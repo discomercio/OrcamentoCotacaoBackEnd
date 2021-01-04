@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Loja.Bll.Dto.CepDto;
 using Loja.UI.Models.Cep;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Loja.UI.Controllers
 {
@@ -22,6 +23,7 @@ namespace Loja.UI.Controllers
         public IActionResult Index()
         {
             CepViewModel cep = new CepViewModel();
+
             cep.ListaCep = new List<CepDto>();
             return View(cep);
         }
@@ -42,7 +44,7 @@ namespace Loja.UI.Controllers
         {
             List<string> lstUf = new List<string>();
             lstUf = (await cepBll.BuscarUfs()).ToList();
-            
+
             return lstUf;
         }
 

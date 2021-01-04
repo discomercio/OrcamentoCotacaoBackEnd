@@ -9,6 +9,7 @@ import { ClienteCadastroDto } from "../../DtosTs/ClienteDto/ClienteCadastroDto";
 import { RefComercialDtoCliente } from "../../DtosTs/ClienteDto/RefComercialDtoCliente";
 import { RefBancariaDtoCliente } from "../../DtosTs/ClienteDto/RefBancariaDtoCliente";
 import { DadosClienteCadastroDto } from "../../DtosTs/ClienteDto/DadosClienteCadastroDto";
+import { EnderecoEntregaClienteCadastroDto } from "../../DtosTs/ClienteDto/EnderecoEntregaClienteCadastroDto";
 
 export class ValidacoesCliente {
     constructor() {
@@ -35,7 +36,7 @@ export class ValidacoesCliente {
         }
 
         retorno += this.validarEndereco(dados, lstCidadesIBGE);
-        debugger;
+
         //inscricao estadual
         retorno += new ClienteCadastroUtils().validarInscricaoestadualIcms(dados);
 
@@ -59,7 +60,7 @@ export class ValidacoesCliente {
 
             retorno += this.verificarRefComercialDuplicada(clienteCadastroDto.RefComercial);
         }
-        
+
 
         return retorno;
     }
@@ -68,7 +69,7 @@ export class ValidacoesCliente {
         let ret: string = "";
 
         if (!dadosClienteCadastroDto.Nome || dadosClienteCadastroDto.Nome.trim() == "") {
-            ret += 'Preencha o nome!<br>';
+            ret += 'Preencha o Nome/Razão Social!<br>';
         }
         if (!!dadosClienteCadastroDto.Cnpj_Cpf || (dadosClienteCadastroDto.Cnpj_Cpf.trim() !== "")) {
             if (CpfCnpjUtils.cnpj_cpf_ok(dadosClienteCadastroDto.Cnpj_Cpf)) {
@@ -87,7 +88,7 @@ export class ValidacoesCliente {
                 ret += 'CNPJ/CPF inválido!<br>';
             }
         } else {
-            ret += 'PREENCHA CNPJ/CPF<br>';
+            ret += 'Preencha CNPJ/CPF<br>';
         }
 
         if (ehObrigatorio) {
@@ -138,7 +139,7 @@ export class ValidacoesCliente {
                 ret = 'Indique qual o sexo!<br>';
             }
         }
-        
+
         return ret;
     }
 
@@ -371,20 +372,16 @@ export class ValidacoesCliente {
 
     private verificarRefComercialDuplicada(lstRef: RefComercialDtoCliente[]): string {
         let ret: string = "";
-        let reduced: RefComercialDtoCliente[] = new Array();
-
-        lstRef.forEach((item) => {
+        for (let i = 0; i < lstRef.length; i++) {
+            let duplicados: RefComercialDtoCliente[] = new Array();
             //preciso fazer um filtro aqui
-            var duplicado = reduced.filter(el => el.Nome_Empresa == item.Nome_Empresa);
+            duplicados = lstRef.filter(el => el.Nome_Empresa == lstRef[i].Nome_Empresa);
 
-
-            if (!duplicado) {
-                reduced.push(item);
+            if (duplicados.length > 1) {
+                ret = "A Referência comercial " + lstRef[i].Nome_Empresa + " já existe!<br>";
+                break;
             }
-            else {
-                ret += "A Referência comercial " + item.Nome_Empresa + " já existe!<br>";
-            }
-        });
+        }
 
         return ret;
     }
@@ -399,4 +396,137 @@ export class ValidacoesCliente {
         return ret;
     }
 
+    public validarEnderecoEntregaDtoClienteCadastro(endEtg: EnderecoEntregaClienteCadastroDto,
+        dadosClienteCadastroDto: DadosClienteCadastroDto, lstCidadeIBGE: string[]): string {
+
+        let ret: string = "";
+
+        ret += this.validarEnderecoEntrega(endEtg, dadosClienteCadastroDto.Tipo, lstCidadeIBGE);
+
+        if (dadosClienteCadastroDto.Tipo == Constantes.ID_PF) {
+            //vamos passar automático
+            endEtg.EndEtg_tipo_pessoa = dadosClienteCadastroDto.Tipo;
+            endEtg.EndEtg_nome = dadosClienteCadastroDto.Nome;
+            endEtg.EndEtg_cnpj_cpf = dadosClienteCadastroDto.Cnpj_Cpf;
+            endEtg.EndEtg_rg = dadosClienteCadastroDto.Rg;
+            endEtg.EndEtg_email = dadosClienteCadastroDto.Email;
+            endEtg.EndEtg_email_xml = dadosClienteCadastroDto.EmailXml;
+            endEtg.EndEtg_produtor_rural_status = dadosClienteCadastroDto.ProdutorRural;
+            endEtg.EndEtg_contribuinte_icms_status = dadosClienteCadastroDto.Contribuinte_Icms_Status;
+            endEtg.EndEtg_ie = dadosClienteCadastroDto.Ie;
+        }
+        if (dadosClienteCadastroDto.Tipo == Constantes.ID_PJ) {
+            endEtg.EndEtg_email = dadosClienteCadastroDto.Email;
+            endEtg.EndEtg_email_xml = dadosClienteCadastroDto.EmailXml;
+        }
+        //vamos converter a entrega para dados cliente para validar
+        let dadosClienteCadastroDto_deEnderecoEntrega = DadosClienteCadastroDto.DadosClienteCadastroDtoDeEnderecoEntregaDtoClienteCadastro(endEtg);
+
+        //valida cpf, cnpj, email e emailxml
+        if (dadosClienteCadastroDto.Tipo == Constantes.ID_PJ)
+            ret += this.validarGeral(dadosClienteCadastroDto_deEnderecoEntrega, false);
+
+        //valida contribuinteICMS e IE
+        if (dadosClienteCadastroDto.Tipo == Constantes.ID_PJ) {
+            ret += new ClienteCadastroUtils().validarInscricaoestadualIcms(dadosClienteCadastroDto_deEnderecoEntrega);
+
+            //se produtor rural = não altera o valor de contribuinte e Ie
+            this.validarProdutorRural(dadosClienteCadastroDto_deEnderecoEntrega);
+        }
+
+        let ehPf: boolean = dadosClienteCadastroDto.Tipo == Constantes.ID_PF ? true : false;
+
+        if (dadosClienteCadastroDto_deEnderecoEntrega.Tipo == Constantes.ID_PJ)
+            ret += this.validarTelefones(dadosClienteCadastroDto, ehPf, false);
+
+
+        if (ret.length > 0) {
+            debugger;
+            let msgSplit: string[] = new Array<string>();
+            msgSplit = ret.split("<br>");
+            ret = "";
+            msgSplit.forEach(x => {
+                if (!!x)
+                    ret += "<b>Endereço de entrega:</b> " + x + "<br>";
+            });
+
+            //validacoes.forEach(x => {
+            //    msgErrosEndEtg.push("Endereço de entrega: " + x);
+            //});
+        }
+
+        return ret;
+    }
+
+    private validarEnderecoEntrega(end: EnderecoEntregaClienteCadastroDto, tipoCliente: string, lstCidadesIBGE: string[]): string {
+        let ret: string = "";
+        let retorno = true;
+        if (end.OutroEndereco) {
+            if (!end.EndEtg_cod_justificativa || end.EndEtg_cod_justificativa.trim() === "") {
+                ret += "Caso seja selecionado outro endereço, selecione a justificativa do endereço!<br>";
+                return ret;
+            }
+            if (tipoCliente == Constantes.ID_PJ) {
+                if (!end.EndEtg_tipo_pessoa || end.EndEtg_tipo_pessoa.trim() === "" ||
+                    end.EndEtg_tipo_pessoa != Constantes.ID_PF && end.EndEtg_tipo_pessoa != Constantes.ID_PJ) {
+                    ret += "Necessário escolher Pessoa Jurídica ou Pessoa Física!<br>";
+                    return ret;
+                }
+
+                if (!end.EndEtg_tipo_pessoa || end.EndEtg_tipo_pessoa.trim() === "" ||
+                    end.EndEtg_tipo_pessoa != Constantes.ID_PF && end.EndEtg_tipo_pessoa != Constantes.ID_PJ) {
+                    ret += "Necessário escolher Pessoa Jurídica ou Pessoa Física!<br>";
+                    return ret;
+                }
+            }
+
+            if (!end.EndEtg_endereco || end.EndEtg_endereco.trim() === "") {
+                ret += "Caso seja selecionado outro endereço, informe um endereço!<br>";
+                return ret;
+            }
+            //somente número, o resto é feito pelo CEP
+            if (!end.EndEtg_endereco_numero || end.EndEtg_endereco_numero.trim() === "") {
+                ret += "Caso seja selecionado outro endereço, preencha o número do endereço!<br>";
+                return ret;
+            }
+            if (!end.EndEtg_bairro || end.EndEtg_bairro.trim() === "") {
+                ret += "Caso seja selecionado outro endereço, informe um bairro!<br>";
+                return ret;
+            }
+            if (!end.EndEtg_cidade || end.EndEtg_cidade.trim() === "") {
+                ret += "Caso seja selecionado outro endereço, informe uma cidade!<br>";
+                return ret;
+            }
+
+            //vamos verificar se tem lista de cidades do IBGE, se tiver é pq a cidade do cep não existe no IBGE
+            if (!!lstCidadesIBGE && lstCidadesIBGE.length > 0) {
+                //a cidade do cep não consta no cadastro do IBGE e deve ter sido alterada, então vamos comparar
+                if (end.EndEtg_cidade.trim() !== "") {
+                    if (lstCidadesIBGE.indexOf(end.EndEtg_cidade) == -1) {
+                        //não existe a cidade
+                        ret += "A cidade informada não consta no cadastro do IBGE para esse estado.<br>";
+                    }
+                }
+            }
+        }
+        return ret;
+    }
+
+    private validarProdutorRural(dadosClienteCadastroDto: DadosClienteCadastroDto): DadosClienteCadastroDto {
+        let clienteCadastroUtils = this;
+        //se é produtor salvamos o contribuinte
+
+        //se não for produtor rural vamos apagar os dados
+
+
+        if (dadosClienteCadastroDto.Tipo == Constantes.ID_PF) {
+            if (dadosClienteCadastroDto.ProdutorRural == Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO) {
+                //vamos apagar os dados de contribuinte e I.E.
+                dadosClienteCadastroDto.Contribuinte_Icms_Status = Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL;
+                dadosClienteCadastroDto.Ie = "";
+            }
+        }
+
+        return dadosClienteCadastroDto;
+    }
 }

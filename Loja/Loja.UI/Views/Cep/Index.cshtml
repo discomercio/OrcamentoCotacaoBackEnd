@@ -3,18 +3,19 @@
 *@
 @model Loja.UI.Models.Cep.CepViewModel
 
-@if (Model.ClienteTipo == "PJ")
+
+@if (Model.ClienteTipo == InfraBanco.Constantes.Constantes.ID_PJ)
 {
     // Radio PF ou PJ
     <div class="row pt-3">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <label id="rb_endEntrega_pf">
-                <input class='check' type='radio' id="EndEntregaTipoPF" value='PF' />
+                <input class='check' type='radio' id="EndEntregaTipoPF" value='PF' name="EndEtg_tipo_pessoa" />
                 <span>Pessoa Física</span>
             </label>
             &nbsp;
             <label id="rb_endEntrega_pj">
-                <input class='check' type='radio' id="EndEntregaTipoPJ" value='PJ' />
+                <input class='check' type='radio' id="EndEntregaTipoPJ" value='PJ' name="EndEtg_tipo_pessoa" />
                 <span>Pessoa Jurídica</span>
             </label>
         </div>
@@ -24,56 +25,87 @@
     <div class="row" id="divEntregaPF" style="display:none">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <label class="col-form-label" for="endEntregaNome">Nome</label>
-            <input type="text" class="form-control" id="endEntregaNome" />
+            <input type="text" class="form-control" id="endEntregaNome" name="EndEtg_nome" />
         </div>
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <label class="col-form-label" for="endEntregaCPF">CPF</label>
-            <input type="text" class="form-control" id="endEntregaCPF" />
+            <input type="text" class="form-control" id="endEntregaCPF" name="EndEtg_cnpj_cpf" />
+
         </div>
         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
             <label class="col-form-label" for="endEntregaTelRes">Fone Residencial</label>
-            <input type="text" class="form-control" id="endEntregaTelRes" />
+            <input type="text" class="form-control" id="endEntregaTelRes" name="EndEtg_tel_res" />
+
         </div>
         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
             <label class="col-form-label" for="endEntregaCel">Celular</label>
-            <input type="text" class="form-control" id="endEntregaCel" />
+            <input type="text" class="form-control" id="endEntregaCel" name="EndEtg_tel_cel" />
+
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+            <label class="col-form-label">PRODUTOR RURAL</label>
+            @Html.DropDownList("EndEtg_produtor_rural_status",
+            new SelectList(Model.LstProdutoRural, "Value", "Text"),
+            new { @id = "endEntregaProdutor", @class = "custom-select" })
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+            <label class="col-form-label">CONTRIBUINTE ICMS</label>
+            @Html.DropDownList("EndEtg_contribuinte_icms_status",
+            new SelectList(Model.LstContribuinte, "Value", "Text"),
+            new { @id = "endEntregaContribuinte", @class = "custom-select" })
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" id="ehProdutorEntrega">
+            <label id="lblIe" for="endEntregaIE">IE</label>
+            <input class="form-control" name="EndEtg_ie" id="endEntregaIE" type="text" />
         </div>
     </div>
     //PJ
     <div class="row" id="divEntregaPJ" style="display:none">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <label class="col-form-label" for="endEntregaRazao">Razão Social</label>
-            <input type="text" class="form-control" id="endEntregaRazao" />
+            <input type="text" class="form-control" id="endEntregaRazao" name="EndEtg_nome" />
         </div>
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <label class="col-form-label" for="endEntregaCNPJ">CNPJ</label>
-            <input type="text" class="form-control" id="endEntregaCNPJ" />
+            <input type="text" class="form-control" id="endEntregaCNPJ" name="EndEtg_cnpj_cpf" />
         </div>
         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-8">
             <label class="col-form-label" for="endEntregaTelCom1">Telefone Com 1</label>
-            <input type="text" class="form-control" id="endEntregaTelCom1" />
+            <input type="text" class="form-control" id="endEntregaTelCom1" name="EndEtg_tel_com" />
+
         </div>
         <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4">
             <label class="col-form-label" for="endEntregaRamal1">Ramal</label>
-            <input type="text" class="form-control" id="endEntregaRamal1" />
+            <input type="text" class="form-control" id="endEntregaRamal1" name="EndEtg_ramal_com" />
         </div>
         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-8">
             <label class="col-form-label" for="endEntregaTelCom2">Telefone Com 2</label>
-            <input type="text" class="form-control" id="endEntregaTelCom2" />
+            <input type="text" class="form-control" id="endEntregaTelCom2" name="EndEtg_tel_com_2" />
+
         </div>
         <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4">
             <label class="col-form-label" for="endEntregaRamal2">Ramal</label>
-            <input type="text" class="form-control" id="endEntregaRamal2" />
+            <input type="text" class="form-control" id="endEntregaRamal2" name="EndEtg_ramal_com_2" />
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+            <label class="col-form-label">CONTRIBUINTE ICMS</label>
+            @Html.DropDownList("EndEtg_contribuinte_icms_status",
+            new SelectList(Model.LstContribuinte, "Value", "Text"),
+            new { @id = "endEntregaContribuinte", @class = "custom-select" })
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12" id="ehProdutorEntrega">
+            <label id="lblIe" for="endEntregaIE">IE</label>
+            <input class="form-control" name="EndEtg_ie" id="endEntregaIE" type="text" />
         </div>
     </div>
 
 }
 
-<div class="row" id="container_cep" style="align-items:flex-end">
+<div class="row container_cep" style="align-items:flex-end">
 
     <div class="col-xl-3 col-md-3 col-sm-6">
         <label class="col-form-label" for="cepEntrega" id="lblcep">CEP</label>
-        <input class="form-control" name="EndEtg_cep" type="text" id="cepEntrega" onblur="buscarCep()" />
+        <input class="form-control" name="EndEtg_cep" type="text" id="cepEntrega" onblur="buscarCep($(this))" />
     </div>
     <button class="btn btn-sm btn-primary waves-effect waves-light col-xl-2 col-md-3 col-sm-6 btnCepCadastro"
             type="button" data-toggle="modal" data-target="#modal1" value="2">
@@ -96,7 +128,7 @@
         <input class="form-control" name="EndEtg_bairro" id="bairroEntrega" type="text" />
     </div>
 </div>
-<div class="row">
+<div class="row container_cep">
     <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
         <label class="col-form-label" id="lblCidadeEntrega" for="cidadeEntrega">CIDADE</label>
         <input class="form-control" name="EndEtg_cidade" id="cidadeEntrega" type="text" />
@@ -107,9 +139,21 @@
     </div>
 </div>
 
-<script>
+@* INPUTS PARA ENVIAR *@
+<input type="hidden" name="EndEtg_rg" id="endEntregaRg" />
+<input type="hidden" name="EndEtg_ddd_res" id="endEntregaDddRes" />
+<input type="hidden" name="EndEtg_ddd_cel" id="endEntregaDddCel" />
+<input type="hidden" name="EndEtg_ddd_com" id="endEntregaDddCom1" />
+<input type="hidden" name="EndEtg_ddd_com_2" id="endEntregaDddCom2" />
+<input type="hidden" name="EndEtg_email" id="endEntregaEmail" />
+<input type="hidden" name="EndEtg_email_xml" id="endEntregaEmailXml" />
+<input type="hidden" name="St_memorizacao_completa_enderecos" id="endEntregaStMemorizacao" />
 
-    requirejs(["Views/Cep/Index"], function (util) {
+
+<script>
+    var lstIBGE_Entrega1;
+    var tipoClienteEntrega;
+    requirejs(["Views/Cep/Index"], function () {
     });
 </script>
 

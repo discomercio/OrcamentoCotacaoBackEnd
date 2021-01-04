@@ -69,6 +69,9 @@ namespace Loja.UI.Controllers
               buscar indicadores 
             */
 
+            List<string> teste = new List<string>() { "teste 1", "teste 2" };
+            return RedirectToAction("Index", "Erro", new { lstErros = teste });
+
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
 
             ClienteCadastroViewModel cliente = new ClienteCadastroViewModel();
@@ -177,6 +180,13 @@ namespace Loja.UI.Controllers
 
             //vamos buscar a lista de IBGE para confrontar na validação de tela
 
+            //vamos carregar os select's de cep
+            cliente.Cep = new Models.Cep.CepViewModel();
+            cliente.Cep.ClienteTipo = cliente.DadosCliente.Tipo;
+            //lista para carregar no select de Produtor Rural              
+            cliente.Cep.LstProdutoRural = new SelectList(lstProdR, "Value", "Text");
+            //lista para carregar o Contribuinte ICMS           
+            cliente.Cep.LstContribuinte = new SelectList(lstContrICMS, "Value", "Text");
 
             return View("DadosCliente", cliente);
         }
@@ -212,11 +222,27 @@ namespace Loja.UI.Controllers
                 novo_clienteCadastro.RefBancaria = lstRefBancaria;
                 novo_clienteCadastro.RefComercial = lstRefCom;
                 //vamos cadastrar o cliente
-                List<string> novo_retorno = (await clienteBll.Novo_CadastrarCliente(novo_clienteCadastro, usuarioLogado.Usuario_atual)).ToList();
-                               
-                //depois de cadastrar, vamos redirecionar o usuário para a tela de cadastro do cliente cadastrado
-                //para caso queira realizar um novo pedido
-                return RedirectToAction("BuscarCliente", new { cpf_cnpj = novo_retorno, novoCliente = false });
+                List<string> lstRetorno = (await clienteBll.Novo_CadastrarCliente(novo_clienteCadastro, usuarioLogado.Usuario_atual)).ToList();
+                                
+                if (lstRetorno.Count > 1)
+                {
+                    //deu erro vamos redirecionar para o Home/Erro
+                    //return RedirectToAction("Error", "Home", new { lstErros = lstRetorno });
+                }
+                else if (lstRetorno.Count == 1)
+                {
+                    //vamos verificar se é o id do cliente cadastrado
+                    if (lstRetorno[0].Length != 12)
+                    {
+                        //é o id
+                        string idClienteNovo = lstRetorno[0];
+                        //depois de cadastrar, vamos redirecionar o usuário para a tela de cadastro do cliente cadastrado
+                        //para caso queira realizar um novo pedido
+                        return RedirectToAction("BuscarCliente", new { cpf_cnpj = idClienteNovo, novoCliente = false });
+                    }
+                }
+
+
             }
 
             //afazer: alterar essa session para utilizar no usuarioLogado
