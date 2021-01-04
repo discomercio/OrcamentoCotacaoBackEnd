@@ -1,5 +1,5 @@
 ﻿@ignore
-@Especificacao.Pedido.Passo20.EnderecoEntrega
+@Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
 Feature: Pedido de cliente PJ com endereço de entrega PJ - validação de telefones
 #em loja/ClienteEdita.asp:
 #                /*
@@ -14,12 +14,9 @@ Feature: Pedido de cliente PJ com endereço de entrega PJ - validação de telef
 
 #também em loja/PedidoNovoConsiste.asp
 
-Background: Pedido base
+Background: Api MAgento somente aceita pedidos PF
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	Given Pedido base cliente PJ com endereço de entrega PJ
-
-Scenario: Configuração
-	Given Nome deste item "Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj.EntregaPjTelefones"
-	Given Implementado em "Especificacao.Pedido.Pedido"
 
 
 #-------------------------------------------------------------

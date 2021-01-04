@@ -29,6 +29,13 @@ namespace Especificacao.Testes.Pedido
             base.Executar(i => i.GivenPedidoBaseClientePJ());
         }
 
+        public void GivenPedidoBaseClientePJComEnderecoDeEntrega()
+        {
+            if (ignorarFeature) return;
+            Utils.LogTestes.LogOperacoes2.DadoBaseClientePJComEnderecoDeEntrega(this);
+            base.Executar(i => i.GivenPedidoBaseClientePJComEnderecoDeEntrega());
+        }
+
         public void WhenInformo(string p0, string p1)
         {
             if (ignorarFeature) return;
@@ -57,6 +64,31 @@ namespace Especificacao.Testes.Pedido
             if (ignorarFeature) return;
             Utils.LogTestes.LogOperacoes2.SemNenhumErro(this);
             base.Executar(i => i.ThenSemNenhumErro());
+        }
+        public void ListaDeItensInformo(int numeroItem, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensInformo(numeroItem, campo, valor, this);
+            base.Executar(i => i.ListaDeItensInformo(numeroItem, campo, valor));
+        }
+
+        public void RecalcularTotaisDoPedido()
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.RecalcularTotaisDoPedido(this);
+            base.Executar(i => i.RecalcularTotaisDoPedido());
+        }
+        public void DeixarFormaDePagamentoConsistente()
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.DeixarFormaDePagamentoConsistente(this);
+            base.Executar(i => i.DeixarFormaDePagamentoConsistente());
+        }
+        public void ListaDeItensComXitens(int p0)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensComXitens(p0, this);
+            base.Executar(i => i.ListaDeItensComXitens(p0));
         }
 
         private bool ignorarFeature = false;

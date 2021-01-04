@@ -120,18 +120,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
  testRunner.And("Especificado em \"Especificacao.Pedido.Passo10.CamposSimplesPjListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 13
+#line 8
  testRunner.And("Especificado em \"Especificacao.Pedido.Passo20.EnderecoEntrega.EnderecoEntregaList" +
                         "aDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 14
+#line 9
+ testRunner.And("Especificado em \"Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj.ClientePj" +
+                        "ListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 12
+ testRunner.And("Especificado em \"Especificacao.Pedido.Passo40.Passo40ListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 13
  testRunner.And("Implementado em \"Especificacao.Prepedido.Prepedido.PrepedidoListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 15
+#line 14
  testRunner.And("Implementado em \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedid" +
                         "oListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 18
+#line 17
  testRunner.And("Implementado em \"Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.C" +
                         "adastrarPedidoListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

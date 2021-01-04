@@ -129,7 +129,10 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             float percRT = 0f;
             foreach (var x in lstProdutosMagento)
             {
-                percRT = percRT + (float)((x.Preco_Lista - (x.Preco_Venda + 1)) / x.Preco_Venda * 100);
+                if (x.Preco_Venda == 0)
+                    percRT = percRT + 0;
+                else
+                    percRT = percRT + (float)((x.Preco_Lista - (x.Preco_Venda + 1)) / x.Preco_Venda * 100);
             };
             pedidoCriacao.PercRT = percRT;
             pedidoCriacao.PercRT = 0;

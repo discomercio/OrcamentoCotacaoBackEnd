@@ -123,10 +123,26 @@ this.ScenarioInitialize(scenarioInfo);
                         "dicional.CamposLidosAppsettings\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 10
- testRunner.And("Especificado em \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoA" +
-                        "dicional.SemPedidosPj\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Especificado em \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente" +
+                        ".SemPedidosPj\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 11
+ testRunner.And("Especificado em \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente" +
+                        ".CriacaoCliente_Pf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 12
+ testRunner.And("Especificado em \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente" +
+                        ".CriacaoCliente_Pf_Obrigatorios\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 13
+ testRunner.And("Especificado em \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente" +
+                        ".CriacaoCliente_Pf_Opcionais\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 14
+ testRunner.And("Especificado em \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente" +
+                        ".SemPedidosPj\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 16
  testRunner.And("Especificado em \"Especificacao.Pedido.Pedido.PedidoListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }

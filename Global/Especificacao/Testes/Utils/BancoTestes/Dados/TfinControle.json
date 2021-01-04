@@ -1,0 +1,482 @@
+﻿[
+  {
+    "id": "NSU_BOLETO_AVULSO_NUMERO_DOCUMENTO",
+    "nsu": 3007,
+    "dt_hr_ult_atualizacao": "2020-12-02T20:35:56Z"
+  },
+  {
+    "id": "NSU_REL_SEPARACAO_ZONA",
+    "nsu": 0,
+    "dt_hr_ult_atualizacao": "2016-05-30T03:00:00Z"
+  },
+  {
+    "id": "T_CLIENTE_SPC_HISTORICO",
+    "nsu": 10005,
+    "dt_hr_ult_atualizacao": "2017-06-08T13:28:46Z"
+  },
+  {
+    "id": "T_COMISSAO_INDICADOR_N1",
+    "nsu": 1174,
+    "dt_hr_ult_atualizacao": "2020-11-11T12:59:20Z"
+  },
+  {
+    "id": "T_COMISSAO_INDICADOR_N2",
+    "nsu": 1424,
+    "dt_hr_ult_atualizacao": "2020-11-11T12:59:20Z"
+  },
+  {
+    "id": "T_COMISSAO_INDICADOR_N3",
+    "nsu": 24235,
+    "dt_hr_ult_atualizacao": "2020-11-11T12:59:20Z"
+  },
+  {
+    "id": "T_COMISSAO_INDICADOR_N4",
+    "nsu": 63128,
+    "dt_hr_ult_atualizacao": "2020-11-11T12:59:20Z"
+  },
+  {
+    "id": "T_EMAILSNDSVC_LOG",
+    "nsu": 34864,
+    "dt_hr_ult_atualizacao": "2020-12-03T00:30:02Z"
+  },
+  {
+    "id": "T_EMAILSNDSVC_LOG_ERRO",
+    "nsu": 529,
+    "dt_hr_ult_atualizacao": "2020-07-07T20:47:58Z"
+  },
+  {
+    "id": "T_EMAILSNDSVC_MENSAGEM",
+    "nsu": 32465,
+    "dt_hr_ult_atualizacao": "2020-12-03T00:30:02Z"
+  },
+  {
+    "id": "T_EMAILSNDSVC_REMETENTE",
+    "nsu": 1,
+    "dt_hr_ult_atualizacao": "2016-07-10T21:45:25Z"
+  },
+  {
+    "id": "T_EQUIPE_VENDAS",
+    "nsu": 0,
+    "dt_hr_ult_atualizacao": "2016-05-30T03:00:00Z"
+  },
+  {
+    "id": "T_ESTOQUE_TRANSFERENCIA",
+    "nsu": 216,
+    "dt_hr_ult_atualizacao": "2020-12-02T19:02:47Z"
+  },
+  {
+    "id": "T_ESTOQUE_XML",
+    "nsu": 4305,
+    "dt_hr_ult_atualizacao": "2020-12-02T16:37:21Z"
+  },
+  {
+    "id": "t_FIN_BOLETO",
+    "nsu": 13130,
+    "dt_hr_ult_atualizacao": "2020-12-02T20:51:05Z"
+  },
+  {
+    "id": "t_FIN_BOLETO_ARQ_REMESSA",
+    "nsu": 1691,
+    "dt_hr_ult_atualizacao": "2020-12-02T20:54:16Z"
+  },
+  {
+    "id": "t_FIN_BOLETO_ARQ_RETORNO",
+    "nsu": 1651,
+    "dt_hr_ult_atualizacao": "2020-12-02T11:34:33Z"
+  },
+  {
+    "id": "T_FIN_BOLETO_CEDENTE",
+    "nsu": 5,
+    "dt_hr_ult_atualizacao": "2017-04-26T20:10:06Z"
+  },
+  {
+    "id": "t_FIN_BOLETO_ITEM",
+    "nsu": 36091,
+    "dt_hr_ult_atualizacao": "2020-12-02T20:51:06Z"
+  },
+  {
+    "id": "t_FIN_BOLETO_MOVIMENTO",
+    "nsu": 29819,
+    "dt_hr_ult_atualizacao": "2020-12-02T11:35:06Z"
+  },
+  {
+    "id": "t_FIN_BOLETO_OCORRENCIA",
+    "nsu": 5034,
+    "dt_hr_ult_atualizacao": "2020-12-02T11:35:08Z"
+  },
+  {
+    "id": "t_FIN_FLUXO_CAIXA",
+    "nsu": 353770,
+    "dt_hr_ult_atualizacao": "2020-12-02T21:16:00Z"
+  },
+  {
+    "id": "t_FIN_NF_PARCELA_PAGTO",
+    "nsu": 10560,
+    "dt_hr_ult_atualizacao": "2016-05-30T03:00:00Z"
+  },
+  {
+    "id": "t_FIN_NF_PARCELA_PAGTO_ITEM",
+    "nsu": 38966,
+    "dt_hr_ult_atualizacao": "2016-05-30T03:00:00Z"
+  },
+  {
+    "id": "t_FIN_PEDIDO_HIST_PAGTO",
+    "nsu": 87513,
+    "dt_hr_ult_atualizacao": "2020-12-03T00:44:36Z"
+  },
+  {
+    "id": "T_FINSVC_LOG",
+    "nsu": 360486,
+    "dt_hr_ult_atualizacao": "2020-12-03T00:30:02Z"
+  },
+  {
+    "id": "t_NFe_EMISSAO",
+    "nsu": 209127,
+    "dt_hr_ult_atualizacao": "2016-05-30T03:00:00Z"
+  },
+  {
+    "id": "t_NFe_IMAGEM",
+    "nsu": 209013,
+    "dt_hr_ult_atualizacao": "2016-05-30T03:00:00Z"
+  },
+  {
+    "id": "t_NFe_IMAGEM_ITEM",
+    "nsu": 454583,
+    "dt_hr_ult_atualizacao": "2016-05-30T03:00:00Z"
+  },
+  {
+    "id": "t_NFe_IMAGEM_NFe_REFERENCIADA",
+    "nsu": 2154,
+    "dt_hr_ult_atualizacao": "2016-05-30T03:00:00Z"
+  },
+  {
+    "id": "T_NFe_IMAGEM_PAG",
+    "nsu": 145505,
+    "dt_hr_ult_atualizacao": "2018-08-02T16:58:11Z"
+  },
+  {
+    "id": "t_NFe_IMAGEM_TAG_DUP",
+    "nsu": 38981,
+    "dt_hr_ult_atualizacao": "2016-05-30T03:00:00Z"
+  },
+  {
+    "id": "t_NFe_TRIANGULAR",
+    "nsu": 877,
+    "dt_hr_ult_atualizacao": "2017-12-28T15:43:57Z"
+  },
+  {
+    "id": "T_ORCAMENTISTA_E_INDICADOR__forma_como_conheceu_codigo",
+    "nsu": 100,
+    "dt_hr_ult_atualizacao": "2016-05-30T03:00:00Z"
+  },
+  {
+    "id": "T_ORCAMENTISTA_E_INDICADOR_BLOCO_NOTAS",
+    "nsu": 9286,
+    "dt_hr_ult_atualizacao": "2020-12-02T19:05:30Z"
+  },
+  {
+    "id": "T_ORCAMENTISTA_E_INDICADOR_DESCONTO",
+    "nsu": 2299,
+    "dt_hr_ult_atualizacao": "2020-12-02T19:37:57Z"
+  },
+  {
+    "id": "T_ORCAMENTISTA_E_INDICADOR_LOG",
+    "nsu": 72887,
+    "dt_hr_ult_atualizacao": "2020-12-02T20:52:05Z"
+  },
+  {
+    "id": "T_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FORMA_PAGTO",
+    "nsu": 103,
+    "dt_hr_ult_atualizacao": "2020-10-07T13:15:47Z"
+  },
+  {
+    "id": "T_PAGTO_GW_AF",
+    "nsu": 49674,
+    "dt_hr_ult_atualizacao": "2020-12-02T23:00:36Z"
+  },
+  {
+    "id": "T_PAGTO_GW_AF_ITEM",
+    "nsu": 114923,
+    "dt_hr_ult_atualizacao": "2020-12-02T23:00:36Z"
+  },
+  {
+    "id": "T_PAGTO_GW_AF_OP_COMPLEMENTAR",
+    "nsu": 49553,
+    "dt_hr_ult_atualizacao": "2020-12-02T21:00:02Z"
+  },
+  {
+    "id": "T_PAGTO_GW_AF_OP_COMPLEMENTAR_XML",
+    "nsu": 99106,
+    "dt_hr_ult_atualizacao": "2020-12-02T21:00:02Z"
+  },
+  {
+    "id": "T_PAGTO_GW_AF_PAYMENT",
+    "nsu": 51693,
+    "dt_hr_ult_atualizacao": "2020-12-02T23:00:36Z"
+  },
+  {
+    "id": "T_PAGTO_GW_AF_PHONE",
+    "nsu": 136206,
+    "dt_hr_ult_atualizacao": "2020-12-02T23:00:36Z"
+  },
+  {
+    "id": "T_PAGTO_GW_AF_SESSIONID",
+    "nsu": 81996,
+    "dt_hr_ult_atualizacao": "2020-12-03T03:03:22Z"
+  },
+  {
+    "id": "T_PAGTO_GW_AF_XML",
+    "nsu": 99334,
+    "dt_hr_ult_atualizacao": "2020-12-02T23:00:37Z"
+  },
+  {
+    "id": "T_PAGTO_GW_PAG",
+    "nsu": 65628,
+    "dt_hr_ult_atualizacao": "2020-12-03T00:44:35Z"
+  },
+  {
+    "id": "T_PAGTO_GW_PAG_ERROR",
+    "nsu": 77,
+    "dt_hr_ult_atualizacao": "2020-10-22T12:16:10Z"
+  },
+  {
+    "id": "T_PAGTO_GW_PAG_OP_COMPLEMENTAR",
+    "nsu": 134163,
+    "dt_hr_ult_atualizacao": "2020-12-03T00:30:00Z"
+  },
+  {
+    "id": "T_PAGTO_GW_PAG_OP_COMPLEMENTAR_XML",
+    "nsu": 268302,
+    "dt_hr_ult_atualizacao": "2020-12-03T00:30:01Z"
+  },
+  {
+    "id": "T_PAGTO_GW_PAG_PAYMENT",
+    "nsu": 67752,
+    "dt_hr_ult_atualizacao": "2020-12-03T00:44:35Z"
+  },
+  {
+    "id": "T_PAGTO_GW_PAG_XML",
+    "nsu": 131180,
+    "dt_hr_ult_atualizacao": "2020-12-03T00:44:36Z"
+  },
+  {
+    "id": "T_PEDIDO_ANALISE_ENDERECO",
+    "nsu": 51226,
+    "dt_hr_ult_atualizacao": "2020-12-03T00:19:49Z"
+  },
+  {
+    "id": "T_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO",
+    "nsu": 284406,
+    "dt_hr_ult_atualizacao": "2020-12-03T00:19:49Z"
+  },
+  {
+    "id": "T_PEDIDO_BLOCO_NOTAS",
+    "nsu": 276650,
+    "dt_hr_ult_atualizacao": "2020-12-03T04:20:02Z"
+  },
+  {
+    "id": "T_PEDIDO_CHAMADO",
+    "nsu": 6411,
+    "dt_hr_ult_atualizacao": "2020-12-02T18:23:01Z"
+  },
+  {
+    "id": "T_PEDIDO_CHAMADO_MENSAGEM",
+    "nsu": 5819,
+    "dt_hr_ult_atualizacao": "2020-12-02T18:23:15Z"
+  },
+  {
+    "id": "T_PEDIDO_FRETE",
+    "nsu": 212866,
+    "dt_hr_ult_atualizacao": "2020-12-02T13:43:26Z"
+  },
+  {
+    "id": "T_PEDIDO_ITEM_DEVOLVIDO_BLOCO_NOTAS",
+    "nsu": 11792,
+    "dt_hr_ult_atualizacao": "2020-12-02T20:41:11Z"
+  },
+  {
+    "id": "T_PEDIDO_NFE_EMISSAO_SOLICITADA",
+    "nsu": 199377,
+    "dt_hr_ult_atualizacao": "2020-12-02T20:50:11Z"
+  },
+  {
+    "id": "T_PEDIDO_OCORRENCIA",
+    "nsu": 9913,
+    "dt_hr_ult_atualizacao": "2020-12-02T19:54:58Z"
+  },
+  {
+    "id": "T_PEDIDO_OCORRENCIA_MENSAGEM",
+    "nsu": 28057,
+    "dt_hr_ult_atualizacao": "2020-12-02T20:37:46Z"
+  },
+  {
+    "id": "T_PEDIDO_PAGTO_BRASPAG",
+    "nsu": 17,
+    "dt_hr_ult_atualizacao": "2016-07-08T13:52:23Z"
+  },
+  {
+    "id": "T_PEDIDO_PAGTO_BRASPAG_AF",
+    "nsu": 17,
+    "dt_hr_ult_atualizacao": "2016-07-08T13:52:23Z"
+  },
+  {
+    "id": "T_PEDIDO_PAGTO_BRASPAG_AF_ERROR",
+    "nsu": 0,
+    "dt_hr_ult_atualizacao": "2016-05-30T03:00:00Z"
+  },
+  {
+    "id": "T_PEDIDO_PAGTO_BRASPAG_AF_ITEM",
+    "nsu": 47,
+    "dt_hr_ult_atualizacao": "2016-07-08T13:52:23Z"
+  },
+  {
+    "id": "T_PEDIDO_PAGTO_BRASPAG_AF_OP_COMPLEMENTAR",
+    "nsu": 22,
+    "dt_hr_ult_atualizacao": "2016-07-08T14:16:51Z"
+  },
+  {
+    "id": "T_PEDIDO_PAGTO_BRASPAG_AF_OP_COMPLEMENTAR_XML",
+    "nsu": 44,
+    "dt_hr_ult_atualizacao": "2016-07-08T14:16:51Z"
+  },
+  {
+    "id": "T_PEDIDO_PAGTO_BRASPAG_PAG",
+    "nsu": 17,
+    "dt_hr_ult_atualizacao": "2016-07-08T13:52:23Z"
+  },
+  {
+    "id": "T_PEDIDO_PAGTO_BRASPAG_PAG_ERROR",
+    "nsu": 0,
+    "dt_hr_ult_atualizacao": "2016-05-30T03:00:00Z"
+  },
+  {
+    "id": "T_PEDIDO_PAGTO_BRASPAG_PAG_OP_COMPLEMENTAR",
+    "nsu": 11,
+    "dt_hr_ult_atualizacao": "2016-07-08T14:16:51Z"
+  },
+  {
+    "id": "T_PEDIDO_PAGTO_BRASPAG_PAG_OP_COMPLEMENTAR_XML",
+    "nsu": 22,
+    "dt_hr_ult_atualizacao": "2016-07-08T14:16:51Z"
+  },
+  {
+    "id": "T_PEDIDO_PAGTO_BRASPAG_XML",
+    "nsu": 34,
+    "dt_hr_ult_atualizacao": "2016-07-08T13:52:27Z"
+  },
+  {
+    "id": "T_PEDIDO_PAGTO_CIELO",
+    "nsu": 0,
+    "dt_hr_ult_atualizacao": "2016-05-30T03:00:00Z"
+  },
+  {
+    "id": "T_PEDIDO_PAGTO_CIELO_XML",
+    "nsu": 0,
+    "dt_hr_ult_atualizacao": "2016-05-30T03:00:00Z"
+  },
+  {
+    "id": "t_SERASA_ARQ_CONCILIACAO_INPUT",
+    "nsu": 44,
+    "dt_hr_ult_atualizacao": "2020-11-16T13:08:23Z"
+  },
+  {
+    "id": "t_SERASA_ARQ_CONCILIACAO_OUTPUT",
+    "nsu": 43,
+    "dt_hr_ult_atualizacao": "2020-11-16T13:37:17Z"
+  },
+  {
+    "id": "t_SERASA_ARQ_REMESSA_NORMAL",
+    "nsu": 194,
+    "dt_hr_ult_atualizacao": "2020-11-30T12:11:45Z"
+  },
+  {
+    "id": "t_SERASA_ARQ_RETORNO_NORMAL",
+    "nsu": 0,
+    "dt_hr_ult_atualizacao": "2016-05-30T03:00:00Z"
+  },
+  {
+    "id": "t_SERASA_CLIENTE",
+    "nsu": 3784,
+    "dt_hr_ult_atualizacao": "2020-12-02T11:34:49Z"
+  },
+  {
+    "id": "t_SERASA_CONCILIACAO_TITULO",
+    "nsu": 39380,
+    "dt_hr_ult_atualizacao": "2020-11-16T13:19:38Z"
+  },
+  {
+    "id": "t_SERASA_REMESSA_DET_TEMPO_RELAC",
+    "nsu": 3829,
+    "dt_hr_ult_atualizacao": "2020-11-30T12:11:50Z"
+  },
+  {
+    "id": "t_SERASA_REMESSA_DET_TITULO",
+    "nsu": 36304,
+    "dt_hr_ult_atualizacao": "2020-11-30T12:14:04Z"
+  },
+  {
+    "id": "t_SERASA_RETORNO_NORMAL_TAB_ERROS",
+    "nsu": 0,
+    "dt_hr_ult_atualizacao": "2016-05-30T03:00:00Z"
+  },
+  {
+    "id": "t_SERASA_RETORNO_NORMAL_TITULO",
+    "nsu": 0,
+    "dt_hr_ult_atualizacao": "2016-05-30T03:00:00Z"
+  },
+  {
+    "id": "t_SERASA_TITULO_MOVIMENTO",
+    "nsu": 36192,
+    "dt_hr_ult_atualizacao": "2020-12-02T11:35:08Z"
+  },
+  {
+    "id": "T_TRANSPORTADORA_CEP",
+    "nsu": 11413,
+    "dt_hr_ult_atualizacao": "2020-03-18T18:59:44Z"
+  },
+  {
+    "id": "T_WMS_ETQ_N1_SEPARACAO_ZONA_RELATORIO",
+    "nsu": 20000,
+    "dt_hr_ult_atualizacao": "2020-12-02T20:02:30Z"
+  },
+  {
+    "id": "T_WMS_ETQ_N2_SEPARACAO_ZONA_PEDIDO",
+    "nsu": 200682,
+    "dt_hr_ult_atualizacao": "2020-12-02T20:02:30Z"
+  },
+  {
+    "id": "T_WMS_ETQ_N3_SEPARACAO_ZONA_PRODUTO",
+    "nsu": 431868,
+    "dt_hr_ult_atualizacao": "2020-12-02T20:02:30Z"
+  },
+  {
+    "id": "T_WMS_REGRA_CD",
+    "nsu": 6,
+    "dt_hr_ult_atualizacao": "2020-01-17T16:54:30Z"
+  },
+  {
+    "id": "T_WMS_REGRA_CD_X_UF",
+    "nsu": 162,
+    "dt_hr_ult_atualizacao": "2020-01-17T16:54:33Z"
+  },
+  {
+    "id": "T_WMS_REGRA_CD_X_UF_X_PESSOA",
+    "nsu": 810,
+    "dt_hr_ult_atualizacao": "2020-01-17T16:54:33Z"
+  },
+  {
+    "id": "T_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD",
+    "nsu": 3105,
+    "dt_hr_ult_atualizacao": "2020-01-17T16:54:33Z"
+  },
+  {
+    "id": "T_WMS_ROMANEIO_N1",
+    "nsu": 13799,
+    "dt_hr_ult_atualizacao": "2020-12-02T20:08:55Z"
+  },
+  {
+    "id": "T_WMS_ROMANEIO_N2",
+    "nsu": 248274,
+    "dt_hr_ult_atualizacao": "2020-12-02T20:08:55Z"
+  }
+]

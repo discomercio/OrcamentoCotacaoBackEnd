@@ -127,6 +127,9 @@ this.ScenarioInitialize(scenarioInfo);
 #line 23
  testRunner.Given("VerificacaoFinalListaDependencias", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
+#line 24
+ testRunner.Given("ApagarMapaComChamadas.txt", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
             }
             this.ScenarioCleanup();
         }

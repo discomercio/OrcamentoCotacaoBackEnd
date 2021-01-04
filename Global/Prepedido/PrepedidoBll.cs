@@ -328,7 +328,7 @@ namespace Prepedido
             //descrição d meio de pagto
             pagto.Descricao_meio_pagto = await ObterDescricaoFormaPagto(torcamento.Av_Forma_Pagto);
             pagto.Tipo_parcelamento = torcamento.Tipo_Parcelamento;
-            pagto.Qtde_Parcelas = (int)torcamento.Qtde_Parcelas;
+            pagto.Qtde_Parcelas_Para_Exibicao = (int)torcamento.Qtde_Parcelas;
 
             if (torcamento.Tipo_Parcelamento == short.Parse(Constantes.COD_FORMA_PAGTO_A_VISTA))
             {
@@ -773,7 +773,7 @@ namespace Prepedido
 
             //Validar endereço de entraga
             await validacoesPrepedidoBll.ValidarEnderecoEntrega(prePedido.EnderecoEntrega, lstErros,
-                prePedido.DadosCliente.Indicador_Orcamentista, prePedido.DadosCliente.Tipo);
+                prePedido.DadosCliente.Indicador_Orcamentista, prePedido.DadosCliente.Tipo, true, prePedido.DadosCliente.Loja);
             if (lstErros.Any())
                 return lstErros;
 
@@ -789,9 +789,11 @@ namespace Prepedido
                 return lstErros;
 
             //Esta sendo verificado qual o tipo de pagamento que esta sendo feito e retornando a quantidade de parcelas
-            int c_custoFinancFornecQtdeParcelas = ObterQtdeParcelasFormaPagto(prePedido.FormaPagtoCriacao);
+            int c_custoFinancFornecQtdeParcelas = ObterCustoFinancFornecQtdeParcelasDeFormaPagto(prePedido.FormaPagtoCriacao);
 
             float perc_limite_RA_sem_desagio = await Util.VerificarSemDesagioRA(contextoProvider);
+
+            decimal percVlPedidoRA = await ObtemPercentualVlPedidoRA();
 
             //Vamos conforntar os valores de cada item, total do prepedido e o percentual máximo de RA
             //afazer: verificar se a lista de produtos contém itens
@@ -800,7 +802,7 @@ namespace Prepedido
 
             await validacoesPrepedidoBll.MontarProdutosParaComparacao(prePedido,
                 c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas,
-                prePedido.DadosCliente.Loja, lstErros, perc_limite_RA_sem_desagio, limiteArredondamento);
+                prePedido.DadosCliente.Loja, lstErros, percVlPedidoRA, limiteArredondamento);
 
 
             Util.ValidarTipoCustoFinanceiroFornecedor(lstErros, c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas);
@@ -956,7 +958,7 @@ namespace Prepedido
             torcamento.St_Orcamento = "";
             torcamento.St_Fechamento = "";
             torcamento.St_Orc_Virou_Pedido = 0;
-            torcamento.CustoFinancFornecQtdeParcelas = (short)ObterQtdeParcelasFormaPagto(prepedido.FormaPagtoCriacao);
+            torcamento.CustoFinancFornecQtdeParcelas = (short)ObterCustoFinancFornecQtdeParcelasDeFormaPagto(prepedido.FormaPagtoCriacao);
             torcamento.Vl_Total = Calcular_Vl_Total(prepedido);
             torcamento.Vl_Total_NF = CalcularVl_Total_NF(prepedido);
             torcamento.Vl_Total_RA = prepedido.PermiteRAStatus == 1 ? CalcularVl_Total_NF(prepedido) - Calcular_Vl_Total(prepedido) : 0M;
@@ -1053,7 +1055,7 @@ namespace Prepedido
         {
             if (torcamento != null)
             {
-                torcamento.Qtde_Parcelas = (short?)prepedido.FormaPagtoCriacao.Qtde_Parcelas;
+                torcamento.Qtde_Parcelas = ObterQtdeParcelasDeFormaPagto(prepedido.FormaPagtoCriacao);
                 torcamento.Forma_Pagamento = prepedido.FormaPagtoCriacao.C_forma_pagto == null ?
                     "" : prepedido.FormaPagtoCriacao.C_forma_pagto;
                 torcamento.Tipo_Parcelamento = short.Parse(prepedido.FormaPagtoCriacao.Rb_forma_pagto);
@@ -1088,7 +1090,7 @@ namespace Prepedido
                     if (prepedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto != "5" &&
                         prepedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto != "7")
                         torcamento.Pce_Prestacao_Periodo = (short)prepedido.FormaPagtoCriacao.C_pce_prestacao_periodo;
-                    torcamento.Qtde_Parcelas = (short?)(prepedido.FormaPagtoCriacao.Qtde_Parcelas);
+                    torcamento.Qtde_Parcelas = ObterQtdeParcelasDeFormaPagto(prepedido.FormaPagtoCriacao);
                 }
                 else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA)
                 {
@@ -1099,7 +1101,7 @@ namespace Prepedido
                     torcamento.Pse_Demais_Prest_Qtde = (short)prepedido.FormaPagtoCriacao.C_pse_demais_prest_qtde;
                     torcamento.Pse_Demais_Prest_Valor = (decimal)prepedido.FormaPagtoCriacao.C_pse_demais_prest_valor;
                     torcamento.Pse_Demais_Prest_Periodo = (short)prepedido.FormaPagtoCriacao.C_pse_demais_prest_periodo;
-                    torcamento.Qtde_Parcelas = (short)(prepedido.FormaPagtoCriacao.Qtde_Parcelas + 1);
+                    torcamento.Qtde_Parcelas = ObterQtdeParcelasDeFormaPagto(prepedido.FormaPagtoCriacao);
                 }
 
                 //Verificando campos NULL para compatibilidade, pois os campos aceitam NULL mas, não é salvo dessa forma
@@ -1244,22 +1246,43 @@ namespace Prepedido
             return log;
         }
 
-        public int ObterQtdeParcelasFormaPagto(FormaPagtoCriacaoDados formaPagto)
+        public static int ObterCustoFinancFornecQtdeParcelasDeFormaPagto(FormaPagtoCriacaoDados formaPagto)
         {
-            int qtdeParcelas = 0;
+            int custoFinancFornecQtdeParcelas = 0;
 
             if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA)
-                qtdeParcelas = 0;
+                custoFinancFornecQtdeParcelas = 0;
+            else if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELA_UNICA)
+                custoFinancFornecQtdeParcelas = 1;
+            else if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO)
+                custoFinancFornecQtdeParcelas = formaPagto.C_pc_qtde ?? -1;
+            else if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA)
+                custoFinancFornecQtdeParcelas = formaPagto.C_pc_maquineta_qtde ?? -1;
+            else if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA)
+                custoFinancFornecQtdeParcelas = formaPagto.C_pce_prestacao_qtde ?? -1;
+            else if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA)
+                custoFinancFornecQtdeParcelas = (formaPagto.C_pse_demais_prest_qtde ?? -1) + 1;//conforme linha 199 pág OrcamentoNovoConfirma.asp
+
+            return custoFinancFornecQtdeParcelas;
+        }
+
+
+        public static short? ObterQtdeParcelasDeFormaPagto(FormaPagtoCriacaoDados formaPagto)
+        {
+            short? qtdeParcelas = 0;
+
+            if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA)
+                qtdeParcelas = 1;
             else if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELA_UNICA)
                 qtdeParcelas = 1;
             else if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO)
-                qtdeParcelas = (int)formaPagto.C_pc_qtde;
+                qtdeParcelas = (short)(formaPagto.C_pc_qtde ?? -1);
             else if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA)
-                qtdeParcelas = (int)formaPagto.C_pc_maquineta_qtde;
+                qtdeParcelas = (short)(formaPagto.C_pc_maquineta_qtde ?? -1);
             else if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA)
-                qtdeParcelas = (int)formaPagto.C_pce_prestacao_qtde;
+                qtdeParcelas = (short)((formaPagto.C_pce_prestacao_qtde ?? -1) + 1);
             else if (formaPagto.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA)
-                qtdeParcelas = (int)formaPagto.C_pse_demais_prest_qtde++;//conforme linha 199 pág OrcamentoNovoConfirma.asp
+                qtdeParcelas = (short)((formaPagto.C_pse_demais_prest_qtde ?? -1) + 1);//conforme linha 199 pág OrcamentoNovoConfirma.asp
 
             return qtdeParcelas;
         }
@@ -1918,6 +1941,14 @@ namespace Prepedido
             TorcamentistaEindicador tOrcamentista = await tOrcamentistaTask.FirstOrDefaultAsync();
 
             return tOrcamentista;
+        }
+
+        public async Task<bool> TorcamentistaExiste(string apelido)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+            return await ((from c in db.TorcamentistaEindicadors
+                                    where c.Apelido == apelido
+                                    select c).AnyAsync());
         }
 
         public async Task GerarNumeroOrcamento(ContextoBdGravacao dbgravacao, PrePedidoDados prepedido)

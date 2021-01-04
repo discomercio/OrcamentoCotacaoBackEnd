@@ -3,6 +3,7 @@ Feature: LojaIndicou
 
 Background: Configurar lojas para teste
 	set r = cn.Execute("SELECT * FROM t_LOJA WHERE (comissao_indicacao > 0) ORDER BY CONVERT(smallint,loja)")
+	Given Reiniciar banco quando terminar o teste
 	Given Limpar tabela "t_LOJA"
 
 	And Novo registro em "t_LOJA"
@@ -15,7 +16,6 @@ Background: Configurar lojas para teste
 	And Novo registro "comissao_indicacao" = "1"
 	And Gravar registro
 
-	And Reiniciar banco quando terminar o teste
 
 
 #loja/PedidoNovoConsiste.asp

@@ -14,8 +14,11 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
         public static MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoDto PedidoBase()
         {
             var ret = PedidoBaseComEnderecoDeEntrega();
-            ret.EnderecoEntrega = null;
-            ret.OutroEndereco = false;
+            /*
+            "Obrigatório informar um endereço de entrega na API Magento para cliente PF."
+            Autlamente, a API Magento somente aceita pedidos PF
+            então o default é retornar COM endereço de entrega
+            */
             return ret;
         }
         public static MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoDto PedidoBaseComEnderecoDeEntrega()
@@ -36,6 +39,10 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             ret.EnderecoCadastralCliente.Endereco_tipo_pessoa = "PJ";
             ret.EnderecoCadastralCliente.Endereco_cnpj_cpf = "76297703000195";
             return ret;
+        }
+        public static MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoDto PedidoBaseClientePjComEnderecoDeEntrega()
+        {
+            return PedidoBaseClientePJ();
         }
     }
 }

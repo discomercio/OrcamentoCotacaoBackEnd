@@ -19,16 +19,14 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "ignore")]
-    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo20.EnderecoEntrega")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj")]
     public partial class PedidoDeClientePJComEnderecoDeEntregaFeature : object, Xunit.IClassFixture<PedidoDeClientePJComEnderecoDeEntregaFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore",
-                "Especificacao.Pedido.Passo20.EnderecoEntrega"};
+                "Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -45,8 +43,7 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Pedido de cliente PJ com endereço de entrega", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ignore",
-                        "Especificacao.Pedido.Passo20.EnderecoEntrega"});
+                        "Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -81,50 +78,19 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 4
+#line hidden
+#line 5
+ testRunner.Given("Ignorar cenário no ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Ca" +
+                    "dastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+        }
+        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="Configuração")]
-        [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega")]
-        [Xunit.TraitAttribute("Description", "Configuração")]
-        [Xunit.TraitAttribute("Category", "ListaDependencias")]
-        public virtual void Configuracao()
-        {
-            string[] tagsOfScenario = new string[] {
-                    "ListaDependencias"};
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Configuração", null, tagsOfScenario, argumentsOfScenario);
-#line 6
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 7
- testRunner.Given("Nome deste item \"Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj.CampoEndE" +
-                        "tg_tipo_pessoa\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 8
- testRunner.Given("Implementado em \"Especificacao.Pedido.Pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            }
-            this.ScenarioCleanup();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Validar tipo de pessoa 1")]
@@ -135,7 +101,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar tipo de pessoa 1", null, tagsOfScenario, argumentsOfScenario);
-#line 10
+#line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -155,15 +121,18 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 17
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 14
  testRunner.Given("Pedido base cliente PJ com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 18
+#line 15
  testRunner.When("Informo \"EndEtg_tipo_pessoa\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 19
- testRunner.Then("Erro \"Necessário escolher Pessoa Jurídica ou Pessoa Física no Endereço de entrega" +
-                        "!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 16
+ testRunner.Then("Erro \"regex .*Necessário escolher Pessoa Jurídica ou Pessoa Física no Endereço de" +
+                        " entrega.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -177,7 +146,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar tipo de pessoa 2", null, tagsOfScenario, argumentsOfScenario);
-#line 21
+#line 18
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -197,15 +166,18 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 22
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 19
  testRunner.Given("Pedido base cliente PJ com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 23
+#line 20
  testRunner.When("Informo \"EndEtg_tipo_pessoa\" = \"XX\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 24
- testRunner.Then("Erro \"Necessário escolher Pessoa Jurídica ou Pessoa Física no Endereço de entrega" +
-                        "!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 21
+ testRunner.Then("Erro \"regex .*Necessário escolher Pessoa Jurídica ou Pessoa Física no Endereço de" +
+                        " entrega.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -219,7 +191,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar tipo de pessoa 3", null, tagsOfScenario, argumentsOfScenario);
-#line 26
+#line 23
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -239,15 +211,18 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 27
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 24
  testRunner.Given("Pedido base cliente PJ com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 28
+#line 25
  testRunner.When("Informo \"EndEtg_tipo_pessoa\" = \"PJ\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 29
- testRunner.Then("Sem erro \"Necessário escolher Pessoa Jurídica ou Pessoa Física no Endereço de ent" +
-                        "rega!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 26
+ testRunner.Then("Sem erro \"regex .*Necessário escolher Pessoa Jurídica ou Pessoa Física no Endereç" +
+                        "o de entrega.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -261,7 +236,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar tipo de pessoa 4", null, tagsOfScenario, argumentsOfScenario);
-#line 31
+#line 28
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -281,15 +256,18 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 32
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 29
  testRunner.Given("Pedido base cliente PJ com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 33
+#line 30
  testRunner.When("Informo \"EndEtg_tipo_pessoa\" = \"PF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 34
- testRunner.Then("Sem erro \"Necessário escolher Pessoa Jurídica ou Pessoa Física no Endereço de ent" +
-                        "rega!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 31
+ testRunner.Then("Sem erro \"regex .*Necessário escolher Pessoa Jurídica ou Pessoa Física no Endereç" +
+                        "o de entrega.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

@@ -12,7 +12,14 @@ namespace Especificacao.Testes.Pedido
         protected abstract void AbstractDadoBase();
         protected abstract void AbstractDadoBaseClientePF();
         protected abstract void AbstractDadoBaseClientePJ();
+        protected abstract void AbstractDadoBaseClientePJComEnderecoDeEntrega();
         protected abstract void AbstractInformo(string p0, string p1);
+        protected abstract void AbstractListaDeItensInformo(int numeroItem, string campo, string valor);
+        protected abstract void AbstractRecalcularTotaisDoPedido();
+        protected abstract void AbstractDeixarFormaDePagamentoConsistente();
+        protected abstract void AbstractListaDeItensComXitens(int numeroItens);
+        protected abstract void AbstractLimparEnderecoDeEntrega();
+        protected abstract void AbstractLimparDadosCadastraisEEnderecoDeEntrega();
         protected abstract List<string> AbstractListaErros();
         #endregion
 
@@ -104,13 +111,13 @@ namespace Especificacao.Testes.Pedido
                 foreach (var m in listaErrosOriginal)
                 {
                     //testamos todas as possibilidades
-                    if (System.Text.RegularExpressions.Regex.Match(m, erroOriginal).Success)
+                    if (System.Text.RegularExpressions.Regex.Match(m, erroOriginal, System.Text.RegularExpressions.RegexOptions.IgnoreCase).Success)
                         contem = true;
-                    if (System.Text.RegularExpressions.Regex.Match(MensagemLimpaParaComparacao(m), erroOriginal).Success)
+                    if (System.Text.RegularExpressions.Regex.Match(MensagemLimpaParaComparacao(m), erroOriginal, System.Text.RegularExpressions.RegexOptions.IgnoreCase).Success)
                         contem = true;
-                    if (System.Text.RegularExpressions.Regex.Match(m, erroParaTeste).Success)
+                    if (System.Text.RegularExpressions.Regex.Match(m, erroParaTeste, System.Text.RegularExpressions.RegexOptions.IgnoreCase).Success)
                         contem = true;
-                    if (System.Text.RegularExpressions.Regex.Match(MensagemLimpaParaComparacao(m), erroParaTeste).Success)
+                    if (System.Text.RegularExpressions.Regex.Match(MensagemLimpaParaComparacao(m), erroParaTeste, System.Text.RegularExpressions.RegexOptions.IgnoreCase).Success)
                         contem = true;
                     if (contem)
                         break;
@@ -178,12 +185,43 @@ namespace Especificacao.Testes.Pedido
             Testes.Utils.LogTestes.LogOperacoes2.DadoBaseClientePJ(this);
             AbstractDadoBaseClientePJ();
         }
+        public void LimparEnderecoDeEntrega()
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.LimparEnderecoDeEntrega(this);
+            AbstractLimparEnderecoDeEntrega();
+        }
+        public void LimparDadosCadastraisEEnderecoDeEntrega()
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.LimparDadosCadastraisEEnderecoDeEntrega(this);
+            AbstractLimparDadosCadastraisEEnderecoDeEntrega();
+        }
+
+        public void RecalcularTotaisDoPedido()
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.RecalcularTotaisDoPedido(this);
+            AbstractRecalcularTotaisDoPedido();
+        }
+        public void DeixarFormaDePagamentoConsistente()
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.DeixarFormaDePagamentoConsistente(this);
+            AbstractDeixarFormaDePagamentoConsistente();
+        }
 
         public void GivenDadoBaseComEnderecoDeEntrega()
         {
             if (ignorarFeature) return;
             Testes.Utils.LogTestes.LogOperacoes2.DadoBaseComEnderecoDeEntrega(this);
             AbstractDadoBaseComEnderecoDeEntrega();
+        }
+        public void GivenPedidoBaseClientePJComEnderecoDeEntrega()
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.DadoBaseClientePJComEnderecoDeEntrega(this);
+            AbstractDadoBaseClientePJComEnderecoDeEntrega();
         }
 
         public void GivenPedidoBaseComEnderecoDeEntrega()
@@ -198,5 +236,19 @@ namespace Especificacao.Testes.Pedido
 
         public void GivenPedidoBaseClientePF() => GivenDadoBaseClientePF();
         public void GivenPedidoBaseClientePJ() => GivenDadoBaseClientePJ();
+
+        public void ListaDeItensInformo(int numeroItem, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensInformo(numeroItem, campo, valor, this);
+            AbstractListaDeItensInformo(numeroItem, campo, valor);
+        }
+
+        public void ListaDeItensComXitens(int numeroItens)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensComXitens(numeroItens, this);
+            AbstractListaDeItensComXitens(numeroItens);
+        }
     }
 }

@@ -39,11 +39,11 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
             //cadastar o nosso cliente
             var cliente = InicializarClienteDados.ClienteNaoCadastradoPF();
             cliente.DadosCliente.Cnpj_Cpf = DadosPrepedidoUnisBll.PrepedidoParceladoCartao1vez().Cnpj_Cpf;
-            clienteUnisBll.CadastrarClienteUnis(cliente).Wait();
+            clienteUnisBll.CadastrarClienteUnis(cliente, cliente.DadosCliente.Indicador_Orcamentista).Wait();
 
             var clientePJ = InicializarClienteDados.ClienteNaoCadastradoPJ();
             clientePJ.DadosCliente.Cnpj_Cpf = DadosPrepedidoUnisBll.PrepedidoParcelaUnica().Cnpj_Cpf;
-            clienteUnisBll.CadastrarClienteUnis(clientePJ).Wait();
+            clienteUnisBll.CadastrarClienteUnis(clientePJ, clientePJ.DadosCliente.Indicador_Orcamentista).Wait();
         }
 
         internal delegate void DeixarDtoErrado(PrePedidoUnisDto clienteDto);

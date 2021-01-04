@@ -57,7 +57,14 @@ namespace Especificacao.Testes.Utils.ListaDependencias
         {
             var ambientes = ambientesRegistrados;
             if (!ambientes.ContainsKey(ambiente))
+            {
+                LogTestes.LogTestes.GetInstance().LogMensagem($"{ambiente}: implementacao nunca foi definida");
                 Assert.Equal("", $"{ambiente}: implementacao nunca foi definida");
+            }
+
+            //para debug
+            if (!ambientes[ambiente].Select(r => r.Texto).ToList().Contains(especificacao))
+                LogTestes.LogTestes.GetInstance().LogMensagem($"Erro: VerificarQueUsou {especificacao} em {String.Join(",", ambientes[ambiente].Select(r => r.Texto).Distinct().ToList())} ");
 
             //este teste somente passa se executar todos os testes
             Assert.Contains(especificacao, ambientes[ambiente].Select(r => r.Texto).ToList());
@@ -71,7 +78,6 @@ namespace Especificacao.Testes.Utils.ListaDependencias
                 .AddJsonFile("appsettings.testes.json").Build();
             var configuracaoTestes = config.Get<ConfiguracaoTestes>();
 
-            DumpMapa(ambientesRegistrados, true, configuracaoTestes.DiretorioLogs + @"\MapaComChamadas.txt");
             DumpMapa(ambientesRegistrados, false, configuracaoTestes.DiretorioLogs + @"\Mapa.txt");
             //estes são uteis para debug
             //DumpMapa(ambientesEspecificados, "ambientesEspecificados");
@@ -82,6 +88,22 @@ namespace Especificacao.Testes.Utils.ListaDependencias
             VerificarUmaLista(ambientesImplementados);
 
             LogTestes.LogTestes.GetInstance().LogMemoria("TodosVerificados fim");
+        }
+
+        public static void SalvarMapaComChamadas_Txt()
+        {
+            var config = new Microsoft.Extensions.Configuration.ConfigurationBuilder()
+                .AddJsonFile("appsettings.testes.json").Build();
+            var configuracaoTestes = config.Get<ConfiguracaoTestes>();
+
+            DumpMapa(ambientesRegistrados, true, configuracaoTestes.DiretorioLogs + @"\MapaComChamadas.txt");
+        }
+        public static void ApagarMapaComChamadas_Txt()
+        {
+            var config = new Microsoft.Extensions.Configuration.ConfigurationBuilder()
+                .AddJsonFile("appsettings.testes.json").Build();
+            var configuracaoTestes = config.Get<ConfiguracaoTestes>();
+            System.IO.File.Delete(configuracaoTestes.DiretorioLogs + @"\MapaComChamadas.txt");
         }
 
         private static void DumpMapaInvertido(Dictionary<string, List<TextoInstancia>> ambientes, string arquivo)
@@ -107,7 +129,10 @@ namespace Especificacao.Testes.Utils.ListaDependencias
 
         private static void DumpMapa(Dictionary<string, List<TextoInstancia>> ambientes, bool detalhesChamadas, string arquivo)
         {
-            using StreamWriter writerMapa = new StreamWriter(new FileStream(arquivo, FileMode.Create));
+            using StreamWriter writerMapa = new StreamWriter(new FileStream(arquivo, FileMode.Create))
+            {
+                AutoFlush = false
+            };
 
             writerMapa.Write("\r\n");
             DumpMapaItem(writerMapa, ambientes, ambientes, detalhesChamadas);
@@ -148,8 +173,10 @@ namespace Especificacao.Testes.Utils.ListaDependencias
 
                     if (ambientesTodos.ContainsKey(especificacao.Texto ?? ""))
                     {
-                        var filtrado = new Dictionary<string, List<TextoInstancia>>();
-                        filtrado.Add(especificacao.Texto ?? "", ambientesTodos[especificacao.Texto ?? ""]);
+                        var filtrado = new Dictionary<string, List<TextoInstancia>>
+                        {
+                            { especificacao.Texto ?? "", ambientesTodos[especificacao.Texto ?? ""] }
+                        };
                         DumpMapaItem(writerMapa, filtrado, ambientesTodos, detalhesChamadas, identacao + 1);
                     }
                 }
@@ -178,7 +205,27 @@ namespace Especificacao.Testes.Utils.ListaDependencias
 
                 //só apra facilitar o debug
                 if (registrados.Count != verificados.Count)
-                    Assert.Equal(registrados, verificados);
+                {
+                    LogTestes.LogTestes.GetInstance().LogMensagem($"Erro: VerificarUmaLista {String.Join(", ", registrados)} diferente de {String.Join(",", verificados)} ");
+
+                    foreach (var registrado in registrados)
+                    {
+                        if (!verificados.Contains(registrado))
+                        {
+                            LogTestes.LogTestes.GetInstance().LogMensagem($"Erro: !verificados.Contains(registrado) {registrado} em {String.Join(",", verificados)} ");
+                            Assert.Equal("", $"{registrado} Erro: !verificados.Contains(registrado) ");
+                        }
+                    }
+                    foreach (var verificado in verificados)
+                    {
+                        if (!registrados.Contains(verificado))
+                        {
+                            LogTestes.LogTestes.GetInstance().LogMensagem($"Erro: !registrados.Contains(verificado) {verificado} em {String.Join(",", registrados)} ");
+                            Assert.Equal("", $"{verificado} Erro: !verificados.Contains(registrado) ");
+                        }
+                    }
+                }
+
 
                 //agora a verificaçaõ de verdade
                 Assert.Equal(registrados, verificados);

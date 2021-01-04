@@ -1,5 +1,5 @@
 ﻿@ignore
-@Especificacao.Pedido.Passo20.EnderecoEntrega
+@Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
 Feature: Pedido de cliente PJ com endereço de entrega PF - validação de telefones
 #em loja/ClienteEdita.asp:
 #                /*
@@ -11,7 +11,9 @@ Feature: Pedido de cliente PJ com endereço de entrega PF - validação de telef
 #                */
 #também em loja/PedidoNovoConsiste.asp
 
-Background: Pedido base
+Background: Api MAgento somente aceita pedidos PF
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
+
 	Given Pedido base cliente PJ com endereço de entrega PF
 
 Scenario: Configuração
@@ -104,12 +106,12 @@ Scenario: EndEtg_ddd_cel EndEtg_tel_cel 2
 Scenario: EndEtg_ddd_com
 	When Informo "EndEtg_ddd_com" = "12"
 	And Informo "EndEtg_tel_com" = "12345678"
-	Then Erro "Endereço de entrega: PJ não pode ter EndEtg_ddd_com_2 (acertar a mensagem)"
+	Then Erro "Endereço de entrega: cliente PJ com entrega PF não pode ter EndEtg_ddd_com_2 (acertar a mensagem)"
 
 Scenario: EndEtg_ddd_com_2
 	When Informo "EndEtg_ddd_com" = "12"
 	And Informo "EndEtg_tel_com" = "12345678"
-	Then Erro "Endereço de entrega: PJ não pode ter EndEtg_ddd_com_2 (acertar a mensagem)"
+	Then Erro "Endereço de entrega: cliente PJ com entrega PF não pode ter EndEtg_ddd_com_2 (acertar a mensagem)"
 
 Scenario: nos telefones, os símbolos devem ser removidos
 	When Informo "EndEtg_tel_cel" = "1234-5678"

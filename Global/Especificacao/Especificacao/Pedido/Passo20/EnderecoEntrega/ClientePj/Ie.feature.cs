@@ -19,14 +19,14 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo20.EnderecoEntrega")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj")]
     public partial class IeNoEnderecoDeEntregaFeature : object, Xunit.IClassFixture<IeNoEnderecoDeEntregaFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "Especificacao.Pedido.Passo20.EnderecoEntrega"};
+                "Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -43,7 +43,7 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Ie no endereço de entrega", null, ProgrammingLanguage.CSharp, new string[] {
-                        "Especificacao.Pedido.Passo20.EnderecoEntrega"});
+                        "Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -82,7 +82,7 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
         {
 #line 4
 #line hidden
-#line 6
+#line 5
  testRunner.Given("Ignorar cenário no ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Ca" +
                     "dastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
@@ -93,17 +93,15 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar IE erro 1")]
+        [Xunit.SkippableFactAttribute(DisplayName="Validar IE sem erro")]
         [Xunit.TraitAttribute("FeatureTitle", "Ie no endereço de entrega")]
-        [Xunit.TraitAttribute("Description", "Validar IE erro 1")]
-        [Xunit.TraitAttribute("Category", "ignore")]
-        public virtual void ValidarIEErro1()
+        [Xunit.TraitAttribute("Description", "Validar IE sem erro")]
+        public virtual void ValidarIESemErro()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar IE erro 1", null, tagsOfScenario, argumentsOfScenario);
-#line 9
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar IE sem erro", null, tagsOfScenario, argumentsOfScenario);
+#line 7
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -126,22 +124,94 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 16
+#line 8
  testRunner.Given("Pedido base cliente PJ com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
+#line 9
+ testRunner.When("Endereço de entrega do estado \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 10
+ testRunner.When("Informo \"EndEtg_ie\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 11
+ testRunner.When("Informo \"EndEtg_contribuinte_icms_status\" = \"COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INI" +
+                        "CIAL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 12
+ testRunner.When("Informo \"EndEtg_produtor_rural_status\" = \"COD_ST_CLIENTE_PRODUTOR_RURAL_NAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 13
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 15
+ testRunner.Given("Pedido base cliente PJ com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 16
+ testRunner.When("Endereço de entrega do estado \"BA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
 #line 17
- testRunner.When("Informo \"EndEtg_ie\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_ie\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 18
+ testRunner.When("Informo \"EndEtg_contribuinte_icms_status\" = \"COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INI" +
+                        "CIAL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 19
+ testRunner.When("Informo \"EndEtg_produtor_rural_status\" = \"COD_ST_CLIENTE_PRODUTOR_RURAL_NAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 20
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Validar IE erro 1")]
+        [Xunit.TraitAttribute("FeatureTitle", "Ie no endereço de entrega")]
+        [Xunit.TraitAttribute("Description", "Validar IE erro 1")]
+        public virtual void ValidarIEErro1()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar IE erro 1", null, tagsOfScenario, argumentsOfScenario);
+#line 22
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 29
+ testRunner.Given("Pedido base cliente PJ com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 30
+ testRunner.When("Informo \"EndEtg_ie\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 31
  testRunner.When("Informo \"EndEtg_contribuinte_icms_status\" = \"COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 19
+#line 32
  testRunner.When("Informo \"EndEtg_produtor_rural_status\" = \"COD_ST_CLIENTE_PRODUTOR_RURAL_SIM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 20
- testRunner.Then("Erro \"regex Endereço de entrega: preencha a IE (Inscrição Estadual) com um número" +
-                        " válido.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 33
+ testRunner.Then("Erro \"regex preencha a IE \\(Inscrição Estadual\\) com um número válido.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -150,14 +220,12 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="Validar IE  erro 2 - com outro estado")]
         [Xunit.TraitAttribute("FeatureTitle", "Ie no endereço de entrega")]
         [Xunit.TraitAttribute("Description", "Validar IE  erro 2 - com outro estado")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void ValidarIEErro2_ComOutroEstado()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar IE  erro 2 - com outro estado", null, tagsOfScenario, argumentsOfScenario);
-#line 23
+#line 35
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -180,25 +248,78 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 24
+#line 36
  testRunner.Given("Pedido base cliente PJ com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 25
+#line 37
  testRunner.When("Endereço de entrega do estado \"BA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 26
- testRunner.When("Informo \"EndEtg_ie\" = \"51.313.629\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 38
+ testRunner.When("Informo \"EndEtg_ie\" = \"151.313.629\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 27
+#line 39
  testRunner.When("Informo \"EndEtg_contribuinte_icms_status\" = \"COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 28
+#line 40
  testRunner.When("Informo \"EndEtg_produtor_rural_status\" = \"COD_ST_CLIENTE_PRODUTOR_RURAL_SIM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 29
- testRunner.Then("Sem erro \"regex Endereço de entrega: preencha a IE (Inscrição Estadual) com um nú" +
-                        "mero válido.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 41
+ testRunner.Then("Erro \"regex preencha a IE \\(Inscrição Estadual\\) com um número válido.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Validar IE  certo 2 - com outro estado")]
+        [Xunit.TraitAttribute("FeatureTitle", "Ie no endereço de entrega")]
+        [Xunit.TraitAttribute("Description", "Validar IE  certo 2 - com outro estado")]
+        public virtual void ValidarIECerto2_ComOutroEstado()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar IE  certo 2 - com outro estado", null, tagsOfScenario, argumentsOfScenario);
+#line 43
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 44
+ testRunner.Given("Pedido base cliente PJ com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 45
+ testRunner.When("Endereço de entrega do estado \"BA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 46
+ testRunner.When("Informo \"EndEtg_ie\" = \"51.313.629\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 47
+ testRunner.When("Informo \"EndEtg_contribuinte_icms_status\" = \"COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM" +
+                        "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 48
+ testRunner.When("Informo \"EndEtg_produtor_rural_status\" = \"COD_ST_CLIENTE_PRODUTOR_RURAL_SIM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 49
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -207,14 +328,12 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="Validar IE  erro 2 - com outro estado 2")]
         [Xunit.TraitAttribute("FeatureTitle", "Ie no endereço de entrega")]
         [Xunit.TraitAttribute("Description", "Validar IE  erro 2 - com outro estado 2")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void ValidarIEErro2_ComOutroEstado2()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar IE  erro 2 - com outro estado 2", null, tagsOfScenario, argumentsOfScenario);
-#line 32
+#line 51
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -237,25 +356,24 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 33
+#line 52
  testRunner.Given("Pedido base cliente PJ com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 34
+#line 53
  testRunner.When("Endereço de entrega do estado \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 35
- testRunner.When("Informo \"EndEtg_ie\" = \"304480484\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 54
+ testRunner.When("Informo \"EndEtg_ie\" = \"115.327.961.119\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 36
+#line 55
  testRunner.When("Informo \"EndEtg_contribuinte_icms_status\" = \"COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 37
+#line 56
  testRunner.When("Informo \"EndEtg_produtor_rural_status\" = \"COD_ST_CLIENTE_PRODUTOR_RURAL_SIM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 38
- testRunner.Then("Sem erro \"regex Endereço de entrega: preencha a IE (Inscrição Estadual) com um nú" +
-                        "mero válido.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 57
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -264,14 +382,12 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="Validar IE  erro 2 - com outro estado 2 errado")]
         [Xunit.TraitAttribute("FeatureTitle", "Ie no endereço de entrega")]
         [Xunit.TraitAttribute("Description", "Validar IE  erro 2 - com outro estado 2 errado")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void ValidarIEErro2_ComOutroEstado2Errado()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar IE  erro 2 - com outro estado 2 errado", null, tagsOfScenario, argumentsOfScenario);
-#line 41
+#line 59
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -294,25 +410,24 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 42
+#line 60
  testRunner.Given("Pedido base cliente PJ com endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 43
+#line 61
  testRunner.When("Endereço de entrega do estado \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 45
- testRunner.When("Informo \"EndEtg_ie\" = \"30448048499\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 63
+ testRunner.When("Informo \"EndEtg_ie\" = \"115.327.961.118\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 46
+#line 64
  testRunner.When("Informo \"EndEtg_contribuinte_icms_status\" = \"COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 47
+#line 65
  testRunner.When("Informo \"EndEtg_produtor_rural_status\" = \"COD_ST_CLIENTE_PRODUTOR_RURAL_SIM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 48
- testRunner.Then("Erro \"regex Endereço de entrega: preencha a IE (Inscrição Estadual) com um número" +
-                        " válido.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 66
+ testRunner.Then("Erro \"regex preencha a IE \\(Inscrição Estadual\\) com um número válido.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

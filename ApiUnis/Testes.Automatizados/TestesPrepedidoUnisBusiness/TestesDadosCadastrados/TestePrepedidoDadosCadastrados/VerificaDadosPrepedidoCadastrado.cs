@@ -30,11 +30,11 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
 
             var cliente = InicializarClienteDados.ClienteNaoCadastradoPF();
             cliente.DadosCliente.Cnpj_Cpf = DadosPrepedidoUnisBll.PrepedidoParceladoCartao1vez().Cnpj_Cpf;
-            clienteUnisBll.CadastrarClienteUnis(cliente).Wait();
+            clienteUnisBll.CadastrarClienteUnis(cliente, cliente.DadosCliente.Indicador_Orcamentista).Wait();
 
             var clientePJ = InicializarClienteDados.ClienteNaoCadastradoPJ();
             clientePJ.DadosCliente.Cnpj_Cpf = DadosPrepedidoUnisBll.PrepedidoParcelaUnica().Cnpj_Cpf;
-            clienteUnisBll.CadastrarClienteUnis(clientePJ).Wait();
+            clienteUnisBll.CadastrarClienteUnis(clientePJ, cliente.DadosCliente.Indicador_Orcamentista).Wait();
         }
 
         [Fact]
@@ -178,7 +178,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
             prePedido.FormaPagtoCriacao.Op_pce_entrada_forma_pagto = "3";
             prePedido.FormaPagtoCriacao.C_pce_prestacao_valor = 1123.41m;
             prePedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto = "3";
-            prePedido.FormaPagtoCriacao.CustoFinancFornecQtdeParcelas = 4;
+            prePedido.FormaPagtoCriacao.CustoFinancFornecQtdeParcelas = 3;
             prePedido.ListaProdutos[0].Preco_Venda = prePedido.ListaProdutos[0].Preco_Lista *
                 (decimal)(1 - prePedido.ListaProdutos[0].Desc_Dado / 100);
             prePedido.ListaProdutos[1].Preco_Venda = prePedido.ListaProdutos[1].Preco_Lista *
@@ -191,7 +191,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
             prePedido.FormaPagtoCriacao.Op_pce_entrada_forma_pagto = "3";
             prePedido.FormaPagtoCriacao.C_pce_prestacao_valor = 1111.85m;
             prePedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto = "3";
-            prePedido.FormaPagtoCriacao.CustoFinancFornecQtdeParcelas = 4;
+            prePedido.FormaPagtoCriacao.CustoFinancFornecQtdeParcelas = 3;
             prePedido.VlTotalDestePedido = (2 * 687.11m) + (2 * 1030.66m);
             prePedido.ListaProdutos[0].Preco_Venda = 687.11m;
             prePedido.ListaProdutos[1].Preco_Venda = 1030.66m;

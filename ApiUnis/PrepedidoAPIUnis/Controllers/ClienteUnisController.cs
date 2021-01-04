@@ -36,11 +36,11 @@ namespace PrepedidoAPIUnis.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<ClienteCadastroResultadoUnisDto>> CadastrarCliente(ClienteCadastroUnisDto clienteDto)
         {
-            if (!servicoValidarTokenApiUnis.ValidarToken(clienteDto.TokenAcesso, out _))
+            if (!servicoValidarTokenApiUnis.ValidarToken(clienteDto.TokenAcesso, out string usuario))
                 return Unauthorized();
 
             ClienteCadastroResultadoUnisDto retorno;
-            retorno = await clienteUnisBll.CadastrarClienteUnis(clienteDto);
+            retorno = await clienteUnisBll.CadastrarClienteUnis(clienteDto, usuario);
 
             return Ok(retorno);
         }

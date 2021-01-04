@@ -18,6 +18,7 @@ rem %aux_msbuild% ../../../PrepedidoApi/PrepedidoApi/PrepedidoApi.csproj -t:Rebu
 del CompilarPrepedidoApiResultado\publish\appsettings.json
 del CompilarPrepedidoApiResultado\publish\appsettings.Development.json
 del CompilarPrepedidoApiResultado\publish\nlog.config
+del CompilarPrepedidoApiResultado\publish\web.config
 
 IF "%~1" NEQ "sem_pausa" pause
 

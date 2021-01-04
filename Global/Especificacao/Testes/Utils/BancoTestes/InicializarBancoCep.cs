@@ -37,6 +37,8 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 "02045080", "São Paulo", "Jardim São Paulo(Zona Norte)", "Rua Professor Fábio Fanucchi", "SP");
             InicializarRegistro(db, ref Bai_nu_sequencial_ini, ref Loc_nu_sequencial,
                 "02408150", "São Paulo", "Água Fria", "Rua Francisco Pecoraro", "SP");
+            InicializarRegistro(db, ref Bai_nu_sequencial_ini, ref Loc_nu_sequencial,
+                "40290050", "Salvador", "Acupe de Brotas", "Rua Prado Moraes", "BA");
 
 
             db.SaveChanges();

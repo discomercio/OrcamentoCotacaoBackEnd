@@ -122,17 +122,15 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Lista de verificações feitas")]
+        [Xunit.SkippableFactAttribute(DisplayName="Orcamentista = \"FRETE\" (vamos ler do appsettings) - precisa existir")]
         [Xunit.TraitAttribute("FeatureTitle", "CamposLidosAppsettings")]
-        [Xunit.TraitAttribute("Description", "Lista de verificações feitas")]
-        [Xunit.TraitAttribute("Category", "ListaDependencias")]
-        public virtual void ListaDeVerificacoesFeitas()
+        [Xunit.TraitAttribute("Description", "Orcamentista = \"FRETE\" (vamos ler do appsettings) - precisa existir")]
+        public virtual void OrcamentistaFRETEVamosLerDoAppsettings_PrecisaExistir()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ListaDependencias"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Lista de verificações feitas", null, tagsOfScenario, argumentsOfScenario);
-#line 9
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Orcamentista = \"FRETE\" (vamos ler do appsettings) - precisa existir", null, tagsOfScenario, argumentsOfScenario);
+#line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -153,45 +151,20 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 10
- testRunner.Given("Nome deste item \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoA" +
-                        "dicional.CamposLidosAppsettings\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Reiniciar appsettings", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 11
- testRunner.And("Implementado em \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedid" +
-                        "oListaDependencias\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="Orcamentista = \"FRETE\" (vamos ler do appsettings) - precisa existir")]
-        [Xunit.TraitAttribute("FeatureTitle", "CamposLidosAppsettings")]
-        [Xunit.TraitAttribute("Description", "Orcamentista = \"FRETE\" (vamos ler do appsettings) - precisa existir")]
-        public virtual void OrcamentistaFRETEVamosLerDoAppsettings_PrecisaExistir()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Orcamentista = \"FRETE\" (vamos ler do appsettings) - precisa existir", null, tagsOfScenario, argumentsOfScenario);
+#line 12
+ testRunner.And("Informo \"frete\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 13
+ testRunner.And("Informo \"appsettings.Orcamentista\" = \"um orçamentista que não existe\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
 #line 14
-this.ScenarioInitialize(scenarioInfo);
+ testRunner.Then("Erro \"O Orçamentista não existe!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
 #line 16
  testRunner.Given("Reiniciar appsettings", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
@@ -199,18 +172,6 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 18
- testRunner.And("Informo \"appsettings.Orcamentista\" = \"um orçamentista que não existe\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 19
- testRunner.Then("Erro \"O Orçamentista não existe!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 21
- testRunner.Given("Reiniciar appsettings", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 22
- testRunner.And("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 23
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -227,7 +188,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Orcamentista = \"FRETE\" (vamos ler do appsettings)", null, tagsOfScenario, argumentsOfScenario);
-#line 26
+#line 21
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -247,7 +208,19 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 29
+#line 24
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 25
+ testRunner.And("Informo \"frete\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 26
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 27
+ testRunner.And("No pedido gravado, verificar campo \"indicador\" = \"FRETE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 28
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
@@ -264,7 +237,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Loja = \"201\" (vamos ler do appsettings)", null, tagsOfScenario, argumentsOfScenario);
-#line 32
+#line 31
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -284,7 +257,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 33
+#line 32
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
@@ -301,7 +274,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Vendedor = usuário que fez o login (ler do token)", null, tagsOfScenario, argumentsOfScenario);
-#line 36
+#line 35
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -321,7 +294,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 37
+#line 36
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }

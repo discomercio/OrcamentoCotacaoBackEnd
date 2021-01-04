@@ -20,7 +20,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    public partial class EnderecoEntregaFeature : object, Xunit.IClassFixture<EnderecoEntregaFeature.FixtureData>, System.IDisposable
+    public partial class EnderecoEntregaSomentePFFeature : object, Xunit.IClassFixture<EnderecoEntregaSomentePFFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -33,7 +33,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
 #line 1 "EnderecoEntrega.feature"
 #line hidden
         
-        public EnderecoEntregaFeature(EnderecoEntregaFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public EnderecoEntregaSomentePFFeature(EnderecoEntregaSomentePFFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,7 +42,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "EnderecoEntrega", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "EnderecoEntrega (somente PF)", null, ProgrammingLanguage.CSharp, new string[] {
                         "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -83,15 +83,15 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="EnderecoEntrega PF/PJ")]
-        [Xunit.TraitAttribute("FeatureTitle", "EnderecoEntrega")]
-        [Xunit.TraitAttribute("Description", "EnderecoEntrega PF/PJ")]
-        public virtual void EnderecoEntregaPFPJ()
+        [Xunit.SkippableFactAttribute(DisplayName="EnderecoEntrega PF")]
+        [Xunit.TraitAttribute("FeatureTitle", "EnderecoEntrega (somente PF)")]
+        [Xunit.TraitAttribute("Description", "EnderecoEntrega PF")]
+        public virtual void EnderecoEntregaPF()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EnderecoEntrega PF/PJ", null, tagsOfScenario, argumentsOfScenario);
-#line 15
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EnderecoEntrega PF", null, tagsOfScenario, argumentsOfScenario);
+#line 19
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -111,7 +111,42 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 16
+#line 20
+ testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Validação de telefones")]
+        [Xunit.TraitAttribute("FeatureTitle", "EnderecoEntrega (somente PF)")]
+        [Xunit.TraitAttribute("Description", "Validação de telefones")]
+        public virtual void ValidacaoDeTelefones()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validação de telefones", null, tagsOfScenario, argumentsOfScenario);
+#line 22
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 23
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
@@ -125,12 +160,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                EnderecoEntregaFeature.FeatureSetup();
+                EnderecoEntregaSomentePFFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                EnderecoEntregaFeature.FeatureTearDown();
+                EnderecoEntregaSomentePFFeature.FeatureTearDown();
             }
         }
     }

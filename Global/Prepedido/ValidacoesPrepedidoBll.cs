@@ -35,7 +35,7 @@ namespace Prepedido
 
         //vamos validar os produtos que foram enviados
         public async Task MontarProdutosParaComparacao(PrePedidoDados prepedido,
-                    string siglaFormaPagto, int qtdeParcelas, string loja, List<string> lstErros, float perc_limite_RA,
+                    string siglaFormaPagto, int qtdeParcelas, string loja, List<string> lstErros, decimal percVlPedidoRA,
                     decimal limiteArredondamento)
         {
 
@@ -57,6 +57,8 @@ namespace Prepedido
             //validar se os coeficientes estão ok
             ValidarCustoFinancFornecCoeficiente(prepedido.ListaProdutos, lstCoeficiente, lstErros);
 
+            //valida valores zerados ou negativos
+            ValidarPrecoQuantidadeZerada(prepedido.ListaProdutos, lstErros);
 
             if (lstErros.Count == 0)
             {
@@ -71,7 +73,7 @@ namespace Prepedido
                     CalcularProdutoComCoeficiente(lstProdutosCompare, lstCoeficiente);
 
                 ConfrontarProdutos(prepedido, lstProdutosCompare, lstErros, limiteArredondamento);
-                ConfrontarTotaisEPercentualMaxRA(prepedido, lstErros, perc_limite_RA);
+                ConfrontarTotaisEPercentualMaxRA(prepedido, lstErros, percVlPedidoRA);
             }
         }
 
@@ -146,6 +148,21 @@ namespace Prepedido
                     lstErros.Add("Fabricante cód.(" + x.Fabricante + ") não possui cadastro de coeficiente!");
                 }
             });
+        }
+
+        public void ValidarPrecoQuantidadeZerada(List<PrepedidoProdutoPrepedidoDados> lstProdutos, List<string> lstErros)
+        {
+            foreach (var p in lstProdutos)
+            {
+                if (p.Qtde <= 0)
+                    lstErros.Add($"Produto {p.Fabricante} {p.Produto} com Qtde menor ou igual a zero!");
+                if (p.Preco_Lista <= 0)
+                    lstErros.Add($"Produto {p.Fabricante} {p.Produto} com Preco_Lista menor ou igual a zero!");
+                if (p.Preco_NF <= 0)
+                    lstErros.Add($"Produto {p.Fabricante} {p.Produto} com Preco_NF menor ou igual a zero!");
+                if (p.Preco_Venda <= 0)
+                    lstErros.Add($"Produto {p.Fabricante} {p.Produto} com Preco_Venda menor ou igual a zero!");
+            }
         }
 
         public async Task<IEnumerable<CoeficienteDados>> BuscarListaCoeficientesFornecedores(List<string> lstFornecedores, int qtdeParcelas, string siglaFP)
@@ -271,7 +288,7 @@ namespace Prepedido
                    {
                        //vamos confrontar os valores
                        if (Math.Abs(x.CustoFinancFornecPrecoListaBase - y.CustoFinancFornecPrecoListaBase) > limiteArredondamento)
-                           lstErros.Add($"Preço do fabricante (CustoFinancFornecPrecoListaBase {x.CustoFinancFornecPrecoListaBase} x {y.CustoFinancFornecPrecoListaBase}) está incorreto!");
+                           lstErros.Add($"Preço do fabricante (CustoFinancFornecPrecoListaBase {x.CustoFinancFornecPrecoListaBase} x {string.Format("{0:C}", y.CustoFinancFornecPrecoListaBase)}) está incorreto!");
 
                        if (x.Preco_Lista != y.Preco_Lista)
                            lstErros.Add($"Custo financeiro preço lista base (Preco_Lista " +
@@ -292,15 +309,15 @@ namespace Prepedido
         }
 
         private void ConfrontarTotaisEPercentualMaxRA(PrePedidoDados prepedido, List<string> lstErros,
-            float perc_limite_RA)
+            decimal percVlPedidoRA)
         {
             decimal totalCompare = 0;
             decimal totalRaCompare = 0;
 
             prepedido.ListaProdutos.ForEach(x =>
             {
-                totalCompare += Math.Round((decimal)(x.Preco_Venda * x.Qtde), 2);
-                totalRaCompare += Math.Round((decimal)(x.Preco_NF * x.Qtde), 2);
+                totalCompare += Math.Round((decimal)(x.Preco_Venda * (x.Qtde ?? 0)), 2);
+                totalRaCompare += Math.Round((decimal)(x.Preco_NF * (x.Qtde ?? 0)), 2);
             });
 
             if (totalCompare != (decimal)prepedido.Vl_total)
@@ -313,7 +330,7 @@ namespace Prepedido
 
                 //vamos verificar o valor de RA
                 decimal ra = totalRaCompare - totalCompare;
-                decimal perc = Math.Round((decimal)(perc_limite_RA / 100), 2);
+                decimal perc = Math.Round((decimal)(percVlPedidoRA / 100), 2);
                 decimal percentual = Math.Round(perc * (decimal)prepedido.Vl_total, 2);
 
                 if (ra > percentual)
@@ -323,11 +340,11 @@ namespace Prepedido
 
 
         public async Task ValidarEnderecoEntrega(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEntrega,
-            List<string> lstErros, string orcamentista, string tipoCliente)
+            List<string> lstErros, string orcamentista, string tipoCliente, bool usarLojaOrcamentista, string loja)
         {
             if (endEntrega.OutroEndereco)
             {
-                await ValidarDadosEnderecoEntrega(endEntrega, orcamentista, lstErros, contextoProvider);
+                await ValidarDadosEnderecoEntrega(endEntrega, lstErros, contextoProvider, usarLojaOrcamentista, loja, orcamentista);
 
                 ValidarDadosPessoaEnderecoEntrega(endEntrega, lstErros, false, tipoCliente);
                 VerificarCaracteresInvalidosEnderecoEntregaClienteCadastro(endEntrega, lstErros);
@@ -364,8 +381,8 @@ namespace Prepedido
         }
 
         private async Task ValidarDadosEnderecoEntrega(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEntrega,
-            string orcamentista, List<string> lstErros,
-            ContextoBdProvider contextoProvider)
+            List<string> lstErros,
+            ContextoBdProvider contextoProvider, bool usarLojaOrcamentista, string loja, string orcamentista)
         {
             if (!endEntrega.OutroEndereco)
                 return;
@@ -375,8 +392,17 @@ namespace Prepedido
             else
             {
                 //verificar se a justificativa esta correta "ListarComboJustificaEndereco"
-                List<Cliente.Dados.EnderecoEntregaJustificativaDados> lstJustificativas =
-                    (await clienteBll.ListarComboJustificaEndereco(orcamentista)).ToList();
+                List<Cliente.Dados.EnderecoEntregaJustificativaDados> lstJustificativas;
+                if (usarLojaOrcamentista)
+                {
+                    orcamentista = orcamentista ?? "";
+                    lstJustificativas = (await clienteBll.ListarComboJustificaEndereco(orcamentista)).ToList();
+                }
+                else
+                {
+                    loja = loja ?? "";
+                    lstJustificativas = (await clienteBll.ListarComboJustificaEnderecoPorLoja(contextoProvider.GetContextoLeitura(), loja)).ToList();
+                }
                 if (!lstJustificativas.Where(r => r.EndEtg_cod_justificativa == endEntrega.EndEtg_cod_justificativa).Any())
                 {
                     lstErros.Add("CÓDIGO DA JUSTFICATIVA INVÁLIDO!");
@@ -579,6 +605,12 @@ namespace Prepedido
                         lstErros.Add("Endereço de entrega: se cliente é contribuinte do ICMS, " +
                             "não pode ter o valor ISENTO no campo de Inscrição Estadual!");
                 }
+
+                if (endEtg.EndEtg_contribuinte_icms_status ==
+                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO &&
+                    !string.IsNullOrEmpty(endEtg.EndEtg_ie))
+                    lstErros.Add("Endereço de entrega: se o Contribuinte ICMS é isento, " +
+                        "o campo IE deve ser vazio!");
 
             }
         }

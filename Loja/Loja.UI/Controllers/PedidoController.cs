@@ -27,7 +27,6 @@ using Loja.Bll.Bll.pedidoBll;
 using Pedido;
 using InfraBanco;
 
-//TODO: habilitar nullable no projeto todo
 #nullable enable
 
 namespace Loja.UI.Controllers
