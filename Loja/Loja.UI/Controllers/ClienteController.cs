@@ -68,10 +68,7 @@ namespace Loja.UI.Controllers
               buscar os dados do cliente
               buscar indicadores 
             */
-
-            List<string> teste = new List<string>() { "teste 1", "teste 2" };
-            return RedirectToAction("Index", "Erro", new { lstErros = teste });
-
+            
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
 
             ClienteCadastroViewModel cliente = new ClienteCadastroViewModel();

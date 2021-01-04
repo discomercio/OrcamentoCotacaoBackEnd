@@ -303,7 +303,7 @@ namespace Loja.Bll.ClienteBll
         public async Task<IEnumerable<string>> Novo_CadastrarCliente(ClienteCadastroDto clienteDto, string usuario)
         {
             List<string> ret = (await clienteBll.CadastrarCliente(ClienteCadastroDto.ClienteCadastroDados_De_ClienteCadastroDto(clienteDto), usuario.Trim(),
-            InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS)).ToList();
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS, usuario)).ToList();
 
             return ret;
         }
