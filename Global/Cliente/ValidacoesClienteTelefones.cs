@@ -60,7 +60,6 @@ namespace Cliente
         {
             TelefonesSomenteComDigitos(dadosCliente);
 
-            bool retorno = true;
 
             if (dadosCliente.Tipo == Constantes.ID_PF)
             {
@@ -69,7 +68,6 @@ namespace Cliente
                     !string.IsNullOrEmpty(dadosCliente.Ramal2))
                 {
                     lstErros.Add("Se cliente é tipo PF, não pode ter os campos de Telefone, DDD e ramal comercial 2 preenchidos!");
-                    retorno = false;
                 }
             }
 
@@ -83,12 +81,12 @@ namespace Cliente
             //CELULAR
             if (!string.IsNullOrEmpty(dadosCliente.Celular) || !string.IsNullOrEmpty(dadosCliente.DddCelular))
             {
-                retorno = await ValidarCelular(dadosCliente, cliente, lstErros, contextoProvider);
+                await ValidarCelular(dadosCliente, cliente, lstErros, contextoProvider);
             }
             //RESIDENCIAL
             if (!string.IsNullOrEmpty(dadosCliente.TelefoneResidencial) || !string.IsNullOrEmpty(dadosCliente.DddResidencial))
             {
-                retorno = await ValidarTelResidencial(dadosCliente, cliente, lstErros, contextoProvider);
+                await ValidarTelResidencial(dadosCliente, cliente, lstErros, contextoProvider);
             }
             //COMERCIA
             if (!string.IsNullOrEmpty(dadosCliente.TelComercial) ||
@@ -143,40 +141,34 @@ namespace Cliente
                 dadosCliente.Ramal2 = Util.Telefone_SoDigito(dadosCliente.Ramal2);
         }
 
-        private static async Task<bool> ValidarTelResidencial(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
+        private static async Task ValidarTelResidencial(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
                 List<string> lstErros, ContextoBdProvider contextoProvider)
         {
-            bool retorno = true;
 
             if (!string.IsNullOrEmpty(dadosCliente.DddResidencial) &&
                 dadosCliente.DddResidencial.Length != 2)
             {
                 lstErros.Add("DDD RESIDENCIAL INVÁLIDO.");
-                retorno = false;
             }
             if (!string.IsNullOrEmpty(dadosCliente.TelefoneResidencial) &&
                 dadosCliente.TelefoneResidencial.Length < 6)
             {
                 lstErros.Add("TELEFONE RESIDENCIAL INVÁLIDO.");
-                retorno = false;
             }
             if (!string.IsNullOrEmpty(dadosCliente.TelefoneResidencial) &&
                 dadosCliente.TelefoneResidencial.Length > 11)
             {
                 lstErros.Add("TELEFONE RESIDENCIAL INVÁLIDO.");
-                retorno = false;
             }
             if (!string.IsNullOrEmpty(dadosCliente.DddResidencial) &&
                 string.IsNullOrEmpty(dadosCliente.TelefoneResidencial))
             {
                 lstErros.Add("PREENCHA O TELEFONE RESIDENCIAL.");
-                retorno = false;
             }
             if (!string.IsNullOrEmpty(dadosCliente.TelefoneResidencial) &&
                 string.IsNullOrEmpty(dadosCliente.DddResidencial))
             {
                 lstErros.Add("PREENCHA O DDD RESIDENCIAL.");
-                retorno = false;
             }
 
             if (lstErros.Count == 0)
@@ -191,43 +183,36 @@ namespace Cliente
                 }
             }
 
-            return retorno;
         }
 
-        private static async Task<bool> ValidarCelular(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
+        private static async Task ValidarCelular(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
             List<string> lstErros, ContextoBdProvider contextoProvider)
         {
-            bool retorno = true;
 
             if (!string.IsNullOrEmpty(dadosCliente.DddCelular) &&
                 dadosCliente.DddCelular.Length != 2)
             {
                 lstErros.Add("DDD CELULAR INVÁLIDO.");
-                retorno = false;
             }
             if (!string.IsNullOrEmpty(dadosCliente.Celular) &&
                 dadosCliente.Celular.Length < 6)
             {
                 lstErros.Add("TELEFONE CELULAR INVÁLIDO.");
-                retorno = false;
             }
             if (!string.IsNullOrEmpty(dadosCliente.Celular) &&
                 dadosCliente.Celular.Length > 11)
             {
                 lstErros.Add("TELEFONE CELULAR INVÁLIDO.");
-                retorno = false;
             }
             if (string.IsNullOrEmpty(dadosCliente.DddCelular) &&
                !string.IsNullOrEmpty(dadosCliente.Celular))
             {
                 lstErros.Add("PREENCHA O DDD CELULAR.");
-                retorno = false;
             }
             if (!string.IsNullOrEmpty(dadosCliente.DddCelular) &&
                 string.IsNullOrEmpty(dadosCliente.Celular))
             {
                 lstErros.Add("PREENCHA O TELEFONE CELULAR.");
-                retorno = false;
             }
 
 
@@ -242,7 +227,6 @@ namespace Cliente
                 }
             }
 
-            return retorno;
         }
 
         private static async Task ValidarTelCom(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
