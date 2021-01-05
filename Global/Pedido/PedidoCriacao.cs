@@ -52,8 +52,7 @@ namespace Pedido
         //as mensagens de erro e as mensagens de erro da validação dos 
         //dados cadastrais (quer dizer, duas listas de erro.) 
         //É que na loja o tratamento dos erros dos dados cadastrais vai ser diferente).
-        public async Task<PedidoCriacaoRetornoDados> CadastrarPedido(PedidoCriacaoDados pedido,
-            InfraBanco.Constantes.Constantes.CodSistemaResponsavel Plataforma_Origem_Pedido)
+        public async Task<PedidoCriacaoRetornoDados> CadastrarPedido(PedidoCriacaoDados pedido)
         {
             PedidoCriacaoRetornoDados pedidoRetorno = new PedidoCriacaoRetornoDados
             {
@@ -419,7 +418,7 @@ namespace Pedido
                 pedidoRetorno.Id = await efetivaPedidoBll.EfetivarCadastroPedido(pedido, vEmpresaAutoSplit,
                     pedido.Usuario, c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas, transportadora,
                     v_item, v_spe, vdesconto, lstRegras, perc_limite_RA_sem_desagio, pedido.LojaUsuario, perc_desagio_RA,
-                    tcliente, pedidoRetorno.ListaErros, dbgravacao, Plataforma_Origem_Pedido);
+                    tcliente, pedidoRetorno.ListaErros, dbgravacao, pedido.SistemaResponsavelCadastro);
 
 
                 await dbgravacao.SaveChangesAsync();

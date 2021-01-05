@@ -54,13 +54,13 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                     Qtde_estoque_total_disponivel = origem.Qtde_estoque_total_disponivel,
                     Preco_Lista = origem.Preco_Lista ?? 0,
                     Comissao = origem.Comissao,
-                    CustoFinancFornecPrecoListaBase = origem.CustoFinancFornecPrecoListaBase,
+                    CustoFinancFornecPrecoListaBase_Conferencia = origem.CustoFinancFornecPrecoListaBase,
                     Preco_NF = origem.Preco_NF,
                     Desc_Dado = origem.Desc_Dado,
                     Preco_Venda = origem.Preco_Venda,
                     TotalItem = origem.TotalItem,
                     TotalItemRA = origem.TotalItemRA,
-                    CustoFinancFornecCoeficiente = origem.CustoFinancFornecCoeficiente
+                    CustoFinancFornecCoeficiente_Conferencia = origem.CustoFinancFornecCoeficiente
                 });
             }
             return ret;

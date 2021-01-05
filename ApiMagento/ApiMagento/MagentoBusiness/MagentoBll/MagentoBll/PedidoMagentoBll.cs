@@ -73,7 +73,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             if (resultado.ListaErros.Count != 0)
                 return resultado;
 
-            Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret = await pedidoCriacao.CadastrarPedido(pedidoDados, Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI);
+            Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret = await pedidoCriacao.CadastrarPedido(pedidoDados);
 
             resultado.IdPedidoCadastrado = ret.Id;
             resultado.IdsPedidosFilhotes = ret.ListaIdPedidosFilhotes;

@@ -10,20 +10,30 @@ namespace Pedido.Dados.Criacao
 {
     public class PedidoProdutoPedidoDados
     {
-        public string Fabricante { get; set; }
-        public string Produto { get; set; }
+        //candidatos a apagar
         public string Descricao { get; set; }
-        public short Qtde { get; set; }
-        public decimal CustoFinancFornecPrecoListaBase { get; set; }
-        public decimal Preco_NF { get; set; }
-        public decimal Preco_Lista { get; set; }
-        public float? Desc_Dado { get; set; }
-        public decimal Preco_Venda { get; set; }
+        public float? Comissao { get; set; }
         public decimal TotalItem { get; set; }
         public decimal? TotalItemRA { get; set; }
-        public float? Comissao { get; set; }
+
+
+
+        public string Fabricante { get; set; }
+        public string Produto { get; set; }
+        public short Qtde { get; set; }
+        public float? Desc_Dado { get; set; }
+        public decimal Preco_Venda { get; set; }
+        public decimal Preco_Lista { get; set; }
+        public decimal Preco_NF { get; set; }
+
+        //estes campos são usados somente para conferência
+        public decimal CustoFinancFornecPrecoListaBase_Conferencia { get; set; }
+        public float CustoFinancFornecCoeficiente_Conferencia { get; set; }
+
+        //usado para avisar se mudou o número de produtos não disponíveis em estoque
+        //o usuário concordou em fazer o pedido com X unidades em estoque; 
+        //se durante o processo outro pedido consumir esse estoque, devemos avisar o cliente que mudou a quantidade de produtos disponíveis para entrega
         public short? Qtde_estoque_total_disponivel { get; set; }
-        public float CustoFinancFornecCoeficiente { get; set; }
 
         public static List<PrepedidoProdutoPrepedidoDados> PrepedidoProdutoPrepedidoDadosDePedidoProdutoPedidoDados(List<PedidoProdutoPedidoDados> lstProdutoPedido)
         {
@@ -35,8 +45,8 @@ namespace Pedido.Dados.Criacao
                 PrepedidoProdutoPrepedidoDados produtoPrepedido = new PrepedidoProdutoPrepedidoDados();
                 produtoPrepedido.Fabricante = x.Fabricante;
                 produtoPrepedido.Produto = x.Produto;
-                produtoPrepedido.CustoFinancFornecPrecoListaBase = x.CustoFinancFornecPrecoListaBase;
-                produtoPrepedido.CustoFinancFornecCoeficiente = x.CustoFinancFornecCoeficiente;
+                produtoPrepedido.CustoFinancFornecPrecoListaBase = x.CustoFinancFornecPrecoListaBase_Conferencia;
+                produtoPrepedido.CustoFinancFornecCoeficiente = x.CustoFinancFornecCoeficiente_Conferencia;
                 produtoPrepedido.Preco_Lista = x.Preco_Lista;
                 produtoPrepedido.Preco_Venda = x.Preco_Venda;
                 produtoPrepedido.Preco_NF = x.Preco_NF;

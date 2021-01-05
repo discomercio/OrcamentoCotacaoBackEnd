@@ -406,7 +406,7 @@ namespace Pedido
                     if (percCusto != null)
                     {
                         coeficiente = percCusto.Coeficiente;
-                        i.Preco_Lista = (decimal)coeficiente * (i.CustoFinancFornecPrecoListaBase);
+                        i.Preco_Lista = (decimal)coeficiente * (i.CustoFinancFornecPrecoListaBase_Conferencia);
                     }
                     else
                     {
