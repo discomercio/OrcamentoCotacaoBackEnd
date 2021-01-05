@@ -479,7 +479,7 @@ namespace Cliente
             Cliente.Dados.DadosClienteCadastroDados dados = new Cliente.Dados.DadosClienteCadastroDados
             {
                 Id = cli.Id,
-                Indicador_Orcamentista = cli.Usuario_Cadastro,
+                Indicador_Orcamentista = cli.Indicador,
                 Cnpj_Cpf = cli.Cnpj_Cpf,
                 Rg = cli.Rg,
                 Ie = cli.Ie,
