@@ -25,7 +25,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
             this.clienteArclubeBll = clienteArclubeBll;
         }
 
-        public async Task<ClienteCadastroResultadoUnisDto> CadastrarClienteUnis(ClienteCadastroUnisDto clienteUnis)
+        public async Task<ClienteCadastroResultadoUnisDto> CadastrarClienteUnis(ClienteCadastroUnisDto clienteUnis, string usuario_cadastro)
         {
             List<string> lstErros = new List<string>();
             ClienteCadastroResultadoUnisDto retorno = new ClienteCadastroResultadoUnisDto();
@@ -44,14 +44,15 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
                     //precisamos passar os dados para o DTO de ClienteCadastroDto da ArClube
                     ClienteCadastroDto clienteArclube = ClienteCadastroUnisDto.ClienteCadastroDtoDeClienteCadastroUnisDto(clienteUnis, loja);
 
-                    /*VERIFICAR SE É RETORNA VAZIO MESMO
+                    /*
                      * vamos fazer a validação e retornar uma lista de erros, 
                      * se estiver vazia foi cadastrado com sucesso
                      * se estiver com itens na lista, ocorreu erro na validação
                      */
                     retorno.ListaErros = (await clienteArclubeBll.CadastrarCliente(ClienteCadastroDto.ClienteCadastroDados_De_ClienteCadastroDto(clienteArclube),
                         orcamentista.Apelido,
-                        Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS)).ToList();
+                        Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS,
+                        usuario_cadastro)).ToList();
 
                     if (retorno.ListaErros.Count <= 0)
                     {

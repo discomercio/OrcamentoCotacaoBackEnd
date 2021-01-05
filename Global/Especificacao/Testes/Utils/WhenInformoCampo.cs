@@ -62,10 +62,20 @@ namespace Especificacao.Testes.Utils
                             valor = ConverterTipo_Parcelamento(campoSimples, valor);
                             p.SetValue(destino, System.Decimal.Parse(valor));
                             break;
+                        case "Boolean":
+                            p.SetValue(destino, System.Boolean.Parse(valor));
+                            break;
                         default:
                             valor = ConverterCustoFinancFornecTipoParcelamento(campoSimples, valor);
-                            //vai dar erro, tudo bem...
-                            p.SetValue(destino, valor);
+                            if (valor.ToLower() == "null")
+                            {
+                                p.SetValue(destino, null);
+                            }
+                            else
+                            {
+                                //se o tipo estiver errado vai dar erro, tudo bem...
+                                p.SetValue(destino, valor);
+                            }
                             break;
                     }
                     return true;
@@ -155,7 +165,7 @@ namespace Especificacao.Testes.Utils
 
         private static string ConverterCustoFinancFornecTipoParcelamento(string campo, string valor)
         {
-            if (!campo.Contains("CustoFinancFornecTipoParcelamento"))
+            if (!campo.ToLower().Contains("CustoFinancFornecTipoParcelamento".ToLower()))
                 return valor;
             switch (valor)
             {

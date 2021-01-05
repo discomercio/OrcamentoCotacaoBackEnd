@@ -2,6 +2,7 @@
 import { PedidoProdutosPedidoDto } from "./PedidoProdutosPedidoDto";
 import { FormaPagtoCriacaoDto } from "./FormaPagtoCriacaoDto";
 import { DetalhesPedidoDto } from "./DetalhesPedidoDto";
+import { DadosClienteCadastroDto } from "../ClienteDto/DadosClienteCadastroDto";
 
 export class PedidoDto {
     NumeroPrePedido: string;

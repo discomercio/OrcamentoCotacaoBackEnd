@@ -2,7 +2,7 @@
 Feature: FormaPagamentoDivergenciaTotal
 
 Background: não executado na api magento
-	#ignoramos na API magento porque não temos todos os campos, é somente PF, e estava dando mais probelma do que testando alguma coisa
+	#ignoramos na API magento porque é feito em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\EspecificacaoAdicional\FormaPagtoCriacaoMagentoDto.feature
 	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	#para testar, afazer, voltar isto para testar o pedido!!!
 	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
@@ -286,7 +286,7 @@ Scenario: TipoParcelamento e QtdeParcelas - COD_FORMA_PAGTO_PARCELA_UNICA 3
 	When Informo "FormaPagtoCriacao.C_pu_valor" = "1"
 	When Informo "FormaPagtoCriacao.CustoFinancFornecTipoParcelamento" = "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA"
 	When Informo "FormaPagtoCriacao.CustoFinancFornecQtdeParcelas" = "1"
-		Then Erro "Tipo do parcelamento (CustoFinancFornecTipoParcelamento 'CE') está incorreto!"
+	Then Erro "Tipo do parcelamento (CustoFinancFornecTipoParcelamento 'CE') está incorreto!"
 
 Scenario: TipoParcelamento e QtdeParcelas - COD_FORMA_PAGTO_PARCELADO_CARTAO 1
 	#c_custoFinancFornecTipoParcelamento e c_custoFinancFornecQtdeParcelasConferencia - COD_FORMA_PAGTO_PARCELADO_CARTAO 1

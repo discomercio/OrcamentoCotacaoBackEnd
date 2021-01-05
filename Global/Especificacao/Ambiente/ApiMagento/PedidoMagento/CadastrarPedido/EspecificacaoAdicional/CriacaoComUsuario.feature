@@ -19,18 +19,3 @@ Scenario: Testar criando o usuário e cadastrando o pedido em uma única operaç
 Scenario: Testar cadastrando o pedido com um usuário já existente no banco (verificar que não atualiza os dados de cadastro)
 	When Fazer esta validação
 
-Scenario: falta: sexo e data de nascimento - vao ficar em branco
-	#Sexo: Retirar obrigatoriedade do preenchimento do sexo, permitindo deixá-lo vazio.
-	#cadastrar o usuário pelo magento e verificar que sexo e nascimento estão em branco (sexo fica string vazia e nascimento fica NULL)
-	When Fazer esta validação
-
-Scenario: Endereco_produtor_rural_status e Endereco_contribuinte_icms_status
-#Ao cadastrar o cliente:
-#- se for PF, assumimos Endereco_produtor_rural_status = COD_ST_CLIENTE_PRODUTOR_RURAL_NAO e Endereco_contribuinte_icms_status = INICIAL
-#- se for PJ, deixar o pedido st_etg_imediata = 1 (não)
-#	e colocar Endereco_contribuinte_icms_status = inicial, Endereco_ie = vazio
-#Contribuinte ICMS
-#Para cliente PJ, quando o cliente for cadastrado automaticamente, manter o campo contribuinte_icms_status com o status default (zero).
-
-	When Fazer esta validação
-

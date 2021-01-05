@@ -12,13 +12,10 @@ namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
         [Required]
         [MaxLength(80)]
         public string Endereco_logradouro { get; set; }
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         [MaxLength(60)]
         public string Endereco_numero { get; set; }
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         /*
 # Colocar a informação do ponto de referência no campo 'Constar na NF'. Comparar o conteúdo do ponto de referência
@@ -30,29 +27,21 @@ Por isso, temos o MaxLength 800 aqui
         [MaxLength(800)]
         public string? Endereco_complemento { get; set; }
 
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         [MaxLength(72)]
         public string Endereco_bairro { get; set; }
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         [MaxLength(60)]
         public string Endereco_cidade { get; set; }
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         [MaxLength(2)]
         public string Endereco_uf { get; set; }
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         [MaxLength(8)]
         public string Endereco_cep { get; set; }
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         [MaxLength(60)]
         public string? Endereco_email { get; set; }
@@ -60,11 +49,9 @@ Por isso, temos o MaxLength 800 aqui
         [MaxLength(60)]
         public string? Endereco_email_xml { get; set; }
 
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         [MaxLength(60)]
         public string Endereco_nome { get; set; }
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         [MaxLength(4)]
         public string? Endereco_ddd_res { get; set; }
@@ -100,13 +87,10 @@ Por isso, temos o MaxLength 800 aqui
         /// Endereco_tipo_pessoa = "PF", "PJ". No momento somente é aceito PF.
         /// <hr />
         /// </summary>
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         [MaxLength(2)]
         public string Endereco_tipo_pessoa { get; set; }
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         [MaxLength(14)]
         public string Endereco_cnpj_cpf { get; set; }
@@ -169,8 +153,8 @@ Ao cadastrar o cliente:
                 (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO :
                 (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL;
             ret.Endereco_contribuinte_icms_status = endCadastralMagento.Endereco_tipo_pessoa == Constantes.ID_PF ?
-                (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO :
-                (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL;
+                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL :
+                    (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL; //inicial nos dois casos
             ret.Endereco_ie = "";
             ret.Endereco_rg = "";
 
@@ -178,7 +162,7 @@ Ao cadastrar o cliente:
         }
 
         public static Cliente.Dados.DadosClienteCadastroDados DadosClienteDeEnderecoCadastralClienteMagentoDto(
-            EnderecoCadastralClienteMagentoDto dadosClienteMagento, string loja, decimal? frete,
+            EnderecoCadastralClienteMagentoDto dadosClienteMagento, string loja,
             string vendedor, string orcamentista)
         {
             var ret = new Cliente.Dados.DadosClienteCadastroDados()
@@ -224,10 +208,53 @@ Ao cadastrar o cliente:
                 Uf = dadosClienteMagento.Endereco_uf,
                 Complemento = dadosClienteMagento.Endereco_complemento,
                 Contato = dadosClienteMagento.Endereco_contato
-                //Observacao_Filiacao = dadosClienteMagento.Observacao_Filiacao **Verificar se mandamos esse campo
             };
 
             return ret;
+        }
+
+        public static EnderecoCadastralClienteMagentoDto EnderecoCadastralClienteMagentoDto_De_EnderecoEntregaClienteMagentoDto(
+            EnderecoEntregaClienteMagentoDto origem, EnderecoCadastralClienteMagentoDto? ret)
+        {
+            ret ??= new EnderecoCadastralClienteMagentoDto();
+            ret.Endereco_logradouro = TransferirCampoSeTiverValorSemNull(ret.Endereco_logradouro, origem.EndEtg_endereco);
+            ret.Endereco_numero = TransferirCampoSeTiverValorSemNull(ret.Endereco_numero, origem.EndEtg_endereco_numero);
+            ret.Endereco_complemento = TransferirCampoSeTiverValorComNull(ret.Endereco_complemento, origem.EndEtg_endereco_complemento);
+            ret.Endereco_bairro = TransferirCampoSeTiverValorSemNull(ret.Endereco_bairro, origem.EndEtg_bairro);
+            ret.Endereco_cidade = TransferirCampoSeTiverValorSemNull(ret.Endereco_cidade, origem.EndEtg_cidade);
+            ret.Endereco_uf = TransferirCampoSeTiverValorSemNull(ret.Endereco_uf, origem.EndEtg_uf);
+            ret.Endereco_cep = TransferirCampoSeTiverValorSemNull(ret.Endereco_cep, origem.EndEtg_cep);
+            ret.Endereco_email = TransferirCampoSeTiverValorComNull(ret.Endereco_email, origem.EndEtg_email);
+            ret.Endereco_email_xml = TransferirCampoSeTiverValorComNull(ret.Endereco_email_xml, origem.EndEtg_email_xml);
+            ret.Endereco_nome = TransferirCampoSeTiverValorSemNull(ret.Endereco_nome, origem.EndEtg_nome);
+            ret.Endereco_ddd_res = TransferirCampoSeTiverValorComNull(ret.Endereco_ddd_res, origem.EndEtg_ddd_res);
+            ret.Endereco_tel_res = TransferirCampoSeTiverValorComNull(ret.Endereco_tel_res, origem.EndEtg_tel_res);
+            ret.Endereco_ddd_com = TransferirCampoSeTiverValorComNull(ret.Endereco_ddd_com, origem.EndEtg_ddd_com);
+            ret.Endereco_tel_com = TransferirCampoSeTiverValorComNull(ret.Endereco_tel_com, origem.EndEtg_tel_com);
+            ret.Endereco_ramal_com = TransferirCampoSeTiverValorComNull(ret.Endereco_ramal_com, origem.EndEtg_ramal_com);
+            ret.Endereco_ddd_cel = TransferirCampoSeTiverValorComNull(ret.Endereco_ddd_cel, origem.EndEtg_ddd_cel);
+            ret.Endereco_tel_cel = TransferirCampoSeTiverValorComNull(ret.Endereco_tel_cel, origem.EndEtg_tel_cel);
+            ret.Endereco_ddd_com_2 = TransferirCampoSeTiverValorComNull(ret.Endereco_ddd_com_2, origem.EndEtg_ddd_com_2);
+            ret.Endereco_tel_com_2 = TransferirCampoSeTiverValorComNull(ret.Endereco_tel_com_2, origem.EndEtg_tel_com_2);
+            ret.Endereco_ramal_com_2 = TransferirCampoSeTiverValorComNull(ret.Endereco_ramal_com_2, origem.EndEtg_ramal_com_2);
+            ret.Endereco_tipo_pessoa = TransferirCampoSeTiverValorSemNull(ret.Endereco_tipo_pessoa, origem.EndEtg_tipo_pessoa);
+            ret.Endereco_cnpj_cpf = TransferirCampoSeTiverValorSemNull(ret.Endereco_cnpj_cpf, origem.EndEtg_cnpj_cpf);
+            //este não temos: ret.Endereco_contato 
+            ret.PontoReferencia = TransferirCampoSeTiverValorComNull(ret.PontoReferencia, origem.PontoReferencia);
+            return ret;
+        }
+
+        private static string? TransferirCampoSeTiverValorComNull(string? valorDefault, string? candidato)
+        {
+            if (!String.IsNullOrEmpty(candidato))
+                return candidato;
+            return valorDefault;
+        }
+        private static string TransferirCampoSeTiverValorSemNull(string valorDefault, string candidato)
+        {
+            if (!String.IsNullOrEmpty(candidato))
+                return candidato;
+            return valorDefault;
         }
     }
 }

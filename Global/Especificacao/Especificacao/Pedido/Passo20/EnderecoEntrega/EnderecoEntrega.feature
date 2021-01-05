@@ -11,12 +11,12 @@ Background: Pedido base com endereço de entrega (pedido e prepedido)
 
 	# Configuração
 	#Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Selecione a justificativa do endereço de entrega!!" é "Código da justficativa inválida!"
-	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Preencha o endereço de entrega!!" é "PREENCHA O ENDEREÇO DE ENTREGA."
-	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Preencha o número do endereço de entrega!!" é "PREENCHA O NÚMERO DO ENDEREÇO DE ENTREGA."
-	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Preencha o bairro do endereço de entrega!!" é "PREENCHA O BAIRRO DO ENDEREÇO DE ENTREGA."
-	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Preencha a cidade do endereço de entrega!!" é "PREENCHA A CIDADE DO ENDEREÇO DE ENTREGA."
-	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "UF inválida no endereço de entrega!!" é "UF INVÁLIDA NO ENDEREÇO DE ENTREGA."
-	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "CEP inválido no endereço de entrega!!" é "CEP INVÁLIDO NO ENDEREÇO DE ENTREGA."
+	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" mapear erro "Preencha o endereço de entrega!!" para "PREENCHA O ENDEREÇO DE ENTREGA."
+	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" mapear erro "Preencha o número do endereço de entrega!!" para "PREENCHA O NÚMERO DO ENDEREÇO DE ENTREGA."
+	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" mapear erro "Preencha o bairro do endereço de entrega!!" para "PREENCHA O BAIRRO DO ENDEREÇO DE ENTREGA."
+	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" mapear erro "Preencha a cidade do endereço de entrega!!" para "PREENCHA A CIDADE DO ENDEREÇO DE ENTREGA."
+	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" mapear erro "UF inválida no endereço de entrega!!" para "UF INVÁLIDA NO ENDEREÇO DE ENTREGA."
+	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" mapear erro "CEP inválido no endereço de entrega!!" para "CEP INVÁLIDO NO ENDEREÇO DE ENTREGA."
 	#Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Informe o CEP do endereço de entrega!!" é "CEP INVÁLIDO NO ENDEREÇO DE ENTREGA."
 
 Scenario: Validação do endereço
@@ -135,10 +135,6 @@ Scenario: EndEtg_uf errado
 	When Informo "EndEtg_uf" = "BA"
 	Then Erro "Estado não confere!"
 
-Scenario: EndEtg_cep errado
-	When Informo "EndEtg_cep" = "12345678"
-	Then Erro "Endereço Entrega: cep inválido!"
-
 Scenario: EndEtg_cidade errado
 	When Informo "EndEtg_cidade" = "12345678"
 	Then Erro "Cidade não confere"
@@ -155,7 +151,7 @@ Scenario: EndEtg_cidade não no IBGE
 	When Informo "EndEtg_cidade" = "Amapá"
 	Then Sem nenhum erro
 
-#se a cidade existir no OBGE, deve ser a mesma do CEP
+#se a cidade existir no IBGE, deve ser a mesma do CEP
 @ignore
 #todo: afazer: colocar estes testes. Tewm que ver como inicializa o CEP
 Scenario: EndEtg_cidade não no IBGE 2

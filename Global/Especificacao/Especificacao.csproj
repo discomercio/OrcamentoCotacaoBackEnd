@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoDados.json" />
     <None Remove="Ambiente\Loja\Loja_Bll\Bll\PedidoBll\PedidoBll\CadastrarPedido\CadastrarPedidoDados.json" />
     <None Remove="appsettings.testes.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tcliente.json" />
@@ -54,6 +53,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\EspecificacaoAdicional\ListaDependencias.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\ObterCodigoMarketplaceListaDependencias.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\ObterCodigoMarketplace\BuscarQtdeParcCartaoVisaListaDependencias.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\ObterCodigoMarketplace\QtdeParcCartaoVisa.feature.cs" />
@@ -77,6 +78,7 @@
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\ClientePj\EntregaPjTelefonesPj - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo20\EnderecoEntrega\EnderecoEntrega - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo40\CamposSimplesPj.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo40\FormaPagamentoPreenchimento - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo40\LimiteDesconto - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo40\PedidoNovoProdCompostoMask - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\Passo20\ValidacaoEstoque - Copy.feature.cs" />
@@ -116,6 +118,15 @@
   <ItemGroup>
     <Compile Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoListaDependencias.feature.cs">
       <DependentUpon>CadastrarPedidoListaDependencias.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf_Opcionais.feature.cs">
+      <DependentUpon>CriacaoCliente_Pf_Opcionais.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf_Obrigatorios.feature.cs">
+      <DependentUpon>CriacaoCliente_Pf_Obrigatorios.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\EspecificacaoAdicional\ListaDependencias.feature.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Ambiente\ApiMagento\PedidoMagento\ObterCodigoMarketplace\ObterCodigoMarketplaceListaDependencias.feature.cs">
       <DependentUpon>ObterCodigoMarketplaceListaDependencias.feature</DependentUpon>
@@ -171,6 +182,9 @@
     <Compile Update="Especificacao\Pedido\Passo20\EnderecoEntrega\EnderecoEntregaListaDependencias.feature.cs">
       <DependentUpon>EnderecoEntregaListaDependencias.feature</DependentUpon>
     </Compile>
+    <Compile Update="Especificacao\Pedido\Passo40\FormaPagamentoPreenchimento_COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA.feature.cs">
+      <DependentUpon>FormaPagamentoPreenchimento_COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA.feature</DependentUpon>
+    </Compile>
     <Compile Update="Especificacao\Pedido\Passo40\Passo40ListaDependencias.feature.cs">
       <DependentUpon>Passo40ListaDependencias.feature</DependentUpon>
     </Compile>
@@ -199,6 +213,22 @@
 
   <ItemGroup>
     <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoListaDependencias.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf_Opcionais.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf_Obrigatorios.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\EspecificacaoAdicional\ListaDependencias.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\FluxoCadastroPedidoMagento_PF.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
@@ -291,6 +321,10 @@
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo10\Permissoes.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo40\FormaPagamentoPreenchimento_COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>

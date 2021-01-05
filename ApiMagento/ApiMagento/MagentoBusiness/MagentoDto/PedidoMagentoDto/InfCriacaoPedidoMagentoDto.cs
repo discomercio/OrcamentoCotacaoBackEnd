@@ -7,19 +7,19 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 {
     public class InfCriacaoPedidoMagentoDto
     {
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         /// <summary>
         /// Este é o número do pedido no magento (no ASP, é C_numero_magento; precisa ter 9 dígitos)
         /// <hr />
         /// </summary>
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
         [MaxLength(9)]
         public string Pedido_bs_x_ac { get; set; }
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
 
         /// <summary>
-        /// Código obtido através da chamada ??????ainda não definido
+        /// Código obtido através da chamada obterCodigoMarketplace, campo Codigo (uma string de 3 dígitos)
+        /// <br />
         /// Somente quando for um pedido de marketplace
         /// <hr />
         /// </summary>

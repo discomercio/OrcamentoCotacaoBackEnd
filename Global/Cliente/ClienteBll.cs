@@ -6,6 +6,8 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using InfraBanco.Constantes;
 using Cep;
+using Cliente.Dados;
+using InfraBanco;
 
 namespace Cliente
 {
@@ -347,50 +349,48 @@ namespace Cliente
             List<string> lstErros = new List<string>();
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await ListarBancosCombo()).ToList();
 
-            if (await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDados, null, null, lstErros,
-                contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, true, sistemaResponsavel, false))
+            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDados, null, null, lstErros,
+                contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, true, sistemaResponsavel);
+            if (lstErros.Count > 0)
+                return lstErros;
+
+
+            var dados = from c in db.Tclientes
+                        where c.Id == dadosClienteCadastroDados.Id
+                        select c;
+            var cli = await dados.FirstOrDefaultAsync();
+
+            if (cli != null)
             {
-                var dados = from c in db.Tclientes
-                            where c.Id == dadosClienteCadastroDados.Id
-                            select c;
-                var cli = await dados.FirstOrDefaultAsync();
-
-                if (cli != null)
+                if (lstErros.Count == 0)
                 {
-                    if (lstErros.Count == 0)
+                    //comparar os log em todos os casos de PF
+                    if (dadosClienteCadastroDados.Tipo == Constantes.ID_PF)
                     {
-                        //comparar os log em todos os casos de PF
-                        if (dadosClienteCadastroDados.Tipo == Constantes.ID_PF)
-                        {
-                            log = Verificar_AletrouDadosPF(cli, dadosClienteCadastroDados, apelido);
-                        }
-                        if (dadosClienteCadastroDados.Tipo == Constantes.ID_PJ)
-                        {
-                            log = Verificar_AlterouDadosPJ(cli, dadosClienteCadastroDados);
-                        }
+                        log = Verificar_AletrouDadosPF(cli, dadosClienteCadastroDados, apelido);
+                    }
+                    if (dadosClienteCadastroDados.Tipo == Constantes.ID_PJ)
+                    {
+                        log = Verificar_AlterouDadosPJ(cli, dadosClienteCadastroDados);
+                    }
 
-                        if (!string.IsNullOrEmpty(log))
+                    if (!string.IsNullOrEmpty(log))
+                    {
+                        using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
                         {
-                            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
-                            {
-                                cli.Dt_Ult_Atualizacao = DateTime.Now;
-                                cli.Usuario_Ult_Atualizacao = apelido;
+                            cli.Dt_Ult_Atualizacao = DateTime.Now;
+                            cli.Usuario_Ult_Atualizacao = apelido;
 
-                                dbgravacao.Update(cli);
-                                dbgravacao.SaveChanges();
+                            dbgravacao.Update(cli);
+                            dbgravacao.SaveChanges();
 
-                                bool salvouLog = UtilsGlobais.Util.GravaLog(dbgravacao, apelido, dadosClienteCadastroDados.Loja, "", dadosClienteCadastroDados.Id,
-                                    Constantes.OP_LOG_CLIENTE_ALTERACAO, log);
-                                if (salvouLog)
-                                    dbgravacao.transacao.Commit();
-                            }
+                            bool salvouLog = UtilsGlobais.Util.GravaLog(dbgravacao, apelido, dadosClienteCadastroDados.Loja, "", dadosClienteCadastroDados.Id,
+                                Constantes.OP_LOG_CLIENTE_ALTERACAO, log);
+                            if (salvouLog)
+                                dbgravacao.transacao.Commit();
                         }
                     }
                 }
-            }
-            else
-            {
-                lstErros.Add("Registro do cliente não encontrado.");
             }
 
             return lstErros;
@@ -448,6 +448,11 @@ namespace Cliente
                                  where c.Apelido == apelido
                                  select c.Loja).FirstOrDefaultAsync();
 
+            return await ListarComboJustificaEnderecoPorLoja(db, loja);
+        }
+
+        public async Task<IEnumerable<EnderecoEntregaJustificativaDados>> ListarComboJustificaEnderecoPorLoja(ContextoBd db, string loja)
+        {
             var retorno = from c in db.TcodigoDescricaos
                           where c.Grupo == Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA &&
                           (c.Lojas_Habilitadas == null || c.Lojas_Habilitadas.Length == 0 || c.Lojas_Habilitadas.Contains("|" + loja + "|")) &&
@@ -474,7 +479,7 @@ namespace Cliente
             Cliente.Dados.DadosClienteCadastroDados dados = new Cliente.Dados.DadosClienteCadastroDados
             {
                 Id = cli.Id,
-                Indicador_Orcamentista = cli.Usuario_Cadastrado,
+                Indicador_Orcamentista = cli.Usuario_Cadastro,
                 Cnpj_Cpf = cli.Cnpj_Cpf,
                 Rg = cli.Rg,
                 Ie = cli.Ie,
@@ -571,8 +576,9 @@ namespace Cliente
          * Incluímos a var "string usuarioCadastro" para permitir que a ApiUnis possa cadastrar outro
          * usuário ao invés do Orçamentista
          */
-        public async Task<IEnumerable<string>> CadastrarCliente(Cliente.Dados.ClienteCadastroDados clienteCadastroDados, string apelido,
-            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro)
+        public async Task<IEnumerable<string>> CadastrarCliente(Cliente.Dados.ClienteCadastroDados clienteCadastroDados, string indicador,
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
+            string usuario_cadastro)
         {
             string id_cliente = "";
 
@@ -591,131 +597,123 @@ namespace Cliente
 
             //passar lista de bancos para validar
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await ListarBancosCombo()).ToList();
-            if (await Cliente.ValidacoesClienteBll.ValidarDadosCliente(clienteCadastroDados.DadosCliente,
+            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(clienteCadastroDados.DadosCliente,
                 clienteCadastroDados.RefBancaria,
                 clienteCadastroDados.RefComercial,
-                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false, sistemaResponsavelCadastro, true))
+                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false, sistemaResponsavelCadastro);
+            if (lstErros.Count != 0)
+                return lstErros;
+
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
             {
-                if (lstErros.Count <= 0)
+                string log = "";
+
+                Cliente.Dados.DadosClienteCadastroDados cliente = clienteCadastroDados.DadosCliente;
+                Tcliente clienteCadastrado = new Tcliente();
+                id_cliente = await CadastrarDadosClienteDados(dbgravacao, cliente, indicador, clienteCadastrado,
+                    sistemaResponsavelCadastro, usuario_cadastro);
+
+                //Por padrão o id do cliente tem 12 caracteres, caso não seja 12 caracteres esta errado
+                if (id_cliente.Length == 12)
                 {
-                    using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+                    string campos_a_omitir = "dt_cadastro|usuario_cadastro|dt_ult_atualizacao|usuario_ult_atualizacao";
+
+                    log = UtilsGlobais.Util.MontaLog(clienteCadastrado, log, campos_a_omitir);
+
+                    if (clienteCadastroDados.DadosCliente.Tipo == Constantes.ID_PJ)
                     {
-                        string log = "";
-
-                        Cliente.Dados.DadosClienteCadastroDados cliente = clienteCadastroDados.DadosCliente;
-                        Tcliente clienteCadastrado = new Tcliente();
-                        id_cliente = await CadastrarDadosClienteDados(dbgravacao, cliente, apelido, clienteCadastrado,
-                            sistemaResponsavelCadastro);
-
-                        //Por padrão o id do cliente tem 12 caracteres, caso não seja 12 caracteres esta errado
-                        if (id_cliente.Length == 12)
-                        {
-                            string campos_a_omitir = "dt_cadastro|usuario_cadastro|dt_ult_atualizacao|usuario_ult_atualizacao";
-
-                            log = UtilsGlobais.Util.MontaLog(clienteCadastrado, log, campos_a_omitir);
-
-                            if (clienteCadastroDados.DadosCliente.Tipo == Constantes.ID_PJ)
-                            {
-                                log = await CadastrarRefBancaria(dbgravacao, clienteCadastroDados.RefBancaria, apelido, id_cliente, log);
-                                log = await CadastrarRefComercial(dbgravacao, clienteCadastroDados.RefComercial, apelido, id_cliente, log);
-                            }
-
-                            bool gravouLog = UtilsGlobais.Util.GravaLog(dbgravacao, apelido, cliente.Loja, "", id_cliente,
-                                    Constantes.OP_LOG_CLIENTE_INCLUSAO, log);
-                            if (gravouLog)
-                                dbgravacao.transacao.Commit();
-
-                        }
-                        else
-                        {
-                            //afazer: ver com o Edu, pq isso esta me cheirando a coisa errada, pois me parece
-                            //que o angular espera retornar uma lista vazia no caso de sucesso.
-                            //não faz sentido no caso de erro ao gerar o Id do cliente devolver o id do cliente
-                            lstErros.Add(id_cliente);
-                        }
+                        log = await CadastrarRefBancaria(dbgravacao, clienteCadastroDados.RefBancaria, usuario_cadastro, id_cliente, log);
+                        log = await CadastrarRefComercial(dbgravacao, clienteCadastroDados.RefComercial, usuario_cadastro, id_cliente, log);
                     }
+
+                    bool gravouLog = UtilsGlobais.Util.GravaLog(dbgravacao, usuario_cadastro, cliente.Loja, "", id_cliente,
+                            Constantes.OP_LOG_CLIENTE_INCLUSAO, log);
+                    if (gravouLog)
+                        dbgravacao.transacao.Commit();
+
+                }
+                else
+                {
+                    lstErros.Add("Erro: id_cliente com tamanho diferente de 12.");
                 }
             }
+
 
             return lstErros;
         }
 
         private async Task<string> CadastrarDadosClienteDados(InfraBanco.ContextoBdGravacao dbgravacao,
-            Cliente.Dados.DadosClienteCadastroDados clienteDados, string apelido, Tcliente tCliente, InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro)
+            Cliente.Dados.DadosClienteCadastroDados clienteDados, string indicador, Tcliente tCliente,
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
+            string usuario_cadastro)
         {
-            string retorno;
-            List<string> lstRetorno = new List<string>();
             string id_cliente = await GerarIdCliente(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES);
 
-            lstRetorno.Add(id_cliente);
+            if (usuario_cadastro != null)
+                usuario_cadastro = usuario_cadastro.ToUpper();
+            if (indicador != null)
+                indicador = indicador.ToUpper();
 
-            if (id_cliente.Length > 12)
-                retorno = id_cliente;
-            else
+            tCliente.Id = id_cliente;
+            tCliente.Dt_Cadastro = DateTime.Now;
+            tCliente.Usuario_Cadastro = usuario_cadastro;
+            tCliente.Indicador = indicador ?? ""; //não deve ser null
+            tCliente.Cnpj_Cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(clienteDados.Cnpj_Cpf);
+            tCliente.Tipo = clienteDados.Tipo.ToUpper();
+            tCliente.Ie = clienteDados.Ie;
+            tCliente.Rg = clienteDados.Rg;
+            tCliente.Nome = clienteDados.Nome;
+            tCliente.Sexo = clienteDados.Sexo;
+            tCliente.Contribuinte_Icms_Status = clienteDados.Contribuinte_Icms_Status;
+            tCliente.Contribuinte_Icms_Data = DateTime.Now;
+            tCliente.Contribuinte_Icms_Data_Hora = DateTime.Now;
+            tCliente.Contribuinte_Icms_Usuario = usuario_cadastro;
+            tCliente.Produtor_Rural_Status = clienteDados.ProdutorRural;
+            if (clienteDados.ProdutorRural != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL)
             {
-                tCliente.Id = id_cliente;
-                tCliente.Dt_Cadastro = DateTime.Now;
-                tCliente.Usuario_Cadastrado = apelido.ToUpper();
-                tCliente.Indicador = apelido.ToUpper();
-                tCliente.Cnpj_Cpf = clienteDados.Cnpj_Cpf.Replace(".", "").Replace("/", "").Replace("-", "");
-                tCliente.Tipo = clienteDados.Tipo.ToUpper();
-                tCliente.Ie = clienteDados.Ie;
-                tCliente.Rg = clienteDados.Rg;
-                tCliente.Nome = clienteDados.Nome;
-                tCliente.Sexo = clienteDados.Sexo;
-                tCliente.Contribuinte_Icms_Status = clienteDados.Contribuinte_Icms_Status;
-                tCliente.Contribuinte_Icms_Data = DateTime.Now;
-                tCliente.Contribuinte_Icms_Data_Hora = DateTime.Now;
-                tCliente.Contribuinte_Icms_Usuario = apelido.ToUpper();
-                tCliente.Produtor_Rural_Status = clienteDados.ProdutorRural;
-                if (clienteDados.ProdutorRural != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL)
-                {
-                    tCliente.Produtor_Rural_Data = DateTime.Now;
-                    tCliente.Produtor_Rural_Data_Hora = DateTime.Now;
-                    tCliente.Produtor_Rural_Usuario = apelido.ToUpper();
-                }
+                tCliente.Produtor_Rural_Data = DateTime.Now;
+                tCliente.Produtor_Rural_Data_Hora = DateTime.Now;
+                tCliente.Produtor_Rural_Usuario = usuario_cadastro;
+            }
 
-                tCliente.Endereco = clienteDados.Endereco;
-                tCliente.Endereco_Numero = clienteDados.Numero;
-                tCliente.Endereco_Complemento = clienteDados.Complemento;
-                tCliente.Bairro = clienteDados.Bairro;
-                tCliente.Cidade = clienteDados.Cidade;
-                tCliente.Cep = clienteDados.Cep.Replace("-", "");
-                tCliente.Uf = clienteDados.Uf;
-                tCliente.Ddd_Res = clienteDados.DddResidencial;
-                tCliente.Tel_Res = clienteDados.TelefoneResidencial;
-                tCliente.Ddd_Com = clienteDados.DddComercial;
-                tCliente.Tel_Com = clienteDados.TelComercial;
-                tCliente.Ramal_Com = clienteDados.Ramal;
-                tCliente.Contato = clienteDados.Contato == null ? "" : clienteDados.Contato;
-                tCliente.Ddd_Com_2 = clienteDados.DddComercial2;
-                tCliente.Tel_Com_2 = clienteDados.TelComercial2;
-                tCliente.Ramal_Com_2 = clienteDados.Ramal2;
-                tCliente.Ddd_Cel = clienteDados.DddCelular;
-                tCliente.Tel_Cel = clienteDados.Celular;
+            tCliente.Endereco = clienteDados.Endereco;
+            tCliente.Endereco_Numero = clienteDados.Numero;
+            tCliente.Endereco_Complemento = clienteDados.Complemento;
+            tCliente.Bairro = clienteDados.Bairro;
+            tCliente.Cidade = clienteDados.Cidade;
+            tCliente.Cep = clienteDados.Cep.Replace("-", "");
+            tCliente.Uf = clienteDados.Uf;
+            tCliente.Ddd_Res = clienteDados.DddResidencial;
+            tCliente.Tel_Res = clienteDados.TelefoneResidencial;
+            tCliente.Ddd_Com = clienteDados.DddComercial;
+            tCliente.Tel_Com = clienteDados.TelComercial;
+            tCliente.Ramal_Com = clienteDados.Ramal;
+            tCliente.Contato = clienteDados.Contato == null ? "" : clienteDados.Contato;
+            tCliente.Ddd_Com_2 = clienteDados.DddComercial2;
+            tCliente.Tel_Com_2 = clienteDados.TelComercial2;
+            tCliente.Ramal_Com_2 = clienteDados.Ramal2;
+            tCliente.Ddd_Cel = clienteDados.DddCelular;
+            tCliente.Tel_Cel = clienteDados.Celular;
 
-                //definição em 20200930: data de nascimento é somente a data, sem hora
-                if (clienteDados.Nascimento.HasValue)
-                    tCliente.Dt_Nasc = clienteDados.Nascimento.Value.Date;
-                else
-                    tCliente.Dt_Nasc = null;
+            //definição em 20200930: data de nascimento é somente a data, sem hora
+            if (clienteDados.Nascimento.HasValue)
+                tCliente.Dt_Nasc = clienteDados.Nascimento.Value.Date;
+            else
+                tCliente.Dt_Nasc = null;
 
-                tCliente.Filiacao = clienteDados.Observacao_Filiacao == null ? "" : clienteDados.Observacao_Filiacao;
-                tCliente.Obs_crediticias = "";
-                tCliente.Midia = "";
-                tCliente.Email = clienteDados.Email;
-                tCliente.Email_Xml = clienteDados.EmailXml;
-                tCliente.Dt_Ult_Atualizacao = DateTime.Now;
-                tCliente.Usuario_Ult_Atualizacao = apelido.ToUpper();
-                tCliente.Sistema_responsavel_cadastro = (int)sistemaResponsavelCadastro;
-                tCliente.Sistema_responsavel_atualizacao = (int)sistemaResponsavelCadastro;
-            };
+            tCliente.Filiacao = clienteDados.Observacao_Filiacao == null ? "" : clienteDados.Observacao_Filiacao;
+            tCliente.Obs_crediticias = "";
+            tCliente.Midia = "";
+            tCliente.Email = clienteDados.Email;
+            tCliente.Email_Xml = clienteDados.EmailXml;
+            tCliente.Dt_Ult_Atualizacao = DateTime.Now;
+            tCliente.Usuario_Ult_Atualizacao = usuario_cadastro;
+            tCliente.Sistema_responsavel_cadastro = (int)sistemaResponsavelCadastro;
+            tCliente.Sistema_responsavel_atualizacao = (int)sistemaResponsavelCadastro;
 
             dbgravacao.Add(tCliente);
             await dbgravacao.SaveChangesAsync();
-            retorno = tCliente.Id;
-
-            return retorno;
+            return id_cliente;
         }
 
         private async Task<string> CadastrarRefBancaria(InfraBanco.ContextoBdGravacao dbgravacao, List<Cliente.Dados.Referencias.RefBancariaClienteDados> lstRefBancaria, string apelido, string id_cliente, string log)
@@ -787,18 +785,13 @@ namespace Cliente
             return UtilsGlobais.Util.GerarNsu(dbgravacao, id_nsu);
         }
 
-        public async Task<string> BuscarIdCliente(string cpf_cnpj)
+        public async Task<bool> ClienteExiste(string cpf_cnpj)
         {
-            string retorno = "";
-
             var db = contextoProvider.GetContextoLeitura();
-
             cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
-
-            retorno = await (from c in db.Tclientes
-                             where c.Cnpj_Cpf == cpf_cnpj
-                             select c.Id).FirstOrDefaultAsync();
-
+            var retorno = await ((from c in db.Tclientes
+                                  where c.Cnpj_Cpf == cpf_cnpj
+                                  select c.Id).AnyAsync());
             return retorno;
         }
 

@@ -44,7 +44,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             ClienteCadastroResultadoUnisDto res;
             clienteDto.RefBancaria = new List<RefBancariaClienteUnisDto>();
             clienteDto.RefComercial = new List<RefComercialClienteUnisDto>();
-            res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
+            res = clienteUnisBll.CadastrarClienteUnis(clienteDto, clienteDto.DadosCliente.Indicador_Orcamentista).Result;
 
             if (res.ListaErros.Count > 0)
                 output.WriteLine(JsonConvert.SerializeObject(res));
@@ -60,7 +60,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             clienteDto = InicializarClienteDados.ClienteNaoCadastradoPJ();
             clienteDto.RefBancaria = null;
             clienteDto.RefComercial = null;
-            res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
+            res = clienteUnisBll.CadastrarClienteUnis(clienteDto, clienteDto.DadosCliente.Indicador_Orcamentista).Result;
 
             if (res.ListaErros.Count > 0)
                 output.WriteLine(JsonConvert.SerializeObject(res));
@@ -79,7 +79,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             ClienteCadastroResultadoUnisDto res;
             clienteDto.RefBancaria = new List<RefBancariaClienteUnisDto>();
             clienteDto.RefComercial = new List<RefComercialClienteUnisDto>();
-            res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
+            res = clienteUnisBll.CadastrarClienteUnis(clienteDto, clienteDto.DadosCliente.Indicador_Orcamentista).Result;
 
             if (res.ListaErros.Count > 0)
                 output.WriteLine(JsonConvert.SerializeObject(res));
@@ -95,7 +95,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             clienteDto = InicializarClienteDados.ClienteNaoCadastradoPF();
             clienteDto.RefBancaria = null;
             clienteDto.RefComercial = null;
-            res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
+            res = clienteUnisBll.CadastrarClienteUnis(clienteDto, clienteDto.DadosCliente.Indicador_Orcamentista).Result;
 
             if (res.ListaErros.Count > 0)
                 output.WriteLine(JsonConvert.SerializeObject(res));
@@ -112,7 +112,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             //este é o que deve dar certo
             ClienteCadastroUnisDto clienteDto = InicializarClienteDados.ClienteNaoCadastradoPJ();
             ClienteCadastroResultadoUnisDto res;
-            res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
+            res = clienteUnisBll.CadastrarClienteUnis(clienteDto, clienteDto.DadosCliente.Indicador_Orcamentista).Result;
 
             if (res.ListaErros.Count > 0)
                 output.WriteLine(JsonConvert.SerializeObject(res));
@@ -136,7 +136,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             //este é o que deve dar certo
             ClienteCadastroUnisDto clienteDto = InicializarClienteDados.ClienteNaoCadastradoPF();
             ClienteCadastroResultadoUnisDto res;
-            res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
+            res = clienteUnisBll.CadastrarClienteUnis(clienteDto, clienteDto.DadosCliente.Indicador_Orcamentista).Result;
 
             if (res.ListaErros.Count > 0)
                 output.WriteLine(JsonConvert.SerializeObject(res));

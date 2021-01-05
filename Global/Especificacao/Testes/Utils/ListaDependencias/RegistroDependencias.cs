@@ -57,11 +57,14 @@ namespace Especificacao.Testes.Utils.ListaDependencias
         {
             var ambientes = ambientesRegistrados;
             if (!ambientes.ContainsKey(ambiente))
+            {
+                LogTestes.LogTestes.GetInstance().LogMensagem($"{ambiente}: implementacao nunca foi definida");
                 Assert.Equal("", $"{ambiente}: implementacao nunca foi definida");
+            }
 
             //para debug
             if (!ambientes[ambiente].Select(r => r.Texto).ToList().Contains(especificacao))
-                LogTestes.LogTestes.GetInstance().LogMensagem($"Erro: VerificarQueUsou {especificacao} em {String.Join(",", ambientes[ambiente].Select(r => r.Texto).ToList())} ");
+                LogTestes.LogTestes.GetInstance().LogMensagem($"Erro: VerificarQueUsou {especificacao} em {String.Join(",", ambientes[ambiente].Select(r => r.Texto).Distinct().ToList())} ");
 
             //este teste somente passa se executar todos os testes
             Assert.Contains(especificacao, ambientes[ambiente].Select(r => r.Texto).ToList());
@@ -170,8 +173,10 @@ namespace Especificacao.Testes.Utils.ListaDependencias
 
                     if (ambientesTodos.ContainsKey(especificacao.Texto ?? ""))
                     {
-                        var filtrado = new Dictionary<string, List<TextoInstancia>>();
-                        filtrado.Add(especificacao.Texto ?? "", ambientesTodos[especificacao.Texto ?? ""]);
+                        var filtrado = new Dictionary<string, List<TextoInstancia>>
+                        {
+                            { especificacao.Texto ?? "", ambientesTodos[especificacao.Texto ?? ""] }
+                        };
                         DumpMapaItem(writerMapa, filtrado, ambientesTodos, detalhesChamadas, identacao + 1);
                     }
                 }
@@ -200,7 +205,26 @@ namespace Especificacao.Testes.Utils.ListaDependencias
 
                 //só apra facilitar o debug
                 if (registrados.Count != verificados.Count)
+                {
                     LogTestes.LogTestes.GetInstance().LogMensagem($"Erro: VerificarUmaLista {String.Join(", ", registrados)} diferente de {String.Join(",", verificados)} ");
+
+                    foreach (var registrado in registrados)
+                    {
+                        if (!verificados.Contains(registrado))
+                        {
+                            LogTestes.LogTestes.GetInstance().LogMensagem($"Erro: !verificados.Contains(registrado) {registrado} em {String.Join(",", verificados)} ");
+                            Assert.Equal("", $"{registrado} Erro: !verificados.Contains(registrado) ");
+                        }
+                    }
+                    foreach (var verificado in verificados)
+                    {
+                        if (!registrados.Contains(verificado))
+                        {
+                            LogTestes.LogTestes.GetInstance().LogMensagem($"Erro: !registrados.Contains(verificado) {verificado} em {String.Join(",", registrados)} ");
+                            Assert.Equal("", $"{verificado} Erro: !verificados.Contains(registrado) ");
+                        }
+                    }
+                }
 
 
                 //agora a verificaçaõ de verdade

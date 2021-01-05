@@ -27,6 +27,14 @@ namespace Especificacao.Testes.Utils.LogTestes
         {
             GravarLog("DadoBaseClientePJ", objeto);
         }
+        public static void LimparEnderecoDeEntrega(object objeto)
+        {
+            GravarLog("LimparEnderecoDeEntrega", objeto);
+        }
+        public static void LimparDadosCadastraisEEnderecoDeEntrega(object objeto)
+        {
+            GravarLog("LimparDadosCadastraisEEnderecoDeEntrega", objeto);
+        }
         public static void DadoBaseClientePJComEnderecoDeEntrega(object objeto)
         {
             GravarLog("DadoBaseClientePJComEnderecoDeEntrega", objeto);
@@ -76,9 +84,29 @@ namespace Especificacao.Testes.Utils.LogTestes
             string controllerFullName = LogTestes.NomeTipo(controllerType);
             GravarLog(controllerFullName + ": " + msg, objeto);
         }
+        public static void ListaDeItensInformo(int numeroItem, string campo, string valor, object objeto)
+        {
+            GravarLog($@"ListaDeItensInformo ""{numeroItem}"", ""{campo}"" = ""{valor}""", objeto);
+        }
+        public static void RecalcularTotaisDoPedido(object objeto)
+        {
+            GravarLog($@"RecalcularTotaisDoPedido ", objeto);
+        }
+        public static void DeixarFormaDePagamentoConsistente(object objeto)
+        {
+            GravarLog($@"DeixarFormaDePagamentoConsistente ", objeto);
+        }
+        public static void ListaDeItensComXitens(int i, object objeto)
+        {
+            GravarLog($@"ListaDeItensComXitens {i}", objeto);
+        }
         public static void MensagemEspecial(string msg, object objeto)
         {
             GravarLog(msg, objeto);
+        }
+        public static void Excecao(string msg, object objeto)
+        {
+            GravarLog("EXCEÇÃO: " + msg, objeto);
         }
         public static class BancoDados
         {
@@ -96,11 +124,16 @@ namespace Especificacao.Testes.Utils.LogTestes
             }
             public static void NovoRegistroEmCampo(string tabela, string p0, string p1, object objeto)
             {
-                GravarLog($@"NovoRegistro ""{p0}"" = ""{p1}""", objeto);
+                GravarLog($@"NovoRegistro tabela=""{tabela}"", ""{p0}"" = ""{p1}""", objeto);
             }
             public static void GravarRegistroEm(string p0, object objeto)
             {
-                GravarLog(@"GravarRegistro {p0}", objeto);
+                GravarLog($@"GravarRegistro {p0}", objeto);
+            }
+            public static void TabelaRegistroComCampoVerificarCampo(string tabela, string campoBusca, string valorBusca, string campoDesejado, string valorDesejado, object objeto)
+            {
+                GravarLog($"TabelaRegistroComCampoVerificarCampo tabela {tabela}, campoBusca {campoBusca}, " +
+                    $"valorBusca {valorBusca}, campoDesejado {campoDesejado}, valorDesejado {valorDesejado}", objeto);
             }
         }
     }

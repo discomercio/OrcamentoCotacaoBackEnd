@@ -739,9 +739,6 @@ namespace Prepedido
                 lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco,
                 prePedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false, sistemaResponsavelCadastro, false);
 
-            //if (lstErros.Count > 0)
-            //    return lstErros;
-
             //verifica se o prepedio já foi gravado
             if (verificarPrepedidoRepetido)
             {
@@ -773,7 +770,7 @@ namespace Prepedido
 
             //Validar endereço de entraga
             await validacoesPrepedidoBll.ValidarEnderecoEntrega(prePedido.EnderecoEntrega, lstErros,
-                prePedido.DadosCliente.Indicador_Orcamentista, prePedido.DadosCliente.Tipo);
+                prePedido.DadosCliente.Indicador_Orcamentista, prePedido.DadosCliente.Tipo, true, prePedido.DadosCliente.Loja);
             if (lstErros.Any())
                 return lstErros;
 
@@ -1941,6 +1938,14 @@ namespace Prepedido
             TorcamentistaEindicador tOrcamentista = await tOrcamentistaTask.FirstOrDefaultAsync();
 
             return tOrcamentista;
+        }
+
+        public async Task<bool> TorcamentistaExiste(string apelido)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+            return await ((from c in db.TorcamentistaEindicadors
+                                    where c.Apelido == apelido
+                                    select c).AnyAsync());
         }
 
         public async Task GerarNumeroOrcamento(ContextoBdGravacao dbgravacao, PrePedidoDados prepedido)

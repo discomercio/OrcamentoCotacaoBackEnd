@@ -9,6 +9,7 @@ using Xunit;
 
 namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 {
+    //o nome do arquivo é diferente do nome da classe para ficar mais fácil de localizar no "Find All References". É que mistura do da loja e do magento.
     class CadastrarPedido : Testes.Pedido.HelperImplementacaoPedido
     {
         private readonly global::ApiMagento.Controllers.PedidoMagentoController pedidoMagentoController;
@@ -37,6 +38,49 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             UltimoAcessoFeito = pedidoMagentoController.CadastrarPedido(pedidoMagentoDto).Result;
             Microsoft.AspNetCore.Mvc.ActionResult res = UltimoAcessoFeito.Result;
             return res;
+        }
+
+        protected override void AbstractRecalcularTotaisDoPedido()
+        {
+            decimal totalCompare = 0;
+            decimal totalRaCompare = 0;
+            foreach (var x in pedidoMagentoDto.ListaProdutos)
+            {
+                totalCompare += Math.Round((decimal)(x.Preco_Venda * x.Qtde), 2);
+                totalRaCompare += Math.Round((decimal)(x.Preco_NF * x.Qtde), 2);
+            }
+            pedidoMagentoDto.VlTotalDestePedido = totalCompare;
+            //nao temos este campo: pedidoMagentoDto.ValorTotalDestePedidoComRA = totalRaCompare;
+        }
+        protected override void AbstractListaDeItensComXitens(int numeroItens)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensComXitens(numeroItens, this);
+            numeroItens = numeroItens < 0 ? 0 : numeroItens;
+            numeroItens = numeroItens > 100 ? 100 : numeroItens;
+            var lp = pedidoMagentoDto.ListaProdutos;
+            while (lp.Count < numeroItens)
+                lp.Add(new MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoProdutoMagentoDto());
+            while (lp.Count > numeroItens)
+                lp.RemoveAt(lp.Count - 1);
+        }
+        protected override void AbstractLimparEnderecoDeEntrega()
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.LimparEnderecoDeEntrega(this);
+            pedidoMagentoDto.EnderecoEntrega = new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
+        }
+        protected override void AbstractLimparDadosCadastraisEEnderecoDeEntrega()
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.LimparDadosCadastraisEEnderecoDeEntrega(this);
+            pedidoMagentoDto.EnderecoEntrega = new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
+            pedidoMagentoDto.EnderecoCadastralCliente = new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoCadastralClienteMagentoDto();
+        }
+
+        protected override void AbstractDeixarFormaDePagamentoConsistente()
+        {
+            Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido.EstaticoDeixarFormaDePagamentoConsistente(pedidoMagentoDto);
         }
 
         protected override List<string> AbstractListaErros()
@@ -81,6 +125,16 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             pedidoMagentoDto.TokenAcesso = Ambiente.ApiMagento.InjecaoDependencias.TokenAcessoApiMagento();
         }
 
+        protected override void AbstractListaDeItensInformo(int numeroItem, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensInformo(numeroItem, campo, valor, this);
+            var item = pedidoMagentoDto.ListaProdutos[numeroItem];
+            if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, item))
+                return;
+            Assert.Equal("", $"{campo} desconhecido na rotina Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.ListaDeItensInformo");
+        }
+
         protected override void AbstractInformo(string campo, string valor)
         {
             switch (campo)
@@ -94,18 +148,26 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
                     return;
 
                 case "CPF/CNPJ":
+                case "Cnpj_Cpf":
+                case "cnpj_cpf":
                     pedidoMagentoDto.Cnpj_Cpf = valor;
                     pedidoMagentoDto.EnderecoCadastralCliente.Endereco_cnpj_cpf = valor;
+                    pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
+                    pedidoMagentoDto.EnderecoEntrega.EndEtg_cnpj_cpf = valor;
                     return;
                 case "pedidoMagentoDto.Cnpj_Cpf":
                     pedidoMagentoDto.Cnpj_Cpf = valor;
                     return;
                 case "EnderecoCadastralCliente.Endereco_cnpj_cpf":
                     pedidoMagentoDto.EnderecoCadastralCliente.Endereco_cnpj_cpf = valor;
+                    pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
+                    pedidoMagentoDto.EnderecoEntrega.EndEtg_cnpj_cpf = valor;
                     return;
 
                 case "EnderecoCadastralCliente.Endereco_tipo_pessoa":
                     pedidoMagentoDto.EnderecoCadastralCliente.Endereco_tipo_pessoa = valor;
+                    pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
+                    pedidoMagentoDto.EnderecoEntrega.EndEtg_tipo_pessoa = valor;
                     return;
             }
 
@@ -119,6 +181,8 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
                 return;
             pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
             if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, pedidoMagentoDto.EnderecoEntrega))
+                return;
+            if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, pedidoMagentoDto.EnderecoCadastralCliente))
                 return;
 
             switch (campo)

@@ -18,12 +18,15 @@ namespace Loja.Bll.ClienteBll
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
         private readonly InfraBanco.ContextoCepProvider contextoCepProvider;
         private readonly InfraBanco.ContextoNFeProvider contextoNFeProvider;
+        private readonly Cliente.ClienteBll clienteBll;
 
-        public ClienteBll(InfraBanco.ContextoBdProvider contextoProvider, InfraBanco.ContextoCepProvider contextoCepProvider, InfraBanco.ContextoNFeProvider contextoNFeProvider)
+        public ClienteBll(InfraBanco.ContextoBdProvider contextoProvider, InfraBanco.ContextoCepProvider contextoCepProvider,
+            InfraBanco.ContextoNFeProvider contextoNFeProvider, Cliente.ClienteBll clienteBll)
         {
             this.contextoProvider = contextoProvider;
             this.contextoCepProvider = contextoCepProvider;
             this.contextoNFeProvider = contextoNFeProvider;
+            this.clienteBll = clienteBll;
         }
 
         //Esse metodo é utilizado em praticamente todas as páginas 
@@ -297,6 +300,14 @@ namespace Loja.Bll.ClienteBll
             return lst;
         }
 
+        public async Task<IEnumerable<string>> Novo_CadastrarCliente(ClienteCadastroDto clienteDto, string usuario)
+        {
+            List<string> ret = (await clienteBll.CadastrarCliente(ClienteCadastroDto.ClienteCadastroDados_De_ClienteCadastroDto(clienteDto), usuario.Trim(),
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS, usuario)).ToList();
+
+            return ret;
+        }
+
         public async Task<IEnumerable<string>> CadastrarCliente(ClienteCadastroDto clienteDto, string apelido, string loja)
         {
             string id_cliente = "";
@@ -388,7 +399,7 @@ namespace Loja.Bll.ClienteBll
 
             cliente.Id = dadosCliente.Id;
             cliente.Dt_Cadastro = DateTime.Now;
-            cliente.Usuario_Cadastrado = tClienteBase.Usuario_Cadastrado.ToUpper();
+            cliente.Usuario_Cadastro = tClienteBase.Usuario_Cadastro.ToUpper();
             cliente.Indicador = dadosCliente.Indicador_Orcamentista;
             cliente.Cnpj_Cpf = Util.Util.SoDigitosCpf_Cnpj(dadosCliente.Cnpj_Cpf);
             cliente.Tipo = dadosCliente.Tipo.ToUpper();
@@ -749,7 +760,7 @@ namespace Loja.Bll.ClienteBll
                 {
                     Id = id_cliente,
                     Dt_Cadastro = DateTime.Now,
-                    Usuario_Cadastrado = apelido.ToUpper(),
+                    Usuario_Cadastro = apelido.ToUpper(),
                     Indicador = apelido.ToUpper(),
                     Cnpj_Cpf = clienteDto.Cnpj_Cpf.Replace(".", "").Replace("/", "").Replace("-", ""),
                     Tipo = clienteDto.Tipo.ToUpper(),
@@ -809,7 +820,7 @@ namespace Loja.Bll.ClienteBll
         {
             int qtdeRef = 1;
             string campos_a_omitir_ref_bancaria = "id_cliente|ordem|excluido_status|dt_cadastro|usuario_cadastro";
-            
+
             //afazer: verificar se é uma inclusão de nova ref
 
             //buscamos as referencias para poder comparar os dados
@@ -1231,23 +1242,23 @@ namespace Loja.Bll.ClienteBll
             return lstNfeMunicipio;
         }
 
-        private async Task VerificarEndereco(DadosClienteCadastroDto cliente, List<string> listaErros)
-        {
-            CepBll.CepBll cep = new CepBll.CepBll(contextoCepProvider);
-            List<CepDto> cepDto = new List<CepDto>();
-            string cepSoDigito = cliente.Cep.Replace(".", "").Replace("-", "");
-            cepDto = (await cep.BuscarPorCep(cepSoDigito)).ToList();
-            foreach (var c in cepDto)
-            {
-                if (c.Cep != cepSoDigito)
-                    listaErros.Add("Número do Cep diferente!");
-                if (c.Endereco != cliente.Endereco ||
-                    c.Bairro != cliente.Bairro ||
-                    c.Cidade != cliente.Cidade ||
-                    c.Uf != cliente.Uf)
-                    listaErros.Add("Os dados informados estão divergindo da base de dados!");
-            }
-        }
+        //private async Task VerificarEndereco(DadosClienteCadastroDto cliente, List<string> listaErros)
+        //{
+        //    CepBll.CepBll cep = new CepBll.CepBll(contextoCepProvider);
+        //    List<CepDto> cepDto = new List<CepDto>();
+        //    string cepSoDigito = cliente.Cep.Replace(".", "").Replace("-", "");
+        //    cepDto = (await cep.BuscarPorCep(cepSoDigito)).ToList();
+        //    foreach (var c in cepDto)
+        //    {
+        //        if (c.Cep != cepSoDigito)
+        //            listaErros.Add("Número do Cep diferente!");
+        //        if (c.Endereco != cliente.Endereco ||
+        //            c.Bairro != cliente.Bairro ||
+        //            c.Cidade != cliente.Cidade ||
+        //            c.Uf != cliente.Uf)
+        //            listaErros.Add("Os dados informados estão divergindo da base de dados!");
+        //    }
+        //}
 
         public async Task<IEnumerable<string>> BuscarListaPedidosBonshop(string cpf_cnpj)
         {

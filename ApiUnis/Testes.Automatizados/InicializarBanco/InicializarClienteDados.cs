@@ -31,7 +31,7 @@ namespace Testes.Automatizados.InicializarBanco
             return ret;
         }
 
-        private static string ClienteNaoCadastradoPJJson = @"
+        private static readonly string ClienteNaoCadastradoPJJson = @"
 {
   ""TokenAcesso"": ""eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJzdXBvcnRlIDEiLCJ1bmlxdWVfbmFtZSI6IkdVSUxIRVJNRSBHT01FUyBQSUVEQURFIC0gUyIsInJvbGUiOiJBcGlVbmlzIiwibmJmIjoxNTkzMDI5NzE5LCJleHAiOjE3NTA3MDk3MTksImlhdCI6MTU5MzAyOTcxOX0.Ofc7DSEKIDPSErYyaIGe-3VEsh9gE8nfuJwY8lCjN28"",
   ""DadosCliente"": {

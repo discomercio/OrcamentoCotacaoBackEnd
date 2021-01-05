@@ -12,5 +12,9 @@
         void ThenErro(string p0);
         void GivenIgnorarCenarioNoAmbiente(string p0);
         void ThenSemNenhumErro();
+        void ListaDeItensInformo(int numeroItem, string campo, string valor);
+        void RecalcularTotaisDoPedido();
+        void DeixarFormaDePagamentoConsistente();
+        void ListaDeItensComXitens(int numeroItens);
     }
 }

@@ -28,15 +28,13 @@ namespace Cliente
             public static string CNPJ_INVALIDO = "CNPJ INVÁLIDO.";
         }
 
-        public static async Task<bool> ValidarDadosCliente(Cliente.Dados.DadosClienteCadastroDados dadosCliente,
+        public static async Task ValidarDadosCliente(Cliente.Dados.DadosClienteCadastroDados dadosCliente,
             List<Cliente.Dados.Referencias.RefBancariaClienteDados> lstRefBancaria,
             List<Cliente.Dados.Referencias.RefComercialClienteDados> lstRefComercial,
             List<string> lstErros, ContextoBdProvider contextoProvider, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio,
             List<Cliente.Dados.ListaBancoDados> lstBanco, bool flagMsg_IE_Cadastro_PF,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel, bool novoCliente)
         {
-            bool retorno;
-
             if (dadosCliente != null)
             {
                 //existe dados
@@ -59,7 +57,6 @@ namespace Cliente
                             if (lstRefBancaria.Count != 0)
                             {
                                 lstErros.Add("Se cliente tipo PF, não deve constar referência bancária!");
-                                return false;
                             }
                         }
 
@@ -68,7 +65,6 @@ namespace Cliente
                             if (lstRefComercial.Count != 0)
                             {
                                 lstErros.Add("Se cliente tipo PF, não deve constar referência comercial!");
-                                return false;
                             }
                         }
 
@@ -79,9 +75,9 @@ namespace Cliente
                     if (dadosCliente.Tipo == Constantes.ID_PJ)
                     {
                         tipoDesconhecido = false;
-                        retorno = await ValidarDadosCliente_PJ(dadosCliente, cliente, lstErros, contextoProvider);
+                        await ValidarDadosCliente_PJ(dadosCliente, cliente, lstErros, contextoProvider);
                         //vamos validar as referências
-                        retorno = ValidarReferencias_Bancarias_Comerciais(lstRefBancaria, lstRefComercial,
+                        ValidarReferencias_Bancarias_Comerciais(lstRefBancaria, lstRefComercial,
                             lstErros, dadosCliente.Tipo, lstBanco);
                     }
 
@@ -89,13 +85,15 @@ namespace Cliente
                         lstErros.Add(MensagensErro.Tipo_de_cliente_nao_e_PF_nem_PJ);
 
                     //validar endereço do cadastro                    
-                    retorno = await ValidarEnderecoCadastroCliente(dadosCliente, lstErros, cepBll, contextoProvider,
+                    await ValidarEnderecoCadastroCliente(dadosCliente, lstErros, cepBll, contextoProvider,
                         bancoNFeMunicipio);
+                    VerificarCaracteresInvalidosEnderecoCadastral(dadosCliente, lstErros);
+
 
                     //vamos verificar o IE dos clientes
                     if (dadosCliente.Tipo == Constantes.ID_PJ ||
                         dadosCliente.Tipo == Constantes.ID_PF)
-                        retorno = ValidarIE_Cliente(dadosCliente, lstErros, contextoProvider,
+                        ValidarIE_Cliente(dadosCliente, lstErros, contextoProvider,
                             bancoNFeMunicipio, flagMsg_IE_Cadastro_PF);
 
                     await CepBll.ConsisteMunicipioIBGE(dadosCliente.Cidade, dadosCliente.Uf, lstErros, contextoProvider,
@@ -104,16 +102,55 @@ namespace Cliente
                 else
                 {
                     lstErros.Add(MensagensErro.INFORME_SE_O_CLIENTE_E_PF_OU_PJ);
-                    retorno = false;
                 }
             }
             else
             {
                 lstErros.Add("DADOS DO CLIENTE ESTA VAZIO!");
-                retorno = false;
             }
+        }
 
-            return retorno;
+        private static void VerificarCaracteresInvalidosEnderecoCadastral(
+            Cliente.Dados.DadosClienteCadastroDados dados, List<string> lstErros)
+        {
+            //proteção contra null
+            dados.Endereco ??= "";
+
+            string caracteres;
+            if (UtilsGlobais.Util.IsTextoValido(dados.Endereco, out caracteres).Length > 0)
+                lstErros.Add("O CAMPO Endereco DO ENDEREÇO POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+
+            if (UtilsGlobais.Util.IsTextoValido(dados.Numero ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO Numero DO ENDEREÇO POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+
+            if (UtilsGlobais.Util.IsTextoValido(dados.Complemento ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO Complemento DO ENDEREÇO POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+
+            if (UtilsGlobais.Util.IsTextoValido(dados.Bairro ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO Bairro DO ENDEREÇO POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+
+            if (UtilsGlobais.Util.IsTextoValido(dados.Cidade ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO Cidade DO ENDEREÇO POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+
+            if (UtilsGlobais.Util.IsTextoValido(dados.Nome ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO Nome DO ENDEREÇO POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+
+            //vamos verificar se o endereço de entrega esta com os valores corretos
+            if (dados.Endereco.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO)
+                lstErros.Add("ENDEREÇO DE ENTREGA EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br> TAMANHO ATUAL: " +
+                    dados.Endereco.Length + " CARACTERES <br> TAMANHO MÁXIMO: " +
+                    Constantes.MAX_TAMANHO_CAMPO_ENDERECO + " CARACTERES");
+
+            if (UtilsGlobais.Util.IsTextoValido(dados.Rg ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO Rg POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+            if (UtilsGlobais.Util.IsTextoValido(dados.Observacao_Filiacao ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO Observacao_Filiacao POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+            if (UtilsGlobais.Util.IsTextoValido(dados.Email ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO Email POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+            if (UtilsGlobais.Util.IsTextoValido(dados.EmailXml ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO EmailXml POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
+            if (UtilsGlobais.Util.IsTextoValido(dados.Contato ?? "", out caracteres).Length > 0)
+                lstErros.Add("O CAMPO Contato POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " + caracteres);
         }
 
         private static async Task<bool> ValidarDadosCliente_PF(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,

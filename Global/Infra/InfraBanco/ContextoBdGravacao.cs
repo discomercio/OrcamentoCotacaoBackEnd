@@ -81,6 +81,7 @@ namespace InfraBanco
 
         //daqui para a frente só é necessário para os testes automatizados
 #if DEBUG_BANCO_DEBUG
+        public DbSet<TorcamentoItem> TorcamentoItem { get => contexto.TorcamentoItem; }
         public DbSet<Tbanco> Tbancos { get => contexto.Tbancos; }
         public DbSet<Tfabricante> Tfabricantes { get => contexto.Tfabricantes; }
         public DbSet<Tproduto> Tprodutos { get => contexto.Tprodutos; }

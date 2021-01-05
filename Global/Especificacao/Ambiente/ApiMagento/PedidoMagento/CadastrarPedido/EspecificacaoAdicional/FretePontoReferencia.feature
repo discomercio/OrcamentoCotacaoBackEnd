@@ -4,6 +4,7 @@ Feature: FretePontoReferencia
 Scenario: campo "frete" -> se for <> 0, vamos usar o indicador. se for 0, sem indicador
 	#Frete/RA
 	#Valor de Frete: analisar se há valor de frete para definir se o pedido terá RA ou não.
+	#- campo "frete" -> se for <> 0, vamos usar o indicador. se for 0, sem indicador
 	#Se houver frete, deve-se automaticamente informar que o pedido possui RA e selecionar o indicador 'FRETE'.
 	When Fazer esta validação
 

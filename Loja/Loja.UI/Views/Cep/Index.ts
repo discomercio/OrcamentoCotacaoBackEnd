@@ -1,121 +1,176 @@
-﻿
+﻿import { CepDto } from "../../DtosTs/CepDto/CepDto";
+import { Constantes } from "../../UtilTs/Constantes/Constantes";
+import { EnderecoEntregaClienteCadastroDto } from "../../DtosTs/ClienteDto/EnderecoEntregaClienteCadastroDto";
 
-declare var window: Window & typeof globalThis;
+export class CepEntrega {
+    constructor() {
+        $(document).ready(() => {
+            this.tipoClienteEntrega = Constantes.ID_PF;
+            $("#EndEntregaTipoPF").prop("checked", true);
+            $("#divEntregaPF").show();
+            // cliente PJ em entrega PF
+            ($("#endEntregaTelRes") as any).mask("(99) 9999-9999");
+            ($("#endEntregaCel") as any).mask("(99) 99999-9999");
 
-$("#btnModificar").click(function () {
-    $('.teste').children().find('input').filter(()  => {
-        if ($(this).prop('checked') == true) {
-            var elem = $(this).parent().parent().parent();
-            inscreve(elem[0].children);
-        }
+            //cliente PJ em entrega PJ
+            ($("#endEntregaTelCom1") as any).mask("(99) 9999-9999");
+            ($("#endEntregaTelCom2") as any).mask("(99) 9999-9999");
 
-        return true;
-    });
-});
 
-(window as any).montaTabela = (data:any) => {
-    var cols = "";
-    var lst = data["ListaCep"];
+            $("#rb_endEntrega_pf").click(() => {
+                this.tipoClienteEntrega = Constantes.ID_PF;
+                $("#divEntregaPF").show();
+                $("#divEntregaPJ").hide();
+                $("#EndEntregaTipoPF").prop("checked", true);
+                if ($("#EndEntregaTipoPJ").is(":checked") == true)
+                    $("#EndEntregaTipoPJ").prop("checked", false);
 
-    if (lst.length > 0) {
-        if ($('#msg').css("display", "block")) $('#msg').css("display", "none");
-        $('.tabela_endereco').css("display", "block");
-        for (var i = 0; i < lst.length; i++) {
-            cols += "<tr id='linha' class='teste'>";
-            cols += "<td>";
-            cols += "<label><input class='with-gap check' type='radio' value='" + i + "'></input><span></span></label>";
-            cols += "</td>";
-            cols += "<td>" + lst[i].Cep + "</td>";
-            cols += "<td>" + lst[i].Uf + "</td>";
-            cols += "<td>" + lst[i].Cidade + "</td>";
-            cols += "<td>" + lst[i].Bairro + "</td>";
-            cols += "<td>" + lst[i].Endereco + "</td>";
-            cols += "<td>" + lst[i].LogradouroComplemento + "</td></tr>";
-            $("#tableBody").empty().append(cols);
-        }
-
-        $(".teste").click(function () {
-
-            $(this).find('td').each(function (i) {
-                if ($(this).find('label')) {
-                    $(this).find('label').each(function (s) {
-                        if ($(this).find('input')) {
-                            $(this).find('input').each(function (p) {
-                                
-                                var cbs = document.getElementsByClassName("check");
-                                //cbs = $(this)
-                                for (var i = 0; i < cbs.length; i++) {
-                                    //if (cbs[i] !== $(this)) cbs[i].checked = false;
-                                }
-                                $(this).prop('checked', true);
-                            })
-                        }
-                    })
-                }
+            });
+            $("#rb_endEntrega_pj").click(() => {
+                this.tipoClienteEntrega = Constantes.ID_PJ;
+                $("#divEntregaPJ").show();
+                $("#divEntregaPF").hide();
+                $("#EndEntregaTipoPJ").prop("checked", true);
+                if ($("#EndEntregaTipoPF").is(":checked") == true)
+                    $("#EndEntregaTipoPF").prop("checked", false);
             });
         });
     }
-    else {
-        if ($('.tabela_endereco').css("display", "block")) $('.tabela_endereco').css("display", "none");
-        var msg = "<span> Endereço não encontrado!</span>";
-        $("#msg").css("display", "block");
-        $("#msg").empty().append(msg);
+
+    public tipoClienteEntrega: string;
+    public lstIBGE_Entrega: string[] = new Array();
+
+    public limparCamposEndEntrega(): void {
+        $('#cepEntrega').val('');
+        $('#ufEntrega').val('');
+        $('#cidadeEntrega').val('');
+        $('#bairroEntrega').val('');
+        $('#enderecoEntrega').val('');
+        $('#compEntrega').val('');
+        $('#numEntrega').val('');
     }
 
+    public atribuirDadosParaEntrega(end:CepDto):void {
+        $("#cepEntrega").val(end.Cep);
+        ($("#cepEntrega") as any).mask("99999-999");
+        $("#lblcep").addClass('active');
 
+        if (!!end.Bairro) {
+            $("#bairroEntrega").val(end.Bairro);
+            $("#lblBairroEntrega").addClass('active');
+        }
+        if (!!end.Cidade) {
+            if (!!end.ListaCidadeIBGE && end.ListaCidadeIBGE.length > 0) {
+                $("#cidadeEntrega").prop("readonly", false);
+                
+                //lstIBGE_Entrega1 = end.ListaCidadeIBGE;
+            }
+            else {
+                $("#cidadeEntrega").prop("readonly", true);
+                $("#cidadeEntrega").val(end.Cidade);
+                $("#lblCidadeEntrega").addClass('active');
+            }
+        }
+        if (!!end.Endereco) {
+            $("#endereco").val(end.Endereco);
+            $("#lbEntrega").addClass('active');
+        }
+        if (!!end.Uf) {
+            $("#ufEntrega").val(end.Uf);
+            $("#lblUfEntrega").addClass('active');
+        }
+
+        $("#numEntrega").val('');
+        $("#compEntrega").val('');
+    }
+
+    public converterEntregaParaEnderecoEntregaClienteCadastroDto(): EnderecoEntregaClienteCadastroDto{
+        let enderecoEntregaClienteDto: EnderecoEntregaClienteCadastroDto = new EnderecoEntregaClienteCadastroDto();
+
+        enderecoEntregaClienteDto.EndEtg_endereco = $("#enderecoEntrega").val() as string;
+        enderecoEntregaClienteDto.EndEtg_endereco_numero = $("#numEntrega").val() as string;
+        enderecoEntregaClienteDto.EndEtg_endereco_complemento = $("#compEntrega").val() as string;
+        enderecoEntregaClienteDto.EndEtg_bairro = $("#bairroEntrega").val() as string;
+        enderecoEntregaClienteDto.EndEtg_cidade = $("#cidadeEntrega").val() as string;
+        enderecoEntregaClienteDto.EndEtg_uf = $("#ufEntrega").val() as string;
+        enderecoEntregaClienteDto.EndEtg_cep = $("#cepEntrega").val() as string;
+        //codigo da justificativa, preenchdio quando está criando (do spa para a api)
+        enderecoEntregaClienteDto.EndEtg_cod_justificativa = $("#justificativa").val() as string;
+        //descrição da justificativa, preenchdio para mostrar (da api para o spa)
+        //enderecoEntregaClienteDto.EndEtg_descricao_justificativa = $("#").val() as string;
+        //se foi selecionado um endereco diferente para a entrega (do spa para a api)
+        enderecoEntregaClienteDto.OutroEndereco = $("#outro").val() == "False" ? false : true as boolean;
+
+        //novos campos
+        enderecoEntregaClienteDto.EndEtg_email = $("#endEntregaEmail").val() as string;
+        enderecoEntregaClienteDto.EndEtg_email_xml = $("#endEntregaEmailXml").val() as string;
+        enderecoEntregaClienteDto.EndEtg_nome = this.tipoClienteEntrega == Constantes.ID_PF ?
+            $("#endEntregaNome").val() as string : $("#endEntregaRazao").val() as string;
+        enderecoEntregaClienteDto.EndEtg_ddd_res = $("#endEntregaDddRes").val() as string;
+        enderecoEntregaClienteDto.EndEtg_tel_res = $("#endEntregaTelRes").val() as string;
+        enderecoEntregaClienteDto.EndEtg_ddd_com = $("#endEntregaDddCom1").val() as string;
+        enderecoEntregaClienteDto.EndEtg_tel_com = $("#endEntregaTelCom1").val() as string;
+        enderecoEntregaClienteDto.EndEtg_ramal_com = $("#endEntregaRamal1").val() as string;
+        enderecoEntregaClienteDto.EndEtg_ddd_cel = $("#endEntregaDddCel").val() as string;
+        enderecoEntregaClienteDto.EndEtg_tel_cel = $("#endEntregaCel").val() as string;
+        enderecoEntregaClienteDto.EndEtg_ddd_com_2 = $("#endEntregaDddCom2").val() as string;
+        enderecoEntregaClienteDto.EndEtg_tel_com_2 = $("#endEntregaTelCom2").val() as string;
+        enderecoEntregaClienteDto.EndEtg_ramal_com_2 = $("#endEntregaRamal2").val() as string;
+        enderecoEntregaClienteDto.EndEtg_tipo_pessoa = this.tipoClienteEntrega == Constantes.ID_PF ? Constantes.ID_PF : Constantes.ID_PJ;
+        enderecoEntregaClienteDto.EndEtg_cnpj_cpf = this.tipoClienteEntrega == Constantes.ID_PF ?
+            $("#endEntregaCPF").val() as string : $("#endEntregaCNPJ").val() as string;
+        enderecoEntregaClienteDto.EndEtg_contribuinte_icms_status = $("#endEntregaContribuinte").val() as number;
+        enderecoEntregaClienteDto.EndEtg_produtor_rural_status = $("#endEntregaProdutor").val() as number;
+        enderecoEntregaClienteDto.EndEtg_ie = $("#endEntregaIE").val() as string;
+        enderecoEntregaClienteDto.EndEtg_rg = $("#endEntregaRg").val() as string;
+        enderecoEntregaClienteDto.St_memorizacao_completa_enderecos = $("#endEntregaStMemorizacao").val() as number;
+
+        return enderecoEntregaClienteDto;
+    }
 }
 
-function limparCamposEndEntrega() {
-    $('#cepEntrega').val('');
-    $('#ufEntrega').val('');
-    $('#cidadeEntrega').val('');
-    $('#bairroEntrega').val('');
-    $('#enderecoEntrega').val('');
-    $('#compEntrega').val('');
-    $('#numEntrega').val('');
-}
 
-function inscreve(o:any) {
-    //fazer a verificação para saber se tem valor no con[i]
-    //para ativar os campos e bloquear a edição de alguns campos caso não seja vazio
+//endereço de entrega para cliente PJ setado em PF
 
-    limparCamposEndEntrega();
 
+//Controla os campos de endereço de entrega para PJ
+
+declare var window: Window & typeof globalThis;
+//declare var lstIBGE_Entrega1: Array<string>;
+//lstIBGE_Entrega1 = new Array<string>();
+//declare var tipoClienteEntrega: string;
+
+(window as any).buscarCep = (el: JQuery<HTMLInputElement>) => {
     
-    var con = $(o);
-    $('#cepEntrega').val(con[1].textContent);
-    $("#cep").addClass('valid');
-    $("#lblcep").addClass('active');
+    if (!!el.val()) {
+        $('.container_cep').addClass('carregando');
 
+        $.ajax({
+            url: "../Cep/BuscarCep/",
+            type: "GET",
+            data: { cep: $('#cepEntrega').val() },
+            dataType: "json",
+            success: function (data) {
+                if (!data || data.length !== 1) {
+                    swal("Erro", "CEP inválido ou não encontrado.");
+                    return false;
+                }
+                //vamos limpar os campos de entrega
+                let cepEntrega: CepEntrega = new CepEntrega();
+                cepEntrega.limparCamposEndEntrega();
 
-    $('#ufEntrega').val(con[2].textContent);
-    $('#ufEntrega').prop('readonly', true);
-    $("#lblUfEntrega").addClass('active');
+                let end: CepDto = data[0];
+                cepEntrega.atribuirDadosParaEntrega(end);
 
-    $('#cidadeEntrega').val(con[3].textContent);
-    $('#cidadeEntrega').prop('readonly', true);
-    $("#lblCidadeEntrega").addClass('active');
-
-    if (con[4].textContent.trim() != "") {
-        $('#bairroEntrega').prop("readonly", true);
-        $('#bairroEntrega').val(con[4].textContent);
-        $("#lblBairroEntrega").addClass('active');
+                $('.container_cep').removeClass('carregando');
+            },
+            error: function (data) {
+                swal("Erro", "Falha ao buscar endereço!");
+                $('.container_cep').removeClass('carregando');
+            }
+        })
     }
     else {
-        $('#bairroEntrega').prop("readonly", false);
-    }
-
-    if (con[5].textContent.trim() != "") {
-        $('#enderecoEntrega').prop("readonly", true);
-        $('#enderecoEntrega').val(con[5].textContent);
-        $("#lblEnderecoEntrega").addClass('active');
-    }
-    else {
-        $('#enderecoEntrega').prop("readonly", false);
-    }
-
-    if (con[6].textContent.trim() != "") {
-        $('#compEntrega').val(con[6].textContent);
-        $("#lblComplementoEntrega").addClass('active');
+        swal("Erro", "É necessário informar um CEP válido!");
     }
 }

@@ -64,7 +64,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             ClienteCadastroResultadoUnisDto res;
             clienteDto.DadosCliente.DddComercial = "12";
             clienteDto.DadosCliente.TelComercial = "1234-56789";
-            res = clienteUnisBll.CadastrarClienteUnis(clienteDto).Result;
+            res = clienteUnisBll.CadastrarClienteUnis(clienteDto, clienteDto.DadosCliente.Indicador_Orcamentista).Result;
 
             if (res.ListaErros.Count > 0)
                 output.WriteLine(JsonConvert.SerializeObject(res));
