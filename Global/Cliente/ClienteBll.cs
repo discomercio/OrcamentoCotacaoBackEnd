@@ -348,7 +348,7 @@ namespace Cliente
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await ListarBancosCombo()).ToList();
 
             if (await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDados, null, null, lstErros,
-                contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, true, sistemaResponsavel))
+                contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, true, sistemaResponsavel, false))
             {
                 var dados = from c in db.Tclientes
                             where c.Id == dadosClienteCadastroDados.Id
@@ -594,7 +594,7 @@ namespace Cliente
             if (await Cliente.ValidacoesClienteBll.ValidarDadosCliente(clienteCadastroDados.DadosCliente,
                 clienteCadastroDados.RefBancaria,
                 clienteCadastroDados.RefComercial,
-                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false, sistemaResponsavelCadastro))
+                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false, sistemaResponsavelCadastro, true))
             {
                 if (lstErros.Count <= 0)
                 {

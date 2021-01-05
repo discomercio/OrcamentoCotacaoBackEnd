@@ -3,7 +3,7 @@ Fazendo a sincronizacação do ASP em 02/12/2020
 alterações do código que precisamos incorporar:
 
 
-angular e apiunis:
+angular e apiunis e loja:
 - se colocar um prepedido para PF que não tenha sexo cadastrado, precisa aceitar o prepedido (o cliente pode ter sido cadastrado pelo magento)
 
 

@@ -33,7 +33,7 @@ namespace Cliente
             List<Cliente.Dados.Referencias.RefComercialClienteDados> lstRefComercial,
             List<string> lstErros, ContextoBdProvider contextoProvider, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio,
             List<Cliente.Dados.ListaBancoDados> lstBanco, bool flagMsg_IE_Cadastro_PF,
-            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel)
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel, bool novoCliente)
         {
             bool retorno;
 
@@ -74,7 +74,7 @@ namespace Cliente
 
                         tipoDesconhecido = false;
                         //vamos verificar e validar os dados referente ao cliente PF
-                        retorno = await ValidarDadosCliente_PF(dadosCliente, cliente, lstErros, contextoProvider, sistemaResponsavel);
+                        retorno = await ValidarDadosCliente_PF(dadosCliente, cliente, lstErros, contextoProvider, sistemaResponsavel, novoCliente);
                     }
                     if (dadosCliente.Tipo == Constantes.ID_PJ)
                     {
@@ -118,7 +118,7 @@ namespace Cliente
 
         private static async Task<bool> ValidarDadosCliente_PF(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
             List<string> lstErros, ContextoBdProvider contextoProvider,
-            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel)
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel, bool novoCliente)
         {
             bool retorno = true;
 
@@ -158,10 +158,15 @@ namespace Cliente
                 }
                 else
                 {
+                    //o campo Sexo não deve mais ser obrigatório em caso de criação de pedido ou prepedido
+                    //somente validaremos o sexo quando for cadastro de novo cliente
+                    
                     //vamos validar o gênero do cliente
                     if (string.IsNullOrEmpty(dadosCliente.Sexo))
                     {
-                        if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI)
+
+                        if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI &&
+                            novoCliente)
                         {
                             lstErros.Add(MensagensErro.GENERO_DO_CLIENTE_NAO_INFORMADO);
                             retorno = false;
@@ -170,13 +175,15 @@ namespace Cliente
                     else
                     {
                         if (dadosCliente.Sexo.Length > 1 &&
-                            sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI)
+                            sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI &&
+                            novoCliente)
                         {
                             lstErros.Add("FORMATO DO TIPO DE SEXO INVÁLIDO!");
                             retorno = false;
                         }
                         if (dadosCliente.Sexo != "M" && dadosCliente.Sexo != "F" &&
-                            sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI)
+                            sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI &&
+                            novoCliente)
                         {
                             lstErros.Add("INDIQUE QUAL O SEXO.");
                             retorno = false;

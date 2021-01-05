@@ -737,7 +737,7 @@ namespace Prepedido
             await Cliente.ValidacoesClienteBll.ValidarDadosCliente(prePedido.DadosCliente,
                 null, null,
                 lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco,
-                prePedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false, sistemaResponsavelCadastro);
+                prePedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false, sistemaResponsavelCadastro, false);
 
             //if (lstErros.Count > 0)
             //    return lstErros;
