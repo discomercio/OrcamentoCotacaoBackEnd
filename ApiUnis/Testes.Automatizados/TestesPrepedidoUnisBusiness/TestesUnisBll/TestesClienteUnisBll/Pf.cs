@@ -237,7 +237,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
                 "GÊNERO DO CLIENTE NÃO INFORMADO!.",
                     TipoPessoa.PF);
             testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Sexo = "X",
-                "INDIQUE QUAL O SEXO.",
+                "FORMATO DO TIPO DE SEXO INVÁLIDO!",
                     TipoPessoa.PF);
         }
 

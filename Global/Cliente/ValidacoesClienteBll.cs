@@ -166,20 +166,26 @@ namespace Cliente
             {
                 lstErros.Add(MensagensErro.CPF_NAO_FORNECIDO);
             }
-
+            //validamos o cpf que esta vindo
             string cpf_cnpjSoDig = Util.SoDigitosCpf_Cnpj(dadosCliente.Cnpj_Cpf);
-            string cpfCliente = Util.SoDigitosCpf_Cnpj(cliente.Cnpj_Cpf);
-            //vamos validar o cpf
-            if (cpfCliente != cpf_cnpjSoDig)
-            {
-                lstErros.Add("O CPF do cliente esta divergindo do cadastro!");
-            }
             if (!Util.ValidaCPF(cpf_cnpjSoDig))
             {
                 lstErros.Add(MensagensErro.CPF_INVALIDO);
             }
+
+            //se não for cadastro de cliente validamos
+            if (cliente != null && novoCliente)
+            {
+                string cpfCliente = Util.SoDigitosCpf_Cnpj(cliente.Cnpj_Cpf);
+                //vamos validar o cpf
+                if (cpfCliente != cpf_cnpjSoDig)
+                {
+                    lstErros.Add("O CPF do cliente esta divergindo do cadastro!");
+                }
+            }
+
             //vamos validar o sexo
-            ValidarGenero(dadosCliente, cliente, lstErros, sistemaResponsavel, novoCliente);
+            ValidarGenero(dadosCliente, lstErros, sistemaResponsavel, novoCliente);
 
             await ValidacoesClienteTelefones.ValidarTelefones_PF(dadosCliente, cliente, lstErros, contextoProvider);
 
@@ -194,8 +200,8 @@ namespace Cliente
             }
         }
 
-        private static void ValidarGenero(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
-                    List<string> lstErros, InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel, bool novoCliente)
+        private static void ValidarGenero(Cliente.Dados.DadosClienteCadastroDados dadosCliente, List<string> lstErros,
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel, bool novoCliente)
         {
             if (string.IsNullOrEmpty(dadosCliente.Sexo))
             {
@@ -211,11 +217,6 @@ namespace Cliente
                 lstErros.Add("FORMATO DO TIPO DE SEXO INVÁLIDO!");
 
             }
-            //if (dadosCliente.Sexo != "M" && dadosCliente.Sexo != "F" &&
-            //    sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI)
-            //{
-            //    lstErros.Add("INDIQUE QUAL O SEXO.");
-            //}
         }
         private static async Task ValidarDadosCliente_PJ(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
             List<string> lstErros, ContextoBdProvider contextoProvider)
@@ -264,18 +265,22 @@ namespace Cliente
             }
 
             string cpf_cnpjSoDig = Util.SoDigitosCpf_Cnpj(dadosCliente.Cnpj_Cpf);
-            string cnpjCliente = Util.SoDigitosCpf_Cnpj(cliente.Cnpj_Cpf);
-
-            //vamos confrontar o cnpj
-            if (cnpjCliente != cpf_cnpjSoDig)
-            {
-                lstErros.Add("O CNPJ do cliente esta divergindo do cadastro!");
-            }
-
             if (!Util.ValidaCNPJ(cpf_cnpjSoDig))
             {
                 lstErros.Add(MensagensErro.CNPJ_INVALIDO);
             }
+            //se for cadastro não confrontamos
+            if (cliente != null)
+            {
+                string cnpjCliente = Util.SoDigitosCpf_Cnpj(cliente.Cnpj_Cpf);
+
+                //vamos confrontar o cnpj
+                if (cnpjCliente != cpf_cnpjSoDig)
+                {
+                    lstErros.Add("O CNPJ do cliente esta divergindo do cadastro!");
+                }
+            }
+
             //vamos validar o contato da empresa
             if (string.IsNullOrEmpty(dadosCliente.Contato))
             {
