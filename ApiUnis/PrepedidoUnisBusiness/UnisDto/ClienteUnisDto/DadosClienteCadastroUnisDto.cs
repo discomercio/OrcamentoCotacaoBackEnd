@@ -66,18 +66,18 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         [Required]
         public byte ProdutorRural { get; set; }
 
-        [MaxLength(80)]
+        [MaxLength(60)]
         [Required]
         public string Endereco { get; set; }
 
-        [MaxLength(20)]
+        [MaxLength(60)]
         [Required]
         public string Numero { get; set; }
 
         [MaxLength(60)]
         public string Complemento { get; set; }
 
-        [MaxLength(72)]
+        [MaxLength(60)]
         [Required]
         public string Bairro { get; set; }
 

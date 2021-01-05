@@ -10,7 +10,7 @@ namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
     {
 #pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]
-        [MaxLength(80)]
+        [MaxLength(60)]
         public string Endereco_logradouro { get; set; }
 
         [Required]
@@ -24,11 +24,11 @@ namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
 
 Por isso, temos o MaxLength 800 aqui
 */
-        [MaxLength(800)]
+        [MaxLength(60)]
         public string? Endereco_complemento { get; set; }
 
         [Required]
-        [MaxLength(72)]
+        [MaxLength(60)]
         public string Endereco_bairro { get; set; }
 
         [Required]

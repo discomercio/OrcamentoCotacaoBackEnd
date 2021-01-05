@@ -10,19 +10,19 @@ namespace PrepedidoUnisBusiness.UnisDto.ClienteUnisDto
 {
     public class EnderecoCadastralClientePrepedidoUnisDto
     {
-        [MaxLength(80)]
+        [MaxLength(60)]
         [Required]
         public string Endereco_logradouro { get; set; }
 
 		//no banco está 60 mas deixamos 20 porque foi a API original
-        [MaxLength(20)]
+        [MaxLength(60)]
         [Required]
         public string Endereco_numero { get; set; }
 
         [MaxLength(60)]
         public string Endereco_complemento { get; set; }
 
-        [MaxLength(72)]
+        [MaxLength(60)]
         [Required]
         public string Endereco_bairro { get; set; }
 
