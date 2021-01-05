@@ -350,7 +350,7 @@ namespace Cliente
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await ListarBancosCombo()).ToList();
 
             await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDados, null, null, lstErros,
-                contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, true, sistemaResponsavel);
+                contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, true, sistemaResponsavel, false);
             if (lstErros.Count > 0)
                 return lstErros;
 
@@ -600,7 +600,7 @@ namespace Cliente
             await Cliente.ValidacoesClienteBll.ValidarDadosCliente(clienteCadastroDados.DadosCliente,
                 clienteCadastroDados.RefBancaria,
                 clienteCadastroDados.RefComercial,
-                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false, sistemaResponsavelCadastro);
+                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false, sistemaResponsavelCadastro, true);
             if (lstErros.Count != 0)
                 return lstErros;
 

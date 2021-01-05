@@ -14,32 +14,27 @@ namespace Cliente
 {
     public class ValidacoesClienteTelefones
     {
-        internal static async Task<bool> ValidarTelefones_PJ(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente, List<string> lstErros,
+        internal static async Task ValidarTelefones_PJ(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente, List<string> lstErros,
             ContextoBdProvider contextoProvider)
         {
             TelefonesSomenteComDigitos(dadosCliente);
-
-            bool retorno = true;
 
             if (!string.IsNullOrEmpty(dadosCliente.DddResidencial) ||
                 !string.IsNullOrEmpty(dadosCliente.TelefoneResidencial))
             {
                 lstErros.Add("Se cliente é tipo PJ, não pode ter os campos de Telefone e DDD residencial preenchidos! ");
-                retorno = false;
             }
 
             if (!string.IsNullOrEmpty(dadosCliente.DddCelular) ||
                 !string.IsNullOrEmpty(dadosCliente.Celular))
             {
                 lstErros.Add("Se cliente é tipo PJ, não pode ter os campos de Telefone e DDD celular preenchidos! ");
-                retorno = false;
             }
 
             if (dadosCliente.Tipo == Constantes.ID_PJ && string.IsNullOrEmpty(dadosCliente.TelComercial) &&
                 string.IsNullOrEmpty(dadosCliente.TelComercial2))
             {
                 lstErros.Add("PREENCHA AO MENOS UM TELEFONE (COMERCIAL OU COMERCIAL 2)!");
-                return false;
             }
 
             //com
@@ -47,7 +42,7 @@ namespace Cliente
                 !string.IsNullOrEmpty(dadosCliente.DddComercial) ||
                 !string.IsNullOrEmpty(dadosCliente.Ramal))
             {
-                retorno = await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
+                await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
             }
 
             //com 2
@@ -55,13 +50,12 @@ namespace Cliente
                 !string.IsNullOrEmpty(dadosCliente.DddComercial2) ||
                 !string.IsNullOrEmpty(dadosCliente.Ramal2))
             {
-                retorno = await ValidarTelCom2(dadosCliente, cliente, lstErros, contextoProvider);
+                await ValidarTelCom2(dadosCliente, cliente, lstErros, contextoProvider);
             }
 
-            return retorno;
         }
 
-        internal static async Task<bool> ValidarTelefones_PF(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
+        internal static async Task ValidarTelefones_PF(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
             List<string> lstErros, ContextoBdProvider contextoProvider)
         {
             TelefonesSomenteComDigitos(dadosCliente);
@@ -83,7 +77,6 @@ namespace Cliente
                 string.IsNullOrEmpty(dadosCliente.TelComercial) && string.IsNullOrEmpty(dadosCliente.Celular))
             {
                 lstErros.Add("PREENCHA PELO MENOS UM TELEFONE (RESIDENCIAL, COMERCIAL OU CELULAR).");
-                return false;
             }
 
 
@@ -102,7 +95,7 @@ namespace Cliente
                 !string.IsNullOrEmpty(dadosCliente.DddComercial) ||
                 !string.IsNullOrEmpty(dadosCliente.Ramal))
             {
-                retorno = await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
+                await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
             }
 
             if (!string.IsNullOrEmpty(dadosCliente.TelComercial2) ||
@@ -113,7 +106,6 @@ namespace Cliente
                     "telefone comercial 2 e ramal comercial 2 preenchidos.");
             }
 
-            return retorno;
         }
 
         //deixa somente dígitos nos telefones
@@ -253,41 +245,35 @@ namespace Cliente
             return retorno;
         }
 
-        private static async Task<bool> ValidarTelCom(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
+        private static async Task ValidarTelCom(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
             List<string> lstErros, ContextoBdProvider contextoProvider)
         {
-            bool retorno = true;
 
             if (!string.IsNullOrEmpty(dadosCliente.TelComercial) &&
                 string.IsNullOrEmpty(dadosCliente.DddComercial))
             {
                 lstErros.Add("PREENCHA O DDD COMERCIAL.");
-                retorno = false;
             }
             if (!string.IsNullOrEmpty(dadosCliente.DddComercial) &&
                 dadosCliente.DddComercial.Length != 2)
             {
                 lstErros.Add("DDD DO TELEFONE COMERCIAL INVÁLIDO.");
-                retorno = false;
             }
 
             if (!string.IsNullOrEmpty(dadosCliente.DddComercial) &&
                 string.IsNullOrEmpty(dadosCliente.TelComercial))
             {
                 lstErros.Add("PREENCHA O TELEFONE COMERCIAL.");
-                retorno = false;
             }
             if (!string.IsNullOrEmpty(dadosCliente.TelComercial) &&
                 dadosCliente.TelComercial.Length < 6)
             {
                 lstErros.Add("TELEFONE COMERCIAL INVÁLIDO.");
-                retorno = false;
             }
             if (!string.IsNullOrEmpty(dadosCliente.TelComercial) &&
                 dadosCliente.TelComercial.Length > 11)
             {
                 lstErros.Add("TELEFONE COMERCIAL INVÁLIDO.");
-                retorno = false;
             }
 
             if (lstErros.Count == 0)
@@ -307,41 +293,32 @@ namespace Cliente
                  string.IsNullOrEmpty(dadosCliente.DddComercial)))
             {
                 lstErros.Add("Ramal comercial preenchido sem telefone!");
-                retorno = false;
             }
-
-            return retorno;
         }
 
-        private static async Task<bool> ValidarTelCom2(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
+        private static async Task ValidarTelCom2(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
             List<string> lstErros, ContextoBdProvider contextoProvider)
         {
-            bool retorno = true;
-
             if (!string.IsNullOrEmpty(dadosCliente.TelComercial2))
             {
                 if (Util.Telefone_SoDigito(dadosCliente.TelComercial2).Length > 11)
                 {
                     lstErros.Add("TELEFONE COMERCIAL2 INVÁLIDO.");
-                    retorno = false;
                 }
                 if (Util.Telefone_SoDigito(dadosCliente.TelComercial2).Length < 6)
                 {
                     lstErros.Add("TELEFONE COMERCIAL2 INVÁLIDO.");
-                    retorno = false;
                 }
                 if (!string.IsNullOrEmpty(dadosCliente.DddComercial2))
                 {
                     if (dadosCliente.DddComercial2.Length != 2)
                     {
                         lstErros.Add("DDD DO TELEFONE COMERCIAL2 INVÁLIDO.");
-                        retorno = false;
                     }
                 }
                 else
                 {
                     lstErros.Add("PREENCHA O DDD DO TELEFONE COMERCIAL2.");
-                    retorno = false;
                 }
             }
 
@@ -349,14 +326,12 @@ namespace Cliente
                 string.IsNullOrEmpty(dadosCliente.TelComercial2))
             {
                 lstErros.Add("PREENCHA O TELEFONE COMERCIAL.");
-                retorno = false;
             }
 
             if (!string.IsNullOrEmpty(dadosCliente.DddComercial2) &&
                 dadosCliente.DddComercial2.Length != 2)
             {
                 lstErros.Add("DDD DO TELEFONE COMERCIAL2 INVÁLIDO.");
-                retorno = false;
             }
 
             if (lstErros.Count == 0)
@@ -376,10 +351,7 @@ namespace Cliente
                  string.IsNullOrEmpty(dadosCliente.DddComercial2)))
             {
                 lstErros.Add("Ramal comercial 2 preenchido sem telefone!");
-                retorno = false;
             }
-
-            return retorno;
         }
 
         private static async Task<bool> ConfrontarTelefones(string dddPrepedido, string telPrepedido, string dddCadastrado,

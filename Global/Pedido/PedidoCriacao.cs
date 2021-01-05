@@ -91,7 +91,7 @@ namespace Pedido
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await clienteBll.ListarBancosCombo()).ToList();
             await Cliente.ValidacoesClienteBll.ValidarDadosCliente(pedido.DadosCliente, null, null, pedidoRetorno.ListaErros,
                 contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, pedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false,
-                pedido.SistemaResponsavelCadastro);
+                pedido.SistemaResponsavelCadastro, false);
             if (pedidoRetorno.ListaErros.Count > 0)
                 return pedidoRetorno;
 

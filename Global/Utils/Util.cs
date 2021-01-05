@@ -1034,15 +1034,10 @@ namespace UtilsGlobais
             return data;
         }
 
-        public static bool ValidarEmail(string email, List<string> lstErros)
+        public static void ValidarEmail(string email, List<string> lstErros)
         {
-            bool retorno;
-            retorno = new EmailAddressAttribute().IsValid(email);
-
-            if (!retorno)
+            if (!new EmailAddressAttribute().IsValid(email))
                 lstErros.Add("E-mail inválido!");
-
-            return retorno;
         }
 
         public static async Task<int?> VerificarTelefoneRepetidos(string ddd, string tel, string cpf_cnpj, string tipoCliente,
