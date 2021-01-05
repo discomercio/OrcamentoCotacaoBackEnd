@@ -788,7 +788,7 @@ namespace UtilsGlobais
 
             var controle = await queryControle.FirstOrDefaultAsync();
             if (controle == null)
-                throw new ArgumentException($"Não existe registro na tabela de controle para poder gerar este NSU!! id_nsu:{id_nsu}");
+                throw new ArgumentException($"Não existe registro na tabela de controle para poder gerar este NSU! id_nsu:{id_nsu}");
 
             int n_nsu = -1;
             if (!string.IsNullOrEmpty(controle.Nsu))

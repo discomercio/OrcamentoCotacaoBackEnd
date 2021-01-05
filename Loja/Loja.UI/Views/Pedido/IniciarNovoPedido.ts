@@ -1565,12 +1565,12 @@ function verifica_excedente_max_desconto(perc_max_comissao_e_desconto_a_utilizar
             //afazer: peciso fazer uma modal de confirmar para esperar o retorno disso
             let s = "A soma dos percentuais de comissão (" + moedaUtils.formatarMoedaSemPrefixo(percComissao) +
                 "%) e de desconto médio do(s) produto(s) (" + moedaUtils.formatarMoedaSemPrefixo(perc_desc_medio) + "%) totaliza " +
-                moedaUtils.formatarMoedaSemPrefixo((perc_desc_medio + percComissao)) + "% e excede o máximo permitido!!" +
-                "\nA comissão será reduzida automaticamente para " + moedaUtils.formatarMoedaSemPrefixo(perc_RT_novo) + "%!!" +
+                moedaUtils.formatarMoedaSemPrefixo((perc_desc_medio + percComissao)) + "% e excede o máximo permitido!" +
+                "\nA comissão será reduzida automaticamente para " + moedaUtils.formatarMoedaSemPrefixo(perc_RT_novo) + "%!" +
                 "\nContinua?";
             //aqui vamos ter que verificar se foi confirmado alterar automatico
             if (!confirm(s)) {
-                s = "Operação cancelada!!";
+                s = "Operação cancelada!";
                 alert(s);
                 erroPercNovo = true;
 

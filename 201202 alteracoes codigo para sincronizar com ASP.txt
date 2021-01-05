@@ -8,7 +8,7 @@ FEITO - se colocar um prepedido para PF que não tenha sexo cadastrado, precisa 
 
 
 angular e apiunis e magento e loja:
-Limitar os tamanhos destes campos:
+FEITO - Limitar os tamanhos destes campos:
 	Const MAX_TAMANHO_CAMPO_ENDERECO_NUMERO = 60
 	Const MAX_TAMANHO_CAMPO_ENDERECO_COMPLEMENTO = 60
 	Const MAX_TAMANHO_CAMPO_ENDERECO_BAIRRO = 60
@@ -29,7 +29,8 @@ e ficou:
 	" AND (hora >= '" & formata_hora_hhnnss(Now-converte_min_to_dec(5))& "')" & _
 
 
-Para verificar o pedido repetido, comparar os dados cadastrais do pedido e não os dados da t_cliente.
+ACHO QUE JA ESTA FEITO NO PREPEDIDO, na loja não encontrei essa validação!!
+- Para verificar o pedido repetido, comparar os dados cadastrais do pedido e não os dados da t_cliente.
 
 Tirar duas exclamações das mensagens de erro.
 
