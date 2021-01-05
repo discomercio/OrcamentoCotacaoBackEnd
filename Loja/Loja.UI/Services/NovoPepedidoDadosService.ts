@@ -1,6 +1,7 @@
 ﻿import { PedidoDto } from "../DtosTs/PedidoDto/PedidoDto";
 import { EnderecoEntregaClienteCadastroDto } from "../DtosTs/ClienteDto/EnderecoEntregaClienteCadastroDto";
 import { FormaPagtoCriacaoDto } from "../DtosTs/PedidoDto/FormaPagtoCriacaoDto";
+import { DadosClienteCadastroDto } from "../DtosTs/ClienteDto/DadosClienteCadastroDto";
 
 
 export class NovoPedidoDadosService {

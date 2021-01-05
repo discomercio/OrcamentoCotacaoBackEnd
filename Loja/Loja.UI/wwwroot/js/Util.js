@@ -1,23 +1,4 @@
-﻿function mostraDiv(id) {
-    var div = document.getElementById(id);
-    var disp = div.style.display;
-    if (disp == 'none') {
-        div.style.display = 'block';
-    }
-    
-    $('#mesmo').prop('checked', false);
-
-}
-
-function fechaDiv(id) {
-    var div = document.getElementById(id);
-    var disp = div.style.display;
-    if (disp == 'block') {
-        div.style.display = 'none';
-    }
-
-    $('#outro').prop('checked', false);
-}
+﻿
 
 function formatReal(int) {
     var tmp = int + '';

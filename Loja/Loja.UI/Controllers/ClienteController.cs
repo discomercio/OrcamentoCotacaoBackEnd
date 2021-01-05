@@ -54,10 +54,10 @@ namespace Loja.UI.Controllers
             }
             else
                 return Json(novoCliente = false);
-                //return RedirectToAction("BuscarCliente", new { cpf_cnpj = cpf_cnpj, novoCliente = novoCliente }); //editar cliente
+            //return RedirectToAction("BuscarCliente", new { cpf_cnpj = cpf_cnpj, novoCliente = novoCliente }); //editar cliente
         }
 
-        
+
         public async Task<IActionResult> BuscarCliente(string cpf_cnpj, bool novoCliente)
         {
             /*Passo a passo da entrada 
@@ -68,7 +68,7 @@ namespace Loja.UI.Controllers
               buscar os dados do cliente
               buscar indicadores 
             */
-
+            
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
 
             ClienteCadastroViewModel cliente = new ClienteCadastroViewModel();
@@ -93,17 +93,20 @@ namespace Loja.UI.Controllers
 
                 cliente.RefBancaria = clienteCadastroDto.RefBancaria;
                 cliente.RefComercial = clienteCadastroDto.RefComercial;
-
+                cliente.Cadastrando = false;
             }
             else
             {
                 cliente.PermiteEdicao = true;
                 clienteCadastroDto.DadosCliente = new DadosClienteCadastroDto();
                 clienteCadastroDto.DadosCliente.Cnpj_Cpf = cpf_cnpj;
-                if (cpf_cnpj.Length == 11)
+
+                if (UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj).Length == 11)
                     clienteCadastroDto.DadosCliente.Tipo = "PF";
-                if (cpf_cnpj.Length == 14)
+                if (UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj).Length == 14)
                     clienteCadastroDto.DadosCliente.Tipo = "PJ";
+
+                cliente.Cadastrando = true;
             }
 
             cliente.DadosCliente = clienteCadastroDto.DadosCliente;
@@ -121,6 +124,14 @@ namespace Loja.UI.Controllers
                 lst.Add(new SelectListItem { Value = lstInd[i], Text = lstInd[i] });
             }
             cliente.LstIndicadores = new SelectList(lst, "Value", "Text");
+
+            var lstSexo = new[]
+            {
+                new SelectListItem{Value = "", Text = "Selecione"},
+                new SelectListItem{Value = "M", Text = "Masculino"},
+                new SelectListItem{Value = "F", Text = "Feminino"}
+            };
+            cliente.LstSexo = new SelectList(lstSexo, "Value", "Text");
 
             //lista para carregar no select de Produtor Rural            
             var lstProdR = new[]
@@ -164,6 +175,15 @@ namespace Loja.UI.Controllers
             }
             cliente.LstComboBanco = new SelectList(lstbancos, "Value", "Text");
 
+            //vamos buscar a lista de IBGE para confrontar na validação de tela
+
+            //vamos carregar os select's de cep
+            cliente.Cep = new Models.Cep.CepViewModel();
+            cliente.Cep.ClienteTipo = cliente.DadosCliente.Tipo;
+            //lista para carregar no select de Produtor Rural              
+            cliente.Cep.LstProdutoRural = new SelectList(lstProdR, "Value", "Text");
+            //lista para carregar o Contribuinte ICMS           
+            cliente.Cep.LstContribuinte = new SelectList(lstContrICMS, "Value", "Text");
 
             return View("DadosCliente", cliente);
         }
@@ -174,7 +194,7 @@ namespace Loja.UI.Controllers
             List<Loja.Bll.Dto.ClienteDto.RefComercialDtoCliente> lstRefCom,
             List<Loja.Bll.Dto.ClienteDto.RefBancariaDtoCliente> lstRefBancaria,
             Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro EndEntrega2,
-            bool novoCliente)
+            bool cadastrando)
         {
             /*afazer: NECESSÁRIO FAZER O TRATAMENTO PARA ERROS 
              * CRIAR A TELA DE ERRO
@@ -189,11 +209,38 @@ namespace Loja.UI.Controllers
              * montar ModelView para listagem de produtos, forma de pagamento
              * 
              */
-
-            //afazer: preciso de uma flag para diferenciar se é cadastro ou alteração do cliente
-            //para teste: novoCliente 
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
 
+            if (cadastrando)
+            {
+                Bll.Dto.ClienteDto.ClienteCadastroDto novo_clienteCadastro = new Bll.Dto.ClienteDto.ClienteCadastroDto();
+
+                novo_clienteCadastro.DadosCliente = dados;
+                novo_clienteCadastro.RefBancaria = lstRefBancaria;
+                novo_clienteCadastro.RefComercial = lstRefCom;
+                //vamos cadastrar o cliente
+                List<string> lstRetorno = (await clienteBll.Novo_CadastrarCliente(novo_clienteCadastro, usuarioLogado.Usuario_atual)).ToList();
+                                
+                if (lstRetorno.Count > 1)
+                {
+                    //deu erro vamos redirecionar para o Home/Erro
+                    //return RedirectToAction("Error", "Home", new { lstErros = lstRetorno });
+                }
+                else if (lstRetorno.Count == 1)
+                {
+                    //vamos verificar se é o id do cliente cadastrado
+                    if (lstRetorno[0].Length != 12)
+                    {
+                        //é o id
+                        string idClienteNovo = lstRetorno[0];
+                        //depois de cadastrar, vamos redirecionar o usuário para a tela de cadastro do cliente cadastrado
+                        //para caso queira realizar um novo pedido
+                        return RedirectToAction("BuscarCliente", new { cpf_cnpj = idClienteNovo, novoCliente = false });
+                    }
+                }
+
+
+            }
 
             //afazer: alterar essa session para utilizar no usuarioLogado
             //string id_cliente = HttpContext.Session.GetString("cliente_selecionado");
@@ -205,10 +252,13 @@ namespace Loja.UI.Controllers
             clienteCadastro.RefBancaria = lstRefBancaria;
             clienteCadastro.RefComercial = lstRefCom;
 
-            //validar os dados do cliente             
+            //validar os dados do cliente 
+            //alterar para fazer o cadastro pelo Global/Cliente
             var retorno = await clienteBll.CadastrarCliente(clienteCadastro, usuarioLogado.Usuario_atual,
                 usuarioLogado.Loja_atual_id);
 
+            //Não iremos mais armazenar em session. Iremos enviar o dto de pedido e retornar o 
+            //dto do pedido em cada página.
             //Armazenando objeto na Session
             Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto dtoPedido = new Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto();
             dtoPedido.DadosCliente = new DadosClienteCadastroDto();
@@ -218,6 +268,7 @@ namespace Loja.UI.Controllers
             {
                 if (EndEntrega2.EndEtg_cep != null)
                 {
+                    //vamos validar o endereço de entrega no Global/Prepedido
                     dtoPedido.EnderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
                     //vamos normalizar o cep enviado antes de armazenar na session
                     EndEntrega2.EndEtg_cep = EndEntrega2.EndEtg_cep.Replace("-", "");
