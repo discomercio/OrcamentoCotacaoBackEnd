@@ -313,65 +313,98 @@ namespace Cliente
             if (string.IsNullOrEmpty(dadosCliente.Endereco))
             {
                 lstErros.Add("PREENCHA O ENDEREÇO.");
+            }            
+            if (string.IsNullOrEmpty(dadosCliente.Numero))
+            {
+                lstErros.Add("PREENCHA O NÚMERO DO ENDEREÇO.");
+            }
+            if (string.IsNullOrEmpty(dadosCliente.Bairro))
+            {
+                lstErros.Add("PREENCHA O BAIRRO.");
+            }
+            if (string.IsNullOrEmpty(dadosCliente.Cidade))
+            {
+                lstErros.Add("PREENCHA A CIDADE.");
+            }
+
+            if (string.IsNullOrEmpty(dadosCliente.Uf))
+            {
+                lstErros.Add("INFORME O UF.");
             }
             else
             {
-                if (dadosCliente.Endereco.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO)
+                if (!Util.VerificaUf(dadosCliente.Uf))
                 {
-                    lstErros.Add("ENDEREÇO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: " +
-                        dadosCliente.Endereco.Length + " CARACTERES<br>TAMANHO MÁXIMO: " +
-                        Constantes.MAX_TAMANHO_CAMPO_ENDERECO + " CARACTERES");
-
+                    lstErros.Add("UF INVÁLIDA.");
                 }
-                if (string.IsNullOrEmpty(dadosCliente.Numero))
+            }
+            if (string.IsNullOrEmpty(dadosCliente.Cep))
+            {
+                lstErros.Add("INFORME O CEP.");
+            }
+            else
+            {
+                if (!Util.VerificaCep(dadosCliente.Cep))
                 {
-                    lstErros.Add("PREENCHA O NÚMERO DO ENDEREÇO.");
+                    lstErros.Add("CEP INVÁLIDO.");
                 }
-                if (string.IsNullOrEmpty(dadosCliente.Bairro))
-                {
-                    lstErros.Add("PREENCHA O BAIRRO.");
-                }
-                if (string.IsNullOrEmpty(dadosCliente.Cidade))
-                {
-                    lstErros.Add("PREENCHA A CIDADE.");
-                }
-
-                if (string.IsNullOrEmpty(dadosCliente.Uf))
-                {
-                    lstErros.Add("INFORME O UF.");
-                }
-                else
-                {
-                    if (!Util.VerificaUf(dadosCliente.Uf))
-                    {
-                        lstErros.Add("UF INVÁLIDA.");
-                    }
-                }
-                if (string.IsNullOrEmpty(dadosCliente.Cep))
-                {
-                    lstErros.Add("INFORME O CEP.");
-                }
-                else
-                {
-                    if (!Util.VerificaCep(dadosCliente.Cep))
-                    {
-                        lstErros.Add("CEP INVÁLIDO.");
-                    }
-                }
-                //vamos buscar o cep e comparar os endereços 
-                Cep.Dados.CepDados cepCliente = new Cep.Dados.CepDados()
-                {
-                    Cep = dadosCliente.Cep,
-                    Endereco = dadosCliente.Endereco,
-                    Bairro = dadosCliente.Bairro,
-                    Cidade = dadosCliente.Cidade,
-                    Uf = dadosCliente.Uf
-                };
-
-                await VerificarEndereco(cepCliente, lstCepDados, lstErros, contextoProvider, bancoNFeMunicipio);
-
             }
 
+            //vamos verificar a quantidade de caracteres de cada campo
+            VerificarQtdeCaracteresDoEndereco(dadosCliente, lstErros);
+            
+            //vamos buscar o cep e comparar os endereços 
+            Cep.Dados.CepDados cepCliente = new Cep.Dados.CepDados()
+            {
+                Cep = dadosCliente.Cep,
+                Endereco = dadosCliente.Endereco,
+                Bairro = dadosCliente.Bairro,
+                Cidade = dadosCliente.Cidade,
+                Uf = dadosCliente.Uf
+            };
+
+
+
+            await VerificarEndereco(cepCliente, lstCepDados, lstErros, contextoProvider, bancoNFeMunicipio);
+        }
+
+        private static void VerificarQtdeCaracteresDoEndereco(Cliente.Dados.DadosClienteCadastroDados dadosCliente,
+            List<string> lstErros)
+        {
+            if (dadosCliente.Endereco?.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO)
+            {
+                lstErros.Add("ENDEREÇO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: " +
+                    dadosCliente.Endereco.Length + " CARACTERES<br>TAMANHO MÁXIMO: " +
+                    Constantes.MAX_TAMANHO_CAMPO_ENDERECO + " CARACTERES");
+
+            }
+            if (dadosCliente.Numero?.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO_NUMERO)
+            {
+                lstErros.Add("NÚMERO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: " +
+                    dadosCliente.Numero.Length + " CARACTERES<br>TAMANHO MÁXIMO: " +
+                    Constantes.MAX_TAMANHO_CAMPO_ENDERECO_NUMERO + " CARACTERES");
+
+            }
+            if (dadosCliente.Complemento?.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO_COMPLEMENTO)
+            {
+                lstErros.Add("COMPLEMENTO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: " +
+                    dadosCliente.Complemento.Length + " CARACTERES<br>TAMANHO MÁXIMO: " +
+                    Constantes.MAX_TAMANHO_CAMPO_ENDERECO_COMPLEMENTO + " CARACTERES");
+
+            }
+            if (dadosCliente.Bairro?.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO_BAIRRO)
+            {
+                lstErros.Add("BAIRRO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: " +
+                    dadosCliente.Bairro.Length + " CARACTERES<br>TAMANHO MÁXIMO: " +
+                    Constantes.MAX_TAMANHO_CAMPO_ENDERECO_BAIRRO + " CARACTERES");
+
+            }
+            if (dadosCliente.Cidade?.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO_CIDADE)
+            {
+                lstErros.Add("CIDADE EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: " +
+                    dadosCliente.Cidade.Length + " CARACTERES<br>TAMANHO MÁXIMO: " +
+                    Constantes.MAX_TAMANHO_CAMPO_ENDERECO_CIDADE + " CARACTERES");
+            }
         }
 
         private static void ValidarIE_Cliente(Cliente.Dados.DadosClienteCadastroDados dadosCliente, List<string> lstErros,

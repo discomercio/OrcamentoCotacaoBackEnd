@@ -4,7 +4,7 @@ alterações do código que precisamos incorporar:
 
 
 angular e apiunis e loja:
-- se colocar um prepedido para PF que não tenha sexo cadastrado, precisa aceitar o prepedido (o cliente pode ter sido cadastrado pelo magento)
+FEITO - se colocar um prepedido para PF que não tenha sexo cadastrado, precisa aceitar o prepedido (o cliente pode ter sido cadastrado pelo magento)
 
 
 angular e apiunis e magento e loja:
