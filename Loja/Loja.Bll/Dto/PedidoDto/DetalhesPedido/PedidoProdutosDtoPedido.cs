@@ -23,7 +23,6 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
         public decimal? VlTotalItemComRA { get; set; }
         public decimal? VlVenda { get; set; }
         public decimal? VlTotal { get; set; }
-        public float? Comissao { get; set; }
         public short? Qtde_estoque_total_disponivel { get; set; }
         public string Alertas { get; set; }
 
@@ -49,17 +48,13 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                 {
                     Fabricante = origem.Fabricante,
                     Produto = origem.Produto,
-                    Descricao = origem.Descricao,
                     Qtde = origem.Qtde ?? 0,
                     Qtde_estoque_total_disponivel = origem.Qtde_estoque_total_disponivel,
                     Preco_Lista = origem.Preco_Lista ?? 0,
-                    Comissao = origem.Comissao,
                     CustoFinancFornecPrecoListaBase_Conferencia = origem.CustoFinancFornecPrecoListaBase,
                     Preco_NF = origem.Preco_NF,
                     Desc_Dado = origem.Desc_Dado,
                     Preco_Venda = origem.Preco_Venda,
-                    TotalItem = origem.TotalItem,
-                    TotalItemRA = origem.TotalItemRA,
                     CustoFinancFornecCoeficiente_Conferencia = origem.CustoFinancFornecCoeficiente
                 });
             }
@@ -92,7 +87,6 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                 VlVenda = origem.Preco_Venda ?? 0m,
                 VlTotalItem = origem.VlTotalItem,
                 VlTotalItemComRA = origem.VlTotalItemComRA,
-                Comissao = origem.Comissao
 
                 ////todo: verificar se isto fica...
                 ////ests são os campos definitivos

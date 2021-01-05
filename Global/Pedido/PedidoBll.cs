@@ -19,10 +19,13 @@ namespace Pedido
     public class PedidoBll
     {
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
+        private readonly ProdutoGeralBll produtoGeralBll;
 
-        public PedidoBll(InfraBanco.ContextoBdProvider contextoProvider)
+        public PedidoBll(InfraBanco.ContextoBdProvider contextoProvider,
+            ProdutoGeralBll produtoGeralBll)
         {
             this.contextoProvider = contextoProvider;
+            this.produtoGeralBll = produtoGeralBll;
         }
 
         // MÉTODOS NOVOS SENDO MOVIDO
@@ -471,7 +474,7 @@ namespace Pedido
             prodValidadoEstoqueProduto.Estoque = produto.Qtde_estoque_total_disponivel ?? 0;
             prodValidadoEstoqueProduto.QtdeSolicitada = produto.Qtde;
             prodValidadoEstoqueProduto.Preco_lista = produto.Preco_Lista;
-            prodValidadoEstoqueProduto.Descricao_html = produto.Descricao;
+            prodValidadoEstoqueProduto.Descricao_html = await produtoGeralBll.BuscarDescricao_Html(produto.Fabricante, produto.Produto);
             prodValidadoEstoqueProduto.Lst_empresa_selecionada = lst_empresa_selecionada;
             ProdutoValidadoComEstoqueDados prodValidadoEstoque = new ProdutoValidadoComEstoqueDados(prodValidadoEstoqueProduto,
                 prodValidadoEstoqueListaErros);
@@ -839,7 +842,7 @@ namespace Pedido
                                     {
                                         p.Estoque_Fabricante = produto.Fabricante;
                                         p.Estoque_Produto = produto.Produto;
-                                        p.Estoque_DescricaoHtml = produto.Descricao;
+                                        p.Estoque_DescricaoHtml = await produtoGeralBll.BuscarDescricao_Html(produto.Fabricante, produto.Produto);
                                         p.Estoque_Qtde_Solicitado = produto.Qtde;//essa variavel não deve ser utilizada, a qtde só sera solicitada 
                                         //quando o usuario inserir a qtde 
                                         p.Estoque_Qtde = 0;

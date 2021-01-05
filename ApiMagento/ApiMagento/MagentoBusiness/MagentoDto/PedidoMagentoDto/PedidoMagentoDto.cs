@@ -152,7 +152,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             pedidoCriacao.Vl_total = vlTotalDestePedido;
 
             //Armazena o valor total de pedido com RA
-            decimal vl_total = lstProdutosMagento.Select(x => x.TotalItemRA ?? 0).Sum();
+            decimal vl_total = lstProdutosMagento.Select(x => x.TotalItemRA() ?? 0).Sum();
             pedidoCriacao.Vl_total_NF = vl_total;
 
             pedidoCriacao.LimiteArredondamento = limiteArredondamento;

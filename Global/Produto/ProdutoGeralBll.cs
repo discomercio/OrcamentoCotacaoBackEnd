@@ -217,6 +217,17 @@ namespace Produto
             return lstTodosProdutos;
         }
 
+        public async Task<string> BuscarDescricao_Html(string fabricante, string produto)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            var produtoInfotask = from p in db.Tprodutos
+                                  where p.Fabricante == fabricante && p.Produto == produto
+                                  select p.Descricao_Html;
+
+            return await produtoInfotask.FirstOrDefaultAsync();
+        }
+
         /*Analisar a necessidade, 
          * pois estamos realizando a busca apenas em produtos que 
          * a subtração entre qtde e qtde_utilizada seja maior que 0

@@ -48,15 +48,12 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             {
                 Fabricante = produtoDto.Fabricante,
                 Produto = produtoDto.Produto,
-                Descricao = produtoDados.Descricao,
                 Qtde = produtoDto.Qtde,
                 CustoFinancFornecPrecoListaBase_Conferencia = produtoDados.Preco_lista ?? 0,
                 Preco_Lista = Math.Round((decimal)(produtoDados.Preco_lista ?? 0 * (decimal)coeficiente), 2),
                 Desc_Dado = 0, //produtoDto.Desc_Dado,
                 Preco_Venda = produtoDto.Preco_Venda,
                 Preco_NF = produtoDto.Preco_NF,
-                TotalItem = Math.Round((produtoDto.Preco_Venda * produtoDto.Qtde), 2),
-                TotalItemRA = Math.Round((produtoDto.Preco_NF * produtoDto.Qtde), 2),
                 CustoFinancFornecCoeficiente_Conferencia = coeficiente
             };
 

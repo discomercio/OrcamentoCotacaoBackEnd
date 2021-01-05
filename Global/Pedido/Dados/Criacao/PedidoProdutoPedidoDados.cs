@@ -10,14 +10,6 @@ namespace Pedido.Dados.Criacao
 {
     public class PedidoProdutoPedidoDados
     {
-        //candidatos a apagar
-        public string Descricao { get; set; }
-        public float? Comissao { get; set; }
-        public decimal TotalItem { get; set; }
-        public decimal? TotalItemRA { get; set; }
-
-
-
         public string Fabricante { get; set; }
         public string Produto { get; set; }
         public short Qtde { get; set; }
@@ -35,6 +27,17 @@ namespace Pedido.Dados.Criacao
         //se durante o processo outro pedido consumir esse estoque, devemos avisar o cliente que mudou a quantidade de produtos disponíveis para entrega
         public short? Qtde_estoque_total_disponivel { get; set; }
 
+        //informações
+        public decimal TotalItem()
+        {
+            return Math.Round((Preco_Venda * Qtde), 2);
+        }
+        public decimal? TotalItemRA()
+        {
+            return Math.Round((Preco_NF * Qtde), 2);
+        }
+
+
         public static List<PrepedidoProdutoPrepedidoDados> PrepedidoProdutoPrepedidoDadosDePedidoProdutoPedidoDados(List<PedidoProdutoPedidoDados> lstProdutoPedido)
         {
 
@@ -51,8 +54,8 @@ namespace Pedido.Dados.Criacao
                 produtoPrepedido.Preco_Venda = x.Preco_Venda;
                 produtoPrepedido.Preco_NF = x.Preco_NF;
                 produtoPrepedido.Qtde = x.Qtde;
-                produtoPrepedido.TotalItem = x.TotalItem;
-                produtoPrepedido.TotalItemRA = x.TotalItemRA ?? 0;
+                produtoPrepedido.TotalItem = x.TotalItem();
+                produtoPrepedido.TotalItemRA = x.TotalItemRA() ?? 0;
                 lstPrepedidoProduto.Add(produtoPrepedido);
             }
 
