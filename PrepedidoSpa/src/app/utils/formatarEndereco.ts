@@ -71,7 +71,11 @@ export class FormatarEndereco {
         let retorno: string = "";
         let emails: string = "";
 
-        sCabecalho = enderecoEntrega.EndEtg_nome + " \nCPF: " + CpfCnpjUtils.cnpj_cpf_formata(enderecoEntrega.EndEtg_cnpj_cpf);
+        if (!!enderecoEntrega.EndEtg_nome)
+            sCabecalho = enderecoEntrega.EndEtg_nome;
+
+        sCabecalho += " \nCPF: " + CpfCnpjUtils.cnpj_cpf_formata(enderecoEntrega.EndEtg_cnpj_cpf);
+
         aux = "";
         if (enderecoEntrega.EndEtg_produtor_rural_status == this.constante.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM) {
             if (enderecoEntrega.EndEtg_contribuinte_icms_status == this.constante.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
@@ -90,8 +94,6 @@ export class FormatarEndereco {
         }
 
         sCabecalho += "\n";
-
-
 
         //fomatar telefones
         //tel residencial e celular
@@ -137,7 +139,10 @@ export class FormatarEndereco {
         let retorno: string = "";
         let emails: string = "";
 
-        sCabecalho = enderecoEntrega.EndEtg_nome + "\nCNPJ: " + CpfCnpjUtils.cnpj_cpf_formata(enderecoEntrega.EndEtg_cnpj_cpf);
+        if (!!enderecoEntrega.EndEtg_nome)
+            sCabecalho = enderecoEntrega.EndEtg_nome;
+
+        sCabecalho += " \nCNPJ: " + CpfCnpjUtils.cnpj_cpf_formata(enderecoEntrega.EndEtg_cnpj_cpf);
 
         if (enderecoEntrega.EndEtg_contribuinte_icms_status == this.constante.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
             aux = "Não";

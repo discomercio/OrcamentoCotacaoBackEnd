@@ -29,7 +29,7 @@ e ficou:
 	" AND (hora >= '" & formata_hora_hhnnss(Now-converte_min_to_dec(5))& "')" & _
 
 
-ACHO QUE JA ESTA FEITO NO PREPEDIDO, na loja não encontrei essa validação!!
+ACHO QUE JA ESTA FEITO NO PREPEDIDO, enviei para o Edu incluir para não ter problema no merge
 - Para verificar o pedido repetido, comparar os dados cadastrais do pedido e não os dados da t_cliente.
 
 FEITO - Tirar duas exclamações das mensagens de erro.
@@ -37,7 +37,7 @@ FEITO - Tirar duas exclamações das mensagens de erro.
 JA ESTAMOS MONTANDO EM UMA LISTA
 mudar a rotina monta_descricao_forma_pagto (agora ela quebra linhas, verificar onde é usado)
 
-
+FEITO
 Garantir os seguintes blocos:
 
 Na criação do pedido:
