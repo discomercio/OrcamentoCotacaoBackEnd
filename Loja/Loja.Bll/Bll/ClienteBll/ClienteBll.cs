@@ -308,6 +308,7 @@ namespace Loja.Bll.ClienteBll
             return ret;
         }
 
+        //REMOVER ESSA ROTINA
         public async Task<IEnumerable<string>> CadastrarCliente(ClienteCadastroDto clienteDto, string apelido, string loja)
         {
             string id_cliente = "";

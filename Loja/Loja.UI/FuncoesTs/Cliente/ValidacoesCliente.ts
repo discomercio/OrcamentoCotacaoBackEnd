@@ -181,7 +181,7 @@ export class ValidacoesCliente {
         if (!new FormatarEndereco().cep_ok(dadosClienteCadastroDto.Cep.toString())) {
             ret += 'CEP inválido!<br>';
         }
-
+        
         //vamos verificar se tem lista de cidades do IBGE, se tiver é pq a cidade do cep não existe no IBGE
         if (!!lstCidadesIBGE && lstCidadesIBGE.length > 0) {
             //a cidade do cep não consta no cadastro do IBGE e deve ter sido alterada, então vamos comparar

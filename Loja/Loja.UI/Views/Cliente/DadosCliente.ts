@@ -714,27 +714,27 @@ function verificarCamposObrigatoriosEndereco():string {
 
     if ($("#cep").val() == "") {
         $("#cep").addClass("is-invalid");
-        msg += "Informe o CEP!"
+        msg += "Informe o CEP!<br>"
     }
     if ($("#endereco").val() == "") {
         $("#endereco").addClass("is-invalid");
-        msg += "Informe o endereço!"
+        msg += "Informe o endereço!<br>"
     }
     if ($("#numero").val() == "") {
         $("#numero").addClass("is-invalid");
-        msg += "Informe o número do endereço!"
+        msg += "Informe o número do endereço!<br>"
     }
     if ($("#bairro").val() == "") {
         $("#bairro").addClass("is-invalid");
-        msg += "Informe o bairro do endereço!"
+        msg += "Informe o bairro do endereço!<br>"
     }
     if ($("#cidade").val() == "") {
         $("#cidade").addClass("is-invalid");
-        msg += "Informe a cidade do endereço!"
+        msg += "Informe a cidade do endereço!<br>"
     }
     if ($("#uf").val() == "") {
         $("#uf").addClass("is-invalid");
-        msg += "Informe o UF do endereço!"
+        msg += "Informe o UF do endereço!<br>"
     }
 
     return msg;

@@ -79,9 +79,6 @@ namespace Loja.UI.Controllers
 
             //somente para teste remover após concluir
             //cliente.PermiteEdicao = false;
-            //afazer: alterar essa session para utilizar no usuarioLogado
-            //vou passar o cadastro do cliente para a session
-            //HttpContext.Session.SetString("cpf_cnpj", cpf_cnpj);
 
             ClienteCadastroDto clienteCadastroDto = new ClienteCadastroDto();
 
@@ -110,8 +107,6 @@ namespace Loja.UI.Controllers
             }
 
             cliente.DadosCliente = clienteCadastroDto.DadosCliente;
-
-
 
             //Lista para carregar no select de Indicadores
             var lstInd = (await clienteBll.BuscarListaIndicadores(cliente.DadosCliente?.Indicador_Orcamentista,
@@ -223,7 +218,8 @@ namespace Loja.UI.Controllers
                                 
                 if (lstRetorno.Count > 1)
                 {
-                    //deu erro vamos redirecionar para o Home/Erro
+                    //afazer: tratar erro para retornar para usuário
+                    //deu erro vamos redirecionar 
                     //return RedirectToAction("Error", "Home", new { lstErros = lstRetorno });
                 }
                 else if (lstRetorno.Count == 1)
@@ -238,9 +234,24 @@ namespace Loja.UI.Controllers
                         return RedirectToAction("BuscarCliente", new { cpf_cnpj = idClienteNovo, novoCliente = false });
                     }
                 }
-
-
             }
+
+            /* OBS: será necessário criar uma nova rotina em Global/Cliente para fazer a 
+             * alteração completa de cadastro do cliente.
+             * Verificar se conseguimos utilizar a criação de log de AtualizaParcial
+             * Será necessário realizar a confrontação de dados do cliente para criação de log
+             * Será necessário realizar a confrontação de referências em caso de PJ
+             * vai dar um trabalho!!!             
+             */
+
+
+            /* OBS 2: Não iremos utilizar "Session" para a criação de novo Pedido
+             * vamos validar os dados de cada tela mas, iremos devolver para a View e assim por diante.
+             */
+
+            //REFAZER DAQUI PARA BAIXO
+            /*==============================================================*/
+
 
             //afazer: alterar essa session para utilizar no usuarioLogado
             //string id_cliente = HttpContext.Session.GetString("cliente_selecionado");
