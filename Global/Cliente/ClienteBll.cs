@@ -805,6 +805,20 @@ namespace Cliente
             return retorno;
         }
 
+        public async Task<string> BuscarIdCliente(string cpf_cnpj)
+        {
+            string retorno = "";
+
+            var db = contextoProvider.GetContextoLeitura();
+
+            cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
+
+            retorno = await (from c in db.Tclientes
+                             where c.Cnpj_Cpf == cpf_cnpj
+                             select c.Id).FirstOrDefaultAsync();
+            return retorno;
+        }
+
 
         public async Task<string> BuscaListaOperacoesPermitidas(string apelido)
         {

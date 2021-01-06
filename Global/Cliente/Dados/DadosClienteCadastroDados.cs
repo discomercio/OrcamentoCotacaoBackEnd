@@ -57,7 +57,7 @@ namespace Cliente.Dados
             var ret = new DadosClienteCadastroDados()
             {
                 Id = idCliente,
-                Indicador_Orcamentista = indicadorOrcamentista.ToUpper(),
+                Indicador_Orcamentista = (indicadorOrcamentista ?? "").ToUpper(),
                 Loja = loja,
                 Nome = endCadastral.Endereco_nome,
                 Cnpj_Cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(endCadastral.Endereco_cnpj_cpf.Trim()),

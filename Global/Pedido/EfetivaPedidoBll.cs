@@ -75,7 +75,7 @@ namespace Pedido
                         pedidonovo.Pedido = id_pedido_temp_base + Gera_letra_pedido_filhote(indicePedido);
                     }
 
-                    pedidonovo.Loja = pedido.DadosCliente.Loja;
+                    pedidonovo.Loja = pedido.Ambiente.Loja;
                     pedidonovo.Data = DateTime.Now.Date;
                     pedidonovo.Hora = DateTime.Now.Hour.ToString().PadLeft(2, '0') +
                         DateTime.Now.Minute.ToString().PadLeft(2, '0') +
@@ -105,7 +105,7 @@ namespace Pedido
                         MontarFormaPagto(pedido, pedidonovo);
 
                         pedidonovo.Forma_Pagto = "";
-                        pedidonovo.Vl_Total_Familia = (decimal)pedido.Vl_total;
+                        pedidonovo.Vl_Total_Familia = pedido.Valor.Vl_total;
                         //Montamos a analise de crédito
                         await MontarAnaliseCredito(pedido, pedidonovo);
 
@@ -121,7 +121,7 @@ namespace Pedido
                         };
                         pedidonovo.Vl_Total_NF = vl_total_nf;
                         pedidonovo.Vl_Total_RA = vl_total_nf - vl_total;
-                        pedidonovo.Perc_RT = pedido.PercRT;
+                        pedidonovo.Perc_RT = pedido.Valor.PercRT;
                         pedidonovo.Perc_Desagio_RA = perc_desagio_RA;
                         pedidonovo.Perc_Limite_RA_Sem_Desagio = perc_limite_RA_sem_desagio;
                     }
@@ -341,7 +341,7 @@ namespace Pedido
 
             pedidonovoTrocaId.St_Entrega = status_entrega;
 
-            if (pedidoDados.PermiteRAStatus == 1)
+            if (pedidoDados.Valor.PermiteRAStatus == 1)
             {
                 //calcula total ra liquido bd 
                 vl_total_RA_liquido = await CalculaTotalRALiquidoBD(idPedidoBase, dbGravacao, lstErros);
@@ -605,7 +605,7 @@ namespace Pedido
                 pedidonovo.Analise_credito_Data = DateTime.Now;
                 pedidonovo.Analise_Credito_Usuario = InfraBanco.Constantes.Constantes.ANALISE_CREDITO_USUARIO_AUTOMATICO;
             }
-            else if (pedido.DadosCliente.Loja == InfraBanco.Constantes.Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE &&
+            else if (pedido.Ambiente.Loja == InfraBanco.Constantes.Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE &&
                 pedido.FormaPagtoCriacao.Rb_forma_pagto == InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_A_VISTA &&
                 pedido.FormaPagtoCriacao.Op_av_forma_pagto == InfraBanco.Constantes.Constantes.ID_FORMA_PAGTO_DINHEIRO)
             {
@@ -613,7 +613,7 @@ namespace Pedido
                 pedidonovo.Analise_credito_Data = DateTime.Now;
                 pedidonovo.Analise_Credito_Usuario = InfraBanco.Constantes.Constantes.ANALISE_CREDITO_USUARIO_AUTOMATICO;
             }
-            else if (pedido.DadosCliente.Loja == InfraBanco.Constantes.Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE &&
+            else if (pedido.Ambiente.Loja == InfraBanco.Constantes.Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE &&
                 pedido.FormaPagtoCriacao.Rb_forma_pagto == InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_A_VISTA &&
                 pedido.FormaPagtoCriacao.Op_av_forma_pagto == InfraBanco.Constantes.Constantes.ID_FORMA_PAGTO_BOLETO_AV)
             {
@@ -630,8 +630,8 @@ namespace Pedido
                 pedidonovo.Analise_credito_Data = DateTime.Now;
                 pedidonovo.Analise_Credito_Usuario = InfraBanco.Constantes.Constantes.ANALISE_CREDITO_USUARIO_AUTOMATICO;
             }
-            else if (pedido.DadosCliente.Loja == InfraBanco.Constantes.Constantes.NUMERO_LOJA_TRANSFERENCIA ||
-                pedido.DadosCliente.Loja == InfraBanco.Constantes.Constantes.NUMERO_LOJA_KITS)
+            else if (pedido.Ambiente.Loja == InfraBanco.Constantes.Constantes.NUMERO_LOJA_TRANSFERENCIA ||
+                pedido.Ambiente.Loja == InfraBanco.Constantes.Constantes.NUMERO_LOJA_KITS)
             {
                 pedidonovo.Analise_Credito = short.Parse(InfraBanco.Constantes.Constantes.COD_AN_CREDITO_OK);
                 pedidonovo.Analise_credito_Data = DateTime.Now;
@@ -785,9 +785,9 @@ namespace Pedido
 
             //referente ao magento
             pedidonovo.Pedido_Bs_X_At = "";
-            pedidonovo.Pedido_Bs_X_Ac = pedido.Pedido_bs_x_ac;  //s_pedido_ac id do pedido magento
-            pedidonovo.Pedido_Bs_X_Marketplace = pedido.Pedido_bs_x_marketplace; //num pedido_marketplace
-            pedidonovo.Marketplace_codigo_origem = pedido.Marketplace_codigo_origem; //s_origem_pedido
+            pedidonovo.Pedido_Bs_X_Ac = pedido.Marketplace.Pedido_bs_x_ac ?? "";  //s_pedido_ac id do pedido magento
+            pedidonovo.Pedido_Bs_X_Marketplace = pedido.Marketplace.Pedido_bs_x_marketplace ?? ""; //num pedido_marketplace
+            pedidonovo.Marketplace_codigo_origem = pedido.Marketplace.Marketplace_codigo_origem ?? ""; //s_origem_pedido
 
             //Nota Fiscal
             pedidonovo.Nfe_Texto_Constar = "";
@@ -796,10 +796,10 @@ namespace Pedido
             pedidonovo.Nfe_XPed = "";
 
             //Comissão
-            pedidonovo.Venda_Externa = pedido.Venda_Externa ? (short)1 : (short)0;
-            pedidonovo.Loja_Indicou = pedido.Venda_Externa ? pedido.DadosCliente.Loja : "";
+            pedidonovo.Venda_Externa = pedido.Ambiente.Venda_Externa ? (short)1 : (short)0;
+            pedidonovo.Loja_Indicou = pedido.Ambiente.Venda_Externa ? pedido.Ambiente.Loja : "";
             pedidonovo.Comissao_Loja_Indicou = 0;//comissao_loja_indicou
-            pedidonovo.Indicador = !string.IsNullOrWhiteSpace(pedido.NomeIndicador) ? pedido.NomeIndicador : "";
+            pedidonovo.Indicador = !string.IsNullOrWhiteSpace(pedido.Ambiente.Indicador_Orcamentista) ? pedido.Ambiente.Indicador_Orcamentista : "";
 
             //quero ver o pq nao esta sendo salvo corretamente
             pedidonovo.GarantiaIndicadorStatus = pedido.DetalhesPedido.GarantiaIndicador != "0" &&
@@ -818,8 +818,8 @@ namespace Pedido
             pedidonovo.Sistema_responsavel_cadastro = (int)InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
 
             //RA
-            pedidonovo.Permite_RA_Status = pedido.PermiteRAStatus;
-            pedidonovo.Opcao_Possui_RA = pedido.PermiteRAStatus == 1 ? "S" : "-";
+            pedidonovo.Permite_RA_Status = pedido.Valor.PermiteRAStatus;
+            pedidonovo.Opcao_Possui_RA = pedido.Valor.PermiteRAStatus == 1 ? "S" : "-";
         }
 
         private async Task<string> GerarNumeroPedidoTemporario(List<string> lstErros, ContextoBdGravacao contextoBdGravacao)
@@ -1402,18 +1402,18 @@ namespace Pedido
         private void CadastrarIndicador(PedidoCriacaoDados pedido, Tpedido pedidonovo, Tpedido pedidonovoTrocaId,
             ContextoBdGravacao dbGravacao, ref string s_log_cliente_indicador)
         {
-            if (pedido.ComIndicador)
+            if (pedido.Ambiente.ComIndicador)
             {
                 if (!string.IsNullOrEmpty(pedidonovo.Indicador))
                 {
-                    pedidonovoTrocaId.Indicador = pedido.NomeIndicador;
+                    pedidonovoTrocaId.Indicador = pedido.Ambiente.Indicador_Orcamentista;
 
                     //alterando indicado do pedido cadastrado
                     dbGravacao.Update(pedidonovoTrocaId);
                     dbGravacao.SaveChanges();
 
-                    s_log_cliente_indicador = "Cadastrado o indicador '" + pedido.NomeIndicador +
-                       "' no cliente id=" + pedido.DadosCliente.Id_cliente;
+                    s_log_cliente_indicador = "Cadastrado o indicador '" + pedido.Ambiente.Indicador_Orcamentista +
+                       "' no cliente id=" + pedido.Cliente.Id_cliente;
                 }
             }
         }
@@ -1581,7 +1581,7 @@ namespace Pedido
             bool blnAnalisaEndereco_ComUsaEndParcrceiro = false;
             int intNsuPai = 0;
 
-            if (pedido.ComIndicador)
+            if (pedido.Ambiente.ComIndicador)
             {
                 if (!string.IsNullOrEmpty(pedidonovoTrocaId.Indicador))
                 {

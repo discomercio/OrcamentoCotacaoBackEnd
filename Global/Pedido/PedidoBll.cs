@@ -68,9 +68,9 @@ namespace Pedido
             string hora_atual = UtilsGlobais.Util.TransformaHora_Minutos();
 
             var lstProdTask = await (from c in db.TpedidoItems
-                                     where c.Tpedido.Id_Cliente == pedido.DadosCliente.Id_cliente &&
+                                     where c.Tpedido.Id_Cliente == pedido.Cliente.Id_cliente &&
                                            c.Tpedido.Data == DateTime.Now.Date &&
-                                           c.Tpedido.Loja == pedido.DadosCliente.Loja &&
+                                           c.Tpedido.Loja == pedido.Ambiente.Loja &&
                                            c.Tpedido.Vendedor == usuario &&
                                            c.Tpedido.Data >= DateTime.Now.Date &&
                                            c.Tpedido.Hora.CompareTo(hora_atual) <= 0 &&
@@ -132,7 +132,7 @@ namespace Pedido
                     {
                         if (s_pg == op)
                         {
-                            if (pedido.DadosCliente.Tipo == Constantes.ID_PJ)
+                            if (pedido.Cliente.Tipo == Constantes.ID_PJ)
                                 percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
                             else
                                 percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;
@@ -187,7 +187,7 @@ namespace Pedido
 
                 if (vlNivel2 > (vl_total / 2))
                 {
-                    if (pedido.DadosCliente.Tipo == Constantes.ID_PJ)
+                    if (pedido.Cliente.Tipo == Constantes.ID_PJ)
                         percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
                     else
                         percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;
@@ -238,7 +238,7 @@ namespace Pedido
 
                 if (vlNivel2 > (vl_total / 2))
                 {
-                    if (pedido.DadosCliente.Tipo == Constantes.ID_PJ)
+                    if (pedido.Cliente.Tipo == Constantes.ID_PJ)
                         percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
                     else
                         percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;
@@ -1347,11 +1347,11 @@ namespace Pedido
                     TprodutoLoja prodLoja = await (from c in db.TprodutoLojas.Include(x => x.Tproduto)
                                                    where c.Tproduto.Produto == prod.Produto &&
                                                    c.Tproduto.Fabricante == prod.Fabricante &&
-                                                   c.Loja == pedidoCriacao.LojaUsuario
+                                                   c.Loja == pedidoCriacao.Ambiente.Loja
                                                    select c).FirstOrDefaultAsync();
 
                     if (prodLoja == null)
-                        lstErros.Add("Produto " + prod.Produto + " não localizado para a loja " + pedidoCriacao.LojaUsuario + ".");
+                        lstErros.Add("Produto " + prod.Produto + " não localizado para a loja " + pedidoCriacao.Ambiente.Loja + ".");
 
                 }
 

@@ -75,34 +75,41 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro)
         {
             if (pedidoDto == null) return null;
-            var ret = new Pedido.Dados.Criacao.PedidoCriacaoDados()
-            {
-                LojaUsuario = lojaUsuario,
-                Usuario = usuario,
-                DadosCliente = Pedido.Dados.Criacao.PedidoCriacaoClienteDados.PedidoCriacaoClienteDados_de_DadosClienteCadastroDados(
+            var ret = new Pedido.Dados.Criacao.PedidoCriacaoDados(
+                ambiente: new Pedido.Dados.Criacao.PedidoCriacaoAmbienteDados(
+                    loja: lojaUsuario,
+                    usuario: usuario,
+                    comIndicador: pedidoDto.ComIndicador != 0,
+                    indicador_Orcamentista: pedidoDto.NomeIndicador,
+                    idNfeSelecionadoManual: pedidoDto.CDManual,
+                    venda_Externa: venda_externa,
+                    opcaoVendaSemEstoque: pedidoDto.OpcaoVendaSemEstoque,
+                    vendedor: usuario
+                    ),
+                cliente: Pedido.Dados.Criacao.PedidoCriacaoClienteDados.PedidoCriacaoClienteDados_de_DadosClienteCadastroDados(
                     DadosClienteCadastroDto.DadosClienteCadastroDados_De_DadosClienteCadastroDto(pedidoDto.DadosCliente)),
-                EnderecoCadastralCliente = DadosClienteCadastroDto.EnderecoCadastralClientePrepedidoDados_De_DadosClienteCadastroDto(pedidoDto.DadosCliente),
-                EnderecoEntrega = EnderecoEntregaDtoClienteCadastro.EnderecoEntregaClienteCadastroDados_De_EnderecoEntregaDtoClienteCadastro(pedidoDto.EnderecoEntrega),
-                ListaProdutos = PedidoProdutosDtoPedido.List_PedidoProdutoPedidoDados_De_PedidoProdutosDtoPedido(pedidoDto.ListaProdutos),
-                FormaPagtoCriacao = pedidoDto.FormaPagtoCriacao,
-                DetalhesPedido = DetalhesNFPedidoDtoPedido.DetalhesPrepedidoDados_De_DetalhesNFPedidoDtoPedido(pedidoDto.DetalhesNF),
-                ComIndicador = pedidoDto.ComIndicador != 0,
-                NomeIndicador = pedidoDto.NomeIndicador,
-                PercRT = pedidoDto.PercRT ?? 0,
-                OpcaoPossuiRa = pedidoDto.OpcaoPossuiRA == "S" ? true : false,
-                IdNfeSelecionadoManual = pedidoDto.CDManual,
-                Venda_Externa = venda_externa,
-                OpcaoVendaSemEstoque = pedidoDto.OpcaoVendaSemEstoque,
-                Vl_total = pedidoDto.VlTotalDestePedido ?? 0,
-                Vl_total_NF = pedidoDto.ValorTotalDestePedidoComRA ?? 0,
-                PermiteRAStatus = pedidoDto.PermiteRAStatus,
-                LimiteArredondamento = limiteArredondamento,
-                MaxErroArredondamento = maxErroArredondamento,
-                Pedido_bs_x_ac = pedido_bs_x_ac,
-                Marketplace_codigo_origem = marketplace_codigo_origem,
-                Pedido_bs_x_marketplace = pedido_bs_x_marketplace,
-                SistemaResponsavelCadastro = sistemaResponsavelCadastro,
-            };
+                enderecoCadastralCliente: DadosClienteCadastroDto.EnderecoCadastralClientePrepedidoDados_De_DadosClienteCadastroDto(pedidoDto.DadosCliente),
+                enderecoEntrega: EnderecoEntregaDtoClienteCadastro.EnderecoEntregaClienteCadastroDados_De_EnderecoEntregaDtoClienteCadastro(pedidoDto.EnderecoEntrega),
+                listaProdutos: PedidoProdutosDtoPedido.List_PedidoProdutoPedidoDados_De_PedidoProdutosDtoPedido(pedidoDto.ListaProdutos),
+                formaPagtoCriacao: pedidoDto.FormaPagtoCriacao,
+                detalhesPedido: DetalhesNFPedidoDtoPedido.DetalhesPrepedidoDados_De_DetalhesNFPedidoDtoPedido(pedidoDto.DetalhesNF),
+                valor: new Pedido.Dados.Criacao.PedidoCriacaoValorDados(
+                    percRT: pedidoDto.PercRT ?? 0,
+                    opcaoPossuiRa: pedidoDto.OpcaoPossuiRA == "S" ? true : false,
+                    vl_total: pedidoDto.VlTotalDestePedido ?? 0,
+                    vl_total_NF: pedidoDto.ValorTotalDestePedidoComRA ?? 0,
+                    permiteRAStatus: pedidoDto.PermiteRAStatus
+                    ),
+                configuracao: new Pedido.Dados.Criacao.PedidoCriacaoConfiguracaoDados(
+                    limiteArredondamento: limiteArredondamento,
+                    maxErroArredondamento: maxErroArredondamento,
+                    sistemaResponsavelCadastro: sistemaResponsavelCadastro
+                    ),
+                marketplace: new Pedido.Dados.Criacao.PedidoCriacaoMarketplaceDados(
+                    pedido_bs_x_ac: pedido_bs_x_ac,
+                    marketplace_codigo_origem: marketplace_codigo_origem,
+                    pedido_bs_x_marketplace: pedido_bs_x_marketplace)
+            );
             return ret;
         }
     }

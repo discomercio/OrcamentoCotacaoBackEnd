@@ -12,6 +12,7 @@ using Prepedido;
 using MagentoBusiness.UtilsMagento;
 using MagentoBusiness.MagentoDto;
 using MagentoBusiness.MagentoDto.MarketplaceDto;
+using Cliente;
 
 #nullable enable
 
@@ -26,12 +27,14 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
         private readonly ConfiguracaoApiMagento configuracaoApiMagento;
         private readonly Pedido.PedidoCriacao pedidoCriacao;
         private readonly PedidoMagentoClienteBll pedidoMagentoClienteBll;
+        private readonly ClienteBll clienteBll;
 
         public PedidoMagentoBll(InfraBanco.ContextoBdProvider contextoProvider,
             Produto.ProdutoGeralBll produtoGeralBll,
             Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll, PrepedidoBll prepedidoBll,
             ConfiguracaoApiMagento configuracaoApiMagento, Pedido.PedidoCriacao pedidoCriacao,
-            PedidoMagentoClienteBll pedidoMagentoClienteBll)
+            PedidoMagentoClienteBll pedidoMagentoClienteBll,
+            Cliente.ClienteBll clienteBll)
         {
             this.contextoProvider = contextoProvider;
             this.produtoGeralBll = produtoGeralBll;
@@ -40,6 +43,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             this.configuracaoApiMagento = configuracaoApiMagento;
             this.pedidoCriacao = pedidoCriacao;
             this.pedidoMagentoClienteBll = pedidoMagentoClienteBll;
+            this.clienteBll = clienteBll;
         }
 
         public async Task<PedidoResultadoMagentoDto> CadastrarPedidoMagento(PedidoMagentoDto pedidoMagento, string usuario)
@@ -69,7 +73,9 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
                 Convert.ToDecimal(configuracaoApiMagento.LimiteArredondamentoPrecoVendaOrcamentoItem), 0.1M,
                 pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac, pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem,
                 pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace,
-                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI);
+                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI,
+                await clienteBll.BuscarIdCliente(pedidoMagento.Cnpj_Cpf)
+                );
             if (resultado.ListaErros.Count != 0)
                 return resultado;
 
@@ -157,16 +163,18 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
         }
 
         private async Task<Pedido.Dados.Criacao.PedidoCriacaoDados> CriarPedidoCriacaoDados(PedidoMagentoDto pedidoMagento,
-            Orcamentistaindicador_vendedor_loja orcamentistaindicador_vendedor_loja , List<string> lstErros,
+            Orcamentistaindicador_vendedor_loja orcamentistaindicador_vendedor_loja, List<string> lstErros,
             decimal limiteArredondamento,
             decimal maxErroArredondamento, string? pedido_bs_x_ac, string? marketplace_codigo_origem, string? pedido_bs_x_marketplace,
-            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro)
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
+            string id_cliente)
         {
             //o cliente existe então vamos converter os dados do cliente para DadosCliente e EnderecoCadastral
             Cliente.Dados.DadosClienteCadastroDados dadosCliente =
                 EnderecoCadastralClienteMagentoDto.DadosClienteDeEnderecoCadastralClienteMagentoDto(pedidoMagento.EnderecoCadastralCliente,
                 orcamentistaindicador_vendedor_loja.loja,
-                orcamentistaindicador_vendedor_loja.vendedor, configuracaoApiMagento.DadosOrcamentista.Orcamentista);
+                orcamentistaindicador_vendedor_loja.vendedor, configuracaoApiMagento.DadosOrcamentista.Orcamentista,
+                id_cliente);
 
             Cliente.Dados.EnderecoCadastralClientePrepedidoDados enderecoCadastral =
                 EnderecoCadastralClienteMagentoDto.EnderecoCadastralClientePrepedidoDados_De_EnderecoCadastralClienteMagentoDto(pedidoMagento.EnderecoCadastralCliente);
