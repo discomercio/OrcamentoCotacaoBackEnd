@@ -112,10 +112,10 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             return new Orcamentistaindicador_vendedor_loja(orcamentista_indicador, vendedor, loja);
         }
 
-        private async Task<IEnumerable<Pedido.Dados.Criacao.PedidoProdutoPedidoDados>> ConverterProdutosMagento(PedidoMagentoDto pedidoMagento,
+        private async Task<IEnumerable<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados>> ConverterProdutosMagento(PedidoMagentoDto pedidoMagento,
             Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacao, string loja, List<string> lstErros)
         {
-            List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados> listaProdutos = new List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados>();
+            List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> listaProdutos = new List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados>();
             List<string> lstFornec = new List<string>();
             lstFornec = pedidoMagento.ListaProdutos.Select(x => x.Fabricante).Distinct().ToList();
 
@@ -142,7 +142,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
 
                 if (produto != null && coeficiente != null)
                 {
-                    listaProdutos.Add(PedidoProdutoMagentoDto.ProdutosDePedidoProdutoMagentoDto(y, produto, coeficiente.Coeficiente));
+                    listaProdutos.Add(PedidoProdutoMagentoDto.PedidoCriacaoProdutoDados_De_PedidoProdutoMagentoDto(y, produto, coeficiente.Coeficiente));
                 }
                 else
                 {
@@ -179,7 +179,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
                 FormaPagtoCriacaoMagentoDto.FormaPagtoCriacaoDados_De_FormaPagtoCriacaoMagentoDto(pedidoMagento.FormaPagtoCriacao,
                 configuracaoApiMagento, pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem);
 
-            List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados> listaProdutos =
+            List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> listaProdutos =
                 (await ConverterProdutosMagento(pedidoMagento, formaPagtoCriacao, configuracaoApiMagento.DadosOrcamentista.Loja, lstErros)).ToList();
 
             //Precisamos buscar os produtos para poder incluir os valores para incluir na classe de produto

@@ -87,8 +87,25 @@ namespace Pedido
             string lista_operacoes_permitidas = await clienteBll.BuscaListaOperacoesPermitidas(tUsuario.Nome);
 
             //vamos validar os dados do cliente que esta vindo no pedido
+            //alterar forma de validacao, a validacao dos dados cadastrais é diferente
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await clienteBll.ListarBancosCombo()).ToList();
-            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(pedido.DadosCliente, null, null, pedidoRetorno.ListaErros,
+            var tclienteSexoNascimento = (from c in clienteBll.BuscarTcliente(pedido.DadosCliente.Cnpj_Cpf) select new { c.Sexo, c.Dt_Nasc }).FirstOrDefault();
+            var tclienteSexo = "M";
+            DateTime? tclienteNascimento = DateTime.Now;
+            if (pedido.DadosCliente.Tipo == Constantes.ID_PJ)
+            {
+                tclienteSexo = "";
+                tclienteNascimento = null;
+            }
+            if (tclienteSexoNascimento != null)
+            {
+                tclienteSexo = tclienteSexoNascimento.Sexo;
+                tclienteNascimento = tclienteSexoNascimento.Dt_Nasc;
+            }
+            var dadosClienteCadastroDados = Cliente.Dados.DadosClienteCadastroDados.DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(pedido.EnderecoCadastralCliente,
+                pedido.DadosCliente.Indicador_Orcamentista, pedido.DadosCliente.Loja,
+                tclienteSexo, tclienteNascimento, pedido.DadosCliente.Id_cliente);
+            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDados, null, null, pedidoRetorno.ListaErros,
                 contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, pedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false,
                 pedido.SistemaResponsavelCadastro);
             if (pedidoRetorno.ListaErros.Count > 0)
@@ -179,7 +196,7 @@ namespace Pedido
                 c_custoFinancFornecQtdeParcelas);
 
             validacoesFormaPagtoBll.ValidarFormaPagto(pedido.FormaPagtoCriacao, pedidoRetorno.ListaErros,
-                pedido.LimiteArredondamento, pedido.MaxErroArredondamento, c_custoFinancFornecTipoParcelamento, formasPagto,
+                pedido.PedidoCriacaoConfiguracao.LimiteArredondamento, pedido.PedidoCriacaoConfiguracao.MaxErroArredondamento, c_custoFinancFornecTipoParcelamento, formasPagto,
                 tOrcamentistaPermite_RA_Status, pedido.Vl_total_NF, pedido.Vl_total);
             if (pedidoRetorno.ListaErros.Any())
                 return pedidoRetorno;
@@ -241,7 +258,7 @@ namespace Pedido
             Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prepedido = PedidoCriacaoDados.PrePedidoDadosDePedidoCriacaoDados(pedido);
             await validacoesPrepedidoBll.MontarProdutosParaComparacao(prepedido,
                         c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas,
-                        pedido.DadosCliente.Loja, pedidoRetorno.ListaErros, (decimal)perc_limite_RA_sem_desagio, pedido.LimiteArredondamento);
+                        pedido.DadosCliente.Loja, pedidoRetorno.ListaErros, (decimal)perc_limite_RA_sem_desagio, pedido.PedidoCriacaoConfiguracao.LimiteArredondamento);
 
             //se tiver erro vamos retornar
             if (pedidoRetorno.ListaErros.Count > 0) return pedidoRetorno;
@@ -300,7 +317,7 @@ namespace Pedido
             //estamos alterando o v_item com descontos verificados e aplicados
             List<string> vdesconto = new List<string>();
             await pedidoBll.VerificarDescontoArredondado(pedido.LojaUsuario, v_item, pedidoRetorno.ListaErros, c_custoFinancFornecTipoParcelamento,
-                c_custoFinancFornecQtdeParcelas, pedido.DadosCliente.Id, percDescComissaoUtilizar, vdesconto);
+                c_custoFinancFornecQtdeParcelas, pedido.DadosCliente.Id_cliente, percDescComissaoUtilizar, vdesconto);
 
             /* 15- busca o coeficiente de cada produto do item 6 */
             //vou buscar a lista de coeficiente para calcular o valor de custoFinacFornec...
@@ -390,7 +407,7 @@ namespace Pedido
             TtransportadoraCep? transportadora = pedido.EnderecoEntrega.OutroEndereco == true &&
                 !string.IsNullOrEmpty(pedido.EnderecoEntrega.EndEtg_cep) ?
                 await pedidoBll.ObterTransportadoraPeloCep(pedido.EnderecoEntrega.EndEtg_cep) :
-                await pedidoBll.ObterTransportadoraPeloCep(pedido.DadosCliente.Cep);
+                await pedidoBll.ObterTransportadoraPeloCep(pedido.EnderecoCadastralCliente.Endereco_cep);
 
             //estou buscando a regra para passar para o metodo 
             //verificar se retorna o esperado

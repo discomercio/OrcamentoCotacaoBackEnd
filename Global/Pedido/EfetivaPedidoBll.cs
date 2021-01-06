@@ -1413,7 +1413,7 @@ namespace Pedido
                     dbGravacao.SaveChanges();
 
                     s_log_cliente_indicador = "Cadastrado o indicador '" + pedido.NomeIndicador +
-                       "' no cliente id=" + pedido.DadosCliente.Id;
+                       "' no cliente id=" + pedido.DadosCliente.Id_cliente;
                 }
             }
         }

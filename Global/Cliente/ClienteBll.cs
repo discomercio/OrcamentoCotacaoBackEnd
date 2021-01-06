@@ -795,6 +795,16 @@ namespace Cliente
             return retorno;
         }
 
+        public IQueryable<Tcliente> BuscarTcliente(string cpf_cnpj)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+            cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
+            IQueryable<Tcliente> retorno = (from c in db.Tclientes
+                                  where c.Cnpj_Cpf == cpf_cnpj
+                                  select c);
+            return retorno;
+        }
+
 
         public async Task<string> BuscaListaOperacoesPermitidas(string apelido)
         {

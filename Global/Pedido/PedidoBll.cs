@@ -68,7 +68,7 @@ namespace Pedido
             string hora_atual = UtilsGlobais.Util.TransformaHora_Minutos();
 
             var lstProdTask = await (from c in db.TpedidoItems
-                                     where c.Tpedido.Id_Cliente == pedido.DadosCliente.Id &&
+                                     where c.Tpedido.Id_Cliente == pedido.DadosCliente.Id_cliente &&
                                            c.Tpedido.Data == DateTime.Now.Date &&
                                            c.Tpedido.Loja == pedido.DadosCliente.Loja &&
                                            c.Tpedido.Vendedor == usuario &&
@@ -423,7 +423,7 @@ namespace Pedido
             return coeficiente;
         }
 
-        public async Task<ProdutoValidadoComEstoqueDados> VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado(PedidoProdutoPedidoDados produto,
+        public async Task<ProdutoValidadoComEstoqueDados> VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado(PedidoCriacaoProdutoDados produto,
             string cpf_cnpj, int id_nfe_emitente_selecao_manual)
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -483,7 +483,7 @@ namespace Pedido
         }
 
         //todo: afazer: tentar unificar com Prepedido.PrepedidoBll.ObterCtrlEstoqueProdutoRegra
-        public async Task<IEnumerable<RegrasBll>> ObterCtrlEstoqueProdutoRegraParaUMProduto(PedidoProdutoPedidoDados produto,
+        public async Task<IEnumerable<RegrasBll>> ObterCtrlEstoqueProdutoRegraParaUMProduto(PedidoCriacaoProdutoDados produto,
             Tcliente tcliente, List<string> lstErros)
         {
             List<RegrasBll> lstRegrasCrtlEstoque = new List<RegrasBll>();
@@ -820,7 +820,7 @@ namespace Pedido
             }
         }
 
-        public async Task ObterDisponibilidadeEstoque(List<RegrasBll> lstRegrasCrtlEstoque, PedidoProdutoPedidoDados produto,
+        public async Task ObterDisponibilidadeEstoque(List<RegrasBll> lstRegrasCrtlEstoque, PedidoCriacaoProdutoDados produto,
             List<string> lstErros, int id_nfe_emitente_selecao_manual)
         {
             //int id_nfe_emitente_selecao_manual = 0;
@@ -861,7 +861,7 @@ namespace Pedido
         }
 
         public async Task<bool> EstoqueVerificaDisponibilidadeIntegralV2(t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD regra,
-            PedidoProdutoPedidoDados produto)
+            PedidoCriacaoProdutoDados produto)
         {
             bool retorno = false;
             if (regra.Estoque_Qtde_Solicitado > 0 && regra.Estoque_Produto != "")
@@ -924,7 +924,7 @@ namespace Pedido
             return regra;
         }
 
-        private bool VerificarEstoqueInsuficienteUMProduto(List<RegrasBll> lstRegras, PedidoProdutoPedidoDados produto,
+        private bool VerificarEstoqueInsuficienteUMProduto(List<RegrasBll> lstRegras, PedidoCriacaoProdutoDados produto,
             int id_nfe_emitente_selecao_manual, List<string> lstErros)
         {
             bool retorno = false;
@@ -971,7 +971,7 @@ namespace Pedido
         }
 
         public List<RegrasBll> VerificarQtdePedidosAutoSplit(List<RegrasBll> lstRegras, List<string> lstErros,
-            PedidoProdutoPedidoDados produto, int id_nfe_emitente_selecao_manual)
+            PedidoCriacaoProdutoDados produto, int id_nfe_emitente_selecao_manual)
         {
             int qtde_a_alocar = 0;
 
@@ -1100,7 +1100,7 @@ namespace Pedido
             return lista_empresa_selecionada;
         }
 
-        private async Task ExisteProdutoDescontinuado(PedidoProdutoPedidoDados produto, List<string> lstErros)
+        private async Task ExisteProdutoDescontinuado(PedidoCriacaoProdutoDados produto, List<string> lstErros)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -1127,7 +1127,7 @@ namespace Pedido
             public List<RegrasBll> regrasBlls = new List<RegrasBll>();
             public List<string> prodValidadoEstoqueListaErros = new List<string>();
         }
-        public async Task<VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado_TesteRetorno> VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado_Teste(PedidoProdutoPedidoDados produto,
+        public async Task<VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado_TesteRetorno> VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado_Teste(PedidoCriacaoProdutoDados produto,
             string cpf_cnpj, int id_nfe_emitente_selecao_manual)
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -1312,7 +1312,7 @@ namespace Pedido
             return true;
         }
 
-        public void ConsisteProdutosValorZerados(List<PedidoProdutoPedidoDados> lstProdutos, List<string> lstErros,
+        public void ConsisteProdutosValorZerados(List<PedidoCriacaoProdutoDados> lstProdutos, List<string> lstErros,
             bool comIndicacao, short PermiteRaStatus)
         {
             foreach (var x in lstProdutos)

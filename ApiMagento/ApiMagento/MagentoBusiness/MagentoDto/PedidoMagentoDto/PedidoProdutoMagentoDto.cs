@@ -41,21 +41,22 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
          * Os campos Preco_Lista e Desc_Dado serão preenchidos por nós e devemos calcular de forma que fiquem consistentes.
         */
 
-        public static Pedido.Dados.Criacao.PedidoProdutoPedidoDados ProdutosDePedidoProdutoMagentoDto(
+        public static Pedido.Dados.Criacao.PedidoCriacaoProdutoDados PedidoCriacaoProdutoDados_De_PedidoProdutoMagentoDto(
             PedidoProdutoMagentoDto produtoDto, Produto.Dados.ProdutoDados produtoDados, float coeficiente)
         {
-            var ret = new Pedido.Dados.Criacao.PedidoProdutoPedidoDados()
-            {
-                Fabricante = produtoDto.Fabricante,
-                Produto = produtoDto.Produto,
-                Qtde = produtoDto.Qtde,
-                CustoFinancFornecPrecoListaBase_Conferencia = produtoDados.Preco_lista ?? 0,
-                Preco_Lista = Math.Round((decimal)(produtoDados.Preco_lista ?? 0 * (decimal)coeficiente), 2),
-                Desc_Dado = 0, //produtoDto.Desc_Dado,
-                Preco_Venda = produtoDto.Preco_Venda,
-                Preco_NF = produtoDto.Preco_NF,
-                CustoFinancFornecCoeficiente_Conferencia = coeficiente
-            };
+            var ret = new Pedido.Dados.Criacao.PedidoCriacaoProdutoDados(
+                fabricante: produtoDto.Fabricante,
+                produto: produtoDto.Produto,
+                qtde: produtoDto.Qtde,
+                custoFinancFornecPrecoListaBase_Conferencia: produtoDados.Preco_lista ?? 0,
+                preco_Lista: Math.Round((decimal)(produtoDados.Preco_lista ?? 0 * (decimal)coeficiente), 2),
+                desc_Dado: 0, //produtoDto.Desc_Dado,
+                preco_Venda: produtoDto.Preco_Venda,
+                preco_NF: produtoDto.Preco_NF,
+                custoFinancFornecCoeficiente_Conferencia: coeficiente,
+                //no magento não validamos se o estoque mudou
+                qtde_estoque_total_disponivel: null
+            );
 
             return ret;
         }

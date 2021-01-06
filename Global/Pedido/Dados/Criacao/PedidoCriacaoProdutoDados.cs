@@ -3,28 +3,41 @@ using System.Collections.Generic;
 using System.Text;
 using Prepedido.Dados.DetalhesPrepedido;
 
-//todo: religar nullable
-#nullable disable
-
 namespace Pedido.Dados.Criacao
 {
-    public class PedidoProdutoPedidoDados
+    public class PedidoCriacaoProdutoDados
     {
-        public string Fabricante { get; set; }
-        public string Produto { get; set; }
-        public short Qtde { get; set; }
-        public float? Desc_Dado { get; set; }
-        public decimal Preco_Venda { get; set; }
+        public PedidoCriacaoProdutoDados(string fabricante, string produto, short qtde, float? desc_Dado, decimal preco_Venda, decimal preco_Lista, decimal preco_NF, decimal custoFinancFornecPrecoListaBase_Conferencia, float custoFinancFornecCoeficiente_Conferencia, short? qtde_estoque_total_disponivel)
+        {
+            Fabricante = fabricante ?? throw new ArgumentNullException(nameof(fabricante));
+            Produto = produto ?? throw new ArgumentNullException(nameof(produto));
+            Qtde = qtde;
+            Desc_Dado = desc_Dado;
+            Preco_Venda = preco_Venda;
+            Preco_Lista = preco_Lista;
+            Preco_NF = preco_NF;
+            CustoFinancFornecPrecoListaBase_Conferencia = custoFinancFornecPrecoListaBase_Conferencia;
+            CustoFinancFornecCoeficiente_Conferencia = custoFinancFornecCoeficiente_Conferencia;
+            Qtde_estoque_total_disponivel = qtde_estoque_total_disponivel;
+        }
+
+        public string Fabricante { get; }
+        public string Produto { get; }
+        public short Qtde { get; }
+        public float? Desc_Dado { get; }
+        public decimal Preco_Venda { get; }
+        //todo: tirar o set desta propriedade. Já deve vir calculado corretamente
         public decimal Preco_Lista { get; set; }
-        public decimal Preco_NF { get; set; }
+        public decimal Preco_NF { get; }
 
         //estes campos são usados somente para conferência
-        public decimal CustoFinancFornecPrecoListaBase_Conferencia { get; set; }
-        public float CustoFinancFornecCoeficiente_Conferencia { get; set; }
+        public decimal CustoFinancFornecPrecoListaBase_Conferencia { get; }
+        public float CustoFinancFornecCoeficiente_Conferencia { get; }
 
         //usado para avisar se mudou o número de produtos não disponíveis em estoque
         //o usuário concordou em fazer o pedido com X unidades em estoque; 
         //se durante o processo outro pedido consumir esse estoque, devemos avisar o cliente que mudou a quantidade de produtos disponíveis para entrega
+        //se null, não é verificado
         public short? Qtde_estoque_total_disponivel { get; set; }
 
         //informações
@@ -38,7 +51,7 @@ namespace Pedido.Dados.Criacao
         }
 
 
-        public static List<PrepedidoProdutoPrepedidoDados> PrepedidoProdutoPrepedidoDadosDePedidoProdutoPedidoDados(List<PedidoProdutoPedidoDados> lstProdutoPedido)
+        public static List<PrepedidoProdutoPrepedidoDados> PrepedidoProdutoPrepedidoDados_De_PedidoCriacaoProdutoDados(List<PedidoCriacaoProdutoDados> lstProdutoPedido)
         {
 
             List<PrepedidoProdutoPrepedidoDados> lstPrepedidoProduto = new List<PrepedidoProdutoPrepedidoDados>();

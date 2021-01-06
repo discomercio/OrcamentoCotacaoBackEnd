@@ -38,25 +38,24 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
         public float CustoFinancFornecCoeficiente { get; set; }
 
 
-        public static List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados> List_PedidoProdutoPedidoDados_De_PedidoProdutosDtoPedido(List<PedidoProdutosDtoPedido> origemLista)
+        public static List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> List_PedidoProdutoPedidoDados_De_PedidoProdutosDtoPedido(List<PedidoProdutosDtoPedido> origemLista)
         {
             if (origemLista == null) return null;
-            var ret = new List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados>(0);
+            var ret = new List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados>(0);
             foreach (var origem in origemLista)
             {
-                ret.Add(new Pedido.Dados.Criacao.PedidoProdutoPedidoDados()
-                {
-                    Fabricante = origem.Fabricante,
-                    Produto = origem.Produto,
-                    Qtde = origem.Qtde ?? 0,
-                    Qtde_estoque_total_disponivel = origem.Qtde_estoque_total_disponivel,
-                    Preco_Lista = origem.Preco_Lista ?? 0,
-                    CustoFinancFornecPrecoListaBase_Conferencia = origem.CustoFinancFornecPrecoListaBase,
-                    Preco_NF = origem.Preco_NF,
-                    Desc_Dado = origem.Desc_Dado,
-                    Preco_Venda = origem.Preco_Venda,
-                    CustoFinancFornecCoeficiente_Conferencia = origem.CustoFinancFornecCoeficiente
-                });
+                ret.Add(new Pedido.Dados.Criacao.PedidoCriacaoProdutoDados(
+                    fabricante: origem.Fabricante,
+                    produto: origem.Produto,
+                    qtde: origem.Qtde ?? 0,
+                    qtde_estoque_total_disponivel: origem.Qtde_estoque_total_disponivel,
+                    preco_Lista: origem.Preco_Lista ?? 0,
+                    custoFinancFornecPrecoListaBase_Conferencia: origem.CustoFinancFornecPrecoListaBase,
+                    preco_NF: origem.Preco_NF,
+                    desc_Dado: origem.Desc_Dado,
+                    preco_Venda: origem.Preco_Venda,
+                    custoFinancFornecCoeficiente_Conferencia: origem.CustoFinancFornecCoeficiente
+                ));
             }
             return ret;
         }

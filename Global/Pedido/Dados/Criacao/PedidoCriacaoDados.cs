@@ -13,29 +13,14 @@ namespace Pedido.Dados.Criacao
         {
         }
 
+        public InfraBanco.Constantes.Constantes.CodSistemaResponsavel SistemaResponsavelCadastro { get; set; }
+
         //Armazena a loja do usuário logado
         public string LojaUsuario { get; set; }
 
         //Armazena nome do usuário logado
         public string Usuario { get; set; }
 
-        //Armazena os dados cadastrados do cliente
-        public Cliente.Dados.DadosClienteCadastroDados DadosCliente { get; set; }
-
-        //Armazena os dados do cliente para o Pedido
-        public Cliente.Dados.EnderecoCadastralClientePrepedidoDados EnderecoCadastralCliente { get; set; }
-
-        //Armazena os dados de endereço de entrega
-        public Cliente.Dados.EnderecoEntregaClienteCadastroDados EnderecoEntrega { get; set; }
-
-        //Armazena os dados dos produtos selecionados
-        public List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados> ListaProdutos { get; set; }
-
-        //Armazena os dados da forma de pagto selecionado
-        public Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados FormaPagtoCriacao { get; set; }
-
-        //Armazena os dados de entrega imediata, obs, instalador instala, bem de uso comum
-        public Prepedido.Dados.DetalhesPrepedido.DetalhesPrepedidoDados DetalhesPedido { get; set; }
 
         //Flag para saber se tem indicador selecionado 
         public bool ComIndicador { get; set; }
@@ -68,19 +53,37 @@ namespace Pedido.Dados.Criacao
 
         public short PermiteRAStatus { get; set; }
 
-        public decimal LimiteArredondamento { get; set; }
-        public decimal MaxErroArredondamento { get; set; }
         public string Pedido_bs_x_ac { get; set; }
         public string Marketplace_codigo_origem { get; set; }
         public string Pedido_bs_x_marketplace { get; set; }
-        public InfraBanco.Constantes.Constantes.CodSistemaResponsavel SistemaResponsavelCadastro { get; set; }
+
+        public PedidoCriacaoConfiguracaoDados PedidoCriacaoConfiguracao { get; set; }
+
+        //Armazena os dados cadastrados do cliente
+        public PedidoCriacaoClienteDados DadosCliente { get; set; }
+
+        //Armazena os dados do cliente para o Pedido
+        public Cliente.Dados.EnderecoCadastralClientePrepedidoDados EnderecoCadastralCliente { get; set; }
+
+        //Armazena os dados de endereço de entrega
+        public Cliente.Dados.EnderecoEntregaClienteCadastroDados EnderecoEntrega { get; set; }
+
+        //Armazena os dados dos produtos selecionados
+        public List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> ListaProdutos { get; set; }
+
+        //Armazena os dados da forma de pagto selecionado
+        public Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados FormaPagtoCriacao { get; set; }
+
+        //Armazena os dados de entrega imediata, obs, instalador instala, bem de uso comum
+        public Prepedido.Dados.DetalhesPrepedido.DetalhesPrepedidoDados DetalhesPedido { get; set; }
 
 
         public static Prepedido.Dados.DetalhesPrepedido.PrePedidoDados PrePedidoDadosDePedidoCriacaoDados(PedidoCriacaoDados pedido)
         {
             Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prepedido = new Prepedido.Dados.DetalhesPrepedido.PrePedidoDados();
-            prepedido.DadosCliente = pedido.DadosCliente;
-            prepedido.ListaProdutos = Pedido.Dados.Criacao.PedidoProdutoPedidoDados.PrepedidoProdutoPrepedidoDadosDePedidoProdutoPedidoDados(pedido.ListaProdutos);
+            prepedido.DadosCliente = Cliente.Dados.DadosClienteCadastroDados.DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(pedido.EnderecoCadastralCliente,
+                pedido.DadosCliente.Indicador_Orcamentista, pedido.DadosCliente.Loja, "", null, pedido.DadosCliente.Id_cliente);
+            prepedido.ListaProdutos = Pedido.Dados.Criacao.PedidoCriacaoProdutoDados.PrepedidoProdutoPrepedidoDados_De_PedidoCriacaoProdutoDados(pedido.ListaProdutos);
             prepedido.FormaPagtoCriacao = pedido.FormaPagtoCriacao;
             prepedido.EnderecoEntrega = pedido.EnderecoEntrega;
             prepedido.EnderecoCadastroClientePrepedido = pedido.EnderecoCadastralCliente;
