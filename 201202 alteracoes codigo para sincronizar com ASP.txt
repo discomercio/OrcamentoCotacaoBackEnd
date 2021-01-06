@@ -16,7 +16,7 @@ FEITO - Limitar os tamanhos destes campos:
 No caso da Unis, dar erro
 
 OBS: Isso é feito apenas para limitar o textarea na tela em 2 linhas e se tiver mais de 2 linha ele faz a rolagem
-No pedido:
+FEITO - No pedido:
 '   NÚMERO DE LINHAS DO CAMPO "TEXTO CONSTAR NF" DO PEDIDO
     Const MAX_LINHAS_NF_TEXTO_CONSTAR = 2
 	Const MAX_TAM_NF_TEXTO = 800
@@ -29,7 +29,7 @@ e ficou:
 	" AND (hora >= '" & formata_hora_hhnnss(Now-converte_min_to_dec(5))& "')" & _
 
 
-ACHO QUE JA ESTA FEITO NO PREPEDIDO, enviei para o Edu incluir para não ter problema no merge
+enviei para o Edu incluir para não ter problema no merge
 - Para verificar o pedido repetido, comparar os dados cadastrais do pedido e não os dados da t_cliente.
 
 FEITO - Tirar duas exclamações das mensagens de erro.
