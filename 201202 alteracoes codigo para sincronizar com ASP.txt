@@ -15,7 +15,7 @@ FEITO - Limitar os tamanhos destes campos:
 	Const MAX_TAMANHO_CAMPO_ENDERECO_CIDADE = 60
 No caso da Unis, dar erro
 
-
+OBS: Isso é feito apenas para limitar o textarea na tela em 2 linhas e se tiver mais de 2 linha ele faz a rolagem
 No pedido:
 '   NÚMERO DE LINHAS DO CAMPO "TEXTO CONSTAR NF" DO PEDIDO
     Const MAX_LINHAS_NF_TEXTO_CONSTAR = 2
