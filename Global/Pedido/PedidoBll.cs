@@ -132,7 +132,7 @@ namespace Pedido
                     {
                         if (s_pg == op)
                         {
-                            if (pedido.Cliente.Tipo == Constantes.ID_PJ)
+                            if (pedido.Cliente.Tipo.PessoaJuridica())
                                 percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
                             else
                                 percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;
@@ -187,7 +187,7 @@ namespace Pedido
 
                 if (vlNivel2 > (vl_total / 2))
                 {
-                    if (pedido.Cliente.Tipo == Constantes.ID_PJ)
+                    if (pedido.Cliente.Tipo.PessoaJuridica())
                         percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
                     else
                         percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;
@@ -238,7 +238,7 @@ namespace Pedido
 
                 if (vlNivel2 > (vl_total / 2))
                 {
-                    if (pedido.Cliente.Tipo == Constantes.ID_PJ)
+                    if (pedido.Cliente.Tipo.PessoaJuridica())
                         percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
                     else
                         percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;

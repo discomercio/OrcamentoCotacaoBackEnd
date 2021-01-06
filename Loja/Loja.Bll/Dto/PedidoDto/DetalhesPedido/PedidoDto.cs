@@ -72,8 +72,15 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
         public static Pedido.Dados.Criacao.PedidoCriacaoDados PedidoCriacaoDados_De_PedidoDto(PedidoDto pedidoDto,
             string lojaUsuario, string usuario, bool venda_externa, decimal limiteArredondamento,
             decimal maxErroArredondamento, string pedido_bs_x_ac, string marketplace_codigo_origem, string pedido_bs_x_marketplace,
-            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro)
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
+            List<string> lstErros)
         {
+            if (!global::InfraBanco.Constantes.Constantes.TipoPessoa.TipoValido(pedidoDto.DadosCliente.Tipo))
+            {
+                lstErros.Add("Tipo de cliente não é PF nem PJ.");
+                return null;
+            }
+
             if (pedidoDto == null) return null;
             var ret = new Pedido.Dados.Criacao.PedidoCriacaoDados(
                 ambiente: new Pedido.Dados.Criacao.PedidoCriacaoAmbienteDados(

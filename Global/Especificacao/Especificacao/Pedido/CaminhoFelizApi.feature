@@ -6,7 +6,12 @@ Caminho feliz da criação do pedido pela API
 O mínimo que um pedido precisa para ser cadastrado pela API
 Levantado a partir do ERP/loja/PedidoNovoConfirma.asp
 
+Este teste não é executado na Api Magento porque o endereço de entrega é obrigatório;
+testado em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf_Obrigatorios.feature
+
 Scenario: Cadastrar um pedido com o mínimo de informação possível
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
+
 	Given Existe "login" = "usuario_sistema"
 	And Existe "loja" = "202"
 	And Existe cliente "cliente_id" = "000000000001" como PF

@@ -25,33 +25,33 @@ namespace Pedido.Dados.Criacao
             Marketplace = marketplace ?? throw new ArgumentNullException(nameof(marketplace));
         }
 
-        public PedidoCriacaoAmbienteDados Ambiente { get; set; }
+        public PedidoCriacaoAmbienteDados Ambiente { get; }
 
-        public PedidoCriacaoConfiguracaoDados Configuracao { get; set; }
+        public PedidoCriacaoConfiguracaoDados Configuracao { get; }
 
         //Armazena os dados cadastrados do cliente
-        public PedidoCriacaoClienteDados Cliente { get; set; }
+        public PedidoCriacaoClienteDados Cliente { get; }
 
         //Armazena os dados do cliente para o Pedido
-        public Cliente.Dados.EnderecoCadastralClientePrepedidoDados EnderecoCadastralCliente { get; set; }
+        public Cliente.Dados.EnderecoCadastralClientePrepedidoDados EnderecoCadastralCliente { get; }
 
         //Armazena os dados de endereço de entrega
-        public Cliente.Dados.EnderecoEntregaClienteCadastroDados EnderecoEntrega { get; set; }
+        public Cliente.Dados.EnderecoEntregaClienteCadastroDados EnderecoEntrega { get; }
 
         //Armazena os dados dos produtos selecionados
-        public List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> ListaProdutos { get; set; }
+        public List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> ListaProdutos { get; }
 
         //totais e detalhes do RA
-        public PedidoCriacaoValorDados Valor { get; set; }
+        public PedidoCriacaoValorDados Valor { get; }
 
         //Armazena os dados da forma de pagto selecionado
-        public Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados FormaPagtoCriacao { get; set; }
+        public Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados FormaPagtoCriacao { get; }
 
         //Armazena os dados de entrega imediata, obs, instalador instala, bem de uso comum
-        public Prepedido.Dados.DetalhesPrepedido.DetalhesPrepedidoDados DetalhesPedido { get; set; }
+        public Prepedido.Dados.DetalhesPrepedido.DetalhesPrepedidoDados DetalhesPedido { get; }
 
         //campos do marketplace
-        public PedidoCriacaoMarketplaceDados Marketplace { get; set; }
+        public PedidoCriacaoMarketplaceDados Marketplace { get; }
 
         public static Prepedido.Dados.DetalhesPrepedido.PrePedidoDados PrePedidoDadosDePedidoCriacaoDados(PedidoCriacaoDados pedido)
         {

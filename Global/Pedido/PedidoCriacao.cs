@@ -54,22 +54,9 @@ namespace Pedido
         //É que na loja o tratamento dos erros dos dados cadastrais vai ser diferente).
         public async Task<PedidoCriacaoRetornoDados> CadastrarPedido(PedidoCriacaoDados pedido)
         {
-            PedidoCriacaoRetornoDados pedidoRetorno = new PedidoCriacaoRetornoDados
-            {
-                ListaErros = new List<string>()
-            };
+            PedidoCriacaoRetornoDados pedidoRetorno = new PedidoCriacaoRetornoDados();
 
             var db = contextoProvider.GetContextoLeitura();
-
-            /* FLUXO DE CRIAÇÃO DE PEDIDO 1ºpasso
-             * PedidoNovoConsiste.asp = uma tela antes de finalizar o pedido
-             * 1- verificar se a loja esta habilitada para ECommerce
-             */
-            if (!await UtilsGlobais.Util.LojaHabilitadaProdutosECommerce(pedido.Ambiente.Loja, contextoProvider))
-            {
-                pedidoRetorno.ListaErros.Add($"Loja não habilitada para e-commerce: {pedido.Ambiente.Loja}");
-                return pedidoRetorno;
-            }
 
             //7- se tiver "vendedor_externo", busca (nome, razão social) na t_LOJA
             //vamos validar o usuario e atribuir alguns valores da base de dados
@@ -89,7 +76,7 @@ namespace Pedido
             var tclienteSexoNascimento = (from c in clienteBll.BuscarTcliente(pedido.Cliente.Cnpj_Cpf) select new { c.Sexo, c.Dt_Nasc }).FirstOrDefault();
             var tclienteSexo = "M";
             DateTime? tclienteNascimento = DateTime.Now;
-            if (pedido.Cliente.Tipo == Constantes.ID_PJ)
+            if (pedido.Cliente.Tipo.PessoaJuridica())
             {
                 tclienteSexo = "";
                 tclienteNascimento = null;
@@ -103,7 +90,7 @@ namespace Pedido
                 pedido.Ambiente.Indicador_Orcamentista, pedido.Ambiente.Loja,
                 tclienteSexo, tclienteNascimento, pedido.Cliente.Id_cliente);
             await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDados, null, null, pedidoRetorno.ListaErros,
-                contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, pedido.Cliente.Tipo == Constantes.ID_PF ? true : false,
+                contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, pedido.Cliente.Tipo.PessoaFisica(),
                 pedido.Configuracao.SistemaResponsavelCadastro);
             if (pedidoRetorno.ListaErros.Count > 0)
                 return pedidoRetorno;
@@ -184,7 +171,7 @@ namespace Pedido
 
             /* 13- valida o tipo de parcelamento "AV", "CE", "SE" */
             /* 14- valida a quantidade de parcela */
-            FormaPagtoDados formasPagto = await formaPagtoBll.ObterFormaPagto(tOrcamentistaApelido, pedido.Cliente.Tipo);
+            FormaPagtoDados formasPagto = await formaPagtoBll.ObterFormaPagto(tOrcamentistaApelido, pedido.Cliente.Tipo.ParaString());
 
             string c_custoFinancFornecTipoParcelamento = prepedidoBll.ObterSiglaFormaPagto(pedido.FormaPagtoCriacao);
             short c_custoFinancFornecQtdeParcelas = (short)Prepedido.PrepedidoBll.ObterCustoFinancFornecQtdeParcelasDeFormaPagto(pedido.FormaPagtoCriacao);
@@ -206,7 +193,7 @@ namespace Pedido
 
             /* 9- valida endereço de entrega */
             await validacoesPrepedidoBll.ValidarEnderecoEntrega(pedido.EnderecoEntrega, pedidoRetorno.ListaErros,
-                pedido.Ambiente.Indicador_Orcamentista, pedido.Cliente.Tipo, false, pedido.Ambiente.Loja);
+                pedido.Ambiente.Indicador_Orcamentista, pedido.Cliente.Tipo.ParaString(), false, pedido.Ambiente.Loja);
             if (pedidoRetorno.ListaErros.Any())
                 return pedidoRetorno;
 
@@ -230,7 +217,7 @@ namespace Pedido
             /* 3- busca o percentual máximo de comissão*/
             percentualMax = await pedidoBll.ObterPercentualMaxDescEComissao(pedido.Ambiente.Loja);
 
-            if (pedido.Cliente.Tipo == Constantes.ID_PJ)
+            if (pedido.Cliente.Tipo.PessoaJuridica())
                 percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
             else
                 percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;

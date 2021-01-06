@@ -64,14 +64,21 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         public decimal? Frete { get; set; }
 #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
-        public static Pedido.Dados.Criacao.PedidoCriacaoDados PedidoDadosCriacaoDePedidoMagentoDto(Cliente.Dados.DadosClienteCadastroDados dadosClienteMagento,
+        public static Pedido.Dados.Criacao.PedidoCriacaoDados? PedidoDadosCriacaoDePedidoMagentoDto(Cliente.Dados.DadosClienteCadastroDados dadosClienteMagento,
             Cliente.Dados.EnderecoCadastralClientePrepedidoDados enderecoCadastralClienteMagento, Cliente.Dados.EnderecoEntregaClienteCadastroDados enderecoEntregaMagento,
             List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> lstProdutosMagento, Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacaoMagento,
             decimal vlTotalDestePedido, PedidoMagentoDto pedidoMagento,
             decimal limiteArredondamento,
-            decimal maxErroArredondamento, string? pedido_bs_x_ac, string? marketplace_codigo_origem, string? pedido_bs_x_marketplace,
-            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro)
+            decimal maxErroArredondamento, 
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
+            List<string> lstErros)
         {
+            if (!Constantes.TipoPessoa.TipoValido(dadosClienteMagento.Tipo))
+            {
+                lstErros.Add("Tipo de cliente não é PF nem PJ.");
+                return null;
+            }
+
             //Armazena os dados de entrega imediata, obs, instalador instala, bem de uso comum
 #pragma warning disable IDE0017 // Simplify object initialization
             var pedidoCriacaoDetalhesPedido = new Prepedido.Dados.DetalhesPrepedido.DetalhesPrepedidoDados();
@@ -168,9 +175,9 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                     maxErroArredondamento: maxErroArredondamento,
                     sistemaResponsavelCadastro: sistemaResponsavelCadastro),
                 marketplace: new Pedido.Dados.Criacao.PedidoCriacaoMarketplaceDados(
-                        pedido_bs_x_ac: pedido_bs_x_ac,
-                        marketplace_codigo_origem: marketplace_codigo_origem,
-                        pedido_bs_x_marketplace: pedido_bs_x_marketplace)
+                        pedido_bs_x_ac: pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac,
+                        marketplace_codigo_origem: pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem,
+                        pedido_bs_x_marketplace: pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace)
                 );
 
             return pedidoCriacao;

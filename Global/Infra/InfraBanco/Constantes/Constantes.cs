@@ -1041,6 +1041,36 @@ namespace InfraBanco.Constantes
         public const string ID_PF = "PF";
 
         public const string ID_PJ = "PJ";
+        public class TipoPessoa
+        {
+            private readonly string tipo = ID_PJ;
+            public TipoPessoa(string tipoString)
+            {
+                if (tipoString.ToUpper() == ID_PF)
+                {
+                    tipo = ID_PF;
+                    return;
+                }
+                if (tipoString.ToUpper() == ID_PJ)
+                {
+                    tipo = ID_PJ;
+                    return;
+                }
+                throw new ArgumentException($"InfraBanco.Constantes.Constantes.TipoPessoa: tipo desconhecido: {tipoString}");
+            }
+            public static bool TipoValido(string tipoString)
+            {
+                if (tipoString.ToUpper() == ID_PF)
+                    return true;
+                if (tipoString.ToUpper() == ID_PJ)
+                    return true;
+
+                return false;
+            }
+            public bool PessoaFisica() { return tipo == ID_PF; }
+            public bool PessoaJuridica() { return !PessoaFisica(); }
+            public string ParaString() { return tipo; }
+        }
 
         //' CÓDIGO USADO NA TABELA t_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FORMA_PAGTO PARA INDICAR UMA RESTRIÇÃO QUE SE APLICA A TODOS OS PARCEIROS
 
