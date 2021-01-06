@@ -50,19 +50,8 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
                 Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI,
                 usuario_cadastro)).ToList();
 
-            //é erro
-            if (lstRet.Count > 1)
-            {
-                listaErros.AddRange(lstRet);
-            }
-            else if (lstRet.Count == 1)
-            {
-                //é o número do id do cliente
-                if (lstRet[0].Length != 12)
-                {
-                    listaErros.AddRange(lstRet);
-                }
-            }
+            //tem erro?
+            listaErros.AddRange(lstRet);
         }
 
         internal void LimitarPedidosMagentoPJ(PedidoMagentoDto pedidoMagento, List<string> lstErros)

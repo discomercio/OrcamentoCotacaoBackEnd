@@ -160,7 +160,7 @@ namespace Prepedido.FormaPagto
             {
                 if (formaPagtoPrepedido.C_pc_qtde != formaPagtoPrepedido.CustoFinancFornecQtdeParcelas)
                 {
-                    lstErros.Add("quantidade de parcelas esta divergente!");
+                    lstErros.Add("Quantidade de parcelas esta divergente!");
                 }
 
                 decimal vlTotal = (decimal)(formaPagtoPrepedido.C_pc_valor * formaPagtoPrepedido.C_pc_qtde);
