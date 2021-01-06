@@ -115,9 +115,9 @@ namespace Produto
 
             if (tipoCliente == Constantes.ID_PF)
             {
-                if (produtoRuralStatus == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
+                if (produtoRuralStatus == (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
                     tipoPessoa = Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PRODUTOR_RURAL;
-                else if (produtoRuralStatus == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)
+                else if (produtoRuralStatus == (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)
                     tipoPessoa = Constantes.COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_FISICA;
             }
             else if (tipoCliente == Constantes.ID_PJ)

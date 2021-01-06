@@ -152,8 +152,8 @@ se o clinte for PF, estes campos são desnecessários
                 ret.EndEtg_tipo_pessoa = endEtg.EndEtg_tipo_pessoa;
                 ret.EndEtg_cnpj_cpf = endEtg.EndEtg_cnpj_cpf;
                 ret.EndEtg_produtor_rural_status = endEtg.EndEtg_tipo_pessoa == Constantes.ID_PF ?
-                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO :
-                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL;
+                    (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO :
+                    (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL;
                 ret.EndEtg_contribuinte_icms_status = endEtg.EndEtg_tipo_pessoa == Constantes.ID_PF ?
                     (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL :
                     (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL; //inicial nos dois casos

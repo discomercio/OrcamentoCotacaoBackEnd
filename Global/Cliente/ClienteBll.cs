@@ -41,7 +41,7 @@ namespace Cliente
             bool ie_diferente = false;
             bool produtor_diferente = false;
 
-            if (dados.ProdutorRural == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)
+            if (dados.ProdutorRural == (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)
             {
                 if (dados.ProdutorRural != cli.Produtor_Rural_Status)
                 {
@@ -66,8 +66,8 @@ namespace Cliente
                     }
 
                     log += "produtor_rural_status: " + cli.Produtor_Rural_Status + " => " +
-                        Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO + "; ";
-                    cli.Produtor_Rural_Status = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
+                        Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO + "; ";
+                    cli.Produtor_Rural_Status = (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
 
                     log += "produtor_rural_data: " + cli.Produtor_Rural_Data + " => " + DateTime.Now + "; ";
                     cli.Produtor_Rural_Data = DateTime.Now;
@@ -85,7 +85,7 @@ namespace Cliente
 
             }
 
-            if (dados.ProdutorRural == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
+            if (dados.ProdutorRural == (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
             {
                 if (dados.Contribuinte_Icms_Status != cli.Contribuinte_Icms_Status)
                 {
@@ -166,8 +166,8 @@ namespace Cliente
             if (produtor_diferente)
             {
                 log += "produtor_rural_status: " + cli.Produtor_Rural_Status + " => " +
-                            Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM + "; ";
-                cli.Produtor_Rural_Status = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
+                            Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM + "; ";
+                cli.Produtor_Rural_Status = (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
 
                 if (cli.Produtor_Rural_Data == null)
                 {
@@ -669,7 +669,7 @@ namespace Cliente
             tCliente.Contribuinte_Icms_Data_Hora = DateTime.Now;
             tCliente.Contribuinte_Icms_Usuario = usuario_cadastro;
             tCliente.Produtor_Rural_Status = clienteDados.ProdutorRural;
-            if (clienteDados.ProdutorRural != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL)
+            if (clienteDados.ProdutorRural != (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL)
             {
                 tCliente.Produtor_Rural_Data = DateTime.Now;
                 tCliente.Produtor_Rural_Data_Hora = DateTime.Now;

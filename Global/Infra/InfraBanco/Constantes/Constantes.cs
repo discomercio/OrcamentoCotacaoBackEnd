@@ -909,7 +909,7 @@ namespace InfraBanco.Constantes
 
 
         //' CÓDIGOS P/ STATUS QUE INDICA SE CLIENTE É OU NÃO PRODUTOR RURAL
-        public enum ProdutorRual
+        public enum ProdutorRural
         {
             COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL = 0,
             COD_ST_CLIENTE_PRODUTOR_RURAL_NAO = 1,

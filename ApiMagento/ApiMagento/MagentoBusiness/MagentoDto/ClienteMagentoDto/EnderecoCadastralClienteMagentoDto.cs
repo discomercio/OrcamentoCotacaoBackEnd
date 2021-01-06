@@ -150,8 +150,8 @@ Ao cadastrar o cliente:
             ret.Endereco_tipo_pessoa = endCadastralMagento.Endereco_tipo_pessoa;
             ret.Endereco_cnpj_cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(endCadastralMagento.Endereco_cnpj_cpf.Trim());
             ret.Endereco_produtor_rural_status = endCadastralMagento.Endereco_tipo_pessoa == Constantes.ID_PF ?
-                (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO :
-                (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL;
+                (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO :
+                (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL;
             ret.Endereco_contribuinte_icms_status = endCadastralMagento.Endereco_tipo_pessoa == Constantes.ID_PF ?
                     (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL :
                     (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL; //inicial nos dois casos
@@ -193,8 +193,8 @@ Ao cadastrar o cliente:
                 */
                 Ie = "",
                 ProdutorRural = dadosClienteMagento.Endereco_tipo_pessoa == Constantes.ID_PF ?
-                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO :
-                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL,
+                    (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO :
+                    (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL,
                 Contribuinte_Icms_Status = dadosClienteMagento.Endereco_tipo_pessoa == Constantes.ID_PF ?
                     (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL :
                     (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL, //inicial nos dois casos

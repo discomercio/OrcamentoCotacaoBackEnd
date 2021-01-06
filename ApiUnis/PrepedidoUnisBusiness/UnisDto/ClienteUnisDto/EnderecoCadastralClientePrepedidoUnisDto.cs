@@ -139,7 +139,7 @@ namespace PrepedidoUnisBusiness.UnisDto.ClienteUnisDto
 
             if(endCadastral.Endereco_tipo_pessoa == Constantes.ID_PF && 
                 endCadastral.Endereco_produtor_rural_status !=
-                (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
+                (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
             {
                 ret.Endereco_contribuinte_icms_status = (byte)0;
             }
@@ -158,7 +158,7 @@ namespace PrepedidoUnisBusiness.UnisDto.ClienteUnisDto
             }
 
             if(endCadastral.Endereco_produtor_rural_status !=
-                (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM &&
+                (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM &&
                 endCadastral.Endereco_tipo_pessoa == Constantes.ID_PF)
             {
                 ret.Endereco_ie = "";
@@ -202,7 +202,7 @@ namespace PrepedidoUnisBusiness.UnisDto.ClienteUnisDto
 
             if (endCadastral.Endereco_tipo_pessoa == Constantes.ID_PF &&
                 endCadastral.Endereco_produtor_rural_status !=
-                (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
+                (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
             {
                 ret.Endereco_contribuinte_icms_status = (byte)0;
             }
@@ -221,7 +221,7 @@ namespace PrepedidoUnisBusiness.UnisDto.ClienteUnisDto
             }
 
             if (endCadastral.Endereco_produtor_rural_status !=
-                (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM &&
+                (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM &&
                 endCadastral.Endereco_tipo_pessoa == Constantes.ID_PF)
             {
                 ret.Endereco_ie = "";

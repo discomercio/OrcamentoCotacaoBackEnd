@@ -56,7 +56,7 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
             ret.DadosCliente.TelComercial = "12345678";
             ret.DadosCliente.Contato = "José da Silva";
             ret.DadosCliente.Contribuinte_Icms_Status = (byte)InfraBanco.Constantes.Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;
-            ret.DadosCliente.ProdutorRural = (byte)InfraBanco.Constantes.Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL;
+            ret.DadosCliente.ProdutorRural = (byte)InfraBanco.Constantes.Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL;
         }
 
         public static global::Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto PedidoBaseaVista(out string lojaUsuario, out string usuario, out bool vendedorExterno)

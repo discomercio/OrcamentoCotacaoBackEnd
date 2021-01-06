@@ -22,7 +22,7 @@ namespace Testes.Automatizados.InicializarBanco
             ret.DadosCliente.Tipo = "PF";
             ret.DadosCliente.Cnpj_Cpf = "479.378.150-00";
             ret.DadosCliente.Sexo = "M";
-            ret.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
+            ret.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
             ret.DadosCliente.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL;
             ret.DadosCliente.Ie = "";
             ret.RefBancaria = new List<RefBancariaClienteUnisDto>();

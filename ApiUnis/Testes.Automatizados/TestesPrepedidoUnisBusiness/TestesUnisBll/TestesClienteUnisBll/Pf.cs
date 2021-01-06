@@ -113,7 +113,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
         {
             inicializarBanco.TclientesApagar();
 
-            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL,
+            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL,
                 "Produtor Rural inválido!",
                     TipoPessoa.PF);
 
@@ -142,7 +142,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             //fizemos um pouco diferente: não aceitamos o cadastro
             testesClienteUnisBll.TestarCadastro(c =>
             {
-                c.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
+                c.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
                 c.DadosCliente.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM;
             },
                 "Se cliente é não Produtor Rural, contribuinte do ICMS tem que ter valor inicial!",
@@ -164,7 +164,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             */
             testesClienteUnisBll.TestarCadastro(c =>
             {
-                c.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
+                c.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
                 c.DadosCliente.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;
                 c.DadosCliente.Ie = InicializarClienteDados.ClienteNaoCadastradoPF().DadosCliente.Ie;
             },
@@ -173,7 +173,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 
             testesClienteUnisBll.TestarCadastro(c =>
             {
-                c.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
+                c.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
                 c.DadosCliente.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO;
                 c.DadosCliente.Ie = "11112222";
             },
@@ -182,7 +182,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 
             testesClienteUnisBll.TestarCadastro(c =>
             {
-                c.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
+                c.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
                 c.DadosCliente.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM;
                 c.DadosCliente.Ie = "";
             },
@@ -210,13 +210,14 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
                                 end if
                             end if
 */
+            //Com a inclusão da verificação de produtor rural, contribuinte e IE essa mensagem não retorna mais
             testesClienteUnisBll.TestarCadastro(c =>
             {
-                c.DadosCliente.Ie = "11112222";
+                c.DadosCliente.Ie = "1";
+                c.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
             },
                 Cliente.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
                 TipoPessoa.PF);
-
 
             testesClienteUnisBll.TestarCadastro(c =>
             {

@@ -71,7 +71,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             ret.EnderecoCadastralCliente.Endereco_tipo_pessoa = "PJ";
             ret.EnderecoCadastralCliente.Endereco_cnpj_cpf = "76297703000195";
             ret.EnderecoCadastralCliente.Endereco_contribuinte_icms_status = (byte)InfraBanco.Constantes.Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;
-            ret.EnderecoCadastralCliente.Endereco_produtor_rural_status = (byte)InfraBanco.Constantes.Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL;
+            ret.EnderecoCadastralCliente.Endereco_produtor_rural_status = (byte)InfraBanco.Constantes.Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL;
             ret.EnderecoCadastralCliente.Endereco_contato = "Endereco_contato";
 
             ret.EnderecoCadastralCliente.Endereco_ddd_res = "";

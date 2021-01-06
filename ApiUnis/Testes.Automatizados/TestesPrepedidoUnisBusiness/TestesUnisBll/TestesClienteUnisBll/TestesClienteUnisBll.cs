@@ -39,14 +39,23 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             TestarCadastro(c => c.DadosCliente.Ie = "1",
                 Cliente.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
                 TipoPessoa.PJ);
-            TestarCadastro(c => c.DadosCliente.Ie = "1",
+
+            TestarCadastro(c =>
+            {
+                c.DadosCliente.Ie = "1";
+                c.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
+            },
                 Cliente.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
                 tipoPessoa: TipoPessoa.PF);
 
             TestarCadastro(c => c.DadosCliente.Ie = "11223344",
                 Cliente.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
                 TipoPessoa.PJ);
-            TestarCadastro(c => c.DadosCliente.Ie = "11223344",
+            TestarCadastro(c => {
+                c.DadosCliente.Ie = "11223344";
+                c.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
+            }
+            ,
                 Cliente.ValidacoesClienteBll.MensagensErro.Preencha_a_IE_Inscricao_Estadual,
                 tipoPessoa: TipoPessoa.PF);
 

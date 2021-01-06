@@ -236,7 +236,7 @@ namespace Cliente
             *-Verificar se tem Ref.Bancária e validar caso exista;
             *-Verificar se tem Ref.Comercial e validar caso exista;
             * */
-            if (dadosCliente.ProdutorRural != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL)
+            if (dadosCliente.ProdutorRural != (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL)
             {
                 lstErros.Add("Se cliente é tipo PJ, não pode ser Produtor Rural");
             }
@@ -309,11 +309,10 @@ namespace Cliente
                 lstErros.Add(MensagensErro.Cep_nao_existe);
             }
 
-
             if (string.IsNullOrEmpty(dadosCliente.Endereco))
             {
                 lstErros.Add("PREENCHA O ENDEREÇO.");
-            }            
+            }
             if (string.IsNullOrEmpty(dadosCliente.Numero))
             {
                 lstErros.Add("PREENCHA O NÚMERO DO ENDEREÇO.");
@@ -352,7 +351,7 @@ namespace Cliente
 
             //vamos verificar a quantidade de caracteres de cada campo
             VerificarQtdeCaracteresDoEndereco(dadosCliente, lstErros);
-            
+
             //vamos buscar o cep e comparar os endereços 
             Cep.Dados.CepDados cepCliente = new Cep.Dados.CepDados()
             {
@@ -420,13 +419,13 @@ namespace Cliente
             }
             if (dadosCliente.Tipo == Constantes.ID_PF)
             {
-                if (dadosCliente.ProdutorRural != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM &&
-                   dadosCliente.ProdutorRural != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)
+                if (dadosCliente.ProdutorRural != (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM &&
+                   dadosCliente.ProdutorRural != (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)
                 {
                     lstErros.Add("Produtor Rural inválido!");
                 }
 
-                if (dadosCliente.ProdutorRural == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)
+                if (dadosCliente.ProdutorRural == (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)
                 {
                     if (dadosCliente.Contribuinte_Icms_Status != (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL)
                     {
@@ -439,7 +438,7 @@ namespace Cliente
                     }
                 }
 
-                if (dadosCliente.ProdutorRural == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
+                if (dadosCliente.ProdutorRural == (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
                 {
                     if (dadosCliente.Contribuinte_Icms_Status ==
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL)
@@ -482,7 +481,7 @@ namespace Cliente
             }
             if (dadosCliente.Tipo == Constantes.ID_PJ)
             {
-                if (dadosCliente.ProdutorRural != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL)
+                if (dadosCliente.ProdutorRural != (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL)
                 {
                     lstErros.Add("Se tipo cliente PJ, o valor de Produtor Rural tem quer ser inicial!");
                 }
@@ -518,6 +517,13 @@ namespace Cliente
                 }
             }
 
+            ValidarIE(dadosCliente, lstErros, flagMsg_IE_Cadastro_PF);
+
+        }
+
+        private static void ValidarIE(Cliente.Dados.DadosClienteCadastroDados dadosCliente, List<string> lstErros, 
+            bool flagMsg_IE_Cadastro_PF)
+        {
             if (!string.IsNullOrEmpty(dadosCliente.Ie))
             {
                 if (dadosCliente.Contribuinte_Icms_Status ==
@@ -532,11 +538,16 @@ namespace Cliente
                     lstErros.Add("Se cliente é contribuinte do ICMS, " +
                         "não pode ter o valor ISENTO no campo de Inscrição Estadual!");
 
-                //if (lstErros.Count == 0)
-                VerificarInscricaoEstadualValida(dadosCliente.Ie, dadosCliente.Uf, lstErros,
-                    flagMsg_IE_Cadastro_PF);
+                if ((dadosCliente.Tipo == Constantes.ID_PF && dadosCliente.ProdutorRural ==
+                    (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM) ||
+                    (dadosCliente.Tipo == Constantes.ID_PJ &&
+                    dadosCliente.Contribuinte_Icms_Status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) ||
+                    (dadosCliente.Tipo == Constantes.ID_PJ &&
+                    dadosCliente.Contribuinte_Icms_Status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO) && !string.IsNullOrEmpty(dadosCliente.Ie))
+                {
+                    VerificarInscricaoEstadualValida(dadosCliente.Ie, dadosCliente.Uf, lstErros, flagMsg_IE_Cadastro_PF);
+                }
             }
-
         }
 
         private static void ValidarReferencias_Bancarias_Comerciais(List<Cliente.Dados.Referencias.RefBancariaClienteDados> lstRefBancaria,
@@ -605,7 +616,6 @@ namespace Cliente
                     }
                 });
             }
-
         }
 
         public static void VerificarInscricaoEstadualValida(string ie, string uf, List<string> listaErros,
@@ -718,7 +728,6 @@ namespace Cliente
                      *  ex: cliente "01.824.328/0001-95", contém "AV" no cadastro, na tabela de cep retorna "Avenida" 
                      *  e isso difere na confrontação de endereço
                      */
-
 
                     //vamos verificar se a cidade da lista de cep existe no IBGE para validar
                     if (!string.IsNullOrEmpty(cepCliente.Cidade) && !string.IsNullOrEmpty(c.Cidade))

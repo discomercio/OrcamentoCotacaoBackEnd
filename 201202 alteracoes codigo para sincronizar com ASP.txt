@@ -32,8 +32,9 @@ e ficou:
 ACHO QUE JA ESTA FEITO NO PREPEDIDO, na loja não encontrei essa validação!!
 - Para verificar o pedido repetido, comparar os dados cadastrais do pedido e não os dados da t_cliente.
 
-Tirar duas exclamações das mensagens de erro.
+FEITO - Tirar duas exclamações das mensagens de erro.
 
+JA ESTAMOS MONTANDO EM UMA LISTA
 mudar a rotina monta_descricao_forma_pagto (agora ela quebra linhas, verificar onde é usado)
 
 
