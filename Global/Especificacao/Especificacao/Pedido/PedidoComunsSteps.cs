@@ -198,6 +198,23 @@ namespace Especificacao.Especificacao.Pedido
             base.ThenSemErro(p0);
         }
 
+        [Then(@"Exceção ""(.*)""")]
+        public void ThenExcecao(string p0)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.Excecao(p0, this);
+            bool lancouExcecao = false;
+            try
+            {
+                base.ThenSemNenhumErro();
+            }
+            catch(Exception e)
+            {
+                if (e.Message.Contains(p0))
+                    lancouExcecao = true;
+            }
+            Assert.True(lancouExcecao);
+        }
+
         [Given(@"No ambiente ""(.*)"" erro ""(.*)"" é ""(.*)""")]
         [Given(@"No ambiente ""(.*)"" mapear erro ""(.*)"" para ""(.*)""")]
         public void GivenNoAmbienteErroE(string p0, string p1, string p2)

@@ -12,6 +12,7 @@ using Prepedido;
 using MagentoBusiness.UtilsMagento;
 using MagentoBusiness.MagentoDto;
 using MagentoBusiness.MagentoDto.MarketplaceDto;
+using Cliente;
 
 #nullable enable
 
@@ -26,12 +27,14 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
         private readonly ConfiguracaoApiMagento configuracaoApiMagento;
         private readonly Pedido.PedidoCriacao pedidoCriacao;
         private readonly PedidoMagentoClienteBll pedidoMagentoClienteBll;
+        private readonly ClienteBll clienteBll;
 
         public PedidoMagentoBll(InfraBanco.ContextoBdProvider contextoProvider,
             Produto.ProdutoGeralBll produtoGeralBll,
             Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll, PrepedidoBll prepedidoBll,
             ConfiguracaoApiMagento configuracaoApiMagento, Pedido.PedidoCriacao pedidoCriacao,
-            PedidoMagentoClienteBll pedidoMagentoClienteBll)
+            PedidoMagentoClienteBll pedidoMagentoClienteBll,
+            Cliente.ClienteBll clienteBll)
         {
             this.contextoProvider = contextoProvider;
             this.produtoGeralBll = produtoGeralBll;
@@ -40,11 +43,16 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             this.configuracaoApiMagento = configuracaoApiMagento;
             this.pedidoCriacao = pedidoCriacao;
             this.pedidoMagentoClienteBll = pedidoMagentoClienteBll;
+            this.clienteBll = clienteBll;
         }
 
         public async Task<PedidoResultadoMagentoDto> CadastrarPedidoMagento(PedidoMagentoDto pedidoMagento, string usuario)
         {
             PedidoResultadoMagentoDto resultado = new PedidoResultadoMagentoDto();
+
+            //normalizacao de campos
+            pedidoMagento.Cnpj_Cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(pedidoMagento.Cnpj_Cpf);
+
 
             var orcamentistaindicador_vendedor_loja = await Calcular_orcamentistaindicador_vendedor_loja(pedidoMagento, usuario, resultado.ListaErros);
             pedidoMagentoClienteBll.LimitarPedidosMagentoPJ(pedidoMagento, resultado.ListaErros);
@@ -53,6 +61,11 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
                 return resultado;
 
             //Cadastrar cliente
+            //#    Endereço
+            //#    Se o cliente for PF, sempre será usado somente o endereço de entrega como sendo o único endereço do cliente.
+            //#    Se for PF, copio o endereço de entrega para o endereço de cobrança e apago o endereço de entrega.
+            //#	    no caso de campos que só existam no endereço de cobrança (exemplo: telefone) mantemos o do endereço de cobrança e não exigimos o campo.
+            //#    Depois disso, se o cliente não existir, cadastrar com o endereço de cobrança
             pedidoMagentoClienteBll.MoverEnderecoEntregaParaEnderecoCadastral(pedidoMagento, resultado.ListaErros);
             //se der erro ao mover não podemos tentar cadastrar
             if (resultado.ListaErros.Count > 0)
@@ -64,16 +77,20 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
 
             //estamos criando o pedido com os dados do cliente que vem e não com os dados do cliente que esta na base
             //ex: se o cliente já cadastrado, utilizamos o que vem em PedidoMagentoDto.EnderecoCadastralClienteMagentoDto
-            Pedido.Dados.Criacao.PedidoCriacaoDados pedidoDados = await CriarPedidoCriacaoDados(pedidoMagento,
+            Pedido.Dados.Criacao.PedidoCriacaoDados? pedidoDados = await CriarPedidoCriacaoDados(pedidoMagento,
                 orcamentistaindicador_vendedor_loja, resultado.ListaErros,
-                Convert.ToDecimal(configuracaoApiMagento.LimiteArredondamentoPrecoVendaOrcamentoItem), 0.1M,
-                pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac, pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem,
-                pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace,
-                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI);
+                configuracaoApiMagento.LimiteArredondamentoPrecoVendaOrcamentoItem, 0.1M,
+                await clienteBll.BuscarIdCliente(pedidoMagento.Cnpj_Cpf)
+                );
             if (resultado.ListaErros.Count != 0)
                 return resultado;
+            if (pedidoDados == null)
+            {
+                resultado.ListaErros.Add("Erro na rotina CriarPedidoCriacaoDados");
+                return resultado;
+            }
 
-            Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret = await pedidoCriacao.CadastrarPedido(pedidoDados, Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI);
+            Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret = await pedidoCriacao.CadastrarPedido(pedidoDados);
 
             resultado.IdPedidoCadastrado = ret.Id;
             resultado.IdsPedidosFilhotes = ret.ListaIdPedidosFilhotes;
@@ -112,12 +129,11 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             return new Orcamentistaindicador_vendedor_loja(orcamentista_indicador, vendedor, loja);
         }
 
-        private async Task<IEnumerable<Pedido.Dados.Criacao.PedidoProdutoPedidoDados>> ConverterProdutosMagento(PedidoMagentoDto pedidoMagento,
+        private async Task<IEnumerable<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados>> ConverterProdutosMagento(PedidoMagentoDto pedidoMagento,
             Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacao, string loja, List<string> lstErros)
         {
-            List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados> listaProdutos = new List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados>();
-            List<string> lstFornec = new List<string>();
-            lstFornec = pedidoMagento.ListaProdutos.Select(x => x.Fabricante).Distinct().ToList();
+            List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> listaProdutos = new List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados>();
+            List<string> lstFornec = pedidoMagento.ListaProdutos.Select(x => x.Fabricante).Distinct().ToList();
 
             //preciso da lista de coeficientes de cada fabricante da lista de produtos
             //preciso obter a qtde de parcelas e a sigla de pagto
@@ -140,33 +156,31 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
                                                                     c.TipoParcela == siglaParc
                                                               select c).FirstOrDefault();
 
+                if (produto == null)
+                    lstErros.Add($"Produto não cadastrado para a loja. Produto: {y.Produto}, loja: {loja}");
+                if (coeficiente == null)
+                    lstErros.Add($"Coeficiente não cadastrado para o fabricante. Fabricante: {y.Fabricante}, TipoParcela: {siglaParc}");
                 if (produto != null && coeficiente != null)
-                {
-                    listaProdutos.Add(PedidoProdutoMagentoDto.ProdutosDePedidoProdutoMagentoDto(y, produto, coeficiente.Coeficiente));
-                }
-                else
-                {
-                    if (produto == null)
-                        lstErros.Add($"Produto não cadastrado para a loja. Produto: {y.Produto}, loja: {loja}");
-                    if (coeficiente == null)
-                        lstErros.Add($"Coeficiente não cadastrado para o fabricante. Fabricante: {y.Fabricante}, TipoParcela: {siglaParc}");
-                }
+                    listaProdutos.Add(PedidoProdutoMagentoDto.PedidoCriacaoProdutoDados_De_PedidoProdutoMagentoDto(y, produto, coeficiente.Coeficiente));
             }
 
             return await Task.FromResult(listaProdutos);
         }
 
-        private async Task<Pedido.Dados.Criacao.PedidoCriacaoDados> CriarPedidoCriacaoDados(PedidoMagentoDto pedidoMagento,
-            Orcamentistaindicador_vendedor_loja orcamentistaindicador_vendedor_loja , List<string> lstErros,
+        private async Task<Pedido.Dados.Criacao.PedidoCriacaoDados?> CriarPedidoCriacaoDados(PedidoMagentoDto pedidoMagento,
+            Orcamentistaindicador_vendedor_loja orcamentistaindicador_vendedor_loja, List<string> lstErros,
             decimal limiteArredondamento,
-            decimal maxErroArredondamento, string? pedido_bs_x_ac, string? marketplace_codigo_origem, string? pedido_bs_x_marketplace,
-            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro)
+            decimal maxErroArredondamento,
+            string id_cliente)
         {
+            var sistemaResponsavelCadastro = Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI;
+
             //o cliente existe então vamos converter os dados do cliente para DadosCliente e EnderecoCadastral
             Cliente.Dados.DadosClienteCadastroDados dadosCliente =
                 EnderecoCadastralClienteMagentoDto.DadosClienteDeEnderecoCadastralClienteMagentoDto(pedidoMagento.EnderecoCadastralCliente,
                 orcamentistaindicador_vendedor_loja.loja,
-                orcamentistaindicador_vendedor_loja.vendedor, configuracaoApiMagento.DadosOrcamentista.Orcamentista);
+                orcamentistaindicador_vendedor_loja.vendedor, configuracaoApiMagento.DadosOrcamentista.Orcamentista,
+                id_cliente);
 
             Cliente.Dados.EnderecoCadastralClientePrepedidoDados enderecoCadastral =
                 EnderecoCadastralClienteMagentoDto.EnderecoCadastralClientePrepedidoDados_De_EnderecoCadastralClienteMagentoDto(pedidoMagento.EnderecoCadastralCliente);
@@ -179,16 +193,17 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
                 FormaPagtoCriacaoMagentoDto.FormaPagtoCriacaoDados_De_FormaPagtoCriacaoMagentoDto(pedidoMagento.FormaPagtoCriacao,
                 configuracaoApiMagento, pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem);
 
-            List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados> listaProdutos =
+            List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> listaProdutos =
                 (await ConverterProdutosMagento(pedidoMagento, formaPagtoCriacao, configuracaoApiMagento.DadosOrcamentista.Loja, lstErros)).ToList();
 
             //Precisamos buscar os produtos para poder incluir os valores para incluir na classe de produto
-            Pedido.Dados.Criacao.PedidoCriacaoDados pedidoDadosCriacao =
+            var pedidoDadosCriacao =
                 PedidoMagentoDto.PedidoDadosCriacaoDePedidoMagentoDto(dadosCliente, enderecoCadastral, enderecoEntrega,
                 listaProdutos, formaPagtoCriacao, pedidoMagento.VlTotalDestePedido, pedidoMagento,
                 limiteArredondamento,
-                maxErroArredondamento, pedido_bs_x_ac, marketplace_codigo_origem, pedido_bs_x_marketplace,
-                sistemaResponsavelCadastro);
+                maxErroArredondamento,
+                sistemaResponsavelCadastro,
+                lstErros);
 
             return await Task.FromResult(pedidoDadosCriacao);
         }

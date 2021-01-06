@@ -163,10 +163,11 @@ Ao cadastrar o cliente:
 
         public static Cliente.Dados.DadosClienteCadastroDados DadosClienteDeEnderecoCadastralClienteMagentoDto(
             EnderecoCadastralClienteMagentoDto dadosClienteMagento, string loja,
-            string vendedor, string orcamentista)
+            string vendedor, string orcamentista, string id_cliente)
         {
             var ret = new Cliente.Dados.DadosClienteCadastroDados()
             {
+                Id = id_cliente,
                 Indicador_Orcamentista = orcamentista,
                 Loja = loja,
                 Vendedor = vendedor,

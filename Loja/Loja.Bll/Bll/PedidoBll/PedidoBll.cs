@@ -3381,12 +3381,19 @@ namespace Loja.Bll.PedidoBll
         {
             pedidoDto.DadosCliente.Loja = lojaUsuario;
             PedidoCriacaoDados pedidoCriacaoDados;
+            List<string> lstErros = new List<string>();
             pedidoCriacaoDados = PedidoDto.PedidoCriacaoDados_De_PedidoDto(pedidoDto, lojaUsuario, usuario, vendedorExterno,
                 0.1M, 0.1M,
                 null, null, null,
-                InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);
-            Pedido.Dados.Criacao.PedidoCriacaoRetornoDados pedidoCriacaoRetornoDados = await pedidoCriacao.CadastrarPedido(pedidoCriacaoDados,
-                InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);
+                InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS,
+                lstErros);
+            if (lstErros.Any())
+            {
+                var ret = new Pedido.Dados.Criacao.PedidoCriacaoRetornoDados();
+                ret.ListaErros.AddRange(lstErros);
+                return ret;
+            }
+            Pedido.Dados.Criacao.PedidoCriacaoRetornoDados pedidoCriacaoRetornoDados = await pedidoCriacao.CadastrarPedido(pedidoCriacaoDados);
 
             return pedidoCriacaoRetornoDados;
         }

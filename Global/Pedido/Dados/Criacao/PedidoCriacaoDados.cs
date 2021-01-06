@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Cliente.Dados;
+using Prepedido.Dados.DetalhesPrepedido;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,85 +11,61 @@ namespace Pedido.Dados.Criacao
 {
     public class PedidoCriacaoDados
     {
-        public PedidoCriacaoDados()
+        public PedidoCriacaoDados(PedidoCriacaoAmbienteDados ambiente, PedidoCriacaoConfiguracaoDados configuracao, PedidoCriacaoClienteDados cliente, EnderecoCadastralClientePrepedidoDados enderecoCadastralCliente, EnderecoEntregaClienteCadastroDados enderecoEntrega, List<PedidoCriacaoProdutoDados> listaProdutos, PedidoCriacaoValorDados valor, FormaPagtoCriacaoDados formaPagtoCriacao, DetalhesPrepedidoDados detalhesPedido, PedidoCriacaoMarketplaceDados marketplace)
         {
+            Ambiente = ambiente ?? throw new ArgumentNullException(nameof(ambiente));
+            Configuracao = configuracao ?? throw new ArgumentNullException(nameof(configuracao));
+            Cliente = cliente ?? throw new ArgumentNullException(nameof(cliente));
+            EnderecoCadastralCliente = enderecoCadastralCliente ?? throw new ArgumentNullException(nameof(enderecoCadastralCliente));
+            EnderecoEntrega = enderecoEntrega ?? throw new ArgumentNullException(nameof(enderecoEntrega));
+            ListaProdutos = listaProdutos ?? throw new ArgumentNullException(nameof(listaProdutos));
+            Valor = valor ?? throw new ArgumentNullException(nameof(valor));
+            FormaPagtoCriacao = formaPagtoCriacao ?? throw new ArgumentNullException(nameof(formaPagtoCriacao));
+            DetalhesPedido = detalhesPedido ?? throw new ArgumentNullException(nameof(detalhesPedido));
+            Marketplace = marketplace ?? throw new ArgumentNullException(nameof(marketplace));
         }
 
-        //Armazena a loja do usuário logado
-        public string LojaUsuario { get; set; }
+        public PedidoCriacaoAmbienteDados Ambiente { get; }
 
-        //Armazena nome do usuário logado
-        public string Usuario { get; set; }
+        public PedidoCriacaoConfiguracaoDados Configuracao { get; }
 
         //Armazena os dados cadastrados do cliente
-        public Cliente.Dados.DadosClienteCadastroDados DadosCliente { get; set; }
+        public PedidoCriacaoClienteDados Cliente { get; }
 
         //Armazena os dados do cliente para o Pedido
-        public Cliente.Dados.EnderecoCadastralClientePrepedidoDados EnderecoCadastralCliente { get; set; }
+        public Cliente.Dados.EnderecoCadastralClientePrepedidoDados EnderecoCadastralCliente { get; }
 
         //Armazena os dados de endereço de entrega
-        public Cliente.Dados.EnderecoEntregaClienteCadastroDados EnderecoEntrega { get; set; }
+        public Cliente.Dados.EnderecoEntregaClienteCadastroDados EnderecoEntrega { get; }
 
         //Armazena os dados dos produtos selecionados
-        public List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados> ListaProdutos { get; set; }
+        public List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> ListaProdutos { get; }
+
+        //totais e detalhes do RA
+        public PedidoCriacaoValorDados Valor { get; }
 
         //Armazena os dados da forma de pagto selecionado
-        public Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados FormaPagtoCriacao { get; set; }
+        public Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados FormaPagtoCriacao { get; }
 
         //Armazena os dados de entrega imediata, obs, instalador instala, bem de uso comum
-        public Prepedido.Dados.DetalhesPrepedido.DetalhesPrepedidoDados DetalhesPedido { get; set; }
+        public Prepedido.Dados.DetalhesPrepedido.DetalhesPrepedidoDados DetalhesPedido { get; }
 
-        //Flag para saber se tem indicador selecionado 
-        public bool ComIndicador { get; set; }
-
-        //Armazena o nome do indicador selecionado
-        public string NomeIndicador { get; set; }
-
-        //Armazena o percentual de comissão para o indicador selecionado
-        public float PercRT { get; set; }
-
-        //Armazena "S" ou "N" para caso de o indicador selecionado permita RA
-        public bool OpcaoPossuiRa { get; set; }
-
-        //Armazena o id do centro de distribuição selecionado manualmente
-        //Obs: armazena "0" caso seja automático
-        public int IdNfeSelecionadoManual { get; set; }
-
-        //Armazena se é venda externa
-        public bool Venda_Externa { get; set; }
-
-        //Flag para saber se o cliente aceitou finalizar o pedido mesmo com produto sem estoque
-        public bool OpcaoVendaSemEstoque { get; set; }
-
-        //Armazena o valor total do pedido
-        public decimal Vl_total { get; set; }
-
-        //Armazena o valor total de pedido com RA
-        //Caso o indicador selecionado permita RA esse campo deve receber o valor total do Pedido com RA
-        public decimal Vl_total_NF { get; set; }
-
-        public short PermiteRAStatus { get; set; }
-
-        public decimal LimiteArredondamento { get; set; }
-        public decimal MaxErroArredondamento { get; set; }
-        public string Pedido_bs_x_ac { get; set; }
-        public string Marketplace_codigo_origem { get; set; }
-        public string Pedido_bs_x_marketplace { get; set; }
-        public InfraBanco.Constantes.Constantes.CodSistemaResponsavel SistemaResponsavelCadastro { get; set; }
-
+        //campos do marketplace
+        public PedidoCriacaoMarketplaceDados Marketplace { get; }
 
         public static Prepedido.Dados.DetalhesPrepedido.PrePedidoDados PrePedidoDadosDePedidoCriacaoDados(PedidoCriacaoDados pedido)
         {
             Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prepedido = new Prepedido.Dados.DetalhesPrepedido.PrePedidoDados();
-            prepedido.DadosCliente = pedido.DadosCliente;
-            prepedido.ListaProdutos = Pedido.Dados.Criacao.PedidoProdutoPedidoDados.PrepedidoProdutoPrepedidoDadosDePedidoProdutoPedidoDados(pedido.ListaProdutos);
+            prepedido.DadosCliente = global::Cliente.Dados.DadosClienteCadastroDados.DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(pedido.EnderecoCadastralCliente,
+                pedido.Ambiente.Indicador_Orcamentista, pedido.Ambiente.Loja, "", null, pedido.Cliente.Id_cliente);
+            prepedido.ListaProdutos = Pedido.Dados.Criacao.PedidoCriacaoProdutoDados.PrepedidoProdutoPrepedidoDados_De_PedidoCriacaoProdutoDados(pedido.ListaProdutos);
             prepedido.FormaPagtoCriacao = pedido.FormaPagtoCriacao;
             prepedido.EnderecoEntrega = pedido.EnderecoEntrega;
             prepedido.EnderecoCadastroClientePrepedido = pedido.EnderecoCadastralCliente;
             prepedido.DetalhesPrepedido = pedido.DetalhesPedido;
-            prepedido.Vl_total = pedido.Vl_total;
-            prepedido.Vl_total_NF = pedido.Vl_total_NF;
-            prepedido.PermiteRAStatus = pedido.PermiteRAStatus;
+            prepedido.Vl_total = pedido.Valor.Vl_total;
+            prepedido.Vl_total_NF = pedido.Valor.Vl_total_NF;
+            prepedido.PermiteRAStatus = pedido.Valor.PermiteRAStatus;
 
             return prepedido;
         }

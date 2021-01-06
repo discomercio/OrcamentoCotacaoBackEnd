@@ -48,5 +48,5 @@ Scenario: Validar CNPJ
 Scenario: Validar EnderecoCadastralCliente.Endereco_tipo_pessoa
 	When Pedido base
 	And  Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = "XX"
-	Then Erro "Tipo de cliente não é PF nem PJ."
+	Then Exceção "InfraBanco.Constantes.Constantes.TipoPessoa: tipo desconhecido: XX"
 
