@@ -69,7 +69,7 @@ export class PrepedidoDesktopComponent extends TelaDesktopBaseComponent implemen
         // return;
       }
       else {
-        debugger;
+        
         let emails: string = "";
         if (this.prepedidoDto.DadosCliente.Tipo == this.constantes.ID_PF) {
           if ((!!enderecoEntregaDto.EndEtg_email) ||
