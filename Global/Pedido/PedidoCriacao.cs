@@ -72,6 +72,7 @@ namespace Pedido
 
             //vamos validar os dados do cliente que esta vindo no pedido
             //alterar forma de validacao, a validacao dos dados cadastrais é diferente
+//todo: verificar se ainda precisamos disto, devemos chamar uma rotina para validar o endereço cadastral e não um cliente novo
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await clienteBll.ListarBancosCombo()).ToList();
             var tclienteSexoNascimento = (from c in clienteBll.BuscarTcliente(pedido.Cliente.Cnpj_Cpf) select new { c.Sexo, c.Dt_Nasc }).FirstOrDefault();
             var tclienteSexo = "M";

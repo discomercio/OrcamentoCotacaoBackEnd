@@ -540,21 +540,12 @@ namespace Prepedido
                 {
                     if (!string.IsNullOrEmpty(endEntrega.EndEtg_ie))
                     {
-                        if ((endEntrega.EndEtg_tipo_pessoa == Constantes.ID_PF &&
-                            endEntrega.EndEtg_produtor_rural_status == (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM) ||
-                            (endEntrega.EndEtg_tipo_pessoa == Constantes.ID_PJ &&
-                            endEntrega.EndEtg_contribuinte_icms_status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) ||
-                            (endEntrega.EndEtg_tipo_pessoa == Constantes.ID_PJ &&
-                            endEntrega.EndEtg_contribuinte_icms_status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO &&
-                            !string.IsNullOrEmpty(endEntrega.EndEtg_ie)))
-                        {
                             Cliente.ValidacoesClienteBll.VerificarInscricaoEstadualValida(endEntrega.EndEtg_ie,
                             endEntrega.EndEtg_uf, lstErros, flagMsg_IE_Cadastro_PF);
                         }
                     }
                 }
             }
-        }
 
         private void ValidarDadosPessoaEnderecoEntrega_PJ(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEtg, List<string> lstErros)
         {

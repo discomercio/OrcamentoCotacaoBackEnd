@@ -24,7 +24,7 @@ namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
 
 Por isso, temos o MaxLength 800 aqui
 */
-        [MaxLength(60)]
+        [MaxLength(800)]
         public string? Endereco_complemento { get; set; }
 
         [Required]

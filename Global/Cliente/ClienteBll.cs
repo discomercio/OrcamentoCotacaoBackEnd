@@ -572,10 +572,6 @@ namespace Cliente
             return lstRefComercial;
         }
 
-        /*
-         * Incluímos a var "string usuarioCadastro" para permitir que a ApiUnis possa cadastrar outro
-         * usuário ao invés do Orçamentista
-         */
         public async Task<IEnumerable<string>> CadastrarCliente(Cliente.Dados.ClienteCadastroDados clienteCadastroDados, string indicador,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             string usuario_cadastro)
