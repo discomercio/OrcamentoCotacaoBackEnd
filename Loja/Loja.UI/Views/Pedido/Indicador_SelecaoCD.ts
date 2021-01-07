@@ -208,7 +208,7 @@ function ValidarCamposIndicador(): boolean {
             if (flagConfirmaIndicadorDiferente == undefined || !flagConfirmaIndicadorDiferente) {
 
                 let msg = "O indicador selecionado é diferente do indicador que consta no cadastro deste cliente. " +
-                    "\n\n##################################################\nFAVOR COMUNICAR AO GERENTE!!\n##################################################\n\nContinua mesmo assim ? ";
+                    "\n\n##################################################\nFAVOR COMUNICAR AO GERENTE!\n##################################################\n\nContinua mesmo assim ? ";
                 //afazer:modal de continuar para mostrar o continuar
 
                 //$("#msg").append(msg);

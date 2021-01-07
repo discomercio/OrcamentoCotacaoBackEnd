@@ -788,7 +788,7 @@ namespace UtilsGlobais
 
             var controle = await queryControle.FirstOrDefaultAsync();
             if (controle == null)
-                throw new ArgumentException($"Não existe registro na tabela de controle para poder gerar este NSU!! id_nsu:{id_nsu}");
+                throw new ArgumentException($"Não existe registro na tabela de controle para poder gerar este NSU! id_nsu:{id_nsu}");
 
             int n_nsu = -1;
             if (!string.IsNullOrEmpty(controle.Nsu))
@@ -1034,15 +1034,10 @@ namespace UtilsGlobais
             return data;
         }
 
-        public static bool ValidarEmail(string email, List<string> lstErros)
+        public static void ValidarEmail(string email, List<string> lstErros)
         {
-            bool retorno;
-            retorno = new EmailAddressAttribute().IsValid(email);
-
-            if (!retorno)
+            if (!new EmailAddressAttribute().IsValid(email))
                 lstErros.Add("E-mail inválido!");
-
-            return retorno;
         }
 
         public static async Task<int?> VerificarTelefoneRepetidos(string ddd, string tel, string cpf_cnpj, string tipoCliente,

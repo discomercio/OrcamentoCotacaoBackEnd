@@ -91,7 +91,7 @@ namespace Pedido
                 tclienteSexo, tclienteNascimento, pedido.Cliente.Id_cliente);
             await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDados, null, null, pedidoRetorno.ListaErros,
                 contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, pedido.Cliente.Tipo.PessoaFisica(),
-                pedido.Configuracao.SistemaResponsavelCadastro);
+                pedido.Configuracao.SistemaResponsavelCadastro, false);
             if (pedidoRetorno.ListaErros.Count > 0)
                 return pedidoRetorno;
 

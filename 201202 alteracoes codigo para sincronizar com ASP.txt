@@ -3,20 +3,20 @@ Fazendo a sincronizacação do ASP em 02/12/2020
 alterações do código que precisamos incorporar:
 
 
-angular e apiunis:
-- se colocar um prepedido para PF que não tenha sexo cadastrado, precisa aceitar o prepedido (o cliente pode ter sido cadastrado pelo magento)
+angular e apiunis e loja:
+FEITO - se colocar um prepedido para PF que não tenha sexo cadastrado, precisa aceitar o prepedido (o cliente pode ter sido cadastrado pelo magento)
 
 
 angular e apiunis e magento e loja:
-Limitar os tamanhos destes campos:
+FEITO - Limitar os tamanhos destes campos:
 	Const MAX_TAMANHO_CAMPO_ENDERECO_NUMERO = 60
 	Const MAX_TAMANHO_CAMPO_ENDERECO_COMPLEMENTO = 60
 	Const MAX_TAMANHO_CAMPO_ENDERECO_BAIRRO = 60
 	Const MAX_TAMANHO_CAMPO_ENDERECO_CIDADE = 60
 No caso da Unis, dar erro
 
-
-No pedido:
+OBS: Isso é feito apenas para limitar o textarea na tela em 2 linhas e se tiver mais de 2 linha ele faz a rolagem
+FEITO - No pedido:
 '   NÚMERO DE LINHAS DO CAMPO "TEXTO CONSTAR NF" DO PEDIDO
     Const MAX_LINHAS_NF_TEXTO_CONSTAR = 2
 	Const MAX_TAM_NF_TEXTO = 800
@@ -29,13 +29,15 @@ e ficou:
 	" AND (hora >= '" & formata_hora_hhnnss(Now-converte_min_to_dec(5))& "')" & _
 
 
-Para verificar o pedido repetido, comparar os dados cadastrais do pedido e não os dados da t_cliente.
+enviei para o Edu incluir para não ter problema no merge
+- Para verificar o pedido repetido, comparar os dados cadastrais do pedido e não os dados da t_cliente.
 
-Tirar duas exclamações das mensagens de erro.
+FEITO - Tirar duas exclamações das mensagens de erro.
 
+JA ESTAMOS MONTANDO EM UMA LISTA
 mudar a rotina monta_descricao_forma_pagto (agora ela quebra linhas, verificar onde é usado)
 
-
+FEITO
 Garantir os seguintes blocos:
 
 Na criação do pedido:

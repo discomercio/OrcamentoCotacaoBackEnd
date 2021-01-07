@@ -269,7 +269,7 @@ namespace Prepedido.PedidoVisualizacao
             return cadastroCliente;
         }
 
-        private async Task<string> ObterRazaoSocial_Nome_Loja(string loja)
+        public async Task<string> ObterRazaoSocial_Nome_Loja(string loja)
         {
             var db = contextoProvider.GetContextoLeitura();
 
