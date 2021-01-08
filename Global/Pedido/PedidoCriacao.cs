@@ -292,10 +292,11 @@ namespace Pedido
                 });
             };
 
-            await pedidoBll.VerificarSePedidoExite(v_item, pedido, pedido.Ambiente.Indicador_Orcamentista, pedidoRetorno.ListaErros);
+            await new Pedido.PedidoRepetidoBll(contextoProvider).PedidoJaCadastrado(pedido, pedidoRetorno.ListaErros);
 
             //se tiver erro vamos retornar
-            if (pedidoRetorno.ListaErros.Count > 0) return pedidoRetorno;
+            if (pedidoRetorno.ListaErros.Count > 0) 
+                return pedidoRetorno;
 
             //busca produtos , busca percentual custo finananceiro, calcula desconto 716 ate 824
             //desc_dado_arredondado
