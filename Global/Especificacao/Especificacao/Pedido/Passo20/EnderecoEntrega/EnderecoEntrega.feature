@@ -6,7 +6,7 @@ Background: Pedido base com endereço de entrega (pedido e prepedido)
 	Given Pedido base com endereço de entrega
 
 	#na API magneto sempre usa o endereço de entrega como endereço cadastral em PF
-	#todo: tirar esta linha e testar na api magento
+	#está sendo testado em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf_Obrigatorios.feature
 	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 
 	# Configuração
@@ -17,7 +17,7 @@ Background: Pedido base com endereço de entrega (pedido e prepedido)
 	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" mapear erro "Preencha a cidade do endereço de entrega!!" para "PREENCHA A CIDADE DO ENDEREÇO DE ENTREGA."
 	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" mapear erro "UF inválida no endereço de entrega!!" para "UF INVÁLIDA NO ENDEREÇO DE ENTREGA."
 	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" mapear erro "CEP inválido no endereço de entrega!!" para "CEP INVÁLIDO NO ENDEREÇO DE ENTREGA."
-	#Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Informe o CEP do endereço de entrega!!" é "CEP INVÁLIDO NO ENDEREÇO DE ENTREGA."
+#Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Informe o CEP do endereço de entrega!!" é "CEP INVÁLIDO NO ENDEREÇO DE ENTREGA."
 
 Scenario: Validação do endereço
 #loja/ClienteEdita.asp
@@ -143,6 +143,21 @@ Scenario: EndEtg_cidade errado
 @ignore
 #todo: afazer: clocar estes testes. Tem que ver como inicializa o CEP
 Scenario: EndEtg_cidade não no IBGE
+	#if rb_end_entrega = "S" then
+	#	if Not consiste_municipio_IBGE_ok(EndEtg_cidade, EndEtg_uf, s_lista_sugerida_municipios, msg_erro) then
+	#		if alerta <> "" then alerta = alerta & "<br><br>" & String(80,"=") & "<br><br>"
+	#		if msg_erro <> "" then
+	#			alerta = alerta & msg_erro
+	#		else
+	#			alerta = alerta & "Endereço de entrega: município '" & EndEtg_cidade & "' não consta na relação de municípios do IBGE para a UF de '" & EndEtg_uf & "'!!"
+	#			if s_lista_sugerida_municipios <> "" then
+	#				alerta = alerta & "<br>" & _
+	#									"Localize o município na lista abaixo e verifique se a grafia está correta!!"
+	#				end if
+	#			end if
+	#		end if
+	#	end if
+	#end if
 	When Informo "EndEtg_cep" = "68912350"
 	When Informo "EndEtg_cidade" = "Abacate da Pedreira"
 	Then Erro "Cidade não está no IBGE (acertar a mensagem)"

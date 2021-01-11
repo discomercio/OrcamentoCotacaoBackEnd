@@ -130,6 +130,8 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
                 return;
             if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, pedidoDto.DadosCliente))
                 return;
+            if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, pedidoDto.DetalhesNF))
+                return;
             pedidoDto.EnderecoEntrega ??= new global::Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro();
             if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, pedidoDto.EnderecoEntrega))
                 return;

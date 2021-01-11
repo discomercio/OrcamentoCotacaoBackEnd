@@ -81,17 +81,18 @@ Scenario: comprovar que salva todos os campos
 	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "29756194804", verificar campo "ramal_com_2" = "7"
 
 
-@ignore
-Scenario: validar emails
+Scenario: validar email
 	Given Pedido base
 	When Informo "OutroEndereco" = "true"
 	When Informo "EndEtg_email" = "email sem arroba"
-	Then Erro "e-mail inválido"
+	Then Erro "E-mail inválido!"
 
+@ignore
+Scenario: validar email xml
 	Given Limpar tabela "t_CLIENTE"
 	Given Pedido base
 	When Informo "EndEtg_email_xml" = "email sem arroba"
-	Then Erro "e-mail inválido"
+	Then Erro "E-mail inválido!"
 
 @ignore
 Scenario: validar telefones - especificação

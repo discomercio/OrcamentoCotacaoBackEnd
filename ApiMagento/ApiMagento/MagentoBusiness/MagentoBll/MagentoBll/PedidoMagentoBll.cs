@@ -71,16 +71,14 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             if (resultado.ListaErros.Count > 0)
                 return resultado;
 
-            await pedidoMagentoClienteBll.CadastrarClienteSeNaoExistir(pedidoMagento, resultado.ListaErros, orcamentistaindicador_vendedor_loja, usuario);
+            string idCliente = await pedidoMagentoClienteBll.CadastrarClienteSeNaoExistir(pedidoMagento, resultado.ListaErros, orcamentistaindicador_vendedor_loja, usuario);
             if (resultado.ListaErros.Count > 0)
                 return resultado;
 
             //estamos criando o pedido com os dados do cliente que vem e não com os dados do cliente que esta na base
             //ex: se o cliente já cadastrado, utilizamos o que vem em PedidoMagentoDto.EnderecoCadastralClienteMagentoDto
             Pedido.Dados.Criacao.PedidoCriacaoDados? pedidoDados = await CriarPedidoCriacaoDados(pedidoMagento,
-                orcamentistaindicador_vendedor_loja, resultado.ListaErros,
-                await clienteBll.BuscarIdCliente(pedidoMagento.Cnpj_Cpf)
-                );
+                orcamentistaindicador_vendedor_loja, resultado.ListaErros, idCliente);
             if (resultado.ListaErros.Count != 0)
                 return resultado;
             if (pedidoDados == null)
@@ -138,8 +136,8 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             //preciso obter a qtde de parcelas e a sigla de pagto
             var qtdeParcelas = PrepedidoBll.ObterCustoFinancFornecQtdeParcelasDeFormaPagto(formaPagtoCriacao);
             var siglaParc = prepedidoBll.ObterSiglaFormaPagto(formaPagtoCriacao);
-            List<Produto.Dados.CoeficienteDados> lstCoeficiente = (await validacoesPrepedidoBll.MontarListaCoeficiente(lstFornec, qtdeParcelas,
-                prepedidoBll.ObterSiglaFormaPagto(formaPagtoCriacao))).ToList();
+            List<Produto.Dados.CoeficienteDados> lstCoeficiente = (await validacoesPrepedidoBll.MontarListaCoeficiente(
+                lstFornec, qtdeParcelas, siglaParc)).ToList();
 
             List<string> lstProdutosDistintos = pedidoMagento.ListaProdutos.Select(x => x.Produto).Distinct().ToList();
             List<Produto.Dados.ProdutoDados> lstProdutosUsados = (await produtoGeralBll.BuscarProdutosEspecificos(loja, lstProdutosDistintos)).ToList();

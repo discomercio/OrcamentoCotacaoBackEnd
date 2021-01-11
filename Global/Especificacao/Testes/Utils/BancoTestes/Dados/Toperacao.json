@@ -1,0 +1,2354 @@
+﻿[
+  {
+    "id": 10100,
+    "modulo": "CENTR",
+    "tipo_operacao": "LOJAS",
+    "ordenacao": 10000,
+    "descricao": "Acesso a Todas as Lojas",
+    "st_inativo": 0
+  },
+  {
+    "id": 10200,
+    "modulo": "CENTR",
+    "tipo_operacao": "CONS",
+    "ordenacao": 100000,
+    "descricao": "Consultar Pedidos Anteriores do Cliente",
+    "st_inativo": 0
+  },
+  {
+    "id": 10300,
+    "modulo": "CENTR",
+    "tipo_operacao": "CONS",
+    "ordenacao": 110000,
+    "descricao": "Consultar Pedido",
+    "st_inativo": 0
+  },
+  {
+    "id": 10400,
+    "modulo": "CENTR",
+    "tipo_operacao": "CONS",
+    "ordenacao": 120000,
+    "descricao": "Consultar Orçamento",
+    "st_inativo": 0
+  },
+  {
+    "id": 10500,
+    "modulo": "CENTR",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 200000,
+    "descricao": "Editar Pedido",
+    "st_inativo": 0
+  },
+  {
+    "id": 10600,
+    "modulo": "CENTR",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 210000,
+    "descricao": "Editar Item do Pedido",
+    "st_inativo": 0
+  },
+  {
+    "id": 10700,
+    "modulo": "CENTR",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 225000,
+    "descricao": "Editar Orçamento",
+    "st_inativo": 0
+  },
+  {
+    "id": 10800,
+    "modulo": "CENTR",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 230000,
+    "descricao": "Editar Item do Orçamento",
+    "st_inativo": 0
+  },
+  {
+    "id": 10900,
+    "modulo": "CENTR",
+    "tipo_operacao": "PAGTO",
+    "ordenacao": 300000,
+    "descricao": "Pagamento Parcial",
+    "st_inativo": 0
+  },
+  {
+    "id": 11000,
+    "modulo": "CENTR",
+    "tipo_operacao": "PAGTO",
+    "ordenacao": 310000,
+    "descricao": "Pagamento Quitação",
+    "st_inativo": 0
+  },
+  {
+    "id": 11100,
+    "modulo": "CENTR",
+    "tipo_operacao": "PERDA",
+    "ordenacao": 400000,
+    "descricao": "Cadastrar Perda",
+    "st_inativo": 0
+  },
+  {
+    "id": 11200,
+    "modulo": "CENTR",
+    "tipo_operacao": "DESC",
+    "ordenacao": 410000,
+    "descricao": "Cadastrar Senha Desconto",
+    "st_inativo": 0
+  },
+  {
+    "id": 11300,
+    "modulo": "CENTR",
+    "tipo_operacao": "SEP",
+    "ordenacao": 500000,
+    "descricao": "Separação de Mercadorias",
+    "st_inativo": 0
+  },
+  {
+    "id": 11400,
+    "modulo": "CENTR",
+    "tipo_operacao": "ENTRG",
+    "ordenacao": 510000,
+    "descricao": "Entrega de Mercadorias",
+    "st_inativo": 0
+  },
+  {
+    "id": 11500,
+    "modulo": "CENTR",
+    "tipo_operacao": "ENTRG",
+    "ordenacao": 520000,
+    "descricao": "Agendamento da Entrega",
+    "st_inativo": 0
+  },
+  {
+    "id": 11600,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 600000,
+    "descricao": "Cadastro de Perfil",
+    "st_inativo": 0
+  },
+  {
+    "id": 11700,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 610000,
+    "descricao": "Cadastro de Usuários",
+    "st_inativo": 0
+  },
+  {
+    "id": 11800,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 620000,
+    "descricao": "Cadastro de Lojas",
+    "st_inativo": 0
+  },
+  {
+    "id": 11900,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 630000,
+    "descricao": "Cadastro de Grupo de Lojas",
+    "st_inativo": 0
+  },
+  {
+    "id": 12000,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 640000,
+    "descricao": "Cadastro de Fabricantes",
+    "st_inativo": 0
+  },
+  {
+    "id": 12100,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 650000,
+    "descricao": "Cadastro de Transportadoras",
+    "st_inativo": 0
+  },
+  {
+    "id": 12200,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 660000,
+    "descricao": "Cadastro de Veículos de Mídia",
+    "st_inativo": 0
+  },
+  {
+    "id": 12300,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 670000,
+    "descricao": "Cadastro do Quadro de Avisos",
+    "st_inativo": 0
+  },
+  {
+    "id": 12400,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 680000,
+    "descricao": "Opções de Pagamento para Visanet",
+    "st_inativo": 0
+  },
+  {
+    "id": 12500,
+    "modulo": "CENTR",
+    "tipo_operacao": "ESTOQ",
+    "ordenacao": 700000,
+    "descricao": "Entrada de Mercadorias no Estoque",
+    "st_inativo": 0
+  },
+  {
+    "id": 12600,
+    "modulo": "CENTR",
+    "tipo_operacao": "ESTOQ",
+    "ordenacao": 710000,
+    "descricao": "Entrada Especial no Estoque",
+    "st_inativo": 0
+  },
+  {
+    "id": 12700,
+    "modulo": "CENTR",
+    "tipo_operacao": "ESTOQ",
+    "ordenacao": 720000,
+    "descricao": "Edita Entrada no Estoque",
+    "st_inativo": 0
+  },
+  {
+    "id": 12800,
+    "modulo": "CENTR",
+    "tipo_operacao": "ESTOQ",
+    "ordenacao": 730000,
+    "descricao": "Conversor de Kits",
+    "st_inativo": 0
+  },
+  {
+    "id": 12900,
+    "modulo": "CENTR",
+    "tipo_operacao": "ESTOQ",
+    "ordenacao": 740000,
+    "descricao": "Transferência\/Movimentação do Estoque (Perfil Básico)",
+    "st_inativo": 0
+  },
+  {
+    "id": 12950,
+    "modulo": "CENTR",
+    "tipo_operacao": "ESTOQ",
+    "ordenacao": 742000,
+    "descricao": "Transferência\/Movimentação do Estoque (Perfil Avançado)",
+    "st_inativo": 0
+  },
+  {
+    "id": 13000,
+    "modulo": "CENTR",
+    "tipo_operacao": "ESTOQ",
+    "ordenacao": 750000,
+    "descricao": "Transf entre Pedidos: Prod Estoq Vendido",
+    "st_inativo": 0
+  },
+  {
+    "id": 13100,
+    "modulo": "CENTR",
+    "tipo_operacao": "QAVIS",
+    "ordenacao": 800000,
+    "descricao": "Ler Quadro de Avisos (somente não lidos)",
+    "st_inativo": 0
+  },
+  {
+    "id": 13200,
+    "modulo": "CENTR",
+    "tipo_operacao": "QAVIS",
+    "ordenacao": 810000,
+    "descricao": "Ler Quadro de Avisos (todos)",
+    "st_inativo": 0
+  },
+  {
+    "id": 13300,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7100000,
+    "descricao": "Relatório: Multicritério de Pedidos (Analítico)",
+    "st_inativo": 0
+  },
+  {
+    "id": 13400,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7110000,
+    "descricao": "Relatório: Multicritério de Orçamentos",
+    "st_inativo": 0
+  },
+  {
+    "id": 13500,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7120000,
+    "descricao": "Relatório: Produtos Vendidos",
+    "st_inativo": 0
+  },
+  {
+    "id": 13600,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7130000,
+    "descricao": "Relatório: Pedidos Colocados no Mês",
+    "st_inativo": 0
+  },
+  {
+    "id": 13700,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7140000,
+    "descricao": "Relatório: Vendas com Desconto Superior",
+    "st_inativo": 0
+  },
+  {
+    "id": 13800,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7150000,
+    "descricao": "Relatório: Comissão aos Vendedores",
+    "st_inativo": 0
+  },
+  {
+    "id": 13900,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7160000,
+    "descricao": "Relatório: Faturamento Vendedores Ext",
+    "st_inativo": 0
+  },
+  {
+    "id": 14000,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7170000,
+    "descricao": "Relatório: Comissão Loja por Indicação",
+    "st_inativo": 0
+  },
+  {
+    "id": 14100,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7180000,
+    "descricao": "Relatório: Análise de Pedidos",
+    "st_inativo": 0
+  },
+  {
+    "id": 14200,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7190000,
+    "descricao": "Relatório: Separação",
+    "st_inativo": 0
+  },
+  {
+    "id": 14300,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7200000,
+    "descricao": "Relatório: Estoque (Visão Básica) [Antigo]",
+    "st_inativo": 0
+  },
+  {
+    "id": 14400,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7210000,
+    "descricao": "Relatório: Estoque (Visão Completa) [Antigo]",
+    "st_inativo": 0
+  },
+  {
+    "id": 14500,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7220000,
+    "descricao": "Relatório: Produtos Pendentes",
+    "st_inativo": 0
+  },
+  {
+    "id": 14600,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7230000,
+    "descricao": "Relatório: Devolução de Produtos",
+    "st_inativo": 0
+  },
+  {
+    "id": 14700,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7240000,
+    "descricao": "Relatório: Produtos Split Possível",
+    "st_inativo": 0
+  },
+  {
+    "id": 14800,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7250000,
+    "descricao": "Relatório: Compras",
+    "st_inativo": 0
+  },
+  {
+    "id": 14900,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7260000,
+    "descricao": "Relatório: Estoque de Venda Crítico",
+    "st_inativo": 0
+  },
+  {
+    "id": 15000,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7270000,
+    "descricao": "Relatório: Meio de Divulgação",
+    "st_inativo": 0
+  },
+  {
+    "id": 15100,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7280000,
+    "descricao": "Relatório: Log Estoque",
+    "st_inativo": 0
+  },
+  {
+    "id": 15150,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7285000,
+    "descricao": "Relatório: Resumo de Operações Entre Estoques",
+    "st_inativo": 0
+  },
+  {
+    "id": 15200,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7290000,
+    "descricao": "Relatório: Faturamento [Antigo]",
+    "st_inativo": 0
+  },
+  {
+    "id": 15300,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7300000,
+    "descricao": "Relatório: Vendas",
+    "st_inativo": 0
+  },
+  {
+    "id": 15400,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7310000,
+    "descricao": "Relatório: Registros Entrada Estoque",
+    "st_inativo": 0
+  },
+  {
+    "id": 15500,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7320000,
+    "descricao": "Relatório: Romaneio de Entrega",
+    "st_inativo": 0
+  },
+  {
+    "id": 15600,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7330000,
+    "descricao": "Relatório: Contagem de Estoque",
+    "st_inativo": 0
+  },
+  {
+    "id": 15700,
+    "modulo": "CENTR",
+    "tipo_operacao": "CRED",
+    "ordenacao": 320000,
+    "descricao": "Editar Análise de Crédito do Pedido",
+    "st_inativo": 0
+  },
+  {
+    "id": 15800,
+    "modulo": "CENTR",
+    "tipo_operacao": "CRED",
+    "ordenacao": 330000,
+    "descricao": "Cadastrar Valor Aprov Auto Anál. Crédito",
+    "st_inativo": 0
+  },
+  {
+    "id": 15900,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7340000,
+    "descricao": "Relatório: Análise de Crédito",
+    "st_inativo": 0
+  },
+  {
+    "id": 16000,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 613000,
+    "descricao": "Cadastro de Orçamentistas \/ Indicadores",
+    "st_inativo": 0
+  },
+  {
+    "id": 16100,
+    "modulo": "CENTR",
+    "tipo_operacao": "COMIS",
+    "ordenacao": 530000,
+    "descricao": "Comissão Paga",
+    "st_inativo": 0
+  },
+  {
+    "id": 16200,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7155000,
+    "descricao": "Relatório: Pedidos Indicadores",
+    "st_inativo": 0
+  },
+  {
+    "id": 16300,
+    "modulo": "CENTR",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 215000,
+    "descricao": "Editar RT e RA",
+    "st_inativo": 0
+  },
+  {
+    "id": 16400,
+    "modulo": "CENTR",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 217000,
+    "descricao": "Editar Pedido: Obs I",
+    "st_inativo": 0
+  },
+  {
+    "id": 16500,
+    "modulo": "CENTR",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 217500,
+    "descricao": "Editar Pedido: Obs II",
+    "st_inativo": 0
+  },
+  {
+    "id": 16600,
+    "modulo": "CENTR",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 218000,
+    "descricao": "Editar Pedido: Forma de Pagamento",
+    "st_inativo": 0
+  },
+  {
+    "id": 16700,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 335000,
+    "descricao": "Cadastrar Percentual Limite de RA Sem Deságio",
+    "st_inativo": 0
+  },
+  {
+    "id": 16800,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 340000,
+    "descricao": "Cadastrar Percentual Máximo de RT",
+    "st_inativo": 0
+  },
+  {
+    "id": 16900,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 350000,
+    "descricao": "Cadastrar Percentual Máximo do Desconto Aceito Sem Zerar RT",
+    "st_inativo": 0
+  },
+  {
+    "id": 17000,
+    "modulo": "CENTR",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 240000,
+    "descricao": "Editar Ordem de Serviço",
+    "st_inativo": 0
+  },
+  {
+    "id": 17100,
+    "modulo": "CENTR",
+    "tipo_operacao": "CONS",
+    "ordenacao": 130000,
+    "descricao": "Consultar Ordem de Serviço",
+    "st_inativo": 0
+  },
+  {
+    "id": 17200,
+    "modulo": "CENTR",
+    "tipo_operacao": "DESC",
+    "ordenacao": 420000,
+    "descricao": "Autorizar Senha Desconto",
+    "st_inativo": 0
+  },
+  {
+    "id": 17300,
+    "modulo": "CENTR",
+    "tipo_operacao": "ADM",
+    "ordenacao": 50000,
+    "descricao": "Módulo ADM (Administrativo)",
+    "st_inativo": 0
+  },
+  {
+    "id": 17400,
+    "modulo": "CENTR",
+    "tipo_operacao": "FILTR",
+    "ordenacao": 7101000,
+    "descricao": "Filtro: Multicritério de Pedidos - Pedidos Entregues Entre",
+    "st_inativo": 0
+  },
+  {
+    "id": 17500,
+    "modulo": "CENTR",
+    "tipo_operacao": "FILTR",
+    "ordenacao": 7102000,
+    "descricao": "Filtro: Multicritério de Pedidos - Pedidos Colocados Entre",
+    "st_inativo": 0
+  },
+  {
+    "id": 17600,
+    "modulo": "CENTR",
+    "tipo_operacao": "FILTR",
+    "ordenacao": 7103000,
+    "descricao": "Filtro: Multicritério de Pedidos - Pedidos Entrega Marcada Entre",
+    "st_inativo": 0
+  },
+  {
+    "id": 17700,
+    "modulo": "CENTR",
+    "tipo_operacao": "CONS",
+    "ordenacao": 7000000,
+    "descricao": "Restringir a data inicial nas consultas com filtro por período de datas",
+    "st_inativo": 0
+  },
+  {
+    "id": 17800,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 360000,
+    "descricao": "Cadastrar Parâmetros Globais",
+    "st_inativo": 0
+  },
+  {
+    "id": 17900,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7305000,
+    "descricao": "Relatório: Gerencial de Vendas",
+    "st_inativo": 0
+  },
+  {
+    "id": 18000,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7350000,
+    "descricao": "Relatório: Solicitação de Coletas",
+    "st_inativo": 0
+  },
+  {
+    "id": 18100,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7100500,
+    "descricao": "Relatório: Multicritério de Pedidos (Sintético)",
+    "st_inativo": 0
+  },
+  {
+    "id": 18200,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 675000,
+    "descricao": "Cadastro de CEP",
+    "st_inativo": 0
+  },
+  {
+    "id": 18300,
+    "modulo": "CENTR",
+    "tipo_operacao": "CONS",
+    "ordenacao": 190000,
+    "descricao": "Pesquisa de Indicadores",
+    "st_inativo": 0
+  },
+  {
+    "id": 18400,
+    "modulo": "CENTR",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 525000,
+    "descricao": "Anotar Transportadora no Pedido",
+    "st_inativo": 0
+  },
+  {
+    "id": 18500,
+    "modulo": "CENTR",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 219000,
+    "descricao": "Editar Pedido: Dados da Transportadora",
+    "st_inativo": 0
+  },
+  {
+    "id": 18600,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7360000,
+    "descricao": "Relatório: Indicador Sem Avaliação de Desempenho",
+    "st_inativo": 0
+  },
+  {
+    "id": 18700,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7370000,
+    "descricao": "Relatório: Checagem de Novos Parceiros",
+    "st_inativo": 0
+  },
+  {
+    "id": 18800,
+    "modulo": "CENTR",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 219500,
+    "descricao": "Editar Pedido: Valor do Frete",
+    "st_inativo": 0
+  },
+  {
+    "id": 18900,
+    "modulo": "CENTR",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 527000,
+    "descricao": "Anotar Valor do Frete no Pedido",
+    "st_inativo": 0
+  },
+  {
+    "id": 19000,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7380000,
+    "descricao": "Relatório: Frete (Analítico)",
+    "st_inativo": 0
+  },
+  {
+    "id": 19100,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7390000,
+    "descricao": "Relatório: Frete (Sintético)",
+    "st_inativo": 0
+  },
+  {
+    "id": 19200,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7295000,
+    "descricao": "Relatório: Faturamento II",
+    "st_inativo": 0
+  },
+  {
+    "id": 19300,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7215000,
+    "descricao": "Relatório: Estoque II",
+    "st_inativo": 0
+  },
+  {
+    "id": 19400,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7255000,
+    "descricao": "Relatório: Compras II",
+    "st_inativo": 0
+  },
+  {
+    "id": 19600,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7211500,
+    "descricao": "Relatório: Estoque (Visão Básica)",
+    "st_inativo": 0
+  },
+  {
+    "id": 19700,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7213500,
+    "descricao": "Relatório: Estoque (Visão Completa)",
+    "st_inativo": 0
+  },
+  {
+    "id": 19800,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7292500,
+    "descricao": "Relatório: Faturamento",
+    "st_inativo": 0
+  },
+  {
+    "id": 19900,
+    "modulo": "CENTR",
+    "tipo_operacao": "CRED",
+    "ordenacao": 325000,
+    "descricao": "Editar Análise de Crédito do Pedido (Pendente Vendas >> Pendente)",
+    "st_inativo": 0
+  },
+  {
+    "id": 20000,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7217500,
+    "descricao": "Relatório: Produtos no Estoque de Devolução",
+    "st_inativo": 0
+  },
+  {
+    "id": 20100,
+    "modulo": "CENTR",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 195000,
+    "descricao": "Cancelar Pedido",
+    "st_inativo": 0
+  },
+  {
+    "id": 20200,
+    "modulo": "CENTR",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 250000,
+    "descricao": "Editar Cliente: Campo Indicador",
+    "st_inativo": 0
+  },
+  {
+    "id": 20300,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7185000,
+    "descricao": "Relatório: Divergência Cliente\/Indicador",
+    "st_inativo": 0
+  },
+  {
+    "id": 20400,
+    "modulo": "CENTR",
+    "tipo_operacao": "ENTRG",
+    "ordenacao": 522500,
+    "descricao": "Anotar Pedidos Recebidos Pelo Cliente",
+    "st_inativo": 0
+  },
+  {
+    "id": 20500,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7400000,
+    "descricao": "Relatório: Pedidos Não Recebidos Pelo Cliente",
+    "st_inativo": 0
+  },
+  {
+    "id": 20600,
+    "modulo": "CENTR",
+    "tipo_operacao": "ENTRG",
+    "ordenacao": 216000,
+    "descricao": "Editar Pedido: Status de Recebimento do Pedido Pelo Cliente",
+    "st_inativo": 0
+  },
+  {
+    "id": 20700,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 665000,
+    "descricao": "Cadastro de Mensagens de Alerta para Produtos",
+    "st_inativo": 0
+  },
+  {
+    "id": 20800,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7187500,
+    "descricao": "Relatório: Metas do Indicador",
+    "st_inativo": 0
+  },
+  {
+    "id": 20900,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 695000,
+    "descricao": "Cadastro da Tabela de Comissão do Vendedor",
+    "st_inativo": 0
+  },
+  {
+    "id": 21000,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7152000,
+    "descricao": "Relatório: Comissão aos Vendedores Sintético (Tabela Progressiva)",
+    "st_inativo": 0
+  },
+  {
+    "id": 21100,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7153000,
+    "descricao": "Relatório: Comissão aos Vendedores Analítico (Tabela Progressiva)",
+    "st_inativo": 0
+  },
+  {
+    "id": 21200,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 697000,
+    "descricao": "Cadastro da Tabela de Custo Financeiro por Fornecedor",
+    "st_inativo": 0
+  },
+  {
+    "id": 21300,
+    "modulo": "CENTR",
+    "tipo_operacao": "FIN",
+    "ordenacao": 3000000,
+    "descricao": "Financeiro: Cadastro de Plano de Contas",
+    "st_inativo": 0
+  },
+  {
+    "id": 21400,
+    "modulo": "CENTR",
+    "tipo_operacao": "FIN",
+    "ordenacao": 70000,
+    "descricao": "Módulo Financeiro: Acesso ao Módulo",
+    "st_inativo": 0
+  },
+  {
+    "id": 21500,
+    "modulo": "CENTR",
+    "tipo_operacao": "FIN",
+    "ordenacao": 70500,
+    "descricao": "Módulo Financeiro: Fluxo de Caixa - Consultar",
+    "st_inativo": 0
+  },
+  {
+    "id": 21600,
+    "modulo": "CENTR",
+    "tipo_operacao": "FIN",
+    "ordenacao": 71000,
+    "descricao": "Módulo Financeiro: Fluxo de Caixa - Lançamento de Débito",
+    "st_inativo": 0
+  },
+  {
+    "id": 21700,
+    "modulo": "CENTR",
+    "tipo_operacao": "FIN",
+    "ordenacao": 71500,
+    "descricao": "Módulo Financeiro: Fluxo de Caixa - Lançamento de Crédito",
+    "st_inativo": 0
+  },
+  {
+    "id": 21800,
+    "modulo": "CENTR",
+    "tipo_operacao": "FIN",
+    "ordenacao": 72000,
+    "descricao": "Módulo Financeiro: Fluxo de Caixa - Editar Lançamento",
+    "st_inativo": 0
+  },
+  {
+    "id": 21900,
+    "modulo": "CENTR",
+    "tipo_operacao": "NF",
+    "ordenacao": 60000,
+    "descricao": "Módulo NF: Acesso ao Módulo",
+    "st_inativo": 0
+  },
+  {
+    "id": 22000,
+    "modulo": "CENTR",
+    "tipo_operacao": "FIN",
+    "ordenacao": 80000,
+    "descricao": "Módulo Financeiro: Boleto - Cadastrar",
+    "st_inativo": 0
+  },
+  {
+    "id": 22100,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 616000,
+    "descricao": "Cadastro de Equipe de Vendas",
+    "st_inativo": 0
+  },
+  {
+    "id": 22200,
+    "modulo": "CENTR",
+    "tipo_operacao": "FIN",
+    "ordenacao": 90000,
+    "descricao": "Módulo de Cobrança: Acesso ao Módulo",
+    "st_inativo": 0
+  },
+  {
+    "id": 22300,
+    "modulo": "CENTR",
+    "tipo_operacao": "FIN",
+    "ordenacao": 91000,
+    "descricao": "Módulo de Cobrança: Administração da Carteira em Atraso",
+    "st_inativo": 0
+  },
+  {
+    "id": 22400,
+    "modulo": "CENTR",
+    "tipo_operacao": "FIN",
+    "ordenacao": 92000,
+    "descricao": "Módulo de Cobrança: Cobrança da Carteira em Atraso",
+    "st_inativo": 0
+  },
+  {
+    "id": 22500,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7188500,
+    "descricao": "Relatório: Performance por Indicador",
+    "st_inativo": 0
+  },
+  {
+    "id": 22600,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7287500,
+    "descricao": "Relatório: Auditoria do Estoque",
+    "st_inativo": 0
+  },
+  {
+    "id": 22700,
+    "modulo": "CENTR",
+    "tipo_operacao": "BLNOT",
+    "ordenacao": 327000,
+    "descricao": "Bloco de Notas do Pedido: Leitura",
+    "st_inativo": 0
+  },
+  {
+    "id": 22800,
+    "modulo": "CENTR",
+    "tipo_operacao": "BLNOT",
+    "ordenacao": 328000,
+    "descricao": "Bloco de Notas do Pedido: Cadastramento",
+    "st_inativo": 0
+  },
+  {
+    "id": 22900,
+    "modulo": "CENTR",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 218500,
+    "descricao": "Editar Pedido: Garantia Indicador",
+    "st_inativo": 0
+  },
+  {
+    "id": 23000,
+    "modulo": "CENTR",
+    "tipo_operacao": "CONS",
+    "ordenacao": 140000,
+    "descricao": "Exibir Link no Pedido para Consultar a DANFE",
+    "st_inativo": 0
+  },
+  {
+    "id": 23100,
+    "modulo": "CENTR",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 197500,
+    "descricao": "Cancelar Pedido com NFe Emitida",
+    "st_inativo": 0
+  },
+  {
+    "id": 23200,
+    "modulo": "CENTR",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 219750,
+    "descricao": "Editar Pedido: Dados da NFe nas Mercadorias Devolvidas",
+    "st_inativo": 0
+  },
+  {
+    "id": 23300,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7235000,
+    "descricao": "Relatório: Devolução de Produtos II",
+    "st_inativo": 0
+  },
+  {
+    "id": 23400,
+    "modulo": "CENTR",
+    "tipo_operacao": "OCORR",
+    "ordenacao": 329000,
+    "descricao": "Ocorrências em Pedidos: Leitura",
+    "st_inativo": 0
+  },
+  {
+    "id": 23500,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7410000,
+    "descricao": "Relatório: Ocorrências em Pedidos",
+    "st_inativo": 0
+  },
+  {
+    "id": 23600,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7420000,
+    "descricao": "Relatório: Estatística de Ocorrências em Pedidos",
+    "st_inativo": 0
+  },
+  {
+    "id": 23700,
+    "modulo": "CENTR",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 245000,
+    "descricao": "Editar Cliente: Dados Cadastrais",
+    "st_inativo": 0
+  },
+  {
+    "id": 23800,
+    "modulo": "CENTR",
+    "tipo_operacao": "OCORR",
+    "ordenacao": 329500,
+    "descricao": "Ocorrências em Pedidos: Cadastramento",
+    "st_inativo": 0
+  },
+  {
+    "id": 23900,
+    "modulo": "CENTR",
+    "tipo_operacao": "BNID",
+    "ordenacao": 328400,
+    "descricao": "Bloco de Notas de Itens Devolvidos: Leitura",
+    "st_inativo": 0
+  },
+  {
+    "id": 24000,
+    "modulo": "CENTR",
+    "tipo_operacao": "BNID",
+    "ordenacao": 328600,
+    "descricao": "Bloco de Notas de Itens Devolvidos: Cadastramento",
+    "st_inativo": 0
+  },
+  {
+    "id": 24100,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 370000,
+    "descricao": "Cadastrar Devolução de Produto",
+    "st_inativo": 1
+  },
+  {
+    "id": 24200,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7297500,
+    "descricao": "Relatório: Faturamento III",
+    "st_inativo": 0
+  },
+  {
+    "id": 24300,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7335000,
+    "descricao": "Relatório: Zona do Produto (Depósito)",
+    "st_inativo": 0
+  },
+  {
+    "id": 24400,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7195000,
+    "descricao": "Relatório: Separação (Zona)",
+    "st_inativo": 0
+  },
+  {
+    "id": 24500,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7430000,
+    "descricao": "Relatório: Transações Cielo",
+    "st_inativo": 0
+  },
+  {
+    "id": 24600,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 355000,
+    "descricao": "Cadastrar Percentual Máximo de Comissão e Desconto por Loja",
+    "st_inativo": 0
+  },
+  {
+    "id": 24700,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 677500,
+    "descricao": "Opções para \"Forma como conheceu a Bonshop\" (Cadastro de Indicadores)",
+    "st_inativo": 0
+  },
+  {
+    "id": 24800,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7425000,
+    "descricao": "Relatório: Pesquisa de Ordem de Serviço",
+    "st_inativo": 0
+  },
+  {
+    "id": 24900,
+    "modulo": "CENTR",
+    "tipo_operacao": "CONS",
+    "ordenacao": 150000,
+    "descricao": "Pedido: Exibir Dados de Logística",
+    "st_inativo": 0
+  },
+  {
+    "id": 25000,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7450000,
+    "descricao": "Relatório: Farol Resumido",
+    "st_inativo": 0
+  },
+  {
+    "id": 25100,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7440000,
+    "descricao": "Relatório: Produtos Comprados (Farol)",
+    "st_inativo": 0
+  },
+  {
+    "id": 25200,
+    "modulo": "CENTR",
+    "tipo_operacao": "ADM2",
+    "ordenacao": 55000,
+    "descricao": "Módulo ADM2 (Administrativo II)",
+    "st_inativo": 0
+  },
+  {
+    "id": 25300,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7460000,
+    "descricao": "Relatório: Cubagem, Volume e Peso (Sintético)",
+    "st_inativo": 0
+  },
+  {
+    "id": 25400,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7435000,
+    "descricao": "Relatório: Transações Cielo em Andamento",
+    "st_inativo": 0
+  },
+  {
+    "id": 25500,
+    "modulo": "CENTR",
+    "tipo_operacao": "ETQWMS",
+    "ordenacao": 57500,
+    "descricao": "Módulo Etiqueta (WMS)",
+    "st_inativo": 0
+  },
+  {
+    "id": 25700,
+    "modulo": "CENTR",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 275000,
+    "descricao": "Editar Dados de Etiqueta (WMS)",
+    "st_inativo": 0
+  },
+  {
+    "id": 25800,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7189250,
+    "descricao": "Relatório: Vendas por Boleto",
+    "st_inativo": 0
+  },
+  {
+    "id": 25900,
+    "modulo": "CENTR",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 215500,
+    "descricao": "Editar Forma de Pagto (Sem Aplicar Restrições do Cadastro de Parceiros)",
+    "st_inativo": 0
+  },
+  {
+    "id": 26000,
+    "modulo": "CENTR",
+    "tipo_operacao": "SERASA",
+    "ordenacao": 56250,
+    "descricao": "Módulo Serasa Reciprocidade",
+    "st_inativo": 0
+  },
+  {
+    "id": 26100,
+    "modulo": "CENTR",
+    "tipo_operacao": "CONS",
+    "ordenacao": 326000,
+    "descricao": "Pedido: Exibir Histórico de Pagamento",
+    "st_inativo": 0
+  },
+  {
+    "id": 26200,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 667500,
+    "descricao": "E-Commerce: Cadastro de Produto Composto",
+    "st_inativo": 0
+  },
+  {
+    "id": 26300,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7189600,
+    "descricao": "E-Commerce: Exportação de Produtos em Arquivo",
+    "st_inativo": 0
+  },
+  {
+    "id": 26400,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7437000,
+    "descricao": "Relatório: Transações Braspag",
+    "st_inativo": 0
+  },
+  {
+    "id": 26500,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7438000,
+    "descricao": "Relatório: Revisão Manual Antifraude Braspag",
+    "st_inativo": 0
+  },
+  {
+    "id": 26600,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7470000,
+    "descricao": "Relatório de Clientes Negativados (SPC)",
+    "st_inativo": 0
+  },
+  {
+    "id": 26700,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7189800,
+    "descricao": "Relatório: Dados para Tabela Dinâmica",
+    "st_inativo": 0
+  },
+  {
+    "id": 26900,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 614500,
+    "descricao": "Cadastro de Tabela de Descontos de Orçamentistas \/ Indicadores",
+    "st_inativo": 0
+  },
+  {
+    "id": 27000,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7157500,
+    "descricao": "Relatório: Pedidos Indicadores Pagamento",
+    "st_inativo": 0
+  },
+  {
+    "id": 27100,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7480000,
+    "descricao": "Relatório: Pedidos Cancelados",
+    "st_inativo": 0
+  },
+  {
+    "id": 27200,
+    "modulo": "CENTR",
+    "tipo_operacao": "CONS",
+    "ordenacao": 192500,
+    "descricao": "Gerar Listagem do Cadastro de Indicadores",
+    "st_inativo": 0
+  },
+  {
+    "id": 27300,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7490000,
+    "descricao": "Relatório: Perfil de Pagamento dos Boletos",
+    "st_inativo": 0
+  },
+  {
+    "id": 27400,
+    "modulo": "CENTR",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 219900,
+    "descricao": "Editar Pedido: Indicador",
+    "st_inativo": 0
+  },
+  {
+    "id": 27500,
+    "modulo": "CENTR",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 220000,
+    "descricao": "Editar Pedido: Nº Pedido E-Commerce",
+    "st_inativo": 0
+  },
+  {
+    "id": 27550,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7492500,
+    "descricao": "Relatório: Impostos Pagos",
+    "st_inativo": 0
+  },
+  {
+    "id": 27600,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7495000,
+    "descricao": "Relatório: Controle de Impostos",
+    "st_inativo": 0
+  },
+  {
+    "id": 27700,
+    "modulo": "CENTR",
+    "tipo_operacao": "EC",
+    "ordenacao": 58750,
+    "descricao": "Módulo Consolidador XLS (EC): Acesso ao Módulo",
+    "st_inativo": 0
+  },
+  {
+    "id": 27800,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7403000,
+    "descricao": "Relatório: Pedidos de Marketplace Não Recebidos Pelo Cliente",
+    "st_inativo": 0
+  },
+  {
+    "id": 27900,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7407000,
+    "descricao": "Relatório: Registro de Pedidos de Marketplace Recebidos Pelo Cliente",
+    "st_inativo": 0
+  },
+  {
+    "id": 28000,
+    "modulo": "CENTR",
+    "tipo_operacao": "CHAMAD",
+    "ordenacao": 329600,
+    "descricao": "Chamados: Leitura de Qualquer Chamado",
+    "st_inativo": 0
+  },
+  {
+    "id": 28100,
+    "modulo": "CENTR",
+    "tipo_operacao": "CHAMAD",
+    "ordenacao": 329700,
+    "descricao": "Chamados: Cadastramento",
+    "st_inativo": 0
+  },
+  {
+    "id": 28200,
+    "modulo": "CENTR",
+    "tipo_operacao": "CHAMAD",
+    "ordenacao": 329800,
+    "descricao": "Chamados: Escrever Mensagem em Qualquer Chamado",
+    "st_inativo": 0
+  },
+  {
+    "id": 28300,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7421000,
+    "descricao": "Relatório: Chamados",
+    "st_inativo": 0
+  },
+  {
+    "id": 28400,
+    "modulo": "CENTR",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7422000,
+    "descricao": "Relatório: Estatística de Chamados",
+    "st_inativo": 0
+  },
+  {
+    "id": 28500,
+    "modulo": "CENTR",
+    "tipo_operacao": "CHAMAD",
+    "ordenacao": 329900,
+    "descricao": "Chamados: Consulta a Chamados de Todos Deptos (Relatórios)",
+    "st_inativo": 0
+  },
+  {
+    "id": 28600,
+    "modulo": "CENTR",
+    "tipo_operacao": "CONS",
+    "ordenacao": 326500,
+    "descricao": "Pedido: Exibir Detalhes do Histórico de Pagto por Cartão",
+    "st_inativo": 0
+  },
+  {
+    "id": 28700,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 698000,
+    "descricao": "Multi CD: Cadastro de Regras do Consumo do Estoque",
+    "st_inativo": 0
+  },
+  {
+    "id": 28800,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 698500,
+    "descricao": "Multi CD: Associação do Produto com a Regra",
+    "st_inativo": 0
+  },
+  {
+    "id": 28900,
+    "modulo": "CENTR",
+    "tipo_operacao": "FIN",
+    "ordenacao": 69000,
+    "descricao": "Módulo Financeiro - Etiquetas: Acesso ao Módulo",
+    "st_inativo": 0
+  },
+  {
+    "id": 29000,
+    "modulo": "CENTR",
+    "tipo_operacao": "EC",
+    "ordenacao": 58800,
+    "descricao": "Módulo Consolidador XLS (EC): Administração de Preços",
+    "st_inativo": 0
+  },
+  {
+    "id": 29100,
+    "modulo": "CENTR",
+    "tipo_operacao": "EC",
+    "ordenacao": 58850,
+    "descricao": "Módulo Consolidador XLS (EC): Administração de Pedidos",
+    "st_inativo": 0
+  },
+  {
+    "id": 29200,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 380000,
+    "descricao": "Pré Devolução: Cadastramento",
+    "st_inativo": 0
+  },
+  {
+    "id": 29300,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 381000,
+    "descricao": "Pré Devolução: Recebimento da Mercadoria",
+    "st_inativo": 0
+  },
+  {
+    "id": 29400,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 382000,
+    "descricao": "Pré Devolução: Administração",
+    "st_inativo": 0
+  },
+  {
+    "id": 29500,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 379000,
+    "descricao": "Pré Devolução: Leitura",
+    "st_inativo": 0
+  },
+  {
+    "id": 29600,
+    "modulo": "CENTR",
+    "tipo_operacao": "CAD",
+    "ordenacao": 380500,
+    "descricao": "Pré Devolução: Escrever Mensagem",
+    "st_inativo": 0
+  },
+  {
+    "id": 29700,
+    "modulo": "CENTR",
+    "tipo_operacao": "ADM2",
+    "ordenacao": 55500,
+    "descricao": "Módulo ADM2: Anotar Pedidos Recebidos Pelo Cliente",
+    "st_inativo": 0
+  },
+  {
+    "id": 50100,
+    "modulo": "LOJA",
+    "tipo_operacao": "NOVO",
+    "ordenacao": 100000,
+    "descricao": "Novo Pedido",
+    "st_inativo": 0
+  },
+  {
+    "id": 50200,
+    "modulo": "LOJA",
+    "tipo_operacao": "NOVO",
+    "ordenacao": 200000,
+    "descricao": "Novo Orçamento",
+    "st_inativo": 0
+  },
+  {
+    "id": 50300,
+    "modulo": "LOJA",
+    "tipo_operacao": "CONS",
+    "ordenacao": 300000,
+    "descricao": "Consultar Pedido",
+    "st_inativo": 0
+  },
+  {
+    "id": 50400,
+    "modulo": "LOJA",
+    "tipo_operacao": "CONS",
+    "ordenacao": 400000,
+    "descricao": "Consultar Orçamento",
+    "st_inativo": 0
+  },
+  {
+    "id": 50500,
+    "modulo": "LOJA",
+    "tipo_operacao": "CONS",
+    "ordenacao": 500000,
+    "descricao": "Consultar Disponibilidade no Estoque",
+    "st_inativo": 0
+  },
+  {
+    "id": 50600,
+    "modulo": "LOJA",
+    "tipo_operacao": "CONS",
+    "ordenacao": 600000,
+    "descricao": "Consultar Prod Bloqueados Estoq Entrega",
+    "st_inativo": 0
+  },
+  {
+    "id": 50700,
+    "modulo": "LOJA",
+    "tipo_operacao": "CONS",
+    "ordenacao": 700000,
+    "descricao": "Consultar Lista de Preços",
+    "st_inativo": 0
+  },
+  {
+    "id": 50800,
+    "modulo": "LOJA",
+    "tipo_operacao": "QAVIS",
+    "ordenacao": 800000,
+    "descricao": "Ler Quadro de Avisos (somente não lidos)",
+    "st_inativo": 0
+  },
+  {
+    "id": 50900,
+    "modulo": "LOJA",
+    "tipo_operacao": "QAVIS",
+    "ordenacao": 900000,
+    "descricao": "Ler Quadro de Avisos (todos)",
+    "st_inativo": 0
+  },
+  {
+    "id": 51000,
+    "modulo": "LOJA",
+    "tipo_operacao": "CONS",
+    "ordenacao": 450000,
+    "descricao": "Acesso Universal a Pedidos\/Orçamentos",
+    "st_inativo": 0
+  },
+  {
+    "id": 51100,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7100000,
+    "descricao": "Relatório: Pedidos Crédito Pendente",
+    "st_inativo": 0
+  },
+  {
+    "id": 51200,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7110000,
+    "descricao": "Relatório: Pedidos Indicadores",
+    "st_inativo": 0
+  },
+  {
+    "id": 51300,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7120000,
+    "descricao": "Relatório: Faturamento [Antigo]",
+    "st_inativo": 0
+  },
+  {
+    "id": 51400,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7130000,
+    "descricao": "Relatório: Vendas com Desconto Superior",
+    "st_inativo": 0
+  },
+  {
+    "id": 51500,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7140000,
+    "descricao": "Relatório: Multicritério de Pedidos (Analítico)",
+    "st_inativo": 0
+  },
+  {
+    "id": 51600,
+    "modulo": "LOJA",
+    "tipo_operacao": "DESC",
+    "ordenacao": 250000,
+    "descricao": "Cadastrar Senha Desconto",
+    "st_inativo": 0
+  },
+  {
+    "id": 51700,
+    "modulo": "LOJA",
+    "tipo_operacao": "CONS",
+    "ordenacao": 7000000,
+    "descricao": "Restringir a data inicial nas consultas com filtro por período de datas",
+    "st_inativo": 0
+  },
+  {
+    "id": 51800,
+    "modulo": "LOJA",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 210000,
+    "descricao": "Editar Pedido",
+    "st_inativo": 0
+  },
+  {
+    "id": 51900,
+    "modulo": "LOJA",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 220000,
+    "descricao": "Editar RA",
+    "st_inativo": 0
+  },
+  {
+    "id": 51950,
+    "modulo": "LOJA",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 221250,
+    "descricao": "Editar RT",
+    "st_inativo": 0
+  },
+  {
+    "id": 52000,
+    "modulo": "LOJA",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 233000,
+    "descricao": "Editar Orçamento",
+    "st_inativo": 0
+  },
+  {
+    "id": 52100,
+    "modulo": "LOJA",
+    "tipo_operacao": "CONS",
+    "ordenacao": 750000,
+    "descricao": "Consultar Cadastro de Orçamentistas \/ Indicadores",
+    "st_inativo": 0
+  },
+  {
+    "id": 52200,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7150000,
+    "descricao": "Relatório: Pedidos Colocados no Mês",
+    "st_inativo": 0
+  },
+  {
+    "id": 52300,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7160000,
+    "descricao": "Relatório: Comissão aos Vendedores",
+    "st_inativo": 0
+  },
+  {
+    "id": 52400,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7170000,
+    "descricao": "Relatório: Estoque de Venda (Sintético) [Antigo]",
+    "st_inativo": 0
+  },
+  {
+    "id": 52500,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7180000,
+    "descricao": "Relatório: Devolução Produtos",
+    "st_inativo": 0
+  },
+  {
+    "id": 52600,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7190000,
+    "descricao": "Relatório: Meio de Divulgação",
+    "st_inativo": 0
+  },
+  {
+    "id": 52700,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7125000,
+    "descricao": "Relatório: Vendas",
+    "st_inativo": 0
+  },
+  {
+    "id": 52800,
+    "modulo": "LOJA",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 215000,
+    "descricao": "Editar Item do Pedido",
+    "st_inativo": 0
+  },
+  {
+    "id": 52900,
+    "modulo": "LOJA",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 235000,
+    "descricao": "Editar Item do Orçamento",
+    "st_inativo": 0
+  },
+  {
+    "id": 53000,
+    "modulo": "LOJA",
+    "tipo_operacao": "CONS",
+    "ordenacao": 475000,
+    "descricao": "Pesquisar Pedido pelo Campo Obs II",
+    "st_inativo": 0
+  },
+  {
+    "id": 53100,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7175000,
+    "descricao": "Relatório: Estoque de Venda (Intermediário) [Antigo]",
+    "st_inativo": 0
+  },
+  {
+    "id": 53200,
+    "modulo": "LOJA",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 225000,
+    "descricao": "Editar Pedido: Forma de Pagamento",
+    "st_inativo": 0
+  },
+  {
+    "id": 53300,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7141000,
+    "descricao": "Relatório: Multicritério de Pedidos (Sintético)",
+    "st_inativo": 0
+  },
+  {
+    "id": 53400,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7200000,
+    "descricao": "Relatório: Gerencial de Vendas",
+    "st_inativo": 0
+  },
+  {
+    "id": 53500,
+    "modulo": "LOJA",
+    "tipo_operacao": "CONS",
+    "ordenacao": 790000,
+    "descricao": "Pesquisa de Indicadores",
+    "st_inativo": 0
+  },
+  {
+    "id": 53600,
+    "modulo": "LOJA",
+    "tipo_operacao": "CAD",
+    "ordenacao": 740000,
+    "descricao": "Cadastrar Indicador",
+    "st_inativo": 0
+  },
+  {
+    "id": 53700,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7210000,
+    "descricao": "Relatório: Checagem de Novos Parceiros",
+    "st_inativo": 0
+  },
+  {
+    "id": 53800,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7122500,
+    "descricao": "Relatório: Faturamento",
+    "st_inativo": 0
+  },
+  {
+    "id": 53900,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7176500,
+    "descricao": "Relatório: Estoque de Venda (Sintético)",
+    "st_inativo": 0
+  },
+  {
+    "id": 54000,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7178500,
+    "descricao": "Relatório: Estoque de Venda (Intermediário)",
+    "st_inativo": 0
+  },
+  {
+    "id": 54100,
+    "modulo": "LOJA",
+    "tipo_operacao": "LOGIN",
+    "ordenacao": 50000,
+    "descricao": "Troca Rápida de Loja",
+    "st_inativo": 0
+  },
+  {
+    "id": 54200,
+    "modulo": "LOJA",
+    "tipo_operacao": "CRED",
+    "ordenacao": 240000,
+    "descricao": "Editar Análise de Crédito do Pedido (Pendente Vendas >> Pendente)",
+    "st_inativo": 0
+  },
+  {
+    "id": 54300,
+    "modulo": "LOJA",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 245000,
+    "descricao": "Editar Cliente: Campo Indicador",
+    "st_inativo": 0
+  },
+  {
+    "id": 54400,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7220000,
+    "descricao": "Relatório: Divergência Cliente\/Indicador",
+    "st_inativo": 0
+  },
+  {
+    "id": 54500,
+    "modulo": "LOJA",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 247500,
+    "descricao": "Exibir Campo RT ao Cadastrar Novo Pedido",
+    "st_inativo": 0
+  },
+  {
+    "id": 54600,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7105000,
+    "descricao": "Relatório: Pedidos Crédito Pendente Vendas",
+    "st_inativo": 0
+  },
+  {
+    "id": 54700,
+    "modulo": "LOJA",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 249000,
+    "descricao": "Exibir Campo Instalador Instala ao Cadastrar Novo Pedido",
+    "st_inativo": 0
+  },
+  {
+    "id": 54800,
+    "modulo": "LOJA",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 246000,
+    "descricao": "Exibir Campos Com\/Sem Indicação ao Cadastrar Novo Pedido",
+    "st_inativo": 0
+  },
+  {
+    "id": 54900,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7230000,
+    "descricao": "Relatório: Metas do Indicador",
+    "st_inativo": 0
+  },
+  {
+    "id": 55000,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7164000,
+    "descricao": "Relatório: Comissão aos Vendedores Sintético (Tabela Progressiva)",
+    "st_inativo": 0
+  },
+  {
+    "id": 55100,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7166000,
+    "descricao": "Relatório: Comissão aos Vendedores Analítico (Tabela Progressiva)",
+    "st_inativo": 0
+  },
+  {
+    "id": 55200,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7179500,
+    "descricao": "Relatório: Produtos no Estoque de Devolução",
+    "st_inativo": 0
+  },
+  {
+    "id": 55300,
+    "modulo": "LOJA",
+    "tipo_operacao": "CONS",
+    "ordenacao": 725000,
+    "descricao": "Consultar Tabela de Custo Financeiro",
+    "st_inativo": 0
+  },
+  {
+    "id": 55400,
+    "modulo": "LOJA",
+    "tipo_operacao": "CAD",
+    "ordenacao": 290000,
+    "descricao": "Cadastrar Devolução de Produto",
+    "st_inativo": 1
+  },
+  {
+    "id": 55500,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7240000,
+    "descricao": "Relatório: Performance por Indicador",
+    "st_inativo": 0
+  },
+  {
+    "id": 55600,
+    "modulo": "LOJA",
+    "tipo_operacao": "BLNOT",
+    "ordenacao": 249400,
+    "descricao": "Bloco de Notas do Pedido: Leitura",
+    "st_inativo": 0
+  },
+  {
+    "id": 55700,
+    "modulo": "LOJA",
+    "tipo_operacao": "BLNOT",
+    "ordenacao": 249600,
+    "descricao": "Bloco de Notas do Pedido: Cadastramento",
+    "st_inativo": 0
+  },
+  {
+    "id": 55800,
+    "modulo": "LOJA",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 225500,
+    "descricao": "Editar Pedido: Garantia Indicador",
+    "st_inativo": 0
+  },
+  {
+    "id": 55900,
+    "modulo": "LOJA",
+    "tipo_operacao": "CONS",
+    "ordenacao": 425000,
+    "descricao": "Exibir Link no Pedido para Consultar a DANFE",
+    "st_inativo": 0
+  },
+  {
+    "id": 56000,
+    "modulo": "LOJA",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 222500,
+    "descricao": "Editar Pedido: Obs I",
+    "st_inativo": 0
+  },
+  {
+    "id": 56100,
+    "modulo": "LOJA",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 205000,
+    "descricao": "Cancelar Pedido com NFe Emitida",
+    "st_inativo": 0
+  },
+  {
+    "id": 56200,
+    "modulo": "LOJA",
+    "tipo_operacao": "OCORR",
+    "ordenacao": 249800,
+    "descricao": "Ocorrências em Pedidos: Leitura",
+    "st_inativo": 0
+  },
+  {
+    "id": 56300,
+    "modulo": "LOJA",
+    "tipo_operacao": "OCORR",
+    "ordenacao": 249900,
+    "descricao": "Ocorrências em Pedidos: Cadastramento",
+    "st_inativo": 0
+  },
+  {
+    "id": 56400,
+    "modulo": "LOJA",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 242500,
+    "descricao": "Editar Cliente: Dados Cadastrais",
+    "st_inativo": 0
+  },
+  {
+    "id": 56500,
+    "modulo": "LOJA",
+    "tipo_operacao": "BNID",
+    "ordenacao": 249680,
+    "descricao": "Bloco de Notas de Itens Devolvidos: Leitura",
+    "st_inativo": 0
+  },
+  {
+    "id": 56600,
+    "modulo": "LOJA",
+    "tipo_operacao": "BNID",
+    "ordenacao": 249720,
+    "descricao": "Bloco de Notas de Itens Devolvidos: Cadastramento",
+    "st_inativo": 0
+  },
+  {
+    "id": 56700,
+    "modulo": "LOJA",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 285000,
+    "descricao": "Preencher Indicador em Pedido Cadastrado",
+    "st_inativo": 0
+  },
+  {
+    "id": 56800,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7107500,
+    "descricao": "Relatório: Pedidos Pendentes Cartão de Crédito",
+    "st_inativo": 0
+  },
+  {
+    "id": 57000,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7250000,
+    "descricao": "Relatório: Vendas por Boleto",
+    "st_inativo": 0
+  },
+  {
+    "id": 57100,
+    "modulo": "LOJA",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 221850,
+    "descricao": "Editar Forma de Pagto (Sem Aplicar Restrições do Cadastro de Parceiros)",
+    "st_inativo": 0
+  },
+  {
+    "id": 57200,
+    "modulo": "LOJA",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 770000,
+    "descricao": "Editar Cadastro de Orçamentistas \/ Indicadores",
+    "st_inativo": 0
+  },
+  {
+    "id": 57300,
+    "modulo": "LOJA",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 227500,
+    "descricao": "Editar Pedido: Entrega Imediata",
+    "st_inativo": 0
+  },
+  {
+    "id": 57400,
+    "modulo": "LOJA",
+    "tipo_operacao": "OCORR",
+    "ordenacao": 249950,
+    "descricao": "Ocorrências em Pedidos: Escrever Mensagem",
+    "st_inativo": 0
+  },
+  {
+    "id": 57500,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7260000,
+    "descricao": "Relatório: Estatística de Ocorrências em Pedidos",
+    "st_inativo": 0
+  },
+  {
+    "id": 57600,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7270000,
+    "descricao": "Relatório: Indicadores Sem Atividade Recente",
+    "st_inativo": 0
+  },
+  {
+    "id": 57700,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7280000,
+    "descricao": "Relatório: Pedidos Cancelados",
+    "st_inativo": 0
+  },
+  {
+    "id": 57800,
+    "modulo": "LOJA",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 229000,
+    "descricao": "Editar Pedido: Indicador",
+    "st_inativo": 0
+  },
+  {
+    "id": 57900,
+    "modulo": "LOJA",
+    "tipo_operacao": "EDIT",
+    "ordenacao": 230000,
+    "descricao": "Editar Pedido: Nº Pedido E-Commerce",
+    "st_inativo": 0
+  },
+  {
+    "id": 58000,
+    "modulo": "LOJA",
+    "tipo_operacao": "CAD",
+    "ordenacao": 202500,
+    "descricao": "Selecionar Qualquer Indicador em Pedido Novo",
+    "st_inativo": 0
+  },
+  {
+    "id": 58100,
+    "modulo": "LOJA",
+    "tipo_operacao": "CONS",
+    "ordenacao": 249200,
+    "descricao": "Pedido: Exibir Histórico de Pagamento",
+    "st_inativo": 0
+  },
+  {
+    "id": 58200,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7290000,
+    "descricao": "Relatório: Registro de Pedidos de Marketplace Recebidos Pelo Cliente",
+    "st_inativo": 0
+  },
+  {
+    "id": 58300,
+    "modulo": "LOJA",
+    "tipo_operacao": "CHAMAD",
+    "ordenacao": 249960,
+    "descricao": "Chamados: Leitura de Qualquer Chamado",
+    "st_inativo": 0
+  },
+  {
+    "id": 58400,
+    "modulo": "LOJA",
+    "tipo_operacao": "CHAMAD",
+    "ordenacao": 249970,
+    "descricao": "Chamados: Cadastramento",
+    "st_inativo": 0
+  },
+  {
+    "id": 58500,
+    "modulo": "LOJA",
+    "tipo_operacao": "CHAMAD",
+    "ordenacao": 249980,
+    "descricao": "Chamados: Escrever Mensagem em Qualquer Chamado",
+    "st_inativo": 0
+  },
+  {
+    "id": 58600,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7265000,
+    "descricao": "Relatório: Chamados",
+    "st_inativo": 0
+  },
+  {
+    "id": 58700,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7266000,
+    "descricao": "Relatório: Estatística de Chamados",
+    "st_inativo": 0
+  },
+  {
+    "id": 58800,
+    "modulo": "LOJA",
+    "tipo_operacao": "CHAMAD",
+    "ordenacao": 249990,
+    "descricao": "Chamados: Consulta a Chamados de Todos Deptos (Relatórios)",
+    "st_inativo": 0
+  },
+  {
+    "id": 58900,
+    "modulo": "LOJA",
+    "tipo_operacao": "NOVO",
+    "ordenacao": 150000,
+    "descricao": "Novo Pedido (Seleção Manual CD)",
+    "st_inativo": 0
+  },
+  {
+    "id": 59000,
+    "modulo": "LOJA",
+    "tipo_operacao": "RELAT",
+    "ordenacao": 7285000,
+    "descricao": "Relatório: Pedidos de Marketplace Não Recebidos Pelo Cliente",
+    "st_inativo": 0
+  },
+  {
+    "id": 59100,
+    "modulo": "LOJA",
+    "tipo_operacao": "CONS",
+    "ordenacao": 249300,
+    "descricao": "Pedido: Exibir Detalhes do Histórico de Pagto por Cartão",
+    "st_inativo": 0
+  },
+  {
+    "id": 59200,
+    "modulo": "LOJA",
+    "tipo_operacao": "NOVO",
+    "ordenacao": 175000,
+    "descricao": "Novo Pedido de E-commerce (Semi-Automático)",
+    "st_inativo": 0
+  },
+  {
+    "id": 59300,
+    "modulo": "LOJA",
+    "tipo_operacao": "CAD",
+    "ordenacao": 295000,
+    "descricao": "Pré Devolução: Cadastramento",
+    "st_inativo": 0
+  },
+  {
+    "id": 59400,
+    "modulo": "LOJA",
+    "tipo_operacao": "CAD",
+    "ordenacao": 294000,
+    "descricao": "Pré Devolução: Leitura",
+    "st_inativo": 0
+  },
+  {
+    "id": 59500,
+    "modulo": "LOJA",
+    "tipo_operacao": "CAD",
+    "ordenacao": 296000,
+    "descricao": "Pré Devolução: Escrever Mensagem",
+    "st_inativo": 0
+  },
+  {
+    "id": 59600,
+    "modulo": "LOJA",
+    "tipo_operacao": "NOVO",
+    "ordenacao": 180000,
+    "descricao": "Novo Pedido de E-commerce com Indicador (Semi-Automático)",
+    "st_inativo": 0
+  },
+  {
+    "id": 59700,
+    "modulo": "LOJA",
+    "tipo_operacao": "CAD",
+    "ordenacao": 297000,
+    "descricao": "Pré Devolução: Administração",
+    "st_inativo": 0
+  }
+]

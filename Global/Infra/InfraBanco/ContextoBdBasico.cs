@@ -95,7 +95,7 @@ namespace InfraBanco
                 .HasForeignKey(x => new { x.Fabricante, x.Produto });
 
             modelBuilder.Entity<TestoqueLog>()
-               .HasKey(x => new {x.Pedido_estoque_destino, x.Pedido_estoque_origem, x.Fabricante, x.Produto, x.Qtde_atendida });
+               .HasKey(x => new { x.Pedido_estoque_destino, x.Pedido_estoque_origem, x.Fabricante, x.Produto, x.Qtde_atendida });
 
             modelBuilder.Entity<TavisoExibido>()
                 .HasKey(x => new { x.Id, x.Usuario });
@@ -169,6 +169,7 @@ namespace InfraBanco
         //daqui para a frente só é necessário para os testes automatizados
 #if DEBUG_BANCO_DEBUG
         public DbSet<TorcamentoItem> TorcamentoItem { get; set; }
+        public DbSet<Toperacao> Toperacaos { get; set; }
 #endif
     }
 }

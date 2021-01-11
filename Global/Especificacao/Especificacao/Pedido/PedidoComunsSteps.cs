@@ -31,6 +31,8 @@ namespace Especificacao.Especificacao.Pedido
                 var imp = new Especificacao.Pedido.PedidoSteps();
                 base.AdicionarImplementacao(imp);
                 RegistroDependencias.AdicionarDependencia("Especificacao.Pedido.Pedido.PedidoListaDependencias", imp,
+                    "Especificacao.Pedido.Passo10.PermissoesListaDependencias");
+                RegistroDependencias.AdicionarDependencia("Especificacao.Pedido.Pedido.PedidoListaDependencias", imp,
                     "Especificacao.Pedido.Passo10.CamposSimplesPfListaDependencias");
                 RegistroDependencias.AdicionarDependencia("Especificacao.Pedido.Pedido.PedidoListaDependencias", imp,
                     "Especificacao.Pedido.Passo10.CamposSimplesPjListaDependencias");

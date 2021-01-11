@@ -226,3 +226,7 @@ Scenario: Obrigatório 10
 	When Informo "EndEtg_cnpj_cpf" = ""
 	When Informo "cnpj_cpf" = ""
 	Then Erro "pegar o erro"
+
+@ignore
+Scenario: validar cep contra endereço
+	Given fazer esta validação

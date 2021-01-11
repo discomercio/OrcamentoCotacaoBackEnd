@@ -35,6 +35,7 @@
     <None Remove="Testes\Utils\BancoTestes\Dados\TformaPagto.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tlojas.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\TnfEmitente.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\Toperacao.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\TorcamentistaEindicador.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\TorcamentistaEIndicadorRestricaoFormaPagto.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tparametro.json" />
@@ -383,6 +384,7 @@
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TorcamentistaEIndicadorRestricaoFormaPagto.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tpedido.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TpercentualCustoFinanceiroFornecedors.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Toperacao.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TwmsRegraCdXUfXPessoaXCd.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TwmsRegraCdXUfPessoa.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TwmsRegraCdXUf.json" />

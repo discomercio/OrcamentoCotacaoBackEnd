@@ -5,6 +5,7 @@ Scenario: Lista de dependências
 	Given Nome deste item "Especificacao.Pedido.Pedido.PedidoListaDependencias"
 	And Especificado em "Especificacao.Pedido.Passo10.CamposSimplesPfListaDependencias"
 	And Especificado em "Especificacao.Pedido.Passo10.CamposSimplesPjListaDependencias"
+	And Especificado em "Especificacao.Pedido.Passo10.PermissoesListaDependencias"
 	And Especificado em "Especificacao.Pedido.Passo20.EnderecoEntrega.EnderecoEntregaListaDependencias"
 	And Especificado em "Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj.ClientePjListaDependencias"
 	#And Especificado em "Especificacao.Pedido.Passo25.*"

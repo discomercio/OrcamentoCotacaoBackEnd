@@ -201,6 +201,8 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
                 return;
             if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, prePedidoUnisDto.EnderecoCadastralCliente))
                 return;
+            if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, prePedidoUnisDto.DetalhesPrepedido))
+                return;
 
             switch (campo)
             {

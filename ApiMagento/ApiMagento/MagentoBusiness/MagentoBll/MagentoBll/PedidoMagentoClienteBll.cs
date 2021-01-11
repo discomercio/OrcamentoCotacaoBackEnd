@@ -29,11 +29,12 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             this.configuracaoApiMagento = configuracaoApiMagento;
         }
 
-        internal async Task CadastrarClienteSeNaoExistir(PedidoMagentoDto pedidoMagento, List<string> listaErros,
+        internal async Task<string> CadastrarClienteSeNaoExistir(PedidoMagentoDto pedidoMagento, List<string> listaErros,
             PedidoMagentoBll.Orcamentistaindicador_vendedor_loja orcamentistaindicador_vendedor_loja, string usuario_cadastro)
         {
-            if (await clienteBll.ClienteExiste(pedidoMagento.Cnpj_Cpf))
-                return;
+            string? idCliente = await clienteBll.BuscarIdCliente(pedidoMagento.Cnpj_Cpf);
+            if (!string.IsNullOrEmpty(idCliente))
+                return idCliente;
 
             Cliente.Dados.ClienteCadastroDados clienteCadastro = new Cliente.Dados.ClienteCadastroDados
             {
@@ -52,6 +53,8 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
 
             //tem erro?
             listaErros.AddRange(lstRet);
+            idCliente = await clienteBll.BuscarIdCliente(pedidoMagento.Cnpj_Cpf);
+            return idCliente;
         }
 
         internal void LimitarPedidosMagentoPJ(PedidoMagentoDto pedidoMagento, List<string> lstErros)

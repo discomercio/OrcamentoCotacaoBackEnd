@@ -82,7 +82,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
 
 
         [Then(@"Tabela ""t_CLIENTE"" registro com campo ""cnpj_cpf"" = ""(.*)"", verificar campo ""(.*)"" = ""(.*)""")]
-        public void ThenTabelaRegistroComCampoVerificarCampo(string valor_cnpj_cpf, string campo, string valor_desejado)
+        public void ThenTabela_t_CLIENTE_RegistroComCampo_cnpj_cpf_VerificarCampo(string valor_cnpj_cpf, string campo, string valor_desejado)
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_CLIENTE", "cnpj_cpf", valor_cnpj_cpf, campo, valor_desejado, this);
 
@@ -100,6 +100,30 @@ namespace Especificacao.Testes.Utils.BancoTestes
             if (desejado != original)
                 LogTestes.LogTestes.ErroNosTestes($"ThenTabelaRegistroComCampoVerificarCampo t_CLIENTE campo {campo} valor errado, {desejado}, {original}");
             Assert.Equal(desejado, original);
+        }
+
+        [Given(@"Tabela ""t_OPERACAO"" apagar registro com campo ""id"" = ""(.*)""")]
+        public void GivenTabelaApagarRegistroComCampo(string valorBusca)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaApagarRegistroComCampo("t_OPERACAO", "id", valorBusca, this);
+
+            int valorInt = -1;
+            switch (valorBusca)
+            {
+                case "OP_LJA_CADASTRA_NOVO_PEDIDO":
+                    valorInt = Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO;
+                    break;
+                case "OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_PEDIDO":
+                    valorInt = Constantes.OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_PEDIDO;
+                    break;
+                default:
+                    throw new ArgumentException($"GivenTabelaApagarRegistroComCampo desconhecido: {valorBusca}");
+            }
+
+            using var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
+            var registro = (from operacao in db.Toperacaos where operacao.Id == valorInt select operacao).First();
+            db.Toperacaos.Remove(registro);
+            db.SaveChanges();
         }
 
     }

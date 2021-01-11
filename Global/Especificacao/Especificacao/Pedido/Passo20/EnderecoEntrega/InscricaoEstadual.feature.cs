@@ -20,7 +20,7 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    public partial class Ie_IbgeFeature : object, Xunit.IClassFixture<Ie_IbgeFeature.FixtureData>, System.IDisposable
+    public partial class InscricaoEstadualFeature : object, Xunit.IClassFixture<InscricaoEstadualFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -30,10 +30,10 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "Ie_ibge.feature"
+#line 1 "InscricaoEstadual.feature"
 #line hidden
         
-        public Ie_IbgeFeature(Ie_IbgeFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public InscricaoEstadualFeature(InscricaoEstadualFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,7 +42,7 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Ie_ibge", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "InscricaoEstadual", null, ProgrammingLanguage.CSharp, new string[] {
                         "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -84,7 +84,7 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="fazer")]
-        [Xunit.TraitAttribute("FeatureTitle", "Ie_ibge")]
+        [Xunit.TraitAttribute("FeatureTitle", "InscricaoEstadual")]
         [Xunit.TraitAttribute("Description", "fazer")]
         public virtual void Fazer()
         {
@@ -125,12 +125,12 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
             
             public FixtureData()
             {
-                Ie_IbgeFeature.FeatureSetup();
+                InscricaoEstadualFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                Ie_IbgeFeature.FeatureTearDown();
+                InscricaoEstadualFeature.FeatureTearDown();
             }
         }
     }

@@ -88,6 +88,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 InicializarTabela<TformaPagto>(db.TformaPagtos, "TformaPagto", db, apagarDadosExistentes);
                 InicializarTabela<Tloja>(db.Tlojas, "Tlojas", db, apagarDadosExistentes);
                 InicializarTabela<TnfEmitente>(db.TnfEmitentes, "TnfEmitente", db, apagarDadosExistentes);
+                InicializarTabela<Toperacao>(db.Toperacaos, "Toperacao", db, apagarDadosExistentes);
                 InicializarTabela<TorcamentistaEindicador>(db.TorcamentistaEindicadors, "TorcamentistaEindicador", db, apagarDadosExistentes);
                 InicializarTabela<TorcamentistaEIndicadorRestricaoFormaPagto>(db.torcamentistaEIndicadorRestricaoFormaPagtos, "TorcamentistaEIndicadorRestricaoFormaPagto", db, apagarDadosExistentes);
                 InicializarTabela<Tparametro>(db.Tparametros, "Tparametro", db, apagarDadosExistentes);
