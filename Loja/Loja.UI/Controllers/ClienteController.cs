@@ -68,7 +68,7 @@ namespace Loja.UI.Controllers
               buscar os dados do cliente
               buscar indicadores 
             */
-            
+
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
 
             ClienteCadastroViewModel cliente = new ClienteCadastroViewModel();
@@ -188,7 +188,7 @@ namespace Loja.UI.Controllers
             Loja.Bll.Dto.ClienteDto.DadosClienteCadastroDto dados,
             List<Loja.Bll.Dto.ClienteDto.RefComercialDtoCliente> lstRefCom,
             List<Loja.Bll.Dto.ClienteDto.RefBancariaDtoCliente> lstRefBancaria,
-            Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro EndEntrega2,
+            Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro EndEntrega,
             bool cadastrando)
         {
             /*afazer: NECESSÁRIO FAZER O TRATAMENTO PARA ERROS 
@@ -214,8 +214,8 @@ namespace Loja.UI.Controllers
                 novo_clienteCadastro.RefBancaria = lstRefBancaria;
                 novo_clienteCadastro.RefComercial = lstRefCom;
                 //vamos cadastrar o cliente
-                List<string> lstRetorno = (await clienteBll.Novo_CadastrarCliente(novo_clienteCadastro, usuarioLogado.Usuario_atual)).ToList();
-                                
+                List<string> lstRetorno = (await clienteBll.CadastrarCliente(novo_clienteCadastro, usuarioLogado.Usuario_atual)).ToList();
+
                 if (lstRetorno.Count > 1)
                 {
                     //afazer: tratar erro para retornar para usuário
@@ -236,13 +236,29 @@ namespace Loja.UI.Controllers
                 }
             }
 
-            /* OBS: será necessário criar uma nova rotina em Global/Cliente para fazer a 
-             * alteração completa de cadastro do cliente.
-             * Verificar se conseguimos utilizar a criação de log de AtualizaParcial
-             * Será necessário realizar a confrontação de dados do cliente para criação de log
-             * Será necessário realizar a confrontação de referências em caso de PJ
-             * vai dar um trabalho!!!             
-             */
+            if (!cadastrando)
+            {
+                /* OBS: será necessário criar uma nova rotina em Global/Cliente para fazer a 
+                 * alteração completa de cadastro do cliente.
+                 * Verificar se conseguimos utilizar a criação de log de AtualizaParcial
+                 * Será necessário realizar a confrontação de dados do cliente para criação de log
+                 * Será necessário realizar a confrontação de referências em caso de PJ
+                 * vai dar um trabalho!!!             
+                 */
+                //cliente existe entaão vamos atualizar os dados
+                Bll.Dto.ClienteDto.ClienteCadastroDto clienteCadastroDto = new Bll.Dto.ClienteDto.ClienteCadastroDto();
+
+                clienteCadastroDto.DadosCliente = dados;
+                clienteCadastroDto.RefBancaria = lstRefBancaria;
+                clienteCadastroDto.RefComercial = lstRefCom;
+
+                List<string> lstErros = (await clienteBll.AtualizarClienteParcial(usuarioLogado.Usuario_atual, clienteCadastroDto)).ToList();
+                if(lstErros.Count > 0)
+                {
+                    //deu erro
+                }
+            }
+
 
 
             /* OBS 2: Não iremos utilizar "Session" para a criação de novo Pedido
@@ -265,8 +281,8 @@ namespace Loja.UI.Controllers
 
             //validar os dados do cliente 
             //alterar para fazer o cadastro pelo Global/Cliente
-            var retorno = await clienteBll.CadastrarCliente(clienteCadastro, usuarioLogado.Usuario_atual,
-                usuarioLogado.Loja_atual_id);
+            //var retorno = await clienteBll.CadastrarCliente(clienteCadastro, usuarioLogado.Usuario_atual,
+            //    usuarioLogado.Loja_atual_id);
 
             //Não iremos mais armazenar em session. Iremos enviar o dto de pedido e retornar o 
             //dto do pedido em cada página.
@@ -275,16 +291,16 @@ namespace Loja.UI.Controllers
             dtoPedido.DadosCliente = new DadosClienteCadastroDto();
             dtoPedido.DadosCliente = dados;
 
-            if (EndEntrega2 != null)
+            if (EndEntrega != null)
             {
-                if (EndEntrega2.EndEtg_cep != null)
+                if (EndEntrega.EndEtg_cep != null)
                 {
                     //vamos validar o endereço de entrega no Global/Prepedido
                     dtoPedido.EnderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
                     //vamos normalizar o cep enviado antes de armazenar na session
-                    EndEntrega2.EndEtg_cep = EndEntrega2.EndEtg_cep.Replace("-", "");
+                    EndEntrega.EndEtg_cep = EndEntrega.EndEtg_cep.Replace("-", "");
                 }
-                dtoPedido.EnderecoEntrega = EndEntrega2;
+                dtoPedido.EnderecoEntrega = EndEntrega;
             }
 
             usuarioLogado.PedidoDto = dtoPedido;

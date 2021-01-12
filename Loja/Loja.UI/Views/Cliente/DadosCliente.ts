@@ -42,8 +42,7 @@ $(function () {
     ($('#cepEntrega') as any).mask("00000-000");
     ($('#cep') as any).mask("00000-000");
     ($('#ie') as any).mask("000.000.000.000");
-    ($('#telRes') as any).mask("(00) 0000-0000");
-    //$('#celular').mask("(00) 00000-0000");
+
     $('#celular').blur(function () {
         if ($('#celular').val().toString().length == 14) {
             ($('#celular') as any).mask("(99) 9999-9999");
@@ -53,12 +52,11 @@ $(function () {
         }
     });
 
-    ($('#telCom') as any).mask("(00) 0000-0000");
     $('#telCom').blur(function () {
         if ($('#telCom').val() != "") {
             $('#telCom').removeClass("is-invalid");
         }
-    })
+    });
 
     $('#telCom2').blur(function () {
         if ($('#telCom2').val().toString().length == 14) {
@@ -70,11 +68,17 @@ $(function () {
     })
 
     $('#addRefComercial').on('click', function () {
+
         let index: number = Number($('#index').val());
 
         if (index == undefined) {
-            index = 0;
+            index = 1;
             $('#index').val(index);
+        }
+
+        if (index == 3) {
+            swal("", "Máximo de 3 referências comerciais.");
+            return false;
         }
 
         let linha: string = "<hr /><div class='form-group row'>";
@@ -88,8 +92,10 @@ $(function () {
         linha += "</div>";
         linha += "<div class='col-sm-4' style='text-align: initial;'>";
         linha += "<label class='col-form-label' for='Telefone'>TELEFONE</label>";
-        linha += "<input name='[" + index + "].Telefone' id='" + index + "-Telefone' type='text' class='form-control' />";
-        linha += "</div></div>";
+        linha += "<input name='[" + index + "].Telefone' id='" + index + "-Telefone' type='text' class='form-control' onblur='IncluirMascara($(this))' onfocus='RemoveMascara($(this))' />";
+        linha += "</div>"
+        linha += "<input type='hidden' id='" + index + "'-Ordem' name='[" + index + "].Ordem' value='" + (index + 1) + "' /> ";
+        linha += "</div>";
 
         $('#collapsible-body-comercial').append(linha);
         ($('#' + index + '-Telefone') as any).mask("(00) 0000-0000");
@@ -98,28 +104,17 @@ $(function () {
         $('#index').val(index);
     });
 
-    //mascara de telefone para ref bancaria
-    $("#0-telBanco").blur(function () {
-        if ($('#0-telBanco').val().toString().length == 14) {
-            ($('#0-telBanco') as any).mask("(99) 9999-9999");
-        }
-        else {
-            ($('#0-telBanco') as any).mask("(99) 99999-9999");
-        }
-    });
-
-
     $('#addRefBancaria').on('click', function () {
-        if (!$("#RefBancariabody-0").is(":visible")) {
-            $("#RefBancariabody-0").show();
-            $("#RefBancariabody-0").css('display', 'inline-flex');
+        let indiceBancaria: string = $("#indiceBancaria").val() as string;
+        if (!$("#RefBancariabody-" + indiceBancaria + "").is(":visible")) {
+            $("#RefBancariabody-" + indiceBancaria + "").show();
+            $("#RefBancariabody-" + indiceBancaria + "").css('display', 'inline-flex');
             return;
         }
 
         swal("Erro", "Máximo de 1 referência bancária.");
         return false;
     });
-
 
     //verificar produtor rural no inicio da tela
     if ($("#tipo").val() == Constantes.ID_PF) {
@@ -129,7 +124,8 @@ $(function () {
         }
     }
 
-
+    MontarTelefonesTela();
+    ColocarMascaraNosTelefones();
 
 });
 
@@ -291,7 +287,7 @@ $('#btnBuscar').on('click', function () {
         data: { nendereco: $('#nendereco').val(), localidade: $('#localidade').val(), lstufs: $('#lstufs').val() },
         dataType: "json",
         success: function (t) {
-            debugger;
+
             //afazer: verificar se a lista de ibge vem junto
             let end: CepDto = t[0];
             montaTabela(t);
@@ -361,6 +357,32 @@ $("#modal1").on("hidden.bs.modal", function () {
 /*================FIM CONROLE DE CAMPOS =================*/
 
 /* ========== CHAMADAS DIRETAS DA TELA ====================================*/
+window.RemoveMascara = (el: JQuery<HTMLInputElement>) => {
+    let valor: string = StringUtils.retorna_so_digitos(el.val() as string);
+    (el as any).unmask();
+    el.val(valor);
+}
+//inclui mascara para Ref's
+window.IncluirMascara = (el: JQuery<HTMLInputElement>) => {
+
+    let valor: string = StringUtils.retorna_so_digitos(el.val() as string);
+    if (!!valor) {
+        if (valor.length < 6) {
+            swal("Erro", "Telefone inválido!");
+            return false;
+        }
+        if (valor.length >= 6 && valor.length <= 8) {
+            //não tem ddd            
+            (el as any).mask(MascaraParaTelefones("", valor));
+        }
+        if (valor.length > 8) {
+            //tem ddd
+            let s = FormatarTelefone.SepararTelefone(valor);
+            el.next().val(s.Ddd);
+            (el as any).mask(MascaraParaTelefones(s.Ddd, s.Telefone));
+        }
+    }
+}
 //mostra a div de endereço de entrega
 window.mostraDiv = (el: JQuery<HTMLInputElement>) => {
 
@@ -470,7 +492,7 @@ window.ValidarFormulario = () => {
         msg = verificarCamposObrigatorios();
 
         if (msg.length == 0) {
-            
+
             //vamos converter os dados do cliente para dadosClienteCadastroDto e passar para  validar
             dadosClienteCadastroDto = converterParaDadosClienteCadastroDto();
             //vamos converter os telefones para validar
@@ -479,7 +501,7 @@ window.ValidarFormulario = () => {
             clienteCadastro = converterParaClienteCadastroDto();
 
             //vamos validar em outro arquivo os dados do cliente
-
+            debugger;
             //ESTOU AQUI!!
             //PRECISO VALIDAR O ENDEREÇO DE ENTREGA CASO NÃO ESTEJA CADASTRANDO
             msg = validacoesCliente.ValidarDadosClienteCadastro(dadosClienteCadastroDto, lstIBGE, clienteCadastro);
@@ -487,7 +509,7 @@ window.ValidarFormulario = () => {
             let cadastrando: boolean = $("#cadastrando").val() == "False" ? false : true as boolean;
             let outro_endereco: boolean = $('#outro').val() == "False" ? false : true as boolean;
             if (!cadastrando) {
-                
+
                 if (outro_endereco) {
                     //vamos converter para endereço entrega dto
                     let endEntrega: EnderecoEntregaClienteCadastroDto = cepEntrega.converterEntregaParaEnderecoEntregaClienteCadastroDto();
@@ -514,6 +536,10 @@ window.ValidarFormulario = () => {
                 return false;
             }
         }
+
+        //vamos passar os telefones de ref
+        ajustarTelRefComercial(clienteCadastro.RefComercial);
+        ajustarTelRefBancaria(clienteCadastro.RefBancaria);
     }
 }
 
@@ -526,6 +552,107 @@ window.ChecarLinha = (el: JQuery<HTMLTableElement>) => {
 /* ============ FIM DE CHAMADAS DIRETAS DA TELA ===========*/
 
 /* ============ FUNÇÕES ===========*/
+function MontarTelefonesTela(): void {
+    //Montar telefones PF
+    if ($("#tipo").val() == Constantes.ID_PF)
+        MontarTelefonesPF();
+
+    //Montar telefones PJ
+    if ($("#tipo").val() == Constantes.ID_PJ)
+        MontarTelefonesPJ();
+}
+
+function MontarTelefonesPF(): void {
+    //RESIDENCIAL
+    let dddRes: string = $('#dddRes').val() as string;
+    let telRes: string = $('#telRes').val() as string;
+    if (!!dddRes && !!telRes) {
+        $('#telRes').val(dddRes + telRes);
+    }
+    ($('#telRes') as any).mask(MascaraParaTelefones(dddRes, telRes));
+    //CELULAR
+    let dddCel: string = $('#dddCel').val() as string;
+    let celular: string = $('#celular').val() as string;
+    if (!!dddCel && !!celular)
+        $('#celular').val(dddCel + celular);
+    ($('#celular') as any).mask(MascaraParaTelefones(dddCel, celular));
+    //COMERCIAL
+    let dddCom: string = $('#dddCom').val() as string;
+    let telCom: string = $('#telCom').val() as string;
+    if (!!dddCom && !!telCom)
+        $('#telCom').val(dddCom + telCom);
+    ($('#telCom') as any).mask(MascaraParaTelefones(dddCom, telCom));
+}
+
+function MontarTelefonesPJ(): void {
+
+    //COMERCIAL
+    let pj_dddCom: string = $('#dddCom').val() as string;
+    let pj_telCom: string = $('#telCom').val() as string;
+    if (!!pj_dddCom && !!pj_telCom)
+        $('#telCom').val(pj_dddCom + pj_telCom);
+    ($('#telCom') as any).mask(MascaraParaTelefones(pj_dddCom, pj_telCom));
+    //COMERCIAL2
+    let dddCom2: string = $('#dddCom2').val() as string;
+    let telCom2: string = $('#telCom2').val() as string;
+    if (!!dddCom2 && !!telCom2)
+        $('#telCom2').val(dddCom2 + telCom2);
+    ($('#telCom2') as any).mask(MascaraParaTelefones(dddCom2, telCom2));
+}
+
+function MascaraParaTelefones(ddd: string, tel: string): string {
+    let mascara: string = "";
+    if (!!ddd) {
+        mascara = "(99) ";
+    }
+    if (!!tel) {
+        //é celular
+        if (tel.length > 8)
+            mascara = mascara + "99999-9999";
+        if (tel.length == 8)
+            mascara = mascara + "9999-9999";
+        if (tel.length < 8)
+            mascara = mascara + "999-9999";
+    }
+
+    return mascara;
+}
+
+function ColocarMascaraNosTelefones() {
+
+    //mascara de telefone para ref bancaria
+    let indice: number = $("#indiceBancaria").val() as number;
+    if (!!indice) {
+        let cont: number = indice > 0 ? indice - 1 : 0;
+        for (let i = 0; i <= indice; i++) {
+            let telBanco: string = $("#" + cont + "-telBanco").val() as string;
+            let dddBanco: string = $("#" + cont + "-dddBanco").val() as string;
+
+            if (!!dddBanco && !!telBanco) {
+                $("#" + cont + "-telBanco").val(dddBanco + telBanco);
+            }
+            ($("#" + cont + "-telBanco") as any).mask(MascaraParaTelefones(dddBanco, telBanco));
+        }
+    }
+
+    //mascara de telefone para ref comercial
+    let index = $("#index").val();
+    if (!!index) {
+        let cont: number = index > 0 ? indice - 1 : 0;
+        for (let i = 0; i <= index; i++) {
+            let telComercial: string = $("#" + cont + "-Telefone").val() as string;
+            let dddComercial: string = $("#" + cont + "-Ddd").val() as string;
+
+            if (!!dddComercial && !!telComercial) {
+                $("#" + cont + "-Telefone").val(dddComercial + telComercial);
+            }
+            ($("#" + cont + "-Telefone") as any).mask(MascaraParaTelefones(dddComercial, telComercial));
+            cont++;
+        }
+    }
+
+}
+
 function converterParaDadosClienteCadastroDto(): DadosClienteCadastroDto {
     //vamos converter o jquery para a classe
 
@@ -541,7 +668,7 @@ function converterParaDadosClienteCadastroDto(): DadosClienteCadastroDto {
     dadosClienteCadastroDto.Observacao_Filiacao = $("#observacoes").val() as string;
     dadosClienteCadastroDto.Nascimento = $("#nascimento").val() as string;
     dadosClienteCadastroDto.Sexo = $("#sexo").val() as string;
-    dadosClienteCadastroDto.Nome = $("#nome").val() as string;
+    dadosClienteCadastroDto.Nome = dadosClienteCadastroDto.Tipo == Constantes.ID_PF ? $("#nome").val() as string : $("#razao").val() as string;
     dadosClienteCadastroDto.ProdutorRural = parseInt($('#produtor').val() as string);
     dadosClienteCadastroDto.Endereco = $("#endereco").val() as string;
     dadosClienteCadastroDto.Numero = $("#numero").val() as string;
@@ -549,7 +676,7 @@ function converterParaDadosClienteCadastroDto(): DadosClienteCadastroDto {
     dadosClienteCadastroDto.Bairro = $("#bairro").val() as string;
     dadosClienteCadastroDto.Cidade = $("#cidade").val() as string;
     dadosClienteCadastroDto.Uf = $("#uf").val() as string;
-    dadosClienteCadastroDto.Cep = $("#endereco").val() as string;
+    dadosClienteCadastroDto.Cep = $("#cep").val() as string;
     dadosClienteCadastroDto.DddResidencial = "";//precisa desconverter os telefones 
     dadosClienteCadastroDto.TelefoneResidencial = $("#telRes").val() as string;
     dadosClienteCadastroDto.DddComercial = "";
@@ -591,11 +718,15 @@ function converterParaRefComercial(): Array<RefComercialDtoCliente> {
         let nome_Empresa: string = $("#" + i + "-Nome_Empresa").val() as string;
         let contato: string = $("#" + i + "-Contato").val() as string;
         let telefone: string = $("#" + i + "-Telefone").val() as string;
+        let ddd: string = $("#" + i + "-Ddd").val() as string;
+
         //vamos passar para referência comercial
         let refComercial: RefComercialDtoCliente = new RefComercialDtoCliente();
         refComercial.Nome_Empresa = nome_Empresa;
         refComercial.Contato = contato;
         refComercial.Telefone = telefone;
+        refComercial.Ddd = ddd;
+        refComercial = converterTelefoneRefComercial(refComercial);
 
         lstRefComercial.push(refComercial);
     }
@@ -603,6 +734,18 @@ function converterParaRefComercial(): Array<RefComercialDtoCliente> {
     return lstRefComercial;
 }
 
+function ajustarTelRefComercial(lstRefComercial: Array<RefComercialDtoCliente>): void {
+    let indiceComercial = $("#indiceComercial").val() as number;
+    for (let i = 0; i < indiceComercial; i++) {
+        $("#" + i + "-Telefone").val(lstRefComercial[i].Telefone);
+    }
+}
+function ajustarTelRefBancaria(lstRefBancaria: Array<RefBancariaDtoCliente>): void {
+    let indiceBancaria = $("#indiceBancaria").val() as number;
+    for (let i = 0; i < indiceBancaria; i++) {
+        $("#" + i + "-telBanco").val(lstRefBancaria[i].Telefone);
+    }
+}
 function converterParaRefBancaria(): Array<RefBancariaDtoCliente> {
     //vamos fazer um foreach para as referências
     let indiceBacaria = $("#indiceBancaria").val() as number;
@@ -613,6 +756,7 @@ function converterParaRefBancaria(): Array<RefBancariaDtoCliente> {
         let agencia: string = $("#" + i + "-agencia").val() as string;
         let conta: string = $("#" + i + "-conta").val() as string;
         let telBanco: string = $("#" + i + "-telBanco").val() as string;
+        let dddBanco: string = $("#" + i + "-dddBanco").val() as string;
         let contatoBanco: string = $("#" + i + "-contatoBanco").val() as string;
 
         //vamos passar para referência bancária
@@ -620,8 +764,11 @@ function converterParaRefBancaria(): Array<RefBancariaDtoCliente> {
         refBancaria.Banco = banco;
         refBancaria.Agencia = agencia;
         refBancaria.Conta = conta;
-        refBancaria.Telefone = telBanco;
         refBancaria.Contato = contatoBanco;
+        refBancaria.Telefone = telBanco;
+        refBancaria.Ddd = dddBanco;
+
+        refBancaria = converterTelefoneRefBancaria(refBancaria);
 
         lstRefBancaria.push(refBancaria);
     }
@@ -659,7 +806,7 @@ function verificarCamposObrigatoriosCliente(): string {
             $("#telCom").addClass("is-invalid");
             msg += "Favor preencher ao menos um número de telefone!<br>";
         }
-    }    
+    }
 
     if ($("#tipo").val() == Constantes.ID_PJ) {
         if ($("#razao").val() == "") {
@@ -709,7 +856,7 @@ function verificarCamposObrigatoriosCliente(): string {
     return msg;
 }
 
-function verificarCamposObrigatoriosEndereco():string {
+function verificarCamposObrigatoriosEndereco(): string {
     let msg: string = "";
 
     if ($("#cep").val() == "") {
@@ -740,19 +887,49 @@ function verificarCamposObrigatoriosEndereco():string {
     return msg;
 }
 
+function converterTelefoneRefBancaria(ref: RefBancariaDtoCliente): RefBancariaDtoCliente {
+    let s: any;
+    if (!!ref.Telefone && !!ref.Ddd) {
+        s = FormatarTelefone.SepararTelefone(ref.Telefone);
+        ref.Telefone = s.Telefone;
+        ref.Ddd = s.Ddd;
+    }
+    if (!!ref.Telefone && !ref.Ddd) {
+        ref.Telefone = ref.Telefone.replace("-", "");
+    }
+
+    return ref;
+}
+
+function converterTelefoneRefComercial(ref: RefComercialDtoCliente): RefComercialDtoCliente {
+    let s: any;
+
+    if (!!ref.Telefone && !!ref.Ddd) {
+        s = FormatarTelefone.SepararTelefone(ref.Telefone);
+        ref.Telefone = s.Telefone;
+        ref.Ddd = s.Ddd;
+    }
+    if (!!ref.Telefone && !ref.Ddd) {
+        ref.Telefone = ref.Telefone.replace("-", "");
+    }
+    return ref;
+}
+
 function converterTelefones(dados: DadosClienteCadastroDto): DadosClienteCadastroDto {
 
     let s: any;
     if (!!dados.TelefoneResidencial) {
         s = FormatarTelefone.SepararTelefone(dados.TelefoneResidencial);
         dados.TelefoneResidencial = s.Telefone;
+        $("#telRes").val(dados.TelefoneResidencial);
         dados.DddResidencial = s.Ddd;
-        //$("#dddRes").val(dados.DddResidencial);
+        $("#dddRes").val(dados.DddResidencial);
     }
 
     if (!!dados.Celular) {
         s = FormatarTelefone.SepararTelefone(dados.Celular);
         dados.Celular = s.Telefone;
+        $("#celular").val(dados.Celular);
         dados.DddCelular = s.Ddd;
         $("#dddCel").val(dados.DddCelular);
     }
@@ -760,6 +937,7 @@ function converterTelefones(dados: DadosClienteCadastroDto): DadosClienteCadastr
     if (!!dados.TelComercial) {
         s = FormatarTelefone.SepararTelefone(dados.TelComercial);
         dados.TelComercial = s.Telefone;
+        $("#telCom").val(dados.TelComercial);
         dados.DddComercial = s.Ddd;
         $("#dddCom").val(dados.DddComercial);
     }
@@ -768,8 +946,10 @@ function converterTelefones(dados: DadosClienteCadastroDto): DadosClienteCadastr
         if (!!dados.TelComercial2) {
             s = FormatarTelefone.SepararTelefone(dados.TelComercial2);
             dados.TelComercial2 = s.Telefone;
+            $("#telCom2").val(dados.TelComercial2);
             dados.DddComercial2 = s.Ddd;
             $("#dddCom2").val(dados.DddComercial2);
+
         }
 
         //for (let i = 0; i < this.clienteCadastroDto.RefBancaria.length; i++) {

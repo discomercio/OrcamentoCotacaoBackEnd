@@ -646,15 +646,15 @@ namespace Cliente
                         retorno = false;
                     }
 
-                    int i = 0;
+                    int i = 1;
                     lstRefComercial.ForEach(x =>
                     {
-                        x.Ordem = i++;
                         if (string.IsNullOrEmpty(x.Nome_Empresa))
                         {
                             lstErros.Add("Ref Comercial (" + x.Ordem + "): informe o nome da empresa.");
                             retorno = false;
                         }
+                        x.Ordem = i++;
                     });
                 }
             }

@@ -70,6 +70,7 @@
 new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", id = "formulario" }))
                                 {
                                     <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12"></div>
+                                    <input type="hidden" value="@Model.DadosCliente.Id" name="Id" id="idCliente" />
                                     <input type="hidden" value="@Model.DadosCliente.Tipo" name="Tipo" id="tipo" />
                                     <input type="hidden" value="@Model.PermiteEdicao.ToString()" name="permiteEditar" id="permiteEditar" />
                                     <input type="hidden" value="@Model.Cadastrando.ToString()" name="cadastrando" id="cadastrando" />
@@ -339,7 +340,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                     <input name="ie" id="ie" type="text" class="form-control" value="@Model.DadosCliente?.Ie" />
                                                 </div>
                                             </div>
-                                            //referencias permite edição
+                                            //referencias Bancária permite edição
                                             <div class="accordion pt-4" id="accordionBancaria">
                                                 <div class="card">
                                                     @* Cabeçalho do accordion *@
@@ -355,7 +356,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
 
                                                         @{
                                                             var indice = 0;
-                                                            <input type="hidden" id="indiceBancaria" value="@indice" />
+
 
                                                             <div class="card-body form-control-right">
                                                                 <hr />
@@ -365,12 +366,6 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                                 </a>
                                                                 <hr />
 
-
-                                                                @while (Model.RefBancaria?.Count < 3)
-                                                                {
-                                                                    Model.RefBancaria.Add(new Loja.Bll.Dto.ClienteDto.RefBancariaDtoCliente());
-                                                                }
-
                                                                 @if (Model.RefBancaria?.Count > 0)
                                                                 {
                                                                     @foreach (var r in Model.RefBancaria)
@@ -378,7 +373,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                                         string visible = "display: none;";
                                                                         if (!String.IsNullOrWhiteSpace(r.ContaBanco))
                                                                         {
-                                                                            visible = "display: block";
+                                                                            visible = "display: inline-flex";
                                                                         }
 
 
@@ -411,9 +406,11 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                                             <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6">
                                                                                 <label class="col-form-label" for="@indice-telBanco">TELEFONE</label>
                                                                                 <input name="[@indice].TelefoneBanco" id="@indice-telBanco"
-                                                                                       type="text"
+                                                                                       type="text" onblur="IncluirMascara($(this))" onfocus="RemoveMascara($(this))"
                                                                                        value="@r.TelefoneBanco"
                                                                                        class="form-control" />
+                                                                                <input name="[@indice].DddBanco" type="hidden" id="@indice-dddBanco"
+                                                                                       value="@r.DddBanco" />
                                                                             </div>
                                                                             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
                                                                                 <label class="col-form-label">CONTATO</label>
@@ -422,9 +419,11 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                                                        value="@r.ContatoBanco"
                                                                                        class="form-control" />
                                                                             </div>
+                                                                            <input type="hidden" id="@indice-ordemBanco" name="[@indice].OrdemBanco" value="@r.OrdemBanco" />
                                                                         </div>
                                                                         indice++;
                                                                     }
+                                                                    <input type="hidden" id="indiceBancaria" value="@indice" />
                                                                 }
 
                                                             </div>
@@ -433,7 +432,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            //referencias Comerciais permite edição
                                             <div class="accordion" id="accordionComercial">
                                                 <div class="card">
                                                     @* Cabeçalho do accordion *@
@@ -479,11 +478,14 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                                             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6">
                                                                                 <label for="Telefone" class="col-form-label">TELEFONE</label>
                                                                                 <input name="[@index].Telefone" id="@index-Telefone"
-                                                                                       type="text"
+                                                                                       type="text" onblur="IncluirMascara($(this))" onfocus="RemoveMascara($(this))"
                                                                                        value="@r.Telefone"
                                                                                        class="form-control" />
+                                                                                <input name="[@index].Ddd" type="hidden" id="@index-Ddd"
+                                                                                       value="@r.Ddd" />
                                                                             </div>
                                                                         </div>
+                                                                        <input type="hidden" id="@index-Ordem" name="[@index].Ordem" value="@r.Ordem"/>
                                                                         index++;
                                                                     }
                                                                     <input type="hidden" id="index" value="@index" />

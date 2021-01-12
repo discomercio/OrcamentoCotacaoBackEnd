@@ -57,7 +57,7 @@ namespace PrepedidoApi.Controllers
              * */
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
             List<string> retorno = await clientePrepedidoBll.AtualizarClienteParcial(apelido.Trim(), dadosClienteCadastroDto,
-                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);
+                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS, false);
             if (retorno == null)
                 return NoContent();
             return Ok(retorno);
