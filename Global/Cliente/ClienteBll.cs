@@ -569,10 +569,6 @@ namespace Cliente
             return lstRefComercial;
         }
 
-        /*
-         * Incluímos a var "string usuarioCadastro" para permitir que a ApiUnis possa cadastrar outro
-         * usuário ao invés do Orçamentista
-         */
         public async Task<IEnumerable<string>> CadastrarCliente(Cliente.Dados.ClienteCadastroDados clienteCadastroDados, string indicador,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             string usuario_cadastro)
@@ -789,6 +785,30 @@ namespace Cliente
             var retorno = await ((from c in db.Tclientes
                                   where c.Cnpj_Cpf == cpf_cnpj
                                   select c.Id).AnyAsync());
+            return retorno;
+        }
+
+        public IQueryable<Tcliente> BuscarTcliente(string cpf_cnpj)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+            cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
+            IQueryable<Tcliente> retorno = (from c in db.Tclientes
+                                  where c.Cnpj_Cpf == cpf_cnpj
+                                  select c);
+            return retorno;
+        }
+
+        public async Task<string> BuscarIdCliente(string cpf_cnpj)
+        {
+            string retorno = "";
+
+            var db = contextoProvider.GetContextoLeitura();
+
+            cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
+
+            retorno = await (from c in db.Tclientes
+                             where c.Cnpj_Cpf == cpf_cnpj
+                             select c.Id).FirstOrDefaultAsync();
             return retorno;
         }
 

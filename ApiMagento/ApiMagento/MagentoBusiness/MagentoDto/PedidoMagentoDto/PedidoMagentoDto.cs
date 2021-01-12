@@ -64,65 +64,32 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         public decimal? Frete { get; set; }
 #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
-        public static Pedido.Dados.Criacao.PedidoCriacaoDados PedidoDadosCriacaoDePedidoMagentoDto(Cliente.Dados.DadosClienteCadastroDados dadosClienteMagento,
+        public static Pedido.Dados.Criacao.PedidoCriacaoDados? PedidoDadosCriacaoDePedidoMagentoDto(Cliente.Dados.DadosClienteCadastroDados dadosClienteMagento,
             Cliente.Dados.EnderecoCadastralClientePrepedidoDados enderecoCadastralClienteMagento, Cliente.Dados.EnderecoEntregaClienteCadastroDados enderecoEntregaMagento,
-            List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados> lstProdutosMagento, Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacaoMagento,
+            List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> lstProdutosMagento, Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacaoMagento,
             decimal vlTotalDestePedido, PedidoMagentoDto pedidoMagento,
-            decimal limiteArredondamento,
-            decimal maxErroArredondamento, string? pedido_bs_x_ac, string? marketplace_codigo_origem, string? pedido_bs_x_marketplace,
-            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro)
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
+            List<string> lstErros, UtilsMagento.ConfiguracaoApiMagento configuracaoApiMagento)
         {
-#pragma warning disable IDE0017 // Simplify object initialization
-            Pedido.Dados.Criacao.PedidoCriacaoDados pedidoCriacao = new Pedido.Dados.Criacao.PedidoCriacaoDados();
-#pragma warning restore IDE0017 // Simplify object initialization
-
-            pedidoCriacao.LojaUsuario = dadosClienteMagento.Loja;
-            //Armazena nome do usuário logado
-            /* AFAZER: Aqui tem que receber o nome do Usuario que no caso do Magento é o SUPORTE 1
-             * O usuário "SUPORTE 1" do Magento esta cadastrado na base de teste da ITS. Estou alterando o 
-             * valor de desse usuário na tabela "t_USUARIO.vendedor_externo" para "1", sendo assim, este usuário passará a ser
-             * "vendedor_externo = 1" 
-             */
-            pedidoCriacao.Usuario = dadosClienteMagento.Vendedor;
-
-            pedidoCriacao.Venda_Externa = true;
-
-            //Armazena os dados cadastrados do cliente
-            pedidoCriacao.DadosCliente = dadosClienteMagento;
-
-            //Armazena os dados do cliente para o Pedido
-            pedidoCriacao.EnderecoCadastralCliente = enderecoCadastralClienteMagento;
-
-            //Armazena os dados de endereço de entrega
-            pedidoCriacao.EnderecoEntrega = enderecoEntregaMagento;
-
-            //Armazena os dados dos produtos selecionados
-            pedidoCriacao.ListaProdutos = lstProdutosMagento;
-
-            //Armazena os dados da forma de pagto selecionado
-            pedidoCriacao.FormaPagtoCriacao = formaPagtoCriacaoMagento;
+            if (!Constantes.TipoPessoa.TipoValido(dadosClienteMagento.Tipo))
+            {
+                lstErros.Add("Tipo de cliente não é PF nem PJ.");
+                return null;
+            }
 
             //Armazena os dados de entrega imediata, obs, instalador instala, bem de uso comum
 #pragma warning disable IDE0017 // Simplify object initialization
-            pedidoCriacao.DetalhesPedido = new Prepedido.Dados.DetalhesPrepedido.DetalhesPrepedidoDados();
+            var pedidoCriacaoDetalhesPedido = new Prepedido.Dados.DetalhesPrepedido.DetalhesPrepedidoDados();
 #pragma warning restore IDE0017 // Simplify object initialization
-            pedidoCriacao.DetalhesPedido.BemDeUso_Consumo = (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_SIM;
-            pedidoCriacao.DetalhesPedido.InstaladorInstala = (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO;
-            pedidoCriacao.DetalhesPedido.EntregaImediata = dadosClienteMagento.Tipo == Constantes.ID_PF ?
+            pedidoCriacaoDetalhesPedido.BemDeUso_Consumo = (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_SIM;
+            pedidoCriacaoDetalhesPedido.InstaladorInstala = (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO;
+            pedidoCriacaoDetalhesPedido.EntregaImediata = dadosClienteMagento.Tipo == Constantes.ID_PF ?
                             Convert.ToString((byte)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM) :
                             Convert.ToString((byte)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO);
-            pedidoCriacao.DetalhesPedido.EntregaImediataData = null;
-            pedidoCriacao.DetalhesPedido.Observacoes = pedidoMagento.Obs_1;
+            pedidoCriacaoDetalhesPedido.EntregaImediataData = null;
+            pedidoCriacaoDetalhesPedido.Observacoes = pedidoMagento.Obs_1;
             //Ponto de referência é armazenado onde???
             //Frete é armazenado onde???
-
-            //Flag para saber se tem indicador selecionado 
-            //campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
-            pedidoCriacao.ComIndicador = ((pedidoMagento.Frete ?? 0) != 0) ? true : false;
-
-            //Armazena o nome do indicador selecionado
-            //campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
-            pedidoCriacao.NomeIndicador = ((pedidoMagento.Frete ?? 0) != 0) ? dadosClienteMagento.Vendedor : "";
 
             //Armazena o percentual de comissão para o indicador selecionado
             //todo: afazer: verificar se esta calculando corretamente
@@ -134,33 +101,87 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                 else
                     percRT = percRT + (float)((x.Preco_Lista - (x.Preco_Venda + 1)) / x.Preco_Venda * 100);
             };
-            pedidoCriacao.PercRT = percRT;
-            pedidoCriacao.PercRT = 0;
+            percRT = 0f;
 
-            //Armazena "S" ou "N" para caso de o indicador selecionado permita RA
-            pedidoCriacao.OpcaoPossuiRa = true;
-            pedidoCriacao.PermiteRAStatus = 1;
+            var pedidoCriacaoValor = new Pedido.Dados.Criacao.PedidoCriacaoValorDados(
+                percRT: percRT,
 
-            //Armazena o id do centro de distribuição selecionado manualmente
-            pedidoCriacao.IdNfeSelecionadoManual = 0; //será sempre automático
+                //Armazena "S" ou "N" para caso de o indicador selecionado permita RA
+                opcaoPossuiRa: true,
+                permiteRAStatus: 1,
 
-            //Flag para saber se o cliente aceitou finalizar o pedido mesmo com produto sem estoque
-            //afazer: verificar se passa true ou false
-            pedidoCriacao.OpcaoVendaSemEstoque = true;
+                //Armazena o valor total do pedido
+                vl_total: vlTotalDestePedido,
 
-            //Armazena o valor total do pedido
-            pedidoCriacao.Vl_total = vlTotalDestePedido;
+                //Armazena o valor total de pedido com RA
+                vl_total_NF: lstProdutosMagento.Select(x => x.TotalItemRA() ?? 0).Sum()
+                );
 
-            //Armazena o valor total de pedido com RA
-            decimal vl_total = lstProdutosMagento.Select(x => x.TotalItemRA ?? 0).Sum();
-            pedidoCriacao.Vl_total_NF = vl_total;
 
-            pedidoCriacao.LimiteArredondamento = limiteArredondamento;
-            pedidoCriacao.MaxErroArredondamento = maxErroArredondamento;
-            pedidoCriacao.Pedido_bs_x_ac = pedido_bs_x_ac;
-            pedidoCriacao.Marketplace_codigo_origem = marketplace_codigo_origem;
-            pedidoCriacao.Pedido_bs_x_marketplace = pedido_bs_x_marketplace;
-            pedidoCriacao.SistemaResponsavelCadastro = sistemaResponsavelCadastro;
+            Pedido.Dados.Criacao.PedidoCriacaoDados pedidoCriacao = new Pedido.Dados.Criacao.PedidoCriacaoDados(
+                detalhesPedido: pedidoCriacaoDetalhesPedido,
+                ambiente: new Pedido.Dados.Criacao.PedidoCriacaoAmbienteDados(
+                    loja: dadosClienteMagento.Loja,
+                    //Armazena nome do usuário logado
+                    /* AFAZER: Aqui tem que receber o nome do Usuario que no caso do Magento é o SUPORTE 1
+                     * O usuário "SUPORTE 1" do Magento esta cadastrado na base de teste da ITS. Estou alterando o 
+                     * valor de desse usuário na tabela "t_USUARIO.vendedor_externo" para "1", sendo assim, este usuário passará a ser
+                     * "vendedor_externo = 1" 
+                     */
+                    usuario: dadosClienteMagento.Vendedor,
+                    vendedor: dadosClienteMagento.Vendedor,
+
+                    venda_Externa: true,
+
+                    //Flag para saber se tem indicador selecionado 
+                    //campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
+                    comIndicador: ((pedidoMagento.Frete ?? 0) != 0) ? true : false,
+
+                    //Armazena o nome do indicador selecionado
+                    //campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
+                    indicador_Orcamentista: ((pedidoMagento.Frete ?? 0) != 0) ? dadosClienteMagento.Vendedor : "",
+
+                    //Armazena o id do centro de distribuição selecionado manualmente
+                    idNfeSelecionadoManual: 0, //será sempre automático
+
+                    //Flag para saber se o cliente aceitou finalizar o pedido mesmo com produto sem estoque
+                    //afazer: verificar se passa true ou false
+                    opcaoVendaSemEstoque: true
+
+
+                    ),
+
+                //Armazena os dados cadastrados do cliente
+                cliente: Pedido.Dados.Criacao.PedidoCriacaoClienteDados.PedidoCriacaoClienteDados_de_DadosClienteCadastroDados(dadosClienteMagento),
+
+                //Armazena os dados do cliente para o Pedido
+                enderecoCadastralCliente: enderecoCadastralClienteMagento,
+
+                //Armazena os dados de endereço de entrega
+                enderecoEntrega: enderecoEntregaMagento,
+
+                //Armazena os dados dos produtos selecionados
+                listaProdutos: lstProdutosMagento,
+
+                //Armazena os dados da forma de pagto selecionado
+                formaPagtoCriacao: formaPagtoCriacaoMagento,
+
+                valor: pedidoCriacaoValor,
+
+                configuracao: new Pedido.Dados.Criacao.PedidoCriacaoConfiguracaoDados(
+                    limiteArredondamento: configuracaoApiMagento.LimiteArredondamentoPrecoVendaOrcamentoItem,
+                    maxErroArredondamento: 0.1M,
+                    sistemaResponsavelCadastro: sistemaResponsavelCadastro,
+                    limitePedidosExatamenteIguais_Numero: configuracaoApiMagento.LimitePedidos.LimitePedidosExatamenteIguais_Numero,
+                    limitePedidosExatamenteIguais_TempoSegundos: configuracaoApiMagento.LimitePedidos.LimitePedidosExatamenteIguais_TempoSegundos,
+                    limitePedidosMesmoCpfCnpj_Numero: configuracaoApiMagento.LimitePedidos.LimitePedidosMesmoCpfCnpj_Numero,
+                    limitePedidosMesmoCpfCnpj_TempoSegundos: configuracaoApiMagento.LimitePedidos.LimitePedidosMesmoCpfCnpj_TempoSegundos
+                    ),
+                marketplace: new Pedido.Dados.Criacao.PedidoCriacaoMarketplaceDados(
+                        pedido_bs_x_ac: pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac,
+                        marketplace_codigo_origem: pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem,
+                        pedido_bs_x_marketplace: pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace)
+                );
 
             return pedidoCriacao;
         }

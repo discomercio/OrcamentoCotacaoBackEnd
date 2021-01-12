@@ -19,10 +19,13 @@ namespace Pedido
     public class PedidoBll
     {
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
+        private readonly ProdutoGeralBll produtoGeralBll;
 
-        public PedidoBll(InfraBanco.ContextoBdProvider contextoProvider)
+        public PedidoBll(InfraBanco.ContextoBdProvider contextoProvider,
+            ProdutoGeralBll produtoGeralBll)
         {
             this.contextoProvider = contextoProvider;
+            this.produtoGeralBll = produtoGeralBll;
         }
 
         // MÉTODOS NOVOS SENDO MOVIDO
@@ -56,48 +59,6 @@ namespace Pedido
             }
         }
 
-        public async Task VerificarSePedidoExite(List<Cl_ITEM_PEDIDO_NOVO> v_item, PedidoCriacaoDados pedido,
-            string usuario, List<string> lstErros)
-        {
-            var db = contextoProvider.GetContextoLeitura();
-
-            //verificar se o pedido existe
-            string hora_atual = UtilsGlobais.Util.TransformaHora_Minutos();
-
-            var lstProdTask = await (from c in db.TpedidoItems
-                                     where c.Tpedido.Id_Cliente == pedido.DadosCliente.Id &&
-                                           c.Tpedido.Data == DateTime.Now.Date &&
-                                           c.Tpedido.Loja == pedido.DadosCliente.Loja &&
-                                           c.Tpedido.Vendedor == usuario &&
-                                           c.Tpedido.Data >= DateTime.Now.Date &&
-                                           c.Tpedido.Hora.CompareTo(hora_atual) <= 0 &&
-                                           c.Tpedido.St_Entrega != Constantes.ST_ENTREGA_CANCELADO
-                                     orderby c.Pedido, c.Sequencia
-                                     select new
-                                     {
-                                         c.Pedido,
-                                         c.Produto,
-                                         c.Fabricante,
-                                         Qtde = c.Qtde ?? 0,
-                                         c.Preco_Venda
-                                     }).ToListAsync();
-
-            foreach (var x in lstProdTask)
-            {
-                foreach (var y in v_item)
-                {
-                    if (x.Produto == y.Produto &&
-                        x.Fabricante == y.Fabricante &&
-                        x.Qtde == y.Qtde &&
-                        x.Preco_Venda == y.Preco_Venda)
-                    {
-                        lstErros.Add("Este pedido já foi gravado com o número " + x.Pedido);
-                        return;
-                    }
-                };
-            };
-        }
-
         public float VerificarPagtoPreferencial(Tparametro tParametro, PedidoCriacaoDados pedido,
             float percDescComissaoUtilizar, PercentualMaxDescEComissao percentualMax, decimal vl_total)
         {
@@ -129,7 +90,7 @@ namespace Pedido
                     {
                         if (s_pg == op)
                         {
-                            if (pedido.DadosCliente.Tipo == Constantes.ID_PJ)
+                            if (pedido.Cliente.Tipo.PessoaJuridica())
                                 percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
                             else
                                 percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;
@@ -184,7 +145,7 @@ namespace Pedido
 
                 if (vlNivel2 > (vl_total / 2))
                 {
-                    if (pedido.DadosCliente.Tipo == Constantes.ID_PJ)
+                    if (pedido.Cliente.Tipo.PessoaJuridica())
                         percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
                     else
                         percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;
@@ -235,7 +196,7 @@ namespace Pedido
 
                 if (vlNivel2 > (vl_total / 2))
                 {
-                    if (pedido.DadosCliente.Tipo == Constantes.ID_PJ)
+                    if (pedido.Cliente.Tipo.PessoaJuridica())
                         percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
                     else
                         percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;
@@ -406,7 +367,7 @@ namespace Pedido
                     if (percCusto != null)
                     {
                         coeficiente = percCusto.Coeficiente;
-                        i.Preco_Lista = (decimal)coeficiente * (i.CustoFinancFornecPrecoListaBase);
+                        i.Preco_Lista = (decimal)coeficiente * (i.CustoFinancFornecPrecoListaBase_Conferencia);
                     }
                     else
                     {
@@ -420,7 +381,7 @@ namespace Pedido
             return coeficiente;
         }
 
-        public async Task<ProdutoValidadoComEstoqueDados> VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado(PedidoProdutoPedidoDados produto,
+        public async Task<ProdutoValidadoComEstoqueDados> VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado(PedidoCriacaoProdutoDados produto,
             string cpf_cnpj, int id_nfe_emitente_selecao_manual)
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -471,7 +432,7 @@ namespace Pedido
             prodValidadoEstoqueProduto.Estoque = produto.Qtde_estoque_total_disponivel ?? 0;
             prodValidadoEstoqueProduto.QtdeSolicitada = produto.Qtde;
             prodValidadoEstoqueProduto.Preco_lista = produto.Preco_Lista;
-            prodValidadoEstoqueProduto.Descricao_html = produto.Descricao;
+            prodValidadoEstoqueProduto.Descricao_html = await produtoGeralBll.BuscarDescricao_Html(produto.Fabricante, produto.Produto);
             prodValidadoEstoqueProduto.Lst_empresa_selecionada = lst_empresa_selecionada;
             ProdutoValidadoComEstoqueDados prodValidadoEstoque = new ProdutoValidadoComEstoqueDados(prodValidadoEstoqueProduto,
                 prodValidadoEstoqueListaErros);
@@ -480,7 +441,7 @@ namespace Pedido
         }
 
         //todo: afazer: tentar unificar com Prepedido.PrepedidoBll.ObterCtrlEstoqueProdutoRegra
-        public async Task<IEnumerable<RegrasBll>> ObterCtrlEstoqueProdutoRegraParaUMProduto(PedidoProdutoPedidoDados produto,
+        public async Task<IEnumerable<RegrasBll>> ObterCtrlEstoqueProdutoRegraParaUMProduto(PedidoCriacaoProdutoDados produto,
             Tcliente tcliente, List<string> lstErros)
         {
             List<RegrasBll> lstRegrasCrtlEstoque = new List<RegrasBll>();
@@ -817,7 +778,7 @@ namespace Pedido
             }
         }
 
-        public async Task ObterDisponibilidadeEstoque(List<RegrasBll> lstRegrasCrtlEstoque, PedidoProdutoPedidoDados produto,
+        public async Task ObterDisponibilidadeEstoque(List<RegrasBll> lstRegrasCrtlEstoque, PedidoCriacaoProdutoDados produto,
             List<string> lstErros, int id_nfe_emitente_selecao_manual)
         {
             //int id_nfe_emitente_selecao_manual = 0;
@@ -839,7 +800,7 @@ namespace Pedido
                                     {
                                         p.Estoque_Fabricante = produto.Fabricante;
                                         p.Estoque_Produto = produto.Produto;
-                                        p.Estoque_DescricaoHtml = produto.Descricao;
+                                        p.Estoque_DescricaoHtml = await produtoGeralBll.BuscarDescricao_Html(produto.Fabricante, produto.Produto);
                                         p.Estoque_Qtde_Solicitado = produto.Qtde;//essa variavel não deve ser utilizada, a qtde só sera solicitada 
                                         //quando o usuario inserir a qtde 
                                         p.Estoque_Qtde = 0;
@@ -858,7 +819,7 @@ namespace Pedido
         }
 
         public async Task<bool> EstoqueVerificaDisponibilidadeIntegralV2(t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD regra,
-            PedidoProdutoPedidoDados produto)
+            PedidoCriacaoProdutoDados produto)
         {
             bool retorno = false;
             if (regra.Estoque_Qtde_Solicitado > 0 && regra.Estoque_Produto != "")
@@ -921,7 +882,7 @@ namespace Pedido
             return regra;
         }
 
-        private bool VerificarEstoqueInsuficienteUMProduto(List<RegrasBll> lstRegras, PedidoProdutoPedidoDados produto,
+        private bool VerificarEstoqueInsuficienteUMProduto(List<RegrasBll> lstRegras, PedidoCriacaoProdutoDados produto,
             int id_nfe_emitente_selecao_manual, List<string> lstErros)
         {
             bool retorno = false;
@@ -968,7 +929,7 @@ namespace Pedido
         }
 
         public List<RegrasBll> VerificarQtdePedidosAutoSplit(List<RegrasBll> lstRegras, List<string> lstErros,
-            PedidoProdutoPedidoDados produto, int id_nfe_emitente_selecao_manual)
+            PedidoCriacaoProdutoDados produto, int id_nfe_emitente_selecao_manual)
         {
             int qtde_a_alocar = 0;
 
@@ -1097,7 +1058,7 @@ namespace Pedido
             return lista_empresa_selecionada;
         }
 
-        private async Task ExisteProdutoDescontinuado(PedidoProdutoPedidoDados produto, List<string> lstErros)
+        private async Task ExisteProdutoDescontinuado(PedidoCriacaoProdutoDados produto, List<string> lstErros)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -1124,7 +1085,7 @@ namespace Pedido
             public List<RegrasBll> regrasBlls = new List<RegrasBll>();
             public List<string> prodValidadoEstoqueListaErros = new List<string>();
         }
-        public async Task<VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado_TesteRetorno> VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado_Teste(PedidoProdutoPedidoDados produto,
+        public async Task<VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado_TesteRetorno> VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado_Teste(PedidoCriacaoProdutoDados produto,
             string cpf_cnpj, int id_nfe_emitente_selecao_manual)
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -1309,7 +1270,7 @@ namespace Pedido
             return true;
         }
 
-        public void ConsisteProdutosValorZerados(List<PedidoProdutoPedidoDados> lstProdutos, List<string> lstErros,
+        public void ConsisteProdutosValorZerados(List<PedidoCriacaoProdutoDados> lstProdutos, List<string> lstErros,
             bool comIndicacao, short PermiteRaStatus)
         {
             foreach (var x in lstProdutos)
@@ -1344,11 +1305,11 @@ namespace Pedido
                     TprodutoLoja prodLoja = await (from c in db.TprodutoLojas.Include(x => x.Tproduto)
                                                    where c.Tproduto.Produto == prod.Produto &&
                                                    c.Tproduto.Fabricante == prod.Fabricante &&
-                                                   c.Loja == pedidoCriacao.LojaUsuario
+                                                   c.Loja == pedidoCriacao.Ambiente.Loja
                                                    select c).FirstOrDefaultAsync();
 
                     if (prodLoja == null)
-                        lstErros.Add("Produto " + prod.Produto + " não localizado para a loja " + pedidoCriacao.LojaUsuario + ".");
+                        lstErros.Add("Produto " + prod.Produto + " não localizado para a loja " + pedidoCriacao.Ambiente.Loja + ".");
 
                 }
 

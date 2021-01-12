@@ -313,15 +313,21 @@ namespace Loja.UI.Controllers
                 origem.TotalItemRA = origem.VlTotalItemComRA;
                 //este precisamos acessar o banco
                 origem.CustoFinancFornecCoeficiente = 0;
-                    //from c in contextoBdProvider.GetContextoLeitura().
-                    //                                   where c.Fabricante == origem.Fabricante && c.TipoParcela == siglaParc
-                    //                                  select 
+                //from c in contextoBdProvider.GetContextoLeitura().
+                //                                   where c.Fabricante == origem.Fabricante && c.TipoParcela == siglaParc
+                //                                  select 
             }
 
 
 
             Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret = await pedidoBll.CadastrarPedido(pedidoDtoSession,
-                usuarioLogado.Loja_atual_id, usuarioLogado.Usuario_atual, usuarioLogado.Vendedor_externo);
+                usuarioLogado.Loja_atual_id, usuarioLogado.Usuario_atual, usuarioLogado.Vendedor_externo,
+                configuracao.LimitePedidosLoja.LimitePedidosExatamenteIguais_Numero,
+                configuracao.LimitePedidosLoja.LimitePedidosExatamenteIguais_TempoSegundos,
+                configuracao.LimitePedidosLoja.LimitePedidosMesmoCpfCnpj_Numero,
+                configuracao.LimitePedidosLoja.LimitePedidosMesmoCpfCnpj_TempoSegundos,
+                0.1M,
+                0.1M);
 
             return Ok(ret);
             //se esta tudo ok redirecionamos para a tela de Pedido
@@ -433,7 +439,7 @@ namespace Loja.UI.Controllers
                     pedidoDto = usuarioLogado.PedidoDto;
                     pedidoDto.PercRT = percComissao;
                     pedidoDto.PermiteRAStatus = (short)comRA;
-                    pedidoDto.OpcaoPossuiRA = comRA == 1 ? "S":"N";
+                    pedidoDto.OpcaoPossuiRA = comRA == 1 ? "S" : "N";
                     pedidoDto.CDManual = cdManual == 0 ? (short)0 : (short)1;
                     pedidoDto.CDSelecionado = cdManual == 1 ? ListaCD : 0;
                     pedidoDto.ComIndicador = int.Parse(comIndicacao) != 0 ? 1 : 0;

@@ -83,7 +83,7 @@ namespace Especificacao.Ambiente.ApiMagento
             configuracaoApiMagento.DadosOrcamentista.Loja = "202";
 
             //para nao dar erro...
-            configuracaoApiMagento.LimitePedidos.LimitePrepedidosExatamenteIguais_Numero = 1000;
+            configuracaoApiMagento.LimitePedidos.LimitePedidosExatamenteIguais_Numero = 1000;
         }
     }
 }

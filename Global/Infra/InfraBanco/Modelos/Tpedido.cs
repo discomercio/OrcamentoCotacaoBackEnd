@@ -10,6 +10,23 @@ using System.Web;
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
 #endif
 
+    /*
+     * campos somente leitura:
+	[tamanho_num_pedido]  AS (len([pedido])) PERSISTED,
+	[pedido_base]  AS (substring([pedido],(1),(7))) PERSISTED,
+	[numero_loja]  AS (CONVERT([smallint],[loja],0)) PERSISTED,
+	[data_hora]  AS (case when len([hora])=(6) then CONVERT([datetime],(((((CONVERT([varchar](10),[data],(120))+' ')+substring([hora],(1),(2)))+':')+substring([hora],(3),(2)))+':')+substring([hora],(5),(2)),(120)) else [data] end) PERSISTED,
+	[st_forma_pagto_somente_cartao]  AS (CONVERT([tinyint],case when [tipo_parcelamento]=(1) AND [av_forma_pagto]=(5) then (1) when [tipo_parcelamento]=(2) then (1) when [tipo_parcelamento]=(3) AND ([pce_forma_pagto_entrada]=(5) AND [pce_forma_pagto_prestacao]=(5)) then (1) when [tipo_parcelamento]=(4) AND ([pse_forma_pagto_prim_prest]=(5) AND [pse_forma_pagto_demais_prest]=(5)) then (1) when [tipo_parcelamento]=(5) AND [pu_forma_pagto]=(5) then (1) else (0) end,0)) PERSISTED,
+	[analise_credito_data_sem_hora]  AS (case when [analise_credito_data] IS NULL then [analise_credito_data] else CONVERT([datetime],CONVERT([varchar](10),[analise_credito_data],(121)),(121)) end) PERSISTED,
+	[st_forma_pagto_possui_parcela_cartao]  AS (CONVERT([tinyint],case when [tipo_parcelamento]=(1) AND [av_forma_pagto]=(5) then (1) when [tipo_parcelamento]=(2) then (1) when [tipo_parcelamento]=(3) AND ([pce_forma_pagto_entrada]=(5) OR [pce_forma_pagto_prestacao]=(5)) then (1) when [tipo_parcelamento]=(4) AND ([pse_forma_pagto_prim_prest]=(5) OR [pse_forma_pagto_demais_prest]=(5)) then (1) when [tipo_parcelamento]=(5) AND [pu_forma_pagto]=(5) then (1) else (0) end,(0))) PERSISTED,
+	[vl_previsto_cartao]  AS (CONVERT([money],case when [tipo_parcelamento]=(1) AND [av_forma_pagto]=(5) then [vl_total_NF] when [tipo_parcelamento]=(2) then [pc_qtde_parcelas]*[pc_valor_parcela] when [tipo_parcelamento]=(3) AND ([pce_forma_pagto_entrada]=(5) OR [pce_forma_pagto_prestacao]=(5)) then case when [pce_forma_pagto_entrada]=(5) AND [pce_forma_pagto_prestacao]=(5) then [pce_entrada_valor]+[pce_prestacao_qtde]*[pce_prestacao_valor] when [pce_forma_pagto_entrada]=(5) AND [pce_forma_pagto_prestacao]<>(5) then [pce_entrada_valor] when [pce_forma_pagto_entrada]<>(5) AND [pce_forma_pagto_prestacao]=(5) then [pce_prestacao_qtde]*[pce_prestacao_valor] else (0) end when [tipo_parcelamento]=(4) AND ([pse_forma_pagto_prim_prest]=(5) OR [pse_forma_pagto_demais_prest]=(5)) then case when [pse_forma_pagto_prim_prest]=(5) AND [pse_forma_pagto_demais_prest]=(5) then [pse_prim_prest_valor]+[pse_demais_prest_qtde]*[pse_demais_prest_valor] when [pse_forma_pagto_prim_prest]=(5) AND [pse_forma_pagto_demais_prest]<>(5) then [pse_prim_prest_valor] when [pse_forma_pagto_prim_prest]<>(5) AND [pse_forma_pagto_demais_prest]=(5) then [pse_demais_prest_qtde]*[pse_demais_prest_valor] else (0) end when [tipo_parcelamento]=(5) AND [pu_forma_pagto]=(5) then [pu_valor] else (0) end,(0))) PERSISTED,
+	[num_obs_2]  AS (case isnumeric([obs_2]) when (1) then CONVERT([int],[obs_2],0) else (0) end) PERSISTED,
+	[num_obs_3]  AS (case isnumeric([obs_3]) when (1) then CONVERT([int],[obs_3],0) else (0) end) PERSISTED,
+	[st_forma_pagto_possui_parcela_cartao_maquineta]  AS (CONVERT([tinyint],case when [tipo_parcelamento]=(1) AND [av_forma_pagto]=(7) then (1) when [tipo_parcelamento]=(6) then (1) when [tipo_parcelamento]=(3) AND ([pce_forma_pagto_entrada]=(7) OR [pce_forma_pagto_prestacao]=(7)) then (1) when [tipo_parcelamento]=(4) AND ([pse_forma_pagto_prim_prest]=(7) OR [pse_forma_pagto_demais_prest]=(7)) then (1) when [tipo_parcelamento]=(5) AND [pu_forma_pagto]=(7) then (1) else (0) end,(0))) PERSISTED,
+	[endereco_nome_iniciais_em_maiusculas]  AS (case when [endereco_nome] IS NULL then NULL else CONVERT([varchar](60),[dbo].[SqlClrUtilIniciaisEmMaiusculas]([endereco_nome]),0) end) PERSISTED,
+	[EndEtg_nome_iniciais_em_maiusculas]  AS (case when [EndEtg_nome] IS NULL then NULL else CONVERT([varchar](60),[dbo].[SqlClrUtilIniciaisEmMaiusculas]([EndEtg_nome]),0) end) PERSISTED,
+*/
+
 namespace InfraBanco.Modelos
 {
     [Table("t_PEDIDO")]

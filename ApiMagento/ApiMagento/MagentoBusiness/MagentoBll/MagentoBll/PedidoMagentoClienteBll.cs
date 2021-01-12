@@ -40,7 +40,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
                 DadosCliente =
                 EnderecoCadastralClienteMagentoDto.DadosClienteDeEnderecoCadastralClienteMagentoDto(pedidoMagento.EnderecoCadastralCliente,
                     orcamentistaindicador_vendedor_loja.loja, orcamentistaindicador_vendedor_loja.vendedor,
-                    configuracaoApiMagento.DadosOrcamentista.Orcamentista),
+                    configuracaoApiMagento.DadosOrcamentista.Orcamentista, ""),
                 RefBancaria = new List<Cliente.Dados.Referencias.RefBancariaClienteDados>(),
                 RefComercial = new List<Cliente.Dados.Referencias.RefComercialClienteDados>()
             };

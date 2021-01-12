@@ -23,7 +23,6 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
         public decimal? VlTotalItemComRA { get; set; }
         public decimal? VlVenda { get; set; }
         public decimal? VlTotal { get; set; }
-        public float? Comissao { get; set; }
         public short? Qtde_estoque_total_disponivel { get; set; }
         public string Alertas { get; set; }
 
@@ -39,29 +38,24 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
         public float CustoFinancFornecCoeficiente { get; set; }
 
 
-        public static List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados> List_PedidoProdutoPedidoDados_De_PedidoProdutosDtoPedido(List<PedidoProdutosDtoPedido> origemLista)
+        public static List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> List_PedidoProdutoPedidoDados_De_PedidoProdutosDtoPedido(List<PedidoProdutosDtoPedido> origemLista)
         {
             if (origemLista == null) return null;
-            var ret = new List<Pedido.Dados.Criacao.PedidoProdutoPedidoDados>(0);
+            var ret = new List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados>(0);
             foreach (var origem in origemLista)
             {
-                ret.Add(new Pedido.Dados.Criacao.PedidoProdutoPedidoDados()
-                {
-                    Fabricante = origem.Fabricante,
-                    Produto = origem.Produto,
-                    Descricao = origem.Descricao,
-                    Qtde = origem.Qtde ?? 0,
-                    Qtde_estoque_total_disponivel = origem.Qtde_estoque_total_disponivel,
-                    Preco_Lista = origem.Preco_Lista ?? 0,
-                    Comissao = origem.Comissao,
-                    CustoFinancFornecPrecoListaBase = origem.CustoFinancFornecPrecoListaBase,
-                    Preco_NF = origem.Preco_NF,
-                    Desc_Dado = origem.Desc_Dado,
-                    Preco_Venda = origem.Preco_Venda,
-                    TotalItem = origem.TotalItem,
-                    TotalItemRA = origem.TotalItemRA,
-                    CustoFinancFornecCoeficiente = origem.CustoFinancFornecCoeficiente
-                });
+                ret.Add(new Pedido.Dados.Criacao.PedidoCriacaoProdutoDados(
+                    fabricante: origem.Fabricante,
+                    produto: origem.Produto,
+                    qtde: origem.Qtde ?? 0,
+                    qtde_estoque_total_disponivel: origem.Qtde_estoque_total_disponivel,
+                    preco_Lista: origem.Preco_Lista ?? 0,
+                    custoFinancFornecPrecoListaBase_Conferencia: origem.CustoFinancFornecPrecoListaBase,
+                    preco_NF: origem.Preco_NF,
+                    desc_Dado: origem.Desc_Dado,
+                    preco_Venda: origem.Preco_Venda,
+                    custoFinancFornecCoeficiente_Conferencia: origem.CustoFinancFornecCoeficiente
+                ));
             }
             return ret;
         }
@@ -92,7 +86,6 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                 VlVenda = origem.Preco_Venda ?? 0m,
                 VlTotalItem = origem.VlTotalItem,
                 VlTotalItemComRA = origem.VlTotalItemComRA,
-                Comissao = origem.Comissao
 
                 ////todo: verificar se isto fica...
                 ////ests são os campos definitivos

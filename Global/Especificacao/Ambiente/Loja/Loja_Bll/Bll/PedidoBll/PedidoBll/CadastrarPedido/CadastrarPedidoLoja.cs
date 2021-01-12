@@ -61,7 +61,9 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
 
         protected override List<string> AbstractListaErros()
         {
-            var ret1 = pedidoBll.CadastrarPedido(pedidoDto, lojaUsuario, usuario, vendedorExterno);
+            var ret1 = pedidoBll.CadastrarPedido(pedidoDto, lojaUsuario, usuario, vendedorExterno,
+                100000, 100000, 100000, 100000,
+                0.1M, 0.1M);
             var ret = ret1.Result;
             return ret.ListaErros;
         }

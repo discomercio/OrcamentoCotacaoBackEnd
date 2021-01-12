@@ -36,46 +36,27 @@ namespace InfraBanco.Modelos
         [Required]
         public decimal Preco_Venda { get; set; }
 
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        [Column("preco_fabricante", TypeName = "money")]
+        public decimal? Preco_Fabricante { get; set; }
+#endif
+
         [Column("preco_lista", TypeName = "money")]
         [Required]
         public decimal Preco_Lista { get; set; }
 
-        [Column("comissao")]
-        public Single? Comissao { get; set; }
-
-        [Column("preco_NF", TypeName = "money")]
-        public decimal? Preco_NF { get; set; }
-
-        [Column("descricao_html")]
-        [MaxLength(400)]
-        public string Descricao_Html { get; set; }
-
-        [Column("subgrupo")]
-        [MaxLength(10)]
-        public string Subgrupo { get; set; }
-
-        public Tpedido Tpedido { get; set; }
-
-
-        [Column("sequencia")]
-        public short? Sequencia { get; set; }
-
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
-
-
-        [Column("preco_fabricante", TypeName = "money")]
-        public decimal? Preco_Fabricante { get; set; }
-
-        [Column("vl_custo2", TypeName = "money")]
-        [Required]
-        public decimal Vl_Custo2 { get; set; }
-
         [Column("margem")]
         public Single? Margem { get; set; }
 
         [Column("desc_max")]
         public Single? Desc_Max { get; set; }
+#endif
 
+        [Column("comissao")]
+        public Single? Comissao { get; set; }
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         [Column("descricao")]
         [MaxLength(120)]
         public string Descricao { get; set; }
@@ -104,14 +85,34 @@ namespace InfraBanco.Modelos
         [Column("abaixo_min_autorizador")]
         [MaxLength(10)]
         public string Abaixo_Min_Autorizador { get; set; }
+#endif
 
+        [Column("sequencia")]
+        public short? Sequencia { get; set; }
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        [Column("markup_fabricante")]
+        public Single? Markup_Fabricante { get; set; }
+#endif
+
+        [Column("preco_NF", TypeName = "money")]
+        public decimal? Preco_NF { get; set; }
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         [Column("abaixo_min_superv_autorizador")]
         [MaxLength(10)]
         public string Abaixo_Min_Superv_Autorizador { get; set; }
 
-        [Column("markup_fabricante")]
-        public Single? Markup_Fabricante { get; set; }
+        [Column("vl_custo2", TypeName = "money")]
+        [Required]
+        public decimal Vl_Custo2 { get; set; }
+#endif
 
+        [Column("descricao_html")]
+        [MaxLength(400)]
+        public string Descricao_Html { get; set; }
+
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         [Column("custoFinancFornecCoeficiente")]
         [Required]
         public Single CustoFinancFornecCoeficiente { get; set; }
@@ -132,9 +133,24 @@ namespace InfraBanco.Modelos
         [MaxLength(3)]
         public string Cst { get; set; }
 
+        /*
+         * campos ainda nao cadastrados aqui:
+        separacao_rel_nsu
+        separacao_data
+        separacao_data_hora
+        separacao_deposito_zona_id
+        */
+
         [Column("descontinuado")]
         [MaxLength(1)]
         public string Descontinuado { get; set; }
 #endif
+
+        [Column("subgrupo")]
+        [MaxLength(10)]
+        public string Subgrupo { get; set; }
+
+        public Tpedido Tpedido { get; set; }
     }
 }
+ 

@@ -20,14 +20,14 @@ namespace MagentoBusiness.UtilsMagento
 
         public VersaoApiMagento VersaoApi { get; set; } = new VersaoApiMagento();
 
-        public double LimiteArredondamentoPrecoVendaOrcamentoItem { get; set; } = 0.1;
+        public decimal LimiteArredondamentoPrecoVendaOrcamentoItem { get; set; } = 0.1M;
 
         public class LimitePedidoMagento
         {
-            public int LimitePrepedidosExatamenteIguais_Numero { get; set; } = 1;
-            public int LimitePrepedidosExatamenteIguais_TempoSegundos { get; set; } = 10;
-            public int LimitePrepedidosMesmoCpfCnpj_Numero { get; set; } = 10;
-            public int LimitePrepedidosMesmoCpfCnpj_TempoSegundos { get; set; } = 3600;
+            public int LimitePedidosExatamenteIguais_Numero { get; set; } = 1;
+            public int LimitePedidosExatamenteIguais_TempoSegundos { get; set; } = 10;
+            public int LimitePedidosMesmoCpfCnpj_Numero { get; set; } = 10;
+            public int LimitePedidosMesmoCpfCnpj_TempoSegundos { get; set; } = 3600;
         }
 
         public LimitePedidoMagento LimitePedidos { get; set; } = new LimitePedidoMagento();

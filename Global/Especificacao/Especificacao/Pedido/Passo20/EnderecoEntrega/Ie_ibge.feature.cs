@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Passo25
+namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,7 +20,7 @@ namespace Especificacao.Especificacao.Pedido.Passo25
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    public partial class PedidoDadosCadastraisVerificarQueExecutou_VerificarQueExecutouFeature : object, Xunit.IClassFixture<PedidoDadosCadastraisVerificarQueExecutou_VerificarQueExecutouFeature.FixtureData>, System.IDisposable
+    public partial class Ie_IbgeFeature : object, Xunit.IClassFixture<Ie_IbgeFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -30,10 +30,10 @@ namespace Especificacao.Especificacao.Pedido.Passo25
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "DadosCadastrais.feature"
+#line 1 "Ie_ibge.feature"
 #line hidden
         
-        public PedidoDadosCadastraisVerificarQueExecutou_VerificarQueExecutouFeature(PedidoDadosCadastraisVerificarQueExecutou_VerificarQueExecutouFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public Ie_IbgeFeature(Ie_IbgeFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,7 +42,7 @@ namespace Especificacao.Especificacao.Pedido.Passo25
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PedidoDadosCadastraisVerificarQueExecutou - VerificarQueExecutou", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Ie_ibge", null, ProgrammingLanguage.CSharp, new string[] {
                         "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -83,57 +83,16 @@ namespace Especificacao.Especificacao.Pedido.Passo25
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="PedidoDadosCadastraisVerificarQueExecutou Configuração")]
-        [Xunit.TraitAttribute("FeatureTitle", "PedidoDadosCadastraisVerificarQueExecutou - VerificarQueExecutou")]
-        [Xunit.TraitAttribute("Description", "PedidoDadosCadastraisVerificarQueExecutou Configuração")]
-        public virtual void PedidoDadosCadastraisVerificarQueExecutouConfiguracao()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PedidoDadosCadastraisVerificarQueExecutou Configuração", null, tagsOfScenario, argumentsOfScenario);
-#line 9
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 10
- testRunner.Given("Nome deste item \"Especificacao.Pedido.Passo25.DadosCadastrais\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 11
- testRunner.Given("Implementado em \"Especificacao.Pedido.Pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 12
- testRunner.Then("Fazer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
         [Xunit.SkippableFactAttribute(DisplayName="fazer")]
-        [Xunit.TraitAttribute("FeatureTitle", "PedidoDadosCadastraisVerificarQueExecutou - VerificarQueExecutou")]
+        [Xunit.TraitAttribute("FeatureTitle", "Ie_ibge")]
         [Xunit.TraitAttribute("Description", "fazer")]
         public virtual void Fazer()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("fazer", null, tagsOfScenario, argumentsOfScenario);
-#line 14
-this.ScenarioInitialize(scenarioInfo);
+#line 4
+ this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
             bool isFeatureIgnored = default(bool);
@@ -152,7 +111,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 15
+#line 5
  testRunner.Given("fazer esta validação, no pedido e prepedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
@@ -166,12 +125,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                PedidoDadosCadastraisVerificarQueExecutou_VerificarQueExecutouFeature.FeatureSetup();
+                Ie_IbgeFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                PedidoDadosCadastraisVerificarQueExecutou_VerificarQueExecutouFeature.FeatureTearDown();
+                Ie_IbgeFeature.FeatureTearDown();
             }
         }
     }
