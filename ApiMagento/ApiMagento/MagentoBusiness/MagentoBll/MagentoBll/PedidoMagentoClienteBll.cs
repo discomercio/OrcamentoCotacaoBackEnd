@@ -30,7 +30,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
         }
 
         internal async Task<string> CadastrarClienteSeNaoExistir(PedidoMagentoDto pedidoMagento, List<string> listaErros,
-            PedidoMagentoBll.Orcamentistaindicador_vendedor_loja orcamentistaindicador_vendedor_loja, string usuario_cadastro)
+            PedidoMagentoBll.Indicador_vendedor_loja indicador_Vendedor_Loja, string usuario_cadastro)
         {
             string? idCliente = await clienteBll.BuscarIdCliente(pedidoMagento.Cnpj_Cpf);
             if (!string.IsNullOrEmpty(idCliente))
@@ -40,14 +40,14 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             {
                 DadosCliente =
                 EnderecoCadastralClienteMagentoDto.DadosClienteDeEnderecoCadastralClienteMagentoDto(pedidoMagento.EnderecoCadastralCliente,
-                    orcamentistaindicador_vendedor_loja.loja, orcamentistaindicador_vendedor_loja.vendedor,
-                    configuracaoApiMagento.DadosOrcamentista.Orcamentista, ""),
+                    indicador_Vendedor_Loja.loja, indicador_Vendedor_Loja.vendedor,
+                    configuracaoApiMagento.DadosIndicador.Indicador, ""),
                 RefBancaria = new List<Cliente.Dados.Referencias.RefBancariaClienteDados>(),
                 RefComercial = new List<Cliente.Dados.Referencias.RefComercialClienteDados>()
             };
 
             List<string> lstRet = (await clienteBll.CadastrarCliente(clienteCadastro,
-                orcamentistaindicador_vendedor_loja.orcamentista_indicador,
+                indicador_Vendedor_Loja.indicador,
                 Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI,
                 usuario_cadastro)).ToList();
 

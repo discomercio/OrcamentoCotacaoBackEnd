@@ -72,7 +72,7 @@ namespace Pedido
 
             //vamos validar os dados do cliente que esta vindo no pedido
             //alterar forma de validacao, a validacao dos dados cadastrais é diferente
-//todo: verificar se ainda precisamos disto, devemos chamar uma rotina para validar o endereço cadastral e não um cliente novo
+            //todo: verificar se ainda precisamos disto, devemos chamar uma rotina para validar o endereço cadastral e não um cliente novo
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await clienteBll.ListarBancosCombo()).ToList();
             var tclienteSexoNascimento = (from c in clienteBll.BuscarTcliente(pedido.Cliente.Cnpj_Cpf) select new { c.Sexo, c.Dt_Nasc }).FirstOrDefault();
             var tclienteSexo = "M";
@@ -88,7 +88,7 @@ namespace Pedido
                 tclienteNascimento = tclienteSexoNascimento.Dt_Nasc;
             }
             var dadosClienteCadastroDados = Cliente.Dados.DadosClienteCadastroDados.DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(pedido.EnderecoCadastralCliente,
-                pedido.Ambiente.Indicador_Orcamentista, pedido.Ambiente.Loja,
+                pedido.Ambiente.Indicador, pedido.Ambiente.Loja,
                 tclienteSexo, tclienteNascimento, pedido.Cliente.Id_cliente);
             await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDados, null, null, pedidoRetorno.ListaErros,
                 contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, pedido.Cliente.Tipo.PessoaFisica(),
@@ -131,7 +131,7 @@ namespace Pedido
                     if (pedido.Valor.PercRT != 0)
                         pedidoRetorno.ListaErros.Add("Usuário não pode editar perc_RT!");
 
-                if (string.IsNullOrEmpty(pedido.Ambiente.Indicador_Orcamentista) && pedido.Valor.PermiteRAStatus == 1)
+                if (string.IsNullOrEmpty(pedido.Ambiente.Indicador) && pedido.Valor.PermiteRAStatus == 1)
                     pedidoRetorno.ListaErros.Add("Usuário não pode opcao_possui_RA");
             }
 
@@ -141,19 +141,19 @@ namespace Pedido
                     if (pedido.Valor.PercRT != 0)
                         pedidoRetorno.ListaErros.Add("Usuário não pode editar perc_RT!");
 
-                if (string.IsNullOrEmpty(pedido.Ambiente.Indicador_Orcamentista) && pedido.Valor.PermiteRAStatus == 1)
+                if (string.IsNullOrEmpty(pedido.Ambiente.Indicador) && pedido.Valor.PermiteRAStatus == 1)
                     pedidoRetorno.ListaErros.Add("Usuário não pode opcao_possui_RA");
             }
 
             //8- busca o orçamentista para saber se permite RA 
             string? tOrcamentistaApelido = null;
             short tOrcamentistaPermite_RA_Status = 0;
-            if (!String.IsNullOrEmpty(pedido.Ambiente.Indicador_Orcamentista))
+            if (!String.IsNullOrEmpty(pedido.Ambiente.Indicador))
             {
-                TorcamentistaEindicador tOrcamentista = await prepedidoBll.BuscarTorcamentista(pedido.Ambiente.Indicador_Orcamentista);
+                TorcamentistaEindicador tOrcamentista = await prepedidoBll.BuscarTorcamentista(pedido.Ambiente.Indicador);
                 if (tOrcamentista == null)
                 {
-                    pedidoRetorno.ListaErros.Add($"Falha ao recuperar os dados do indicador! Indicador: {pedido.Ambiente.Indicador_Orcamentista}");
+                    pedidoRetorno.ListaErros.Add($"Falha ao recuperar os dados do indicador! Indicador: {pedido.Ambiente.Indicador}");
                     return pedidoRetorno;
                 }
                 tOrcamentistaApelido = tOrcamentista.Apelido;
@@ -194,7 +194,7 @@ namespace Pedido
 
             /* 9- valida endereço de entrega */
             await validacoesPrepedidoBll.ValidarEnderecoEntrega(pedido.EnderecoEntrega, pedidoRetorno.ListaErros,
-                pedido.Ambiente.Indicador_Orcamentista, pedido.Cliente.Tipo.ParaString(), false, pedido.Ambiente.Loja);
+                pedido.Ambiente.Indicador, pedido.Cliente.Tipo.ParaString(), false, pedido.Ambiente.Loja);
             if (pedidoRetorno.ListaErros.Any())
                 return pedidoRetorno;
 
@@ -202,7 +202,7 @@ namespace Pedido
              * 11- valida percentual máximo de comissão */
             if (pedido.Ambiente.ComIndicador)
             {
-                if (string.IsNullOrEmpty(pedido.Ambiente.Indicador_Orcamentista))
+                if (string.IsNullOrEmpty(pedido.Ambiente.Indicador))
                 {
                     pedidoRetorno.ListaErros.Add("Informe quem é o indicador.");
                 }
@@ -229,10 +229,10 @@ namespace Pedido
             if (pedido.Ambiente.ComIndicador)
             {
                 //perc_desagio_RA
-                perc_desagio_RA = await UtilsGlobais.Util.ObterPercentualDesagioRAIndicador(pedido.Ambiente.Indicador_Orcamentista, contextoProvider);
+                perc_desagio_RA = await UtilsGlobais.Util.ObterPercentualDesagioRAIndicador(pedido.Ambiente.Indicador, contextoProvider);
                 perc_limite_RA_sem_desagio = await UtilsGlobais.Util.VerificarSemDesagioRA(contextoProvider);
-                vl_limite_mensal = await UtilsGlobais.Util.ObterLimiteMensalComprasDoIndicador(pedido.Ambiente.Indicador_Orcamentista, contextoProvider);
-                vl_limite_mensal_consumido = await UtilsGlobais.Util.CalcularLimiteMensalConsumidoDoIndicador(pedido.Ambiente.Indicador_Orcamentista, DateTime.Now, contextoProvider);
+                vl_limite_mensal = await UtilsGlobais.Util.ObterLimiteMensalComprasDoIndicador(pedido.Ambiente.Indicador, contextoProvider);
+                vl_limite_mensal_consumido = await UtilsGlobais.Util.CalcularLimiteMensalConsumidoDoIndicador(pedido.Ambiente.Indicador, DateTime.Now, contextoProvider);
                 vl_limite_mensal_disponivel = vl_limite_mensal - vl_limite_mensal_consumido;
             }
 
@@ -295,7 +295,7 @@ namespace Pedido
             await new Pedido.PedidoRepetidoBll(contextoProvider).PedidoJaCadastrado(pedido, pedidoRetorno.ListaErros);
 
             //se tiver erro vamos retornar
-            if (pedidoRetorno.ListaErros.Count > 0) 
+            if (pedidoRetorno.ListaErros.Count > 0)
                 return pedidoRetorno;
 
             //busca produtos , busca percentual custo finananceiro, calcula desconto 716 ate 824

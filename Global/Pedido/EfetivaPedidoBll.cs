@@ -799,7 +799,9 @@ namespace Pedido
             pedidonovo.Venda_Externa = pedido.Ambiente.Venda_Externa ? (short)1 : (short)0;
             pedidonovo.Loja_Indicou = pedido.Ambiente.Venda_Externa ? pedido.Ambiente.Loja : "";
             pedidonovo.Comissao_Loja_Indicou = 0;//comissao_loja_indicou
-            pedidonovo.Indicador = !string.IsNullOrWhiteSpace(pedido.Ambiente.Indicador_Orcamentista) ? pedido.Ambiente.Indicador_Orcamentista : "";
+            pedidonovo.Indicador = pedido.Ambiente.Indicador ?? "";
+            //campo Orcamentista pode ser null
+            pedidonovo.Orcamentista = string.IsNullOrWhiteSpace(pedido.Ambiente.Orcamentista) ? null : pedido.Ambiente.Orcamentista;
 
             //quero ver o pq nao esta sendo salvo corretamente
             pedidonovo.GarantiaIndicadorStatus = pedido.DetalhesPedido.GarantiaIndicador != "0" &&
@@ -1406,13 +1408,13 @@ namespace Pedido
             {
                 if (!string.IsNullOrEmpty(pedidonovo.Indicador))
                 {
-                    pedidonovoTrocaId.Indicador = pedido.Ambiente.Indicador_Orcamentista;
+                    pedidonovoTrocaId.Indicador = pedido.Ambiente.Indicador;
 
                     //alterando indicado do pedido cadastrado
                     dbGravacao.Update(pedidonovoTrocaId);
                     dbGravacao.SaveChanges();
 
-                    s_log_cliente_indicador = "Cadastrado o indicador '" + pedido.Ambiente.Indicador_Orcamentista +
+                    s_log_cliente_indicador = "Cadastrado o indicador '" + pedido.Ambiente.Indicador +
                        "' no cliente id=" + pedido.Cliente.Id_cliente;
                 }
             }

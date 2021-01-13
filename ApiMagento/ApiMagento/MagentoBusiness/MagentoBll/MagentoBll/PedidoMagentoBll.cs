@@ -97,33 +97,33 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             return resultado;
         }
 
-        internal class Orcamentistaindicador_vendedor_loja
+        internal class Indicador_vendedor_loja
         {
-            public readonly string? orcamentista_indicador;
+            public readonly string? indicador;
             public readonly string vendedor;
             public readonly string loja;
 
-            public Orcamentistaindicador_vendedor_loja(string? orcamentista_indicador, string vendedor, string loja)
+            public Indicador_vendedor_loja(string? indicador, string vendedor, string loja)
             {
-                this.orcamentista_indicador = orcamentista_indicador;
+                this.indicador = indicador;
                 this.vendedor = vendedor;
                 this.loja = loja;
             }
         }
 
-        private async Task<Orcamentistaindicador_vendedor_loja> Calcular_orcamentistaindicador_vendedor_loja(PedidoMagentoDto pedidoMagento, string usuario, List<string> listaErros)
+        private async Task<Indicador_vendedor_loja> Calcular_orcamentistaindicador_vendedor_loja(PedidoMagentoDto pedidoMagento, string usuario, List<string> listaErros)
         {
             //campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
-            string? orcamentista_indicador = null;
+            string? indicador = null;
             if (pedidoMagento.Frete.HasValue && pedidoMagento.Frete != 0)
             {
-                orcamentista_indicador = configuracaoApiMagento.DadosOrcamentista.Orcamentista;
-                if (!await prepedidoBll.TorcamentistaExiste(orcamentista_indicador))
+                indicador = configuracaoApiMagento.DadosIndicador.Indicador;
+                if (!await prepedidoBll.TorcamentistaExiste(indicador))
                     listaErros.Add("O Orçamentista não existe!");
             }
             string vendedor = usuario;
-            string loja = configuracaoApiMagento.DadosOrcamentista.Loja;
-            return new Orcamentistaindicador_vendedor_loja(orcamentista_indicador, vendedor, loja);
+            string loja = configuracaoApiMagento.DadosIndicador.Loja;
+            return new Indicador_vendedor_loja(indicador, vendedor, loja);
         }
 
         private async Task<IEnumerable<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados>> ConverterProdutosMagento(PedidoMagentoDto pedidoMagento,
@@ -165,7 +165,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
         }
 
         private async Task<Pedido.Dados.Criacao.PedidoCriacaoDados?> CriarPedidoCriacaoDados(PedidoMagentoDto pedidoMagento,
-            Orcamentistaindicador_vendedor_loja orcamentistaindicador_vendedor_loja, List<string> lstErros,
+            Indicador_vendedor_loja indicador_Vendedor_Loja, List<string> lstErros,
             string id_cliente)
         {
             var sistemaResponsavelCadastro = Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI;
@@ -173,8 +173,8 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             //o cliente existe então vamos converter os dados do cliente para DadosCliente e EnderecoCadastral
             Cliente.Dados.DadosClienteCadastroDados dadosCliente =
                 EnderecoCadastralClienteMagentoDto.DadosClienteDeEnderecoCadastralClienteMagentoDto(pedidoMagento.EnderecoCadastralCliente,
-                orcamentistaindicador_vendedor_loja.loja,
-                orcamentistaindicador_vendedor_loja.vendedor, configuracaoApiMagento.DadosOrcamentista.Orcamentista,
+                indicador_Vendedor_Loja.loja,
+                indicador_Vendedor_Loja.vendedor, configuracaoApiMagento.DadosIndicador.Indicador,
                 id_cliente);
 
             Cliente.Dados.EnderecoCadastralClientePrepedidoDados enderecoCadastral =
@@ -189,7 +189,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
                 configuracaoApiMagento, pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem);
 
             List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> listaProdutos =
-                (await ConverterProdutosMagento(pedidoMagento, formaPagtoCriacao, configuracaoApiMagento.DadosOrcamentista.Loja, lstErros)).ToList();
+                (await ConverterProdutosMagento(pedidoMagento, formaPagtoCriacao, configuracaoApiMagento.DadosIndicador.Loja, lstErros)).ToList();
 
             //Precisamos buscar os produtos para poder incluir os valores para incluir na classe de produto
             var pedidoDadosCriacao =

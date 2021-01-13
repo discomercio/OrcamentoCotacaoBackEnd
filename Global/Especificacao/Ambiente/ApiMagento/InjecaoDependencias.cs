@@ -79,8 +79,8 @@ namespace Especificacao.Ambiente.ApiMagento
             configuracaoApiMagento.ValidadeTokenMinutos = 2628000;
             configuracaoApiMagento.ApelidoPerfilLiberaAcessoApiMagento = "USUARIOAPIMAGENTO";
 
-            configuracaoApiMagento.DadosOrcamentista.Orcamentista = "FRETE";
-            configuracaoApiMagento.DadosOrcamentista.Loja = "202";
+            configuracaoApiMagento.DadosIndicador.Indicador = "FRETE";
+            configuracaoApiMagento.DadosIndicador.Loja = "202";
 
             //para nao dar erro...
             configuracaoApiMagento.LimitePedidos.LimitePedidosExatamenteIguais_Numero = 1000;

@@ -139,7 +139,8 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
                     //Armazena o nome do indicador selecionado
                     //campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
-                    indicador_Orcamentista: ((pedidoMagento.Frete ?? 0) != 0) ? dadosClienteMagento.Vendedor : "",
+                    indicador: ((pedidoMagento.Frete ?? 0) != 0) ? configuracaoApiMagento.DadosIndicador.Indicador : "",
+                    orcamentista: "",
 
                     //Armazena o id do centro de distribuição selecionado manualmente
                     idNfeSelecionadoManual: 0, //será sempre automático

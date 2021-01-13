@@ -5,12 +5,12 @@ Feature: CamposLidosAppsettings
 Scenario: AdicionarDependencia
 	Given AdicionarDependencia ambiente = "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedidoListaDependencias", especificacao = "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional.CamposLidosAppsettings"
 
-Scenario: Orcamentista = "FRETE" (vamos ler do appsettings) - precisa existir
+Scenario: Indicador = "FRETE" (vamos ler do appsettings) - precisa existir
 	#Vamos colocar um indicador no appsettings que não esteja cadastrado no banco e ver se ele testa
 	Given Reiniciar appsettings
 	And Pedido base
 	And Informo "frete" = "10"
-	And Informo "appsettings.Orcamentista" = "um orçamentista que não existe"
+	And Informo "appsettings.Indicador" = "um orçamentista que não existe"
 	Then Erro "O Orçamentista não existe!"
 
 	Given Reiniciar appsettings

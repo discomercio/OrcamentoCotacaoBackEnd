@@ -122,14 +122,14 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Orcamentista = \"FRETE\" (vamos ler do appsettings) - precisa existir")]
+        [Xunit.SkippableFactAttribute(DisplayName="Indicador = \"FRETE\" (vamos ler do appsettings) - precisa existir")]
         [Xunit.TraitAttribute("FeatureTitle", "CamposLidosAppsettings")]
-        [Xunit.TraitAttribute("Description", "Orcamentista = \"FRETE\" (vamos ler do appsettings) - precisa existir")]
-        public virtual void OrcamentistaFRETEVamosLerDoAppsettings_PrecisaExistir()
+        [Xunit.TraitAttribute("Description", "Indicador = \"FRETE\" (vamos ler do appsettings) - precisa existir")]
+        public virtual void IndicadorFRETEVamosLerDoAppsettings_PrecisaExistir()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Orcamentista = \"FRETE\" (vamos ler do appsettings) - precisa existir", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Indicador = \"FRETE\" (vamos ler do appsettings) - precisa existir", null, tagsOfScenario, argumentsOfScenario);
 #line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -160,7 +160,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("Informo \"frete\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 13
- testRunner.And("Informo \"appsettings.Orcamentista\" = \"um orçamentista que não existe\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Informo \"appsettings.Indicador\" = \"um orçamentista que não existe\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 14
  testRunner.Then("Erro \"O Orçamentista não existe!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");

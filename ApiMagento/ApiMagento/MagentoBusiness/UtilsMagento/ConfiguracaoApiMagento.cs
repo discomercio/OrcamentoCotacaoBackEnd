@@ -34,13 +34,13 @@ namespace MagentoBusiness.UtilsMagento
 
         public string EndEtg_cod_justificativa { get; set; } = "007";   //Pedido Arclube
 
-        public class OrcamentistaMagento
+        public class IndicadorMagento
         {
-            public string Orcamentista { get; set; } = "FRETE";
+            public string Indicador { get; set; } = "FRETE";
             public string Loja { get; set; } = "201";
         }
 
-        public OrcamentistaMagento DadosOrcamentista { get; set; } = new OrcamentistaMagento();
+        public IndicadorMagento DadosIndicador { get; set; } = new IndicadorMagento();
 
         public class Magento
         {

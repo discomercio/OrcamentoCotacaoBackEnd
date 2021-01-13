@@ -139,8 +139,8 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
         {
             switch (campo)
             {
-                case "appsettings.Orcamentista":
-                    configuracaoApiMagento.DadosOrcamentista.Orcamentista = valor;
+                case "appsettings.Indicador":
+                    configuracaoApiMagento.DadosIndicador.Indicador = valor;
                     return;
 
                 case "TokenAcesso":

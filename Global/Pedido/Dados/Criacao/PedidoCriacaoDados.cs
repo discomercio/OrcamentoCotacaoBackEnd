@@ -57,7 +57,7 @@ namespace Pedido.Dados.Criacao
         {
             Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prepedido = new Prepedido.Dados.DetalhesPrepedido.PrePedidoDados();
             prepedido.DadosCliente = global::Cliente.Dados.DadosClienteCadastroDados.DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(pedido.EnderecoCadastralCliente,
-                pedido.Ambiente.Indicador_Orcamentista, pedido.Ambiente.Loja, "", null, pedido.Cliente.Id_cliente);
+                pedido.Ambiente.Indicador, pedido.Ambiente.Loja, "", null, pedido.Cliente.Id_cliente);
             prepedido.ListaProdutos = Pedido.Dados.Criacao.PedidoCriacaoProdutoDados.PrepedidoProdutoPrepedidoDados_De_PedidoCriacaoProdutoDados(pedido.ListaProdutos);
             prepedido.FormaPagtoCriacao = pedido.FormaPagtoCriacao;
             prepedido.EnderecoEntrega = pedido.EnderecoEntrega;
