@@ -59,48 +59,6 @@ namespace Pedido
             }
         }
 
-        public async Task VerificarSePedidoExite(List<Cl_ITEM_PEDIDO_NOVO> v_item, PedidoCriacaoDados pedido,
-            string usuario, List<string> lstErros)
-        {
-            var db = contextoProvider.GetContextoLeitura();
-
-            //verificar se o pedido existe
-            string hora_atual = UtilsGlobais.Util.TransformaHora_Minutos();
-
-            var lstProdTask = await (from c in db.TpedidoItems
-                                     where c.Tpedido.Id_Cliente == pedido.Cliente.Id_cliente &&
-                                           c.Tpedido.Data == DateTime.Now.Date &&
-                                           c.Tpedido.Loja == pedido.Ambiente.Loja &&
-                                           c.Tpedido.Vendedor == usuario &&
-                                           c.Tpedido.Data >= DateTime.Now.Date &&
-                                           c.Tpedido.Hora.CompareTo(hora_atual) <= 0 &&
-                                           c.Tpedido.St_Entrega != Constantes.ST_ENTREGA_CANCELADO
-                                     orderby c.Pedido, c.Sequencia
-                                     select new
-                                     {
-                                         c.Pedido,
-                                         c.Produto,
-                                         c.Fabricante,
-                                         Qtde = c.Qtde ?? 0,
-                                         c.Preco_Venda
-                                     }).ToListAsync();
-
-            foreach (var x in lstProdTask)
-            {
-                foreach (var y in v_item)
-                {
-                    if (x.Produto == y.Produto &&
-                        x.Fabricante == y.Fabricante &&
-                        x.Qtde == y.Qtde &&
-                        x.Preco_Venda == y.Preco_Venda)
-                    {
-                        lstErros.Add("Este pedido já foi gravado com o número " + x.Pedido);
-                        return;
-                    }
-                };
-            };
-        }
-
         public float VerificarPagtoPreferencial(Tparametro tParametro, PedidoCriacaoDados pedido,
             float percDescComissaoUtilizar, PercentualMaxDescEComissao percentualMax, decimal vl_total)
         {

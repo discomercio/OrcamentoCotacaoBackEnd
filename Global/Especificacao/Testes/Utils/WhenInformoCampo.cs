@@ -145,17 +145,17 @@ namespace Especificacao.Testes.Utils
         {
             if (!campo.Contains("produtor_rural_status"))
                 return valor;
-            InfraBanco.Constantes.Constantes.ProdutorRual valorProdutorRural;
+            InfraBanco.Constantes.Constantes.ProdutorRural valorProdutorRural;
             switch (valor)
             {
                 case "COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL":
-                    valorProdutorRural = InfraBanco.Constantes.Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL;
+                    valorProdutorRural = InfraBanco.Constantes.Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL;
                     break;
                 case "COD_ST_CLIENTE_PRODUTOR_RURAL_NAO":
-                    valorProdutorRural = InfraBanco.Constantes.Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
+                    valorProdutorRural = InfraBanco.Constantes.Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
                     break;
                 case "COD_ST_CLIENTE_PRODUTOR_RURAL_SIM":
-                    valorProdutorRural = InfraBanco.Constantes.Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
+                    valorProdutorRural = InfraBanco.Constantes.Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
                     break;
                 default:
                     return valor;

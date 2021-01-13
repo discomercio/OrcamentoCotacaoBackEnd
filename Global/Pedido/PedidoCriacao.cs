@@ -72,6 +72,7 @@ namespace Pedido
 
             //vamos validar os dados do cliente que esta vindo no pedido
             //alterar forma de validacao, a validacao dos dados cadastrais é diferente
+//todo: verificar se ainda precisamos disto, devemos chamar uma rotina para validar o endereço cadastral e não um cliente novo
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await clienteBll.ListarBancosCombo()).ToList();
             var tclienteSexoNascimento = (from c in clienteBll.BuscarTcliente(pedido.Cliente.Cnpj_Cpf) select new { c.Sexo, c.Dt_Nasc }).FirstOrDefault();
             var tclienteSexo = "M";
@@ -91,7 +92,7 @@ namespace Pedido
                 tclienteSexo, tclienteNascimento, pedido.Cliente.Id_cliente);
             await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDados, null, null, pedidoRetorno.ListaErros,
                 contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, pedido.Cliente.Tipo.PessoaFisica(),
-                pedido.Configuracao.SistemaResponsavelCadastro);
+                pedido.Configuracao.SistemaResponsavelCadastro, false);
             if (pedidoRetorno.ListaErros.Count > 0)
                 return pedidoRetorno;
 
@@ -291,10 +292,11 @@ namespace Pedido
                 });
             };
 
-            await pedidoBll.VerificarSePedidoExite(v_item, pedido, pedido.Ambiente.Indicador_Orcamentista, pedidoRetorno.ListaErros);
+            await new Pedido.PedidoRepetidoBll(contextoProvider).PedidoJaCadastrado(pedido, pedidoRetorno.ListaErros);
 
             //se tiver erro vamos retornar
-            if (pedidoRetorno.ListaErros.Count > 0) return pedidoRetorno;
+            if (pedidoRetorno.ListaErros.Count > 0) 
+                return pedidoRetorno;
 
             //busca produtos , busca percentual custo finananceiro, calcula desconto 716 ate 824
             //desc_dado_arredondado

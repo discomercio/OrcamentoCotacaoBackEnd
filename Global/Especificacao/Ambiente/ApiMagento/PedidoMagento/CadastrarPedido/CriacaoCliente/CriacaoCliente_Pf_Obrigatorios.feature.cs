@@ -143,9 +143,11 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="Caminho feliz")]
         [Xunit.TraitAttribute("FeatureTitle", "Magento CriacaoCliente_Pf_Obrigatorios")]
         [Xunit.TraitAttribute("Description", "Caminho feliz")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void CaminhoFeliz()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Caminho feliz", null, tagsOfScenario, argumentsOfScenario);
 #line 43

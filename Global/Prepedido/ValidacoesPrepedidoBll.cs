@@ -540,12 +540,12 @@ namespace Prepedido
                 {
                     if (!string.IsNullOrEmpty(endEntrega.EndEtg_ie))
                     {
-                        Cliente.ValidacoesClienteBll.VerificarInscricaoEstadualValida(endEntrega.EndEtg_ie,
+                            Cliente.ValidacoesClienteBll.VerificarInscricaoEstadualValida(endEntrega.EndEtg_ie,
                             endEntrega.EndEtg_uf, lstErros, flagMsg_IE_Cadastro_PF);
+                        }
                     }
                 }
             }
-        }
 
         private void ValidarDadosPessoaEnderecoEntrega_PJ(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEtg, List<string> lstErros)
         {
@@ -699,9 +699,9 @@ namespace Prepedido
             if (endEtg.EndEtg_tipo_pessoa == Constantes.ID_PF)
             {
                 if (endEtg.EndEtg_produtor_rural_status !=
-                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO &&
+                    (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO &&
                     endEtg.EndEtg_produtor_rural_status !=
-                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
+                    (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
                 {
                     lstErros.Add("Endereço de entrega: valor de produtor rural inválido!");
                 }
@@ -714,7 +714,7 @@ namespace Prepedido
                     lstErros.Add("Endereço de entrega: informe se o cliente é produtor rural ou não!");
 
                 if (endEtg.EndEtg_produtor_rural_status ==
-                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM &&
+                    (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM &&
                     endEtg.EndEtg_tipo_pessoa == Constantes.ID_PF)
                 {
                     if (endEtg.EndEtg_contribuinte_icms_status !=
@@ -765,11 +765,11 @@ namespace Prepedido
 
                 if (endEtg.EndEtg_contribuinte_icms_status ==
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM &&
-                        endEtg.EndEtg_produtor_rural_status != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
+                        endEtg.EndEtg_produtor_rural_status != (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
                     lstErros.Add("Endereço de entrega: se cliente é contribuinte do ICMS, ele dever ser Produtor Rural!");
 
                 if (endEtg.EndEtg_produtor_rural_status ==
-                    (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO &&
+                    (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO &&
                     endEtg.EndEtg_tipo_pessoa == Constantes.ID_PF)
                 {
                     if (endEtg.EndEtg_contribuinte_icms_status !=

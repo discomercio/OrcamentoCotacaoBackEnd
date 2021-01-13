@@ -70,10 +70,12 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
         }
 
         public static Pedido.Dados.Criacao.PedidoCriacaoDados PedidoCriacaoDados_De_PedidoDto(PedidoDto pedidoDto,
-            string lojaUsuario, string usuario, bool venda_externa, decimal limiteArredondamento,
-            decimal maxErroArredondamento, string pedido_bs_x_ac, string marketplace_codigo_origem, string pedido_bs_x_marketplace,
+            string lojaUsuario, string usuario, bool venda_externa, string pedido_bs_x_ac, string marketplace_codigo_origem, string pedido_bs_x_marketplace,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
-            List<string> lstErros)
+            List<string> lstErros,
+            int limitePedidosExatamenteIguais_Numero, int limitePedidosExatamenteIguais_TempoSegundos, int limitePedidosMesmoCpfCnpj_Numero, int limitePedidosMesmoCpfCnpj_TempoSegundos,
+            decimal limiteArredondamento,
+            decimal maxErroArredondamento)
         {
             if (!global::InfraBanco.Constantes.Constantes.TipoPessoa.TipoValido(pedidoDto.DadosCliente.Tipo))
             {
@@ -110,7 +112,11 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                 configuracao: new Pedido.Dados.Criacao.PedidoCriacaoConfiguracaoDados(
                     limiteArredondamento: limiteArredondamento,
                     maxErroArredondamento: maxErroArredondamento,
-                    sistemaResponsavelCadastro: sistemaResponsavelCadastro
+                    sistemaResponsavelCadastro: sistemaResponsavelCadastro,
+                    limitePedidosExatamenteIguais_Numero: limitePedidosExatamenteIguais_Numero,
+                    limitePedidosExatamenteIguais_TempoSegundos: limitePedidosExatamenteIguais_TempoSegundos,
+                    limitePedidosMesmoCpfCnpj_Numero: limitePedidosMesmoCpfCnpj_Numero,
+                    limitePedidosMesmoCpfCnpj_TempoSegundos: limitePedidosMesmoCpfCnpj_TempoSegundos
                     ),
                 marketplace: new Pedido.Dados.Criacao.PedidoCriacaoMarketplaceDados(
                     pedido_bs_x_ac: pedido_bs_x_ac,

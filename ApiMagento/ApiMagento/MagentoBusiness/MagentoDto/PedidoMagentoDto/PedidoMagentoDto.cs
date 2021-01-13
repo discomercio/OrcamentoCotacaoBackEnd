@@ -68,10 +68,8 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             Cliente.Dados.EnderecoCadastralClientePrepedidoDados enderecoCadastralClienteMagento, Cliente.Dados.EnderecoEntregaClienteCadastroDados enderecoEntregaMagento,
             List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> lstProdutosMagento, Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacaoMagento,
             decimal vlTotalDestePedido, PedidoMagentoDto pedidoMagento,
-            decimal limiteArredondamento,
-            decimal maxErroArredondamento, 
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
-            List<string> lstErros)
+            List<string> lstErros, UtilsMagento.ConfiguracaoApiMagento configuracaoApiMagento)
         {
             if (!Constantes.TipoPessoa.TipoValido(dadosClienteMagento.Tipo))
             {
@@ -171,9 +169,14 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                 valor: pedidoCriacaoValor,
 
                 configuracao: new Pedido.Dados.Criacao.PedidoCriacaoConfiguracaoDados(
-                    limiteArredondamento: limiteArredondamento,
-                    maxErroArredondamento: maxErroArredondamento,
-                    sistemaResponsavelCadastro: sistemaResponsavelCadastro),
+                    limiteArredondamento: configuracaoApiMagento.LimiteArredondamentoPrecoVendaOrcamentoItem,
+                    maxErroArredondamento: 0.1M,
+                    sistemaResponsavelCadastro: sistemaResponsavelCadastro,
+                    limitePedidosExatamenteIguais_Numero: configuracaoApiMagento.LimitePedidos.LimitePedidosExatamenteIguais_Numero,
+                    limitePedidosExatamenteIguais_TempoSegundos: configuracaoApiMagento.LimitePedidos.LimitePedidosExatamenteIguais_TempoSegundos,
+                    limitePedidosMesmoCpfCnpj_Numero: configuracaoApiMagento.LimitePedidos.LimitePedidosMesmoCpfCnpj_Numero,
+                    limitePedidosMesmoCpfCnpj_TempoSegundos: configuracaoApiMagento.LimitePedidos.LimitePedidosMesmoCpfCnpj_TempoSegundos
+                    ),
                 marketplace: new Pedido.Dados.Criacao.PedidoCriacaoMarketplaceDados(
                         pedido_bs_x_ac: pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac,
                         marketplace_codigo_origem: pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem,

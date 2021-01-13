@@ -94,6 +94,7 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
       let sEndereco: string;
       let split: string[];
       //vamos formatar conforme é feito no asp
+      
       sEndereco = this.formatarEndereco.formata_endereco(enderecoEntregaDto.EndEtg_endereco,
         enderecoEntregaDto.EndEtg_endereco_numero, enderecoEntregaDto.EndEtg_endereco_complemento,
         enderecoEntregaDto.EndEtg_bairro, enderecoEntregaDto.EndEtg_cidade, enderecoEntregaDto.EndEtg_uf,

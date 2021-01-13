@@ -909,7 +909,7 @@ namespace InfraBanco.Constantes
 
 
         //' CÓDIGOS P/ STATUS QUE INDICA SE CLIENTE É OU NÃO PRODUTOR RURAL
-        public enum ProdutorRual
+        public enum ProdutorRural
         {
             COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL = 0,
             COD_ST_CLIENTE_PRODUTOR_RURAL_NAO = 1,
@@ -1172,6 +1172,14 @@ namespace InfraBanco.Constantes
 
         //' TAMANHO MÁXIMO DO CAMPO ENDEREÇO DEVIDO À RESTRIÇÃO EXISTENTE NA NOTA FISCAL ELETRÔNICA
         public const int MAX_TAMANHO_CAMPO_ENDERECO = 60;
+
+        public const int MAX_TAMANHO_CAMPO_ENDERECO_NUMERO = 60;
+
+        public const int MAX_TAMANHO_CAMPO_ENDERECO_COMPLEMENTO = 60;
+
+        public const int MAX_TAMANHO_CAMPO_ENDERECO_BAIRRO = 60;
+
+        public const int MAX_TAMANHO_CAMPO_ENDERECO_CIDADE = 60;
 
         //'	ANÁLISE DE ENDEREÇO
 

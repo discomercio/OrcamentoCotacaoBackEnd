@@ -143,9 +143,11 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="comprovar que salva todos os campos")]
         [Xunit.TraitAttribute("FeatureTitle", "Magento CriacaoCliente_Pf_Opcionais")]
         [Xunit.TraitAttribute("Description", "comprovar que salva todos os campos")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void ComprovarQueSalvaTodosOsCampos()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("comprovar que salva todos os campos", null, tagsOfScenario, argumentsOfScenario);
 #line 45

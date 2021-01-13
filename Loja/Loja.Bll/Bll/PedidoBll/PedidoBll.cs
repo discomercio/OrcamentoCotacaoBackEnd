@@ -3377,16 +3377,21 @@ namespace Loja.Bll.PedidoBll
         }
 
         public async Task<PedidoCriacaoRetornoDados> CadastrarPedido(PedidoDto pedidoDto,
-            string lojaUsuario, string usuario, bool vendedorExterno)
+            string lojaUsuario, string usuario, bool vendedorExterno,
+            int limitePedidosExatamenteIguais_Numero, int limitePedidosExatamenteIguais_TempoSegundos, int limitePedidosMesmoCpfCnpj_Numero, int limitePedidosMesmoCpfCnpj_TempoSegundos,
+            decimal limiteArredondamento,
+            decimal maxErroArredondamento)
         {
             pedidoDto.DadosCliente.Loja = lojaUsuario;
             PedidoCriacaoDados pedidoCriacaoDados;
             List<string> lstErros = new List<string>();
             pedidoCriacaoDados = PedidoDto.PedidoCriacaoDados_De_PedidoDto(pedidoDto, lojaUsuario, usuario, vendedorExterno,
-                0.1M, 0.1M,
                 null, null, null,
                 InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS,
-                lstErros);
+                lstErros,
+                limitePedidosExatamenteIguais_Numero, limitePedidosExatamenteIguais_TempoSegundos, limitePedidosMesmoCpfCnpj_Numero, limitePedidosMesmoCpfCnpj_TempoSegundos,
+                limiteArredondamento,
+                maxErroArredondamento);
             if (lstErros.Any())
             {
                 var ret = new Pedido.Dados.Criacao.PedidoCriacaoRetornoDados();

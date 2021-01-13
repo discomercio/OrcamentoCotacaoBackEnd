@@ -1202,15 +1202,15 @@ namespace Loja.Bll.ClienteBll
 
             if (string.IsNullOrEmpty(municipio))
                 lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
-                    "nenhum município foi informado!!");
+                    "nenhum município foi informado!");
             if (string.IsNullOrEmpty(uf))
                 lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
-                    "a UF não foi informada!!");
+                    "a UF não foi informada!");
             else
             {
                 if (uf.Length > 2)
                     lstErros.Add("Não é possível consistir o município através da relação de municípios do IBGE: " +
-                        "a UF é inválida (" + uf + ")!!");
+                        "a UF é inválida (" + uf + ")!");
             }
 
             if (lstErros.Count == 0)
@@ -1219,7 +1219,7 @@ namespace Loja.Bll.ClienteBll
 
                 if (!lst_nfeMunicipios.Any())
                 {
-                    lstErros.Add("Município '" + municipio + "' não consta na relação de municípios do IBGE para a UF de '" + uf + "'!!");
+                    lstErros.Add("Município '" + municipio + "' não consta na relação de municípios do IBGE para a UF de '" + uf + "'!");
                 }
             }
 
@@ -1243,7 +1243,7 @@ namespace Loja.Bll.ClienteBll
 
             if (string.IsNullOrEmpty(nfeUf.CodUF))
                 retorno = "Não é possível consistir o município através da relação de municípios do IBGE: " +
-                    "a UF '" + uf + "' não foi localizada na relação do IBGE!!";
+                    "a UF '" + uf + "' não foi localizada na relação do IBGE!";
             else
             {
                 string codUF = nfeUf.CodUF;

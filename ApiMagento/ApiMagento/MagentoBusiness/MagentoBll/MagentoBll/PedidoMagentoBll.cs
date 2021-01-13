@@ -79,7 +79,6 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             //ex: se o cliente já cadastrado, utilizamos o que vem em PedidoMagentoDto.EnderecoCadastralClienteMagentoDto
             Pedido.Dados.Criacao.PedidoCriacaoDados? pedidoDados = await CriarPedidoCriacaoDados(pedidoMagento,
                 orcamentistaindicador_vendedor_loja, resultado.ListaErros,
-                configuracaoApiMagento.LimiteArredondamentoPrecoVendaOrcamentoItem, 0.1M,
                 await clienteBll.BuscarIdCliente(pedidoMagento.Cnpj_Cpf)
                 );
             if (resultado.ListaErros.Count != 0)
@@ -169,8 +168,6 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
 
         private async Task<Pedido.Dados.Criacao.PedidoCriacaoDados?> CriarPedidoCriacaoDados(PedidoMagentoDto pedidoMagento,
             Orcamentistaindicador_vendedor_loja orcamentistaindicador_vendedor_loja, List<string> lstErros,
-            decimal limiteArredondamento,
-            decimal maxErroArredondamento,
             string id_cliente)
         {
             var sistemaResponsavelCadastro = Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI;
@@ -200,10 +197,9 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             var pedidoDadosCriacao =
                 PedidoMagentoDto.PedidoDadosCriacaoDePedidoMagentoDto(dadosCliente, enderecoCadastral, enderecoEntrega,
                 listaProdutos, formaPagtoCriacao, pedidoMagento.VlTotalDestePedido, pedidoMagento,
-                limiteArredondamento,
-                maxErroArredondamento,
                 sistemaResponsavelCadastro,
-                lstErros);
+                lstErros,
+                configuracaoApiMagento);
 
             return await Task.FromResult(pedidoDadosCriacao);
         }

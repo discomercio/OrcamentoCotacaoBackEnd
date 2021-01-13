@@ -256,12 +256,12 @@ namespace Prepedido
             Cliente.Dados.DadosClienteCadastroDados cadastroCliente = new Cliente.Dados.DadosClienteCadastroDados();
             if (pp.St_memorizacao_completa_enderecos == 0)
             {
-                cadastroCliente = await ObterDadosCliente(t.Razao_Social, pp.Orcamentista, pp.Vendedor, pp.Id_Cliente);
+                cadastroCliente = await ObterDadosCliente(t.Loja, pp.Orcamentista, pp.Vendedor, pp.Id_Cliente);
             }
             else
             {
                 //vamos preencher os dados do cliente com o prepedido
-                cadastroCliente = await ObterDadosClientePrepedido(pp, t.Razao_Social);
+                cadastroCliente = await ObterDadosClientePrepedido(pp, t.Loja);
             }
             var enderecoEntregaTask = ObterEnderecoEntrega(pp);
             var lstProdutoTask = await ObterProdutos(pp);
@@ -503,7 +503,7 @@ namespace Prepedido
 
             Cliente.Dados.DadosClienteCadastroDados cadastroCliente = new Cliente.Dados.DadosClienteCadastroDados
             {
-                Loja = loja,
+                Loja = await pedidoVisualizacaoBll.ObterRazaoSocial_Nome_Loja(loja),
                 Indicador_Orcamentista = orcamento.Orcamentista,
                 Vendedor = orcamento.Vendedor,
                 Id = cli.Id,
@@ -552,7 +552,7 @@ namespace Prepedido
             var cli = await dadosCliente.FirstOrDefaultAsync();
             Cliente.Dados.DadosClienteCadastroDados cadastroCliente = new Cliente.Dados.DadosClienteCadastroDados
             {
-                Loja = loja,
+                Loja = await pedidoVisualizacaoBll.ObterRazaoSocial_Nome_Loja(loja),
                 Indicador_Orcamentista = indicador_orcamentista,
                 Vendedor = vendedor,
                 Id = cli.Id,
@@ -737,7 +737,7 @@ namespace Prepedido
             await Cliente.ValidacoesClienteBll.ValidarDadosCliente(prePedido.DadosCliente,
                 null, null,
                 lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco,
-                prePedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false, sistemaResponsavelCadastro);
+                prePedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false, sistemaResponsavelCadastro, false);
 
             //verifica se o prepedio já foi gravado
             if (verificarPrepedidoRepetido)

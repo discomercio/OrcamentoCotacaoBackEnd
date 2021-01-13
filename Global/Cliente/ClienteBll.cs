@@ -590,12 +590,12 @@ namespace Cliente
             bool ie_diferente = false;
             bool produtor_diferente = false;
 
-            if (dados.ProdutorRural == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)
+            if (dados.ProdutorRural == (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)
             {
                 if (dados.ProdutorRural != cli.Produtor_Rural_Status)
                 {
                     log += "contribuinte_icms_status: " + cli.Contribuinte_Icms_Status + " => " +
-                        Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL + "; ";
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL + "; ";
                     cli.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL;
 
                     log += "contribuinte_icms_data: " + cli.Contribuinte_Icms_Data + " => " + DateTime.Now + "; ";
@@ -612,8 +612,8 @@ namespace Cliente
                     }
 
                     log += "produtor_rural_status: " + cli.Produtor_Rural_Status + " => " +
-                        Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO + "; ";
-                    cli.Produtor_Rural_Status = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
+                        (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO + "; ";
+                    cli.Produtor_Rural_Status = (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
 
                     log += "produtor_rural_data: " + cli.Produtor_Rural_Data + " => " + DateTime.Now + "; ";
                     cli.Produtor_Rural_Data = DateTime.Now;
@@ -631,7 +631,7 @@ namespace Cliente
 
             }
 
-            if (dados.ProdutorRural == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
+            if (dados.ProdutorRural == (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
             {
                 if (dados.Contribuinte_Icms_Status != cli.Contribuinte_Icms_Status)
                 {
@@ -674,23 +674,20 @@ namespace Cliente
                 if (dados.Contribuinte_Icms_Status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                 {
                     log += "contribuinte_icms_status: " + cli.Contribuinte_Icms_Status + " => " +
-                                    Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM + "; ";
-                    cli.Contribuinte_Icms_Status =
-                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM;
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM + "; ";
+                    cli.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM;
                 }
                 if (dados.Contribuinte_Icms_Status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
                 {
-                    log += "contribuinte_icms_status: " + cli.Contribuinte_Icms_Status + " => " +
-                                    Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO + "; ";
-                    cli.Contribuinte_Icms_Status =
-                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;
+                    log += "contribuinte_icms_status: " + cli.Contribuinte_Icms_Status + " => " + 
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO + "; ";
+                    cli.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;
                 }
                 if (dados.Contribuinte_Icms_Status == (short)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO)
                 {
-                    log += "contribuinte_icms_status: " + cli.Contribuinte_Icms_Status + " => " +
-                                    Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO + "; ";
-                    cli.Contribuinte_Icms_Status =
-                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO;
+                    log += "contribuinte_icms_status: " + cli.Contribuinte_Icms_Status + " => " + 
+                        (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO + "; ";
+                    cli.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO;
                 }
 
                 log += "contribuinte_icms_data: " + cli.Contribuinte_Icms_Data + " => " + DateTime.Now + "; ";
@@ -711,9 +708,9 @@ namespace Cliente
 
             if (produtor_diferente)
             {
-                log += "produtor_rural_status: " + cli.Produtor_Rural_Status + " => " +
-                            Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM + "; ";
-                cli.Produtor_Rural_Status = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
+                log += "produtor_rural_status: " + cli.Produtor_Rural_Status + " => " + 
+                    (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM + "; ";
+                cli.Produtor_Rural_Status = (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
 
                 if (cli.Produtor_Rural_Data == null)
                 {
@@ -995,7 +992,7 @@ namespace Cliente
             Cliente.Dados.DadosClienteCadastroDados dados = new Cliente.Dados.DadosClienteCadastroDados
             {
                 Id = cli.Id,
-                Indicador_Orcamentista = cli.Usuario_Cadastro,
+                Indicador_Orcamentista = cli.Indicador,
                 Cnpj_Cpf = cli.Cnpj_Cpf,
                 Rg = cli.Rg,
                 Ie = cli.Ie,
@@ -1090,10 +1087,6 @@ namespace Cliente
             return lstRefComercial;
         }
 
-        /*
-         * Incluímos a var "string usuarioCadastro" para permitir que a ApiUnis possa cadastrar outro
-         * usuário ao invés do Orçamentista
-         */
         public async Task<IEnumerable<string>> CadastrarCliente(Cliente.Dados.ClienteCadastroDados clienteCadastroDados, string indicador,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             string usuario_cadastro)
@@ -1118,7 +1111,7 @@ namespace Cliente
             await Cliente.ValidacoesClienteBll.ValidarDadosCliente(clienteCadastroDados.DadosCliente,
                 clienteCadastroDados.RefBancaria,
                 clienteCadastroDados.RefComercial,
-                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false, sistemaResponsavelCadastro);
+                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false, sistemaResponsavelCadastro, true);
             if (lstErros.Count != 0)
                 return lstErros;
 
@@ -1187,7 +1180,7 @@ namespace Cliente
             tCliente.Contribuinte_Icms_Data_Hora = DateTime.Now;
             tCliente.Contribuinte_Icms_Usuario = usuario_cadastro;
             tCliente.Produtor_Rural_Status = clienteDados.ProdutorRural;
-            if (clienteDados.ProdutorRural != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL)
+            if (clienteDados.ProdutorRural != (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL)
             {
                 tCliente.Produtor_Rural_Data = DateTime.Now;
                 tCliente.Produtor_Rural_Data_Hora = DateTime.Now;
