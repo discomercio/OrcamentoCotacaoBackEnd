@@ -232,7 +232,7 @@ namespace Prepedido.PedidoVisualizacao
             DadosClienteCadastroDados cadastroCliente = new DadosClienteCadastroDados
             {
                 Loja = await ObterRazaoSocial_Nome_Loja(pedido.Loja),
-                Indicador_Orcamentista = pedido.Orcamentista,
+                Indicador_Orcamentista = pedido.Indicador,
                 Vendedor = pedido.Vendedor,
                 Id = cli.Id,
                 Cnpj_Cpf = Util.FormatCpf_Cnpj_Ie(pedido.Endereco_cnpj_cpf),
@@ -400,7 +400,7 @@ namespace Prepedido.PedidoVisualizacao
             Tpedido tPedidoPai = await pedido.Select(x => x).Where(x => x.Pedido == pedido_pai).FirstOrDefaultAsync();
 
             //aqui vamos montar o pedido conforme o número do pedido que veio na entrada
-            Tpedido p = await pedido.Select(x => x).Where(x => x.Pedido == numPedido).FirstOrDefaultAsync();
+            Tpedido p = pedido.Select(x => x).Where(x => x.Pedido == numPedido && x.Indicador == apelido.ToUpper()).First();
 
             if (p == null)
                 return null;
@@ -1060,7 +1060,7 @@ namespace Prepedido.PedidoVisualizacao
                 var db = contextoProvider.GetContextoLeitura();
 
                 var ret = from c in db.Tpedidos
-                          where c.Pedido == numPedido && c.Orcamentista == apelido
+                          where c.Pedido == numPedido && c.Indicador == apelido
                           select new { analise_credito_data = c.Analise_credito_Data, analise_credito_usuario = c.Analise_Credito_Usuario };
 
                 var registro = ret.FirstOrDefault();
