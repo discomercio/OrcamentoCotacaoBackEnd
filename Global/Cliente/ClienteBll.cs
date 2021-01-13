@@ -52,16 +52,18 @@ namespace Cliente
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL + "; ";
                     cli.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL;
 
-                    log += "contribuinte_icms_data: " + cli.Contribuinte_Icms_Data + " => " + DateTime.Now + "; ";
+                    log += "contribuinte_icms_data: " + (!cli.Contribuinte_Icms_Data.HasValue 
+                        ? "\"\"" : cli.Contribuinte_Icms_Data.ToString()) + " => " + DateTime.Now + "; ";
                     cli.Contribuinte_Icms_Data = DateTime.Now;
 
-                    log += "contribuinte_icms_data_hora: " + cli.Contribuinte_Icms_Data_Hora + " => " + DateTime.Now + "; ";
+                    log += "contribuinte_icms_data_hora: " + (!cli.Contribuinte_Icms_Data_Hora.HasValue 
+                        ? "\"\"" : cli.Contribuinte_Icms_Data_Hora.ToString()) + " => " + DateTime.Now + "; ";
                     cli.Contribuinte_Icms_Data_Hora = DateTime.Now;
 
-                    if (apelido.ToUpper() != cli.Contribuinte_Icms_Usuario.ToUpper())
+                    if (apelido.ToUpper() != cli.Contribuinte_Icms_Usuario?.ToUpper())
                     {
-                        log += "contribuinte_icms_usuario: " + cli.Contribuinte_Icms_Usuario.ToUpper() + " => " +
-                                apelido.ToUpper() + "; ";
+                        log += "contribuinte_icms_usuario: " + (!string.IsNullOrEmpty(cli.Contribuinte_Icms_Usuario) 
+                            ? cli.Contribuinte_Icms_Usuario.ToUpper() : "\"\"") + " => " + apelido.ToUpper() + "; ";
                         cli.Contribuinte_Icms_Usuario = apelido.ToUpper();
                     }
 
@@ -69,16 +71,18 @@ namespace Cliente
                         (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO + "; ";
                     cli.Produtor_Rural_Status = (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
 
-                    log += "produtor_rural_data: " + cli.Produtor_Rural_Data + " => " + DateTime.Now + "; ";
+                    log += "produtor_rural_data: " + (!cli.Produtor_Rural_Data.HasValue 
+                        ? "\"\"" : cli.Produtor_Rural_Data.ToString()) + " => " + DateTime.Now + "; ";
                     cli.Produtor_Rural_Data = DateTime.Now;
 
-                    log += "produtor_rural_data_hora: " + cli.Produtor_Rural_Data_Hora + " => " + DateTime.Now + "; ";
+                    log += "produtor_rural_data_hora: " + (!cli.Produtor_Rural_Data_Hora.HasValue 
+                        ? "\"\"": cli.Produtor_Rural_Data_Hora.ToString()) + " => " + DateTime.Now + "; ";
                     cli.Produtor_Rural_Data_Hora = DateTime.Now;
 
-                    if (apelido.ToUpper() != cli.Produtor_Rural_Usuario.ToUpper())
+                    if (apelido.ToUpper() != cli.Produtor_Rural_Usuario?.ToUpper())
                     {
-                        log += "produtor_rural_usuario: " + cli.Produtor_Rural_Usuario.ToUpper() + " => " +
-                                apelido.ToUpper() + "; ";
+                        log += "produtor_rural_usuario: " + (!string.IsNullOrEmpty(cli.Produtor_Rural_Usuario)
+                            ? cli.Produtor_Rural_Usuario.ToUpper(): "\"\"") + " => " + apelido.ToUpper() + "; ";
                         cli.Produtor_Rural_Usuario = apelido.ToUpper();
                     }
                 }
@@ -133,28 +137,30 @@ namespace Cliente
                 }
                 if (dados.Contribuinte_Icms_Status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
                 {
-                    log += "contribuinte_icms_status: " + cli.Contribuinte_Icms_Status + " => " + 
+                    log += "contribuinte_icms_status: " + cli.Contribuinte_Icms_Status + " => " +
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO + "; ";
                     cli.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;
                 }
                 if (dados.Contribuinte_Icms_Status == (short)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO)
                 {
-                    log += "contribuinte_icms_status: " + cli.Contribuinte_Icms_Status + " => " + 
+                    log += "contribuinte_icms_status: " + cli.Contribuinte_Icms_Status + " => " +
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO + "; ";
                     cli.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO;
                 }
 
-                log += "contribuinte_icms_data: " + cli.Contribuinte_Icms_Data + " => " + DateTime.Now + "; ";
+                log += "contribuinte_icms_data: " + (!cli.Contribuinte_Icms_Data.HasValue 
+                    ? "\"\"" : cli.Contribuinte_Icms_Data.ToString()) + " => " + DateTime.Now + "; ";
                 cli.Contribuinte_Icms_Data = DateTime.Now;
 
-                log += "contribuinte_icms_data_hora: " + cli.Contribuinte_Icms_Data_Hora + " => " + DateTime.Now + "; ";
+                log += "contribuinte_icms_data_hora: " + (!cli.Contribuinte_Icms_Data_Hora.HasValue
+                    ? "\"\"" : cli.Contribuinte_Icms_Data_Hora.ToString()) + " => " + DateTime.Now + "; ";
                 cli.Contribuinte_Icms_Data_Hora = DateTime.Now;
 
-                if (cli.Contribuinte_Icms_Usuario.ToUpper() != apelido.ToUpper())
+                if (cli.Contribuinte_Icms_Usuario?.ToUpper() != apelido.ToUpper())
                 {
                     //contribuinte_icms_usuario: 
-                    log += "contribuinte_icms_usuario: " + cli.Contribuinte_Icms_Usuario.ToUpper() + " => " +
-                        apelido.ToUpper() + "; ";
+                    log += "contribuinte_icms_usuario: " + (!string.IsNullOrEmpty(cli.Contribuinte_Icms_Usuario)
+                        ? cli.Contribuinte_Icms_Usuario.ToUpper() : "\"\"") + " => " + apelido.ToUpper() + "; ";
                     cli.Contribuinte_Icms_Usuario = apelido.ToUpper();
                 }
 
@@ -162,7 +168,7 @@ namespace Cliente
 
             if (produtor_diferente)
             {
-                log += "produtor_rural_status: " + cli.Produtor_Rural_Status + " => " + 
+                log += "produtor_rural_status: " + cli.Produtor_Rural_Status + " => " +
                     (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM + "; ";
                 cli.Produtor_Rural_Status = (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
 
@@ -172,36 +178,48 @@ namespace Cliente
                 }
                 else
                 {
-                    log += "produtor_rural_data: " + cli.Produtor_Rural_Data + " => " + DateTime.Now + "; ";
+                    log += "produtor_rural_data: " + (!cli.Produtor_Rural_Data.HasValue 
+                        ? "\"\"" : cli.Produtor_Rural_Data.ToString()) + " => " + DateTime.Now + "; ";
                 }
 
                 cli.Produtor_Rural_Data = DateTime.Now;
 
-                if (cli.Produtor_Rural_Data_Hora == null)
-                {
-                    log += "produtor_rural_data_hora: \"\" => " + DateTime.Now + "; ";
-                }
-                else
-                {
-                    log += "produtor_rural_data_hora: " + cli.Produtor_Rural_Data_Hora + " => " + DateTime.Now + "; ";
-                }
+                //if (cli.Produtor_Rural_Data_Hora == null)
+                //{
+                //    log += "produtor_rural_data_hora: \"\" => " + DateTime.Now + "; ";
+                //}
+                //else
+                //{
+                //    log += "produtor_rural_data_hora: " + cli.Produtor_Rural_Data_Hora + " => " + DateTime.Now + "; ";
+                //}
+
+                log += "produtor_rural_data_hora: " + (!cli.Produtor_Rural_Data_Hora.HasValue
+                    ? "\"\"" : cli.Produtor_Rural_Data_Hora.ToString()) + " => " + DateTime.Now + "; ";
 
                 cli.Produtor_Rural_Data_Hora = DateTime.Now;
 
-                if (!string.IsNullOrEmpty(cli.Produtor_Rural_Usuario))
+                if(cli.Produtor_Rural_Usuario?.ToUpper() == apelido.ToUpper())
                 {
-                    if (apelido.ToUpper() != cli.Produtor_Rural_Usuario.ToUpper())
-                    {
-                        log += "produtor_rural_usuario: " + cli.Produtor_Rural_Usuario.ToUpper() + " => " +
-                                apelido.ToUpper() + "; ";
-                        cli.Produtor_Rural_Usuario = apelido.ToUpper();
-                    }
-                }
-                else
-                {
-                    log += "produtor_rural_usuario: \"\" => " + apelido.ToUpper() + "; ";
+                    log += "produtor_rural_usuario: " + (!string.IsNullOrEmpty(cli.Produtor_Rural_Usuario)
+                    ? cli.Produtor_Rural_Usuario.ToUpper() : "\"\"") + " => " + apelido.ToUpper() + "; ";
                     cli.Produtor_Rural_Usuario = apelido.ToUpper();
                 }
+                
+
+                //if (!string.IsNullOrEmpty(cli.Produtor_Rural_Usuario))
+                //{
+                //    if (apelido.ToUpper() != cli.Produtor_Rural_Usuario.ToUpper())
+                //    {
+                //        log += "produtor_rural_usuario: " + cli.Produtor_Rural_Usuario.ToUpper() + " => " +
+                //                apelido.ToUpper() + "; ";
+                //        cli.Produtor_Rural_Usuario = apelido.ToUpper();
+                //    }
+                //}
+                //else
+                //{
+                //    log += "produtor_rural_usuario: \"\" => " + apelido.ToUpper() + "; ";
+                //    cli.Produtor_Rural_Usuario = apelido.ToUpper();
+                //}
             }
 
             if (cli.Sistema_responsavel_atualizacao != (int)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS)
@@ -215,7 +233,7 @@ namespace Cliente
             return log;
         }
 
-        public string Verificar_AlterouDadosPJ(Tcliente cli, Cliente.Dados.DadosClienteCadastroDados dados)
+        public string Verificar_AlterouDadosPJ(Tcliente cli, Cliente.Dados.DadosClienteCadastroDados dados, string apelido)
         {
             string log = "";
 
@@ -285,13 +303,21 @@ namespace Cliente
 
                 if (alterou)
                 {
-                    log += "contribuinte_icms_data: " + cli.Contribuinte_Icms_Data + " => " + DateTime.Now + "; ";
+                    log += "contribuinte_icms_data: " + (!cli.Contribuinte_Icms_Data.HasValue ?
+                        "\"\"" : cli.Contribuinte_Icms_Data.ToString()) + " => " + DateTime.Now + "; ";
                     cli.Contribuinte_Icms_Data = DateTime.Now;
 
-                    log += "contribuinte_icms_data_hora: " + cli.Contribuinte_Icms_Data_Hora + " => " + DateTime.Now + "; ";
+                    log += "contribuinte_icms_data_hora: " + (!cli.Contribuinte_Icms_Data_Hora.HasValue 
+                        ? "\"\"" : cli.Contribuinte_Icms_Data_Hora.ToString()) + " => " + DateTime.Now + "; ";
                     cli.Contribuinte_Icms_Data_Hora = DateTime.Now;
 
-
+                    if (cli.Contribuinte_Icms_Usuario?.ToUpper() != apelido.ToUpper())
+                    {
+                        //contribuinte_icms_usuario: 
+                        log += "contribuinte_icms_usuario: " + (!string.IsNullOrEmpty(cli.Contribuinte_Icms_Usuario)
+                            ? cli.Contribuinte_Icms_Usuario.ToUpper() : "\"\"") + " => " + apelido.ToUpper() + "; ";
+                        cli.Contribuinte_Icms_Usuario = apelido.ToUpper();
+                    }
                 }
             }
             if (dados.Contribuinte_Icms_Status == cli.Contribuinte_Icms_Status)
@@ -368,7 +394,7 @@ namespace Cliente
                     }
                     if (dadosClienteCadastroDados.Tipo == Constantes.ID_PJ)
                     {
-                        log = Verificar_AlterouDadosPJ(cli, dadosClienteCadastroDados);
+                        log = Verificar_AlterouDadosPJ(cli, dadosClienteCadastroDados, apelido);
                     }
 
                     if (!string.IsNullOrEmpty(log))
@@ -793,8 +819,8 @@ namespace Cliente
             var db = contextoProvider.GetContextoLeitura();
             cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
             IQueryable<Tcliente> retorno = (from c in db.Tclientes
-                                  where c.Cnpj_Cpf == cpf_cnpj
-                                  select c);
+                                            where c.Cnpj_Cpf == cpf_cnpj
+                                            select c);
             return retorno;
         }
 
