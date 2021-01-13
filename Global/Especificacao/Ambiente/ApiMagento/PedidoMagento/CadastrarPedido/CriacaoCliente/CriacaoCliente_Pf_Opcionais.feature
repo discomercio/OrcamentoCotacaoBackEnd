@@ -59,7 +59,7 @@ Scenario: comprovar que salva todos os campos
 	When Informo "EndEtg_tel_com" = "34567890"
 	When Informo "EndEtg_ramal_com" = "5"
 	When Informo "EndEtg_ddd_cel" = "45"
-	When Informo "EndEtg_tel_cel" = "56789012"
+	When Informo "EndEtg_tel_cel" = "76789012"
 	When Informo "EndEtg_ddd_com_2" = "56"
 	When Informo "EndEtg_tel_com_2" = "56789012"
 	When Informo "EndEtg_ramal_com_2" = "7"
@@ -75,7 +75,7 @@ Scenario: comprovar que salva todos os campos
 	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "29756194804", verificar campo "tel_com" = "34567890"
 	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "29756194804", verificar campo "ramal_com" = "5"
 	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "29756194804", verificar campo "ddd_cel" = "45"
-	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "29756194804", verificar campo "tel_cel" = "56789012"
+	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "29756194804", verificar campo "tel_cel" = "76789012"
 	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "29756194804", verificar campo "ddd_com_2" = "56"
 	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "29756194804", verificar campo "tel_com_2" = "56789012"
 	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "29756194804", verificar campo "ramal_com_2" = "7"
@@ -93,25 +93,4 @@ Scenario: validar email xml
 	Given Pedido base
 	When Informo "EndEtg_email_xml" = "email sem arroba"
 	Then Erro "E-mail inválido!"
-
-@ignore
-Scenario: validar telefones - especificação
-#pergunta:
-#	- exigir telefones com a lógica atual (exemplo: não permitir telefone comercial para PF)
-#	atualmente, se é cliente PF, não aceitamos nenhum telefone.
-#
-#	lógica do endereço de entrega:
-#	- se cliente PF, somente endereço e justificativa (proibimos os outros campos)
-#	- se cliente PJ, tem telefones, CPF/CNPJ, IE, razão social
-#	lógica do cadastro do cliente:
-#	- se cliente PF, exige pelo menos um telefone
-#
-#resposta:
-#	primeiro passar para o endereço de cobrança
-#	não exigir telefones e aceitamos todos que recebermos
-
-@ignore
-Scenario: validar telefones
-	Given Pedido base
-	Given fazer este cenário
 

@@ -67,7 +67,3 @@ Scenario: falta: sexo e data de nascimento - vao ficar em branco
 	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "29756194804", verificar campo "sexo" = ""
 
 
-@ignore
-Scenario: Não atualizar dados se o cliente já existir
-	Given fazer este cenário
-
