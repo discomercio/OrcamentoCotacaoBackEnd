@@ -198,7 +198,7 @@ namespace Cliente
 
                 cli.Produtor_Rural_Data_Hora = DateTime.Now;
 
-                if(cli.Produtor_Rural_Usuario?.ToUpper() == apelido.ToUpper())
+                if(cli.Produtor_Rural_Usuario?.ToUpper() != apelido.ToUpper())
                 {
                     log += "produtor_rural_usuario: " + (!string.IsNullOrEmpty(cli.Produtor_Rural_Usuario)
                     ? cli.Produtor_Rural_Usuario.ToUpper() : "\"\"") + " => " + apelido.ToUpper() + "; ";
