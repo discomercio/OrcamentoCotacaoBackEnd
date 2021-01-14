@@ -75,10 +75,13 @@ namespace Cliente
                     if (dadosCliente.Tipo == Constantes.ID_PJ)
                     {
                         tipoDesconhecido = false;
-                        await ValidarDadosCliente_PJ(dadosCliente, cliente, lstErros, contextoProvider);
+                        await ValidarDadosCliente_PJ(dadosCliente, cliente, lstErros, contextoProvider, sistemaResponsavel);
                         //vamos validar as referências
-                        ValidarReferencias_Bancarias_Comerciais(lstRefBancaria, lstRefComercial,
+                        if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO)
+                        {
+                            ValidarReferencias_Bancarias_Comerciais(lstRefBancaria, lstRefComercial,
                             lstErros, dadosCliente.Tipo, lstBanco);
+                        }
                     }
 
                     if (tipoDesconhecido)
@@ -187,16 +190,19 @@ namespace Cliente
             //vamos validar o sexo
             ValidarGenero(dadosCliente, lstErros, sistemaResponsavel, novoCliente);
 
-            await ValidacoesClienteTelefones.ValidarTelefones_PF(dadosCliente, cliente, lstErros, contextoProvider);
+            await ValidacoesClienteTelefones.ValidarTelefones_PF(dadosCliente, cliente, lstErros, contextoProvider, sistemaResponsavel);
 
             if (!string.IsNullOrEmpty(dadosCliente.Email))
             {
                 Util.ValidarEmail(dadosCliente.Email, lstErros);
             }
             //vamos verificar os campos que não pertence ao tipo PF
-            if (!string.IsNullOrEmpty(dadosCliente.Contato))
+            if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO)
             {
-                lstErros.Add("Se cliente é tipo PF não deve ter o campo contato preenchido.");
+                if (!string.IsNullOrEmpty(dadosCliente.Contato))
+                {
+                    lstErros.Add("Se cliente é tipo PF não deve ter o campo contato preenchido.");
+                }
             }
         }
 
@@ -211,7 +217,8 @@ namespace Cliente
                     lstErros.Add(MensagensErro.GENERO_DO_CLIENTE_NAO_INFORMADO);
                 }
             }
-            if (dadosCliente.Sexo.Length > 1 || (dadosCliente.Sexo != "M" && dadosCliente.Sexo != "F") &&
+            var sexo = dadosCliente.Sexo ?? "";
+            if (sexo.Length > 1 || (sexo != "M" && sexo != "F") &&
                 sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO && novoCliente)
             {
                 lstErros.Add("FORMATO DO TIPO DE SEXO INVÁLIDO!");
@@ -219,7 +226,7 @@ namespace Cliente
             }
         }
         private static async Task ValidarDadosCliente_PJ(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
-            List<string> lstErros, ContextoBdProvider contextoProvider)
+            List<string> lstErros, ContextoBdProvider contextoProvider, InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel)
         {
             /*
             -Para CNPJ:
@@ -286,16 +293,19 @@ namespace Cliente
             {
                 lstErros.Add("INFORME O NOME DA PESSOA PARA CONTATO!");
             }
-            if (string.IsNullOrEmpty(dadosCliente.Email))
+            if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO)
             {
-                lstErros.Add("É OBRIGATÓRIO INFORMAR UM ENDEREÇO DE E-MAIL!");
+                if (string.IsNullOrEmpty(dadosCliente.Email))
+                {
+                    lstErros.Add("É OBRIGATÓRIO INFORMAR UM ENDEREÇO DE E-MAIL!");
+                }
             }
             if (!string.IsNullOrEmpty(dadosCliente.Email))
             {
                 Util.ValidarEmail(dadosCliente.Email, lstErros);
             }
             //vamos validar os telefones
-            await ValidacoesClienteTelefones.ValidarTelefones_PJ(dadosCliente, cliente, lstErros, contextoProvider);
+            await ValidacoesClienteTelefones.ValidarTelefones_PJ(dadosCliente, cliente, lstErros, contextoProvider, sistemaResponsavel);
         }
 
         private static async Task ValidarEnderecoCadastroCliente(Cliente.Dados.DadosClienteCadastroDados dadosCliente,
@@ -521,7 +531,7 @@ namespace Cliente
 
         }
 
-        private static void ValidarIE(Cliente.Dados.DadosClienteCadastroDados dadosCliente, List<string> lstErros, 
+        private static void ValidarIE(Cliente.Dados.DadosClienteCadastroDados dadosCliente, List<string> lstErros,
             bool flagMsg_IE_Cadastro_PF)
         {
             if (!string.IsNullOrEmpty(dadosCliente.Ie))

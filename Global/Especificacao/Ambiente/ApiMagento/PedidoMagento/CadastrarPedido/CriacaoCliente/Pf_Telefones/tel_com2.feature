@@ -6,13 +6,12 @@ Background: Acertar banco de dados
 	Given Reiniciar banco ao terminar cenário
 	And Limpar tabela "t_CLIENTE"
 
-@ignore
 Scenario: validar telefone - tel_com_2
 	Given Pedido base
 	When Informo "OutroEndereco" = "true"
 	When Informo "EndEtg_ddd_com_2" = "12"
 	When Informo "EndEtg_tel_com_2" = ""
-	Then Erro "EndEtg_tel_com2 faltando"
+	Then Erro "PREENCHA O TELEFONE COMERCIAL2."
 
 @ignore
 Scenario: validar telefone - tel_com_2 2
