@@ -27,14 +27,12 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
         private readonly ConfiguracaoApiMagento configuracaoApiMagento;
         private readonly Pedido.PedidoCriacao pedidoCriacao;
         private readonly PedidoMagentoClienteBll pedidoMagentoClienteBll;
-        private readonly ClienteBll clienteBll;
 
         public PedidoMagentoBll(InfraBanco.ContextoBdProvider contextoProvider,
             Produto.ProdutoGeralBll produtoGeralBll,
             Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll, PrepedidoBll prepedidoBll,
             ConfiguracaoApiMagento configuracaoApiMagento, Pedido.PedidoCriacao pedidoCriacao,
-            PedidoMagentoClienteBll pedidoMagentoClienteBll,
-            Cliente.ClienteBll clienteBll)
+            PedidoMagentoClienteBll pedidoMagentoClienteBll)
         {
             this.contextoProvider = contextoProvider;
             this.produtoGeralBll = produtoGeralBll;
@@ -43,7 +41,6 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             this.configuracaoApiMagento = configuracaoApiMagento;
             this.pedidoCriacao = pedidoCriacao;
             this.pedidoMagentoClienteBll = pedidoMagentoClienteBll;
-            this.clienteBll = clienteBll;
         }
 
         public async Task<PedidoResultadoMagentoDto> CadastrarPedidoMagento(PedidoMagentoDto pedidoMagento, string usuario)
@@ -54,7 +51,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             pedidoMagento.Cnpj_Cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(pedidoMagento.Cnpj_Cpf);
 
 
-            var orcamentistaindicador_vendedor_loja = await Calcular_orcamentistaindicador_vendedor_loja(pedidoMagento, usuario, resultado.ListaErros);
+            var indicador_vendedor_loja = await Calcular_indicador_vendedor_loja(pedidoMagento, usuario, resultado.ListaErros);
             pedidoMagentoClienteBll.LimitarPedidosMagentoPJ(pedidoMagento, resultado.ListaErros);
             await ValidarPedidoMagentoEMarketplace(pedidoMagento, resultado.ListaErros);
             if (resultado.ListaErros.Count > 0)
@@ -71,14 +68,14 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             if (resultado.ListaErros.Count > 0)
                 return resultado;
 
-            string idCliente = await pedidoMagentoClienteBll.CadastrarClienteSeNaoExistir(pedidoMagento, resultado.ListaErros, orcamentistaindicador_vendedor_loja, usuario);
+            string idCliente = await pedidoMagentoClienteBll.CadastrarClienteSeNaoExistir(pedidoMagento, resultado.ListaErros, indicador_vendedor_loja, usuario);
             if (resultado.ListaErros.Count > 0)
                 return resultado;
 
             //estamos criando o pedido com os dados do cliente que vem e não com os dados do cliente que esta na base
             //ex: se o cliente já cadastrado, utilizamos o que vem em PedidoMagentoDto.EnderecoCadastralClienteMagentoDto
             Pedido.Dados.Criacao.PedidoCriacaoDados? pedidoDados = await CriarPedidoCriacaoDados(pedidoMagento,
-                orcamentistaindicador_vendedor_loja, resultado.ListaErros, idCliente);
+                indicador_vendedor_loja, resultado.ListaErros, idCliente);
             if (resultado.ListaErros.Count != 0)
                 return resultado;
             if (pedidoDados == null)
@@ -111,7 +108,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             }
         }
 
-        private async Task<Indicador_vendedor_loja> Calcular_orcamentistaindicador_vendedor_loja(PedidoMagentoDto pedidoMagento, string usuario, List<string> listaErros)
+        private async Task<Indicador_vendedor_loja> Calcular_indicador_vendedor_loja(PedidoMagentoDto pedidoMagento, string usuario, List<string> listaErros)
         {
             //campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
             string? indicador = null;
@@ -168,7 +165,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             Indicador_vendedor_loja indicador_Vendedor_Loja, List<string> lstErros,
             string id_cliente)
         {
-            var sistemaResponsavelCadastro = Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI;
+            var sistemaResponsavelCadastro = Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO;
 
             //o cliente existe então vamos converter os dados do cliente para DadosCliente e EnderecoCadastral
             Cliente.Dados.DadosClienteCadastroDados dadosCliente =
@@ -199,7 +196,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
                 lstErros,
                 configuracaoApiMagento);
 
-            return await Task.FromResult(pedidoDadosCriacao);
+            return pedidoDadosCriacao;
         }
 
         private async Task ValidarPedidoMagentoEMarketplace(PedidoMagentoDto pedidoMagento, List<string> lstErros)

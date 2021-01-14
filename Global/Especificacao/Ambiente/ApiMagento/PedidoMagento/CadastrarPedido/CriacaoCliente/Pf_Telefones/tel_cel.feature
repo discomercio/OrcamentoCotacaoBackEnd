@@ -1,5 +1,4 @@
-﻿@ignore
-@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente
+﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente
 @GerenciamentoBanco
 Feature: tel_cel
 
@@ -12,8 +11,10 @@ Scenario: validar telefone - tel_cel
 	When Informo "OutroEndereco" = "true"
 	When Informo "EndEtg_ddd_cel" = "12"
 	When Informo "EndEtg_tel_cel" = ""
-	Then Erro "EndEtg_tel_cel esta faltando"
+	Then Erro "PREENCHA O TELEFONE CELULAR."
 
+@ignore
+Scenario: validar telefone - tel_cel 2
 	Given Pedido base
 	When Informo "OutroEndereco" = "true"
 	When Informo "EndEtg_ddd_cel" = ""

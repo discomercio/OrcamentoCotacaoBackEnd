@@ -205,14 +205,14 @@ namespace Cliente
         {
             if (string.IsNullOrEmpty(dadosCliente.Sexo))
             {
-                if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI &&
+                if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO &&
                     novoCliente)
                 {
                     lstErros.Add(MensagensErro.GENERO_DO_CLIENTE_NAO_INFORMADO);
                 }
             }
             if (dadosCliente.Sexo.Length > 1 || (dadosCliente.Sexo != "M" && dadosCliente.Sexo != "F") &&
-                sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI && novoCliente)
+                sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO && novoCliente)
             {
                 lstErros.Add("FORMATO DO TIPO DE SEXO INVÁLIDO!");
 

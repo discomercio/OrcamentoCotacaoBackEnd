@@ -98,6 +98,7 @@ Scenario: validar telefones - todos
 	Then Sem nenhum erro
 
 
+@ignore
 Scenario: validar telefones - nenhum
 	Given Pedido base
 	When Informo "OutroEndereco" = "true"
