@@ -29,6 +29,7 @@ namespace Cliente
         }
 
         public static async Task ValidarDadosCliente(Cliente.Dados.DadosClienteCadastroDados dadosCliente,
+            bool validarReferenciasBancasUsandoLstBanco, //durante o cadastro do pedido não queremos validar as referências bancárias porque elas não existem
             List<Cliente.Dados.Referencias.RefBancariaClienteDados> lstRefBancaria,
             List<Cliente.Dados.Referencias.RefComercialClienteDados> lstRefComercial,
             List<string> lstErros, ContextoBdProvider contextoProvider, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio,
@@ -79,8 +80,11 @@ namespace Cliente
                         //vamos validar as referências
                         if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO)
                         {
-                            ValidarReferencias_Bancarias_Comerciais(lstRefBancaria, lstRefComercial,
-                            lstErros, dadosCliente.Tipo, lstBanco);
+                            if (validarReferenciasBancasUsandoLstBanco && lstBanco != null)
+                            {
+                                ValidarReferencias_Bancarias_Comerciais(lstRefBancaria, lstRefComercial,
+                                lstErros, dadosCliente.Tipo, lstBanco);
+                            }
                         }
                     }
 

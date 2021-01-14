@@ -52,17 +52,17 @@ namespace Cliente
                         (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL + "; ";
                     cli.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL;
 
-                    log += "contribuinte_icms_data: " + (!cli.Contribuinte_Icms_Data.HasValue 
+                    log += "contribuinte_icms_data: " + (!cli.Contribuinte_Icms_Data.HasValue
                         ? "\"\"" : cli.Contribuinte_Icms_Data.ToString()) + " => " + DateTime.Now + "; ";
                     cli.Contribuinte_Icms_Data = DateTime.Now;
 
-                    log += "contribuinte_icms_data_hora: " + (!cli.Contribuinte_Icms_Data_Hora.HasValue 
+                    log += "contribuinte_icms_data_hora: " + (!cli.Contribuinte_Icms_Data_Hora.HasValue
                         ? "\"\"" : cli.Contribuinte_Icms_Data_Hora.ToString()) + " => " + DateTime.Now + "; ";
                     cli.Contribuinte_Icms_Data_Hora = DateTime.Now;
 
                     if (apelido.ToUpper() != cli.Contribuinte_Icms_Usuario?.ToUpper())
                     {
-                        log += "contribuinte_icms_usuario: " + (!string.IsNullOrEmpty(cli.Contribuinte_Icms_Usuario) 
+                        log += "contribuinte_icms_usuario: " + (!string.IsNullOrEmpty(cli.Contribuinte_Icms_Usuario)
                             ? cli.Contribuinte_Icms_Usuario.ToUpper() : "\"\"") + " => " + apelido.ToUpper() + "; ";
                         cli.Contribuinte_Icms_Usuario = apelido.ToUpper();
                     }
@@ -71,18 +71,18 @@ namespace Cliente
                         (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO + "; ";
                     cli.Produtor_Rural_Status = (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
 
-                    log += "produtor_rural_data: " + (!cli.Produtor_Rural_Data.HasValue 
+                    log += "produtor_rural_data: " + (!cli.Produtor_Rural_Data.HasValue
                         ? "\"\"" : cli.Produtor_Rural_Data.ToString()) + " => " + DateTime.Now + "; ";
                     cli.Produtor_Rural_Data = DateTime.Now;
 
-                    log += "produtor_rural_data_hora: " + (!cli.Produtor_Rural_Data_Hora.HasValue 
-                        ? "\"\"": cli.Produtor_Rural_Data_Hora.ToString()) + " => " + DateTime.Now + "; ";
+                    log += "produtor_rural_data_hora: " + (!cli.Produtor_Rural_Data_Hora.HasValue
+                        ? "\"\"" : cli.Produtor_Rural_Data_Hora.ToString()) + " => " + DateTime.Now + "; ";
                     cli.Produtor_Rural_Data_Hora = DateTime.Now;
 
                     if (apelido.ToUpper() != cli.Produtor_Rural_Usuario?.ToUpper())
                     {
                         log += "produtor_rural_usuario: " + (!string.IsNullOrEmpty(cli.Produtor_Rural_Usuario)
-                            ? cli.Produtor_Rural_Usuario.ToUpper(): "\"\"") + " => " + apelido.ToUpper() + "; ";
+                            ? cli.Produtor_Rural_Usuario.ToUpper() : "\"\"") + " => " + apelido.ToUpper() + "; ";
                         cli.Produtor_Rural_Usuario = apelido.ToUpper();
                     }
                 }
@@ -148,7 +148,7 @@ namespace Cliente
                     cli.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO;
                 }
 
-                log += "contribuinte_icms_data: " + (!cli.Contribuinte_Icms_Data.HasValue 
+                log += "contribuinte_icms_data: " + (!cli.Contribuinte_Icms_Data.HasValue
                     ? "\"\"" : cli.Contribuinte_Icms_Data.ToString()) + " => " + DateTime.Now + "; ";
                 cli.Contribuinte_Icms_Data = DateTime.Now;
 
@@ -178,7 +178,7 @@ namespace Cliente
                 }
                 else
                 {
-                    log += "produtor_rural_data: " + (!cli.Produtor_Rural_Data.HasValue 
+                    log += "produtor_rural_data: " + (!cli.Produtor_Rural_Data.HasValue
                         ? "\"\"" : cli.Produtor_Rural_Data.ToString()) + " => " + DateTime.Now + "; ";
                 }
 
@@ -198,13 +198,13 @@ namespace Cliente
 
                 cli.Produtor_Rural_Data_Hora = DateTime.Now;
 
-                if(cli.Produtor_Rural_Usuario?.ToUpper() != apelido.ToUpper())
+                if (cli.Produtor_Rural_Usuario?.ToUpper() != apelido.ToUpper())
                 {
                     log += "produtor_rural_usuario: " + (!string.IsNullOrEmpty(cli.Produtor_Rural_Usuario)
                     ? cli.Produtor_Rural_Usuario.ToUpper() : "\"\"") + " => " + apelido.ToUpper() + "; ";
                     cli.Produtor_Rural_Usuario = apelido.ToUpper();
                 }
-                
+
 
                 //if (!string.IsNullOrEmpty(cli.Produtor_Rural_Usuario))
                 //{
@@ -306,7 +306,7 @@ namespace Cliente
                         "\"\"" : cli.Contribuinte_Icms_Data.ToString()) + " => " + DateTime.Now + "; ";
                     cli.Contribuinte_Icms_Data = DateTime.Now;
 
-                    log += "contribuinte_icms_data_hora: " + (!cli.Contribuinte_Icms_Data_Hora.HasValue 
+                    log += "contribuinte_icms_data_hora: " + (!cli.Contribuinte_Icms_Data_Hora.HasValue
                         ? "\"\"" : cli.Contribuinte_Icms_Data_Hora.ToString()) + " => " + DateTime.Now + "; ";
                     cli.Contribuinte_Icms_Data_Hora = DateTime.Now;
 
@@ -368,10 +368,9 @@ namespace Cliente
             string log = "";
 
             List<string> lstErros = new List<string>();
-            List<Cliente.Dados.ListaBancoDados> lstBanco = (await ListarBancosCombo()).ToList();
 
-            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDados, null, null, lstErros,
-                contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, true, sistemaResponsavel, false);
+            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDados, false, null, null, lstErros,
+                contextoProvider, cepBll, bancoNFeMunicipio, null, true, sistemaResponsavel, false);
             if (lstErros.Count > 0)
                 return lstErros;
 
@@ -614,7 +613,7 @@ namespace Cliente
 
             //passar lista de bancos para validar
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await ListarBancosCombo()).ToList();
-            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(clienteCadastroDados.DadosCliente,
+            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(clienteCadastroDados.DadosCliente, true,
                 clienteCadastroDados.RefBancaria,
                 clienteCadastroDados.RefComercial,
                 lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false, sistemaResponsavelCadastro, true);
