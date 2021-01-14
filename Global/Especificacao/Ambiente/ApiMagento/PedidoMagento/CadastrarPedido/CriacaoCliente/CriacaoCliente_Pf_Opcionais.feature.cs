@@ -213,7 +213,7 @@ this.FeatureBackground();
  testRunner.When("Informo \"EndEtg_ddd_cel\" = \"45\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 62
- testRunner.When("Informo \"EndEtg_tel_cel\" = \"56789012\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_tel_cel\" = \"76789012\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 63
  testRunner.When("Informo \"EndEtg_ddd_com_2\" = \"56\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -265,7 +265,7 @@ this.FeatureBackground();
 #line hidden
 #line 78
  testRunner.And("Tabela \"t_CLIENTE\" registro com campo \"cnpj_cpf\" = \"29756194804\", verificar campo" +
-                        " \"tel_cel\" = \"56789012\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        " \"tel_cel\" = \"76789012\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 79
  testRunner.And("Tabela \"t_CLIENTE\" registro com campo \"cnpj_cpf\" = \"29756194804\", verificar campo" +
