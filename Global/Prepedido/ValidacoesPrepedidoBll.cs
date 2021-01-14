@@ -342,6 +342,7 @@ namespace Prepedido
         public async Task ValidarEnderecoEntrega(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEntrega,
             List<string> lstErros, string orcamentista, string tipoCliente, bool usarLojaOrcamentista, string loja)
         {
+            
             if (endEntrega.OutroEndereco)
             {
                 await ValidarDadosEnderecoEntrega(endEntrega, lstErros, contextoProvider, usarLojaOrcamentista, loja, orcamentista);
