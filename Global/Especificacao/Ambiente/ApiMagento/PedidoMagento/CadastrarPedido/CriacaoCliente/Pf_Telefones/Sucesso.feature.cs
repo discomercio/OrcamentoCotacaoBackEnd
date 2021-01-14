@@ -136,9 +136,11 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="validar telefones - todos")]
         [Xunit.TraitAttribute("FeatureTitle", "Sucesso")]
         [Xunit.TraitAttribute("Description", "validar telefones - todos")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void ValidarTelefones_Todos()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validar telefones - todos", null, tagsOfScenario, argumentsOfScenario);
 #line 25

@@ -623,7 +623,7 @@ namespace Cliente
         {
             if (string.IsNullOrEmpty(ie))
             {
-                listaErros.Add("IE (Inscrição Estadual) vazia! ");
+                listaErros.Add("IE (Inscrição Estadual) vazia!");
                 return;
             }
             if (string.IsNullOrEmpty(uf))

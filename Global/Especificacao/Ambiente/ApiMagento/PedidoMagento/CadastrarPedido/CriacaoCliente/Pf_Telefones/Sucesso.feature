@@ -21,7 +21,7 @@ Scenario: validar telefones - especificação
 #resposta:
 #	primeiro passar para o endereço de cobrança
 #	não exigir telefones e aceitamos todos que recebermos
-
+@ignore
 Scenario: validar telefones - todos
 	Given Pedido base
 	When Informo "OutroEndereco" = "true"
