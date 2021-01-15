@@ -39,7 +39,6 @@ Background: Acertar banco de dados
 Scenario: AdicionarDependencia
 	Given AdicionarDependencia ambiente = "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedidoListaDependencias", especificacao = "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente.CriacaoCliente_Pf_Obrigatorios"
 
-@ignore
 Scenario: Caminho feliz
 	Given Pedido base
 	And Limpar dados cadastrais e endereço de entrega
