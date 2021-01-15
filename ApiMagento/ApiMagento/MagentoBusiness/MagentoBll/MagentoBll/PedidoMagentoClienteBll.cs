@@ -48,7 +48,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
 
             List<string> lstRet = (await clienteBll.CadastrarCliente(clienteCadastro,
                 indicador_Vendedor_Loja.indicador,
-                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI,
+                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO,
                 usuario_cadastro)).ToList();
 
             //tem erro?

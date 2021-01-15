@@ -26,6 +26,7 @@ export class ClienteCadastroUtils {
   }
   
   telefone1(p: DadosClienteCadastroDto): string {
+    
     if (!p) {
       return "";
     }
@@ -55,7 +56,7 @@ export class ClienteCadastroUtils {
     let s_aux = p.DddComercial.trim();
     if (s_aux != "")
       s2 = "(" + s_aux + ") " + s2;
-    s_aux = p.Ramal.trim();
+    s_aux = (!!p.Ramal ? p.Ramal.trim() : "");
     if (s_aux != "")
       s2 = s2 + "  - (Ramal " + s_aux + ")";
     return s2;
@@ -78,7 +79,7 @@ export class ClienteCadastroUtils {
       let s_aux = p.DddComercial.trim();
       if (s_aux != "")
         s2 = "(" + s_aux + ") " + s2;
-      s_aux = p.Ramal.trim();
+      s_aux = (!!p.Ramal ? p.Ramal.trim() : "");
       if (s_aux != "")
         s2 = s2 + "  - (Ramal " + s_aux + ")";
       return s2;
@@ -92,7 +93,7 @@ export class ClienteCadastroUtils {
     let s_aux = p.DddComercial2.trim();
     if (s_aux != "")
       s4 = "(" + s_aux + ") " + s4;
-    s_aux = p.Ramal2.trim();
+    s_aux = (!!p.Ramal2 ? p.Ramal2.trim() : "");
     if (s_aux != "")
       s4 = s4 + "  - (Ramal " + s_aux + ")";
     return s4;

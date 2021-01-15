@@ -57,4 +57,7 @@ Scenario: validar telefones - tel_com
 	When Informo "EndEtg_tel_com" = "1234567890"
 	Then Erro "EndEtg_tel_res muito grande"
 
+@ignore
+Scenario: EndEtg_ramal_com
+	Given Falta validar este campo
 

@@ -295,7 +295,7 @@ this.FeatureBackground();
 #line hidden
 #line 55
  testRunner.And("Tabela \"t_CLIENTE\" registro com campo \"cnpj_cpf\" = \"29756194804\", verificar campo" +
-                        " \"sistema_responsavel_cadastro\" = \"4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        " \"sistema_responsavel_cadastro\" = \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

@@ -732,11 +732,10 @@ namespace Prepedido
                     prePedido.EnderecoCadastroClientePrepedido, tOrcamentista.Apelido.ToUpper(), tOrcamentista.Loja,
                     prePedido.DadosCliente.Sexo, prePedido.DadosCliente.Nascimento, prePedido.DadosCliente.Id);
 
-            List<Cliente.Dados.ListaBancoDados> lstBanco = (await clienteBll.ListarBancosCombo()).ToList();
             //vamos validar os dados do cliente
-            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(prePedido.DadosCliente,
+            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(prePedido.DadosCliente, false,
                 null, null,
-                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco,
+                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, null,
                 prePedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false, sistemaResponsavelCadastro, false);
 
             //verifica se o prepedio já foi gravado

@@ -56,6 +56,12 @@ namespace Pedido
         {
             PedidoCriacaoRetornoDados pedidoRetorno = new PedidoCriacaoRetornoDados();
 
+            return await CadastrarPedido_anterior(pedido);
+        }
+        private async Task<PedidoCriacaoRetornoDados> CadastrarPedido_anterior(PedidoCriacaoDados pedido)
+        {
+            PedidoCriacaoRetornoDados pedidoRetorno = new PedidoCriacaoRetornoDados();
+
             var db = contextoProvider.GetContextoLeitura();
 
             //7- se tiver "vendedor_externo", busca (nome, razão social) na t_LOJA
@@ -71,30 +77,16 @@ namespace Pedido
             string lista_operacoes_permitidas = await clienteBll.BuscaListaOperacoesPermitidas(tUsuario.Nome);
 
             //vamos validar os dados do cliente que esta vindo no pedido
-            //alterar forma de validacao, a validacao dos dados cadastrais é diferente
-            //todo: verificar se ainda precisamos disto, devemos chamar uma rotina para validar o endereço cadastral e não um cliente novo
-            List<Cliente.Dados.ListaBancoDados> lstBanco = (await clienteBll.ListarBancosCombo()).ToList();
-            var tclienteSexoNascimento = (from c in clienteBll.BuscarTcliente(pedido.Cliente.Cnpj_Cpf) select new { c.Sexo, c.Dt_Nasc }).FirstOrDefault();
-            var tclienteSexo = "M";
-            DateTime? tclienteNascimento = DateTime.Now;
-            if (pedido.Cliente.Tipo.PessoaJuridica())
-            {
-                tclienteSexo = "";
-                tclienteNascimento = null;
-            }
-            if (tclienteSexoNascimento != null)
-            {
-                tclienteSexo = tclienteSexoNascimento.Sexo;
-                tclienteNascimento = tclienteSexoNascimento.Dt_Nasc;
-            }
             var dadosClienteCadastroDados = Cliente.Dados.DadosClienteCadastroDados.DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(pedido.EnderecoCadastralCliente,
                 pedido.Ambiente.Indicador, pedido.Ambiente.Loja,
-                tclienteSexo, tclienteNascimento, pedido.Cliente.Id_cliente);
-            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDados, null, null, pedidoRetorno.ListaErros,
-                contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, pedido.Cliente.Tipo.PessoaFisica(),
+                "", null, pedido.Cliente.Id_cliente);
+            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDados, false, null, null, pedidoRetorno.ListaErros,
+                contextoProvider, cepBll, bancoNFeMunicipio, null, pedido.Cliente.Tipo.PessoaFisica(),
                 pedido.Configuracao.SistemaResponsavelCadastro, false);
             if (pedidoRetorno.ListaErros.Count > 0)
                 return pedidoRetorno;
+
+
 
             if (!validacoesPrepedidoBll.ValidarDetalhesPrepedido(pedido.DetalhesPedido, pedidoRetorno.ListaErros))
             {

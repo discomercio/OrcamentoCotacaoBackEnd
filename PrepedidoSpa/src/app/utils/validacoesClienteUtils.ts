@@ -197,7 +197,7 @@ export class ValidacoesClienteUtils {
         } else {
             ret.push('PREENCHA CNPJ/CPF');
         }
-
+        debugger;
         if (ehObrigatorio) {
             //se for PJ é obrigatório
             if (dadosClienteCadastroDto.Tipo == this.constantes.ID_PJ) {

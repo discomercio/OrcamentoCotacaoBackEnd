@@ -51,8 +51,8 @@ Scenario: usar o flag para indicar que esse t_cliente foi criado pelo magento (o
 	When Informo "EndEtg_tipo_pessoa" = "PF"
 	When Informo "cnpj_cpf" = "29756194804"
 	Then Sem nenhum erro
-	#COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI = 4   //API magento
-	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "29756194804", verificar campo "sistema_responsavel_cadastro" = "4"
+	#COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO = 5   //API magento
+	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "29756194804", verificar campo "sistema_responsavel_cadastro" = "5"
 
 Scenario: falta: sexo e data de nascimento - vao ficar em branco
 	#Sexo: Retirar obrigatoriedade do preenchimento do sexo, permitindo deixá-lo vazio.
