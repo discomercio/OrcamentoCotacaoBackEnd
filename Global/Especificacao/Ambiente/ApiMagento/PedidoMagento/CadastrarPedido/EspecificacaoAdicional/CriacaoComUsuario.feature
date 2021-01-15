@@ -13,9 +13,22 @@ Feature: CriacaoComUsuario
 
 
 
-Scenario: Testar criando o usuário e cadastrando o pedido em uma única operação (verificar que o sistema_responsavel_cadastro é o magento)
-	When Fazer esta validação
+#FIQUEI CONFUSO, o nome da Feature e dos cenários estão como usuário mas, a explicação acima esta falando do cliente
+#OBS: alterei os nomes para cliente
+Scenario: Testar criando o cliente e cadastrando o pedido em uma única operação (verificar que o sistema_responsavel_cadastro é o magento)
+	Given Pedido base
+	And Limpar tabela "t_CLIENTE"
+	Then Sem nenhum erro
+	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "{valor_cnpj_cpf}", verificar campo "sistema_responsavel_cadastro" = "4"
+	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "{valor_cnpj_cpf}", verificar campo "sistema_responsavel_atualizacao" = "4"
+	And Tabela "t_PEDIDO" registro com campo "cnpj_cpf" = "{valor_cnpj_cpf}", verificar campo "sistema_responsavel_cadastro" = "4"
 
-Scenario: Testar cadastrando o pedido com um usuário já existente no banco (verificar que não atualiza os dados de cadastro)
-	When Fazer esta validação
+# Acho que devemos criar uma rotina para confrontar os dados do cliente na t_CLIENTE ou
+# cadastrar um cliente com outro sistema_responsavel_cadastro e verifcar se foi alterado o o campo sistema_responsavel_atualizacao
+Scenario: Testar cadastrando o pedido com um cliente já existente no banco (verificar que não atualiza os dados de cadastro)
+	Given Pedido base
+	Then Sem nenhum erro
+	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "{valor_cnpj_cpf}", verificar campo "sistema_responsavel_atualizacao" = "2"
+	And Tabela "t_PEDIDO" registro com campo "cnpj_cpf" = "{valor_cnpj_cpf}", verificar campo "sistema_responsavel_cadastro" = "4"
+
 
