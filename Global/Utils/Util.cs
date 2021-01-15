@@ -1039,7 +1039,12 @@ namespace UtilsGlobais
             if (!new EmailAddressAttribute().IsValid(email))
                 lstErros.Add("E-mail inválido!");
         }
-
+        
+        public static void ValidarEmailXml(string emailxml, List<string> lstErros)
+        {
+            if (!new EmailAddressAttribute().IsValid(emailxml))
+                lstErros.Add("E-mail XML inválido!");
+        }
         public static async Task<int?> VerificarTelefoneRepetidos(string ddd, string tel, string cpf_cnpj, string tipoCliente,
             ContextoBdProvider contextoProvider, List<string> lstErros)
         {
