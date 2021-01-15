@@ -55,48 +55,37 @@ Scenario: telefones com simbolos
 	Then Erro "Telefone comercial com símbolo"
 
 Scenario: CaracteresInvalidos
-	#alerta="O CAMPO 'NOME' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " & s_caracteres_invalidos
 	Given Pedido base
 	When Informo "DadosCliente.Nome" = "Caracter inválido: $"
 	Then Erro "O CAMPO 'NOME' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: $"
 
-	#alerta="O CAMPO 'ENDEREÇO' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " & s_caracteres_invalidos
 	Given Pedido base
 	When Informo "DadosCliente.Endereco" = "Caracter inválido: $"
 	Then Erro "O CAMPO 'ENDEREÇO' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: $"
 
-	#alerta="O CAMPO NÚMERO DO ENDEREÇO POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " & s_caracteres_invalidos
 	Given Pedido base
 	When Informo "DadosCliente.Numero" = "Caracter inválido: $"
 	Then Erro "O CAMPO 'NÚMERO' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: $"
 
-	#alerta="O CAMPO 'COMPLEMENTO' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " & s_caracteres_invalidos
 	Given Pedido base
 	When Informo "DadosCliente.Complemento" = "Caracter inválido: $"
 	Then Erro "O CAMPO 'COMPLEMENTO' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: $"
 
-	#alerta="O CAMPO 'BAIRRO' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " & s_caracteres_invalidos
 	Given Pedido base
 	When Informo "DadosCliente.Bairro" = "Caracter inválido: $"
 	Then Erro "O CAMPO 'BAIRRO' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: $"
 
-	#alerta="O CAMPO 'CIDADE' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " & s_caracteres_invalidos
 	Given Pedido base
 	When Informo "DadosCliente.Cidade" = "Caracter inválido: $"
 	Then Erro "O CAMPO 'CIDADE' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: $"
 
-	#alerta="O CAMPO 'CONTATO' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " & s_caracteres_invalidos
 	Given Pedido base
 	When Informo "DadosCliente.Contato" = "Caracter inválido: $"	
 	Then Erro "O CAMPO 'CONTATO' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: $"
 
-	#alerta="O CAMPO 'FILIAÇÃO' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: " & s_caracteres_invalidos
 	Given Pedido base
 	When Informo "DadosCliente.Observacao_Filiacao" = "Caracter inválido: $"
 	Then Erro "O CAMPO 'OBSERVAÇÕES' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: $"
 
-	# Não utilizamos esse campo
-	@ignore
-	Given Pedido base
-	When Informo "DadosCliente.Endereco" = "Caracter inválido: $"
-	Then Erro "O CAMPO 'OBSERVAÇÕES CREDITÍCIAS' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: $"
+	
+	
