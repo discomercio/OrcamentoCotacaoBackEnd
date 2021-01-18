@@ -101,7 +101,6 @@ Scenario: Obrigatório 2
 	When Informo "cnpj_cpf" = "29756194804"
 	Then Erro "PREENCHA O NÚMERO DO ENDEREÇO."
 
-@ignore
 Scenario: Obrigatório 3
 	Given Pedido base
 	And Limpar dados cadastrais e endereço de entrega
@@ -117,12 +116,11 @@ Scenario: Obrigatório 3
 	When Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = "PF"
 	When Informo "EndEtg_cnpj_cpf" = "29756194804"
 	When Informo "cnpj_cpf" = "29756194804"
-	Then Erro "pegar o erro"
+	Then Erro "PREENCHA O BAIRRO."
 
-@ignore
 Scenario: Obrigatório 4
 	Given Pedido base
-	And Limpar endereço de entrega
+	And Limpar dados cadastrais e endereço de entrega
 	When Informo "OutroEndereco" = "true"
 	When Informo "EndEtg_endereco" = "Rua Professor Fábio Fanucchi"
 	When Informo "EndEtg_endereco_numero" = "1"
@@ -134,12 +132,13 @@ Scenario: Obrigatório 4
 	When Informo "EndEtg_tipo_pessoa" = "PF"
 	When Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = "PF"
 	When Informo "EndEtg_cnpj_cpf" = "29756194804"
-	Then Erro "pegar o erro"
+	When Informo "cnpj_cpf" = "29756194804"
+	Then Erro "PREENCHA A CIDADE."
 
 @ignore
 Scenario: Obrigatório 6
 	Given Pedido base
-	And Limpar endereço de entrega
+	And Limpar dados cadastrais e endereço de entrega
 	When Informo "OutroEndereco" = "true"
 	When Informo "EndEtg_endereco" = "Rua Professor Fábio Fanucchi"
 	When Informo "EndEtg_endereco_numero" = "1"
@@ -152,27 +151,25 @@ Scenario: Obrigatório 6
 	When Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = "PF"
 	When Informo "EndEtg_cnpj_cpf" = "29756194804"
 	When Informo "cnpj_cpf" = "29756194804"
-	Then Erro "pegar o erro"
+	Then Erro "INFORME O UF."
 
-@ignore
 Scenario: Obrigatório 7
 	Given Pedido base
-	And Limpar endereço de entrega
+	And Limpar dados cadastrais e endereço de entrega
 	When Informo "OutroEndereco" = "true"
 	When Informo "EndEtg_endereco" = "Rua Professor Fábio Fanucchi"
 	When Informo "EndEtg_endereco_numero" = "1"
 	When Informo "EndEtg_bairro" = "Jardim São Paulo(Zona Norte)"
 	When Informo "EndEtg_cidade" = "São Paulo"
 	When Informo "EndEtg_uf" = "SP"
-	#	When Informo "EndEtg_cep" = "02045080"
+	When Informo "EndEtg_cep" = ""
 	When Informo "EndEtg_nome" = "Vivian"
 	When Informo "EndEtg_tipo_pessoa" = "PF"
 	When Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = "PF"
 	When Informo "EndEtg_cnpj_cpf" = "29756194804"
 	When Informo "cnpj_cpf" = "29756194804"
-	Then Erro "pegar o erro"
+	Then Erro "INFORME O CEP."
 
-@ignore
 Scenario: Obrigatório 8
 	Given Pedido base
 	And Limpar endereço de entrega
@@ -188,12 +185,11 @@ Scenario: Obrigatório 8
 	When Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = "PF"
 	When Informo "EndEtg_cnpj_cpf" = "29756194804"
 	When Informo "cnpj_cpf" = "29756194804"
-	Then Erro "pegar o erro"
+	Then Erro "PREENCHA O NOME DO CLIENTE."
 
-@ignore
 Scenario: Obrigatório 9
 	Given Pedido base
-	And Limpar endereço de entrega
+	And Limpar dados cadastrais e endereço de entrega
 	When Informo "OutroEndereco" = "true"
 	When Informo "EndEtg_endereco" = "Rua Professor Fábio Fanucchi"
 	When Informo "EndEtg_endereco_numero" = "1"
@@ -202,13 +198,12 @@ Scenario: Obrigatório 9
 	When Informo "EndEtg_uf" = "SP"
 	When Informo "EndEtg_cep" = "02045080"
 	When Informo "EndEtg_nome" = "Vivian"
-	#	When Informo "EndEtg_tipo_pessoa" = "PF"
-	When Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = "PF"
+	When Informo "EndEtg_tipo_pessoa" = ""
+	When Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = ""
 	When Informo "EndEtg_cnpj_cpf" = "29756194804"
 	When Informo "cnpj_cpf" = "29756194804"
-	Then Erro "pegar o erro"
+	Then Erro "A API Magento somente aceita pedidos para PF (EnderecoCadastralCliente.Endereco_tipo_pessoa)."
 
-@ignore
 Scenario: Obrigatório 10
 	Given Pedido base
 	And Limpar endereço de entrega

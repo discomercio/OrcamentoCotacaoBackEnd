@@ -15,7 +15,7 @@ Scenario: preço: aceitamos o valor que vier do magento.
 Scenario: produtos: sempre virão divididos, nunca vai vir um produto composto.
 	When Fazer esta validação
 
-
+#Esse teste esta sendo feito em "EnderecoEntregaFeature.EntregaImediata"
 Scenario: Entrega Imediata
 #Se o cliente for PF, sempre colocar com entrega imediata SIM
 #Se o cliente for PJ, sempre colocar com entrega imediata NÃO
