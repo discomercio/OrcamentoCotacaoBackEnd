@@ -39,7 +39,6 @@ Background: Acertar banco de dados
 Scenario: AdicionarDependencia
 	Given AdicionarDependencia ambiente = "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedidoListaDependencias", especificacao = "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente.CriacaoCliente_Pf_Obrigatorios"
 
-@ignore
 Scenario: Caminho feliz
 	Given Pedido base
 	And Limpar dados cadastrais e endereço de entrega
@@ -225,8 +224,40 @@ Scenario: Obrigatório 10
 	When Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = "PF"
 	When Informo "EndEtg_cnpj_cpf" = ""
 	When Informo "cnpj_cpf" = ""
-	Then Erro "pegar o erro"
+	Then Erro "CPF NÃO FORNECIDO."
 
-@ignore
+
 Scenario: validar cep contra endereço
-	Given fazer esta validação
+	Given Pedido base
+	And Limpar dados cadastrais e endereço de entrega
+	When Informo "OutroEndereco" = "true"
+	When Informo "EndEtg_endereco" = "Rua Professor Fábio Fanucchi"
+	When Informo "EndEtg_endereco_numero" = "1"
+	When Informo "EndEtg_bairro" = "Jardim São Paulo(Zona Norte)"
+	When Informo "EndEtg_cidade" = "Santos"
+	When Informo "EndEtg_uf" = "SP"
+	When Informo "EndEtg_cep" = "02045080"
+	When Informo "EndEtg_nome" = "Vivian"
+	When Informo "EndEtg_tipo_pessoa" = "PF"
+	When Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = "PF"
+	When Informo "EndEtg_cnpj_cpf" = "29756194804"
+	When Informo "cnpj_cpf" = "29756194804"
+	Then Erro "Cidade não confere"
+
+	Given Pedido base
+	And Limpar dados cadastrais e endereço de entrega
+	When Informo "OutroEndereco" = "true"
+	When Informo "EndEtg_endereco" = "Rua Professor Fábio Fanucchi"
+	When Informo "EndEtg_endereco_numero" = "1"
+	When Informo "EndEtg_bairro" = "Jardim São Paulo(Zona Norte)"
+	When Informo "EndEtg_cidade" = "São Paulo"
+	When Informo "EndEtg_uf" = "SP"
+	When Informo "EndEtg_cep" = "02045080"
+	When Informo "EndEtg_nome" = "Vivian"
+	When Informo "EndEtg_tipo_pessoa" = "PF"
+	When Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = "PF"
+	When Informo "EndEtg_cnpj_cpf" = "29756194804"
+	When Informo "cnpj_cpf" = "29756194804"
+	When Informo "EndEtg_ddd_res" = "11"
+	When Informo "EndEtg_tel_res" = "1234-5678"
+	Then Sem nenhum erro

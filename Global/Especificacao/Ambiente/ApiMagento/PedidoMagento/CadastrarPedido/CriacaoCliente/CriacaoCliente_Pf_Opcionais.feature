@@ -41,7 +41,6 @@ Background: Acertar banco de dados
 Scenario: AdicionarDependencia
 	Given AdicionarDependencia ambiente = "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedidoListaDependencias", especificacao = "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente.CriacaoCliente_Pf_Opcionais"
 
-@ignore
 Scenario: comprovar que salva todos os campos
 	Given Pedido base
 	When Informo "OutroEndereco" = "true"
@@ -84,13 +83,12 @@ Scenario: comprovar que salva todos os campos
 Scenario: validar email
 	Given Pedido base
 	When Informo "OutroEndereco" = "true"
-	When Informo "EndEtg_email" = "email sem arroba"
+	When Informo "EndEtg_email" = "gabriel.com.br"
 	Then Erro "E-mail inválido!"
 
-@ignore
 Scenario: validar email xml
 	Given Limpar tabela "t_CLIENTE"
 	Given Pedido base
-	When Informo "EndEtg_email_xml" = "email sem arroba"
-	Then Erro "E-mail inválido!"
+	When Informo "EndEtg_email_xml" = "gabriel.com.br"
+	Then Erro "E-mail XML inválido!"
 

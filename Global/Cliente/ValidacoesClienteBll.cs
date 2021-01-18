@@ -200,6 +200,12 @@ namespace Cliente
             {
                 Util.ValidarEmail(dadosCliente.Email, lstErros);
             }
+
+            if (!string.IsNullOrEmpty(dadosCliente.EmailXml))
+            {
+                Util.ValidarEmailXml(dadosCliente.EmailXml, lstErros);
+            }
+
             //vamos verificar os campos que não pertence ao tipo PF
             if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO)
             {

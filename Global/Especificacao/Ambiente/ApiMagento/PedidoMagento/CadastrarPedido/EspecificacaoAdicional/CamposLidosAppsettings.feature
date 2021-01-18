@@ -24,14 +24,18 @@ Scenario: Orcamentista = "FRETE" (vamos ler do appsettings)
 	Given Pedido base
 	And Informo "frete" = "10"
 	Then Sem nenhum erro
-	And No pedido gravado, verificar campo "indicador" = "FRETE"
-	When Fazer esta validação
+	And Tabela "t_PEDIDO" registro campo "Orcamentista" = "FRETE"
+	#No pedido gravado, verificar campo "indicador" = "FRETE"
 
 @ignore
 Scenario: Loja = "201" (vamos ler do appsettings)
-	When Fazer esta validação
+	Given Pedido base
+	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro campo "Loja" = "201" 
 
 @ignore
 Scenario: Vendedor = usuário que fez o login (ler do token)
-	When Fazer esta validação
+	Given Pedido base
+	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro campo "Vendedor" = "UsuarioApiMagento" 
 

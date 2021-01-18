@@ -15,9 +15,12 @@ Feature: EnderecoEntrega (somente PF)
 #sim, exigir. 
 
 
-
+#Verificar se o pedido tem os campos de endereço de entrega preenchidos - não pode estar preenchido
+#e os campos que estavam na entrega tem que estar no cadastral
 Scenario: EnderecoEntrega PF
-	When Fazer esta validação
+	Given Pedido base cliente PF
+	And Limpar endereço de entrega
+	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro com campo "pedido" = "{número pedido}", verificar campo "EndEtg_cnpj_cpf" = ""
+	And Tabela "t_PEDIDO" registro com campo "pedido" = "{número pedido}", verificar campo "EndEtg_endereco" = ""
 
-Scenario: Validação de telefones
-	When Fazer esta validação
