@@ -2,6 +2,15 @@
 Feature: PedidoMagentoDto
 #testar a validação campo a campo
 
+#O teste "PedidoMagentoDto" não faz sentido fazer, pois validamos os pricipais campos conforme abaixo:
+#Exigimos o endereço de entrega em CadastrarPedido.CriacaoCliente/MagentoCriacaoCliente_PfFeature
+#Verificação de campos de enderço de entrega preenchidos em CadastrarPedido.EspecificacaoAdicional.EnderecoEntregaSomentePFFeature
+#Verificação de telefones CadastrarPedido.CriacaoCliente.Pf_Telefones
+#Campos obrigatórios estão concluídos em CadastrarPedido.EspecificacaoAdicional.MagentoCriacaoCliente_Pf_ObrigatoriosFeature
+#Verificação de pagtos estão em CadastrarPedido.EspecificacaoAdicional.FormaPagtoCriacaoMagentoDtoFeature
+#Verificação de campos de appsettings CadastrarPedido.EspecificacaoAdicional.CamposLidosAppsettingsFeature
+#Verificação de produtos composto e preço que vier estão em CadastrarPedido.EspecificacaoAdicional.EspecificacaoMagentoFeature
+#Verificação de frete e ponto de referência estão em CadastrarPedido.EspecificacaoAdicional.FretePontoReferenciaFeature
 @ignore
 Scenario: PedidoMagentoDto
 	When Fazer esta validação
