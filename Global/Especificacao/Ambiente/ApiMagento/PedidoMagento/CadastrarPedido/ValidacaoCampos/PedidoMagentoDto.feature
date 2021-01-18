@@ -69,4 +69,10 @@ Scenario: DetalhesPedidoMagentoDto
 	#// PrevisaoEntregaData = null
 	#// BemDeUso_Consumo = COD_ST_BEM_USO_CONSUMO_SIM
 	#//InstaladorInstala = COD_INSTALADOR_INSTALA_NAO
-	When Fazer esta validação
+	Given Pedido base
+	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro com campo "pedido" = "{pedido}", verificar campo "st_entrega_imediata" = "2"
+	And Tabela "t_PEDIDO" registro com campo "pedido" = "{pedido}", verificar campo "PrevisaoEntregaData" = "null"
+	And Tabela "t_PEDIDO" registro com campo "pedido" = "{pedido}", verificar campo "StBemUsoComum" = "1"
+	And Tabela "t_PEDIDO" registro com campo "pedido" = "{pedido}", verificar campo "InstaladorInstalaStatus" = "1"
+	
