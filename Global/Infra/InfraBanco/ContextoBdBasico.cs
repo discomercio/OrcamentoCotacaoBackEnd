@@ -144,7 +144,7 @@ namespace InfraBanco
         public DbSet<TprodutoXAlerta> TprodutoXAlertas { get; set; }
         public DbSet<TalertaProduto> TalertaProdutos { get; set; }
         public DbSet<TformaPagto> TformaPagtos { get; set; }
-        public DbSet<TorcamentistaEIndicadorRestricaoFormaPagto> torcamentistaEIndicadorRestricaoFormaPagtos { get; set; }
+        public DbSet<TorcamentistaEIndicadorRestricaoFormaPagto> TorcamentistaEIndicadorRestricaoFormaPagtos { get; set; }
         public DbSet<TprazoPagtoVisanet> TprazoPagtoVisanets { get; set; }
         public DbSet<TprodutoSubgrupo> TprodutoSubgrupos { get; set; }
         public DbSet<Tusuario> Tusuarios { get; set; }

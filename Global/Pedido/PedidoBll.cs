@@ -28,39 +28,8 @@ namespace Pedido
             this.produtoGeralBll = produtoGeralBll;
         }
 
-        // MÉTODOS NOVOS SENDO MOVIDO
-        public async Task<PercentualMaxDescEComissao> ObterPercentualMaxDescEComissao(string loja)
-        {
-            var db = contextoProvider.GetContextoLeitura();
-
-            var ret = from c in db.Tlojas
-                      where c.Loja == loja
-                      select new PercentualMaxDescEComissao
-                      {
-                          PercMaxComissao = c.Perc_Max_Comissao,
-                          PercMaxComissaoEDesc = c.Perc_Max_Comissao_E_Desconto,
-                          PercMaxComissaoEDescNivel2 = c.Perc_Max_Comissao_E_Desconto_Nivel2,
-                          PercMaxComissaoEDescPJ = c.Perc_Max_Comissao_E_Desconto_Pj,
-                          PercMaxComissaoEDescNivel2PJ = c.Perc_Max_Comissao_E_Desconto_Nivel2_Pj
-                      };
-
-            return await ret.FirstOrDefaultAsync();
-        }
-
-        public void ValidarPercentualRT(float percComissao, float percentualMax, List<string> lstErros)
-        {
-            if (percComissao < 0 || percComissao > 100)
-            {
-                lstErros.Add("Percentual de comissão inválido.");
-            }
-            if (percComissao > percentualMax)
-            {
-                lstErros.Add("O percentual de comissão excede o máximo permitido.");
-            }
-        }
-
         public float VerificarPagtoPreferencial(Tparametro tParametro, PedidoCriacaoDados pedido,
-            float percDescComissaoUtilizar, PercentualMaxDescEComissao percentualMax, decimal vl_total)
+            float percDescComissaoUtilizar, Pedido.Criacao.UtilsLoja.PercentualMaxDescEComissao percentualMax, decimal vl_total)
         {
             List<string> lstOpcoesPagtoPrefericiais = new List<string>();
             if (!string.IsNullOrEmpty(tParametro.Id))

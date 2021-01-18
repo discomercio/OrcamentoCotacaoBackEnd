@@ -35,9 +35,8 @@ namespace Loja.Bll.ClienteBll
         public async Task<string> BuscaListaOperacoesPermitidas(string apelido)
         {
             string retorno = "";
-            var permissoes = new global::UtilsGlobais.Usuario.UsuarioPermissao();
-            await permissoes.BuscaListaOperacoesPermitidas((apelido ?? "").ToUpper(), contextoProvider);
-            var lstTask = permissoes.ObterListaPermissoes();
+            var permissoes = global::UtilsGlobais.Usuario.UsuarioPermissao.ConstruirUsuarioPermissao((apelido ?? "").ToUpper(), contextoProvider);
+            var lstTask = (await permissoes).ObterListaPermissoes();
 
 
             foreach (var i in lstTask.ToList())

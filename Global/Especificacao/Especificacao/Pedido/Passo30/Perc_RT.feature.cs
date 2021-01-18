@@ -136,7 +136,7 @@ this.FeatureBackground();
  testRunner.Given("Usuário sem permissão \"OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 12
- testRunner.And("Loja do usuário = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Loja do usuário = \"NUMERO_LOJA_BONSHOP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 13
  testRunner.When("Pedido Base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -145,7 +145,8 @@ this.FeatureBackground();
  testRunner.And("Informo \"perc_RT\" = 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 15
- testRunner.Then("Erro \"Usuário não pode editar perc_RT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Erro \"Usuário não pode editar perc_RT (permissão OP_LJA_EXIBIR_CAMPO_RT_AO_CADAST" +
+                        "RAR_NOVO_PEDIDO)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -186,7 +187,7 @@ this.FeatureBackground();
  testRunner.Given("Usuário com permissão \"OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 19
- testRunner.And("Loja do usuário = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Loja do usuário = \"NUMERO_LOJA_BONSHOP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 20
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -195,7 +196,8 @@ this.FeatureBackground();
  testRunner.And("Informo \"perc_RT\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 22
- testRunner.Then("Sem erro \"Usuário não pode editar perc_RT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Sem erro \"Usuário não pode editar perc_RT (permissão OP_LJA_EXIBIR_CAMPO_RT_AO_CA" +
+                        "DASTRAR_NOVO_PEDIDO)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -245,7 +247,8 @@ this.FeatureBackground();
  testRunner.And("Informo \"perc_RT\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 29
- testRunner.Then("Erro \"Usuário não pode editar perc_RT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Erro \"Usuário não pode editar perc_RT (permissão OP_LJA_EXIBIR_CAMPO_RT_AO_CADAST" +
+                        "RAR_NOVO_PEDIDO)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -286,7 +289,7 @@ this.FeatureBackground();
  testRunner.Given("Usuário com permissão \"OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 36
- testRunner.And("Loja do usuário = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Loja do usuário = \"NUMERO_LOJA_BONSHOP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 37
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -336,7 +339,7 @@ this.FeatureBackground();
  testRunner.Given("Usuário com permissão \"OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 43
- testRunner.And("Loja do usuário = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Loja do usuário = \"NUMERO_LOJA_BONSHOP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 44
  testRunner.When("Pedido Base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -386,7 +389,7 @@ this.FeatureBackground();
  testRunner.Given("Usuário com permissão \"OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 50
- testRunner.And("Loja do usuário = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Loja do usuário = \"NUMERO_LOJA_BONSHOP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 51
  testRunner.When("Pedido Base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -436,10 +439,10 @@ this.FeatureBackground();
  testRunner.Given("Usuário com permissão \"OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 66
- testRunner.And("Loja do usuário = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Loja do usuário = \"NUMERO_LOJA_BONSHOP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 67
- testRunner.And("Tabela t_loja registro com loja = 202", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela t_loja registro com loja = NUMERO_LOJA_BONSHOP", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 68
  testRunner.And("Tabela t_loja registro atual perc_max_comissao = 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -492,10 +495,10 @@ this.FeatureBackground();
  testRunner.Given("Usuário com permissão \"OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 75
- testRunner.And("Loja do usuário = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Loja do usuário = \"NUMERO_LOJA_BONSHOP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 76
- testRunner.And("Tabela t_loja registro com loja = 202", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela t_loja registro com loja = NUMERO_LOJA_BONSHOP", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 77
  testRunner.And("Tabela t_loja registro atual perc_max_comissao = 11", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

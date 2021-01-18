@@ -6,6 +6,8 @@ arquivo loja/PedidoNovoConfirma.asp
 
 Passo10: Fazer todas as validações (documentado em FluxoCriacaoPedido.feature e nos passos dele).
 
+Passo15: Verificar pedidos repetidos
+
 Passo20: LER AS REGRAS DE CONSUMO DO ESTOQUE
 	rotina obtemCtrlEstoqueProdutoRegra (arquivo bdd.asp)
 		tipo_pessoa: especificado em Passo20/multi_cd_regra_determina_tipo_pessoa.feature

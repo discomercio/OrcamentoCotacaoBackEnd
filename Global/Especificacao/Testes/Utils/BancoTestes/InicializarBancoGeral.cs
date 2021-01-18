@@ -90,7 +90,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 InicializarTabela<TnfEmitente>(db.TnfEmitentes, "TnfEmitente", db, apagarDadosExistentes);
                 InicializarTabela<Toperacao>(db.Toperacaos, "Toperacao", db, apagarDadosExistentes);
                 InicializarTabela<TorcamentistaEindicador>(db.TorcamentistaEindicadors, "TorcamentistaEindicador", db, apagarDadosExistentes);
-                InicializarTabela<TorcamentistaEIndicadorRestricaoFormaPagto>(db.torcamentistaEIndicadorRestricaoFormaPagtos, "TorcamentistaEIndicadorRestricaoFormaPagto", db, apagarDadosExistentes);
+                InicializarTabela<TorcamentistaEIndicadorRestricaoFormaPagto>(db.TorcamentistaEIndicadorRestricaoFormaPagtos, "TorcamentistaEIndicadorRestricaoFormaPagto", db, apagarDadosExistentes);
                 InicializarTabela<Tparametro>(db.Tparametros, "Tparametro", db, apagarDadosExistentes);
                 InicializarTabela<Tpedido>(db.Tpedidos, "Tpedido", db, apagarDadosExistentes);
                 InicializarTabela<TpercentualCustoFinanceiroFornecedor>(db.TpercentualCustoFinanceiroFornecedors, "TpercentualCustoFinanceiroFornecedors", db, apagarDadosExistentes);

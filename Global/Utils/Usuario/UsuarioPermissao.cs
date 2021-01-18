@@ -12,17 +12,27 @@ namespace UtilsGlobais.Usuario
 {
     public class UsuarioPermissao
     {
-        private List<int>? listaPermissoes = null;
-        public List<int>? ObterListaPermissoes() => listaPermissoes;
+        private readonly List<int> listaPermissoes;
+        public List<int> ObterListaPermissoes() => listaPermissoes;
 
         public bool Permitido(int permissao)
         {
-            if (listaPermissoes == null)
-                throw new Exception("Erro: UtilsGlobais.Usuario.UsuarioPermissao não foi inicializado e Permitido foi chamado");
             return listaPermissoes.Contains(permissao);
         }
 
-        public async Task BuscaListaOperacoesPermitidas(string usuario, InfraBanco.ContextoBdProvider contextoProvider)
+        //usamos uma factory porque cosntrutores não podem ser async
+        public static async Task<UsuarioPermissao> ConstruirUsuarioPermissao(string usuario, InfraBanco.ContextoBdProvider contextoProvider)
+        {
+            var listaPermissoes = await BuscaListaOperacoesPermitidas(usuario, contextoProvider);
+            return new UsuarioPermissao(listaPermissoes);
+        }
+
+        private UsuarioPermissao(List<int> listaPermissoes)
+        {
+            this.listaPermissoes = listaPermissoes ?? throw new ArgumentNullException(nameof(listaPermissoes));
+        }
+
+        private static async Task<List<int>> BuscaListaOperacoesPermitidas(string usuario, InfraBanco.ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();
             //            SELECT DISTINCT id_operacao
@@ -61,7 +71,7 @@ namespace UtilsGlobais.Usuario
                            //orderby perfilitem.Id_operacao
                            select perfilitem.Id_operacao).Distinct();
 
-            listaPermissoes = await lstTask.ToListAsync();
+            return await lstTask.ToListAsync();
         }
     }
 }

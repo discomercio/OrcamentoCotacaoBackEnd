@@ -48,8 +48,6 @@ namespace Pedido.Criacao
             this.bancoNFeMunicipio = bancoNFeMunicipio;
         }
 
-        private readonly UtilsGlobais.Usuario.UsuarioPermissao usuarioPermissao = new UtilsGlobais.Usuario.UsuarioPermissao();
-
         //uma classe: Global/Pedido/PedidoBll/PedidoCriacao com a rotina CadastrarPrepedido, 
         //que retorna um PedidoCriacaoRetorno com o id do pedido, dos filhotes, 
         //as mensagens de erro e as mensagens de erro da validação dos 
@@ -73,23 +71,43 @@ Fluxo no módulo loja:
 */
 
             //setup dados
-            await ConfigurarExecucao(pedido);
+            ConfigurarExecucao(pedido, out UtilsGlobais.Usuario.UsuarioPermissao usuarioPermissao,
+                out Pedido.Criacao.UtilsLoja.PercentualMaxDescEComissao percentualMaxDescEComissao);
 
-            Passo10(pedido, pedidoRetorno);
+            Passo10(pedido, pedidoRetorno, usuarioPermissao);
             if (pedidoRetorno.AlgumErro())
                 return pedidoRetorno;
 
-            return await CadastrarPedido_anterior(pedido);
+            //somente valida o endereço de entrega. Os dados cadastrais são validados no passo 10 (ou 25)
+            //na API magento, por hora, nunca será feito
+            await Passo20.Passo20.ValidarEnderecoEntrega(pedido, pedidoRetorno, validacoesPrepedidoBll);
+
+            //passo 25 feito em Criacao.Passo10.Passo10.ValidarCliente
+
+            new Passo30.Passo30(pedido, pedidoRetorno, usuarioPermissao, percentualMaxDescEComissao).Executar();
+
+
+            if (pedidoRetorno.AlgumErro())
+                return pedidoRetorno;
+
+            return await CadastrarPedido_anterior(pedido, usuarioPermissao, percentualMaxDescEComissao);
         }
 
-        private async Task ConfigurarExecucao(PedidoCriacaoDados pedido)
+        private void ConfigurarExecucao(PedidoCriacaoDados pedido,
+            out UtilsGlobais.Usuario.UsuarioPermissao usuarioPermissao,
+            out Pedido.Criacao.UtilsLoja.PercentualMaxDescEComissao percentualMaxDescEComissao)
         {
             //busca a lista de permissões
-            await usuarioPermissao.BuscaListaOperacoesPermitidas(pedido.Ambiente.Usuario.ToUpper(), contextoProvider);
+            usuarioPermissao = UtilsGlobais.Usuario.UsuarioPermissao.ConstruirUsuarioPermissao(pedido.Ambiente.Usuario.ToUpper(), contextoProvider).Result;
+
+            /* busca o percentual máximo de comissão*/
+            percentualMaxDescEComissao =
+                Pedido.Criacao.UtilsLoja.PercentualMaxDescEComissao.ObterPercentualMaxDescEComissao(pedido.Ambiente.Loja, contextoProvider).Result;
         }
 
 
-        private async void Passo10(PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados pedidoRetorno)
+        private async void Passo10(PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados pedidoRetorno,
+            UtilsGlobais.Usuario.UsuarioPermissao usuarioPermissao)
         {
             Criacao.Passo10.Passo10.Permissoes(pedido, pedidoRetorno, usuarioPermissao);
             //se tiver erro de permissao retorna imediatamente
@@ -99,7 +117,9 @@ Fluxo no módulo loja:
             await Criacao.Passo10.Passo10.ValidarCliente(pedido, pedidoRetorno, contextoProvider, cepBll, bancoNFeMunicipio);
         }
 
-        private async Task<PedidoCriacaoRetornoDados> CadastrarPedido_anterior(PedidoCriacaoDados pedido)
+        private async Task<PedidoCriacaoRetornoDados> CadastrarPedido_anterior(PedidoCriacaoDados pedido,
+            UtilsGlobais.Usuario.UsuarioPermissao usuarioPermissao,
+            Pedido.Criacao.UtilsLoja.PercentualMaxDescEComissao percentualMaxDescEComissao)
         {
             PedidoCriacaoRetornoDados pedidoRetorno = new PedidoCriacaoRetornoDados();
 
@@ -147,20 +167,12 @@ Fluxo no módulo loja:
 
             if (tUsuario.Loja == Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE)
             {
-                if (!usuarioPermissao.Permitido(Constantes.OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO))
-                    if (pedido.Valor.PercRT != 0)
-                        pedidoRetorno.ListaErros.Add("Usuário não pode editar perc_RT!");
-
                 if (string.IsNullOrEmpty(pedido.Ambiente.Indicador) && pedido.Valor.PermiteRAStatus == 1)
                     pedidoRetorno.ListaErros.Add("Usuário não pode opcao_possui_RA");
             }
 
             if (tUsuario.Loja == Constantes.NUMERO_LOJA_BONSHOP)
             {
-                if (!usuarioPermissao.Permitido(Constantes.OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO))
-                    if (pedido.Valor.PercRT != 0)
-                        pedidoRetorno.ListaErros.Add("Usuário não pode editar perc_RT!");
-
                 if (string.IsNullOrEmpty(pedido.Ambiente.Indicador) && pedido.Valor.PermiteRAStatus == 1)
                     pedidoRetorno.ListaErros.Add("Usuário não pode opcao_possui_RA");
             }
@@ -188,7 +200,6 @@ Fluxo no módulo loja:
             decimal vl_limite_mensal_consumido = 0;
             decimal vl_limite_mensal_disponivel = 0;
             float percDescComissaoUtilizar = 0;
-            PercentualMaxDescEComissao percentualMax = new PercentualMaxDescEComissao();
 
             /* 13- valida o tipo de parcelamento "AV", "CE", "SE" */
             /* 14- valida a quantidade de parcela */
@@ -212,12 +223,6 @@ Fluxo no módulo loja:
             await pedidoBll.ValidarProdutosComFormaPagto(pedido, c_custoFinancFornecTipoParcelamento,
                 c_custoFinancFornecQtdeParcelas, pedidoRetorno.ListaErros);
 
-            /* 9- valida endereço de entrega */
-            await validacoesPrepedidoBll.ValidarEnderecoEntrega(pedido.EnderecoEntrega, pedidoRetorno.ListaErros,
-                pedido.Ambiente.Indicador, pedido.Cliente.Tipo.ParaString(), false, pedido.Ambiente.Loja);
-            if (pedidoRetorno.ListaErros.Any())
-                return pedidoRetorno;
-
             /* 10- valida se o pedido é com ou sem indicação
              * 11- valida percentual máximo de comissão */
             if (pedido.Ambiente.ComIndicador)
@@ -235,16 +240,10 @@ Fluxo no módulo loja:
                 #endregion
             }
 
-            /* 3- busca o percentual máximo de comissão*/
-            percentualMax = await pedidoBll.ObterPercentualMaxDescEComissao(pedido.Ambiente.Loja);
-
             if (pedido.Cliente.Tipo.PessoaJuridica())
-                percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
+                percDescComissaoUtilizar = percentualMaxDescEComissao.PercMaxComissaoEDescPJ;
             else
-                percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;
-
-            if (!string.IsNullOrEmpty(pedido.Valor.PercRT.ToString()))
-                pedidoBll.ValidarPercentualRT(pedido.Valor.PercRT, percentualMax.PercMaxComissao, pedidoRetorno.ListaErros);
+                percDescComissaoUtilizar = percentualMaxDescEComissao.PercMaxComissaoEDesc;
 
             if (pedido.Ambiente.ComIndicador)
             {
@@ -273,7 +272,7 @@ Fluxo no módulo loja:
                 Constantes.ID_PARAMETRO_PercMaxComissaoEDesconto_Nivel2_MeiosPagto, contextoProvider);
 
             percDescComissaoUtilizar = pedidoBll.VerificarPagtoPreferencial(tParametro, pedido, percDescComissaoUtilizar,
-                    percentualMax, pedido.Valor.Vl_total);
+                    percentualMaxDescEComissao, pedido.Valor.Vl_total);
 
             //CONSISTÊNCIA PARA VALOR ZERADO
             if (pedido.ListaProdutos.Count() > 0)
