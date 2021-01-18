@@ -38,7 +38,7 @@ Scenario: Tipo_Parcelamento - parcela única
 	And Tabela "t_PEDIDO" registro com campo "pedido" = "{número pedido}", verificar campo "pu_valor" = "3132.90"
 	And Tabela "t_PEDIDO" registro com campo "pedido" = "{número pedido}", verificar campo "pc_qtde_parcelas" = "0"
 	And Tabela "t_PEDIDO" registro com campo "pedido" = "{número pedido}", verificar campo "pc_valor_parcela" = "0.00"
-		And Tabela "t_PEDIDO" registro com campo "pedido" = "{número pedido}", verificar campo "av_forma_pagto" = "0"
+	And Tabela "t_PEDIDO" registro com campo "pedido" = "{número pedido}", verificar campo "av_forma_pagto" = "0"
 
 
 Scenario: Tipo_Parcelamento - parcelado cartão

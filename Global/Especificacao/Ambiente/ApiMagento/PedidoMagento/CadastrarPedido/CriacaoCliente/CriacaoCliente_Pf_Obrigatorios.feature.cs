@@ -575,11 +575,9 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="Obrigatório 6")]
         [Xunit.TraitAttribute("FeatureTitle", "Magento CriacaoCliente_Pf_Obrigatorios")]
         [Xunit.TraitAttribute("Description", "Obrigatório 6")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void Obrigatorio6()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Obrigatório 6", null, tagsOfScenario, argumentsOfScenario);
 #line 139
@@ -625,6 +623,9 @@ this.FeatureBackground();
 #line hidden
 #line 146
  testRunner.When("Informo \"EndEtg_cidade\" = \"São Paulo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 147
+ testRunner.When("Informo \"EndEtg_uf\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 148
  testRunner.When("Informo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");

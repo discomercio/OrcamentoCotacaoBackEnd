@@ -48,9 +48,26 @@ Scenario: Pedido_bs_x_marketplace e Marketplace_codigo_origem já existem
 	When Fazer esta validação
 
 
+#afazer: precisa fazer alteração em todas as aplicações para passar o sistemaResponsavel
+# Parcela única é validado apenas se o cliente for PJ, no caso do magento não faremos pedido para PJ mas,
+# aceitamos Parcela única para PF
+# isso ocorre em FormaPagoBll.ObterFormaPagto
 @ignore
 Scenario: Validar se o que expomos pelo ObterCodigoMarketplace foi informado
-	When Fazer esta validação
+	Given Pedido base
+	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "123"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "123456789"
+	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "123"
+	Then Erro "Código Marketplace não encontrado."
+
+	Given Pedido base
+	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "123"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "123456789"
+	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "019"
+	And Informo "Tipo_Parcelamento" = "5"
+	And Informo "C_pu_valor" = "3132.90"
+	Then Sem nenhum erro
+
 
 
 Scenario: EnderecoCadastralCliente

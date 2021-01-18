@@ -135,7 +135,7 @@ Scenario: Obrigatório 4
 	When Informo "cnpj_cpf" = "29756194804"
 	Then Erro "PREENCHA A CIDADE."
 
-@ignore
+
 Scenario: Obrigatório 6
 	Given Pedido base
 	And Limpar dados cadastrais e endereço de entrega
@@ -144,7 +144,7 @@ Scenario: Obrigatório 6
 	When Informo "EndEtg_endereco_numero" = "1"
 	When Informo "EndEtg_bairro" = "Jardim São Paulo(Zona Norte)"
 	When Informo "EndEtg_cidade" = "São Paulo"
-	#	When Informo "EndEtg_uf" = "SP"
+	When Informo "EndEtg_uf" = ""
 	When Informo "EndEtg_cep" = "02045080"
 	When Informo "EndEtg_nome" = "Vivian"
 	When Informo "EndEtg_tipo_pessoa" = "PF"

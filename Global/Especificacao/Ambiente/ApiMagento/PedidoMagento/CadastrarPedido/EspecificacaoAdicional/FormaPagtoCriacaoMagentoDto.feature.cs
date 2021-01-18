@@ -83,17 +83,17 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Tipo_Parcelamento")]
+        [Xunit.SkippableFactAttribute(DisplayName="Tipo_Parcelamento - á vista")]
         [Xunit.TraitAttribute("FeatureTitle", "FormaPagtoCriacaoMagentoDto")]
-        [Xunit.TraitAttribute("Description", "Tipo_Parcelamento")]
+        [Xunit.TraitAttribute("Description", "Tipo_Parcelamento - á vista")]
         [Xunit.TraitAttribute("Category", "mytag")]
-        public virtual void Tipo_Parcelamento()
+        public virtual void Tipo_Parcelamento_AVista()
         {
             string[] tagsOfScenario = new string[] {
                     "mytag"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Tipo_Parcelamento", null, tagsOfScenario, argumentsOfScenario);
-#line 19
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Tipo_Parcelamento - á vista", null, tagsOfScenario, argumentsOfScenario);
+#line 21
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -113,8 +113,174 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 20
- testRunner.Given("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 22
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 23
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 24
+ testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{número pedido}\", verificar camp" +
+                        "o \"tipo_parcelamento\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 25
+ testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{número pedido}\", verificar camp" +
+                        "o \"av_forma_pagto\" = \"6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 26
+ testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{número pedido}\", verificar camp" +
+                        "o \"pu_valor\" = \"0.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 27
+ testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{número pedido}\", verificar camp" +
+                        "o \"pc_qtde_parcelas\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 28
+ testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{número pedido}\", verificar camp" +
+                        "o \"pc_valor_parcela\" = \"0.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Tipo_Parcelamento - parcela única")]
+        [Xunit.TraitAttribute("FeatureTitle", "FormaPagtoCriacaoMagentoDto")]
+        [Xunit.TraitAttribute("Description", "Tipo_Parcelamento - parcela única")]
+        public virtual void Tipo_Parcelamento_ParcelaUnica()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Tipo_Parcelamento - parcela única", null, tagsOfScenario, argumentsOfScenario);
+#line 30
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 31
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 32
+ testRunner.When("Informo \"Tipo_Parcelamento\" = \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 33
+ testRunner.When("Informo \"C_pu_valor\" = \"3132.90\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 34
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 35
+ testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{número pedido}\", verificar camp" +
+                        "o \"tipo_parcelamento\" = \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 36
+ testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{número pedido}\", verificar camp" +
+                        "o \"pu_forma_pagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 37
+ testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{número pedido}\", verificar camp" +
+                        "o \"pu_vencto_apos\" = \"30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 38
+ testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{número pedido}\", verificar camp" +
+                        "o \"pu_valor\" = \"3132.90\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 39
+ testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{número pedido}\", verificar camp" +
+                        "o \"pc_qtde_parcelas\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 40
+ testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{número pedido}\", verificar camp" +
+                        "o \"pc_valor_parcela\" = \"0.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 41
+ testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{número pedido}\", verificar camp" +
+                        "o \"av_forma_pagto\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Tipo_Parcelamento - parcelado cartão")]
+        [Xunit.TraitAttribute("FeatureTitle", "FormaPagtoCriacaoMagentoDto")]
+        [Xunit.TraitAttribute("Description", "Tipo_Parcelamento - parcelado cartão")]
+        public virtual void Tipo_Parcelamento_ParceladoCartao()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Tipo_Parcelamento - parcelado cartão", null, tagsOfScenario, argumentsOfScenario);
+#line 44
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 45
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 46
+ testRunner.When("Informo \"Tipo_Parcelamento\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 47
+ testRunner.When("Informo \"C_pc_qtde\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 48
+ testRunner.When("Informo \"C_pc_valor\" = \"3132.90\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 49
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 50
+ testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{número pedido}\", verificar camp" +
+                        "o \"tipo_parcelamento\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 51
+ testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{número pedido}\", verificar camp" +
+                        "o \"pu_forma_pagto\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 52
+ testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{número pedido}\", verificar camp" +
+                        "o \"av_forma_pagto\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 53
+ testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{número pedido}\", verificar camp" +
+                        "o \"pu_valor\" = \"0.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 54
+ testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{número pedido}\", verificar camp" +
+                        "o \"pc_qtde_parcelas\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 55
+ testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{número pedido}\", verificar camp" +
+                        "o \"pc_valor_parcela\" = \"3132.90\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
