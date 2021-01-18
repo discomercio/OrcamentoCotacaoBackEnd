@@ -95,6 +95,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 InicializarTabela<Tpedido>(db.Tpedidos, "Tpedido", db, apagarDadosExistentes);
                 InicializarTabela<TpercentualCustoFinanceiroFornecedor>(db.TpercentualCustoFinanceiroFornecedors, "TpercentualCustoFinanceiroFornecedors", db, apagarDadosExistentes);
                 InicializarTabela<Tperfil>(db.Tperfils, "Tperfil", db, apagarDadosExistentes);
+                InicializarTabela<TperfilItem>(db.TperfilItens, "TperfilItens", db, apagarDadosExistentes);
                 InicializarTabela<TperfilUsuario>(db.TperfilUsuarios, "TperfilUsuario", db, apagarDadosExistentes);
                 InicializarTabela<Tproduto>(db.Tprodutos, "Tproduto", db, apagarDadosExistentes);
                 InicializarTabela<TprodutoLoja>(db.TprodutoLojas, "TprodutoLoja", db, apagarDadosExistentes);

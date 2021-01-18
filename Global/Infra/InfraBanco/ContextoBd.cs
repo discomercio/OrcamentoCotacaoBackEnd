@@ -76,12 +76,14 @@ namespace InfraBanco
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public IQueryable<Tdesconto> Tdescontos { get => contexto.Tdescontos.AsNoTracking(); }
 
-        public IQueryable<TtransportadoraCep>TtransportadoraCeps { get => contexto.TtransportadoraCeps.AsNoTracking(); }
+        public IQueryable<TtransportadoraCep> TtransportadoraCeps { get => contexto.TtransportadoraCeps.AsNoTracking(); }
 
         public IQueryable<TusuarioXLoja> TusuarioXLojas { get => contexto.TusuarioXLojas.AsNoTracking(); }
         public IQueryable<Taviso> Tavisos { get => contexto.Tavisos.AsNoTracking(); }
         public IQueryable<TavisoExibido> TavisoExibidos { get => contexto.TavisoExibidos.AsNoTracking(); }
         public IQueryable<TavisoLido> TavisoLidos { get => contexto.TavisoLidos.AsNoTracking(); }
+        public IQueryable<Toperacao> Toperacaos { get => contexto.Toperacaos.AsNoTracking(); }
+        public IQueryable<TperfilItem> TperfilItens { get => contexto.TperfilItens.AsNoTracking(); }
 #endif
 
     }

@@ -165,11 +165,12 @@ namespace InfraBanco
         public DbSet<Taviso> Tavisos { get; set; }
         public DbSet<TavisoExibido> TavisoExibidos { get; set; }
         public DbSet<TavisoLido> TavisoLidos { get; set; }
+        public DbSet<Toperacao> Toperacaos { get; set; }
+        public DbSet<TperfilItem> TperfilItens { get; set; }
 #endif
         //daqui para a frente só é necessário para os testes automatizados
 #if DEBUG_BANCO_DEBUG
         public DbSet<TorcamentoItem> TorcamentoItem { get; set; }
-        public DbSet<Toperacao> Toperacaos { get; set; }
 #endif
     }
 }

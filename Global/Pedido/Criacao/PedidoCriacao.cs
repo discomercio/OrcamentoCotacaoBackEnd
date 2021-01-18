@@ -15,7 +15,7 @@ using Cep;
 
 #nullable enable
 
-namespace Pedido
+namespace Pedido.Criacao
 {
 
     public class PedidoCriacao
@@ -47,6 +47,9 @@ namespace Pedido
             this.cepBll = cepBll;
             this.bancoNFeMunicipio = bancoNFeMunicipio;
         }
+
+        private readonly UtilsGlobais.Usuario.UsuarioPermissao usuarioPermissao = new UtilsGlobais.Usuario.UsuarioPermissao();
+
         //uma classe: Global/Pedido/PedidoBll/PedidoCriacao com a rotina CadastrarPrepedido, 
         //que retorna um PedidoCriacaoRetorno com o id do pedido, dos filhotes, 
         //as mensagens de erro e as mensagens de erro da validação dos 
@@ -56,8 +59,46 @@ namespace Pedido
         {
             PedidoCriacaoRetornoDados pedidoRetorno = new PedidoCriacaoRetornoDados();
 
+            /*
+Fluxo no módulo loja:
+1 - Passo10: Escolher cliente já cadastrado
+	Se o cliente não existir, ele deve ser cadastrado primeiro. (arquivo CLiente/FLuxoCadastroCliente - criar esse arquivo)
+2 - Passo20: Confirmar (ou editar) dados cadastrais e informar endereço de entrega
+	se editar dados cadastrais, salva na t_cliente
+2.5 - Passo 25: somente na API. Validar dados cadastrais. Não existe na tela porque sempre se usa o atual do cliente.
+3 - Passo30: Escolher indicador e RA e Modo de Seleção do CD 
+4 - Passo40: Escolher produtos, quantidades e alterar valores e forma de pagamento
+5 - Passo50: Informar observações (entrega imediata, instalador instala, etc) 
+6 - Passo60: Salvar o pedido
+*/
+
+            //setup dados
+            await ConfigurarExecucao(pedido);
+
+            Passo10(pedido, pedidoRetorno);
+            if (pedidoRetorno.AlgumErro())
+                return pedidoRetorno;
+
             return await CadastrarPedido_anterior(pedido);
         }
+
+        private async Task ConfigurarExecucao(PedidoCriacaoDados pedido)
+        {
+            //busca a lista de permissões
+            await usuarioPermissao.BuscaListaOperacoesPermitidas(pedido.Ambiente.Usuario.ToUpper(), contextoProvider);
+        }
+
+
+        private async void Passo10(PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados pedidoRetorno)
+        {
+            Criacao.Passo10.Passo10.Permissoes(pedido, pedidoRetorno, usuarioPermissao);
+            //se tiver erro de permissao retorna imediatamente
+            if (pedidoRetorno.AlgumErro())
+                return;
+
+            await Criacao.Passo10.Passo10.ValidarCliente(pedido, pedidoRetorno, contextoProvider, cepBll, bancoNFeMunicipio);
+        }
+
         private async Task<PedidoCriacaoRetornoDados> CadastrarPedido_anterior(PedidoCriacaoDados pedido)
         {
             PedidoCriacaoRetornoDados pedidoRetorno = new PedidoCriacaoRetornoDados();
@@ -72,19 +113,6 @@ namespace Pedido
                 pedidoRetorno.ListaErros.Add("Usuário não encontrado.");
                 return pedidoRetorno;
             }
-
-            //busca a lista de permissões
-            string lista_operacoes_permitidas = await clienteBll.BuscaListaOperacoesPermitidas(tUsuario.Nome);
-
-            //vamos validar os dados do cliente que esta vindo no pedido
-            var dadosClienteCadastroDados = Cliente.Dados.DadosClienteCadastroDados.DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(pedido.EnderecoCadastralCliente,
-                pedido.Ambiente.Indicador, pedido.Ambiente.Loja,
-                "", null, pedido.Cliente.Id_cliente);
-            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDados, false, null, null, pedidoRetorno.ListaErros,
-                contextoProvider, cepBll, bancoNFeMunicipio, null, pedido.Cliente.Tipo.PessoaFisica(),
-                pedido.Configuracao.SistemaResponsavelCadastro, false);
-            if (pedidoRetorno.ListaErros.Count > 0)
-                return pedidoRetorno;
 
 
 
@@ -119,7 +147,7 @@ namespace Pedido
 
             if (tUsuario.Loja == Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE)
             {
-                if (lista_operacoes_permitidas.Contains(Convert.ToString(Constantes.OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO)))
+                if (!usuarioPermissao.Permitido(Constantes.OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO))
                     if (pedido.Valor.PercRT != 0)
                         pedidoRetorno.ListaErros.Add("Usuário não pode editar perc_RT!");
 
@@ -129,7 +157,7 @@ namespace Pedido
 
             if (tUsuario.Loja == Constantes.NUMERO_LOJA_BONSHOP)
             {
-                if (!lista_operacoes_permitidas.Contains(Convert.ToString(Constantes.OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO)))
+                if (!usuarioPermissao.Permitido(Constantes.OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO))
                     if (pedido.Valor.PercRT != 0)
                         pedidoRetorno.ListaErros.Add("Usuário não pode editar perc_RT!");
 
@@ -322,8 +350,8 @@ namespace Pedido
             * 27- verifica se tem algum produto descontinuado*/
             //antes vamos validar o CD 
 
-            if (pedido.Ambiente.IdNfeSelecionadoManual == 1)
-                if (lista_operacoes_permitidas.Contains(Convert.ToString(Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD)))
+            if (pedido.Ambiente.IdNfeSelecionadoManual != 0)
+                if (usuarioPermissao.Permitido(Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD))
                     pedidoRetorno.ListaErros.Add("Usuário não tem permissão de especificar o CD!");
 
             //Se tiver erro retorna

@@ -42,6 +42,7 @@
     <None Remove="Testes\Utils\BancoTestes\Dados\Tpedido.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\TpercentualCustoFinanceiroFornecedors.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tperfil.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TperfilItens.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\TperfilUsuario.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tproduto.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\TprodutoLoja.json" />
@@ -401,6 +402,7 @@
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tpedido.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TpercentualCustoFinanceiroFornecedors.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Toperacao.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TperfilItens.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TwmsRegraCdXUfXPessoaXCd.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TwmsRegraCdXUfPessoa.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TwmsRegraCdXUf.json" />

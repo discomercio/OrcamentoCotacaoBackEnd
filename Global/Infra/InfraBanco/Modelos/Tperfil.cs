@@ -16,7 +16,6 @@ namespace InfraBanco.Modelos
         public string Id { get; set; }
 
         public TperfilUsuario TperfilUsuario { get; set; }
-        public TperfilItem TperfilItem { get; set; }
 
         [Required]
         [MaxLength(12)]

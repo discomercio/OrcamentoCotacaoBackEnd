@@ -35,30 +35,12 @@ namespace Loja.Bll.ClienteBll
         public async Task<string> BuscaListaOperacoesPermitidas(string apelido)
         {
             string retorno = "";
-            var db = contextoProvider.GetContextoLeitura();
-            //            SELECT DISTINCT id_operacao
-            //FROM t_PERFIL
-            //INNER JOIN t_PERFIL_ITEM ON t_PERFIL.id = t_PERFIL_ITEM.id_perfil
-            //INNER JOIN t_PERFIL_X_USUARIO ON t_PERFIL.id = t_PERFIL_X_USUARIO.id_perfil
-            //INNER JOIN t_OPERACAO ON(t_PERFIL_ITEM.id_operacao= t_OPERACAO.id)
-            //WHERE(t_PERFIL_X_USUARIO.usuario = 'pragmatica') AND
-            //      (t_PERFIL.st_inativo = 0) AND
-            //      (t_OPERACAO.st_inativo = 0)
-            //ORDER BY id_operacao
-
-            var lstTask = (from c in db.Tperfils
-                          .Include(r => r.TperfilItem)
-                          .Include(r => r.TperfilUsuario)
-                          .Include(r => r.TperfilItem.Toperacao)
-                           where c.TperfilUsuario.Usuario == apelido &&
-                                 c.St_inativo == 0 &&
-                                 c.TperfilItem.Toperacao.St_inativo == 0
-                           orderby c.TperfilItem.Id_operacao
-                           select c.TperfilItem.Id_operacao).Distinct();
+            var permissoes = new global::UtilsGlobais.Usuario.UsuarioPermissao();
+            await permissoes.BuscaListaOperacoesPermitidas((apelido ?? "").ToUpper(), contextoProvider);
+            var lstTask = permissoes.ObterListaPermissoes();
 
 
-
-            foreach (var i in await lstTask.ToListAsync())
+            foreach (var i in lstTask.ToList())
             {
                 retorno = retorno + "|" + i;
             }

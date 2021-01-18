@@ -33,11 +33,11 @@ namespace Loja.Bll.PedidoBll
         private readonly ContextoCepProvider contextoCepProvider;
         private readonly Loja.Bll.ProdutoBll.ProdutoBll produtoBll;
         private readonly Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll pedidoVisualizacaoBll;
-        private readonly PedidoCriacao pedidoCriacao;
+        private readonly Pedido.Criacao.PedidoCriacao pedidoCriacao;
 
         public PedidoBll(ContextoBdProvider contextoProvider, ContextoCepProvider contextoCepProvider,
             ProdutoBll.ProdutoBll produtoBll,
-            PedidoVisualizacaoBll pedidoVisualizacaoBll, PedidoCriacao pedidoCriacao)
+            PedidoVisualizacaoBll pedidoVisualizacaoBll, Pedido.Criacao.PedidoCriacao pedidoCriacao)
         {
             this.contextoProvider = contextoProvider;
             this.contextoCepProvider = contextoCepProvider;

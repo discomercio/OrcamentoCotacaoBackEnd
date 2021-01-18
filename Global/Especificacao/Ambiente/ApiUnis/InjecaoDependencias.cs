@@ -20,7 +20,7 @@ namespace Especificacao.Ambiente.ApiUnis
                 var acessoUnisBll = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<PrepedidoUnisBusiness.UnisBll.AcessoBll.AcessoUnisBll>();
                 PrepedidoApiUnisBusiness.UnisDto.AcessoDto.LoginResultadoUnisDto loginResultadoUnisDto = acessoUnisBll.FazerLogin(new PrepedidoApiUnisBusiness.UnisDto.AcessoDto.LoginUnisDto()
                 {
-                    Usuario = "UsuarioApiUnis",
+                    Usuario = "USUARIOAPIUNIS",
                     Senha = "123456"
                 }, "local", "testes").Result;
                 Assert.Empty(loginResultadoUnisDto.ListaErros);

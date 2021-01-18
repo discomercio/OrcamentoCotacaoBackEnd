@@ -11,8 +11,8 @@ namespace Pedido.Dados.Criacao
         public PedidoCriacaoAmbienteDados(string loja, string vendedor, string usuario, bool comIndicador, string indicador, string orcamentista, int idNfeSelecionadoManual, bool venda_Externa, bool opcaoVendaSemEstoque)
         {
             //pode vir com null
-            indicador = indicador ?? "";
-            orcamentista = orcamentista ?? "";
+            indicador ??= "";
+            orcamentista ??= "";
 
             Loja = loja ?? throw new ArgumentNullException(nameof(loja));
             Vendedor = vendedor ?? throw new ArgumentNullException(nameof(vendedor));
