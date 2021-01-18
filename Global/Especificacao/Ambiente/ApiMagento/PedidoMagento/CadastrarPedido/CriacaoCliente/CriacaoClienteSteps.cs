@@ -28,7 +28,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Criaca
             cadastrarPedido.GivenPedidoBaseClientePJ();
         }
 
-        [Given(@"Limpar endereço de entrega2")]
+        [Given(@"Limpar endereço de entrega")]
         public void GivenLimparEnderecoDeEntrega()
         {
             Testes.Utils.LogTestes.LogOperacoes2.LimparEnderecoDeEntrega(this);

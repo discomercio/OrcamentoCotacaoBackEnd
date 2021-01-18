@@ -83,55 +83,19 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Testar criando o usuário e cadastrando o pedido em uma única operação (verificar " +
+        [Xunit.SkippableFactAttribute(DisplayName="Testar criando o cliente e cadastrando o pedido em uma única operação (verificar " +
             "que o sistema_responsavel_cadastro é o magento)")]
         [Xunit.TraitAttribute("FeatureTitle", "CriacaoComUsuario")]
-        [Xunit.TraitAttribute("Description", "Testar criando o usuário e cadastrando o pedido em uma única operação (verificar " +
+        [Xunit.TraitAttribute("Description", "Testar criando o cliente e cadastrando o pedido em uma única operação (verificar " +
             "que o sistema_responsavel_cadastro é o magento)")]
-        public virtual void TestarCriandoOUsuarioECadastrandoOPedidoEmUmaUnicaOperacaoVerificarQueOSistema_Responsavel_CadastroEOMagento()
+        [Xunit.TraitAttribute("Category", "ignore")]
+        public virtual void TestarCriandoOClienteECadastrandoOPedidoEmUmaUnicaOperacaoVerificarQueOSistema_Responsavel_CadastroEOMagento()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Testar criando o usuário e cadastrando o pedido em uma única operação (verificar " +
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Testar criando o cliente e cadastrando o pedido em uma única operação (verificar " +
                     "que o sistema_responsavel_cadastro é o magento)", null, tagsOfScenario, argumentsOfScenario);
-#line 16
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 17
- testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="Testar cadastrando o pedido com um usuário já existente no banco (verificar que n" +
-            "ão atualiza os dados de cadastro)")]
-        [Xunit.TraitAttribute("FeatureTitle", "CriacaoComUsuario")]
-        [Xunit.TraitAttribute("Description", "Testar cadastrando o pedido com um usuário já existente no banco (verificar que n" +
-            "ão atualiza os dados de cadastro)")]
-        public virtual void TestarCadastrandoOPedidoComUmUsuarioJaExistenteNoBancoVerificarQueNaoAtualizaOsDadosDeCadastro()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Testar cadastrando o pedido com um usuário já existente no banco (verificar que n" +
-                    "ão atualiza os dados de cadastro)", null, tagsOfScenario, argumentsOfScenario);
 #line 19
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -153,7 +117,76 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 20
- testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 21
+ testRunner.And("Limpar tabela \"t_CLIENTE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 22
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 23
+ testRunner.And("Tabela \"t_CLIENTE\" registro com campo \"cnpj_cpf\" = \"{valor_cnpj_cpf}\", verificar " +
+                        "campo \"sistema_responsavel_cadastro\" = \"4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 24
+ testRunner.And("Tabela \"t_CLIENTE\" registro com campo \"cnpj_cpf\" = \"{valor_cnpj_cpf}\", verificar " +
+                        "campo \"sistema_responsavel_atualizacao\" = \"4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 25
+ testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"cnpj_cpf\" = \"{valor_cnpj_cpf}\", verificar c" +
+                        "ampo \"sistema_responsavel_cadastro\" = \"4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Testar cadastrando o pedido com um cliente já existente no banco (verificar que n" +
+            "ão atualiza os dados de cadastro)")]
+        [Xunit.TraitAttribute("FeatureTitle", "CriacaoComUsuario")]
+        [Xunit.TraitAttribute("Description", "Testar cadastrando o pedido com um cliente já existente no banco (verificar que n" +
+            "ão atualiza os dados de cadastro)")]
+        [Xunit.TraitAttribute("Category", "ignore")]
+        public virtual void TestarCadastrandoOPedidoComUmClienteJaExistenteNoBancoVerificarQueNaoAtualizaOsDadosDeCadastro()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Testar cadastrando o pedido com um cliente já existente no banco (verificar que n" +
+                    "ão atualiza os dados de cadastro)", null, tagsOfScenario, argumentsOfScenario);
+#line 30
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 31
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 32
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 33
+ testRunner.And("Tabela \"t_CLIENTE\" registro com campo \"cnpj_cpf\" = \"{valor_cnpj_cpf}\", verificar " +
+                        "campo \"sistema_responsavel_atualizacao\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 34
+ testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"cnpj_cpf\" = \"{valor_cnpj_cpf}\", verificar c" +
+                        "ampo \"sistema_responsavel_cadastro\" = \"4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
