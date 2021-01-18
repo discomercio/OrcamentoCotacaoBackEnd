@@ -9,6 +9,8 @@
 #    COD_FORMA_PAGTO_PARCELADO_CARTAO = "2",
 #    COD_FORMA_PAGTO_PARCELA_UNICA = "5",
 
+
+#esse teste esta sendo feito em "FormaPagtoCriacaoMagento.feature"
 @ignore
 Scenario: Tipo_Parcelamento
 	Given fazere sta validação
