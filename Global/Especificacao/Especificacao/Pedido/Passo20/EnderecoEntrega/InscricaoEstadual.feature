@@ -18,14 +18,14 @@ Scenario: fazer
 #		end if
 #	end if
 #end if
-Scenario: Validar IE para PF - Sucesso
+Scenario: Validar IE endereco de entrega para PF - Sucesso
 	Given Pedido base com endereco de entrega
 	When Informo "EnderecoEntrega.EndEtg_produtor_rural_status" = "2"
 	When Informo "EnderecoEntrega.EndEtg_contribuinte_icms_status" = "2"
 	When Informo "EnderecoEntrega.EndEtg_ie" = "749.201.682.501"
 	Then Sem nehum erro
 
-Scenario: Validar IE para PF - IE inválido e vazio
+Scenario:Validar IE endereco de entrega para PF - IE inválido e vazio
 	#IE inválida
 	Given Pedido base com endereco de entrega
 	When Informo "EnderecoEntrega.EndEtg_produtor_rural_status" = "2"
@@ -46,14 +46,14 @@ Scenario: Validar IE para PF - IE inválido e vazio
 	When Informo "EnderecoEntrega.EndEtg_uf" = ""
 	Then Erro "UF (estado) vazio! "
 
-Scenario:  Validar IE para PJ - Sucesso Endereco entrega PF
+Scenario:  Validar IE endereco de entrega para PJ - Sucesso Endereco entrega PF
 	Given Pedido base cliente PJ com endereço de entrega PF
 	When Informo "EnderecoEntrega.EndEtg_produtor_rural_status" = "2"
 	When Informo "EnderecoEntrega.EndEtg_contribuinte_icms_status" = "2"
 	When Informo "EnderecoEntrega.EndEtg_ie" = "749.201.682.501"
 	Then Sem nenhum erro
 
-Scenario: Validar IE para PJ - Sucesso Endereco entrega PJ
+Scenario: Validar IE endereco de entrega para PJ - Sucesso Endereco entrega PJ
 	#Contribuinte Sim
 	Given Pedido base cliente PJ com endereço de entrega PJ
 	When Informo "EnderecoEntrega.EndEtg_contribuinte_icms_status" = "2"
@@ -65,7 +65,7 @@ Scenario: Validar IE para PJ - Sucesso Endereco entrega PJ
 	When Informo "EnderecoEntrega.EndEtg_ie" = "749.201.682.501"
 	Then Sem nenhum erro
 
-Scenario: Validar IE para PJ - Endereco entrega PF IE inválido e vazio
+Scenario: Validar IE endereco de entrega para PJ - Endereco entrega PF IE inválido e vazio
 	Given Pedido base cliente PJ com endereço de entrega PF
 	When Informo "EnderecoEntrega.EndEtg_produtor_rural_status" = "2"
 	When Informo "EnderecoEntrega.EndEtg_contribuinte_icms_status" = "2"
@@ -85,7 +85,7 @@ Scenario: Validar IE para PJ - Endereco entrega PF IE inválido e vazio
 	When Informo "EnderecoEntrega.EndEtg_uf" = ""
 	Then Erro "UF (estado) vazio! "
 
-Scenario: Validar IE para PJ - Endereco entrega PJ IE inválido e vazio
+Scenario: Validar IE endereco de entrega para PJ - Endereco entrega PJ IE inválido e vazio
 	#IE inválida contribuinte sim
 	Given Pedido base cliente PJ com endereço de entrega PJ
 	When Informo "EnderecoEntrega.EndEtg_contribuinte_icms_status" = "2"
@@ -102,7 +102,6 @@ Scenario: Validar IE para PJ - Endereco entrega PJ IE inválido e vazio
 	When Informo "EnderecoEntrega.EndEtg_ie" = "749.201.682.501"
 	When Informo "EnderecoEntrega.EndEtg_uf" = ""
 	Then Erro "UF (estado) vazio! "
-
 	#IE inválida contribuinte não
 	Given Pedido base cliente PJ com endereço de entrega PJ
 	When Informo "EnderecoEntrega.EndEtg_contribuinte_icms_status" = "2"
