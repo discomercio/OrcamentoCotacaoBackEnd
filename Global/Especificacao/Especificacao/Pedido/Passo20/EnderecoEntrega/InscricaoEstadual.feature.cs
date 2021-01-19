@@ -118,14 +118,14 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar IE para PF - Sucesso")]
+        [Xunit.SkippableFactAttribute(DisplayName="Validar IE endereco de entrega para PF - Sucesso")]
         [Xunit.TraitAttribute("FeatureTitle", "InscricaoEstadual")]
-        [Xunit.TraitAttribute("Description", "Validar IE para PF - Sucesso")]
-        public virtual void ValidarIEParaPF_Sucesso()
+        [Xunit.TraitAttribute("Description", "Validar IE endereco de entrega para PF - Sucesso")]
+        public virtual void ValidarIEEnderecoDeEntregaParaPF_Sucesso()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar IE para PF - Sucesso", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar IE endereco de entrega para PF - Sucesso", null, tagsOfScenario, argumentsOfScenario);
 #line 21
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -165,14 +165,14 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar IE para PF - IE inválido e vazio")]
+        [Xunit.SkippableFactAttribute(DisplayName="Validar IE endereco de entrega para PF - IE inválido e vazio")]
         [Xunit.TraitAttribute("FeatureTitle", "InscricaoEstadual")]
-        [Xunit.TraitAttribute("Description", "Validar IE para PF - IE inválido e vazio")]
-        public virtual void ValidarIEParaPF_IEInvalidoEVazio()
+        [Xunit.TraitAttribute("Description", "Validar IE endereco de entrega para PF - IE inválido e vazio")]
+        public virtual void ValidarIEEnderecoDeEntregaParaPF_IEInvalidoEVazio()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar IE para PF - IE inválido e vazio", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar IE endereco de entrega para PF - IE inválido e vazio", null, tagsOfScenario, argumentsOfScenario);
 #line 28
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -247,14 +247,14 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar IE para PJ - Sucesso Endereco entrega PF")]
+        [Xunit.SkippableFactAttribute(DisplayName="Validar IE endereco de entrega para PJ - Sucesso Endereco entrega PF")]
         [Xunit.TraitAttribute("FeatureTitle", "InscricaoEstadual")]
-        [Xunit.TraitAttribute("Description", "Validar IE para PJ - Sucesso Endereco entrega PF")]
-        public virtual void ValidarIEParaPJ_SucessoEnderecoEntregaPF()
+        [Xunit.TraitAttribute("Description", "Validar IE endereco de entrega para PJ - Sucesso Endereco entrega PF")]
+        public virtual void ValidarIEEnderecoDeEntregaParaPJ_SucessoEnderecoEntregaPF()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar IE para PJ - Sucesso Endereco entrega PF", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar IE endereco de entrega para PJ - Sucesso Endereco entrega PF", null, tagsOfScenario, argumentsOfScenario);
 #line 49
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -294,14 +294,14 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar IE para PJ - Sucesso Endereco entrega PJ")]
+        [Xunit.SkippableFactAttribute(DisplayName="Validar IE endereco de entrega para PJ - Sucesso Endereco entrega PJ")]
         [Xunit.TraitAttribute("FeatureTitle", "InscricaoEstadual")]
-        [Xunit.TraitAttribute("Description", "Validar IE para PJ - Sucesso Endereco entrega PJ")]
-        public virtual void ValidarIEParaPJ_SucessoEnderecoEntregaPJ()
+        [Xunit.TraitAttribute("Description", "Validar IE endereco de entrega para PJ - Sucesso Endereco entrega PJ")]
+        public virtual void ValidarIEEnderecoDeEntregaParaPJ_SucessoEnderecoEntregaPJ()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar IE para PJ - Sucesso Endereco entrega PJ", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar IE endereco de entrega para PJ - Sucesso Endereco entrega PJ", null, tagsOfScenario, argumentsOfScenario);
 #line 56
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -350,14 +350,14 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar IE para PJ - Endereco entrega PF IE inválido e vazio")]
+        [Xunit.SkippableFactAttribute(DisplayName="Validar IE endereco de entrega para PJ - Endereco entrega PF IE inválido e vazio")]
         [Xunit.TraitAttribute("FeatureTitle", "InscricaoEstadual")]
-        [Xunit.TraitAttribute("Description", "Validar IE para PJ - Endereco entrega PF IE inválido e vazio")]
-        public virtual void ValidarIEParaPJ_EnderecoEntregaPFIEInvalidoEVazio()
+        [Xunit.TraitAttribute("Description", "Validar IE endereco de entrega para PJ - Endereco entrega PF IE inválido e vazio")]
+        public virtual void ValidarIEEnderecoDeEntregaParaPJ_EnderecoEntregaPFIEInvalidoEVazio()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar IE para PJ - Endereco entrega PF IE inválido e vazio", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar IE endereco de entrega para PJ - Endereco entrega PF IE inválido e vazio", null, tagsOfScenario, argumentsOfScenario);
 #line 68
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -432,14 +432,14 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar IE para PJ - Endereco entrega PJ IE inválido e vazio")]
+        [Xunit.SkippableFactAttribute(DisplayName="Validar IE endereco de entrega para PJ - Endereco entrega PJ IE inválido e vazio")]
         [Xunit.TraitAttribute("FeatureTitle", "InscricaoEstadual")]
-        [Xunit.TraitAttribute("Description", "Validar IE para PJ - Endereco entrega PJ IE inválido e vazio")]
-        public virtual void ValidarIEParaPJ_EnderecoEntregaPJIEInvalidoEVazio()
+        [Xunit.TraitAttribute("Description", "Validar IE endereco de entrega para PJ - Endereco entrega PJ IE inválido e vazio")]
+        public virtual void ValidarIEEnderecoDeEntregaParaPJ_EnderecoEntregaPJIEInvalidoEVazio()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar IE para PJ - Endereco entrega PJ IE inválido e vazio", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar IE endereco de entrega para PJ - Endereco entrega PJ IE inválido e vazio", null, tagsOfScenario, argumentsOfScenario);
 #line 88
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -501,33 +501,33 @@ this.ScenarioInitialize(scenarioInfo);
 #line 104
  testRunner.Then("Erro \"UF (estado) vazio! \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 107
+#line 106
  testRunner.Given("Pedido base cliente PJ com endereço de entrega PJ", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 108
+#line 107
  testRunner.When("Informo \"EnderecoEntrega.EndEtg_contribuinte_icms_status\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 109
+#line 108
  testRunner.When("Informo \"EnderecoEntrega.EndEtg_ie\" = \"829514-56\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 110
+#line 109
  testRunner.Then("Erro \"Endereço de entrega: preencha a IE (Inscrição Estadual) com um número válid" +
                         "o! Certifique-se de que a UF do endereço de entrega corresponde à UF responsável" +
                         " pelo registro da IE.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 112
+#line 111
  testRunner.Given("Pedido base cliente PJ com endereço de entrega PJ", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 113
+#line 112
  testRunner.When("Informo \"EnderecoEntrega.EndEtg_contribuinte_icms_status\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 114
+#line 113
  testRunner.When("Informo \"EnderecoEntrega.EndEtg_ie\" = \"749.201.682.501\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 115
+#line 114
  testRunner.When("Informo \"EnderecoEntrega.EndEtg_uf\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 116
+#line 115
  testRunner.Then("Erro \"UF (estado) vazio! \"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
