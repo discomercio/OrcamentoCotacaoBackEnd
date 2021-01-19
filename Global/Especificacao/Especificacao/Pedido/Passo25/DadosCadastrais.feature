@@ -1,11 +1,10 @@
 ﻿@ignore
 Feature: PedidoDadosCadastraisVerificarQueExecutou - VerificarQueExecutou
+
 #Precisamos verificar os dados cadastrais
 #Quando chama pelo ASP ou pela Loja, esta verificação não precisa ser feita porque vamos usar os dados do cliente já cadastrado.
 #Mas pela API precisa desta verificação
-
 #todo: afazer: fazer estas validações
-
 Scenario: PedidoDadosCadastraisVerificarQueExecutou Configuração
 	Given Nome deste item "Especificacao.Pedido.Passo25.DadosCadastrais"
 	Given Implementado em "Especificacao.Pedido.Pedido"
@@ -13,6 +12,7 @@ Scenario: PedidoDadosCadastraisVerificarQueExecutou Configuração
 
 Scenario: fazer
 	Given fazer esta validação, no pedido e prepedido
+
 #if alerta = "" then
 #	if ( (EndCob_tipo_pessoa = ID_PF) And (Cstr(EndCob_produtor_rural_status) = Cstr(COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)) ) _
 #		Or _
@@ -25,8 +25,44 @@ Scenario: fazer
 #					"<br>" & "Certifique-se de que a UF informada corresponde à UF responsável pelo registro da IE."
 #			end if
 #		end if
-#
-#
+Scenario: Validar IE de Endereco Cadastral para PF
+	
+	Given Pedido base cliente PF
+	When Informo "DadosCliente.Ie" = "829514-56"
+	Then Erro "Preencha a IE (Inscrição Estadual) com um número válido! Certifique-se de que a UF do endereço de entrega corresponde à UF responsável pelo registro da IE."
+
+	Given Pedido base cliente PF
+	When Informo "DadosCliente.Uf" = ""
+	Then Erro "UF (estado) vazio! "
+
+Scenario: Validar IE de Endereco Cadastral para PJ
+	#Contribuinte sim
+	Given Pedido base cliente PJ
+	When Informo "DadosCliente.ProdutorRural" = "0"
+	When Informo "DadosCliente.Contribuinte_Icms_Status" = "2"
+	When Informo "DadosCliente.Ie" = "829514-56"
+	Then Erro "Preencha a IE (Inscrição Estadual) com um número válido! Certifique-se de que a UF do endereço de entrega corresponde à UF responsável pelo registro da IE."
+
+	Given Pedido base cliente PJ
+	When Informo "DadosCliente.ProdutorRural" = "0"
+	When Informo "DadosCliente.Contribuinte_Icms_Status" = "2"
+	When Informo "DadosCliente.Ie" = "749.201.682.501"
+	When Informo "DadosCliente.Uf" = ""
+	Then Erro "UF (estado) vazio! "
+	#Contribuinte não
+	Given Pedido base cliente PJ
+	When Informo "DadosCliente.ProdutorRural" = "0"
+	When Informo "DadosCliente.Contribuinte_Icms_Status" = "1"
+	When Informo "DadosCliente.Ie" = "829514-56"
+	Then Erro "Preencha a IE (Inscrição Estadual) com um número válido! Certifique-se de que a UF do endereço de entrega corresponde à UF responsável pelo registro da IE."
+
+	Given Pedido base cliente PJ
+	When Informo "DadosCliente.ProdutorRural" = "0"
+	When Informo "DadosCliente.Contribuinte_Icms_Status" = "1"
+	When Informo "DadosCliente.Ie" = "749.201.682.501"
+	When Informo "DadosCliente.Uf" = ""
+	Then Erro "UF (estado) vazio! "
+
 #if alerta="" then
 #'	MUNICÍPIO DE ACORDO C/ TABELA DO IBGE?
 #	dim s_lista_sugerida_municipios
@@ -42,4 +78,19 @@ Scenario: fazer
 #				end if
 #			end if
 #		end if
-#
+Scenario: Validar Endereco com IBGE
+	Given Pedido base
+	When Informo "DadosCliente.Cep" = "68912350"
+	When Informo "DadosCliente.Cidade" = "Abacate da Pedreira"
+	Then Erro "Cidade não está no IBGE (acertar a mensagem)"
+
+	Given Pedido base
+	When Informo "DadosCliente.Cep" = "68912350"
+	When Informo "DadosCliente.Cidade" = "Amapá"
+	Then Sem nenhum erro
+
+Scenario: Validar Endereco com IBGE 2
+	Given Pedido base
+	When Informo "DadosCliente.Cep" = "04321001"
+	When Informo "DadosCliente.Cidade" = "Santo André"
+	Then Erro "Cidade inconsistente"
