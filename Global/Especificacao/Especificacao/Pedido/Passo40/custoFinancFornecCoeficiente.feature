@@ -14,5 +14,20 @@
 
 @ignore
 Scenario: custoFinancFornecCoeficiente
-	Given Fazer esta validação
+	Given Pedido base
+	When Informo "PedidoProdutoPedidoDados.CustoFinancFornecCoeficiente" = "123"
+	Then Erro "Coeficiente do fabricante (003) está incorreto!"
+
+	Given Pedido base 
+	When Informo "FormaPagtoCriacao.Tipo_parcelamento" = "1"
+	When Informo "FormaPagtoCriacao.Op_av_forma_pagto" = "1"
+	When Informo "FormaPagtoCriacao.CustoFinancFornecTipoParcelamento" = "AV"
+	When Informo "FormaPagtoCriacao.CustoFinancFornecQtdeParcelas" = "0"
+	When Informo "ListaProdutos[0].Preco_Venda" = "939.87"
+	When Informo "ListaProdutos[0].Preco_NF" = "939.87"
+	When Informo "ListaProdutos[0].Preco_Lista" = "939.87"
+	When Informo "ListaProdutos[0].Preco_NF" = "939.87"
+	When Informo "ListaProdutos[0].CustoFinancFornecCoeficiente" = "1"
+	Then Erro "Coeficiente do fabricante (003) está incorreto!"
+
 
