@@ -342,7 +342,7 @@ namespace Prepedido
         public async Task ValidarEnderecoEntrega(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEntrega,
             List<string> lstErros, string orcamentista, string tipoCliente, bool usarLojaOrcamentista, string loja)
         {
-            
+
             if (endEntrega.OutroEndereco)
             {
                 await ValidarDadosEnderecoEntrega(endEntrega, lstErros, contextoProvider, usarLojaOrcamentista, loja, orcamentista);
@@ -539,14 +539,20 @@ namespace Prepedido
                 //Cliente PF aceita IE com estado do endereço de endereço de entrega diferente
                 if (tipoCliente == Constantes.ID_PJ)
                 {
-                    if (!string.IsNullOrEmpty(endEntrega.EndEtg_ie))
+                    if ((endEntrega.EndEtg_tipo_pessoa == Constantes.ID_PF && endEntrega.EndEtg_produtor_rural_status ==
+                    (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM) ||
+                    (endEntrega.EndEtg_tipo_pessoa == Constantes.ID_PJ &&
+                    endEntrega.EndEtg_contribuinte_icms_status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) ||
+                    (endEntrega.EndEtg_tipo_pessoa == Constantes.ID_PJ &&
+                    endEntrega.EndEtg_contribuinte_icms_status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
+                    && !string.IsNullOrEmpty(endEntrega.EndEtg_ie))
                     {
-                            Cliente.ValidacoesClienteBll.VerificarInscricaoEstadualValida(endEntrega.EndEtg_ie,
-                            endEntrega.EndEtg_uf, lstErros, flagMsg_IE_Cadastro_PF);
-                        }
+                        Cliente.ValidacoesClienteBll.VerificarInscricaoEstadualValida(endEntrega.EndEtg_ie,
+                        endEntrega.EndEtg_uf, lstErros, flagMsg_IE_Cadastro_PF);
                     }
                 }
             }
+        }
 
         private void ValidarDadosPessoaEnderecoEntrega_PJ(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEtg, List<string> lstErros)
         {
