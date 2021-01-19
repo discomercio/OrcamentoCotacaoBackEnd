@@ -10,5 +10,14 @@ namespace Pedido.Dados.Criacao
         public List<string> ListaIdPedidosFilhotes { get; } = new List<string>();
         public List<string> ListaErros { get; } = new List<string>();
         public List<string> ListaErrosValidacao { get; } = new List<string>();
+
+        public bool AlgumErro()
+        {
+            if (ListaErros.Count > 0)
+                return true;
+            if (ListaErrosValidacao.Count > 0)
+                return true;
+            return false;
+        }
     }
 }

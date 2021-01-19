@@ -39,6 +39,7 @@ namespace ApiMagento.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<ActionResult<PedidoResultadoMagentoDto>> CadastrarPedido(PedidoMagentoDto pedido)
         {
+            //em 210115 estava demorando 8,1 segundos
             if (!servicoValidarTokenApiMagento.ValidarToken(pedido.TokenAcesso, out string? usuario))
                 return Unauthorized();
             if (string.IsNullOrEmpty(usuario))

@@ -393,7 +393,7 @@ namespace Loja.Bll.Bll.AcessoBll
         public async Task<bool> AtualizarSessionCtrlTicket(UsuarioLogado usuarioLogado)
         {
             bool retorno = false;
-            
+
 
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
             {

@@ -65,7 +65,10 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
                 100000, 100000, 100000, 100000,
                 0.1M, 0.1M);
             var ret = ret1.Result;
-            return ret.ListaErros;
+            List<string> erros = new List<string>();
+            erros.AddRange(ret.ListaErros);
+            erros.AddRange(ret.ListaErrosValidacao);
+            return erros;
         }
         protected override void AbstractDeixarFormaDePagamentoConsistente()
         {

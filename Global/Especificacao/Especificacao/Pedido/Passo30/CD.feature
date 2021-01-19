@@ -5,6 +5,8 @@ todo: terminar Validação do CD
 
 Background: Reiniciar banco
 	Given Reiniciar permissões do usuário quando terminar o cenário
+	#ignoramos na API magneto porque sempre é CD automático
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 
 Scenario: Configuração
 	Given Nome deste item "Especificacao.Pedido.Passo30.CD"

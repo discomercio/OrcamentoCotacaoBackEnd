@@ -22,17 +22,18 @@ namespace InfraBanco.Modelos
         public ICollection<TestoqueItem> TestoqueItem { get; set; }
 
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
-        [Column("data_emissao_NF_entrada")]
-        public DateTime? Data_emissao_NF_entrada { get; set; }
+        //esta coluna não existe em uma versão anterior do banco. Analisar se efetivamnete existe quando precisar dela.
+        //[Column("data_emissao_NF_entrada")]
+        //public DateTime? Data_emissao_NF_entrada { get; set; }
 
         [Column("data_ult_movimento")]
         [Required]
         public DateTime Data_ult_movimento { get; set; }
 
-        [Column("fabricante")]
-        [MaxLength(4)]
-        [Required]
-        public string Fabricante { get; set; }
+        //[Column("fabricante")]
+        //[MaxLength(4)]
+        //[Required]
+        //public string Fabricante { get; set; }
 #endif
     }
 }

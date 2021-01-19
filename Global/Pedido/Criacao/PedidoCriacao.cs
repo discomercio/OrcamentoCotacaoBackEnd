@@ -15,7 +15,7 @@ using Cep;
 
 #nullable enable
 
-namespace Pedido
+namespace Pedido.Criacao
 {
 
     public class PedidoCriacao
@@ -47,6 +47,7 @@ namespace Pedido
             this.cepBll = cepBll;
             this.bancoNFeMunicipio = bancoNFeMunicipio;
         }
+
         //uma classe: Global/Pedido/PedidoBll/PedidoCriacao com a rotina CadastrarPrepedido, 
         //que retorna um PedidoCriacaoRetorno com o id do pedido, dos filhotes, 
         //as mensagens de erro e as mensagens de erro da validação dos 
@@ -56,9 +57,69 @@ namespace Pedido
         {
             PedidoCriacaoRetornoDados pedidoRetorno = new PedidoCriacaoRetornoDados();
 
-            return await CadastrarPedido_anterior(pedido);
+            /*
+Fluxo no módulo loja:
+1 - Passo10: Escolher cliente já cadastrado
+	Se o cliente não existir, ele deve ser cadastrado primeiro. (arquivo CLiente/FLuxoCadastroCliente - criar esse arquivo)
+2 - Passo20: Confirmar (ou editar) dados cadastrais e informar endereço de entrega
+	se editar dados cadastrais, salva na t_cliente
+2.5 - Passo 25: somente na API. Validar dados cadastrais. Não existe na tela porque sempre se usa o atual do cliente.
+3 - Passo30: Escolher indicador e RA e Modo de Seleção do CD 
+4 - Passo40: Escolher produtos, quantidades e alterar valores e forma de pagamento
+5 - Passo50: Informar observações (entrega imediata, instalador instala, etc) 
+6 - Passo60: Salvar o pedido
+*/
+
+            //setup dados
+            ConfigurarExecucao(pedido, out UtilsGlobais.Usuario.UsuarioPermissao usuarioPermissao,
+                out Pedido.Criacao.UtilsLoja.PercentualMaxDescEComissao percentualMaxDescEComissao);
+
+            Passo10(pedido, pedidoRetorno, usuarioPermissao);
+            if (pedidoRetorno.AlgumErro())
+                return pedidoRetorno;
+
+            //somente valida o endereço de entrega. Os dados cadastrais são validados no passo 10 (ou 25)
+            //na API magento, por hora, nunca será feito
+            await Passo20.Passo20.ValidarEnderecoEntrega(pedido, pedidoRetorno, validacoesPrepedidoBll);
+
+            //passo 25 feito em Criacao.Passo10.Passo10.ValidarCliente
+
+            new Passo30.Passo30(pedido, pedidoRetorno, usuarioPermissao, percentualMaxDescEComissao).Executar();
+
+
+            if (pedidoRetorno.AlgumErro())
+                return pedidoRetorno;
+
+            return await CadastrarPedido_anterior(pedido, usuarioPermissao, percentualMaxDescEComissao);
         }
-        private async Task<PedidoCriacaoRetornoDados> CadastrarPedido_anterior(PedidoCriacaoDados pedido)
+
+        private void ConfigurarExecucao(PedidoCriacaoDados pedido,
+            out UtilsGlobais.Usuario.UsuarioPermissao usuarioPermissao,
+            out Pedido.Criacao.UtilsLoja.PercentualMaxDescEComissao percentualMaxDescEComissao)
+        {
+            //busca a lista de permissões
+            usuarioPermissao = UtilsGlobais.Usuario.UsuarioPermissao.ConstruirUsuarioPermissao(pedido.Ambiente.Usuario.ToUpper(), contextoProvider).Result;
+
+            /* busca o percentual máximo de comissão*/
+            percentualMaxDescEComissao =
+                Pedido.Criacao.UtilsLoja.PercentualMaxDescEComissao.ObterPercentualMaxDescEComissao(pedido.Ambiente.Loja, contextoProvider).Result;
+        }
+
+
+        private async void Passo10(PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados pedidoRetorno,
+            UtilsGlobais.Usuario.UsuarioPermissao usuarioPermissao)
+        {
+            Criacao.Passo10.Passo10.Permissoes(pedido, pedidoRetorno, usuarioPermissao);
+            //se tiver erro de permissao retorna imediatamente
+            if (pedidoRetorno.AlgumErro())
+                return;
+
+            await Criacao.Passo10.Passo10.ValidarCliente(pedido, pedidoRetorno, contextoProvider, cepBll, bancoNFeMunicipio);
+        }
+
+        private async Task<PedidoCriacaoRetornoDados> CadastrarPedido_anterior(PedidoCriacaoDados pedido,
+            UtilsGlobais.Usuario.UsuarioPermissao usuarioPermissao,
+            Pedido.Criacao.UtilsLoja.PercentualMaxDescEComissao percentualMaxDescEComissao)
         {
             PedidoCriacaoRetornoDados pedidoRetorno = new PedidoCriacaoRetornoDados();
 
@@ -72,19 +133,6 @@ namespace Pedido
                 pedidoRetorno.ListaErros.Add("Usuário não encontrado.");
                 return pedidoRetorno;
             }
-
-            //busca a lista de permissões
-            string lista_operacoes_permitidas = await clienteBll.BuscaListaOperacoesPermitidas(tUsuario.Nome);
-
-            //vamos validar os dados do cliente que esta vindo no pedido
-            var dadosClienteCadastroDados = Cliente.Dados.DadosClienteCadastroDados.DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(pedido.EnderecoCadastralCliente,
-                pedido.Ambiente.Indicador, pedido.Ambiente.Loja,
-                "", null, pedido.Cliente.Id_cliente);
-            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDados, false, null, null, pedidoRetorno.ListaErros,
-                contextoProvider, cepBll, bancoNFeMunicipio, null, pedido.Cliente.Tipo.PessoaFisica(),
-                pedido.Configuracao.SistemaResponsavelCadastro, false);
-            if (pedidoRetorno.ListaErros.Count > 0)
-                return pedidoRetorno;
 
 
 
@@ -119,20 +167,12 @@ namespace Pedido
 
             if (tUsuario.Loja == Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE)
             {
-                if (lista_operacoes_permitidas.Contains(Convert.ToString(Constantes.OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO)))
-                    if (pedido.Valor.PercRT != 0)
-                        pedidoRetorno.ListaErros.Add("Usuário não pode editar perc_RT!");
-
                 if (string.IsNullOrEmpty(pedido.Ambiente.Indicador) && pedido.Valor.PermiteRAStatus == 1)
                     pedidoRetorno.ListaErros.Add("Usuário não pode opcao_possui_RA");
             }
 
             if (tUsuario.Loja == Constantes.NUMERO_LOJA_BONSHOP)
             {
-                if (!lista_operacoes_permitidas.Contains(Convert.ToString(Constantes.OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO)))
-                    if (pedido.Valor.PercRT != 0)
-                        pedidoRetorno.ListaErros.Add("Usuário não pode editar perc_RT!");
-
                 if (string.IsNullOrEmpty(pedido.Ambiente.Indicador) && pedido.Valor.PermiteRAStatus == 1)
                     pedidoRetorno.ListaErros.Add("Usuário não pode opcao_possui_RA");
             }
@@ -160,7 +200,6 @@ namespace Pedido
             decimal vl_limite_mensal_consumido = 0;
             decimal vl_limite_mensal_disponivel = 0;
             float percDescComissaoUtilizar = 0;
-            PercentualMaxDescEComissao percentualMax = new PercentualMaxDescEComissao();
 
             /* 13- valida o tipo de parcelamento "AV", "CE", "SE" */
             /* 14- valida a quantidade de parcela */
@@ -184,12 +223,6 @@ namespace Pedido
             await pedidoBll.ValidarProdutosComFormaPagto(pedido, c_custoFinancFornecTipoParcelamento,
                 c_custoFinancFornecQtdeParcelas, pedidoRetorno.ListaErros);
 
-            /* 9- valida endereço de entrega */
-            await validacoesPrepedidoBll.ValidarEnderecoEntrega(pedido.EnderecoEntrega, pedidoRetorno.ListaErros,
-                pedido.Ambiente.Indicador, pedido.Cliente.Tipo.ParaString(), false, pedido.Ambiente.Loja);
-            if (pedidoRetorno.ListaErros.Any())
-                return pedidoRetorno;
-
             /* 10- valida se o pedido é com ou sem indicação
              * 11- valida percentual máximo de comissão */
             if (pedido.Ambiente.ComIndicador)
@@ -207,16 +240,10 @@ namespace Pedido
                 #endregion
             }
 
-            /* 3- busca o percentual máximo de comissão*/
-            percentualMax = await pedidoBll.ObterPercentualMaxDescEComissao(pedido.Ambiente.Loja);
-
             if (pedido.Cliente.Tipo.PessoaJuridica())
-                percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
+                percDescComissaoUtilizar = percentualMaxDescEComissao.PercMaxComissaoEDescPJ;
             else
-                percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;
-
-            if (!string.IsNullOrEmpty(pedido.Valor.PercRT.ToString()))
-                pedidoBll.ValidarPercentualRT(pedido.Valor.PercRT, percentualMax.PercMaxComissao, pedidoRetorno.ListaErros);
+                percDescComissaoUtilizar = percentualMaxDescEComissao.PercMaxComissaoEDesc;
 
             if (pedido.Ambiente.ComIndicador)
             {
@@ -245,7 +272,7 @@ namespace Pedido
                 Constantes.ID_PARAMETRO_PercMaxComissaoEDesconto_Nivel2_MeiosPagto, contextoProvider);
 
             percDescComissaoUtilizar = pedidoBll.VerificarPagtoPreferencial(tParametro, pedido, percDescComissaoUtilizar,
-                    percentualMax, pedido.Valor.Vl_total);
+                    percentualMaxDescEComissao, pedido.Valor.Vl_total);
 
             //CONSISTÊNCIA PARA VALOR ZERADO
             if (pedido.ListaProdutos.Count() > 0)
@@ -322,8 +349,8 @@ namespace Pedido
             * 27- verifica se tem algum produto descontinuado*/
             //antes vamos validar o CD 
 
-            if (pedido.Ambiente.IdNfeSelecionadoManual == 1)
-                if (lista_operacoes_permitidas.Contains(Convert.ToString(Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD)))
+            if (pedido.Ambiente.IdNfeSelecionadoManual != 0)
+                if (usuarioPermissao.Permitido(Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD))
                     pedidoRetorno.ListaErros.Add("Usuário não tem permissão de especificar o CD!");
 
             //Se tiver erro retorna

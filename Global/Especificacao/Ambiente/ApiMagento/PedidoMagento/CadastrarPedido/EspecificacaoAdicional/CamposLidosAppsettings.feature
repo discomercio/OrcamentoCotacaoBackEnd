@@ -32,10 +32,12 @@ Scenario: Loja = "201" (vamos ler do appsettings)
 	Given Pedido base
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro campo "Loja" = "201" 
+	And afazer: colocar uma loja inválida e verificar que é validado
 
 @ignore
 Scenario: Vendedor = usuário que fez o login (ler do token)
 	Given Pedido base
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro campo "Vendedor" = "UsuarioApiMagento" 
+	And afazer: colocar um usuario inválido e verificar que é validado
 

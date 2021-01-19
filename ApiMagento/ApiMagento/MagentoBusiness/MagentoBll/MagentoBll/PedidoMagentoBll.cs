@@ -25,13 +25,13 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
         private readonly ValidacoesPrepedidoBll validacoesPrepedidoBll;
         private readonly PrepedidoBll prepedidoBll;
         private readonly ConfiguracaoApiMagento configuracaoApiMagento;
-        private readonly Pedido.PedidoCriacao pedidoCriacao;
+        private readonly Pedido.Criacao.PedidoCriacao pedidoCriacao;
         private readonly PedidoMagentoClienteBll pedidoMagentoClienteBll;
 
         public PedidoMagentoBll(InfraBanco.ContextoBdProvider contextoProvider,
             Produto.ProdutoGeralBll produtoGeralBll,
             Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll, PrepedidoBll prepedidoBll,
-            ConfiguracaoApiMagento configuracaoApiMagento, Pedido.PedidoCriacao pedidoCriacao,
+            ConfiguracaoApiMagento configuracaoApiMagento, Pedido.Criacao.PedidoCriacao pedidoCriacao,
             PedidoMagentoClienteBll pedidoMagentoClienteBll)
         {
             this.contextoProvider = contextoProvider;

@@ -20,7 +20,7 @@ namespace Especificacao.Ambiente.ApiMagento
                 var acessoMagentoBll = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<MagentoBusiness.MagentoBll.AcessoBll.AcessoMagentoBll>();
                 var loginResultadoUnisDto = acessoMagentoBll.FazerLogin(new MagentoBusiness.MagentoDto.LoginMagentoDto()
                 {
-                    Usuario = "UsuarioApiMagento",
+                    Usuario = "USUARIOAPIMAGENTO",
                     Senha = "123456"
                 }, "local", "testes").Result;
                 Assert.Empty(loginResultadoUnisDto.ListaErros);

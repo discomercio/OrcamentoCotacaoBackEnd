@@ -1,0 +1,38 @@
+﻿[
+  {
+    "id": "000000000003",
+    "id_perfil": "000000020008",
+    "id_operacao": 50100,
+    "dt_cadastro": "2006-09-11T15:21:15Z",
+    "usuario_cadastro": null,
+    "excluido_status": 0,
+    "timestamp": 1
+  },
+  {
+    "id": "000000000004",
+    "id_perfil": "000000020008",
+    "id_operacao": 54700,
+    "dt_cadastro": "2006-09-11T15:21:15Z",
+    "usuario_cadastro": null,
+    "excluido_status": 0,
+    "timestamp": 1
+  },
+  {
+    "id": "000000000006",
+    "id_perfil": "000000020009",
+    "id_operacao": 54700,
+    "dt_cadastro": "2006-09-11T15:21:15Z",
+    "usuario_cadastro": null,
+    "excluido_status": 0,
+    "timestamp": 1
+  },
+  {
+    "id": "000000000005",
+    "id_perfil": "000000020009",
+    "id_operacao": 50100,
+    "dt_cadastro": "2006-09-11T15:21:15Z",
+    "usuario_cadastro": null,
+    "excluido_status": 0,
+    "timestamp": 1
+  }
+]
