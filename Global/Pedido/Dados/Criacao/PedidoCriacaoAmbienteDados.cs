@@ -37,6 +37,7 @@ namespace Pedido.Dados.Criacao
 
         //Armazena o nome do indicador selecionado
         public string Indicador { get; }
+        //orcamentista, somente quando um prepedido vira pedido
         public string Orcamentista { get; }
 
         //Armazena o id do centro de distribuição selecionado manualmente

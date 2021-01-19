@@ -81,6 +81,7 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
 
             ret.VlTotalDestePedido = ret.ListaProdutos[0].Preco_Venda * ret.ListaProdutos[0].Qtde;
             ret.VlTotalDestePedido += ret.ListaProdutos[1].Preco_Venda * ret.ListaProdutos[1].Qtde;
+            ret.ValorTotalDestePedidoComRA = ret.VlTotalDestePedido;
             return ret;
         }
         public static global::Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto PedidoBaseParceladoCartao1vez(out string lojaUsuario, out string usuario, out bool vendedorExterno)

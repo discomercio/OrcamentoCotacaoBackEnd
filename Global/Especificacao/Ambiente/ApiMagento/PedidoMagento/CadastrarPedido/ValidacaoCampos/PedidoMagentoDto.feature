@@ -40,12 +40,12 @@ Scenario: InfCriacaoPedido Marketplace_codigo_origem
 	Then Erro "Informe o Pedido_bs_x_marketplace."
 
 
-@ignore
 Scenario: Pedido_bs_x_marketplace e Marketplace_codigo_origem já existem
 #2) Seria necessário tratar a possibilidade de ocorrer acesso concorrente entre o cadastramento semi-automático e a integração.
 #Em ambos os casos, seria importante verificar no instante final antes da efetivar o cadastramento do pedido se o número Magento e,
 #caso exista, o número do pedido marketplace já estão cadastrados em algum pedido c/ st_entrega válido (diferente de cancelado).
-	When Fazer esta validação
+#Testado em Especificacao\Pedido\Passo60\Gravacao\Passo15\PedidoMagentoRepetido.feature
+
 
 
 @ignore

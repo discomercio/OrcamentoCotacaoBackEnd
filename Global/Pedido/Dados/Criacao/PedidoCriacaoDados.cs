@@ -65,7 +65,7 @@ namespace Pedido.Dados.Criacao
             prepedido.DetalhesPrepedido = pedido.DetalhesPedido;
             prepedido.Vl_total = pedido.Valor.Vl_total;
             prepedido.Vl_total_NF = pedido.Valor.Vl_total_NF;
-            prepedido.PermiteRAStatus = pedido.Valor.PermiteRAStatus;
+            prepedido.PermiteRAStatus = (short)(pedido.Valor.PermiteRAStatus ? 1 : 0);
 
             return prepedido;
         }

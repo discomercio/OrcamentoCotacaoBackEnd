@@ -12,18 +12,18 @@ namespace Pedido.Criacao.Passo30
     class Passo30
     {
         private readonly PedidoCriacaoDados pedido;
-        private readonly PedidoCriacaoRetornoDados pedidoRetorno;
-        private readonly UtilsGlobais.Usuario.UsuarioPermissao usuarioPermissao;
-        private readonly Pedido.Criacao.UtilsLoja.PercentualMaxDescEComissao percentualMaxDescEComissao;
-        public Passo30(PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados pedidoRetorno, UsuarioPermissao usuarioPermissao, PercentualMaxDescEComissao percentualMaxDescEComissao)
+        private readonly PedidoCriacaoRetornoDados retorno;
+        private readonly Pedido.Criacao.PedidoCriacao pedidoCriacao;
+        public Passo30(PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao pedidoCriacao)
         {
             this.pedido = pedido ?? throw new ArgumentNullException(nameof(pedido));
-            this.pedidoRetorno = pedidoRetorno ?? throw new ArgumentNullException(nameof(pedidoRetorno));
-            this.usuarioPermissao = usuarioPermissao ?? throw new ArgumentNullException(nameof(usuarioPermissao));
-            this.percentualMaxDescEComissao = percentualMaxDescEComissao ?? throw new ArgumentNullException(nameof(percentualMaxDescEComissao));
+            this.retorno = retorno ?? throw new ArgumentNullException(nameof(retorno));
+            this.pedidoCriacao = pedidoCriacao ?? throw new ArgumentNullException(nameof(pedidoCriacao));
         }
 
-        public void Executar()
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        public async Task Executar()
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             PermissaoPercRt();
         }
@@ -35,17 +35,17 @@ namespace Pedido.Criacao.Passo30
 
 
             bool erro = false;
-            if (!usuarioPermissao.Permitido(Constantes.OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO))
+            if (!pedidoCriacao.UsuarioPermissao.Permitido(Constantes.OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO))
                 erro = true;
             //NUMERO_LOJA_ECOMMERCE_AR_CLUBE nunca pode
             if (pedido.Ambiente.Loja == Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE)
                 erro = true;
 
             if (erro)
-                pedidoRetorno.ListaErros.Add("Usuário não pode editar perc_RT (permissão OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO)");
+                retorno.ListaErros.Add("Usuário não pode editar perc_RT (permissão OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO)");
 
 
-            ValidarPercentualRT(pedido.Valor.PercRT, percentualMaxDescEComissao.PercMaxComissao, pedidoRetorno.ListaErros);
+            ValidarPercentualRT(pedido.Valor.PercRT, pedidoCriacao.PercentualMaxDescEComissao.PercMaxComissao, retorno.ListaErros);
         }
 
         private void ValidarPercentualRT(float percComissao, float percentualMax, List<string> lstErros)

@@ -265,14 +265,12 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="Pedido_bs_x_marketplace e Marketplace_codigo_origem já existem")]
         [Xunit.TraitAttribute("FeatureTitle", "PedidoMagentoDto")]
         [Xunit.TraitAttribute("Description", "Pedido_bs_x_marketplace e Marketplace_codigo_origem já existem")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void Pedido_Bs_X_MarketplaceEMarketplace_Codigo_OrigemJaExistem()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pedido_bs_x_marketplace e Marketplace_codigo_origem já existem", null, tagsOfScenario, argumentsOfScenario);
-#line 44
+#line 43
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -292,9 +290,6 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 48
- testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
             }
             this.ScenarioCleanup();
         }

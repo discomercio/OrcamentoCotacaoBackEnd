@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60
+namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo15
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,7 +20,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    public partial class Preenche_Os_Campos_Do_PedidoFeature : object, Xunit.IClassFixture<Preenche_Os_Campos_Do_PedidoFeature.FixtureData>, System.IDisposable
+    public partial class PedidoMagentoRepetidoFeature : object, Xunit.IClassFixture<PedidoMagentoRepetidoFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -30,10 +30,10 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "Preenche_os_campos_do_pedido.feature"
+#line 1 "PedidoMagentoRepetido.feature"
 #line hidden
         
-        public Preenche_Os_Campos_Do_PedidoFeature(Preenche_Os_Campos_Do_PedidoFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public PedidoMagentoRepetidoFeature(PedidoMagentoRepetidoFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,7 +42,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Preenche_os_campos_do_pedido", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PedidoMagentoRepetido", null, ProgrammingLanguage.CSharp, new string[] {
                         "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -83,15 +83,15 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Preenche_os_campos_do_pedido")]
-        [Xunit.TraitAttribute("FeatureTitle", "Preenche_os_campos_do_pedido")]
-        [Xunit.TraitAttribute("Description", "Preenche_os_campos_do_pedido")]
-        public virtual void Preenche_Os_Campos_Do_Pedido()
+        [Xunit.SkippableFactAttribute(DisplayName="Pedido_bs_x_marketplace e Marketplace_codigo_origem já existem")]
+        [Xunit.TraitAttribute("FeatureTitle", "PedidoMagentoRepetido")]
+        [Xunit.TraitAttribute("Description", "Pedido_bs_x_marketplace e Marketplace_codigo_origem já existem")]
+        public virtual void Pedido_Bs_X_MarketplaceEMarketplace_Codigo_OrigemJaExistem()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido", null, tagsOfScenario, argumentsOfScenario);
-#line 12
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pedido_bs_x_marketplace e Marketplace_codigo_origem já existem", null, tagsOfScenario, argumentsOfScenario);
+#line 66
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -111,41 +111,9 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 21
+#line 67
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="perc_desagio_RA_liquida")]
-        [Xunit.TraitAttribute("FeatureTitle", "Preenche_os_campos_do_pedido")]
-        [Xunit.TraitAttribute("Description", "perc_desagio_RA_liquida")]
-        public virtual void Perc_Desagio_RA_Liquida()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("perc_desagio_RA_liquida", null, tagsOfScenario, argumentsOfScenario);
-#line 23
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
             }
             this.ScenarioCleanup();
         }
@@ -157,12 +125,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                Preenche_Os_Campos_Do_PedidoFeature.FeatureSetup();
+                PedidoMagentoRepetidoFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                Preenche_Os_Campos_Do_PedidoFeature.FeatureTearDown();
+                PedidoMagentoRepetidoFeature.FeatureTearDown();
             }
         }
     }

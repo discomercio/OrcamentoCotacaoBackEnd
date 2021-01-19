@@ -20,16 +20,17 @@ namespace Pedido.Criacao
 
     public class PedidoCriacao
     {
-        private readonly PedidoBll pedidoBll;
-        private readonly InfraBanco.ContextoBdProvider contextoProvider;
-        private readonly Prepedido.FormaPagto.ValidacoesFormaPagtoBll validacoesFormaPagtoBll;
-        private readonly Prepedido.PrepedidoBll prepedidoBll;
-        private readonly Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll;
-        private readonly Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll;
-        private readonly EfetivaPedidoBll efetivaPedidoBll;
-        private readonly ClienteBll clienteBll;
-        private readonly CepBll cepBll;
-        private readonly IBancoNFeMunicipio bancoNFeMunicipio;
+        #region construtor
+        public readonly PedidoBll pedidoBll;
+        public readonly InfraBanco.ContextoBdProvider contextoProvider;
+        public readonly Prepedido.FormaPagto.ValidacoesFormaPagtoBll validacoesFormaPagtoBll;
+        public readonly Prepedido.PrepedidoBll prepedidoBll;
+        public readonly Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll;
+        public readonly Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll;
+        public readonly EfetivaPedidoBll efetivaPedidoBll;
+        public readonly ClienteBll clienteBll;
+        public readonly CepBll cepBll;
+        public readonly IBancoNFeMunicipio bancoNFeMunicipio;
 
         public PedidoCriacao(PedidoBll pedidoBll, InfraBanco.ContextoBdProvider contextoProvider,
             Prepedido.FormaPagto.ValidacoesFormaPagtoBll validacoesFormaPagtoBll, Prepedido.PrepedidoBll prepedidoBll,
@@ -47,6 +48,37 @@ namespace Pedido.Criacao
             this.cepBll = cepBll;
             this.bancoNFeMunicipio = bancoNFeMunicipio;
         }
+        #endregion
+
+        #region propriedades calculadas
+        //prporiedades calculadas. Elas são calculadas no inicio do processo, mas não podem ser determiandas
+        //pelo cosntrutor. Por isso temos os getters que testam se estão null e garantem a inicialização
+        //e tamém permitem usar as validações de nullable do c#
+        private UtilsGlobais.Usuario.UsuarioPermissao? _usuarioPermissao = null;
+        public UtilsGlobais.Usuario.UsuarioPermissao UsuarioPermissao
+        {
+            get
+            {
+                if (_usuarioPermissao == null)
+                    throw new Exception("Pedido.Criacao.PedidoCriacao: _usuarioPermissao == null. Erro na inicialização do objeto.");
+                return _usuarioPermissao;
+            }
+        }
+        private Pedido.Criacao.UtilsLoja.PercentualMaxDescEComissao? _percentualMaxDescEComissao = null;
+        public Pedido.Criacao.UtilsLoja.PercentualMaxDescEComissao PercentualMaxDescEComissao
+        {
+            get
+            {
+                if (_percentualMaxDescEComissao == null)
+                    throw new Exception("Pedido.Criacao.PedidoCriacao: _percentualMaxDescEComissao == null. Erro na inicialização do objeto.");
+                return _percentualMaxDescEComissao;
+            }
+        }
+
+        //este pode ser null sim
+        public TorcamentistaEindicador? Indicador { get; private set; } = null;
+        #endregion
+
 
         //uma classe: Global/Pedido/PedidoBll/PedidoCriacao com a rotina CadastrarPrepedido, 
         //que retorna um PedidoCriacaoRetorno com o id do pedido, dos filhotes, 
@@ -55,7 +87,7 @@ namespace Pedido.Criacao
         //É que na loja o tratamento dos erros dos dados cadastrais vai ser diferente).
         public async Task<PedidoCriacaoRetornoDados> CadastrarPedido(PedidoCriacaoDados pedido)
         {
-            PedidoCriacaoRetornoDados pedidoRetorno = new PedidoCriacaoRetornoDados();
+            PedidoCriacaoRetornoDados retorno = new PedidoCriacaoRetornoDados();
 
             /*
 Fluxo no módulo loja:
@@ -71,51 +103,69 @@ Fluxo no módulo loja:
 */
 
             //setup dados
-            ConfigurarExecucao(pedido, out UtilsGlobais.Usuario.UsuarioPermissao usuarioPermissao,
-                out Pedido.Criacao.UtilsLoja.PercentualMaxDescEComissao percentualMaxDescEComissao);
+            await ConfigurarExecucaoInicial(pedido);
 
-            Passo10(pedido, pedidoRetorno, usuarioPermissao);
-            if (pedidoRetorno.AlgumErro())
-                return pedidoRetorno;
+            var passo10 = new Criacao.Passo10.Passo10(pedido, retorno, this);
+            passo10.Permissoes();
+            //se tiver erro de permissao retorna imediatamente
+            if (retorno.AlgumErro())
+                return retorno;
+
+            await ConfigurarExecucaoComPermissaoOk(pedido, retorno);
+            if (retorno.AlgumErro())
+                return retorno;
+            await passo10.ValidarCliente();
 
             //somente valida o endereço de entrega. Os dados cadastrais são validados no passo 10 (ou 25)
             //na API magento, por hora, nunca será feito
-            await Passo20.Passo20.ValidarEnderecoEntrega(pedido, pedidoRetorno, validacoesPrepedidoBll);
+            await new Passo20.Passo20(pedido, retorno, this).ValidarEnderecoEntrega();
 
             //passo 25 feito em Criacao.Passo10.Passo10.ValidarCliente
 
-            new Passo30.Passo30(pedido, pedidoRetorno, usuarioPermissao, percentualMaxDescEComissao).Executar();
+            await new Passo30.Passo30(pedido, retorno, this).Executar();
+            await new Passo40.Passo40(pedido, retorno, this).Executar();
+            await new Passo50.Passo50(pedido, retorno, this).Executar();
+
+            await new Passo60.Passo60(pedido, retorno, this).Executar();
 
 
-            if (pedidoRetorno.AlgumErro())
-                return pedidoRetorno;
+            if (retorno.AlgumErro())
+                return retorno;
 
-            return await CadastrarPedido_anterior(pedido, usuarioPermissao, percentualMaxDescEComissao);
+            return await CadastrarPedido_anterior(pedido, UsuarioPermissao, PercentualMaxDescEComissao);
         }
 
-        private void ConfigurarExecucao(PedidoCriacaoDados pedido,
-            out UtilsGlobais.Usuario.UsuarioPermissao usuarioPermissao,
-            out Pedido.Criacao.UtilsLoja.PercentualMaxDescEComissao percentualMaxDescEComissao)
+        private async Task ConfigurarExecucaoInicial(PedidoCriacaoDados pedido)
         {
             //busca a lista de permissões
-            usuarioPermissao = UtilsGlobais.Usuario.UsuarioPermissao.ConstruirUsuarioPermissao(pedido.Ambiente.Usuario.ToUpper(), contextoProvider).Result;
+            _usuarioPermissao = await UtilsGlobais.Usuario.UsuarioPermissao.ConstruirUsuarioPermissao(pedido.Ambiente.Usuario.ToUpper(), contextoProvider);
 
-            /* busca o percentual máximo de comissão*/
-            percentualMaxDescEComissao =
-                Pedido.Criacao.UtilsLoja.PercentualMaxDescEComissao.ObterPercentualMaxDescEComissao(pedido.Ambiente.Loja, contextoProvider).Result;
         }
-
-
-        private async void Passo10(PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados pedidoRetorno,
-            UtilsGlobais.Usuario.UsuarioPermissao usuarioPermissao)
+        private async Task ConfigurarExecucaoComPermissaoOk(PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno)
         {
-            Criacao.Passo10.Passo10.Permissoes(pedido, pedidoRetorno, usuarioPermissao);
-            //se tiver erro de permissao retorna imediatamente
-            if (pedidoRetorno.AlgumErro())
-                return;
+            /* busca o percentual máximo de comissão*/
+            _percentualMaxDescEComissao =
+                await Pedido.Criacao.UtilsLoja.PercentualMaxDescEComissao.ObterPercentualMaxDescEComissao(pedido.Ambiente.Loja, contextoProvider);
 
-            await Criacao.Passo10.Passo10.ValidarCliente(pedido, pedidoRetorno, contextoProvider, cepBll, bancoNFeMunicipio);
+            if (!String.IsNullOrEmpty(pedido.Ambiente.Indicador))
+                Indicador = await prepedidoBll.BuscarTorcamentista(pedido.Ambiente.Indicador);
+
+            if (pedido.Ambiente.ComIndicador)
+            {
+                if (string.IsNullOrEmpty(pedido.Ambiente.Indicador))
+                {
+                    retorno.ListaErros.Add("Informe quem é o indicador.");
+                }
+
+                //Não estou retornando a mensagem abaixo, pois o campos pedido.OpcaoPossuiRa é bool, 
+                //sendo assim não tem como ser vazio
+                //elseif rb_RA = "" then
+                //    alerta = "Informe se o pedido possui RA ou não."
+                //end if
+            }
+
         }
+
 
         private async Task<PedidoCriacaoRetornoDados> CadastrarPedido_anterior(PedidoCriacaoDados pedido,
             UtilsGlobais.Usuario.UsuarioPermissao usuarioPermissao,
@@ -125,72 +175,11 @@ Fluxo no módulo loja:
 
             var db = contextoProvider.GetContextoLeitura();
 
-            //7- se tiver "vendedor_externo", busca (nome, razão social) na t_LOJA
-            //vamos validar o usuario e atribuir alguns valores da base de dados
-            Tusuario tUsuario = db.Tusuarios.Where(x => x.Usuario.ToUpper() == pedido.Ambiente.Usuario.ToUpper()).FirstOrDefault();
-            if (tUsuario == null)
-            {
-                pedidoRetorno.ListaErros.Add("Usuário não encontrado.");
-                return pedidoRetorno;
-            }
-
-
-
-            if (!validacoesPrepedidoBll.ValidarDetalhesPrepedido(pedido.DetalhesPedido, pedidoRetorno.ListaErros))
-            {
-                return pedidoRetorno;
-            }
-
-            if (pedido.ListaProdutos.Count > 12)
-            {
-                pedidoRetorno.ListaErros.Add("É permitido apenas 12 itens por Pré-Pedido!");
-                return pedidoRetorno;
-            }
-
-
-            //vamos validar o vendedor externo
-            if (tUsuario.Vendedor_Externo != 0)
-            {
-                if (string.IsNullOrEmpty(tUsuario.Loja))
-                {
-                    pedidoRetorno.ListaErros.Add("Não foi especificada a loja que fez a indicação.");
-                    return pedidoRetorno;
-                }
-
-                var tLoja = db.Tlojas.Where(x => x.Loja == tUsuario.Loja).Count();
-                if (tLoja == 0)
-                {
-                    pedidoRetorno.ListaErros.Add("Loja " + tUsuario.Loja + " não está cadastrada.");
-                    return pedidoRetorno;
-                }
-            }
-
-            if (tUsuario.Loja == Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE)
-            {
-                if (string.IsNullOrEmpty(pedido.Ambiente.Indicador) && pedido.Valor.PermiteRAStatus == 1)
-                    pedidoRetorno.ListaErros.Add("Usuário não pode opcao_possui_RA");
-            }
-
-            if (tUsuario.Loja == Constantes.NUMERO_LOJA_BONSHOP)
-            {
-                if (string.IsNullOrEmpty(pedido.Ambiente.Indicador) && pedido.Valor.PermiteRAStatus == 1)
-                    pedidoRetorno.ListaErros.Add("Usuário não pode opcao_possui_RA");
-            }
 
             //8- busca o orçamentista para saber se permite RA 
-            string? tOrcamentistaApelido = null;
-            short tOrcamentistaPermite_RA_Status = 0;
-            if (!String.IsNullOrEmpty(pedido.Ambiente.Indicador))
-            {
-                TorcamentistaEindicador tOrcamentista = await prepedidoBll.BuscarTorcamentista(pedido.Ambiente.Indicador);
-                if (tOrcamentista == null)
-                {
-                    pedidoRetorno.ListaErros.Add($"Falha ao recuperar os dados do indicador! Indicador: {pedido.Ambiente.Indicador}");
-                    return pedidoRetorno;
-                }
-                tOrcamentistaApelido = tOrcamentista.Apelido;
-                tOrcamentistaPermite_RA_Status = tOrcamentista.Permite_RA_Status;
-            }
+            short TOrcamentista_Permite_RA_Status = 0;
+            if (Indicador != null)
+                TOrcamentista_Permite_RA_Status = Indicador.Permite_RA_Status;
 
 
 
@@ -203,7 +192,7 @@ Fluxo no módulo loja:
 
             /* 13- valida o tipo de parcelamento "AV", "CE", "SE" */
             /* 14- valida a quantidade de parcela */
-            FormaPagtoDados formasPagto = await formaPagtoBll.ObterFormaPagto(tOrcamentistaApelido, pedido.Cliente.Tipo.ParaString());
+            FormaPagtoDados formasPagto = await formaPagtoBll.ObterFormaPagto(pedido.Ambiente.Indicador, pedido.Cliente.Tipo.ParaString());
 
             string c_custoFinancFornecTipoParcelamento = prepedidoBll.ObterSiglaFormaPagto(pedido.FormaPagtoCriacao);
             short c_custoFinancFornecQtdeParcelas = (short)Prepedido.PrepedidoBll.ObterCustoFinancFornecQtdeParcelasDeFormaPagto(pedido.FormaPagtoCriacao);
@@ -213,7 +202,7 @@ Fluxo no módulo loja:
 
             validacoesFormaPagtoBll.ValidarFormaPagto(pedido.FormaPagtoCriacao, pedidoRetorno.ListaErros,
                 pedido.Configuracao.LimiteArredondamento, pedido.Configuracao.MaxErroArredondamento, c_custoFinancFornecTipoParcelamento, formasPagto,
-                tOrcamentistaPermite_RA_Status, pedido.Valor.Vl_total_NF, pedido.Valor.Vl_total);
+                TOrcamentista_Permite_RA_Status, pedido.Valor.Vl_total_NF, pedido.Valor.Vl_total);
             if (pedidoRetorno.ListaErros.Any())
                 return pedidoRetorno;
 
@@ -225,21 +214,6 @@ Fluxo no módulo loja:
 
             /* 10- valida se o pedido é com ou sem indicação
              * 11- valida percentual máximo de comissão */
-            if (pedido.Ambiente.ComIndicador)
-            {
-                if (string.IsNullOrEmpty(pedido.Ambiente.Indicador))
-                {
-                    pedidoRetorno.ListaErros.Add("Informe quem é o indicador.");
-                }
-
-                #region Não estou retornando a mensagem abaixo, pois o campos pedido.OpcaoPossuiRa é bool, 
-                //sendo assim não tem como ser vazio
-                //elseif rb_RA = "" then
-                //    alerta = "Informe se o pedido possui RA ou não."
-                //end if
-                #endregion
-            }
-
             if (pedido.Cliente.Tipo.PessoaJuridica())
                 percDescComissaoUtilizar = percentualMaxDescEComissao.PercMaxComissaoEDescPJ;
             else
@@ -254,9 +228,6 @@ Fluxo no módulo loja:
                 vl_limite_mensal_consumido = await UtilsGlobais.Util.CalcularLimiteMensalConsumidoDoIndicador(pedido.Ambiente.Indicador, DateTime.Now, contextoProvider);
                 vl_limite_mensal_disponivel = vl_limite_mensal - vl_limite_mensal_consumido;
             }
-
-
-
 
             //validar os produtos
             Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prepedido = PedidoCriacaoDados.PrePedidoDadosDePedidoCriacaoDados(pedido);
@@ -278,6 +249,32 @@ Fluxo no módulo loja:
             if (pedido.ListaProdutos.Count() > 0)
                 pedidoBll.ConsisteProdutosValorZerados(pedido.ListaProdutos, pedidoRetorno.ListaErros,
                     pedido.Ambiente.ComIndicador, pedido.Valor.PermiteRAStatus);
+
+            //7- se tiver "vendedor_externo", busca (nome, razão social) na t_LOJA
+            //vamos validar o usuario e atribuir alguns valores da base de dados
+            Tusuario tUsuario = db.Tusuarios.Where(x => x.Usuario.ToUpper() == pedido.Ambiente.Usuario.ToUpper()).FirstOrDefault();
+            if (tUsuario == null)
+            {
+                pedidoRetorno.ListaErros.Add("Usuário não encontrado.");
+                return pedidoRetorno;
+            }
+
+            //vamos validar o vendedor externo
+            if (tUsuario.Vendedor_Externo != 0)
+            {
+                if (string.IsNullOrEmpty(tUsuario.Loja))
+                {
+                    pedidoRetorno.ListaErros.Add("Não foi especificada a loja que fez a indicação.");
+                    return pedidoRetorno;
+                }
+
+                var tLoja = db.Tlojas.Where(x => x.Loja == tUsuario.Loja).Count();
+                if (tLoja == 0)
+                {
+                    pedidoRetorno.ListaErros.Add("Loja " + tUsuario.Loja + " não está cadastrada.");
+                    return pedidoRetorno;
+                }
+            }
 
             /* 2- busca os dados do cliente */
             Tcliente tcliente = db.Tclientes.Where(r => r.Cnpj_Cpf == pedido.Cliente.Cnpj_Cpf).FirstOrDefault();

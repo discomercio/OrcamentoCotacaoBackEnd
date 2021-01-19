@@ -1240,13 +1240,13 @@ namespace Pedido
         }
 
         public void ConsisteProdutosValorZerados(List<PedidoCriacaoProdutoDados> lstProdutos, List<string> lstErros,
-            bool comIndicacao, short PermiteRaStatus)
+            bool comIndicacao, bool PermiteRaStatus)
         {
             foreach (var x in lstProdutos)
             {
                 if (x.Preco_Venda <= 0)
                     lstErros.Add("Produto '" + x.Produto + "' está com valor de venda zerado!");
-                else if (comIndicacao && PermiteRaStatus == 1 && x.Preco_NF <= 0)
+                else if (comIndicacao && PermiteRaStatus && x.Preco_NF <= 0)
                     lstErros.Add("Produto '" + x.Produto + "' está com preço zerado!");
             };
         }
