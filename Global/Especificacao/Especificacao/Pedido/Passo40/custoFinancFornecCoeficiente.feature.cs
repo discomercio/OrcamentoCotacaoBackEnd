@@ -135,19 +135,19 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 26
- testRunner.When("Informo \"PedidoProdutoPedidoDados[0].Preco_Venda\" = \"939.87\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"ListaProdutos[0].Preco_Venda\" = \"939.87\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 27
- testRunner.When("Informo \"PedidoProdutoPedidoDados[0].Preco_NF\" = \"939.87\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"ListaProdutos[0].Preco_NF\" = \"939.87\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 28
- testRunner.When("Informo \"PedidoProdutoPedidoDados[0].Preco_Lista\" = \"939.87\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"ListaProdutos[0].Preco_Lista\" = \"939.87\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 29
- testRunner.When("Informo \"PedidoProdutoPedidoDados[0].Preco_NF\" = \"939.87\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"ListaProdutos[0].Preco_NF\" = \"939.87\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 30
- testRunner.When("Informo \"PedidoProdutoPedidoDados[0].CustoFinancFornecCoeficiente\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"ListaProdutos[0].CustoFinancFornecCoeficiente\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 31
  testRunner.Then("Erro \"Coeficiente do fabricante (003) está incorreto!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
