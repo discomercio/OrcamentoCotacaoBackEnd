@@ -1,0 +1,82 @@
+﻿{
+  "TokenAcesso": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJzdXBvcnRlIDEiLCJ1bmlxdWVfbmFtZSI6IkdVSUxIRVJNRSBHT01FUyBQSUVEQURFIC0gUyIsInJvbGUiOiJBcGlNYWdlbnRvIiwibmJmIjoxNjAxMDYzMzE3LCJleHAiOjE3NTg3NDMzMTcsImlhdCI6MTYwMTA2MzMxN30.wU56GsuPwyISJc8BnG08waX1j20KTZ1yghhvYzyf21Q",
+  "Cnpj_Cpf": "14039603052",
+  "InfCriacaoPedido": {
+    "Pedido_bs_x_ac": "123456789",
+    "Marketplace_codigo_origem": "",
+    "Pedido_bs_x_marketplace": ""
+  },
+  "EnderecoCadastralCliente": {
+    "Endereco_logradouro": "Rua Francisco Pecoraro",
+    "Endereco_numero": "101",
+    "Endereco_complemento": "",
+    "Endereco_bairro": "Água Fria",
+    "Endereco_cidade": "São Paulo",
+    "Endereco_uf": "SP",
+    "Endereco_cep": "02408150",
+    "Endereco_email": "magento@magento.com.teste",
+    "Endereco_email_xml": "",
+    "Endereco_nome": "Teste Cliente Magento 2",
+    "Endereco_ddd_res": "11",
+    "Endereco_tel_res": "112252333",
+    "Endereco_ddd_com": "",
+    "Endereco_tel_com": "",
+    "Endereco_ramal_com": "",
+    "Endereco_ddd_cel": "11",
+    "Endereco_tel_cel": "98755252",
+    "Endereco_ddd_com_2": "",
+    "Endereco_tel_com_2": "",
+    "Endereco_ramal_com_2": "",
+    "Endereco_tipo_pessoa": "PF",
+    "Endereco_cnpj_cpf": "14039603052",
+    "PontoReferencia": "",
+    "Endereco_contato": ""
+  },
+  "OutroEndereco": true,
+  "EnderecoEntrega": {
+    "EndEtg_endereco": "Rua Professor Fábio Fanucchi",
+    "EndEtg_endereco_numero": "97",
+    "EndEtg_endereco_complemento": "",
+    "EndEtg_bairro": "Jardim São Paulo(Zona Norte)",
+    "EndEtg_cidade": "São Paulo",
+    "EndEtg_uf": "SP",
+    "EndEtg_cep": "02045080",
+    "EndEtg_cod_justificativa": "003",
+    "EndEtg_email": "testeCad@Gabriel.com",
+    "EndEtg_email_xml": "",
+    "EndEtg_nome": "Vivian",
+    "EndEtg_ddd_res": "11",
+    "EndEtg_tel_res": "11111111",
+    "EndEtg_ddd_com": "11",
+    "EndEtg_tel_com": "12345678",
+    "EndEtg_ramal_com": "",
+    "EndEtg_ddd_cel": "11",
+    "EndEtg_tel_cel": "981603313",
+    "EndEtg_ddd_com_2": "",
+    "EndEtg_tel_com_2": "",
+    "EndEtg_ramal_com_2": "",
+    "EndEtg_tipo_pessoa": "PF",
+    "EndEtg_cnpj_cpf": "14039603052",
+    "EndEtg_contribuinte_icms_status": 1,
+    "EndEtg_produtor_rural_status": 2,
+    "EndEtg_ie": "244.355.757.113"
+  },
+  "ListaProdutos": [
+    {
+      "Fabricante": "001",
+      "Produto": "001000",
+      "Qtde": 1,
+      "Preco_Venda": 494.41,
+      "Preco_NF": 494.41
+    }
+  ],
+  "VlTotalDestePedido": 494.41,
+  "FormaPagtoCriacao": {
+    "Tipo_Parcelamento": 1,
+    "C_pu_valor": 0,
+    "C_pc_qtde": 0,
+    "C_pc_valor": 0
+  },
+  "Obs_1": "teste magento",
+  "Frete": 0
+}

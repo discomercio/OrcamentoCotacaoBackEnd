@@ -11,33 +11,33 @@ namespace Pedido.Criacao.Passo10
 {
     class Passo10
     {
-        private readonly PedidoCriacaoDados pedido;
-        private readonly PedidoCriacaoRetornoDados retorno;
-        private readonly Pedido.Criacao.PedidoCriacao pedidoCriacao;
+        private readonly PedidoCriacaoDados Pedido;
+        private readonly PedidoCriacaoRetornoDados Retorno;
+        private readonly Pedido.Criacao.PedidoCriacao Criacao;
         public Passo10(PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao pedidoCriacao)
         {
-            this.pedido = pedido ?? throw new ArgumentNullException(nameof(pedido));
-            this.retorno = retorno ?? throw new ArgumentNullException(nameof(retorno));
-            this.pedidoCriacao = pedidoCriacao ?? throw new ArgumentNullException(nameof(pedidoCriacao));
+            this.Pedido = pedido ?? throw new ArgumentNullException(nameof(pedido));
+            this.Retorno = retorno ?? throw new ArgumentNullException(nameof(retorno));
+            this.Criacao = pedidoCriacao ?? throw new ArgumentNullException(nameof(pedidoCriacao));
         }
 
         public async Task ValidarCliente()
         {
             //vamos validar os dados do cliente que esta vindo no pedido
-            var dadosClienteCadastroDados = Cliente.Dados.DadosClienteCadastroDados.DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(pedido.EnderecoCadastralCliente,
-                pedido.Ambiente.Indicador, pedido.Ambiente.Loja,
-                "", null, pedido.Cliente.Id_cliente);
+            var dadosClienteCadastroDados = Cliente.Dados.DadosClienteCadastroDados.DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(Pedido.EnderecoCadastralCliente,
+                Pedido.Ambiente.Indicador, Pedido.Ambiente.Loja,
+                "", null, Pedido.Cliente.Id_cliente);
             await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDados,
                 false,
                 null,
                 null,
-                retorno.ListaErrosValidacao,
-                pedidoCriacao.contextoProvider,
-                pedidoCriacao.cepBll,
-                pedidoCriacao.bancoNFeMunicipio,
+                Retorno.ListaErrosValidacao,
+                Criacao.ContextoProvider,
+                Criacao.CepBll,
+                Criacao.BancoNFeMunicipio,
                 null,
-                pedido.Cliente.Tipo.PessoaFisica(),
-                pedido.Configuracao.SistemaResponsavelCadastro,
+                Pedido.Cliente.Tipo.PessoaFisica(),
+                Pedido.Configuracao.SistemaResponsavelCadastro,
                 false);
         }
         public void Permissoes()
@@ -46,17 +46,17 @@ namespace Pedido.Criacao.Passo10
 	        #em loja/ClienteEdita.asp
 	        #<% if operacao_permitida(OP_LJA_CADASTRA_NOVO_PEDIDO, s_lista_operacoes_permitidas) then %>
             */
-            if (!pedidoCriacao.UsuarioPermissao.Permitido(Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO))
-                retorno.ListaErros.Add("Usuário não tem permissão para criar pedido (OP_LJA_CADASTRA_NOVO_PEDIDO)");
+            if (!Criacao.Execucao.UsuarioPermissao.Permitido(Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO))
+                Retorno.ListaErros.Add("Usuário não tem permissão para criar pedido (OP_LJA_CADASTRA_NOVO_PEDIDO)");
             /*
             #loja/PedidoNovoConsiste.asp
             #	if operacao_permitida(OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_PEDIDO, s_lista_operacoes_permitidas) then intColSpan = intColSpan + 1
             #nesse caso, instalador_instala fica vazio
             #temos que verificar que não posso dar essa iinformação se não tiver a permissão
             */
-            if (!pedidoCriacao.UsuarioPermissao.Permitido(Constantes.OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_PEDIDO))
-                if (pedido.DetalhesPedido.InstaladorInstala != 0)
-                    retorno.ListaErros.Add("Usuário não tem permissão para informar o campo InstaladorInstala (OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_PEDIDO)");
+            if (!Criacao.Execucao.UsuarioPermissao.Permitido(Constantes.OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_PEDIDO))
+                if (Pedido.DetalhesPedido.InstaladorInstala != 0)
+                    Retorno.ListaErros.Add("Usuário não tem permissão para informar o campo InstaladorInstala (OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_PEDIDO)");
         }
     }
 }

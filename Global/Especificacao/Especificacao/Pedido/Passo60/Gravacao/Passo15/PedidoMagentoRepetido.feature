@@ -4,6 +4,7 @@ Feature: PedidoMagentoRepetido
 #Em ambos os casos, seria importante verificar no instante final antes da efetivar o cadastramento do pedido se o número Magento e,
 #caso exista, o número do pedido marketplace já estão cadastrados em algum pedido c/ st_entrega válido (diferente de cancelado).
 
+#Isto está feito no ASP abaixo:
 #loja/PedidoNovoConfirma.asp
 #ATENÇÃO: fazer com 2 campos separadamente; pedido_bs_x_marketplace e pedido_bs_x_ac
 #se loja = NUMERO_LOJA_ECOMMERCE_AR_CLUBE

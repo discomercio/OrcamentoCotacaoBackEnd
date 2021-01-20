@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoDados_para_banco_ARCLUBE_DIS20201204.json" />
     <None Remove="Ambiente\Loja\Loja_Bll\Bll\PedidoBll\PedidoBll\CadastrarPedido\CadastrarPedidoDados.json" />
     <None Remove="appsettings.testes.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tcliente.json" />
@@ -403,6 +404,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoDados_para_banco_ARCLUBE_DIS20201204.json" />
     <EmbeddedResource Include="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoDados.json" />
     <EmbeddedResource Include="Ambiente\Loja\Loja_Bll\Bll\PedidoBll\PedidoBll\CadastrarPedido\CadastrarPedidoDados.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Testoque.json" />

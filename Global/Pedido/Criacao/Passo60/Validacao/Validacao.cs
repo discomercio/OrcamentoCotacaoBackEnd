@@ -8,14 +8,14 @@ namespace Pedido.Criacao.Passo60.Validacao
 {
     class Validacao
     {
-        private readonly PedidoCriacaoDados pedido;
-        private readonly PedidoCriacaoRetornoDados retorno;
-        private readonly Pedido.Criacao.PedidoCriacao pedidoCriacao;
+        private readonly PedidoCriacaoDados Pedido;
+        private readonly PedidoCriacaoRetornoDados Retorno;
+        private readonly Pedido.Criacao.PedidoCriacao Criacao;
         public Validacao(PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao pedidoCriacao)
         {
-            this.pedido = pedido ?? throw new ArgumentNullException(nameof(pedido));
-            this.retorno = retorno ?? throw new ArgumentNullException(nameof(retorno));
-            this.pedidoCriacao = pedidoCriacao ?? throw new ArgumentNullException(nameof(pedidoCriacao));
+            this.Pedido = pedido ?? throw new ArgumentNullException(nameof(pedido));
+            this.Retorno = retorno ?? throw new ArgumentNullException(nameof(retorno));
+            this.Criacao = pedidoCriacao ?? throw new ArgumentNullException(nameof(pedidoCriacao));
         }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously

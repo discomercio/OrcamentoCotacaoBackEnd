@@ -8,21 +8,21 @@ namespace Pedido.Criacao.Passo20
 {
     class Passo20
     {
-        private readonly PedidoCriacaoDados pedido;
-        private readonly PedidoCriacaoRetornoDados retorno;
-        private readonly Pedido.Criacao.PedidoCriacao pedidoCriacao;
+        private readonly PedidoCriacaoDados Pedido;
+        private readonly PedidoCriacaoRetornoDados Retorno;
+        private readonly Pedido.Criacao.PedidoCriacao Criacao;
         public Passo20(PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao pedidoCriacao)
         {
-            this.pedido = pedido ?? throw new ArgumentNullException(nameof(pedido));
-            this.retorno = retorno ?? throw new ArgumentNullException(nameof(retorno));
-            this.pedidoCriacao = pedidoCriacao ?? throw new ArgumentNullException(nameof(pedidoCriacao));
+            this.Pedido = pedido ?? throw new ArgumentNullException(nameof(pedido));
+            this.Retorno = retorno ?? throw new ArgumentNullException(nameof(retorno));
+            this.Criacao = pedidoCriacao ?? throw new ArgumentNullException(nameof(pedidoCriacao));
         }
 
         public async Task ValidarEnderecoEntrega()
         {
             /* valida endereço de entrega */
-            await pedidoCriacao.validacoesPrepedidoBll.ValidarEnderecoEntrega(pedido.EnderecoEntrega, retorno.ListaErros,
-                pedido.Ambiente.Indicador, pedido.Cliente.Tipo.ParaString(), false, pedido.Ambiente.Loja);
+            await Criacao.ValidacoesPrepedidoBll.ValidarEnderecoEntrega(Pedido.EnderecoEntrega, Retorno.ListaErros,
+                Pedido.Ambiente.Indicador, Pedido.Cliente.Tipo.ParaString(), false, Pedido.Ambiente.Loja);
         }
     }
 }

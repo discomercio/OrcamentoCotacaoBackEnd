@@ -9,57 +9,59 @@ namespace Pedido.Criacao.Passo50
 {
     class Passo50
     {
-        private readonly PedidoCriacaoDados pedido;
-        private readonly PedidoCriacaoRetornoDados retorno;
-        private readonly Pedido.Criacao.PedidoCriacao pedidoCriacao;
+        private readonly PedidoCriacaoDados Pedido;
+        private readonly PedidoCriacaoRetornoDados Retorno;
+        private readonly Pedido.Criacao.PedidoCriacao Criacao;
         public Passo50(PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao pedidoCriacao)
         {
-            this.pedido = pedido ?? throw new ArgumentNullException(nameof(pedido));
-            this.retorno = retorno ?? throw new ArgumentNullException(nameof(retorno));
-            this.pedidoCriacao = pedidoCriacao ?? throw new ArgumentNullException(nameof(pedidoCriacao));
+            this.Pedido = pedido ?? throw new ArgumentNullException(nameof(pedido));
+            this.Retorno = retorno ?? throw new ArgumentNullException(nameof(retorno));
+            this.Criacao = pedidoCriacao ?? throw new ArgumentNullException(nameof(pedidoCriacao));
         }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task Executar()
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             EntregaImediata();
-            await ValidarRA();
+            ValidarRA();
         }
         private void EntregaImediata()
         {
             //valida somente EntregaImediataData e EntregaImediata
-            pedidoCriacao.validacoesPrepedidoBll.ValidarDetalhesPrepedido(pedido.DetalhesPedido, retorno.ListaErros);
+            Criacao.ValidacoesPrepedidoBll.ValidarDetalhesPrepedido(Pedido.DetalhesPedido, Retorno.ListaErros);
         }
-        private async Task ValidarRA()
+        private void ValidarRA()
         {
-            if (string.IsNullOrEmpty(pedido.Ambiente.Indicador) && pedido.Valor.PedidoPossuiRa())
-                retorno.ListaErros.Add("Necessário indicador para usar RA");
+            if (string.IsNullOrEmpty(Pedido.Ambiente.Indicador) && Pedido.Valor.PedidoPossuiRa())
+                Retorno.ListaErros.Add("Necessário indicador para usar RA");
 
-            if (pedido.Valor.PedidoPossuiRa() && !pedido.Valor.PermiteRAStatus)
-                retorno.ListaErros.Add("Pedido está usando RA mas está inconsistente com PermiteRAStatus.");
+            if (Pedido.Valor.PedidoPossuiRa() && !Pedido.Valor.PermiteRAStatus)
+                Retorno.ListaErros.Add("Pedido está usando RA mas está inconsistente com PermiteRAStatus.");
 
             //o resto só validamos se tiver RA
-            if (!pedido.Valor.PedidoPossuiRa())
+            if (!Pedido.Valor.PedidoPossuiRa())
                 return;
 
 
             //repetido, né? melhor...
-            if (String.IsNullOrEmpty(pedido.Ambiente.Indicador))
+            if (String.IsNullOrEmpty(Pedido.Ambiente.Indicador))
             {
-                retorno.ListaErros.Add("Necessário indicador para usar RA");
+                Retorno.ListaErros.Add("Necessário indicador para usar RA");
                 return;
             }
 
-            if (pedidoCriacao.Indicador == null)
+            if (Criacao.Execucao.TabelasBanco.Indicador == null)
             {
-                retorno.ListaErros.Add($"Falha ao recuperar os dados do indicador! Indicador: {pedido.Ambiente.Indicador}");
+                Retorno.ListaErros.Add($"Falha ao recuperar os dados do indicador! Indicador: {Pedido.Ambiente.Indicador}");
                 return;
             }
             bool Indicador_Permite_RA_Status;
-            Indicador_Permite_RA_Status = pedidoCriacao.Indicador.Permite_RA_Status == 1;
+            Indicador_Permite_RA_Status = Criacao.Execucao.TabelasBanco.Indicador.Permite_RA_Status == 1;
 
 
-            if (pedido.Valor.PedidoPossuiRa() && !Indicador_Permite_RA_Status)
-                retorno.ListaErros.Add("Indicador não tem permissão para usar RA");
+            if (Pedido.Valor.PedidoPossuiRa() && !Indicador_Permite_RA_Status)
+                Retorno.ListaErros.Add("Indicador não tem permissão para usar RA");
         }
     }
 }
