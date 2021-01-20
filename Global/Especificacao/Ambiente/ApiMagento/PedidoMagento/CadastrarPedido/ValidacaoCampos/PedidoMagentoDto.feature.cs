@@ -309,7 +309,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar se o que expomos pelo ObterCodigoMarketplace foi informado", null, tagsOfScenario, argumentsOfScenario);
-#line 65
+#line 62
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -329,40 +329,34 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 66
+#line 63
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 67
+#line 64
  testRunner.And("Informo \"InfCriacaoPedido.Pedido_bs_x_marketplace\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 68
+#line 65
  testRunner.And("Informo \"InfCriacaoPedido.Pedido_bs_x_ac\" = \"123456789\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 69
+#line 66
  testRunner.And("Informo \"InfCriacaoPedido.Marketplace_codigo_origem\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 70
+#line 67
  testRunner.Then("Erro \"Código Marketplace não encontrado.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 72
+#line 69
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 73
+#line 70
  testRunner.And("Informo \"InfCriacaoPedido.Pedido_bs_x_marketplace\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 74
+#line 71
  testRunner.And("Informo \"InfCriacaoPedido.Pedido_bs_x_ac\" = \"123456789\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 75
+#line 72
  testRunner.And("Informo \"InfCriacaoPedido.Marketplace_codigo_origem\" = \"019\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 76
- testRunner.And("Informo \"Tipo_Parcelamento\" = \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 77
- testRunner.And("Informo \"C_pu_valor\" = \"3132.90\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 78
+#line 73
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -377,7 +371,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EnderecoCadastralCliente", null, tagsOfScenario, argumentsOfScenario);
-#line 82
+#line 77
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -409,7 +403,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EnderecoCadastralCliente CPF diferente do principal", null, tagsOfScenario, argumentsOfScenario);
-#line 85
+#line 80
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -429,16 +423,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 86
+#line 81
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 87
+#line 82
  testRunner.And("Informo \"EnderecoCadastralCliente.Endereco_cnpj_cpf\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 88
+#line 83
  testRunner.And("Informo \"pedidoMagentoDto.Cnpj_Cpf\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 89
+#line 84
  testRunner.Then("Erro \"Cnpj_Cpf está diferente de EnderecoEntrega.EndEtg_cnpj_cpf.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -455,7 +449,7 @@ this.ScenarioInitialize(scenarioInfo);
                     "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("DetalhesPedidoMagentoDto", null, tagsOfScenario, argumentsOfScenario);
-#line 92
+#line 87
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -475,25 +469,25 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 98
+#line 93
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 99
+#line 94
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 100
+#line 95
  testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{pedido}\", verificar campo \"st_e" +
                         "ntrega_imediata\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 101
+#line 96
  testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{pedido}\", verificar campo \"Prev" +
                         "isaoEntregaData\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 102
+#line 97
  testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{pedido}\", verificar campo \"StBe" +
                         "mUsoComum\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 103
+#line 98
  testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{pedido}\", verificar campo \"Inst" +
                         "aladorInstalaStatus\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

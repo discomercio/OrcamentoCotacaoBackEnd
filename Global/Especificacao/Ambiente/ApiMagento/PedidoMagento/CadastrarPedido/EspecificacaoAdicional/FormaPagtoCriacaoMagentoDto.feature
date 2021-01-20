@@ -1,5 +1,6 @@
 ﻿@ignore
 Feature: FormaPagtoCriacaoMagentoDto
+
 #validar os campos:
 #        /// Tipo_Parcelamento:
 #        ///     COD_FORMA_PAGTO_A_VISTA = "1",
@@ -14,8 +15,6 @@ Feature: FormaPagtoCriacaoMagentoDto
 #
 #        public int? C_pc_qtde { get; set; }
 #        public decimal? C_pc_valor { get; set; }
-
-
 #se tiver dados em outros campos esta errado
 @mytag
 Scenario: Tipo_Parcelamento - á vista
@@ -27,6 +26,10 @@ Scenario: Tipo_Parcelamento - á vista
 	And Tabela "t_PEDIDO" registro com campo "pedido" = "{número pedido}", verificar campo "pc_qtde_parcelas" = "0"
 	And Tabela "t_PEDIDO" registro com campo "pedido" = "{número pedido}", verificar campo "pc_valor_parcela" = "0.00"
 
+#afazer: precisa fazer alteração em todas as aplicações para passar o sistemaResponsavel
+# Parcela única é validado apenas se o cliente for PJ, no caso do magento não faremos pedido para PJ mas,
+# aceitamos Parcela única para PF
+# isso ocorre em FormaPagoBll.ObterFormaPagto
 Scenario: Tipo_Parcelamento - parcela única
 	Given Pedido base
 	When Informo "Tipo_Parcelamento" = "5"
@@ -39,7 +42,6 @@ Scenario: Tipo_Parcelamento - parcela única
 	And Tabela "t_PEDIDO" registro com campo "pedido" = "{número pedido}", verificar campo "pc_qtde_parcelas" = "0"
 	And Tabela "t_PEDIDO" registro com campo "pedido" = "{número pedido}", verificar campo "pc_valor_parcela" = "0.00"
 	And Tabela "t_PEDIDO" registro com campo "pedido" = "{número pedido}", verificar campo "av_forma_pagto" = "0"
-
 
 Scenario: Tipo_Parcelamento - parcelado cartão
 	Given Pedido base
