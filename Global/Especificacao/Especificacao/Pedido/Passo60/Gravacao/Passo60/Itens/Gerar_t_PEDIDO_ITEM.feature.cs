@@ -83,13 +83,88 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60.Itens
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Gerar_t_PEDIDO_ITEM")]
+        [Xunit.SkippableTheoryAttribute(DisplayName="Gerar_t_PEDIDO_ITEM")]
         [Xunit.TraitAttribute("FeatureTitle", "Gerar_t_PEDIDO_ITEM")]
         [Xunit.TraitAttribute("Description", "Gerar_t_PEDIDO_ITEM")]
-        public virtual void Gerar_T_PEDIDO_ITEM()
+        [Xunit.InlineDataAttribute("1", "pedido", "pedido gerado", new string[0])]
+        [Xunit.InlineDataAttribute("1", "fabricante", "003", new string[0])]
+        [Xunit.InlineDataAttribute("1", "produto", "003220", new string[0])]
+        [Xunit.InlineDataAttribute("1", "qtde", "2", new string[0])]
+        [Xunit.InlineDataAttribute("1", "desc_dado", "0", new string[0])]
+        [Xunit.InlineDataAttribute("1", "preco_venda", "659.600", new string[0])]
+        [Xunit.InlineDataAttribute("1", "preco_fabricante", "659.300", new string[0])]
+        [Xunit.InlineDataAttribute("1", "preco_lista", "659.600", new string[0])]
+        [Xunit.InlineDataAttribute("1", "margem", "0.0", new string[0])]
+        [Xunit.InlineDataAttribute("1", "desc_max", "8.0", new string[0])]
+        [Xunit.InlineDataAttribute("1", "comissao", "0.0", new string[0])]
+        [Xunit.InlineDataAttribute("1", "descricao", "Evap. AR09MVSPBGMNAZ Inverter - FRIO", new string[0])]
+        [Xunit.InlineDataAttribute("1", "ean", "7892509093149", new string[0])]
+        [Xunit.InlineDataAttribute("1", "grupo", "INV", new string[0])]
+        [Xunit.InlineDataAttribute("1", "peso", "10.2", new string[0])]
+        [Xunit.InlineDataAttribute("1", "qtde_volumes", "1", new string[0])]
+        [Xunit.InlineDataAttribute("1", "abaixo_min_status", "0", new string[0])]
+        [Xunit.InlineDataAttribute("1", "abaixo_min_autorizacao", "", new string[0])]
+        [Xunit.InlineDataAttribute("1", "abaixo_min_autorizador", "", new string[0])]
+        [Xunit.InlineDataAttribute("1", "sequencia", "1", new string[0])]
+        [Xunit.InlineDataAttribute("1", "markup_fabricante", "0", new string[0])]
+        [Xunit.InlineDataAttribute("1", "preco_NF", "694.0500", new string[0])]
+        [Xunit.InlineDataAttribute("1", "abaixo_min_superv_autorizador", "", new string[0])]
+        [Xunit.InlineDataAttribute("1", "vl_custo2", "0.0000", new string[0])]
+        [Xunit.InlineDataAttribute("1", "descricao_html", "Evap. <b>AR09MVS</b>PBGMNAZ Inverter - FRIO", new string[0])]
+        [Xunit.InlineDataAttribute("1", "custoFinancFornecCoeficiente", "1.0527", new string[0])]
+        [Xunit.InlineDataAttribute("1", "custoFinancFornecPrecoListaBase", "626.5800", new string[0])]
+        [Xunit.InlineDataAttribute("1", "cubagem", "0.09", new string[0])]
+        [Xunit.InlineDataAttribute("1", "ncm", "84151011", new string[0])]
+        [Xunit.InlineDataAttribute("1", "cst", "000", new string[0])]
+        [Xunit.InlineDataAttribute("1", "separacao_rel_nsu", "0", new string[0])]
+        [Xunit.InlineDataAttribute("1", "separacao_data", "null", new string[0])]
+        [Xunit.InlineDataAttribute("1", "separacao_data_hora", "null", new string[0])]
+        [Xunit.InlineDataAttribute("1", "separacao_deposito_zona_id", "0", new string[0])]
+        [Xunit.InlineDataAttribute("1", "descontinuado", "", new string[0])]
+        [Xunit.InlineDataAttribute("1", "subgrupo", "null", new string[0])]
+        [Xunit.InlineDataAttribute("2", "pedido", "pedido gerado", new string[0])]
+        [Xunit.InlineDataAttribute("2", "fabricante", "003", new string[0])]
+        [Xunit.InlineDataAttribute("2", "produto", "003221", new string[0])]
+        [Xunit.InlineDataAttribute("2", "qtde", "2", new string[0])]
+        [Xunit.InlineDataAttribute("2", "desc_dado", "0", new string[0])]
+        [Xunit.InlineDataAttribute("2", "preco_venda", "989.4000", new string[0])]
+        [Xunit.InlineDataAttribute("2", "preco_fabricante", "988.9500", new string[0])]
+        [Xunit.InlineDataAttribute("2", "preco_lista", "939.8700", new string[0])]
+        [Xunit.InlineDataAttribute("2", "margem", "0.0", new string[0])]
+        [Xunit.InlineDataAttribute("2", "desc_max", "8.0", new string[0])]
+        [Xunit.InlineDataAttribute("2", "comissao", "0.0", new string[0])]
+        [Xunit.InlineDataAttribute("2", "descricao", "Cond. AR09MVSPBGMXAZ Inverter - FRIO", new string[0])]
+        [Xunit.InlineDataAttribute("2", "ean", "7892509093156", new string[0])]
+        [Xunit.InlineDataAttribute("2", "grupo", "INV", new string[0])]
+        [Xunit.InlineDataAttribute("2", "peso", "29.5", new string[0])]
+        [Xunit.InlineDataAttribute("2", "qtde_volumes", "1", new string[0])]
+        [Xunit.InlineDataAttribute("2", "abaixo_min_status", "0", new string[0])]
+        [Xunit.InlineDataAttribute("2", "abaixo_min_autorizacao", "", new string[0])]
+        [Xunit.InlineDataAttribute("2", "abaixo_min_autorizador", "", new string[0])]
+        [Xunit.InlineDataAttribute("2", "sequencia", "2", new string[0])]
+        [Xunit.InlineDataAttribute("2", "markup_fabricante", "0", new string[0])]
+        [Xunit.InlineDataAttribute("2", "preco_NF", "1041.0700", new string[0])]
+        [Xunit.InlineDataAttribute("2", "abaixo_min_superv_autorizador", "", new string[0])]
+        [Xunit.InlineDataAttribute("2", "vl_custo2", "0.0000", new string[0])]
+        [Xunit.InlineDataAttribute("2", "descricao_html", "Cond. <b>AR09MVS</b>PBGMXAZ Inverter - FRIO", new string[0])]
+        [Xunit.InlineDataAttribute("2", "custoFinancFornecCoeficiente", "1.0527", new string[0])]
+        [Xunit.InlineDataAttribute("2", "custoFinancFornecPrecoListaBase", "939.8700", new string[0])]
+        [Xunit.InlineDataAttribute("2", "cubagem", "0.19", new string[0])]
+        [Xunit.InlineDataAttribute("2", "ncm", "84151011", new string[0])]
+        [Xunit.InlineDataAttribute("2", "cst", "000", new string[0])]
+        [Xunit.InlineDataAttribute("2", "separacao_rel_nsu", "0", new string[0])]
+        [Xunit.InlineDataAttribute("2", "separacao_data", "null", new string[0])]
+        [Xunit.InlineDataAttribute("2", "separacao_data_hora", "null", new string[0])]
+        [Xunit.InlineDataAttribute("2", "separacao_deposito_zona_id", "0", new string[0])]
+        [Xunit.InlineDataAttribute("2", "descontinuado", "", new string[0])]
+        [Xunit.InlineDataAttribute("2", "subgrupo", "null", new string[0])]
+        public virtual void Gerar_T_PEDIDO_ITEM(string sequencia, string campo, string valor, string[] exampleTags)
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = exampleTags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Sequencia", sequencia);
+            argumentsOfScenario.Add("campo", campo);
+            argumentsOfScenario.Add("valor", valor);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Gerar_t_PEDIDO_ITEM", null, tagsOfScenario, argumentsOfScenario);
 #line 4
 this.ScenarioInitialize(scenarioInfo);
@@ -111,8 +186,15 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
+#line 11
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
 #line 12
- testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("Sem nehum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 13
+ testRunner.And(string.Format("Tabela \"t_PEDIDO_ITEM\" registro com campo \"pedido\" = \"pedido gerado\" e campo \"seq" +
+                            "uencia\" = <sequencia>, verificar campo \"{0}\" = \"{1}\"", campo, valor), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
