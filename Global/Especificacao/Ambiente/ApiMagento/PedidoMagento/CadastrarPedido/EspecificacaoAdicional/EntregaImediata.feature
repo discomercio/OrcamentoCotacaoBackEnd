@@ -6,5 +6,5 @@
 Scenario: EntregaImediata
 	Given Pedido base
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro com campo "cnpj_cpf" = "", verificar campo "EntregaImediata" = "2"
+	And Tabela "t_PEDIDO" registro com campo "pedido" = "pedido", verificar campo "EntregaImediata" = "2"
 	

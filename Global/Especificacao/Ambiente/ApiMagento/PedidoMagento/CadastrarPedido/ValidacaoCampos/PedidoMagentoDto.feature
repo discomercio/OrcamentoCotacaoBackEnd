@@ -2,6 +2,15 @@
 Feature: PedidoMagentoDto
 #testar a validação campo a campo
 
+#O teste "PedidoMagentoDto" não faz sentido fazer, pois validamos os pricipais campos conforme abaixo:
+#Exigimos o endereço de entrega em CadastrarPedido.CriacaoCliente/MagentoCriacaoCliente_PfFeature
+#Verificação de campos de enderço de entrega preenchidos em CadastrarPedido.EspecificacaoAdicional.EnderecoEntregaSomentePFFeature
+#Verificação de telefones CadastrarPedido.CriacaoCliente.Pf_Telefones
+#Campos obrigatórios estão concluídos em CadastrarPedido.EspecificacaoAdicional.MagentoCriacaoCliente_Pf_ObrigatoriosFeature
+#Verificação de pagtos estão em CadastrarPedido.EspecificacaoAdicional.FormaPagtoCriacaoMagentoDtoFeature
+#Verificação de campos de appsettings CadastrarPedido.EspecificacaoAdicional.CamposLidosAppsettingsFeature
+#Verificação de produtos composto e preço que vier estão em CadastrarPedido.EspecificacaoAdicional.EspecificacaoMagentoFeature
+#Verificação de frete e ponto de referência estão em CadastrarPedido.EspecificacaoAdicional.FretePontoReferenciaFeature
 @ignore
 Scenario: PedidoMagentoDto
 	When Fazer esta validação
@@ -48,9 +57,26 @@ Scenario: Pedido_bs_x_marketplace e Marketplace_codigo_origem já existem
 
 
 
+#afazer: precisa fazer alteração em todas as aplicações para passar o sistemaResponsavel
+# Parcela única é validado apenas se o cliente for PJ, no caso do magento não faremos pedido para PJ mas,
+# aceitamos Parcela única para PF
+# isso ocorre em FormaPagoBll.ObterFormaPagto
 @ignore
 Scenario: Validar se o que expomos pelo ObterCodigoMarketplace foi informado
-	When Fazer esta validação
+	Given Pedido base
+	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "123"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "123456789"
+	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "123"
+	Then Erro "Código Marketplace não encontrado."
+
+	Given Pedido base
+	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "123"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "123456789"
+	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "019"
+	And Informo "Tipo_Parcelamento" = "5"
+	And Informo "C_pu_valor" = "3132.90"
+	Then Sem nenhum erro
+
 
 
 Scenario: EnderecoCadastralCliente
@@ -69,4 +95,10 @@ Scenario: DetalhesPedidoMagentoDto
 	#// PrevisaoEntregaData = null
 	#// BemDeUso_Consumo = COD_ST_BEM_USO_CONSUMO_SIM
 	#//InstaladorInstala = COD_INSTALADOR_INSTALA_NAO
-	When Fazer esta validação
+	Given Pedido base
+	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro com campo "pedido" = "{pedido}", verificar campo "st_entrega_imediata" = "2"
+	And Tabela "t_PEDIDO" registro com campo "pedido" = "{pedido}", verificar campo "PrevisaoEntregaData" = "null"
+	And Tabela "t_PEDIDO" registro com campo "pedido" = "{pedido}", verificar campo "StBemUsoComum" = "1"
+	And Tabela "t_PEDIDO" registro com campo "pedido" = "{pedido}", verificar campo "InstaladorInstalaStatus" = "1"
+	

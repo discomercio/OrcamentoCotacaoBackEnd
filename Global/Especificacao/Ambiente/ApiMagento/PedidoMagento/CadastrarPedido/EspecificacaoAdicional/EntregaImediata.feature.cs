@@ -117,8 +117,8 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 9
- testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"cnpj_cpf\" = \"\", verificar campo \"EntregaIme" +
-                        "diata\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"pedido\", verificar campo \"Entreg" +
+                        "aImediata\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
