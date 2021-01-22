@@ -97,12 +97,53 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
   ngOnInit() {
     //lemos o único dado que é fixo
     const cpfCnpj = this.activatedRoute.snapshot.params.cpfCnpj;
+    debugger;
+
+
+
+
     this.dadosClienteCadastroDto.Cnpj_Cpf = cpfCnpj;
     this.clienteCadastroDto.DadosCliente = this.dadosClienteCadastroDto;
 
     //inicializar como vazio
     this.dadosClienteCadastroDto.Nome = "";
     this.dadosClienteCadastroDto.Contato = "";
+
+    //vamos verificar se o cliente já existe para que possamos redirecionar para a tela correta
+    this.buscarClienteService.buscar(cpfCnpj).toPromise()
+      .then((r) => {
+        debugger;
+        if (r === null) {
+          return;
+        }
+        //cliente já existe
+        this.router.navigate(['confirmar-cliente', StringUtils.retorna_so_digitos(cpfCnpj)],
+        { relativeTo: this.activatedRoute, state: cpfCnpj });
+      }).catch((r) => {
+        //deu erro na busca
+        //ou não achou nada...
+        this.alertaService.mostrarErroInternet(r);
+        return;
+      });
+  }
+
+  verificarCliente(cpfCnpj: string): boolean {
+
+    this.buscarClienteService.buscar(cpfCnpj).toPromise()
+      .then((r) => {
+        debugger;
+        if (r === null) {
+          return false;
+        }
+        //cliente já existe
+      }).catch((r) => {
+        //deu erro na busca
+        //ou não achou nada...
+        this.alertaService.mostrarErroInternet(r);
+        return false;
+      });
+
+    return true;
   }
 
   ehPf() {
@@ -116,13 +157,16 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
   }
 
 
-
-
+  //desabilita o botão para evitar duplo clique
+  desabilita = false;
 
   continuar() {
+
+    this.desabilita = true;
     //primeiro, vamos ver o CEP que está dentro do cliente
     if (!this.clienteCorpo.podeAvancar()) {
       this.alertaService.mostrarMensagem("Aguarde o carregamento do endereço antes de continuar.");
+      this.desabilita = false;
       return;
     }
     //avisamos para o corpo do cliente que vamos avançar
@@ -147,6 +191,7 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
     if (validacoes.length > 0) {
       this.desconverterTelefones();
       this.alertaService.mostrarMensagem("Campos inválidos. Preencha os campos marcados como obrigatórios. \nLista de erros: \n" + validacoes.join("\n"));
+      this.desabilita = false;
       return;
     }
 
@@ -154,6 +199,8 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
     this.clienteCadastroDto.DadosCliente.Loja = this.autenticacaoService.loja;
 
     //salvar e ir para a tela de confirmação de cliente
+
+
     this.carregando = true;
     this.buscarClienteService.cadastrarCliente(this.clienteCadastroDto).toPromise()
       .then((r) => {
@@ -167,6 +214,7 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
         if (r.length > 0) {
           this.desconverterTelefones();
           this.alertaService.mostrarMensagem("Erros ao salvar. \nLista de erros: \n" + r.join("\n"));
+          this.desabilita = false;
           return;
         }
         //agora podemos continuar
@@ -177,8 +225,10 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
         this.desconverterTelefones();
         this.carregando = false;
         this.alertaService.mostrarErroInternet(r);
+        this.desabilita = false;
       });
   }
+
   carregando = false;
 
   converterTelefones() {

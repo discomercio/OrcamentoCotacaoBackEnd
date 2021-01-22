@@ -17,7 +17,7 @@ namespace InfraBanco
         internal ContextoBdGravacao(ContextoBdBasico contexto)
         {
             this.contexto = contexto;
-            transacao = contexto.Database.BeginTransaction();
+            transacao = RelationalDatabaseFacadeExtensions.BeginTransaction(contexto.Database, System.Data.IsolationLevel.Serializable);
         }
 
 

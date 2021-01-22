@@ -272,6 +272,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   //#endregion
 
   voltar() {
+    debugger;
     //voltamos apra a fase anterior
     //fazer uma variavel para receber um valor para saber para onde voltar
     if (this.fase1e2juntas) {

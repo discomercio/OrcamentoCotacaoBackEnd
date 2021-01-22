@@ -600,17 +600,8 @@ namespace Cliente
             string id_cliente = "";
 
             var db = contextoProvider.GetContextoLeitura();
-            var verifica = await (from c in db.Tclientes
-                                  where c.Cnpj_Cpf == clienteCadastroDados.DadosCliente.Cnpj_Cpf
-                                  select c.Id).FirstOrDefaultAsync();
-
+            
             List<string> lstErros = new List<string>();
-
-            if (verifica != null)
-            {
-                lstErros.Add(MensagensErro.REGISTRO_COM_ID_JA_EXISTE(verifica));
-                return lstErros;
-            }
 
             //passar lista de bancos para validar
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await ListarBancosCombo()).ToList();
@@ -623,6 +614,15 @@ namespace Cliente
 
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
             {
+                    var verifica = await (from c in dbgravacao.Tclientes
+                                          where c.Cnpj_Cpf == clienteCadastroDados.DadosCliente.Cnpj_Cpf
+                                          select c.Id).FirstOrDefaultAsync();
+
+                if (verifica != null)
+                {
+                    lstErros.Add(MensagensErro.REGISTRO_COM_ID_JA_EXISTE(verifica));
+                    return lstErros;
+                }
                 string log = "";
 
                 Cliente.Dados.DadosClienteCadastroDados cliente = clienteCadastroDados.DadosCliente;

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Input } from '@angular/core';
 import { TelaDesktopService } from './servicos/telaDesktop/telaDesktop.service';
 import { Router, NavigationEnd, NavigationStart } from '@angular/router';
 import { AutenticacaoService } from './servicos/autenticacao/autenticacao.service'
@@ -20,7 +20,7 @@ import { environment } from 'src/environments/environment';
 })
 export class AppComponent implements OnInit {
   telaDesktop = true;
-  
+
 
   constructor(private readonly telaDesktopService: TelaDesktopService,
     public readonly autenticacaoService: AutenticacaoService,
@@ -121,4 +121,5 @@ export class AppComponent implements OnInit {
   }
 
   title = 'Sistema de pedidos';
+
 }
