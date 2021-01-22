@@ -43,7 +43,6 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   }
 
   ngOnInit() {
-
     this.endCadastralClientePrepedidoDto = new EnderecoCadastralClientePrepedidoDto();
     this.dadosClienteCadastroDto = null;
     if (this.router.getCurrentNavigation()) {
@@ -212,6 +211,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     let mensagem = new ClienteCadastroUtils().validarInscricaoestadualIcms(this.dadosClienteCadastroDto);
     if (mensagem && mensagem.trim() !== "") {
       this.mostrarMensagem(mensagem);
+      this.desabilita = false;
       return;
     }
 
@@ -240,14 +240,17 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
             }
 
             this.mostrarMensagem(`Dados salvos com sucesso.`);
+            this.desabilita = false;
             return;
           }
 
           //vamos mostrar os erros
           this.mostrarMensagem(`Ocorreu um erro ao salvar os dados. Mensagens de erro: ` + r.join(", "));
+          this.desabilita = false;
         },
         error: (r) => {
           this.alertaService.mostrarErroInternet(r);
+          this.desabilita = false;
         }
       }
     );
@@ -272,7 +275,6 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   //#endregion
 
   voltar() {
-    debugger;
     //voltamos apra a fase anterior
     //fazer uma variavel para receber um valor para saber para onde voltar
     if (this.fase1e2juntas) {
@@ -295,13 +297,16 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   //esta como undefined
   @ViewChild("clienteCorpo", { static: false }) clienteCorpo: ClienteCorpoComponent;
 
-
+  //desabilita o botão para evitar duplo clique
+  desabilita = false;
   continuar(): void {
+    //desabilita o botão para evitar duplo clique
+    this.desabilita = true;
     //primeiro, vamos ver o CEP que está dentro do cliente
     //somente se o confirmarEndereco estiver atribuído. Se não estiver, é porque não estamos na tela em que precisamos testar ele
     if (this.confirmarEndereco && !this.confirmarEndereco.podeAvancar()) {
       this.alertaService.mostrarMensagem("Aguarde o carregamento do endereço antes de continuar.");
-
+      this.desabilita = false;
       return;
     }
 
@@ -361,6 +366,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
           this.confirmarEndereco.componenteCep.required = true;
         }
         this.clienteCorpo.componenteCepDadosCadastrais.required = true;
+        this.desabilita = false;
         return;
       }
       //salvar no serviço

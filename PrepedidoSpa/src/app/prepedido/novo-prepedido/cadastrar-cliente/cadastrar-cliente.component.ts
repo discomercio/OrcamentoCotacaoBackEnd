@@ -97,11 +97,7 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
   ngOnInit() {
     //lemos o único dado que é fixo
     const cpfCnpj = this.activatedRoute.snapshot.params.cpfCnpj;
-    debugger;
-
-
-
-
+    
     this.dadosClienteCadastroDto.Cnpj_Cpf = cpfCnpj;
     this.clienteCadastroDto.DadosCliente = this.dadosClienteCadastroDto;
 
@@ -112,7 +108,6 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
     //vamos verificar se o cliente já existe para que possamos redirecionar para a tela correta
     this.buscarClienteService.buscar(cpfCnpj).toPromise()
       .then((r) => {
-        debugger;
         if (r === null) {
           return;
         }
@@ -131,7 +126,6 @@ export class CadastrarClienteComponent extends TelaDesktopBaseComponent implemen
 
     this.buscarClienteService.buscar(cpfCnpj).toPromise()
       .then((r) => {
-        debugger;
         if (r === null) {
           return false;
         }

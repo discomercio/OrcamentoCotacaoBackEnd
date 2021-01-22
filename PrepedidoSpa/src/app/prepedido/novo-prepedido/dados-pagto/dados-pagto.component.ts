@@ -533,7 +533,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     let retorno = "";
     this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento;
     this.recalcularValoresComCoeficiente(this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento);
-debugger;
+
     switch (this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento.toString()) {
       case this.constantes.COD_FORMA_PAGTO_A_VISTA:
         retorno = this.prePedidoDto.FormaPagtoCriacao.Qtde_Parcelas + " X " +
