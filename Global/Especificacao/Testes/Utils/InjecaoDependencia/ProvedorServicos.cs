@@ -45,6 +45,7 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
             Ambiente.ApiUnis.InjecaoDependencias.ConfigurarDependencias(services);
             Ambiente.ApiMagento.InjecaoDependencias.ConfigurarDependencias(services);
             Ambiente.Loja.Loja_Bll.InjecaoDependencias.ConfigurarDependencias(services);
+            Ambiente.PrepedidoApi.InjecaoDependencias.ConfigurarDependencias(services);
 
             Servicos = services.BuildServiceProvider();
 

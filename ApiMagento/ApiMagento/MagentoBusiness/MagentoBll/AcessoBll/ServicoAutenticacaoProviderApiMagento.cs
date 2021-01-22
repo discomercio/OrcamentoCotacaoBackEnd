@@ -21,7 +21,7 @@ namespace MagentoBusiness.MagentoBll.AcessoBll
             this.contextoProvider = contextoProvider;
         }
 
-        private static string Erro_ERR_IDENTIFICACAO = "OS DADOS INFORMADOS NA IDENTIFICAÇÃO ESTÃO INCORRETOS.";
+        private static readonly string Erro_ERR_IDENTIFICACAO = "OS DADOS INFORMADOS NA IDENTIFICAÇÃO ESTÃO INCORRETOS.";
 
         //retorna null se nao exisitr (ou se a senha estiver errada)
         public async Task<UsuarioLoginApiMagento> ObterUsuarioApiMagento(string usuarioOriginal, string senha, string ip, string userAgent,
@@ -86,9 +86,11 @@ namespace MagentoBusiness.MagentoBll.AcessoBll
 				" WHERE (t_PERFIL_X_USUARIO.usuario='" & usuario & "')" & _
 				" AND (t_OPERACAO.modulo='" & COD_OP_MODULO_CENTRAL & "')"
 							*/
-            var perfil = await (from p in contextoProvider.GetContextoLeitura().Tperfils
+            var db = contextoProvider.GetContextoLeitura();
+            var perfil = await (from p in db.Tperfils
+                                join pu in db.TperfilUsuarios on p.Id equals pu.Id_perfil
                                 where p.Apelido.ToUpper() == ApelidoPerfilLiberaAcessoApiMagento.ToUpper() &&
-                                      p.TperfilUsuario.Usuario.ToUpper() == usuarioMaisuculas && p.St_inativo == 0
+                                      pu.Usuario.ToUpper() == usuarioMaisuculas && p.St_inativo == 0
                                 select p.Id).FirstOrDefaultAsync();
             if (perfil == null)
             {
@@ -183,40 +185,38 @@ namespace MagentoBusiness.MagentoBll.AcessoBll
             logoutResultadoUnisDto.ListaErros.RemoveAll(r => true);
 
             //atualizar dados
-            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+            using var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing();
+            var tusuario = await (from u in dbgravacao.Tusuarios
+                                  where u.Usuario.ToUpper() == usuario.ToUpper()
+                                  select u).FirstOrDefaultAsync();
+            if (tusuario == null)
             {
-                var tusuario = await (from u in dbgravacao.Tusuarios
-                                      where u.Usuario.ToUpper() == usuario.ToUpper()
-                                      select u).FirstOrDefaultAsync();
-                if (tusuario == null)
-                {
-                    logoutResultadoUnisDto.ListaErros.Add($"Usuário não encontrado: {usuario}");
-                    return;
-                }
-
-                var sessionCtrlTicketAnterior = tusuario.SessionCtrlTicket;
-                tusuario.SessionCtrlTicket = null;
-                tusuario.SessionCtrlLoja = null;
-                tusuario.SessionCtrlModulo = null;
-                tusuario.SessionCtrlDtHrLogon = null;
-                dbgravacao.Update(tusuario);
-                dbgravacao.SaveChanges();
-
-                var tsessaoHistorico = await (from h in dbgravacao.TsessaoHistoricos
-                                              where h.Usuario.ToUpper() == usuario.ToUpper()
-                                              && h.DtHrInicio >= DateTime.Now.AddDays(-1)
-                                              && h.SessionCtrlTicket == sessionCtrlTicketAnterior
-                                              orderby h.DtHrInicio descending
-                                              select h).FirstOrDefaultAsync();
-                if (tsessaoHistorico != null)
-                {
-                    tsessaoHistorico.DtHrTermino = DateTime.Now;
-                    dbgravacao.Update(tsessaoHistorico);
-                    dbgravacao.SaveChanges();
-                }
-
-                dbgravacao.transacao.Commit();
+                logoutResultadoUnisDto.ListaErros.Add($"Usuário não encontrado: {usuario}");
+                return;
             }
+
+            var sessionCtrlTicketAnterior = tusuario.SessionCtrlTicket;
+            tusuario.SessionCtrlTicket = null;
+            tusuario.SessionCtrlLoja = null;
+            tusuario.SessionCtrlModulo = null;
+            tusuario.SessionCtrlDtHrLogon = null;
+            dbgravacao.Update(tusuario);
+            dbgravacao.SaveChanges();
+
+            var tsessaoHistorico = await (from h in dbgravacao.TsessaoHistoricos
+                                          where h.Usuario.ToUpper() == usuario.ToUpper()
+                                          && h.DtHrInicio >= DateTime.Now.AddDays(-1)
+                                          && h.SessionCtrlTicket == sessionCtrlTicketAnterior
+                                          orderby h.DtHrInicio descending
+                                          select h).FirstOrDefaultAsync();
+            if (tsessaoHistorico != null)
+            {
+                tsessaoHistorico.DtHrTermino = DateTime.Now;
+                dbgravacao.Update(tsessaoHistorico);
+                dbgravacao.SaveChanges();
+            }
+
+            dbgravacao.transacao.Commit();
         }
     }
 }

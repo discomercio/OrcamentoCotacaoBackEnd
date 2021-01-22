@@ -191,7 +191,11 @@ namespace Especificacao.Testes.Utils.ListaDependencias
             listaverificados.Sort();
             //só apra facilitar o debug
             if (listaregistrados.Count != listaverificados.Count)
+            {
+                LogTestes.LogTestes.GetInstance().LogMensagem($"Erro: listaregistrados.Count != listaverificados.Count listaregistrados {String.Join(",", listaregistrados.OrderBy(r => r))} ");
+                LogTestes.LogTestes.GetInstance().LogMensagem($"Erro: listaregistrados.Count != listaverificados.Count listaverificados {String.Join(",", listaverificados.OrderBy(r => r))} ");
                 Assert.Equal(listaregistrados, listaverificados);
+            }
 
             //agora a verificaçaõ de verdade
             Assert.Equal(listaregistrados, listaverificados);

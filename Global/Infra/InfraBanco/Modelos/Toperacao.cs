@@ -14,8 +14,6 @@ namespace InfraBanco.Modelos
         [Column("id")]
         public int Id { get; set; }
 
-        public TperfilUsuario TperfilUsuario { get; set; }
-
         [Required]
         [MaxLength(5)]
         [Column("modulo")]

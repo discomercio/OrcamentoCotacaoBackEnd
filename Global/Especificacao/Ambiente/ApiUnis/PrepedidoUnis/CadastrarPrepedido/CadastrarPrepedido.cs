@@ -174,6 +174,48 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
                     break;
             }
         }
+        //3 versoes da mesma rotina...
+        public static void EstaticoDeixarFormaDePagamentoConsistente(global::PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido.PrePedidoDto prePedidoUnisDto)
+        {
+            var total = prePedidoUnisDto.ValorTotalDestePedidoComRA;
+            var fp = prePedidoUnisDto.FormaPagtoCriacao;
+            switch (fp.Tipo_parcelamento.ToString())
+            {
+                case Constantes.COD_FORMA_PAGTO_A_VISTA:
+                    fp.Op_av_forma_pagto = Constantes.ID_FORMA_PAGTO_DEPOSITO;
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
+                    fp.C_pc_qtde = fp.Qtde_Parcelas;
+                    fp.C_pc_valor = total / fp.C_pc_qtde;
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
+                    fp.C_pce_entrada_valor = 3;
+                    fp.C_pce_prestacao_qtde = fp.Qtde_Parcelas;
+                    fp.C_pce_prestacao_valor = (total - fp.C_pce_entrada_valor) / fp.C_pce_prestacao_qtde;
+                    fp.C_pce_prestacao_periodo = 5;
+                    fp.Op_pce_entrada_forma_pagto = Constantes.ID_FORMA_PAGTO_DEPOSITO;
+                    fp.Op_pce_prestacao_forma_pagto = Constantes.ID_FORMA_PAGTO_DEPOSITO;
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA:
+                    fp.C_pse_demais_prest_periodo = 10;
+                    fp.C_pse_demais_prest_qtde = fp.Qtde_Parcelas;
+                    fp.C_pse_prim_prest_apos = 10;
+                    fp.C_pse_prim_prest_valor = 5;
+                    fp.C_pse_demais_prest_valor = (total - fp.C_pse_prim_prest_valor) / fp.C_pse_demais_prest_qtde;
+                    fp.Op_pse_demais_prest_forma_pagto = Constantes.ID_FORMA_PAGTO_DEPOSITO;
+                    fp.Op_pse_prim_prest_forma_pagto = Constantes.ID_FORMA_PAGTO_DEPOSITO;
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
+                    fp.C_pu_valor = total;
+                    fp.C_pu_vencto_apos = 5;
+                    fp.Op_pu_forma_pagto = Constantes.ID_FORMA_PAGTO_DEPOSITO;
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA:
+                    fp.C_pc_maquineta_qtde = fp.Qtde_Parcelas;
+                    fp.C_pc_maquineta_valor = total / fp.C_pc_maquineta_qtde;
+                    break;
+            }
+        }
 
         public void WhenInformo(string campo, string valor)
         {
