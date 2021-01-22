@@ -11,11 +11,11 @@ namespace Prepedido
 {
     public class PrepedidoRepetidoBll
     {
-        private readonly ContextoBdProvider contextoProvider;
+        private readonly ContextoBdGravacao banco;
 
-        public PrepedidoRepetidoBll(ContextoBdProvider contextoProvider)
+        public PrepedidoRepetidoBll(ContextoBdGravacao contextoBdGravacao)
         {
-            this.contextoProvider = contextoProvider;
+            this.banco = contextoBdGravacao;
         }
 
         public async Task<string> PrepedidoJaCadastradoCriterioSiteColors(PrePedidoDados prePedido)
@@ -49,7 +49,6 @@ namespace Prepedido
                     " ORDER BY t_ORCAMENTO_ITEM.orcamento, sequencia"
                     */
 
-            var banco = contextoProvider.GetContextoLeitura();
             var hora = Util.HoraParaBanco(dataLimite);
             var prepedidosExistentes = await (from prepedidoBanco in banco.Torcamentos
                                               join item in banco.TorcamentoItems on prepedidoBanco.Orcamento equals item.Orcamento
@@ -102,7 +101,6 @@ namespace Prepedido
         {
             List<string> ret = new List<string>();
 
-            var banco = contextoProvider.GetContextoLeitura();
             var hora = Util.HoraParaBanco(dataLimite);
             var prepedidosExistentes = await (from prepedidoBanco in banco.Torcamentos
                                               where prepedidoBanco.Id_Cliente == idCliente

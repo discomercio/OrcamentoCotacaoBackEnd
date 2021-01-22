@@ -592,24 +592,35 @@ namespace Cliente
             return lstRefComercial;
         }
 
+        private object _lockCadastrarCliente = new object();
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<IEnumerable<string>> CadastrarCliente(Cliente.Dados.ClienteCadastroDados clienteCadastroDados, string indicador,
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
+            string usuario_cadastro)
+        {
+            /*
+             * precisamos deste lock porque temos erros do tipo:
+            System.Data.SqlClient.SqlException (0x80131904): Transaction (Process ID 60) was deadlocked on lock resources with another 
+            process and has been chosen as the deadlock victim. Rerun the transaction.
+
+            isso ocorre porque a ordem de leitura das tabelas pode gerar um deadlock. Então melhor que cada uma espere a sua vez aqui.
+            */
+            lock (_lockCadastrarCliente)
+            {
+                var ret = CadastrarClienteProtegido(clienteCadastroDados, indicador, sistemaResponsavelCadastro, usuario_cadastro).Result;
+                return ret;
+            }
+        }
+        private async Task<IEnumerable<string>> CadastrarClienteProtegido(Cliente.Dados.ClienteCadastroDados clienteCadastroDados, string indicador,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             string usuario_cadastro)
         {
             string id_cliente = "";
 
             var db = contextoProvider.GetContextoLeitura();
-            var verifica = await (from c in db.Tclientes
-                                  where c.Cnpj_Cpf == clienteCadastroDados.DadosCliente.Cnpj_Cpf
-                                  select c.Id).FirstOrDefaultAsync();
-
+            
             List<string> lstErros = new List<string>();
-
-            if (verifica != null)
-            {
-                lstErros.Add(MensagensErro.REGISTRO_COM_ID_JA_EXISTE(verifica));
-                return lstErros;
-            }
 
             //passar lista de bancos para validar
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await ListarBancosCombo()).ToList();
@@ -622,6 +633,15 @@ namespace Cliente
 
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
             {
+                    var verifica = await (from c in dbgravacao.Tclientes
+                                          where c.Cnpj_Cpf == clienteCadastroDados.DadosCliente.Cnpj_Cpf
+                                          select c.Id).FirstOrDefaultAsync();
+
+                if (verifica != null)
+                {
+                    lstErros.Add(MensagensErro.REGISTRO_COM_ID_JA_EXISTE(verifica));
+                    return lstErros;
+                }
                 string log = "";
 
                 Cliente.Dados.DadosClienteCadastroDados cliente = clienteCadastroDados.DadosCliente;

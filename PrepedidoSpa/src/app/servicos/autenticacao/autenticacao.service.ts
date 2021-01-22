@@ -51,7 +51,6 @@ export class AutenticacaoService {
     this.salvar = salvar;
     this._NomeUsuario = null;
     let msg = "";
-    debugger;
 
     this.http.post(environment.apiUrl + 'acesso/fazerLogin', { apelido: usuario, senha: senha },
       {

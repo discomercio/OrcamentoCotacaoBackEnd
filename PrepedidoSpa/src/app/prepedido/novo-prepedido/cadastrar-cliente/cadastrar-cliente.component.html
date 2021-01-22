@@ -13,7 +13,7 @@
             <a mat-raised-button color="accent" (click)="voltar()">
                 <mat-icon>arrow_back</mat-icon> Voltar
             </a>
-            <button mat-raised-button color="accent" (click)="continuar()" type="submit" id="avancar">
+            <button mat-raised-button color="accent" (click)="continuar()" type="submit" id="avancar" [disabled]="desabilita">
                 <mat-icon>arrow_forward</mat-icon> Avançar
             </button>
         </footer>
