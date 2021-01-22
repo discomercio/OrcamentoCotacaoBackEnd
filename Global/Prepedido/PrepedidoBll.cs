@@ -739,17 +739,6 @@ namespace Prepedido
                 lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco,
                 prePedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false, sistemaResponsavelCadastro, false);
 
-            //verifica se o prepedio já foi gravado
-            if (verificarPrepedidoRepetido)
-            {
-                var prepedidoJaCadastradoNumero = await new Prepedido.PrepedidoRepetidoBll(contextoProvider).PrepedidoJaCadastradoCriterioSiteColors(prePedido);
-                if (!String.IsNullOrEmpty(prepedidoJaCadastradoNumero))
-                {
-                    lstErros.Add($"Esta solicitação já foi gravada com o número {prepedidoJaCadastradoNumero}");
-                    return lstErros;
-                }
-            }
-
             //verificar como esta sendo salvo
             if (!validacoesPrepedidoBll.ValidarDetalhesPrepedido(prePedido.DetalhesPrepedido, lstErros))
             {
@@ -844,6 +833,17 @@ namespace Prepedido
             {
                 using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
                 {
+                    //verifica se o prepedio já foi gravado
+                    if (verificarPrepedidoRepetido)
+                    {
+                        var prepedidoJaCadastradoNumero = await new Prepedido.PrepedidoRepetidoBll(dbgravacao).PrepedidoJaCadastradoCriterioSiteColors(prePedido);
+                        if (!String.IsNullOrEmpty(prepedidoJaCadastradoNumero))
+                        {
+                            lstErros.Add($"Esta solicitação já foi gravada com o número {prepedidoJaCadastradoNumero}");
+                            return lstErros;
+                        }
+                    }
+
                     //Se orcamento existir, fazer o delete das informações
                     if (!string.IsNullOrEmpty(prePedido.NumeroPrePedido))
                     {
