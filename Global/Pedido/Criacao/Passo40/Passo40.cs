@@ -11,18 +11,13 @@ using System.Threading.Tasks;
 
 namespace Pedido.Criacao.Passo40
 {
-    class Passo40
+    class Passo40 : PassoBase
     {
-        private readonly PedidoCriacaoDados Pedido;
-        private readonly PedidoCriacaoRetornoDados Retorno;
-        private readonly Pedido.Criacao.PedidoCriacao Criacao;
         public Passo40(PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao pedidoCriacao)
-        {
-            this.Pedido = pedido ?? throw new ArgumentNullException(nameof(pedido));
-            this.Retorno = retorno ?? throw new ArgumentNullException(nameof(retorno));
-            this.Criacao = pedidoCriacao ?? throw new ArgumentNullException(nameof(pedidoCriacao));
-        }
+            : base(pedido, retorno, pedidoCriacao)
 
+        {
+        }
 
         public async Task Executar()
         {
@@ -155,10 +150,10 @@ namespace Pedido.Criacao.Passo40
 
 
                     TprodutoLoja prodLoja = (from c in Criacao.Execucao.TabelasBanco.TprodutoLoja_Include_Tprodtuo_Tfabricante
-                                                   where c.Tproduto.Produto == prod.Produto &&
-                                                   c.Tproduto.Fabricante == prod.Fabricante &&
-                                                   c.Loja == Pedido.Ambiente.Loja
-                                                   select c).FirstOrDefault();
+                                             where c.Tproduto.Produto == prod.Produto &&
+                                             c.Tproduto.Fabricante == prod.Fabricante &&
+                                             c.Loja == Pedido.Ambiente.Loja
+                                             select c).FirstOrDefault();
 
                     if (prodLoja == null)
                         lstErros.Add("Produto " + prod.Produto + " não localizado para a loja " + Pedido.Ambiente.Loja + ".");

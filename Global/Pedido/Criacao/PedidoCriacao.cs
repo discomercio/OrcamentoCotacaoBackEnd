@@ -286,6 +286,8 @@ Fluxo no módulo loja:
                     v_item, v_spe, vdesconto, lstRegras, Execucao.Perc_limite_RA_sem_desagio, pedido.Ambiente.Loja, Execucao.Perc_desagio_RA,
                     tcliente, pedidoRetorno.ListaErros, dbgravacao, pedido.Configuracao.SistemaResponsavelCadastro);
 
+                if (pedidoRetorno.ListaErros.Count() > 0)
+                    return pedidoRetorno;
 
                 await dbgravacao.SaveChangesAsync();
                 dbgravacao.transacao.Commit();

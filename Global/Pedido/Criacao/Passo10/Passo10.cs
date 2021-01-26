@@ -9,16 +9,12 @@ using UtilsGlobais.Usuario;
 
 namespace Pedido.Criacao.Passo10
 {
-    class Passo10
+    class Passo10 : PassoBase
     {
-        private readonly PedidoCriacaoDados Pedido;
-        private readonly PedidoCriacaoRetornoDados Retorno;
-        private readonly Pedido.Criacao.PedidoCriacao Criacao;
         public Passo10(PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao pedidoCriacao)
+            : base(pedido, retorno, pedidoCriacao)
+
         {
-            this.Pedido = pedido ?? throw new ArgumentNullException(nameof(pedido));
-            this.Retorno = retorno ?? throw new ArgumentNullException(nameof(retorno));
-            this.Criacao = pedidoCriacao ?? throw new ArgumentNullException(nameof(pedidoCriacao));
         }
 
         public async Task ValidarCliente()

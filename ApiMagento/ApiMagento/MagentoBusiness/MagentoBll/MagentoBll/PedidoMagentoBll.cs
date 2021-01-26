@@ -116,7 +116,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             {
                 indicador = configuracaoApiMagento.DadosIndicador.Indicador;
                 if (!await prepedidoBll.TorcamentistaExiste(indicador))
-                    listaErros.Add("O Orçamentista não existe!");
+                    listaErros.Add("O Indicador não existe!");
             }
             string vendedor = usuario;
             string loja = configuracaoApiMagento.DadosIndicador.Loja;

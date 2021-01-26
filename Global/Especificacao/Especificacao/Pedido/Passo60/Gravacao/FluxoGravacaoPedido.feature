@@ -3,6 +3,7 @@ Feature: FluxoGravacaoPedido
 
 arquivo loja/PedidoNovoConfirma.asp
 
+Passo01: Gerar o NSU do pedido (para bloquear transações concorrentes)
 
 Passo10: Fazer todas as validações (documentado em FluxoCriacaoPedido.feature e nos passos dele).
 
@@ -19,8 +20,7 @@ Passo20: LER AS REGRAS DE CONSUMO DO ESTOQUE
 		Lê as tabelas t_PRODUTO_X_WMS_REGRA_CD, t_WMS_REGRA_CD_X_UF, t_WMS_REGRA_CD_X_UF_X_PESSOA, t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD
 
 
-Passo25:  
-	VERIFICA SE AS REGRAS ASSOCIADAS AOS PRODUTOS ESTÃO OK - linha 1010
+Passo25:  VERIFICA SE AS REGRAS ASSOCIADAS AOS PRODUTOS ESTÃO OK - linha 1010
 		Verifica se todos os produtos possuem regra ativa e não bloqueada e ao menos um CD ativo.
 	'NO CASO DE SELEÇÃO MANUAL DO CD, VERIFICA SE O CD SELECIONADO ESTÁ HABILITADO EM TODAS AS REGRAS - linha 1047
 		No caso de CD manual, verifica se o CD tem regra ativa

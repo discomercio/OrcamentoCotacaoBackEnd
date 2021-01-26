@@ -11,11 +11,11 @@ namespace Pedido.Criacao.Passo60
         private readonly PedidoCriacaoDados Pedido;
         private readonly PedidoCriacaoRetornoDados Retorno;
         private readonly Pedido.Criacao.PedidoCriacao Criacao;
-        public Passo60(PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao pedidoCriacao)
+        public Passo60(PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao criacao)
         {
             this.Pedido = pedido ?? throw new ArgumentNullException(nameof(pedido));
             this.Retorno = retorno ?? throw new ArgumentNullException(nameof(retorno));
-            this.Criacao = pedidoCriacao ?? throw new ArgumentNullException(nameof(pedidoCriacao));
+            this.Criacao = criacao ?? throw new ArgumentNullException(nameof(criacao));
         }
 
         public async Task Executar()
@@ -25,6 +25,7 @@ namespace Pedido.Criacao.Passo60
             if (Retorno.AlgumErro())
                 return;
 
+            await new Gravacao.Gravacao(Pedido, Retorno, Criacao).Executar();
         }
     }
 }

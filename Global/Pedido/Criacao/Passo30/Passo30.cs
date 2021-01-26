@@ -8,16 +8,12 @@ using UtilsGlobais.Usuario;
 
 namespace Pedido.Criacao.Passo30
 {
-    class Passo30
+    class Passo30 : PassoBase
     {
-        private readonly PedidoCriacaoDados Pedido;
-        private readonly PedidoCriacaoRetornoDados Retorno;
-        private readonly Pedido.Criacao.PedidoCriacao Criacao;
         public Passo30(PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao pedidoCriacao)
+            : base(pedido, retorno, pedidoCriacao)
+
         {
-            this.Pedido = pedido ?? throw new ArgumentNullException(nameof(pedido));
-            this.Retorno = retorno ?? throw new ArgumentNullException(nameof(retorno));
-            this.Criacao = pedidoCriacao ?? throw new ArgumentNullException(nameof(pedidoCriacao));
         }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
