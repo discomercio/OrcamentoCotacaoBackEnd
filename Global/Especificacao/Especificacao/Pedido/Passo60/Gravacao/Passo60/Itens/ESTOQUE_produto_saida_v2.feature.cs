@@ -111,8 +111,32 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 6
- testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 16
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 17
+ testRunner.When("precisa alterar a \"qtde_utilizada\" da tabela t_ESTOQUE_ITEM para retornar 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 18
+ testRunner.Then(@"Erro ""Produto "" + id_produto + "" do fabricante "" + id_fabricante + "": faltam "" + ((qtde_a_sair - qtde_autorizada_sem_presenca) - qtde_disponivel) + "" unidades no estoque ("" + UtilsGlobais.Util.ObterApelidoEmpresaNfeEmitentesGravacao(id_nfe_emitente, dbGravacao) + "") para poder atender ao pedido.""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 19
+ testRunner.And("afazer - Ajustar a mensagem de erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 28
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 29
+ testRunner.When("precisa alterar para que a qtde_movimentada seja menor que (qtde_a_sair - qtde_au" +
+                        "torizada_sem_presenca)", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 30
+ testRunner.Then("Erro \"Produto \" + id_produto + \" do fabricante \" + id_fabricante + \": faltam \" + " +
+                        "((qtde_a_sair - qtde_autorizada_sem_presenca) - qtde_movimentada) + \" unidades n" +
+                        "o estoque para poder atender ao pedido.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 31
+ testRunner.And("afazer - ajustar a mensagem de erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -174,7 +198,7 @@ this.ScenarioInitialize(scenarioInfo);
             argumentsOfScenario.Add("campo", campo);
             argumentsOfScenario.Add("valor", valor);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verificar estoque item", null, tagsOfScenario, argumentsOfScenario);
-#line 8
+#line 33
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -194,19 +218,19 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 9
+#line 34
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 10
+#line 35
  testRunner.Then("Sem nehum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 11
+#line 36
  testRunner.And("pegar o número do pedido gerado", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 12
+#line 37
  testRunner.And("pegar o id_estoque na tabela t_ESTOQUE_MOVIMENTO", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 13
+#line 38
  testRunner.And(string.Format("Tabela \"t_ESTOQUE_ITEM\" registro com campo \"id_estoque\" = \"id_estoque da t_ESTOQU" +
                             "E_MOVIMENTO\", verificar campo \"{0}\" = \"{1}\"", campo, valor), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -266,7 +290,7 @@ this.ScenarioInitialize(scenarioInfo);
             argumentsOfScenario.Add("campo", campo);
             argumentsOfScenario.Add("valor", valor);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("verfificar estoque movimento", null, tagsOfScenario, argumentsOfScenario);
-#line 64
+#line 89
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -286,16 +310,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 65
+#line 90
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 66
+#line 91
  testRunner.Then("Sem nehum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 67
+#line 92
  testRunner.And("pegar o número do pedido gerado", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 68
+#line 93
  testRunner.And(string.Format("Tabela \"t_ESTOQUE_MOVIMENTO\" registro com campo \"pedido\" = \"pedido gerado\", verif" +
                             "icar campo \"{0}\" = \"{1}\"", campo, valor), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -311,7 +335,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("verificar log da movimentação", null, tagsOfScenario, argumentsOfScenario);
-#line 113
+#line 138
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -331,7 +355,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 114
+#line 139
  testRunner.Then("afazer essa validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -371,7 +395,7 @@ this.ScenarioInitialize(scenarioInfo);
             argumentsOfScenario.Add("campo", campo);
             argumentsOfScenario.Add("valor", valor);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("verificar alteração de último movimento estoque", null, tagsOfScenario, argumentsOfScenario);
-#line 116
+#line 141
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -391,19 +415,19 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 117
+#line 142
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 118
+#line 143
  testRunner.Then("Sem nehum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 119
+#line 144
  testRunner.And("pegar o número do pedido gerado", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 120
+#line 145
  testRunner.And("pegar o id_estoque na tabela t_ESTOQUE_MOVIMENTO", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 121
+#line 146
  testRunner.And(string.Format("Tabela \"t_ESTOQUE\" registro com campo \"id_estoque\" = \"id_estoque\", verificar camp" +
                             "o \"{0}\" = \"{1}\"", campo, valor), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

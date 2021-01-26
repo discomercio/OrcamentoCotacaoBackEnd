@@ -3,7 +3,32 @@ Feature: ESTOQUE_produto_saida_v2
 
 Scenario: ESTOQUE_produto_saida_v2
 	#Testar rotina ESTOQUE_produto_saida_v2
-	When Fazer esta validação
+	#testar o erros que deve retornar
+	#NÃO HÁ PRODUTOS SUFICIENTES NO ESTOQUE!!
+	#           if ((qtde_a_sair - qtde_autorizada_sem_presenca) > qtde_disponivel)
+	#           {
+	#               lstErros.Add("Produto " + id_produto + " do fabricante " + id_fabricante + ": faltam " +
+	#                   ((qtde_a_sair - qtde_autorizada_sem_presenca) - qtde_disponivel) + " unidades no estoque (" +
+	#                   UtilsGlobais.Util.ObterApelidoEmpresaNfeEmitentesGravacao(id_nfe_emitente, dbGravacao) +
+	#                   ") para poder atender ao pedido.");
+	#               return false;
+	#           }
+	Given Pedido base
+	When precisa alterar a "qtde_utilizada" da tabela t_ESTOQUE_ITEM para retornar 0
+	Then Erro "Produto " + id_produto + " do fabricante " + id_fabricante + ": faltam " + ((qtde_a_sair - qtde_autorizada_sem_presenca) - qtde_disponivel) + " unidades no estoque (" + UtilsGlobais.Util.ObterApelidoEmpresaNfeEmitentesGravacao(id_nfe_emitente, dbGravacao) + ") para poder atender ao pedido."
+	And afazer - Ajustar a mensagem de erro
+	#não conseguiu movimentar a quantidade suficiente
+	#           if (qtde_movimentada < (qtde_a_sair - qtde_autorizada_sem_presenca))
+	#           {
+	#               lstErros.Add("Produto " + id_produto + " do fabricante " + id_fabricante + ": faltam " +
+	#                   ((qtde_a_sair - qtde_autorizada_sem_presenca) - qtde_movimentada) +
+	#                   " unidades no estoque para poder atender ao pedido.");
+	#               return retorno = false;
+	#           }
+	Given Pedido base
+	When precisa alterar para que a qtde_movimentada seja menor que (qtde_a_sair - qtde_autorizada_sem_presenca)
+	Then Erro "Produto " + id_produto + " do fabricante " + id_fabricante + ": faltam " + ((qtde_a_sair - qtde_autorizada_sem_presenca) - qtde_movimentada) + " unidades no estoque para poder atender ao pedido."
+	And afazer - ajustar a mensagem de erro
 
 Scenario Outline: Verificar estoque item
 	Given Pedido base
@@ -119,6 +144,7 @@ Scenario Outline: verificar alteração de último movimento estoque
 	And pegar o número do pedido gerado
 	And pegar o id_estoque na tabela t_ESTOQUE_MOVIMENTO
 	And Tabela "t_ESTOQUE" registro com campo "id_estoque" = "id_estoque", verificar campo "<campo>" = "<valor>"
+
 	#verificar se o campo "data_ult_movimento" esta com a data correta
 	Examples:
 		| campo                       | valor               |
