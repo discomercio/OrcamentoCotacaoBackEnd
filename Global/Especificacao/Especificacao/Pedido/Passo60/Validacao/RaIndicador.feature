@@ -15,5 +15,8 @@ Scenario: sem indicador não pode ter RA
 	#				end if
 	#			end if
 	#		end if
-	When Fazer esta validação
-
+	Given Pedido base
+	When Informo "NomeIndicador" = "POLITÉCNIC"
+	When Informo "OpcaoPossuiRA" = "S"
+	Then Sem nenhum erro
+	#não sei ao certo o que esperar
