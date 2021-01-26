@@ -118,6 +118,109 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
+        [Xunit.SkippableFactAttribute(DisplayName="Verificar estoque item")]
+        [Xunit.TraitAttribute("FeatureTitle", "ESTOQUE_produto_saida_v2")]
+        [Xunit.TraitAttribute("Description", "Verificar estoque item")]
+        public virtual void VerificarEstoqueItem()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verificar estoque item", null, tagsOfScenario, argumentsOfScenario);
+#line 8
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 9
+ testRunner.Then("afazer esse", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableTheoryAttribute(DisplayName="verfificar estoque movimento")]
+        [Xunit.TraitAttribute("FeatureTitle", "ESTOQUE_produto_saida_v2")]
+        [Xunit.TraitAttribute("Description", "verfificar estoque movimento")]
+        [Xunit.InlineDataAttribute("pedido", "id_movimento", "000003020931", new string[0])]
+        [Xunit.InlineDataAttribute("pedido", "data", "2021-01-20 00:00:00", new string[0])]
+        [Xunit.InlineDataAttribute("pedido", "hora", "174738", new string[0])]
+        [Xunit.InlineDataAttribute("pedido", "usuario", "HAMILTON", new string[0])]
+        [Xunit.InlineDataAttribute("pedido", "id_estoque", "000000119328", new string[0])]
+        [Xunit.InlineDataAttribute("pedido", "fabricante", "003", new string[0])]
+        [Xunit.InlineDataAttribute("pedido", "produto", "003221", new string[0])]
+        [Xunit.InlineDataAttribute("pedido", "qtde", "2", new string[0])]
+        [Xunit.InlineDataAttribute("pedido", "operacao", "VDA", new string[0])]
+        [Xunit.InlineDataAttribute("pedido", "estoque", "VDO", new string[0])]
+        [Xunit.InlineDataAttribute("pedido", "pedido", "222266N", new string[0])]
+        [Xunit.InlineDataAttribute("pedido", "loja", "", new string[0])]
+        [Xunit.InlineDataAttribute("pedido", "anulado_status", "0", new string[0])]
+        [Xunit.InlineDataAttribute("pedido", "anulado_data", "null", new string[0])]
+        [Xunit.InlineDataAttribute("pedido", "anulado_hora", "null", new string[0])]
+        [Xunit.InlineDataAttribute("pedido", "anulado_usuario", "null", new string[0])]
+        [Xunit.InlineDataAttribute("pedido", "timestamp", "[x.", new string[0])]
+        [Xunit.InlineDataAttribute("pedido", "kit", "0", new string[0])]
+        [Xunit.InlineDataAttribute("pedido", "kit_id_estoque", "", new string[0])]
+        [Xunit.InlineDataAttribute("pedido", "id_ordem_servico", "null", new string[0])]
+        public virtual void VerfificarEstoqueMovimento(string pedido, string campo, string valor, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("pedido", pedido);
+            argumentsOfScenario.Add("campo", campo);
+            argumentsOfScenario.Add("valor", valor);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("verfificar estoque movimento", null, tagsOfScenario, argumentsOfScenario);
+#line 13
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 14
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 15
+ testRunner.Then("Sem nehum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 16
+ testRunner.And("pegar o número do pedido gerado", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 17
+ testRunner.And(string.Format("Tabela \"t_ESTOQUE_MOVIMENTO\" registro com campo \"pedido\" = \"pedido gerado\", verif" +
+                            "icar campo \"{0}\" = \"{1}\"", campo, valor), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
         [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
         [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
         public class FixtureData : System.IDisposable
