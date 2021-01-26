@@ -111,4 +111,37 @@ Scenario Outline: verfificar estoque movimento
 		| pedido | 003220  | id_ordem_servico | null                |
 
 Scenario Outline: verificar log da movimentação
-Then afazer essa validação
+	Then afazer essa validação
+
+Scenario Outline: verificar alteração de último movimento estoque
+	Given Pedido base
+	Then Sem nehum erro
+	And pegar o número do pedido gerado
+	And pegar o id_estoque na tabela t_ESTOQUE_MOVIMENTO
+	And Tabela "t_ESTOQUE" registro com campo "id_estoque" = "id_estoque", verificar campo "<campo>" = "<valor>"
+	#verificar se o campo "data_ult_movimento" esta com a data correta
+	Examples:
+		| campo                       | valor               |
+		| id_estoque                  | 000000119328        |
+		| data_entrada                | 2020-12-29 00:00:00 |
+		| hora_entrada                | 135628              |
+		| fabricante                  | 003                 |
+		| documento                   | tstenovo            |
+		| usuario                     | PRAGMATICA          |
+		| data_ult_movimento          | 2021-01-20 00:00:00 |
+		| [timestamp]                 | [x[                 |
+		| kit                         | 0                   |
+		| entrada_especial            | 0                   |
+		| devolucao_status            | 0                   |
+		| devolucao_data              | null                |
+		| devolucao_hora              | null                |
+		| devolucao_usuario           | null                |
+		| devolucao_loja              | null                |
+		| devolucao_pedido            | null                |
+		| devolucao_id_item_devolvido | null                |
+		| devolucao_id_estoque        | null                |
+		| obs                         | teste               |
+		| id_nfe_emitente             | 4903                |
+		| entrada_tipo                | 0                   |
+		| perc_agio                   | 0.0                 |
+		| data_emissao_NF_entrada     | null                |

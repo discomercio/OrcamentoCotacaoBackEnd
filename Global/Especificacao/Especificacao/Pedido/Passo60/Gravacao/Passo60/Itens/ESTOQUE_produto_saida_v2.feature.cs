@@ -332,7 +332,80 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 114
-testRunner.Then("afazer essa validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("afazer essa validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableTheoryAttribute(DisplayName="verificar alteração de último movimento estoque")]
+        [Xunit.TraitAttribute("FeatureTitle", "ESTOQUE_produto_saida_v2")]
+        [Xunit.TraitAttribute("Description", "verificar alteração de último movimento estoque")]
+        [Xunit.InlineDataAttribute("id_estoque", "000000119328", new string[0])]
+        [Xunit.InlineDataAttribute("data_entrada", "2020-12-29 00:00:00", new string[0])]
+        [Xunit.InlineDataAttribute("hora_entrada", "135628", new string[0])]
+        [Xunit.InlineDataAttribute("fabricante", "003", new string[0])]
+        [Xunit.InlineDataAttribute("documento", "tstenovo", new string[0])]
+        [Xunit.InlineDataAttribute("usuario", "PRAGMATICA", new string[0])]
+        [Xunit.InlineDataAttribute("data_ult_movimento", "2021-01-20 00:00:00", new string[0])]
+        [Xunit.InlineDataAttribute("[timestamp]", "[x[", new string[0])]
+        [Xunit.InlineDataAttribute("kit", "0", new string[0])]
+        [Xunit.InlineDataAttribute("entrada_especial", "0", new string[0])]
+        [Xunit.InlineDataAttribute("devolucao_status", "0", new string[0])]
+        [Xunit.InlineDataAttribute("devolucao_data", "null", new string[0])]
+        [Xunit.InlineDataAttribute("devolucao_hora", "null", new string[0])]
+        [Xunit.InlineDataAttribute("devolucao_usuario", "null", new string[0])]
+        [Xunit.InlineDataAttribute("devolucao_loja", "null", new string[0])]
+        [Xunit.InlineDataAttribute("devolucao_pedido", "null", new string[0])]
+        [Xunit.InlineDataAttribute("devolucao_id_item_devolvido", "null", new string[0])]
+        [Xunit.InlineDataAttribute("devolucao_id_estoque", "null", new string[0])]
+        [Xunit.InlineDataAttribute("obs", "teste", new string[0])]
+        [Xunit.InlineDataAttribute("id_nfe_emitente", "4903", new string[0])]
+        [Xunit.InlineDataAttribute("entrada_tipo", "0", new string[0])]
+        [Xunit.InlineDataAttribute("perc_agio", "0.0", new string[0])]
+        [Xunit.InlineDataAttribute("data_emissao_NF_entrada", "null", new string[0])]
+        public virtual void VerificarAlteracaoDeUltimoMovimentoEstoque(string campo, string valor, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("campo", campo);
+            argumentsOfScenario.Add("valor", valor);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("verificar alteração de último movimento estoque", null, tagsOfScenario, argumentsOfScenario);
+#line 116
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 117
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 118
+ testRunner.Then("Sem nehum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 119
+ testRunner.And("pegar o número do pedido gerado", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 120
+ testRunner.And("pegar o id_estoque na tabela t_ESTOQUE_MOVIMENTO", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 121
+ testRunner.And(string.Format("Tabela \"t_ESTOQUE\" registro com campo \"id_estoque\" = \"id_estoque\", verificar camp" +
+                            "o \"{0}\" = \"{1}\"", campo, valor), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
