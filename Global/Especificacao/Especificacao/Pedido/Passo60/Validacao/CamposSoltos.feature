@@ -1,7 +1,7 @@
 ﻿@ignore
 Feature: Pedido Passo 60 validação CamposSoltos
 
-Scenario: campos soltos 1
+Scenario: campos soltos 1 - loja que indicou
 	#loja/PedidoNovoConfirma.asp
 	#'	OBTÉM O PERCENTUAL DA COMISSÃO
 	#	if alerta = "" then
@@ -21,7 +21,7 @@ Scenario: campos soltos 1
 	When Informo "Loja_Indicou" = "203"
 	Then Erro "Loja 202 não está cadastrada."
 
-Scenario: campos soltos 2
+Scenario: campos soltos 2 - nome do indicador
 	#loja/PedidoNovoConfirma.asp
 	#	if alerta="" then
 	#		if rb_indicacao = "" then
@@ -32,17 +32,22 @@ Scenario: campos soltos 2
 	#			elseif rb_RA = "" then
 	#				alerta = "Informe se o pedido possui RA ou não."
 	#		'	POR SOLICITAÇÃO DO ROGÉRIO, A CONSISTÊNCIA DO LIMITE DE COMPRAS FOI DESATIVADA (NOV/2008)
-	#'			elseif (vl_limite_mensal_disponivel - vl_total) <= 0 then
-	#'				alerta = "Não é possível cadastrar este pedido porque excede o valor do limite mensal estabelecido para o indicador (" & c_indicador & ")"
+	#		'	elseif (vl_limite_mensal_disponivel - vl_total) <= 0 then
+	#		'		alerta = "Não é possível cadastrar este pedido porque excede o valor do limite mensal estabelecido para o indicador (" & c_indicador & ")"
 	#			elseif rb_garantia_indicador = "" then
 	#				alerta = "Informe se o pedido é garantido pelo indicador ou não."
 	#				end if
 	#			end if
 	#		end if
-
-	
-	
-
+	#
+	#if rb_indicacao = "" then
+	#		alerta = "Informe se o pedido é com indicação ou não."
+	# O campo do dto que especifica se é com ou sem indicador "ComIndicador" é bool, então por definição é false
+	#
+	#elseif rb_RA = "" then
+	#		alerta = "Informe se o pedido possui RA ou não."
+	#O campo do dto PermiteRAStatus é um short que passa a ser um bool na criação do pedido, então por definição é false
+	#
 	#		elseif rb_indicacao = "S" then
 	#			if c_indicador = "" then
 	#				alerta = "Informe quem é o indicador."
@@ -71,17 +76,18 @@ Scenario: campos soltos 3
 	#			end if
 	#		end if
 	#
-	When Fazer esta validação
+
+	When Implementado em "Especificacao.Especificacao.Pedido.Passo50.CamposSoltos
 
 Scenario: campos soltos 4
 	#loja/PedidoNovoConfirma.asp
 	#if s_bem_uso_consumo = "" then
 	#	alerta = "É necessário informar se é 'Bem de Uso/Consumo'."
-	When Fazer esta validação
+	When Implementado em "Especificacao.Especificacao.Pedido.Passo50.CamposSoltos
 
 Scenario: campos soltos 5
 	#loja/PedidoNovoConfirma.asp
 	#if c_exibir_campo_instalador_instala = "S" then
 	#	if s_instalador_instala = "" then
 	#		alerta = "É necessário preencher o campo 'Instalador Instala'."
-	When Fazer esta validação
+	When Implementado em "Especificacao.Especificacao.Pedido.Passo50.CamposSoltos
