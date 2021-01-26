@@ -111,22 +111,22 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 26
+#line 25
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 27
+#line 26
  testRunner.When("Informo \"PermiteRAStatus\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 28
+#line 27
  testRunner.When("Informo \"ListaProdutos[0].Preco_NF\" = \"704.05\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 29
+#line 28
  testRunner.When("Informo \"ListaProdutos[1].Preco_NF\" = \"1051.07\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 30
+#line 29
  testRunner.When("Informo \"ValorTotalDestePedidoComRA\" = \"3510.24\" 3470.24", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 31
+#line 30
  testRunner.Then("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"pedido gerado\", verificar campo " +
                         "\"vl_total_RA_liquido\" = \"40.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
