@@ -7,8 +7,8 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava30
 {
     class Grava30 : PassoBaseGravacao
     {
-        public Grava30(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao criacao)
-            : base(contextoBdGravacao, pedido, retorno, criacao)
+        public Grava30(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao criacao, ExecucaoDados execucao)
+            : base(contextoBdGravacao, pedido, retorno, criacao, execucao)
         {
         }
 

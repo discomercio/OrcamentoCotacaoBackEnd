@@ -1565,7 +1565,7 @@ namespace Prepedido
             return lstPercentualCustoFinanFornec;
         }
 
-        public static async Task<IEnumerable<RegrasBll>> ObtemCtrlEstoqueProdutoRegra(ContextoBdProvider contextoProvider,
+        public static async Task<List<RegrasBll>> ObtemCtrlEstoqueProdutoRegra(ContextoBdProvider contextoProvider,
             PrePedidoDados prePedido, List<string> lstErros)
         {
             /*
