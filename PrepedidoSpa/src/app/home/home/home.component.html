@@ -1,6 +1,6 @@
 <!-- no destop só aparecfe se for o menu
 no celular aparece sempre -->
-<div *ngIf="menuDesktop || !telaDesktop">
+<div *ngIf="menuDesktop || !telaDesktop" >
 
     <div [class]="menuDesktop? 'corpoMenu': 'corpohome'" layout="row" fxLayoutAlign="center center">
         <div style="flex-grow: 0.4" *ngIf="!menuDesktop">
@@ -11,7 +11,7 @@ no celular aparece sempre -->
                 Incluir Pedido
             </a>
             <a *ngIf="menuDesktop" color="accent" class="botaoMenu" mat-button [routerLink]="['/novo-prepedido']"
-                (click)="cliqueNovoPrepedido()">
+                (click)="cliqueNovoPrepedido()" >
                 Incluir Pedido
             </a>
         </div>

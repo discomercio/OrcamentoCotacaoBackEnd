@@ -105,10 +105,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
             var pedidoCriacaoValor = new Pedido.Dados.Criacao.PedidoCriacaoValorDados(
                 percRT: percRT,
-
-                //Armazena "S" ou "N" para caso de o indicador selecionado permita RA
-                opcaoPossuiRa: true,
-                permiteRAStatus: 1,
+                permiteRAStatus: true,
 
                 //Armazena o valor total do pedido
                 vl_total: vlTotalDestePedido,

@@ -341,3 +341,12 @@ Scenario: indicador pode informar permite_RA_status?
 #implementado em Especificacao\Pedido\Passo60\Validacao\RaIndicador.feature
 
 
+Scenario: indicador e perc_rt
+	#if (f.c_loja.value != NUMERO_LOJA_ECOMMERCE_AR_CLUBE) {
+	#    if (f.c_indicador.value == "") {
+	#        if(f.c_perc_RT.value != "") {
+	#            if (parseFloat(f.c_perc_RT.value.replace(',','.')) > 0) {
+	#                alert('Não é possível gravar o pedido com o campo "Indicador" vazio e "COM(%)" maior do que zero!!');
+	#                f.c_perc_RT.focus();
+	#                return;
+	Given fazer esta validação

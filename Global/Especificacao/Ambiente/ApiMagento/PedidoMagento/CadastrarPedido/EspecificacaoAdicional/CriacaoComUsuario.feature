@@ -11,6 +11,8 @@ Feature: CriacaoComUsuario
 #o cadastro foi criado no Magento
 #ok. e usar o flag para indicar que esse t_cliente foi criado pelo magento (o sistema_responsavel_cadastro)
 
+Background: reiniciar
+	Given Reiniciar banco ao terminar cenário
 
 @ignore
 Scenario: Testar criando o cliente e cadastrando o pedido em uma única operação (verificar que o sistema_responsavel_cadastro é o magento)

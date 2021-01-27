@@ -297,7 +297,7 @@ namespace Pedido
             {
                 // gerar num_pedido
                 if (idPedidoBase == "")
-                    idPedidoBase = await GerarNumeroPedido(lstErros, dbGravacao);
+                    idPedidoBase = await global::Pedido.Criacao.Passo60.Gravacao.Grava60.Gera_num_pedido.Gera_num_pedido_pai(lstErros, dbGravacao);
 
                 if (string.IsNullOrEmpty(idPedidoBase))
                 {
@@ -341,7 +341,7 @@ namespace Pedido
 
             pedidonovoTrocaId.St_Entrega = status_entrega;
 
-            if (pedidoDados.Valor.PermiteRAStatus == 1)
+            if (pedidoDados.Valor.PermiteRAStatus)
             {
                 //calcula total ra liquido bd 
                 vl_total_RA_liquido = await CalculaTotalRALiquidoBD(idPedidoBase, dbGravacao, lstErros);
@@ -820,8 +820,8 @@ namespace Pedido
             pedidonovo.Sistema_responsavel_cadastro = (int)InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
 
             //RA
-            pedidonovo.Permite_RA_Status = pedido.Valor.PermiteRAStatus;
-            pedidonovo.Opcao_Possui_RA = pedido.Valor.PermiteRAStatus == 1 ? "S" : "-";
+            pedidonovo.Permite_RA_Status = (short)(pedido.Valor.PermiteRAStatus ? 1 : 0);
+            pedidonovo.Opcao_Possui_RA = pedido.Valor.PermiteRAStatus ? "S" : "-";
         }
 
         private async Task<string> GerarNumeroPedidoTemporario(List<string> lstErros, ContextoBdGravacao contextoBdGravacao)
@@ -1079,51 +1079,6 @@ namespace Pedido
                 }
             }
             return retorno;
-        }
-
-        private async Task<string> GerarNumeroPedido(List<string> lstErros, ContextoBdGravacao contextoBdGravacao)
-        {
-            string numPedido = "";
-            string s_num = "";
-            string s_letra_ano = "";
-            int n_descarte = 0;
-            string s_descarte = "";
-            //passar o db ContextoBdGravacao
-            var dbgravacao = contextoBdGravacao;
-
-            s_num = await UtilsGlobais.Util.GerarNsu(contextoBdGravacao, InfraBanco.Constantes.Constantes.NSU_PEDIDO);
-
-            if (!string.IsNullOrEmpty(s_num))
-            {
-                n_descarte = s_num.Length - InfraBanco.Constantes.Constantes.TAM_MIN_NUM_PEDIDO;
-                s_descarte = s_num.Substring(0, n_descarte);
-                string teste = new String('0', n_descarte);
-
-                if (s_descarte != teste)
-                    return numPedido;
-
-                s_num = s_num.Substring(s_num.Length - n_descarte);
-
-                //obtém a letra para o sufixo do pedido de acordo c / o ano da geração do 
-                //nsu(importante: fazer a leitura somente após gerar o nsu, pois a letra pode ter 
-                //sido alterada devido à mudança de ano!!)
-                var ret = await (from c in dbgravacao.Tcontroles
-                                 where c.Id_Nsu == InfraBanco.Constantes.Constantes.NSU_PEDIDO
-                                 select c).FirstOrDefaultAsync();
-
-                var controle = ret;
-
-                if (controle == null)
-                    lstErros.Add("Não existe registro na tabela de controle com o id = '" +
-                        InfraBanco.Constantes.Constantes.NSU_PEDIDO_TEMPORARIO);
-                else
-                    s_letra_ano = controle.Ano_Letra_Seq;
-
-                numPedido = s_num + s_letra_ano;
-
-            }
-
-            return numPedido;
         }
 
         public string Gera_letra_pedido_filhote(int indice_pedido)

@@ -80,7 +80,7 @@ Scenario: Máximo de itens por pedido
 	When Lista de itens com "13" itens
 	And Recalcular totais do pedido
 	And Deixar forma de pagamento consistente
-	Then Erro "É permitido apenas 12 itens."
+	Then Erro "São permitidos no máximo 12 itens por pedido."
 
 
 Scenario: Sem produtos repetidos

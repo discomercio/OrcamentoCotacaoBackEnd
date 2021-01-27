@@ -78,7 +78,7 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
   }
 
   inscrever(): void {
-    
+
     if (this.emPrepedidos) {
 
       this.prepedidos$ = this.prepedidoListarService.prepedidos$;
@@ -171,7 +171,9 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
       }
     });
   }
+  count = 0;
   cliqueLinha(linha: any) {
+
     //temos que ignorar se tiver clicado sobre a lata de lixo!
     if (this.emRemoverPrepedido)
       return;
@@ -180,30 +182,38 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
 
     }
     else {
-      //vamos ver os detalhes: this.router.navigate(['/prepedido/detalhes', linha.NumeroPrepedido]);
-      this.prepedidoBuscarService.buscar(linha.NumeroPrepedido).subscribe({
-        next: (r) => {
-          if (r == null) {
-            this.deuErro("Erro");
-            return;
+      this.count = this.count + 1;
+      if (this.count < 2) {
+        //vamos ver os detalhes: this.router.navigate(['/prepedido/detalhes', linha.NumeroPrepedido]);
+        this.prepedidoBuscarService.buscar(linha.NumeroPrepedido).subscribe({
+          next: (r) => {
+            this.count = 0;
+            if (r == null) {
+              this.deuErro("Erro");
+              return;
+            }
+
+            //virou pedido? vamos direto para o pedido
+            if (r.St_Orc_Virou_Pedido) {
+              this.router.navigate(['/pedido/detalhes', r.NumeroPedido]);
+              return;
+            }
+
+            //detalhes do prepedido
+            this.novoPrepedidoDadosService.setar(r);
+            //também passamos o número do pré-pedido no link
+
+            // this.router.navigate(['/novo-prepedido/itens', r.NumeroPrePedido]);
+            this.router.navigate(['/prepedido/detalhes', r.NumeroPrePedido]);
+          },
+          error: (r) => {
+            this.deuErro(r);
+            this.count = 0;
           }
 
-          //virou pedido? vamos direto para o pedido
-          if (r.St_Orc_Virou_Pedido) {
-            this.router.navigate(['/pedido/detalhes', r.NumeroPedido]);
-            return;
-          }
+        });
+      }
 
-          //detalhes do prepedido
-          this.novoPrepedidoDadosService.setar(r);
-          //também passamos o número do pré-pedido no link
-
-          // this.router.navigate(['/novo-prepedido/itens', r.NumeroPrePedido]);
-          this.router.navigate(['/prepedido/detalhes', r.NumeroPrePedido]);
-        },
-        error: (r) => this.deuErro(r)
-
-      });
     }
   }
 }

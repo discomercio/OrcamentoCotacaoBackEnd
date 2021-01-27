@@ -14,6 +14,7 @@ Background: Api MAgento somente aceita pedidos PF
 	Given Pedido base cliente PJ com endereço de entrega PJ
 	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" erro "Endereço de entrega: se cliente é contribuinte do ICMS isento, não pode ter valor no campo de Inscrição Estadual!!" é "Endereço de entrega: se o Contribuinte ICMS é isento, o campo IE deve ser vazio!"
 	Given No ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido" erro "Endereço de entrega: se cliente é contribuinte do ICMS isento, não pode ter valor no campo de Inscrição Estadual!!" é "Endereço de entrega: se o Contribuinte ICMS é isento, o campo IE deve ser vazio!"
+	Given No ambiente "Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApiBll.CadastrarPrepedido.CadastrarPrepedidoPrepedidoApi" mapear erro "Endereço de entrega: se cliente é contribuinte do ICMS isento, não pode ter valor no campo de Inscrição Estadual!!" para "Endereço de entrega: se o Contribuinte ICMS é isento, o campo IE deve ser vazio!"
 
 Scenario: EndEtg_cnpj_cpf_PJ
 	Given Pedido base cliente PJ com endereço de entrega PJ

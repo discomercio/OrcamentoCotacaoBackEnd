@@ -100,11 +100,14 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prePedidoDados =
                 PrePedidoUnisDto.PrePedidoDadosDePrePedidoUnisDto(prePedidoUnis, endCadastralDados, lstProdutosDados, clienteCadastroDados.DadosCliente);
 
-            string prepedidosRepetidos = await PrepedidosRepetidos(prePedidoDados);
-            if (!string.IsNullOrEmpty(prepedidosRepetidos))
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
             {
-                retorno.ListaErros.Add(prepedidosRepetidos);
-                return retorno;
+                string prepedidosRepetidos = await PrepedidosRepetidos(prePedidoDados, dbgravacao);
+                if (!string.IsNullOrEmpty(prepedidosRepetidos))
+                {
+                    retorno.ListaErros.Add(prepedidosRepetidos);
+                    return retorno;
+                }
             }
 
             //vamos cadastrar
@@ -172,9 +175,9 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             return ret;
         }
 
-        public async Task<string> PrepedidosRepetidos(Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prePedidoDados)
+        public async Task<string> PrepedidosRepetidos(Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prePedidoDados, InfraBanco.ContextoBdGravacao dbgravacao)
         {
-            Prepedido.PrepedidoRepetidoBll prepedidoRepetidoBll = new Prepedido.PrepedidoRepetidoBll(contextoProvider);
+            Prepedido.PrepedidoRepetidoBll prepedidoRepetidoBll = new Prepedido.PrepedidoRepetidoBll(dbgravacao);
 
             //repetição totalmente igual
             var repetidos = await prepedidoRepetidoBll.PrepedidoJaCadastradoDesdeData(prePedidoDados, DateTime.Now.AddSeconds(-1 * configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosExatamenteIguais_TempoSegundos));

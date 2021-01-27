@@ -6,16 +6,19 @@ using System.Threading.Tasks;
 
 namespace Pedido.Criacao.Passo20
 {
-    static class Passo20
+    class Passo20 : PassoBase
     {
-        static public async Task ValidarEnderecoEntrega(
-            PedidoCriacaoDados pedido,
-            PedidoCriacaoRetornoDados pedidoRetorno,
-            Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll)
+        public Passo20(PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao pedidoCriacao)
+            : base(pedido, retorno, pedidoCriacao)
+
+        {
+        }
+
+        public async Task ValidarEnderecoEntrega()
         {
             /* valida endereço de entrega */
-            await validacoesPrepedidoBll.ValidarEnderecoEntrega(pedido.EnderecoEntrega, pedidoRetorno.ListaErros,
-                pedido.Ambiente.Indicador, pedido.Cliente.Tipo.ParaString(), false, pedido.Ambiente.Loja);
+            await Criacao.ValidacoesPrepedidoBll.ValidarEnderecoEntrega(Pedido.EnderecoEntrega, Retorno.ListaErros,
+                Pedido.Ambiente.Indicador, Pedido.Cliente.Tipo.ParaString(), false, Pedido.Ambiente.Loja);
         }
     }
 }

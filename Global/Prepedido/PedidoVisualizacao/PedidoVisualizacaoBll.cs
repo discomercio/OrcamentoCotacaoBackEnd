@@ -586,130 +586,13 @@ namespace Prepedido.PedidoVisualizacao
                 dataFormatada = p.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm");
             //verificar se o retorno acima esta vazio
             if (!string.IsNullOrEmpty(dataFormatada))
-                retorno += " (" + IniciaisEmMaisculas(p.Etg_Imediata_Usuario) + " - " + dataFormatada + ")";
+                //retorno += " (" + IniciaisEmMaisculas(p.Etg_Imediata_Usuario) + " - " + dataFormatada + ")";
+                retorno += " (" + Texto.iniciaisEmMaiusculas(p.Etg_Imediata_Usuario) + " - " + dataFormatada + ")";
 
 
             return retorno;
         }
-
-        private string IniciaisEmMaisculas(string text)
-        {
-            string retorno = "";
-            string palavras_minusculas = "|A|AS|AO|AOS|À|ÀS|E|O|OS|UM|UNS|UMA|UMAS" +
-                "|DA|DAS|DE|DO|DOS|EM|NA|NAS|NO|NOS|COM|SEM|POR|PELO|PELA|PARA|PRA|P/|S/|C/|TEM|OU|E/OU|ATE|ATÉ|QUE|SE|QUAL|";
-            string palavras_maiusculas = "|II|III|IV|VI|VII|VIII|IX|XI|XII|XIII|XIV" +
-                "|XV|XVI|XVII|XVIII|XIX|XX|XXI|XXII|XXIII|S/A|S/C|AC|AL|AM|AP|BA|CE|DF|ES|GO" +
-                "|MA|MG|MS|MT|PA|PB|PE|PI|PR|RJ|RN|RO|RR|RS|SC|SE|SP|TO|ME|EPP|";
-
-            string letra;
-            string palavra = "";
-            string frase = "";
-            string s;
-            bool blnAltera;
-
-            string[] teste = text.Split(' ');
-
-            string char34 = Convert.ToString((char)34);
-
-            foreach (string t in teste)
-            {
-                string texto = t;
-                for (int i = 0; i < texto.Length; i++)
-                {
-                    letra = texto.Substring(i, 1);
-                    palavra += letra;
-
-                    if ((letra == " ") || (i == texto.Length - 1) || (letra == "(") || (letra == ")") || (letra == "[") || (letra == "]")
-                        || (letra == "'") || (letra == char34) || (letra == "-"))
-                    {
-                        s = "|" + palavra.ToUpper().Trim() + "|";
-                        if (palavras_minusculas.IndexOf(s) != 0 && frase != "")
-                        {
-                            //SE FOR FINAL DA FRASE, DEIXA INALTERADO(EX: BLOCO A)
-                            if (i < texto.Length && texto.Length < 1)
-                                palavra = palavra.ToLower();
-                        }
-                        else if (palavras_maiusculas.IndexOf(s) >= 0)
-                            palavra = palavra.ToUpper();
-                        else
-                        {
-                            //ANALISA SE CONVERTE O TEXTO OU NÃO
-                            blnAltera = true;
-                            if (TemDigito(palavra))
-                            {
-                                //ENDEREÇOS CUJO Nº DA RESIDÊNCIA SÃO SEPARADOS POR VÍRGULA, SEM NENHUM ESPAÇO EM BRANCO
-                                //CASO CONTRÁRIO, CONSIDERA QUE É ALGUM TIPO DE CÓDIGO
-                                if (palavra.IndexOf(",") != 0)
-                                    blnAltera = false;
-                            }
-                            if (palavra.IndexOf(".") >= 0)
-                            {
-                                if (palavra.IndexOf(palavra, palavra.IndexOf(".") + 1, StringComparison.OrdinalIgnoreCase.CompareTo(".")) != 0)
-                                    blnAltera = false;
-                            }
-                            if (palavra.IndexOf("/") != 0)
-                            {
-                                if (palavra.Length <= 4)
-                                    blnAltera = false;
-                            }
-                            //verifica se tem vogal
-                            if (!TemVogal(palavra))
-                                blnAltera = false;
-
-                            if (blnAltera)
-                                palavra = palavra.Substring(0, 1).ToUpper() + palavra.Substring(1, palavra.Length - 1).ToLower();
-                        }
-                        if (retorno.Length > 0)
-                        {
-                            frase = frase + " " + palavra;
-
-                        }
-                        else
-                        {
-                            frase = frase + palavra;
-                        }
-                        palavra = "";
-                        retorno += frase;
-                        frase = "";
-                    }
-                }
-            }
-
-            return retorno;
-        }
-
-
-
-
-        private bool TemVogal(string texto)
-        {
-            bool retorno = false;
-            string letra = "";
-
-            for (int i = 0; i < texto.Length; i++)
-            {
-                letra = texto.Substring(i, 1).ToUpper();
-                if (letra == "A" || letra == "E" || letra == "I" || letra == "O" || letra == "U")
-                    retorno = true;
-            }
-
-            return retorno;
-        }
-
-        private bool TemDigito(string texto)
-        {
-            int ehNumero;
-            bool retorno = false;
-
-            for (int i = 0; i < texto.Length; i++)
-            {
-                if (int.TryParse(texto.Substring(i, 1), out ehNumero))
-                    retorno = true;
-            }
-
-            return retorno;
-        }
-
+        
         private async Task<string> ObterNomeTransportadora(string idTransportadora)
         {
             var db = contextoProvider.GetContextoLeitura();

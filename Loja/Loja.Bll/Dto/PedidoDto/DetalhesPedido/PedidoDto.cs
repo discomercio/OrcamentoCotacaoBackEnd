@@ -105,10 +105,9 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                 detalhesPedido: DetalhesNFPedidoDtoPedido.DetalhesPrepedidoDados_De_DetalhesNFPedidoDtoPedido(pedidoDto.DetalhesNF),
                 valor: new Pedido.Dados.Criacao.PedidoCriacaoValorDados(
                     percRT: pedidoDto.PercRT ?? 0,
-                    opcaoPossuiRa: pedidoDto.OpcaoPossuiRA == "S" ? true : false,
                     vl_total: pedidoDto.VlTotalDestePedido ?? 0,
                     vl_total_NF: pedidoDto.ValorTotalDestePedidoComRA ?? 0,
-                    permiteRAStatus: pedidoDto.PermiteRAStatus
+                    permiteRAStatus: pedidoDto.PermiteRAStatus == 1
                     ),
                 configuracao: new Pedido.Dados.Criacao.PedidoCriacaoConfiguracaoDados(
                     limiteArredondamento: limiteArredondamento,

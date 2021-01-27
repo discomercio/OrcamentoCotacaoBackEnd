@@ -44,36 +44,6 @@ Scenario: forma_pagto tamanho
 	When Informo "forma_pagto" = um texto com "250" caracteres
 	Then Sem nenhum erro
 
-Scenario: etg_imediata
-	#loja/PedidoNovoConsiste.asp
-	#if (!blnFlag) {
-	#	alert('Selecione uma opção para o campo "Entrega Imediata"');
-	Given Pedido base
-	When Informo "etg_imediata" = ""
-	Then Erro "Selecione uma opção para o campo "Entrega Imediata"
-
-Scenario: data_previsao_entrega
-	#loja/PedidoNovoConsiste.asp
-	#if (f.rb_etg_imediata[0].checked)
-	#{
-	#	if (trim(f.c_data_previsao_entrega.value) == "") {
-	#		alert("Informe a data de previsão de entrega!");
-	Given Pedido base
-	When Informo "etg_imediata" = "true"
-	When Informo "data_previsao_entrega" = ""
-	Then Erro "Informe a data de previsão de entrega!"
-
-	#if (retorna_so_digitos(formata_ddmmyyyy_yyyymmdd(f.c_data_previsao_entrega.value)) <= retorna_so_digitos(formata_ddmmyyyy_yyyymmdd('<%=formata_data(Date)%>'))) {
-	#	alert("Data de previsão de entrega deve ser uma data futura!");
-	Given Pedido base
-	When Informo "etg_imediata" = "true"
-	When Informo "data_previsao_entrega" = hoje
-	Then Erro "Data de previsão de entrega deve ser uma data futura!"
-
-	Given Pedido base
-	When Informo "etg_imediata" = "true"
-	When Informo "data_previsao_entrega" = amanhã
-	Then Sem nenhum erro
 
 Scenario: bem_uso_consumo
 	#loja/PedidoNovoConsiste.asp
@@ -123,17 +93,17 @@ Scenario: garantia_indicador
 
 Scenario: c_indicador c_perc_RT rb_RA garantia_indicador somente se for indicacao
 #loja/PedidoNovoConfirma.asp
-	#if rb_indicacao = "S" then
-	#	c_indicador = Trim(Request.Form("c_indicador"))
-	#	c_perc_RT = Trim(Request.Form("c_perc_RT"))
-	#	rb_RA = Trim(Request.Form("rb_RA"))
-	#	rb_garantia_indicador = Trim(Request.Form("rb_garantia_indicador"))
-	#else
-	#	c_indicador = ""
-	#	c_perc_RT = ""
-	#	rb_RA = ""
-	#	rb_garantia_indicador = COD_GARANTIA_INDICADOR_STATUS__NAO
-	#	end if
+#if rb_indicacao = "S" then
+#	c_indicador = Trim(Request.Form("c_indicador"))
+#	c_perc_RT = Trim(Request.Form("c_perc_RT"))
+#	rb_RA = Trim(Request.Form("rb_RA"))
+#	rb_garantia_indicador = Trim(Request.Form("rb_garantia_indicador"))
+#else
+#	c_indicador = ""
+#	c_perc_RT = ""
+#	rb_RA = ""
+#	rb_garantia_indicador = COD_GARANTIA_INDICADOR_STATUS__NAO
+#	end if
 
 	Given Pedido base
 	When Informo "indicador" = "ZEZINHO"

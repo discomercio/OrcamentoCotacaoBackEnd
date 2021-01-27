@@ -89,8 +89,11 @@ namespace PrepedidoUnisBusiness.UnisBll.AcessoBll
 				" WHERE (t_PERFIL_X_USUARIO.usuario='" & usuario & "')" & _
 				" AND (t_OPERACAO.modulo='" & COD_OP_MODULO_CENTRAL & "')"
 							*/
-            var perfil = await (from p in contextoProvider.GetContextoLeitura().Tperfils
-                                where p.Apelido.ToUpper() == ApelidoPerfilLiberaAcessoApiUnis.ToUpper() && p.TperfilUsuario.Usuario.ToUpper() == usuarioMaisuculas && p.St_inativo == 0
+            var db = contextoProvider.GetContextoLeitura();
+            var perfil = await (from p in db.Tperfils
+                                join pu in db.TperfilUsuarios on p.Id equals pu.Id_perfil
+                                where p.Apelido.ToUpper() == ApelidoPerfilLiberaAcessoApiUnis.ToUpper() &&
+                                      pu.Usuario.ToUpper() == usuarioMaisuculas && p.St_inativo == 0
                                 select p.Id).FirstOrDefaultAsync();
             if (perfil == null)
             {

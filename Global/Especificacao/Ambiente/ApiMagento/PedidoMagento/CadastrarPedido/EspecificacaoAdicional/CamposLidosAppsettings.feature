@@ -10,21 +10,21 @@ Scenario: Indicador = "FRETE" (vamos ler do appsettings) - precisa existir
 	Given Reiniciar appsettings
 	And Pedido base
 	And Informo "frete" = "10"
-	And Informo "appsettings.Indicador" = "um orçamentista que não existe"
-	Then Erro "O Orçamentista não existe!"
+	And Informo "appsettings.Indicador" = "um Indicador que não existe"
+	Then Erro "O Indicador não existe!"
 
 	Given Reiniciar appsettings
 	And Pedido base
 	Then Sem nenhum erro
 
 @ignore
-Scenario: Orcamentista = "FRETE" (vamos ler do appsettings)
+Scenario: Indicador = "FRETE" (vamos ler do appsettings)
 	#vamos verificar se salvou onde deveria
 	#vamos testar com o KONAR
 	Given Pedido base
 	And Informo "frete" = "10"
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro campo "Orcamentista" = "FRETE"
+	And Tabela "t_PEDIDO" registro gerado, campo "Indicador" = "FRETE"
 	#No pedido gravado, verificar campo "indicador" = "FRETE"
 
 @ignore
