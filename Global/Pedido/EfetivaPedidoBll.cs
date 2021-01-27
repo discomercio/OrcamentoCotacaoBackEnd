@@ -171,7 +171,7 @@ namespace Pedido
                         //campos do pedido magento á incluir
                     }
 
-                    MontarEnderecoCadastralCliente(pedidonovo, cliente);
+                    MontarEnderecoCadastralCliente(pedidonovo, pedido);
 
                     pedidonovo.Plataforma_Origem_Pedido = (int)Plataforma_Origem_Pedido;
 
@@ -724,37 +724,38 @@ namespace Pedido
             }
         }
 
-        private void MontarEnderecoCadastralCliente(Tpedido pedidonovo, Tcliente cliente)
+        private void MontarEnderecoCadastralCliente(Tpedido pedidonovo, PedidoCriacaoDados pedido)
         {
+            var cliente = pedido.EnderecoCadastralCliente;
             pedidonovo.Endereco_memorizado_status = 1;
             pedidonovo.St_memorizacao_completa_enderecos = 1;
-            pedidonovo.Endereco_tipo_pessoa = cliente.Tipo;
-            pedidonovo.Endereco_cnpj_cpf = cliente.Cnpj_Cpf;
-            pedidonovo.Endereco_nome = cliente.Nome;
-            pedidonovo.Endereco_ie = string.IsNullOrEmpty(cliente.Ie) ? "" : cliente.Ie;
-            pedidonovo.Endereco_rg = string.IsNullOrEmpty(cliente.Rg) ? "" : cliente.Rg;
-            pedidonovo.Endereco_contribuinte_icms_status = cliente.Contribuinte_Icms_Status;
-            pedidonovo.Endereco_produtor_rural_status = cliente.Produtor_Rural_Status;
-            pedidonovo.Endereco_contato = string.IsNullOrEmpty(cliente.Contato) ? "" : cliente.Contato;
-            pedidonovo.Endereco_email = cliente.Email;
-            pedidonovo.Endereco_email_xml = string.IsNullOrEmpty(cliente.Email_Xml) ? "" : cliente.Email_Xml;
-            pedidonovo.Endereco_ddd_res = string.IsNullOrEmpty(cliente.Ddd_Res) ? "" : cliente.Ddd_Res;
-            pedidonovo.Endereco_tel_res = string.IsNullOrEmpty(cliente.Tel_Res) ? "" : cliente.Tel_Res;
-            pedidonovo.Endereco_ddd_com = string.IsNullOrEmpty(cliente.Ddd_Com) ? "" : cliente.Ddd_Com;
-            pedidonovo.Endereco_tel_com = string.IsNullOrEmpty(cliente.Tel_Com) ? "" : cliente.Tel_Com;
-            pedidonovo.Endereco_ramal_com = string.IsNullOrEmpty(cliente.Ramal_Com) ? "" : cliente.Ramal_Com;
-            pedidonovo.Endereco_ddd_cel = string.IsNullOrEmpty(cliente.Ddd_Cel) ? "" : cliente.Ddd_Cel;
-            pedidonovo.Endereco_tel_cel = string.IsNullOrEmpty(cliente.Tel_Cel) ? "" : cliente.Tel_Cel;
-            pedidonovo.Endereco_ddd_com_2 = string.IsNullOrEmpty(cliente.Ddd_Com_2) ? "" : cliente.Ddd_Com_2;
-            pedidonovo.Endereco_tel_com_2 = string.IsNullOrEmpty(cliente.Tel_Com_2) ? "" : cliente.Tel_Com_2;
-            pedidonovo.EndEtg_ramal_com_2 = string.IsNullOrEmpty(cliente.Ramal_Com_2) ? "" : cliente.Ramal_Com_2;
-            pedidonovo.Endereco_logradouro = cliente.Endereco;
-            pedidonovo.Endereco_bairro = cliente.Bairro;
-            pedidonovo.Endereco_cidade = cliente.Cidade;
-            pedidonovo.Endereco_uf = cliente.Uf;
-            pedidonovo.Endereco_cep = cliente.Cep;
-            pedidonovo.Endereco_numero = cliente.Endereco_Numero;
-            pedidonovo.Endereco_complemento = cliente.Endereco_Complemento == null ? "" : cliente.Endereco_Complemento;
+            pedidonovo.Endereco_tipo_pessoa = cliente.Endereco_tipo_pessoa;
+            pedidonovo.Endereco_cnpj_cpf = cliente.Endereco_cnpj_cpf;
+            pedidonovo.Endereco_nome = cliente.Endereco_nome;
+            pedidonovo.Endereco_ie = string.IsNullOrEmpty(cliente.Endereco_ie) ? "" : cliente.Endereco_ie;
+            pedidonovo.Endereco_rg = string.IsNullOrEmpty(cliente.Endereco_rg) ? "" : cliente.Endereco_rg;
+            pedidonovo.Endereco_contribuinte_icms_status = cliente.Endereco_contribuinte_icms_status;
+            pedidonovo.Endereco_produtor_rural_status = cliente.Endereco_produtor_rural_status;
+            pedidonovo.Endereco_contato = string.IsNullOrEmpty(cliente.Endereco_contato) ? "" : cliente.Endereco_contato;
+            pedidonovo.Endereco_email = cliente.Endereco_email;
+            pedidonovo.Endereco_email_xml = string.IsNullOrEmpty(cliente.Endereco_email_xml) ? "" : cliente.Endereco_email_xml;
+            pedidonovo.Endereco_ddd_res = string.IsNullOrEmpty(cliente.Endereco_ddd_res) ? "" : cliente.Endereco_ddd_res;
+            pedidonovo.Endereco_tel_res = string.IsNullOrEmpty(cliente.Endereco_tel_res) ? "" : cliente.Endereco_tel_res;
+            pedidonovo.Endereco_ddd_com = string.IsNullOrEmpty(cliente.Endereco_ddd_com) ? "" : cliente.Endereco_ddd_com;
+            pedidonovo.Endereco_tel_com = string.IsNullOrEmpty(cliente.Endereco_tel_com) ? "" : cliente.Endereco_tel_com;
+            pedidonovo.Endereco_ramal_com = string.IsNullOrEmpty(cliente.Endereco_ramal_com) ? "" : cliente.Endereco_ramal_com;
+            pedidonovo.Endereco_ddd_cel = string.IsNullOrEmpty(cliente.Endereco_ddd_cel) ? "" : cliente.Endereco_ddd_cel;
+            pedidonovo.Endereco_tel_cel = string.IsNullOrEmpty(cliente.Endereco_tel_cel) ? "" : cliente.Endereco_tel_cel;
+            pedidonovo.Endereco_ddd_com_2 = string.IsNullOrEmpty(cliente.Endereco_ddd_com_2) ? "" : cliente.Endereco_ddd_com_2;
+            pedidonovo.Endereco_tel_com_2 = string.IsNullOrEmpty(cliente.Endereco_tel_com_2) ? "" : cliente.Endereco_tel_com_2;
+            pedidonovo.Endereco_ramal_com_2 = string.IsNullOrEmpty(cliente.Endereco_ramal_com_2) ? "" : cliente.Endereco_ramal_com_2;
+            pedidonovo.Endereco_logradouro = cliente.Endereco_logradouro;
+            pedidonovo.Endereco_bairro = cliente.Endereco_bairro;
+            pedidonovo.Endereco_cidade = cliente.Endereco_cidade;
+            pedidonovo.Endereco_uf = cliente.Endereco_uf;
+            pedidonovo.Endereco_cep = cliente.Endereco_cep;
+            pedidonovo.Endereco_numero = cliente.Endereco_numero;
+            pedidonovo.Endereco_complemento = cliente.Endereco_complemento == null ? "" : cliente.Endereco_complemento;
         }
 
         private void MontarDetalhesPedido(Tpedido pedidonovo, PedidoCriacaoDados pedido, Tcliente cliente,
@@ -816,8 +817,8 @@ namespace Pedido
             //afazer: verificar qual é no prepedido esse campo "ConstaNaNF"
             //pedidonovo.Obs_2 = string.IsNullOrWhiteSpace(pedido.DetalhesPedido.ConstaNaNF) ? "" : pedido.DetalhesPedido.ConstaNaNF;
 
-            pedidonovo.Sistema_responsavel_atualizacao = (int)InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
-            pedidonovo.Sistema_responsavel_cadastro = (int)InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS;
+            pedidonovo.Sistema_responsavel_atualizacao = (int)pedido.Configuracao.SistemaResponsavelCadastro;
+            pedidonovo.Sistema_responsavel_cadastro = (int)pedido.Configuracao.SistemaResponsavelCadastro;
 
             //RA
             pedidonovo.Permite_RA_Status = (short)(pedido.Valor.PermiteRAStatus ? 1 : 0);

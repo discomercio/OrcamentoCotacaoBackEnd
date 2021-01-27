@@ -31,6 +31,15 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             Testes.Utils.StatusCodes.TestarStatusCode(statusCode, res);
         }
 
+        public MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto? ultimoPedidoResultadoMagentoDto()
+        {
+            var temp = UltimoAcessoFeito?.Result;
+            if (temp == null)
+                return null;
+            MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto pedidoResultadoMagentoDto
+            = (MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto)((Microsoft.AspNetCore.Mvc.OkObjectResult)temp).Value;
+            return pedidoResultadoMagentoDto;
+        }
         public Microsoft.AspNetCore.Mvc.ActionResult<MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto>? UltimoAcessoFeito { get; private set; } = null;
         private ActionResult AcessarControladorMagento()
         {

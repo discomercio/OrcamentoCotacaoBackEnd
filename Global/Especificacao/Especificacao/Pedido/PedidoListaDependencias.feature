@@ -11,6 +11,7 @@ Scenario: Lista de dependências
 	#And Especificado em "Especificacao.Pedido.Passo25.*"
 	#And Especificado em "Especificacao.Pedido.Passo30.*"
 	And Especificado em "Especificacao.Pedido.Passo40.Passo40ListaDependencias"
+	And Especificado em "Especificacao.Pedido.Passo60.Passo60ListaDependencias"
 	And Implementado em "Especificacao.Prepedido.Prepedido.PrepedidoListaDependencias"
 	And Implementado em "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedidoListaDependencias"
 	

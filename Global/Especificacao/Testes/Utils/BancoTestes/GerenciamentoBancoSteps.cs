@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PrepedidoUnisBusiness.UnisDto.FormaPagtoUnisDto;
 using PrepedidoUnisBusiness.UnisDto.PrepedidoUnisDto;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow;
 using Xunit;
@@ -100,6 +101,29 @@ namespace Especificacao.Testes.Utils.BancoTestes
             if (desejado != original)
                 LogTestes.LogTestes.ErroNosTestes($"ThenTabelaRegistroComCampoVerificarCampo t_CLIENTE campo {campo} valor errado, {desejado}, {original}");
             Assert.Equal(desejado, original);
+        }
+
+        public void TabelaT_PEDIDORegistroVerificarCampo(List<string> listaPedidos, string campo, string valor_desejado)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO", "pedido", String.Join("; ", listaPedidos), campo, valor_desejado, this);
+
+            var db = this.contextoBdProvider.GetContextoLeitura();
+            var registros = (from pedido in db.Tpedidos where listaPedidos.Contains(pedido.Pedido) select pedido).ToList();
+            //deve ter um ou mais registros
+            Assert.True(registros.Any());
+
+            foreach (var registro in registros)
+            {
+                //tiramos um clone
+                string original = Newtonsoft.Json.JsonConvert.SerializeObject(registro);
+                Tpedido copia = Newtonsoft.Json.JsonConvert.DeserializeObject<Tpedido>(original);
+                if (!WhenInformoCampo.InformarCampo(campo, valor_desejado, copia))
+                    throw new Exception($"Campo {campo} não encontrado em Tpedido");
+                string desejado = Newtonsoft.Json.JsonConvert.SerializeObject(copia);
+                if (desejado != original)
+                    LogTestes.LogTestes.ErroNosTestes($"ThenTabelaRegistroComCampoVerificarCampo t_PEDIDO campo {campo} valor errado, {desejado}, {original}");
+                Assert.Equal(desejado, original);
+            }
         }
 
         [Given(@"Tabela ""t_OPERACAO"" apagar registro com campo ""id"" = ""(.*)""")]
