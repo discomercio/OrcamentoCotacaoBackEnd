@@ -38,6 +38,8 @@ namespace Pedido.Criacao.Passo60.Gravacao
 
             //Passo20: LER AS REGRAS DE CONSUMO DO ESTOQUE
             await new Grava20.Grava20(contextoBdGravacao, Pedido, Retorno, Criacao).Executar();
+            //se tiver erro, nao continua
+            if (Retorno.AlgumErro()) return;
 
             //Passo25:  VERIFICA SE AS REGRAS ASSOCIADAS AOS PRODUTOS ESTÃO OK - linha 1010
             await new Grava25.Grava25(contextoBdGravacao, Pedido, Retorno, Criacao).Executar();

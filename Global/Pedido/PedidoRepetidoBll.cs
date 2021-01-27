@@ -43,6 +43,9 @@ namespace Pedido
 
             var db = contextoProvider.GetContextoLeitura();
             var hora = UtilsGlobais.Util.HoraParaBanco(dataLimite);
+            //com muitas combinações, o entitty não está conseguindo otimizar a 
+            //passamos de 13 para 4 segundos na criação do pedido
+            /*
             var pedidosExistentes = await (from pedidoBanco in db.Tpedidos
                                            join item in db.TpedidoItems on pedidoBanco.Pedido equals item.Pedido
                                            where pedidoBanco.Id_Cliente == pedido.Cliente.Id_cliente &&
@@ -54,6 +57,21 @@ namespace Pedido
                                                 pedidoBanco.St_Entrega != InfraBanco.Constantes.Constantes.ST_ENTREGA_CANCELADO
                                            orderby item.Pedido, item.Sequencia
                                            select new { pedidoBanco.Pedido, item.Fabricante, item.Produto, item.Qtde, item.Preco_Venda }).ToListAsync();
+                                           */
+            var pedidosFiltrads = await (from pedidoBanco in db.Tpedidos
+                                         where pedidoBanco.Id_Cliente == pedido.Cliente.Id_cliente &&
+                                              pedidoBanco.Loja == pedido.Ambiente.Loja &&
+                                              pedidoBanco.Usuario_Cadastro == pedido.Ambiente.Usuario &&
+                                              pedidoBanco.St_Entrega != InfraBanco.Constantes.Constantes.ST_ENTREGA_CANCELADO
+                                         select new { pedidoBanco.Pedido, pedidoBanco.Data, pedidoBanco.Hora }).ToListAsync();
+            var pedidosExistentes = (from pedidoBanco in pedidosFiltrads
+                                     join item in db.TpedidoItems on pedidoBanco.Pedido equals item.Pedido
+                                     where
+                                         (pedidoBanco.Data.HasValue && pedidoBanco.Data.Value.Date == dataLimite.Date) &&
+                                         dataLimite.CompareTo(pedidoBanco.Data) <= 0 &&
+                                         hora.CompareTo(pedidoBanco.Hora) <= 0
+                                     orderby item.Pedido, item.Sequencia
+                                     select new { pedidoBanco.Pedido, item.Fabricante, item.Produto, item.Qtde, item.Preco_Venda }).ToList();
 
             var pedExistentes = (from p in pedidosExistentes select p.Pedido).Distinct();
 

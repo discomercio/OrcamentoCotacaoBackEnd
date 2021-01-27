@@ -41,6 +41,7 @@ namespace ApiMagento.Controllers
         {
             //em 210115 estava demorando 8,1 segundos
             //em 210120 estava demorando de 10,0 a 11,5 segundos de casa com vpn 
+            //em 210126 estava demorando de 13 segundos de casa com vpn, passou apra 3,9 por causa do PedidoJaCadastradoDesdeData
             if (!servicoValidarTokenApiMagento.ValidarToken(pedido.TokenAcesso, out string? usuario))
                 return Unauthorized();
             if (string.IsNullOrEmpty(usuario))

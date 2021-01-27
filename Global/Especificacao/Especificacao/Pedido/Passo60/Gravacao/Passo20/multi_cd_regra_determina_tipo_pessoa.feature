@@ -26,6 +26,9 @@ Feature: multi_cd_regra_determina_tipo_pessoa
 #	multi_cd_regra_determina_tipo_pessoa = tipo_pessoa
 #end function
 
+#temos que testar a rotina UtilsProduto.MultiCdRegraDeterminaPessoa
+#se houver alugma outra versão dela, a que está sendo usada no produto é essa.
+
 Scenario Outline: Testar multi_cd_regra_determina_tipo_pessoa
 	Given tipo_cliente = <tipo_cliente>
 	And contribuinte_icms_status = <contribuinte_icms_status>

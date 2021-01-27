@@ -473,7 +473,7 @@ namespace Pedido
 
                         if (wmsRegraCdXUf == null)
                         {
-                            itemRegra.St_Regra = false;
+                            itemRegra.St_Regra_ok = false;
                             lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + tcliente.Uf + "' e '" +
                                 Util.DescricaoMultiCDRegraTipoPessoa(tcliente.Tipo) + "': regra associada ao produto (" +
                                 produto.Fabricante + ")" +
@@ -503,7 +503,7 @@ namespace Pedido
 
                             if (wmsRegraCdXUfXPessoa == null)
                             {
-                                itemRegra.St_Regra = false;
+                                itemRegra.St_Regra_ok = false;
                                 lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" +
                                     tcliente.Uf + "' e '" +
                                     Util.DescricaoMultiCDRegraTipoPessoa(tcliente.Tipo) +
@@ -524,7 +524,7 @@ namespace Pedido
 
                                 if (wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente == 0)
                                 {
-                                    itemRegra.St_Regra = false;
+                                    itemRegra.St_Regra_ok = false;
                                     lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" +
                                         tcliente.Uf + "' e '" +
                                         Util.DescricaoMultiCDRegraTipoPessoa(tcliente.Tipo) +
@@ -544,7 +544,7 @@ namespace Pedido
                                     {
                                         if (nfEmitente.St_Ativo != 1)
                                         {
-                                            itemRegra.St_Regra = false;
+                                            itemRegra.St_Regra_ok = false;
                                             lstErros.Add("Falha na regra de consumo do estoque para a UF '" +
                                                 tcliente.Uf + "' e '" +
                                                 Util.DescricaoMultiCDRegraTipoPessoa(tcliente.Tipo) +
@@ -562,7 +562,7 @@ namespace Pedido
 
                                     if (wmsRegraCdXUfXPessoaXcd.Count == 0)
                                     {
-                                        itemRegra.St_Regra = false;
+                                        itemRegra.St_Regra_ok = false;
                                         lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" +
                                             tcliente.Uf + "' e '" +
                                             Util.DescricaoMultiCDRegraTipoPessoa(tcliente.Tipo) +
@@ -643,7 +643,7 @@ namespace Pedido
                         lstErros.Add("Produto (" + i.Fabricante + ")" + i.Produto +
                             " não possui regra de consumo do estoque associada");
                     }
-                    else if (i.St_Regra == false)
+                    else if (i.St_Regra_ok == false)
                     {
                         lstErros.Add("Regra de consumo do estoque '" + i.TwmsRegraCd.Apelido +
                             "' associada ao produto (" + i.Fabricante + ")" + i.Produto + " está desativada");
