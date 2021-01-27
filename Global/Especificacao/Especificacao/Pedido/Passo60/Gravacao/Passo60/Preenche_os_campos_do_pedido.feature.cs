@@ -735,15 +735,15 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="perc_desagio_RA_liquida")]
+        [Xunit.SkippableFactAttribute(DisplayName="perc_desagio_RA_liquida 2")]
         [Xunit.TraitAttribute("FeatureTitle", "Preenche_os_campos_do_pedido")]
-        [Xunit.TraitAttribute("Description", "perc_desagio_RA_liquida")]
-        public virtual void Perc_Desagio_RA_Liquida()
+        [Xunit.TraitAttribute("Description", "perc_desagio_RA_liquida 2")]
+        public virtual void Perc_Desagio_RA_Liquida2()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("perc_desagio_RA_liquida", null, tagsOfScenario, argumentsOfScenario);
-#line 549
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("perc_desagio_RA_liquida 2", null, tagsOfScenario, argumentsOfScenario);
+#line 566
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -763,7 +763,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 563
+#line 580
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
