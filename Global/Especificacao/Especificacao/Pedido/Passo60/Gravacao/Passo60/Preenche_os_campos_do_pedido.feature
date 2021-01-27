@@ -283,7 +283,6 @@ Scenario Outline: Preenche_os_campos_do_pedido - pedido pai
 		| pedido | endereco_nome_iniciais_em_maiusculas           | Gabriel Prada Teodoro           |
 		| pedido | EndEtg_nome_iniciais_em_maiusculas             | Gabriel Prada Teodoro           |
 
-	When Fazer esta validação
 
 Scenario: perc_desagio_RA_liquida
 #gravado no pai e nos filhotes, depende da loja (NUMERO_LOJA_ECOMMERCE_AR_CLUBE nunca é gravado)

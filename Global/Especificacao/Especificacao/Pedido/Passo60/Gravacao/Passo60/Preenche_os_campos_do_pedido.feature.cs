@@ -393,6 +393,38 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
+        [Xunit.SkippableFactAttribute(DisplayName="perc_desagio_RA_liquida")]
+        [Xunit.TraitAttribute("FeatureTitle", "Preenche_os_campos_do_pedido")]
+        [Xunit.TraitAttribute("Description", "perc_desagio_RA_liquida")]
+        public virtual void Perc_Desagio_RA_Liquida()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("perc_desagio_RA_liquida", null, tagsOfScenario, argumentsOfScenario);
+#line 287
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+            }
+            this.ScenarioCleanup();
+        }
+        
         [Xunit.SkippableTheoryAttribute(DisplayName="Preenche_os_campos_do_pedido - pedido filhote")]
         [Xunit.TraitAttribute("FeatureTitle", "Preenche_os_campos_do_pedido")]
         [Xunit.TraitAttribute("Description", "Preenche_os_campos_do_pedido - pedido filhote")]
@@ -654,7 +686,7 @@ this.ScenarioInitialize(scenarioInfo);
             argumentsOfScenario.Add("campo", campo);
             argumentsOfScenario.Add("valor", valor);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido - pedido filhote", null, tagsOfScenario, argumentsOfScenario);
-#line 286
+#line 303
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -674,63 +706,31 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 287
+#line 304
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 288
+#line 305
  testRunner.When("Informo \"ListaProdutos[0].Qtde\" = \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 289
+#line 306
  testRunner.When("Informo \"ListaProdutos[1].Qtde\" = \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 290
+#line 307
  testRunner.When("Informo \"ValorTotalDestePedidoComRA\" = \"173512.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 291
+#line 308
  testRunner.When("Informo \"VlTotalDestePedido\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 292
+#line 309
  testRunner.When("Informo \"FormaPagtoCriacao.C_pc_valor\" = \"173512.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 293
+#line 310
  testRunner.Then("Sem nehum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 294
+#line 311
  testRunner.And(string.Format("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"pedido gerado + -A\", verificar c" +
                             "ampo \"{0}\" = \"{1}\"", campo, valor), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="perc_desagio_RA_liquida")]
-        [Xunit.TraitAttribute("FeatureTitle", "Preenche_os_campos_do_pedido")]
-        [Xunit.TraitAttribute("Description", "perc_desagio_RA_liquida")]
-        public virtual void Perc_Desagio_RA_Liquida()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("perc_desagio_RA_liquida", null, tagsOfScenario, argumentsOfScenario);
-#line 23
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
             }
             this.ScenarioCleanup();
         }
