@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo70
+namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.ValidacaoEndereco
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,7 +20,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo70
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    public partial class Calcula_Total_RA_Liquido_BDFeature : object, Xunit.IClassFixture<Calcula_Total_RA_Liquido_BDFeature.FixtureData>, System.IDisposable
+    public partial class ValidacaoEnderecoFeatureFeature : object, Xunit.IClassFixture<ValidacaoEnderecoFeatureFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -30,10 +30,10 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo70
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "calcula_total_RA_liquido_BD.feature"
+#line 1 "ValidacaoEnderecoFeature.feature"
 #line hidden
         
-        public Calcula_Total_RA_Liquido_BDFeature(Calcula_Total_RA_Liquido_BDFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public ValidacaoEnderecoFeatureFeature(ValidacaoEnderecoFeatureFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,7 +42,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo70
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "calcula_total_RA_liquido_BD", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ValidacaoEnderecoFeature", null, ProgrammingLanguage.CSharp, new string[] {
                         "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -83,15 +83,15 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo70
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="calcula_total_RA_liquido_BD")]
-        [Xunit.TraitAttribute("FeatureTitle", "calcula_total_RA_liquido_BD")]
-        [Xunit.TraitAttribute("Description", "calcula_total_RA_liquido_BD")]
-        public virtual void Calcula_Total_RA_Liquido_BD()
+        [Xunit.SkippableFactAttribute(DisplayName="validar endereco")]
+        [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEnderecoFeature")]
+        [Xunit.TraitAttribute("Description", "validar endereco")]
+        public virtual void ValidarEndereco()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("calcula_total_RA_liquido_BD", null, tagsOfScenario, argumentsOfScenario);
-#line 4
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validar endereco", null, tagsOfScenario, argumentsOfScenario);
+#line 14
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -111,24 +111,8 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 25
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 26
- testRunner.When("Informo \"PermiteRAStatus\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 27
- testRunner.When("Informo \"ListaProdutos[0].Preco_NF\" = \"704.05\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 28
- testRunner.When("Informo \"ListaProdutos[1].Preco_NF\" = \"1051.07\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 29
- testRunner.When("Informo \"ValorTotalDestePedidoComRA\" = \"3510.24\" 3470.24", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 30
- testRunner.Then("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"pedido gerado\", verificar campo " +
-                        "\"vl_total_RA_liquido\" = \"40.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 15
+ testRunner.When("fazer as validacoes conforme os comentários acima", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -141,12 +125,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                Calcula_Total_RA_Liquido_BDFeature.FeatureSetup();
+                ValidacaoEnderecoFeatureFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                Calcula_Total_RA_Liquido_BDFeature.FeatureTearDown();
+                ValidacaoEnderecoFeatureFeature.FeatureTearDown();
             }
         }
     }

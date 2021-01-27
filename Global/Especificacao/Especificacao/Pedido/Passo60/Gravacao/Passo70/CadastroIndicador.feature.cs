@@ -112,7 +112,62 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 15
- testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("t_CLIENTE registro com \"cpf_cnpj\" = \"352.704.458-24\" alterar campo \"indicador\" = " +
+                        "\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 16
+ testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 17
+ testRunner.When("Informo \"DadosCliente.Indicador_Orcamentista\" = \"POLITÉCNIC\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 18
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 19
+ testRunner.And("Tabela \"t_CLIENTE\" registro com campo \"cnpj_cpf\" = \"352.704.458-24\", verificar ca" +
+                        "mpo \"indicador\" = \"POLITÉCNIC\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 20
+ testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"pedido gerado\", verificar campo " +
+                        "\"indicador\" = \"POLITÉCNIC\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Log indicador")]
+        [Xunit.TraitAttribute("FeatureTitle", "CadastroIndicador")]
+        [Xunit.TraitAttribute("Description", "Log indicador")]
+        [Xunit.TraitAttribute("Category", "ignore")]
+        public virtual void LogIndicador()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Log indicador", null, tagsOfScenario, argumentsOfScenario);
+#line 23
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 24
+ testRunner.Given("fazer esse teste", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
             this.ScenarioCleanup();

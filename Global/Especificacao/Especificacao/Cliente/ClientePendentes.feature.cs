@@ -83,41 +83,6 @@ namespace Especificacao.Especificacao.Cliente
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Afazer ClientePendentes")]
-        [Xunit.TraitAttribute("FeatureTitle", "ClientePendentes")]
-        [Xunit.TraitAttribute("Description", "Afazer ClientePendentes")]
-        public virtual void AfazerClientePendentes()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Afazer ClientePendentes", null, tagsOfScenario, argumentsOfScenario);
-#line 8
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 9
- testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
         [Xunit.SkippableFactAttribute(DisplayName="Referencias PF")]
         [Xunit.TraitAttribute("FeatureTitle", "ClientePendentes")]
         [Xunit.TraitAttribute("Description", "Referencias PF")]
@@ -126,7 +91,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Referencias PF", null, tagsOfScenario, argumentsOfScenario);
-#line 13
+#line 11
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -146,22 +111,22 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 14
+#line 12
  testRunner.Given("Pedido base cliente PF", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 15
+#line 13
  testRunner.When("Informo \"RefComercial\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 16
+#line 14
  testRunner.Then("Erro \"Se cliente tipo PF, não deve constar referência comercial!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 18
+#line 16
  testRunner.Given("Pedido base cliente PF", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 19
+#line 17
  testRunner.When("Informo \"RefBancaria\" =  \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 20
+#line 18
  testRunner.Then("Erro \"Se cliente tipo PF, não deve constar referência bancária!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -176,7 +141,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Referencias PJ", null, tagsOfScenario, argumentsOfScenario);
-#line 22
+#line 20
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -196,40 +161,40 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 23
+#line 21
  testRunner.Given("Pedido base cliente PJ", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 24
+#line 22
  testRunner.When("Informo \"RefComercial\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 25
+#line 23
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 26
+#line 24
  testRunner.Given("Pedido base cliente PJ", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 27
+#line 25
  testRunner.When("Informo \"RefComercial\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 28
+#line 26
  testRunner.Then("Sem nenum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 29
+#line 27
  testRunner.Given("Pedido base cliente PJ", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 30
+#line 28
  testRunner.When("Informo \"RefBancaria\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 31
+#line 29
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 32
+#line 30
  testRunner.Given("Pedido base cliente PJ", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 33
+#line 31
  testRunner.When("Informo \"RefBancaria\" =  \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 34
+#line 32
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -244,7 +209,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("telefones com simbolos", null, tagsOfScenario, argumentsOfScenario);
-#line 39
+#line 37
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -264,52 +229,52 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 40
+#line 38
  testRunner.Given("Pedido base cliente PF", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 41
+#line 39
  testRunner.When("Informo \"DadosCliente.DddResidencial\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 42
+#line 40
  testRunner.When("Informo \"DadosCliente.TelefoneResidencial\" = \"1234-5678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 43
+#line 41
  testRunner.Then("Erro \"Telefone residencial com símbolo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 44
+#line 42
  testRunner.Given("Pedido base cliente PF", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 45
+#line 43
  testRunner.When("Informo \"DadosCliente.DddCelular\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 46
+#line 44
  testRunner.When("Informo \"DadosCliente.Celular\" = \"98160-3313\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 47
+#line 45
  testRunner.Then("Erro \"Telefone celular com símbolo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 48
+#line 46
  testRunner.Given("Pedido base cliente PF", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 49
+#line 47
  testRunner.When("Informo \"DadosCliente.DddComercial\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 50
+#line 48
  testRunner.When("Informo \"DadosCliente.TelComercial\" = \"1234-678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 51
+#line 49
  testRunner.Then("Erro \"Telefone comercial com símbolo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 52
+#line 50
  testRunner.Given("Pedido base cliente PJ", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 53
+#line 51
  testRunner.When("Informo \"DadosCliente.DddComercial2\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 54
+#line 52
  testRunner.When("Informo \"DadosCliente.TelComercial2\" = \"1234-5678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 55
+#line 53
  testRunner.Then("Erro \"Telefone comercial com símbolo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -324,7 +289,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CaracteresInvalidos", null, tagsOfScenario, argumentsOfScenario);
-#line 57
+#line 55
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -344,76 +309,76 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 58
+#line 56
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 59
+#line 57
  testRunner.When("Informo \"DadosCliente.Nome\" = \"Caracter inválido: $\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 60
+#line 58
  testRunner.Then("Erro \"O CAMPO \'NOME\' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: $\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 62
+#line 60
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 63
+#line 61
  testRunner.When("Informo \"DadosCliente.Endereco\" = \"Caracter inválido: $\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 64
+#line 62
  testRunner.Then("Erro \"O CAMPO \'ENDEREÇO\' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: $\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 66
+#line 64
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 67
+#line 65
  testRunner.When("Informo \"DadosCliente.Numero\" = \"Caracter inválido: $\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 68
+#line 66
  testRunner.Then("Erro \"O CAMPO \'NÚMERO\' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: $\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 70
+#line 68
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 71
+#line 69
  testRunner.When("Informo \"DadosCliente.Complemento\" = \"Caracter inválido: $\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 72
+#line 70
  testRunner.Then("Erro \"O CAMPO \'COMPLEMENTO\' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: $\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 74
+#line 72
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 75
+#line 73
  testRunner.When("Informo \"DadosCliente.Bairro\" = \"Caracter inválido: $\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 76
+#line 74
  testRunner.Then("Erro \"O CAMPO \'BAIRRO\' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: $\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 78
+#line 76
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 79
+#line 77
  testRunner.When("Informo \"DadosCliente.Cidade\" = \"Caracter inválido: $\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 80
+#line 78
  testRunner.Then("Erro \"O CAMPO \'CIDADE\' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: $\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 82
+#line 80
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 83
+#line 81
  testRunner.When("Informo \"DadosCliente.Contato\" = \"Caracter inválido: $\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 84
+#line 82
  testRunner.Then("Erro \"O CAMPO \'CONTATO\' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: $\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 86
+#line 84
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 87
+#line 85
  testRunner.When("Informo \"DadosCliente.Observacao_Filiacao\" = \"Caracter inválido: $\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 88
+#line 86
  testRunner.Then("Erro \"O CAMPO \'OBSERVAÇÕES\' POSSUI UM OU MAIS CARACTERES INVÁLIDOS: $\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

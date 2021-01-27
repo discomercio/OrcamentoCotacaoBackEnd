@@ -111,7 +111,46 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 17
- testRunner.Given("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 18
+ testRunner.When("Informo \"PedidoProdutoPedidoDados.CustoFinancFornecCoeficiente\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 19
+ testRunner.Then("Erro \"Coeficiente do fabricante (003) está incorreto!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 21
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 22
+ testRunner.When("Informo \"FormaPagtoCriacao.Tipo_parcelamento\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 23
+ testRunner.When("Informo \"FormaPagtoCriacao.Op_av_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 24
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"AV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 25
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 26
+ testRunner.When("Informo \"ListaProdutos[0].Preco_Venda\" = \"939.87\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 27
+ testRunner.When("Informo \"ListaProdutos[0].Preco_NF\" = \"939.87\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 28
+ testRunner.When("Informo \"ListaProdutos[0].Preco_Lista\" = \"939.87\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 29
+ testRunner.When("Informo \"ListaProdutos[0].Preco_NF\" = \"939.87\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 30
+ testRunner.When("Informo \"ListaProdutos[0].CustoFinancFornecCoeficiente\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 31
+ testRunner.Then("Erro \"Coeficiente do fabricante (003) está incorreto!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
