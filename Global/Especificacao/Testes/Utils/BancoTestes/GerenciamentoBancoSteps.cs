@@ -126,6 +126,29 @@ namespace Especificacao.Testes.Utils.BancoTestes
             }
         }
 
+        public void TabelaT_PEDIDO_ITEMRegistroVerificarCampo(string pedido, string campo, string valor_desejado)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO_ITEM", "pedido", pedido, campo, valor_desejado, this);
+
+            var db = this.contextoBdProvider.GetContextoLeitura();
+            var registros = (from item in db.TpedidoItems where item.Pedido.Contains(pedido) select item).ToList();
+            //deve ter um ou mais registros
+            Assert.True(registros.Any());
+
+            foreach (var registro in registros)
+            {
+                //tiramos um clone
+                string original = Newtonsoft.Json.JsonConvert.SerializeObject(registro);
+                TpedidoItem copia = Newtonsoft.Json.JsonConvert.DeserializeObject<TpedidoItem>(original);
+                if (!WhenInformoCampo.InformarCampo(campo, valor_desejado, copia))
+                    throw new Exception($"Campo {campo} não encontrado em TpedidoItem");
+                string desejado = Newtonsoft.Json.JsonConvert.SerializeObject(copia);
+                if (desejado != original)
+                    LogTestes.LogTestes.ErroNosTestes($"ThenTabelaRegistroComCampoVerificarCampo t_PEDIDO_ITEM campo {campo} valor errado, {desejado}, {original}");
+                Assert.Equal(desejado, original);
+            }
+        }
+
         [Given(@"Tabela ""t_OPERACAO"" apagar registro com campo ""id"" = ""(.*)""")]
         public void GivenTabelaApagarRegistroComCampo(string valorBusca)
         {

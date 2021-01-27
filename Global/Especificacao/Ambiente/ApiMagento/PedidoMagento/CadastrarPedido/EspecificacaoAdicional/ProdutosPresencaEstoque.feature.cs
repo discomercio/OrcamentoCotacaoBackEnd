@@ -149,6 +149,11 @@ this.ScenarioInitialize(scenarioInfo);
 #line 14
  testRunner.Given("fazer esta validacao", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
+#line 15
+ testRunner.When("Implementado em Especificacao.Especificacao.Ambiente.ApiMagento.PedidoMagento.Cad" +
+                        "astrarPedido.EspecificacaoAdicional.EspecificacaoMagentoFeature.preço: aceitamos" +
+                        " o valor que vier do magento.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
             }
             this.ScenarioCleanup();
         }

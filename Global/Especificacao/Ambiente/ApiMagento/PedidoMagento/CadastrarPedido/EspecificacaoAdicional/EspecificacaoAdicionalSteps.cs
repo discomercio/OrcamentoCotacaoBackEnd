@@ -89,6 +89,20 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
             gerenciamentoBanco.TabelaT_PEDIDORegistroVerificarCampo(somentePai, campo, valor);
         }
 
+        [Then(@"Tabela ""t_PEDIDO_ITEM"" registro criado, verificar campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaT_PEDIDO_ITEMRegistroCriadoVerificarCampo(string campo, string valor)
+        {
+            var dto = cadastrarPedido.ultimoPedidoResultadoMagentoDto();
+            if (dto == null)
+                throw new Exception("erro");
+            Assert.Empty(dto.ListaErros);
+
+            string pedido = dto.IdPedidoCadastrado ?? "";
+
+            gerenciamentoBanco.TabelaT_PEDIDO_ITEMRegistroVerificarCampo(pedido, campo, valor);
+        }
+
+
         [Given(@"Reiniciar appsettings")]
         public void GivenReiniciarAppsettings()
         {

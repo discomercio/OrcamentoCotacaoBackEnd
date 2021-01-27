@@ -99,8 +99,8 @@ Scenario: DetalhesPedidoMagentoDto
 	#//InstaladorInstala = COD_INSTALADOR_INSTALA_NAO
 	Given Pedido base
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro com campo "pedido" = "{pedido}", verificar campo "st_entrega_imediata" = "2"
-	And Tabela "t_PEDIDO" registro com campo "pedido" = "{pedido}", verificar campo "PrevisaoEntregaData" = "null"
-	And Tabela "t_PEDIDO" registro com campo "pedido" = "{pedido}", verificar campo "StBemUsoComum" = "1"
-	And Tabela "t_PEDIDO" registro com campo "pedido" = "{pedido}", verificar campo "InstaladorInstalaStatus" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_entrega_imediata" = "2"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "PrevisaoEntregaData" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "StBemUsoComum" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "InstaladorInstalaStatus" = "1"
 	
