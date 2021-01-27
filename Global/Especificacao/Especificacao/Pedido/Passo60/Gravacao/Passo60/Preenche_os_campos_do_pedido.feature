@@ -283,6 +283,23 @@ Scenario Outline: Preenche_os_campos_do_pedido - pedido pai
 		| pedido | endereco_nome_iniciais_em_maiusculas           | Gabriel Prada Teodoro           |
 		| pedido | EndEtg_nome_iniciais_em_maiusculas             | Gabriel Prada Teodoro           |
 
+
+Scenario: perc_desagio_RA_liquida
+#gravado no pai e nos filhotes, depende da loja (NUMERO_LOJA_ECOMMERCE_AR_CLUBE nunca é gravado)
+#
+#loja/PedidoNovoConfirma.asp
+#			'01/02/2018: os pedidos do Arclube usam o RA para incluir o valor do frete e, portanto, não devem ter deságio do RA
+#			if (Cstr(loja) <> Cstr(NUMERO_LOJA_ECOMMERCE_AR_CLUBE)) And (Not blnMagentoPedidoComIndicador) then rs("perc_desagio_RA_liquida") = getParametroPercDesagioRALiquida
+#set rP = get_registro_t_parametro(ID_PARAMETRO_PERC_DESAGIO_RA_LIQUIDA)
+#if Trim("" & rP.campo_real) <> "" then getParametroPercDesagioRALiquida = rP.campo_real
+#s = "SELECT " & _
+#		"*" & _
+#	" FROM t_PARAMETRO" & _
+#	" WHERE" & _
+#		" (id = '" & id_registro & "')"
+#
+
+
 Scenario Outline: Preenche_os_campos_do_pedido - pedido filhote
 	Given Pedido base
 	When Informo "ListaProdutos[0].Qtde" = "100"
@@ -546,7 +563,7 @@ Scenario Outline: Preenche_os_campos_do_pedido - pedido filhote
 		| pedido | endereco_nome_iniciais_em_maiusculas           | Gabriel Prada Teodoro           |
 		| pedido | EndEtg_nome_iniciais_em_maiusculas             | Gabriel Prada Teodoro           |
 
-Scenario: perc_desagio_RA_liquida
+Scenario: perc_desagio_RA_liquida 2
 	#gravado no pai e nos filhotes, depende da loja (NUMERO_LOJA_ECOMMERCE_AR_CLUBE nunca é gravado)
 	#
 	#loja/PedidoNovoConfirma.asp

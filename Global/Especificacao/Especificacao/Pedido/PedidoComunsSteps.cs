@@ -20,6 +20,7 @@ namespace Especificacao.Especificacao.Pedido
     [Scope(Tag = "Especificacao.Pedido.FluxoCriacaoPedido")]
     [Scope(Tag = "Especificacao.Pedido.Passo30")]
     [Scope(Tag = "Especificacao.Pedido.Passo40")]
+    [Scope(Tag = "Especificacao.Pedido.Passo60")]
     public class PedidoComunsSteps : PedidoPassosComuns
     {
         public PedidoComunsSteps(FeatureContext featureContext)
@@ -73,6 +74,14 @@ namespace Especificacao.Especificacao.Pedido
                 base.AdicionarImplementacao(imp);
                 RegistroDependencias.AdicionarDependencia("Especificacao.Pedido.Pedido.PedidoListaDependencias", imp,
                     "Especificacao.Pedido.Passo40.Passo40ListaDependencias");
+                return;
+            }
+            if (tags.Contains("Especificacao.Pedido.Passo60"))
+            {
+                var imp = new Especificacao.Pedido.PedidoSteps();
+                base.AdicionarImplementacao(imp);
+                RegistroDependencias.AdicionarDependencia("Especificacao.Pedido.Pedido.PedidoListaDependencias", imp,
+                    "Especificacao.Pedido.Passo60.Passo60ListaDependencias");
                 return;
             }
         }

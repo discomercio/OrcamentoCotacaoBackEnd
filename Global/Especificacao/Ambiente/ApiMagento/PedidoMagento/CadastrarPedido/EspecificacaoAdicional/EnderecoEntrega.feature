@@ -1,4 +1,4 @@
-﻿@ignore
+﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
 Feature: EnderecoEntrega (somente PF)
 #Endereço
 #Se o cliente for PF, sempre será usado somente o endereço de entrega como sendo o único endereço do cliente.
@@ -12,15 +12,13 @@ Feature: EnderecoEntrega (somente PF)
 
 #201229 reuniao semanal.txt
 #- fazer o endereço de entrega para PF obrigatório?
-#sim, exigir. 
+#sim, exigir.
 
 
-#Verificar se o pedido tem os campos de endereço de entrega preenchidos - não pode estar preenchido
-#e os campos que estavam na entrega tem que estar no cadastral
 Scenario: EnderecoEntrega PF
-	Given Pedido base cliente PF
-	And Limpar endereço de entrega
+	#Garantir que o pedido PF nunca entra com endereço de entrega
+	Given Pedido base PF com endereço de entrega
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro com campo "pedido" = "{número pedido}", verificar campo "EndEtg_cnpj_cpf" = ""
-	And Tabela "t_PEDIDO" registro com campo "pedido" = "{número pedido}", verificar campo "EndEtg_endereco" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_cnpj_cpf" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_endereco" = "null"
 

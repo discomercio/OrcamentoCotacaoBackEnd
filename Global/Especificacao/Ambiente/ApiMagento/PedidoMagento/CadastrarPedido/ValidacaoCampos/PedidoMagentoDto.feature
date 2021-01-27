@@ -36,6 +36,13 @@ Scenario: InfCriacaoPedido Pedido_bs_x_ac
 	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "223456799"
 	Then Sem nenhum erro
 
+@ignore
+Scenario: InfCriacaoPedido Pedido_bs_x_ac somente digitos
+	Given Pedido base
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "1234567AA"
+	Then Erro "O número Magento deve conter apenas dígitos!"
+
+
 Scenario: InfCriacaoPedido Marketplace_codigo_origem
 	#/// Número do pedido no marketplace (opcional, se o pedido é do magento este campo não existe)
 	Given Pedido base

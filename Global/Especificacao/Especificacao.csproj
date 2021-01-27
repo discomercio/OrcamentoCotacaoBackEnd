@@ -91,6 +91,7 @@
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\Passo20\ValidacaoEstoque - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\Passo20\ValidacaoEstoque2 - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\SplitEstoqueResultante3casos - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Passo40ListaDependencias.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Validacao\Estoque.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Prepedido\Pedido.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\TesteExecucaoCruzadaPedido - Copy.feature.cs" />
@@ -221,6 +222,9 @@
     </Compile>
     <Compile Update="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\SplitEstoqueResultanteCdManual.feature.cs">
       <DependentUpon>SplitEstoqueResultanteCdManual.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Especificacao\Pedido\Passo60\Passo60ListaDependencias.feature.cs">
+      <DependentUpon>Passo60ListaDependencias.feature</DependentUpon>
     </Compile>
     <Compile Update="Especificacao\Prepedido\Prepedido.feature.cs">
       <DependentUpon>Prepedido.feature</DependentUpon>
@@ -388,6 +392,10 @@
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\SplitEstoqueResultanteCdManual.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo60\Passo60ListaDependencias.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
