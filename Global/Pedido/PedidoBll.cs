@@ -392,7 +392,10 @@ namespace Pedido
 
             VerificarQtdePedidosAutoSplit(regraCrtlEstoque, prodValidadoEstoqueListaErros, produto, id_nfe_emitente_selecao_manual);
 
-            List<int> lst_empresa_selecionada = ContagemEmpresasUsadasAutoSplit(regraCrtlEstoque, id_nfe_emitente_selecao_manual);
+            List<int> lst_empresa_selecionada_temporaria = ContagemEmpresasUsadasAutoSplit(regraCrtlEstoque, id_nfe_emitente_selecao_manual);
+            //está com alguma falha, vamos executar somente com a primeira
+            List<int> lst_empresa_selecionada = new List<int>();
+            lst_empresa_selecionada.Add(lst_empresa_selecionada_temporaria.First());
 
             await ExisteProdutoDescontinuado(produto, prodValidadoEstoqueListaErros);
 
