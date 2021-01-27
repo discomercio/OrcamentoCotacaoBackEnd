@@ -14,3 +14,6 @@
 @ignore
 Scenario: Tipo_Parcelamento
 	Given fazere sta validação
+	When Implementado em Especificacao.Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional.FormaPagtoCriacaoMagentoDtoFeature
+
+

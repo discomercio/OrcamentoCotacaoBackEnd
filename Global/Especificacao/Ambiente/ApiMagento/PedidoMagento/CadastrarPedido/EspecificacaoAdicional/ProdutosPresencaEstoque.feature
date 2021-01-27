@@ -12,4 +12,7 @@ Scenario: PresencaEstoque
 Scenario: Produtos
 #	preço: aceitamos o valor que vier do magento. Não validamos o preço.
 	Given fazer esta validacao
+	When Implementado em Especificacao.Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional.EspecificacaoMagentoFeature.preço: aceitamos o valor que vier do magento.
+
+
 

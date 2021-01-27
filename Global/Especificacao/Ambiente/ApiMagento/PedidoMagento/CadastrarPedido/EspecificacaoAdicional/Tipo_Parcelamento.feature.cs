@@ -113,6 +113,10 @@ this.ScenarioInitialize(scenarioInfo);
 #line 16
  testRunner.Given("fazere sta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
+#line 17
+ testRunner.When("Implementado em Especificacao.Especificacao.Ambiente.ApiMagento.PedidoMagento.Cad" +
+                        "astrarPedido.EspecificacaoAdicional.FormaPagtoCriacaoMagentoDtoFeature", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
             }
             this.ScenarioCleanup();
         }
