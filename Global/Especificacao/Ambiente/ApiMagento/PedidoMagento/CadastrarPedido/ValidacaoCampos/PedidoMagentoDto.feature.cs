@@ -514,20 +514,18 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 102
- testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{pedido}\", verificar campo \"st_e" +
-                        "ntrega_imediata\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_entrega_imediata\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 103
- testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{pedido}\", verificar campo \"Prev" +
-                        "isaoEntregaData\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"PrevisaoEntregaData\" = \"null\"" +
+                        "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 104
- testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{pedido}\", verificar campo \"StBe" +
-                        "mUsoComum\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"StBemUsoComum\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 105
- testRunner.And("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"{pedido}\", verificar campo \"Inst" +
-                        "aladorInstalaStatus\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"InstaladorInstalaStatus\" = \"1" +
+                        "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
