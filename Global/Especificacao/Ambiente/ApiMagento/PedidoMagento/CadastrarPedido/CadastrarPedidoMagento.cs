@@ -63,6 +63,11 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
         }
         protected override void AbstractListaDeItensComXitens(int numeroItens)
         {
+            MagentoListaDeItensComXitens(numeroItens);
+        }
+
+        public void MagentoListaDeItensComXitens(int numeroItens)
+        {
             if (ignorarFeature) return;
             Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensComXitens(numeroItens, this);
             numeroItens = numeroItens < 0 ? 0 : numeroItens;
@@ -73,6 +78,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             while (lp.Count > numeroItens)
                 lp.RemoveAt(lp.Count - 1);
         }
+
         protected override void AbstractLimparEnderecoDeEntrega()
         {
             if (ignorarFeature) return;

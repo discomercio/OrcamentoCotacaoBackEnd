@@ -19,7 +19,6 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "ignore")]
     [Xunit.TraitAttribute("Category", "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional")]
     public partial class EspecificacaoMagentoFeature : object, Xunit.IClassFixture<EspecificacaoMagentoFeature.FixtureData>, System.IDisposable
     {
@@ -27,7 +26,6 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore",
                 "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
@@ -47,7 +45,6 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "EspecificacaoMagento", "Definições da ApiMagento\r\n\r\nParadigma de salvamento: fazer o mesmo que acontece c" +
                     "om o processo semi-automático.\r\nSe o semi-automático der erro, damos erro. Se ac" +
                     "eitar, aceitamos.\r\n\r\nEstoque: não é um problema. ", ProgrammingLanguage.CSharp, new string[] {
-                        "ignore",
                         "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -176,22 +173,25 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("Informo \"VlTotalDestePedido\" = \"1648.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 25
- testRunner.When("Lista de itens com \"1\" itens", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"appsettings.Loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 26
- testRunner.When("Lista de itens \"0\" informo \"Fabricante\" = \"001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Lista de itens com \"1\" itens", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 27
- testRunner.When("Lista de itens \"0\" informo \"Produto\" = \"001090\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Lista de itens \"0\" informo \"Fabricante\" = \"001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 28
- testRunner.When("Lista de itens \"0\" informo \"Preco_Venda\" = \"1648.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Lista de itens \"0\" informo \"Produto\" = \"001090\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 29
+ testRunner.When("Lista de itens \"0\" informo \"Preco_Venda\" = \"1648.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 30
  testRunner.When("Lista de itens \"0\" informo \"Preco_NF\" = \"1648.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 31
- testRunner.Then("Erro \"pegar o erro\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 32
+ testRunner.Then("Erro \"Produto não cadastrado para a loja. Produto: 001090, loja: 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
