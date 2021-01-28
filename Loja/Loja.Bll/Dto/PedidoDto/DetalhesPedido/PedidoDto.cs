@@ -91,7 +91,7 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                     comIndicador: pedidoDto.ComIndicador != 0,
                     indicador: pedidoDto.NomeIndicador,
                     orcamentista: "",
-                    idNfeSelecionadoManual: pedidoDto.CDManual,
+                    id_nfe_emitente_selecao_manual: pedidoDto.CDManual,
                     venda_Externa: venda_externa,
                     opcaoVendaSemEstoque: pedidoDto.OpcaoVendaSemEstoque,
                     vendedor: usuario

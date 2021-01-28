@@ -55,6 +55,7 @@ namespace Produto.RegrasCrtlEstoque
         public short? Estoque_Qtde_Solicitado { get; set; }
         public short Estoque_Qtde { get; set; }
         public short? Estoque_Qtde_Estoque_Global { get; set; }
+        public short? Estoque_Qtde_Estoque { get; set; }
     }
 
 }

@@ -12,8 +12,8 @@ namespace Pedido.Criacao.Passo60.Gravacao
         public readonly PedidoCriacaoDados Pedido;
         public readonly PedidoCriacaoRetornoDados Retorno;
         public readonly Pedido.Criacao.PedidoCriacao Criacao;
-        public readonly ExecucaoDados Execucao;
-        public PassoBaseGravacao(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao criacao, ExecucaoDados execucao)
+        public readonly Pedido.Criacao.Execucao.Execucao Execucao;
+        public PassoBaseGravacao(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao criacao, Execucao.Execucao execucao)
         {
             this.ContextoBdGravacao = contextoBdGravacao ?? throw new ArgumentNullException(nameof(contextoBdGravacao));
             this.Pedido = pedido ?? throw new ArgumentNullException(nameof(pedido));

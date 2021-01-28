@@ -20,12 +20,15 @@ namespace Pedido
     {
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
         private readonly ProdutoGeralBll produtoGeralBll;
+        public readonly Prepedido.PrepedidoBll PrepedidoBll;
 
         public PedidoBll(InfraBanco.ContextoBdProvider contextoProvider,
-            ProdutoGeralBll produtoGeralBll)
+            ProdutoGeralBll produtoGeralBll,
+            Prepedido.PrepedidoBll prepedidoBll)
         {
             this.contextoProvider = contextoProvider;
             this.produtoGeralBll = produtoGeralBll;
+            this.PrepedidoBll = prepedidoBll;
         }
 
         public float VerificarPagtoPreferencial(Tparametro tParametro, PedidoCriacaoDados pedido,
@@ -230,7 +233,7 @@ namespace Pedido
                                                select new { c.Coeficiente }).FirstOrDefault();
                         if (coeficienteTask == null)
                             lstErros.Add("Opção de parcelamento não disponível para fornecedor " + item.Fabricante +
-                                ": " + DecodificaCustoFinanFornecQtdeParcelas(c_custoFinancFornecTipoParcelamento,
+                                ": " + Prepedido.PrepedidoBll.DecodificaCustoFinanFornecQtdeParcelas(c_custoFinancFornecTipoParcelamento,
                                 c_custoFinancFornecQtdeParcelas) + " parcela(s)");
                         else
                         {
@@ -301,18 +304,6 @@ namespace Pedido
             }
         }
 
-        public string DecodificaCustoFinanFornecQtdeParcelas(string tipoParcelamento, short custoFFQtdeParcelas)
-        {
-            string retorno = "";
-
-            if (tipoParcelamento == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
-                retorno = "0+" + custoFFQtdeParcelas;
-            else if (tipoParcelamento == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA)
-                retorno = "1+" + custoFFQtdeParcelas;
-
-            return retorno;
-        }
-
         public async Task<float> BuscarCoeficientePercentualCustoFinanFornec(Criacao.PedidoCriacao criacao,
             PedidoCriacaoDados pedido, short qtdeParcelas, string siglaPagto, List<string> lstErros)
         {
@@ -342,7 +333,7 @@ namespace Pedido
                     else
                     {
                         lstErros.Add("Opção de parcelamento não disponível para fornecedor " + i.Fabricante + ": " +
-                            DecodificaCustoFinanFornecQtdeParcelas(pedido.FormaPagtoCriacao.C_forma_pagto, qtdeParcelas) + " parcela(s)");
+                            Prepedido.PrepedidoBll.DecodificaCustoFinanFornecQtdeParcelas(pedido.FormaPagtoCriacao.C_forma_pagto, qtdeParcelas) + " parcela(s)");
                     }
 
                 }
@@ -631,6 +622,7 @@ namespace Pedido
             return lstRegrasCrtlEstoque;
         }
 
+        //todo: remover rotina em favor da ProdutoGeralBll.VerificarRegrasAssociadasAosProdutos
         public static void VerificarRegrasAssociadasParaUMProduto(List<RegrasBll> lst, List<string> lstErros,
             Tcliente cliente, int id_nfe_emitente_selecao_manual)
         {

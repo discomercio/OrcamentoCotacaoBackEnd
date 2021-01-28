@@ -7,7 +7,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava25
 {
     class Grava25 : PassoBaseGravacao
     {
-        public Grava25(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao criacao, ExecucaoDados execucao)
+        public Grava25(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao criacao, Execucao.Execucao execucao)
             : base(contextoBdGravacao, pedido, retorno, criacao, execucao)
         {
         }
@@ -73,9 +73,14 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava25
 					end if 'if alerta=""
 */
 
+            //todo: fazer ewsta nritna no grava25
+            // usar ProdutoGeralBll.VerificarRegrasAssociadasAosProdutos
+
         }
         public void CdSelecionadoEstaHabilitadoEmTodasAsRegras()
         {
+            //todo: fazer ewsta nritna no grava25
+
             /*
                             'NO CASO DE SELEÇÃO MANUAL DO CD, VERIFICA SE O CD SELECIONADO ESTÁ HABILITADO EM TODAS AS REGRAS
                                 if alerta="" then
@@ -123,7 +128,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava25
                 return;
 
             //garante que tenha rgistrado o erro
-            foreach (var regra in Execucao.RegrasControleEstoque)
+            foreach (var regra in Execucao.ListaRegrasControleEstoque)
             {
                 if (!regra.St_Regra_ok)
                     Retorno.ListaErros.Add("Ocorreu algum erro na leitura das regras de consumo de estoque.");

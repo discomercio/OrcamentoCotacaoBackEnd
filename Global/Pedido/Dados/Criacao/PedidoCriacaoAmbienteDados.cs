@@ -8,7 +8,7 @@ namespace Pedido.Dados.Criacao
 {
     public class PedidoCriacaoAmbienteDados
     {
-        public PedidoCriacaoAmbienteDados(string loja, string vendedor, string usuario, bool comIndicador, string indicador, string orcamentista, int idNfeSelecionadoManual, bool venda_Externa, bool opcaoVendaSemEstoque)
+        public PedidoCriacaoAmbienteDados(string loja, string vendedor, string usuario, bool comIndicador, string indicador, string orcamentista, int id_nfe_emitente_selecao_manual, bool venda_Externa, bool opcaoVendaSemEstoque)
         {
             //pode vir com null
             indicador ??= "";
@@ -20,7 +20,7 @@ namespace Pedido.Dados.Criacao
             ComIndicador = comIndicador;
             Indicador = indicador ?? throw new ArgumentNullException(nameof(indicador));
             Orcamentista = orcamentista ?? throw new ArgumentNullException(nameof(orcamentista));
-            IdNfeSelecionadoManual = idNfeSelecionadoManual;
+            Id_nfe_emitente_selecao_manual = id_nfe_emitente_selecao_manual;
             Venda_Externa = venda_Externa;
             OpcaoVendaSemEstoque = opcaoVendaSemEstoque;
         }
@@ -42,7 +42,7 @@ namespace Pedido.Dados.Criacao
 
         //Armazena o id do centro de distribuição selecionado manualmente
         //Obs: armazena "0" caso seja automático
-        public int IdNfeSelecionadoManual { get; }
+        public int Id_nfe_emitente_selecao_manual { get; }
 
         //Armazena se é venda externa
         public bool Venda_Externa { get; }

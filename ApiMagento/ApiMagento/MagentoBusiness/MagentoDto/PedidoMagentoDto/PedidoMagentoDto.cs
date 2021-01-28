@@ -140,7 +140,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                     orcamentista: "",
 
                     //Armazena o id do centro de distribuição selecionado manualmente
-                    idNfeSelecionadoManual: 0, //será sempre automático
+                    id_nfe_emitente_selecao_manual: 0, //será sempre automático
 
                     //Flag para saber se o cliente aceitou finalizar o pedido mesmo com produto sem estoque
                     //afazer: verificar se passa true ou false

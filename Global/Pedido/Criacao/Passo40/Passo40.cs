@@ -146,7 +146,7 @@ namespace Pedido.Criacao.Passo40
 
                     if (custoFinancFornec == null)
                         lstErros.Add("Opção de parcelamento não disponível para fornecedor " + prod.Fabricante + ": " +
-                            Criacao.PedidoBll.DecodificaCustoFinanFornecQtdeParcelas(Criacao.Execucao.C_custoFinancFornecTipoParcelamento, (short)Criacao.Execucao.C_custoFinancFornecQtdeParcelas) + " parcela(s).");
+                            Prepedido.PrepedidoBll.DecodificaCustoFinanFornecQtdeParcelas(Criacao.Execucao.C_custoFinancFornecTipoParcelamento, (short)Criacao.Execucao.C_custoFinancFornecQtdeParcelas) + " parcela(s).");
 
 
                     TprodutoLoja prodLoja = (from c in Criacao.Execucao.TabelasBanco.TprodutoLoja_Include_Tprodtuo_Tfabricante

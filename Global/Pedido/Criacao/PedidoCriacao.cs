@@ -194,7 +194,7 @@ Fluxo no módulo loja:
             * 27- verifica se tem algum produto descontinuado*/
             //antes vamos validar o CD 
 
-            if (pedido.Ambiente.IdNfeSelecionadoManual != 0)
+            if (pedido.Ambiente.Id_nfe_emitente_selecao_manual != 0)
                 if (usuarioPermissao.Permitido(Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD))
                     pedidoRetorno.ListaErros.Add("Usuário não tem permissão de especificar o CD!");
 
@@ -208,7 +208,7 @@ Fluxo no módulo loja:
 
                 //vamos buscar as regras relacionadas ao produto
                 produto_validado_item = await PedidoBll.VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado(produto,
-                UtilsGlobais.Util.SoDigitosCpf_Cnpj(pedido.Cliente.Cnpj_Cpf), pedido.Ambiente.IdNfeSelecionadoManual);
+                UtilsGlobais.Util.SoDigitosCpf_Cnpj(pedido.Cliente.Cnpj_Cpf), pedido.Ambiente.Id_nfe_emitente_selecao_manual);
 
                 if (produto_validado_item.ListaErros.Count > 0)
                 {
@@ -264,7 +264,7 @@ Fluxo no módulo loja:
             foreach (var produto in pedido.ListaProdutos)
             {
                 var lstRegrast = (await PedidoBll.VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado_Teste(
-                    produto, pedido.Cliente.Cnpj_Cpf, pedido.Ambiente.IdNfeSelecionadoManual));
+                    produto, pedido.Cliente.Cnpj_Cpf, pedido.Ambiente.Id_nfe_emitente_selecao_manual));
                 //todo: revisar isto
                 if (lstRegrast.regrasBlls.Count > 0)
                     lstRegras.Add(lstRegrast.regrasBlls[0]);

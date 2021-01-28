@@ -1619,7 +1619,7 @@ namespace Prepedido
             //esta tabela é pequena
             var dbTnfEmitentes = await (from c in dbreal.TnfEmitentes select new { c.Id, c.St_Ativo }).ToListAsync(); ;
 
-            //todo: terminar de montar o cache
+            //para melhorar a velocidade, poderíamos terminar de montar o cache
 
             //buscar a sigla tipo pessoa
             var tipo_pessoa = UtilsProduto.MultiCdRegraDeterminaPessoa(prePedido.DadosCliente.Tipo,
@@ -1991,7 +1991,7 @@ namespace Prepedido
             return retorno;
         }
 
-        private string DecodificaCustoFinanFornecQtdeParcelas(string tipoParcelamento, short custoFFQtdeParcelas)
+        public static string DecodificaCustoFinanFornecQtdeParcelas(string tipoParcelamento, short custoFFQtdeParcelas)
         {
             string retorno = "";
 

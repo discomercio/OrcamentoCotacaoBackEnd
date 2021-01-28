@@ -12,11 +12,9 @@ namespace Pedido.Criacao.Passo60.Gravacao
         {
         }
 
-        //dados de gravacao
-        public ExecucaoDados Execucao = new ExecucaoDados();
-
         public async Task Executar()
         {
+            var Execucao = Criacao.Execucao;
             using var contextoBdGravacao = Criacao.ContextoProvider.GetContextoGravacaoParaUsing();
 
             //veja Especificacao\Pedido\Passo60\Gravacao\FluxoGravacaoPedido.feature
@@ -33,7 +31,7 @@ namespace Pedido.Criacao.Passo60.Gravacao
             if (Retorno.AlgumErro()) return;
 
             //Passo20: LER AS REGRAS DE CONSUMO DO ESTOQUE
-            Execucao.RegrasControleEstoque = await new Grava20.Grava20(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao).Executar();
+            Execucao.ListaRegrasControleEstoque = await new Grava20.Grava20(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao).Executar();
 
             //Passo25:  VERIFICA SE AS REGRAS ASSOCIADAS AOS PRODUTOS ESTÃO OK - linha 1010
             await new Grava25.Grava25(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao).Executar();
