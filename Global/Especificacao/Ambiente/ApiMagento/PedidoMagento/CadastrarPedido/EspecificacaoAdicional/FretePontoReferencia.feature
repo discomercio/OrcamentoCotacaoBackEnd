@@ -31,7 +31,7 @@ Scenario: campo "frete" salvo em t_PEDIDO.vl_frete
 	#a possibilidade de salvar essa informação, creio que deveríamos gravar nesse campo
 	When Fazer esta validação
 
-@ignore
+
 Scenario: Ponto de Referência
 	#Colocar a informação do ponto de referência no campo 'Constar na NF'. Comparar o conteúdo do ponto de referência
 	#com o campo complemento. Se forem iguais, não colocar em 'Constar na NF'. Se o campo complemento exceder o

@@ -225,11 +225,9 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="Ponto de Referência")]
         [Xunit.TraitAttribute("FeatureTitle", "FretePontoReferencia")]
         [Xunit.TraitAttribute("Description", "Ponto de Referência")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void PontoDeReferencia()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ponto de Referência", null, tagsOfScenario, argumentsOfScenario);
 #line 35

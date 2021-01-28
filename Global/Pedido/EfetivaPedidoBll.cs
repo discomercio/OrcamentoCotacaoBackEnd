@@ -791,7 +791,7 @@ namespace Pedido
             pedidonovo.Marketplace_codigo_origem = pedido.Marketplace.Marketplace_codigo_origem ?? ""; //s_origem_pedido
 
             //Nota Fiscal
-            pedidonovo.Nfe_Texto_Constar = "";
+            pedidonovo.Nfe_Texto_Constar = pedido.DetalhesPedido.Observacoes;
             //verificar, pois no PedidoNovoConsiste é possivel inserir o tetxto o 
             //número de "xPed" a variavel é "c_num_pedido_compra" 
             pedidonovo.Nfe_XPed = "";
