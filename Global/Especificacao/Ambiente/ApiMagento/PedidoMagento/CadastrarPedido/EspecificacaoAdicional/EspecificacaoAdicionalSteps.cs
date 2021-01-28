@@ -54,6 +54,14 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
             cadastrarPedido.WhenInformo(p0, p1);
         }
 
+        [When(@"Lista de itens ""(.*)"" informo ""(.*)"" = ""(.*)""")]
+        public void WhenListaDeItensInformo(int indice, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensInformo(indice, campo, valor, this);
+            cadastrarPedido.MagentoListaDeItensInformo(indice, campo, valor);
+        }
+
+
         [Then(@"Erro ""(.*)""")]
         public void ThenErro(string p0)
         {

@@ -61,10 +61,12 @@ namespace Pedido.Criacao.Execucao
 
             var db = Criacao.ContextoProvider.GetContextoLeitura();
             var listaFabricantes = Pedido.ListaProdutos.Select(c => c.Fabricante).Distinct().ToList();
+            var tipoParcela = Pedido.FormaPagtoCriacao.CustoFinancFornecTipoParcelamento;
+            var qtdeParcelas = Pedido.FormaPagtoCriacao.CustoFinancFornecQtdeParcelas;
             TpercentualCustoFinanceiroFornecedors_Coeficiente = await (from c in db.TpercentualCustoFinanceiroFornecedors
                                                                        where listaFabricantes.Contains(c.Fabricante) &&
-                                                                           c.Tipo_Parcelamento == Criacao.Execucao.C_custoFinancFornecTipoParcelamento &&
-                                                                           c.Qtde_Parcelas == Criacao.Execucao.C_custoFinancFornecQtdeParcelas
+                                                                           c.Tipo_Parcelamento == tipoParcela &&
+                                                                           c.Qtde_Parcelas == qtdeParcelas
                                                                        select new TpercentualCustoFinanceiroFornecedors_Coeficiente_Dado(
                                                                            c.Fabricante, c.Coeficiente,
                                                                            c.Tipo_Parcelamento, c.Qtde_Parcelas))

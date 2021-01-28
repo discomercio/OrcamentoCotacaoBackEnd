@@ -49,8 +49,10 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                 produto: produtoDto.Produto,
                 qtde: produtoDto.Qtde,
                 custoFinancFornecPrecoListaBase_Conferencia: produtoDados.Preco_lista ?? 0,
-                preco_Lista: Math.Round((decimal)(produtoDados.Preco_lista ?? 0 * (decimal)coeficiente), 2),
-                desc_Dado: 0, //produtoDto.Desc_Dado,
+                preco_Lista: Math.Round((produtoDados.Preco_lista ?? 0) * (decimal)coeficiente, 2),//tinha um erro aqui - não estava calculando corretamente
+                desc_Dado: 0, //produtoDto.Desc_Dado, 
+                //precisamos calcular o valor de desconto?? na comparação o valor de preco_venda não esta batendo na confrontação,
+                //como não temos o valor de desconto aplicado 
                 preco_Venda: produtoDto.Preco_Venda,
                 preco_NF: produtoDto.Preco_NF,
                 custoFinancFornecCoeficiente_Conferencia: coeficiente,

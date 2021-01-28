@@ -17,21 +17,20 @@ Scenario: Indicador = "FRETE" (vamos ler do appsettings) - precisa existir
 	And Pedido base
 	Then Sem nenhum erro
 
-@ignore
 Scenario: Indicador = "FRETE" (vamos ler do appsettings)
 	#vamos verificar se salvou onde deveria
 	#vamos testar com o KONAR
 	Given Pedido base
 	And Informo "frete" = "10"
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro gerado, campo "Indicador" = "FRETE"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "indicador" = "FRETE"
 	#No pedido gravado, verificar campo "indicador" = "FRETE"
 
 @ignore
 Scenario: Loja = "201" (vamos ler do appsettings)
 	Given Pedido base
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro campo "Loja" = "201" 
+	And Tabela "t_PEDIDO" registro criado, verificar campo "loja" = "201" 
 	And afazer: colocar uma loja inválida e verificar que é validado
 
 @ignore

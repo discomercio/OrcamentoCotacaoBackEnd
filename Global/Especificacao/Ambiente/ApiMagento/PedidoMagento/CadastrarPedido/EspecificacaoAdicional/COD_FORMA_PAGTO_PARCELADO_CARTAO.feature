@@ -21,6 +21,7 @@ Feature: COD_FORMA_PAGTO_PARCELADO_CARTAO
 #  "VlTotalDestePedido": 3440.00,
 @ignore
 Scenario: COD_FORMA_PAGTO_PARCELADO_CARTAO
+	#afazer - necessário cria o calculo de desconto para quando confrontar os dados o valor de preco_lista esteja correto
 	Given Pedido base
 	When Informo "FormaPagtoCriacao.Tipo_Parcelamento" = "COD_FORMA_PAGTO_PARCELADO_CARTAO"
 	When Informo "FormaPagtoCriacao.C_pc_qtde" = "1"
@@ -35,6 +36,7 @@ Scenario: COD_FORMA_PAGTO_PARCELADO_CARTAO
 	When Lista de itens "1" informo "Qtde" = "2"
 	When Lista de itens "1" informo "Preco_Venda" = "1188.23"
 	When Lista de itens "1" informo "Preco_NF" = "1200.00"
+	When Informo "VlTotalDestePedido" = "3440.00" 
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "tipo_parcelamento" = "2"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "pc_qtde_parcelas" = "1"

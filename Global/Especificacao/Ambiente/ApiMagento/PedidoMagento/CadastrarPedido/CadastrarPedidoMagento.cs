@@ -136,6 +136,10 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 
         protected override void AbstractListaDeItensInformo(int numeroItem, string campo, string valor)
         {
+            ListaDeItensInformo(numeroItem, campo, valor);
+        }
+        public void MagentoListaDeItensInformo(int numeroItem, string campo, string valor)
+        {
             if (ignorarFeature) return;
             Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensInformo(numeroItem, campo, valor, this);
             var item = pedidoMagentoDto.ListaProdutos[numeroItem];
