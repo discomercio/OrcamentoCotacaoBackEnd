@@ -90,7 +90,6 @@ Scenario: EnderecoCadastralCliente CPF diferente do principal
 	And Informo "pedidoMagentoDto.Cnpj_Cpf" = "2"
 	Then Erro "Cnpj_Cpf está diferente de EnderecoEntrega.EndEtg_cnpj_cpf."
 
-@ignore
 Scenario: DetalhesPedidoMagentoDto
 	#//nao existe o DetalhesPedidoMagentoDto. Os valores a usar são:
 	#//St_Entrega_Imediata: se for PF, sim. Se for PJ, não
@@ -99,8 +98,8 @@ Scenario: DetalhesPedidoMagentoDto
 	#//InstaladorInstala = COD_INSTALADOR_INSTALA_NAO
 	Given Pedido base
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro criado, verificar campo "st_entrega_imediata" = "2"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_etg_imediata" = "2"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "PrevisaoEntregaData" = "null"
-	And Tabela "t_PEDIDO" registro criado, verificar campo "StBemUsoComum" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "StBemUsoConsumo" = "1"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "InstaladorInstalaStatus" = "1"
 	
