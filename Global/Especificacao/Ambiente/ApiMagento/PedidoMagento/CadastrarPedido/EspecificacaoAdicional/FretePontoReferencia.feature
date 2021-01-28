@@ -31,11 +31,10 @@ Scenario: campo "frete" salvo em t_PEDIDO.vl_frete
 	#a possibilidade de salvar essa informação, creio que deveríamos gravar nesse campo
 	When Fazer esta validação
 
-
 Scenario: Ponto de Referência - diferente de EndEtg_endereco_complemento
 	#Colocar a informação do ponto de referência no campo 'Constar na NF'. Comparar o conteúdo do ponto de referência
-	#com o campo complemento. Se forem iguais, não colocar em 'Constar na NF'. 
-	#Se o campo complemento exceder o tamanho do BD e precisar ser truncado, 
+	#com o campo complemento. Se forem iguais, não colocar em 'Constar na NF'.
+	#Se o campo complemento exceder o tamanho do BD e precisar ser truncado,
 	#copiá-lo no campo 'Constar na NF', junto com o ponto de referência.
 	#
 	#Necessário fazer essa condição na conversão de dados
@@ -45,3 +44,23 @@ Scenario: Ponto de Referência - diferente de EndEtg_endereco_complemento
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "NFe_texto_constar" = "teste de ponto de referencia"
 
+@ignore
+Scenario:  Ponto de Referência - igual de EndEtg_endereco_complemento
+	#Comparar o conteúdo do ponto de referência
+	#com o campo complemento. Se forem iguais,
+	#não colocar em 'Constar na NF'.
+	Given Pedido base
+	When Informo "Obs_1" = "teste de ponto de referencia"
+	When Informo "EndEtg_endereco_complemento" = "teste de ponto de referencia"
+	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro criado, verificar campo "NFe_texto_constar" = ""
+
+@ignore
+Scenario:  Ponto de Referência - EndEtg_endereco_complemento com mais de 60 caracteres
+	#Se o campo complemento exceder o tamanho do BD e precisar ser truncado,
+	#copiá-lo no campo 'Constar na NF', junto com o ponto de referência.
+	Given Pedido base
+	When Informo "Obs_1" = "teste de ponto de referencia"
+	When Informo "EndEtg_endereco_complemento" = "complemento endereço entrega 12 complemento endereço entrega 12"
+	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro criado, verificar campo "NFe_texto_constar" = "teste de ponto de referencia complemento endereço entrega 12 complemento endereço entrega 12"
