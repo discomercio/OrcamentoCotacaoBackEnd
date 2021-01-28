@@ -38,9 +38,14 @@ Scenario: Loja diferente de "201"
 	And Informo "appsettings.Loja" = "001"
 	Then Erro "pegar erro"
 
-
 Scenario: Vendedor = usuário que fez o login (ler do token)
 	Given Pedido base
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "vendedor" = "USUARIOAPIMAGENTO"
-	#And afazer: colocar um usuario inválido e verificar que é validado
+
+@GerenciamentoBanco
+Scenario: Vendedor diferente do token
+	Given Reiniciar banco ao terminar cenário
+	Given Pedido base
+	And Tabela "t_USUARIO" apagar registro com campo "usuario" = "USUARIOAPIMAGENTO"
+	Then Erro "Usuário não encontrado."
