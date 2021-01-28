@@ -32,12 +32,16 @@ Scenario: campo "frete" salvo em t_PEDIDO.vl_frete
 	When Fazer esta validação
 
 
-Scenario: Ponto de Referência
+Scenario: Ponto de Referência - diferente de EndEtg_endereco_complemento
 	#Colocar a informação do ponto de referência no campo 'Constar na NF'. Comparar o conteúdo do ponto de referência
-	#com o campo complemento. Se forem iguais, não colocar em 'Constar na NF'. Se o campo complemento exceder o
-	#tamanho do BD e precisar ser truncado, copiá-lo no campo 'Constar na NF', junto com o ponto de referência.
-	#Campo t_pedido.NFe_texto_constar
+	#com o campo complemento. Se forem iguais, não colocar em 'Constar na NF'. 
+	#Se o campo complemento exceder o tamanho do BD e precisar ser truncado, 
+	#copiá-lo no campo 'Constar na NF', junto com o ponto de referência.
+	#
+	#Necessário fazer essa condição na conversão de dados
+	#diferente do EndEtg_endereco_complemento
 	Given Pedido base
 	When Informo "Obs_1" = "teste de ponto de referencia"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "NFe_texto_constar" = "teste de ponto de referencia"
+

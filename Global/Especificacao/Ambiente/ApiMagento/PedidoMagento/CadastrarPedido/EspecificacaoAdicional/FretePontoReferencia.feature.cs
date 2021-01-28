@@ -222,14 +222,14 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Ponto de Referência")]
+        [Xunit.SkippableFactAttribute(DisplayName="Ponto de Referência - diferente de EndEtg_endereco_complemento")]
         [Xunit.TraitAttribute("FeatureTitle", "FretePontoReferencia")]
-        [Xunit.TraitAttribute("Description", "Ponto de Referência")]
-        public virtual void PontoDeReferencia()
+        [Xunit.TraitAttribute("Description", "Ponto de Referência - diferente de EndEtg_endereco_complemento")]
+        public virtual void PontoDeReferencia_DiferenteDeEndEtg_Endereco_Complemento()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ponto de Referência", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ponto de Referência - diferente de EndEtg_endereco_complemento", null, tagsOfScenario, argumentsOfScenario);
 #line 35
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -250,16 +250,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 40
+#line 43
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 41
+#line 44
  testRunner.When("Informo \"Obs_1\" = \"teste de ponto de referencia\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 42
+#line 45
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 43
+#line 46
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"NFe_texto_constar\" = \"teste d" +
                         "e ponto de referencia\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
