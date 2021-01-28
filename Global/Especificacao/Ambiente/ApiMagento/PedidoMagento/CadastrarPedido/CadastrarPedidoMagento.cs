@@ -155,6 +155,9 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
                 case "appsettings.Indicador":
                     configuracaoApiMagento.DadosIndicador.Indicador = valor;
                     return;
+                case "appsettings.Loja":
+                    configuracaoApiMagento.DadosIndicador.Loja = valor;
+                    return;
 
                 case "TokenAcesso":
                     pedidoMagentoDto.TokenAcesso = valor;
