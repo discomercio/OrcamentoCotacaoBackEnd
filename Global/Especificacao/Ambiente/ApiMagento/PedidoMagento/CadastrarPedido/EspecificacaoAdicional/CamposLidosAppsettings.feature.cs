@@ -312,11 +312,9 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="Vendedor = usuário que fez o login (ler do token)")]
         [Xunit.TraitAttribute("FeatureTitle", "CamposLidosAppsettings")]
         [Xunit.TraitAttribute("Description", "Vendedor = usuário que fez o login (ler do token)")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void VendedorUsuarioQueFezOLoginLerDoToken()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Vendedor = usuário que fez o login (ler do token)", null, tagsOfScenario, argumentsOfScenario);
 #line 42
@@ -346,10 +344,8 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 45
- testRunner.And("Tabela \"t_PEDIDO\" registro campo \"Vendedor\" = \"UsuarioApiMagento\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 46
- testRunner.And("afazer: colocar um usuario inválido e verificar que é validado", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vendedor\" = \"USUARIOAPIMAGENT" +
+                        "O\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

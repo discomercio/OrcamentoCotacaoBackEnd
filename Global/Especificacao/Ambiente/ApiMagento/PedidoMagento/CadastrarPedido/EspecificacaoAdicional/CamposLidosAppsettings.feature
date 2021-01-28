@@ -38,9 +38,9 @@ Scenario: Loja diferente de "201"
 	And Informo "appsettings.Loja" = "001"
 	Then Erro "pegar erro"
 
-@ignore
+
 Scenario: Vendedor = usuário que fez o login (ler do token)
 	Given Pedido base
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro campo "Vendedor" = "UsuarioApiMagento"
-	And afazer: colocar um usuario inválido e verificar que é validado
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vendedor" = "USUARIOAPIMAGENTO"
+	#And afazer: colocar um usuario inválido e verificar que é validado
