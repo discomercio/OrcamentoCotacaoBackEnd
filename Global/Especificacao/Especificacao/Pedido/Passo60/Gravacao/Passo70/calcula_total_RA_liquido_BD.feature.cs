@@ -20,13 +20,15 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo70
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo60")]
     public partial class Calcula_Total_RA_Liquido_BDFeature : object, Xunit.IClassFixture<Calcula_Total_RA_Liquido_BDFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore"};
+                "ignore",
+                "Especificacao.Pedido.Passo60"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -43,7 +45,8 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo70
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "calcula_total_RA_liquido_BD", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ignore"});
+                        "ignore",
+                        "Especificacao.Pedido.Passo60"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -91,7 +94,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo70
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("calcula_total_RA_liquido_BD", null, tagsOfScenario, argumentsOfScenario);
-#line 4
+#line 5
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -111,24 +114,24 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 25
+#line 26
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 26
+#line 27
  testRunner.When("Informo \"PermiteRAStatus\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 27
- testRunner.When("Informo \"ListaProdutos[0].Preco_NF\" = \"704.05\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 28
- testRunner.When("Informo \"ListaProdutos[1].Preco_NF\" = \"1051.07\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Lista de itens \"0\" informo \"Preco_NF\" = \"704.05\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 29
- testRunner.When("Informo \"ValorTotalDestePedidoComRA\" = \"3510.24\" 3470.24", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Lista de itens \"1\" informo \"Preco_NF\" = \"1051.07\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 30
- testRunner.Then("Tabela \"t_PEDIDO\" registro com campo \"pedido\" = \"pedido gerado\", verificar campo " +
-                        "\"vl_total_RA_liquido\" = \"40.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Informo \"ValorTotalDestePedidoComRA\" = \"3510.24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 31
+ testRunner.Then("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vl_total_RA_liquido\" = \"40.00" +
+                        "00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

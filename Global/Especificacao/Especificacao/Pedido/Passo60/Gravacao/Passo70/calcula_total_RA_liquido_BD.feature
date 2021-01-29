@@ -1,4 +1,5 @@
 ﻿@ignore
+@Especificacao.Pedido.Passo60
 Feature: calcula_total_RA_liquido_BD
 
 Scenario: calcula_total_RA_liquido_BD
@@ -24,8 +25,8 @@ Scenario: calcula_total_RA_liquido_BD
 	#	end if
 	Given Pedido base
 	When Informo "PermiteRAStatus" = "1"
-	When Informo "ListaProdutos[0].Preco_NF" = "704.05"
-	When Informo "ListaProdutos[1].Preco_NF" = "1051.07"
-	When Informo "ValorTotalDestePedidoComRA" = "3510.24" 3470.24
-	Then Tabela "t_PEDIDO" registro com campo "pedido" = "pedido gerado", verificar campo "vl_total_RA_liquido" = "40.0000"
+	When Lista de itens "0" informo "Preco_NF" = "704.05"
+	When Lista de itens "1" informo "Preco_NF" = "1051.07"
+	When Informo "ValorTotalDestePedidoComRA" = "3510.24"
+	Then Tabela "t_PEDIDO" registro criado, verificar campo "vl_total_RA_liquido" = "40.0000"
 
