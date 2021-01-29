@@ -4,8 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-//todo: religar nullable
-#nullable disable
+#nullable enable
 
 namespace Pedido.Dados.Criacao
 {

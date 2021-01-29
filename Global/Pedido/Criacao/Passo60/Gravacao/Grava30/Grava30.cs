@@ -69,19 +69,14 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava30
                                 next
                             end if
             */
-            foreach (var vProdRegra_iRegra in Execucao.ListaRegrasControleEstoque)
+            foreach (var vProdRegra_iRegra in Execucao.Gravacao.ListaRegrasControleEstoque)
             {
                 //vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD(iCD) é twmsCdXUfXPessoaXCd
                 foreach (var twmsCdXUfXPessoaXCd in vProdRegra_iRegra.TwmsCdXUfXPessoaXCd)
                 {
-                    /*
-                    if (vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD(iCD).id_nfe_emitente > 0) And _
-                        ( (id_nfe_emitente_selecao_manual = 0) Or (vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD(iCD).id_nfe_emitente = id_nfe_emitente_selecao_manual) ) then
-                    */
                     if (twmsCdXUfXPessoaXCd.Id_nfe_emitente > 0 &&
                         (Pedido.Ambiente.Id_nfe_emitente_selecao_manual == 0 || twmsCdXUfXPessoaXCd.Id_nfe_emitente == Pedido.Ambiente.Id_nfe_emitente_selecao_manual))
                     {
-                        //if (vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD(iCD).st_inativo = 0) Or (id_nfe_emitente_selecao_manual <> 0) then
                         if ((twmsCdXUfXPessoaXCd.St_inativo == 0) || (Pedido.Ambiente.Id_nfe_emitente_selecao_manual != 0))
                         {
                             //for iItem = Lbound(v_item) to Ubound(v_item)
@@ -99,7 +94,6 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava30
 
                             if (v_item_idxItem == null)
                             {
-                                //alerta = alerta & "Falha ao localizar o produto (" & vProdRegra(iRegra).fabricante & ")" & vProdRegra(iRegra).produto & " na lista de produtos a ser processada"
                                 Retorno.ListaErros.Add("Falha ao localizar o produto (" + vProdRegra_iRegra.Fabricante + ")" + vProdRegra_iRegra.Produto + " na lista de produtos a ser processada");
                             }
                             else
@@ -112,15 +106,8 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava30
                                     (r => r.Fabricante == v_item_idxItem.Fabricante && r.Produto == v_item_idxItem.Produto).Select(r => r.Tproduto.Descricao_Html).FirstOrDefault();
                                 twmsCdXUfXPessoaXCd.Estoque_Qtde_Solicitado = v_item_idxItem.Qtde;
                                 twmsCdXUfXPessoaXCd.Estoque_Qtde_Estoque = 0;
-                                /*
-                                //todo: faltando este pedaço
 
-                                    if Not estoque_verifica_disponibilidade_integral_v2(vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD(iCD).id_nfe_emitente, vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD(iCD).estoque) then
-                                        alerta = texto_add_br(alerta)
-                                        alerta = alerta & "Falha ao tentar consultar disponibilidade no estoque do produto (" & vProdRegra(iRegra).fabricante & ")" & vProdRegra(iRegra).produto
-                                        end if
-                                    end if
-                                    */
+                                await global::Produto.Estoque.Estoque.Estoque_verifica_disponibilidade_integral_v2(ContextoBdGravacao, twmsCdXUfXPessoaXCd.Id_nfe_emitente, twmsCdXUfXPessoaXCd);
                             }
 
 

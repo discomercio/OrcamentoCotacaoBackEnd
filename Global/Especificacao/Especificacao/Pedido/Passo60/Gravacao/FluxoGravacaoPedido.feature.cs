@@ -84,31 +84,32 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao
                     " EMPRESAS QUE SERÃO USADAS NO AUTO-SPLIT, OU SEJA, A QUANTIDADE DE PEDIDOS QUE S" +
                     "ERÁ CADASTRADA, \r\n\tJÁ QUE CADA PEDIDO SE REFERE AO ESTOQUE DE UMA EMPRESA\r\n\r\n\tCo" +
                     "nta todos os CDs que tem alguma quantidade solicitada.\r\n\r\n\r\nPasso60: criar pedid" +
-                    "os\r\n\tLoop nos CDs a utilizar\r\n\t\tGerar o número do pedido: Passo60/Gerar_o_numero" +
-                    "_do_pedido.feature\r\n\t\tAdiciona um novo pedido\r\n\t\tPreenche os campos do pedido: P" +
-                    "asso60/Preenche_os_campos_do_pedido.feature\r\n\t\t\ta maioria no pai e filhotes, alg" +
-                    "uns só no pai, alguns só nos filhotes\r\n\t\tSalva o registro em t_pedido\r\n\r\n\t\tLoop " +
-                    "nas regras: \r\n\t\t\tEspecificado em Passo60/Itens/Gerar_t_PEDIDO_ITEM.feature\r\n\t\t\t\t" +
-                    "Se essa regra cobrir um dos itens do pedido, adicionar registro em t_PEDIDO_ITEM" +
-                    " (linha 2090 até 2122)\r\n\t\t\t\tNote que a quantidade rs(\"qtde\") é a que foi alocada" +
-                    " para esse filhote pela regra, não a quantidade total do pedido inteiro\r\n\t\t\t\tA s" +
-                    "equencia do t_PEDIDO_ITEM para esse pedido (base ou filhote) começa de 1 e é seq" +
-                    "uencial.\r\n\t\t\tSe qtde_solicitada > qtde_estoque, qtde_spe (quantidade_sen_presenç" +
-                    "a_estoque) fica com o número de itens faltando\r\n\t\t\tchama rotina ESTOQUE_produto_" +
-                    "saida_v2, em Passo60/Itens/ESTOQUE_produto_saida_v2.feature\r\n\t\t\t\tA quantidade de" +
-                    "ste item ou efetivamente sai do estoque (atualizando t_ESTOQUE_ITEM)\r\n\t\t\t\tou ent" +
-                    "ra como venda sem presença no estoque (novo registro na tabela t_ESTOQUE_MOVIMEN" +
-                    "TO, operacao = OP_ESTOQUE_VENDA, estoque = ID_ESTOQUE_SEM_PRESENCA)\r\n\t\t\tMonta o " +
-                    "log do item - Passo60/Itens/Log.feature\r\n\t\t\t\r\n\t\tDetermina o status st_entrega de" +
-                    "ste pedido (Passo60/st_entrega.feature)\r\n\r\nPasso70: ajustes adicionais no pedido" +
-                    " pai\r\n\tNo pedido pai atualiza campos de RA (Passo70/calcula_total_RA_liquido_BD." +
-                    "feture)\r\n\r\n\tCaso tenha usado algum desconto superior ao limite, liberado pela t_" +
-                    "DESCONTO, marca como usado (Passo70/Senhas_de_autorizacao_para_desconto_superior" +
-                    ".feature)\r\n\r\n\tINDICADOR: SE ESTE PEDIDO É COM INDICADOR E O CLIENTE AINDA NÃO TE" +
-                    "M UM INDICADOR NO CADASTRO, ENTÃO CADASTRA ESTE. (Passo70/CadastroIndicador.feat" +
-                    "ure)\r\n\r\n\r\nPasso80: VERIFICA SE O ENDEREÇO JÁ FOI USADO ANTERIORMENTE POR OUTRO C" +
-                    "LIENTE (POSSÍVEL FRAUDE)\r\n\tPasso80/FluxoVerificacaoEndereco.feature\r\n\r\n\r\nPasso90" +
-                    ": log (Passo90/Log.feature)", ProgrammingLanguage.CSharp, new string[] {
+                    "os - \'\tCADASTRA O PEDIDO E PROCESSA A MOVIMENTAÇÃO NO ESTOQUE\r\n\tLoop nos CDs a u" +
+                    "tilizar\r\n\t\tGerar o número do pedido: Passo60/Gerar_o_numero_do_pedido.feature\r\n\t" +
+                    "\tAdiciona um novo pedido\r\n\t\tPreenche os campos do pedido: Passo60/Preenche_os_ca" +
+                    "mpos_do_pedido.feature\r\n\t\t\ta maioria no pai e filhotes, alguns só no pai, alguns" +
+                    " só nos filhotes\r\n\t\tSalva o registro em t_pedido\r\n\r\n\t\tLoop nas regras: \r\n\t\t\tEspe" +
+                    "cificado em Passo60/Itens/Gerar_t_PEDIDO_ITEM.feature\r\n\t\t\t\tSe essa regra cobrir " +
+                    "um dos itens do pedido, adicionar registro em t_PEDIDO_ITEM (linha 2090 até 2122" +
+                    ")\r\n\t\t\t\tNote que a quantidade rs(\"qtde\") é a que foi alocada para esse filhote pe" +
+                    "la regra, não a quantidade total do pedido inteiro\r\n\t\t\t\tA sequencia do t_PEDIDO_" +
+                    "ITEM para esse pedido (base ou filhote) começa de 1 e é sequencial.\r\n\t\t\tSe qtde_" +
+                    "solicitada > qtde_estoque, qtde_spe (quantidade_sen_presença_estoque) fica com o" +
+                    " número de itens faltando\r\n\t\t\tchama rotina ESTOQUE_produto_saida_v2, em Passo60/" +
+                    "Itens/ESTOQUE_produto_saida_v2.feature\r\n\t\t\t\tA quantidade deste item ou efetivame" +
+                    "nte sai do estoque (atualizando t_ESTOQUE_ITEM)\r\n\t\t\t\tou entra como venda sem pre" +
+                    "sença no estoque (novo registro na tabela t_ESTOQUE_MOVIMENTO, operacao = OP_EST" +
+                    "OQUE_VENDA, estoque = ID_ESTOQUE_SEM_PRESENCA)\r\n\t\t\tMonta o log do item - Passo60" +
+                    "/Itens/Log.feature\r\n\t\t\t\r\n\t\tDetermina o status st_entrega deste pedido (Passo60/s" +
+                    "t_entrega.feature)\r\n\r\nPasso70: ajustes adicionais no pedido pai\r\n\tNo pedido pai " +
+                    "atualiza campos de RA (Passo70/calcula_total_RA_liquido_BD.feture)\r\n\r\n\tCaso tenh" +
+                    "a usado algum desconto superior ao limite, liberado pela t_DESCONTO, marca como " +
+                    "usado (Passo70/Senhas_de_autorizacao_para_desconto_superior.feature)\r\n\r\n\tINDICAD" +
+                    "OR: SE ESTE PEDIDO É COM INDICADOR E O CLIENTE AINDA NÃO TEM UM INDICADOR NO CAD" +
+                    "ASTRO, ENTÃO CADASTRA ESTE. (Passo70/CadastroIndicador.feature)\r\n\r\n\r\nPasso80: VE" +
+                    "RIFICA SE O ENDEREÇO JÁ FOI USADO ANTERIORMENTE POR OUTRO CLIENTE (POSSÍVEL FRAU" +
+                    "DE)\r\n\tPasso80/FluxoVerificacaoEndereco.feature\r\n\r\n\r\nPasso90: log (Passo90/Log.fe" +
+                    "ature)", ProgrammingLanguage.CSharp, new string[] {
                         "Especificacao.Pedido.FluxoCriacaoPedido"});
             testRunner.OnFeatureStart(featureInfo);
         }

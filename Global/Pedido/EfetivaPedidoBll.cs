@@ -72,7 +72,7 @@ namespace Pedido
                     }
                     else
                     {
-                        pedidonovo.Pedido = id_pedido_temp_base + Gera_letra_pedido_filhote(indicePedido);
+                        pedidonovo.Pedido = id_pedido_temp_base + global::Pedido.Criacao.Passo60.Gravacao.Grava60.Gera_num_pedido.Gera_letra_pedido_filhote(indicePedido);
                     }
 
                     pedidonovo.Loja = pedido.Ambiente.Loja;
@@ -308,7 +308,7 @@ namespace Pedido
             {
                 //Gera Pedido filhote
                 idPedidoBase = idPedidoBase + InfraBanco.Constantes.Constantes.COD_SEPARADOR_FILHOTE +
-                    Gera_letra_pedido_filhote(indice_pedido - 1);
+                    global::Pedido.Criacao.Passo60.Gravacao.Grava60.Gera_num_pedido.Gera_letra_pedido_filhote(indice_pedido - 1);
             }
 
             //Log
@@ -1080,25 +1080,6 @@ namespace Pedido
                 }
             }
             return retorno;
-        }
-
-        public string Gera_letra_pedido_filhote(int indice_pedido)
-        {
-            string s_letra = "";
-            string gera_letra_pedido_filhote = "";
-            if (indice_pedido <= 0)
-            {
-                return "";
-
-            }
-
-            char letra = 'A';
-
-            s_letra = (((int)letra - 1) + indice_pedido).ToString();
-
-            gera_letra_pedido_filhote = s_letra;
-
-            return gera_letra_pedido_filhote;
         }
 
         private async Task<decimal> CalculaTotalRALiquidoBD(string id_pedido, ContextoBdGravacao dbGravacao, List<string> lstErros)

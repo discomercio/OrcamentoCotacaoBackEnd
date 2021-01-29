@@ -64,7 +64,7 @@ Passo55: Contagem de pedidos a serem gravados - Linha 1286
 	Conta todos os CDs que tem alguma quantidade solicitada.
 
 
-Passo60: criar pedidos
+Passo60: criar pedidos - '	CADASTRA O PEDIDO E PROCESSA A MOVIMENTAÇÃO NO ESTOQUE
 	Loop nos CDs a utilizar
 		Gerar o número do pedido: Passo60/Gerar_o_numero_do_pedido.feature
 		Adiciona um novo pedido

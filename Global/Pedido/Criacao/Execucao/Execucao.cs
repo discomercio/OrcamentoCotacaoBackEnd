@@ -1,9 +1,10 @@
 ﻿using InfraBanco.Constantes;
 using InfraBanco.Modelos;
+using Microsoft.EntityFrameworkCore;
 using Pedido.Dados.Criacao;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Pedido.Criacao.Execucao
@@ -80,6 +81,7 @@ namespace Pedido.Criacao.Execucao
         public float PercDescComissaoUtilizar { get; private set; } = 0;
         public string C_custoFinancFornecTipoParcelamento { get; private set; } = "";
         public short C_custoFinancFornecQtdeParcelas { get; private set; } = 0;
+        public bool isLojaGarantia { get; private set; } = false;
 
         private async Task ConfigurarVariaveisAdicionais(PedidoCriacaoDados pedido)
         {
@@ -113,35 +115,107 @@ namespace Pedido.Criacao.Execucao
 
             PercDescComissaoUtilizar = Criacao.PedidoBll.VerificarPagtoPreferencial(tParametro, pedido, PercDescComissaoUtilizar,
                     PercentualMaxDescEComissao, pedido.Valor.Vl_total);
+
+
+
+            Tloja tloja = await (from l in Criacao.ContextoProvider.GetContextoLeitura().Tlojas
+                                 where l.Loja == pedido.Ambiente.Loja
+                                 select l).FirstOrDefaultAsync();
+            isLojaGarantia = false;
+            if (tloja != null && tloja.Unidade_Negocio == Constantes.COD_UNIDADE_NEGOCIO_LOJA__GARANTIA)
+                isLojaGarantia = true;
         }
 
 
-        #region criadas durante a criaão efetiva
-        public string Id_pedido_base
+        #region blnPedidoECommerceCreditoOkAutomatico
+
+        public bool BlnPedidoECommerceCreditoOkAutomatico
         {
             get
             {
-                if (_id_pedido_base == null)
-                    throw new ApplicationException($"Id_pedido_base acessado antes de ser calculado.");
-                return _id_pedido_base;
+                if (_blnPedidoECommerceCreditoOkAutomatico == null)
+                    throw new ApplicationException($"_blnPedidoECommerceCreditoOkAutomatico acessado antes de ser calculado.");
+                return _blnPedidoECommerceCreditoOkAutomatico.Value;
             }
-            set => _id_pedido_base = value;
+            set => _blnPedidoECommerceCreditoOkAutomatico = value;
         }
-        private string? _id_pedido_base;
-
-
-        public List<Produto.RegrasCrtlEstoque.RegrasBll> ListaRegrasControleEstoque
-        {
-            get
-            {
-                if (_regrasControleEstoque == null)
-                    throw new ApplicationException($"RegrasControleEstoque acessado antes de ser calculado.");
-                return _regrasControleEstoque;
-            }
-            set => _regrasControleEstoque = value;
-        }
-        private List<Produto.RegrasCrtlEstoque.RegrasBll>? _regrasControleEstoque = null;
-
+        private bool? _blnPedidoECommerceCreditoOkAutomatico = null;
         #endregion
+
+
+        public class GravacaoDados
+        {
+            #region Id_pedido_base
+            public string Id_pedido_base
+            {
+                get
+                {
+                    if (_id_pedido_base == null)
+                        throw new ApplicationException($"Id_pedido_base acessado antes de ser calculado.");
+                    return _id_pedido_base;
+                }
+                set => _id_pedido_base = value;
+            }
+            private string? _id_pedido_base;
+            #endregion
+
+            #region Hora_pedido
+            public string Hora_pedido
+            {
+                get
+                {
+                    if (_hora_pedido == null)
+                        throw new ApplicationException($"_hora_pedido acessado antes de ser calculado.");
+                    return _hora_pedido;
+                }
+                set => _hora_pedido = value;
+            }
+            private string? _hora_pedido;
+            #endregion
+            #region DataHoraCriacao
+            public DateTime DataHoraCriacao = DateTime.Now;
+            #endregion
+
+            #region ListaRegrasControleEstoque
+            public List<Produto.RegrasCrtlEstoque.RegrasBll> ListaRegrasControleEstoque
+            {
+                get
+                {
+                    if (_regrasControleEstoque == null)
+                        throw new ApplicationException($"RegrasControleEstoque acessado antes de ser calculado.");
+                    return _regrasControleEstoque;
+                }
+                set => _regrasControleEstoque = value;
+            }
+            private List<Produto.RegrasCrtlEstoque.RegrasBll>? _regrasControleEstoque = null;
+            #endregion
+
+            #region EmpresasAutoSplit
+            //este é simplesmente uma lsita de ints, mas encapsulamos em uma classe
+            public class EmpresaAutoSplitDados
+            {
+                public EmpresaAutoSplitDados(int id_nfe_emitente)
+                {
+                    Id_nfe_emitente = id_nfe_emitente;
+                }
+
+                public int Id_nfe_emitente { get; }
+            }
+            public List<EmpresaAutoSplitDados> EmpresasAutoSplit
+            {
+                get
+                {
+                    if (_empresasAutoSplit == null)
+                        throw new ApplicationException($"_empresasAutoSplit acessado antes de ser calculado.");
+                    return _empresasAutoSplit;
+                }
+                set => _empresasAutoSplit = value;
+            }
+            private List<EmpresaAutoSplitDados>? _empresasAutoSplit = null;
+            #endregion
+
+        }
+        public GravacaoDados Gravacao = new GravacaoDados();
+
     }
 }

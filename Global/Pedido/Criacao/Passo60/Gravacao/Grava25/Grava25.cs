@@ -128,7 +128,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava25
                 return;
 
             //garante que tenha rgistrado o erro
-            foreach (var regra in Execucao.ListaRegrasControleEstoque)
+            foreach (var regra in Execucao.Gravacao.ListaRegrasControleEstoque)
             {
                 if (!regra.St_Regra_ok)
                     Retorno.ListaErros.Add("Ocorreu algum erro na leitura das regras de consumo de estoque.");

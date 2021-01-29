@@ -6,8 +6,12 @@ namespace Prepedido.Dados.DetalhesPrepedido
 {
     public class DetalhesPrepedidoDados
     {
-        public string Observacoes { get; set; }
-        public string NumeroNF { get; set; }
+        public string Observacoes { get; set; }     //campo obs_1
+        public string Obter_obs_1() => Observacoes;
+
+        public string NumeroNF { get; set; }        //campo obs_2
+        public string Obter_obs_2() => NumeroNF;
+
         public string EntregaImediata { get; set; }
         public DateTime? EntregaImediataData { get; set; }
         public short BemDeUso_Consumo { get; set; }

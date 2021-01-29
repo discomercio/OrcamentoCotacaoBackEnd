@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Pedido.Criacao.Passo60.Gravacao.Grava60
 {
-    public class Gera_num_pedido
+    public static class Gera_num_pedido
     {
 
         public static async Task<string> Gera_num_pedido_pai(List<string> lstErros, ContextoBdGravacao contextoBdGravacao)
@@ -61,5 +61,18 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
 
             return numPedido;
         }
+
+        public static string Gera_letra_pedido_filhote(int indice_pedido)
+        {
+            string s_letra;
+            if (indice_pedido <= 0)
+                return "";
+
+            char letra = 'A';
+            s_letra = (((int)letra - 1) + indice_pedido).ToString();
+            return s_letra;
+        }
+
+
     }
 }

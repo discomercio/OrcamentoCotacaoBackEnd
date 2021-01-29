@@ -20,7 +20,7 @@ namespace Pedido.Criacao.Passo60.Gravacao
             //veja Especificacao\Pedido\Passo60\Gravacao\FluxoGravacaoPedido.feature
 
             //Passo01: Gerar o NSU do pedido (para bloquear transações concorrentes)
-            Execucao.Id_pedido_base = await new Grava01.Grava01(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao).Gerar_id_pedido_base();
+            Execucao.Gravacao.Id_pedido_base = await new Grava01.Grava01(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao).Gerar_id_pedido_base();
             if (Retorno.AlgumErro()) return;
 
             //Passo10: Fazer todas as validações (documentado em FluxoCriacaoPedido.feature e nos passos dele).
@@ -31,7 +31,7 @@ namespace Pedido.Criacao.Passo60.Gravacao
             if (Retorno.AlgumErro()) return;
 
             //Passo20: LER AS REGRAS DE CONSUMO DO ESTOQUE
-            Execucao.ListaRegrasControleEstoque = await new Grava20.Grava20(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao).Executar();
+            Execucao.Gravacao.ListaRegrasControleEstoque = await new Grava20.Grava20(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao).Executar();
 
             //Passo25:  VERIFICA SE AS REGRAS ASSOCIADAS AOS PRODUTOS ESTÃO OK - linha 1010
             await new Grava25.Grava25(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao).Executar();
@@ -48,9 +48,11 @@ namespace Pedido.Criacao.Passo60.Gravacao
             await new Grava50.Grava50(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao).Executar();
 
             //Passo55: Contagem de pedidos a serem gravados - Linha 1286
-            await new Grava55.Grava55(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao).Executar();
+            new Grava55.Grava55(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao).Executar();
 
             //Passo60: criar pedidos
+            //se tiver erro, nao continua
+            if (Retorno.AlgumErro()) return;
             await new Grava60.Grava60(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao).Executar();
 
             //Passo70: ajustes adicionais no pedido pai
@@ -62,6 +64,10 @@ namespace Pedido.Criacao.Passo60.Gravacao
             //Passo90: log (Passo90/Log.feature)
             await new Grava90.Grava90(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao).Executar();
 
+
+            //se tiver erro, nao continua
+            if (Retorno.AlgumErro()) return;
+            //finalmente salva
             //ainda não!
             //contextoBdGravacao.transacao.Commit();
         }
