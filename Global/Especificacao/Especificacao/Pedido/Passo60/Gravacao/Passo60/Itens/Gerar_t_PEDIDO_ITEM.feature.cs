@@ -20,13 +20,15 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60.Itens
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo60")]
     public partial class Gerar_T_PEDIDO_ITEMFeature : object, Xunit.IClassFixture<Gerar_T_PEDIDO_ITEMFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore"};
+                "ignore",
+                "Especificacao.Pedido.Passo60"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -43,7 +45,8 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60.Itens
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Gerar_t_PEDIDO_ITEM", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ignore"});
+                        "ignore",
+                        "Especificacao.Pedido.Passo60"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -83,90 +86,15 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60.Itens
             this.TestTearDown();
         }
         
-        [Xunit.SkippableTheoryAttribute(DisplayName="Gerar_t_PEDIDO_ITEM")]
+        [Xunit.SkippableFactAttribute(DisplayName="Gerar_t_PEDIDO_ITEM")]
         [Xunit.TraitAttribute("FeatureTitle", "Gerar_t_PEDIDO_ITEM")]
         [Xunit.TraitAttribute("Description", "Gerar_t_PEDIDO_ITEM")]
-        [Xunit.InlineDataAttribute("1", "pedido", "pedido gerado", new string[0])]
-        [Xunit.InlineDataAttribute("1", "fabricante", "003", new string[0])]
-        [Xunit.InlineDataAttribute("1", "produto", "003220", new string[0])]
-        [Xunit.InlineDataAttribute("1", "qtde", "2", new string[0])]
-        [Xunit.InlineDataAttribute("1", "desc_dado", "0", new string[0])]
-        [Xunit.InlineDataAttribute("1", "preco_venda", "659.600", new string[0])]
-        [Xunit.InlineDataAttribute("1", "preco_fabricante", "659.300", new string[0])]
-        [Xunit.InlineDataAttribute("1", "preco_lista", "659.600", new string[0])]
-        [Xunit.InlineDataAttribute("1", "margem", "0.0", new string[0])]
-        [Xunit.InlineDataAttribute("1", "desc_max", "8.0", new string[0])]
-        [Xunit.InlineDataAttribute("1", "comissao", "0.0", new string[0])]
-        [Xunit.InlineDataAttribute("1", "descricao", "Evap. AR09MVSPBGMNAZ Inverter - FRIO", new string[0])]
-        [Xunit.InlineDataAttribute("1", "ean", "7892509093149", new string[0])]
-        [Xunit.InlineDataAttribute("1", "grupo", "INV", new string[0])]
-        [Xunit.InlineDataAttribute("1", "peso", "10.2", new string[0])]
-        [Xunit.InlineDataAttribute("1", "qtde_volumes", "1", new string[0])]
-        [Xunit.InlineDataAttribute("1", "abaixo_min_status", "0", new string[0])]
-        [Xunit.InlineDataAttribute("1", "abaixo_min_autorizacao", "", new string[0])]
-        [Xunit.InlineDataAttribute("1", "abaixo_min_autorizador", "", new string[0])]
-        [Xunit.InlineDataAttribute("1", "sequencia", "1", new string[0])]
-        [Xunit.InlineDataAttribute("1", "markup_fabricante", "0", new string[0])]
-        [Xunit.InlineDataAttribute("1", "preco_NF", "694.0500", new string[0])]
-        [Xunit.InlineDataAttribute("1", "abaixo_min_superv_autorizador", "", new string[0])]
-        [Xunit.InlineDataAttribute("1", "vl_custo2", "0.0000", new string[0])]
-        [Xunit.InlineDataAttribute("1", "descricao_html", "Evap. <b>AR09MVS</b>PBGMNAZ Inverter - FRIO", new string[0])]
-        [Xunit.InlineDataAttribute("1", "custoFinancFornecCoeficiente", "1.0527", new string[0])]
-        [Xunit.InlineDataAttribute("1", "custoFinancFornecPrecoListaBase", "626.5800", new string[0])]
-        [Xunit.InlineDataAttribute("1", "cubagem", "0.09", new string[0])]
-        [Xunit.InlineDataAttribute("1", "ncm", "84151011", new string[0])]
-        [Xunit.InlineDataAttribute("1", "cst", "000", new string[0])]
-        [Xunit.InlineDataAttribute("1", "separacao_rel_nsu", "0", new string[0])]
-        [Xunit.InlineDataAttribute("1", "separacao_data", "null", new string[0])]
-        [Xunit.InlineDataAttribute("1", "separacao_data_hora", "null", new string[0])]
-        [Xunit.InlineDataAttribute("1", "separacao_deposito_zona_id", "0", new string[0])]
-        [Xunit.InlineDataAttribute("1", "descontinuado", "", new string[0])]
-        [Xunit.InlineDataAttribute("1", "subgrupo", "null", new string[0])]
-        [Xunit.InlineDataAttribute("2", "pedido", "pedido gerado", new string[0])]
-        [Xunit.InlineDataAttribute("2", "fabricante", "003", new string[0])]
-        [Xunit.InlineDataAttribute("2", "produto", "003221", new string[0])]
-        [Xunit.InlineDataAttribute("2", "qtde", "2", new string[0])]
-        [Xunit.InlineDataAttribute("2", "desc_dado", "0", new string[0])]
-        [Xunit.InlineDataAttribute("2", "preco_venda", "989.4000", new string[0])]
-        [Xunit.InlineDataAttribute("2", "preco_fabricante", "988.9500", new string[0])]
-        [Xunit.InlineDataAttribute("2", "preco_lista", "939.8700", new string[0])]
-        [Xunit.InlineDataAttribute("2", "margem", "0.0", new string[0])]
-        [Xunit.InlineDataAttribute("2", "desc_max", "8.0", new string[0])]
-        [Xunit.InlineDataAttribute("2", "comissao", "0.0", new string[0])]
-        [Xunit.InlineDataAttribute("2", "descricao", "Cond. AR09MVSPBGMXAZ Inverter - FRIO", new string[0])]
-        [Xunit.InlineDataAttribute("2", "ean", "7892509093156", new string[0])]
-        [Xunit.InlineDataAttribute("2", "grupo", "INV", new string[0])]
-        [Xunit.InlineDataAttribute("2", "peso", "29.5", new string[0])]
-        [Xunit.InlineDataAttribute("2", "qtde_volumes", "1", new string[0])]
-        [Xunit.InlineDataAttribute("2", "abaixo_min_status", "0", new string[0])]
-        [Xunit.InlineDataAttribute("2", "abaixo_min_autorizacao", "", new string[0])]
-        [Xunit.InlineDataAttribute("2", "abaixo_min_autorizador", "", new string[0])]
-        [Xunit.InlineDataAttribute("2", "sequencia", "2", new string[0])]
-        [Xunit.InlineDataAttribute("2", "markup_fabricante", "0", new string[0])]
-        [Xunit.InlineDataAttribute("2", "preco_NF", "1041.0700", new string[0])]
-        [Xunit.InlineDataAttribute("2", "abaixo_min_superv_autorizador", "", new string[0])]
-        [Xunit.InlineDataAttribute("2", "vl_custo2", "0.0000", new string[0])]
-        [Xunit.InlineDataAttribute("2", "descricao_html", "Cond. <b>AR09MVS</b>PBGMXAZ Inverter - FRIO", new string[0])]
-        [Xunit.InlineDataAttribute("2", "custoFinancFornecCoeficiente", "1.0527", new string[0])]
-        [Xunit.InlineDataAttribute("2", "custoFinancFornecPrecoListaBase", "939.8700", new string[0])]
-        [Xunit.InlineDataAttribute("2", "cubagem", "0.19", new string[0])]
-        [Xunit.InlineDataAttribute("2", "ncm", "84151011", new string[0])]
-        [Xunit.InlineDataAttribute("2", "cst", "000", new string[0])]
-        [Xunit.InlineDataAttribute("2", "separacao_rel_nsu", "0", new string[0])]
-        [Xunit.InlineDataAttribute("2", "separacao_data", "null", new string[0])]
-        [Xunit.InlineDataAttribute("2", "separacao_data_hora", "null", new string[0])]
-        [Xunit.InlineDataAttribute("2", "separacao_deposito_zona_id", "0", new string[0])]
-        [Xunit.InlineDataAttribute("2", "descontinuado", "", new string[0])]
-        [Xunit.InlineDataAttribute("2", "subgrupo", "null", new string[0])]
-        public virtual void Gerar_T_PEDIDO_ITEM(string sequencia, string campo, string valor, string[] exampleTags)
+        public virtual void Gerar_T_PEDIDO_ITEM()
         {
-            string[] tagsOfScenario = exampleTags;
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("Sequencia", sequencia);
-            argumentsOfScenario.Add("campo", campo);
-            argumentsOfScenario.Add("valor", valor);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Gerar_t_PEDIDO_ITEM", null, tagsOfScenario, argumentsOfScenario);
-#line 4
+#line 5
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -186,15 +114,291 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 11
+#line 12
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 12
- testRunner.Then("Sem nehum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
 #line 13
- testRunner.And(string.Format("Tabela \"t_PEDIDO_ITEM\" registro com campo \"pedido\" = \"pedido gerado\" e campo \"seq" +
-                            "uencia\" = <sequencia>, verificar campo \"{0}\" = \"{1}\"", campo, valor), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 15
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 16
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"produto\" = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 17
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"qtde\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 18
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"desc_dado\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 19
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"preco_venda\" = \"659.600\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 20
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"preco_fabricante\" = \"659.300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 21
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"preco_lista\" = \"659.600\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 22
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"margem\" = \"0.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 23
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"desc_max\" = \"8.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 24
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"comissao\" = \"0.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 25
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"descricao\" = \"Evap. AR09MVSPBGMNAZ Inverter - FRIO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 26
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"ean\" = \"7892509093149\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 27
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"grupo\" = \"INV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 28
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"peso\" = \"10.2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 29
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"qtde_volumes\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 30
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"abaixo_min_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 31
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"abaixo_min_autorizacao\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 32
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"abaixo_min_autorizador\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 33
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"sequencia\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 34
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"markup_fabricante\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 35
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"preco_NF\" = \"694.0500\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 36
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"abaixo_min_superv_autorizador\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 37
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"vl_custo2\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 38
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"descricao_html\" = \"Evap. <b>AR09MVS</b>PBGMNAZ Inverter - FRIO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 39
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"custoFinancFornecCoeficiente\" = \"1.0527\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 40
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"custoFinancFornecPrecoListaBase\" = \"626.5800\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 41
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"cubagem\" = \"0.09\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 42
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"ncm\" = \"84151011\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 43
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"cst\" = \"000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 44
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"separacao_rel_nsu\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 45
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"separacao_data\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 46
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"separacao_data_hora\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 47
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"separacao_deposito_zona_id\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 48
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"descontinuado\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 49
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"1\", verificar campo" +
+                        " \"subgrupo\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 51
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 52
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"produto\" = \"003221\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 53
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"qtde\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 54
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"desc_dado\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 55
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"preco_venda\" = \"989.4000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 56
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"preco_fabricante\" = \"988.9500\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 57
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"preco_lista\" = \"939.8700\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 58
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"margem\" = \"0.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 59
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"desc_max\" = \"8.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 60
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"comissao\" = \"0.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 61
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"descricao\" = \"Cond. AR09MVSPBGMXAZ Inverter - FRIO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 62
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"ean\" = \"7892509093156\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 63
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"grupo\" = \"INV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 64
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"peso\" = \"29.5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 65
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"qtde_volumes\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 66
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"abaixo_min_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 67
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"abaixo_min_autorizacao\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 68
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"abaixo_min_autorizador\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 69
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"sequencia\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 70
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"markup_fabricante\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 71
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"preco_NF\" = \"1041.0700\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 72
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"abaixo_min_superv_autorizador\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 73
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"vl_custo2\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 74
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"descricao_html\" = \"Cond. <b>AR09MVS</b>PBGMXAZ Inverter - FRIO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 75
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"custoFinancFornecCoeficiente\" = \"1.0527\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 76
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"custoFinancFornecPrecoListaBase\" = \"939.8700\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 77
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"cubagem\" = \"0.19\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 78
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"ncm\" = \"84151011\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 79
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"cst\" = \"000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 80
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"separacao_rel_nsu\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 81
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"separacao_data\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 82
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"separacao_data_hora\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 83
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"separacao_deposito_zona_id\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 84
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"descontinuado\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 85
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado e campo \"sequencia\" = \"2\", verificar campo" +
+                        " \"subgrupo\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

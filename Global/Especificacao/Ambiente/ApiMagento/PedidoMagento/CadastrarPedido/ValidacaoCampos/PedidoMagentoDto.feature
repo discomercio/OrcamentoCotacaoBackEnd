@@ -1,7 +1,7 @@
 ﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.ValidacaoCampos
 Feature: PedidoMagentoDto
-#testar a validação campo a campo
 
+#testar a validação campo a campo
 #O teste "PedidoMagentoDto" não faz sentido fazer, pois validamos os pricipais campos conforme abaixo:
 #Exigimos o endereço de entrega em CadastrarPedido.CriacaoCliente/MagentoCriacaoCliente_PfFeature
 #Verificação de campos de enderço de entrega preenchidos em CadastrarPedido.EspecificacaoAdicional.EnderecoEntregaSomentePFFeature
@@ -38,10 +38,10 @@ Scenario: InfCriacaoPedido Pedido_bs_x_ac
 
 @ignore
 Scenario: InfCriacaoPedido Pedido_bs_x_ac somente digitos
+	# afazer - criar essa verificação
 	Given Pedido base
 	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "1234567AA"
 	Then Erro "O número Magento deve conter apenas dígitos!"
-
 
 Scenario: InfCriacaoPedido Marketplace_codigo_origem
 	#/// Número do pedido no marketplace (opcional, se o pedido é do magento este campo não existe)
@@ -49,41 +49,39 @@ Scenario: InfCriacaoPedido Marketplace_codigo_origem
 	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "123"
 	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = ""
 	Then Erro "Informe o Marketplace_codigo_origem."
-
 	Given Pedido base
 	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = ""
 	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "123"
 	Then Erro "Informe o Pedido_bs_x_marketplace."
 
-
 Scenario: Pedido_bs_x_marketplace e Marketplace_codigo_origem já existem
+
 #2) Seria necessário tratar a possibilidade de ocorrer acesso concorrente entre o cadastramento semi-automático e a integração.
 #Em ambos os casos, seria importante verificar no instante final antes da efetivar o cadastramento do pedido se o número Magento e,
 #caso exista, o número do pedido marketplace já estão cadastrados em algum pedido c/ st_entrega válido (diferente de cancelado).
 #Testado em Especificacao\Pedido\Passo60\Gravacao\Passo15\PedidoMagentoRepetido.feature
-
-
-
-
-@ignore
-Scenario: Validar se o que expomos pelo ObterCodigoMarketplace foi informado
+Scenario: Validar se o que expomos pelo ObterCodigoMarketplace foi informado - erro
 	Given Pedido base
 	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "123"
 	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "123456789"
 	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "123"
 	Then Erro "Código Marketplace não encontrado."
 
+@ignore
+Scenario: Validar se o que expomos pelo ObterCodigoMarketplace foi informado - sucesso
+	#precisa ser parcela única para poder ter o Marketplace_codigo_origem
+	#precisa ajustar a validação para aceita PF com parcela única no magento
 	Given Pedido base
 	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "123"
 	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "123456789"
 	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "019"
+	When Informo "Tipo_Parcelamento" = "5"
+	When Informo "C_pu_valor" = "3132.90"
 	Then Sem nenhum erro
 
-
-
 Scenario: EnderecoCadastralCliente
-	#não precisamos validar porque o endereço de entregaécopiado sbre o endereço cadastral no caso de PF. E PJ não está sendo aceito pela API
 
+#não precisamos validar porque o endereço de entregaécopiado sbre o endereço cadastral no caso de PF. E PJ não está sendo aceito pela API
 Scenario: EnderecoCadastralCliente CPF diferente do principal
 	Given Pedido base
 	And Informo "EnderecoCadastralCliente.Endereco_cnpj_cpf" = "1"
@@ -102,4 +100,3 @@ Scenario: DetalhesPedidoMagentoDto
 	And Tabela "t_PEDIDO" registro criado, verificar campo "PrevisaoEntregaData" = "null"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "StBemUsoConsumo" = "1"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "InstaladorInstalaStatus" = "1"
-	

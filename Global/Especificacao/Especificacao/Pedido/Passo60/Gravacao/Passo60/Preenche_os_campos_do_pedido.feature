@@ -1,4 +1,5 @@
 ﻿@ignore
+@Especificacao.Pedido.Passo60
 Feature: Preenche_os_campos_do_pedido
 
 #a maioria no pai e filhotes, alguns só no pai, alguns só nos filhotes
@@ -8,7 +9,7 @@ Feature: Preenche_os_campos_do_pedido
 #até linha 2057
 #rs("id_nfe_emitente") = vEmpresaAutoSplit(iv)
 #rs.Update
-Scenario Outline: Preenche_os_campos_do_pedido - pedido pai
+Scenario: Preenche_os_campos_do_pedido - pedido pai
 	#Campos que existem em todos os pedidos: pedido, loja, data, hora
 	#Campos que existem somente no pedido base, não nos filhotes:
 	#	st_auto_split se tiver filhotes
@@ -22,269 +23,264 @@ Scenario Outline: Preenche_os_campos_do_pedido - pedido pai
 	# nos pedidos que fizeram spli auto os cd são diferentes
 	# no meu teste não tinha a opção de selecionar um cd e nem selcionar se era auto
 	Given Pedido base
-	When Informo "ListaProdutos[0].Qtde" = "100"
-	When Informo "ListaProdutos[1].Qtde" = "100"
+	When Lista de itens "0" informo "Qtde" = "100"
+	When Lista de itens "1" informo "Qtde" = "100"
 	When Informo "ValorTotalDestePedidoComRA" = "173512.00"
 	When Informo "VlTotalDestePedido" = ""
 	When Informo "FormaPagtoCriacao.C_pc_valor" = "173512.00"
-	Then Sem nehum erro
-	And Tabela "t_PEDIDO" registro com campo "pedido" = "pedido gerado", verificar campo "<campo>" = "<valor>"
-
-	Examples:
-		| pedido | campo                                          | valor                           |
-		| pedido | pedido                                         | pedido pai                      |
-		| pedido | loja                                           | 202                             |
-		| pedido | data                                           | 2021-01-20 00:00:00             |
-		| pedido | hora                                           | 183128                          |
-		| pedido | id_cliente                                     | 000000684226                    |
-		| pedido | midia                                          |                                 |
-		| pedido | servicos                                       |                                 |
-		| pedido | vl_servicos                                    | 0.0000                          |
-		| pedido | vendedor                                       | HAMILTON                        |
-		| pedido | st_entrega                                     | SPL                             |
-		| pedido | entregue_data                                  |                                 |
-		| pedido | entregue_usuario                               |                                 |
-		| pedido | cancelado_data                                 |                                 |
-		| pedido | cancelado_usuario                              |                                 |
-		| pedido | st_pagto                                       | N                               |
-		| pedido | st_recebido                                    |                                 |
-		| pedido | obs_1                                          |                                 |
-		| pedido | obs_2                                          |                                 |
-		| pedido | qtde_parcelas                                  | 1                               |
-		| pedido | forma_pagto                                    |                                 |
-		| pedido | vl_total_familia                               | 173512.0000                     |
-		| pedido | vl_pago_familia                                | 0.0000                          |
-		| pedido | split_status                                   | 0                               |
-		| pedido | split_data                                     |                                 |
-		| pedido | split_hora                                     |                                 |
-		| pedido | split_usuario                                  |                                 |
-		| pedido | a_entregar_status                              | 0                               |
-		| pedido | a_entregar_data_marcada                        |                                 |
-		| pedido | a_entregar_data                                |                                 |
-		| pedido | a_entregar_hora                                |                                 |
-		| pedido | a_entregar_usuario                             |                                 |
-		| pedido | timestamp                                      | [xL                             |
-		| pedido | loja_indicou                                   |                                 |
-		| pedido | comissao_loja_indicou                          | 0.0                             |
-		| pedido | venda_externa                                  | 0                               |
-		| pedido | vl_frete                                       | 0.0000                          |
-		| pedido | transportadora_id                              |                                 |
-		| pedido | transportadora_data                            |                                 |
-		| pedido | transportadora_usuario                         |                                 |
-		| pedido | analise_credito                                | 0                               |
-		| pedido | analise_credito_data                           |                                 |
-		| pedido | analise_credito_usuario                        |                                 |
-		| pedido | tipo_parcelamento                              | 2                               |
-		| pedido | av_forma_pagto                                 | 0                               |
-		| pedido | pc_qtde_parcelas                               | 1                               |
-		| pedido | pc_valor_parcela                               | 173512.0000                     |
-		| pedido | pce_forma_pagto_entrada                        | 0                               |
-		| pedido | pce_forma_pagto_prestacao                      | 0                               |
-		| pedido | pce_entrada_valor                              | 0.0000                          |
-		| pedido | pce_prestacao_qtde                             | 0                               |
-		| pedido | pce_prestacao_valor                            | 0.0000                          |
-		| pedido | pce_prestacao_periodo                          | 0                               |
-		| pedido | pse_forma_pagto_prim_prest                     | 0                               |
-		| pedido | pse_forma_pagto_demais_prest                   | 0                               |
-		| pedido | pse_prim_prest_valor                           | 0.0000                          |
-		| pedido | pse_prim_prest_apos                            | 0                               |
-		| pedido | pse_demais_prest_qtde                          | 0                               |
-		| pedido | pse_demais_prest_valor                         | 0.0000                          |
-		| pedido | pse_demais_prest_periodo                       | 0                               |
-		| pedido | pu_forma_pagto                                 | 0                               |
-		| pedido | pu_valor                                       | 0.0000                          |
-		| pedido | pu_vencto_apos                                 | 0                               |
-		| pedido | indicador                                      |                                 |
-		| pedido | vl_total_NF                                    | 173512.0000                     |
-		| pedido | vl_total_RA                                    | 0.0000                          |
-		| pedido | perc_RT                                        | 0.0                             |
-		| pedido | st_orc_virou_pedido                            | 0                               |
-		| pedido | orcamento                                      |                                 |
-		| pedido | orcamentista                                   |                                 |
-		| pedido | comissao_paga                                  | 0                               |
-		| pedido | comissao_paga_ult_op                           |                                 |
-		| pedido | comissao_paga_data                             |                                 |
-		| pedido | comissao_paga_usuario                          |                                 |
-		| pedido | perc_desagio_RA                                | 0.0                             |
-		| pedido | perc_limite_RA_sem_desagio                     | 0.0                             |
-		| pedido | vl_total_RA_liquido                            | 0.0000                          |
-		| pedido | st_tem_desagio_RA                              | 0                               |
-		| pedido | qtde_parcelas_desagio_RA                       | 0                               |
-		| pedido | transportadora_num_coleta                      |                                 |
-		| pedido | transportadora_contato                         |                                 |
-		| pedido | st_end_entrega                                 | 1                               |
-		| pedido | EndEtg_endereco                                | Rua Professor Fábio Fanucchi    |
-		| pedido | EndEtg_bairro                                  | Jardim São Paulo(Zona Norte)    |
-		| pedido | EndEtg_cidade                                  | São Paulo                       |
-		| pedido | EndEtg_uf                                      | SP                              |
-		| pedido | EndEtg_cep                                     | 02045080                        |
-		| pedido | st_etg_imediata                                | 2                               |
-		| pedido | etg_imediata_data                              | 2021-01-20 18:31:31             |
-		| pedido | etg_imediata_usuario                           | HAMILTON                        |
-		| pedido | frete_status                                   | 0                               |
-		| pedido | frete_valor                                    | 0.0000                          |
-		| pedido | frete_data                                     |                                 |
-		| pedido | frete_usuario                                  |                                 |
-		| pedido | StBemUsoConsumo                                | 1                               |
-		| pedido | PedidoRecebidoStatus                           | 0                               |
-		| pedido | PedidoRecebidoData                             |                                 |
-		| pedido | PedidoRecebidoUsuarioUltAtualiz                |                                 |
-		| pedido | PedidoRecebidoDtHrUltAtualiz                   |                                 |
-		| pedido | InstaladorInstalaStatus                        | 2                               |
-		| pedido | InstaladorInstalaUsuarioUltAtualiz             | HAMILTON                        |
-		| pedido | InstaladorInstalaDtHrUltAtualiz                | 2021-01-20 18:31:31             |
-		| pedido | custoFinancFornecTipoParcelamento              | SE                              |
-		| pedido | custoFinancFornecQtdeParcelas                  | 1                               |
-		| pedido | BoletoConfeccionadoStatus                      | 0                               |
-		| pedido | BoletoConfeccionadoData                        |                                 |
-		| pedido | GarantiaIndicadorStatus                        | 0                               |
-		| pedido | GarantiaIndicadorUsuarioUltAtualiz             | HAMILTON                        |
-		| pedido | GarantiaIndicadorDtHrUltAtualiz                | 2021-01-20 18:31:31             |
-		| pedido | EndEtg_endereco_numero                         | 97                              |
-		| pedido | EndEtg_endereco_complemento                    |                                 |
-		| pedido | romaneio_status                                | 0                               |
-		| pedido | romaneio_data                                  |                                 |
-		| pedido | romaneio_data_hora                             |                                 |
-		| pedido | romaneio_usuario                               |                                 |
-		| pedido | danfe_impressa_status                          | 0                               |
-		| pedido | danfe_impressa_data                            |                                 |
-		| pedido | danfe_impressa_data_hora                       |                                 |
-		| pedido | danfe_impressa_usuario                         |                                 |
-		| pedido | transportadora_conferente                      |                                 |
-		| pedido | transportadora_motorista                       |                                 |
-		| pedido | transportadora_placa_veiculo                   |                                 |
-		| pedido | perc_desagio_RA_liquida                        | 30.0                            |
-		| pedido | indicador_editado_manual_status                | 0                               |
-		| pedido | indicador_editado_manual_data_hora             |                                 |
-		| pedido | indicador_editado_manual_usuario               |                                 |
-		| pedido | indicador_editado_manual_indicador_original    |                                 |
-		| pedido | permite_RA_status                              | 0                               |
-		| pedido | st_violado_permite_RA_status                   | 0                               |
-		| pedido | dt_hr_violado_permite_RA_status                |                                 |
-		| pedido | usuario_violado_permite_RA_status              |                                 |
-		| pedido | opcao_possui_RA                                | -                               |
-		| pedido | tamanho_num_pedido                             | 7                               |
-		| pedido | pedido_base                                    | pedido gerado                   |
-		| pedido | numero_loja                                    | 202                             |
-		| pedido | data_hora                                      | 2021-01-20 18:31:28             |
-		| pedido | st_forma_pagto_somente_cartao                  | 1                               |
-		| pedido | endereco_memorizado_status                     | 1                               |
-		| pedido | endereco_logradouro                            | Rua Francisco Pecoraro          |
-		| pedido | endereco_bairro                                | Água Fria                       |
-		| pedido | endereco_cidade                                | São Paulo                       |
-		| pedido | endereco_uf                                    | SP                              |
-		| pedido | endereco_cep                                   | 02408150                        |
-		| pedido | endereco_numero                                | 97                              |
-		| pedido | endereco_complemento                           | casa 01                         |
-		| pedido | analise_endereco_tratar_status                 | 1                               |
-		| pedido | analise_endereco_tratado_status                | 0                               |
-		| pedido | analise_endereco_tratado_data                  |                                 |
-		| pedido | analise_endereco_tratado_data_hora             |                                 |
-		| pedido | analise_endereco_tratado_usuario               |                                 |
-		| pedido | analise_credito_data_sem_hora                  |                                 |
-		| pedido | cancelado_auto_status                          | 0                               |
-		| pedido | cancelado_auto_data                            |                                 |
-		| pedido | cancelado_auto_data_hora                       |                                 |
-		| pedido | cancelado_auto_motivo                          |                                 |
-		| pedido | obs_3                                          |                                 |
-		| pedido | danfe_a_imprimir_status                        | 0                               |
-		| pedido | danfe_a_imprimir_data_hora                     |                                 |
-		| pedido | danfe_a_imprimir_usuario                       |                                 |
-		| pedido | transportadora_selecao_auto_status             | 0                               |
-		| pedido | transportadora_selecao_auto_cep                |                                 |
-		| pedido | transportadora_selecao_auto_tipo_endereco      | 0                               |
-		| pedido | transportadora_selecao_auto_transportadora     |                                 |
-		| pedido | transportadora_selecao_auto_data_hora          |                                 |
-		| pedido | pedido_bs_x_at                                 |                                 |
-		| pedido | cancelado_data_hora                            |                                 |
-		| pedido | cancelado_codigo_motivo                        |                                 |
-		| pedido | cancelado_codigo_sub_motivo                    |                                 |
-		| pedido | cancelado_motivo                               |                                 |
-		| pedido | EndEtg_obs                                     |                                 |
-		| pedido | pedido_bs_x_ac                                 |                                 |
-		| pedido | pedido_bs_x_ac_reverso                         |                                 |
-		| pedido | EndEtg_cod_justificativa                       | 003                             |
-		| pedido | pedido_bs_x_marketplace                        |                                 |
-		| pedido | marketplace_codigo_origem                      |                                 |
-		| pedido | id_nfe_emitente                                | 4903                            |
-		| pedido | st_pedido_novo_analise_credito_msg_alerta      | 0                               |
-		| pedido | dt_hr_pedido_novo_analise_credito_msg_alerta   |                                 |
-		| pedido | st_forma_pagto_possui_parcela_cartao           | 1                               |
-		| pedido | vl_previsto_cartao                             | 173512.0000                     |
-		| pedido | NFe_texto_constar                              |                                 |
-		| pedido | NFe_xPed                                       |                                 |
-		| pedido | MarketplacePedidoRecebidoRegistrarStatus       | 0                               |
-		| pedido | MarketplacePedidoRecebidoRegistrarDataRecebido |                                 |
-		| pedido | MarketplacePedidoRecebidoRegistrarDataHora     |                                 |
-		| pedido | MarketplacePedidoRecebidoRegistrarUsuario      |                                 |
-		| pedido | MarketplacePedidoRecebidoRegistradoStatus      | 0                               |
-		| pedido | MarketplacePedidoRecebidoRegistradoDataHora    |                                 |
-		| pedido | MarketplacePedidoRecebidoRegistradoUsuario     |                                 |
-		| pedido | st_auto_split                                  | 0                               |
-		| pedido | analise_credito_pendente_vendas_motivo         |                                 |
-		| pedido | usuario_cadastro                               | HAMILTON                        |
-		| pedido | plataforma_origem_pedido                       | 0                               |
-		| pedido | magento_installer_commission_value             | 0.0000                          |
-		| pedido | magento_installer_commission_discount          | 0.0000                          |
-		| pedido | magento_shipping_amount                        | 0.0000                          |
-		| pedido | dt_st_pagto                                    | 2021-01-20 00:00:00             |
-		| pedido | dt_hr_st_pagto                                 | 2021-01-20 18:31:30             |
-		| pedido | usuario_st_pagto                               | HAMILTON                        |
-		| pedido | pc_maquineta_qtde_parcelas                     | 0                               |
-		| pedido | pc_maquineta_valor_parcela                     | 0.0000                          |
-		| pedido | sistema_responsavel_cadastro                   | 1                               |
-		| pedido | sistema_responsavel_atualizacao                | 1                               |
-		| pedido | num_obs_2                                      | 0                               |
-		| pedido | num_obs_3                                      | 0                               |
-		| pedido | PrevisaoEntregaData                            |                                 |
-		| pedido | PrevisaoEntregaUsuarioUltAtualiz               |                                 |
-		| pedido | PrevisaoEntregaDtHrUltAtualiz                  |                                 |
-		| pedido | st_forma_pagto_possui_parcela_cartao_maquineta | 0                               |
-		| pedido | st_memorizacao_completa_enderecos              | 1                               |
-		| pedido | endereco_email                                 | gabriel.prada.teodoro@gmail.com |
-		| pedido | endereco_email_xml                             | teste@xml.com                   |
-		| pedido | endereco_nome                                  | Gabriel Prada Teodoro           |
-		| pedido | endereco_ddd_res                               | 11                              |
-		| pedido | endereco_tel_res                               | 25321634                        |
-		| pedido | endereco_ddd_com                               | 11                              |
-		| pedido | endereco_tel_com                               | 55788755                        |
-		| pedido | endereco_ramal_com                             | 12                              |
-		| pedido | endereco_ddd_cel                               | 11                              |
-		| pedido | endereco_tel_cel                               | 981603313                       |
-		| pedido | endereco_ddd_com_2                             |                                 |
-		| pedido | endereco_tel_com_2                             |                                 |
-		| pedido | endereco_ramal_com_2                           |                                 |
-		| pedido | endereco_tipo_pessoa                           | PF                              |
-		| pedido | endereco_cnpj_cpf                              | 35270445824                     |
-		| pedido | endereco_contribuinte_icms_status              | 2                               |
-		| pedido | endereco_produtor_rural_status                 | 2                               |
-		| pedido | endereco_ie                                    | 361.289.183.714                 |
-		| pedido | endereco_rg                                    | 304480484                       |
-		| pedido | endereco_contato                               |                                 |
-		| pedido | EndEtg_email                                   | gabriel.prada.teodoro@gmail.com |
-		| pedido | EndEtg_email_xml                               | teste@xml.com                   |
-		| pedido | EndEtg_nome                                    | Gabriel Prada Teodoro           |
-		| pedido | EndEtg_ddd_res                                 |                                 |
-		| pedido | EndEtg_tel_res                                 |                                 |
-		| pedido | EndEtg_ddd_com                                 |                                 |
-		| pedido | EndEtg_tel_com                                 |                                 |
-		| pedido | EndEtg_ramal_com                               |                                 |
-		| pedido | EndEtg_ddd_cel                                 |                                 |
-		| pedido | EndEtg_tel_cel                                 |                                 |
-		| pedido | EndEtg_ddd_com_2                               |                                 |
-		| pedido | EndEtg_tel_com_2                               |                                 |
-		| pedido | EndEtg_ramal_com_2                             |                                 |
-		| pedido | EndEtg_tipo_pessoa                             | PF                              |
-		| pedido | EndEtg_cnpj_cpf                                | 35270445824                     |
-		| pedido | EndEtg_contribuinte_icms_status                | 2                               |
-		| pedido | EndEtg_produtor_rural_status                   | 2                               |
-		| pedido | EndEtg_ie                                      | 361.289.183.714                 |
-		| pedido | EndEtg_rg                                      | 304480484                       |
-		| pedido | endereco_nome_iniciais_em_maiusculas           | Gabriel Prada Teodoro           |
-		| pedido | EndEtg_nome_iniciais_em_maiusculas             | Gabriel Prada Teodoro           |
-
+	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro criado, verificar campo "loja" = "202"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "data" = "2021-01-20 00:00:00"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "hora" = "183128"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "id_cliente" = "000000684226"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "midia" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "servicos" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vl_servicos" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vendedor" = "HAMILTON"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_entrega" = "SPL"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "entregue_data" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "entregue_usuario" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "cancelado_data" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "cancelado_usuario" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_pagto" = "N"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_recebido" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "obs_1" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "obs_2"  = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "qtde_parcelas" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "forma_pagto" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vl_total_familia" = "173512.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vl_pago_familia" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "split_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "split_data" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "split_hora" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "split_usuario" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "a_entregar_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "a_entregar_data_marcada" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "a_entregar_data" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "a_entregar_hora" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "a_entregar_usuario" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "timestamp" = "[xL"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "loja_indicou" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "comissao_loja_indicou" = "0.0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "venda_externa" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vl_frete" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_id" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_data" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_usuario" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito_data" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito_usuario" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "tipo_parcelamento" = "2"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "av_forma_pagto" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pc_qtde_parcelas" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pc_valor_parcela" = "173512.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pce_forma_pagto_entrada" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pce_forma_pagto_prestacao" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pce_entrada_valor" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pce_prestacao_qtde" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pce_prestacao_valor" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pce_prestacao_periodo" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pse_forma_pagto_prim_prest" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pse_forma_pagto_demais_prest" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pse_prim_prest_valor" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pse_prim_prest_apos" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pse_demais_prest_qtde" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pse_demais_prest_valor" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pse_demais_prest_periodo" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pu_forma_pagto" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pu_valor" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pu_vencto_apos" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "indicador" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vl_total_NF" = "173512.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vl_total_RA" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "perc_RT" = "0.0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_orc_virou_pedido" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "orcamento" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "orcamentista" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "comissao_paga" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "comissao_paga_ult_op" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "comissao_paga_data" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "comissao_paga_usuario" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "perc_desagio_RA" = "0.0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "perc_limite_RA_sem_desagio" = "0.0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vl_total_RA_liquido" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_tem_desagio_RA" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "qtde_parcelas_desagio_RA" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_num_coleta" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_contato" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_end_entrega" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_endereco" = "Rua Professor Fábio Fanucchi"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_bairro" = "Jardim São Paulo(Zona Norte)"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_cidade" = "São Paulo"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_uf" = "SP"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_cep" = "02045080"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_etg_imediata" = "2"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "etg_imediata_data" = "2021-01-20 18:31:31"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "etg_imediata_usuario" = "HAMILTON"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "frete_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "frete_valor" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "frete_data" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "frete_usuario" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "StBemUsoConsumo" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "PedidoRecebidoStatus" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "PedidoRecebidoData" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "PedidoRecebidoUsuarioUltAtualiz" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "PedidoRecebidoDtHrUltAtualiz" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "InstaladorInstalaStatus" = "2"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "InstaladorInstalaUsuarioUltAtualiz" = "HAMILTON"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "InstaladorInstalaDtHrUltAtualiz" = "2021-01-20 18:31:31"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "custoFinancFornecTipoParcelamento" = "SE"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "custoFinancFornecQtdeParcelas" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "BoletoConfeccionadoStatus" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "BoletoConfeccionadoData" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "GarantiaIndicadorStatus" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "GarantiaIndicadorUsuarioUltAtualiz" = "HAMILTON"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "GarantiaIndicadorDtHrUltAtualiz" = "2021-01-20 18:31:31"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_endereco_numero" = "97"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_endereco_complemento" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "romaneio_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "romaneio_data" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "romaneio_data_hora" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "romaneio_usuario" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "danfe_impressa_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "danfe_impressa_data" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "danfe_impressa_data_hora" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "danfe_impressa_usuario" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_conferente" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_motorista" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_placa_veiculo" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "perc_desagio_RA_liquida" = "30.0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "indicador_editado_manual_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "indicador_editado_manual_data_hora" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "indicador_editado_manual_usuario" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "indicador_editado_manual_indicador_original" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "permite_RA_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_violado_permite_RA_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "dt_hr_violado_permite_RA_status" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "usuario_violado_permite_RA_status" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "opcao_possui_RA" = "-"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "tamanho_num_pedido" = "7"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pedido_base" = "pedido gerado"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "numero_loja" = "202"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "data_hora" = "2021-01-20 18:31:28"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_forma_pagto_somente_cartao" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_memorizado_status" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_logradouro" = "Rua Francisco Pecoraro"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_bairro" = "Água Fria"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_cidade" = "São Paulo"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_uf" = "SP"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_cep" = "02408150"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_numero" = "97"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_complemento" = "casa 01"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_endereco_tratar_status" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_endereco_tratado_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_endereco_tratado_data" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_endereco_tratado_data_hora" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_endereco_tratado_usuario" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito_data_sem_hora" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "cancelado_auto_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "cancelado_auto_data" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "cancelado_auto_data_hora" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "cancelado_auto_motivo" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "obs_3" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "danfe_a_imprimir_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "danfe_a_imprimir_data_hora" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "danfe_a_imprimir_usuario" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_selecao_auto_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_selecao_auto_cep" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_selecao_auto_tipo_endereco" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_selecao_auto_transportadora" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_selecao_auto_data_hora" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pedido_bs_x_at" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "cancelado_data_hora" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "cancelado_codigo_motivo" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "cancelado_codigo_sub_motivo" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "cancelado_motivo" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_obs" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pedido_bs_x_ac" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pedido_bs_x_ac_reverso" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_cod_justificativa" = "003"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pedido_bs_x_marketplace" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "marketplace_codigo_origem" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "id_nfe_emitente" = "4903"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_pedido_novo_analise_credito_msg_alerta" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "dt_hr_pedido_novo_analise_credito_msg_alerta" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_forma_pagto_possui_parcela_cartao" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vl_previsto_cartao" = "173512.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "NFe_texto_constar" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "NFe_xPed" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "MarketplacePedidoRecebidoRegistrarStatus" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "MarketplacePedidoRecebidoRegistrarDataRecebido" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "MarketplacePedidoRecebidoRegistrarDataHora" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "MarketplacePedidoRecebidoRegistrarUsuario" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "MarketplacePedidoRecebidoRegistradoStatus" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "MarketplacePedidoRecebidoRegistradoDataHora" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "MarketplacePedidoRecebidoRegistradoUsuario" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_auto_split" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito_pendente_vendas_motivo" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "usuario_cadastro" = "HAMILTON"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "plataforma_origem_pedido" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "magento_installer_commission_value" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "magento_installer_commission_discount" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "magento_shipping_amount" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "dt_st_pagto" = "2021-01-20 00:00:00"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "dt_hr_st_pagto" = "2021-01-20 18:31:30"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "usuario_st_pagto" = "HAMILTON"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pc_maquineta_qtde_parcelas" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pc_maquineta_valor_parcela" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "sistema_responsavel_cadastro" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "sistema_responsavel_atualizacao" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "num_obs_2" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "num_obs_3" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "PrevisaoEntregaData" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "PrevisaoEntregaUsuarioUltAtualiz" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "PrevisaoEntregaDtHrUltAtualiz" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_forma_pagto_possui_parcela_cartao_maquineta" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_memorizacao_completa_enderecos" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_email" = "gabriel.prada.teodoro@gmail.com"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_email_xml" = "teste@xml.com"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_nome" = "Gabriel Prada Teodoro"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_ddd_res" = "11"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_tel_res" = "25321634"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_ddd_com" = "11"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_tel_com" = "55788755"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_ramal_com" = "12"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_ddd_cel" = "11"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_tel_cel" = "981603313"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_ddd_com_2" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_tel_com_2" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_ramal_com_2" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_tipo_pessoa" = "PF"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_cnpj_cpf" = "35270445824"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_contribuinte_icms_status" = "2"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_produtor_rural_status" = "2"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_ie" = "361.289.183.714"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_rg" = "304480484"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_contato" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_email" = "gabriel.prada.teodoro@gmail.com"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_email_xml" = "teste@xml.com"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_nome" = "Gabriel Prada Teodoro"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_ddd_res" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_tel_res" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_ddd_com" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_tel_com" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_ramal_com" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_ddd_cel" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_tel_cel" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_ddd_com_2" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_tel_com_2" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_ramal_com_2" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_tipo_pessoa" = "PF"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_cnpj_cpf" = "35270445824"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_contribuinte_icms_status" = "2"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_produtor_rural_status" = "2"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_ie" = "361.289.183.714"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_rg" = "304480484"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_nome_iniciais_em_maiusculas" = "Gabriel Prada Teodoro"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_nome_iniciais_em_maiusculas" = "Gabriel Prada Teodoro"
 
 Scenario: perc_desagio_RA_liquida
+
 #gravado no pai e nos filhotes, depende da loja (NUMERO_LOJA_ECOMMERCE_AR_CLUBE nunca é gravado)
 #
 #loja/PedidoNovoConfirma.asp
@@ -298,270 +294,264 @@ Scenario: perc_desagio_RA_liquida
 #	" WHERE" & _
 #		" (id = '" & id_registro & "')"
 #
-
-
-Scenario Outline: Preenche_os_campos_do_pedido - pedido filhote
+Scenario: Preenche_os_campos_do_pedido - pedido filhote
 	Given Pedido base
-	When Informo "ListaProdutos[0].Qtde" = "100"
-	When Informo "ListaProdutos[1].Qtde" = "100"
+	When Lista de itens "0" informo "Qtde" = "100"
+	When Lista de itens "1" informo "Qtde" = "100"
 	When Informo "ValorTotalDestePedidoComRA" = "173512.00"
 	When Informo "VlTotalDestePedido" = ""
 	When Informo "FormaPagtoCriacao.C_pc_valor" = "173512.00"
-	Then Sem nehum erro
-	And Tabela "t_PEDIDO" registro com campo "pedido" = "pedido gerado + -A", verificar campo "<campo>" = "<valor>"
-
-	Examples:
-		| pedido | campo                                          | valor                           |
-		| pedido | pedido                                         | 222267N-A                       |
-		| pedido | loja                                           | 202                             |
-		| pedido | data                                           | 2021-01-20 00:00:00             |
-		| pedido | hora                                           | 183128                          |
-		| pedido | id_cliente                                     | 000000684226                    |
-		| pedido | midia                                          |                                 |
-		| pedido | servicos                                       |                                 |
-		| pedido | vl_servicos                                    | 0.0000                          |
-		| pedido | vendedor                                       | HAMILTON                        |
-		| pedido | st_entrega                                     | SEP                             |
-		| pedido | entregue_data                                  | null                            |
-		| pedido | entregue_usuario                               | null                            |
-		| pedido | cancelado_data                                 | null                            |
-		| pedido | cancelado_usuario                              | null                            |
-		| pedido | st_pagto                                       |                                 |
-		| pedido | st_recebido                                    |                                 |
-		| pedido | obs_1                                          |                                 |
-		| pedido | obs_2                                          |                                 |
-		| pedido | qtde_parcelas                                  | 0                               |
-		| pedido | forma_pagto                                    |                                 |
-		| pedido | vl_total_familia                               | 0.0000                          |
-		| pedido | vl_pago_familia                                | 0.0000                          |
-		| pedido | split_status                                   | 1                               |
-		| pedido | split_data                                     | 2021-01-20 00:00:00             |
-		| pedido | split_hora                                     | 183840                          |
-		| pedido | split_usuario                                  | HAMILTON                        |
-		| pedido | a_entregar_status                              | 0                               |
-		| pedido | a_entregar_data_marcada                        | null                            |
-		| pedido | a_entregar_data                                | null                            |
-		| pedido | a_entregar_hora                                | null                            |
-		| pedido | a_entregar_usuario                             | null                            |
-		| pedido | timestamp                                      | [xM                             |
-		| pedido | loja_indicou                                   |                                 |
-		| pedido | comissao_loja_indicou                          | 0.0                             |
-		| pedido | venda_externa                                  | 0                               |
-		| pedido | vl_frete                                       | 0.0000                          |
-		| pedido | transportadora_id                              | null                            |
-		| pedido | transportadora_data                            | null                            |
-		| pedido | transportadora_usuario                         | null                            |
-		| pedido | analise_credito                                | 0                               |
-		| pedido | analise_credito_data                           | null                            |
-		| pedido | analise_credito_usuario                        | null                            |
-		| pedido | tipo_parcelamento                              | 0                               |
-		| pedido | av_forma_pagto                                 | 0                               |
-		| pedido | pc_qtde_parcelas                               | 0                               |
-		| pedido | pc_valor_parcela                               | 0.0000                          |
-		| pedido | pce_forma_pagto_entrada                        | 0                               |
-		| pedido | pce_forma_pagto_prestacao                      | 0                               |
-		| pedido | pce_entrada_valor                              | 0.0000                          |
-		| pedido | pce_prestacao_qtde                             | 0                               |
-		| pedido | pce_prestacao_valor                            | 0.0000                          |
-		| pedido | pce_prestacao_periodo                          | 0                               |
-		| pedido | pse_forma_pagto_prim_prest                     | 0                               |
-		| pedido | pse_forma_pagto_demais_prest                   | 0                               |
-		| pedido | pse_prim_prest_valor                           | 0.0000                          |
-		| pedido | pse_prim_prest_apos                            | 0                               |
-		| pedido | pse_demais_prest_qtde                          | 0                               |
-		| pedido | pse_demais_prest_valor                         | 0.0000                          |
-		| pedido | pse_demais_prest_periodo                       | 0                               |
-		| pedido | pu_forma_pagto                                 | 0                               |
-		| pedido | pu_valor                                       | 0.0000                          |
-		| pedido | pu_vencto_apos                                 | 0                               |
-		| pedido | indicador                                      |                                 |
-		| pedido | vl_total_NF                                    | 0.0000                          |
-		| pedido | vl_total_RA                                    | 0.0000                          |
-		| pedido | perc_RT                                        | 0.0                             |
-		| pedido | st_orc_virou_pedido                            | 0                               |
-		| pedido | orcamento                                      |                                 |
-		| pedido | orcamentista                                   |                                 |
-		| pedido | comissao_paga                                  | 0                               |
-		| pedido | comissao_paga_ult_op                           | null                            |
-		| pedido | comissao_paga_data                             | null                            |
-		| pedido | comissao_paga_usuario                          | null                            |
-		| pedido | perc_desagio_RA                                | 0.0                             |
-		| pedido | perc_limite_RA_sem_desagio                     | 0.0                             |
-		| pedido | vl_total_RA_liquido                            | 0.0000                          |
-		| pedido | st_tem_desagio_RA                              | 0                               |
-		| pedido | qtde_parcelas_desagio_RA                       | 0                               |
-		| pedido | transportadora_num_coleta                      | null                            |
-		| pedido | transportadora_contato                         | null                            |
-		| pedido | st_end_entrega                                 | 1                               |
-		| pedido | EndEtg_endereco                                | Rua Professor Fábio Fanucchi    |
-		| pedido | EndEtg_bairro                                  | Jardim São Paulo(Zona Norte)    |
-		| pedido | EndEtg_cidade                                  | São Paulo                       |
-		| pedido | EndEtg_uf                                      | SP                              |
-		| pedido | EndEtg_cep                                     | 02045080                        |
-		| pedido | st_etg_imediata                                | 2                               |
-		| pedido | etg_imediata_data                              | 2021-01-20 18:31:31             |
-		| pedido | etg_imediata_usuario                           | HAMILTON                        |
-		| pedido | frete_status                                   | 0                               |
-		| pedido | frete_valor                                    | 0.0000                          |
-		| pedido | frete_data                                     | null                            |
-		| pedido | frete_usuario                                  | null                            |
-		| pedido | StBemUsoConsumo                                | 1                               |
-		| pedido | PedidoRecebidoStatus                           | 0                               |
-		| pedido | PedidoRecebidoData                             | null                            |
-		| pedido | PedidoRecebidoUsuarioUltAtualiz                | null                            |
-		| pedido | PedidoRecebidoDtHrUltAtualiz                   | null                            |
-		| pedido | InstaladorInstalaStatus                        | 2                               |
-		| pedido | InstaladorInstalaUsuarioUltAtualiz             | HAMILTON                        |
-		| pedido | InstaladorInstalaDtHrUltAtualiz                | 2021-01-20 18:31:31             |
-		| pedido | custoFinancFornecTipoParcelamento              | null                            |
-		| pedido | custoFinancFornecQtdeParcelas                  | 0                               |
-		| pedido | BoletoConfeccionadoStatus                      | 0                               |
-		| pedido | BoletoConfeccionadoData                        |                                 |
-		| pedido | GarantiaIndicadorStatus                        | 0                               |
-		| pedido | GarantiaIndicadorUsuarioUltAtualiz             | HAMILTON                        |
-		| pedido | GarantiaIndicadorDtHrUltAtualiz                | 2021-01-20 18:31:31             |
-		| pedido | EndEtg_endereco_numero                         | 97                              |
-		| pedido | EndEtg_endereco_complemento                    |                                 |
-		| pedido | romaneio_status                                | 0                               |
-		| pedido | romaneio_data                                  | null                            |
-		| pedido | romaneio_data_hora                             | null                            |
-		| pedido | romaneio_usuario                               | null                            |
-		| pedido | danfe_impressa_status                          | 0                               |
-		| pedido | danfe_impressa_data                            | null                            |
-		| pedido | danfe_impressa_data_hora                       | null                            |
-		| pedido | danfe_impressa_usuario                         | null                            |
-		| pedido | transportadora_conferente                      | null                            |
-		| pedido | transportadora_motorista                       | null                            |
-		| pedido | transportadora_placa_veiculo                   | null                            |
-		| pedido | perc_desagio_RA_liquida                        | 30.0                            |
-		| pedido | indicador_editado_manual_status                | 0                               |
-		| pedido | indicador_editado_manual_data_hora             | null                            |
-		| pedido | indicador_editado_manual_usuario               | null                            |
-		| pedido | indicador_editado_manual_indicador_original    | null                            |
-		| pedido | permite_RA_status                              | 0                               |
-		| pedido | st_violado_permite_RA_status                   | 0                               |
-		| pedido | dt_hr_violado_permite_RA_status                | null                            |
-		| pedido | usuario_violado_permite_RA_status              | null                            |
-		| pedido | opcao_possui_RA                                | -                               |
-		| pedido | tamanho_num_pedido                             | 9                               |
-		| pedido | pedido_base                                    | 222267N                         |
-		| pedido | numero_loja                                    | 202                             |
-		| pedido | data_hora                                      | 2021-01-20 18:31:28             |
-		| pedido | st_forma_pagto_somente_cartao                  | 0                               |
-		| pedido | endereco_memorizado_status                     | 1                               |
-		| pedido | endereco_logradouro                            | Rua Francisco Pecoraro          |
-		| pedido | endereco_bairro                                | Água Fria                       |
-		| pedido | endereco_cidade                                | São Paulo                       |
-		| pedido | endereco_uf                                    | SP                              |
-		| pedido | endereco_cep                                   | 02408150                        |
-		| pedido | endereco_numero                                | 97                              |
-		| pedido | endereco_complemento                           | casa 01                         |
-		| pedido | analise_endereco_tratar_status                 | 0                               |
-		| pedido | analise_endereco_tratado_status                | 0                               |
-		| pedido | analise_endereco_tratado_data                  | null                            |
-		| pedido | analise_endereco_tratado_data_hora             | null                            |
-		| pedido | analise_endereco_tratado_usuario               | null                            |
-		| pedido | analise_credito_data_sem_hora                  | null                            |
-		| pedido | cancelado_auto_status                          | 0                               |
-		| pedido | cancelado_auto_data                            | null                            |
-		| pedido | cancelado_auto_data_hora                       | null                            |
-		| pedido | cancelado_auto_motivo                          | null                            |
-		| pedido | obs_3                                          | null                            |
-		| pedido | danfe_a_imprimir_status                        | 0                               |
-		| pedido | danfe_a_imprimir_data_hora                     | null                            |
-		| pedido | danfe_a_imprimir_usuario                       | null                            |
-		| pedido | transportadora_selecao_auto_status             | 0                               |
-		| pedido | transportadora_selecao_auto_cep                | null                            |
-		| pedido | transportadora_selecao_auto_tipo_endereco      | 0                               |
-		| pedido | transportadora_selecao_auto_transportadora     | null                            |
-		| pedido | transportadora_selecao_auto_data_hora          | null                            |
-		| pedido | pedido_bs_x_at                                 | null                            |
-		| pedido | cancelado_data_hora                            | null                            |
-		| pedido | cancelado_codigo_motivo                        | null                            |
-		| pedido | cancelado_codigo_sub_motivo                    | null                            |
-		| pedido | cancelado_motivo                               | null                            |
-		| pedido | EndEtg_obs                                     | null                            |
-		| pedido | pedido_bs_x_ac                                 |                                 |
-		| pedido | pedido_bs_x_ac_reverso                         |                                 |
-		| pedido | EndEtg_cod_justificativa                       | 003                             |
-		| pedido | pedido_bs_x_marketplace                        |                                 |
-		| pedido | marketplace_codigo_origem                      |                                 |
-		| pedido | id_nfe_emitente                                | 4903                            |
-		| pedido | st_pedido_novo_analise_credito_msg_alerta      | 0                               |
-		| pedido | dt_hr_pedido_novo_analise_credito_msg_alerta   | null                            |
-		| pedido | st_forma_pagto_possui_parcela_cartao           | 0                               |
-		| pedido | vl_previsto_cartao                             | 0.0000                          |
-		| pedido | NFe_texto_constar                              | null                            |
-		| pedido | NFe_xPed                                       | null                            |
-		| pedido | MarketplacePedidoRecebidoRegistrarStatus       | 0                               |
-		| pedido | MarketplacePedidoRecebidoRegistrarDataRecebido | null                            |
-		| pedido | MarketplacePedidoRecebidoRegistrarDataHora     | null                            |
-		| pedido | MarketplacePedidoRecebidoRegistrarUsuario      | null                            |
-		| pedido | MarketplacePedidoRecebidoRegistradoStatus      | 0                               |
-		| pedido | MarketplacePedidoRecebidoRegistradoDataHora    | null                            |
-		| pedido | MarketplacePedidoRecebidoRegistradoUsuario     | null                            |
-		| pedido | st_auto_split                                  | 0                               |
-		| pedido | analise_credito_pendente_vendas_motivo         | null                            |
-		| pedido | usuario_cadastro                               | HAMILTON                        |
-		| pedido | plataforma_origem_pedido                       | 0                               |
-		| pedido | magento_installer_commission_value             | 0.0000                          |
-		| pedido | magento_installer_commission_discount          | 0.0000                          |
-		| pedido | magento_shipping_amount                        | 0.0000                          |
-		| pedido | dt_st_pagto                                    | null                            |
-		| pedido | dt_hr_st_pagto                                 | null                            |
-		| pedido | usuario_st_pagto                               |                                 |
-		| pedido | pc_maquineta_qtde_parcelas                     | 0                               |
-		| pedido | pc_maquineta_valor_parcela                     | 0.0000                          |
-		| pedido | sistema_responsavel_cadastro                   | 1                               |
-		| pedido | sistema_responsavel_atualizacao                | 1                               |
-		| pedido | num_obs_2                                      | 0                               |
-		| pedido | num_obs_3                                      | 0                               |
-		| pedido | PrevisaoEntregaData                            | null                            |
-		| pedido | PrevisaoEntregaUsuarioUltAtualiz               | null                            |
-		| pedido | PrevisaoEntregaDtHrUltAtualiz                  | null                            |
-		| pedido | st_forma_pagto_possui_parcela_cartao_maquineta | 0                               |
-		| pedido | st_memorizacao_completa_enderecos              | 1                               |
-		| pedido | endereco_email                                 | gabriel.prada.teodoro@gmail.com |
-		| pedido | endereco_email_xml                             | teste@xml.com                   |
-		| pedido | endereco_nome                                  | Gabriel Prada Teodoro           |
-		| pedido | endereco_ddd_res                               | 11                              |
-		| pedido | endereco_tel_res                               | 25321634                        |
-		| pedido | endereco_ddd_com                               | 11                              |
-		| pedido | endereco_tel_com                               | 55788755                        |
-		| pedido | endereco_ramal_com                             | 12                              |
-		| pedido | endereco_ddd_cel                               | 11                              |
-		| pedido | endereco_tel_cel                               | 981603313                       |
-		| pedido | endereco_ddd_com_2                             |                                 |
-		| pedido | endereco_tel_com_2                             |                                 |
-		| pedido | endereco_ramal_com_2                           |                                 |
-		| pedido | endereco_tipo_pessoa                           | PF                              |
-		| pedido | endereco_cnpj_cpf                              | 35270445824                     |
-		| pedido | endereco_contribuinte_icms_status              | 2                               |
-		| pedido | endereco_produtor_rural_status                 | 2                               |
-		| pedido | endereco_ie                                    | 361.289.183.714                 |
-		| pedido | endereco_rg                                    | 304480484                       |
-		| pedido | endereco_contato                               |                                 |
-		| pedido | EndEtg_email                                   | gabriel.prada.teodoro@gmail.com |
-		| pedido | EndEtg_email_xml                               | teste@xml.com                   |
-		| pedido | EndEtg_nome                                    | Gabriel Prada Teodoro           |
-		| pedido | EndEtg_ddd_res                                 |                                 |
-		| pedido | EndEtg_tel_res                                 |                                 |
-		| pedido | EndEtg_ddd_com                                 |                                 |
-		| pedido | EndEtg_tel_com                                 |                                 |
-		| pedido | EndEtg_ramal_com                               |                                 |
-		| pedido | EndEtg_ddd_cel                                 |                                 |
-		| pedido | EndEtg_tel_cel                                 |                                 |
-		| pedido | EndEtg_ddd_com_2                               |                                 |
-		| pedido | EndEtg_tel_com_2                               |                                 |
-		| pedido | EndEtg_ramal_com_2                             |                                 |
-		| pedido | EndEtg_tipo_pessoa                             | PF                              |
-		| pedido | EndEtg_cnpj_cpf                                | 35270445824                     |
-		| pedido | EndEtg_contribuinte_icms_status                | 2                               |
-		| pedido | EndEtg_produtor_rural_status                   | 2                               |
-		| pedido | EndEtg_ie                                      | 361.289.183.714                 |
-		| pedido | EndEtg_rg                                      | 304480484                       |
-		| pedido | endereco_nome_iniciais_em_maiusculas           | Gabriel Prada Teodoro           |
-		| pedido | EndEtg_nome_iniciais_em_maiusculas             | Gabriel Prada Teodoro           |
+	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pedido" = "222267N-A"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "loja" = "202"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "data" = "2021-01-20 00:00:00"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "hora" = "183128"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "id_cliente" = "000000684226"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "midia" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "servicos" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vl_servicos" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vendedor" = "HAMILTON"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_entrega" = "SEP"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "entregue_data" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "entregue_usuario" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "cancelado_data" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "cancelado_usuario" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_pagto" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_recebido" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "obs_1" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "obs_2" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "qtde_parcelas" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "forma_pagto" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vl_total_familia" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vl_pago_familia" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "split_status" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "split_data" = "2021-01-20 00:00:00"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "split_hora" = "183840"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "split_usuario" = "HAMILTON"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "a_entregar_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "a_entregar_data_marcada" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "a_entregar_data" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "a_entregar_hora" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "a_entregar_usuario" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "timestamp" = "[xM"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "loja_indicou" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "comissao_loja_indicou" = "0.0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "venda_externa" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vl_frete" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_id" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_data" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_usuario" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito_data" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito_usuario" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "tipo_parcelamento" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "av_forma_pagto" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pc_qtde_parcelas" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pc_valor_parcela" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pce_forma_pagto_entrada" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pce_forma_pagto_prestacao" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pce_entrada_valor" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pce_prestacao_qtde" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pce_prestacao_valor" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pce_prestacao_periodo" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pse_forma_pagto_prim_prest" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pse_forma_pagto_demais_prest" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pse_prim_prest_valor" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pse_prim_prest_apos" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pse_demais_prest_qtde" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pse_demais_prest_valor" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pse_demais_prest_periodo" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pu_forma_pagto" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pu_valor" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pu_vencto_apos" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "indicador" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vl_total_NF" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vl_total_RA" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "perc_RT" = "0.0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_orc_virou_pedido" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "orcamento" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "orcamentista" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "comissao_paga" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "comissao_paga_ult_op" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "comissao_paga_data" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "comissao_paga_usuario" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "perc_desagio_RA" = "0.0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "perc_limite_RA_sem_desagio" = "0.0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vl_total_RA_liquido" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_tem_desagio_RA" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "qtde_parcelas_desagio_RA" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_num_coleta" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_contato" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_end_entrega" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_endereco" = "Rua Professor Fábio Fanucchi"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_bairro" = "Jardim São Paulo(Zona Norte)"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_cidade" = "São Paulo"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_uf" = "SP"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_cep" = "02045080"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_etg_imediata" = "2"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "etg_imediata_data" = "2021-01-20 18:31:31"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "etg_imediata_usuario" = "HAMILTON"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "frete_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "frete_valor" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "frete_data" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "frete_usuario" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "StBemUsoConsumo" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "PedidoRecebidoStatus" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "PedidoRecebidoData" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "PedidoRecebidoUsuarioUltAtualiz" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "PedidoRecebidoDtHrUltAtualiz" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "InstaladorInstalaStatus" = "2"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "InstaladorInstalaUsuarioUltAtualiz" = "HAMILTON"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "InstaladorInstalaDtHrUltAtualiz" = "2021-01-20 18:31:31"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "custoFinancFornecTipoParcelamento" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "custoFinancFornecQtdeParcelas" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "BoletoConfeccionadoStatus" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "BoletoConfeccionadoData" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "GarantiaIndicadorStatus" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "GarantiaIndicadorUsuarioUltAtualiz" = "HAMILTON"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "GarantiaIndicadorDtHrUltAtualiz" = "2021-01-20 18:31:31"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_endereco_numero" = "97"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_endereco_complemento" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "romaneio_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "romaneio_data" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "romaneio_data_hora" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "romaneio_usuario" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "danfe_impressa_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "danfe_impressa_data" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "danfe_impressa_data_hora" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "danfe_impressa_usuario" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_conferente" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_motorista" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_placa_veiculo" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "perc_desagio_RA_liquida" = "30.0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "indicador_editado_manual_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "indicador_editado_manual_data_hora" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "indicador_editado_manual_usuario" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "indicador_editado_manual_indicador_original" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "permite_RA_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_violado_permite_RA_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "dt_hr_violado_permite_RA_status" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "usuario_violado_permite_RA_status" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "opcao_possui_RA" = "-"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "tamanho_num_pedido" = "9"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pedido_base" = "222267N"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "numero_loja" = "202"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "data_hora" = "2021-01-20 18:31:28"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_forma_pagto_somente_cartao" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_memorizado_status" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_logradouro" = "Rua Francisco Pecoraro"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_bairro" = "Água Fria"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_cidade" = "São Paulo"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_uf" = "SP"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_cep" = "02408150"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_numero" = "97"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_complemento" = "casa 01"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_endereco_tratar_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_endereco_tratado_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_endereco_tratado_data" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_endereco_tratado_data_hora" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_endereco_tratado_usuario" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito_data_sem_hora" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "cancelado_auto_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "cancelado_auto_data" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "cancelado_auto_data_hora" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "cancelado_auto_motivo" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "obs_3" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "danfe_a_imprimir_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "danfe_a_imprimir_data_hora" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "danfe_a_imprimir_usuario" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_selecao_auto_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_selecao_auto_cep" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_selecao_auto_tipo_endereco" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_selecao_auto_transportadora" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "transportadora_selecao_auto_data_hora" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pedido_bs_x_at" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "cancelado_data_hora" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "cancelado_codigo_motivo" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "cancelado_codigo_sub_motivo" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "cancelado_motivo" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_obs" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pedido_bs_x_ac" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pedido_bs_x_ac_reverso" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_cod_justificativa" = "003"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pedido_bs_x_marketplace" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "marketplace_codigo_origem" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "id_nfe_emitente" = "4903"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_pedido_novo_analise_credito_msg_alerta" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "dt_hr_pedido_novo_analise_credito_msg_alerta" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_forma_pagto_possui_parcela_cartao" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vl_previsto_cartao" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "NFe_texto_constar" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "NFe_xPed" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "MarketplacePedidoRecebidoRegistrarStatus" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "MarketplacePedidoRecebidoRegistrarDataRecebido" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "MarketplacePedidoRecebidoRegistrarDataHora" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "MarketplacePedidoRecebidoRegistrarUsuario" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "MarketplacePedidoRecebidoRegistradoStatus" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "MarketplacePedidoRecebidoRegistradoDataHora" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "MarketplacePedidoRecebidoRegistradoUsuario" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_auto_split" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito_pendente_vendas_motivo" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "usuario_cadastro" = "HAMILTON"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "plataforma_origem_pedido" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "magento_installer_commission_value" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "magento_installer_commission_discount" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "magento_shipping_amount" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "dt_st_pagto" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "dt_hr_st_pagto" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "usuario_st_pagto" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pc_maquineta_qtde_parcelas" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "pc_maquineta_valor_parcela" = "0.0000"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "sistema_responsavel_cadastro" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "sistema_responsavel_atualizacao" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "num_obs_2" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "num_obs_3" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "PrevisaoEntregaData" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "PrevisaoEntregaUsuarioUltAtualiz" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "PrevisaoEntregaDtHrUltAtualiz" = "null"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_forma_pagto_possui_parcela_cartao_maquineta" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "st_memorizacao_completa_enderecos" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_email" = "gabriel.prada.teodoro@gmail.com"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_email_xml" = "teste@xml.com"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_nome" = "Gabriel Prada Teodoro"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_ddd_res" = "11"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_tel_res" = "25321634"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_ddd_com" = "11"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_tel_com" = "55788755"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_ramal_com" = "12"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_ddd_cel" = "11"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_tel_cel" = "981603313"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_ddd_com_2" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_tel_com_2" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_ramal_com_2" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_tipo_pessoa" = "PF"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_cnpj_cpf" = "35270445824"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_contribuinte_icms_status" = "2"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_produtor_rural_status" = "2"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_ie" = "361.289.183.714"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_rg" = "304480484"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_contato" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_email" = "gabriel.prada.teodoro@gmail.com"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_email_xml" = "teste@xml.com"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_nome" = "Gabriel Prada Teodoro"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_ddd_res" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_tel_res" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_ddd_com" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_tel_com" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_ramal_com" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_ddd_cel" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_tel_cel" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_ddd_com_2" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_tel_com_2" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_ramal_com_2" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_tipo_pessoa" = "PF"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_cnpj_cpf" = "35270445824"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_contribuinte_icms_status" = "2"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_produtor_rural_status" = "2"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_ie" = "361.289.183.714"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_rg" = "304480484"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_nome_iniciais_em_maiusculas" = "Gabriel Prada Teodoro"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_nome_iniciais_em_maiusculas" = "Gabriel Prada Teodoro"
 
 Scenario: perc_desagio_RA_liquida 2
 	#gravado no pai e nos filhotes, depende da loja (NUMERO_LOJA_ECOMMERCE_AR_CLUBE nunca é gravado)

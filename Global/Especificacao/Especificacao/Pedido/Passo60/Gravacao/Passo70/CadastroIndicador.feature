@@ -1,4 +1,5 @@
 ﻿@ignore
+@Especificacao.Pedido.Passo60
 Feature: CadastroIndicador
 
 #loja/PedidoNovoConfirma.asp
@@ -17,7 +18,7 @@ Scenario: CadastroIndicador
 	When Informo "DadosCliente.Indicador_Orcamentista" = "POLITÉCNIC"
 	Then Sem nenhum erro
 	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "352.704.458-24", verificar campo "indicador" = "POLITÉCNIC"
-	And Tabela "t_PEDIDO" registro com campo "pedido" = "pedido gerado", verificar campo "indicador" = "POLITÉCNIC"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "indicador" = "POLITÉCNIC"
 
 @ignore
 Scenario: Log indicador
