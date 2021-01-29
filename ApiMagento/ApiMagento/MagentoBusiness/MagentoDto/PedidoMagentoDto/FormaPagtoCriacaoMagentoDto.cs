@@ -44,7 +44,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             ConfiguracaoApiMagento configuracaoApiMagento, string? marketplace_codigo_origem)
         {
             Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados ret = new Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados();
-
+            //Verificar com Edu se essa condição está correta
             if (formaPagtoCriacaoMagento.Tipo_Parcelamento.ToString() ==
                 InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_A_VISTA &&
                 string.IsNullOrEmpty(marketplace_codigo_origem))

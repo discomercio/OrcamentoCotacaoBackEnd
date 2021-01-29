@@ -25,6 +25,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Valida
         }
 
         [Given(@"Informo ""(.*)"" = ""(.*)""")]
+        [When(@"Informo ""(.*)"" = ""(.*)""")]
         public void GivenInformo(string p0, string p1)
         {
             Testes.Utils.LogTestes.LogOperacoes2.Informo(p0,p1,this);
@@ -64,6 +65,13 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Valida
                 { dto.IdPedidoCadastrado??"" };
 
             gerenciamentoBanco.TabelaT_PEDIDORegistroVerificarCampo(somentePai, campo, valor);
+        }
+
+        [When(@"Lista de itens ""(.*)"" informo ""(.*)"" = ""(.*)""")]
+        public void WhenListaDeItensInformo(int indice, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensInformo(indice, campo, valor, this);
+            cadastrarPedido.MagentoListaDeItensInformo(indice, campo, valor);
         }
     }
 }
