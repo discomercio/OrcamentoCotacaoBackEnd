@@ -48,3 +48,10 @@ Scenario: Validação de CEP que não existe na base - CEP menor que 8 dígitos
 	When Informo "EndEtg_uf" = "XX"
 	When Informo "EndEtg_cep" = "0101090"
 	Then Erro "CEP INVÁLIDO."
+
+Scenario: Validação de CEP que não existe na base - CEP vazio
+	Given Pedido base
+	When Informo "EndEtg_cidade" = "São Paulo"
+	When Informo "EndEtg_uf" = "XX"
+	When Informo "EndEtg_cep" = ""
+	Then Erro "INFORME O CEP."
