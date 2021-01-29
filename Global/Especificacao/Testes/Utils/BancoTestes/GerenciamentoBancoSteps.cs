@@ -173,6 +173,30 @@ namespace Especificacao.Testes.Utils.BancoTestes
             db.SaveChanges();
         }
 
+        [Given(@"Tabela ""t_USUARIO"" apagar registro com campo ""(.*)"" = ""(.*)""")]
+        public void GivenTabelaT_USUARIOApagarRegistroComCampo(string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaApagarRegistroComCampo("t_USUARIO", "usuario", valor, this);
+
+            //int valorInt = -1;
+            //switch (valor)
+            //{
+            //    case "OP_LJA_CADASTRA_NOVO_PEDIDO":
+            //        valorInt = Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO;
+            //        break;
+            //    case "OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_PEDIDO":
+            //        valorInt = Constantes.OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_PEDIDO;
+            //        break;
+            //    default:
+            //        throw new ArgumentException($"GivenTabelaApagarRegistroComCampo desconhecido: {valorBusca}");
+            //}
+
+            using var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
+            var registro = (from usuario in db.Tusuarios where usuario.Usuario == valor select usuario).First();
+            db.Tusuarios.Remove(registro);
+            db.SaveChanges();
+        }
+
     }
 }
 

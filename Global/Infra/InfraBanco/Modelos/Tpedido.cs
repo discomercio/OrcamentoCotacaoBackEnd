@@ -512,6 +512,9 @@ namespace InfraBanco.Modelos
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public ICollection<TpedidoItemDevolvido> TpedidoItemDevolvido { get; set; }
 
+        [Column("vl_frete")]
+        public decimal? Vl_Frete { get; set; }
+
         [Column("st_auto_split")]
         [Required]
         public byte St_Auto_Split { get; set; }

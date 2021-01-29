@@ -63,6 +63,11 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
         }
         protected override void AbstractListaDeItensComXitens(int numeroItens)
         {
+            MagentoListaDeItensComXitens(numeroItens);
+        }
+
+        public void MagentoListaDeItensComXitens(int numeroItens)
+        {
             if (ignorarFeature) return;
             Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensComXitens(numeroItens, this);
             numeroItens = numeroItens < 0 ? 0 : numeroItens;
@@ -73,6 +78,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             while (lp.Count > numeroItens)
                 lp.RemoveAt(lp.Count - 1);
         }
+
         protected override void AbstractLimparEnderecoDeEntrega()
         {
             if (ignorarFeature) return;
@@ -136,6 +142,10 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 
         protected override void AbstractListaDeItensInformo(int numeroItem, string campo, string valor)
         {
+            ListaDeItensInformo(numeroItem, campo, valor);
+        }
+        public void MagentoListaDeItensInformo(int numeroItem, string campo, string valor)
+        {
             if (ignorarFeature) return;
             Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensInformo(numeroItem, campo, valor, this);
             var item = pedidoMagentoDto.ListaProdutos[numeroItem];
@@ -150,6 +160,9 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             {
                 case "appsettings.Indicador":
                     configuracaoApiMagento.DadosIndicador.Indicador = valor;
+                    return;
+                case "appsettings.Loja":
+                    configuracaoApiMagento.DadosIndicador.Loja = valor;
                     return;
 
                 case "TokenAcesso":

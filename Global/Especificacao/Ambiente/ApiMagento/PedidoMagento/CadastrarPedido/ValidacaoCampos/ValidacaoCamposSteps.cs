@@ -1,7 +1,9 @@
 ﻿using Especificacao.Testes.Utils.ListaDependencias;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using TechTalk.SpecFlow;
+using Xunit;
 
 namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.ValidacaoCampos
 {
@@ -9,6 +11,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Valida
     public class ValidacaoCampos
     {
         private readonly CadastrarPedido cadastrarPedido = new CadastrarPedido();
+        private readonly Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
 
         public ValidacaoCampos()
         {
@@ -49,6 +52,18 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Valida
             cadastrarPedido.ThenSemNenhumErro();
         }
 
+        [Then(@"Tabela ""t_PEDIDO"" registro criado, verificar campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaT_PEDIDORegistroCriadoVerificarCampo(string campo, string valor)
+        {
+            var dto = cadastrarPedido.ultimoPedidoResultadoMagentoDto();
+            if (dto == null)
+                throw new Exception("erro");
+            Assert.Empty(dto.ListaErros);
 
+            List<string> somentePai = new List<string>()
+                { dto.IdPedidoCadastrado??"" };
+
+            gerenciamentoBanco.TabelaT_PEDIDORegistroVerificarCampo(somentePai, campo, valor);
+        }
     }
 }
