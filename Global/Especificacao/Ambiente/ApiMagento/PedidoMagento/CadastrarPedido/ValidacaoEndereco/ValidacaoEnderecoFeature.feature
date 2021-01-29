@@ -30,7 +30,8 @@ Scenario: Validação de cidade X IBGE e UF X CEP - sucesso
 Scenario: Validação de CEP que não existe na base - sucesso
 	#o cep 01010-900 não existe na base e deve ser aceito no magento
 	#deve validar apenas a qtde de caracteres do CEP = 8
-	#validar a Cidade com o IBGE??
+	#a cidade consta no IBGE
+	#não deve validar UF, Endereço, Bairro
 	Given Pedido base
 	When Informo "EndEtg_cidade" = "São Paulo"
 	When Informo "EndEtg_uf" = "XX"
@@ -55,3 +56,14 @@ Scenario: Validação de CEP que não existe na base - CEP vazio
 	When Informo "EndEtg_uf" = "XX"
 	When Informo "EndEtg_cep" = ""
 	Then Erro "INFORME O CEP."
+
+@ignore
+Scenario: Validação de cidade que não consta no IBGE - erro
+	#cidade não consta no IBGE
+	#cep não consta na base
+	#cep não é de AP
+	Given Pedido base
+	When Informo "EndEtg_cidade" = "Abacate da Pedreira"
+	When Informo "EndEtg_uf" = "XX"
+	When Informo "EndEtg_cep" = "01010900"
+	Then Erro "Pegar erro"
