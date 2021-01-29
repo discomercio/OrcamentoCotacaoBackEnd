@@ -21,7 +21,22 @@ Scenario: Validação de cidade X IBGE e UF X CEP - sucesso
 	When Informo "EndEtg_uf" = "SP"
 	When Informo "EndEtg_cep" = "02045080"
 	When Informo "EndEtg_endereco" = "teste"
-    When Informo "EndEtg_endereco_numero" = "97"
-    When Informo "EndEtg_endereco_complemento" = "teste"
-    When Informo "EndEtg_bairro" = "teste"
+	When Informo "EndEtg_endereco_numero" = "97"
+	When Informo "EndEtg_endereco_complemento" = "teste"
+	When Informo "EndEtg_bairro" = "teste"
+	Then Sem nenhum erro
+
+@ignore
+Scenario: Validação de CEP que não existe na base - sucesso
+	#o cep 01010-900 não existe na base e deve ser aceito no magento
+	#deve validar apenas a qtde de caracteres do CEP = 8
+	#validar a Cidade com o IBGE??
+	Given Pedido base
+	When Informo "EndEtg_cidade" = "São Paulo"
+	When Informo "EndEtg_uf" = "XX"
+	When Informo "EndEtg_cep" = "01010900"
+	When Informo "EndEtg_endereco" = "teste"
+	When Informo "EndEtg_endereco_numero" = "97"
+	When Informo "EndEtg_endereco_complemento" = "teste"
+	When Informo "EndEtg_bairro" = "teste"
 	Then Sem nenhum erro
