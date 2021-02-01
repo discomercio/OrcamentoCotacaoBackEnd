@@ -128,7 +128,6 @@ namespace Pedido.Criacao.Execucao
 
 
         #region blnPedidoECommerceCreditoOkAutomatico
-
         public bool BlnPedidoECommerceCreditoOkAutomatico
         {
             get
@@ -140,6 +139,40 @@ namespace Pedido.Criacao.Execucao
             set => _blnPedidoECommerceCreditoOkAutomatico = value;
         }
         private bool? _blnPedidoECommerceCreditoOkAutomatico = null;
+        #endregion
+
+        #region Vl_aprov_auto_analise_credito
+        public decimal Vl_aprov_auto_analise_credito
+        {
+            get
+            {
+                if (_vl_aprov_auto_analise_credito == null)
+                    throw new ApplicationException($"Vl_aprov_auto_analise_credito acessado antes de ser calculado.");
+                return _vl_aprov_auto_analise_credito.Value;
+            }
+            set => _vl_aprov_auto_analise_credito = value;
+        }
+        private decimal? _vl_aprov_auto_analise_credito = null;
+        #endregion
+
+        #region Comissao_loja_indicou
+        //este pode ser null
+        public float? Comissao_loja_indicou
+        {
+            get
+            {
+                if (!_comissao_loja_indicou_calculado)
+                    throw new ApplicationException($"_comissao_loja_indicou  acessado antes de ser calculado.");
+                return _comissao_loja_indicou;
+            }
+            set
+            {
+                _comissao_loja_indicou = value;
+                _comissao_loja_indicou_calculado = true;
+            }
+        }
+        private float? _comissao_loja_indicou = null;
+        private bool _comissao_loja_indicou_calculado = false;
         #endregion
 
 

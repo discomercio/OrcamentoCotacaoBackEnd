@@ -1,13 +1,15 @@
 ﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
 Feature: CamposLidosAppsettings
 
+Background: reiniciar appsettings
+	Given Reiniciar appsettings
+
 @ListaDependencias
 Scenario: AdicionarDependencia
 	Given AdicionarDependencia ambiente = "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedidoListaDependencias", especificacao = "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional.CamposLidosAppsettings"
 
 Scenario: Indicador = "FRETE" (vamos ler do appsettings) - precisa existir
 	#Vamos colocar um indicador no appsettings que não esteja cadastrado no banco e ver se ele testa
-	Given Reiniciar appsettings
 	And Pedido base
 	And Informo "frete" = "10"
 	And Informo "appsettings.Indicador" = "um Indicador que não existe"
@@ -29,6 +31,12 @@ Scenario: Loja = "201" (vamos ler do appsettings)
 	And Informo "appsettings.Loja" = "201"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "loja" = "201"
+
+Scenario: Loja = "202" (vamos ler do appsettings)
+	Given Pedido base
+	And Informo "appsettings.Loja" = "202"
+	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro criado, verificar campo "loja" = "202"
 
 @ignore
 Scenario: Loja diferente de "201"

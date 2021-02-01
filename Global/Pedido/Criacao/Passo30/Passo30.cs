@@ -25,7 +25,7 @@ namespace Pedido.Criacao.Passo30
 
         private void PermissaoPercRt()
         {
-            if (Pedido.Valor.PercRT == 0)
+            if (Pedido.Valor.Perc_RT == 0)
                 return;
 
 
@@ -40,7 +40,7 @@ namespace Pedido.Criacao.Passo30
                 Retorno.ListaErros.Add("Usuário não pode editar perc_RT (permissão OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO)");
 
 
-            ValidarPercentualRT(Pedido.Valor.PercRT, Criacao.Execucao.PercentualMaxDescEComissao.PercMaxComissao, Retorno.ListaErros);
+            ValidarPercentualRT(Pedido.Valor.Perc_RT, Criacao.Execucao.PercentualMaxDescEComissao.PercMaxComissao, Retorno.ListaErros);
         }
 
         private void ValidarPercentualRT(float percComissao, float percentualMax, List<string> lstErros)

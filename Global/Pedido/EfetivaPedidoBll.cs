@@ -47,7 +47,6 @@ namespace Pedido
             //Criando PedidoNovo
             Tpedido pedidonovo = new Tpedido();
 
-            //todo: revisar lógica
             Tpedido pedidonovoTrocaId = pedidonovo;
             //pedidonovoTrocaId = new Tpedido();
 
@@ -121,7 +120,7 @@ namespace Pedido
                         };
                         pedidonovo.Vl_Total_NF = vl_total_nf;
                         pedidonovo.Vl_Total_RA = vl_total_nf - vl_total;
-                        pedidonovo.Perc_RT = pedido.Valor.PercRT;
+                        pedidonovo.Perc_RT = pedido.Valor.Perc_RT;
                         pedidonovo.Perc_Desagio_RA = perc_desagio_RA;
                         pedidonovo.Perc_Limite_RA_Sem_Desagio = perc_limite_RA_sem_desagio;
                     }

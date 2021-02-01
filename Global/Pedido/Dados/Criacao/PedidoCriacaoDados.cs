@@ -10,10 +10,17 @@ namespace Pedido.Dados.Criacao
 {
     public class PedidoCriacaoDados
     {
-        public PedidoCriacaoDados(PedidoCriacaoAmbienteDados ambiente, PedidoCriacaoConfiguracaoDados configuracao, PedidoCriacaoClienteDados cliente, EnderecoCadastralClientePrepedidoDados enderecoCadastralCliente, EnderecoEntregaClienteCadastroDados enderecoEntrega, List<PedidoCriacaoProdutoDados> listaProdutos, PedidoCriacaoValorDados valor, FormaPagtoCriacaoDados formaPagtoCriacao, DetalhesPrepedidoDados detalhesPedido, PedidoCriacaoMarketplaceDados marketplace)
+        public PedidoCriacaoDados(
+            PedidoCriacaoAmbienteDados ambiente, PedidoCriacaoConfiguracaoDados configuracao,
+            PedidoCriacaoExtraDados extra, PedidoCriacaoClienteDados cliente,
+            EnderecoCadastralClientePrepedidoDados enderecoCadastralCliente,
+            EnderecoEntregaClienteCadastroDados enderecoEntrega, List<PedidoCriacaoProdutoDados> listaProdutos,
+            PedidoCriacaoValorDados valor, FormaPagtoCriacaoDados formaPagtoCriacao,
+            DetalhesPrepedidoDados detalhesPedido, PedidoCriacaoMarketplaceDados marketplace)
         {
             Ambiente = ambiente ?? throw new ArgumentNullException(nameof(ambiente));
             Configuracao = configuracao ?? throw new ArgumentNullException(nameof(configuracao));
+            Extra = extra ?? throw new ArgumentNullException(nameof(extra));
             Cliente = cliente ?? throw new ArgumentNullException(nameof(cliente));
             EnderecoCadastralCliente = enderecoCadastralCliente ?? throw new ArgumentNullException(nameof(enderecoCadastralCliente));
             EnderecoEntrega = enderecoEntrega ?? throw new ArgumentNullException(nameof(enderecoEntrega));
@@ -27,6 +34,8 @@ namespace Pedido.Dados.Criacao
         public PedidoCriacaoAmbienteDados Ambiente { get; }
 
         public PedidoCriacaoConfiguracaoDados Configuracao { get; }
+
+        public PedidoCriacaoExtraDados Extra { get; }
 
         //Armazena os dados cadastrados do cliente
         public PedidoCriacaoClienteDados Cliente { get; }

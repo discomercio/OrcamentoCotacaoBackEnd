@@ -68,14 +68,19 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             if (resultado.ListaErros.Count > 0)
                 return resultado;
 
-            string idCliente = await pedidoMagentoClienteBll.CadastrarClienteSeNaoExistir(pedidoMagento, resultado.ListaErros, indicador_vendedor_loja, usuario);
+            var cliente = await pedidoMagentoClienteBll.CadastrarClienteSeNaoExistir(pedidoMagento, resultado.ListaErros, indicador_vendedor_loja, usuario);
+            if (cliente == null)
+            {
+                resultado.ListaErros.Add("Erro ao cadastrar cliente");
+                return resultado;
+            }
             if (resultado.ListaErros.Count > 0)
                 return resultado;
 
             //estamos criando o pedido com os dados do cliente que vem e não com os dados do cliente que esta na base
             //ex: se o cliente já cadastrado, utilizamos o que vem em PedidoMagentoDto.EnderecoCadastralClienteMagentoDto
             Pedido.Dados.Criacao.PedidoCriacaoDados? pedidoDados = await CriarPedidoCriacaoDados(pedidoMagento,
-                indicador_vendedor_loja, resultado.ListaErros, idCliente);
+                indicador_vendedor_loja, resultado.ListaErros, id_cliente: cliente.Id, dadosClienteMidia: cliente.Midia);
             if (resultado.ListaErros.Count != 0)
                 return resultado;
             if (pedidoDados == null)
@@ -163,7 +168,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
 
         private async Task<Pedido.Dados.Criacao.PedidoCriacaoDados?> CriarPedidoCriacaoDados(PedidoMagentoDto pedidoMagento,
             Indicador_vendedor_loja indicador_Vendedor_Loja, List<string> lstErros,
-            string id_cliente)
+            string id_cliente, string? dadosClienteMidia)
         {
             var sistemaResponsavelCadastro = Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO;
 
@@ -194,7 +199,8 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
                 listaProdutos, formaPagtoCriacao, pedidoMagento.VlTotalDestePedido, pedidoMagento,
                 sistemaResponsavelCadastro,
                 lstErros,
-                configuracaoApiMagento);
+                configuracaoApiMagento,
+                dadosClienteMidia: dadosClienteMidia);
 
             return pedidoDadosCriacao;
         }

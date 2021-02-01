@@ -31,7 +31,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             Testes.Utils.StatusCodes.TestarStatusCode(statusCode, res);
         }
 
-        public MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto? ultimoPedidoResultadoMagentoDto()
+        public MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto? UltimoPedidoResultadoMagentoDto()
         {
             var temp = UltimoAcessoFeito?.Result;
             if (temp == null)
@@ -142,7 +142,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 
         protected override void AbstractListaDeItensInformo(int numeroItem, string campo, string valor)
         {
-            ListaDeItensInformo(numeroItem, campo, valor);
+            MagentoListaDeItensInformo(numeroItem, campo, valor);
         }
         public void MagentoListaDeItensInformo(int numeroItem, string campo, string valor)
         {
@@ -230,5 +230,22 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             }
         }
 
+        protected override string? AbstractPedidoPaiGerado()
+        {
+            var ultimo = UltimoPedidoResultadoMagentoDto();
+            if (ultimo == null)
+                return null;
+
+            return ultimo.IdPedidoCadastrado;
+        }
+
+        protected override List<string> AbstractPedidosFilhotesGerados()
+        {
+            var ultimo = UltimoPedidoResultadoMagentoDto();
+            if (ultimo == null)
+                return new List<string>();
+
+            return ultimo.IdsPedidosFilhotes;
+        }
     }
 }

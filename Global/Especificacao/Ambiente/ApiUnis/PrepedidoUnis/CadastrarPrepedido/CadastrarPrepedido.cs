@@ -340,5 +340,20 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             Testes.Pedido.PedidoPassosComuns.IgnorarCenarioNoAmbiente(p0, ref ignorarFeature, this.GetType());
         }
 
+#pragma warning disable IDE0060 // Remove unused parameter
+        public void TabelaT_PEDIDORegistroPaiCriadoVerificarCampo(string campo, string valor)
+#pragma warning restore IDE0060 // Remove unused parameter
+        {
+            //não é implementado aqui porque nunca deve ser executado dentro de um prepedido
+            throw new NotImplementedException();
+        }
+
+#pragma warning disable IDE0060 // Remove unused parameter
+        public void TabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo(string campo, string valor)
+#pragma warning restore IDE0060 // Remove unused parameter
+        {
+            //não é implementado aqui porque nunca deve ser executado dentro de um prepedido
+            throw new NotImplementedException();
+        }
     }
 }

@@ -9,6 +9,7 @@
 
 #No magento, a validação do endereço é diferente: somente validamos a cidade no IBGE e a UF. 
 #Exigimos CEP mas não precisa existir na nossa base.
+#mas temos que validar os limites de tamanho!
 
 #'	CONSISTÊNCIAS
 #	if alerta = "" then

@@ -265,7 +265,6 @@ Fluxo no módulo loja:
             {
                 var lstRegrast = (await PedidoBll.VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado_Teste(
                     produto, pedido.Cliente.Cnpj_Cpf, pedido.Ambiente.Id_nfe_emitente_selecao_manual));
-                //todo: revisar isto
                 if (lstRegrast.regrasBlls.Count > 0)
                     lstRegras.Add(lstRegrast.regrasBlls[0]);
                 if (lstRegrast.prodValidadoEstoqueListaErros.Count > 0)

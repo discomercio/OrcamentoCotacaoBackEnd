@@ -13,6 +13,8 @@
         void GivenIgnorarCenarioNoAmbiente(string p0);
         void ThenSemNenhumErro();
         void ListaDeItensInformo(int numeroItem, string campo, string valor);
+        void TabelaT_PEDIDORegistroPaiCriadoVerificarCampo(string campo, string valor);
+        void TabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo(string campo, string valor);
         void RecalcularTotaisDoPedido();
         void DeixarFormaDePagamentoConsistente();
         void ListaDeItensComXitens(int numeroItens);
