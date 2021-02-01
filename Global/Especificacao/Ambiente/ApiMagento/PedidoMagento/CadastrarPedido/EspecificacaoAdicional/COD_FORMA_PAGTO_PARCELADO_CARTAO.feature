@@ -21,7 +21,9 @@ Feature: COD_FORMA_PAGTO_PARCELADO_CARTAO
 #  "VlTotalDestePedido": 3440.00,
 @ignore
 Scenario: COD_FORMA_PAGTO_PARCELADO_CARTAO
-	#afazer - necessário cria o calculo de desconto para quando confrontar os dados o valor de preco_lista esteja correto
+	# esse teste esta retornando o erro de "O valor total de RA excede o limite permitido!"
+	# procurando no asp essa mensagem só aparece em OrcamentoNovoConsiste
+	# afazer - analisar se devemos verificar o RA em ValidacoesPrepedidoBll.ConfrontarTotaisEPercentualMaxRA
 	Given Pedido base
 	When Informo "FormaPagtoCriacao.Tipo_Parcelamento" = "COD_FORMA_PAGTO_PARCELADO_CARTAO"
 	When Informo "FormaPagtoCriacao.C_pc_qtde" = "1"
