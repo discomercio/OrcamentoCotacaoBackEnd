@@ -19,7 +19,6 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "ignore")]
     [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo60")]
     public partial class Preenche_Os_Campos_Do_PedidoFeature : object, Xunit.IClassFixture<Preenche_Os_Campos_Do_PedidoFeature.FixtureData>, System.IDisposable
     {
@@ -27,7 +26,6 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore",
                 "Especificacao.Pedido.Passo60"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
@@ -45,7 +43,6 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Preenche_os_campos_do_pedido", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ignore",
                         "Especificacao.Pedido.Passo60"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -81,6 +78,15 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 4
+#line hidden
+#line 6
+ testRunner.Given("Ignorar cenário no ambiente \"Especificacao.Prepedido.PrepedidoSteps\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+        }
+        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
@@ -94,7 +100,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido - pedido pai", null, tagsOfScenario, argumentsOfScenario);
-#line 12
+#line 15
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -114,895 +120,919 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 25
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 26
- testRunner.When("Lista de itens \"0\" informo \"Qtde\" = \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 27
- testRunner.When("Lista de itens \"1\" informo \"Qtde\" = \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 4
+this.FeatureBackground();
 #line hidden
 #line 28
- testRunner.When("Informo \"ValorTotalDestePedidoComRA\" = \"173512.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 29
- testRunner.When("Informo \"VlTotalDestePedido\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Lista de itens \"0\" informo \"Qtde\" = \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 30
- testRunner.When("Informo \"FormaPagtoCriacao.C_pc_valor\" = \"173512.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Lista de itens \"1\" informo \"Qtde\" = \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 31
- testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 32
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 33
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"data\" = \"2021-01-20 00:00:00\"" +
-                        "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 34
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"hora\" = \"183128\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 35
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"id_cliente\" = \"000000684226\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 36
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"midia\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 37
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"servicos\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 38
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vl_servicos\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 39
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vendedor\" = \"HAMILTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"midia\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 40
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_entrega\" = \"SPL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"servicos\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 41
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"entregue_data\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 42
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"entregue_usuario\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 43
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"cancelado_data\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="acertar")]
+        [Xunit.TraitAttribute("FeatureTitle", "Preenche_os_campos_do_pedido")]
+        [Xunit.TraitAttribute("Description", "acertar")]
+        [Xunit.TraitAttribute("Category", "ignore")]
+        public virtual void Acertar()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("acertar", null, tagsOfScenario, argumentsOfScenario);
 #line 44
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"cancelado_usuario\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 4
+this.FeatureBackground();
 #line hidden
 #line 45
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_pagto\" = \"N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vendedor\" = \"HAMILTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 46
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_recebido\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_entrega\" = \"SPL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 47
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"obs_1\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"entregue_data\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 48
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"obs_2\"  = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"entregue_usuario\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 49
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"qtde_parcelas\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"cancelado_data\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 50
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"forma_pagto\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"cancelado_usuario\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 51
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_pagto\" = \"N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 52
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_recebido\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 53
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"obs_1\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 54
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"obs_2\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 55
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"qtde_parcelas\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 56
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"forma_pagto\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 57
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vl_total_familia\" = \"173512.0" +
                         "000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 52
+#line 58
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vl_pago_familia\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 53
+#line 59
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"split_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 54
+#line 60
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"split_data\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 55
+#line 61
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"split_hora\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 56
+#line 62
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"split_usuario\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 57
+#line 63
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"a_entregar_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 58
+#line 64
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"a_entregar_data_marcada\" = \"\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 59
+#line 65
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"a_entregar_data\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 60
+#line 66
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"a_entregar_hora\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 61
+#line 67
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"a_entregar_usuario\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 62
+#line 68
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"timestamp\" = \"[xL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 63
+#line 69
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"loja_indicou\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 64
+#line 70
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"comissao_loja_indicou\" = \"0.0" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 65
+#line 71
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"venda_externa\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 66
+#line 72
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vl_frete\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 67
+#line 73
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_id\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 68
+#line 74
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_data\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 69
+#line 75
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_usuario\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 70
+#line 76
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_credito\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 71
+#line 77
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_credito_data\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 72
+#line 78
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_credito_usuario\" = \"\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 73
+#line 79
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"tipo_parcelamento\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 74
+#line 80
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"av_forma_pagto\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 75
+#line 81
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pc_qtde_parcelas\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 76
+#line 82
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pc_valor_parcela\" = \"173512.0" +
                         "000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 77
+#line 83
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pce_forma_pagto_entrada\" = \"0" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 78
+#line 84
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pce_forma_pagto_prestacao\" = " +
                         "\"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 79
+#line 85
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pce_entrada_valor\" = \"0.0000\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 80
+#line 86
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pce_prestacao_qtde\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 81
+#line 87
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pce_prestacao_valor\" = \"0.000" +
                         "0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 82
+#line 88
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pce_prestacao_periodo\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 83
+#line 89
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pse_forma_pagto_prim_prest\" =" +
                         " \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 84
+#line 90
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pse_forma_pagto_demais_prest\"" +
                         " = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 85
+#line 91
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pse_prim_prest_valor\" = \"0.00" +
                         "00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 86
+#line 92
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pse_prim_prest_apos\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 87
+#line 93
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pse_demais_prest_qtde\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 88
+#line 94
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pse_demais_prest_valor\" = \"0." +
                         "0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 89
+#line 95
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pse_demais_prest_periodo\" = \"" +
                         "0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 90
+#line 96
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pu_forma_pagto\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 91
+#line 97
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pu_valor\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 92
+#line 98
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pu_vencto_apos\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 93
+#line 99
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"indicador\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 94
+#line 100
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vl_total_NF\" = \"173512.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 95
+#line 101
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vl_total_RA\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 96
+#line 102
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"perc_RT\" = \"0.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 97
+#line 103
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_orc_virou_pedido\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 98
+#line 104
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"orcamento\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 99
+#line 105
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"orcamentista\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 100
+#line 106
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"comissao_paga\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 101
+#line 107
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"comissao_paga_ult_op\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 102
+#line 108
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"comissao_paga_data\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 103
+#line 109
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"comissao_paga_usuario\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 104
+#line 110
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"perc_desagio_RA\" = \"0.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 105
+#line 111
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"perc_limite_RA_sem_desagio\" =" +
                         " \"0.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 106
+#line 112
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vl_total_RA_liquido\" = \"0.000" +
                         "0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 107
+#line 113
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_tem_desagio_RA\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 108
+#line 114
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"qtde_parcelas_desagio_RA\" = \"" +
                         "0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 109
+#line 115
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_num_coleta\" = " +
                         "\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 110
+#line 116
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_contato\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 111
+#line 117
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_end_entrega\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 112
+#line 118
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_endereco\" = \"Rua Profe" +
                         "ssor Fábio Fanucchi\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 113
+#line 119
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_bairro\" = \"Jardim São " +
                         "Paulo(Zona Norte)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 114
+#line 120
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_cidade\" = \"São Paulo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 115
+#line 121
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 116
+#line 122
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 117
+#line 123
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_etg_imediata\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 118
+#line 124
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"etg_imediata_data\" = \"2021-01" +
                         "-20 18:31:31\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 119
+#line 125
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"etg_imediata_usuario\" = \"HAMI" +
                         "LTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 120
+#line 126
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"frete_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 121
+#line 127
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"frete_valor\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 122
+#line 128
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"frete_data\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 123
+#line 129
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"frete_usuario\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 124
+#line 130
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"StBemUsoConsumo\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 125
+#line 131
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"PedidoRecebidoStatus\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 126
+#line 132
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"PedidoRecebidoData\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 127
+#line 133
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"PedidoRecebidoUsuarioUltAtual" +
                         "iz\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 128
+#line 134
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"PedidoRecebidoDtHrUltAtualiz\"" +
                         " = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 129
+#line 135
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"InstaladorInstalaStatus\" = \"2" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 130
+#line 136
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"InstaladorInstalaUsuarioUltAt" +
                         "ualiz\" = \"HAMILTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 131
+#line 137
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"InstaladorInstalaDtHrUltAtual" +
                         "iz\" = \"2021-01-20 18:31:31\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 132
+#line 138
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"custoFinancFornecTipoParcelam" +
                         "ento\" = \"SE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 133
+#line 139
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"custoFinancFornecQtdeParcelas" +
                         "\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 134
+#line 140
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"BoletoConfeccionadoStatus\" = " +
                         "\"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 135
+#line 141
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"BoletoConfeccionadoData\" = \"\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 136
+#line 142
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"GarantiaIndicadorStatus\" = \"0" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 137
+#line 143
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"GarantiaIndicadorUsuarioUltAt" +
                         "ualiz\" = \"HAMILTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 138
+#line 144
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"GarantiaIndicadorDtHrUltAtual" +
                         "iz\" = \"2021-01-20 18:31:31\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 139
+#line 145
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_endereco_numero\" = \"97" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 140
+#line 146
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_endereco_complemento\" " +
                         "= \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 141
+#line 147
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"romaneio_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 142
+#line 148
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"romaneio_data\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 143
+#line 149
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"romaneio_data_hora\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 144
+#line 150
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"romaneio_usuario\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 145
+#line 151
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"danfe_impressa_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 146
+#line 152
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"danfe_impressa_data\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 147
+#line 153
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"danfe_impressa_data_hora\" = \"" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 148
+#line 154
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"danfe_impressa_usuario\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 149
+#line 155
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_conferente\" = " +
                         "\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 150
+#line 156
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_motorista\" = \"" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 151
+#line 157
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_placa_veiculo\"" +
                         " = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 152
+#line 158
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"perc_desagio_RA_liquida\" = \"3" +
                         "0.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 153
+#line 159
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"indicador_editado_manual_stat" +
                         "us\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 154
+#line 160
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"indicador_editado_manual_data" +
                         "_hora\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 155
+#line 161
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"indicador_editado_manual_usua" +
                         "rio\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 156
+#line 162
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"indicador_editado_manual_indi" +
                         "cador_original\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 157
+#line 163
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"permite_RA_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 158
+#line 164
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_violado_permite_RA_status\"" +
                         " = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 159
+#line 165
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"dt_hr_violado_permite_RA_stat" +
                         "us\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 160
+#line 166
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"usuario_violado_permite_RA_st" +
                         "atus\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 161
+#line 167
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"opcao_possui_RA\" = \"-\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 162
+#line 168
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"tamanho_num_pedido\" = \"7\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 163
+#line 169
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pedido_base\" = \"pedido gerado" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 164
+#line 170
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"numero_loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 165
+#line 171
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"data_hora\" = \"2021-01-20 18:3" +
                         "1:28\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 166
+#line 172
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_forma_pagto_somente_cartao" +
                         "\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 167
+#line 173
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_memorizado_status\" =" +
                         " \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 168
+#line 174
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_logradouro\" = \"Rua F" +
                         "rancisco Pecoraro\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 169
+#line 175
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_bairro\" = \"Água Fria" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 170
+#line 176
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_cidade\" = \"São Paulo" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 171
+#line 177
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 172
+#line 178
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_cep\" = \"02408150\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 173
+#line 179
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_numero\" = \"97\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 174
+#line 180
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_complemento\" = \"casa" +
                         " 01\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 175
+#line 181
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_endereco_tratar_statu" +
                         "s\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 176
+#line 182
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_endereco_tratado_stat" +
                         "us\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 177
+#line 183
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_endereco_tratado_data" +
                         "\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 178
+#line 184
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_endereco_tratado_data" +
                         "_hora\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 179
+#line 185
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_endereco_tratado_usua" +
                         "rio\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 180
+#line 186
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_credito_data_sem_hora" +
                         "\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 181
+#line 187
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"cancelado_auto_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 182
+#line 188
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"cancelado_auto_data\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 183
+#line 189
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"cancelado_auto_data_hora\" = \"" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 184
+#line 190
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"cancelado_auto_motivo\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 185
+#line 191
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"obs_3\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 186
+#line 192
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"danfe_a_imprimir_status\" = \"0" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 187
+#line 193
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"danfe_a_imprimir_data_hora\" =" +
                         " \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 188
+#line 194
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"danfe_a_imprimir_usuario\" = \"" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 189
+#line 195
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_selecao_auto_s" +
                         "tatus\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 190
+#line 196
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_selecao_auto_c" +
                         "ep\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 191
+#line 197
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_selecao_auto_t" +
                         "ipo_endereco\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 192
+#line 198
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_selecao_auto_t" +
                         "ransportadora\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 193
+#line 199
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_selecao_auto_d" +
                         "ata_hora\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 194
+#line 200
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pedido_bs_x_at\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 195
+#line 201
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"cancelado_data_hora\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 196
+#line 202
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"cancelado_codigo_motivo\" = \"\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 197
+#line 203
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"cancelado_codigo_sub_motivo\" " +
                         "= \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 198
+#line 204
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"cancelado_motivo\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 199
+#line 205
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_obs\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 200
+#line 206
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pedido_bs_x_ac\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 201
+#line 207
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pedido_bs_x_ac_reverso\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 202
+#line 208
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_cod_justificativa\" = \"" +
                         "003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 203
+#line 209
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pedido_bs_x_marketplace\" = \"\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 204
+#line 210
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"marketplace_codigo_origem\" = " +
                         "\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 205
+#line 211
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"id_nfe_emitente\" = \"4903\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 206
+#line 212
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_pedido_novo_analise_credit" +
                         "o_msg_alerta\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 207
+#line 213
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"dt_hr_pedido_novo_analise_cre" +
                         "dito_msg_alerta\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 208
+#line 214
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_forma_pagto_possui_parcela" +
                         "_cartao\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 209
+#line 215
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vl_previsto_cartao\" = \"173512" +
                         ".0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 210
+#line 216
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"NFe_texto_constar\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 211
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"NFe_xPed\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 212
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"MarketplacePedidoRecebidoRegi" +
-                        "strarStatus\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 213
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"MarketplacePedidoRecebidoRegi" +
-                        "strarDataRecebido\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 214
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"MarketplacePedidoRecebidoRegi" +
-                        "strarDataHora\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 215
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"MarketplacePedidoRecebidoRegi" +
-                        "strarUsuario\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 216
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"MarketplacePedidoRecebidoRegi" +
-                        "stradoStatus\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
 #line 217
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"MarketplacePedidoRecebidoRegi" +
-                        "stradoDataHora\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"NFe_xPed\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 218
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"MarketplacePedidoRecebidoRegi" +
-                        "stradoUsuario\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "strarStatus\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 219
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_auto_split\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"MarketplacePedidoRecebidoRegi" +
+                        "strarDataRecebido\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 220
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"MarketplacePedidoRecebidoRegi" +
+                        "strarDataHora\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 221
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"MarketplacePedidoRecebidoRegi" +
+                        "strarUsuario\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 222
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"MarketplacePedidoRecebidoRegi" +
+                        "stradoStatus\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 223
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"MarketplacePedidoRecebidoRegi" +
+                        "stradoDataHora\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 224
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"MarketplacePedidoRecebidoRegi" +
+                        "stradoUsuario\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 225
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_auto_split\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 226
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_credito_pendente_vend" +
                         "as_motivo\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 221
+#line 227
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"usuario_cadastro\" = \"HAMILTON" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 222
+#line 228
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"plataforma_origem_pedido\" = \"" +
                         "0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 223
+#line 229
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"magento_installer_commission_" +
                         "value\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 224
+#line 230
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"magento_installer_commission_" +
                         "discount\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 225
+#line 231
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"magento_shipping_amount\" = \"0" +
                         ".0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 226
+#line 232
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"dt_st_pagto\" = \"2021-01-20 00" +
                         ":00:00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 227
+#line 233
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"dt_hr_st_pagto\" = \"2021-01-20" +
                         " 18:31:30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 228
+#line 234
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"usuario_st_pagto\" = \"HAMILTON" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 229
+#line 235
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pc_maquineta_qtde_parcelas\" =" +
                         " \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 230
+#line 236
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pc_maquineta_valor_parcela\" =" +
                         " \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 231
+#line 237
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"sistema_responsavel_cadastro\"" +
                         " = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 232
+#line 238
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"sistema_responsavel_atualizac" +
                         "ao\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 233
+#line 239
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"num_obs_2\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 234
+#line 240
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"num_obs_3\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 235
+#line 241
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"PrevisaoEntregaData\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 236
+#line 242
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"PrevisaoEntregaUsuarioUltAtua" +
                         "liz\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 237
+#line 243
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"PrevisaoEntregaDtHrUltAtualiz" +
                         "\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 238
+#line 244
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_forma_pagto_possui_parcela" +
                         "_cartao_maquineta\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 239
+#line 245
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_memorizacao_completa_ender" +
                         "ecos\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 240
+#line 246
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_email\" = \"gabriel.pr" +
                         "ada.teodoro@gmail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 241
+#line 247
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_email_xml\" = \"teste@" +
                         "xml.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 242
+#line 248
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_nome\" = \"Gabriel Pra" +
                         "da Teodoro\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 243
+#line 249
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_ddd_res\" = \"11\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 244
+#line 250
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_tel_res\" = \"25321634" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 245
+#line 251
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_ddd_com\" = \"11\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 246
+#line 252
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_tel_com\" = \"55788755" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 247
+#line 253
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_ramal_com\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 248
+#line 254
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_ddd_cel\" = \"11\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 249
+#line 255
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_tel_cel\" = \"98160331" +
                         "3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 250
+#line 256
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_ddd_com_2\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 251
+#line 257
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_tel_com_2\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 252
+#line 258
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_ramal_com_2\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 253
+#line 259
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_tipo_pessoa\" = \"PF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 254
+#line 260
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_cnpj_cpf\" = \"3527044" +
                         "5824\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 255
+#line 261
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_contribuinte_icms_st" +
                         "atus\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 256
+#line 262
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_produtor_rural_statu" +
                         "s\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 257
+#line 263
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_ie\" = \"361.289.183.7" +
                         "14\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 258
+#line 264
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_rg\" = \"304480484\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 259
+#line 265
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_contato\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 260
+#line 266
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_email\" = \"gabriel.prad" +
                         "a.teodoro@gmail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 261
+#line 267
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_email_xml\" = \"teste@xm" +
                         "l.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 262
+#line 268
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_nome\" = \"Gabriel Prada" +
                         " Teodoro\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 263
+#line 269
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_ddd_res\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 264
+#line 270
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_tel_res\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 265
+#line 271
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_ddd_com\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 266
+#line 272
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_tel_com\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 267
+#line 273
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_ramal_com\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 268
+#line 274
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_ddd_cel\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 269
+#line 275
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_tel_cel\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 270
+#line 276
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_ddd_com_2\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 271
+#line 277
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_tel_com_2\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 272
+#line 278
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_ramal_com_2\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 273
+#line 279
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_tipo_pessoa\" = \"PF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 274
+#line 280
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_cnpj_cpf\" = \"352704458" +
                         "24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 275
+#line 281
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_contribuinte_icms_stat" +
                         "us\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 276
+#line 282
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_produtor_rural_status\"" +
                         " = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 277
+#line 283
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_ie\" = \"361.289.183.714" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 278
+#line 284
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_rg\" = \"304480484\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 279
+#line 285
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_nome_iniciais_em_mai" +
                         "usculas\" = \"Gabriel Prada Teodoro\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 280
+#line 286
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_nome_iniciais_em_maius" +
                         "culas\" = \"Gabriel Prada Teodoro\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1018,7 +1048,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("perc_desagio_RA_liquida", null, tagsOfScenario, argumentsOfScenario);
-#line 282
+#line 288
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1038,6 +1068,9 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
+#line 4
+this.FeatureBackground();
+#line hidden
             }
             this.ScenarioCleanup();
         }
@@ -1045,12 +1078,14 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="Preenche_os_campos_do_pedido - pedido filhote")]
         [Xunit.TraitAttribute("FeatureTitle", "Preenche_os_campos_do_pedido")]
         [Xunit.TraitAttribute("Description", "Preenche_os_campos_do_pedido - pedido filhote")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void Preenche_Os_Campos_Do_Pedido_PedidoFilhote()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido - pedido filhote", null, tagsOfScenario, argumentsOfScenario);
-#line 297
+#line 304
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1070,905 +1105,909 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 298
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 299
- testRunner.When("Lista de itens \"0\" informo \"Qtde\" = \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 300
- testRunner.When("Lista de itens \"1\" informo \"Qtde\" = \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 301
- testRunner.When("Informo \"ValorTotalDestePedidoComRA\" = \"173512.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 302
- testRunner.When("Informo \"VlTotalDestePedido\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 303
- testRunner.When("Informo \"FormaPagtoCriacao.C_pc_valor\" = \"173512.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 304
- testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 4
+this.FeatureBackground();
 #line hidden
 #line 305
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pedido\" = \"222267N-A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 306
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("Lista de itens \"0\" informo \"Qtde\" = \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 307
+ testRunner.When("Lista de itens \"1\" informo \"Qtde\" = \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 308
+ testRunner.When("Informo \"ValorTotalDestePedidoComRA\" = \"173512.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 309
+ testRunner.When("Informo \"VlTotalDestePedido\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 310
+ testRunner.When("Informo \"FormaPagtoCriacao.C_pc_valor\" = \"173512.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 311
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 312
+ testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"pedido\" = \"222267N" +
+                        "-A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 313
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 314
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"data\" = \"2021-01-20 00:00:00\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 308
+#line 315
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"hora\" = \"183128\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 309
+#line 316
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"id_cliente\" = \"000000684226\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 310
+#line 317
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"midia\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 311
+#line 318
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"servicos\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 312
+#line 319
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vl_servicos\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 313
+#line 320
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vendedor\" = \"HAMILTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 314
+#line 321
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_entrega\" = \"SEP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 315
+#line 322
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"entregue_data\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 316
+#line 323
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"entregue_usuario\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 317
+#line 324
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"cancelado_data\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 318
+#line 325
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"cancelado_usuario\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 319
+#line 326
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_pagto\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 320
+#line 327
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_recebido\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 321
+#line 328
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"obs_1\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 322
+#line 329
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"obs_2\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 323
+#line 330
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"qtde_parcelas\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 324
+#line 331
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"forma_pagto\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 325
+#line 332
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vl_total_familia\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 326
+#line 333
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vl_pago_familia\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 327
+#line 334
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"split_status\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 328
+#line 335
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"split_data\" = \"2021-01-20 00:" +
                         "00:00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 329
+#line 336
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"split_hora\" = \"183840\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 330
+#line 337
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"split_usuario\" = \"HAMILTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 331
+#line 338
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"a_entregar_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 332
+#line 339
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"a_entregar_data_marcada\" = \"n" +
                         "ull\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 333
+#line 340
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"a_entregar_data\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 334
+#line 341
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"a_entregar_hora\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 335
+#line 342
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"a_entregar_usuario\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 336
+#line 343
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"timestamp\" = \"[xM\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 337
+#line 344
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"loja_indicou\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 338
+#line 345
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"comissao_loja_indicou\" = \"0.0" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 339
+#line 346
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"venda_externa\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 340
+#line 347
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vl_frete\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 341
+#line 348
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_id\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 342
+#line 349
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_data\" = \"null\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 343
+#line 350
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_usuario\" = \"nu" +
                         "ll\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 344
+#line 351
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_credito\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 345
+#line 352
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_credito_data\" = \"null" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 346
+#line 353
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_credito_usuario\" = \"n" +
                         "ull\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 347
+#line 354
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"tipo_parcelamento\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 348
+#line 355
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"av_forma_pagto\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 349
+#line 356
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pc_qtde_parcelas\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 350
+#line 357
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pc_valor_parcela\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 351
+#line 358
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pce_forma_pagto_entrada\" = \"0" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 352
+#line 359
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pce_forma_pagto_prestacao\" = " +
                         "\"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 353
+#line 360
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pce_entrada_valor\" = \"0.0000\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 354
+#line 361
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pce_prestacao_qtde\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 355
+#line 362
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pce_prestacao_valor\" = \"0.000" +
                         "0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 356
+#line 363
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pce_prestacao_periodo\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 357
+#line 364
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pse_forma_pagto_prim_prest\" =" +
                         " \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 358
+#line 365
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pse_forma_pagto_demais_prest\"" +
                         " = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 359
+#line 366
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pse_prim_prest_valor\" = \"0.00" +
                         "00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 360
+#line 367
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pse_prim_prest_apos\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 361
+#line 368
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pse_demais_prest_qtde\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 362
+#line 369
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pse_demais_prest_valor\" = \"0." +
                         "0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 363
+#line 370
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pse_demais_prest_periodo\" = \"" +
                         "0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 364
+#line 371
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pu_forma_pagto\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 365
+#line 372
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pu_valor\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 366
+#line 373
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pu_vencto_apos\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 367
+#line 374
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"indicador\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 368
+#line 375
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vl_total_NF\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 369
+#line 376
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vl_total_RA\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 370
+#line 377
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"perc_RT\" = \"0.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 371
+#line 378
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_orc_virou_pedido\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 372
+#line 379
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"orcamento\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 373
+#line 380
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"orcamentista\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 374
+#line 381
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"comissao_paga\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 375
+#line 382
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"comissao_paga_ult_op\" = \"null" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 376
+#line 383
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"comissao_paga_data\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 377
+#line 384
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"comissao_paga_usuario\" = \"nul" +
                         "l\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 378
+#line 385
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"perc_desagio_RA\" = \"0.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 379
+#line 386
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"perc_limite_RA_sem_desagio\" =" +
                         " \"0.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 380
+#line 387
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vl_total_RA_liquido\" = \"0.000" +
                         "0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 381
+#line 388
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_tem_desagio_RA\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 382
+#line 389
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"qtde_parcelas_desagio_RA\" = \"" +
                         "0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 383
+#line 390
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_num_coleta\" = " +
                         "\"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 384
+#line 391
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_contato\" = \"nu" +
                         "ll\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 385
+#line 392
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_end_entrega\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 386
+#line 393
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_endereco\" = \"Rua Profe" +
                         "ssor Fábio Fanucchi\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 387
+#line 394
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_bairro\" = \"Jardim São " +
                         "Paulo(Zona Norte)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 388
+#line 395
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_cidade\" = \"São Paulo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 389
+#line 396
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 390
+#line 397
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 391
+#line 398
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_etg_imediata\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 392
+#line 399
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"etg_imediata_data\" = \"2021-01" +
                         "-20 18:31:31\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 393
+#line 400
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"etg_imediata_usuario\" = \"HAMI" +
                         "LTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 394
+#line 401
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"frete_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 395
+#line 402
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"frete_valor\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 396
+#line 403
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"frete_data\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 397
+#line 404
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"frete_usuario\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 398
+#line 405
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"StBemUsoConsumo\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 399
+#line 406
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"PedidoRecebidoStatus\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 400
+#line 407
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"PedidoRecebidoData\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 401
+#line 408
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"PedidoRecebidoUsuarioUltAtual" +
                         "iz\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 402
+#line 409
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"PedidoRecebidoDtHrUltAtualiz\"" +
                         " = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 403
+#line 410
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"InstaladorInstalaStatus\" = \"2" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 404
+#line 411
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"InstaladorInstalaUsuarioUltAt" +
                         "ualiz\" = \"HAMILTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 405
+#line 412
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"InstaladorInstalaDtHrUltAtual" +
                         "iz\" = \"2021-01-20 18:31:31\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 406
+#line 413
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"custoFinancFornecTipoParcelam" +
                         "ento\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 407
+#line 414
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"custoFinancFornecQtdeParcelas" +
                         "\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 408
+#line 415
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"BoletoConfeccionadoStatus\" = " +
                         "\"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 409
+#line 416
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"BoletoConfeccionadoData\" = \"\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 410
+#line 417
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"GarantiaIndicadorStatus\" = \"0" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 411
+#line 418
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"GarantiaIndicadorUsuarioUltAt" +
                         "ualiz\" = \"HAMILTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 412
+#line 419
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"GarantiaIndicadorDtHrUltAtual" +
                         "iz\" = \"2021-01-20 18:31:31\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 413
+#line 420
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_endereco_numero\" = \"97" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 414
+#line 421
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_endereco_complemento\" " +
                         "= \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 415
+#line 422
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"romaneio_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 416
+#line 423
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"romaneio_data\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 417
+#line 424
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"romaneio_data_hora\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 418
+#line 425
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"romaneio_usuario\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 419
+#line 426
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"danfe_impressa_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 420
+#line 427
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"danfe_impressa_data\" = \"null\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 421
+#line 428
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"danfe_impressa_data_hora\" = \"" +
                         "null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 422
+#line 429
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"danfe_impressa_usuario\" = \"nu" +
                         "ll\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 423
+#line 430
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_conferente\" = " +
                         "\"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 424
+#line 431
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_motorista\" = \"" +
                         "null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 425
+#line 432
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_placa_veiculo\"" +
                         " = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 426
+#line 433
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"perc_desagio_RA_liquida\" = \"3" +
                         "0.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 427
+#line 434
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"indicador_editado_manual_stat" +
                         "us\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 428
+#line 435
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"indicador_editado_manual_data" +
                         "_hora\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 429
+#line 436
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"indicador_editado_manual_usua" +
                         "rio\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 430
+#line 437
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"indicador_editado_manual_indi" +
                         "cador_original\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 431
+#line 438
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"permite_RA_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 432
+#line 439
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_violado_permite_RA_status\"" +
                         " = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 433
+#line 440
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"dt_hr_violado_permite_RA_stat" +
                         "us\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 434
+#line 441
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"usuario_violado_permite_RA_st" +
                         "atus\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 435
+#line 442
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"opcao_possui_RA\" = \"-\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 436
+#line 443
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"tamanho_num_pedido\" = \"9\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 437
+#line 444
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pedido_base\" = \"222267N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 438
+#line 445
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"numero_loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 439
+#line 446
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"data_hora\" = \"2021-01-20 18:3" +
                         "1:28\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 440
+#line 447
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_forma_pagto_somente_cartao" +
                         "\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 441
+#line 448
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_memorizado_status\" =" +
                         " \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 442
+#line 449
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_logradouro\" = \"Rua F" +
                         "rancisco Pecoraro\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 443
+#line 450
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_bairro\" = \"Água Fria" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 444
+#line 451
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_cidade\" = \"São Paulo" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 445
+#line 452
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 446
+#line 453
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_cep\" = \"02408150\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 447
+#line 454
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_numero\" = \"97\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 448
+#line 455
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_complemento\" = \"casa" +
                         " 01\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 449
+#line 456
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_endereco_tratar_statu" +
                         "s\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 450
+#line 457
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_endereco_tratado_stat" +
                         "us\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 451
+#line 458
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_endereco_tratado_data" +
                         "\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 452
+#line 459
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_endereco_tratado_data" +
                         "_hora\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 453
+#line 460
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_endereco_tratado_usua" +
                         "rio\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 454
+#line 461
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_credito_data_sem_hora" +
                         "\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 455
+#line 462
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"cancelado_auto_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 456
+#line 463
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"cancelado_auto_data\" = \"null\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 457
+#line 464
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"cancelado_auto_data_hora\" = \"" +
                         "null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 458
+#line 465
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"cancelado_auto_motivo\" = \"nul" +
                         "l\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 459
+#line 466
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"obs_3\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 460
+#line 467
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"danfe_a_imprimir_status\" = \"0" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 461
+#line 468
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"danfe_a_imprimir_data_hora\" =" +
                         " \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 462
+#line 469
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"danfe_a_imprimir_usuario\" = \"" +
                         "null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 463
+#line 470
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_selecao_auto_s" +
                         "tatus\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 464
+#line 471
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_selecao_auto_c" +
                         "ep\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 465
+#line 472
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_selecao_auto_t" +
                         "ipo_endereco\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 466
+#line 473
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_selecao_auto_t" +
                         "ransportadora\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 467
+#line 474
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"transportadora_selecao_auto_d" +
                         "ata_hora\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 468
+#line 475
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pedido_bs_x_at\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 469
+#line 476
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"cancelado_data_hora\" = \"null\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 470
+#line 477
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"cancelado_codigo_motivo\" = \"n" +
                         "ull\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 471
+#line 478
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"cancelado_codigo_sub_motivo\" " +
                         "= \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 472
+#line 479
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"cancelado_motivo\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 473
+#line 480
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_obs\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 474
+#line 481
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pedido_bs_x_ac\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 475
+#line 482
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pedido_bs_x_ac_reverso\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 476
+#line 483
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_cod_justificativa\" = \"" +
                         "003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 477
+#line 484
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pedido_bs_x_marketplace\" = \"\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 478
+#line 485
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"marketplace_codigo_origem\" = " +
                         "\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 479
+#line 486
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"id_nfe_emitente\" = \"4903\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 480
+#line 487
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_pedido_novo_analise_credit" +
                         "o_msg_alerta\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 481
+#line 488
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"dt_hr_pedido_novo_analise_cre" +
                         "dito_msg_alerta\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 482
+#line 489
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_forma_pagto_possui_parcela" +
                         "_cartao\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 483
+#line 490
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vl_previsto_cartao\" = \"0.0000" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 484
+#line 491
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"NFe_texto_constar\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 485
+#line 492
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"NFe_xPed\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 486
+#line 493
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"MarketplacePedidoRecebidoRegi" +
                         "strarStatus\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 487
+#line 494
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"MarketplacePedidoRecebidoRegi" +
                         "strarDataRecebido\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 488
+#line 495
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"MarketplacePedidoRecebidoRegi" +
                         "strarDataHora\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 489
+#line 496
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"MarketplacePedidoRecebidoRegi" +
                         "strarUsuario\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 490
+#line 497
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"MarketplacePedidoRecebidoRegi" +
                         "stradoStatus\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 491
+#line 498
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"MarketplacePedidoRecebidoRegi" +
                         "stradoDataHora\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 492
+#line 499
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"MarketplacePedidoRecebidoRegi" +
                         "stradoUsuario\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 493
+#line 500
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_auto_split\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 494
+#line 501
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_credito_pendente_vend" +
                         "as_motivo\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 495
+#line 502
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"usuario_cadastro\" = \"HAMILTON" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 496
+#line 503
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"plataforma_origem_pedido\" = \"" +
                         "0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 497
+#line 504
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"magento_installer_commission_" +
                         "value\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 498
+#line 505
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"magento_installer_commission_" +
                         "discount\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 499
+#line 506
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"magento_shipping_amount\" = \"0" +
                         ".0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 500
+#line 507
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"dt_st_pagto\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 501
+#line 508
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"dt_hr_st_pagto\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 502
+#line 509
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"usuario_st_pagto\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 503
+#line 510
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pc_maquineta_qtde_parcelas\" =" +
                         " \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 504
+#line 511
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pc_maquineta_valor_parcela\" =" +
                         " \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 505
+#line 512
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"sistema_responsavel_cadastro\"" +
                         " = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 506
+#line 513
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"sistema_responsavel_atualizac" +
                         "ao\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 507
+#line 514
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"num_obs_2\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 508
+#line 515
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"num_obs_3\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 509
+#line 516
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"PrevisaoEntregaData\" = \"null\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 510
+#line 517
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"PrevisaoEntregaUsuarioUltAtua" +
                         "liz\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 511
+#line 518
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"PrevisaoEntregaDtHrUltAtualiz" +
                         "\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 512
+#line 519
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_forma_pagto_possui_parcela" +
                         "_cartao_maquineta\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 513
+#line 520
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_memorizacao_completa_ender" +
                         "ecos\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 514
+#line 521
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_email\" = \"gabriel.pr" +
                         "ada.teodoro@gmail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 515
+#line 522
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_email_xml\" = \"teste@" +
                         "xml.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 516
+#line 523
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_nome\" = \"Gabriel Pra" +
                         "da Teodoro\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 517
+#line 524
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_ddd_res\" = \"11\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 518
+#line 525
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_tel_res\" = \"25321634" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 519
+#line 526
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_ddd_com\" = \"11\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 520
+#line 527
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_tel_com\" = \"55788755" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 521
+#line 528
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_ramal_com\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 522
+#line 529
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_ddd_cel\" = \"11\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 523
+#line 530
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_tel_cel\" = \"98160331" +
                         "3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 524
+#line 531
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_ddd_com_2\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 525
+#line 532
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_tel_com_2\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 526
+#line 533
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_ramal_com_2\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 527
+#line 534
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_tipo_pessoa\" = \"PF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 528
+#line 535
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_cnpj_cpf\" = \"3527044" +
                         "5824\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 529
+#line 536
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_contribuinte_icms_st" +
                         "atus\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 530
+#line 537
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_produtor_rural_statu" +
                         "s\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 531
+#line 538
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_ie\" = \"361.289.183.7" +
                         "14\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 532
+#line 539
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_rg\" = \"304480484\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 533
+#line 540
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_contato\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 534
+#line 541
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_email\" = \"gabriel.prad" +
                         "a.teodoro@gmail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 535
+#line 542
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_email_xml\" = \"teste@xm" +
                         "l.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 536
+#line 543
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_nome\" = \"Gabriel Prada" +
                         " Teodoro\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 537
+#line 544
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_ddd_res\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 538
+#line 545
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_tel_res\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 539
+#line 546
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_ddd_com\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 540
+#line 547
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_tel_com\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 541
+#line 548
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_ramal_com\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 542
+#line 549
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_ddd_cel\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 543
+#line 550
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_tel_cel\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 544
+#line 551
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_ddd_com_2\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 545
+#line 552
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_tel_com_2\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 546
+#line 553
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_ramal_com_2\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 547
+#line 554
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_tipo_pessoa\" = \"PF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 548
+#line 555
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_cnpj_cpf\" = \"352704458" +
                         "24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 549
+#line 556
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_contribuinte_icms_stat" +
                         "us\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 550
+#line 557
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_produtor_rural_status\"" +
                         " = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 551
+#line 558
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_ie\" = \"361.289.183.714" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 552
+#line 559
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_rg\" = \"304480484\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 553
+#line 560
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_nome_iniciais_em_mai" +
                         "usculas\" = \"Gabriel Prada Teodoro\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 554
+#line 561
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_nome_iniciais_em_maius" +
                         "culas\" = \"Gabriel Prada Teodoro\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1979,12 +2018,14 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="perc_desagio_RA_liquida 2")]
         [Xunit.TraitAttribute("FeatureTitle", "Preenche_os_campos_do_pedido")]
         [Xunit.TraitAttribute("Description", "perc_desagio_RA_liquida 2")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void Perc_Desagio_RA_Liquida2()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("perc_desagio_RA_liquida 2", null, tagsOfScenario, argumentsOfScenario);
-#line 556
+#line 564
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -2004,7 +2045,10 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 570
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 578
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }

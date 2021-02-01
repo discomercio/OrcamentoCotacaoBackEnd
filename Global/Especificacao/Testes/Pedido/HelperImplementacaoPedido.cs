@@ -21,6 +21,8 @@ namespace Especificacao.Testes.Pedido
         protected abstract void AbstractLimparEnderecoDeEntrega();
         protected abstract void AbstractLimparDadosCadastraisEEnderecoDeEntrega();
         protected abstract List<string> AbstractListaErros();
+        protected abstract string? AbstractPedidoPaiGerado();
+        protected abstract List<string> AbstractPedidosFilhotesGerados();
         #endregion
 
         protected bool ignorarFeature = false;
@@ -249,6 +251,28 @@ namespace Especificacao.Testes.Pedido
             if (ignorarFeature) return;
             Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensComXitens(numeroItens, this);
             AbstractListaDeItensComXitens(numeroItens);
+        }
+
+        public void TabelaT_PEDIDORegistroPaiCriadoVerificarCampo(string campo, string valor)
+        {
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            var pedidoPaiGerado = AbstractPedidoPaiGerado();
+            if (string.IsNullOrEmpty(pedidoPaiGerado))
+            {
+                Assert.Equal("sem pedido gerado", pedidoPaiGerado ?? "");
+                throw new ArgumentNullException();
+            }
+            List<string> somentePai = new List<string>()
+                { pedidoPaiGerado };
+
+            gerenciamentoBanco.TabelaT_PEDIDORegistroVerificarCampo(somentePai, campo, valor);
+        }
+
+        public void TabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo(string campo, string valor)
+        {
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            var filhotes = AbstractPedidosFilhotesGerados();
+            gerenciamentoBanco.TabelaT_PEDIDORegistroVerificarCampo(filhotes, campo, valor);
         }
     }
 }

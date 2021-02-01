@@ -1,6 +1,9 @@
-﻿@ignore
-@Especificacao.Pedido.Passo60
+﻿@Especificacao.Pedido.Passo60
 Feature: Preenche_os_campos_do_pedido
+
+Background: Setup
+	#ignoramos no prepedio inteiro
+	Given Ignorar cenário no ambiente "Especificacao.Prepedido.PrepedidoSteps"
 
 #a maioria no pai e filhotes, alguns só no pai, alguns só nos filhotes
 #loja/PedidoNovoConfirma.asp
@@ -25,17 +28,20 @@ Scenario: Preenche_os_campos_do_pedido - pedido pai
 	Given Pedido base
 	When Lista de itens "0" informo "Qtde" = "100"
 	When Lista de itens "1" informo "Qtde" = "100"
-	When Informo "ValorTotalDestePedidoComRA" = "173512.00"
-	When Informo "VlTotalDestePedido" = ""
-	When Informo "FormaPagtoCriacao.C_pc_valor" = "173512.00"
+	And Recalcular totais do pedido
+	And Deixar forma de pagamento consistente
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro criado, verificar campo "loja" = "202"
-	And Tabela "t_PEDIDO" registro criado, verificar campo "data" = "2021-01-20 00:00:00"
-	And Tabela "t_PEDIDO" registro criado, verificar campo "hora" = "183128"
-	And Tabela "t_PEDIDO" registro criado, verificar campo "id_cliente" = "000000684226"
-	And Tabela "t_PEDIDO" registro criado, verificar campo "midia" = ""
-	And Tabela "t_PEDIDO" registro criado, verificar campo "servicos" = ""
-	And Tabela "t_PEDIDO" registro criado, verificar campo "vl_servicos" = "0.0000"
+		And Tabela "t_PEDIDO" registro pai criado, verificar campo "loja" = "202"
+	#	And Tabela "t_PEDIDO" registro pai criado, verificar campo "data" = "2021-01-20 00:00:00"
+	#	And Tabela "t_PEDIDO" registro pai criado, verificar campo "hora" = "183128"
+#	And Tabela "t_PEDIDO" registro pai criado, verificar campo "id_cliente" = "000000684226"
+
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "midia" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "servicos" = ""
+#	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_servicos" = "0.0000"
+
+@ignore
+Scenario: acertar
 	And Tabela "t_PEDIDO" registro criado, verificar campo "vendedor" = "HAMILTON"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "st_entrega" = "SPL"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "entregue_data" = ""
@@ -45,7 +51,7 @@ Scenario: Preenche_os_campos_do_pedido - pedido pai
 	And Tabela "t_PEDIDO" registro criado, verificar campo "st_pagto" = "N"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "st_recebido" = ""
 	And Tabela "t_PEDIDO" registro criado, verificar campo "obs_1" = ""
-	And Tabela "t_PEDIDO" registro criado, verificar campo "obs_2"  = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "obs_2" = ""
 	And Tabela "t_PEDIDO" registro criado, verificar campo "qtde_parcelas" = "1"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "forma_pagto" = ""
 	And Tabela "t_PEDIDO" registro criado, verificar campo "vl_total_familia" = "173512.0000"
@@ -293,7 +299,8 @@ Scenario: perc_desagio_RA_liquida
 #	" FROM t_PARAMETRO" & _
 #	" WHERE" & _
 #		" (id = '" & id_registro & "')"
-#
+
+@ignore
 Scenario: Preenche_os_campos_do_pedido - pedido filhote
 	Given Pedido base
 	When Lista de itens "0" informo "Qtde" = "100"
@@ -302,7 +309,7 @@ Scenario: Preenche_os_campos_do_pedido - pedido filhote
 	When Informo "VlTotalDestePedido" = ""
 	When Informo "FormaPagtoCriacao.C_pc_valor" = "173512.00"
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro criado, verificar campo "pedido" = "222267N-A"
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "pedido" = "222267N-A"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "loja" = "202"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "data" = "2021-01-20 00:00:00"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "hora" = "183128"
@@ -553,6 +560,7 @@ Scenario: Preenche_os_campos_do_pedido - pedido filhote
 	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_nome_iniciais_em_maiusculas" = "Gabriel Prada Teodoro"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_nome_iniciais_em_maiusculas" = "Gabriel Prada Teodoro"
 
+@ignore
 Scenario: perc_desagio_RA_liquida 2
 	#gravado no pai e nos filhotes, depende da loja (NUMERO_LOJA_ECOMMERCE_AR_CLUBE nunca é gravado)
 	#

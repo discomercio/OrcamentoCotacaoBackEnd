@@ -84,6 +84,18 @@ namespace Especificacao.Testes.Pedido
             Testes.Utils.LogTestes.LogOperacoes2.DeixarFormaDePagamentoConsistente(this);
             base.Executar(i => i.DeixarFormaDePagamentoConsistente());
         }
+        public void TabelaT_PEDIDORegistroPaiCriadoVerificarCampo(string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO", "pedido", "registro pai criado", campo, valor, this);
+            base.Executar(i => i.TabelaT_PEDIDORegistroPaiCriadoVerificarCampo(campo, valor));
+        }
+        public void TabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo(string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO", "pedido", "registros filhotes criados", campo, valor, this);
+            base.Executar(i => i.TabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo(campo, valor));
+        }
         public void ListaDeItensComXitens(int p0)
         {
             if (ignorarFeature) return;

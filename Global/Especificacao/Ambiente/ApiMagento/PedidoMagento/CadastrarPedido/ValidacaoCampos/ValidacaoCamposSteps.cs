@@ -56,7 +56,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Valida
         [Then(@"Tabela ""t_PEDIDO"" registro criado, verificar campo ""(.*)"" = ""(.*)""")]
         public void ThenTabelaT_PEDIDORegistroCriadoVerificarCampo(string campo, string valor)
         {
-            var dto = cadastrarPedido.ultimoPedidoResultadoMagentoDto();
+            var dto = cadastrarPedido.UltimoPedidoResultadoMagentoDto();
             if (dto == null)
                 throw new Exception("erro");
             Assert.Empty(dto.ListaErros);

@@ -59,15 +59,16 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
             pedidoDto.DadosCliente = new global::Loja.Bll.Dto.ClienteDto.DadosClienteCadastroDto();
         }
 
+        private Pedido.Dados.Criacao.PedidoCriacaoRetornoDados? UltimoPedidoCriacaoRetornoDados = null;
         protected override List<string> AbstractListaErros()
         {
             var ret1 = pedidoBll.CadastrarPedido(pedidoDto, lojaUsuario, usuario, vendedorExterno,
                 100000, 100000, 100000, 100000,
                 0.1M, 0.1M);
-            var ret = ret1.Result;
+            UltimoPedidoCriacaoRetornoDados = ret1.Result;
             List<string> erros = new List<string>();
-            erros.AddRange(ret.ListaErros);
-            erros.AddRange(ret.ListaErrosValidacao);
+            erros.AddRange(UltimoPedidoCriacaoRetornoDados.ListaErros);
+            erros.AddRange(UltimoPedidoCriacaoRetornoDados.ListaErrosValidacao);
             return erros;
         }
         protected override void AbstractDeixarFormaDePagamentoConsistente()
@@ -185,5 +186,22 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
             }
         }
 
+        protected override string? AbstractPedidoPaiGerado()
+        {
+            var ultimo = UltimoPedidoCriacaoRetornoDados;
+            if (ultimo == null)
+                return null;
+
+            return ultimo.Id;
+        }
+
+        protected override List<string> AbstractPedidosFilhotesGerados()
+        {
+            var ultimo = UltimoPedidoCriacaoRetornoDados;
+            if (ultimo == null)
+                return new List<string>();
+
+            return ultimo.ListaIdPedidosFilhotes;
+        }
     }
 }

@@ -218,7 +218,7 @@ namespace Especificacao.Especificacao.Pedido
             {
                 base.ThenSemNenhumErro();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 if (e.Message.Contains(p0))
                     lancouExcecao = true;
@@ -279,6 +279,20 @@ namespace Especificacao.Especificacao.Pedido
         {
             Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensComXitens(p0, this);
             base.ListaDeItensComXitens(p0);
+        }
+
+        [Then(@"Tabela ""t_PEDIDO"" registro pai criado, verificar campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaT_PEDIDORegistroPaiCriadoVerificarCampo(string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO", "pedido", "registro pai criado", campo, valor, this);
+            base.TabelaT_PEDIDORegistroPaiCriadoVerificarCampo(campo, valor);
+        }
+
+        [Then(@"Tabela ""t_PEDIDO"" registros filhotes criados, verificar campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaRegistrosFilhotesCriadosVerificarCampo(string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO", "pedido", "registros filhotes criados", campo, valor, this);
+            base.TabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo(campo, valor);
         }
 
     }
