@@ -404,7 +404,7 @@ namespace Pedido
             return prodValidadoEstoque;
         }
 
-        //todo: afazer: tentar unificar com Prepedido.PrepedidoBll.ObterCtrlEstoqueProdutoRegra
+        //se mantiver, tentar unificar com Prepedido.PrepedidoBll.ObterCtrlEstoqueProdutoRegra
         public async Task<IEnumerable<RegrasBll>> ObterCtrlEstoqueProdutoRegraParaUMProduto(PedidoCriacaoProdutoDados produto,
             Tcliente tcliente, List<string> lstErros)
         {
@@ -622,7 +622,7 @@ namespace Pedido
             return lstRegrasCrtlEstoque;
         }
 
-        //todo: remover rotina em favor da ProdutoGeralBll.VerificarRegrasAssociadasAosProdutos
+        //se mantiver, remover rotina em favor da ProdutoGeralBll.VerificarRegrasAssociadasAosProdutos
         public static void VerificarRegrasAssociadasParaUMProduto(List<RegrasBll> lst, List<string> lstErros,
             Tcliente cliente, int id_nfe_emitente_selecao_manual)
         {

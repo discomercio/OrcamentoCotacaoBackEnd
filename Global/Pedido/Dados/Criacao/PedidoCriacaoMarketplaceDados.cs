@@ -16,5 +16,6 @@ namespace Pedido.Dados.Criacao
         public string? Pedido_bs_x_ac { get; }
         public string? Marketplace_codigo_origem { get; }
         public string? Pedido_bs_x_marketplace { get; }
+
     }
 }

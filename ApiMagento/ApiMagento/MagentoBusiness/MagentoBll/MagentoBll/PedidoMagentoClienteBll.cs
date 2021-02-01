@@ -12,6 +12,7 @@ using Prepedido;
 using MagentoBusiness.UtilsMagento;
 using MagentoBusiness.MagentoDto;
 using MagentoBusiness.MagentoDto.MarketplaceDto;
+using InfraBanco.Modelos;
 
 #nullable enable
 
@@ -29,11 +30,11 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             this.configuracaoApiMagento = configuracaoApiMagento;
         }
 
-        internal async Task<string> CadastrarClienteSeNaoExistir(PedidoMagentoDto pedidoMagento, List<string> listaErros,
+        internal async Task<Tcliente?> CadastrarClienteSeNaoExistir(PedidoMagentoDto pedidoMagento, List<string> listaErros,
             PedidoMagentoBll.Indicador_vendedor_loja indicador_Vendedor_Loja, string usuario_cadastro)
         {
-            string? idCliente = await clienteBll.BuscarIdCliente(pedidoMagento.Cnpj_Cpf);
-            if (!string.IsNullOrEmpty(idCliente))
+            var idCliente = await clienteBll.BuscarTcliente(pedidoMagento.Cnpj_Cpf).FirstOrDefaultAsync();
+            if (idCliente != null)
                 return idCliente;
 
             Cliente.Dados.ClienteCadastroDados clienteCadastro = new Cliente.Dados.ClienteCadastroDados
@@ -53,7 +54,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
 
             //tem erro?
             listaErros.AddRange(lstRet);
-            idCliente = await clienteBll.BuscarIdCliente(pedidoMagento.Cnpj_Cpf);
+            idCliente = await clienteBll.BuscarTcliente(pedidoMagento.Cnpj_Cpf).FirstOrDefaultAsync();
             return idCliente;
         }
 

@@ -94,17 +94,20 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                     id_nfe_emitente_selecao_manual: pedidoDto.CDManual,
                     venda_Externa: venda_externa,
                     opcaoVendaSemEstoque: pedidoDto.OpcaoVendaSemEstoque,
-                    vendedor: usuario
+                    vendedor: usuario,
+                    loja_indicou: ""
                     ),
+                extra: new Pedido.Dados.Criacao.PedidoCriacaoExtraDados(pedido_bs_x_at: null, nfe_Texto_Constar: null, nfe_XPed: null),
                 cliente: Pedido.Dados.Criacao.PedidoCriacaoClienteDados.PedidoCriacaoClienteDados_de_DadosClienteCadastroDados(
-                    DadosClienteCadastroDto.DadosClienteCadastroDados_De_DadosClienteCadastroDto(pedidoDto.DadosCliente)),
+                    DadosClienteCadastroDto.DadosClienteCadastroDados_De_DadosClienteCadastroDto(pedidoDto.DadosCliente),
+                    midia: ""),
                 enderecoCadastralCliente: DadosClienteCadastroDto.EnderecoCadastralClientePrepedidoDados_De_DadosClienteCadastroDto(pedidoDto.DadosCliente),
                 enderecoEntrega: EnderecoEntregaDtoClienteCadastro.EnderecoEntregaClienteCadastroDados_De_EnderecoEntregaDtoClienteCadastro(pedidoDto.EnderecoEntrega),
                 listaProdutos: PedidoProdutosDtoPedido.List_PedidoProdutoPedidoDados_De_PedidoProdutosDtoPedido(pedidoDto.ListaProdutos),
                 formaPagtoCriacao: pedidoDto.FormaPagtoCriacao,
                 detalhesPedido: DetalhesNFPedidoDtoPedido.DetalhesPrepedidoDados_De_DetalhesNFPedidoDtoPedido(pedidoDto.DetalhesNF),
                 valor: new Pedido.Dados.Criacao.PedidoCriacaoValorDados(
-                    percRT: pedidoDto.PercRT ?? 0,
+                    perc_RT: pedidoDto.PercRT ?? 0,
                     vl_total: pedidoDto.VlTotalDestePedido ?? 0,
                     vl_total_NF: pedidoDto.ValorTotalDestePedidoComRA ?? 0,
                     permiteRAStatus: pedidoDto.PermiteRAStatus == 1

@@ -21,8 +21,16 @@ namespace Pedido.Criacao.Passo60.Validacao
         public async Task Executar()
         {
             await ConfigurarBlnPedidoECommerceCreditoOkAutomatico();
+            await ConfigurarVariaveis();
+        }
 
-            //todfo: afazer estas variaveis
+        private async Task ConfigurarVariaveis()
+        {
+
+            //todo: calcular Vl_aprov_auto_analise_credito e Comissao_loja_indicou
+            Criacao.Execucao.Vl_aprov_auto_analise_credito = 0;
+            Criacao.Execucao.Comissao_loja_indicou = 0;
+
             /*
 '	OBTÉM O VALOR LIMITE P/ APROVAÇÃO AUTOMÁTICA DA ANÁLISE DE CRÉDITO
 	if alerta = "" then

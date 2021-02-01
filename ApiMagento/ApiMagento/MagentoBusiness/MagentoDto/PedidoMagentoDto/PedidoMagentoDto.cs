@@ -69,7 +69,8 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> lstProdutosMagento, Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacaoMagento,
             decimal vlTotalDestePedido, PedidoMagentoDto pedidoMagento,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
-            List<string> lstErros, UtilsMagento.ConfiguracaoApiMagento configuracaoApiMagento)
+            List<string> lstErros, UtilsMagento.ConfiguracaoApiMagento configuracaoApiMagento,
+            string? dadosClienteMidia)
         {
             if (!Constantes.TipoPessoa.TipoValido(dadosClienteMagento.Tipo))
             {
@@ -88,23 +89,12 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                             Convert.ToString((byte)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO);
             pedidoCriacaoDetalhesPedido.EntregaImediataData = null;
             pedidoCriacaoDetalhesPedido.Observacoes = pedidoMagento.Obs_1;
+            pedidoCriacaoDetalhesPedido.GarantiaIndicador = Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO;
             //Ponto de referência é armazenado onde???
             //Frete é armazenado onde???
 
-            //Armazena o percentual de comissão para o indicador selecionado
-            //todo: afazer: verificar se esta calculando corretamente
-            float percRT = 0f;
-            foreach (var x in lstProdutosMagento)
-            {
-                if (x.Preco_Venda == 0)
-                    percRT = percRT + 0;
-                else
-                    percRT = percRT + (float)((x.Preco_Lista - (x.Preco_Venda + 1)) / x.Preco_Venda * 100);
-            };
-            percRT = 0f;
-
             var pedidoCriacaoValor = new Pedido.Dados.Criacao.PedidoCriacaoValorDados(
-                percRT: percRT,
+                perc_RT: 0,
                 permiteRAStatus: true,
 
                 //Armazena o valor total do pedido
@@ -120,11 +110,6 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                 ambiente: new Pedido.Dados.Criacao.PedidoCriacaoAmbienteDados(
                     loja: dadosClienteMagento.Loja,
                     //Armazena nome do usuário logado
-                    /* AFAZER: Aqui tem que receber o nome do Usuario que no caso do Magento é o SUPORTE 1
-                     * O usuário "SUPORTE 1" do Magento esta cadastrado na base de teste da ITS. Estou alterando o 
-                     * valor de desse usuário na tabela "t_USUARIO.vendedor_externo" para "1", sendo assim, este usuário passará a ser
-                     * "vendedor_externo = 1" 
-                     */
                     usuario: dadosClienteMagento.Vendedor,
                     vendedor: dadosClienteMagento.Vendedor,
 
@@ -143,14 +128,15 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                     id_nfe_emitente_selecao_manual: 0, //será sempre automático
 
                     //Flag para saber se o cliente aceitou finalizar o pedido mesmo com produto sem estoque
-                    //afazer: verificar se passa true ou false
-                    opcaoVendaSemEstoque: true
+                    opcaoVendaSemEstoque: true,
 
-
+                    loja_indicou: ""
                     ),
 
+                extra: new Pedido.Dados.Criacao.PedidoCriacaoExtraDados(pedido_bs_x_at: null, nfe_Texto_Constar: null, nfe_XPed: null),
+
                 //Armazena os dados cadastrados do cliente
-                cliente: Pedido.Dados.Criacao.PedidoCriacaoClienteDados.PedidoCriacaoClienteDados_de_DadosClienteCadastroDados(dadosClienteMagento),
+                cliente: Pedido.Dados.Criacao.PedidoCriacaoClienteDados.PedidoCriacaoClienteDados_de_DadosClienteCadastroDados(dadosClienteMagento, midia: dadosClienteMidia),
 
                 //Armazena os dados do cliente para o Pedido
                 enderecoCadastralCliente: enderecoCadastralClienteMagento,

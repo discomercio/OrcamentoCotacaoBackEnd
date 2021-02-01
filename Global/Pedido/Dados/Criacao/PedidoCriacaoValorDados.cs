@@ -7,16 +7,16 @@ namespace Pedido.Dados.Criacao
 {
     public class PedidoCriacaoValorDados
     {
-        public PedidoCriacaoValorDados(float percRT, decimal vl_total, decimal vl_total_NF, bool permiteRAStatus)
+        public PedidoCriacaoValorDados(float perc_RT, decimal vl_total, decimal vl_total_NF, bool permiteRAStatus)
         {
-            PercRT = percRT;
+            Perc_RT = perc_RT;
             Vl_total = vl_total;
             Vl_total_NF = vl_total_NF;
             PermiteRAStatus = permiteRAStatus;
         }
 
-        //Armazena o percentual de comissão para o indicador selecionado
-        public float PercRT { get; }
+        //Armazena o percentual de comissão para o indicador selecionado (reserva técnica).
+        public float Perc_RT { get; }
 
         /*
         No banco de dados, o campo OpcaoPossuiRa é gravado da seguinte forma::
@@ -27,6 +27,8 @@ namespace Pedido.Dados.Criacao
             Quer dizer, este flag indica o estado do pedido; o PermiteRAStatus é se o indicador tem essa permissão
         */
         public bool PedidoPossuiRa() => Vl_total != Vl_total_NF;
+
+        public decimal Vl_total_RA => Vl_total_NF - Vl_total;
 
         //Armazena o valor total do pedido
         public decimal Vl_total { get; }

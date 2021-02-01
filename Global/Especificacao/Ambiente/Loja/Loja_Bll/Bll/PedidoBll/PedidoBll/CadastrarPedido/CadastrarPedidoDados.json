@@ -148,10 +148,10 @@
     "EntregaImediata": "2",
     "StBemUsoConsumo": 1,
     "InstaladorInstala": 2,
-    "GarantiaIndicadorStatus": null,
+    "GarantiaIndicadorStatus": 1,
     "EntregaImediataData": null,
     "FormaDePagamento": null,
-    "DescricaoFormaPagamento": null,
+    "DescricaoFormaPagamento": "",
     "PrevisaoEntrega": null
   },
   "OpcaoVendaSemEstoque": false,

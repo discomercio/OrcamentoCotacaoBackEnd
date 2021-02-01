@@ -8,11 +8,12 @@ namespace Pedido.Dados.Criacao
 {
     public class PedidoCriacaoAmbienteDados
     {
-        public PedidoCriacaoAmbienteDados(string loja, string vendedor, string usuario, bool comIndicador, string indicador, string orcamentista, int id_nfe_emitente_selecao_manual, bool venda_Externa, bool opcaoVendaSemEstoque)
+        public PedidoCriacaoAmbienteDados(string loja, string vendedor, string usuario, bool comIndicador, string indicador, string orcamentista, int id_nfe_emitente_selecao_manual, bool venda_Externa, bool opcaoVendaSemEstoque, string loja_indicou)
         {
             //pode vir com null
             indicador ??= "";
             orcamentista ??= "";
+            loja_indicou ??= "";
 
             Loja = loja ?? throw new ArgumentNullException(nameof(loja));
             Vendedor = vendedor ?? throw new ArgumentNullException(nameof(vendedor));
@@ -23,6 +24,7 @@ namespace Pedido.Dados.Criacao
             Id_nfe_emitente_selecao_manual = id_nfe_emitente_selecao_manual;
             Venda_Externa = venda_Externa;
             OpcaoVendaSemEstoque = opcaoVendaSemEstoque;
+            Loja_indicou = loja_indicou ?? throw new ArgumentNullException(nameof(loja_indicou));
         }
 
         //Armazena a loja do usuário logado
@@ -49,5 +51,7 @@ namespace Pedido.Dados.Criacao
 
         //Flag para saber se o cliente aceitou finalizar o pedido mesmo com produto sem estoque
         public bool OpcaoVendaSemEstoque { get; }
+
+        public string Loja_indicou { get; }
     }
 }
