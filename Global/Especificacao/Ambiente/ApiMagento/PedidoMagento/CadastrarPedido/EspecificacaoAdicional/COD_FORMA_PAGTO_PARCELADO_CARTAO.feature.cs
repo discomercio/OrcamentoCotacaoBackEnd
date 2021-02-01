@@ -124,7 +124,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("Informo \"FormaPagtoCriacao.C_pc_qtde\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 28
- testRunner.When("Informo \"FormaPagtoCriacao.C_pc_valor\" = \"3440.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"FormaPagtoCriacao.C_pc_valor\" = \"3394.94\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 29
  testRunner.When("Lista de itens \"0\" informo \"Fabricante\" = \"001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -157,7 +157,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("Lista de itens \"1\" informo \"Preco_NF\" = \"1200.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 39
- testRunner.When("Informo \"VlTotalDestePedido\" = \"3440.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"VlTotalDestePedido\" = \"3394.94\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 40
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -169,7 +169,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pc_qtde_parcelas\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 43
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pc_valor_parcela\" = \"3440.00\"" +
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pc_valor_parcela\" = \"3394.94\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 44
@@ -183,28 +183,22 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vl_total_RA\" = \"45.06\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 47
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"C_pc_qtde\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 48
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"C_pc_valor\" = \"3440.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 49
  testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado, verificar campo \"qtde\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 50
+#line 48
  testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado, verificar campo \"preco_venda\" = \"1188.23\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 51
+#line 49
  testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado, verificar campo \"preco_NF\" = \"1200.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 52
+#line 50
  testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado, verificar campo \"qtde\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 53
+#line 51
  testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado, verificar campo \"preco_venda\" = \"509.24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 54
+#line 52
  testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado, verificar campo \"preco_NF\" = \"520.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
