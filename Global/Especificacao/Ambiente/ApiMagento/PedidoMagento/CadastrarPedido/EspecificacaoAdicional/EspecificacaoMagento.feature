@@ -9,7 +9,7 @@ Se o semi-automático der erro, damos erro. Se aceitar, aceitamos.
 Estoque: não é um problema. 
 
 #Para esse teste funcionar, devemos fazer o calculo de percentual de desconto para evitar os erros ao confrontar os produtos
-
+@ignore
 Scenario: preço: aceitamos o valor que vier do magento.
 	#nao fazemos nenhuma crítica nos preços que chegam do magento
 	# afazer - analisar se devemos verificar o RA em ValidacoesPrepedidoBll.ConfrontarTotaisEPercentualMaxRA
