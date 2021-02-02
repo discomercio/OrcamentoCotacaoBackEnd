@@ -1,10 +1,14 @@
 ﻿@ignore
+@Especificacao.Pedido.Passo60
+@GerenciamentoBanco
 Feature: Gerar_o_numero_do_pedido
 
 Background: Background
+	Given Ignorar cenário no ambiente "Especificacao.Prepedido.PrepedidoSteps"
 	Given Reiniciar banco ao terminar cenário
-	Given Pedido base sem itens
-	And Usando fabricante = "001", produto = "001000"
+	When Lista de itens "0" informo "Qtde" = "20"
+	When Lista de itens "0" informo "Fabricante" = "001"
+	When Lista de itens "0" informo "Produto" = "001000"
 	And Zerar todo o estoque
 
 Scenario: Gerar_o_numero_do_pedido
@@ -14,11 +18,8 @@ Scenario: Gerar_o_numero_do_pedido
 	#		'	pedido-filhote 'A' => indice_pedido=2
 	#		'	pedido-filhote 'B' => indice_pedido=3
 	#		'	etc
-	Given Criar novo item com quantidade = "20"
+	Given Pedido base
 	And Definir estoque id_nfe_emitente = "4003", saldo de estoque = "5"
 	And Definir estoque id_nfe_emitente = "4903", saldo de estoque = "40"
-	When Cadastrar pedido
-	Then Gerado 2 pedido
-	And Pedido gerado "0", verificar pedido = "numero pedido pai retornado"
-	And Pedido gerado "1", verificar pedido = "numero pedido pai retornado mais traço A"
-	
+	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "pedido" = "contém a letra A"

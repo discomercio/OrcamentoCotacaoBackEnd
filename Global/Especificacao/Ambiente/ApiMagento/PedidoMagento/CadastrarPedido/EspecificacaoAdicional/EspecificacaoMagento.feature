@@ -12,8 +12,9 @@ Estoque: não é um problema.
 @ignore
 Scenario: preço: aceitamos o valor que vier do magento.
 	#nao fazemos nenhuma crítica nos preços que chegam do magento
+	# afazer - analisar se devemos verificar o RA em ValidacoesPrepedidoBll.ConfrontarTotaisEPercentualMaxRA
 	Given Pedido base
-	When Informo "VlTotalDestePedido" = "3800.00"
+	When Informo "VlTotalDestePedido" = "3200.00"
 	When Lista de itens "0" informo "Preco_Venda" = "650.00"
 	When Lista de itens "0" informo "Preco_NF" = "800.00"
 	When Lista de itens "1" informo "Preco_Venda" = "950.00"

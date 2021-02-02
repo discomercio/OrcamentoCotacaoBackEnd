@@ -69,6 +69,7 @@ namespace Pedido.Dados.Criacao
                 produtoPrepedido.Qtde = x.Qtde;
                 produtoPrepedido.TotalItem = x.TotalItem();
                 produtoPrepedido.TotalItemRA = x.TotalItemRA() ?? 0;
+                produtoPrepedido.Desc_Dado = x.Desc_Dado ?? 0;//não estava passando o desconto
                 lstPrepedidoProduto.Add(produtoPrepedido);
             }
 
