@@ -131,7 +131,10 @@ namespace Especificacao.Testes.Utils.BancoTestes
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO_ITEM", "pedido", pedido, campo, valor_desejado, this);
 
             var db = this.contextoBdProvider.GetContextoLeitura();
-            var registros = (from item in db.TpedidoItems where item.Pedido.Contains(pedido) select item).ToList();
+            var registros = (from item in db.TpedidoItems 
+                             where item.Pedido.Contains(pedido)
+                             orderby item.Sequencia
+                             select item).ToList();
             //deve ter um ou mais registros
             Assert.True(registros.Any());
 
