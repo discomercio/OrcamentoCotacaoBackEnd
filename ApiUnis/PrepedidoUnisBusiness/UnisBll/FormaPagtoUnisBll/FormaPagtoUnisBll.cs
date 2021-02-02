@@ -37,7 +37,8 @@ namespace PrepedidoUnisBusiness.UnisBll.FormaPagtoUnisBll
             {
                 retorno = FormaPagtoUnisDto.FormaPagtoUnisDtoDeFormaPagtoDto(
                     FormaPagtoDto.FormaPagtoDto_De_FormaPagtoDados(
-                       await formaPagtoBll.ObterFormaPagto(apelido, tipo_pessoa)));
+                       await formaPagtoBll.ObterFormaPagto(apelido, tipo_pessoa,
+                       InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS)));
             }
             else
             {

@@ -86,7 +86,8 @@ namespace Pedido.Criacao.Passo40
 
             /* 13- valida o tipo de parcelamento "AV", "CE", "SE" */
             /* 14- valida a quantidade de parcela */
-            FormaPagtoDados formasPagto = await Criacao.FormaPagtoBll.ObterFormaPagto(Pedido.Ambiente.Indicador, Pedido.Cliente.Tipo.ParaString());
+            FormaPagtoDados formasPagto = await Criacao.FormaPagtoBll.ObterFormaPagto(Pedido.Ambiente.Indicador, Pedido.Cliente.Tipo.ParaString(),
+                Pedido.Configuracao.SistemaResponsavelCadastro);
 
             UtilsGlobais.Util.ValidarTipoCustoFinanceiroFornecedor(Retorno.ListaErros, Criacao.Execucao.C_custoFinancFornecTipoParcelamento,
                 Criacao.Execucao.C_custoFinancFornecQtdeParcelas);

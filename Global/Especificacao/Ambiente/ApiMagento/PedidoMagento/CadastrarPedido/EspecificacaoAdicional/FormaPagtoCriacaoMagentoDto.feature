@@ -29,11 +29,13 @@ Scenario: Tipo_Parcelamento - á vista
 # Parcela única é validado apenas se o cliente for PJ, no caso do magento não faremos pedido para PJ mas,
 # aceitamos Parcela única para PF
 # isso ocorre em FormaPagoBll.ObterFormaPagto
-@ignore
+
 Scenario: Tipo_Parcelamento - parcela única
 	Given Pedido base
 	When Informo "Tipo_Parcelamento" = "5"
 	When Informo "C_pu_valor" = "3132.90"
+	When Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "019"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "123"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "tipo_parcelamento" = "5"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "pu_forma_pagto" = "2"
