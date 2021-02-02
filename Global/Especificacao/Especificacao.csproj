@@ -90,6 +90,7 @@
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo50\CamposSoltos - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\Passo20\ValidacaoEstoque - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\Passo20\ValidacaoEstoque2 - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\Passo60\Itens\ESTOQUE_produto_saida_v2 - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\SplitEstoqueResultante3casos - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Passo40ListaDependencias.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Validacao\Estoque.feature.cs" />
@@ -219,6 +220,9 @@
     </Compile>
     <Compile Update="Especificacao\Pedido\Passo60\Gravacao\Passo20\ValidacaoEstoque2.feature.cs">
       <DependentUpon>ValidacaoEstoque2.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\ESTOQUE_produto_saida_v2_rotina.feature.cs">
+      <DependentUpon>ESTOQUE_produto_saida_v2_rotina.feature</DependentUpon>
     </Compile>
     <Compile Update="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\SplitEstoqueResultanteCdManual.feature.cs">
       <DependentUpon>SplitEstoqueResultanteCdManual.feature</DependentUpon>
@@ -388,6 +392,10 @@
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo60\Gravacao\Passo20\ValidacaoEstoque2.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\ESTOQUE_produto_saida_v2_rotina.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>

@@ -15,6 +15,7 @@ Feature: Pedido de cliente PJ com endereço de entrega PJ - validação de telef
 #também em loja/PedidoNovoConsiste.asp
 
 Background: Api MAgento somente aceita pedidos PF
+	#o magento testa isto separadamente, em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\Pf_Telefones\*.feature
 	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	Given Pedido base cliente PJ com endereço de entrega PJ
 
@@ -32,7 +33,7 @@ Scenario: EndEtg_ddd_com 2
 	Then Erro "Endereço de entrega: DDD inválido!!"
 
 Scenario: EndEtg_tel_com
-#	if ((len(s_tel)=0) Or (len(s_tel)>=6)) then telefone_ok = True
+	#	if ((len(s_tel)=0) Or (len(s_tel)>=6)) then telefone_ok = True
 	When Informo "EndEtg_tel_com" = "123"
 	Then Erro "Endereço de entrega: telefone inválido!!"
 
@@ -72,7 +73,7 @@ Scenario: EndEtg_ddd_com_2 2
 	Then Erro "Endereço de entrega: DDD inválido!!"
 
 Scenario: EndEtg_tel_com_2
-#	if ((len(s_tel)=0) Or (len(s_tel)>=6)) then telefone_ok = True
+	#	if ((len(s_tel)=0) Or (len(s_tel)>=6)) then telefone_ok = True
 	When Informo "EndEtg_tel_com_2" = "123"
 	Then Erro "Endereço de entrega: telefone inválido!!"
 
@@ -127,11 +128,13 @@ Scenario: EndEtg_ddd_res
 	And Informo "EndEtg_tel_res" = "12345678"
 	Then Erro "Endereço de entrega: PJ não pode ter EndEtg_ddd_res (acertar a mensagem)"
 
+@ignore
 Scenario: nos telefones, os símbolos devem ser removidos
 	When Informo "EndEtg_tel_com" = "1234-5678"
 	Then Sem nenhum erro
 	And No registro gravado, campo "EndEtg_tel_com" = "12345678"
 
+@ignore
 Scenario: nos telefones, os símbolos devem ser removidos 2
 	When Informo "EndEtg_tel_com" = "123,.;5678"
 	Then Sem nenhum erro
