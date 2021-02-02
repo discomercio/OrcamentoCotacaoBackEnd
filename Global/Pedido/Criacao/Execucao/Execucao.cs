@@ -70,6 +70,9 @@ namespace Pedido.Criacao.Execucao
             await TabelasBanco.Inicializar();
 
             await ConfigurarVariaveisAdicionais(pedido);
+            await Transportadora_Inicializar(pedido);
+            await BlnMagentoPedidoComIndicador_Inicializar(pedido);
+            await ParametroPercDesagioRALiquida_Inicializar();
         }
 
         public short TOrcamentista_Permite_RA_Status { get; private set; } = 0;
@@ -81,7 +84,7 @@ namespace Pedido.Criacao.Execucao
         public float PercDescComissaoUtilizar { get; private set; } = 0;
         public string C_custoFinancFornecTipoParcelamento { get; private set; } = "";
         public short C_custoFinancFornecQtdeParcelas { get; private set; } = 0;
-        public bool isLojaGarantia { get; private set; } = false;
+        public bool IsLojaGarantia { get; private set; } = false;
 
         private async Task ConfigurarVariaveisAdicionais(PedidoCriacaoDados pedido)
         {
@@ -121,9 +124,9 @@ namespace Pedido.Criacao.Execucao
             Tloja tloja = await (from l in Criacao.ContextoProvider.GetContextoLeitura().Tlojas
                                  where l.Loja == pedido.Ambiente.Loja
                                  select l).FirstOrDefaultAsync();
-            isLojaGarantia = false;
+            IsLojaGarantia = false;
             if (tloja != null && tloja.Unidade_Negocio == Constantes.COD_UNIDADE_NEGOCIO_LOJA__GARANTIA)
-                isLojaGarantia = true;
+                IsLojaGarantia = true;
         }
 
 
@@ -175,6 +178,77 @@ namespace Pedido.Criacao.Execucao
         private bool _comissao_loja_indicou_calculado = false;
         #endregion
 
+
+        #region Transportadora
+        public Transportadora Transportadora
+        {
+            get
+            {
+                if (_transportadora == null)
+                    throw new ApplicationException($"_transportadora  acessado antes de ser calculado.");
+                return _transportadora;
+            }
+            private set => _transportadora = value;
+        }
+        private Transportadora? _transportadora = null;
+        private async Task Transportadora_Inicializar(PedidoCriacaoDados pedido)
+        {
+            Transportadora = await Transportadora.CriarInstancia(pedido);
+        }
+        #endregion
+
+        #region Id_cliente
+        public string Id_cliente
+        {
+            get
+            {
+                if (_id_cliente == null)
+                    throw new ApplicationException($"_id_cliente  acessado antes de ser calculado.");
+                return _id_cliente;
+            }
+            set => _id_cliente = value;
+        }
+        private string? _id_cliente = null;
+        #endregion
+
+        #region BlnMagentoPedidoComIndicador
+        public bool BlnMagentoPedidoComIndicador
+        {
+            get
+            {
+                if (_blnMagentoPedidoComIndicador == null)
+                    throw new ApplicationException($"_blnMagentoPedidoComIndicador acessado antes de ser calculado.");
+                return _blnMagentoPedidoComIndicador.Value;
+            }
+            private set => _blnMagentoPedidoComIndicador = value;
+        }
+        private bool? _blnMagentoPedidoComIndicador = null;
+        private async Task BlnMagentoPedidoComIndicador_Inicializar(PedidoCriacaoDados pedido)
+        {
+            //todo: fazer _blnMagentoPedidoComIndicador 
+            _blnMagentoPedidoComIndicador = false;
+        }
+        #endregion
+
+
+        #region ParametroPercDesagioRALiquida
+        public float ParametroPercDesagioRALiquida
+        {
+            get
+            {
+                if (_parametroPercDesagioRALiquida == null)
+                    throw new ApplicationException($"_parametroPercDesagioRALiquida  acessado antes de ser calculado.");
+                return _parametroPercDesagioRALiquida.Value;
+            }
+            private set => _parametroPercDesagioRALiquida = value;
+        }
+        private float? _parametroPercDesagioRALiquida = null;
+        private async Task ParametroPercDesagioRALiquida_Inicializar()
+        {
+            //todo: fazer ParametroPercDesagioRALiquida
+            ParametroPercDesagioRALiquida = 0;
+        }
+        #endregion
 
         public class GravacaoDados
         {

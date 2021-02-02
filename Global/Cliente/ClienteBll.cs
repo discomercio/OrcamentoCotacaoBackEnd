@@ -841,11 +841,9 @@ namespace Cliente
             return retorno;
         }
 
-        public async Task<string> BuscarIdCliente(string cpf_cnpj)
+        public static async Task<string> BuscarIdCliente(string cpf_cnpj, ContextoBd db)
         {
             string retorno = "";
-
-            var db = contextoProvider.GetContextoLeitura();
 
             cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
 

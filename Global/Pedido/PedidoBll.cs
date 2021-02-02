@@ -1200,7 +1200,7 @@ namespace Pedido
             return tfincontroleEditando.Nsu;
         }
 
-        public async Task<bool> Grava_log_estoque_v2(string strUsuario, short id_nfe_emitente, string strFabricante,
+        public static async Task<bool> Grava_log_estoque_v2(string strUsuario, short id_nfe_emitente, string strFabricante,
             string strProduto, short intQtdeSolicitada, short intQtdeAtendida, string strOperacao,
             string strCodEstoqueOrigem, string strCodEstoqueDestino, string strLojaEstoqueOrigem,
             string strLojaEstoqueDestino, string strPedidoEstoqueOrigem, string strPedidoEstoqueDestino,

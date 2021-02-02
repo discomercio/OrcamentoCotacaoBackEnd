@@ -19,10 +19,19 @@ namespace Pedido.Criacao.Passo10
 
         public async Task ValidarCliente()
         {
+            var idCLiente = await Cliente.ClienteBll.BuscarIdCliente(Pedido.Cliente.Cnpj_Cpf, Criacao.ContextoProvider.GetContextoLeitura());
+            if (idCLiente == null)
+            {
+                Retorno.ListaErros.Add($"O cliente não está cadastrado: {Pedido.Cliente.Cnpj_Cpf}");
+                return;
+            }
+            Criacao.Execucao.Id_cliente = idCLiente;
+
+
             //vamos validar os dados do cliente que esta vindo no pedido
             var dadosClienteCadastroDados = Cliente.Dados.DadosClienteCadastroDados.DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(Pedido.EnderecoCadastralCliente,
                 Pedido.Ambiente.Indicador, Pedido.Ambiente.Loja,
-                "", null, Pedido.Cliente.Id_cliente);
+                "", null, Criacao.Execucao.Id_cliente);
             await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDados,
                 false,
                 null,

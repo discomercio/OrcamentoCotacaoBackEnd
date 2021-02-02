@@ -90,8 +90,6 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             pedidoCriacaoDetalhesPedido.EntregaImediataData = null;
             pedidoCriacaoDetalhesPedido.Observacoes = pedidoMagento.Obs_1;
             pedidoCriacaoDetalhesPedido.GarantiaIndicador = Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO;
-            //Ponto de referência é armazenado onde???
-            //Frete é armazenado onde???
 
             var pedidoCriacaoValor = new Pedido.Dados.Criacao.PedidoCriacaoValorDados(
                 perc_RT: 0,
@@ -130,10 +128,13 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                     //Flag para saber se o cliente aceitou finalizar o pedido mesmo com produto sem estoque
                     opcaoVendaSemEstoque: true,
 
-                    loja_indicou: ""
+                    loja_indicou: "",
+
+                    operacao_origem: Constantes.OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO
                     ),
 
-                extra: new Pedido.Dados.Criacao.PedidoCriacaoExtraDados(pedido_bs_x_at: null, nfe_Texto_Constar: null, nfe_XPed: null),
+                extra: new Pedido.Dados.Criacao.PedidoCriacaoExtraDados(
+                    pedido_bs_x_at: null, nfe_Texto_Constar: null, nfe_XPed: null),
 
                 //Armazena os dados cadastrados do cliente
                 cliente: Pedido.Dados.Criacao.PedidoCriacaoClienteDados.PedidoCriacaoClienteDados_de_DadosClienteCadastroDados(dadosClienteMagento, midia: dadosClienteMidia),

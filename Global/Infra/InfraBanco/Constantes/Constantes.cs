@@ -15,13 +15,6 @@ namespace InfraBanco.Constantes
         public static string TEL_BONSHOP_2 = "1139344420";
         public static string TEL_BONSHOP_3 = "1139344411";
 
-        //todo: usar estes campos
-        public enum Cod_plataforma_origem
-        {
-            COD_PLATAFORMA_ORIGEM_PEDIDO__ERP = 0,
-            COD_PLATAFORMA_ORIGEM_PEDIDO__MAGENTO = 1
-        };
-
         public enum CodSistemaResponsavel
         {
             COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP = 1,
@@ -682,9 +675,12 @@ namespace InfraBanco.Constantes
         public const string OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO = "PED_NOVO_EC_SEMI_AUTO";
 
 
-        public const int COD_PLATAFORMA_ORIGEM_PEDIDO__ERP = 0;
+        public enum Cod_plataforma_origem
+        {
+            COD_PLATAFORMA_ORIGEM_PEDIDO__ERP = 0,
+            COD_PLATAFORMA_ORIGEM_PEDIDO__MAGENTO = 1
+        };
 
-        public const int COD_PLATAFORMA_ORIGEM_PEDIDO__MAGENTO = 1;
 
         //' CÓDIGOS PARA NÍVEL DOS USUÁRIOS
 

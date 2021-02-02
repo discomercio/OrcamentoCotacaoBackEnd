@@ -90,6 +90,7 @@ Fluxo no módulo loja:
             if (retorno.AlgumErro()) return retorno;
 
             await passo10.ValidarCliente();
+            if (retorno.AlgumErro()) return retorno;
 
             //somente valida o endereço de entrega. Os dados cadastrais são validados no passo 10 (ou 25)
             //na API magento, por hora, nunca será feito
@@ -104,11 +105,14 @@ Fluxo no módulo loja:
 
             await new Passo60.Passo60(pedido, retorno, this).Executar();
 
-
+            //se tiver algum erro, limpa os numeros de pedidos gerados
             if (retorno.AlgumErro())
-                return retorno;
+            {
+                retorno.LimparPedidos();
+            }
+            return retorno;
 
-            return await CadastrarPedido_anterior(pedido, Execucao.UsuarioPermissao);
+            //return await CadastrarPedido_anterior(pedido, Execucao.UsuarioPermissao);
         }
 
         private async Task<PedidoCriacaoRetornoDados> CadastrarPedido_anterior(PedidoCriacaoDados pedido,
@@ -156,7 +160,7 @@ Fluxo no módulo loja:
                 });
             };
 
-            await new Pedido.PedidoRepetidoBll(ContextoProvider).PedidoJaCadastrado(pedido, pedidoRetorno.ListaErros);
+            await new Pedido.PedidoRepetidoBll(ContextoProvider).PedidoJaCadastrado(pedido, pedidoRetorno.ListaErros, tcliente.Id);
 
             //se tiver erro vamos retornar
             if (pedidoRetorno.ListaErros.Count > 0)
@@ -167,7 +171,7 @@ Fluxo no módulo loja:
             //estamos alterando o v_item com descontos verificados e aplicados
             List<string> vdesconto = new List<string>();
             await PedidoBll.VerificarDescontoArredondado(this, pedido.Ambiente.Loja, v_item, pedidoRetorno.ListaErros, Execucao.C_custoFinancFornecTipoParcelamento,
-                Execucao.C_custoFinancFornecQtdeParcelas, pedido.Cliente.Id_cliente, Execucao.PercDescComissaoUtilizar, vdesconto);
+                Execucao.C_custoFinancFornecQtdeParcelas, tcliente.Id, Execucao.PercDescComissaoUtilizar, vdesconto);
 
             /* 15- busca o coeficiente de cada produto do item 6 */
             //vou buscar a lista de coeficiente para calcular o valor de custoFinacFornec...
