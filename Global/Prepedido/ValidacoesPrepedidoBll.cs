@@ -33,10 +33,17 @@ namespace Prepedido
             this.bancoNFeMunicipio = bancoNFeMunicipio;
         }
 
+
+        public enum AmbienteValidacao
+        {
+            PrepedidoValidacao, PedidoValidacao
+        }
+
         //vamos validar os produtos que foram enviados
         public async Task MontarProdutosParaComparacao(PrePedidoDados prepedido,
                     string siglaFormaPagto, int qtdeParcelas, string loja, List<string> lstErros, decimal percVlPedidoRA,
-                    decimal limiteArredondamento)
+                    decimal limiteArredondamento,
+                    AmbienteValidacao ambienteValidacao)
         {
 
 
@@ -73,7 +80,7 @@ namespace Prepedido
                     CalcularProdutoComCoeficiente(lstProdutosCompare, lstCoeficiente);
 
                 ConfrontarProdutos(prepedido, lstProdutosCompare, lstErros, limiteArredondamento);
-                ConfrontarTotaisEPercentualMaxRA(prepedido, lstErros, percVlPedidoRA);
+                ConfrontarTotaisEPercentualMaxRA(prepedido, lstErros, percVlPedidoRA, ambienteValidacao);
             }
         }
 
@@ -309,7 +316,7 @@ namespace Prepedido
         }
 
         private void ConfrontarTotaisEPercentualMaxRA(PrePedidoDados prepedido, List<string> lstErros,
-            decimal percVlPedidoRA)
+            decimal percVlPedidoRA, AmbienteValidacao ambienteValidacao)
         {
             decimal totalCompare = 0;
             decimal totalRaCompare = 0;
@@ -328,13 +335,16 @@ namespace Prepedido
                 if (totalRaCompare != (decimal)prepedido.Vl_total_NF)
                     lstErros.Add("Os valores totais de RA estão divergindo!");
 
-                //vamos verificar o valor de RA
-                decimal ra = totalRaCompare - totalCompare;
-                decimal perc = Math.Round((decimal)(percVlPedidoRA / 100), 2);
-                decimal percentual = Math.Round(perc * (decimal)prepedido.Vl_total, 2);
+                if (ambienteValidacao == AmbienteValidacao.PrepedidoValidacao)
+                {
+                    //vamos verificar o valor de RA
+                    decimal ra = totalRaCompare - totalCompare;
+                    decimal perc = Math.Round((decimal)(percVlPedidoRA / 100), 2);
+                    decimal percentual = Math.Round(perc * (decimal)prepedido.Vl_total, 2);
 
-                if (ra > percentual)
-                    lstErros.Add("O valor total de RA excede o limite permitido!");
+                    if (ra > percentual)
+                        lstErros.Add("O valor total de RA excede o limite permitido!");
+                }
             }
         }
 

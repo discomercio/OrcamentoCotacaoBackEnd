@@ -103,7 +103,8 @@ namespace Pedido.Criacao.Passo40
                 Pedido, Criacao.Execucao.Id_cliente);
             await Criacao.ValidacoesPrepedidoBll.MontarProdutosParaComparacao(prepedido,
                         Criacao.Execucao.C_custoFinancFornecTipoParcelamento, Criacao.Execucao.C_custoFinancFornecQtdeParcelas,
-                        Pedido.Ambiente.Loja, Retorno.ListaErros, (decimal)Criacao.Execucao.Perc_limite_RA_sem_desagio, Pedido.Configuracao.LimiteArredondamento);
+                        Pedido.Ambiente.Loja, Retorno.ListaErros, (decimal)Criacao.Execucao.Perc_limite_RA_sem_desagio, Pedido.Configuracao.LimiteArredondamento,
+                        Prepedido.ValidacoesPrepedidoBll.AmbienteValidacao.PedidoValidacao);
 
             //se tiver erro vamos retornar
             if (Retorno.ListaErros.Count > 0)
