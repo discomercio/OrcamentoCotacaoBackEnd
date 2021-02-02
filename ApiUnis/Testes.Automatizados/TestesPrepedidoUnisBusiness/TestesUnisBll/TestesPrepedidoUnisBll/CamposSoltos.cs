@@ -52,6 +52,19 @@ VlTotalDestePedido	number($double)
             Teste(c => c.ValorTotalDestePedidoComRA = 1, "Valor total da forma de pagamento diferente do valor total!");
             Teste(c => c.VlTotalDestePedido = 1, "Os valores totais estão divergindo!");
         }
+
+        [Fact]
+        public void ExcedeValorDeRA()
+        {
+            //afazer: gerar o valor que excede o limite de ra            
+            TesteParcCartao(c => {
+                c.ValorTotalDestePedidoComRA = 4400M;
+                c.FormaPagtoCriacao.C_pc_valor = 1100M;
+                c.ListaProdutos[0].Preco_NF = 1100M;
+                c.ListaProdutos[1].Preco_NF = 1100M;
+            }, "O valor total de RA excede o limite permitido!");
+        }
+
         [Fact]
         public void Indicador_Orcamentista()
         {
