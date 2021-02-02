@@ -42,6 +42,7 @@ Flag que informa se o indicador pode ou não fazer uso de RA:
 	0 = Não permite RA
 	1 = Permite RA
 */
+        //todo: remover esta variavel
         public bool PermiteRAStatus { get; }
     }
 }

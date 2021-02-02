@@ -19,18 +19,19 @@ namespace Pedido
             this.contextoProvider = contextoProvider;
         }
 
-        public async Task PedidoJaCadastrado(PedidoCriacaoDados pedido, List<string> listaErros)
+        public async Task PedidoJaCadastrado(PedidoCriacaoDados pedido, List<string> listaErros, string id_cliente)
         {
             DateTime dataLimite = DateTime.Now.AddSeconds(-1 * pedido.Configuracao.LimitePedidosExatamenteIguais_TempoSegundos);
-            var repetidos = await PedidoJaCadastradoDesdeData(pedido, dataLimite);
-            if (repetidos.Count < pedido.Configuracao.LimitePedidosExatamenteIguais_Numero)
+            var repetidos = await PedidoJaCadastradoDesdeData(pedido, dataLimite, id_cliente);
+            if (repetidos.Count() < pedido.Configuracao.LimitePedidosExatamenteIguais_Numero)
                 return;
 
             foreach (var pedidoJaCadastrado in repetidos)
                 listaErros.Add($"Esta solicitação já foi gravada com o número {pedidoJaCadastrado}");
         }
 
-        public async Task<List<string>> PedidoJaCadastradoDesdeData(PedidoCriacaoDados pedido, DateTime dataLimite)
+        public async Task<List<string>> PedidoJaCadastradoDesdeData(PedidoCriacaoDados pedido, DateTime dataLimite,
+            string id_cliente)
         {
             List<string> ret = new List<string>();
             //"SELECT t_PEDIDO.pedido, fabricante, produto, qtde, preco_venda FROM t_PEDIDO INNER JOIN t_PEDIDO_ITEM ON (t_PEDIDO.pedido=t_PEDIDO_ITEM.pedido)" & _
@@ -59,7 +60,7 @@ namespace Pedido
                                            select new { pedidoBanco.Pedido, item.Fabricante, item.Produto, item.Qtde, item.Preco_Venda }).ToListAsync();
                                            */
             var pedidosFiltradosSemData = await (from pedidoBanco in db.Tpedidos
-                                                 where pedidoBanco.Id_Cliente == pedido.Cliente.Id_cliente &&
+                                                 where pedidoBanco.Id_Cliente == id_cliente &&
                                                       pedidoBanco.Loja == pedido.Ambiente.Loja &&
                                                       pedidoBanco.Usuario_Cadastro == pedido.Ambiente.Usuario &&
                                                       pedidoBanco.St_Entrega != InfraBanco.Constantes.Constantes.ST_ENTREGA_CANCELADO

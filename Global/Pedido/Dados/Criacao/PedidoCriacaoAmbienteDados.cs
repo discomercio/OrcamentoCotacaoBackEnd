@@ -8,7 +8,8 @@ namespace Pedido.Dados.Criacao
 {
     public class PedidoCriacaoAmbienteDados
     {
-        public PedidoCriacaoAmbienteDados(string loja, string vendedor, string usuario, bool comIndicador, string indicador, string orcamentista, int id_nfe_emitente_selecao_manual, bool venda_Externa, bool opcaoVendaSemEstoque, string loja_indicou)
+        public PedidoCriacaoAmbienteDados(string loja, string vendedor, string usuario, bool comIndicador, string indicador, string orcamentista, int id_nfe_emitente_selecao_manual, bool venda_Externa, bool opcaoVendaSemEstoque, string loja_indicou,
+            string operacao_origem)
         {
             //pode vir com null
             indicador ??= "";
@@ -25,6 +26,9 @@ namespace Pedido.Dados.Criacao
             Venda_Externa = venda_Externa;
             OpcaoVendaSemEstoque = opcaoVendaSemEstoque;
             Loja_indicou = loja_indicou ?? throw new ArgumentNullException(nameof(loja_indicou));
+
+            //vazio ou OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO
+            Operacao_origem = operacao_origem ?? "";
         }
 
         //Armazena a loja do usuário logado
@@ -53,5 +57,7 @@ namespace Pedido.Dados.Criacao
         public bool OpcaoVendaSemEstoque { get; }
 
         public string Loja_indicou { get; }
+
+        public string Operacao_origem { get; }
     }
 }

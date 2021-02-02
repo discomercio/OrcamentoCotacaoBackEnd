@@ -66,10 +66,14 @@ namespace Pedido.Criacao.Passo60.Gravacao
 
 
             //se tiver erro, nao continua
-            if (Retorno.AlgumErro()) return;
-            //finalmente salva
-            //ainda não!
-            //contextoBdGravacao.transacao.Commit();
+            if (Retorno.AlgumErro())
+            {
+                contextoBdGravacao.transacao.Rollback();
+                return;
+            }
+
+            await contextoBdGravacao.SaveChangesAsync();
+            contextoBdGravacao.transacao.Commit();
         }
     }
 }

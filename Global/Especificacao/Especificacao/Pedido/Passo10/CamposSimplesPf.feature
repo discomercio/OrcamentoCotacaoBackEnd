@@ -9,6 +9,9 @@ Background: Configuração
 	#não sei pq está aceitando com CPF inválido. Porvavelmente está testando outro campo
 	Given Ignorar cenário no ambiente "Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApiBll.CadastrarPrepedido.CadastrarPrepedidoPrepedidoApi"
 
+	#no pedido a mensagem é diferente, só na loja
+	Given No ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido" mapear erro "CPF INVÁLIDO." para "regex O cliente não está cadastrado.*"
+
 @ListaDependencias
 Scenario: CamposSimples ListaDependencias Configuração
 	Given Nome deste item "Especificacao.Pedido.Passo10.CamposSimplesPfListaDependencias"

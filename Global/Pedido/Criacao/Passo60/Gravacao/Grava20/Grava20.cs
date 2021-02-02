@@ -25,7 +25,9 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava20
             //			Descobrir em t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD os CDs que atendem em ordem de prioridade
             //		Lê as tabelas t_PRODUTO_X_WMS_REGRA_CD, t_WMS_REGRA_CD, t_WMS_REGRA_CD_X_UF, t_WMS_REGRA_CD_X_UF_X_PESSOA, t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD
 
-            Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prepedido = PedidoCriacaoDados.PrePedidoDadosDePedidoCriacaoDados(Pedido);
+            Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prepedido = PedidoCriacaoDados.PrePedidoDadosDePedidoCriacaoDados(
+                Pedido,
+                Execucao.Id_cliente);
 
             //estes dados são lidso com o contexto de leitura, e ficam fora da transação
             List<Produto.RegrasCrtlEstoque.RegrasBll> listaRegras = await Prepedido.PrepedidoBll.ObtemCtrlEstoqueProdutoRegra(

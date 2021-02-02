@@ -13,7 +13,7 @@ namespace Pedido.Dados.Criacao
             Pedido_bs_x_marketplace = pedido_bs_x_marketplace;
         }
 
-        public string? Pedido_bs_x_ac { get; }
+        public string? Pedido_bs_x_ac { get; } //Número magenot, no asp também é pedido_ac
         public string? Marketplace_codigo_origem { get; }
         public string? Pedido_bs_x_marketplace { get; }
 

@@ -328,7 +328,7 @@ namespace Pedido
                 {
                     //indicador: se este pedido é com indicador e o cliente ainda 
                     //não tem um indicador no cadastro, então cadastra este.
-                    CadastrarIndicador(pedidoDados, pedidonovo, pedidonovoTrocaId, dbGravacao, ref s_log_cliente_indicador);
+                    CadastrarIndicador(pedidoDados, pedidonovo, pedidonovoTrocaId, dbGravacao, ref s_log_cliente_indicador, cliente.Id);
 
                 }
             }
@@ -868,8 +868,9 @@ namespace Pedido
             return numPedido;
         }
 
+        //todo: revisar Estoque_produto_saida_v2 e mover para o projeto de produto
         //Estamos gerando o id_estoque, id_estoque_movimento, gravando e gravando o Log
-        public async Task<bool> EstoqueProdutoSaidaV2(string id_usuario, string id_pedido, short id_nfe_emitente,
+        public static async Task<bool> Estoque_produto_saida_v2(string id_usuario, string id_pedido, short id_nfe_emitente,
             string id_fabricante, string id_produto, int qtde_a_sair, int qtde_autorizada_sem_presenca,
             short[] qtde_estoque_aux, List<string> lstErros, ContextoBdGravacao dbGravacao)
         {
@@ -1059,7 +1060,7 @@ namespace Pedido
 
 
             //log de movimentação do estoque
-            if (!await pedidoBll.Grava_log_estoque_v2(id_usuario, id_nfe_emitente, id_fabricante, id_produto,
+            if (!await PedidoBll.Grava_log_estoque_v2(id_usuario, id_nfe_emitente, id_fabricante, id_produto,
                 (short)qtde_a_sair, qtde_estoque_aux[0], InfraBanco.Constantes.Constantes.OP_ESTOQUE_LOG_VENDA,
                 InfraBanco.Constantes.Constantes.ID_ESTOQUE_VENDA, InfraBanco.Constantes.Constantes.ID_ESTOQUE_VENDIDO,
                 "", "", "", id_pedido, "", "", "", dbGravacao))
@@ -1069,7 +1070,7 @@ namespace Pedido
             }
             if (qtde_estoque_aux[1] > 0)
             {
-                if (!await pedidoBll.Grava_log_estoque_v2(id_usuario, id_nfe_emitente, id_fabricante, id_produto,
+                if (!await PedidoBll.Grava_log_estoque_v2(id_usuario, id_nfe_emitente, id_fabricante, id_produto,
                 qtde_estoque_aux[1], qtde_estoque_aux[1],
                 InfraBanco.Constantes.Constantes.OP_ESTOQUE_LOG_VENDA_SEM_PRESENCA, "",
                 InfraBanco.Constantes.Constantes.ID_ESTOQUE_SEM_PRESENCA, "", "", "", id_pedido, "", "", "", dbGravacao))
@@ -1270,7 +1271,7 @@ namespace Pedido
 
         }
 
-        public async Task<string> GeraIdEstoqueMovto(List<string> lstErros, ContextoBdGravacao contexto)
+        public static async Task<string> GeraIdEstoqueMovto(List<string> lstErros, ContextoBdGravacao contexto)
         {
             string retorno = "";
             retorno = await UtilsGlobais.Util.GerarNsu(contexto, InfraBanco.Constantes.Constantes.NSU_ID_ESTOQUE_MOVTO);
@@ -1338,7 +1339,7 @@ namespace Pedido
         }
 
         private void CadastrarIndicador(PedidoCriacaoDados pedido, Tpedido pedidonovo, Tpedido pedidonovoTrocaId,
-            ContextoBdGravacao dbGravacao, ref string s_log_cliente_indicador)
+            ContextoBdGravacao dbGravacao, ref string s_log_cliente_indicador, string id_cliente)
         {
             if (pedido.Ambiente.ComIndicador)
             {
@@ -1351,7 +1352,7 @@ namespace Pedido
                     dbGravacao.SaveChanges();
 
                     s_log_cliente_indicador = "Cadastrado o indicador '" + pedido.Ambiente.Indicador +
-                       "' no cliente id=" + pedido.Cliente.Id_cliente;
+                       "' no cliente id=" + id_cliente;
                 }
             }
         }
@@ -1883,7 +1884,7 @@ namespace Pedido
                 qtde_spe = 0;
             }
 
-            if (!await EstoqueProdutoSaidaV2(usuario_atual, id_pedido_temp, (short)vEmpresaAutoSplit,
+            if (!await Estoque_produto_saida_v2(usuario_atual, id_pedido_temp, (short)vEmpresaAutoSplit,
                 item.Fabricante, item.Produto, (int)(regra_UF_Pessoa_CD.Estoque_Qtde_Solicitado ?? 0), qtde_spe,
                 qtde_estoque_aux, lstErros, dbGravacao))
             {

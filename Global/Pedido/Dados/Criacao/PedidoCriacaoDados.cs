@@ -61,11 +61,11 @@ namespace Pedido.Dados.Criacao
         //campos do marketplace
         public PedidoCriacaoMarketplaceDados Marketplace { get; }
 
-        public static Prepedido.Dados.DetalhesPrepedido.PrePedidoDados PrePedidoDadosDePedidoCriacaoDados(PedidoCriacaoDados pedido)
+        public static Prepedido.Dados.DetalhesPrepedido.PrePedidoDados PrePedidoDadosDePedidoCriacaoDados(PedidoCriacaoDados pedido, string id_cliente)
         {
             Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prepedido = new Prepedido.Dados.DetalhesPrepedido.PrePedidoDados();
             prepedido.DadosCliente = global::Cliente.Dados.DadosClienteCadastroDados.DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(pedido.EnderecoCadastralCliente,
-                pedido.Ambiente.Indicador, pedido.Ambiente.Loja, "", null, pedido.Cliente.Id_cliente);
+                pedido.Ambiente.Indicador, pedido.Ambiente.Loja, "", null, id_cliente);
             prepedido.ListaProdutos = Pedido.Dados.Criacao.PedidoCriacaoProdutoDados.PrepedidoProdutoPrepedidoDados_De_PedidoCriacaoProdutoDados(pedido.ListaProdutos);
             prepedido.FormaPagtoCriacao = pedido.FormaPagtoCriacao;
             prepedido.EnderecoEntrega = pedido.EnderecoEntrega;

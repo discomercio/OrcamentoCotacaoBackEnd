@@ -95,7 +95,8 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                     venda_Externa: venda_externa,
                     opcaoVendaSemEstoque: pedidoDto.OpcaoVendaSemEstoque,
                     vendedor: usuario,
-                    loja_indicou: ""
+                    loja_indicou: "",
+                    operacao_origem: ""
                     ),
                 extra: new Pedido.Dados.Criacao.PedidoCriacaoExtraDados(pedido_bs_x_at: null, nfe_Texto_Constar: null, nfe_XPed: null),
                 cliente: Pedido.Dados.Criacao.PedidoCriacaoClienteDados.PedidoCriacaoClienteDados_de_DadosClienteCadastroDados(

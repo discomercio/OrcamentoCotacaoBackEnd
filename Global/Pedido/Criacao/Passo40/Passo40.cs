@@ -99,7 +99,8 @@ namespace Pedido.Criacao.Passo40
             ValidarProdutosComFormaPagto(Retorno.ListaErros);
 
             //validar os produtos
-            Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prepedido = PedidoCriacaoDados.PrePedidoDadosDePedidoCriacaoDados(Pedido);
+            Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prepedido = PedidoCriacaoDados.PrePedidoDadosDePedidoCriacaoDados(
+                Pedido, Criacao.Execucao.Id_cliente);
             await Criacao.ValidacoesPrepedidoBll.MontarProdutosParaComparacao(prepedido,
                         Criacao.Execucao.C_custoFinancFornecTipoParcelamento, Criacao.Execucao.C_custoFinancFornecQtdeParcelas,
                         Pedido.Ambiente.Loja, Retorno.ListaErros, (decimal)Criacao.Execucao.Perc_limite_RA_sem_desagio, Pedido.Configuracao.LimiteArredondamento);
