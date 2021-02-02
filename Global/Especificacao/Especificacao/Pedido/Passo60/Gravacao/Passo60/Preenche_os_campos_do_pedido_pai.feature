@@ -16,6 +16,7 @@ Feature: Preenche_os_campos_do_pedido_pai
 Background: Setup
 	#ignoramos no prepedio inteiro
 	Given Ignorar cenário no ambiente "Especificacao.Prepedido.PrepedidoSteps"
+	
 
 #a maioria no pai e filhotes, alguns só no pai, alguns só nos filhotes
 #loja/PedidoNovoConfirma.asp
@@ -368,6 +369,7 @@ Scenario: Preenche_os_campos_do_pedido - Marketplace e magento
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "magento_installer_commission_discount" = "0.0000"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "magento_shipping_amount" = "0.0000"
 
+@ignore
 Scenario: perc_desagio_RA_liquida
 
 #gravado no pai e nos filhotes, depende da loja (NUMERO_LOJA_ECOMMERCE_AR_CLUBE nunca é gravado)

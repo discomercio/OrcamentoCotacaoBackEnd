@@ -273,9 +273,11 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="Preenche_os_campos_do_pedido_filhote - pagamento")]
         [Xunit.TraitAttribute("FeatureTitle", "Preenche_os_campos_do_pedido_filhote")]
         [Xunit.TraitAttribute("Description", "Preenche_os_campos_do_pedido_filhote - pagamento")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void Preenche_Os_Campos_Do_Pedido_Filhote_Pagamento()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido_filhote - pagamento", null, tagsOfScenario, argumentsOfScenario);
 #line 49
