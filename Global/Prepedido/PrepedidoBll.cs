@@ -787,7 +787,8 @@ namespace Prepedido
 
             await validacoesPrepedidoBll.MontarProdutosParaComparacao(prePedido,
                 c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas,
-                prePedido.DadosCliente.Loja, lstErros, percVlPedidoRA, limiteArredondamento);
+                prePedido.DadosCliente.Loja, lstErros, percVlPedidoRA, limiteArredondamento,
+                ValidacoesPrepedidoBll.AmbienteValidacao.PrepedidoValidacao);
 
 
             Util.ValidarTipoCustoFinanceiroFornecedor(lstErros, c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas);

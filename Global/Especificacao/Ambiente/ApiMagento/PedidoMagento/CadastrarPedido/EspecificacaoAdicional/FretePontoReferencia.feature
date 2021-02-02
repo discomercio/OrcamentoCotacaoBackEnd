@@ -41,7 +41,7 @@ Scenario: Ponto de Referência - diferente de EndEtg_endereco_complemento
 	#Necessário fazer essa condição na conversão de dados
 	#diferente do EndEtg_endereco_complemento
 	Given Pedido base
-	When Informo "PontoReferencia" = "teste de ponto de referencia"
+	When Informo "EnderecoEntrega.PontoReferencia" = "teste de ponto de referencia"
 	When Informo "EndEtg_endereco_complemento" = "outro texto"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "NFe_texto_constar" = "teste de ponto de referencia"
@@ -52,7 +52,7 @@ Scenario:  Ponto de Referência - igual de EndEtg_endereco_complemento
 	#com o campo complemento. Se forem iguais,
 	#não colocar em 'Constar na NF'.
 	Given Pedido base
-	When Informo "PontoReferencia" = "teste de ponto de referencia"
+	When Informo "EnderecoEntrega.PontoReferencia" = "teste de ponto de referencia"
 	When Informo "EndEtg_endereco_complemento" = "teste de ponto de referencia"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "NFe_texto_constar" = ""
@@ -62,7 +62,8 @@ Scenario:  Ponto de Referência - EndEtg_endereco_complemento com mais de 60 car
 	#Se o campo complemento exceder o tamanho do BD e precisar ser truncado,
 	#copiá-lo no campo 'Constar na NF', junto com o ponto de referência.
 	Given Pedido base
-	When Informo "PontoReferencia" = "teste de ponto de referencia"
+	When Informo "EnderecoEntrega.PontoReferencia" = "teste de ponto de referencia"
 	When Informo "EndEtg_endereco_complemento" = "complemento endereço entrega 12 complemento endereço entrega 12"
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro criado, verificar campo "NFe_texto_constar" = "teste de ponto de referencia complemento endereço entrega 12 complemento endereço entrega 12"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "NFe_texto_constar" = "complemento endereço entrega 12 complemento endereço entrega 12 teste de ponto de referencia"
+
