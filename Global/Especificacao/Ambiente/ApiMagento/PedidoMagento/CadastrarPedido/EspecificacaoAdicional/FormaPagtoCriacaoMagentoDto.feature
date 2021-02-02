@@ -43,9 +43,8 @@ Scenario: Tipo_Parcelamento - parcela única
 	And Tabela "t_PEDIDO" registro criado, verificar campo "pc_valor_parcela" = "0.0"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "av_forma_pagto" = "0"
 
-@ignore
+
 Scenario: Tipo_Parcelamento - parcelado cartão
-	#afazer - necessário cria o calculo de desconto para quando confrontar os dados o valor de preco_lista esteja correto
 	Given Pedido base
 	When Informo "Tipo_Parcelamento" = "2"
 	When Informo "C_pc_qtde" = "1"
