@@ -14,11 +14,8 @@ Feature: CadastroIndicador
 #		end if
 @ignore
 Scenario: CadastroIndicador
-	#Given t_CLIENTE registro com "cpf_cnpj" = "352.704.458-24" alterar campo "indicador" = ""
-	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
-	Given Ignorar cenário no ambiente "Especificacao.Prepedido.PrepedidoSteps"
-	Given Tabela t_CLIENTE registro com cpf_cnpj = "35270445824" alterar campo "indicador" = "POLITÉCNIC"
-	When Pedido base 
+	Given Tabela t_CLIENTE registro com cpf_cnpj = "35270445824" alterar campo "indicador" = ""
+	Given Pedido base 
 	When Informo "DadosCliente.Indicador_Orcamentista" = "POLITÉCNIC"
 	Then Sem nenhum erro
 	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "35270445824", verificar campo "indicador" = "POLITÉCNIC"
