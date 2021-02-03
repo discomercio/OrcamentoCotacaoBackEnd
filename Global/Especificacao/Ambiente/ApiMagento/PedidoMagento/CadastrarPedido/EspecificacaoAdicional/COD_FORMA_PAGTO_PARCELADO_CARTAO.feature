@@ -20,7 +20,6 @@ Feature: COD_FORMA_PAGTO_PARCELADO_CARTAO
 #  ],
 #  "VlTotalDestePedido": 3440.00,
 Scenario: COD_FORMA_PAGTO_PARCELADO_CARTAO
-	#ao debugar o teste ele passa 1 vez e valida os 2 itens, depois ele segue e valida novamente e gera erro
 	Given Pedido base
 	When Informo "FormaPagtoCriacao.Tipo_Parcelamento" = "COD_FORMA_PAGTO_PARCELADO_CARTAO"
 	When Informo "FormaPagtoCriacao.C_pc_qtde" = "1"

@@ -9,10 +9,7 @@ Feature: Preenche_os_campos_do_pedido_pai
 #	linha 1892 rs("st_auto_split") = 1 até 1903 rs("forma_pagto")=""
 #Transfere mais campos: linha 1907 até 2055
 #
-#Gabriel fez o pedido 222267N com o mesmo endereço de entrega do json e com os mesmos produtos
-#e fez split manualmente, verifiquei o o cd é o mesmo
-# nos pedidos que fizeram spli auto os cd são diferentes
-# no meu teste não tinha a opção de selecionar um cd e nem selcionar se era auto
+
 Background: Setup
 	#ignoramos no prepedio inteiro
 	Given Ignorar cenário no ambiente "Especificacao.Prepedido.PrepedidoSteps"
@@ -27,7 +24,7 @@ Background: Setup
 #rs.Update
 @ignore
 Scenario: Preenche_os_campos_do_pedido_pai - endereco
-	# não sei como fazer a validação corretamente pq os campos e os json tem valores diferentes
+	
 	Given Pedido base
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_memorizacao_completa_enderecos" = "1"

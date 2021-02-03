@@ -19,4 +19,3 @@ Scenario: sem indicador não pode ter RA
 	When Informo "NomeIndicador" = "POLITÉCNIC"
 	When Informo "OpcaoPossuiRA" = "S"
 	Then Sem nenhum erro
-	#não sei ao certo o que esperar
