@@ -1,7 +1,10 @@
-﻿@ignore
-@Especificacao.Pedido.Passo60
+﻿@Especificacao.Pedido.Passo60
 Feature: st_entrega
 
+Background:
+	Given Ignorar cenário no ambiente "Especificacao.Prepedido.PrepedidoSteps"
+
+@ignore
 Scenario: st_entrega
 	#loja/PedidoNovoConfirma.asp
 	#'		STATUS DE ENTREGA
@@ -21,10 +24,11 @@ Scenario: st_entrega
 Scenario: st_entrega - separar
 	Given Pedido base
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro criado, verificar campo "st_entrega" = "SEP"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_entrega" = "SEP"
 
 #Se nenhum produto saiu do estoque (tabela t_ESTOQUE_ITEM)
 #	st_entrega = ST_ENTREGA_ESPERAR
+@ignore
 Scenario: st_entrega - esperar
 	Given Pedido base
 	And Alterar a qtde de estoque vendido para ser 0
@@ -33,6 +37,7 @@ Scenario: st_entrega - esperar
 
 #Se algum produto saiu do estoque e algum produto foi vendido sem presença no estoque
 #	st_entrega = ST_ENTREGA_SPLIT_POSSIVEL
+@ignore
 Scenario: st_entregar - split possivel
 	#criamos um pedido com split possivel no verdinho com esses dados
 	Given Pedido base
@@ -42,4 +47,4 @@ Scenario: st_entregar - split possivel
 	When Informo "VlTotalDestePedido" = ""
 	When Informo "FormaPagtoCriacao.C_pc_valor" = "173512.00"
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro criado, verificar campo "st_entrega" = "SPL"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_entrega" = "SPL"
