@@ -385,11 +385,9 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="Validar se o que expomos pelo ObterCodigoMarketplace foi informado - sucesso")]
         [Xunit.TraitAttribute("FeatureTitle", "PedidoMagentoDto")]
         [Xunit.TraitAttribute("Description", "Validar se o que expomos pelo ObterCodigoMarketplace foi informado - sucesso")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void ValidarSeOQueExpomosPeloObterCodigoMarketplaceFoiInformado_Sucesso()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar se o que expomos pelo ObterCodigoMarketplace foi informado - sucesso", null, tagsOfScenario, argumentsOfScenario);
 #line 71

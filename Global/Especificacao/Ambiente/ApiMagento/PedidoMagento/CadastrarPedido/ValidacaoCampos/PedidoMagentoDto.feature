@@ -67,7 +67,7 @@ Scenario: Validar se o que expomos pelo ObterCodigoMarketplace foi informado - e
 	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "123"
 	Then Erro "Código Marketplace não encontrado."
 
-@ignore
+
 Scenario: Validar se o que expomos pelo ObterCodigoMarketplace foi informado - sucesso
 	#precisa ser parcela única para poder ter o Marketplace_codigo_origem
 	#precisa ajustar a validação para aceita PF com parcela única no magento
