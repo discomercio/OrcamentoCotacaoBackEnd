@@ -25,11 +25,6 @@ Scenario: Tipo_Parcelamento - á vista
 	And Tabela "t_PEDIDO" registro criado, verificar campo "pc_qtde_parcelas" = "0"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "pc_valor_parcela" = "0.0"
 
-#afazer: precisa fazer alteração em todas as aplicações para passar o sistemaResponsavel
-# Parcela única é validado apenas se o cliente for PJ, no caso do magento não faremos pedido para PJ mas,
-# aceitamos Parcela única para PF
-# isso ocorre em FormaPagoBll.ObterFormaPagto
-
 Scenario: Tipo_Parcelamento - parcela única
 	Given Pedido base
 	When Informo "Tipo_Parcelamento" = "5"

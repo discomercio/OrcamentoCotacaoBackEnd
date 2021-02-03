@@ -31,9 +31,7 @@ Scenario: Referencias PJ
 	When Informo "RefBancaria" =  ""
 	Then Sem nenhum erro
 
-#Perguntas para o Edu
-# O "Then" deve ser "Sem nenhum erro"?
-# Temos que comparar o dados depois de salvar?
+
 Scenario: telefones com simbolos
 	Given Pedido base cliente PF
 	When Informo "DadosCliente.DddResidencial" = "12"

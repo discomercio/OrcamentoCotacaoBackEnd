@@ -37,8 +37,6 @@ Scenario: Ponto de Referência - diferente de EndEtg_endereco_complemento
 	#Se o campo complemento exceder o tamanho do BD e precisar ser truncado,
 	#copiá-lo no campo 'Constar na NF', junto com o ponto de referência.
 	#
-	#Necessário fazer essa condição na conversão de dados
-	#diferente do EndEtg_endereco_complemento
 	Given Pedido base
 	When Informo "EnderecoEntrega.PontoReferencia" = "teste de ponto de referencia"
 	When Informo "EndEtg_endereco_complemento" = "outro texto"

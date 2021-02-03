@@ -140,6 +140,11 @@ namespace Especificacao.Testes.Utils.LogTestes
                 GravarLog($"TabelaApagarRegistroComCampo tabela {tabela}, campoBusca {campoBusca}, " +
                     $"valorBusca {valorBusca}", objeto);
             }
+            public static void TabelaAlterarRegistroComCampo(string tabela, string campoBusca, string valorBusca, object objeto)
+            {
+                GravarLog($"TabelaAlterarRegistroComCampo tabela {tabela}, campoBusca {campoBusca}, " +
+                    $"valorBusca {valorBusca}", objeto);
+            }
         }
     }
 }

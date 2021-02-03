@@ -20,7 +20,6 @@ Scenario: Indicador = "FRETE" (vamos ler do appsettings) - precisa existir
 
 Scenario: Indicador = "FRETE" (vamos ler do appsettings)
 	#vamos verificar se salvou onde deveria
-	#vamos testar com o KONAR
 	Given Pedido base
 	And Informo "frete" = "10"
 	Then Sem nenhum erro

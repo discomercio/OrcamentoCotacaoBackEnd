@@ -17,7 +17,6 @@ Scenario: campos soltos 1 - loja que indicou
 	#		end if
 	Given Pedido base
 	When Informo "DadosCliente.Vendedor" = "S"
-	#O campo "Loja_Indicou" não existe no dto, precisa ser adicionado para rodar esse teste
 	When Informo "Loja_Indicou" = "203"
 	Then Erro "Loja 202 não está cadastrada."
 
