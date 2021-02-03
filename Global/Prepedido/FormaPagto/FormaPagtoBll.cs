@@ -29,12 +29,9 @@ namespace Prepedido.FormaPagto
 
             //implementar as buscas
             formaPagto.ListaAvista = (await ObterFormaPagtoAVista(apelido, tipo_pessoa)).ToList();
-            if ((tipo_pessoa == Constantes.ID_PJ &&
-                sistemaResponsavel == Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS)
-                || (tipo_pessoa == Constantes.ID_PJ &&
-                sistemaResponsavel == Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS)
-                || (tipo_pessoa == Constantes.ID_PF &&
-                sistemaResponsavel == Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO))
+			//parcela unica: se PJ ou no magento aceita sempre
+            if (tipo_pessoa == Constantes.ID_PJ 
+                || sistemaResponsavel == Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO)
             {
                 formaPagto.ListaParcUnica = (await ObterFormaPagtoParcUnica(apelido, tipo_pessoa)).ToList();
             }
