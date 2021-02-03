@@ -50,7 +50,7 @@ namespace MagentoBusiness.UtilsMagento
         public class Markeplace
         {
             public string Op_pu_forma_pagto { get; set; } = "2";
-            public int C_pu_vencto_apos { get; set; }
+            public int C_pu_vencto_apos { get; set; } = 30;
         }
 
         public class PagtoMagento

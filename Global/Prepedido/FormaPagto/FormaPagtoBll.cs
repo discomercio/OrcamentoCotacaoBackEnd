@@ -19,7 +19,8 @@ namespace Prepedido.FormaPagto
             this.contextoProvider = contextoProvider;
         }
 
-        public async Task<FormaPagtoDados> ObterFormaPagto(string apelido, string tipo_pessoa)
+        public async Task<FormaPagtoDados> ObterFormaPagto(string apelido, string tipo_pessoa,
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel)
         {
             FormaPagtoDados formaPagto = new FormaPagtoDados();
 
@@ -28,8 +29,15 @@ namespace Prepedido.FormaPagto
 
             //implementar as buscas
             formaPagto.ListaAvista = (await ObterFormaPagtoAVista(apelido, tipo_pessoa)).ToList();
-            if (tipo_pessoa == Constantes.ID_PJ)
+            if ((tipo_pessoa == Constantes.ID_PJ &&
+                sistemaResponsavel == Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS)
+                || (tipo_pessoa == Constantes.ID_PJ &&
+                sistemaResponsavel == Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS)
+                || (tipo_pessoa == Constantes.ID_PF &&
+                sistemaResponsavel == Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO))
+            {
                 formaPagto.ListaParcUnica = (await ObterFormaPagtoParcUnica(apelido, tipo_pessoa)).ToList();
+            }
             formaPagto.ParcCartaoInternet = await ObterFlagParcCartaoInternet(apelido, tipo_pessoa);
             formaPagto.ParcCartaoMaquineta = await ObterFlagParcCartaoMaquineta(apelido, tipo_pessoa);
             formaPagto.ListaParcComEntrada = (await ObterFormaPagtoParcComEntrada(apelido, tipo_pessoa)).ToList();

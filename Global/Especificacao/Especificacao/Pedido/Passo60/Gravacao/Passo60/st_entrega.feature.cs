@@ -19,7 +19,6 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "ignore")]
     [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo60")]
     public partial class St_EntregaFeature : object, Xunit.IClassFixture<St_EntregaFeature.FixtureData>, System.IDisposable
     {
@@ -27,7 +26,6 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore",
                 "Especificacao.Pedido.Passo60"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
@@ -45,7 +43,6 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "st_entrega", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ignore",
                         "Especificacao.Pedido.Passo60"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -81,6 +78,15 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 4
+#line hidden
+#line 5
+ testRunner.Given("Ignorar cenário no ambiente \"Especificacao.Prepedido.PrepedidoSteps\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+        }
+        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
@@ -89,12 +95,14 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60
         [Xunit.SkippableFactAttribute(DisplayName="st_entrega")]
         [Xunit.TraitAttribute("FeatureTitle", "st_entrega")]
         [Xunit.TraitAttribute("Description", "st_entrega")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void St_Entrega()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("st_entrega", null, tagsOfScenario, argumentsOfScenario);
-#line 5
+#line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -114,7 +122,10 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 17
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 20
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
@@ -129,7 +140,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("st_entrega - separar", null, tagsOfScenario, argumentsOfScenario);
-#line 21
+#line 24
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -149,14 +160,17 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 22
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 25
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 23
+#line 26
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 24
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_entrega\" = \"SEP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 27
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"st_entrega\" = \"SEP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -165,12 +179,14 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="st_entrega - esperar")]
         [Xunit.TraitAttribute("FeatureTitle", "st_entrega")]
         [Xunit.TraitAttribute("Description", "st_entrega - esperar")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void St_Entrega_Esperar()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("st_entrega - esperar", null, tagsOfScenario, argumentsOfScenario);
-#line 28
+#line 32
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -190,16 +206,19 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 29
+#line 4
+this.FeatureBackground();
+#line hidden
+#line 33
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 30
+#line 34
  testRunner.And("Alterar a qtde de estoque vendido para ser 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 31
+#line 35
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 32
+#line 36
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_entrega\" = \"ESP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -209,12 +228,14 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="st_entregar - split possivel")]
         [Xunit.TraitAttribute("FeatureTitle", "st_entrega")]
         [Xunit.TraitAttribute("Description", "st_entregar - split possivel")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void St_Entregar_SplitPossivel()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("st_entregar - split possivel", null, tagsOfScenario, argumentsOfScenario);
-#line 36
+#line 41
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -234,29 +255,32 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 38
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 39
- testRunner.When("Lista de itens \"0\" informo \"Qtde\" = \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 40
- testRunner.When("Lista de itens \"1\" informo \"Qtde\" = \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 41
- testRunner.When("Informo \"ValorTotalDestePedidoComRA\" = \"173512.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 42
- testRunner.When("Informo \"VlTotalDestePedido\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 4
+this.FeatureBackground();
 #line hidden
 #line 43
- testRunner.When("Informo \"FormaPagtoCriacao.C_pc_valor\" = \"173512.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 44
- testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Lista de itens \"0\" informo \"Qtde\" = \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 45
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_entrega\" = \"SPL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("Lista de itens \"1\" informo \"Qtde\" = \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 46
+ testRunner.When("Informo \"ValorTotalDestePedidoComRA\" = \"173512.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 47
+ testRunner.When("Informo \"VlTotalDestePedido\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 48
+ testRunner.When("Informo \"FormaPagtoCriacao.C_pc_valor\" = \"173512.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 49
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 50
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"st_entrega\" = \"SPL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

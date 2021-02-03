@@ -88,11 +88,9 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
         [Xunit.SkippableFactAttribute(DisplayName="preço: aceitamos o valor que vier do magento.")]
         [Xunit.TraitAttribute("FeatureTitle", "EspecificacaoMagento")]
         [Xunit.TraitAttribute("Description", "preço: aceitamos o valor que vier do magento.")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void PrecoAceitamosOValorQueVierDoMagento_()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("preço: aceitamos o valor que vier do magento.", null, tagsOfScenario, argumentsOfScenario);
 #line 13
@@ -115,8 +113,11 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 16
+#line 15
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 16
+ testRunner.When("Informo \"Frete\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 17
  testRunner.When("Informo \"VlTotalDestePedido\" = \"3200.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");

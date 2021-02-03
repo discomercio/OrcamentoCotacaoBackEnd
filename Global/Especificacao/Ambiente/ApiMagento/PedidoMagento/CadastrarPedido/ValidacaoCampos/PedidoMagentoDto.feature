@@ -36,7 +36,7 @@ Scenario: InfCriacaoPedido Pedido_bs_x_ac
 	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "223456799"
 	Then Sem nenhum erro
 
-@ignore
+
 Scenario: InfCriacaoPedido Pedido_bs_x_ac somente digitos
 	# afazer - criar essa verificação
 	Given Pedido base
@@ -67,7 +67,7 @@ Scenario: Validar se o que expomos pelo ObterCodigoMarketplace foi informado - e
 	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "123"
 	Then Erro "Código Marketplace não encontrado."
 
-@ignore
+
 Scenario: Validar se o que expomos pelo ObterCodigoMarketplace foi informado - sucesso
 	#precisa ser parcela única para poder ter o Marketplace_codigo_origem
 	#precisa ajustar a validação para aceita PF com parcela única no magento

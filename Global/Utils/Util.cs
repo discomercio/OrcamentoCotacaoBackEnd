@@ -119,6 +119,14 @@ namespace UtilsGlobais
             return true;
         }
 
+        public static bool ExisteLetras(string palavra)
+        {
+            if (palavra.Where(c => char.IsLetter(c)).Count() > 0)
+                return true;
+
+            return false;
+        }
+
         public static bool ValidaCNPJ(string cnpj)
         {
             string p1 = "543298765432";

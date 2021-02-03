@@ -89,7 +89,7 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
  testRunner.Given("Ignorar cenário no ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Ca" +
                     "dastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 17
+#line 16
  testRunner.Given("Pedido base cliente PJ com endereço de entrega PF", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
@@ -102,9 +102,11 @@ namespace Especificacao.Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
         [Xunit.SkippableFactAttribute(DisplayName="Configuração")]
         [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PF - validação de telefones")]
         [Xunit.TraitAttribute("Description", "Configuração")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void Configuracao()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Configuração", null, tagsOfScenario, argumentsOfScenario);
 #line 19
@@ -144,9 +146,11 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="EndEtg_ddd_res")]
         [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PF - validação de telefones")]
         [Xunit.TraitAttribute("Description", "EndEtg_ddd_res")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void EndEtg_Ddd_Res()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_ddd_res", null, tagsOfScenario, argumentsOfScenario);
 #line 28
@@ -185,12 +189,14 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="EndEtg_ddd_res 2")]
         [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PF - validação de telefones")]
         [Xunit.TraitAttribute("Description", "EndEtg_ddd_res 2")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void EndEtg_Ddd_Res2()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_ddd_res 2", null, tagsOfScenario, argumentsOfScenario);
-#line 32
+#line 33
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -213,10 +219,10 @@ this.ScenarioInitialize(scenarioInfo);
 #line 14
 this.FeatureBackground();
 #line hidden
-#line 33
+#line 34
  testRunner.When("Informo \"EndEtg_ddd_res\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 34
+#line 35
  testRunner.Then("Erro \"Endereço de entrega: DDD inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -226,12 +232,14 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="EndEtg_tel_res")]
         [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PF - validação de telefones")]
         [Xunit.TraitAttribute("Description", "EndEtg_tel_res")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void EndEtg_Tel_Res()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_tel_res", null, tagsOfScenario, argumentsOfScenario);
-#line 36
+#line 38
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -254,10 +262,10 @@ this.ScenarioInitialize(scenarioInfo);
 #line 14
 this.FeatureBackground();
 #line hidden
-#line 38
+#line 40
  testRunner.When("Informo \"EndEtg_tel_res\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 39
+#line 41
  testRunner.Then("Erro \"Endereço de entrega: telefone inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -267,12 +275,14 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="EndEtg_tel_res 2")]
         [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PF - validação de telefones")]
         [Xunit.TraitAttribute("Description", "EndEtg_tel_res 2")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void EndEtg_Tel_Res2()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_tel_res 2", null, tagsOfScenario, argumentsOfScenario);
-#line 41
+#line 44
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -295,10 +305,10 @@ this.ScenarioInitialize(scenarioInfo);
 #line 14
 this.FeatureBackground();
 #line hidden
-#line 42
+#line 45
  testRunner.When("Informo \"EndEtg_tel_res\" = \"12345\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 43
+#line 46
  testRunner.Then("Erro \"Endereço de entrega: telefone inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -308,57 +318,13 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="EndEtg_tel_res 3")]
         [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PF - validação de telefones")]
         [Xunit.TraitAttribute("Description", "EndEtg_tel_res 3")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void EndEtg_Tel_Res3()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_tel_res 3", null, tagsOfScenario, argumentsOfScenario);
-#line 45
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 14
-this.FeatureBackground();
-#line hidden
-#line 46
- testRunner.When("Informo \"EndEtg_tel_res\" = \"123456\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 47
- testRunner.Then("Sem erro \"Endereço de entrega: telefone inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="EndEtg_ddd_res EndEtg_tel_res")]
-        [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PF - validação de telefones")]
-        [Xunit.TraitAttribute("Description", "EndEtg_ddd_res EndEtg_tel_res")]
-        public virtual void EndEtg_Ddd_ResEndEtg_Tel_Res()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_ddd_res EndEtg_tel_res", @"                if ((trim(f.EndEtg_ddd_res.value) != """") || (trim(f.EndEtg_tel_res.value) != """")) {
-                    if (trim(f.EndEtg_ddd_res.value) == """") {
-                        alert('Endereço de entrega: preencha o DDD!!');
-                        f.EndEtg_ddd_res.focus();
-                        return;
-                    }", tagsOfScenario, argumentsOfScenario);
 #line 49
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -382,28 +348,32 @@ this.ScenarioInitialize(scenarioInfo);
 #line 14
 this.FeatureBackground();
 #line hidden
-#line 56
- testRunner.When("Informo \"EndEtg_ddd_res\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 50
+ testRunner.When("Informo \"EndEtg_tel_res\" = \"123456\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 57
- testRunner.And("Informo \"EndEtg_tel_res\" = \"123456\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 58
- testRunner.Then("Erro \"Endereço de entrega: preencha o DDD!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 51
+ testRunner.Then("Sem erro \"Endereço de entrega: telefone inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="EndEtg_ddd_res EndEtg_tel_res 2")]
+        [Xunit.SkippableFactAttribute(DisplayName="EndEtg_ddd_res EndEtg_tel_res")]
         [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PF - validação de telefones")]
-        [Xunit.TraitAttribute("Description", "EndEtg_ddd_res EndEtg_tel_res 2")]
-        public virtual void EndEtg_Ddd_ResEndEtg_Tel_Res2()
+        [Xunit.TraitAttribute("Description", "EndEtg_ddd_res EndEtg_tel_res")]
+        [Xunit.TraitAttribute("Category", "ignore")]
+        public virtual void EndEtg_Ddd_ResEndEtg_Tel_Res()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_ddd_res EndEtg_tel_res 2", null, tagsOfScenario, argumentsOfScenario);
-#line 60
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_ddd_res EndEtg_tel_res", @"                if ((trim(f.EndEtg_ddd_res.value) != """") || (trim(f.EndEtg_tel_res.value) != """")) {
+                    if (trim(f.EndEtg_ddd_res.value) == """") {
+                        alert('Endereço de entrega: preencha o DDD!!');
+                        f.EndEtg_ddd_res.focus();
+                        return;
+                    }", tagsOfScenario, argumentsOfScenario);
+#line 54
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -427,12 +397,58 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 61
- testRunner.When("Informo \"EndEtg_tel_res\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_ddd_res\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 62
- testRunner.And("Informo \"EndEtg_ddd_res\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Informo \"EndEtg_tel_res\" = \"123456\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 63
+ testRunner.Then("Erro \"Endereço de entrega: preencha o DDD!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="EndEtg_ddd_res EndEtg_tel_res 2")]
+        [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PF - validação de telefones")]
+        [Xunit.TraitAttribute("Description", "EndEtg_ddd_res EndEtg_tel_res 2")]
+        [Xunit.TraitAttribute("Category", "ignore")]
+        public virtual void EndEtg_Ddd_ResEndEtg_Tel_Res2()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_ddd_res EndEtg_tel_res 2", null, tagsOfScenario, argumentsOfScenario);
+#line 66
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 14
+this.FeatureBackground();
+#line hidden
+#line 67
+ testRunner.When("Informo \"EndEtg_tel_res\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 68
+ testRunner.And("Informo \"EndEtg_ddd_res\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 69
  testRunner.Then("Erro \"Endereço de entrega: preencha o telefone!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -442,12 +458,14 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="EndEtg_ddd_cel")]
         [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PF - validação de telefones")]
         [Xunit.TraitAttribute("Description", "EndEtg_ddd_cel")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void EndEtg_Ddd_Cel()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_ddd_cel", null, tagsOfScenario, argumentsOfScenario);
-#line 69
+#line 76
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -470,10 +488,10 @@ this.ScenarioInitialize(scenarioInfo);
 #line 14
 this.FeatureBackground();
 #line hidden
-#line 70
+#line 77
  testRunner.When("Informo \"EndEtg_ddd_cel\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 71
+#line 78
  testRunner.Then("Erro \"Endereço de entrega: DDD inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -483,12 +501,14 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="EndEtg_ddd_cel 2")]
         [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PF - validação de telefones")]
         [Xunit.TraitAttribute("Description", "EndEtg_ddd_cel 2")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void EndEtg_Ddd_Cel2()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_ddd_cel 2", null, tagsOfScenario, argumentsOfScenario);
-#line 73
+#line 81
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -511,10 +531,10 @@ this.ScenarioInitialize(scenarioInfo);
 #line 14
 this.FeatureBackground();
 #line hidden
-#line 74
+#line 82
  testRunner.When("Informo \"EndEtg_ddd_cel\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 75
+#line 83
  testRunner.Then("Erro \"Endereço de entrega: DDD inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -524,93 +544,13 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="EndEtg_tel_cel")]
         [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PF - validação de telefones")]
         [Xunit.TraitAttribute("Description", "EndEtg_tel_cel")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void EndEtg_Tel_Cel()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_tel_cel", null, tagsOfScenario, argumentsOfScenario);
-#line 77
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 14
-this.FeatureBackground();
-#line hidden
-#line 79
- testRunner.When("Informo \"EndEtg_tel_cel\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 80
- testRunner.Then("Erro \"Endereço de entrega: telefone inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="EndEtg_tel_cel 2")]
-        [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PF - validação de telefones")]
-        [Xunit.TraitAttribute("Description", "EndEtg_tel_cel 2")]
-        public virtual void EndEtg_Tel_Cel2()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_tel_cel 2", null, tagsOfScenario, argumentsOfScenario);
-#line 82
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 14
-this.FeatureBackground();
-#line hidden
-#line 83
- testRunner.When("Informo \"EndEtg_tel_cel\" = \"12345\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 84
- testRunner.Then("Erro \"Endereço de entrega: telefone inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="EndEtg_tel_cel 3")]
-        [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PF - validação de telefones")]
-        [Xunit.TraitAttribute("Description", "EndEtg_tel_cel 3")]
-        public virtual void EndEtg_Tel_Cel3()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_tel_cel 3", null, tagsOfScenario, argumentsOfScenario);
 #line 86
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -634,10 +574,96 @@ this.ScenarioInitialize(scenarioInfo);
 #line 14
 this.FeatureBackground();
 #line hidden
-#line 87
+#line 88
+ testRunner.When("Informo \"EndEtg_tel_cel\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 89
+ testRunner.Then("Erro \"Endereço de entrega: telefone inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="EndEtg_tel_cel 2")]
+        [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PF - validação de telefones")]
+        [Xunit.TraitAttribute("Description", "EndEtg_tel_cel 2")]
+        [Xunit.TraitAttribute("Category", "ignore")]
+        public virtual void EndEtg_Tel_Cel2()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_tel_cel 2", null, tagsOfScenario, argumentsOfScenario);
+#line 92
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 14
+this.FeatureBackground();
+#line hidden
+#line 93
+ testRunner.When("Informo \"EndEtg_tel_cel\" = \"12345\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 94
+ testRunner.Then("Erro \"Endereço de entrega: telefone inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="EndEtg_tel_cel 3")]
+        [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PF - validação de telefones")]
+        [Xunit.TraitAttribute("Description", "EndEtg_tel_cel 3")]
+        [Xunit.TraitAttribute("Category", "ignore")]
+        public virtual void EndEtg_Tel_Cel3()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_tel_cel 3", null, tagsOfScenario, argumentsOfScenario);
+#line 97
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 14
+this.FeatureBackground();
+#line hidden
+#line 98
  testRunner.When("Informo \"EndEtg_tel_cel\" = \"123456\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 88
+#line 99
  testRunner.Then("Sem erro \"Endereço de entrega: telefone inválido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -647,12 +673,14 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="EndEtg_ddd_cel EndEtg_tel_cel")]
         [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PF - validação de telefones")]
         [Xunit.TraitAttribute("Description", "EndEtg_ddd_cel EndEtg_tel_cel")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void EndEtg_Ddd_CelEndEtg_Tel_Cel()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_ddd_cel EndEtg_tel_cel", null, tagsOfScenario, argumentsOfScenario);
-#line 90
+#line 102
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -675,13 +703,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 14
 this.FeatureBackground();
 #line hidden
-#line 91
+#line 103
  testRunner.When("Informo \"EndEtg_ddd_cel\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 92
+#line 104
  testRunner.And("Informo \"EndEtg_tel_cel\" = \"123456\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 93
+#line 105
  testRunner.Then("Erro \"Endereço de entrega: preencha o DDD do celular.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -691,12 +719,14 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="EndEtg_ddd_cel EndEtg_tel_cel 2")]
         [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PF - validação de telefones")]
         [Xunit.TraitAttribute("Description", "EndEtg_ddd_cel EndEtg_tel_cel 2")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void EndEtg_Ddd_CelEndEtg_Tel_Cel2()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_ddd_cel EndEtg_tel_cel 2", null, tagsOfScenario, argumentsOfScenario);
-#line 95
+#line 108
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -719,13 +749,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 14
 this.FeatureBackground();
 #line hidden
-#line 96
+#line 109
  testRunner.When("Informo \"EndEtg_tel_cel\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 97
+#line 110
  testRunner.And("Informo \"EndEtg_ddd_cel\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 98
+#line 111
  testRunner.Then("Erro \"Endereço de entrega: preencha o número do celular.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -735,12 +765,14 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="EndEtg_ddd_com")]
         [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PF - validação de telefones")]
         [Xunit.TraitAttribute("Description", "EndEtg_ddd_com")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void EndEtg_Ddd_Com()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_ddd_com", null, tagsOfScenario, argumentsOfScenario);
-#line 106
+#line 120
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -763,13 +795,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 14
 this.FeatureBackground();
 #line hidden
-#line 107
+#line 121
  testRunner.When("Informo \"EndEtg_ddd_com\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 108
+#line 122
  testRunner.And("Informo \"EndEtg_tel_com\" = \"12345678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 109
+#line 123
  testRunner.Then("Erro \"Endereço de entrega: cliente PJ com entrega PF não pode ter EndEtg_ddd_com_" +
                         "2 (acertar a mensagem)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -780,12 +812,14 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="EndEtg_ddd_com_2")]
         [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PF - validação de telefones")]
         [Xunit.TraitAttribute("Description", "EndEtg_ddd_com_2")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void EndEtg_Ddd_Com_2()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EndEtg_ddd_com_2", null, tagsOfScenario, argumentsOfScenario);
-#line 111
+#line 126
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -808,13 +842,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 14
 this.FeatureBackground();
 #line hidden
-#line 112
+#line 127
  testRunner.When("Informo \"EndEtg_ddd_com\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 113
+#line 128
  testRunner.And("Informo \"EndEtg_tel_com\" = \"12345678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 114
+#line 129
  testRunner.Then("Erro \"Endereço de entrega: cliente PJ com entrega PF não pode ter EndEtg_ddd_com_" +
                         "2 (acertar a mensagem)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -825,12 +859,14 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="nos telefones, os símbolos devem ser removidos")]
         [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PF - validação de telefones")]
         [Xunit.TraitAttribute("Description", "nos telefones, os símbolos devem ser removidos")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void NosTelefonesOsSimbolosDevemSerRemovidos()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("nos telefones, os símbolos devem ser removidos", null, tagsOfScenario, argumentsOfScenario);
-#line 116
+#line 132
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -853,14 +889,15 @@ this.ScenarioInitialize(scenarioInfo);
 #line 14
 this.FeatureBackground();
 #line hidden
-#line 117
+#line 133
  testRunner.When("Informo \"EndEtg_tel_cel\" = \"1234-5678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 118
+#line 134
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 119
- testRunner.And("No registro gravado, campo \"EndEtg_tel_cel\" = \"12345678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 135
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"EndEtg_tel_cel\" = \"123456" +
+                        "78\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -869,12 +906,14 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="nos telefones, os símbolos devem ser removidos 2")]
         [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PF - validação de telefones")]
         [Xunit.TraitAttribute("Description", "nos telefones, os símbolos devem ser removidos 2")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void NosTelefonesOsSimbolosDevemSerRemovidos2()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("nos telefones, os símbolos devem ser removidos 2", null, tagsOfScenario, argumentsOfScenario);
-#line 121
+#line 138
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -897,14 +936,15 @@ this.ScenarioInitialize(scenarioInfo);
 #line 14
 this.FeatureBackground();
 #line hidden
-#line 122
+#line 139
  testRunner.When("Informo \"EndEtg_tel_cel\" = \"123,.;5678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 123
+#line 140
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 124
- testRunner.And("No registro gravado, campo \"EndEtg_tel_cel\" = \"1235678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 141
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"EndEtg_tel_cel\" = \"123567" +
+                        "8\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

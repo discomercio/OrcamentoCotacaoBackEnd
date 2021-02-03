@@ -16,7 +16,8 @@ namespace PrepedidoBusiness.Bll
         }
         public async Task<FormaPagtoDto> ObterFormaPagto(string apelido, string tipo_pessoa)
         {
-            Prepedido.Dados.FormaPagto.FormaPagtoDados ret = await formaPagtoBll.ObterFormaPagto(apelido, tipo_pessoa);
+            Prepedido.Dados.FormaPagto.FormaPagtoDados ret = await formaPagtoBll.ObterFormaPagto(apelido, tipo_pessoa,
+                InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);
             return FormaPagtoDto.FormaPagtoDto_De_FormaPagtoDados(ret);
         }
     }
