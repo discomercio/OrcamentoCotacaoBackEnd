@@ -45,7 +45,7 @@ Scenario: Ponto de Referência - diferente de EndEtg_endereco_complemento
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "NFe_texto_constar" = "teste de ponto de referencia"
 
-@ignore
+
 Scenario:  Ponto de Referência - igual de EndEtg_endereco_complemento
 	#Comparar o conteúdo do ponto de referência
 	#com o campo complemento. Se forem iguais,

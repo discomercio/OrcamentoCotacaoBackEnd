@@ -270,11 +270,9 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="Ponto de Referência - igual de EndEtg_endereco_complemento")]
         [Xunit.TraitAttribute("FeatureTitle", "FretePontoReferencia")]
         [Xunit.TraitAttribute("Description", "Ponto de Referência - igual de EndEtg_endereco_complemento")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void PontoDeReferencia_IgualDeEndEtg_Endereco_Complemento()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ponto de Referência - igual de EndEtg_endereco_complemento", null, tagsOfScenario, argumentsOfScenario);
 #line 49
