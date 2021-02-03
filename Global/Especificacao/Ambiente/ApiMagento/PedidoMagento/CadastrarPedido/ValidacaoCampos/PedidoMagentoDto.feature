@@ -36,7 +36,7 @@ Scenario: InfCriacaoPedido Pedido_bs_x_ac
 	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "223456799"
 	Then Sem nenhum erro
 
-@ignore
+
 Scenario: InfCriacaoPedido Pedido_bs_x_ac somente digitos
 	# afazer - criar essa verificação
 	Given Pedido base

@@ -209,11 +209,9 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="InfCriacaoPedido Pedido_bs_x_ac somente digitos")]
         [Xunit.TraitAttribute("FeatureTitle", "PedidoMagentoDto")]
         [Xunit.TraitAttribute("Description", "InfCriacaoPedido Pedido_bs_x_ac somente digitos")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void InfCriacaoPedidoPedido_Bs_X_AcSomenteDigitos()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("InfCriacaoPedido Pedido_bs_x_ac somente digitos", null, tagsOfScenario, argumentsOfScenario);
 #line 40

@@ -215,6 +215,8 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             if (pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac.Length != Constantes.MAX_TAMANHO_ID_PEDIDO_MAGENTO)
                 lstErros.Add("Nº pedido Magento(Pedido_bs_x_ac) com formato inválido!");
 
+            if (UtilsGlobais.Util.ExisteLetras(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac))
+                lstErros.Add("O número Magento deve conter apenas dígitos!");
 
             /*
              * Pedido_bs_x_marketplace e Marketplace_codigo_origem
