@@ -1,7 +1,7 @@
 ﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
 Feature: FretePontoReferencia
 
-@ignore
+
 Scenario: campo "frete" -> se for <> 0, vamos usar o indicador. se for 0, sem indicador
 	#Frete/RA
 	#Valor de Frete: analisar se há valor de frete para definir se o pedido terá RA ou não.
@@ -13,7 +13,6 @@ Scenario: campo "frete" -> se for <> 0, vamos usar o indicador. se for 0, sem in
 	When Informo "appsettings.Loja" = "201"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "indicador" = "FRETE"
-	And Tabela "t_PEDIDO" registro criado, verificar campo "vl_frete" = "10.00"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "permite_RA_status" = "1"
 
 Scenario: pedido sem indicador
