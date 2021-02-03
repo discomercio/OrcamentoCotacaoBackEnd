@@ -54,7 +54,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             db.SaveChanges();
         }
 
-        private void LimparTabelaDbSet<TipoDados>(Microsoft.EntityFrameworkCore.DbSet<TipoDados> dbSet)
+        public static void LimparTabelaDbSet<TipoDados>(Microsoft.EntityFrameworkCore.DbSet<TipoDados> dbSet)
             where TipoDados : class
         {
             foreach (var c in dbSet)

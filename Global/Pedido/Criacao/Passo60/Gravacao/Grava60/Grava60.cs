@@ -151,35 +151,29 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                                     qtde_spe = 0;
                                 }
 
-                                //todo: revisar Estoque_produto_saida_v2
-                                short qtde_estoque_vendido_aux = 0;
-                                short qtde_estoque_sem_presenca_aux = 0;
-                                short[] qtde_estoque_aux = new short[2] { qtde_estoque_vendido_aux, qtde_estoque_sem_presenca_aux };
-                                //if Not ESTOQUE_produto_saida_v2(usuario, id_pedido_temp, vEmpresaAutoSplit_iv.Id_nfe_emitente, .fabricante, .produto, twmsCdXUfXPessoaXCd.estoque.qtde_solicitada, qtde_spe, qtde_estoque_vendido_aux, qtde_estoque_sem_presenca_aux, msg_erro) then
+                                EfetivaPedidoBll.QuantidadeEncapsulada qtde_estoque_vendido = new EfetivaPedidoBll.QuantidadeEncapsulada { Valor = 0 };
+                                EfetivaPedidoBll.QuantidadeEncapsulada qtde_estoque_sem_presenca = new EfetivaPedidoBll.QuantidadeEncapsulada { Valor = 0 };
                                 if (!await EfetivaPedidoBll.Estoque_produto_saida_v2(
                                     Pedido.Ambiente.Usuario, id_pedido_temp,
                                     (short)vEmpresaAutoSplit_iv.Id_nfe_emitente,
                                     linha_pedido.Pedido.Fabricante, linha_pedido.Pedido.Produto,
                                     (int)(twmsCdXUfXPessoaXCd.Estoque_Qtde_Solicitado ?? 0),
                                     qtde_spe,
-                                    qtde_estoque_aux, Retorno.ListaErros, ContextoBdGravacao))
+                                    qtde_estoque_vendido,
+                                    qtde_estoque_sem_presenca,
+                                    Retorno.ListaErros, ContextoBdGravacao))
                                 {
                                     Retorno.ListaErros.Add("Erro em operação de movimentação de estoque, código do erro " + InfraBanco.Constantes.Constantes.ERR_FALHA_OPERACAO_MOVIMENTO_ESTOQUE);
                                     //pode abortar tudo!
                                     return;
                                 }
-                                {
-                                    //desconverter
-                                    qtde_estoque_vendido_aux = qtde_estoque_aux[0];
-                                    qtde_estoque_sem_presenca_aux = qtde_estoque_aux[1];
-                                }
 
 
-                                linha_pedido.Qtde_estoque_vendido = linha_pedido.Qtde_estoque_vendido + qtde_estoque_vendido_aux;
-                                linha_pedido.Qtde_estoque_sem_presenca = linha_pedido.Qtde_estoque_sem_presenca + qtde_estoque_sem_presenca_aux;
+                                linha_pedido.Qtde_estoque_vendido = linha_pedido.Qtde_estoque_vendido + qtde_estoque_vendido.Valor;
+                                linha_pedido.Qtde_estoque_sem_presenca = linha_pedido.Qtde_estoque_sem_presenca + qtde_estoque_sem_presenca.Valor;
 
-                                total_estoque_vendido = total_estoque_vendido + qtde_estoque_vendido_aux;
-                                total_estoque_sem_presenca = total_estoque_sem_presenca + qtde_estoque_sem_presenca_aux;
+                                total_estoque_vendido = total_estoque_vendido + qtde_estoque_vendido.Valor;
+                                total_estoque_sem_presenca = total_estoque_sem_presenca + qtde_estoque_sem_presenca.Valor;
 
                                 /*
 //todo: log grava60

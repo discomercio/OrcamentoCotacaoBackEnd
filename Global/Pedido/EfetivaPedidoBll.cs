@@ -868,11 +868,14 @@ namespace Pedido
             return numPedido;
         }
 
+        //async nao pode ter parametros ref ou out, então temos que encapsular em uma classe para ler a resposta
+        public class QuantidadeEncapsulada { public short Valor; }
         //todo: revisar Estoque_produto_saida_v2 e mover para o projeto de produto
         //Estamos gerando o id_estoque, id_estoque_movimento, gravando e gravando o Log
         public static async Task<bool> Estoque_produto_saida_v2(string id_usuario, string id_pedido, short id_nfe_emitente,
             string id_fabricante, string id_produto, int qtde_a_sair, int qtde_autorizada_sem_presenca,
-            short[] qtde_estoque_aux, List<string> lstErros, ContextoBdGravacao dbGravacao)
+            QuantidadeEncapsulada qtde_estoque_vendido, QuantidadeEncapsulada qtde_estoque_sem_presenca,
+            List<string> lstErros, ContextoBdGravacao dbGravacao)
         {
             //essas variveis tem que retornar
             int qtde_disponivel = 0;
@@ -936,7 +939,7 @@ namespace Pedido
 
                     qtde_aux = testoqueItem.Qtde ?? 0;
                     qtde_utilizada_aux = testoqueItem.Qtde_utilizada ?? 0;
-                    qtde_estoque_aux[0] = (short)qtde_aux;
+                    qtde_estoque_vendido.Valor = (short)qtde_aux;
 
                     if ((qtde_a_sair - qtde_movimentada) > (qtde_aux - qtde_utilizada_aux))
                     {
@@ -947,7 +950,7 @@ namespace Pedido
                     {
                         //quantidade de produtos deste item sozinho é suficiente p / atender o pedido
                         qtde_movto = qtde_a_sair - qtde_movimentada;
-                        qtde_estoque_aux[0] = (short)qtde_movto;
+                        qtde_estoque_vendido.Valor = (short)qtde_movto;
                     }
 
                     testoqueItem.Qtde_utilizada = (short?)(qtde_utilizada_aux + qtde_movto);
@@ -1031,7 +1034,7 @@ namespace Pedido
                     return retorno = false;
                 }
 
-                qtde_estoque_aux[1] = (short)(qtde_a_sair - qtde_movimentada);
+                qtde_estoque_sem_presenca.Valor = (short)(qtde_a_sair - qtde_movimentada);
                 //qtde_estoque_sem_presenca = qtde_a_sair - qtde_movimentada;
 
 
@@ -1045,7 +1048,7 @@ namespace Pedido
                 testoqueMovimento.Id_Estoque = "";// está sem presença no estoque
                 testoqueMovimento.Fabricante = id_fabricante;
                 testoqueMovimento.Produto = id_produto;
-                testoqueMovimento.Qtde = qtde_estoque_aux[1];
+                testoqueMovimento.Qtde = qtde_estoque_sem_presenca.Valor;
                 testoqueMovimento.Operacao = InfraBanco.Constantes.Constantes.OP_ESTOQUE_VENDA;
                 testoqueMovimento.Estoque = InfraBanco.Constantes.Constantes.ID_ESTOQUE_SEM_PRESENCA;
                 testoqueMovimento.Pedido = id_pedido;
@@ -1055,23 +1058,22 @@ namespace Pedido
                 await dbGravacao.SaveChangesAsync();
             }
 
-            qtde_estoque_aux[0] = (short)qtde_movimentada;
-            //short qtde_estoque_vendido = (short)qtde_movimentada;
+            qtde_estoque_vendido.Valor = (short)qtde_movimentada;
 
 
             //log de movimentação do estoque
             if (!await PedidoBll.Grava_log_estoque_v2(id_usuario, id_nfe_emitente, id_fabricante, id_produto,
-                (short)qtde_a_sair, qtde_estoque_aux[0], InfraBanco.Constantes.Constantes.OP_ESTOQUE_LOG_VENDA,
+                (short)qtde_a_sair, qtde_estoque_vendido.Valor, InfraBanco.Constantes.Constantes.OP_ESTOQUE_LOG_VENDA,
                 InfraBanco.Constantes.Constantes.ID_ESTOQUE_VENDA, InfraBanco.Constantes.Constantes.ID_ESTOQUE_VENDIDO,
                 "", "", "", id_pedido, "", "", "", dbGravacao))
             {
                 lstErros.Add("FALHA AO GRAVAR O LOG DA MOVIMENTAÇÃO NO ESTOQUE");
                 return retorno = false;
             }
-            if (qtde_estoque_aux[1] > 0)
+            if (qtde_estoque_sem_presenca.Valor > 0)
             {
                 if (!await PedidoBll.Grava_log_estoque_v2(id_usuario, id_nfe_emitente, id_fabricante, id_produto,
-                qtde_estoque_aux[1], qtde_estoque_aux[1],
+                qtde_estoque_sem_presenca.Valor, qtde_estoque_sem_presenca.Valor,
                 InfraBanco.Constantes.Constantes.OP_ESTOQUE_LOG_VENDA_SEM_PRESENCA, "",
                 InfraBanco.Constantes.Constantes.ID_ESTOQUE_SEM_PRESENCA, "", "", "", id_pedido, "", "", "", dbGravacao))
                 {
@@ -1866,10 +1868,6 @@ namespace Pedido
             string id_pedido_temp, List<string> lstErros, ContextoBdGravacao dbGravacao)
         {
             MovimentoEstoqueDados movtoEstoque = new MovimentoEstoqueDados();
-            short qtde_estoque_vendido_aux = 0;
-            short qtde_estoque_sem_presenca_aux = 0;
-            //montar um objeto com esses 2 parametros
-            short[] qtde_estoque_aux = new short[2] { qtde_estoque_vendido_aux, qtde_estoque_sem_presenca_aux };
 
             short qtde_spe = 0;
 
@@ -1884,19 +1882,22 @@ namespace Pedido
                 qtde_spe = 0;
             }
 
+            QuantidadeEncapsulada qtde_estoque_vendido = new QuantidadeEncapsulada { Valor = 0 };
+            QuantidadeEncapsulada qtde_estoque_sem_presenca = new QuantidadeEncapsulada { Valor = 0 };
             if (!await Estoque_produto_saida_v2(usuario_atual, id_pedido_temp, (short)vEmpresaAutoSplit,
                 item.Fabricante, item.Produto, (int)(regra_UF_Pessoa_CD.Estoque_Qtde_Solicitado ?? 0), qtde_spe,
-                qtde_estoque_aux, lstErros, dbGravacao))
+                qtde_estoque_vendido, qtde_estoque_sem_presenca,
+                lstErros, dbGravacao))
             {
                 lstErros.Add(InfraBanco.Constantes.Constantes.ERR_FALHA_OPERACAO_MOVIMENTO_ESTOQUE);
             }
 
             //altera lista que concordou mesmo sem presença de estoque
-            item.Qtde_estoque_vendido = (short)(item.Qtde_estoque_vendido + qtde_estoque_aux[0]);
-            item.Qtde_estoque_sem_presenca = (short)(item.Qtde_estoque_sem_presenca + qtde_estoque_aux[1]);
+            item.Qtde_estoque_vendido = (short)(item.Qtde_estoque_vendido + qtde_estoque_vendido.Valor);
+            item.Qtde_estoque_sem_presenca = (short)(item.Qtde_estoque_sem_presenca + qtde_estoque_sem_presenca.Valor);
 
-            movtoEstoque.Total_estoque_vendido += qtde_estoque_aux[0];
-            movtoEstoque.Total_estoque_sem_presenca += qtde_estoque_aux[1];
+            movtoEstoque.Total_estoque_vendido += qtde_estoque_vendido.Valor;
+            movtoEstoque.Total_estoque_sem_presenca += qtde_estoque_sem_presenca.Valor;
 
             if (!string.IsNullOrEmpty(movtoEstoque.Slog_item_autosplit))
             {
@@ -1907,8 +1908,8 @@ namespace Pedido
                 item.Produto + ":" + " Qtde Solicitada = " +
                 regra_UF_Pessoa_CD.Estoque_Qtde_Solicitado + "," +
                 " Qtde Sem Presença Autorizada = " + qtde_spe.ToString() + "," +
-                " Qtde Estoque Vendido = " + qtde_estoque_aux[0].ToString() + "," +
-                " Qtde Sem Presença = " + qtde_estoque_aux[1].ToString();
+                " Qtde Estoque Vendido = " + qtde_estoque_vendido.Valor.ToString() + "," +
+                " Qtde Sem Presença = " + qtde_estoque_sem_presenca.Valor.ToString();
 
             return movtoEstoque;
         }
