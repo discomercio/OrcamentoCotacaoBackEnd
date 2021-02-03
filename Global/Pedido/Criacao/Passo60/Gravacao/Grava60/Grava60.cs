@@ -151,9 +151,9 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                                     qtde_spe = 0;
                                 }
 
-                                EfetivaPedidoBll.QuantidadeEncapsulada qtde_estoque_vendido = new EfetivaPedidoBll.QuantidadeEncapsulada { Valor = 0 };
-                                EfetivaPedidoBll.QuantidadeEncapsulada qtde_estoque_sem_presenca = new EfetivaPedidoBll.QuantidadeEncapsulada { Valor = 0 };
-                                if (!await EfetivaPedidoBll.Estoque_produto_saida_v2(
+                                Produto.Estoque.Estoque.QuantidadeEncapsulada qtde_estoque_vendido = new Produto.Estoque.Estoque.QuantidadeEncapsulada { Valor = 0 };
+                                Produto.Estoque.Estoque.QuantidadeEncapsulada qtde_estoque_sem_presenca = new Produto.Estoque.Estoque.QuantidadeEncapsulada { Valor = 0 };
+                                if (!await Produto.Estoque.Estoque.Estoque_produto_saida_v2(
                                     Pedido.Ambiente.Usuario, id_pedido_temp,
                                     (short)vEmpresaAutoSplit_iv.Id_nfe_emitente,
                                     linha_pedido.Pedido.Fabricante, linha_pedido.Pedido.Produto,
@@ -280,7 +280,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
             tpedido.Vendedor = Pedido.Ambiente.Vendedor;
             tpedido.Usuario_Cadastro = Pedido.Ambiente.Usuario;
             tpedido.St_Entrega = "";
-            tpedido.Pedido_Bs_X_At = string.IsNullOrWhiteSpace(Pedido.Extra.Pedido_bs_x_at) ? "" : Pedido.Extra.Pedido_bs_x_at;
+            tpedido.Pedido_Bs_X_At = Pedido.Extra.Pedido_bs_x_at ?? "";
 
             if (!string.IsNullOrEmpty(Pedido.DetalhesPedido.EntregaImediata))
             {
@@ -307,8 +307,8 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
             tpedido.Pedido_Bs_X_Marketplace = Pedido.Marketplace.Pedido_bs_x_marketplace;
             tpedido.Marketplace_codigo_origem = Pedido.Marketplace.Marketplace_codigo_origem;
 
-            tpedido.Nfe_Texto_Constar = string.IsNullOrWhiteSpace(Pedido.Extra.Nfe_Texto_Constar) ? "" : Pedido.Extra.Nfe_Texto_Constar;
-            tpedido.Nfe_XPed = string.IsNullOrWhiteSpace(Pedido.Extra.Nfe_XPed) ? "" : Pedido.Extra.Nfe_XPed;
+            tpedido.Nfe_Texto_Constar = Pedido.Extra.Nfe_Texto_Constar ?? "";
+            tpedido.Nfe_XPed = Pedido.Extra.Nfe_XPed ?? "";
 
             tpedido.Loja_Indicou = Pedido.Ambiente.Loja_indicou;
             tpedido.Comissao_Loja_Indicou = Criacao.Execucao.Comissao_loja_indicou;
@@ -420,7 +420,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
             tpedido.Endereco_produtor_rural_status = Pedido.EnderecoCadastralCliente.Endereco_produtor_rural_status;
             tpedido.Endereco_ie = Pedido.EnderecoCadastralCliente.Endereco_ie;
             tpedido.Endereco_rg = Pedido.EnderecoCadastralCliente.Endereco_rg;
-            tpedido.Endereco_contato = string.IsNullOrWhiteSpace(Pedido.EnderecoCadastralCliente.Endereco_contato) ? "" : Pedido.EnderecoCadastralCliente.Endereco_contato;
+            tpedido.Endereco_contato = Pedido.EnderecoCadastralCliente.Endereco_contato ?? "";
 
             if ((Pedido.Ambiente.Operacao_origem == Constantes.OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO)
                 || ((Pedido.Ambiente.Loja == Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE) && !string.IsNullOrEmpty(Pedido.Marketplace.Pedido_bs_x_ac)))
@@ -471,9 +471,9 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                 tpedido.Usuario_St_Pagto = Pedido.Ambiente.Usuario;
             }
             tpedido.St_Pagto = Constantes.ST_PAGTO_NAO_PAGO;
-            //st_recebido: este campo não está mais sendo usado!!
-            tpedido.Obs_1 = string.IsNullOrWhiteSpace(Pedido.DetalhesPedido.Obter_obs_1()) ? "" : Pedido.DetalhesPedido.Obter_obs_1();
-            tpedido.Obs_2 = string.IsNullOrWhiteSpace(Pedido.DetalhesPedido.Obter_obs_2()) ? "" : Pedido.DetalhesPedido.Obter_obs_2();
+            //st_recebido: este campo não está mais sendo usado
+            tpedido.Obs_1 = Pedido.DetalhesPedido.Obter_obs_1() ?? "";
+            tpedido.Obs_2 = Pedido.DetalhesPedido.Obter_obs_2() ?? "";
 
             //'	Forma de Pagamento (nova versão)
             tpedido.Tipo_Parcelamento = short.Parse(Pedido.FormaPagtoCriacao.Rb_forma_pagto);
@@ -609,6 +609,13 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                     }
                 }
             }
+
+/*
+ * todo: perc_rt
+pergunta hamilton: o que é o perc_rt? Lemos da T_CODIGO_DESCRICAO, certo?
+usar o fluxo autal, procurar PedidoECommerce_Origem_Grupo. temos que ler conforme a origem e ler o valor percentual.
+ver PedidoNovoConfirma.asp '	OBTÉM O PERCENTUAL DE COMISSÃO DO MARKETPLACE
+*/
 
             //'	CUSTO FINANCEIRO FORNECEDOR
             tpedido.CustoFinancFornecTipoParcelamento = Execucao.C_custoFinancFornecTipoParcelamento;

@@ -1200,40 +1200,5 @@ namespace Pedido
             return tfincontroleEditando.Nsu;
         }
 
-        public static async Task<bool> Grava_log_estoque_v2(string strUsuario, short id_nfe_emitente, string strFabricante,
-            string strProduto, short intQtdeSolicitada, short intQtdeAtendida, string strOperacao,
-            string strCodEstoqueOrigem, string strCodEstoqueDestino, string strLojaEstoqueOrigem,
-            string strLojaEstoqueDestino, string strPedidoEstoqueOrigem, string strPedidoEstoqueDestino,
-            string strDocumento, string strComplemento, string strIdOrdemServico, ContextoBdGravacao contexto)
-        {
-
-            TestoqueLog testoqueLog = new TestoqueLog();
-
-            testoqueLog.data = DateTime.Now.Date;
-            testoqueLog.Data_hora = DateTime.Now;
-            testoqueLog.Usuario = strUsuario;
-            testoqueLog.Id_nfe_emitente = id_nfe_emitente;
-            testoqueLog.Fabricante = strFabricante;
-            testoqueLog.Produto = strProduto;
-            testoqueLog.Qtde_solicitada = intQtdeSolicitada;
-            testoqueLog.Qtde_atendida = intQtdeAtendida;
-            testoqueLog.Operacao = strOperacao;
-            testoqueLog.Cod_estoque_origem = strCodEstoqueOrigem;
-            testoqueLog.Cod_estoque_destino = strCodEstoqueDestino;
-            testoqueLog.Loja_estoque_origem = strLojaEstoqueOrigem;
-            testoqueLog.Loja_estoque_destino = strLojaEstoqueDestino;
-            testoqueLog.Pedido_estoque_origem = strPedidoEstoqueOrigem;
-            testoqueLog.Pedido_estoque_destino = strPedidoEstoqueDestino;
-            testoqueLog.Documento = strDocumento;
-            testoqueLog.Complemento = strComplemento.Length > 80 ? strComplemento.Substring(0, 80) : strComplemento;
-            testoqueLog.Id_ordem_servico = strIdOrdemServico;
-
-            contexto.Add(testoqueLog);
-            await contexto.SaveChangesAsync();
-
-
-            return true;
-        }
-
     }
 }

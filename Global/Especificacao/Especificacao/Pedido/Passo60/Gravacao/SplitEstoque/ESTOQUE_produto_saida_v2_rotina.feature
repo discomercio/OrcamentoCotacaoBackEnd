@@ -1,12 +1,12 @@
-﻿@ignore
+﻿@Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.ESTOQUE_Produto_Saida_V2_RotinaSteps
+@GerenciamentoBanco
 Feature: ESTOQUE_produto_saida_v2_rotina
 #vamos testar a rotina ESTOQUE_produto_saida_v2
 
 Background: Configuracao
+	Given Reiniciar banco ao terminar cenário
 	Given Usar produto "um" como fabricante = "003", produto = "003220"
-	Given Usar produto "dois" como fabricante = "003", produto = "003221"
-	And usar id_nfe_emitente "CD" = "4003"
-	And usar id_nfe_emitente "ID_ESTOQUE_SEM_PRESENCA" = "ID_ESTOQUE_SEM_PRESENCA"
+	And Usar produto "dois" como fabricante = "003", produto = "003221"
 	And Zerar todo o estoque
 #
 #' --------------------------------------------------------------------
@@ -29,110 +29,123 @@ Background: Configuracao
 #								byref msg_erro)
 
 Scenario: ESTOQUE_produto_saida_v2_rotina normal
-	Given Definir saldo de estoque = "40" para id_nfe_emitente "CD" e produto "um"
+	Given Definir saldo de estoque = "40" para produto "um"
 	When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "10", qtde_autorizada_sem_presenca = "0"
-	Then Retorno qtde_estoque_vendido = "10", qtde_estoque_sem_presenca = "0"
-	And msg_erro vazia
-	And Saldo de estoque = "30" em id_nfe_emitente "CD"
-	And Saldo de estoque = "0" em id_nfe_emitente "ID_ESTOQUE_SEM_PRESENCA"
+	Then Retorno sucesso, qtde_estoque_vendido = "10", qtde_estoque_sem_presenca = "0"
+	And Saldo de estoque = "30" para produto "um"
+	And Movimento de estoque = "10" para produto "um"
+	And Movimento ID_ESTOQUE_SEM_PRESENCA = "0" para produto "um"
 
 Scenario: ESTOQUE_produto_saida_v2_rotina para estoque sem presença
-	Given Definir saldo de estoque = "40" para id_nfe_emitente "CD" e produto "um"
+	Given Definir saldo de estoque = "40" para produto "um"
 	When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "100", qtde_autorizada_sem_presenca = "60"
-	And msg_erro vazia
-	And Saldo de estoque = "0" em id_nfe_emitente "CD"
-	And Saldo de estoque = "60" em id_nfe_emitente "ID_ESTOQUE_SEM_PRESENCA"
+	Then Retorno sucesso, qtde_estoque_vendido = "40", qtde_estoque_sem_presenca = "60"
+	And Saldo de estoque = "0" para produto "um"
+	And Movimento de estoque = "40" para produto "um"
+	And Movimento ID_ESTOQUE_SEM_PRESENCA = "60" para produto "um"
 
 
 Scenario: Produtos spe
-	Given Definir saldo de estoque = "40" para id_nfe_emitente "CD" e produto "um"
+	Given Definir saldo de estoque = "40" para produto "um"
 	When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "50", qtde_autorizada_sem_presenca = "10"
-	Then Retorno qtde_estoque_vendido = "40", qtde_estoque_sem_presenca = "10"
-	And msg_erro vazia
-	And Saldo de estoque = "0" em id_nfe_emitente "CD"
-	And Saldo de estoque = "10" em id_nfe_emitente "ID_ESTOQUE_SEM_PRESENCA"
+	Then Retorno sucesso, qtde_estoque_vendido = "40", qtde_estoque_sem_presenca = "10"
+	And Saldo de estoque = "0" para produto "um"
+	And Movimento de estoque = "40" para produto "um"
+	And Movimento ID_ESTOQUE_SEM_PRESENCA = "10" para produto "um"
 
 Scenario: muitos produtos sem presenca
 	#neste cenário, aceitamos o pedido - temos MAIS estoque do que o cliente aceitou
-	Given Definir saldo de estoque = "40"
+	Given Definir saldo de estoque = "40" para produto "um"
 	When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "50", qtde_autorizada_sem_presenca = "20"
-	Then Retorno qtde_estoque_vendido = "40", qtde_estoque_sem_presenca = "10"
-	And msg_erro vazia
-	And Saldo de estoque = "0" em id_nfe_emitente "CD"
-	And Saldo de estoque = "10" em id_nfe_emitente "ID_ESTOQUE_SEM_PRESENCA"
-
-
+	Then Retorno sucesso, qtde_estoque_vendido = "40", qtde_estoque_sem_presenca = "10"
+	And Saldo de estoque = "0" para produto "um"
+	And Movimento de estoque = "40" para produto "um"
+	And Movimento ID_ESTOQUE_SEM_PRESENCA = "10" para produto "um"
 
 Scenario: Sem produtos
 	#o usuário não concordou em comprar sem presença no estoque
-	Given Definir saldo de estoque = "40" para id_nfe_emitente "CD" e produto "um"
+	Given Definir saldo de estoque = "40" para produto "um"
 	When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "50", qtde_autorizada_sem_presenca = "0"
-	And msg_erro "quantidade inconsistente"
-
+	Then msg_erro "Produto 003220 do fabricante 003: faltam 10 unidades"
 
 Scenario: Sem produtos - 2
-	Given Definir saldo de estoque = "40" para id_nfe_emitente "CD" e produto "um"
+	Given Definir saldo de estoque = "40" para produto "um"
 	When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "50", qtde_autorizada_sem_presenca = "5"
-	And msg_erro "quantidade inconsistente"
-
+	Then msg_erro "Produto 003220 do fabricante 003: faltam 5 unidades"
 
 
 #chamadas consecutivas para acumular
-Scenario: chamadas acumuladas
-	Given Definir saldo de estoque = "40" para id_nfe_emitente "CD" e produto "um"
+Scenario: chamadas acumuladas - com erro
+	Given Definir saldo de estoque = "40" para produto "um"
 	When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "20", qtde_autorizada_sem_presenca = "0"
-	Then Retorno qtde_estoque_vendido = "20", qtde_estoque_sem_presenca = "0"
-	And msg_erro vazia
-	And Saldo de estoque = "20" em id_nfe_emitente "CD" para produto "um" 
+	Then Retorno sucesso, qtde_estoque_vendido = "20", qtde_estoque_sem_presenca = "0"
+	And Saldo de estoque = "20" para produto "um"
+	And Movimento de estoque = "20" para produto "um"
+	And Movimento ID_ESTOQUE_SEM_PRESENCA = "0" para produto "um"
 
 	When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "15", qtde_autorizada_sem_presenca = "0"
-	Then Retorno qtde_estoque_vendido = "15", qtde_estoque_sem_presenca = "0"
-	And msg_erro vazia
-	And Saldo de estoque = "5" em id_nfe_emitente "CD" para produto "um" 
+	Then Retorno sucesso, qtde_estoque_vendido = "15", qtde_estoque_sem_presenca = "0"
+	And Saldo de estoque = "5" para produto "um"
+	And Movimento de estoque = "35" para produto "um"
+	And Movimento ID_ESTOQUE_SEM_PRESENCA = "0" para produto "um"
 
 	When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "10", qtde_autorizada_sem_presenca = "0"
-	And msg_erro "quantidade inconsistente"
+	#o erro tem que ser com 5 unidades
+	#quando dá erro o banco fica em um estado inconsistente e a transação deve ter rollback. Nos testes não temos transações!
+	Then msg_erro "Produto 003220 do fabricante 003: faltam 5 unidades"
+
+#chamadas consecutivas para acumular
+Scenario: chamadas acumuladas
+	Given Definir saldo de estoque = "40" para produto "um"
+	When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "20", qtde_autorizada_sem_presenca = "0"
+	Then Retorno sucesso, qtde_estoque_vendido = "20", qtde_estoque_sem_presenca = "0"
+	And Saldo de estoque = "20" para produto "um"
+	And Movimento de estoque = "20" para produto "um"
+	And Movimento ID_ESTOQUE_SEM_PRESENCA = "0" para produto "um"
+
+	When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "15", qtde_autorizada_sem_presenca = "0"
+	Then Retorno sucesso, qtde_estoque_vendido = "15", qtde_estoque_sem_presenca = "0"
+	And Saldo de estoque = "5" para produto "um"
+	And Movimento de estoque = "35" para produto "um"
+	And Movimento ID_ESTOQUE_SEM_PRESENCA = "0" para produto "um"
 
 	When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "11", qtde_autorizada_sem_presenca = "8"
-	Then Retorno qtde_estoque_vendido = "5", qtde_estoque_sem_presenca = "6"
-	And msg_erro vazia
-	And Saldo de estoque = "0" em id_nfe_emitente "CD"
-	And Saldo de estoque = "6" em id_nfe_emitente "ID_ESTOQUE_SEM_PRESENCA" para produto "um" 
+	Then Retorno sucesso, qtde_estoque_vendido = "5", qtde_estoque_sem_presenca = "6"
+	And Saldo de estoque = "0" para produto "um"
+	And Movimento de estoque = "40" para produto "um"
+	And Movimento ID_ESTOQUE_SEM_PRESENCA = "6" para produto "um"
 
 	#aqui já está sem estoque e esperando 6
 	When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "12", qtde_autorizada_sem_presenca = "12"
-	Then Retorno qtde_estoque_vendido = "0", qtde_estoque_sem_presenca = "12"
-	And msg_erro vazia
-	And Saldo de estoque = "0" em id_nfe_emitente "CD"
-	And Saldo de estoque = "18" em id_nfe_emitente "ID_ESTOQUE_SEM_PRESENCA" para produto "um"
-
+	Then Retorno sucesso, qtde_estoque_vendido = "0", qtde_estoque_sem_presenca = "12"
+	And Saldo de estoque = "0" para produto "um"
+	And Movimento de estoque = "40" para produto "um"
+	And Movimento ID_ESTOQUE_SEM_PRESENCA = "18" para produto "um"
 
 Scenario: Respeita ordem FIFO
-	Given Zerar todo o estoque
-	Given Inserir movimento de estoque = "12" para id_nfe_emitente "CD" e produto "um" com valor "100"
-	Given Inserir movimento de estoque = "14" para id_nfe_emitente "CD" e produto "um" com valor "222"
+	Given Definir2 saldo de estoque = "12" para produto "um" com valor "100"
+	Given Definir2 saldo de estoque = "14" para produto "um" com valor "222"
 	When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "15", qtde_autorizada_sem_presenca = "0"
-	Then Verificar estoque para id_nfe_emitente "CD" e produto "um" com valor "100" saldo de estoque = "0"
-	Then Verificar estoque para id_nfe_emitente "CD" e produto "um" com valor "222" saldo de estoque = "11"
-	And Saldo de estoque = "0" em id_nfe_emitente "ID_ESTOQUE_SEM_PRESENCA" para produto "um" 
+	Then Saldo2 de estoque = "0" para produto "um" com valor "100"
+	Then Saldo2 de estoque = "11" para produto "um" com valor "222"
+	And Movimento ID_ESTOQUE_SEM_PRESENCA = "0" para produto "um"
 
 
 #testar com mais de um produto
-Scenario: testar com mais de um produto
-	Given Zerar todo o estoque
-	Given Inserir movimento de estoque = "12" para id_nfe_emitente "CD" e produto "um" com valor "100"
-	Given Inserir movimento de estoque = "14" para id_nfe_emitente "CD" e produto "um" com valor "222"
-	Given Inserir movimento de estoque = "21" para id_nfe_emitente "CD" e produto "dois" com valor "333"
-	Given Inserir movimento de estoque = "24" para id_nfe_emitente "CD" e produto "dois" com valor "444"
+Scenario: FIFO com mais de um produto
+	Given Definir2 saldo de estoque = "10" para produto "um" com valor "123"
+	Given Definir2 saldo de estoque = "14" para produto "um" com valor "222"
+	Given Definir2 saldo de estoque = "21" para produto "dois" com valor "333"
+	Given Definir2 saldo de estoque = "24" para produto "dois" com valor "444"
 
 	When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "dois", qtde_a_sair = "44", qtde_autorizada_sem_presenca = "0"
-	Then Verificar estoque para id_nfe_emitente "CD" e produto "um" com valor "333" saldo de estoque = "0"
-	Then Verificar estoque para id_nfe_emitente "CD" e produto "um" com valor "444" saldo de estoque = "1"
-	And Saldo de estoque = "0" em id_nfe_emitente "ID_ESTOQUE_SEM_PRESENCA" para produto "dois" 
+	Then Saldo2 de estoque = "0" para produto "dois" com valor "333"
+	Then Saldo2 de estoque = "1" para produto "dois" com valor "444"
+	And Movimento ID_ESTOQUE_SEM_PRESENCA = "0" para produto "dois"
 
 	When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "15", qtde_autorizada_sem_presenca = "0"
-	Then Verificar estoque para id_nfe_emitente "CD" e produto "um" com valor "100" saldo de estoque = "0"
-	Then Verificar estoque para id_nfe_emitente "CD" e produto "um" com valor "222" saldo de estoque = "11"
-	And Saldo de estoque = "0" em id_nfe_emitente "ID_ESTOQUE_SEM_PRESENCA" para produto "um" 
+	Then Saldo2 de estoque = "0" para produto "um" com valor "123"
+	Then Saldo2 de estoque = "9" para produto "um" com valor "222"
+	And Movimento ID_ESTOQUE_SEM_PRESENCA = "0" para produto "um"
 
 

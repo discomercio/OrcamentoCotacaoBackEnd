@@ -972,10 +972,10 @@ namespace UtilsGlobais
         }
 
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
-        //Afazer: Edu o método "ObterApelidoEmpresaNfeEmitentes" está sendo duplicado porque é utilizado
+        //O método "ObterApelidoEmpresaNfeEmitentes" está sendo duplicado porque é utilizado
         //dentro da transação do cadastro de pedido que utiliza o contexto de gravação, 
         //não fazia sentido criar uma interface de contexto apenas para um método
-        public static async Task<string> ObterApelidoEmpresaNfeEmitentesGravacao(int id_nfe_emitente, ContextoBdGravacao dbGravacao)
+        public static async Task<string> Obtem_apelido_empresa_NFe_emitente_Gravacao(int id_nfe_emitente, ContextoBdGravacao dbGravacao)
         {
             string apelidoEmpresa = "";
 
