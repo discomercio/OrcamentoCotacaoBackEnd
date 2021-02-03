@@ -9,7 +9,9 @@ using PrepedidoUnisBusiness.UnisDto.FormaPagtoUnisDto;
 using PrepedidoUnisBusiness.UnisDto.PrepedidoUnisDto;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Reflection;
 using TechTalk.SpecFlow;
 using Xunit;
 
@@ -126,15 +128,15 @@ namespace Especificacao.Testes.Utils.BancoTestes
             }
         }
 
-        public void TabelaT_PEDIDO_ITEMRegistroVerificarCampo(string pedido, string campo, string valor_desejado)
+        public void TabelaT_PEDIDO_ITEMRegistroVerificarCampo(int item, string pedido, string campo, string valor_desejado)
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO_ITEM", "pedido", pedido, campo, valor_desejado, this);
 
             var db = this.contextoBdProvider.GetContextoLeitura();
-            var registros = (from item in db.TpedidoItems 
-                             where item.Pedido.Contains(pedido)
-                             orderby item.Sequencia
-                             select item).ToList();
+            var registros = (from registro in db.TpedidoItems
+                             where registro.Pedido.Contains(pedido) && 
+                             registro.Sequencia == item
+                             select registro).ToList();
             //deve ter um ou mais registros
             Assert.True(registros.Any());
 
@@ -199,6 +201,26 @@ namespace Especificacao.Testes.Utils.BancoTestes
             db.Tusuarios.Remove(registro);
             db.SaveChanges();
         }
+
+        [Given(@"Tabela t_CLIENTE registro com cpf_cnpj = ""(.*)"" alterar campo ""(.*)"" = ""(.*)""")]
+        public void GivenTabelaT_CLIENTERegistroComCpf_CnpjAlterarCampo(string valor_cnpj_cpf, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_CLIENTE", "cpf_cnpj", valor, this);
+
+            var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
+            var registro = (from cliente in db.Tclientes
+                            where cliente.Cnpj_Cpf == valor_cnpj_cpf
+                            select cliente).FirstOrDefault();
+
+            Assert.NotNull(registro);
+
+            if (!WhenInformoCampo.InformarCampo(campo, valor, registro))
+                Assert.Equal("campo desconhecido", campo);
+                       
+            db.Update(registro);
+            db.SaveChanges();
+        }
+
 
     }
 }

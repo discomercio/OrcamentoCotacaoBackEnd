@@ -104,8 +104,8 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
             gerenciamentoBanco.TabelaT_PEDIDORegistroVerificarCampo(somentePai, campo, valor);
         }
 
-        [Then(@"Tabela ""t_PEDIDO_ITEM"" registro criado, verificar campo ""(.*)"" = ""(.*)""")]
-        public void ThenTabelaT_PEDIDO_ITEMRegistroCriadoVerificarCampo(string campo, string valor)
+        [Then(@"Tabela ""t_PEDIDO_ITEM"" registro criado, verificar item ""(.*)"" campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaT_PEDIDO_ITEMRegistroCriadoVerificarCampo(int item, string campo, string valor)
         {
             var dto = cadastrarPedido.UltimoPedidoResultadoMagentoDto();
             if (dto == null)
@@ -114,7 +114,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
 
             string pedido = dto.IdPedidoCadastrado ?? "";
 
-            gerenciamentoBanco.TabelaT_PEDIDO_ITEMRegistroVerificarCampo(pedido, campo, valor);
+            gerenciamentoBanco.TabelaT_PEDIDO_ITEMRegistroVerificarCampo(item, pedido, campo, valor);
         }
 
 

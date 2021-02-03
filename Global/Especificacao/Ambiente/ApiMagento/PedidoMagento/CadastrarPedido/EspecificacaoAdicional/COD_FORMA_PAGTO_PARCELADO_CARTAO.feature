@@ -19,7 +19,6 @@ Feature: COD_FORMA_PAGTO_PARCELADO_CARTAO
 #    }
 #  ],
 #  "VlTotalDestePedido": 3440.00,
-@ignore
 Scenario: COD_FORMA_PAGTO_PARCELADO_CARTAO
 	#ao debugar o teste ele passa 1 vez e valida os 2 itens, depois ele segue e valida novamente e gera erro
 	Given Pedido base
@@ -45,10 +44,10 @@ Scenario: COD_FORMA_PAGTO_PARCELADO_CARTAO
 	And Tabela "t_PEDIDO" registro criado, verificar campo "vl_total_NF" = "3440.00"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "vl_total_familia" = "3394.94"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "vl_total_RA" = "45.06"
-	And Tabela "t_PEDIDO_ITEM" registro criado, verificar campo "qtde" = "2"
-	And Tabela "t_PEDIDO_ITEM" registro criado, verificar campo "preco_venda" = "509.24"
-	And Tabela "t_PEDIDO_ITEM" registro criado, verificar campo "preco_NF" = "520.00"
-	And Tabela "t_PEDIDO_ITEM" registro criado, verificar campo "qtde" = "2"
-	And Tabela "t_PEDIDO_ITEM" registro criado, verificar campo "preco_venda" = "1188.23"
-	And Tabela "t_PEDIDO_ITEM" registro criado, verificar campo "preco_NF" = "1200.00"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "qtde" = "2"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "preco_venda" = "509.24"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "preco_NF" = "520.00"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "qtde" = "2"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "preco_venda" = "1188.23"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "preco_NF" = "1200.00"
 
