@@ -12,7 +12,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava25
         {
         }
 
-        public async Task Executar()
+        public async Task ExecutarAsync()
         {
 
             //Passo25:  

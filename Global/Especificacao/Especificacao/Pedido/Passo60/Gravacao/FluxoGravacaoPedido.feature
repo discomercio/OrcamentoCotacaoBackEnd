@@ -86,7 +86,7 @@ Passo60: criar pedidos - '	CADASTRA O PEDIDO E PROCESSA A MOVIMENTAÇÃO NO ESTO
 		Determina o status st_entrega deste pedido (Passo60/st_entrega.feature)
 
 Passo70: ajustes adicionais no pedido pai
-	No pedido pai atualiza campos de RA (Passo70/calcula_total_RA_liquido_BD.feture)
+	No pai e nos filhotes, atualiza campos de RA (Passo70/calcula_total_RA_liquido_BD.feture)
 
 	Caso tenha usado algum desconto superior ao limite, liberado pela t_DESCONTO, marca como usado (Passo70/Senhas_de_autorizacao_para_desconto_superior.feature)
 

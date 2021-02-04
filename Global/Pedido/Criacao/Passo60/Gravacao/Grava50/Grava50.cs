@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace Pedido.Criacao.Passo60.Gravacao.Grava50
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0054:Use compound assignment", Justification = "Estilo de código")]
     class Grava50 : PassoBaseGravacao
     {
         public Grava50(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao criacao, Execucao.Execucao execucao)
@@ -12,7 +13,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava50
         {
         }
 
-        public async Task Executar()
+        public void Executar()
         {
 
 
@@ -56,7 +57,6 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava50
 
         private void AlocarProdutos()
         {
-#pragma warning disable IDE0054 // Use compound assignment
 
 
             /*
@@ -254,7 +254,6 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava50
                         " que não puderam ser alocados na lista de produtos sem presença no estoque de nenhum CD");
             }
         }
-#pragma warning restore IDE0054 // Use compound assignment
     }
 }
 

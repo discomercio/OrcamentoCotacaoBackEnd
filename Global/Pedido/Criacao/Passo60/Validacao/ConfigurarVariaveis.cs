@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Pedido.Criacao.Passo60.Validacao
 {
-    class Validacao
+    class ConfigurarVariaveis
     {
         private readonly PedidoCriacaoDados Pedido;
         private readonly PedidoCriacaoRetornoDados Retorno;
         private readonly Pedido.Criacao.PedidoCriacao Criacao;
-        public Validacao(PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao pedidoCriacao)
+        public ConfigurarVariaveis(PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao pedidoCriacao)
         {
             this.Pedido = pedido ?? throw new ArgumentNullException(nameof(pedido));
             this.Retorno = retorno ?? throw new ArgumentNullException(nameof(retorno));
@@ -21,10 +21,10 @@ namespace Pedido.Criacao.Passo60.Validacao
         public async Task Executar()
         {
             await ConfigurarBlnPedidoECommerceCreditoOkAutomatico();
-            await ConfigurarVariaveis();
+            await ConfigurarVariaveisExecutar();
         }
 
-        private async Task ConfigurarVariaveis()
+        private async Task ConfigurarVariaveisExecutar()
         {
 
             //todo: calcular Vl_aprov_auto_analise_credito e Comissao_loja_indicou

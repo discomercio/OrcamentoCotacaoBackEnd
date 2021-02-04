@@ -16,6 +16,7 @@ using InfraBanco;
 
 namespace Pedido
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0054:Use compound assignment", Justification = "Estilo de código")]
     public class PedidoBll
     {
         private readonly InfraBanco.ContextoBdProvider contextoProvider;

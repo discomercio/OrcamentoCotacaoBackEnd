@@ -12,8 +12,9 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava40
         {
         }
 
-        public async Task Executar()
+        public async Task ExecutarAsync()
         {
+            //todo: fazer Passo40: Verifica se a disponibilidade do estoque foi alterada - Linha 1159
 
             //	Passo40: Verifica se a disponibilidade do estoque foi alterada - Linha 1159
             //	HÁ PRODUTO C / ESTOQUE INSUFICIENTE(SOMANDO - SE O ESTOQUE DE TODAS AS EMPRESAS CANDIDATAS) - linha 1127

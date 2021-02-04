@@ -18,9 +18,9 @@ namespace Pedido.Criacao.Passo60
             this.Criacao = criacao ?? throw new ArgumentNullException(nameof(criacao));
         }
 
-        public async Task Executar()
+        public async Task ExecutarAsync()
         {
-            await new Validacao.Validacao(Pedido, Retorno, Criacao).Executar();
+            await new Validacao.ConfigurarVariaveis(Pedido, Retorno, Criacao).Executar();
             await new Validacao.ValidacaoCampos(Pedido, Retorno, Criacao).Executar();
             //se tem erro de validação não coeçamos a gravação
             if (Retorno.AlgumErro())

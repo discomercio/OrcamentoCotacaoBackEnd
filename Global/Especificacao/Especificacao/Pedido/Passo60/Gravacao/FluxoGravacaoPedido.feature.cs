@@ -101,15 +101,15 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao
                     "sença no estoque (novo registro na tabela t_ESTOQUE_MOVIMENTO, operacao = OP_EST" +
                     "OQUE_VENDA, estoque = ID_ESTOQUE_SEM_PRESENCA)\r\n\t\t\tMonta o log do item - Passo60" +
                     "/Itens/Log.feature\r\n\t\t\t\r\n\t\tDetermina o status st_entrega deste pedido (Passo60/s" +
-                    "t_entrega.feature)\r\n\r\nPasso70: ajustes adicionais no pedido pai\r\n\tNo pedido pai " +
-                    "atualiza campos de RA (Passo70/calcula_total_RA_liquido_BD.feture)\r\n\r\n\tCaso tenh" +
-                    "a usado algum desconto superior ao limite, liberado pela t_DESCONTO, marca como " +
-                    "usado (Passo70/Senhas_de_autorizacao_para_desconto_superior.feature)\r\n\r\n\tINDICAD" +
-                    "OR: SE ESTE PEDIDO É COM INDICADOR E O CLIENTE AINDA NÃO TEM UM INDICADOR NO CAD" +
-                    "ASTRO, ENTÃO CADASTRA ESTE. (Passo70/CadastroIndicador.feature)\r\n\r\n\r\nPasso80: VE" +
-                    "RIFICA SE O ENDEREÇO JÁ FOI USADO ANTERIORMENTE POR OUTRO CLIENTE (POSSÍVEL FRAU" +
-                    "DE)\r\n\tPasso80/FluxoVerificacaoEndereco.feature\r\n\r\n\r\nPasso90: log (Passo90/Log.fe" +
-                    "ature)", ProgrammingLanguage.CSharp, new string[] {
+                    "t_entrega.feature)\r\n\r\nPasso70: ajustes adicionais no pedido pai\r\n\tNo pai e nos f" +
+                    "ilhotes, atualiza campos de RA (Passo70/calcula_total_RA_liquido_BD.feture)\r\n\r\n\t" +
+                    "Caso tenha usado algum desconto superior ao limite, liberado pela t_DESCONTO, ma" +
+                    "rca como usado (Passo70/Senhas_de_autorizacao_para_desconto_superior.feature)\r\n\r" +
+                    "\n\tINDICADOR: SE ESTE PEDIDO É COM INDICADOR E O CLIENTE AINDA NÃO TEM UM INDICAD" +
+                    "OR NO CADASTRO, ENTÃO CADASTRA ESTE. (Passo70/CadastroIndicador.feature)\r\n\r\n\r\nPa" +
+                    "sso80: VERIFICA SE O ENDEREÇO JÁ FOI USADO ANTERIORMENTE POR OUTRO CLIENTE (POSS" +
+                    "ÍVEL FRAUDE)\r\n\tPasso80/FluxoVerificacaoEndereco.feature\r\n\r\n\r\nPasso90: log (Passo" +
+                    "90/Log.feature)", ProgrammingLanguage.CSharp, new string[] {
                         "Especificacao.Pedido.FluxoCriacaoPedido"});
             testRunner.OnFeatureStart(featureInfo);
         }

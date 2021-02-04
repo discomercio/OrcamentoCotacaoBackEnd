@@ -70,7 +70,8 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             decimal vlTotalDestePedido, PedidoMagentoDto pedidoMagento,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             List<string> lstErros, UtilsMagento.ConfiguracaoApiMagento configuracaoApiMagento,
-            string? dadosClienteMidia)
+            string? dadosClienteMidia,
+            string? dadosClienteIndicador)
         {
             if (!Constantes.TipoPessoa.TipoValido(dadosClienteMagento.Tipo))
             {
@@ -137,7 +138,8 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                     pedido_bs_x_at: null, nfe_Texto_Constar: null, nfe_XPed: null),
 
                 //Armazena os dados cadastrados do cliente
-                cliente: Pedido.Dados.Criacao.PedidoCriacaoClienteDados.PedidoCriacaoClienteDados_de_DadosClienteCadastroDados(dadosClienteMagento, midia: dadosClienteMidia),
+                cliente: Pedido.Dados.Criacao.PedidoCriacaoClienteDados.PedidoCriacaoClienteDados_de_DadosClienteCadastroDados(
+                    dadosClienteMagento, midia: dadosClienteMidia, indicador: dadosClienteIndicador),
 
                 //Armazena os dados do cliente para o Pedido
                 enderecoCadastralCliente: enderecoCadastralClienteMagento,

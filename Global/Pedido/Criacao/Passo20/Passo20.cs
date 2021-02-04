@@ -14,7 +14,7 @@ namespace Pedido.Criacao.Passo20
         {
         }
 
-        public async Task ValidarEnderecoEntrega()
+        public async Task ValidarEnderecoEntregaAsync()
         {
             /* valida endereço de entrega */
             await Criacao.ValidacoesPrepedidoBll.ValidarEnderecoEntrega(Pedido.EnderecoEntrega, Retorno.ListaErros,

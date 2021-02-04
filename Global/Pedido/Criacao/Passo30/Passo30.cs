@@ -16,11 +16,19 @@ namespace Pedido.Criacao.Passo30
         {
         }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task Executar()
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        public async Task ExecutarAsync()
         {
             PermissaoPercRt();
+            //todo: passo30
+            /*
+             * CamposMagentoExigidos.feature
+             * CamposMagentoNaoAceitos.feature
+             * CD.feature
+             * COD_SITE_ASSISTENCIA_TECNICA
+             * Indicador
+             * opcao_possui_RA
+             * 
+             * */
         }
 
         private void PermissaoPercRt()

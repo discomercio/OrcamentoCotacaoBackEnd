@@ -15,17 +15,58 @@ namespace Pedido.Criacao.Passo50
         {
         }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task Executar()
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        public void Executar()
         {
             EntregaImediata();
             ValidarRA();
+            ValidarTamanhos();
+            Validar_bem_uso_consumo();
+            Validar_instalador_instala();
+            Validar_garantia_indicador();
+
+            //todo: passo50 tamanhos
+            //c_indicador c_perc_RT rb_RA garantia_indicador somente se for indicacao
         }
+
+        private void Validar_garantia_indicador()
+        {
+            //todo: passo50 tamanhos
+            //# alert('Preencha o campo "Garantia Indicador"');
+        }
+        private void Validar_bem_uso_consumo()
+        {
+            //todo: passo50 tamanhos
+            //#if (!blnFlag) {
+            //# alert('Informe se é "Bem de Uso/Consumo"');
+        }
+        private void Validar_instalador_instala()
+        {
+            //todo: passo50 tamanhos
+            //# alert('Preencha o campo "Instalador Instala"');
+        }
+        private void ValidarTamanhos()
+        {
+            //todo: passo50 tamanhos
+            //#s = "" + f.c_obs1.value;
+            //#if (s.length > MAX_TAM_OBS1) {
+            //#	alert('Conteúdo de "Observações " excede em ' + (s.length-MAX_TAM_OBS1) + ' caracteres o tamanho máximo de ' + MAX_TAM_OBS1 + '!!');
+
+            //todo: passo50 tamanhos
+            //#s = "" + f.c_nf_texto.value;
+            //#if (s.length > MAX_TAM_NF_TEXTO) {
+            //#    alert('Conteúdo de "Constar na NF" excede em ' + (s.length-MAX_TAM_NF_TEXTO) + ' caracteres o tamanho máximo de ' + MAX_TAM_NF_TEXTO + '!!');
+
+
+            //todo: passo50 tamanhos
+            //#s = "" + f.c_forma_pagto.value;
+            //#if (s.length > MAX_TAM_FORMA_PAGTO) {
+            //#	alert('Conteúdo de "Forma de Pagamento" excede em ' + (s.length-MAX_TAM_FORMA_PAGTO) + ' caracteres o tamanho máximo de ' + MAX_TAM_FORMA_PAGTO + '!!');
+        }
+
         private void EntregaImediata()
         {
             //valida somente EntregaImediataData e EntregaImediata
-            Criacao.ValidacoesPrepedidoBll.ValidarDetalhesPrepedido(Pedido.DetalhesPedido, Retorno.ListaErros);
+            Prepedido.ValidacoesPrepedidoBll.ValidarDetalhesPrepedido(Pedido.DetalhesPedido, Retorno.ListaErros);
         }
         private void ValidarRA()
         {

@@ -94,16 +94,16 @@ Fluxo no módulo loja:
 
             //somente valida o endereço de entrega. Os dados cadastrais são validados no passo 10 (ou 25)
             //na API magento, por hora, nunca será feito
-            await new Passo20.Passo20(pedido, retorno, this).ValidarEnderecoEntrega();
+            await new Passo20.Passo20(pedido, retorno, this).ValidarEnderecoEntregaAsync();
 
             //passo 25 feito em Criacao.Passo10.Passo10.ValidarCliente
 
-            await new Passo30.Passo30(pedido, retorno, this).Executar();
-            await new Passo40.Passo40(pedido, retorno, this).Executar();
+            await new Passo30.Passo30(pedido, retorno, this).ExecutarAsync();
+            await new Passo40.Passo40(pedido, retorno, this).ExecutarAsync();
             if (retorno.AlgumErro()) return retorno;
-            await new Passo50.Passo50(pedido, retorno, this).Executar();
+            new Passo50.Passo50(pedido, retorno, this).Executar();
 
-            await new Passo60.Passo60(pedido, retorno, this).Executar();
+            await new Passo60.Passo60(pedido, retorno, this).ExecutarAsync();
 
             //se tiver algum erro, limpa os numeros de pedidos gerados
             if (retorno.AlgumErro())

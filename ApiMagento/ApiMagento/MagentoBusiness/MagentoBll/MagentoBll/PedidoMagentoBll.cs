@@ -80,7 +80,8 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             //estamos criando o pedido com os dados do cliente que vem e não com os dados do cliente que esta na base
             //ex: se o cliente já cadastrado, utilizamos o que vem em PedidoMagentoDto.EnderecoCadastralClienteMagentoDto
             Pedido.Dados.Criacao.PedidoCriacaoDados? pedidoDados = await CriarPedidoCriacaoDados(pedidoMagento,
-                indicador_vendedor_loja, resultado.ListaErros, id_cliente: cliente.Id, dadosClienteMidia: cliente.Midia);
+                indicador_vendedor_loja, resultado.ListaErros, id_cliente: cliente.Id, dadosClienteMidia: cliente.Midia,
+                dadosClienteIndicador: cliente.Indicador);
             if (resultado.ListaErros.Count != 0)
                 return resultado;
             if (pedidoDados == null)
@@ -168,7 +169,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
 
         private async Task<Pedido.Dados.Criacao.PedidoCriacaoDados?> CriarPedidoCriacaoDados(PedidoMagentoDto pedidoMagento,
             Indicador_vendedor_loja indicador_Vendedor_Loja, List<string> lstErros,
-            string id_cliente, string? dadosClienteMidia)
+            string id_cliente, string? dadosClienteMidia, string? dadosClienteIndicador)
         {
             var sistemaResponsavelCadastro = Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO;
 
@@ -200,7 +201,8 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
                 sistemaResponsavelCadastro,
                 lstErros,
                 configuracaoApiMagento,
-                dadosClienteMidia: dadosClienteMidia);
+                dadosClienteMidia: dadosClienteMidia,
+                dadosClienteIndicador: dadosClienteIndicador);
 
             return pedidoDadosCriacao;
         }

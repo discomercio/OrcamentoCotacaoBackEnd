@@ -739,7 +739,7 @@ namespace Prepedido
                 prePedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false, sistemaResponsavelCadastro, false);
 
             //verificar como esta sendo salvo
-            if (!validacoesPrepedidoBll.ValidarDetalhesPrepedido(prePedido.DetalhesPrepedido, lstErros))
+            if (!ValidacoesPrepedidoBll.ValidarDetalhesPrepedido(prePedido.DetalhesPrepedido, lstErros))
             {
                 return lstErros;
             }

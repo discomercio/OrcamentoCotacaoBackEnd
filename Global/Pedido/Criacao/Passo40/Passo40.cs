@@ -19,7 +19,7 @@ namespace Pedido.Criacao.Passo40
         {
         }
 
-        public async Task Executar()
+        public async Task ExecutarAsync()
         {
             NumeroProdutos();
             await ListaProdutosFormaPagamento();

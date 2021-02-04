@@ -477,7 +477,7 @@ namespace Prepedido
             }
         }
 
-        public bool ValidarDetalhesPrepedido(DetalhesPrepedidoDados detalhesPrepedido, List<string> lstErros)
+        public static bool ValidarDetalhesPrepedido(DetalhesPrepedidoDados detalhesPrepedido, List<string> lstErros)
         {
             bool retorno = true;
 

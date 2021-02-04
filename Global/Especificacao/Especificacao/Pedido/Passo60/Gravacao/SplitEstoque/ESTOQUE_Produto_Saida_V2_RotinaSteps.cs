@@ -25,8 +25,8 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
         {
             public class FabricanteProdutoItem
             {
-                public string Fabricante;
-                public string Produto;
+                public readonly string Fabricante;
+                public readonly string Produto;
                 public FabricanteProdutoItem(string fabricante, string produto)
                 {
                     Fabricante = fabricante ?? throw new ArgumentNullException(nameof(fabricante));

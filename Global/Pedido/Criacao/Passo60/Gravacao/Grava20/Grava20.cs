@@ -13,7 +13,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava20
         {
         }
 
-        public async Task<List<Produto.RegrasCrtlEstoque.RegrasBll>> Executar()
+        public async Task<List<Produto.RegrasCrtlEstoque.RegrasBll>> ExecutarAsync()
         {
             //Passo20: LER AS REGRAS DE CONSUMO DO ESTOQUE
             //	rotina obtemCtrlEstoqueProdutoRegra(arquivo bdd.asp)

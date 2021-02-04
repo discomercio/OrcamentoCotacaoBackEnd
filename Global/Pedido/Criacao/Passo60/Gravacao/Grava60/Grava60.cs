@@ -10,14 +10,17 @@ using System.Threading.Tasks;
 
 namespace Pedido.Criacao.Passo60.Gravacao.Grava60
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0054:Use compound assignment", Justification = "Estilo de código")]
     class Grava60 : PassoBaseGravacao
     {
+        private readonly Grava70.Grava70 Grava70;
         public Grava60(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao criacao, Execucao.Execucao execucao)
             : base(contextoBdGravacao, pedido, retorno, criacao, execucao)
         {
+            Grava70 = new Grava70.Grava70(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao);
         }
 
-        public async Task Executar()
+        public async Task ExecutarAsync()
         {
 
             //Passo60: criar pedidos -'	CADASTRA O PEDIDO E PROCESSA A MOVIMENTAÇÃO NO ESTOQUE
@@ -116,7 +119,6 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                 var total_estoque_vendido = 0;
                 var total_estoque_sem_presenca = 0;
                 var s_log_item_autosplit = "";
-                //todo:terminar grava60
                 foreach (var vProdRegra_iRegra in Execucao.Gravacao.ListaRegrasControleEstoque)
                 {
                     //vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD(iCD) é twmsCdXUfXPessoaXCd
@@ -191,7 +193,6 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                 }
 
                 /*
-                 * todo: terminar
 //todo: log grava60
 
                 '	LOG
@@ -216,6 +217,9 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                         tpedido.St_Entrega = Constantes.ST_ENTREGA_SPLIT_POSSIVEL;
                     }
                 }
+
+                //ajustes do passo70
+                await Grava70.Executar(tpedido, indice_pedido);
 
                 ContextoBdGravacao.Add(tpedido);
             }
@@ -372,7 +376,8 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
 
 
             /*
-             * augardando  perguntar para hamilton. No momento, não temos esses campos na API do magento
+             * não temos esses campos na API do magento
+             * são campos antigos e não serão mais alimentados
                 if (operacao_origem = OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO) And blnMagentoPedidoComIndicador then
                     rs("magento_installer_commission_value") = percCommissionValue
                     rs("magento_installer_commission_discount") = percCommissionDiscount
@@ -462,7 +467,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
             //'	===========
             if (Execucao.Gravacao.EmpresasAutoSplit.Count > 1)
                 tpedido.St_Auto_Split = 1;
-            tpedido.Split_Status = 0;   //naop estava no ASP, é o valor default do banco
+            tpedido.Split_Status = 0;   //nao estava no ASP, é o valor default do banco
 
             if ((tpedido.St_Pagto ?? "") != Constantes.ST_PAGTO_NAO_PAGO)
             {
@@ -610,12 +615,12 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                 }
             }
 
-/*
- * todo: perc_rt
-pergunta hamilton: o que é o perc_rt? Lemos da T_CODIGO_DESCRICAO, certo?
-usar o fluxo autal, procurar PedidoECommerce_Origem_Grupo. temos que ler conforme a origem e ler o valor percentual.
-ver PedidoNovoConfirma.asp '	OBTÉM O PERCENTUAL DE COMISSÃO DO MARKETPLACE
-*/
+            /*
+             * todo: perc_rt
+            pergunta hamilton: o que é o perc_rt? Lemos da T_CODIGO_DESCRICAO, certo?
+            usar o fluxo autal, procurar PedidoECommerce_Origem_Grupo. temos que ler conforme a origem e ler o valor percentual.
+            ver PedidoNovoConfirma.asp '	OBTÉM O PERCENTUAL DE COMISSÃO DO MARKETPLACE
+            */
 
             //'	CUSTO FINANCEIRO FORNECEDOR
             tpedido.CustoFinancFornecTipoParcelamento = Execucao.C_custoFinancFornecTipoParcelamento;
