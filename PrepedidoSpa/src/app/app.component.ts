@@ -12,6 +12,7 @@ import { PrepedidoBuscarService } from './servicos/prepedido/prepedido-buscar.se
 import { PedidoListarService } from './servicos/pedido/pedido-listar.service';
 import { PrepedidoListarService } from './servicos/prepedido/prepedido-listar.service';
 import { environment } from 'src/environments/environment';
+import { TIMEOUT } from 'dns';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +28,8 @@ export class AppComponent implements OnInit {
     public readonly impressaoService: ImpressaoService,
     private readonly router: Router,
     private readonly pedidoListarService: PedidoListarService,
-    private readonly prepedidoListarService: PrepedidoListarService) {
+    private readonly prepedidoListarService: PrepedidoListarService,
+    private readonly alertaService: AlertaService) {
     telaDesktopService.telaAtual$.subscribe(r => this.telaDesktop = r);
 
   }
@@ -35,11 +37,17 @@ export class AppComponent implements OnInit {
 
 
   ngOnInit(): void {
+    if (!this.verificarBrowser()) {
+      this.alertaService.mostrarMensagemBrowser();
+      this.logout();
+    }
 
     //proteção para não publicar se a verificação da versão da API não estiver correta
     if (environment.production && (environment.versaoApi == 'DEBUG' || environment.versaoApi == 'SUBSTITUIR_VERSAO_API')) {
       alert("Ocorreu algum erro no processo de compilação. Por favor, avise o suporte técnico.")
     }
+
+
 
     this.carregarEstilo(false);
 
@@ -61,6 +69,31 @@ export class AppComponent implements OnInit {
         }
       }
     });
+  }
+
+  verificarBrowser(): boolean {
+    if (navigator.appName.toUpperCase().indexOf("INTERNET") > -1)
+      return false;
+
+    if (navigator.appName.toUpperCase().indexOf("MICROSOFT") > -1)
+      return false;
+
+    if (navigator.appName.toUpperCase().indexOf("EXPLORER") > -1)
+      return false;
+
+    if (navigator.appName.toUpperCase().indexOf("MSIE") > -1)
+      return false;
+
+    if (navigator.userAgent.toUpperCase().indexOf("MSIE") > -1)
+      return false;
+
+    if (navigator.userAgent.toUpperCase().indexOf("MICROSOFT") > -1)
+      return false;
+
+    if (navigator.userAgent.toUpperCase().indexOf("TRIDENT/") > -1)
+      return false;
+
+    return true;
   }
 
   //carrega o estilo conforme o cliente. se for o caso, espera carregar para ir para a home
@@ -115,7 +148,6 @@ export class AppComponent implements OnInit {
 
     //vamos criar uma método que irá chamar os métodos que serão criados dentro 
     //de todos os serviços para que seja limpo todos as variaveis
-    //AFAZER: NÃO SEI SE FAZ A CHAMADA DO METODO AQUI
     this.pedidoListarService.limpar(true);
     this.prepedidoListarService.limpar(true);
   }
@@ -123,3 +155,4 @@ export class AppComponent implements OnInit {
   title = 'Sistema de pedidos';
 
 }
+

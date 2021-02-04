@@ -31,6 +31,10 @@ export class AlertaService {
       msg, "350px", null);
   }
 
+  public mostrarMensagemBrowser(): void {
+    let msg: string = "Este navegador não é suportado!\nPor favor, utilize o Google Chrome, FireFox ou Edge!";
+    this.mostrarMensagemComLargura(msg, "350px", null);
+  }
 
   public static mostrandoErroNaoAutorizado: boolean = false;
   //esta é um pouco mais estreita...
