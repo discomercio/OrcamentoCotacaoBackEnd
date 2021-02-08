@@ -299,6 +299,18 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
                 c.EnderecoEntrega.EndEtg_ddd_com_2 = "";
                 c.EnderecoEntrega.EndEtg_tel_com_2 = "";
                 c.EnderecoEntrega.EndEtg_ramal_com_2 = "";
+                c.EnderecoEntrega.EndEtg_tel_res = "123456789012";
+            }, "Endereço de entrega: telefone residencial inválido.", true);
+
+            TesteEnderecoEntrega(c =>
+            {
+                c.OutroEndereco = true;
+                c.EnderecoEntrega.EndEtg_ddd_com = "";
+                c.EnderecoEntrega.EndEtg_tel_com = "";
+                c.EnderecoEntrega.EndEtg_ramal_com = "";
+                c.EnderecoEntrega.EndEtg_ddd_com_2 = "";
+                c.EnderecoEntrega.EndEtg_tel_com_2 = "";
+                c.EnderecoEntrega.EndEtg_ramal_com_2 = "";
                 c.EnderecoEntrega.EndEtg_ddd_res = "";
             }, "Endereço de entrega: preencha o ddd residencial.", true);
 
@@ -324,6 +336,18 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
                 c.EnderecoEntrega.EndEtg_tel_com_2 = "";
                 c.EnderecoEntrega.EndEtg_ramal_com_2 = "";
                 c.EnderecoEntrega.EndEtg_tel_cel = "12345";
+            }, "Endereço de entrega: telefone celular inválido.", true);
+
+            TesteEnderecoEntrega(c =>
+            {
+                c.OutroEndereco = true;
+                c.EnderecoEntrega.EndEtg_ddd_com = "";
+                c.EnderecoEntrega.EndEtg_tel_com = "";
+                c.EnderecoEntrega.EndEtg_ramal_com = "";
+                c.EnderecoEntrega.EndEtg_ddd_com_2 = "";
+                c.EnderecoEntrega.EndEtg_tel_com_2 = "";
+                c.EnderecoEntrega.EndEtg_ramal_com_2 = "";
+                c.EnderecoEntrega.EndEtg_tel_cel = "123456789012";
             }, "Endereço de entrega: telefone celular inválido.", true);
 
             TesteEnderecoEntrega(c =>
@@ -653,6 +677,20 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
                 c.EnderecoEntrega.EndEtg_tipo_pessoa = "PJ";
                 c.EnderecoEntrega.EndEtg_cnpj_cpf = "00371048000106";
                 c.EnderecoEntrega.EndEtg_produtor_rural_status = 0;
+                c.EnderecoEntrega.EndEtg_tel_com = "123456789012";
+            }, "Endereço de entrega: telefone comercial inválido!", true);
+
+            TesteEnderecoEntrega(c =>
+            {
+                c.OutroEndereco = true;
+                c.EnderecoEntrega.EndEtg_ddd_res = "";
+                c.EnderecoEntrega.EndEtg_tel_res = "";
+                c.EnderecoEntrega.EndEtg_ddd_cel = "";
+                c.EnderecoEntrega.EndEtg_tel_cel = "";
+                c.EnderecoEntrega.EndEtg_rg = "";
+                c.EnderecoEntrega.EndEtg_tipo_pessoa = "PJ";
+                c.EnderecoEntrega.EndEtg_cnpj_cpf = "00371048000106";
+                c.EnderecoEntrega.EndEtg_produtor_rural_status = 0;
                 c.EnderecoEntrega.EndEtg_ddd_com = "1";
             }, "Endereço de entrega: ddd do telefone comercial inválido!", true);
 
@@ -712,6 +750,20 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
                 c.EnderecoEntrega.EndEtg_cnpj_cpf = "00371048000106";
                 c.EnderecoEntrega.EndEtg_produtor_rural_status = 0;
                 c.EnderecoEntrega.EndEtg_tel_com_2 = "12345";
+            }, "Endereço de entrega: telefone comercial 2 inválido!", true);
+
+            TesteEnderecoEntrega(c =>
+            {
+                c.OutroEndereco = true;
+                c.EnderecoEntrega.EndEtg_ddd_res = "";
+                c.EnderecoEntrega.EndEtg_tel_res = "";
+                c.EnderecoEntrega.EndEtg_ddd_cel = "";
+                c.EnderecoEntrega.EndEtg_tel_cel = "";
+                c.EnderecoEntrega.EndEtg_rg = "";
+                c.EnderecoEntrega.EndEtg_tipo_pessoa = "PJ";
+                c.EnderecoEntrega.EndEtg_cnpj_cpf = "00371048000106";
+                c.EnderecoEntrega.EndEtg_produtor_rural_status = 0;
+                c.EnderecoEntrega.EndEtg_tel_com_2 = "123456789012";
             }, "Endereço de entrega: telefone comercial 2 inválido!", true);
 
             TesteEnderecoEntrega(c =>
