@@ -2,10 +2,7 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { AlertDialogComponent } from './alert-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AppComponent } from 'src/app/app.component';
-import { AutenticacaoService } from 'src/app/servicos/autenticacao/autenticacao.service';
 import { Router } from '@angular/router';
-import { $ } from 'protractor';
 
 @Injectable({
   providedIn: 'root'

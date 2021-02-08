@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, DebugElement, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { PrepedidoComboNumeroService } from '../../../../src/app/servicos/prepedido/prepedido-combo-numero.service';
 import { PrepedidoComboCpfcnpjService } from '../../../../src/app/servicos/prepedido/prepedido-combo-cpfcnpj.service';
 import { Observable } from 'rxjs';

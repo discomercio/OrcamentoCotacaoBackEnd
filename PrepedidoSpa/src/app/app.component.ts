@@ -1,18 +1,12 @@
 import { Component, OnInit, Inject, Input } from '@angular/core';
 import { TelaDesktopService } from './servicos/telaDesktop/telaDesktop.service';
-import { Router, NavigationEnd, NavigationStart } from '@angular/router';
+import { Router, NavigationStart } from '@angular/router';
 import { AutenticacaoService } from './servicos/autenticacao/autenticacao.service'
 import { ImpressaoService } from './utils/impressao.service';
-import { DOCUMENT } from '@angular/common';
-import * as jtw_decode from 'jwt-decode';
 import { AlertaService } from './utils/alert-dialog/alerta.service';
-import { ConsultaBaseComponent } from './prepedido/consulta-base/consulta-base.component';
-import { PedidoBuscarService } from './servicos/pedido/pedido-buscar.service';
-import { PrepedidoBuscarService } from './servicos/prepedido/prepedido-buscar.service';
 import { PedidoListarService } from './servicos/pedido/pedido-listar.service';
 import { PrepedidoListarService } from './servicos/prepedido/prepedido-listar.service';
 import { environment } from 'src/environments/environment';
-import { TIMEOUT } from 'dns';
 
 @Component({
   selector: 'app-root',
@@ -34,7 +28,6 @@ export class AppComponent implements OnInit {
 
   }
   public logo: string = null;
-
 
   ngOnInit(): void {
     if (!this.verificarBrowser()) {
