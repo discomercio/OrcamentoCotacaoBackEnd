@@ -1,6 +1,7 @@
 ﻿@ignore
 @Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
 Feature: Pedido de cliente PJ com endereço de entrega PF - validação de telefones
+
 #em loja/ClienteEdita.asp:
 #                /*
 #                telefones PF:
@@ -10,16 +11,13 @@ Feature: Pedido de cliente PJ com endereço de entrega PF - validação de telef
 #                EndEtg_tel_cel
 #                */
 #também em loja/PedidoNovoConsiste.asp
-
 Background: Api MAgento somente aceita pedidos PF
 	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
-
 	Given Pedido base cliente PJ com endereço de entrega PF
 
 Scenario: Configuração
 	Given Nome deste item "Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj.EntregaPfTelefones"
 	Given Implementado em "Especificacao.Pedido.Pedido"
-
 
 #-------------------------------------------------------------
 #-------------------------------------------------------------
@@ -34,15 +32,19 @@ Scenario: EndEtg_ddd_res 2
 	Then Erro "Endereço de entrega: DDD inválido!!"
 
 Scenario: EndEtg_tel_res
-#	if ((len(s_tel)=0) Or (len(s_tel)>=6)) then telefone_ok = True
+	#	if ((len(s_tel)=0) Or (len(s_tel)>=6)) then telefone_ok = True
 	When Informo "EndEtg_tel_res" = "123"
-	Then Erro "Endereço de entrega: telefone inválido!!"
+	Then Erro "Endereço de entrega: telefone residencial inválido."
 
 Scenario: EndEtg_tel_res 2
 	When Informo "EndEtg_tel_res" = "12345"
-	Then Erro "Endereço de entrega: telefone inválido!!"
+	Then Erro "Endereço de entrega: telefone residencial inválido."
 
 Scenario: EndEtg_tel_res 3
+	When Informo "EndEtg_tel_res" = "123456789012"
+	Then Erro "Endereço de entrega: telefone residencial inválido."
+
+Scenario: EndEtg_tel_res 4
 	When Informo "EndEtg_tel_res" = "123456"
 	Then Sem erro "Endereço de entrega: telefone inválido!!"
 
@@ -75,15 +77,19 @@ Scenario: EndEtg_ddd_cel 2
 	Then Erro "Endereço de entrega: DDD inválido!!"
 
 Scenario: EndEtg_tel_cel
-#	if ((len(s_tel)=0) Or (len(s_tel)>=6)) then telefone_ok = True
+	#	if ((len(s_tel)=0) Or (len(s_tel)>=6)) then telefone_ok = True
 	When Informo "EndEtg_tel_cel" = "123"
-	Then Erro "Endereço de entrega: telefone inválido!!"
+	Then Erro "Endereço de entrega: telefone celular inválido."
 
 Scenario: EndEtg_tel_cel 2
 	When Informo "EndEtg_tel_cel" = "12345"
-	Then Erro "Endereço de entrega: telefone inválido!!"
+	Then Erro "Endereço de entrega: telefone celular inválido."
 
 Scenario: EndEtg_tel_cel 3
+	When Informo "EndEtg_tel_cel" = "123456789012"
+	Then Erro "Endereço de entrega: telefone celular inválido."
+
+Scenario: EndEtg_tel_cel 4
 	When Informo "EndEtg_tel_cel" = "123456"
 	Then Sem erro "Endereço de entrega: telefone inválido!!"
 
@@ -122,4 +128,3 @@ Scenario: nos telefones, os símbolos devem ser removidos 2
 	When Informo "EndEtg_tel_cel" = "123,.;5678"
 	Then Sem nenhum erro
 	And No registro gravado, campo "EndEtg_tel_cel" = "1235678"
-
