@@ -10,6 +10,8 @@ using System;
 
 namespace Produto.Estoque
 {
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+
     public static class Estoque
     {
         public static async Task Estoque_verifica_disponibilidade_integral_v2(
@@ -397,5 +399,7 @@ namespace Produto.Estoque
         }
 
     }
+#endif
+
 }
 

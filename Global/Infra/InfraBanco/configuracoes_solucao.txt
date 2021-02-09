@@ -13,7 +13,7 @@ Temos as seguintes Solution Configuration:
 	Release_Loja
 	Debug (também usado para exeuctar os testes)
 	
-No InfraBanco, temos as seguintes Project Configuration e o define que cada uma delas define:
+Por exemplo, no InfraBanco, temos as seguintes Project Configuration e o define que cada uma delas define:
 	Release_Banco_Prepedido -> RELEASE_BANCO_PREPEDIDO
 	Release_Banco_Pedido -> RELEASE_BANCO_PEDIDO
 	Release_Banco_Loja -> RELEASE_BANCO_LOJA
