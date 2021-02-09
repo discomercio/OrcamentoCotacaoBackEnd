@@ -39,7 +39,8 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
     public readonly impressaoService: ImpressaoService,
     public readonly novoPrepedidoDadosService: NovoPrepedidoDadosService,
     public readonly prepedidoBuscarService: PrepedidoBuscarService,
-    public readonly dialog: MatDialog) {
+    public readonly dialog: MatDialog,
+    public readonly alertaService: AlertaService) {
     super(telaDesktopService);
 
   }
@@ -83,6 +84,20 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
             this.deuErro(r);
           }
         });
+
+      //vamos validar as data de busca caso fique armazenado o valor errado no sessionStorage
+      let dataInicial: Date = DataUtils.formata_formulario_date(this.prepedidoListarService.paramsBuscaPrepedido.dataInicial);
+      let dataFinal: Date = DataUtils.formata_formulario_date(this.prepedidoListarService.paramsBuscaPrepedido.dataFinal);
+
+      if (!DataUtils.validarData(dataInicial)) {
+        this.alertaService.mostrarMensagem("Data inicial inválida!");
+        return;
+      }
+      if (!DataUtils.validarData(dataFinal)) {
+        this.alertaService.mostrarMensagem("Data final inválida!");
+        return;
+      }
+
       this.prepedidoListarService.atualizar();
 
     }
@@ -95,6 +110,19 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
             this.deuErro(r);
           }
         });
+
+      let dataInicial: Date = DataUtils.formata_formulario_date(this.pedidoListarService.paramsBuscaPedido.dataInicial);
+      let dataFinal: Date = DataUtils.formata_formulario_date(this.pedidoListarService.paramsBuscaPedido.dataFinal);
+
+      if (!DataUtils.validarData(dataInicial)) {
+        this.alertaService.mostrarMensagem("Data inicial inválida!");
+        return;
+      }
+      if (!DataUtils.validarData(dataFinal)) {
+        this.alertaService.mostrarMensagem("Data final inválida!");
+        return;
+      }
+
       this.pedidoListarService.atualizar();
     }
   }
@@ -107,17 +135,7 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
     if (this.jaDeuErro) return;
     this.jaDeuErro = true;
 
-
-    let alertaService = new AlertaService(this.dialog, this.router);
-
-    alertaService.mostrarErroInternet(r);
-    // const dialogRef = this.dialog.open(AlertDialogComponent, {
-    //   width: '350px',
-    //   data: `Ocorreu um erro ao acessar os dados. Verifique a conexão com a Internet.`
-    // });
-    // dialogRef.afterClosed().subscribe((result) => {
-    //   //this.jaDeuErro = false;
-    // });
+    this.alertaService.mostrarErroInternet(r);
   }
 
 
