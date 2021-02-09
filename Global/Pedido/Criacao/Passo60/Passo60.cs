@@ -26,7 +26,7 @@ namespace Pedido.Criacao.Passo60
             if (Retorno.AlgumErro())
                 return;
 
-            await new Gravacao.Gravacao(Pedido, Retorno, Criacao).Executar();
+            await new Gravacao.FluxoGravacao(Pedido, Retorno, Criacao).Executar();
         }
     }
 }

@@ -192,6 +192,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
                                && ei.Operacao == Constantes.OP_ESTOQUE_VENDA
                                && ei.Estoque == Constantes.ID_ESTOQUE_VENDIDO
                                && e.Id_nfe_emitente == Id_nfe_emitente
+                               && ei.Anulado_Status == 0
                            select (int)(ei.Qtde ?? 0)).Sum();
             Assert.Equal(movimento, estoque);
         }
@@ -204,6 +205,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
                            where ei.Produto == produto.Produto && ei.Fabricante == produto.Fabricante
                                && ei.Operacao == Constantes.OP_ESTOQUE_VENDA
                                && ei.Estoque == Constantes.ID_ESTOQUE_SEM_PRESENCA
+                               && ei.Anulado_Status == 0
                            select (int)(ei.Qtde ?? 0)).Sum();
             Assert.Equal(movimento, estoque);
         }

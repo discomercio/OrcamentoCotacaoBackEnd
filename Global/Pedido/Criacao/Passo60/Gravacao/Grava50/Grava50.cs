@@ -8,8 +8,8 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava50
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0054:Use compound assignment", Justification = "Estilo de código")]
     class Grava50 : PassoBaseGravacao
     {
-        public Grava50(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao criacao, Execucao.Execucao execucao)
-            : base(contextoBdGravacao, pedido, retorno, criacao, execucao)
+        public Grava50(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao criacao, Execucao.Execucao execucao, Execucao.Gravacao gravacao)
+            : base(contextoBdGravacao, pedido, retorno, criacao, execucao, gravacao)
         {
         }
 
@@ -48,7 +48,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava50
                     end if 'if alerta=""
                 */
 
-            foreach (var regra in Execucao.Gravacao.ListaRegrasControleEstoque)
+            foreach (var regra in Gravacao.ListaRegrasControleEstoque)
             {
                 foreach (var vCD in regra.TwmsCdXUfXPessoaXCd)
                     vCD.Estoque_Qtde_Solicitado = 0;
@@ -108,7 +108,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava50
             foreach (var v_item_iItem in Pedido.ListaProdutos)
             {
                 int qtde_a_alocar = v_item_iItem.Qtde;
-                foreach (var vProdRegra_iRegra in Execucao.Gravacao.ListaRegrasControleEstoque)
+                foreach (var vProdRegra_iRegra in Gravacao.ListaRegrasControleEstoque)
                 {
                     if (qtde_a_alocar == 0)
                         break;
@@ -194,7 +194,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava50
                     //'	LOCALIZA E ALOCA A QUANTIDADE PENDENTE:
                     //'		1) SELEÇÃO AUTOMÁTICA DE CD: A QUANTIDADE PENDENTE FICARÁ ALOCADA NO CD DEFINIDO P/ TAL
                     //'		2) SELEÇÃO MANUAL DE CD: A QUANTIDADE PENDENTE FICARÁ ALOCADA NO CD SELECIONADO MANUALMENTE
-                    foreach (var vProdRegra_iRegra in Execucao.Gravacao.ListaRegrasControleEstoque)
+                    foreach (var vProdRegra_iRegra in Gravacao.ListaRegrasControleEstoque)
                     {
                         if (qtde_a_alocar == 0)
                             break;

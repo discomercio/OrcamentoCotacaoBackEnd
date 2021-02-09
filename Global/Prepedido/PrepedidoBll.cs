@@ -2159,7 +2159,7 @@ namespace Prepedido
                             PedidoRecebidoStatus = pedidoPai.PedidoRecebidoStatus,
                             PedidoRecebidoData = pedidoPai.PedidoRecebidoData,
                             Analise_credito = pedidoPai.Analise_Credito,
-                            DescricaoAnaliseCredito = pedidoVisualizacaoBll.DescricaoAnaliseCreditoCadastroPedido(Convert.ToString(pedidoPai.Analise_Credito)),
+                            DescricaoAnaliseCredito = PedidoVisualizacao.PedidoVisualizacaoBll.Descricao_analise_credito_CadastroPedido(Convert.ToString(pedidoPai.Analise_Credito)),
                             Analise_credito_data = pedidoPai.Analise_credito_Data,
                             St_pagto = pedidoPai.St_Pagto,
                             DescricaoStatusPagto = pedidoVisualizacaoBll.StatusPagto(pedidoPai.St_Pagto)
@@ -2186,7 +2186,7 @@ namespace Prepedido
                                     PedidoRecebidoStatus = filho.PedidoRecebidoStatus,
                                     PedidoRecebidoData = filho.PedidoRecebidoData,
                                     Analise_credito = pedidoPai.Analise_Credito,
-                                    DescricaoAnaliseCredito = pedidoVisualizacaoBll.DescricaoAnaliseCreditoCadastroPedido(Convert.ToString(pedidoPai.Analise_Credito)),
+                                    DescricaoAnaliseCredito = PedidoVisualizacao.PedidoVisualizacaoBll.Descricao_analise_credito_CadastroPedido(Convert.ToString(pedidoPai.Analise_Credito)),
                                     Analise_credito_data = pedidoPai.Analise_credito_Data,
                                     St_pagto = pedidoPai.St_Pagto,
                                     DescricaoStatusPagto = pedidoVisualizacaoBll.StatusPagto(pedidoPai.St_Pagto)

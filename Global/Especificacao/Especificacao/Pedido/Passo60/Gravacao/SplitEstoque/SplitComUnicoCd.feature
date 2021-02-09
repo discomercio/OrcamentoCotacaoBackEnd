@@ -1,9 +1,10 @@
 ﻿@ignore
-Feature: SplitEstoqueResultante3casos
+Feature: SplitComUnicoCd
 Vmaos verificar se está fazendo o slipt corretamente:
 - com um pedido totalmente atendido por um CD
-- com um pedido totalmente atendido por dois CDs
-- com um pedido atendido por dois CDs e ainda com quantidade sem presença no estoque
+
+fazer esse arquivo todo
+
 
 Background: Background
 	Given Reiniciar banco ao terminar cenário
@@ -11,7 +12,7 @@ Background: Background
 	And Usando fabricante = "001", produto = "001000"
 	And Zerar todo o estoque
 
-Scenario: Pedido com somente um CD
+	Scenario: Pedido com somente um CD
 #Supondo que vendemos 10 e tem 5 no estoque. Ele deve gerar um único pedido com status SPLIT_POSSIVEL,
 #marcando que 5 estão sendo atendidos e 5 estão eseprando o estoque.
 Given falta fazer

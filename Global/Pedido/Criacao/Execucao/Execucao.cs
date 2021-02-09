@@ -3,7 +3,6 @@ using InfraBanco.Modelos;
 using Microsoft.EntityFrameworkCore;
 using Pedido.Dados.Criacao;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -248,81 +247,7 @@ namespace Pedido.Criacao.Execucao
             //todo: fazer ParametroPercDesagioRALiquida
             ParametroPercDesagioRALiquida = 0;
         }
+
         #endregion
-
-        public class GravacaoDados
-        {
-            #region Id_pedido_base
-            public string Id_pedido_base
-            {
-                get
-                {
-                    if (_id_pedido_base == null)
-                        throw new ApplicationException($"Id_pedido_base acessado antes de ser calculado.");
-                    return _id_pedido_base;
-                }
-                set => _id_pedido_base = value;
-            }
-            private string? _id_pedido_base;
-            #endregion
-
-            #region Hora_pedido
-            public string Hora_pedido
-            {
-                get
-                {
-                    if (_hora_pedido == null)
-                        throw new ApplicationException($"_hora_pedido acessado antes de ser calculado.");
-                    return _hora_pedido;
-                }
-                set => _hora_pedido = value;
-            }
-            private string? _hora_pedido;
-            #endregion
-            #region DataHoraCriacao
-            public DateTime DataHoraCriacao = DateTime.Now;
-            #endregion
-
-            #region ListaRegrasControleEstoque
-            public List<Produto.RegrasCrtlEstoque.RegrasBll> ListaRegrasControleEstoque
-            {
-                get
-                {
-                    if (_regrasControleEstoque == null)
-                        throw new ApplicationException($"RegrasControleEstoque acessado antes de ser calculado.");
-                    return _regrasControleEstoque;
-                }
-                set => _regrasControleEstoque = value;
-            }
-            private List<Produto.RegrasCrtlEstoque.RegrasBll>? _regrasControleEstoque = null;
-            #endregion
-
-            #region EmpresasAutoSplit
-            //este é simplesmente uma lsita de ints, mas encapsulamos em uma classe
-            public class EmpresaAutoSplitDados
-            {
-                public EmpresaAutoSplitDados(int id_nfe_emitente)
-                {
-                    Id_nfe_emitente = id_nfe_emitente;
-                }
-
-                public int Id_nfe_emitente { get; }
-            }
-            public List<EmpresaAutoSplitDados> EmpresasAutoSplit
-            {
-                get
-                {
-                    if (_empresasAutoSplit == null)
-                        throw new ApplicationException($"_empresasAutoSplit acessado antes de ser calculado.");
-                    return _empresasAutoSplit;
-                }
-                set => _empresasAutoSplit = value;
-            }
-            private List<EmpresaAutoSplitDados>? _empresasAutoSplit = null;
-            #endregion
-
-        }
-        public GravacaoDados Gravacao = new GravacaoDados();
-
     }
 }

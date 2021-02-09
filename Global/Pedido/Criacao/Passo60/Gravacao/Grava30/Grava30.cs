@@ -8,8 +8,8 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava30
 {
     class Grava30 : PassoBaseGravacao
     {
-        public Grava30(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao criacao, Execucao.Execucao execucao)
-            : base(contextoBdGravacao, pedido, retorno, criacao, execucao)
+        public Grava30(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao criacao, Execucao.Execucao execucao, Execucao.Gravacao gravacao)
+            : base(contextoBdGravacao, pedido, retorno, criacao, execucao, gravacao)
         {
         }
 
@@ -69,7 +69,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava30
                                 next
                             end if
             */
-            foreach (var vProdRegra_iRegra in Execucao.Gravacao.ListaRegrasControleEstoque)
+            foreach (var vProdRegra_iRegra in Gravacao.ListaRegrasControleEstoque)
             {
                 //vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD(iCD) é twmsCdXUfXPessoaXCd
                 foreach (var twmsCdXUfXPessoaXCd in vProdRegra_iRegra.TwmsCdXUfXPessoaXCd)

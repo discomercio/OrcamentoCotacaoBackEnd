@@ -1098,32 +1098,43 @@ namespace UtilsGlobais
             return qtdCliente + qtdOrcamentista;
         }
 
-        public static string FormatarEndereco(string endereco, string numero, string complemento,
+        public static string Formata_endereco(string endereco, string numero, string complemento,
             string bairro, string cidade, string uf, string cep)
         {
 
             string retorno = "";
             if (!string.IsNullOrEmpty(endereco))
+            {
                 retorno = endereco.Trim();
-            if (!string.IsNullOrEmpty(numero))
-                retorno += ", " + numero.Trim();
-            if (!string.IsNullOrEmpty(complemento))
-                retorno += " " + complemento.Trim();
-            if (!string.IsNullOrEmpty(bairro))
-                retorno += " - " + bairro.Trim();
-            if (!string.IsNullOrEmpty(cidade))
-                retorno += " - " + cidade.Trim();
-            if (!string.IsNullOrEmpty(uf))
-                retorno += " - " + uf.Trim();
-            if (!string.IsNullOrEmpty(cep))
-                retorno += " - " + FormatarCep(cep.Trim());
+                if (!string.IsNullOrEmpty(numero))
+                    retorno += ", " + numero.Trim();
+                if (!string.IsNullOrEmpty(complemento))
+                    retorno += " " + complemento.Trim();
+                if (!string.IsNullOrEmpty(bairro))
+                    retorno += " - " + bairro.Trim();
+                if (!string.IsNullOrEmpty(cidade))
+                    retorno += " - " + cidade.Trim();
+                if (!string.IsNullOrEmpty(uf))
+                    retorno += " - " + uf.Trim();
+                if (!string.IsNullOrEmpty(cep))
+                    retorno += " - " + Cep_formata(cep.Trim());
+            }
 
             return retorno;
         }
 
-        public static string FormatarCep(string cep)
+        public static string Cep_SoDigito(string cep)
         {
-            string sCep = cep.Replace("-", "");
+            if (cep == null)
+                cep = "";
+            cep = System.Text.RegularExpressions.Regex.Replace(cep, @"\D", "");
+            return cep;
+        }
+
+        public static string Cep_formata(string cep)
+        {
+            //a mesma rotina que para o telefone, ficamos osmnete com os digitos
+            string sCep = Cep_SoDigito(cep);
             if (!Util.VerificaCep(sCep))
                 return "";
 

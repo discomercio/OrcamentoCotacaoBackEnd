@@ -80,15 +80,15 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
         
         public virtual void FeatureBackground()
         {
-#line 6
-#line hidden
-#line 7
- testRunner.Given("Pedido base sem itens", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 8
- testRunner.And("Usando fabricante = \"001\", produto = \"001000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 9
+ testRunner.Given("Pedido base sem itens", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 10
+ testRunner.And("Usando fabricante = \"001\", produto = \"001000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 11
  testRunner.And("Zerar todo o estoque", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
         }
@@ -128,7 +128,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
             argumentsOfScenario.Add("spe", spe);
             argumentsOfScenario.Add("Comentários", comentarios);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Teste de auto-slipt", null, tagsOfScenario, argumentsOfScenario);
-#line 11
+#line 13
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -148,37 +148,37 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 6
+#line 8
 this.FeatureBackground();
 #line hidden
-#line 14
+#line 16
  testRunner.Given(string.Format("Definir estoque id_nfe_emitente = \"4003\", saldo de estoque = {0}", inicial1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 15
+#line 17
  testRunner.And(string.Format("Definir estoque id_nfe_emitente = \"4903\", saldo de estoque = {0}", inicial2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 17
+#line 19
  testRunner.And("Pedido base sem itens", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 18
+#line 20
  testRunner.And(string.Format("Criar novo item com qde = {0}", qde), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 20
+#line 22
  testRunner.When("Cadastrar pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 21
+#line 23
  testRunner.Then(string.Format("Gerado {0} pedidos", nroPedidos), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 23
+#line 25
  testRunner.And(string.Format("Pedido gerado {0}, verificar st_entrega = {1}", pedido, st_Entrega), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 24
+#line 26
  testRunner.And(string.Format("Pedido gerado {0}, verificar id_nfe_emitente = {1} e qde = {2}", pedido, cD, iqde), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 26
+#line 28
  testRunner.And(string.Format("Verificar estoque id_nfe_emitente = {0}, saldo de estoque = {1}", cD, estoque), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 27
+#line 29
  testRunner.And(string.Format("Verificar estoque id_nfe_emitente = {0}, saldo de ID_ESTOQUE_SEM_PRESENCA = {1}", cD, spe), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }

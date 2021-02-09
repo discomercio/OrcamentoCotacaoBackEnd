@@ -2,23 +2,21 @@
 using Pedido.Dados.Criacao;
 using System.Linq;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using static Pedido.Criacao.Execucao.Execucao;
-using static Pedido.Criacao.Execucao.Execucao.GravacaoDados;
+using static Pedido.Criacao.Execucao.Gravacao;
 
 namespace Pedido.Criacao.Passo60.Gravacao.Grava55
 {
     class Grava55 : PassoBaseGravacao
     {
-        public Grava55(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao criacao, Execucao.Execucao execucao)
-            : base(contextoBdGravacao, pedido, retorno, criacao, execucao)
+        public Grava55(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao criacao, Execucao.Execucao execucao, Execucao.Gravacao gravacao)
+            : base(contextoBdGravacao, pedido, retorno, criacao, execucao, gravacao)
         {
         }
 
         public void Executar()
         {
-            Execucao.Gravacao.EmpresasAutoSplit = CalcularEmpresaAutoSplitDados();
-            if (!Execucao.Gravacao.EmpresasAutoSplit.Any())
+            Gravacao.EmpresasAutoSplit = CalcularEmpresaAutoSplitDados();
+            if (!Gravacao.EmpresasAutoSplit.Any())
                 Retorno.ListaErros.Add("Erro: nenhuma empresa selecionada para consumir o estoque.");
         }
         private List<EmpresaAutoSplitDados> CalcularEmpresaAutoSplitDados()
@@ -64,9 +62,9 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava55
             //	end if 'if alerta=""
 
             //'	CONTAGEM DE EMPRESAS QUE SERÃO USADAS NO AUTO-SPLIT, OU SEJA, A QUANTIDADE DE PEDIDOS QUE SERÁ CADASTRADA, JÁ QUE CADA PEDIDO SE REFERE AO ESTOQUE DE UMA EMPRESA
-            List< GravacaoDados.EmpresaAutoSplitDados > vEmpresaAutoSplit = new List<GravacaoDados.EmpresaAutoSplitDados >();
+            List<Execucao.Gravacao.EmpresaAutoSplitDados> vEmpresaAutoSplit = new List<Execucao.Gravacao.EmpresaAutoSplitDados>();
             List<int> lista_empresa_selecionada = new List<int>();
-            foreach (var vProdRegra_iRegra in Execucao.Gravacao.ListaRegrasControleEstoque)
+            foreach (var vProdRegra_iRegra in Gravacao.ListaRegrasControleEstoque)
             {
                 //vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD(iCD) é twmsCdXUfXPessoaXCd
                 foreach (var twmsCdXUfXPessoaXCd in vProdRegra_iRegra.TwmsCdXUfXPessoaXCd)
@@ -80,7 +78,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava55
                             {
                                 //'	SE O CD AINDA NÃO CONSTA DA LISTA, INCLUI
                                 lista_empresa_selecionada.Add(twmsCdXUfXPessoaXCd.Id_nfe_emitente);
-                                vEmpresaAutoSplit.Add(new GravacaoDados.EmpresaAutoSplitDados(twmsCdXUfXPessoaXCd.Id_nfe_emitente));
+                                vEmpresaAutoSplit.Add(new Execucao.Gravacao.EmpresaAutoSplitDados(twmsCdXUfXPessoaXCd.Id_nfe_emitente));
                             }
                         }
                     }

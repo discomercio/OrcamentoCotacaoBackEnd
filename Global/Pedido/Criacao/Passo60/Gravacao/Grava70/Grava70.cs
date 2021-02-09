@@ -10,8 +10,8 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava70
 {
     class Grava70 : PassoBaseGravacao
     {
-        public Grava70(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao criacao, Execucao.Execucao execucao)
-            : base(contextoBdGravacao, pedido, retorno, criacao, execucao)
+        public Grava70(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao criacao, Execucao.Execucao execucao, Execucao.Gravacao gravacao)
+            : base(contextoBdGravacao, pedido, retorno, criacao, execucao, gravacao)
         {
         }
 
@@ -25,6 +25,8 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava70
 
         private async Task AtualizarIndicador(int indice_pedido)
         {
+            Gravacao.Log_cliente_indicador = "";
+
             //	INDICADOR: SE ESTE PEDIDO É COM INDICADOR E O CLIENTE AINDA NÃO TEM UM INDICADOR NO CADASTRO, ENTÃO CADASTRA ESTE. (Passo70 / CadastroIndicador.feature)
 
             /*
@@ -57,6 +59,9 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava70
 
             tcliente.Indicador = Pedido.Ambiente.Indicador;
             ContextoBdGravacao.Update(tcliente);
+
+            var s_log_cliente_indicador = "Cadastrado o indicador '" + Pedido.Ambiente.Indicador + "' no cliente id=" + Execucao.Id_cliente;
+            Gravacao.Log_cliente_indicador = s_log_cliente_indicador;
         }
 
 

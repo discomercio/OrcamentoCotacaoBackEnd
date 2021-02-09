@@ -3,6 +3,8 @@ Feature: SplitEstoqueResultanteTabela
 #Vamos testar vários cenários de auto-split
 #com 1 produto e possível split em dois CDs
 
+#fazer esse arquivo todo
+
 Background: Background
 	Given Pedido base sem itens
 	And Usando fabricante = "001", produto = "001000"
@@ -25,6 +27,8 @@ Scenario Outline: Teste de auto-slipt
 
 	And Verificar estoque id_nfe_emitente = <CD>, saldo de estoque = <estoque>
 	And Verificar estoque id_nfe_emitente = <CD>, saldo de ID_ESTOQUE_SEM_PRESENCA = <spe>
+
+	#pergunta hamilton: ID_ESTOQUE_SEM_PRESENCA fica atreado a um CD? Fica no pedido gerado, mas não no t_estoque_movimento
 
 	Examples:
 		| Caso | qde | inicial1 | inicial2 | NroPedidos | pedido | st_entrega | CD   | iqde | estoque | spe | Comentários                                                |

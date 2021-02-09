@@ -866,7 +866,7 @@ namespace Prepedido.PedidoVisualizacao
             return await Task.FromResult(msg);
         }
 
-        public string DescricaoAnaliseCreditoCadastroPedido(string codigo)
+        public static string Descricao_analise_credito_CadastroPedido(string codigo)
         {
             string retorno = "";
             switch (codigo)
@@ -972,7 +972,7 @@ namespace Prepedido.PedidoVisualizacao
             //virou método para aproveitar no cadastro do pedido
             string retorno = "";
 
-            retorno = DescricaoAnaliseCreditoCadastroPedido(codigo);
+            retorno = Descricao_analise_credito_CadastroPedido(codigo);
 
             if (retorno != "")
             {

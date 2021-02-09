@@ -45,71 +45,74 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FluxoGravacaoPedido", "arquivo loja/PedidoNovoConfirma.asp\r\n\r\nPasso01: Gerar o NSU do pedido (para bloqu" +
                     "ear transações concorrentes)\r\n\r\nPasso10: Fazer todas as validações (documentado " +
                     "em FluxoCriacaoPedido.feature e nos passos dele).\r\n\r\nPasso15: Verificar pedidos " +
-                    "repetidos\r\n\r\nPasso20: LER AS REGRAS DE CONSUMO DO ESTOQUE\r\n\trotina obtemCtrlEsto" +
-                    "queProdutoRegra (arquivo bdd.asp)\r\n\t\ttipo_pessoa: especificado em Passo20/multi_" +
-                    "cd_regra_determina_tipo_pessoa.feature\r\n\t\trotina obtemCtrlEstoqueProdutoRegra va" +
-                    "lidações especificado em Passo20/obtemCtrlEstoqueProdutoRegra.feature\r\n\r\n\tTraduz" +
-                    "indo: para cada produto:\r\n\t\tDado o produto, UF, tipo_cliente, contribuinte_icms_" +
-                    "status, produtor_rural_status             \r\n\t\tDescobrir em t_WMS_REGRA_CD_X_UF_X" +
-                    "_PESSOA_X_CD os CDs que atendem em ordem de prioridade\r\n\t\tLê as tabelas t_PRODUT" +
-                    "O_X_WMS_REGRA_CD, t_WMS_REGRA_CD_X_UF, t_WMS_REGRA_CD_X_UF_X_PESSOA, t_WMS_REGRA" +
-                    "_CD_X_UF_X_PESSOA_X_CD\r\n\r\n\r\nPasso25:  VERIFICA SE AS REGRAS ASSOCIADAS AOS PRODU" +
-                    "TOS ESTÃO OK - linha 1010\r\n\t\tVerifica se todos os produtos possuem regra ativa e" +
-                    " não bloqueada e ao menos um CD ativo.\r\n\t\'NO CASO DE SELEÇÃO MANUAL DO CD, VERIF" +
-                    "ICA SE O CD SELECIONADO ESTÁ HABILITADO EM TODAS AS REGRAS - linha 1047\r\n\t\tNo ca" +
-                    "so de CD manual, verifica se o CD tem regra ativa\r\n\r\n\r\nPasso30: OBTÉM DISPONIBIL" +
-                    "IDADE DO PRODUTO NO ESTOQUE - linha 1083\r\n\tPara todas as regras linha 1086\r\n\t\tSe" +
-                    " o CD deve ser usado (manual ou auto)\r\n\t\tpara todos os CDs da regra linha 1088\r\n" +
-                    "\t\t\tProcura esse produto na lista de produtos linha 1095\r\n\t\t\testoque_verifica_dis" +
-                    "ponibilidade_integral_v2 em estoque.asp, especificado em Passo30/estoque_verific" +
-                    "a_disponibilidade_integral_v2.feature\r\n\t\t\t\t\'Calcula quantidade em estoque no CD " +
-                    "especificado\r\n\r\n\tTraduzindo:\r\n\t\tCalcula o estoque de cada produto em cada CD que" +
-                    " pode ser usado\r\n\r\n\r\nPasso40: Verifica se a disponibilidade do estoque foi alter" +
-                    "ada - Linha 1159\r\n\tHÁ PRODUTO C/ ESTOQUE INSUFICIENTE (SOMANDO-SE O ESTOQUE DE T" +
-                    "ODAS AS EMPRESAS CANDIDATAS) - linha 1127\r\n\r\n\tPorque: avisamos o usuário que exi" +
-                    "stem produtos sem presença no estoque e, no momento de salvar, os produtos sem p" +
-                    "resença no estoque foram alterados.\r\n\tNo caso da ApiMagento, não temos essa veri" +
-                    "ficação\r\n\r\n\r\nPasso50: ANALISA A QUANTIDADE DE PEDIDOS QUE SERÃO CADASTRADOS (AUT" +
-                    "O-SPLIT) - linha 1184\r\n\t\t\t\'\tOS CD\'S ESTÃO ORDENADOS DE ACORDO C/ A PRIORIZAÇÃO D" +
-                    "EFINIDA PELA REGRA DE CONSUMO DO ESTOQUE\r\n\t\t\t\'\tSE O PRIMEIRO CD HABILITADO NÃO P" +
-                    "UDER ATENDER INTEGRALMENTE A QUANTIDADE SOLICITADA DO PRODUTO,\r\n\t\t\t\'\tA QUANTIDAD" +
-                    "E RESTANTE SERÁ CONSUMIDA DOS DEMAIS CD\'S.\r\n\t\t\t\'\tSE HOUVER ALGUMA QUANTIDADE RES" +
-                    "IDUAL P/ FICAR NA LISTA DE PRODUTOS SEM PRESENÇA NO ESTOQUE:\r\n\t\t\t\'\t\t1) SELEÇÃO A" +
-                    "UTOMÁTICA DE CD: A QUANTIDADE PENDENTE FICARÁ ALOCADA NO CD DEFINIDO P/ TAL\r\n\t\t\t" +
-                    "\'\t\t2) SELEÇÃO MANUAL DE CD: A QUANTIDADE PENDENTE FICARÁ ALOCADA NO CD SELECIONA" +
-                    "DO MANUALMENTE\r\n\r\n\tPara cada produto:\r\n\t\tAloca a quantidade solicitada nos CDs o" +
-                    "rdenados até alocar todos.\r\n\t\tSe não conseguir alocar todos, marca a quantidade " +
-                    "residual no CD manual ou no CD de t_WMS_REGRA_CD_X_UF_X_PESSOA.spe_id_nfe_emiten" +
-                    "te\r\n\r\nPasso55: Contagem de pedidos a serem gravados - Linha 1286\r\n\t\'\tCONTAGEM DE" +
-                    " EMPRESAS QUE SERÃO USADAS NO AUTO-SPLIT, OU SEJA, A QUANTIDADE DE PEDIDOS QUE S" +
-                    "ERÁ CADASTRADA, \r\n\tJÁ QUE CADA PEDIDO SE REFERE AO ESTOQUE DE UMA EMPRESA\r\n\r\n\tCo" +
-                    "nta todos os CDs que tem alguma quantidade solicitada.\r\n\r\n\r\nPasso60: criar pedid" +
-                    "os - \'\tCADASTRA O PEDIDO E PROCESSA A MOVIMENTAÇÃO NO ESTOQUE\r\n\tLoop nos CDs a u" +
-                    "tilizar\r\n\t\tGerar o número do pedido: Passo60/Gerar_o_numero_do_pedido.feature\r\n\t" +
-                    "\tAdiciona um novo pedido\r\n\t\tPreenche os campos do pedido: Passo60/Preenche_os_ca" +
-                    "mpos_do_pedido.feature\r\n\t\t\ta maioria no pai e filhotes, alguns só no pai, alguns" +
-                    " só nos filhotes\r\n\t\tSalva o registro em t_pedido\r\n\r\n\t\tLoop nas regras: \r\n\t\t\tEspe" +
-                    "cificado em Passo60/Itens/Gerar_t_PEDIDO_ITEM.feature\r\n\t\t\t\tSe essa regra cobrir " +
-                    "um dos itens do pedido, adicionar registro em t_PEDIDO_ITEM (linha 2090 até 2122" +
-                    ")\r\n\t\t\t\tNote que a quantidade rs(\"qtde\") é a que foi alocada para esse filhote pe" +
-                    "la regra, não a quantidade total do pedido inteiro\r\n\t\t\t\tA sequencia do t_PEDIDO_" +
-                    "ITEM para esse pedido (base ou filhote) começa de 1 e é sequencial.\r\n\t\t\tSe qtde_" +
-                    "solicitada > qtde_estoque, qtde_spe (quantidade_sen_presença_estoque) fica com o" +
-                    " número de itens faltando\r\n\t\t\tchama rotina ESTOQUE_produto_saida_v2, em Passo60/" +
-                    "Itens/ESTOQUE_produto_saida_v2.feature\r\n\t\t\t\tA quantidade deste item ou efetivame" +
-                    "nte sai do estoque (atualizando t_ESTOQUE_ITEM)\r\n\t\t\t\tou entra como venda sem pre" +
-                    "sença no estoque (novo registro na tabela t_ESTOQUE_MOVIMENTO, operacao = OP_EST" +
-                    "OQUE_VENDA, estoque = ID_ESTOQUE_SEM_PRESENCA)\r\n\t\t\tMonta o log do item - Passo60" +
-                    "/Itens/Log.feature\r\n\t\t\t\r\n\t\tDetermina o status st_entrega deste pedido (Passo60/s" +
-                    "t_entrega.feature)\r\n\r\nPasso70: ajustes adicionais no pedido pai\r\n\tNo pai e nos f" +
-                    "ilhotes, atualiza campos de RA (Passo70/calcula_total_RA_liquido_BD.feture)\r\n\r\n\t" +
-                    "Caso tenha usado algum desconto superior ao limite, liberado pela t_DESCONTO, ma" +
-                    "rca como usado (Passo70/Senhas_de_autorizacao_para_desconto_superior.feature)\r\n\r" +
-                    "\n\tINDICADOR: SE ESTE PEDIDO É COM INDICADOR E O CLIENTE AINDA NÃO TEM UM INDICAD" +
-                    "OR NO CADASTRO, ENTÃO CADASTRA ESTE. (Passo70/CadastroIndicador.feature)\r\n\r\n\r\nPa" +
-                    "sso80: VERIFICA SE O ENDEREÇO JÁ FOI USADO ANTERIORMENTE POR OUTRO CLIENTE (POSS" +
-                    "ÍVEL FRAUDE)\r\n\tPasso80/FluxoVerificacaoEndereco.feature\r\n\r\n\r\nPasso90: log (Passo" +
-                    "90/Log.feature)", ProgrammingLanguage.CSharp, new string[] {
+                    "repetidos\r\n\r\nPasso17: Marcar t_DESCONTO que forem usados\r\n\tMonta a lista de prod" +
+                    "utos para processamento, incluindo a autorização da t_DESCONTO\r\n\tMonta a lista d" +
+                    "e registro da t_DESCONTO utilizadas\r\n\tloja/PedidoNovoConfirma.asp de linha 798 a" +
+                    " 908 (VERIFICA CADA UM DOS PRODUTOS SELECIONADOS)\r\n\r\nPasso20: LER AS REGRAS DE C" +
+                    "ONSUMO DO ESTOQUE\r\n\trotina obtemCtrlEstoqueProdutoRegra (arquivo bdd.asp)\r\n\t\ttip" +
+                    "o_pessoa: especificado em Passo20/multi_cd_regra_determina_tipo_pessoa.feature\r\n" +
+                    "\t\trotina obtemCtrlEstoqueProdutoRegra validações especificado em Passo20/obtemCt" +
+                    "rlEstoqueProdutoRegra.feature\r\n\r\n\tTraduzindo: para cada produto:\r\n\t\tDado o produ" +
+                    "to, UF, tipo_cliente, contribuinte_icms_status, produtor_rural_status           " +
+                    "  \r\n\t\tDescobrir em t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD os CDs que atendem em ordem" +
+                    " de prioridade\r\n\t\tLê as tabelas t_WMS_REGRA_CD, t_PRODUTO_X_WMS_REGRA_CD, t_WMS_" +
+                    "REGRA_CD_X_UF, t_WMS_REGRA_CD_X_UF_X_PESSOA, t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD\r\n" +
+                    "\r\n\r\nPasso25:  VERIFICA SE AS REGRAS ASSOCIADAS AOS PRODUTOS ESTÃO OK - linha 101" +
+                    "0\r\n\t\tVerifica se todos os produtos possuem regra ativa e não bloqueada e ao meno" +
+                    "s um CD ativo.\r\n\t\'NO CASO DE SELEÇÃO MANUAL DO CD, VERIFICA SE O CD SELECIONADO " +
+                    "ESTÁ HABILITADO EM TODAS AS REGRAS - linha 1047\r\n\t\tNo caso de CD manual, verific" +
+                    "a se o CD tem regra ativa\r\n\r\n\r\nPasso30: OBTÉM DISPONIBILIDADE DO PRODUTO NO ESTO" +
+                    "QUE - linha 1083\r\n\tPara todas as regras linha 1086\r\n\t\tSe o CD deve ser usado (ma" +
+                    "nual ou auto)\r\n\t\tpara todos os CDs da regra linha 1088\r\n\t\t\tProcura esse produto " +
+                    "na lista de produtos linha 1095\r\n\t\t\testoque_verifica_disponibilidade_integral_v2" +
+                    " em estoque.asp, especificado em Passo30/estoque_verifica_disponibilidade_integr" +
+                    "al_v2.feature\r\n\t\t\t\t\'Calcula quantidade em estoque no CD especificado\r\n\r\n\tTraduzi" +
+                    "ndo:\r\n\t\tCalcula o estoque de cada produto em cada CD que pode ser usado\r\n\r\n\r\nPas" +
+                    "so40: Verifica se a disponibilidade do estoque foi alterada - Linha 1159\r\n\tHÁ PR" +
+                    "ODUTO C/ ESTOQUE INSUFICIENTE (SOMANDO-SE O ESTOQUE DE TODAS AS EMPRESAS CANDIDA" +
+                    "TAS) - linha 1127\r\n\r\n\tPorque: avisamos o usuário que existem produtos sem presen" +
+                    "ça no estoque e, no momento de salvar, os produtos sem presença no estoque foram" +
+                    " alterados.\r\n\tNo caso da ApiMagento, não temos essa verificação\r\n\r\n\r\nPasso50: AN" +
+                    "ALISA A QUANTIDADE DE PEDIDOS QUE SERÃO CADASTRADOS (AUTO-SPLIT) - linha 1184\r\n\t" +
+                    "\t\t\'\tOS CD\'S ESTÃO ORDENADOS DE ACORDO C/ A PRIORIZAÇÃO DEFINIDA PELA REGRA DE CO" +
+                    "NSUMO DO ESTOQUE\r\n\t\t\t\'\tSE O PRIMEIRO CD HABILITADO NÃO PUDER ATENDER INTEGRALMEN" +
+                    "TE A QUANTIDADE SOLICITADA DO PRODUTO,\r\n\t\t\t\'\tA QUANTIDADE RESTANTE SERÁ CONSUMID" +
+                    "A DOS DEMAIS CD\'S.\r\n\t\t\t\'\tSE HOUVER ALGUMA QUANTIDADE RESIDUAL P/ FICAR NA LISTA " +
+                    "DE PRODUTOS SEM PRESENÇA NO ESTOQUE:\r\n\t\t\t\'\t\t1) SELEÇÃO AUTOMÁTICA DE CD: A QUANT" +
+                    "IDADE PENDENTE FICARÁ ALOCADA NO CD DEFINIDO P/ TAL\r\n\t\t\t\'\t\t2) SELEÇÃO MANUAL DE " +
+                    "CD: A QUANTIDADE PENDENTE FICARÁ ALOCADA NO CD SELECIONADO MANUALMENTE\r\n\r\n\tPara " +
+                    "cada produto:\r\n\t\tAloca a quantidade solicitada nos CDs ordenados até alocar todo" +
+                    "s.\r\n\t\tSe não conseguir alocar todos, marca a quantidade residual no CD manual ou" +
+                    " no CD de t_WMS_REGRA_CD_X_UF_X_PESSOA.spe_id_nfe_emitente\r\n\r\nPasso55: Contagem " +
+                    "de pedidos a serem gravados - Linha 1286\r\n\t\'\tCONTAGEM DE EMPRESAS QUE SERÃO USAD" +
+                    "AS NO AUTO-SPLIT, OU SEJA, A QUANTIDADE DE PEDIDOS QUE SERÁ CADASTRADA, \r\n\tJÁ QU" +
+                    "E CADA PEDIDO SE REFERE AO ESTOQUE DE UMA EMPRESA\r\n\r\n\tConta todos os CDs que tem" +
+                    " alguma quantidade solicitada.\r\n\r\n\r\nPasso60: criar pedidos - \'\tCADASTRA O PEDIDO" +
+                    " E PROCESSA A MOVIMENTAÇÃO NO ESTOQUE\r\n\tLoop nos CDs a utilizar\r\n\t\tGerar o númer" +
+                    "o do pedido: Passo60/Gerar_o_numero_do_pedido.feature\r\n\t\tAdiciona um novo pedido" +
+                    "\r\n\t\tPreenche os campos do pedido: Passo60/Preenche_os_campos_do_pedido.feature\r\n" +
+                    "\t\t\ta maioria no pai e filhotes, alguns só no pai, alguns só nos filhotes\r\n\t\tSalv" +
+                    "a o registro em t_pedido\r\n\r\n\t\tLoop nas regras: \r\n\t\t\tEspecificado em Passo60/Iten" +
+                    "s/Gerar_t_PEDIDO_ITEM.feature\r\n\t\t\t\tSe essa regra cobrir um dos itens do pedido, " +
+                    "adicionar registro em t_PEDIDO_ITEM (linha 2090 até 2122)\r\n\t\t\t\tNote que a quanti" +
+                    "dade rs(\"qtde\") é a que foi alocada para esse filhote pela regra, não a quantida" +
+                    "de total do pedido inteiro\r\n\t\t\t\tA sequencia do t_PEDIDO_ITEM para esse pedido (b" +
+                    "ase ou filhote) começa de 1 e é sequencial.\r\n\t\t\tSe qtde_solicitada > qtde_estoqu" +
+                    "e, qtde_spe (quantidade_sen_presença_estoque) fica com o número de itens faltand" +
+                    "o\r\n\t\t\tchama rotina ESTOQUE_produto_saida_v2, em Passo60/Itens/ESTOQUE_produto_sa" +
+                    "ida_v2.feature\r\n\t\t\t\tA quantidade deste item ou efetivamente sai do estoque (atua" +
+                    "lizando t_ESTOQUE_ITEM)\r\n\t\t\t\tou entra como venda sem presença no estoque (novo r" +
+                    "egistro na tabela t_ESTOQUE_MOVIMENTO, operacao = OP_ESTOQUE_VENDA, estoque = ID" +
+                    "_ESTOQUE_SEM_PRESENCA)\r\n\t\t\tMonta o log do item - Passo60/Itens/Log.feature\r\n\t\t\t\r" +
+                    "\n\t\tDetermina o status st_entrega deste pedido (Passo60/st_entrega.feature)\r\n\r\nPa" +
+                    "sso70: ajustes adicionais no pedido pai\r\n\tNo pai e nos filhotes, atualiza campos" +
+                    " de RA (Passo70/calcula_total_RA_liquido_BD.feture)\r\n\r\n\tCaso tenha usado algum d" +
+                    "esconto superior ao limite, liberado pela t_DESCONTO, marca como usado (Passo70/" +
+                    "Senhas_de_autorizacao_para_desconto_superior.feature)\r\n\r\n\tINDICADOR: SE ESTE PED" +
+                    "IDO É COM INDICADOR E O CLIENTE AINDA NÃO TEM UM INDICADOR NO CADASTRO, ENTÃO CA" +
+                    "DASTRA ESTE. (Passo70/CadastroIndicador.feature)\r\n\r\n\r\nPasso80: VERIFICA SE O END" +
+                    "EREÇO JÁ FOI USADO ANTERIORMENTE POR OUTRO CLIENTE (POSSÍVEL FRAUDE)\r\n\tPasso80/F" +
+                    "luxoVerificacaoEndereco.feature\r\n\r\n\r\nPasso90: log (Passo90/Log.feature)", ProgrammingLanguage.CSharp, new string[] {
                         "Especificacao.Pedido.FluxoCriacaoPedido"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -158,7 +161,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fluxo da gravação do pedido", null, tagsOfScenario, argumentsOfScenario);
-#line 105
+#line 110
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -178,10 +181,10 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 106
+#line 111
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 107
+#line 112
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

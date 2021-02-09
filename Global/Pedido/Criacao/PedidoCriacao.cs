@@ -32,6 +32,7 @@ namespace Pedido.Criacao
         public readonly CepBll CepBll;
         public readonly IBancoNFeMunicipio BancoNFeMunicipio;
         internal readonly Execucao.Execucao Execucao;
+        internal readonly Execucao.Gravacao Gravacao = new Execucao.Gravacao();
 
         public PedidoCriacao(PedidoBll pedidoBll, InfraBanco.ContextoBdProvider contextoProvider,
             Prepedido.FormaPagto.ValidacoesFormaPagtoBll validacoesFormaPagtoBll, Prepedido.PrepedidoBll prepedidoBll,

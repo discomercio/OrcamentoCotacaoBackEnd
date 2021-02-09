@@ -9,6 +9,11 @@ Passo10: Fazer todas as validações (documentado em FluxoCriacaoPedido.feature 
 
 Passo15: Verificar pedidos repetidos
 
+Passo17: Marcar t_DESCONTO que forem usados
+	Monta a lista de produtos para processamento, incluindo a autorização da t_DESCONTO
+	Monta a lista de registro da t_DESCONTO utilizadas
+	loja/PedidoNovoConfirma.asp de linha 798 a 908 (VERIFICA CADA UM DOS PRODUTOS SELECIONADOS)
+
 Passo20: LER AS REGRAS DE CONSUMO DO ESTOQUE
 	rotina obtemCtrlEstoqueProdutoRegra (arquivo bdd.asp)
 		tipo_pessoa: especificado em Passo20/multi_cd_regra_determina_tipo_pessoa.feature
@@ -17,7 +22,7 @@ Passo20: LER AS REGRAS DE CONSUMO DO ESTOQUE
 	Traduzindo: para cada produto:
 		Dado o produto, UF, tipo_cliente, contribuinte_icms_status, produtor_rural_status             
 		Descobrir em t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD os CDs que atendem em ordem de prioridade
-		Lê as tabelas t_PRODUTO_X_WMS_REGRA_CD, t_WMS_REGRA_CD_X_UF, t_WMS_REGRA_CD_X_UF_X_PESSOA, t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD
+		Lê as tabelas t_WMS_REGRA_CD, t_PRODUTO_X_WMS_REGRA_CD, t_WMS_REGRA_CD_X_UF, t_WMS_REGRA_CD_X_UF_X_PESSOA, t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD
 
 
 Passo25:  VERIFICA SE AS REGRAS ASSOCIADAS AOS PRODUTOS ESTÃO OK - linha 1010

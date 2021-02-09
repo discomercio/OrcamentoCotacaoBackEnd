@@ -20,7 +20,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    public partial class SplitEstoqueResultante3CasosFeature : object, Xunit.IClassFixture<SplitEstoqueResultante3CasosFeature.FixtureData>, System.IDisposable
+    public partial class SplitComUnicoCdFeature : object, Xunit.IClassFixture<SplitComUnicoCdFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -30,10 +30,10 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "SplitEstoqueResultante3casos.feature"
+#line 1 "SplitComUnicoCd.feature"
 #line hidden
         
-        public SplitEstoqueResultante3CasosFeature(SplitEstoqueResultante3CasosFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public SplitComUnicoCdFeature(SplitComUnicoCdFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,9 +42,8 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "SplitEstoqueResultante3casos", "Vmaos verificar se está fazendo o slipt corretamente:\r\n- com um pedido totalmente" +
-                    " atendido por um CD\r\n- com um pedido totalmente atendido por dois CDs\r\n- com um " +
-                    "pedido atendido por dois CDs e ainda com quantidade sem presença no estoque", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "SplitComUnicoCd", "Vmaos verificar se está fazendo o slipt corretamente:\r\n- com um pedido totalmente" +
+                    " atendido por um CD\r\n\r\nfazer esse arquivo todo", ProgrammingLanguage.CSharp, new string[] {
                         "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -82,18 +81,18 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
         
         public virtual void FeatureBackground()
         {
-#line 8
-#line hidden
 #line 9
- testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 10
- testRunner.Given("Pedido base sem itens", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 11
- testRunner.And("Usando fabricante = \"001\", produto = \"001000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("Pedido base sem itens", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 12
+ testRunner.And("Usando fabricante = \"001\", produto = \"001000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 13
  testRunner.And("Zerar todo o estoque", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
         }
@@ -104,15 +103,15 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Pedido com somente um CD")]
-        [Xunit.TraitAttribute("FeatureTitle", "SplitEstoqueResultante3casos")]
+        [Xunit.TraitAttribute("FeatureTitle", "SplitComUnicoCd")]
         [Xunit.TraitAttribute("Description", "Pedido com somente um CD")]
         public virtual void PedidoComSomenteUmCD()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pedido com somente um CD", null, tagsOfScenario, argumentsOfScenario);
-#line 14
-this.ScenarioInitialize(scenarioInfo);
+#line 15
+ this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
             bool isFeatureIgnored = default(bool);
@@ -131,10 +130,10 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 8
+#line 9
 this.FeatureBackground();
 #line hidden
-#line 17
+#line 18
 testRunner.Given("falta fazer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
@@ -142,14 +141,14 @@ testRunner.Given("falta fazer", ((string)(null)), ((TechTalk.SpecFlow.Table)(nul
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Pedido sem slipt")]
-        [Xunit.TraitAttribute("FeatureTitle", "SplitEstoqueResultante3casos")]
+        [Xunit.TraitAttribute("FeatureTitle", "SplitComUnicoCd")]
         [Xunit.TraitAttribute("Description", "Pedido sem slipt")]
         public virtual void PedidoSemSlipt()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pedido sem slipt", null, tagsOfScenario, argumentsOfScenario);
-#line 20
+#line 21
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -169,28 +168,28 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 8
+#line 9
 this.FeatureBackground();
 #line hidden
-#line 21
+#line 22
  testRunner.Given("Criar novo pedido com quantidade = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 22
+#line 23
  testRunner.And("Definir estoque id_nfe_emitente = \"4003\", saldo de estoque = \"40\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 23
+#line 24
  testRunner.When("Cadastrar pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 24
+#line 25
  testRunner.Then("Gerado 1 pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 25
+#line 26
  testRunner.And("Pedido gerado \"0\", verificar id_nfe_emitente = \"4003\", qtde = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 26
+#line 27
  testRunner.And("Pedido gerado \"0\", verificar st_entrega = \"ST_ENTREGA_SEPARAR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 27
+#line 28
  testRunner.And("Verificar estoque id_nfe_emitente = \"4003\", saldo de estoque = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -198,14 +197,14 @@ this.FeatureBackground();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Pedido com slipt totalmente atendido")]
-        [Xunit.TraitAttribute("FeatureTitle", "SplitEstoqueResultante3casos")]
+        [Xunit.TraitAttribute("FeatureTitle", "SplitComUnicoCd")]
         [Xunit.TraitAttribute("Description", "Pedido com slipt totalmente atendido")]
         public virtual void PedidoComSliptTotalmenteAtendido()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pedido com slipt totalmente atendido", null, tagsOfScenario, argumentsOfScenario);
-#line 30
+#line 31
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -225,47 +224,47 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 8
+#line 9
 this.FeatureBackground();
 #line hidden
-#line 31
+#line 32
  testRunner.Given("Criar novo item com quantidade = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 32
+#line 33
  testRunner.And("Definir estoque id_nfe_emitente = \"4003\", saldo de estoque = \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 33
+#line 34
  testRunner.And("Definir estoque id_nfe_emitente = \"4903\", saldo de estoque = \"40\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 34
+#line 35
  testRunner.When("Cadastrar pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 36
+#line 37
  testRunner.Then("Gerado 2 pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 37
+#line 38
  testRunner.And("Pedido gerado \"0\", verificar id_nfe_emitente = \"4003\", qtde = \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 38
+#line 39
  testRunner.And("Pedido gerado \"0\", verificar st_entrega = \"ST_ENTREGA_SEPARAR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 39
+#line 40
  testRunner.And("Pedido gerado \"1\", verificar id_nfe_emitente = \"4903\", qtde = \"15\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 40
+#line 41
  testRunner.And("Pedido gerado \"1\", verificar st_entrega = \"ST_ENTREGA_SEPARAR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 43
+#line 44
  testRunner.And("Verificar estoque id_nfe_emitente = \"4003\", saldo de estoque = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 44
+#line 45
  testRunner.And("Verificar estoque id_nfe_emitente = \"4003\", saldo de ID_ESTOQUE_SEM_PRESENCA = \"0" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 46
+#line 47
  testRunner.And("Verificar estoque id_nfe_emitente = \"4903\", saldo de estoque = \"25\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 47
+#line 48
  testRunner.And("Verificar estoque id_nfe_emitente = \"4903\", saldo de ID_ESTOQUE_SEM_PRESENCA = \"0" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -274,14 +273,14 @@ this.FeatureBackground();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Pedido com slipt faltando produto")]
-        [Xunit.TraitAttribute("FeatureTitle", "SplitEstoqueResultante3casos")]
+        [Xunit.TraitAttribute("FeatureTitle", "SplitComUnicoCd")]
         [Xunit.TraitAttribute("Description", "Pedido com slipt faltando produto")]
         public virtual void PedidoComSliptFaltandoProduto()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pedido com slipt faltando produto", null, tagsOfScenario, argumentsOfScenario);
-#line 50
+#line 51
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -301,47 +300,47 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 8
+#line 9
 this.FeatureBackground();
 #line hidden
-#line 51
+#line 52
  testRunner.Given("Criar novo item com quantidade = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 52
+#line 53
  testRunner.And("Definir estoque id_nfe_emitente = \"4003\", saldo de estoque = \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 53
+#line 54
  testRunner.And("Definir estoque id_nfe_emitente = \"4903\", saldo de estoque = \"7\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 54
+#line 55
  testRunner.When("Cadastrar pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 56
+#line 57
  testRunner.Then("Gerado 2 pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 59
+#line 60
  testRunner.And("Pedido gerado \"0\", verificar id_nfe_emitente = \"4003\", qtde = \"13\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 60
+#line 61
  testRunner.And("Pedido gerado \"0\", verificar st_entrega = \"ST_ENTREGA_SPLIT_POSSIVEL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 61
+#line 62
  testRunner.And("Pedido gerado \"1\", verificar id_nfe_emitente = \"4903\", qtde = \"7\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 62
+#line 63
  testRunner.And("Pedido gerado \"1\", verificar st_entrega = \"ST_ENTREGA_SEPARAR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 65
+#line 66
  testRunner.And("Verificar estoque id_nfe_emitente = \"4003\", saldo de estoque = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 66
+#line 67
  testRunner.And("Verificar estoque id_nfe_emitente = \"4903\", saldo de estoque = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 68
+#line 69
  testRunner.And("Verificar estoque id_nfe_emitente = \"4003\", saldo de ID_ESTOQUE_SEM_PRESENCA = \"8" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 69
+#line 70
  testRunner.And("Verificar estoque id_nfe_emitente = \"4903\", saldo de ID_ESTOQUE_SEM_PRESENCA = \"0" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -356,12 +355,12 @@ this.FeatureBackground();
             
             public FixtureData()
             {
-                SplitEstoqueResultante3CasosFeature.FeatureSetup();
+                SplitComUnicoCdFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                SplitEstoqueResultante3CasosFeature.FeatureTearDown();
+                SplitComUnicoCdFeature.FeatureTearDown();
             }
         }
     }

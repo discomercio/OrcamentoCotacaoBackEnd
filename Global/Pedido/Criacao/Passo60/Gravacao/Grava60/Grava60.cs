@@ -14,10 +14,10 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
     class Grava60 : PassoBaseGravacao
     {
         private readonly Grava70.Grava70 Grava70;
-        public Grava60(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao criacao, Execucao.Execucao execucao)
-            : base(contextoBdGravacao, pedido, retorno, criacao, execucao)
+        public Grava60(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao criacao, Execucao.Execucao execucao, Execucao.Gravacao gravacao)
+            : base(contextoBdGravacao, pedido, retorno, criacao, execucao, gravacao)
         {
-            Grava70 = new Grava70.Grava70(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao);
+            Grava70 = new Grava70.Grava70(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao, Gravacao);
         }
 
         public async Task ExecutarAsync()
@@ -67,13 +67,14 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
 
 
             //cira alista de produtos com as variaveis auxiliares
+            //todo: passar para grava17 para permitir o log
             List<ProdutoGravacao> listaProdutoGravacao = ProdutoGravacao.ListaProdutoGravacao(Pedido.ListaProdutos);
 
             //s_hora_pedido = retorna_so_digitos(formata_hora(Now))
-            Execucao.Gravacao.Hora_pedido = UtilsGlobais.Util.HoraParaBanco(Execucao.Gravacao.DataHoraCriacao);
+            Gravacao.Hora_pedido = UtilsGlobais.Util.HoraParaBanco(Gravacao.DataHoraCriacao);
             int indice_pedido = 0;
 
-            foreach (var vEmpresaAutoSplit_iv in Execucao.Gravacao.EmpresasAutoSplit)
+            foreach (var vEmpresaAutoSplit_iv in Gravacao.EmpresasAutoSplit)
             {
                 //o primeiro é 1, inicializamos com 0
                 indice_pedido += 1;
@@ -85,14 +86,15 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                 //'	pedido-filhote 'A' => indice_pedido=2
                 //'	pedido-filhote 'B' => indice_pedido=3
                 //'	etc
-                string id_pedido = Execucao.Gravacao.Id_pedido_base;
+                string id_pedido = Gravacao.Id_pedido_base;
                 if (indice_pedido == 1)
                 {
                     Retorno.Id = id_pedido;
+                    Gravacao.Tpedido_pai = tpedido;
                 }
                 else
                 {
-                    id_pedido = Execucao.Gravacao.Id_pedido_base +
+                    id_pedido = Gravacao.Id_pedido_base +
                         InfraBanco.Constantes.Constantes.COD_SEPARADOR_FILHOTE +
                         Gera_num_pedido.Gera_letra_pedido_filhote(indice_pedido - 1);
                     Retorno.ListaIdPedidosFilhotes.Add(id_pedido);
@@ -103,8 +105,8 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                 //transferir campos
                 tpedido.Pedido = id_pedido_temp;
                 tpedido.Loja = Pedido.Ambiente.Loja;
-                tpedido.Data = Execucao.Gravacao.DataHoraCriacao.Date;
-                tpedido.Hora = Execucao.Gravacao.Hora_pedido;
+                tpedido.Data = Gravacao.DataHoraCriacao.Date;
+                tpedido.Hora = Gravacao.Hora_pedido;
 
                 if (indice_pedido == 1)
                     CamposPedidoPai(tpedido);
@@ -119,7 +121,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                 var total_estoque_vendido = 0;
                 var total_estoque_sem_presenca = 0;
                 var s_log_item_autosplit = "";
-                foreach (var vProdRegra_iRegra in Execucao.Gravacao.ListaRegrasControleEstoque)
+                foreach (var vProdRegra_iRegra in Gravacao.ListaRegrasControleEstoque)
                 {
                     //vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD(iCD) é twmsCdXUfXPessoaXCd
                     foreach (var twmsCdXUfXPessoaXCd in vProdRegra_iRegra.TwmsCdXUfXPessoaXCd)
@@ -153,16 +155,16 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                                     qtde_spe = 0;
                                 }
 
-                                Produto.Estoque.Estoque.QuantidadeEncapsulada qtde_estoque_vendido = new Produto.Estoque.Estoque.QuantidadeEncapsulada { Valor = 0 };
-                                Produto.Estoque.Estoque.QuantidadeEncapsulada qtde_estoque_sem_presenca = new Produto.Estoque.Estoque.QuantidadeEncapsulada { Valor = 0 };
+                                Produto.Estoque.Estoque.QuantidadeEncapsulada qtde_estoque_vendido_aux = new Produto.Estoque.Estoque.QuantidadeEncapsulada { Valor = 0 };
+                                Produto.Estoque.Estoque.QuantidadeEncapsulada qtde_estoque_sem_presenca_aux = new Produto.Estoque.Estoque.QuantidadeEncapsulada { Valor = 0 };
                                 if (!await Produto.Estoque.Estoque.Estoque_produto_saida_v2(
                                     Pedido.Ambiente.Usuario, id_pedido_temp,
                                     (short)vEmpresaAutoSplit_iv.Id_nfe_emitente,
                                     linha_pedido.Pedido.Fabricante, linha_pedido.Pedido.Produto,
                                     (int)(twmsCdXUfXPessoaXCd.Estoque_Qtde_Solicitado ?? 0),
                                     qtde_spe,
-                                    qtde_estoque_vendido,
-                                    qtde_estoque_sem_presenca,
+                                    qtde_estoque_vendido_aux,
+                                    qtde_estoque_sem_presenca_aux,
                                     Retorno.ListaErros, ContextoBdGravacao))
                                 {
                                     Retorno.ListaErros.Add("Erro em operação de movimentação de estoque, código do erro " + InfraBanco.Constantes.Constantes.ERR_FALHA_OPERACAO_MOVIMENTO_ESTOQUE);
@@ -171,36 +173,31 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                                 }
 
 
-                                linha_pedido.Qtde_estoque_vendido = linha_pedido.Qtde_estoque_vendido + qtde_estoque_vendido.Valor;
-                                linha_pedido.Qtde_estoque_sem_presenca = linha_pedido.Qtde_estoque_sem_presenca + qtde_estoque_sem_presenca.Valor;
+                                linha_pedido.Qtde_estoque_vendido = linha_pedido.Qtde_estoque_vendido + qtde_estoque_vendido_aux.Valor;
+                                linha_pedido.Qtde_estoque_sem_presenca = linha_pedido.Qtde_estoque_sem_presenca + qtde_estoque_sem_presenca_aux.Valor;
 
-                                total_estoque_vendido = total_estoque_vendido + qtde_estoque_vendido.Valor;
-                                total_estoque_sem_presenca = total_estoque_sem_presenca + qtde_estoque_sem_presenca.Valor;
+                                total_estoque_vendido = total_estoque_vendido + qtde_estoque_vendido_aux.Valor;
+                                total_estoque_sem_presenca = total_estoque_sem_presenca + qtde_estoque_sem_presenca_aux.Valor;
 
-                                /*
-//todo: log grava60
-                                '	LOG
-                                    if s_log_item_autosplit <> "" then s_log_item_autosplit = s_log_item_autosplit & chr(13)
-                                    s_log_item_autosplit = s_log_item_autosplit & "(" & .fabricante & ")" & .produto & ":" & _
-                                                " Qtde Solicitada = " & twmsCdXUfXPessoaXCd.estoque.qtde_solicitada & "," & _
-                                                " Qtde Sem Presença Autorizada = " & Cstr(qtde_spe) & "," & _
-                                                " Qtde Estoque Vendido = " & Cstr(qtde_estoque_vendido_aux) & "," & _
-                                                " Qtde Sem Presença = " & Cstr(qtde_estoque_sem_presenca_aux)
-                */
+                                //'	LOG
+                                if (s_log_item_autosplit != "")
+                                    s_log_item_autosplit = s_log_item_autosplit + UtilsGlobais.Log.EnterParaLogBanco();
+                                s_log_item_autosplit = s_log_item_autosplit + "(" + linha_pedido.Pedido.Fabricante + ")" + linha_pedido.Pedido.Produto + ":" +
+                                            " Qtde Solicitada = " + twmsCdXUfXPessoaXCd.Estoque_Qtde_Solicitado.ToString() + "," +
+                                            " Qtde Sem Presença Autorizada = " + qtde_spe.ToString() + "," +
+                                            " Qtde Estoque Vendido = " + qtde_estoque_vendido_aux.Valor.ToString() + "," +
+                                            " Qtde Sem Presença = " + qtde_estoque_sem_presenca_aux.Valor.ToString();
                             }
                         }
                     }
                 }
 
-                /*
-//todo: log grava60
+                //'	LOG
+                Gravacao.VlogAutoSplit.Add(id_pedido + " ("
+                    + await (UtilsGlobais.Util.Obtem_apelido_empresa_NFe_emitente_Gravacao(vEmpresaAutoSplit_iv.Id_nfe_emitente, ContextoBdGravacao)) + ")"
+                    + UtilsGlobais.Log.EnterParaLogBanco() + s_log_item_autosplit);
 
-                '	LOG
-                    if Trim("" & vLogAutoSplit(UBound(vLogAutoSplit))) <> "" then redim preserve vLogAutoSplit(UBound(vLogAutoSplit)+1)
-                    vLogAutoSplit(UBound(vLogAutoSplit)) = id_pedido & " (" & obtem_apelido_empresa_NFe_emitente(vEmpresaAutoSplit_iv.Id_nfe_emitente) & ")" & chr(13) & _
-                                                            s_log_item_autosplit
 
-                */
                 //'	STATUS DE ENTREGA
                 if (total_estoque_vendido == 0)
                 {
@@ -274,7 +271,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
             ContextoBdGravacao.Add(tpedidoitem);
         }
 
-        private void CamposPedidoPaieFilhote(bool permite_RA_status, Execucao.Execucao.GravacaoDados.EmpresaAutoSplitDados vEmpresaAutoSplit_iv, Tpedido tpedido)
+        private void CamposPedidoPaieFilhote(bool permite_RA_status, Execucao.Gravacao.EmpresaAutoSplitDados vEmpresaAutoSplit_iv, Tpedido tpedido)
         {
 
             //'	CAMPOS ARMAZENADOS TANTO NO PEDIDO-PAI QUANTO NO PEDIDO-FILHOTE
@@ -289,14 +286,14 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
             if (!string.IsNullOrEmpty(Pedido.DetalhesPedido.EntregaImediata))
             {
                 tpedido.St_Etg_Imediata = short.Parse(Pedido.DetalhesPedido.EntregaImediata);
-                tpedido.Etg_Imediata_Data = Execucao.Gravacao.DataHoraCriacao;
+                tpedido.Etg_Imediata_Data = Gravacao.DataHoraCriacao;
                 tpedido.Etg_Imediata_Usuario = Pedido.Ambiente.Usuario;
             }
             if (short.Parse(Pedido.DetalhesPedido.EntregaImediata) == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO)
             {
                 tpedido.PrevisaoEntregaData = Pedido.DetalhesPedido.EntregaImediataData;
                 tpedido.PrevisaoEntregaUsuarioUltAtualiz = Pedido.Ambiente.Usuario;
-                tpedido.PrevisaoEntregaDtHrUltAtualiz = Execucao.Gravacao.DataHoraCriacao;
+                tpedido.PrevisaoEntregaDtHrUltAtualiz = Gravacao.DataHoraCriacao;
             }
             tpedido.StBemUsoConsumo = Pedido.DetalhesPedido.BemDeUso_Consumo;
 
@@ -304,7 +301,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
             {
                 tpedido.InstaladorInstalaStatus = Pedido.DetalhesPedido.InstaladorInstala;
                 tpedido.InstaladorInstalaUsuarioUltAtualiz = Pedido.Ambiente.Usuario;
-                tpedido.InstaladorInstalaDtHrUltAtualiz = Execucao.Gravacao.DataHoraCriacao;
+                tpedido.InstaladorInstalaDtHrUltAtualiz = Gravacao.DataHoraCriacao;
             }
 
             tpedido.Pedido_Bs_X_Ac = Pedido.Marketplace.Pedido_bs_x_ac;
@@ -321,7 +318,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
 
             tpedido.GarantiaIndicadorStatus = byte.Parse(Pedido.DetalhesPedido.GarantiaIndicador);
             tpedido.GarantiaIndicadorUsuarioUltAtualiz = Pedido.Ambiente.Usuario;
-            tpedido.GarantiaIndicadorDtHrUltAtualiz = Execucao.Gravacao.DataHoraCriacao;
+            tpedido.GarantiaIndicadorDtHrUltAtualiz = Gravacao.DataHoraCriacao;
 
             if (Pedido.EnderecoEntrega.OutroEndereco)
             {
@@ -359,13 +356,13 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
             if (!string.IsNullOrEmpty(Execucao.Transportadora.Transportadora_Id))
             {
                 tpedido.Transportadora_Id = Execucao.Transportadora.Transportadora_Id;
-                tpedido.Transportadora_Data = Execucao.Gravacao.DataHoraCriacao;
+                tpedido.Transportadora_Data = Gravacao.DataHoraCriacao;
                 tpedido.Transportadora_Usuario = Pedido.Ambiente.Usuario;
                 tpedido.Transportadora_Selecao_Auto_Status = Execucao.Transportadora.Transportadora_Selecao_Auto_status();
                 tpedido.Transportadora_Selecao_Auto_Cep = Execucao.Transportadora.Transportadora_Selecao_Auto_Cep;
                 tpedido.Transportadora_Selecao_Auto_Transportadora = Execucao.Transportadora.Transportadora_Selecao_Auto_Transportadora;
                 tpedido.Transportadora_Selecao_Auto_Tipo_Endereco = Execucao.Transportadora.Transportadora_Selecao_Auto_Tipo_Endereco;
-                tpedido.Transportadora_Selecao_Auto_Data_Hora = Execucao.Gravacao.DataHoraCriacao;
+                tpedido.Transportadora_Selecao_Auto_Data_Hora = Gravacao.DataHoraCriacao;
             }
             //'01/02/2018: os pedidos do Arclube usam o RA para incluir o valor do frete e, portanto, não devem ter deságio do RA
             if ((Pedido.Ambiente.Loja != Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE)
@@ -449,8 +446,8 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
             //'	==============
             tpedido.St_Auto_Split = 1;
             tpedido.Split_Status = 1;
-            tpedido.Split_Data = Execucao.Gravacao.DataHoraCriacao.Date;
-            tpedido.Split_Hora = Execucao.Gravacao.Hora_pedido;
+            tpedido.Split_Data = Gravacao.DataHoraCriacao.Date;
+            tpedido.Split_Hora = Gravacao.Hora_pedido;
             tpedido.Split_Usuario = Constantes.ID_USUARIO_SISTEMA;
             tpedido.St_Pagto = "";
             tpedido.Usuario_St_Pagto = "";
@@ -465,14 +462,14 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
         {
             //'	PEDIDO BASE
             //'	===========
-            if (Execucao.Gravacao.EmpresasAutoSplit.Count > 1)
+            if (Gravacao.EmpresasAutoSplit.Count > 1)
                 tpedido.St_Auto_Split = 1;
             tpedido.Split_Status = 0;   //nao estava no ASP, é o valor default do banco
 
             if ((tpedido.St_Pagto ?? "") != Constantes.ST_PAGTO_NAO_PAGO)
             {
-                tpedido.Dt_St_Pagto = Execucao.Gravacao.DataHoraCriacao.Date;
-                tpedido.Dt_Hr_St_Pagto = Execucao.Gravacao.DataHoraCriacao;
+                tpedido.Dt_St_Pagto = Gravacao.DataHoraCriacao.Date;
+                tpedido.Dt_Hr_St_Pagto = Gravacao.DataHoraCriacao;
                 tpedido.Usuario_St_Pagto = Pedido.Ambiente.Usuario;
             }
             tpedido.St_Pagto = Constantes.ST_PAGTO_NAO_PAGO;
@@ -553,7 +550,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
             if (Execucao.BlnPedidoECommerceCreditoOkAutomatico)
             {
                 tpedido.Analise_Credito = cod_an_credito_ok;
-                tpedido.Analise_credito_Data = Execucao.Gravacao.DataHoraCriacao;
+                tpedido.Analise_credito_Data = Gravacao.DataHoraCriacao;
                 tpedido.Analise_Credito_Usuario = usuario_automatico;
             }
             else
@@ -561,7 +558,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                 if (Pedido.Valor.Vl_total <= Execucao.Vl_aprov_auto_analise_credito)
                 {
                     tpedido.Analise_Credito = cod_an_credito_ok;
-                    tpedido.Analise_credito_Data = Execucao.Gravacao.DataHoraCriacao;
+                    tpedido.Analise_credito_Data = Gravacao.DataHoraCriacao;
                     tpedido.Analise_Credito_Usuario = usuario_automatico;
                 }
                 else
@@ -570,7 +567,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                     {
                         //'Lojas usadas para pedidos de operações internas
                         tpedido.Analise_Credito = cod_an_credito_ok;
-                        tpedido.Analise_credito_Data = Execucao.Gravacao.DataHoraCriacao;
+                        tpedido.Analise_credito_Data = Gravacao.DataHoraCriacao;
                         tpedido.Analise_Credito_Usuario = usuario_automatico;
                     }
                     else
@@ -578,7 +575,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                         if ((Pedido.Ambiente.Loja == Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE) && (Pedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA) && (Pedido.FormaPagtoCriacao.Op_av_forma_pagto == Constantes.ID_FORMA_PAGTO_DINHEIRO))
                         {
                             tpedido.Analise_Credito = short.Parse(Constantes.COD_AN_CREDITO_PENDENTE_VENDAS);
-                            tpedido.Analise_credito_Data = Execucao.Gravacao.DataHoraCriacao;
+                            tpedido.Analise_credito_Data = Gravacao.DataHoraCriacao;
                             tpedido.Analise_Credito_Usuario = usuario_automatico;
                         }
                         else
@@ -587,7 +584,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                             {
                                 tpedido.Analise_Credito = short.Parse(Constantes.COD_AN_CREDITO_PENDENTE_VENDAS);
                                 tpedido.Analise_Credito_Pendente_Vendas_Motivo = "006";// 'Aguardando Emissão do Boleto Avulso
-                                tpedido.Analise_credito_Data = Execucao.Gravacao.DataHoraCriacao;
+                                tpedido.Analise_credito_Data = Gravacao.DataHoraCriacao;
                                 tpedido.Analise_Credito_Usuario = usuario_automatico;
                             }
                             else
@@ -595,7 +592,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                                 if ((Pedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA) && ((Pedido.FormaPagtoCriacao.Op_av_forma_pagto == Constantes.ID_FORMA_PAGTO_DEPOSITO) || (Pedido.FormaPagtoCriacao.Op_av_forma_pagto == Constantes.ID_FORMA_PAGTO_BOLETO_AV)))
                                 {
                                     tpedido.Analise_Credito = short.Parse(Constantes.COD_AN_CREDITO_OK_AGUARDANDO_DEPOSITO);
-                                    tpedido.Analise_credito_Data = Execucao.Gravacao.DataHoraCriacao;
+                                    tpedido.Analise_credito_Data = Gravacao.DataHoraCriacao;
                                     tpedido.Analise_Credito_Usuario = usuario_automatico;
                                 }
                                 else
@@ -603,7 +600,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                                     if (Pedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA)
                                     {
                                         tpedido.Analise_Credito = short.Parse(Constantes.COD_AN_CREDITO_PENDENTE_VENDAS);
-                                        tpedido.Analise_credito_Data = Execucao.Gravacao.DataHoraCriacao;
+                                        tpedido.Analise_credito_Data = Gravacao.DataHoraCriacao;
                                         tpedido.Analise_Credito_Usuario = usuario_automatico;
 
 

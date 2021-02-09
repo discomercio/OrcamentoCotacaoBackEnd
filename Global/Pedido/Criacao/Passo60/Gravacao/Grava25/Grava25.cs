@@ -7,8 +7,8 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava25
 {
     class Grava25 : PassoBaseGravacao
     {
-        public Grava25(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao criacao, Execucao.Execucao execucao)
-            : base(contextoBdGravacao, pedido, retorno, criacao, execucao)
+        public Grava25(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao criacao, Execucao.Execucao execucao, Execucao.Gravacao gravacao)
+            : base(contextoBdGravacao, pedido, retorno, criacao, execucao, gravacao)
         {
         }
 
@@ -128,7 +128,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava25
                 return;
 
             //garante que tenha rgistrado o erro
-            foreach (var regra in Execucao.Gravacao.ListaRegrasControleEstoque)
+            foreach (var regra in Gravacao.ListaRegrasControleEstoque)
             {
                 if (!regra.St_Regra_ok)
                     Retorno.ListaErros.Add("Ocorreu algum erro na leitura das regras de consumo de estoque.");

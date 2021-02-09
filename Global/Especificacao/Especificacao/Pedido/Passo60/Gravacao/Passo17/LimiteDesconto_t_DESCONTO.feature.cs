@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Passo40
+namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo17
 {
     using TechTalk.SpecFlow;
     using System;
