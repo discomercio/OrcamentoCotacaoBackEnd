@@ -35,14 +35,10 @@ Scenario: EndEtg_tel_com
 	Then Erro "Endereço de entrega: telefone comercial inválido!"
 
 Scenario: EndEtg_tel_com 2
-	When Informo "EndEtg_tel_com" = "12345"
-	Then Erro "Endereço de entrega: telefone comercial inválido!"
-
-Scenario: EndEtg_tel_com 3
 	When Informo "EndEtg_tel_com" = "123456789012"
 	Then Erro "Endereço de entrega: telefone comercial inválido!"
 
-Scenario: EndEtg_tel_com 4
+Scenario: EndEtg_tel_com 3
 	When Informo "EndEtg_tel_com" = "123456"
 	Then Sem erro "Endereço de entrega: telefone comercial inválido!"
 
@@ -83,14 +79,10 @@ Scenario: EndEtg_tel_com_2
 
 Scenario: EndEtg_tel_com_2 2
 	When Informo "EndEtg_ddd_com_2" = "12"
-	When Informo "EndEtg_tel_com_2" = "12345"
-	Then Erro "Endereço de entrega: telefone comercial 2 inválido!"
-
-Scenario: EndEtg_tel_com_2 3
 	When Informo "EndEtg_tel_com_2" = "123456789012"
 	Then Erro "Endereço de entrega: telefone comercial 2 inválido!"
 
-Scenario: EndEtg_tel_com_2 4
+Scenario: EndEtg_tel_com_2 3
 	When Informo "EndEtg_tel_com_2" = "123456"
 	Then Sem erro "Endereço de entrega: telefone comercial 2 inválido!"
 
