@@ -349,9 +349,10 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
             }
           }
         }
-
+      //estou removendo o código abaixo de dentro da condição de "OutroEndereco", pois mesmo que o outro endereço esteja como false
+      //ele pode ter preenchido os dados
+      this.enderecoEntregaDtoClienteCadastro = this.confirmarEndereco.converterTelefones(this.enderecoEntregaDtoClienteCadastro);
       if (this.enderecoEntregaDtoClienteCadastro.OutroEndereco) {
-        this.enderecoEntregaDtoClienteCadastro = this.confirmarEndereco.converterTelefones(this.enderecoEntregaDtoClienteCadastro);
         validacoes = validacoes.concat(ValidacoesClienteUtils.validarEnderecoEntregaDtoClienteCadastro(this.enderecoEntregaDtoClienteCadastro,
           this.endCadastralClientePrepedidoDto, this.confirmarEndereco.componenteCep.lstCidadeIBGE));
       }
