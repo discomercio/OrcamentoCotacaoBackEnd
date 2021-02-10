@@ -223,7 +223,7 @@
     <Compile Update="Especificacao\Pedido\Passo60\Gravacao\Passo20\ValidacaoEstoque2.feature.cs">
       <DependentUpon>ValidacaoEstoque2.feature</DependentUpon>
     </Compile>
-    <Compile Update="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\ESTOQUE_produto_saida_v2_rotina.feature.cs">
+    <Compile Update="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\EstoqueSaida\ESTOQUE_produto_saida_v2_rotina.feature.cs">
       <DependentUpon>ESTOQUE_produto_saida_v2_rotina.feature</DependentUpon>
     </Compile>
     <Compile Update="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\Roteiro_o_que_testar.feature.cs">
@@ -403,7 +403,7 @@
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\ESTOQUE_produto_saida_v2_rotina.feature">
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\EstoqueSaida\ESTOQUE_produto_saida_v2_rotina.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
