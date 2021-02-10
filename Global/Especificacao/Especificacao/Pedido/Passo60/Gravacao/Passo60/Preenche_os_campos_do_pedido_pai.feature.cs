@@ -758,11 +758,9 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="Preenche_os_campos_do_pedido - transportadora")]
         [Xunit.TraitAttribute("FeatureTitle", "Preenche_os_campos_do_pedido_pai")]
         [Xunit.TraitAttribute("Description", "Preenche_os_campos_do_pedido - transportadora")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void Preenche_Os_Campos_Do_Pedido_Transportadora()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido - transportadora", null, tagsOfScenario, argumentsOfScenario);
 #line 179
@@ -795,31 +793,12 @@ this.FeatureBackground();
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 182
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"transportadora_id\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"transportadora_id\" = \"nul" +
+                        "l\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 183
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"transportadora_usuario\" =" +
-                        " \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 184
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"transportadora_num_coleta" +
-                        "\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 185
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"transportadora_contato\" =" +
-                        " \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 186
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"transportadora_conferente" +
-                        "\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 187
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"transportadora_motorista\"" +
-                        " = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 188
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"transportadora_placa_veic" +
-                        "ulo\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        " \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 189
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"transportadora_selecao_au" +
@@ -827,7 +806,7 @@ this.FeatureBackground();
 #line hidden
 #line 190
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"transportadora_selecao_au" +
-                        "to_cep\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "to_cep\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 191
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"transportadora_selecao_au" +
@@ -835,7 +814,7 @@ this.FeatureBackground();
 #line hidden
 #line 192
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"transportadora_selecao_au" +
-                        "to_transportadora\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "to_transportadora\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

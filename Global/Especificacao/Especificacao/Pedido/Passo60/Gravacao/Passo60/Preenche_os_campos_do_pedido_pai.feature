@@ -175,21 +175,22 @@ Scenario: Preenche_os_campos_do_pedido - campos soltos com valores
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_frete" = "0.0000"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "comissao_loja_indicou" = "0.0"
 
-@ignore
+
 Scenario: Preenche_os_campos_do_pedido - transportadora
 	Given Pedido base
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_id" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_usuario" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_num_coleta" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_contato" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_conferente" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_motorista" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_placa_veiculo" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_id" = "null"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_usuario" = "null"
+	#Campo que não existem na t_PEDIDO
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_num_coleta" = "null"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_contato" = "null"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_conferente" = "null"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_motorista" = "null"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_placa_veiculo" = "null"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_selecao_auto_status" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_selecao_auto_cep" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_selecao_auto_cep" = "null"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_selecao_auto_tipo_endereco" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_selecao_auto_transportadora" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_selecao_auto_transportadora" = "null"
 
 @ignore
 Scenario: Preenche_os_campos_do_pedido - refente a entrega
