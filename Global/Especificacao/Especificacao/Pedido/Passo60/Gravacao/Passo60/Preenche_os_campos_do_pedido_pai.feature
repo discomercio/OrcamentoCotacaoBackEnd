@@ -22,9 +22,9 @@ Background: Setup
 #até linha 2057
 #rs("id_nfe_emitente") = vEmpresaAutoSplit(iv)
 #rs.Update
-@ignore
+
 Scenario: Preenche_os_campos_do_pedido_pai - endereco
-	
+	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_memorizacao_completa_enderecos" = "1"
@@ -34,29 +34,29 @@ Scenario: Preenche_os_campos_do_pedido_pai - endereco
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_cidade" = "São Paulo"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_uf" = "SP"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_cep" = "02045080"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_numero" = "420"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_numero" = "97"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_complemento" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_email" = "gabriel.prada.teodoro@gmail.com"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_email_xml" = "xmail@xmail.com"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_nome" = "Gabriel Prada Teodoro"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_email" = "testeCad@Gabriel.com"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_email_xml" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_nome" = "Vivian"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_ddd_res" = "11"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_tel_res" = "25321634"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_tel_res" = "11111111"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_ddd_com" = "11"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_tel_com" = "12211221"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_ramal_com" = "12"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_tel_com" = "12345678"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_ramal_com" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_ddd_cel" = "11"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_tel_cel" = "981603313"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_ddd_com_2" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_tel_com_2" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_ramal_com_2" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_tipo_pessoa" = "PF"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_cnpj_cpf" = "35270445824"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_contribuinte_icms_status" = "2"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_produtor_rural_status" = "2"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_ie" = "749.201.682.501"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_rg" = "304480484"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_cnpj_cpf" = "14039603052"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_contribuinte_icms_status" = "0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_produtor_rural_status" = "1"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_ie" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_rg" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_contato" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_nome_iniciais_em_maiusculas" = "Gabriel Prada Teodoro"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_nome_iniciais_em_maiusculas" = "Vivian"
 
 @ignore
 Scenario: Preenche_os_campos_do_pedido_pai - pagamento
