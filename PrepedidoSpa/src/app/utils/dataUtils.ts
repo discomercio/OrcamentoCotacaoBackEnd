@@ -266,4 +266,9 @@ export class DataUtils {
         return dt;
 
     }
+
+    public static validarData(data: Date): boolean{
+        if(isNaN(data.getTime())) return false;
+        return true;
+    }
 }

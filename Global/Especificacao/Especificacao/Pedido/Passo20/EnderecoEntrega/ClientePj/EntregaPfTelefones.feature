@@ -38,15 +38,19 @@ Scenario: EndEtg_ddd_res 2
 Scenario: EndEtg_tel_res
 	#	if ((len(s_tel)=0) Or (len(s_tel)>=6)) then telefone_ok = True
 	When Informo "EndEtg_tel_res" = "123"
-	Then Erro "Endereço de entrega: telefone inválido!!"
+	Then Erro "Endereço de entrega: telefone residencial inválido."
 
 @ignore
 Scenario: EndEtg_tel_res 2
 	When Informo "EndEtg_tel_res" = "12345"
-	Then Erro "Endereço de entrega: telefone inválido!!"
+	Then Erro "Endereço de entrega: telefone residencial inválido."
 
 @ignore
 Scenario: EndEtg_tel_res 3
+	When Informo "EndEtg_tel_res" = "123456789012"
+	Then Erro "Endereço de entrega: telefone residencial inválido."
+
+Scenario: EndEtg_tel_res 4
 	When Informo "EndEtg_tel_res" = "123456"
 	Then Sem erro "Endereço de entrega: telefone inválido!!"
 
@@ -86,15 +90,19 @@ Scenario: EndEtg_ddd_cel 2
 Scenario: EndEtg_tel_cel
 	#	if ((len(s_tel)=0) Or (len(s_tel)>=6)) then telefone_ok = True
 	When Informo "EndEtg_tel_cel" = "123"
-	Then Erro "Endereço de entrega: telefone inválido!!"
+	Then Erro "Endereço de entrega: telefone celular inválido."
 
 @ignore
 Scenario: EndEtg_tel_cel 2
 	When Informo "EndEtg_tel_cel" = "12345"
-	Then Erro "Endereço de entrega: telefone inválido!!"
+	Then Erro "Endereço de entrega: telefone celular inválido."
 
 @ignore
 Scenario: EndEtg_tel_cel 3
+	When Informo "EndEtg_tel_cel" = "123456789012"
+	Then Erro "Endereço de entrega: telefone celular inválido."
+
+Scenario: EndEtg_tel_cel 4
 	When Informo "EndEtg_tel_cel" = "123456"
 	Then Sem erro "Endereço de entrega: telefone inválido!!"
 

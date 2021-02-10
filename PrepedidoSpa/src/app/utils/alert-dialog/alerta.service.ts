@@ -2,10 +2,7 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { AlertDialogComponent } from './alert-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AppComponent } from 'src/app/app.component';
-import { AutenticacaoService } from 'src/app/servicos/autenticacao/autenticacao.service';
 import { Router } from '@angular/router';
-import { $ } from 'protractor';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +28,10 @@ export class AlertaService {
       msg, "350px", null);
   }
 
+  public mostrarMensagemBrowser(): void {
+    let msg: string = "Este navegador não é suportado!\nPor favor, utilize o Google Chrome, FireFox ou Edge!";
+    this.mostrarMensagemComLargura(msg, "350px", null);
+  }
 
   public static mostrandoErroNaoAutorizado: boolean = false;
   //esta é um pouco mais estreita...
