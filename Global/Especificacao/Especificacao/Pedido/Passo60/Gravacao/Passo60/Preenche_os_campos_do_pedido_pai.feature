@@ -134,29 +134,29 @@ Scenario: Preenche_os_campos_do_pedido - endereco entrega
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_rg" = "304480484"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_nome_iniciais_em_maiusculas" = "Gabriel Prada Teodoro"
 
-@ignore
 Scenario: Preenche_os_campos_do_pedido - campos soltos
+	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "loja" = "202"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vendedor" = "HAMILTON"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vendedor" = "USUARIOAPIMAGENTO"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "midia" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "servicos" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_servicos" = "0.0000"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_servicos" = "0.0000"
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "timestamp" = "[xL"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_orc_virou_pedido" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "orcamento" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "orcamentista" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "tamanho_num_pedido" = "7"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_orc_virou_pedido" = "0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "orcamento" = "null"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "orcamentista" = "null"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "tamanho_num_pedido" = "7"
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "pedido_base" = "pedido gerado"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "numero_loja" = "202"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "numero_loja" = "202"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "id_nfe_emitente" = "4903"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "NFe_texto_constar" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "NFe_xPed" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "usuario_cadastro" = "HAMILTON"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "plataforma_origem_pedido" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "sistema_responsavel_cadastro" = "1"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "sistema_responsavel_atualizacao" = "1"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "usuario_cadastro" = "USUARIOAPIMAGENTO"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "plataforma_origem_pedido" = "1"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "sistema_responsavel_cadastro" = "5"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "sistema_responsavel_atualizacao" = "5"
 
 @ignore
 Scenario: Preenche_os_campos_do_pedido - campos soltos com valores
