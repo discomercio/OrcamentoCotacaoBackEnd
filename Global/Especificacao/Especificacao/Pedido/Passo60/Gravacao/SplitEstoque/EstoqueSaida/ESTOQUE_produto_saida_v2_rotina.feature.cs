@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
+namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.EstoqueSaida
 {
     using TechTalk.SpecFlow;
     using System;

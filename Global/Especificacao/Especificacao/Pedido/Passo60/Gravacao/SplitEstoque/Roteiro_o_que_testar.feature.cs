@@ -42,28 +42,79 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Roteiro_o_que_testar", @"Como fazemos o teste do auto-split
-
-1 - Escrever regra de consumo de estoque:
-
-2 - Definir estoque:
-
-3 - Cadastrar pedido:
-
-4 - Verificar pedidos criados
-
-5 - Verificar posicao e movimento de estoque
-
-
-Fazer um roteiro manual para criar pedidos, dar entrada no estoque pelo ASP
-e verficiar que a rotina que processa os produtos pendentes atende esses pedidos
-e que o estoque ficou consistente.
-
-
-Pedido criado:
-pai: sair do CD 1, produto 1 qdte = 12, produto 2 qde =15
-filhote: sair do CD 2, produto 1 qdte = 1, produto 2 qde =7
-filhote: sair do CD 3, produto 1 qdte = 7, produto 2 qde =18", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Roteiro_o_que_testar", "Roteiro de cada teste:\r\n\r\n1 - Escrever regra de consumo de estoque\r\n2 - Definir e" +
+                    "stoque\r\n3 - Cadastrar pedido\r\n4 - Verificar slipt e quantidades dos pedidos cria" +
+                    "dos\r\n5 - Verificar posicao e movimento de estoque\r\n\r\nTestes:\r\n\r\n\r\nVamos colocar " +
+                    "as tabelas completas de homologacao, as atbelas *WMS*, para ter massa de dados.\r" +
+                    "\n\r\n200 - Um único produto com um mais de um CD\r\n\tRodar este teste com todas as c" +
+                    "ombinações: cliente PF e uma com cliente PJ, contrib, prod rural, em mais de um " +
+                    "estado\r\n\tParâmetros: tipo_pessoa, UF, CD1, CD2, nivel para desabilitar\r\n\t\t210 - " +
+                    "Definição de regras\r\n\t\t\tDesabilitar todas as regras ou pela regra, ou pela UF, o" +
+                    "u pelo tipo_pessoa, ou pelo CD)\r\n\t\t\tRegra de consumo para CD1 para tipo_pessoa p" +
+                    "ara estado UF\r\n\t\t\tRegra de consumo para CD2 para tipo_pessoa para estado UF\r\n\t\t\t" +
+                    "Regra de consumo para esperar mercadoria CD1 para tipo_pessoa para estado UF\r\n\t\t" +
+                    "\tRegra de consumo para CD3 para todos os outros tipo_pessoa e para todos os outr" +
+                    "os UF\r\n\t\t\r\n\t\t220 - ser atendido pelo CD 1 e pelo CD 2\r\n\t\t\testoque CD1 de 45\r\n\t\t\t" +
+                    "estoque CD2 de 33\r\n\t\t\tCriar pedido com 20 itens\r\n\t\t\t\tGerar 1 pedido totalmente a" +
+                    "tendido, deixar 25 no CD1 e 33 CD2\r\n\t\t\tCriar pedido com 50 itens\r\n\t\t\t\tGerar 1 pe" +
+                    "dido totalmente atendido com 1 filhote, deixar 0 no CD1 e 28 CD2\r\n\t\t\t\r\n\t\t\tCriar " +
+                    "pedido com 100 itens\r\n\t\t\t\tGerar 1 pedido pai e 1 filhote\r\n\t\t\t\tPedido pai status " +
+                    "= SPL\r\n\t\t\t\tPedido filhote status = SEP\r\n\r\n\t\t\t\tPedido pai id_nfe_emitente = CD1\r\n" +
+                    "\t\t\t\tPedido filhote id_nfe_emitente = CD2\r\n\r\n\t\t\t\tEstoque da t_estoque_item no CD1" +
+                    " ficou 0\r\n\t\t\t\tEstoque da t_estoque_item no CD2 ficou 0\r\n\r\n\t\t\t\tPedido pai t_pedid" +
+                    "o_item quantidade = 45 + 22\r\n\t\t\t\tPedido filhote t_pedido_item quantidade = 33\r\n\r" +
+                    "\n\t\t\t\tt_estoque_movimento 45 para o pedido pai no estoque VDO\r\n\t\t\t\tt_estoque_movi" +
+                    "mento 22 para o pedido pai no estoque SPE\r\n\t\t\t\tt_estoque_movimento 33 para o ped" +
+                    "ido filhote no estoque VDO\r\n\r\n\t\t230 - atender pelo CD2 e o resto sem presença\r\n\t" +
+                    "\t\testoque CD1 de 0\r\n\t\t\testoque CD2 de 31\r\n\t\t\tCriar pedido com 100 itens\r\n\t\t\t\tGer" +
+                    "ar 1 pedido pai e 1 filhote\r\n\t\t\t\tPedido pai status = ESP\r\n\t\t\t\tPedido filhote sta" +
+                    "tus = SEP\r\n\r\n\t\t\t\tPedido pai id_nfe_emitente = CD1\r\n\t\t\t\tPedido filhote id_nfe_emi" +
+                    "tente = CD2\r\n\r\n\t\t\t\tEstoque da t_estoque_item no CD1 ficou 0\r\n\t\t\t\tEstoque da t_es" +
+                    "toque_item no CD2 ficou 0\r\n\r\n\t\t\t\tPedido pai t_pedido_item quantidade = 100 - 31\r" +
+                    "\n\t\t\t\tPedido filhote t_pedido_item quantidade = 31\r\n\r\n\t\t\t\tt_estoque_movimento 100" +
+                    " - 31 para o pedido pai no estoque SPE\r\n\t\t\t\tt_estoque_movimento 31 para o pedido" +
+                    " filhote no estoque VDO\r\n\r\n\r\n\t\t240 - ficar com todos os produtos sem presença\r\n\t" +
+                    "\t\testoque CD1 de 0\r\n\t\t\testoque CD2 de 0\r\n\t\t\tCriar pedido com 26 itens\r\n\t\t\t\tGerar" +
+                    " 1 pedido pai\r\n\t\t\t\tPedido pai status = ESP\r\n\r\n\t\t\t\tPedido pai id_nfe_emitente = C" +
+                    "D1\r\n\r\n\t\t\t\tEstoque da t_estoque_item no CD1 ficou 0 \r\n\t\t\t\tEstoque da t_estoque_it" +
+                    "em no CD2 ficou 0 ---obvio!!!\r\n\r\n\t\t\t\tPedido pai t_pedido_item quantidade = 26\r\n\r" +
+                    "\n\t\t\t\tt_estoque_movimento 0 para o pedido pai no estoque VDO --nem pode ter o reg" +
+                    "isto\r\n\t\t\t\tt_estoque_movimento 26 para o pedido pai no estoque SPE\r\n\r\n\r\n\t\t250 - N" +
+                    "ovas regras\r\n\t\t\tRegra de consumo para CD1 para tipo_pessoa para estado UF\r\n\t\t\tRe" +
+                    "gra de consumo para CD2 para tipo_pessoa para estado UF\r\n\t\t\tRegra de consumo par" +
+                    "a esperar mercadoria CD2 para tipo_pessoa para estado UF\r\n\t\t\tRegra de consumo pa" +
+                    "ra CD2 para outro tipo_pessoa para estado UF\r\n\r\n\t\t260 - ser atendido pelo CD 1 e" +
+                    " pelo CD 2, esperando no CD2\r\n\t\t\testoque CD1 de 45\r\n\t\t\testoque CD2 de 33\r\n\t\t\t\r\n\t" +
+                    "\t\tCriar pedido com 100 itens\r\n\t\t\t\tGerar 1 pedido pai e 1 filhote\r\n\t\t\t\tPedido pai" +
+                    " status = SEP\r\n\t\t\t\tPedido filhote status = SPL\r\n\r\n\t\t\t\tPedido pai id_nfe_emitente" +
+                    " = CD1\r\n\t\t\t\tPedido filhote id_nfe_emitente = CD2\r\n\r\n\t\t\t\tEstoque da t_estoque_ite" +
+                    "m no CD1 ficou 0\r\n\t\t\t\tEstoque da t_estoque_item no CD2 ficou 0\r\n\r\n\t\t\t\tPedido pai" +
+                    " t_pedido_item quantidade = 45\r\n\t\t\t\tPedido filhote t_pedido_item quantidade = 33" +
+                    " + 22\r\n\r\n\t\t\t\tt_estoque_movimento 45 para o pedido pai no estoque VDO\r\n\t\t\t\tt_esto" +
+                    "que_movimento 22 para o pedido filhote no estoque SPE\r\n\t\t\t\tt_estoque_movimento 3" +
+                    "3 para o pedido filhote no estoque VDO\r\n\r\n\t\t230 - atender pelo CD2 e o resto sem" +
+                    " presença\r\n\t\t\testoque CD1 de 0\r\n\t\t\testoque CD2 de 31\r\n\t\t\tCriar pedido com 72 ite" +
+                    "ns\r\n\t\t\t\tGerar 1 pedido pai\r\n\t\t\t\tPedido pai status = SPL\r\n\r\n\t\t\t\tPedido pai id_nfe" +
+                    "_emitente = CD2\r\n\r\n\t\t\t\tEstoque da t_estoque_item no CD1 ficou 0 ---obvio!!!\r\n\t\t\t" +
+                    "\tEstoque da t_estoque_item no CD2 ficou 0\r\n\r\n\t\t\t\tPedido pai t_pedido_item quanti" +
+                    "dade = 31 + 41\r\n\r\n\t\t\t\tt_estoque_movimento 31 para o pedido pai no estoque VDO\r\n\t" +
+                    "\t\t\tt_estoque_movimento 41 para o pedido pai no estoque SPE\r\n\r\n\t\t240 - ficar com " +
+                    "todos os produtos sem presença\r\n\t\t\testoque CD1 de 0\r\n\t\t\testoque CD2 de 0\r\n\t\t\tCri" +
+                    "ar pedido com 26 itens\r\n\t\t\t\tGerar 1 pedido pai\r\n\t\t\t\tPedido pai status = ESP\r\n\r\n\t" +
+                    "\t\t\tPedido pai id_nfe_emitente = CD2\r\n\r\n\t\t\t\tEstoque da t_estoque_item no CD1 fico" +
+                    "u 0 ---obvio!!!\r\n\t\t\t\tEstoque da t_estoque_item no CD2 ficou 0\r\n\r\n\t\t\t\tPedido pai " +
+                    "t_pedido_item quantidade = 26\r\n\r\n\t\t\t\tt_estoque_movimento 0 para o pedido pai no " +
+                    "estoque VDO --nem pode ter o registo\r\n\t\t\t\tt_estoque_movimento 26 para o pedido p" +
+                    "ai no estoque SPE\r\n\r\n\t\t\r\n\r\n400 - Três produtos atendidos por CDs com a mesma pri" +
+                    "oridade\r\n\tOs três produtos possuem a mesma regra de consumo de estoque\r\n\t410 - O" +
+                    " primeiro CD tem estoque para todos\r\n\t420 - O primeiro CD tem estoque para o pro" +
+                    "duto 1 e o CD 2 para o produto 2\r\n\t430 - Idem mas não atende completamente; o pr" +
+                    "oduto 1 é vendido sem presença\r\n\t440 - Idem mas não atende completamente; o prod" +
+                    "uto 1 e 2 são vendidos sem presença\r\n500 - Três produtos atendidos por CDs com d" +
+                    "uas regras com prioridades diferentes\r\n600 - Testar status de ativo das regras\r\n" +
+                    "\r\n\r\nTestes não atuomatizados:\r\nFazer um roteiro manual para criar pedidos, dar e" +
+                    "ntrada no estoque pelo ASP\r\ne verficiar que a rotina que processa os produtos pe" +
+                    "ndentes atende esses pedidos\r\ne que o estoque ficou consistente.", ProgrammingLanguage.CSharp, new string[] {
                         "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -112,7 +163,7 @@ filhote: sair do CD 3, produto 1 qdte = 7, produto 2 qde =18", ProgrammingLangua
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("fazer", null, tagsOfScenario, argumentsOfScenario);
-#line 30
+#line 174
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -132,7 +183,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 31
+#line 175
  testRunner.Given("falta fazer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
