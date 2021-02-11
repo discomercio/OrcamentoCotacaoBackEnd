@@ -322,17 +322,17 @@ Scenario: Preenche_os_campos_do_pedido - campos de data e hora
 Scenario: Preenche_os_campos_do_pedido - frete, romaneio e danfe
 	Given Pedido base
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "frete_status" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "frete_valor" = "0.0000"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "frete_usuario" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "romaneio_status" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "romaneio_usuario" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "danfe_impressa_status" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "danfe_impressa_usuario" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "danfe_a_imprimir_status" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "danfe_a_imprimir_usuario" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "frete_status" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "frete_valor" = "0.0000"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "frete_usuario" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "romaneio_status" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "romaneio_usuario" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "danfe_impressa_status" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "danfe_impressa_usuario" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "danfe_a_imprimir_status" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "danfe_a_imprimir_usuario" = ""
+	#Obs: No momento esses campos não existem na tabela t_PEDIDO e alguns são utilizados apenas na Central
 
-@ignore
 Scenario: Preenche_os_campos_do_pedido - referente a RA
 	Given Pedido base
 	Then Sem nenhum erro
@@ -340,10 +340,10 @@ Scenario: Preenche_os_campos_do_pedido - referente a RA
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_limite_RA_sem_desagio" = "0.0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_tem_desagio_RA" = "0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "qtde_parcelas_desagio_RA" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_desagio_RA_liquida" = "30.0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_desagio_RA_liquida" = "0.0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "permite_RA_status" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_violado_permite_RA_status" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "usuario_violado_permite_RA_status" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_violado_permite_RA_status" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "usuario_violado_permite_RA_status" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "opcao_possui_RA" = "-"
 
 @ignore

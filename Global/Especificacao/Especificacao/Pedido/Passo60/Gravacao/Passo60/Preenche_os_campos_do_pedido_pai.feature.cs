@@ -1408,37 +1408,6 @@ this.FeatureBackground();
 #line 324
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 325
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"frete_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 326
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"frete_valor\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 327
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"frete_usuario\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 328
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"romaneio_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 329
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"romaneio_usuario\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 330
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"danfe_impressa_status\" = " +
-                        "\"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 331
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"danfe_impressa_usuario\" =" +
-                        " \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 332
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"danfe_a_imprimir_status\" " +
-                        "= \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 333
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"danfe_a_imprimir_usuario\"" +
-                        " = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
             }
             this.ScenarioCleanup();
         }
@@ -1446,11 +1415,9 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="Preenche_os_campos_do_pedido - referente a RA")]
         [Xunit.TraitAttribute("FeatureTitle", "Preenche_os_campos_do_pedido_pai")]
         [Xunit.TraitAttribute("Description", "Preenche_os_campos_do_pedido - referente a RA")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void Preenche_Os_Campos_Do_Pedido_ReferenteARA()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido - referente a RA", null, tagsOfScenario, argumentsOfScenario);
 #line 336
@@ -1498,18 +1465,10 @@ this.FeatureBackground();
 #line hidden
 #line 343
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"perc_desagio_RA_liquida\" " +
-                        "= \"30.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "= \"0.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 344
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"permite_RA_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 345
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"st_violado_permite_RA_sta" +
-                        "tus\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 346
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"usuario_violado_permite_R" +
-                        "A_status\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 347
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"opcao_possui_RA\" = \"-\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
