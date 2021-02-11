@@ -249,15 +249,15 @@ Scenario: Preenche_os_campos_do_pedido - instalador, bem de uso, entrega imediat
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "GarantiaIndicadorStatus" = "0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "GarantiaIndicadorUsuarioUltAtualiz" = "USUARIOAPIMAGENTO"
 
-@ignore
 Scenario: Preenche_os_campos_do_pedido - campos de OBS
+	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "obs_1" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "obs_1" = "teste magento"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "obs_2" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "obs_3" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "num_obs_2" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "num_obs_3" = "0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "obs_3" = "null"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "num_obs_2" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "num_obs_3" = "0"
 
 @ignore
 Scenario: Preenche_os_campos_do_pedido - referente a indicação
