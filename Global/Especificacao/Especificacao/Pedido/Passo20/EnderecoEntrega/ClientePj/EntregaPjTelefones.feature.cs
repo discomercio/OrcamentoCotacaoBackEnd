@@ -887,11 +887,9 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="nos telefones, os símbolos devem ser removidos")]
         [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PJ - validação de telefones")]
         [Xunit.TraitAttribute("Description", "nos telefones, os símbolos devem ser removidos")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void NosTelefonesOsSimbolosDevemSerRemovidos()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("nos telefones, os símbolos devem ser removidos", null, tagsOfScenario, argumentsOfScenario);
 #line 133
@@ -940,11 +938,9 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="nos telefones, os símbolos devem ser removidos 2")]
         [Xunit.TraitAttribute("FeatureTitle", "Pedido de cliente PJ com endereço de entrega PJ - validação de telefones")]
         [Xunit.TraitAttribute("Description", "nos telefones, os símbolos devem ser removidos 2")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void NosTelefonesOsSimbolosDevemSerRemovidos2()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("nos telefones, os símbolos devem ser removidos 2", null, tagsOfScenario, argumentsOfScenario);
 #line 141
