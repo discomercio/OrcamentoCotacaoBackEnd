@@ -346,22 +346,23 @@ Scenario: Preenche_os_campos_do_pedido - referente a RA
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "usuario_violado_permite_RA_status" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "opcao_possui_RA" = "-"
 
-@ignore
+
 Scenario: Preenche_os_campos_do_pedido - Marketplace e magento
+	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pedido_bs_x_at" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pedido_bs_x_ac" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pedido_bs_x_ac_reverso" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pedido_bs_x_ac" = "123456789"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "pedido_bs_x_ac_reverso" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pedido_bs_x_marketplace" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "marketplace_codigo_origem" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "MarketplacePedidoRecebidoRegistrarStatus" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "MarketplacePedidoRecebidoRegistrarUsuario" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "MarketplacePedidoRecebidoRegistradoStatus" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "MarketplacePedidoRecebidoRegistradoUsuario" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "magento_installer_commission_value" = "0.0000"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "magento_installer_commission_discount" = "0.0000"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "magento_shipping_amount" = "0.0000"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "MarketplacePedidoRecebidoRegistrarStatus" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "MarketplacePedidoRecebidoRegistrarUsuario" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "MarketplacePedidoRecebidoRegistradoStatus" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "MarketplacePedidoRecebidoRegistradoUsuario" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "magento_installer_commission_value" = "0.0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "magento_installer_commission_discount" = "0.0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "magento_shipping_amount" = "0.0"
 
 @ignore
 Scenario: perc_desagio_RA_liquida

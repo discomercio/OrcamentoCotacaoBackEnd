@@ -683,6 +683,14 @@ namespace InfraBanco.Modelos
         [Column("st_forma_pagto_possui_parcela_cartao_maquineta")]
         public byte? St_forma_pagto_possui_parcela_cartao_maquineta { get; }
 
+        [Column("magento_installer_commission_value")]
+        public decimal Magento_installer_commission_value { get; set; }
+
+        [Column("magento_installer_commission_discount")]
+        public decimal Magento_installer_commission_discount { get; set; }
+
+        [Column("magento_shipping_amount")]
+        public decimal Magento_shipping_amount { get; set; }
 #endif
     }
 }
