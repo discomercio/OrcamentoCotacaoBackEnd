@@ -259,20 +259,20 @@ Scenario: Preenche_os_campos_do_pedido - campos de OBS
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "num_obs_2" = "0"
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "num_obs_3" = "0"
 
-@ignore
+
 Scenario: Preenche_os_campos_do_pedido - referente a indicação
 	Given Pedido base
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "loja_indicou" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "venda_externa" = "0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "venda_externa" = "1"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "indicador" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_RT" = "0.0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "comissao_paga" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "comissao_paga_ult_op" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "comissao_paga_usuario" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "indicador_editado_manual_status" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "indicador_editado_manual_usuario" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "indicador_editado_manual_indicador_original" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "comissao_paga" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "comissao_paga_ult_op" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "comissao_paga_usuario" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "indicador_editado_manual_status" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "indicador_editado_manual_usuario" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "indicador_editado_manual_indicador_original" = ""
 
 @ignore
 Scenario: Preenche_os_campos_do_pedido - campos de data e hora
