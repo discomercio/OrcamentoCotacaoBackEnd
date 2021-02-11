@@ -100,9 +100,10 @@ Scenario: Preenche_os_campos_do_pedido_pai - pagamento
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "custoFinancFornecQtdeParcelas" = "0"
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "BoletoConfeccionadoStatus" = "0"
 
-@ignore
+
 Scenario: Preenche_os_campos_do_pedido - endereco entrega
-	Given Pedido base
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
+	Given Pedido base com endereço de entrega
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_end_entrega" = "1"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_cod_justificativa" = "003"
@@ -113,27 +114,27 @@ Scenario: Preenche_os_campos_do_pedido - endereco entrega
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_cep" = "02045080"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_endereco_numero" = "97"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_endereco_complemento" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_obs" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_email" = "gabriel.prada.teodoro@gmail.com"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_email_xml" = "teste@xml.com"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_nome" = "Gabriel Prada Teodoro"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_ddd_res" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_tel_res" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_ddd_com" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_obs" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_email" = "testeCad@Gabriel.com"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_email_xml" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_nome" = "Vivian"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_ddd_res" = "11"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_tel_res" = "11111111"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_ddd_com" = "null"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_tel_com" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_ramal_com" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_ddd_cel" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_tel_cel" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_ramal_com" = "null"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_ddd_cel" = "11"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_tel_cel" = "981603313"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_ddd_com_2" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_tel_com_2" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_ramal_com_2" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_tipo_pessoa" = "PF"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_cnpj_cpf" = "35270445824"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_contribuinte_icms_status" = "2"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_produtor_rural_status" = "2"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_ie" = "361.289.183.714"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_rg" = "304480484"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_nome_iniciais_em_maiusculas" = "Gabriel Prada Teodoro"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_cnpj_cpf" = "29756194804"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_contribuinte_icms_status" = "0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_produtor_rural_status" = "1"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_ie" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_rg" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_nome_iniciais_em_maiusculas" = "Vivian"
 
 Scenario: Preenche_os_campos_do_pedido - campos soltos
 	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
