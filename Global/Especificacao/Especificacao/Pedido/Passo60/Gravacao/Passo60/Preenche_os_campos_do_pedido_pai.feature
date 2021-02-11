@@ -160,7 +160,6 @@ Scenario: Preenche_os_campos_do_pedido - campos soltos
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "sistema_responsavel_cadastro" = "5"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "sistema_responsavel_atualizacao" = "5"
 
-@ignore
 Scenario: Preenche_os_campos_do_pedido - campos soltos com valores
 	Given Pedido base
 	When Lista de itens "0" informo "Qtde" = "100"
@@ -168,13 +167,13 @@ Scenario: Preenche_os_campos_do_pedido - campos soltos com valores
 	And Recalcular totais do pedido
 	And Deixar forma de pagamento consistente
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_total_familia" = "173512.0000"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_pago_familia" = "0.0000"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_total_NF" = "173512.0000"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_total_RA" = "0.0000"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_total_RA_liquido" = "0.0000"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_previsto_cartao" = "173512.0000"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_frete" = "0.0000"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_total_familia" = "156645.00"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_pago_familia" = "0.0000"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_total_NF" = "156645.00"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_total_RA" = "0.00"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_total_RA_liquido" = "0.00"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_previsto_cartao" = "156645.00"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_frete" = "0.0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "comissao_loja_indicou" = "0.0"
 
 
