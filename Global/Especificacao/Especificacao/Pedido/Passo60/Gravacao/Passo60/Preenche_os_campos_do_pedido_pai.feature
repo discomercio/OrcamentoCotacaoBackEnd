@@ -227,25 +227,27 @@ Scenario: Preenche_os_campos_do_pedido - split
 Scenario: Preenche_os_campos_do_pedido - refente a cancelamento
 	Given Pedido base
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_usuario" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_auto_status" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_auto_motivo" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_codigo_motivo" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_codigo_sub_motivo" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_motivo" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_usuario" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_auto_status" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_auto_motivo" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_codigo_motivo" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_codigo_sub_motivo" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_motivo" = ""
+	#Obs: esses campo ainda não existem mas, serão utilizados para visualização
 
-@ignore
+
 Scenario: Preenche_os_campos_do_pedido - instalador, bem de uso, entrega imediata e garantia
+	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_etg_imediata" = "2"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "etg_imediata_usuario" = "HAMILTON"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "PrevisaoEntregaUsuarioUltAtualiz" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "etg_imediata_usuario" = "USUARIOAPIMAGENTO"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "PrevisaoEntregaUsuarioUltAtualiz" = "null"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "StBemUsoConsumo" = "1"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "InstaladorInstalaStatus" = "2"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "InstaladorInstalaUsuarioUltAtualiz" = "HAMILTON"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "InstaladorInstalaStatus" = "1"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "InstaladorInstalaUsuarioUltAtualiz" = "USUARIOAPIMAGENTO"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "GarantiaIndicadorStatus" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "GarantiaIndicadorUsuarioUltAtualiz" = "HAMILTON"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "GarantiaIndicadorUsuarioUltAtualiz" = "USUARIOAPIMAGENTO"
 
 @ignore
 Scenario: Preenche_os_campos_do_pedido - campos de OBS
