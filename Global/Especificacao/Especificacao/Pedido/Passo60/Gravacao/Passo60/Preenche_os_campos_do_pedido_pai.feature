@@ -193,18 +193,18 @@ Scenario: Preenche_os_campos_do_pedido - transportadora
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_selecao_auto_tipo_endereco" = "0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_selecao_auto_transportadora" = "null"
 
-@ignore
+
 Scenario: Preenche_os_campos_do_pedido - refente a entrega
 	Given Pedido base
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_recebido" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_entrega" = "SPL"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "entregue_usuario" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "a_entregar_status" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "a_entregar_data_marcada" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "a_entregar_usuario" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_recebido" = "null"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_entrega" = "SEP"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "entregue_usuario" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "a_entregar_status" = "0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "a_entregar_data_marcada" = "null"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "a_entregar_usuario" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "PedidoRecebidoStatus" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "PedidoRecebidoUsuarioUltAtualiz" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "PedidoRecebidoUsuarioUltAtualiz" = ""
 
 @ignore
 Scenario: Preenche_os_campos_do_pedido - analise de crédito
