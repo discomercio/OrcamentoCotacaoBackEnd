@@ -28,9 +28,11 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
 
             services.AddDbContext<InfraBanco.ContextoBdBasico>(options =>
             {
-                //options.UseSqlServer(Configuration.GetConnectionString("conexaoLocal"));
-                options.UseInMemoryDatabase("bancomemoria");
-                options.ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+                var conexaolocal = "server=localhost;database=ARCLUBE_testes2;Integrated Security=SSPI;";
+                options.UseSqlServer(conexaolocal);
+                //options.UseInMemoryDatabase("bancomemoria");
+                //options.ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+                options.EnableSensitiveDataLogging();
             });
             services.AddDbContext<InfraBanco.ContextoCepBd>(options =>
             {

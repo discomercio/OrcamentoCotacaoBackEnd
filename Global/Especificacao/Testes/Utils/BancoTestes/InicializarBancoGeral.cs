@@ -63,6 +63,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
 
         private void InicalizarInterno(bool apagarDadosExistentes)
         {
+            apagarDadosExistentes = true;
             using (var db = contextoBdProvider.GetContextoGravacaoParaUsing())
             {
                 //estas, só apagamos
@@ -106,6 +107,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 InicializarTabela<TwmsRegraCdXUfPessoa>(db.TwmsRegraCdXUfPessoas, "TwmsRegraCdXUfPessoa", db, apagarDadosExistentes);
                 InicializarTabela<TwmsRegraCdXUfXPessoaXCd>(db.TwmsRegraCdXUfXPessoaXCds, "TwmsRegraCdXUfXPessoaXCd", db, apagarDadosExistentes);
                 db.SaveChanges();
+                db.transacao.Commit();
             }
 
             Inicalizar_TorcamentistaEindicador();
