@@ -80,7 +80,7 @@ Fluxo no módulo loja:
             //setup dados
             await Execucao.ConfigurarExecucaoInicial(pedido);
 
-            //todo: separar em outro passo, normalizacao de campos
+            //todo: separar em outro passo 05, normalizacao de campos
             pedido.EnderecoCadastralCliente.Endereco_cnpj_cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(pedido.EnderecoCadastralCliente.Endereco_cnpj_cpf);
             pedido.EnderecoCadastralCliente.Endereco_cep = UtilsGlobais.Util.Cep_SoDigito(pedido.EnderecoCadastralCliente.Endereco_cep);
             pedido.EnderecoCadastralCliente.Endereco_tel_res = UtilsGlobais.Util.Telefone_SoDigito(pedido.EnderecoCadastralCliente.Endereco_tel_res);
@@ -106,6 +106,13 @@ Fluxo no módulo loja:
             //setup adicional
             await Execucao.ConfigurarExecucaoComPermissaoOk(pedido, retorno);
             if (retorno.AlgumErro()) return retorno;
+
+            //15 - Passo15: verificar a loja
+            var db = ContextoProvider.GetContextoLeitura();
+            var lojaExiste = db.Tlojas.Where(c => c.Loja.Contains(pedido.Ambiente.Loja))
+                .Select(c => c.Loja).FirstOrDefault();
+            if (string.IsNullOrEmpty(lojaExiste))
+                retorno.ListaErrosValidacao.Add("Loja não existe!");
 
             await passo10.ValidarCliente();
             if (retorno.AlgumErro()) return retorno;

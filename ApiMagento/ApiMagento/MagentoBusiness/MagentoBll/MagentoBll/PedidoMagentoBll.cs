@@ -77,6 +77,16 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             if (resultado.ListaErros.Count > 0)
                 return resultado;
 
+            /* ====================================
+             * Inclui a verificação de loja aqui pois caso a loja não exista a rotina "CriarPedidoCriacaoDados" abaixo irá             
+             * gerar erro ao complementar os produtos "ConverterProdutosMagento"
+            */
+            var db = contextoProvider.GetContextoLeitura();
+            var lojaExiste = db.Tlojas.Where(c => c.Loja.Contains(indicador_vendedor_loja.loja))
+                .Select(c => c.Loja).FirstOrDefault();
+            if (string.IsNullOrEmpty(lojaExiste))
+                resultado.ListaErros.Add("Loja não existe!");
+
             //estamos criando o pedido com os dados do cliente que vem e não com os dados do cliente que esta na base
             //ex: se o cliente já cadastrado, utilizamos o que vem em PedidoMagentoDto.EnderecoCadastralClienteMagentoDto
             Pedido.Dados.Criacao.PedidoCriacaoDados? pedidoDados = await CriarPedidoCriacaoDados(pedidoMagento,
