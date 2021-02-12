@@ -360,9 +360,9 @@ Scenario: Preenche_os_campos_do_pedido - Marketplace e magento
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "MarketplacePedidoRecebidoRegistrarUsuario" = ""
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "MarketplacePedidoRecebidoRegistradoStatus" = "0"
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "MarketplacePedidoRecebidoRegistradoUsuario" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "magento_installer_commission_value" = "0.0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "magento_installer_commission_discount" = "0.0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "magento_shipping_amount" = "0.0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "magento_installer_commission_value" = "0.0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "magento_installer_commission_discount" = "0.0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "magento_shipping_amount" = "0.0"
 
 @ignore
 Scenario: perc_desagio_RA_liquida
