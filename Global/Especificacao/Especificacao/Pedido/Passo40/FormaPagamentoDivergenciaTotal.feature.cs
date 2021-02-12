@@ -107,47 +107,6 @@ namespace Especificacao.Especificacao.Pedido.Passo40
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="tirar esta linha acima!!! não está estando na loja!!")]
-        [Xunit.TraitAttribute("FeatureTitle", "FormaPagamentoDivergenciaTotal")]
-        [Xunit.TraitAttribute("Description", "tirar esta linha acima!!! não está estando na loja!!")]
-        [Xunit.TraitAttribute("Category", "ignore")]
-        public virtual void TirarEstaLinhaAcimaNaoEstaEstandoNaLoja()
-        {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("tirar esta linha acima!!! não está estando na loja!!", null, tagsOfScenario, argumentsOfScenario);
-#line 15
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 4
-this.FeatureBackground();
-#line hidden
-#line 16
- testRunner.Given("Ignorar cenário no ambiente \"Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadas" +
-                        "trarPedido.CadastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
         [Xunit.SkippableFactAttribute(DisplayName="COD_FORMA_PAGTO_A_VISTA - divergência entre o valor total do pedido")]
         [Xunit.TraitAttribute("FeatureTitle", "FormaPagamentoDivergenciaTotal")]
         [Xunit.TraitAttribute("Description", "COD_FORMA_PAGTO_A_VISTA - divergência entre o valor total do pedido")]
@@ -156,7 +115,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("COD_FORMA_PAGTO_A_VISTA - divergência entre o valor total do pedido", null, tagsOfScenario, argumentsOfScenario);
-#line 25
+#line 21
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -179,16 +138,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 31
+#line 27
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 32
+#line 28
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_A_VISTA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 33
+#line 29
  testRunner.When("Informo \"vl_total_NF\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 34
+#line 30
  testRunner.And("Informo \"vl_total_NF\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -203,7 +162,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("COD_FORMA_PAGTO_PARCELA_UNICA - somente para PJ", null, tagsOfScenario, argumentsOfScenario);
-#line 39
+#line 35
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -226,19 +185,19 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 45
+#line 41
  testRunner.Given("Pedido base cliente PF", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 46
+#line 42
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 47
+#line 43
  testRunner.When("Informo \"FormaPagtoCriacao.Op_pu_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 48
+#line 44
  testRunner.When("Informo \"FormaPagtoCriacao.C_pu_vencto_apos\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 49
+#line 45
  testRunner.Then("Erro \"Forma de pagamento não aceita para esse indicador.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -253,7 +212,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("COD_FORMA_PAGTO_PARCELA_UNICA - divergência entre o valor total do pedido", null, tagsOfScenario, argumentsOfScenario);
-#line 51
+#line 47
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -276,29 +235,29 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 53
+#line 49
  testRunner.Given("Ignorar cenário no ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Ca" +
                         "dastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 69
+#line 65
  testRunner.Given("Pedido base cliente PJ", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 70
+#line 66
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 71
+#line 67
  testRunner.When("Informo \"FormaPagtoCriacao.Op_pu_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 72
+#line 68
  testRunner.When("Informo \"FormaPagtoCriacao.C_pu_vencto_apos\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 73
+#line 69
  testRunner.When("Informo \"FormaPagtoCriacao.c_pu_valor\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 74
+#line 70
  testRunner.And("Informo \"vl_total_NF\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 75
+#line 71
  testRunner.Then("Erro \"Valor total da forma de pagamento diferente do valor total!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -313,7 +272,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("COD_FORMA_PAGTO_PARCELADO_CARTAO - Parcelado no cartão (internet) divergência", null, tagsOfScenario, argumentsOfScenario);
-#line 77
+#line 73
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -336,23 +295,23 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 87
+#line 83
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 88
+#line 84
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 89
+#line 85
  testRunner.When("Informo \"c_pc_qtde\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 90
+#line 86
  testRunner.When("Informo \"c_pc_valor\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 91
+#line 87
  testRunner.And("Informo \"vl_total_NF\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 92
+#line 88
  testRunner.Then("Erro \"Valor total da forma de pagamento diferente do valor total!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -370,7 +329,7 @@ this.FeatureBackground();
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA - Parcelado no cartão (maquineta) dive" +
                     "rgência", null, tagsOfScenario, argumentsOfScenario);
-#line 94
+#line 90
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -393,26 +352,26 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 105
+#line 101
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 106
+#line 102
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO" +
                         "_MAQUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 107
+#line 103
  testRunner.When("Informo \"c_pc_maquineta_qtde\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 108
+#line 104
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 109
+#line 105
  testRunner.When("Informo \"c_pc_maquineta_valor\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 110
+#line 106
  testRunner.And("Informo \"vl_total_NF\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 111
+#line 107
  testRunner.Then("Erro \"Valor total da forma de pagamento diferente do valor total!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -427,7 +386,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA - Parcelado com entrada divergência", null, tagsOfScenario, argumentsOfScenario);
-#line 113
+#line 109
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -450,80 +409,80 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 123
+#line 119
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 120
+ testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_COM_EN" +
+                        "TRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 121
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
+                        "_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 122
+ testRunner.When("Informo \"c_pce_entrada_valor\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 123
+ testRunner.When("Informo \"c_pce_prestacao_qtde\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 124
- testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_COM_EN" +
-                        "TRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"11\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 125
- testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
-                        "_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 126
- testRunner.When("Informo \"c_pce_entrada_valor\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 127
- testRunner.When("Informo \"c_pce_prestacao_qtde\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 128
- testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"11\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 129
  testRunner.When("Informo \"c_pce_prestacao_valor\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 130
+#line 126
  testRunner.When("Informo \"Op_pce_entrada_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 131
+#line 127
  testRunner.When("Informo \"Op_pce_prestacao_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 132
+#line 128
  testRunner.When("Informo \"C_pce_prestacao_periodo\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 133
+#line 129
  testRunner.And("Informo \"vl_total_NF\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 134
+#line 130
  testRunner.Then("Erro \"Valor total da forma de pagamento diferente do valor total!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 136
+#line 132
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 137
+#line 133
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_COM_EN" +
                         "TRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 138
+#line 134
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
                         "_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 139
+#line 135
  testRunner.When("Informo \"c_pce_entrada_valor\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 140
+#line 136
  testRunner.When("Informo \"c_pce_prestacao_qtde\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 141
+#line 137
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"11\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 142
+#line 138
  testRunner.When("Informo \"c_pce_prestacao_valor\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 143
+#line 139
  testRunner.When("Informo \"Op_pce_entrada_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 144
+#line 140
  testRunner.When("Informo \"Op_pce_prestacao_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 145
+#line 141
  testRunner.When("Informo \"C_pce_prestacao_periodo\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 146
+#line 142
  testRunner.And("Informo \"vl_total_NF\" = \"110\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 147
+#line 143
  testRunner.Then("Sem erro \"Valor total da forma de pagamento diferente do valor total!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -538,7 +497,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA - Parcelado sem entrada divergência", null, tagsOfScenario, argumentsOfScenario);
-#line 149
+#line 145
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -561,26 +520,26 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 172
+#line 168
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 173
+#line 169
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_SEM_EN" +
                         "TRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 174
+#line 170
  testRunner.When("Informo \"c_pse_prim_prest_valor\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 175
+#line 171
  testRunner.When("Informo \"c_pse_demais_prest_qtde\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 176
+#line 172
  testRunner.When("Informo \"c_pse_demais_prest_valor\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 177
+#line 173
  testRunner.And("Informo \"vl_total_NF\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 179
+#line 175
  testRunner.Then("Erro \"Forma de pagamento não aceita para esse indicador.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -595,7 +554,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TipoParcelamento e QtdeParcelas", null, tagsOfScenario, argumentsOfScenario);
-#line 181
+#line 177
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -630,7 +589,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TipoParcelamento e QtdeParcelas - COD_FORMA_PAGTO_A_VISTA 1", null, tagsOfScenario, argumentsOfScenario);
-#line 219
+#line 215
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -653,23 +612,23 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 224
+#line 220
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 225
+#line 221
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_A_VISTA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 226
+#line 222
  testRunner.When("Informo \"FormaPagtoCriacao.Op_av_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 227
+#line 223
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
                         "_FORNEC_TIPO_PARCELAMENTO__A_VISTA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 228
+#line 224
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 230
+#line 226
  testRunner.Then("Erro \"Coeficiente do fabricante (003) está incorreto!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -684,7 +643,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TipoParcelamento e QtdeParcelas - COD_FORMA_PAGTO_A_VISTA 2", null, tagsOfScenario, argumentsOfScenario);
-#line 232
+#line 228
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -707,23 +666,23 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 234
+#line 230
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 235
+#line 231
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_A_VISTA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 236
+#line 232
  testRunner.When("Informo \"FormaPagtoCriacao.Op_av_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 237
+#line 233
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
                         "_FORNEC_TIPO_PARCELAMENTO__A_VISTA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 238
+#line 234
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 239
+#line 235
  testRunner.Then("Erro \"Quantidade da parcela esta divergente!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -738,7 +697,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TipoParcelamento e QtdeParcelas - COD_FORMA_PAGTO_A_VISTA 3", null, tagsOfScenario, argumentsOfScenario);
-#line 241
+#line 237
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -761,23 +720,23 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 243
+#line 239
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 244
+#line 240
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_A_VISTA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 245
+#line 241
  testRunner.When("Informo \"FormaPagtoCriacao.Op_av_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 246
+#line 242
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
                         "_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 247
+#line 243
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 248
+#line 244
  testRunner.Then("Erro \"Tipo do parcelamento (CustoFinancFornecTipoParcelamento \'CE\') está incorret" +
                         "o!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -793,7 +752,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TipoParcelamento e QtdeParcelas - COD_FORMA_PAGTO_A_VISTA 4", null, tagsOfScenario, argumentsOfScenario);
-#line 250
+#line 246
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -816,23 +775,23 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 252
+#line 248
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 253
+#line 249
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_A_VISTA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 254
+#line 250
  testRunner.When("Informo \"FormaPagtoCriacao.Op_av_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 255
+#line 251
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
                         "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 256
+#line 252
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 257
+#line 253
  testRunner.Then("Erro \"Tipo do parcelamento (CustoFinancFornecTipoParcelamento \'SE\') está incorret" +
                         "o!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -848,7 +807,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TipoParcelamento e QtdeParcelas - COD_FORMA_PAGTO_PARCELA_UNICA 1", null, tagsOfScenario, argumentsOfScenario);
-#line 260
+#line 256
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -871,29 +830,29 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 265
+#line 261
  testRunner.Given("Pedido base cliente PJ", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 266
+#line 262
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 267
+#line 263
  testRunner.When("Informo \"FormaPagtoCriacao.Op_pu_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 268
+#line 264
  testRunner.When("Informo \"FormaPagtoCriacao.C_pu_vencto_apos\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 269
+#line 265
  testRunner.When("Informo \"FormaPagtoCriacao.C_pu_valor\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 270
+#line 266
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
                         "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 271
+#line 267
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 272
+#line 268
  testRunner.Then("Erro \"Valor total da forma de pagamento diferente do valor total!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -908,7 +867,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TipoParcelamento e QtdeParcelas - COD_FORMA_PAGTO_PARCELA_UNICA 2", null, tagsOfScenario, argumentsOfScenario);
-#line 274
+#line 270
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -931,29 +890,29 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 276
+#line 272
  testRunner.Given("Pedido base cliente PJ", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 277
+#line 273
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 278
+#line 274
  testRunner.When("Informo \"FormaPagtoCriacao.Op_pu_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 279
+#line 275
  testRunner.When("Informo \"FormaPagtoCriacao.C_pu_vencto_apos\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 280
+#line 276
  testRunner.When("Informo \"FormaPagtoCriacao.C_pu_valor\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 281
+#line 277
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
                         "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 282
+#line 278
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 283
+#line 279
  testRunner.Then("Erro \"Quantidade da parcela esta divergente!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -968,7 +927,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TipoParcelamento e QtdeParcelas - COD_FORMA_PAGTO_PARCELA_UNICA 3", null, tagsOfScenario, argumentsOfScenario);
-#line 284
+#line 280
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -991,29 +950,29 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 286
+#line 282
  testRunner.Given("Pedido base cliente PJ", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 287
+#line 283
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 288
+#line 284
  testRunner.When("Informo \"FormaPagtoCriacao.Op_pu_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 289
+#line 285
  testRunner.When("Informo \"FormaPagtoCriacao.C_pu_vencto_apos\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 290
+#line 286
  testRunner.When("Informo \"FormaPagtoCriacao.C_pu_valor\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 291
+#line 287
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
                         "_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 292
+#line 288
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 293
+#line 289
  testRunner.Then("Erro \"Tipo do parcelamento (CustoFinancFornecTipoParcelamento \'CE\') está incorret" +
                         "o!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -1029,7 +988,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TipoParcelamento e QtdeParcelas - COD_FORMA_PAGTO_PARCELADO_CARTAO 1", null, tagsOfScenario, argumentsOfScenario);
-#line 295
+#line 291
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1052,27 +1011,27 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 300
+#line 296
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 301
+#line 297
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 302
+#line 298
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
                         "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 303
+#line 299
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 304
+#line 300
  testRunner.When("Informo \"FormaPagtoCriacao.C_pc_qtde\" = \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 305
+#line 301
  testRunner.When("Informo \"FormaPagtoCriacao.C_pc_valor\" = \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 306
+#line 302
  testRunner.Then("Erro \"Valor total da forma de pagamento diferente do valor total!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -1087,7 +1046,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TipoParcelamento e QtdeParcelas - COD_FORMA_PAGTO_PARCELADO_CARTAO 2", null, tagsOfScenario, argumentsOfScenario);
-#line 308
+#line 304
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1110,24 +1069,24 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 310
+#line 306
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 311
+#line 307
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 312
+#line 308
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
                         "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 313
+#line 309
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 314
+#line 310
  testRunner.When("Informo \"FormaPagtoCriacao.C_pc_qtde\" = \"4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 315
+#line 311
  testRunner.Then("Erro \"Quantidade de parcelas esta divergente!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -1142,7 +1101,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TipoParcelamento e QtdeParcelas - COD_FORMA_PAGTO_PARCELADO_CARTAO 3", null, tagsOfScenario, argumentsOfScenario);
-#line 316
+#line 312
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1165,24 +1124,24 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 317
+#line 313
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 318
+#line 314
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 319
+#line 315
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
                         "_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 320
+#line 316
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 321
+#line 317
  testRunner.When("Informo \"FormaPagtoCriacao.C_pc_qtde\" = \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 322
+#line 318
  testRunner.Then("Erro \"Tipo do parcelamento (CustoFinancFornecTipoParcelamento \'CE\') está incorret" +
                         "o!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -1198,7 +1157,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TipoParcelamento e QtdeParcelas- COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA 1", null, tagsOfScenario, argumentsOfScenario);
-#line 324
+#line 320
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1221,27 +1180,27 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 329
+#line 325
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 330
+#line 326
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO" +
                         "_MAQUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 331
+#line 327
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
                         "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 332
+#line 328
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 333
+#line 329
  testRunner.When("Informo \"FormaPagtoCriacao.C_pc_maquineta_qtde\" = \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 334
+#line 330
  testRunner.When("Informo \"FormaPagtoCriacao.C_pc_maquineta_valor\" = \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 335
+#line 331
  testRunner.Then("Erro \"Valor total da forma de pagamento diferente do valor total!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -1256,7 +1215,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TipoParcelamento e QtdeParcelas- COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA 2", null, tagsOfScenario, argumentsOfScenario);
-#line 337
+#line 333
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1279,27 +1238,27 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 339
+#line 335
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 340
+#line 336
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO" +
                         "_MAQUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 341
+#line 337
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
                         "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 342
+#line 338
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 343
+#line 339
  testRunner.When("Informo \"FormaPagtoCriacao.C_pc_maquineta_qtde\" = \"4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 344
+#line 340
  testRunner.When("Informo \"FormaPagtoCriacao.C_pc_maquineta_valor\" = \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 345
+#line 341
  testRunner.Then("Erro \"Quantidade de parcelas esta divergente!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -1314,7 +1273,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TipoParcelamento e QtdeParcelas- COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA 3", null, tagsOfScenario, argumentsOfScenario);
-#line 346
+#line 342
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1337,27 +1296,27 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 347
+#line 343
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 348
+#line 344
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO" +
                         "_MAQUINETA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 349
+#line 345
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
                         "_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 350
+#line 346
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 351
+#line 347
  testRunner.When("Informo \"FormaPagtoCriacao.C_pc_maquineta_qtde\" = \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 352
+#line 348
  testRunner.When("Informo \"FormaPagtoCriacao.C_pc_maquineta_valor\" = \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 353
+#line 349
  testRunner.Then("Erro \"Tipo do parcelamento (CustoFinancFornecTipoParcelamento \'CE\') está incorret" +
                         "o!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -1373,7 +1332,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TipoParcelamento e QtdeParcelas- COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA 1", null, tagsOfScenario, argumentsOfScenario);
-#line 355
+#line 351
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1396,39 +1355,39 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 360
+#line 356
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 361
+#line 357
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_COM_EN" +
                         "TRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 362
+#line 358
  testRunner.When("Informo \"FormaPagtoCriacao.Op_pce_entrada_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 363
+#line 359
  testRunner.When("Informo \"FormaPagtoCriacao.Op_pce_prestacao_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 364
+#line 360
  testRunner.When("Informo \"FormaPagtoCriacao.C_pce_prestacao_valor\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 365
+#line 361
  testRunner.When("Informo \"FormaPagtoCriacao.C_pce_entrada_valor\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 366
+#line 362
  testRunner.When("Informo \"FormaPagtoCriacao.C_pce_prestacao_periodo\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 367
+#line 363
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
                         "_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 368
+#line 364
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 369
+#line 365
  testRunner.When("Informo \"FormaPagtoCriacao.C_pce_prestacao_qtde\" = \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 370
+#line 366
  testRunner.Then("Erro \"Valor total da forma de pagamento diferente do valor total!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -1443,7 +1402,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TipoParcelamento e QtdeParcelas- COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA 2", null, tagsOfScenario, argumentsOfScenario);
-#line 372
+#line 368
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1466,39 +1425,39 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 374
+#line 370
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 375
+#line 371
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_COM_EN" +
                         "TRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 376
+#line 372
  testRunner.When("Informo \"FormaPagtoCriacao.Op_pce_entrada_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 377
+#line 373
  testRunner.When("Informo \"FormaPagtoCriacao.Op_pce_prestacao_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 378
+#line 374
  testRunner.When("Informo \"FormaPagtoCriacao.C_pce_prestacao_valor\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 379
+#line 375
  testRunner.When("Informo \"FormaPagtoCriacao.C_pce_entrada_valor\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 380
+#line 376
  testRunner.When("Informo \"FormaPagtoCriacao.C_pce_prestacao_periodo\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 381
+#line 377
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
                         "_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 382
+#line 378
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 383
+#line 379
  testRunner.When("Informo \"FormaPagtoCriacao.C_pce_prestacao_qtde\" = \"4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 384
+#line 380
  testRunner.Then("Erro \"Quantidade de parcelas esta divergente!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -1513,7 +1472,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TipoParcelamento e QtdeParcelas- COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA 3", null, tagsOfScenario, argumentsOfScenario);
-#line 385
+#line 381
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1536,39 +1495,39 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 387
+#line 383
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 388
+#line 384
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_COM_EN" +
                         "TRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 389
+#line 385
  testRunner.When("Informo \"FormaPagtoCriacao.Op_pce_entrada_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 390
+#line 386
  testRunner.When("Informo \"FormaPagtoCriacao.Op_pce_prestacao_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 391
+#line 387
  testRunner.When("Informo \"FormaPagtoCriacao.C_pce_prestacao_valor\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 392
+#line 388
  testRunner.When("Informo \"FormaPagtoCriacao.C_pce_entrada_valor\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 393
+#line 389
  testRunner.When("Informo \"FormaPagtoCriacao.C_pce_prestacao_periodo\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 394
+#line 390
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
                         "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 395
+#line 391
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 396
+#line 392
  testRunner.When("Informo \"FormaPagtoCriacao.C_pce_prestacao_qtde\" = \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 397
+#line 393
  testRunner.Then("Erro \"Tipo do parcelamento (CustoFinancFornecTipoParcelamento \'SE\') está incorret" +
                         "o!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -1584,7 +1543,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TipoParcelamento e QtdeParcelas- COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA 1", null, tagsOfScenario, argumentsOfScenario);
-#line 399
+#line 395
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1607,24 +1566,24 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 408
+#line 404
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 409
+#line 405
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_SEM_EN" +
                         "TRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 410
+#line 406
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
                         "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 411
+#line 407
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 412
+#line 408
  testRunner.When("Informo \"FormaPagtoCriacao.C_pse_demais_prest_qtde\" = \"4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 415
+#line 411
  testRunner.Then("Erro \"Forma de pagamento não aceita para esse indicador.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -1639,7 +1598,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TipoParcelamento e QtdeParcelas- COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA 2", null, tagsOfScenario, argumentsOfScenario);
-#line 417
+#line 413
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1662,24 +1621,24 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 419
+#line 415
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 420
+#line 416
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_SEM_EN" +
                         "TRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 421
+#line 417
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
                         "_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 422
+#line 418
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 423
+#line 419
  testRunner.When("Informo \"FormaPagtoCriacao.C_pse_demais_prest_qtde\" = \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 426
+#line 422
  testRunner.Then("Erro \"Forma de pagamento não aceita para esse indicador.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -1694,7 +1653,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TipoParcelamento e QtdeParcelas- COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA 3", null, tagsOfScenario, argumentsOfScenario);
-#line 428
+#line 424
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1717,24 +1676,24 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 430
+#line 426
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 431
+#line 427
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_SEM_EN" +
                         "TRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 432
+#line 428
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"COD_CUSTO_FINANC" +
                         "_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 433
+#line 429
  testRunner.When("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 434
+#line 430
  testRunner.When("Informo \"FormaPagtoCriacao.C_pse_demais_prest_qtde\" = \"4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 437
+#line 433
  testRunner.Then("Erro \"Forma de pagamento não aceita para esse indicador.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -1749,7 +1708,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TipoParcelamento e QtdeParcelas- outros", null, tagsOfScenario, argumentsOfScenario);
-#line 439
+#line 435
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1772,13 +1731,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 this.FeatureBackground();
 #line hidden
-#line 446
+#line 442
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 447
+#line 443
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO inválido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 448
+#line 444
  testRunner.Then("Erro \"Tipo do parcelamento inválido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

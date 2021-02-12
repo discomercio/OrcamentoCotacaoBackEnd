@@ -11,10 +11,6 @@ Background: não executado na api magento
 	#para testar, afazer, voltar isto para testar o pedido!!!
 	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 
-@ignore
-Scenario: tirar esta linha acima!!! não está estando na loja!!
-	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
-
 
 #documentação auxiliar:
 #Const COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA = "CE"

@@ -1,4 +1,4 @@
-﻿@ignore
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
 Feature: CamposSoltos
 
 #var MAX_TAM_OBS1 = 500;
@@ -11,11 +11,11 @@ Scenario: obs1 tamanho
 	#if (s.length > MAX_TAM_OBS1) {
 	#	alert('Conteúdo de "Observações " excede em ' + (s.length-MAX_TAM_OBS1) + ' caracteres o tamanho máximo de ' + MAX_TAM_OBS1 + '!!');
 	Given Pedido base
-	When Informo "obs1" = um texto com "501" caracteres
+	When Informo "obs1" = "texto com 500 caracteres"
 	Then Erro "regex .*Conteúdo de \"Observações \" excede em .*"
 
 	Given Pedido base
-	When Informo "obs1" = um texto com "500" caracteres
+	When Informo "obs1" = "texto com 500 caracteres"
 	Then Sem nenhum erro
 
 Scenario: c_nf_texto tamanho
@@ -24,11 +24,11 @@ Scenario: c_nf_texto tamanho
 	#if (s.length > MAX_TAM_NF_TEXTO) {
 	#    alert('Conteúdo de "Constar na NF" excede em ' + (s.length-MAX_TAM_NF_TEXTO) + ' caracteres o tamanho máximo de ' + MAX_TAM_NF_TEXTO + '!!');
 	Given Pedido base
-	When Informo "nf_texto" = um texto com "801" caracteres
-	Then Erro regex "Conteúdo de "Constar na NF" excede em.*"
+	When Informo "nf_texto" = "texto com 801 caracteres"
+	Then Erro "Conteúdo de "Constar na NF" excede em.*"
 
 	Given Pedido base
-	When Informo "nf_texto" = um texto com "800" caracteres
+	When Informo "nf_texto" = "texto com 800 caracteres"
 	Then Sem nenhum erro
 
 Scenario: forma_pagto tamanho
@@ -37,11 +37,11 @@ Scenario: forma_pagto tamanho
 	#if (s.length > MAX_TAM_FORMA_PAGTO) {
 	#	alert('Conteúdo de "Forma de Pagamento" excede em ' + (s.length-MAX_TAM_FORMA_PAGTO) + ' caracteres o tamanho máximo de ' + MAX_TAM_FORMA_PAGTO + '!!');
 	Given Pedido base
-	When Informo "forma_pagto" = um texto com "251" caracteres
-	Then Erro regex "Conteúdo de \"Forma de Pagamento\" excede em .*"
+	When Informo "forma_pagto" = "texto com 251 caracteres"
+	Then Erro "Conteúdo de \"Forma de Pagamento\" excede em .*"
 
 	Given Pedido base
-	When Informo "forma_pagto" = um texto com "250" caracteres
+	When Informo "forma_pagto" = "texto com 250 caracteres"
 	Then Sem nenhum erro
 
 
@@ -108,20 +108,21 @@ Scenario: c_indicador c_perc_RT rb_RA garantia_indicador somente se for indicaca
 	Given Pedido base
 	When Informo "indicador" = "ZEZINHO"
 	And Informo "indicacao" = "N"
-	Then No pedido gravado, verificar campo "indicador" = ""
+	Then Tabela "t_PEDIDO" registro pai criado, verificar campo "indicador" = ""
 
 	Given Pedido base
 	When Informo "perc_RT" = "123"
 	And Informo "indicacao" = "N"
-	Then No pedido gravado, verificar campo "perc_RT" = ""
+	Then Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_RT" = ""
 
 	Given Pedido base
 	When Informo "RA" = "True"
 	And Informo "indicacao" = "N"
-	Then No pedido gravado, verificar campo "RA" = "false"
+	Then Tabela "t_PEDIDO" registro pai criado, verificar campo "RA" = "false"
 
 	Given Pedido base
 	When Informo "garantia_indicador" = "COD_GARANTIA_INDICADOR_STATUS__SIM"
 	And Informo "indicacao" = "N"
-	Then No pedido gravado, verificar campo "garantia_indicador" = "COD_GARANTIA_INDICADOR_STATUS__NAO"
+	Then Tabela "t_PEDIDO" registro pai criado, verificar campo "RA" = "false"
+	Then Tabela "t_PEDIDO" registro pai criado, verificar campo "RA" = "COD_GARANTIA_INDICADOR_STATUS__NAO"
 

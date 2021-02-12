@@ -148,5 +148,10 @@ namespace Especificacao.Especificacao.Pedido
 
         }
 
+        [Then(@"Tabela ""t_PEDIDO"" registro pai criado, verificar campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaT_PEDIDORegistroPaiCriadoVerificarCampo(string campo, string valor)
+        {
+            
+        }
     }
 }
