@@ -80,7 +80,7 @@ Fluxo no módulo loja:
             //setup dados
             await Execucao.ConfigurarExecucaoInicial(pedido);
 
-            //todo: separar em outro passo, normalizacao de campos
+            //todo: separar em outro passo 05, normalizacao de campos
             pedido.EnderecoCadastralCliente.Endereco_cnpj_cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(pedido.EnderecoCadastralCliente.Endereco_cnpj_cpf);
             pedido.EnderecoCadastralCliente.Endereco_cep = UtilsGlobais.Util.Cep_SoDigito(pedido.EnderecoCadastralCliente.Endereco_cep);
             pedido.EnderecoCadastralCliente.Endereco_tel_res = UtilsGlobais.Util.Telefone_SoDigito(pedido.EnderecoCadastralCliente.Endereco_tel_res);
