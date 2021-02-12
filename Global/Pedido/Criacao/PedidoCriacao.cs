@@ -107,6 +107,13 @@ Fluxo no módulo loja:
             await Execucao.ConfigurarExecucaoComPermissaoOk(pedido, retorno);
             if (retorno.AlgumErro()) return retorno;
 
+            //15 - Passo15: verificar a loja
+            var db = ContextoProvider.GetContextoLeitura();
+            var lojaExiste = db.Tlojas.Where(c => c.Loja.Contains(pedido.Ambiente.Loja))
+                .Select(c => c.Loja).FirstOrDefault();
+            if (string.IsNullOrEmpty(lojaExiste))
+                retorno.ListaErrosValidacao.Add("Loja não existe!");
+
             await passo10.ValidarCliente();
             if (retorno.AlgumErro()) return retorno;
 
