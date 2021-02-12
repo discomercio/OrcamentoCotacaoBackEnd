@@ -1,6 +1,7 @@
-﻿@ignore
-@Especificacao.Pedido
-@Implementacao.CaminhoFelizApi
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
+#@ignore
+#@Especificacao.Pedido
+#@Implementacao.CaminhoFelizApi
 Feature: CaminhoFelizApi
 Caminho feliz da criação do pedido pela API
 O mínimo que um pedido precisa para ser cadastrado pela API
@@ -58,7 +59,6 @@ Scenario: Cadastrar um pedido com o mínimo de informação possível
 	And Informo "DetalhesPrepedido.InstaladorInstala" = "1"
 	#
 	# Todos os campos informados
-	And Salvo o pedido
-	Then O pedido é criado
-	And Campo "av_forma_pagto" = "2"
+	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "av_forma_pagto" = "2"
 	# todo: terminar a lista de campos a verificar

@@ -153,5 +153,53 @@ namespace Especificacao.Especificacao.Pedido
         {
             
         }
+
+        [Given(@"Definir appsettings limite pedido igual = ""(.*)""")]
+        public void GivenDefinirAppsettingsLimitePedidoIgual(int p0)
+        {
+            
+        }
+
+        [Given(@"Reinciar appsettings no final da feature")]
+        public void GivenReinciarAppsettingsNoFinalDaFeature()
+        {
+            
+        }
+        [Given(@"Definir appsettings limite pedido por cpf = ""(.*)""")]
+        public void GivenDefinirAppsettingsLimitePedidoPorCpf(int p0)
+        {
+            
+        }
+
+        [Given(@"Existe ""(.*)"" = ""(.*)""")]
+        public void GivenExiste(string p0, string p1)
+        {
+            
+        }
+
+        [Given(@"Existe cliente ""(.*)"" = ""(.*)"" como PF")]
+        public void GivenExisteClienteComoPF(string p0, int p1)
+        {
+            
+        }
+
+        [Given(@"Existe produto ""(.*)"" = ""(.*)"", ""(.*)"" = ""(.*)"", ""(.*)"" = ""(.*)""")]
+        public void GivenExisteProduto(string p0, int p1, string p2, int p3, string p4, int p5)
+        {
+            
+        }
+
+        [When(@"Fiz login como ""(.*)"" e escolhi a loja ""(.*)""")]
+        public void WhenFizLoginComoEEscolhiALoja(string p0, int p1)
+        {
+            
+        }
+
+        [When(@"Pedido vazio")]
+        public void WhenPedidoVazio()
+        {
+            
+        }
+
     }
 }
