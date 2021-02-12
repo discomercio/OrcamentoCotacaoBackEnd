@@ -1,6 +1,6 @@
-﻿@ignore
-@Especificacao.Pedido.Passo40
-@GerenciamentoBanco
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
+#@Especificacao.Pedido.Passo40
+#@GerenciamentoBanco
 Feature: FormaPagamentoPermitidas
 
 #loja/PedidoNovoConsiste.asp linha 3104 e seguintes
