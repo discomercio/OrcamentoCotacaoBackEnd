@@ -82,9 +82,8 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
              * gerar erro ao complementar os produtos "ConverterProdutosMagento"
             */
             var db = contextoProvider.GetContextoLeitura();
-            var lojaExiste = db.Tlojas.Where(c => c.Loja.Contains(indicador_vendedor_loja.loja))
-                .Select(c => c.Loja).FirstOrDefault();
-            if (string.IsNullOrEmpty(lojaExiste))
+            var lojaExiste = await db.Tlojas.Where(c => c.Loja == indicador_vendedor_loja.loja).AnyAsync();
+            if (!lojaExiste)
                 resultado.ListaErros.Add("Loja não existe!");
 
             //estamos criando o pedido com os dados do cliente que vem e não com os dados do cliente que esta na base
