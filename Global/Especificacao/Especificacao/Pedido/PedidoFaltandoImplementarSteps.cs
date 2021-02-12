@@ -124,5 +124,29 @@ namespace Especificacao.Especificacao.Pedido
             
         }
 
+        [When(@"Lista de itens ""(.*)"" informo ""(.*)"" = ""(.*)""")]
+        public void WhenListaDeItensInformo(int indice, string campo, string valor)
+        {
+            
+        }
+
+        [Then(@"Sem erro ""(.*)""")]
+        public void ThenSemErro(string p0)
+        {
+            
+        }
+
+        [When(@"Lista de itens com ""(.*)"" itens")]
+        public void WhenListaDeItensComItens(int numeroItens)
+        {
+            
+        }
+
+        [Given(@"Cadastro do cliente ""(.*)"" = ""(.*)""")]
+        public void GivenCadastroDoCliente(string p0, string p1)
+        {
+
+        }
+
     }
 }

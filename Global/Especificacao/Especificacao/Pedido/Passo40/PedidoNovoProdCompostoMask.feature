@@ -1,12 +1,12 @@
-﻿@ignore
-@Especificacao.Pedido.Passo40
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
+#@Especificacao.Pedido.Passo40
 Feature: Endereco e produtos
 Validações do PedidoNovoProdCompostoMask
 #no ASP, em loja/PedidoNovoProdCompostoMask.asp
 
-Scenario: Configuração
-	Given Nome deste item "Especificacao.Pedido.Passo40.PedidoNovoProdCompostoMask"
-	Given Implementado em "Especificacao.Pedido.Pedido"
+#Scenario: Configuração
+#	Given Nome deste item "Especificacao.Pedido.Passo40.PedidoNovoProdCompostoMask"
+#	Given Implementado em "Especificacao.Pedido.Pedido"
 
 
 Scenario: Número preenchido
@@ -18,21 +18,23 @@ loja/PedidoNovoProdCompostoMask.asp linha 62
 #		Response.Redirect("aviso.asp?id=" & ERR_CAD_CLIENTE_ENDERECO_EXCEDE_TAMANHO_MAXIMO)
 #		end if
 
-	When Pedido base
-	And  Cadastro do cliente "endereco_numero" = ""
+	Given Pedido base
+	And Cadastro do cliente "endereco_numero" = ""
 	Then Erro "ERR_CAD_CLIENTE_ENDERECO_NUMERO_NAO_PREENCHIDO"
 
 Scenario: Tamanho do endereço
 #loja/PedidoNovoProdCompostoMask.asp linha 62
 #também em loja/PedidoNovo.asp
-	When Pedido base
-	And  Cadastro do cliente "endereco" = "um texto muito grande, maior que TAMANHO MÁXIMO DO CAMPO ENDEREÇO DEVIDO À RESTRIÇÃO EXISTENTE NA NOTA FISCAL ELETRÔNICA - MAX_TAMANHO_CAMPO_ENDERECO = 60"
+	Given Pedido base
+	And Cadastro do cliente "endereco" = "um texto muito grande, maior que TAMANHO MÁXIMO DO CAMPO ENDEREÇO DEVIDO À RESTRIÇÃO EXISTENTE NA NOTA FISCAL ELETRÔNICA - MAX_TAMANHO_CAMPO_ENDERECO = 60"
 	Then Erro "ERR_CAD_CLIENTE_ENDERECO_EXCEDE_TAMANHO_MAXIMO"
-	When Pedido base
+	Given Pedido base
 	#                                               10        20        30       40         50        60    
-	And  Cadastro do cliente "endereco" = "1234567890123456789012345678901234567890123456789012345678901"
+	And Cadastro do cliente "endereco" = "1234567890123456789012345678901234567890123456789012345678901"
 	Then Erro "ERR_CAD_CLIENTE_ENDERECO_EXCEDE_TAMANHO_MAXIMO"
-	And  Cadastro do cliente "endereco" = "123456789012345678901234567890123456789012345678901234567890"
+	#
+	Given Pedido base
+	And Cadastro do cliente "endereco" = "123456789012345678901234567890123456789012345678901234567890"
 	Then Sem erro "ERR_CAD_CLIENTE_ENDERECO_EXCEDE_TAMANHO_MAXIMO"
 
 Scenario: ddd_res
@@ -41,16 +43,16 @@ Scenario: ddd_res
 	#		if alerta <> "" then alerta = alerta & "<br><br>" & String(80,"=") & "<br><br>"
 	#		alerta = alerta & "DDD do telefone residencial é inválido!!"
 	#		end if
-	When Pedido base
-	And Informo "ddd_res" = "1"
+	Given Pedido base
+	When Informo "ddd_res" = "1"
 	Then Erro "DDD do telefone residencial é inválido!!"
 			
-	When Pedido base
-	And Informo "ddd_res" = "123"
+	Given Pedido base
+	When Informo "ddd_res" = "123"
 	Then Erro "DDD do telefone residencial é inválido!!"
 			
-	When Pedido base
-	And Informo "ddd_res" = "12"
+	Given Pedido base
+	When Informo "ddd_res" = "12"
 	Then Sem erro "DDD do telefone residencial é inválido!!"
 			
 Scenario: ddd_com
@@ -58,32 +60,32 @@ Scenario: ddd_com
 		#	if alerta <> "" then alerta = alerta & "<br><br>" & String(80,"=") & "<br><br>"
 		#	alerta = alerta & "DDD do telefone comercial é inválido!!"
 		#	end if
-	When Pedido base
-	And Informo "ddd_com" = "1"
+	Given Pedido base
+	When Informo "ddd_com" = "1"
 	Then Erro "DDD do telefone comercial é inválido!!"
 			
-	When Pedido base
-	And Informo "ddd_com" = "123"
+	Given Pedido base
+	When Informo "ddd_com" = "123"
 	Then Erro "DDD do telefone comercial é inválido!!"
 			
-	When Pedido base
-	And Informo "ddd_com" = "12"
+	Given Pedido base
+	When Informo "ddd_com" = "12"
 	Then Sem erro "DDD do telefone comercial é inválido!!"
 			
 			
 Scenario: MUNICÍPIO DE ACORDO C/ TABELA DO IBGE?
 	#'	MUNICÍPIO DE ACORDO C/ TABELA DO IBGE?
 	#	if Not consiste_municipio_IBGE_ok(r_cliente.cidade, r_cliente.uf, s_lista_sugerida_municipios, msg_erro) then
-	When Pedido base
-	And Informo "cidade" = "Cidade que não está no IBGE"
-	Then erro regex "Município .* não consta na relação de municípios do IBGE para a UF de .."
+	Given Pedido base
+	When Informo "cidade" = "Cidade que não está no IBGE"
+	Then Erro "Município .* não consta na relação de municípios do IBGE para a UF de .."
 			
 #			if Not consiste_municipio_IBGE_ok(EndEtg_cidade, EndEtg_uf, s_lista_sugerida_municipios, msg_erro) then
-	When Pedido base
-	And Informo "EndEtg_cidade" = "Cidade que não está no IBGE"
-	Then erro regex "Município .* não consta na relação de municípios do IBGE para a UF de .."
+	Given Pedido base
+	When Informo "EndEtg_cidade" = "Cidade que não está no IBGE"
+	Then Erro "Município .* não consta na relação de municípios do IBGE para a UF de .."
 
-@ignore
+
 Scenario: Produtos e quantidades devem existir
 		#if (b) {
 		#	ha_item=true;
@@ -104,28 +106,28 @@ Scenario: Produtos e quantidades devem existir
 		#		}
 		#	}
 		#}
-	When Pedido base
-	And Informo lista de itens linha "1" campo "c_produto" = ""
+	Given Pedido base
+	When Lista de itens "0" informo "c_produto" = ""
 	Then Erro "Informe o código do produto!!"
-	When Pedido base
-	And Informo lista de itens linha "1" campo "c_qtde" = ""
-	Then erro "Informe a quantidade!!"
-	When Pedido base
-	And Informo lista de itens linha "1" campo "c_qtde" = "0"
+	Given Pedido base
+	When Lista de itens "0" informo "c_qtde" = ""
+	Then Erro "Informe a quantidade!!"
+	Given Pedido base
+	When Lista de itens "0" informo "c_qtde" = "0"
 	Then Erro "Quantidade inválida!!"
-	When Pedido base
-	And Informo lista de itens linha "1" campo "c_qtde" = "-1"
+	Given Pedido base
+	When Lista de itens "0" informo "c_qtde" = "-1"
 	Then Erro "Quantidade inválida!!"
 
 
-@ignore
+
 Scenario: Não aceitamos pedidos vazios
 	#if (!ha_item) {
 	#	alert("Não há produtos na lista!!");
 	#	f.c_fabricante[0].focus();
 	#	return;
 	#	}
-	When Pedido base
-	And Removo todos os itenss da lista de itens
+	Given Pedido base
+	When Lista de itens com "0" itens
 	Then Erro "Não há produtos na lista!!"
 

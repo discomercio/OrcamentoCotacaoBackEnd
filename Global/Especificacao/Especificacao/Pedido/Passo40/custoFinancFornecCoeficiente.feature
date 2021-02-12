@@ -1,4 +1,5 @@
-﻿Feature: custoFinancFornecCoeficiente
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
+Feature: custoFinancFornecCoeficiente
 #validar os campos
 #PedidoProdutoPedidoDados
 #        public decimal CustoFinancFornecPrecoListaBase { get; set; }
@@ -12,7 +13,7 @@
 #        public short? Qtde_estoque_total_disponivel { get; set; }
 #        public float CustoFinancFornecCoeficiente { get; set; }
 
-@ignore
+
 Scenario: custoFinancFornecCoeficiente
 	Given Pedido base
 	When Informo "PedidoProdutoPedidoDados.CustoFinancFornecCoeficiente" = "123"
