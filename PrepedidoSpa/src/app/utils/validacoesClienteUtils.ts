@@ -12,6 +12,9 @@ import { EnderecoEntregaDtoClienteCadastro } from '../dto/ClienteCadastro/Endere
 import { DadosPagtoComponent } from '../prepedido/novo-prepedido/dados-pagto/dados-pagto.component';
 import { EnderecoCadastralClientePrepedidoDto } from '../dto/Prepedido/EnderecoCadastralClientePrepedidoDto';
 import { StringUtils } from './stringUtils';
+import { isDate } from 'util';
+import { DataUtils } from './dataUtils';
+import { getLocaleDateFormat } from '@angular/common';
 
 export class ValidacoesClienteUtils {
 
@@ -197,7 +200,7 @@ export class ValidacoesClienteUtils {
         } else {
             ret.push('PREENCHA CNPJ/CPF');
         }
-        
+
         if (ehObrigatorio) {
             //se for PJ é obrigatório
             if (dadosClienteCadastroDto.Tipo == this.constantes.ID_PJ) {
@@ -246,6 +249,31 @@ export class ValidacoesClienteUtils {
         }
         //nao validamos a data dessa forma, ela já é uma data no formulário: if (!isDate(f.dt_nasc)) {
         //e ela é opcional, então não validamos nada!
+        
+        let dataAtual = new Date();
+        let data = dadosClienteCadastroDto.Nascimento.toString().split('-');
+        if (data[1].substring(0, 1) == "0")
+            data[1] = data[1].replace("0", "");
+        if (data[2].substring(0, 1) == "0")
+            data[2] = data[2].replace("0", "");
+
+        let nascimento: Date = new Date(data[0] + "/" + data[1] + "/" + data[2]);
+        let nascIsValid: boolean = true;
+        //verificamos o ano
+        if (parseInt(data[0]) < 1900)
+            nascIsValid = false;
+        if (!DataUtils.validarData(nascimento))
+            nascIsValid = false;
+
+        if (!nascIsValid)
+            ret.push("Data de nascimento inválida!");
+
+        if (nascimento.getDate() >= dataAtual.getDate() &&
+            nascimento.getMonth() >= dataAtual.getMonth() &&
+            nascimento.getFullYear() >= dataAtual.getFullYear())
+            ret.push("Data de nascimento não pode ser igual ou maior que a data atual!");
+
+        
         return ret;
     }
 

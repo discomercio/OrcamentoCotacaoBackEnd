@@ -7,21 +7,17 @@ import { TelaDesktopService } from '../../../../src/app/servicos/telaDesktop/tel
 import { DataUtils } from '../../../../src/app/utils/dataUtils';
 import { MoedaUtils } from '../../../../src/app/utils/moedaUtils';
 import { Location } from '@angular/common';
-import { Sort } from '@angular/material/sort';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { PedidoListarService } from '../../servicos/pedido/pedido-listar.service';
 import { environment } from '../../../../src/environments/environment';
 import { ConfirmationDialogComponent } from '../../../../src/app/utils/confirmation-dialog/confirmation-dialog.component';
 import { PrepedidoRemoverService } from '../../../../src/app/servicos/prepedido/prepedido-remover.service';
 import { Router } from '@angular/router';
-import { AlertDialogComponent } from 'src/app/utils/alert-dialog/alert-dialog.component';
 import { ImpressaoService } from 'src/app/utils/impressao.service';
 import { PedidoDtoPedido } from 'src/app/dto/pedido/pedidosDtoPedido';
 import { NovoPrepedidoDadosService } from '../novo-prepedido/novo-prepedido-dados.service';
 import { PrepedidoBuscarService } from 'src/app/servicos/prepedido/prepedido-buscar.service';
 import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
-import { AutenticacaoService } from 'src/app/servicos/autenticacao/autenticacao.service';
-import { AppComponent } from 'src/app/app.component';
 
 @Component({
   selector: 'app-lista-base',
@@ -43,8 +39,8 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
     public readonly impressaoService: ImpressaoService,
     public readonly novoPrepedidoDadosService: NovoPrepedidoDadosService,
     public readonly prepedidoBuscarService: PrepedidoBuscarService,
-    private readonly autenticacaoService: AutenticacaoService,
-    public readonly dialog: MatDialog) {
+    public readonly dialog: MatDialog,
+    public readonly alertaService: AlertaService) {
     super(telaDesktopService);
 
   }
@@ -88,6 +84,20 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
             this.deuErro(r);
           }
         });
+
+      //vamos validar as data de busca caso fique armazenado o valor errado no sessionStorage
+      let dataInicial: Date = DataUtils.formata_formulario_date(this.prepedidoListarService.paramsBuscaPrepedido.dataInicial);
+      let dataFinal: Date = DataUtils.formata_formulario_date(this.prepedidoListarService.paramsBuscaPrepedido.dataFinal);
+
+      if (!DataUtils.validarData(dataInicial)) {
+        this.alertaService.mostrarMensagem("Data inicial inválida!");
+        return;
+      }
+      if (!DataUtils.validarData(dataFinal)) {
+        this.alertaService.mostrarMensagem("Data final inválida!");
+        return;
+      }
+
       this.prepedidoListarService.atualizar();
 
     }
@@ -100,6 +110,19 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
             this.deuErro(r);
           }
         });
+
+      let dataInicial: Date = DataUtils.formata_formulario_date(this.pedidoListarService.paramsBuscaPedido.dataInicial);
+      let dataFinal: Date = DataUtils.formata_formulario_date(this.pedidoListarService.paramsBuscaPedido.dataFinal);
+
+      if (!DataUtils.validarData(dataInicial)) {
+        this.alertaService.mostrarMensagem("Data inicial inválida!");
+        return;
+      }
+      if (!DataUtils.validarData(dataFinal)) {
+        this.alertaService.mostrarMensagem("Data final inválida!");
+        return;
+      }
+
       this.pedidoListarService.atualizar();
     }
   }
@@ -112,17 +135,7 @@ export class ListaBaseComponent extends TelaDesktopBaseComponent implements OnIn
     if (this.jaDeuErro) return;
     this.jaDeuErro = true;
 
-
-    let alertaService = new AlertaService(this.dialog, this.router);
-
-    alertaService.mostrarErroInternet(r);
-    // const dialogRef = this.dialog.open(AlertDialogComponent, {
-    //   width: '350px',
-    //   data: `Ocorreu um erro ao acessar os dados. Verifique a conexão com a Internet.`
-    // });
-    // dialogRef.afterClosed().subscribe((result) => {
-    //   //this.jaDeuErro = false;
-    // });
+    this.alertaService.mostrarErroInternet(r);
   }
 
 

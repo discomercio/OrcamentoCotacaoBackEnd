@@ -9,11 +9,9 @@ Feature: Preenche_os_campos_do_pedido_pai
 #	linha 1892 rs("st_auto_split") = 1 até 1903 rs("forma_pagto")=""
 #Transfere mais campos: linha 1907 até 2055
 #
-
 Background: Setup
 	#ignoramos no prepedio inteiro
 	Given Ignorar cenário no ambiente "Especificacao.Prepedido.PrepedidoSteps"
-	
 
 #a maioria no pai e filhotes, alguns só no pai, alguns só nos filhotes
 #loja/PedidoNovoConfirma.asp
@@ -22,9 +20,8 @@ Background: Setup
 #até linha 2057
 #rs("id_nfe_emitente") = vEmpresaAutoSplit(iv)
 #rs.Update
-@ignore
 Scenario: Preenche_os_campos_do_pedido_pai - endereco
-	
+	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_memorizacao_completa_enderecos" = "1"
@@ -34,32 +31,32 @@ Scenario: Preenche_os_campos_do_pedido_pai - endereco
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_cidade" = "São Paulo"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_uf" = "SP"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_cep" = "02045080"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_numero" = "420"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_numero" = "97"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_complemento" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_email" = "gabriel.prada.teodoro@gmail.com"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_email_xml" = "xmail@xmail.com"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_nome" = "Gabriel Prada Teodoro"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_email" = "testeCad@Gabriel.com"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_email_xml" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_nome" = "Vivian"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_ddd_res" = "11"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_tel_res" = "25321634"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_tel_res" = "11111111"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_ddd_com" = "11"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_tel_com" = "12211221"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_ramal_com" = "12"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_tel_com" = "12345678"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_ramal_com" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_ddd_cel" = "11"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_tel_cel" = "981603313"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_ddd_com_2" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_tel_com_2" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_ramal_com_2" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_tipo_pessoa" = "PF"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_cnpj_cpf" = "35270445824"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_contribuinte_icms_status" = "2"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_produtor_rural_status" = "2"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_ie" = "749.201.682.501"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_rg" = "304480484"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_cnpj_cpf" = "14039603052"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_contribuinte_icms_status" = "0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_produtor_rural_status" = "1"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_ie" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_rg" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_contato" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_nome_iniciais_em_maiusculas" = "Gabriel Prada Teodoro"
 
-@ignore
+#And Tabela "t_PEDIDO" registro pai criado, verificar campo "endereco_nome_iniciais_em_maiusculas" = "Vivian"
 Scenario: Preenche_os_campos_do_pedido_pai - pagamento
+	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	When Lista de itens "0" informo "Qtde" = "100"
 	When Lista de itens "1" informo "Qtde" = "100"
@@ -69,39 +66,39 @@ Scenario: Preenche_os_campos_do_pedido_pai - pagamento
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_pagto" = "N"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "qtde_parcelas" = "1"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "forma_pagto" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "tipo_parcelamento" = "2"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "av_forma_pagto" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pc_qtde_parcelas" = "1"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pc_valor_parcela" = "173512.0000"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "tipo_parcelamento" = "1"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "av_forma_pagto" = "6"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pc_qtde_parcelas" = "0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pc_valor_parcela" = "0.0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pc_maquineta_qtde_parcelas" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pc_maquineta_valor_parcela" = "0.0000"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pc_maquineta_valor_parcela" = "0.0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pce_forma_pagto_entrada" = "0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pce_forma_pagto_prestacao" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pce_entrada_valor" = "0.0000"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pce_entrada_valor" = "0.0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pce_prestacao_qtde" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pce_prestacao_valor" = "0.0000"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pce_prestacao_valor" = "0.0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pce_prestacao_periodo" = "0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pse_forma_pagto_prim_prest" = "0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pse_forma_pagto_demais_prest" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pse_prim_prest_valor" = "0.0000"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pse_prim_prest_valor" = "0.0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pse_prim_prest_apos" = "0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pse_demais_prest_qtde" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pse_demais_prest_valor" = "0.0000"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pse_demais_prest_valor" = "0.0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pse_demais_prest_periodo" = "0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pu_forma_pagto" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pu_valor" = "0.0000"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pu_valor" = "0.0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pu_vencto_apos" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_forma_pagto_possui_parcela_cartao_maquineta" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_forma_pagto_somente_cartao" = "1"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_forma_pagto_possui_parcela_cartao" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "usuario_st_pagto" = "HAMILTON"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "custoFinancFornecTipoParcelamento" = "SE"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "custoFinancFornecQtdeParcelas" = "1"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "BoletoConfeccionadoStatus" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_forma_pagto_possui_parcela_cartao_maquineta" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_forma_pagto_somente_cartao" = "1"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_forma_pagto_possui_parcela_cartao" = "0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "usuario_st_pagto" = "USUARIOAPIMAGENTO"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "custoFinancFornecTipoParcelamento" = "AV"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "custoFinancFornecQtdeParcelas" = "0"
 
-@ignore
+#And Tabela "t_PEDIDO" registro pai criado, verificar campo "BoletoConfeccionadoStatus" = "0"
 Scenario: Preenche_os_campos_do_pedido - endereco entrega
-	Given Pedido base
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
+	Given Pedido base com endereço de entrega
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_end_entrega" = "1"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_cod_justificativa" = "003"
@@ -112,53 +109,52 @@ Scenario: Preenche_os_campos_do_pedido - endereco entrega
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_cep" = "02045080"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_endereco_numero" = "97"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_endereco_complemento" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_obs" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_email" = "gabriel.prada.teodoro@gmail.com"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_email_xml" = "teste@xml.com"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_nome" = "Gabriel Prada Teodoro"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_ddd_res" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_tel_res" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_ddd_com" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_obs" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_email" = "testeCad@Gabriel.com"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_email_xml" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_nome" = "Vivian"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_ddd_res" = "11"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_tel_res" = "11111111"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_ddd_com" = "null"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_tel_com" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_ramal_com" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_ddd_cel" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_tel_cel" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_ramal_com" = "null"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_ddd_cel" = "11"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_tel_cel" = "981603313"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_ddd_com_2" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_tel_com_2" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_ramal_com_2" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_tipo_pessoa" = "PF"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_cnpj_cpf" = "35270445824"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_contribuinte_icms_status" = "2"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_produtor_rural_status" = "2"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_ie" = "361.289.183.714"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_rg" = "304480484"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_nome_iniciais_em_maiusculas" = "Gabriel Prada Teodoro"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_cnpj_cpf" = "29756194804"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_contribuinte_icms_status" = "0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_produtor_rural_status" = "1"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_ie" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_rg" = ""
 
-@ignore
+#And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_nome_iniciais_em_maiusculas" = "Vivian"
 Scenario: Preenche_os_campos_do_pedido - campos soltos
+	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "loja" = "202"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vendedor" = "HAMILTON"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vendedor" = "USUARIOAPIMAGENTO"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "midia" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "servicos" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_servicos" = "0.0000"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_servicos" = "0.0000"
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "timestamp" = "[xL"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_orc_virou_pedido" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "orcamento" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "orcamentista" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "tamanho_num_pedido" = "7"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_orc_virou_pedido" = "0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "orcamento" = "null"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "orcamentista" = "null"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "tamanho_num_pedido" = "7"
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "pedido_base" = "pedido gerado"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "numero_loja" = "202"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "numero_loja" = "202"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "id_nfe_emitente" = "4903"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "NFe_texto_constar" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "NFe_xPed" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "usuario_cadastro" = "HAMILTON"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "plataforma_origem_pedido" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "sistema_responsavel_cadastro" = "1"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "sistema_responsavel_atualizacao" = "1"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "usuario_cadastro" = "USUARIOAPIMAGENTO"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "plataforma_origem_pedido" = "1"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "sistema_responsavel_cadastro" = "5"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "sistema_responsavel_atualizacao" = "5"
 
-@ignore
 Scenario: Preenche_os_campos_do_pedido - campos soltos com valores
 	Given Pedido base
 	When Lista de itens "0" informo "Qtde" = "100"
@@ -166,55 +162,54 @@ Scenario: Preenche_os_campos_do_pedido - campos soltos com valores
 	And Recalcular totais do pedido
 	And Deixar forma de pagamento consistente
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_total_familia" = "173512.0000"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_pago_familia" = "0.0000"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_total_NF" = "173512.0000"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_total_RA" = "0.0000"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_total_RA_liquido" = "0.0000"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_previsto_cartao" = "173512.0000"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_frete" = "0.0000"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_total_familia" = "156645.00"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_pago_familia" = "0.0000"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_total_NF" = "156645.00"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_total_RA" = "0.00"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_total_RA_liquido" = "0.00"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_previsto_cartao" = "156645.00"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_frete" = "0.0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "comissao_loja_indicou" = "0.0"
 
-@ignore
 Scenario: Preenche_os_campos_do_pedido - transportadora
 	Given Pedido base
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_id" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_usuario" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_num_coleta" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_contato" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_conferente" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_motorista" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_placa_veiculo" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_id" = "null"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_usuario" = "null"
+	#Campo que não existem na t_PEDIDO
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_num_coleta" = "null"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_contato" = "null"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_conferente" = "null"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_motorista" = "null"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_placa_veiculo" = "null"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_selecao_auto_status" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_selecao_auto_cep" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_selecao_auto_cep" = "null"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_selecao_auto_tipo_endereco" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_selecao_auto_transportadora" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_selecao_auto_transportadora" = "null"
 
-@ignore
 Scenario: Preenche_os_campos_do_pedido - refente a entrega
 	Given Pedido base
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_recebido" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_entrega" = "SPL"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "entregue_usuario" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "a_entregar_status" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "a_entregar_data_marcada" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "a_entregar_usuario" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_recebido" = "null"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_entrega" = "SEP"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "entregue_usuario" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "a_entregar_status" = "0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "a_entregar_data_marcada" = "null"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "a_entregar_usuario" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "PedidoRecebidoStatus" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "PedidoRecebidoUsuarioUltAtualiz" = ""
 
-@ignore
+#And Tabela "t_PEDIDO" registro pai criado, verificar campo "PedidoRecebidoUsuarioUltAtualiz" = ""
 Scenario: Preenche_os_campos_do_pedido - analise de crédito
+	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_credito" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_credito_usuario" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_endereco_tratar_status" = "1"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_endereco_tratado_status" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_endereco_tratado_usuario" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_pedido_novo_analise_credito_msg_alerta" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_credito_pendente_vendas_motivo" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_credito" = "9"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_credito_usuario" = "AUTOMÁTICO"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_endereco_tratar_status" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_endereco_tratado_status" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_endereco_tratado_usuario" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_pedido_novo_analise_credito_msg_alerta" = "0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_credito_pendente_vendas_motivo" = "null"
 
 @ignore
 Scenario: Preenche_os_campos_do_pedido - split
@@ -232,50 +227,52 @@ Scenario: Preenche_os_campos_do_pedido - split
 Scenario: Preenche_os_campos_do_pedido - refente a cancelamento
 	Given Pedido base
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_usuario" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_auto_status" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_auto_motivo" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_codigo_motivo" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_codigo_sub_motivo" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_motivo" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_usuario" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_auto_status" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_auto_motivo" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_codigo_motivo" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_codigo_sub_motivo" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_motivo" = ""
+	#Obs: esses campo ainda não existem mas, serão utilizados para visualização
 
-@ignore
+
 Scenario: Preenche_os_campos_do_pedido - instalador, bem de uso, entrega imediata e garantia
+	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_etg_imediata" = "2"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "etg_imediata_usuario" = "HAMILTON"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "PrevisaoEntregaUsuarioUltAtualiz" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "etg_imediata_usuario" = "USUARIOAPIMAGENTO"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "PrevisaoEntregaUsuarioUltAtualiz" = "null"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "StBemUsoConsumo" = "1"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "InstaladorInstalaStatus" = "2"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "InstaladorInstalaUsuarioUltAtualiz" = "HAMILTON"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "InstaladorInstalaStatus" = "1"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "InstaladorInstalaUsuarioUltAtualiz" = "USUARIOAPIMAGENTO"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "GarantiaIndicadorStatus" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "GarantiaIndicadorUsuarioUltAtualiz" = "HAMILTON"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "GarantiaIndicadorUsuarioUltAtualiz" = "USUARIOAPIMAGENTO"
 
-@ignore
 Scenario: Preenche_os_campos_do_pedido - campos de OBS
+	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "obs_1" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "obs_1" = "teste magento"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "obs_2" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "obs_3" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "num_obs_2" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "num_obs_3" = "0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "obs_3" = "null"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "num_obs_2" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "num_obs_3" = "0"
 
-@ignore
+
 Scenario: Preenche_os_campos_do_pedido - referente a indicação
 	Given Pedido base
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "loja_indicou" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "venda_externa" = "0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "venda_externa" = "1"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "indicador" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_RT" = "0.0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "comissao_paga" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "comissao_paga_ult_op" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "comissao_paga_usuario" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "indicador_editado_manual_status" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "indicador_editado_manual_usuario" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "indicador_editado_manual_indicador_original" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "comissao_paga" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "comissao_paga_ult_op" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "comissao_paga_usuario" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "indicador_editado_manual_status" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "indicador_editado_manual_usuario" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "indicador_editado_manual_indicador_original" = ""
 
 @ignore
 Scenario: Preenche_os_campos_do_pedido - campos de data e hora
@@ -325,17 +322,17 @@ Scenario: Preenche_os_campos_do_pedido - campos de data e hora
 Scenario: Preenche_os_campos_do_pedido - frete, romaneio e danfe
 	Given Pedido base
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "frete_status" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "frete_valor" = "0.0000"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "frete_usuario" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "romaneio_status" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "romaneio_usuario" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "danfe_impressa_status" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "danfe_impressa_usuario" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "danfe_a_imprimir_status" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "danfe_a_imprimir_usuario" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "frete_status" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "frete_valor" = "0.0000"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "frete_usuario" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "romaneio_status" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "romaneio_usuario" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "danfe_impressa_status" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "danfe_impressa_usuario" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "danfe_a_imprimir_status" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "danfe_a_imprimir_usuario" = ""
+	#Obs: No momento esses campos não existem na tabela t_PEDIDO e alguns são utilizados apenas na Central
 
-@ignore
 Scenario: Preenche_os_campos_do_pedido - referente a RA
 	Given Pedido base
 	Then Sem nenhum erro
@@ -343,28 +340,29 @@ Scenario: Preenche_os_campos_do_pedido - referente a RA
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_limite_RA_sem_desagio" = "0.0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_tem_desagio_RA" = "0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "qtde_parcelas_desagio_RA" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_desagio_RA_liquida" = "30.0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_desagio_RA_liquida" = "0.0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "permite_RA_status" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_violado_permite_RA_status" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "usuario_violado_permite_RA_status" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_violado_permite_RA_status" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "usuario_violado_permite_RA_status" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "opcao_possui_RA" = "-"
 
-@ignore
+
 Scenario: Preenche_os_campos_do_pedido - Marketplace e magento
+	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pedido_bs_x_at" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pedido_bs_x_ac" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pedido_bs_x_ac_reverso" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pedido_bs_x_ac" = "123456789"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "pedido_bs_x_ac_reverso" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pedido_bs_x_marketplace" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "marketplace_codigo_origem" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "MarketplacePedidoRecebidoRegistrarStatus" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "MarketplacePedidoRecebidoRegistrarUsuario" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "MarketplacePedidoRecebidoRegistradoStatus" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "MarketplacePedidoRecebidoRegistradoUsuario" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "magento_installer_commission_value" = "0.0000"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "magento_installer_commission_discount" = "0.0000"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "magento_shipping_amount" = "0.0000"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "MarketplacePedidoRecebidoRegistrarStatus" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "MarketplacePedidoRecebidoRegistrarUsuario" = ""
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "MarketplacePedidoRecebidoRegistradoStatus" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "MarketplacePedidoRecebidoRegistradoUsuario" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "magento_installer_commission_value" = "0.0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "magento_installer_commission_discount" = "0.0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "magento_shipping_amount" = "0.0"
 
 @ignore
 Scenario: perc_desagio_RA_liquida

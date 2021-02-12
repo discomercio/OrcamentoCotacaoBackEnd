@@ -35,7 +35,7 @@ Scenario: EndEtg_tel_com
 	Then Erro "Endereço de entrega: telefone comercial inválido!"
 
 Scenario: EndEtg_tel_com 2
-	When Informo "EndEtg_tel_com" = "12345"
+	When Informo "EndEtg_tel_com" = "123456789012"
 	Then Erro "Endereço de entrega: telefone comercial inválido!"
 
 Scenario: EndEtg_tel_com 3
@@ -79,7 +79,7 @@ Scenario: EndEtg_tel_com_2
 
 Scenario: EndEtg_tel_com_2 2
 	When Informo "EndEtg_ddd_com_2" = "12"
-	When Informo "EndEtg_tel_com_2" = "12345"
+	When Informo "EndEtg_tel_com_2" = "123456789012"
 	Then Erro "Endereço de entrega: telefone comercial 2 inválido!"
 
 Scenario: EndEtg_tel_com_2 3
@@ -129,7 +129,7 @@ Scenario: EndEtg_ddd_res
 	And Informo "EndEtg_tel_res" = "12345678"
 	Then Erro "Endereço de entrega: se tipo pessoa PJ, não pode conter DDD residencial e telefone residencial!"
 
-@ignore
+
 Scenario: nos telefones, os símbolos devem ser removidos
 	Given Ignorar cenário no ambiente "Especificacao.Prepedido.PrepedidoSteps"
 	When Informo "EndEtg_contribuinte_icms_status" = "1"
@@ -137,7 +137,7 @@ Scenario: nos telefones, os símbolos devem ser removidos
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "EndEtg_tel_com" = "12345678"
 
-@ignore
+
 Scenario: nos telefones, os símbolos devem ser removidos 2
 	Given Ignorar cenário no ambiente "Especificacao.Prepedido.PrepedidoSteps"
 	When Informo "EndEtg_contribuinte_icms_status" = "1"

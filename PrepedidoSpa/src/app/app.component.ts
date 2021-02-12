@@ -1,14 +1,9 @@
 import { Component, OnInit, Inject, Input } from '@angular/core';
 import { TelaDesktopService } from './servicos/telaDesktop/telaDesktop.service';
-import { Router, NavigationEnd, NavigationStart } from '@angular/router';
+import { Router, NavigationStart } from '@angular/router';
 import { AutenticacaoService } from './servicos/autenticacao/autenticacao.service'
 import { ImpressaoService } from './utils/impressao.service';
-import { DOCUMENT } from '@angular/common';
-import * as jtw_decode from 'jwt-decode';
 import { AlertaService } from './utils/alert-dialog/alerta.service';
-import { ConsultaBaseComponent } from './prepedido/consulta-base/consulta-base.component';
-import { PedidoBuscarService } from './servicos/pedido/pedido-buscar.service';
-import { PrepedidoBuscarService } from './servicos/prepedido/prepedido-buscar.service';
 import { PedidoListarService } from './servicos/pedido/pedido-listar.service';
 import { PrepedidoListarService } from './servicos/prepedido/prepedido-listar.service';
 import { environment } from 'src/environments/environment';
@@ -27,19 +22,25 @@ export class AppComponent implements OnInit {
     public readonly impressaoService: ImpressaoService,
     private readonly router: Router,
     private readonly pedidoListarService: PedidoListarService,
-    private readonly prepedidoListarService: PrepedidoListarService) {
+    private readonly prepedidoListarService: PrepedidoListarService,
+    private readonly alertaService: AlertaService) {
     telaDesktopService.telaAtual$.subscribe(r => this.telaDesktop = r);
 
   }
   public logo: string = null;
 
-
   ngOnInit(): void {
+    if (!this.verificarBrowser()) {
+      this.alertaService.mostrarMensagemBrowser();
+      this.logout();
+    }
 
     //proteção para não publicar se a verificação da versão da API não estiver correta
     if (environment.production && (environment.versaoApi == 'DEBUG' || environment.versaoApi == 'SUBSTITUIR_VERSAO_API')) {
       alert("Ocorreu algum erro no processo de compilação. Por favor, avise o suporte técnico.")
     }
+
+
 
     this.carregarEstilo(false);
 
@@ -61,6 +62,31 @@ export class AppComponent implements OnInit {
         }
       }
     });
+  }
+
+  verificarBrowser(): boolean {
+    if (navigator.appName.toUpperCase().indexOf("INTERNET") > -1)
+      return false;
+
+    if (navigator.appName.toUpperCase().indexOf("MICROSOFT") > -1)
+      return false;
+
+    if (navigator.appName.toUpperCase().indexOf("EXPLORER") > -1)
+      return false;
+
+    if (navigator.appName.toUpperCase().indexOf("MSIE") > -1)
+      return false;
+
+    if (navigator.userAgent.toUpperCase().indexOf("MSIE") > -1)
+      return false;
+
+    if (navigator.userAgent.toUpperCase().indexOf("MICROSOFT") > -1)
+      return false;
+
+    if (navigator.userAgent.toUpperCase().indexOf("TRIDENT/") > -1)
+      return false;
+
+    return true;
   }
 
   //carrega o estilo conforme o cliente. se for o caso, espera carregar para ir para a home
@@ -115,7 +141,6 @@ export class AppComponent implements OnInit {
 
     //vamos criar uma método que irá chamar os métodos que serão criados dentro 
     //de todos os serviços para que seja limpo todos as variaveis
-    //AFAZER: NÃO SEI SE FAZ A CHAMADA DO METODO AQUI
     this.pedidoListarService.limpar(true);
     this.prepedidoListarService.limpar(true);
   }
@@ -123,3 +148,4 @@ export class AppComponent implements OnInit {
   title = 'Sistema de pedidos';
 
 }
+

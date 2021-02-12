@@ -242,6 +242,32 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
                     TipoPessoa.PF);
         }
 
+        [Fact]
+        public void Nascimento()
+        {
+            inicializarBanco.TclientesApagar();
+
+            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Nascimento = new DateTime(0084, 06, 19),
+                "Data de nascimento inválida!", TipoPessoa.PF);
+
+            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Nascimento = new DateTime(84, 06, 19),
+                "Data de nascimento inválida!", TipoPessoa.PF);
+
+            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Nascimento = new DateTime(1900, 06, 19),
+                "Data de nascimento inválida!", TipoPessoa.PF);
+
+            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Nascimento = DateTime.Now,
+                "Data de nascimento não pode ser igual ou maior que a data atual!", TipoPessoa.PF);
+
+            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Nascimento = DateTime.Now.AddDays(10),
+                "Data de nascimento não pode ser igual ou maior que a data atual!", TipoPessoa.PF);
+
+            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Nascimento = DateTime.Now.AddMonths(1),
+                "Data de nascimento não pode ser igual ou maior que a data atual!", TipoPessoa.PF);
+
+            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Nascimento = DateTime.Now.AddYears(1),
+                "Data de nascimento não pode ser igual ou maior que a data atual!", TipoPessoa.PF);
+        }
 
 
         [Fact]

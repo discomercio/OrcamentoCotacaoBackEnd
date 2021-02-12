@@ -13,10 +13,7 @@ import { PrepedidoBuscarService } from 'src/app/servicos/prepedido/prepedido-bus
 import { EnumFormaPagto } from './enum-forma-pagto';
 import { CoeficienteDto } from 'src/app/dto/Produto/CoeficienteDto';
 import { EnumTipoPagto } from './tipo-forma-pagto';
-import { BreakpointObserver } from '@angular/cdk/layout';
 import { RecalcularComCoeficiente } from './recalcularComCoeficiente';
-import { FormaPagtoCriacaoDto } from 'src/app/dto/Prepedido/DetalhesPrepedido/FormaPagtoCriacaoDto';
-
 
 @Component({
   selector: 'app-dados-pagto',

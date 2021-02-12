@@ -255,6 +255,7 @@ namespace Especificacao.Testes.Pedido
 
         public void TabelaT_PEDIDORegistroPaiCriadoVerificarCampo(string campo, string valor)
         {
+            if (ignorarFeature) return;
             Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
             var pedidoPaiGerado = AbstractPedidoPaiGerado();
             if (string.IsNullOrEmpty(pedidoPaiGerado))
