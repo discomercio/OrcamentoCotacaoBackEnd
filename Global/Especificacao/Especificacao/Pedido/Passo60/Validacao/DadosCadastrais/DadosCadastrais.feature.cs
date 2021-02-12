@@ -19,12 +19,14 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao.DadosCadastrais
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.PedidoFaltandoImplementarSteps")]
     public partial class DadosCadastraisFeature : object, Xunit.IClassFixture<DadosCadastraisFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = ((string[])(null));
+        private string[] _featureTags = new string[] {
+                "Especificacao.Pedido.PedidoFaltandoImplementarSteps"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -40,7 +42,8 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao.DadosCadastrais
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "DadosCadastrais", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "DadosCadastrais", null, ProgrammingLanguage.CSharp, new string[] {
+                        "Especificacao.Pedido.PedidoFaltandoImplementarSteps"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -83,14 +86,12 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao.DadosCadastrais
         [Xunit.SkippableFactAttribute(DisplayName="Validar")]
         [Xunit.TraitAttribute("FeatureTitle", "DadosCadastrais")]
         [Xunit.TraitAttribute("Description", "Validar")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void Validar()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar", null, tagsOfScenario, argumentsOfScenario);
-#line 133
+#line 134
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -110,9 +111,6 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 134
- testRunner.Given("Fazer a validação acima", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
             }
             this.ScenarioCleanup();
         }

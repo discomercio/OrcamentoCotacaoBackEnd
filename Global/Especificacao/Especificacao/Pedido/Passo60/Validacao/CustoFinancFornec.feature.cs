@@ -19,14 +19,14 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "ignore")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.PedidoFaltandoImplementarSteps")]
     public partial class CustoFinancFornecFeature : object, Xunit.IClassFixture<CustoFinancFornecFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore"};
+                "Especificacao.Pedido.PedidoFaltandoImplementarSteps"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -43,7 +43,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "CustoFinancFornec", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ignore"});
+                        "Especificacao.Pedido.PedidoFaltandoImplementarSteps"});
             testRunner.OnFeatureStart(featureInfo);
         }
         

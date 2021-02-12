@@ -19,14 +19,14 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "ignore")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.PedidoFaltandoImplementarSteps")]
     public partial class Passo60ValidacaoClienteFeature : object, Xunit.IClassFixture<Passo60ValidacaoClienteFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore"};
+                "Especificacao.Pedido.PedidoFaltandoImplementarSteps"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -43,7 +43,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Passo 60 Validação cliente", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ignore"});
+                        "Especificacao.Pedido.PedidoFaltandoImplementarSteps"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -115,7 +115,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 6
- testRunner.And("Informo \"CPF/CNPJ\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("Informo \"CPF/CNPJ\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 7
  testRunner.Then("Erro \"Cliente não cadastrado\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -152,9 +152,6 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 18
- testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
             }
             this.ScenarioCleanup();
         }
@@ -187,9 +184,6 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 24
- testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
             }
             this.ScenarioCleanup();
         }
