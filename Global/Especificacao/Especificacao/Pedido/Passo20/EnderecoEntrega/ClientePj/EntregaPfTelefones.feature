@@ -15,10 +15,10 @@ Background: Api MAgento somente aceita pedidos PF
 	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	Given Pedido base cliente PJ com endereço de entrega PF
 
-@ignore
-Scenario: Configuração
-	Given Nome deste item "Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj.EntregaPfTelefones"
-	Given Implementado em "Especificacao.Pedido.Pedido"
+#@ignore
+#Scenario: Configuração
+#	Given Nome deste item "Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj.EntregaPfTelefones"
+#	Given Implementado em "Especificacao.Pedido.Pedido"
 
 #-------------------------------------------------------------
 #-------------------------------------------------------------

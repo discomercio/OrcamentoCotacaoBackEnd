@@ -201,5 +201,12 @@ namespace Especificacao.Especificacao.Pedido
             
         }
 
+
+        [Given(@"No ambiente ""(.*)"" erro ""(.*)"" é ""(.*)""")]
+        [Given(@"No ambiente ""(.*)"" mapear erro ""(.*)"" para ""(.*)""")]
+        public void GivenNoAmbienteErroE(string p0, string p1, string p2)
+        {
+            
+        }
     }
 }
