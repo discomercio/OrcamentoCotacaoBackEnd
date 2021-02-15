@@ -1,9 +1,8 @@
 ﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente
 @GerenciamentoBanco
 Feature: Magento CriacaoCliente_Pf_Obrigatorios
+
 #Testando os campos obrigatorios e o caminho feliz
-
-
 #Campos do endereço de entrega:
 #        OutroEndereco
 #        [Required] string EndEtg_endereco
@@ -29,8 +28,6 @@ Feature: Magento CriacaoCliente_Pf_Obrigatorios
 #        [Required] string EndEtg_tipo_pessoa
 #        [Required] string EndEtg_cnpj_cpf
 #        string? PontoReferencia
-
-
 Background: Acertar banco de dados
 	Given Reiniciar banco ao terminar cenário
 	And Limpar tabela "t_CLIENTE"
@@ -135,7 +132,6 @@ Scenario: Obrigatório 4
 	When Informo "cnpj_cpf" = "29756194804"
 	Then Erro "PREENCHA A CIDADE."
 
-
 Scenario: Obrigatório 6
 	Given Pedido base
 	And Limpar dados cadastrais e endereço de entrega
@@ -221,7 +217,6 @@ Scenario: Obrigatório 10
 	When Informo "cnpj_cpf" = ""
 	Then Erro "CPF NÃO FORNECIDO."
 
-
 Scenario: validar cep contra endereço
 	Given Pedido base
 	And Limpar dados cadastrais e endereço de entrega
@@ -238,7 +233,6 @@ Scenario: validar cep contra endereço
 	When Informo "EndEtg_cnpj_cpf" = "29756194804"
 	When Informo "cnpj_cpf" = "29756194804"
 	Then Erro "Cidade não confere"
-
 	Given Pedido base
 	And Limpar dados cadastrais e endereço de entrega
 	When Informo "OutroEndereco" = "true"
@@ -256,3 +250,58 @@ Scenario: validar cep contra endereço
 	When Informo "EndEtg_ddd_res" = "11"
 	When Informo "EndEtg_tel_res" = "1234-5678"
 	Then Sem nenhum erro
+
+Scenario: Endereço de entrega - tamanho endereço
+	Given Pedido base
+	When Informo "EndEtg_endereco" = "1234567890123456789012345678901234567890123456789012345678901"
+	Then Erro "ENDEREÇO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES"
+
+Scenario: Endereço de entrega - tamanho endereço 2
+	Given Pedido base
+	#                                          10        20        30       40         50        60
+	When Informo "EndEtg_endereco" = "12345678901234567890123456789012345678901234567890123456789"
+	Then Sem erro "ENDEREÇO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES"
+
+Scenario: Endereço de entrega - tamanho número
+	Given Pedido base
+	When Informo "EndEtg_endereco_numero" = "1234567890123456789012345678901234567890123456789012345678901"
+	Then Erro "NÚMERO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES"
+
+Scenario: Endereço de entrega - tamanho número 2
+	Given Pedido base
+	#                                          10        20        30       40         50        60
+	When Informo "EndEtg_endereco_numero" = "12345678901234567890123456789012345678901234567890123456789"
+	Then Sem erro "NÚMERO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES"
+
+Scenario: Endereço de entrega - tamanho complemento
+	Given Pedido base
+	When Informo "EndEtg_endereco_complemento" = "1234567890123456789012345678901234567890123456789012345678901"
+	Then Erro "COMPLEMENTO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES"
+
+Scenario: Endereço de entrega - tamanho complemento 2
+	Given Pedido base
+	#                                          10        20        30       40         50        60
+	When Informo "EndEtg_endereco_complemento" = "12345678901234567890123456789012345678901234567890123456789"
+	Then Sem erro "COMPLEMENTO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES"
+
+Scenario: Endereço de entrega - tamanho bairro
+	Given Pedido base
+	When Informo "EndEtg_bairro" = "1234567890123456789012345678901234567890123456789012345678901"
+	Then Erro "BAIRRO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES"
+
+Scenario: Endereço de entrega - tamanho bairro 2
+	Given Pedido base
+	#                                          10        20        30       40         50        60
+	When Informo "EndEtg_bairro" = "12345678901234567890123456789012345678901234567890123456789"
+	Then Sem erro "BAIRRO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES"
+
+Scenario: Endereço de entrega - tamanho cidade
+	Given Pedido base
+	When Informo "EndEtg_cidade" = "1234567890123456789012345678901234567890123456789012345678901"
+	Then Erro "CIDADE EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES"
+
+Scenario: Endereço de entrega - tamanho cidade 2
+	Given Pedido base
+	#                                          10        20        30       40         50        60
+	When Informo "EndEtg_cidade" = "12345678901234567890123456789012345678901234567890123456789"
+	Then Sem erro "CIDADE EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES"
