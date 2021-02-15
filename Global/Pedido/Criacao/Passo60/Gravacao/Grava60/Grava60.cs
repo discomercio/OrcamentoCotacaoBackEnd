@@ -1,6 +1,7 @@
 ﻿using InfraBanco;
 using InfraBanco.Constantes;
 using InfraBanco.Modelos;
+using Pedido.Criacao.Execucao;
 using Pedido.Dados.Criacao;
 using Produto.RegrasCrtlEstoque;
 using System;
@@ -66,10 +67,6 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
             }
 
 
-            //cira alista de produtos com as variaveis auxiliares
-            //todo: passar para grava17 para permitir o log
-            List<ProdutoGravacao> listaProdutoGravacao = ProdutoGravacao.ListaProdutoGravacao(Pedido.ListaProdutos);
-
             //s_hora_pedido = retorna_so_digitos(formata_hora(Now))
             Gravacao.Hora_pedido = UtilsGlobais.Util.HoraParaBanco(Gravacao.DataHoraCriacao);
             int indice_pedido = 0;
@@ -131,7 +128,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                         {
                             //'	LOCALIZA O PRODUTO EM V_ITEM
                             ProdutoGravacao? linha_pedido = null;
-                            foreach (var produto in listaProdutoGravacao)
+                            foreach (var produto in Gravacao.ProdutoGravacaoLista)
                             {
                                 if ((produto.Pedido.Fabricante == twmsCdXUfXPessoaXCd.Estoque_Fabricante)
                                     && (produto.Pedido.Produto == twmsCdXUfXPessoaXCd.Estoque_Produto))
@@ -254,11 +251,10 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
             tpedidoitem.Subgrupo = dados_produto.Tproduto.Subgrupo;
             tpedidoitem.Peso = dados_produto.Tproduto.Peso;
             tpedidoitem.Qtde_Volumes = dados_produto.Tproduto.Qtde_Volumes;
-            //todo: grva60, gravar campos de autorização de desconto
-            //tpedidoitem.Abaixo_Min_Status = linha_pedido.abaixo_min_status;
-            //tpedidoitem.Abaixo_Min_Autorizacao = linha_pedido.abaixo_min_autorizacao; //nao gravar null
-            //tpedidoitem.Abaixo_Min_Autorizador = linha_pedido.abaixo_min_autorizador; //nao gravar null
-            //tpedidoitem.Abaixo_Min_Superv_Autorizador = linha_pedido.abaixo_min_superv_autorizador; //nao gravar null
+            tpedidoitem.Abaixo_Min_Status = (short)(linha_pedido.Abaixo_min_status ? 1 : 0);
+            tpedidoitem.Abaixo_Min_Autorizacao = linha_pedido.Abaixo_min_autorizacao ?? "";
+            tpedidoitem.Abaixo_Min_Autorizador = linha_pedido.Abaixo_min_autorizador ?? "";
+            tpedidoitem.Abaixo_Min_Superv_Autorizador = linha_pedido.Abaixo_min_superv_autorizador ?? "";
             tpedidoitem.Sequencia = sequencia_item;
             tpedidoitem.Markup_Fabricante = dados_produto.Tfabricante.Markup;
             tpedidoitem.CustoFinancFornecCoeficiente = linha_pedido.Pedido.CustoFinancFornecCoeficiente_Conferencia;

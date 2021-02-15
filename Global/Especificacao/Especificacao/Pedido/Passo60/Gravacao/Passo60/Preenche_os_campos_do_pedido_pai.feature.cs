@@ -1533,18 +1533,6 @@ this.FeatureBackground();
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"marketplace_codigo_origem" +
                         "\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 363
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"magento_installer_commiss" +
-                        "ion_value\" = \"0.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 364
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"magento_installer_commiss" +
-                        "ion_discount\" = \"0.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 365
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"magento_shipping_amount\" " +
-                        "= \"0.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
             }
             this.ScenarioCleanup();
         }

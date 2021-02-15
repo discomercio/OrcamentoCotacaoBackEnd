@@ -3,13 +3,17 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Pedido.Criacao.Passo60.Gravacao.Grava60
+namespace Pedido.Criacao.Execucao
 {
-    class ProdutoGravacao
+    public class ProdutoGravacao
     {
         public PedidoCriacaoProdutoDados Pedido { get; }
         public int Qtde_estoque_vendido = 0;
         public int Qtde_estoque_sem_presenca = 0;
+        public bool Abaixo_min_status = false;
+        public string? Abaixo_min_superv_autorizador = null;
+        public string? Abaixo_min_autorizador = null;
+        public string? Abaixo_min_autorizacao = null;
 
         private ProdutoGravacao(PedidoCriacaoProdutoDados produto)
         {

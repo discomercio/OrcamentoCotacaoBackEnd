@@ -25,6 +25,7 @@ export class ConfirmarEnderecoComponent implements OnInit {
 
   buscarClienteServiceJustificativaEndEntregaComboTemporario: EnderecoEntregaJustificativaDto[];
   ngOnInit() {
+   
     this.inicializarCamposEndereco(this.enderecoEntregaDtoClienteCadastro);
 
     this.enderecoEntregaDtoClienteCadastro.OutroEndereco = false;
@@ -208,8 +209,7 @@ export class ConfirmarEnderecoComponent implements OnInit {
   }
 
   public desconverterTelefonesEnderecoEntrega(enderecoEntrega: EnderecoEntregaDtoClienteCadastro): EnderecoEntregaDtoClienteCadastro {
-
-    if (enderecoEntrega.EndEtg_cod_justificativa != undefined) {
+    if (enderecoEntrega != undefined) {
       enderecoEntrega.EndEtg_tel_res = enderecoEntrega.EndEtg_ddd_res + enderecoEntrega.EndEtg_tel_res;
 
       enderecoEntrega.EndEtg_tel_cel = enderecoEntrega.EndEtg_ddd_cel + enderecoEntrega.EndEtg_tel_cel;

@@ -67,5 +67,16 @@ namespace UtilsGlobais
             return valor;
         }
 
+        //' ---------------------------------------------------------------
+        //'   LOG_PRODUTO_MONTA
+        public static string Log_produto_monta(int? quantidade, string id_fabricante, string id_produto)
+        {
+            string s;
+
+            s = " " + (quantidade ?? 0).ToString() + "x" + (id_produto ?? "").Trim();
+            if ((id_fabricante ?? "").Trim() != "")
+                s = s + "(" + (id_fabricante ?? "").Trim() + ")";
+            return s;
+        }
     }
 }
