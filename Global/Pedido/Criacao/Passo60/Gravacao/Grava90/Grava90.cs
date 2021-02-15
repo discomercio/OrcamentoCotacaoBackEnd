@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Pedido.Criacao.Passo60.Gravacao.Grava90
 {
+#pragma warning disable IDE0054 // Use compound assignment
     class Grava90 : PassoBaseGravacao
     {
         public Grava90(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao criacao, Execucao.Execucao execucao, Execucao.Gravacao gravacao)
@@ -17,11 +18,16 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava90
         private string Formata_texto_log(string? valor) => UtilsGlobais.Log.Formata_texto_log(valor);
         private string Formata_texto_log_float(float? valor) => UtilsGlobais.Log.Formata_texto_log_numeros<float?>(valor);
         private string Formata_texto_log_short(short? valor) => UtilsGlobais.Log.Formata_texto_log_numeros<short?>(valor);
+        private string Formata_texto_log_int(int? valor) => UtilsGlobais.Log.Formata_texto_log_numeros<int?>(valor);
+        private string Formata_texto_log_decimal(decimal? valor) => UtilsGlobais.Log.Formata_texto_log_numeros<decimal?>(valor);
         private string Formata_data(DateTime? valor) => UtilsGlobais.Log.Formata_data_log(valor);
         private string Formata_perc_comissao(float? valor) => UtilsGlobais.Log.Formata_perc_comissao_log(valor);
 
         public async Task ExecutarAsync()
         {
+            //salvamos aqui proque o GravaLog faz o savechanges sem ser async
+            await ContextoBdGravacao.SaveChangesAsync(); 
+
             //Passo90: log(Passo90 / Log.feature)
             string s_log = "";
 
@@ -275,55 +281,64 @@ Detalhes do auto-split: Modo de seleção do CD = AUTOMATICO
                 s_log = s_log + Gravacao.Log_cliente_indicador;
             }
 
-            /*
-            //todo: Passo90: log(Passo90 / Log.feature)
+            foreach (var produto in Gravacao.ProdutoGravacaoLista)
+            {
+                if (!string.IsNullOrWhiteSpace(s_log))
+                    s_log = s_log + ";" + UtilsGlobais.Log.EnterParaLogBanco();
 
-    '	MONTA LOG DOS ITENS
-        for i=Lbound(v_item) to Ubound(v_item)
-            with v_item(i)
-                if s_log <> "" then s_log=s_log & ";" & chr(13)
-                s_log = s_log & _
-                        log_produto_monta(.qtde, .fabricante, .produto) & _
-                        "; preco_lista=" & formata_texto_log(.preco_lista) & _
-                        "; desc_dado=" & formata_texto_log(.desc_dado) & _
-                        "; preco_venda=" & formata_texto_log(.preco_venda) & _
-                        "; preco_NF=" & formata_texto_log(.preco_NF) & _
-                        "; custoFinancFornecCoeficiente=" & formata_texto_log(.custoFinancFornecCoeficiente) & _
-                        "; custoFinancFornecPrecoListaBase=" & formata_texto_log(.custoFinancFornecPrecoListaBase)
-                if .qtde_estoque_vendido<>0 then s_log = s_log & "; estoque_vendido=" & formata_texto_log(.qtde_estoque_vendido)
-                if .qtde_estoque_sem_presenca<>0 then s_log = s_log & "; estoque_sem_presenca=" & formata_texto_log(.qtde_estoque_sem_presenca)
+                s_log = s_log +
+                        UtilsGlobais.Log.Log_produto_monta(produto.Pedido.Qtde, produto.Pedido.Fabricante, produto.Pedido.Produto) +
+                        "; preco_lista=" + Formata_texto_log_decimal(produto.Pedido.Preco_Lista) +
+                        "; desc_dado=" + Formata_texto_log_float(produto.Pedido.Desc_Dado) +
+                        "; preco_venda=" + Formata_texto_log_decimal(produto.Pedido.Preco_Venda) +
+                        "; preco_NF=" + Formata_texto_log_decimal(produto.Pedido.Preco_NF) +
+                        "; custoFinancFornecCoeficiente=" + Formata_texto_log_float(produto.Pedido.CustoFinancFornecCoeficiente_Conferencia) +
+                        "; custoFinancFornecPrecoListaBase=" + Formata_texto_log_decimal(produto.Pedido.CustoFinancFornecPrecoListaBase_Conferencia);
+                if (produto.Qtde_estoque_vendido != 0)
+                    s_log = s_log + "; estoque_vendido=" + Formata_texto_log_int(produto.Qtde_estoque_vendido);
+                if (produto.Qtde_estoque_sem_presenca != 0)
+                    s_log = s_log + "; estoque_sem_presenca=" + Formata_texto_log_int(produto.Qtde_estoque_sem_presenca);
 
-                if converte_numero(.abaixo_min_status) <> 0 then
-                    s_log = s_log & _
-                            "; abaixo_min_status=" & formata_texto_log(.abaixo_min_status) & _
-                            "; abaixo_min_autorizacao=" & formata_texto_log(.abaixo_min_autorizacao) & _
-                            "; abaixo_min_autorizador=" & formata_texto_log(.abaixo_min_autorizador) & _
-                            "; abaixo_min_superv_autorizador=" & formata_texto_log(.abaixo_min_superv_autorizador)
-                    end if
-                end with
-            next
+                if (produto.Abaixo_min_status)
+                {
+                    s_log = s_log +
+                            "; abaixo_min_status=" + Formata_texto_log_int(produto.Abaixo_min_status ? 1 : 0) +
+                            "; abaixo_min_autorizacao=" + Formata_texto_log(produto.Abaixo_min_autorizacao) +
+                            "; abaixo_min_autorizador=" + Formata_texto_log(produto.Abaixo_min_autorizador) +
+                            "; abaixo_min_superv_autorizador=" + Formata_texto_log(produto.Abaixo_min_superv_autorizador);
+                }
+            }
+            //'	ADICIONA DETALHES SOBRE O AUTO-SPLIT
+            var blnAchou = false;
+            foreach (var vLogAutoSplit_i in Gravacao.VlogAutoSplit)
+            {
+                if (!String.IsNullOrWhiteSpace(vLogAutoSplit_i))
+                {
+                    if (!string.IsNullOrWhiteSpace(s_log))
+                        s_log = s_log + UtilsGlobais.Log.EnterParaLogBanco();
 
-    '	ADICIONA DETALHES SOBRE O AUTO-SPLIT
-        blnAchou=False
-        for i=LBound(vLogAutoSplit) to UBound(vLogAutoSplit)
-            if Trim("" & vLogAutoSplit(i)) <> "" then
-                if s_log <> "" then s_log = s_log & chr(13)
-                if Not blnAchou then
-                    s_log = s_log & "Detalhes do auto-split: Modo de seleção do CD = " & rb_selecao_cd
-                    if rb_selecao_cd = MODO_SELECAO_CD__MANUAL then s_log = s_log & "; id_nfe_emitente = " & c_id_nfe_emitente_selecao_manual
-                    s_log = s_log & chr(13)
-                    blnAchou = True
-                    end if
-                s_log = s_log & vLogAutoSplit(i)
-                end if
-            next
+                    if (!blnAchou)
+                    {
+                        s_log = s_log + "Detalhes do auto-split: Modo de seleção do CD = ";
+                        if (Pedido.Ambiente.Id_nfe_emitente_selecao_manual == 0)
+                            s_log = s_log + Constantes.MODO_SELECAO_CD__AUTOMATICO;
+                        else
+                            s_log = s_log + Constantes.MODO_SELECAO_CD__MANUAL;
 
-        if s_log <> "" then
-            grava_log usuario, loja, id_pedido, cliente_selecionado, OP_LOG_PEDIDO_NOVO, s_log
-            end if
-        end if
-* */
+                        if (Pedido.Ambiente.Id_nfe_emitente_selecao_manual != 0)
+                            s_log = s_log + "; id_nfe_emitente = " + Formata_texto_log_int(Pedido.Ambiente.Id_nfe_emitente_selecao_manual);
+                        s_log = s_log + UtilsGlobais.Log.EnterParaLogBanco();
+                        blnAchou = true;
+                    }
+                    s_log = s_log + vLogAutoSplit_i;
+                }
+            }
+
+            if (!UtilsGlobais.Util.GravaLog(ContextoBdGravacao, Pedido.Ambiente.Usuario, Pedido.Ambiente.Loja, tpedido_pai.Pedido,
+                           Pedido.Cliente.Id_cliente, InfraBanco.Constantes.Constantes.OP_LOG_PEDIDO_NOVO, s_log))
+                Retorno.ListaErros.Add("Falha ao gravar log.");
 
         }
     }
+#pragma warning restore IDE0054 // Use compound assignment
 }

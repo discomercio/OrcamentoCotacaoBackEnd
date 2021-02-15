@@ -60,7 +60,7 @@ namespace Pedido.Criacao.Passo10
             #temos que verificar que não posso dar essa iinformação se não tiver a permissão
             */
             if (!Criacao.Execucao.UsuarioPermissao.Permitido(Constantes.OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_PEDIDO))
-                if (Pedido.DetalhesPedido.InstaladorInstala != 0)
+                if (Pedido.DetalhesPedido.InstaladorInstala != (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO_DEFINIDO)
                     Retorno.ListaErros.Add("Usuário não tem permissão para informar o campo InstaladorInstala (OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_PEDIDO)");
         }
     }

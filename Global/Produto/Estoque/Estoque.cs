@@ -197,7 +197,7 @@ namespace Produto.Estoque
             int qtde_disponivel = 0;
             foreach (var lote in lotes)
             {
-                if (lote.Saldo.HasValue)
+                if (lote.Saldo.HasValue && lote.Saldo > 0)
                 {
                     v_estoque.Add(lote.Id_estoque);
                     qtde_disponivel += lote.Saldo.Value;

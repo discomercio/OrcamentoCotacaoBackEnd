@@ -1,4 +1,5 @@
-﻿using InfraBanco.Modelos;
+﻿using InfraBanco.Constantes;
+using InfraBanco.Modelos;
 using Pedido.Dados.Criacao;
 using System;
 using System.Collections.Generic;
@@ -30,19 +31,37 @@ namespace Pedido.Criacao.Passo50
 
         private void Validar_garantia_indicador()
         {
-            //todo: passo50 tamanhos
             //# alert('Preencha o campo "Garantia Indicador"');
+            if (string.IsNullOrWhiteSpace(Pedido.DetalhesPedido.GarantiaIndicador))
+            {
+                Retorno.ListaErros.Add("Preencha o campo \"Garantia Indicador\"");
+                return;
+            }
+
+            if (Pedido.DetalhesPedido.GarantiaIndicador != Constantes.COD_GARANTIA_INDICADOR_STATUS__SIM
+                && Pedido.DetalhesPedido.GarantiaIndicador != Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO)
+            {
+                Retorno.ListaErros.Add("Preencha o campo \"Garantia Indicador\" com 0 ou 1");
+            }
         }
         private void Validar_bem_uso_consumo()
         {
-            //todo: passo50 tamanhos
-            //#if (!blnFlag) {
             //# alert('Informe se é "Bem de Uso/Consumo"');
+            if (Pedido.DetalhesPedido.BemDeUso_Consumo != (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO
+                && Pedido.DetalhesPedido.BemDeUso_Consumo != (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_SIM)
+            {
+                Retorno.ListaErros.Add("Informe se é \"Bem de Uso / Consumo\" com 0 ou 1");
+            }
         }
         private void Validar_instalador_instala()
         {
-            //todo: passo50 tamanhos
             //# alert('Preencha o campo "Instalador Instala"');
+            if (Pedido.DetalhesPedido.InstaladorInstala != (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO
+                && Pedido.DetalhesPedido.InstaladorInstala != (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_SIM
+                && Pedido.DetalhesPedido.InstaladorInstala != (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO_DEFINIDO)
+            {
+                Retorno.ListaErros.Add("Preencha o campo \"Instalador Instala\" com 0 ou 1 ou 2");
+            }
         }
         private void ValidarTamanhos()
         {

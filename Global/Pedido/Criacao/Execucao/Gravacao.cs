@@ -20,6 +20,20 @@ namespace Pedido.Criacao.Execucao
         private string? _id_pedido_base;
         #endregion
 
+        #region ProdutoGravacao
+        public List<ProdutoGravacao> ProdutoGravacaoLista
+        {
+            get
+            {
+                if (_produtoGravacaoLista == null)
+                    throw new ApplicationException($"_produtoGravacaoLista acessado antes de ser calculado.");
+                return _produtoGravacaoLista;
+            }
+            set => _produtoGravacaoLista = value;
+        }
+        private List<ProdutoGravacao>? _produtoGravacaoLista;
+        #endregion
+
         #region Tpedido_pai
         public Tpedido Tpedido_pai
         {
