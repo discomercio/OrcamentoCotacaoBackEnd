@@ -1,4 +1,5 @@
-﻿@ignore
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
+
 Feature: InscricaoEstadual
 
 Scenario: fazer

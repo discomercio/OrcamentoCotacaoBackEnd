@@ -18,6 +18,7 @@ Feature: vl_aprov_auto_analise_credito
 #						rs("analise_credito_usuario")="AUTOMÁTICO"
 
 Scenario: vl_aprov_auto_analise_credito automatica
+	#precisa testar a formatação no NSU: 1,00 = 1, mas 1.00 = 100
 	Given Fazer esta validacao
 
 Scenario: vl_aprov_auto_analise_credito sem automatica

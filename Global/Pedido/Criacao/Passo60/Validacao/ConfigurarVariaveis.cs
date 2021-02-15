@@ -1,7 +1,10 @@
-﻿using Pedido.Dados.Criacao;
+﻿using InfraBanco.Constantes;
+using Microsoft.EntityFrameworkCore;
+using Pedido.Dados.Criacao;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Pedido.Criacao.Passo60.Validacao
@@ -27,9 +30,6 @@ namespace Pedido.Criacao.Passo60.Validacao
         private async Task ConfigurarVariaveisExecutar()
         {
 
-            //todo: calcular Vl_aprov_auto_analise_credito e Comissao_loja_indicou
-            Criacao.Execucao.Vl_aprov_auto_analise_credito = 0;
-            Criacao.Execucao.Comissao_loja_indicou = 0;
 
             /*
 '	OBTÉM O VALOR LIMITE P/ APROVAÇÃO AUTOMÁTICA DA ANÁLISE DE CRÉDITO
@@ -41,21 +41,46 @@ namespace Pedido.Criacao.Passo60.Validacao
 			end if
 		if rs.State <> 0 then rs.Close
 		end if
-	
-'	OBTÉM O PERCENTUAL DA COMISSÃO
-	if alerta = "" then
-		if s_loja_indicou<>"" then
-			s = "SELECT loja, comissao_indicacao FROM t_LOJA WHERE (loja='" & s_loja_indicou & "')"
-			set rs = cn.execute(s)
-			if Not rs.Eof then
-				comissao_loja_indicou = rs("comissao_indicacao")
-			else
-				alerta = "Loja " & s_loja_indicou & " não está cadastrada."
-				end if
-			end if
-		end if
-	
 	*/
+            {
+                Criacao.Execucao.Vl_aprov_auto_analise_credito = 0;
+                var valorBd = await (from l in Criacao.ContextoProvider.GetContextoLeitura().Tcontroles
+                                     where l.Id_Nsu == Constantes.ID_PARAM_CAD_VL_APROV_AUTO_ANALISE_CREDITO
+                                     select l.Nsu).ToListAsync();
+                if (valorBd.Count() > 0)
+                {
+                    CultureInfo FormatarEmPortugues = new CultureInfo("pt-BR");
+                    decimal.Parse(valorBd[0], FormatarEmPortugues);
+                }
+            }
+            /*
+        '	OBTÉM O PERCENTUAL DA COMISSÃO
+            if alerta = "" then
+                if s_loja_indicou<>"" then
+                    s = "SELECT loja, comissao_indicacao FROM t_LOJA WHERE (loja='" & s_loja_indicou & "')"
+                    set rs = cn.execute(s)
+                    if Not rs.Eof then
+                        comissao_loja_indicou = rs("comissao_indicacao")
+                    else
+                        alerta = "Loja " & s_loja_indicou & " não está cadastrada."
+                        end if
+                    end if
+                end if
+
+            */
+
+            Criacao.Execucao.Comissao_loja_indicou = 0;
+            if (!string.IsNullOrWhiteSpace(Pedido.Ambiente.Loja_indicou))
+            {
+                var valorBd = await (from l in Criacao.ContextoProvider.GetContextoLeitura().Tlojas
+                                     where l.Loja == Pedido.Ambiente.Loja_indicou
+                                     select l.Comissao_indicacao).ToListAsync();
+                if (valorBd.Count() > 0)
+                {
+                    var valor = valorBd[0];
+                    Criacao.Execucao.Comissao_loja_indicou = valor;
+                }
+            }
         }
 
         private async Task ConfigurarBlnPedidoECommerceCreditoOkAutomatico()

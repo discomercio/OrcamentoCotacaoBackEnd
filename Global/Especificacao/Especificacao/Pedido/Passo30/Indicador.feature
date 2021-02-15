@@ -1,10 +1,11 @@
-﻿@ignore
-@Especificacao.Pedido.Passo30
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
+
 Feature: Validações do Indicador
 
+
 Background: Configuração
-	#na ApiMagento, o valor é lido do appsettings. Verificado no "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido"
-	Given Ignorar scenario no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido"
+#	#na ApiMagento, o valor é lido do appsettings. Verificado no "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido"
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido"
 
 	Given Reiniciar banco ao terminar cenário
 
@@ -162,8 +163,8 @@ Scenario: indicador preenchido
 Scenario: indicador válido - ID_PARAM_SITE = COD_SITE_ASSISTENCIA_TECNICA
 
 	#somente a loja tem a configuracao de ID_PARAM_SITE, ignoramos nos outros ambientes
-	Given Ignorar scenario no ambiente "Especificacao.Prepedido.PrepedidoSteps"
-	Given Ignorar scenario no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
+	Given Ignorar cenário no ambiente "Especificacao.Prepedido.PrepedidoSteps"
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 
 	#	if ID_PARAM_SITE = COD_SITE_ASSISTENCIA_TECNICA then
 	#		strSql = "SELECT " & _
@@ -174,7 +175,7 @@ Scenario: indicador válido - ID_PARAM_SITE = COD_SITE_ASSISTENCIA_TECNICA
 	#				" ORDER BY" & _
 	#					" apelido"
 	Given Pedido base
-	Given Reiniciar appsettings ao terminar cenário
+	Given Reiniciar appsettings
 	When Informo "ID_PARAM_SITE" = "COD_SITE_ASSISTENCIA_TECNICA"
 	When Informo "loja" = "201"
 	And Informo "rb_indicacao" = "S"
@@ -280,7 +281,7 @@ Scenario: indicador válido - NUMERO_LOJA_OLD03_BONIFICACAO
 
 Scenario: indicador válido - OP_LJA_SELECIONAR_QUALQUER_INDICADOR_EM_PEDIDO_NOVO
 	Given Reiniciar permissões do usuário quando terminar o cenário
-	And Usuário com permissão OP_LJA_SELECIONAR_QUALQUER_INDICADOR_EM_PEDIDO_NOVO
+	And Usuário com permissão "OP_LJA_SELECIONAR_QUALQUER_INDICADOR_EM_PEDIDO_NOVO"
 
 	Given Pedido base
 	When Informo "loja" = "201"
@@ -317,7 +318,7 @@ Scenario: indicador válido - outras lojas
 #		end if
 
 	Given Reiniciar permissões do usuário quando terminar o cenário
-	And Usuário sem permissão OP_LJA_SELECIONAR_QUALQUER_INDICADOR_EM_PEDIDO_NOVO
+	And Usuário sem permissão "OP_LJA_SELECIONAR_QUALQUER_INDICADOR_EM_PEDIDO_NOVO"
 
 	#usamos a 205
 	Given Pedido base
@@ -349,4 +350,4 @@ Scenario: indicador e perc_rt
 	#                alert('Não é possível gravar o pedido com o campo "Indicador" vazio e "COM(%)" maior do que zero!!');
 	#                f.c_perc_RT.focus();
 	#                return;
-	Given fazer esta validação
+	#Given fazer esta validação

@@ -37,13 +37,11 @@ Scenario: Loja = "202" (vamos ler do appsettings)
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "loja" = "202"
 
-@ignore
+
 Scenario: Loja diferente de "201"
-	#Esse teste retorna a mensagem "Produto não cadastrado para a loja. Produto: 00322"
-	#talvez incluir uma validação para magento
 	Given Pedido base
 	And Informo "appsettings.Loja" = "001"
-	Then Erro "pegar erro"
+	Then Erro "Loja não existe!"
 
 Scenario: Vendedor = usuário que fez o login (ler do token)
 	Given Pedido base
