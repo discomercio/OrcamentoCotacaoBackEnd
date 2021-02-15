@@ -40,6 +40,9 @@ namespace Especificacao.Testes.Utils.BancoTestes
             using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
             switch (tabela)
             {
+                case "t_PRODUTO_LOJA":
+                    LimparTabelaDbSet<TprodutoLoja>(db.TprodutoLojas);
+                    break;
                 case "t_PERCENTUAL_CUSTO_FINANCEIRO_FORNECEDOR":
                     LimparTabelaDbSet<TpercentualCustoFinanceiroFornecedor>(db.TpercentualCustoFinanceiroFornecedors);
                     break;
