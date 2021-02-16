@@ -43,6 +43,7 @@ namespace InfraBanco.Constantes
         public const int FATOR_CRIPTO_SESSION_CTRL = 1329;
 #endif
 
+        public const int MAX_TAM_OBS1 = 500;
 
         public const int FATOR_BD = 1209;
 

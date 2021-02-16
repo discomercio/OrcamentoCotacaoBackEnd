@@ -92,3 +92,17 @@ Scenario: validar email xml
 	When Informo "EndEtg_email_xml" = "gabriel.com.br"
 	Then Erro "E-mail XML inválido!"
 
+
+Scenario: obs1 tamanho
+	#loja/PedidoNovoConsiste.asp
+	#s = "" + f.c_obs1.value;
+	#if (s.length > MAX_TAM_OBS1) {
+	#	alert('Conteúdo de "Observações " excede em ' + (s.length-MAX_TAM_OBS1) + ' caracteres o tamanho máximo de ' + MAX_TAM_OBS1 + '!!');
+
+	Given Pedido base
+	When Informo "Obs_1" com "501" caracteres
+	Then Erro "regex .*Conteúdo de \"Observações\" excede em .*"
+
+	Given Pedido base
+	When Informo "Obs_1" com "500" caracteres
+	Then Sem nenhum erro

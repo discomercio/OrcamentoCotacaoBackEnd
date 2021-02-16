@@ -51,6 +51,22 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Criaca
             cadastrarPedido.WhenInformo(p0, p1);
         }
 
+        [When(@"Informo ""(.*)"" com ""(.*)"" caracteres")]
+        public void WhenInformoCaracteres(string p0, int p1)
+        {
+            //                       10        20        30        40        50        60        70        80   
+            string texto = "";
+            for (int i = 0; texto.Length < p1; i++)
+            {
+                i = i == 10 ? 0 : i;
+                texto += i.ToString();
+            }
+
+            //Testes.Utils.LogTestes.LogOperacoes2.Informo(p0, p1, this);
+            cadastrarPedido.WhenInformo(p0, texto);
+        }
+
+
         [Then(@"Erro ""(.*)""")]
         public void ThenErro(string p0)
         {
