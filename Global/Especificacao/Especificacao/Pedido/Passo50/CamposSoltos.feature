@@ -10,6 +10,8 @@ Scenario: obs1 tamanho
 	#s = "" + f.c_obs1.value;
 	#if (s.length > MAX_TAM_OBS1) {
 	#	alert('Conteúdo de "Observações " excede em ' + (s.length-MAX_TAM_OBS1) + ' caracteres o tamanho máximo de ' + MAX_TAM_OBS1 + '!!');
+	#Implementado em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf_Opcionais.feature
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	When Informo "obs1" = "texto com 500 caracteres"
 	Then Erro "regex .*Conteúdo de \"Observações \" excede em .*"
@@ -23,6 +25,8 @@ Scenario: c_nf_texto tamanho
 	#s = "" + f.c_nf_texto.value;
 	#if (s.length > MAX_TAM_NF_TEXTO) {
 	#    alert('Conteúdo de "Constar na NF" excede em ' + (s.length-MAX_TAM_NF_TEXTO) + ' caracteres o tamanho máximo de ' + MAX_TAM_NF_TEXTO + '!!');
+	#Implementado em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\EspecificacaoAdicional\FretePontoReferencia.feature
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	When Informo "nf_texto" = "texto com 801 caracteres"
 	Then Erro "Conteúdo de "Constar na NF" excede em.*"
@@ -49,6 +53,8 @@ Scenario: bem_uso_consumo
 	#loja/PedidoNovoConsiste.asp
 	#if (!blnFlag) {
 	#	alert('Informe se é "Bem de Uso/Consumo"');
+	#Implementado em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\ValidacaoCampos\PedidoMagentoDto.feature
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	When Informo "bem_uso_consumo" = "99"
 	Then Erro "Informe se é "Bem de Uso/Consumo""

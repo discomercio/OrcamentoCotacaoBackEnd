@@ -2,6 +2,7 @@
 Feature: EntregaImediata
 
 Background:
+	#Implementado em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\ValidacaoCampos\PedidoMagentoDto.feature
 	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 
 Scenario: EntregaImediata
