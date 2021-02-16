@@ -386,8 +386,8 @@ this.FeatureBackground();
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"pu_vencto_apos\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 94
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"usuario_st_pagto\" = \"USUA" +
-                        "RIOAPIMAGENTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"usuario_st_pagto\" = \"USRM" +
+                        "AG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 95
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"custoFinancFornecTipoParc" +
@@ -589,8 +589,7 @@ this.FeatureBackground();
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 139
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"vendedor\" = \"USUARIOAPIMA" +
-                        "GENTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"vendedor\" = \"USRMAG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 140
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"midia\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -615,8 +614,8 @@ this.FeatureBackground();
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"NFe_xPed\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 153
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"usuario_cadastro\" = \"USUA" +
-                        "RIOAPIMAGENTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"usuario_cadastro\" = \"USRM" +
+                        "AG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 154
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"plataforma_origem_pedido\"" +
@@ -1045,7 +1044,7 @@ this.FeatureBackground();
 #line hidden
 #line 244
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"etg_imediata_usuario\" = \"" +
-                        "USUARIOAPIMAGENTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "USRMAG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 245
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"PrevisaoEntregaUsuarioUlt" +
@@ -1060,7 +1059,7 @@ this.FeatureBackground();
 #line hidden
 #line 248
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"InstaladorInstalaUsuarioU" +
-                        "ltAtualiz\" = \"USUARIOAPIMAGENTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "ltAtualiz\" = \"USRMAG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 249
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"GarantiaIndicadorStatus\" " +
@@ -1068,7 +1067,7 @@ this.FeatureBackground();
 #line hidden
 #line 250
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"GarantiaIndicadorUsuarioU" +
-                        "ltAtualiz\" = \"USUARIOAPIMAGENTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "ltAtualiz\" = \"USRMAG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

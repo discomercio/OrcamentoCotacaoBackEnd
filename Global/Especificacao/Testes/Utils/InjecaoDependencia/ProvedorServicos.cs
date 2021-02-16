@@ -28,10 +28,17 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
 
             services.AddDbContext<InfraBanco.ContextoBdBasico>(options =>
             {
-                var conexaolocal = "server=localhost;database=ARCLUBE_testes2;Integrated Security=SSPI;";
-                options.UseSqlServer(conexaolocal);
-                //options.UseInMemoryDatabase("bancomemoria");
-                //options.ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+                var usarSqlServer = false;
+                if (usarSqlServer)
+                {
+                    var conexaolocal = "server=ITS-DBDEV\\SQL2017;database=ARCLUBE_TESTES;Uid=appAirClube;Pwd=appAirClube;";
+                    options.UseSqlServer(conexaolocal);
+                }
+                else
+                {
+                    options.UseInMemoryDatabase("bancomemoria");
+                    options.ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+                }
                 options.EnableSensitiveDataLogging();
             });
             services.AddDbContext<InfraBanco.ContextoCepBd>(options =>

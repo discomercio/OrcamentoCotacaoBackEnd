@@ -1,6 +1,6 @@
 ﻿[
   {
-    "usuario": "USUARIOAPIUNIS",
+    "usuario": "USRAPUN",
     "id_perfil": "000000020007",
     "dt_cadastro": "2020-06-16T03:00:00Z",
     "usuario_cadastro": "PRAGMATICA",
@@ -8,7 +8,7 @@
     "timestamp": 0
   },
   {
-    "usuario": "USUARIOAPIMAGENTO",
+    "usuario": "USRMAG",
     "id_perfil": "000000020008",
     "dt_cadastro": "2020-06-16T03:00:00Z",
     "usuario_cadastro": "PRAGMATICA",
@@ -16,7 +16,7 @@
     "timestamp": 0
   },
   {
-    "usuario": "USUARIOLOJA",
+    "usuario": "USRLOJA",
     "id_perfil": "000000020009",
     "dt_cadastro": "2020-06-16T03:00:00Z",
     "usuario_cadastro": "PRAGMATICA",
@@ -24,7 +24,7 @@
     "timestamp": 0
   },
   {
-    "usuario": "USUARIOPREPEDIDOAPI",
+    "usuario": "USRPAPI",
     "id_perfil": "000000020007",
     "dt_cadastro": "2020-06-16T03:00:00Z",
     "usuario_cadastro": "PRAGMATICA",

@@ -63,6 +63,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
 
         private void InicalizarInterno(bool apagarDadosExistentes)
         {
+            //todo: tirar parametro
             apagarDadosExistentes = true;
             using (var db = contextoBdProvider.GetContextoGravacaoParaUsing())
             {
@@ -154,10 +155,10 @@ namespace Especificacao.Testes.Utils.BancoTestes
         {
             static public class Orcamentista
             {
-                public static string Apelido_com_ra = "Apelido_com_ra";
-                public static string Apelido_sem_ra = "Apelido_sem_ra";
-                public static string Apelido_sem_vendedor = "Apelido_sem_vendedor";
-                public static string Apelido_sem_loja = "Apelido_sem_loja";
+                public static string Apelido_com_ra = "Ap_com_ra";
+                public static string Apelido_sem_ra = "Ap_sem_ra";
+                public static string Apelido_sem_vendedor = "Ap_sem_ven";
+                public static string Apelido_sem_loja = "Ap_sem_lj";
                 public static string ApelidoNaoExiste = "XXX";
             }
         }
@@ -170,6 +171,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 Apelido = Dados.Orcamentista.Apelido_com_ra.ToUpper(),
                 Vendedor = Dados.Orcamentista.Apelido_com_ra.ToUpper(),
                 Loja = Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE,
+                Razao_Social_Nome= "Teste",
                 Permite_RA_Status = 1
             });
             db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
@@ -177,22 +179,26 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 Apelido = Dados.Orcamentista.Apelido_sem_ra.ToUpper(),
                 Vendedor = Dados.Orcamentista.Apelido_sem_ra.ToUpper(),
                 Loja = Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE,
+                Razao_Social_Nome = "Teste",
                 Permite_RA_Status = 0
             });
             db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
             {
                 Apelido = Dados.Orcamentista.Apelido_sem_vendedor.ToUpper(),
                 Loja = Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE,
+                Razao_Social_Nome = "Teste",
                 Permite_RA_Status = 0
             });
             db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
             {
                 Apelido = Dados.Orcamentista.Apelido_sem_loja.ToUpper(),
                 Vendedor = Dados.Orcamentista.Apelido_sem_loja.ToUpper(),
-                Loja = "loja nao e-commerce",
+                Loja = "321",
+                Razao_Social_Nome = "Teste",
                 Permite_RA_Status = 1
             });
             db.SaveChanges();
+            db.transacao.Commit();
         }
 
     }

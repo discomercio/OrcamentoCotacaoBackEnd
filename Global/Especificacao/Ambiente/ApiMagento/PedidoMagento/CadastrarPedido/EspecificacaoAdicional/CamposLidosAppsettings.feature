@@ -46,11 +46,11 @@ Scenario: Loja diferente de "201"
 Scenario: Vendedor = usuário que fez o login (ler do token)
 	Given Pedido base
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro criado, verificar campo "vendedor" = "USUARIOAPIMAGENTO"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vendedor" = "USRMAG"
 
 @GerenciamentoBanco
 Scenario: Vendedor diferente do token
 	Given Reiniciar banco ao terminar cenário
 	Given Pedido base
-	And Tabela "t_USUARIO" apagar registro com campo "usuario" = "USUARIOAPIMAGENTO"
+	And Tabela "t_USUARIO" apagar registro com campo "usuario" = "USRMAG"
 	Then Erro "Usuário não encontrado."
