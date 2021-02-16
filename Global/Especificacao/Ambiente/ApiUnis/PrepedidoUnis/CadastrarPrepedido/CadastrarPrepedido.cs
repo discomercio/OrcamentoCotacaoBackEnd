@@ -254,6 +254,9 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
                 case "Endereco_EmailXml":
                     prePedidoUnisDto.EnderecoCadastralCliente.Endereco_email_xml = valor;
                     return;
+                case "FormaPagtoCriacao.Rb_forma_pagto":
+                    prePedidoUnisDto.FormaPagtoCriacao.Tipo_Parcelamento = Convert.ToInt16(valor);
+                    return;
                 default:
                     Assert.Equal("", $"{campo} desconhecido na rotina Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.WhenInformo");
                     break;
