@@ -2,7 +2,7 @@
 Feature: FormaPagamentoDivergenciaTotal
 
 Background: não executado na api magento
-	#ignoramos na API magento porque é feito em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\EspecificacaoAdicional\FormaPagtoCriacaoMagentoDto.feature
+	#ignoramos na API magento porque é feito em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\EspecificacaoAdicional\FormaPagtoCriacaoMagento.feature
 	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	#no CadastrarPrepedidoPrepedidoApi parece que a ordem de validação é diferente
 	Given No ambiente "Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApiBll.CadastrarPrepedido.CadastrarPrepedidoPrepedidoApi" mapear erro "Valor total da forma de pagamento diferente do valor total!" para "regex Tipo do parcelamento .* está incorreto!"

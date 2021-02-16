@@ -12,6 +12,7 @@ Scenario: COD_FORMA_PAGTO_PARCELA_UNICA - verifica campos na tabela t_PEDIDO
 	When Informo "C_pu_valor" = "3132.90"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "tipo_parcelamento" = "5"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "CustoFinancFornecTipoParcelamento" = "SE"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "pu_forma_pagto" = "2"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "pu_vencto_apos" = "30"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "pu_valor" = "3132.90"

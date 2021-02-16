@@ -23,6 +23,7 @@ Scenario: COD_FORMA_PAGTO_PARCELADO_CARTAO - verifica campos na tabela t_PEDIDO
 	When Informo "VlTotalDestePedido" = "3394.94"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "tipo_parcelamento" = "2"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "CustoFinancFornecTipoParcelamento" = "SE"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "pc_qtde_parcelas" = "1"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "pc_valor_parcela" = "3440.00"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "vl_total_NF" = "3440.00"
