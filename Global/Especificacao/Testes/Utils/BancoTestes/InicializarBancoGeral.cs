@@ -63,7 +63,6 @@ namespace Especificacao.Testes.Utils.BancoTestes
 
         private void InicalizarInterno()
         {
-            //todo: tirar parametro
             var apagarDadosExistentes = true;
             using (var db = contextoBdProvider.GetContextoGravacaoParaUsing())
             {

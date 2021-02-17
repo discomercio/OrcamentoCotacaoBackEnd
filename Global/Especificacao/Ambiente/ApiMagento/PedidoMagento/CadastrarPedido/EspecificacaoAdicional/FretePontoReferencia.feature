@@ -1,26 +1,27 @@
 ﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
 Feature: FretePontoReferencia
 
-
+@ignore
 Scenario: campo "frete" -> se for <> 0, vamos usar o indicador. se for 0, sem indicador
 	#Frete/RA
 	#Valor de Frete: analisar se há valor de frete para definir se o pedido terá RA ou não.
 	#- campo "frete" -> se for <> 0, vamos usar o indicador. se for 0, sem indicador
 	#Se houver frete, deve-se automaticamente informar que o pedido possui RA e selecionar o indicador 'FRETE'.
-	#O campo vl_frete não existia no mapeamento, foi inserido e a atribuição de valor de frete não deve estar implementada
 	Given Pedido base
 	When Informo "Frete" = "10.00"
 	When Informo "appsettings.Loja" = "201"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "indicador" = "FRETE"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "permite_RA_status" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "Opcao_Possui_RA" = "S"
 
 Scenario: pedido sem indicador
 	Given Pedido base
 	When Informo "Frete" = "0"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "indicador" = ""
-	And Tabela "t_PEDIDO" registro criado, verificar campo "permite_RA_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "permite_RA_status" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "Opcao_Possui_RA" = "N"
 
 #esse teste esta sendo verificado no teste acima
 @ignore

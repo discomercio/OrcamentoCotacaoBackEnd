@@ -289,7 +289,8 @@ namespace Produto
 
         }
 
-        public static void VerificarRegrasAssociadasAosProdutos(List<RegrasBll> lstRegras, List<string> lstErros, string clienteUf, string clienteTipo)
+        public static void VerificarRegrasAssociadasAosProdutos(List<RegrasBll> lstRegras, List<string> lstErros, string clienteUf, string clienteTipo,
+            int id_nfe_emitente_selecao_manual)
         {
             foreach (var r in lstRegras)
             {
@@ -330,7 +331,8 @@ namespace Produto
                             }
                         }
                     }
-                    if (verificaErros == 0)
+                    //'A SELEÇÃO MANUAL DE CD PERMITE O USO DE CD DESATIVADO
+                    if (verificaErros == 0 && id_nfe_emitente_selecao_manual == 0)
                     {
                         lstErros.Add("Regra de consumo do estoque '" + r.TwmsRegraCd.Apelido + "' associada ao produto (" +
                             r.Fabricante + ")" + r.Produto + " não especifica nenhum CD ativo para clientes '" +

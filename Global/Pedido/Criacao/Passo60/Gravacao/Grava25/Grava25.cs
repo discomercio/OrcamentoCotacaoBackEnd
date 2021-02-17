@@ -3,6 +3,7 @@ using Pedido.Dados.Criacao;
 using System;
 using System.Threading.Tasks;
 
+#pragma warning disable IDE0054 // Use compound assignment
 namespace Pedido.Criacao.Passo60.Gravacao.Grava25
 {
     class Grava25 : PassoBaseGravacao
@@ -24,100 +25,101 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava25
 
             //PedidoNovoConfirma.asp linha mais ou menos 1073
             //'VERIFICA SE AS REGRAS ASSOCIADAS AOS PRODUTOS ESTÃO OK
-            VerificaRegrasAssociadasAosProdutos();
-            CdSelecionadoEstaHabilitadoEmTodasAsRegras();
+            Produto.ProdutoGeralBll.VerificarRegrasAssociadasAosProdutos(Gravacao.ListaRegrasControleEstoque,
+                Retorno.ListaErros, Pedido.EnderecoCadastralCliente.Endereco_uf, Pedido.EnderecoCadastralCliente.Endereco_tipo_pessoa,
+                Pedido.Ambiente.Id_nfe_emitente_selecao_manual);
+
+            await CdSelecionadoEstaHabilitadoEmTodasAsRegras();
 
             MarcarErroSeNaoExsitir();
 
         }
 
-        public void VerificaRegrasAssociadasAosProdutos()
+        public async Task CdSelecionadoEstaHabilitadoEmTodasAsRegras()
         {
             /*
-				if alerta="" then
-					'VERIFICA SE AS REGRAS ASSOCIADAS AOS PRODUTOS ESTÃO OK
-					for iRegra=LBound(vProdRegra) to UBound(vProdRegra)
-						if Trim(vProdRegra(iRegra).produto) <> "" then
-							if converte_numero(vProdRegra(iRegra).regra.id) = 0 then
-								alerta=texto_add_br(alerta)
-								alerta=alerta & "Produto (" & vProdRegra(iRegra).fabricante & ")" & vProdRegra(iRegra).produto & " não possui regra de consumo do estoque associada"
-							elseif vProdRegra(iRegra).regra.st_inativo = 1 then
-								alerta=texto_add_br(alerta)
-								alerta=alerta & "Regra de consumo do estoque '" & vProdRegra(iRegra).regra.apelido & "' associada ao produto (" & vProdRegra(iRegra).fabricante & ")" & vProdRegra(iRegra).produto & " está desativada"
-							elseif vProdRegra(iRegra).regra.regraUF.st_inativo = 1 then
-								alerta=texto_add_br(alerta)
-								alerta=alerta & "Regra de consumo do estoque '" & vProdRegra(iRegra).regra.apelido & "' associada ao produto (" & vProdRegra(iRegra).fabricante & ")" & vProdRegra(iRegra).produto & " está bloqueada para a UF '" & EndCob_uf & "'"
-							elseif vProdRegra(iRegra).regra.regraUF.regraPessoa.st_inativo = 1 then
-								alerta=texto_add_br(alerta)
-								alerta=alerta & "Regra de consumo do estoque '" & vProdRegra(iRegra).regra.apelido & "' associada ao produto (" & vProdRegra(iRegra).fabricante & ")" & vProdRegra(iRegra).produto & " está bloqueada para clientes '" & descricao_tipo_pessoa & "' da UF '" & EndCob_uf & "'"
-							elseif converte_numero(vProdRegra(iRegra).regra.regraUF.regraPessoa.spe_id_nfe_emitente) = 0 then
-								alerta=texto_add_br(alerta)
-								alerta=alerta & "Regra de consumo do estoque '" & vProdRegra(iRegra).regra.apelido & "' associada ao produto (" & vProdRegra(iRegra).fabricante & ")" & vProdRegra(iRegra).produto & " não especifica nenhum CD para aguardar produtos sem presença no estoque para clientes '" & descricao_tipo_pessoa & "' da UF '" & EndCob_uf & "'"
-							else
-								qtde_CD_ativo = 0
-								for iCD=LBound(vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD) to UBound(vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD)
-									if converte_numero(vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD(iCD).id_nfe_emitente) > 0 then
-										if vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD(iCD).st_inativo = 0 then
-											qtde_CD_ativo = qtde_CD_ativo + 1
-											end if
-										end if
-									next
-								'A SELEÇÃO MANUAL DE CD PERMITE O USO DE CD DESATIVADO
-								if (qtde_CD_ativo = 0) And (id_nfe_emitente_selecao_manual = 0) then
-									alerta=texto_add_br(alerta)
-									alerta=alerta & "Regra de consumo do estoque '" & vProdRegra(iRegra).regra.apelido & "' associada ao produto (" & vProdRegra(iRegra).fabricante & ")" & vProdRegra(iRegra).produto & " não especifica nenhum CD ativo para clientes '" & descricao_tipo_pessoa & "' da UF '" & EndCob_uf & "'"
-									end if
-								end if
-							end if
-						next
-					end if 'if alerta=""
-*/
-
-            //todo: fazer ewsta nritna no grava25
-            // usar ProdutoGeralBll.VerificarRegrasAssociadasAosProdutos
-
-        }
-        public void CdSelecionadoEstaHabilitadoEmTodasAsRegras()
-        {
-            //todo: fazer ewsta nritna no grava25
-
-            /*
-                            'NO CASO DE SELEÇÃO MANUAL DO CD, VERIFICA SE O CD SELECIONADO ESTÁ HABILITADO EM TODAS AS REGRAS
-                                if alerta="" then
-                                if id_nfe_emitente_selecao_manual <> 0 then
-                                    alerta_aux = ""
-                                    for iRegra=LBound(vProdRegra) to UBound(vProdRegra)
-                                        blnAchou = False
-                                        blnDesativado = False
-                                        if Trim(vProdRegra(iRegra).produto) <> "" then
-                                            for iCD=LBound(vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD) to UBound(vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD)
-                                                if vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD(iCD).id_nfe_emitente = id_nfe_emitente_selecao_manual then
-                                                    blnAchou = True
-                                                    if vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD(iCD).st_inativo = 1 then blnDesativado = True
-                                                    exit for
-                                                    end if
-                                                next
-                                            end if
-
-                                        if Not blnAchou then
-                                            alerta_aux=texto_add_br(alerta_aux)
-                                            alerta_aux=alerta_aux & "Produto (" & vProdRegra(iRegra).fabricante & ")" & vProdRegra(iRegra).produto & ": regra '" & vProdRegra(iRegra).regra.apelido & "' (Id=" & vProdRegra(iRegra).regra.id & ") não permite o CD '" & obtem_apelido_empresa_NFe_emitente(id_nfe_emitente_selecao_manual) & "'"
-                                        elseif blnDesativado then
-                                            '16/09/2017: FOI REALIZADA UMA ALTERAÇÃO P/ QUE A SELEÇÃO MANUAL DE CD PERMITA O USO DE CD DESATIVADO
-                                            'alerta_aux=texto_add_br(alerta_aux)
-                                            'alerta_aux=alerta_aux & "Produto (" & vProdRegra(iRegra).fabricante & ")" & vProdRegra(iRegra).produto & ": regra '" & vProdRegra(iRegra).regra.apelido & "' (Id=" & vProdRegra(iRegra).regra.id & ") define o CD '" & obtem_apelido_empresa_NFe_emitente(id_nfe_emitente_selecao_manual) & "' como 'desativado'"
-                                            end if
-                                        next
-
-                                    if alerta_aux <> "" then
-                                        alerta=texto_add_br(alerta)
-                                        alerta=alerta & "O CD selecionado manualmente não pode ser usado devido aos seguintes motivos:"
-                                        alerta=texto_add_br(alerta)
-                                        alerta=alerta & alerta_aux
-                                        end if
+            'NO CASO DE SELEÇÃO MANUAL DO CD, VERIFICA SE O CD SELECIONADO ESTÁ HABILITADO EM TODAS AS REGRAS
+                if id_nfe_emitente_selecao_manual <> 0 then
+                    for iRegra=LBound(vProdRegra) to UBound(vProdRegra)
+                        blnAchou = False
+                        blnDesativado = False
+                        if Trim(vProdRegra(iRegra).produto) <> "" then
+                            for iCD=LBound(vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD) to UBound(vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD)
+                                if vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD(iCD).id_nfe_emitente = id_nfe_emitente_selecao_manual then
+                                    blnAchou = True
+                                    if vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD(iCD).st_inativo = 1 then blnDesativado = True
+                                    exit for
                                     end if
-                                end if
+                                next
+                            end if
+
+                        if Not blnAchou then
+                            alerta_aux=texto_add_br(alerta_aux)
+                            alerta_aux=alerta_aux & "Produto (" & vProdRegra(iRegra).fabricante & ")" & vProdRegra(iRegra).produto & ": regra '" & vProdRegra(iRegra).regra.apelido & "' (Id=" & vProdRegra(iRegra).regra.id & ") não permite o CD '" & obtem_apelido_empresa_NFe_emitente(id_nfe_emitente_selecao_manual) & "'"
+                        elseif blnDesativado then
+                            '16/09/2017: FOI REALIZADA UMA ALTERAÇÃO P/ QUE A SELEÇÃO MANUAL DE CD PERMITA O USO DE CD DESATIVADO
+                            'alerta_aux=texto_add_br(alerta_aux)
+                            'alerta_aux=alerta_aux & "Produto (" & vProdRegra(iRegra).fabricante & ")" & vProdRegra(iRegra).produto & ": regra '" & vProdRegra(iRegra).regra.apelido & "' (Id=" & vProdRegra(iRegra).regra.id & ") define o CD '" & obtem_apelido_empresa_NFe_emitente(id_nfe_emitente_selecao_manual) & "' como 'desativado'"
+                            end if
+                        next
+
+                    if alerta_aux <> "" then
+                        alerta=texto_add_br(alerta)
+                        alerta=alerta & "O CD selecionado manualmente não pode ser usado devido aos seguintes motivos:"
+                        alerta=texto_add_br(alerta)
+                        alerta=alerta & alerta_aux
+                        end if
+                    end if
+                end if
                             */
+
+            if (Pedido.Ambiente.Id_nfe_emitente_selecao_manual == 0)
+                return;
+
+            string alerta_aux = "";
+            foreach (var vProdRegra_iRegra in Gravacao.ListaRegrasControleEstoque)
+            {
+                var blnAchou = false;
+                var blnDesativado = false;
+                if (!string.IsNullOrWhiteSpace(vProdRegra_iRegra.Produto))
+                {
+                    foreach (var regraPessoa_vCD_iCD in vProdRegra_iRegra.TwmsCdXUfXPessoaXCd)
+                    {
+                        if (regraPessoa_vCD_iCD.Id_nfe_emitente == Pedido.Ambiente.Id_nfe_emitente_selecao_manual)
+                        {
+                            blnAchou = true;
+                            if (regraPessoa_vCD_iCD.St_inativo == 1)
+                            {
+                                blnDesativado = true;
+                            }
+                            break;
+                        }
+                    }
+                }
+                if (!blnAchou)
+                {
+                    if (!String.IsNullOrWhiteSpace(alerta_aux))
+                        alerta_aux = alerta_aux + UtilsGlobais.Util.EnterParaMensagemErro();
+                    alerta_aux = alerta_aux + "Produto (" + vProdRegra_iRegra.Fabricante
+                        + ")" + vProdRegra_iRegra.Produto + ": regra '" + vProdRegra_iRegra.TwmsRegraCd.Apelido
+                        + "' (Id=" + vProdRegra_iRegra.TwmsRegraCd.Id + ") não permite o CD '"
+                        + await (UtilsGlobais.Util.Obtem_apelido_empresa_NFe_emitente_Gravacao(Pedido.Ambiente.Id_nfe_emitente_selecao_manual, ContextoBdGravacao)) + "'";
+                }
+                else if (blnDesativado)
+                {
+                    //'16/09/2017: FOI REALIZADA UMA ALTERAÇÃO P/ QUE A SELEÇÃO MANUAL DE CD PERMITA O USO DE CD DESATIVADO
+                    //'alerta_aux=texto_add_br(alerta_aux)
+                    //'alerta_aux=alerta_aux & "Produto (" & vProdRegra(iRegra).fabricante & ")" & vProdRegra(iRegra).produto & ": regra '" & vProdRegra(iRegra).regra.apelido & "' (Id=" & vProdRegra(iRegra).regra.id & ") define o CD '" & obtem_apelido_empresa_NFe_emitente(id_nfe_emitente_selecao_manual) & "' como 'desativado'"
+                }
+            }
+
+            if (!String.IsNullOrWhiteSpace(alerta_aux))
+            {
+                var alerta = "O CD selecionado manualmente não pode ser usado devido aos seguintes motivos:";
+                alerta = alerta + UtilsGlobais.Util.EnterParaMensagemErro();
+                alerta = alerta + alerta_aux;
+                Retorno.ListaErros.Add(alerta);
+            }
 
         }
 
@@ -137,3 +139,4 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava25
         }
     }
 }
+#pragma warning restore IDE0054 // Use compound assignment

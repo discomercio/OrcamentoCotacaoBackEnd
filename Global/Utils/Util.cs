@@ -997,6 +997,7 @@ namespace UtilsGlobais
 
         public static async Task<Tparametro> BuscarRegistroParametro(string id, ContextoBdProvider contextoProvider)
         {
+            //rotina get_registro_t_parametro no ASP
             var db = contextoProvider.GetContextoLeitura();
 
             var parametroTask = from c in db.Tparametros
@@ -1267,6 +1268,10 @@ namespace UtilsGlobais
 #nullable disable
         }
 
-        
+        public static string EnterParaMensagemErro()
+        {
+            return "\n\r";
+        }
+
     }
 }

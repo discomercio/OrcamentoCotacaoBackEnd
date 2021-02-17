@@ -1368,6 +1368,7 @@ namespace InfraBanco.Constantes
 
         //'   NÚMERO DE LINHAS DO CAMPO "TEXTO CONSTAR NF" DO PEDIDO
         public const int MAX_LINHAS_NF_TEXTO_CONSTAR = 2;
+        public const int MAX_TAM_NF_TEXTO = 800;
 
         //'	NÚMERO DE LINHAS DO CAMPO "MENSAGEM" AO CADASTRAR NOVA MENSAGEM NO BLOCO DE NOTAS DO PEDIDO
 
@@ -1392,8 +1393,8 @@ namespace InfraBanco.Constantes
         public const int MAX_LINHAS_MENSAGEM_CHAMADOS_EM_PEDIDOS = 5;
 
         //'	NÚMERO DE LINHAS DO CAMPO "FORMA DE PAGAMENTO" DO PEDIDO
-
         public const int MAX_LINHAS_FORMA_PAGTO = 5;
+        public const int MAX_TAM_FORMA_PAGTO = 250;
 
         //'	NÚMERO DE LINHAS DOS CAMPOS MULTI-LINHAS DA ORDEM DE SERVIÇO	
 

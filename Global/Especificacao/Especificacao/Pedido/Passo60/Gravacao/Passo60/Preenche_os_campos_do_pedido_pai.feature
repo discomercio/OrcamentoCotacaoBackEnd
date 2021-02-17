@@ -333,6 +333,7 @@ Scenario: Preenche_os_campos_do_pedido - frete, romaneio e danfe
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "danfe_a_imprimir_usuario" = ""
 	#Obs: No momento esses campos não existem na tabela t_PEDIDO e alguns são utilizados apenas na Central
 
+@ignore
 Scenario: Preenche_os_campos_do_pedido - referente a RA
 	Given Pedido base
 	Then Sem nenhum erro
