@@ -241,5 +241,22 @@ namespace Especificacao.Especificacao.Pedido
             
         }
 
+        [When(@"Recalcular totais do pedido")]
+        public void WhenRecalcularTotaisDoPedido()
+        {
+           
+        }
+
+        [When(@"Deixar forma de pagamento consistente")]
+        public void WhenDeixarFormaDePagamentoConsistente()
+        {
+            
+        }
+
+        [Given(@"Pedido base COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA")]
+        public void GivenPedidoBaseCOD_FORMA_PAGTO_PARCELADO_COM_ENTRADA()
+        {
+            
+        }
     }
 }
