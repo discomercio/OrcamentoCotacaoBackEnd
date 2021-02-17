@@ -8,7 +8,7 @@ using UtilsGlobais.Usuario;
 
 namespace Pedido.Criacao.Passo30
 {
-    class Passo30 : PassoBase
+    partial class Passo30 : PassoBase
     {
         public Passo30(PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao pedidoCriacao)
             : base(pedido, retorno, pedidoCriacao)
@@ -19,16 +19,13 @@ namespace Pedido.Criacao.Passo30
         public async Task ExecutarAsync()
         {
             PermissaoPercRt();
-            //todo: passo30
-            /*
-             * CamposMagentoExigidos.feature
-             * CamposMagentoNaoAceitos.feature
-             * CD.feature
-             * COD_SITE_ASSISTENCIA_TECNICA
-             * Indicador
-             * opcao_possui_RA
-             * 
-             * */
+            CamposMagentoExigidos();
+            CamposMagentoNaoAceitos();
+            Cd();
+            Cod_site_assistencia_tecnica();
+            Indicador();
+            Opcao_possui_RA();
+            Perc_RT();
         }
 
         private void PermissaoPercRt()

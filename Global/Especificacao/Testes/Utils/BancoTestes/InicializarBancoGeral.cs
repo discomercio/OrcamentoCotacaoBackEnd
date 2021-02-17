@@ -37,15 +37,15 @@ namespace Especificacao.Testes.Utils.BancoTestes
         {
             this.contextoBdProvider = contextoBdProvider;
             this.contextoCepProvider = contextoCepProvider;
-            Inicializar(false);
+            Inicializar();
         }
 
         public void InicializarForcado()
         {
             _inicialziado = false;
-            Inicializar(true);
+            Inicializar();
         }
-        public void Inicializar(bool apagarDadosExistentes)
+        public void Inicializar()
         {
             if (!_inicialziado)
             {
@@ -53,18 +53,18 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 {
                     _inicialziado = true;
                     logTestes.LogMemoria("InicializarBancoGeral Inicializar inicio");
-                    InicalizarInterno(apagarDadosExistentes);
+                    InicalizarInterno();
                     logTestes.LogMensagem("InicializarBancoGeral CEP inicio");
-                    new InicializarBancoCep(contextoCepProvider).Inicializar(apagarDadosExistentes);
+                    new InicializarBancoCep(contextoCepProvider).Inicializar();
                     logTestes.LogMemoria("InicializarBancoGeral Inicializar fim");
                 }
             }
         }
 
-        private void InicalizarInterno(bool apagarDadosExistentes)
+        private void InicalizarInterno()
         {
             //todo: tirar parametro
-            apagarDadosExistentes = true;
+            var apagarDadosExistentes = true;
             using (var db = contextoBdProvider.GetContextoGravacaoParaUsing())
             {
                 //estas, só apagamos

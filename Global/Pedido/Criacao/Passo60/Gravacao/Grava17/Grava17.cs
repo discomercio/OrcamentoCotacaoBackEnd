@@ -23,8 +23,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava17
 
         private void MontarProdutoGravacao()
         {
-            //cira alista de produtos com as variaveis auxiliares
-            //todo: passar para grava17 para permitir o log
+            //cria alista de produtos com as variaveis auxiliares
             List<ProdutoGravacao> listaProdutoGravacao = ProdutoGravacao.ListaProdutoGravacao(Pedido.ListaProdutos);
             Gravacao.ProdutoGravacaoLista = listaProdutoGravacao;
         }
