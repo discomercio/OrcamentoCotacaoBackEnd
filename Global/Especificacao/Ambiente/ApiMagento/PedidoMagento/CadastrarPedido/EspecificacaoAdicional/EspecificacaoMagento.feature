@@ -27,7 +27,6 @@ Scenario: produtos: sempre virão divididos, nunca vai vir um produto composto.
 	When Lista de itens "0" informo "Preco_NF" = "1648.00"
 	Then Erro "Produto não cadastrado para a loja. Produto: 001090, loja: 201"
 
-@ignore
 Scenario: Produtos e quantidades devem existir
 	#if (b) {
 	#	ha_item=true;
@@ -48,15 +47,15 @@ Scenario: Produtos e quantidades devem existir
 	#		}
 	#	}
 	#}
-	#Given Pedido base
-	#When Lista de itens "0" informo "Produto" = ""
-	#Then Erro "regex .*Produto não cadastrado para a loja. Produto:*"
+	Given Pedido base
+	When Lista de itens "0" informo "Produto" = ""
+	Then Erro "regex .*Produto não cadastrado para a loja. Produto:*"
 	#Given Pedido base
 	#When Lista de itens "0" informo "Qtde" = ""
 	#Then Erro "Informe a quantidade!!"
 	Given Pedido base
 	When Lista de itens "0" informo "Qtde" = "0"
-	Then Erro "Quantidade inválida!!"
-#Given Pedido base
-#When Lista de itens "0" informo "Qtde" = "-1"
-#Then Erro "Quantidade inválida!!"
+	Then Erro "regex .*com Qtde menor ou igual a zero!*"
+	Given Pedido base
+	When Lista de itens "0" informo "Qtde" = "-1"
+	Then Erro "regex .*com Qtde menor ou igual a zero!*"
