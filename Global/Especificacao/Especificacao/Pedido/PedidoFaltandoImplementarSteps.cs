@@ -235,5 +235,11 @@ namespace Especificacao.Especificacao.Pedido
 
         }
 
+        [Given(@"Alterar pedido colocar RA de (.*) real")]
+        public void GivenAlterarPedidoColocarRADeReal(int p0)
+        {
+            
+        }
+
     }
 }
