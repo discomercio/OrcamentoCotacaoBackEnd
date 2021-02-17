@@ -94,7 +94,7 @@ Scenario: DetalhesPedidoMagentoDto
 	And Tabela "t_PEDIDO" registro criado, verificar campo "StBemUsoConsumo" = "1"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "InstaladorInstalaStatus" = "1"
 
-@ignore
+
 Scenario: Não aceitamos pedidos vazios - magento
 	#if (!ha_item) {
 	#	alert("Não há produtos na lista!!");
@@ -103,7 +103,7 @@ Scenario: Não aceitamos pedidos vazios - magento
 	#	}
 	Given Pedido base
 	When Lista de itens com "0" itens
-	Then Erro "Não há produtos na lista!!"
+	Then Erro "Pedido sem nenhum produto na lista."
 
 @ignore
 Scenario: validação de Perc_RT
