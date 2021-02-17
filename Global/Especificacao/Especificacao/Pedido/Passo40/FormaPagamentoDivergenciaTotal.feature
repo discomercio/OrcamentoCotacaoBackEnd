@@ -1,4 +1,5 @@
-﻿@Especificacao.Pedido.Passo40
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
+#@Especificacao.Pedido.Passo40
 Feature: FormaPagamentoDivergenciaTotal
 
 Background: não executado na api magento

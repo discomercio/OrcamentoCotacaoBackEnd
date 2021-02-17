@@ -19,9 +19,15 @@ Background:
 	Given Reiniciar banco ao terminar cenário
 
 Scenario: Verificar se o produto não existe na t_PRODUTO_LOJA
-	Given Limpar tabela "t_PRODUTO_LOJA"	
+	Given Limpar tabela "t_PRODUTO_LOJA"
 	Then Erro "regex .*Produto não cadastrado para a loja. Produto:*"
 
 Scenario: Tipo_Parcelamento - parcelado única - t_PERCENTUAL_CUSTO_FINANCEIRO_FORNECEDOR
 	Given Limpar tabela "t_PERCENTUAL_CUSTO_FINANCEIRO_FORNECEDOR"
 	Then Erro "Coeficiente não cadastrado para o fabricante. Fabricante: 001, TipoParcela: SE"
+
+@ignore
+Scenario: Tipo_Parcelamento - não existe
+Given Pedido base
+When Informo "Tipo_Parcelamento" = "12"
+Then Erro "pegar erro"

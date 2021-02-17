@@ -99,9 +99,11 @@ Com esses registros, a gente amrca exatamente onde cada teste é feito.", Progra
         [Xunit.SkippableFactAttribute(DisplayName="VerificacaoFinalListaDependencias")]
         [Xunit.TraitAttribute("FeatureTitle", "VerificacaoFinalListaDependencias")]
         [Xunit.TraitAttribute("Description", "VerificacaoFinalListaDependencias")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void VerificacaoFinalListaDependencias()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("VerificacaoFinalListaDependencias", null, tagsOfScenario, argumentsOfScenario);
 #line 20

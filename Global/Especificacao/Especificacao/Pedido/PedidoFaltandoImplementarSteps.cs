@@ -28,6 +28,20 @@ namespace Especificacao.Especificacao.Pedido
 
         }
 
+        [Given(@"Pedido base cliente PF")]
+        [When(@"Pedido base cliente PF")]
+        public void GivenPedidoBaseClientePF()
+        {
+            
+        }
+
+        [Given(@"Pedido base cliente PJ")]
+        [When(@"Pedido base cliente PJ")]
+        public void GivenPedidoBaseClientePJ()
+        {
+            
+        }
+
         [When(@"Informo ""(.*)"" = ""(.*)""")]
         public void WhenInformo(string p0, string p1)
         {

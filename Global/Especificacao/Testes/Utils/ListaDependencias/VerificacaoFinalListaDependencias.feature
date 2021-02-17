@@ -16,7 +16,7 @@ Esse teste é feito em vários lugares; por exemplo, em:
 
 Com esses registros, a gente amrca exatamente onde cada teste é feito.
 
-
+@ignore
 Scenario: VerificacaoFinalListaDependencias
 #só chamamos a rotina para fazer a verificação final
 #este teste provavelmente só passa quando todos os testes forem executados
