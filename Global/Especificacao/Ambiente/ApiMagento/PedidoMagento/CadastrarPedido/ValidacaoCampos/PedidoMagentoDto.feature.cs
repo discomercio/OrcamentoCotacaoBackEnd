@@ -526,14 +526,16 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Não aceitamos pedidos vazios - magento")]
+        [Xunit.SkippableFactAttribute(DisplayName="validação de Perc_RT")]
         [Xunit.TraitAttribute("FeatureTitle", "PedidoMagentoDto")]
-        [Xunit.TraitAttribute("Description", "Não aceitamos pedidos vazios - magento")]
-        public virtual void NaoAceitamosPedidosVazios_Magento()
+        [Xunit.TraitAttribute("Description", "validação de Perc_RT")]
+        [Xunit.TraitAttribute("Category", "ignore")]
+        public virtual void ValidacaoDePerc_RT()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Não aceitamos pedidos vazios - magento", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validação de Perc_RT", null, tagsOfScenario, argumentsOfScenario);
 #line 98
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -554,53 +556,10 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 104
+#line 99
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 105
- testRunner.When("Lista de itens com \"0\" itens", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 106
- testRunner.Then("Erro \"Pedido sem nenhum produto na lista.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="validação de Perc_RT")]
-        [Xunit.TraitAttribute("FeatureTitle", "PedidoMagentoDto")]
-        [Xunit.TraitAttribute("Description", "validação de Perc_RT")]
-        [Xunit.TraitAttribute("Category", "ignore")]
-        public virtual void ValidacaoDePerc_RT()
-        {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validação de Perc_RT", null, tagsOfScenario, argumentsOfScenario);
-#line 109
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 110
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 111
+#line 100
  testRunner.Then("Erro \"ajustar esse teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

@@ -145,3 +145,8 @@ Scenario: Máximo de itens por pedido - magento
 	When Lista de itens "10" informo "Preco_NF" = "583.04"
 	#
 	Then Erro "São permitidos no máximo 12 itens por pedido."
+
+Scenario: Sem produtos - magento
+	Given Pedido base
+	When Lista de itens com "0" itens
+	Then Erro "Pedido sem nenhum produto na lista."
