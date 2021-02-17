@@ -28,6 +28,20 @@ namespace Especificacao.Especificacao.Pedido
 
         }
 
+        [Given(@"Pedido base cliente PF")]
+        [When(@"Pedido base cliente PF")]
+        public void GivenPedidoBaseClientePF()
+        {
+            
+        }
+
+        [Given(@"Pedido base cliente PJ")]
+        [When(@"Pedido base cliente PJ")]
+        public void GivenPedidoBaseClientePJ()
+        {
+            
+        }
+
         [When(@"Informo ""(.*)"" = ""(.*)""")]
         public void WhenInformo(string p0, string p1)
         {
@@ -124,5 +138,89 @@ namespace Especificacao.Especificacao.Pedido
             
         }
 
+        [When(@"Lista de itens ""(.*)"" informo ""(.*)"" = ""(.*)""")]
+        public void WhenListaDeItensInformo(int indice, string campo, string valor)
+        {
+            
+        }
+
+        [Then(@"Sem erro ""(.*)""")]
+        public void ThenSemErro(string p0)
+        {
+            
+        }
+
+        [When(@"Lista de itens com ""(.*)"" itens")]
+        public void WhenListaDeItensComItens(int numeroItens)
+        {
+            
+        }
+
+        [Given(@"Cadastro do cliente ""(.*)"" = ""(.*)""")]
+        public void GivenCadastroDoCliente(string p0, string p1)
+        {
+
+        }
+
+        [Then(@"Tabela ""t_PEDIDO"" registro pai criado, verificar campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaT_PEDIDORegistroPaiCriadoVerificarCampo(string campo, string valor)
+        {
+            
+        }
+
+        [Given(@"Definir appsettings limite pedido igual = ""(.*)""")]
+        public void GivenDefinirAppsettingsLimitePedidoIgual(int p0)
+        {
+            
+        }
+
+        [Given(@"Reinciar appsettings no final da feature")]
+        public void GivenReinciarAppsettingsNoFinalDaFeature()
+        {
+            
+        }
+        [Given(@"Definir appsettings limite pedido por cpf = ""(.*)""")]
+        public void GivenDefinirAppsettingsLimitePedidoPorCpf(int p0)
+        {
+            
+        }
+
+        [Given(@"Existe ""(.*)"" = ""(.*)""")]
+        public void GivenExiste(string p0, string p1)
+        {
+            
+        }
+
+        [Given(@"Existe cliente ""(.*)"" = ""(.*)"" como PF")]
+        public void GivenExisteClienteComoPF(string p0, int p1)
+        {
+            
+        }
+
+        [Given(@"Existe produto ""(.*)"" = ""(.*)"", ""(.*)"" = ""(.*)"", ""(.*)"" = ""(.*)""")]
+        public void GivenExisteProduto(string p0, int p1, string p2, int p3, string p4, int p5)
+        {
+            
+        }
+
+        [When(@"Fiz login como ""(.*)"" e escolhi a loja ""(.*)""")]
+        public void WhenFizLoginComoEEscolhiALoja(string p0, int p1)
+        {
+            
+        }
+
+        [When(@"Pedido vazio")]
+        public void WhenPedidoVazio()
+        {
+            
+        }
+
+
+        [Given(@"No ambiente ""(.*)"" erro ""(.*)"" é ""(.*)""")]
+        [Given(@"No ambiente ""(.*)"" mapear erro ""(.*)"" para ""(.*)""")]
+        public void GivenNoAmbienteErroE(string p0, string p1, string p2)
+        {
+            
+        }
     }
 }

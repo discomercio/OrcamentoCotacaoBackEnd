@@ -1,4 +1,4 @@
-﻿@ignore
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
 Feature: Pedido Passo 60 validação CamposSoltos
 
 Scenario: campos soltos 1 - loja que indicou
@@ -76,17 +76,17 @@ Scenario: campos soltos 3
 	#		end if
 	#
 
-	When Implementado em "Especificacao.Especificacao.Pedido.Passo50.CamposSoltos
+	#When Implementado em "Especificacao.Especificacao.Pedido.Passo50.CamposSoltos
 
 Scenario: campos soltos 4
 	#loja/PedidoNovoConfirma.asp
 	#if s_bem_uso_consumo = "" then
 	#	alerta = "É necessário informar se é 'Bem de Uso/Consumo'."
-	When Implementado em "Especificacao.Especificacao.Pedido.Passo50.CamposSoltos
+	#When Implementado em "Especificacao.Especificacao.Pedido.Passo50.CamposSoltos
 
 Scenario: campos soltos 5
 	#loja/PedidoNovoConfirma.asp
 	#if c_exibir_campo_instalador_instala = "S" then
 	#	if s_instalador_instala = "" then
 	#		alerta = "É necessário preencher o campo 'Instalador Instala'."
-	When Implementado em "Especificacao.Especificacao.Pedido.Passo50.CamposSoltos
+	#When Implementado em "Especificacao.Especificacao.Pedido.Passo50.CamposSoltos

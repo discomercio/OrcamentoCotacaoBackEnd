@@ -69,6 +69,11 @@ namespace Pedido.Criacao.Passo50
             //#s = "" + f.c_obs1.value;
             //#if (s.length > MAX_TAM_OBS1) {
             //#	alert('Conteúdo de "Observações " excede em ' + (s.length-MAX_TAM_OBS1) + ' caracteres o tamanho máximo de ' + MAX_TAM_OBS1 + '!!');
+            if (Pedido.DetalhesPedido.Observacoes?.Length > Constantes.MAX_TAM_OBS1)
+                Retorno.ListaErros.Add("Conteúdo de \"Observações\" excede em " +
+                    (Pedido.DetalhesPedido.Observacoes.Length - Constantes.MAX_TAM_OBS1) +
+                    " caracteres o tamanho máximo de " + Constantes.MAX_TAM_OBS1 + "!");
+
 
             //todo: passo50 tamanhos
             //#s = "" + f.c_nf_texto.value;

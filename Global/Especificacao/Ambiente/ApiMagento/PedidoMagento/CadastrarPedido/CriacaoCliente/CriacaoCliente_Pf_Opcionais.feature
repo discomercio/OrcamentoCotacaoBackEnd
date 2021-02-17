@@ -1,12 +1,11 @@
 ﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente
 @GerenciamentoBanco
 Feature: Magento CriacaoCliente_Pf_Opcionais
+
 #Testando a criação do cliente
 #Se for PF, copio o endereço de entrega para o endereço de cobrança e apago o endereço de entrega.
 #	no caso de campos que só existam no endereço de cobrança (exemplo: telefone) mantemos o do endereço de cobrança e não exigimos o campo.
 #Depois disso, se o cliente não existir, cadastrar com o endereço de cobrança
-
-
 #Campos do endereço de entrega:
 #        OutroEndereco
 #        [Required] string EndEtg_endereco
@@ -32,7 +31,6 @@ Feature: Magento CriacaoCliente_Pf_Opcionais
 #        [Required] string EndEtg_tipo_pessoa
 #        [Required] string EndEtg_cnpj_cpf
 #        string? PontoReferencia
-
 Background: Acertar banco de dados
 	Given Reiniciar banco ao terminar cenário
 	And Limpar tabela "t_CLIENTE"
@@ -47,7 +45,6 @@ Scenario: comprovar que salva todos os campos
 	#só pra garantir que estmaos usando o CPF certo
 	When Informo "EndEtg_tipo_pessoa" = "PF"
 	When Informo "cnpj_cpf" = "29756194804"
-
 	#vamos verificar se os opcionais são salvos
 	When Informo "EndEtg_endereco_complemento" = "compl"
 	When Informo "EndEtg_email" = "email@teste.com"
@@ -62,9 +59,7 @@ Scenario: comprovar que salva todos os campos
 	When Informo "EndEtg_ddd_com_2" = "56"
 	When Informo "EndEtg_tel_com_2" = "56789012"
 	When Informo "EndEtg_ramal_com_2" = "7"
-
 	Then Sem nenhum erro
-
 	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "29756194804", verificar campo "endereco_complemento" = "compl"
 	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "29756194804", verificar campo "email" = "email@teste.com"
 	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "29756194804", verificar campo "email_xml" = "emailxml@teste.com"
@@ -79,7 +74,6 @@ Scenario: comprovar que salva todos os campos
 	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "29756194804", verificar campo "tel_com_2" = "56789012"
 	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "29756194804", verificar campo "ramal_com_2" = "7"
 
-
 Scenario: validar email
 	Given Pedido base
 	When Informo "OutroEndereco" = "true"
@@ -92,3 +86,29 @@ Scenario: validar email xml
 	When Informo "EndEtg_email_xml" = "gabriel.com.br"
 	Then Erro "E-mail XML inválido!"
 
+Scenario: obs1 tamanho
+	#loja/PedidoNovoConsiste.asp
+	#s = "" + f.c_obs1.value;
+	#if (s.length > MAX_TAM_OBS1) {
+	#	alert('Conteúdo de "Observações " excede em ' + (s.length-MAX_TAM_OBS1) + ' caracteres o tamanho máximo de ' + MAX_TAM_OBS1 + '!!');
+	Given Pedido base
+	When Informo "Obs_1" com "501" caracteres
+	Then Erro "regex .*Conteúdo de \"Observações\" excede em .*"
+	Given Pedido base
+	When Informo "Obs_1" com "500" caracteres
+	Then Sem nenhum erro
+
+@ignore
+Scenario: c_nf_texto tamanho
+	#loja/PedidoNovoConsiste.asp
+	#s = "" + f.c_nf_texto.value;
+	#if (s.length > MAX_TAM_NF_TEXTO) {
+	#    alert('Conteúdo de "Constar na NF" excede em ' + (s.length-MAX_TAM_NF_TEXTO) + ' caracteres o tamanho máximo de ' + MAX_TAM_NF_TEXTO + '!!');
+	#Implementado em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\EspecificacaoAdicional\FretePontoReferencia.feature
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
+	Given Pedido base
+	When Informo "nf_texto" = "texto com 801 caracteres"
+	Then Erro "Conteúdo de "Constar na NF" excede em.*"
+	Given Pedido base
+	When Informo "nf_texto" = "texto com 800 caracteres"
+	Then Sem nenhum erro

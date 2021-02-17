@@ -1,4 +1,4 @@
-﻿@ignore
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
 Feature: CustoFinancFornec
 
 Scenario: A forma de pagamento não foi informada (à vista, com entrada, sem entrada)."

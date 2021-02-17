@@ -12,9 +12,6 @@ Background: não executado na api magento
 	#para testar, afazer, voltar isto para testar o pedido!!!
 	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 
-@ignore
-Scenario: tirar esta linha acima!!! não está estando na loja!!
-	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 
 
 #CUIDADO COM O NOME DA VARIÁVEL!!

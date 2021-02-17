@@ -1,9 +1,9 @@
-﻿@ignore
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
 Feature: Passo 60 Validação cliente
 
 Scenario: Cliente existe
 	Given Pedido base
-	And Informo "CPF/CNPJ" = "1"
+	When Informo "CPF/CNPJ" = "1"
 	Then Erro "Cliente não cadastrado"
 
 Scenario: Cliente com CEP
@@ -15,11 +15,11 @@ Scenario: Cliente com CEP
 		#	indicador_original = Trim("" & t_CLIENTE("indicador"))
 		#	tipo_cliente = Trim("" & t_CLIENTE("tipo"))
 		#	if Trim("" & t_CLIENTE("cep")) = "" then alerta = "É necessário preencher o CEP no cadastro do cliente."
-	When Fazer esta validação
+	#When Fazer esta validação
 
 Scenario: fakltando fazer
 	#Incluir:
 	#	- validar preços (desconto, preco de lista com o preco da tabela, etc, etc. Escrever todos os passos).
 	#	- validar se o tipo de parcelamento é permitido para todos os produtos
-	When Fazer esta validação
+	#When Fazer esta validação
 

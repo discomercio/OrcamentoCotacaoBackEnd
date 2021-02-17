@@ -1,10 +1,9 @@
-﻿@ignore
+﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
 Feature: blnPedidoECommerceCreditoOkAutomatico
+
 #'TRATAMENTO PARA CADASTRAMENTO DE PEDIDOS DO SITE MAGENTO DO ARCLUBE
 #	verifica se deve colocar crédito OK automaticamente
-
 #loja/PedidoNOvoConfirma.asp
-
 #	'TRATAMENTO PARA CADASTRAMENTO DE PEDIDOS DO SITE MAGENTO DO ARCLUBE
 #	dim blnPedidoECommerceCreditoOkAutomatico
 #	blnPedidoECommerceCreditoOkAutomatico = False
@@ -83,16 +82,31 @@ Feature: blnPedidoECommerceCreditoOkAutomatico
 #					alerta=alerta & "O número Marketplace deve conter apenas dígitos e hífen"
 #					end if
 #				end if
-
 #e, no momento do salvamento:
-
 #if blnPedidoECommerceCreditoOkAutomatico then
 #	rs("analise_credito")=Clng(COD_AN_CREDITO_OK)
 #	rs("analise_credito_data")=Now
 #	rs("analise_credito_usuario")="AUTOMÁTICO"
 
-
-Scenario: blnPedidoECommerceCreditoOkAutomatico
+@ignore
+Scenario: blnPedidoECommerceCreditoOkAutomatico - NUMERO_LOJA_ECOMMERCE_AR_CLUBE
 	#essa opção é usada se loja for NUMERO_LOJA_ECOMMERCE_AR_CLUBE ou se a origem for a API do magento
-	Given Fazer esta validação
+	Given Pedido base
+	When Informo "appsettings.Loja" = "201"
+	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vendedor" = "USUARIOAPIMAGENTO"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito" = "2"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito_usuario" = "AUTOMÁTICO"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_endereco_tratar_status" = "0"
 
+@ignore
+Scenario: blnPedidoECommerceCreditoOkAutomatico - Loja diferente de NUMERO_LOJA_ECOMMERCE_AR_CLUBE
+	#essa opção é usada se loja for NUMERO_LOJA_ECOMMERCE_AR_CLUBE ou se a origem for a API do magento
+	#Pedido_bs_x_marketplace e Marketplace_codigo_origem
+	Given Pedido base
+	When Informo "appsettings.Loja" = "203"
+	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vendedor" = "USUARIOAPIMAGENTO"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito" = "2"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito_usuario" = "AUTOMÁTICO"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_endereco_tratar_status" = "0"

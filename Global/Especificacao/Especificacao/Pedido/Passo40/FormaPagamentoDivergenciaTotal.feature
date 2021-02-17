@@ -1,18 +1,15 @@
-﻿@Especificacao.Pedido.Passo40
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
+#@Especificacao.Pedido.Passo40
 Feature: FormaPagamentoDivergenciaTotal
 
 Background: não executado na api magento
-	#ignoramos na API magento porque é feito em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\EspecificacaoAdicional\FormaPagtoCriacaoMagentoDto.feature
+	#ignoramos na API magento porque é feito em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\EspecificacaoAdicional\FormaPagtoCriacaoMagento.feature
 	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	#no CadastrarPrepedidoPrepedidoApi parece que a ordem de validação é diferente
 	Given No ambiente "Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApiBll.CadastrarPrepedido.CadastrarPrepedidoPrepedidoApi" mapear erro "Valor total da forma de pagamento diferente do valor total!" para "regex Tipo do parcelamento .* está incorreto!"
 	#está com muitas diferenças....
 	Given Ignorar cenário no ambiente "Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApiBll.CadastrarPrepedido.CadastrarPrepedidoPrepedidoApi"
 	#para testar, afazer, voltar isto para testar o pedido!!!
-	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
-
-@ignore
-Scenario: tirar esta linha acima!!! não está estando na loja!!
 	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 
 

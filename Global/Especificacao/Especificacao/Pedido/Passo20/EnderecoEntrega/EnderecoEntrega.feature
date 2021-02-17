@@ -1,9 +1,10 @@
-﻿@Especificacao.Pedido.Passo20.EnderecoEntrega
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
+#@Especificacao.Pedido.Passo20.EnderecoEntrega
 Feature: Validar endereco de entrega
 
 
 Background: Pedido base com endereço de entrega (pedido e prepedido)
-	Given Pedido base com endereço de entrega
+	#Given Pedido base com endereço de entrega
 
 	#na API magneto sempre usa o endereço de entrega como endereço cadastral em PF
 	#está sendo testado em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf_Obrigatorios.feature
@@ -140,7 +141,7 @@ Scenario: EndEtg_cidade errado
 	Then Erro "Cidade não confere"
 
 #validação da cidade que não está no IBGE
-@ignore
+
 #todo: afazer: clocar estes testes. Tem que ver como inicializa o CEP
 Scenario: EndEtg_cidade não no IBGE
 	#if rb_end_entrega = "S" then
@@ -167,7 +168,7 @@ Scenario: EndEtg_cidade não no IBGE
 	Then Sem nenhum erro
 
 #se a cidade existir no IBGE, deve ser a mesma do CEP
-@ignore
+
 #todo: afazer: colocar estes testes. Tewm que ver como inicializa o CEP
 Scenario: EndEtg_cidade não no IBGE 2
 	When Informo "EndEtg_cep" = "04321001"

@@ -1,4 +1,5 @@
-﻿Feature: DadosCadastrais
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
+Feature: DadosCadastrais
 #loja/PedidoNovoConfirma.asp
 #Validaçãoo de dados cadastrais
 
@@ -129,6 +130,6 @@
 #				end if
 #			end if 'if c_FlagCadSemiAutoPedMagento_FluxoOtimizado = "1"
 #		end if
-@ignore
+
 Scenario: Validar
-	Given Fazer a validação acima
+	#Given Fazer a validação acima

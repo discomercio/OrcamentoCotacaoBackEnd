@@ -1,4 +1,4 @@
-﻿@ignore
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
 Feature: RaIndicador
 
 Scenario: sem indicador não pode ter RA
