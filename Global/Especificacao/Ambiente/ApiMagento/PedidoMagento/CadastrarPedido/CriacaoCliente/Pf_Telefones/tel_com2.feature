@@ -106,3 +106,10 @@ Scenario: validar telefone - tel_com_2 sucesso
 	When Informo "EndEtg_tel_com_2" = "12345678"
 	When Informo "EndEtg_ramal_com_2" = "21"
 	Then Sem nenhum erro
+
+Scenario: validar telefone - tel_com_2 com simbolos
+	Given Pedido base
+	When Informo "OutroEndereco" = "true"
+	When Informo "EndEtg_ddd_com_2" = "12"
+	When Informo "EndEtg_tel_com_2" = "1234-5678"
+	Then Sem nenhum erro
