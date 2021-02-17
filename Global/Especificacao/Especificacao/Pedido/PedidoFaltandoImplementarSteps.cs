@@ -222,5 +222,18 @@ namespace Especificacao.Especificacao.Pedido
         {
             
         }
+
+        [Given(@"Usuário sem permissão OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD")]
+        public void GivenUsuarioSemPermissaoOP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD()
+        {
+            
+        }
+
+        [Given(@"Usuário com permissão OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD")]
+        public void GivenUsuarioComPermissaoOP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD()
+        {
+
+        }
+
     }
 }

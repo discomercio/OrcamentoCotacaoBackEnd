@@ -217,11 +217,9 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="Tipo_Parcelamento - não existe")]
         [Xunit.TraitAttribute("FeatureTitle", "FormaPagtoCriacaoMagentofeature")]
         [Xunit.TraitAttribute("Description", "Tipo_Parcelamento - não existe")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void Tipo_Parcelamento_NaoExiste()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Tipo_Parcelamento - não existe", null, tagsOfScenario, argumentsOfScenario);
 #line 30
@@ -254,7 +252,7 @@ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(nul
 testRunner.When("Informo \"Tipo_Parcelamento\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 33
-testRunner.Then("Erro \"pegar erro\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+testRunner.Then("Erro \"regex .*Coeficiente não cadastrado para o fabricante.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
