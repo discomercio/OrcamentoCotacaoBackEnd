@@ -100,12 +100,11 @@ Scenario: obs1 tamanho
 
 @ignore
 Scenario: c_nf_texto tamanho
+	#NA CRIAÇÃO DO PEDIDO NO MAGENTO ESSE CAMPO ESTA SENDO CRIADO COMO NULL
 	#loja/PedidoNovoConsiste.asp
 	#s = "" + f.c_nf_texto.value;
 	#if (s.length > MAX_TAM_NF_TEXTO) {
 	#    alert('Conteúdo de "Constar na NF" excede em ' + (s.length-MAX_TAM_NF_TEXTO) + ' caracteres o tamanho máximo de ' + MAX_TAM_NF_TEXTO + '!!');
-	#Implementado em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\EspecificacaoAdicional\FretePontoReferencia.feature
-	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	When Informo "nf_texto" = "texto com 801 caracteres"
 	Then Erro "Conteúdo de "Constar na NF" excede em.*"

@@ -1,4 +1,5 @@
-﻿@ignore
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
+#@ignore
 Feature: ClientePendentes
 
 #coisas pendentes no cliente:
@@ -14,7 +15,7 @@ Scenario: Referencias PF
 	Then Erro "Se cliente tipo PF, não deve constar referência comercial!"
 
 	Given Pedido base cliente PF
-	When Informo "RefBancaria" =  ""
+	When Informo "RefBancaria" = ""
 	Then Erro "Se cliente tipo PF, não deve constar referência bancária!"
 
 Scenario: Referencias PJ
@@ -23,12 +24,12 @@ Scenario: Referencias PJ
 	Then Sem nenhum erro
 	Given Pedido base cliente PJ
 	When Informo "RefComercial" = ""
-	Then Sem nenum erro
+	Then Sem nehum erro
 	Given Pedido base cliente PJ
 	When Informo "RefBancaria" = "null"
 	Then Sem nenhum erro
 	Given Pedido base cliente PJ
-	When Informo "RefBancaria" =  ""
+	When Informo "RefBancaria" = ""
 	Then Sem nenhum erro
 
 
