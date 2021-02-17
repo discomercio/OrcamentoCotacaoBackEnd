@@ -51,14 +51,14 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 
         protected override void AbstractRecalcularTotaisDoPedido()
         {
-            decimal totalCompare = 0;
-            decimal totalRaCompare = 0;
-            foreach (var x in pedidoMagentoDto.ListaProdutos)
-            {
-                totalCompare += Math.Round((decimal)(x.Preco_Venda * x.Qtde), 2);
-                totalRaCompare += Math.Round((decimal)(x.Preco_NF * x.Qtde), 2);
-            }
-            pedidoMagentoDto.VlTotalDestePedido = totalCompare;
+            //decimal totalCompare = 0;
+            //decimal totalRaCompare = 0;
+            //foreach (var x in pedidoMagentoDto.ListaProdutos)
+            //{
+            //    totalCompare += Math.Round((decimal)(x.Preco_Venda * x.Qtde), 2);
+            //    totalRaCompare += Math.Round((decimal)(x.Preco_NF * x.Qtde), 2);
+            //}
+            //pedidoMagentoDto.VlTotalDestePedido = totalCompare;
             //nao temos este campo: pedidoMagentoDto.ValorTotalDestePedidoComRA = totalRaCompare;
         }
         protected override void AbstractListaDeItensComXitens(int numeroItens)

@@ -206,7 +206,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             //Precisamos buscar os produtos para poder incluir os valores para incluir na classe de produto
             var pedidoDadosCriacao =
                 PedidoMagentoDto.PedidoDadosCriacaoDePedidoMagentoDto(dadosCliente, enderecoCadastral, enderecoEntrega,
-                listaProdutos, formaPagtoCriacao, pedidoMagento.VlTotalDestePedido, pedidoMagento,
+                listaProdutos, formaPagtoCriacao, pedidoMagento,
                 sistemaResponsavelCadastro,
                 lstErros,
                 configuracaoApiMagento,

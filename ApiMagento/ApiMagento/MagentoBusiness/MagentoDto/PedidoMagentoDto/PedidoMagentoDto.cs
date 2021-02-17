@@ -42,8 +42,8 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
         //PermiteRAStatus = true, sempre
 
-        [Required]
-        public decimal VlTotalDestePedido { get; set; }
+        //[Required]
+        //public decimal VlTotalDestePedido { get; set; }
 
         //nao existe o DetalhesPedidoMagentoDto. Os valores a usar são:
         //St_Entrega_Imediata: se for PF, sim. Se for PJ, não
@@ -67,7 +67,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         public static Pedido.Dados.Criacao.PedidoCriacaoDados? PedidoDadosCriacaoDePedidoMagentoDto(Cliente.Dados.DadosClienteCadastroDados dadosClienteMagento,
             Cliente.Dados.EnderecoCadastralClientePrepedidoDados enderecoCadastralClienteMagento, Cliente.Dados.EnderecoEntregaClienteCadastroDados enderecoEntregaMagento,
             List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> lstProdutosMagento, Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacaoMagento,
-            decimal vlTotalDestePedido, PedidoMagentoDto pedidoMagento,
+            PedidoMagentoDto pedidoMagento,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             List<string> lstErros, UtilsMagento.ConfiguracaoApiMagento configuracaoApiMagento,
             string? dadosClienteMidia,
@@ -97,7 +97,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                 permiteRAStatus: true,
 
                 //Armazena o valor total do pedido
-                vl_total: vlTotalDestePedido,
+                vl_total: lstProdutosMagento.Select(x => x.TotalItem()).Sum(),
 
                 //Armazena o valor total de pedido com RA
                 vl_total_NF: lstProdutosMagento.Select(x => x.TotalItemRA() ?? 0).Sum()

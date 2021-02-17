@@ -20,7 +20,7 @@ Scenario: COD_FORMA_PAGTO_PARCELADO_CARTAO - verifica campos na tabela t_PEDIDO
 	When Lista de itens "1" informo "Qtde" = "2"
 	When Lista de itens "1" informo "Preco_Venda" = "1188.23"
 	When Lista de itens "1" informo "Preco_NF" = "1200.00"
-	When Informo "VlTotalDestePedido" = "3394.94"
+	#When Informo "VlTotalDestePedido" = "3394.94"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "tipo_parcelamento" = "2"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "CustoFinancFornecTipoParcelamento" = "SE"
@@ -49,17 +49,17 @@ Scenario: COD_FORMA_PAGTO_PARCELADO_CARTAO - C_pc_valor negativo
 Scenario: COD_FORMA_PAGTO_PARCELADO_CARTAO - C_pc_qtde zerada
 	When Informo "C_pc_qtde" = "0"
 	When Informo "C_pc_valor" = "3132.90"
-	When Informo "VlTotalDestePedido" = "3132.90"
+	#When Informo "VlTotalDestePedido" = "3132.90"
 	Then Erro "regex .*Coeficiente não cadastrado para o fabricante. Fabricante:*"
 
 Scenario: COD_FORMA_PAGTO_PARCELADO_CARTAO - C_pc_qtde negativa
 	When Informo "C_pc_qtde" = "-1"
 	When Informo "C_pc_valor" = "3132.90"
-	When Informo "VlTotalDestePedido" = "3132.90"
+	#When Informo "VlTotalDestePedido" = "3132.90"
 	Then Erro "regex .*Coeficiente não cadastrado para o fabricante. Fabricante:*"
 
 Scenario: COD_FORMA_PAGTO_PARCELADO_CARTAO - C_pc_qtde alta
 	When Informo "C_pc_qtde" = "20"
 	When Informo "C_pc_valor" = "3132.90"
-	When Informo "VlTotalDestePedido" = "3132.90"
+	#When Informo "VlTotalDestePedido" = "3132.90"
 	Then Erro "Coeficiente não cadastrado para o fabricante. Fabricante: 003, TipoParcela: SE"

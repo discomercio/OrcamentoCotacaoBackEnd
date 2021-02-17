@@ -9,7 +9,7 @@ Scenario: preço: aceitamos o valor que vier do magento.
 	#nao fazemos nenhuma crítica nos preços que chegam do magento
 	Given Pedido base
 	When Informo "Frete" = "10"
-	When Informo "VlTotalDestePedido" = "3200.00"
+	#When Informo "VlTotalDestePedido" = "3200.00"
 	When Lista de itens "0" informo "Preco_Venda" = "650.00"
 	When Lista de itens "0" informo "Preco_NF" = "800.00"
 	When Lista de itens "1" informo "Preco_Venda" = "950.00"
@@ -18,7 +18,7 @@ Scenario: preço: aceitamos o valor que vier do magento.
 
 Scenario: produtos: sempre virão divididos, nunca vai vir um produto composto.
 	Given Pedido base
-	When Informo "VlTotalDestePedido" = "1648.00"
+	#When Informo "VlTotalDestePedido" = "1648.00"
 	When Informo "appsettings.Loja" = "201"
 	When Lista de itens com "1" itens
 	When Lista de itens "0" informo "Fabricante" = "001"

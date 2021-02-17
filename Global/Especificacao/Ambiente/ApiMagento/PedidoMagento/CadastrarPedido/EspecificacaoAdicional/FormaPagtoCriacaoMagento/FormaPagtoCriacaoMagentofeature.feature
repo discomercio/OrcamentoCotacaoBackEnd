@@ -15,7 +15,7 @@ Background:
 	When Lista de itens "0" informo "Qtde" = "2"
 	When Lista de itens "0" informo "Preco_Venda" = "509.24"
 	When Lista de itens "0" informo "Preco_NF" = "520.00"
-	When Informo "VlTotalDestePedido" = "1018.48"
+	#When Informo "VlTotalDestePedido" = "1018.48"
 	Given Reiniciar banco ao terminar cenário
 
 Scenario: Verificar se o produto não existe na t_PRODUTO_LOJA
