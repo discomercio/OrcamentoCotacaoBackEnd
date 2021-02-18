@@ -1,10 +1,7 @@
-﻿#@Especificacao.Pedido.PedidoFaltandoImplementarSteps
-@Especificacao.Pedido.Passo40
+﻿@Especificacao.Pedido.Passo40
 Feature: Produtos
 
-#Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
-#Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedidoListaDependencias"
-#Given Ignorar cenário no ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido"
+
 Scenario: Sem quantidade zero
 	#loja/PedidoNovoConsiste.asp
 	#				if .qtde <= 0 then
@@ -79,12 +76,7 @@ Scenario: produtos: sempre virão divididos, nunca vai vir um produto composto.
 # Validação feita em outro arquivo: "Especificacao\Pedido\Passo40\PedidoNovoProdCompostoMask_t_PRODUTO_LOJA.feature"
 Scenario: Máximo de itens por pedido
 	#alerta=alerta & "O número de itens que está sendo cadastrado (" & CStr(n) & ") excede o máximo permitido por pedido (" & CStr(MAX_ITENS) & ")!!"
-	#Given Pedido base
-	#When Lista de itens com "13" itens
-	#And Recalcular totais do pedido
-	#And Deixar forma de pagamento consistente
-	#Then Erro "São permitidos no máximo 12 itens por pedido."
-
+	
 	#Implementado em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\Passo40\Produtos.feature
 	#para o magento precisamos mudar a loja do appsettings
 	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
