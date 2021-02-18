@@ -19,14 +19,14 @@ namespace Especificacao.Especificacao.Pedido.Passo40
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "ignore")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.PedidoFaltandoImplementarSteps")]
     public partial class LimiteDesconto_Perc_Comissao_E_DescontoFeature : object, Xunit.IClassFixture<LimiteDesconto_Perc_Comissao_E_DescontoFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore"};
+                "Especificacao.Pedido.PedidoFaltandoImplementarSteps"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -43,7 +43,7 @@ namespace Especificacao.Especificacao.Pedido.Passo40
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "LimiteDesconto_perc_comissao_e_desconto", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ignore"});
+                        "Especificacao.Pedido.PedidoFaltandoImplementarSteps"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -84,26 +84,6 @@ namespace Especificacao.Especificacao.Pedido.Passo40
 #line hidden
 #line 5
  testRunner.Given("Reinciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 7
- testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
-                    "max_comissao\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 8
- testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
-                    "max_comissao_e_desconto_nivel2\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 9
- testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
-                    "max_comissao_e_desconto_nivel2_pj\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 10
- testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
-                    "max_comissao_e_desconto_pj\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 12
- testRunner.And("Alterar registro em \"t_PARAMETRO\", busca \"id\" = \"especial: loja atual\", campo \"Pe" +
-                    "rcMaxComissaoEDesconto_Nivel2_MeiosPagto\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
         }
         
@@ -147,11 +127,11 @@ this.FeatureBackground();
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 29
- testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
-                        "max_comissao\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
+                        "max_comissao\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 30
- testRunner.And("Informo \"perc_RT\" = \"13\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("Informo \"perc_RT\" = \"13\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 31
  testRunner.Then("Erro \"Percentual de comissão excede o máximo permitido!!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -367,7 +347,7 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 97
- testRunner.Given("Pedido base PJ a vista", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PJ\" com forma pagamento \"a vista\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 98
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -411,21 +391,21 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 102
- testRunner.Given("Pedido base PJ a vista", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PJ\" com forma pagamento \"a vista\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 103
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 104
- testRunner.And("Informo \"op_av_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 105
  testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
                         "max_comissao_e_desconto_nivel2_pj\" = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 106
+#line 105
  testRunner.And("Alterar registro em \"t_PARAMETRO\", busca \"id\" = \"especial: loja atual\", campo \"Pe" +
                         "rcMaxComissaoEDesconto_Nivel2_MeiosPagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 106
+ testRunner.When("Informo \"op_av_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 107
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -466,21 +446,21 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 110
- testRunner.Given("Pedido base PF a vista", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PF\" com forma pagamento \"a vista\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 111
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 112
- testRunner.And("Informo \"op_av_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 113
  testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
                         "max_comissao_e_desconto_nivel2\" = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 114
+#line 113
  testRunner.And("Alterar registro em \"t_PARAMETRO\", busca \"id\" = \"especial: loja atual\", campo \"Pe" +
                         "rcMaxComissaoEDesconto_Nivel2_MeiosPagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 114
+ testRunner.When("Informo \"op_av_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 115
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -521,7 +501,7 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 135
- testRunner.Given("Pedido base PJ COD_FORMA_PAGTO_PARCELA_UNICA", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PJ\" com forma pagamento \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 136
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -565,21 +545,21 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 141
- testRunner.Given("Pedido base PJ COD_FORMA_PAGTO_PARCELA_UNICA", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PJ\" com forma pagamento \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 142
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 143
- testRunner.And("Informo \"op_pu_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 144
  testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
                         "max_comissao_e_desconto_nivel2_pj\" = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 145
+#line 144
  testRunner.And("Alterar registro em \"t_PARAMETRO\", busca \"id\" = \"especial: loja atual\", campo \"Pe" +
                         "rcMaxComissaoEDesconto_Nivel2_MeiosPagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 145
+ testRunner.When("Informo \"op_pu_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 146
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -620,21 +600,21 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 149
- testRunner.Given("Pedido base PF COD_FORMA_PAGTO_PARCELA_UNICA", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PF\" com forma pagamento \"COD_FORMA_PAGTO_PARCELA_UNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 150
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 151
- testRunner.And("Informo \"op_pu_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 152
  testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
                         "max_comissao_e_desconto_nivel2\" = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 153
+#line 152
  testRunner.And("Alterar registro em \"t_PARAMETRO\", busca \"id\" = \"especial: loja atual\", campo \"Pe" +
                         "rcMaxComissaoEDesconto_Nivel2_MeiosPagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 153
+ testRunner.When("Informo \"op_pu_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 154
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -675,7 +655,7 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 174
- testRunner.Given("Pedido base PJ COD_FORMA_PAGTO_PARCELADO_CARTAO", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PJ\" com forma pagamento \"COD_FORMA_PAGTO_PARCELADO_CARTAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 175
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -722,7 +702,7 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 179
- testRunner.Given("Pedido base PJ COD_FORMA_PAGTO_PARCELADO_CARTAO", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PJ\" com forma pagamento \"COD_FORMA_PAGTO_PARCELADO_CARTAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 180
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -777,7 +757,7 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 187
- testRunner.Given("Pedido base PF COD_FORMA_PAGTO_PARCELADO_CARTAO", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PF\" com forma pagamento \"COD_FORMA_PAGTO_PARCELADO_CARTAO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 188
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -832,7 +812,8 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 210
- testRunner.Given("Pedido base PJ COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PJ\" com forma pagamento \"COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA\"" +
+                        "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 211
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -879,7 +860,8 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 215
- testRunner.Given("Pedido base PJ COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PJ\" com forma pagamento \"COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA\"" +
+                        "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 216
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -934,7 +916,8 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 223
- testRunner.Given("Pedido base PF COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PF\" com forma pagamento \"COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA\"" +
+                        "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 224
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -989,7 +972,8 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 279
- testRunner.Given("Pedido base PJ COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA com 10% de entrada", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PJ\" com forma pagamento \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\" com " +
+                        "percentual de desconto \"10\" de entrada", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 280
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -1036,24 +1020,25 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 285
- testRunner.Given("Pedido base PJ COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA com 10% de entrada", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PJ\" com forma pagamento \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\" com " +
+                        "percentual de desconto \"10\" de entrada", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 286
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 287
- testRunner.And("Informo \"op_pce_entrada_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 288
- testRunner.And("Informo \"op_pce_prestacao_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 289
  testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
                         "max_comissao_e_desconto_nivel2_pj\" = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 290
+#line 288
  testRunner.And("Alterar registro em \"t_PARAMETRO\", busca \"id\" = \"especial: loja atual\", campo \"Pe" +
                         "rcMaxComissaoEDesconto_Nivel2_MeiosPagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 289
+ testRunner.When("Informo \"op_pce_entrada_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 290
+ testRunner.When("Informo \"op_pce_prestacao_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 291
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -1097,24 +1082,25 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 294
- testRunner.Given("Pedido base PF COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA com 10% de entrada", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PF\" com forma pagamento \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\" com " +
+                        "percentual de desconto \"10\" de entrada", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 295
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 296
- testRunner.And("Informo \"op_pu_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 297
- testRunner.And("Informo \"op_pce_prestacao_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 298
  testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
                         "max_comissao_e_desconto_nivel2\" = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 299
+#line 297
  testRunner.And("Alterar registro em \"t_PARAMETRO\", busca \"id\" = \"especial: loja atual\", campo \"Pe" +
                         "rcMaxComissaoEDesconto_Nivel2_MeiosPagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 298
+ testRunner.When("Informo \"op_pu_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 299
+ testRunner.When("Informo \"op_pce_prestacao_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 300
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -1158,24 +1144,25 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 304
- testRunner.Given("Pedido base PJ COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA com 10% de entrada", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PJ\" com forma pagamento \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\" com " +
+                        "percentual de desconto \"10\" de entrada", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 305
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 306
- testRunner.And("Informo \"op_pce_entrada_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 307
- testRunner.And("Informo \"op_pce_prestacao_forma_pagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 308
  testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
                         "max_comissao_e_desconto_nivel2_pj\" = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 309
+#line 307
  testRunner.And("Alterar registro em \"t_PARAMETRO\", busca \"id\" = \"especial: loja atual\", campo \"Pe" +
                         "rcMaxComissaoEDesconto_Nivel2_MeiosPagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 308
+ testRunner.When("Informo \"op_pce_entrada_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 309
+ testRunner.When("Informo \"op_pce_prestacao_forma_pagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 310
  testRunner.Then("Erro \"Desconto exede o permitido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -1219,24 +1206,25 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 313
- testRunner.Given("Pedido base PF COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA com 10% de entrada", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PF\" com forma pagamento \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\" com " +
+                        "percentual de desconto \"10\" de entrada", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 314
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 315
- testRunner.And("Informo \"op_pu_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 316
- testRunner.And("Informo \"op_pce_prestacao_forma_pagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 317
  testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
                         "max_comissao_e_desconto_nivel2\" = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 318
+#line 316
  testRunner.And("Alterar registro em \"t_PARAMETRO\", busca \"id\" = \"especial: loja atual\", campo \"Pe" +
                         "rcMaxComissaoEDesconto_Nivel2_MeiosPagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 317
+ testRunner.When("Informo \"op_pu_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 318
+ testRunner.When("Informo \"op_pce_prestacao_forma_pagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 319
  testRunner.Then("Erro \"Desconto exede o permitido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -1280,24 +1268,25 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 323
- testRunner.Given("Pedido base PJ COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA com 10% de entrada", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PJ\" com forma pagamento \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\" com " +
+                        "percentual de desconto \"10\" de entrada", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 324
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 325
- testRunner.And("Informo \"op_pce_entrada_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 326
- testRunner.And("Informo \"op_pce_prestacao_forma_pagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 327
  testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
                         "max_comissao_e_desconto_nivel2_pj\" = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 328
+#line 326
  testRunner.And("Alterar registro em \"t_PARAMETRO\", busca \"id\" = \"especial: loja atual\", campo \"Pe" +
                         "rcMaxComissaoEDesconto_Nivel2_MeiosPagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 327
+ testRunner.When("Informo \"op_pce_entrada_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 328
+ testRunner.When("Informo \"op_pce_prestacao_forma_pagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 329
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -1341,24 +1330,25 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 332
- testRunner.Given("Pedido base PF COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA com 10% de entrada", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PF\" com forma pagamento \"COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA\" com " +
+                        "percentual de desconto \"10\" de entrada", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 333
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 334
- testRunner.And("Informo \"op_pu_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 335
- testRunner.And("Informo \"op_pce_prestacao_forma_pagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 336
  testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
                         "max_comissao_e_desconto_nivel2\" = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 337
+#line 335
  testRunner.And("Alterar registro em \"t_PARAMETRO\", busca \"id\" = \"especial: loja atual\", campo \"Pe" +
                         "rcMaxComissaoEDesconto_Nivel2_MeiosPagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 336
+ testRunner.When("Informo \"op_pu_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 337
+ testRunner.When("Informo \"op_pce_prestacao_forma_pagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 338
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -1402,8 +1392,8 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 392
- testRunner.Given("Pedido base PJ COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA com 10% de primeira prestaçã" +
-                        "o", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PJ\" com forma pagamento \"COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\" com " +
+                        "percentual de desconto \"10\" de primeira prestação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 393
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -1450,25 +1440,25 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 398
- testRunner.Given("Pedido base PJ COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA com 10% de primeira prestaçã" +
-                        "o", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PJ\" com forma pagamento \"COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\" com " +
+                        "percentual de desconto \"10\" de primeira prestação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 399
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 400
- testRunner.And("Informo \"op_pse_prim_prest_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 401
- testRunner.And("Informo \"op_pse_demais_prest_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 402
  testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
                         "max_comissao_e_desconto_nivel2_pj\" = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 403
+#line 401
  testRunner.And("Alterar registro em \"t_PARAMETRO\", busca \"id\" = \"especial: loja atual\", campo \"Pe" +
                         "rcMaxComissaoEDesconto_Nivel2_MeiosPagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 402
+ testRunner.When("Informo \"op_pse_prim_prest_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 403
+ testRunner.When("Informo \"op_pse_demais_prest_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 404
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -1512,25 +1502,25 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 407
- testRunner.Given("Pedido base PF COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA com 10% de primeira prestaçã" +
-                        "o", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PF\" com forma pagamento \"COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\" com " +
+                        "percentual de desconto \"10\" de primeira prestação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 408
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 409
- testRunner.And("Informo \"op_pse_prim_prest_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 410
- testRunner.And("Informo \"op_pse_demais_prest_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 411
  testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
                         "max_comissao_e_desconto_nivel2\" = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 412
+#line 410
  testRunner.And("Alterar registro em \"t_PARAMETRO\", busca \"id\" = \"especial: loja atual\", campo \"Pe" +
                         "rcMaxComissaoEDesconto_Nivel2_MeiosPagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 411
+ testRunner.When("Informo \"op_pse_prim_prest_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 412
+ testRunner.When("Informo \"op_pse_demais_prest_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 413
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -1574,25 +1564,25 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 417
- testRunner.Given("Pedido base PJ COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA com 10% de primeira prestaçã" +
-                        "o", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PJ\" com forma pagamento \"COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\" com " +
+                        "percentual de desconto \"10\" de primeira prestação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 418
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 419
- testRunner.And("Informo \"op_pse_prim_prest_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 420
- testRunner.And("Informo \"op_pse_demais_prest_forma_pagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 421
  testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
                         "max_comissao_e_desconto_nivel2_pj\" = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 422
+#line 420
  testRunner.And("Alterar registro em \"t_PARAMETRO\", busca \"id\" = \"especial: loja atual\", campo \"Pe" +
                         "rcMaxComissaoEDesconto_Nivel2_MeiosPagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 421
+ testRunner.When("Informo \"op_pse_prim_prest_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 422
+ testRunner.When("Informo \"op_pse_demais_prest_forma_pagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 423
  testRunner.Then("Erro \"Desconto exede o permitido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -1636,25 +1626,25 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 426
- testRunner.Given("Pedido base PF COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA com 10% de primeira prestaçã" +
-                        "o", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PF\" com forma pagamento \"COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\" com " +
+                        "percentual de desconto \"10\" de primeira prestação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 427
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 428
- testRunner.And("Informo \"op_pse_prim_prest_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 429
- testRunner.And("Informo \"op_pse_demais_prest_forma_pagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 430
  testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
                         "max_comissao_e_desconto_nivel2\" = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 431
+#line 429
  testRunner.And("Alterar registro em \"t_PARAMETRO\", busca \"id\" = \"especial: loja atual\", campo \"Pe" +
                         "rcMaxComissaoEDesconto_Nivel2_MeiosPagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 430
+ testRunner.When("Informo \"op_pse_prim_prest_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 431
+ testRunner.When("Informo \"op_pse_demais_prest_forma_pagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 432
  testRunner.Then("Erro \"Desconto exede o permitido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -1698,25 +1688,25 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 436
- testRunner.Given("Pedido base PJ COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA com 10% de primeira prestaçã" +
-                        "o", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PJ\" com forma pagamento \"COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\" com " +
+                        "percentual de desconto \"10\" de primeira prestação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 437
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 438
- testRunner.And("Informo \"op_pse_prim_prest_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 439
- testRunner.And("Informo \"op_pse_demais_prest_forma_pagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 440
  testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
                         "max_comissao_e_desconto_nivel2_pj\" = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 441
+#line 439
  testRunner.And("Alterar registro em \"t_PARAMETRO\", busca \"id\" = \"especial: loja atual\", campo \"Pe" +
                         "rcMaxComissaoEDesconto_Nivel2_MeiosPagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 440
+ testRunner.When("Informo \"op_pse_prim_prest_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 441
+ testRunner.When("Informo \"op_pse_demais_prest_forma_pagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 442
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -1760,25 +1750,25 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 445
- testRunner.Given("Pedido base PF COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA com 10% de primeira prestaçã" +
-                        "o", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base \"PF\" com forma pagamento \"COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA\" com " +
+                        "percentual de desconto \"10\" de primeira prestação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 446
  testRunner.Given("Modificar pedido para \"15\" por cento de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 447
- testRunner.And("Informo \"op_pse_prim_prest_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 448
- testRunner.And("Informo \"op_pse_demais_prest_forma_pagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 449
  testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
                         "max_comissao_e_desconto_nivel2\" = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 450
+#line 448
  testRunner.And("Alterar registro em \"t_PARAMETRO\", busca \"id\" = \"especial: loja atual\", campo \"Pe" +
                         "rcMaxComissaoEDesconto_Nivel2_MeiosPagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 449
+ testRunner.When("Informo \"op_pse_prim_prest_forma_pagto\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 450
+ testRunner.When("Informo \"op_pse_demais_prest_forma_pagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 451
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");

@@ -1,15 +1,15 @@
-﻿@ignore
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
 Feature: LimiteDesconto_perc_comissao_e_desconto
 
 Background: Configurar descontos da loja
 	Given Reinciar banco ao terminar cenário
 	#todo mundo com 10% de máximo
-	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao" = "10"
-	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_nivel2" = "10"
-	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_nivel2_pj" = "10"
-	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_pj" = "10"
-	#desabilita os meios preferenciais
-	And Alterar registro em "t_PARAMETRO", busca "id" = "especial: loja atual", campo "PercMaxComissaoEDesconto_Nivel2_MeiosPagto" = ""
+	#Given Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao" = "10"
+	#Given Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_nivel2" = "10"
+	#Given Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_nivel2_pj" = "10"
+	#Given Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_pj" = "10"
+	##desabilita os meios preferenciais
+	#Given Alterar registro em "t_PARAMETRO", busca "id" = "especial: loja atual", campo "PercMaxComissaoEDesconto_Nivel2_MeiosPagto" = ""
 
 Scenario: Percentual de comissão excede o máximo permitido!!
 #loja/PedidoNovoConsiste.asp
@@ -26,8 +26,8 @@ Scenario: Percentual de comissão excede o máximo permitido!!
 #		" (CONVERT(smallint,loja) = " & loja & ")"
 
 	Given Pedido base
-	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao" = "12"
-	And Informo "perc_RT" = "13"
+	Given Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao" = "12"
+	When Informo "perc_RT" = "13"
 	Then Erro "Percentual de comissão excede o máximo permitido!!"
 
 Scenario: Verifica o perc_comissao_e_desconto_a_utilizar
@@ -94,24 +94,24 @@ Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_A_VISTA
 	#						end if
 	#					next
 	#				end if
-	Given Pedido base PJ a vista
+	Given Pedido base "PJ" com forma pagamento "a vista"
 	Given Modificar pedido para "15" por cento de desconto
 	Then Erro "Desconto exede o permitido"
 
 Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_A_VISTA PJ
-	Given Pedido base PJ a vista
+	Given Pedido base "PJ" com forma pagamento "a vista"
 	Given Modificar pedido para "15" por cento de desconto
-	And Informo "op_av_forma_pagto" = "1"
 	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_nivel2_pj" = "20"
 	And Alterar registro em "t_PARAMETRO", busca "id" = "especial: loja atual", campo "PercMaxComissaoEDesconto_Nivel2_MeiosPagto" = "1"
+	When Informo "op_av_forma_pagto" = "1"
 	Then Sem nenhum erro
 
 Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_A_VISTA PF
-	Given Pedido base PF a vista
+	Given Pedido base "PF" com forma pagamento "a vista"
 	Given Modificar pedido para "15" por cento de desconto
-	And Informo "op_av_forma_pagto" = "1"
 	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_nivel2" = "20"
 	And Alterar registro em "t_PARAMETRO", busca "id" = "especial: loja atual", campo "PercMaxComissaoEDesconto_Nivel2_MeiosPagto" = "1"
+	When Informo "op_av_forma_pagto" = "1"
 	Then Sem nenhum erro
 
 
@@ -132,25 +132,25 @@ Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELA
 	#						end if
 	#					next
 	#				end if
-	Given Pedido base PJ COD_FORMA_PAGTO_PARCELA_UNICA
+	Given Pedido base "PJ" com forma pagamento "COD_FORMA_PAGTO_PARCELA_UNICA"
 	Given Modificar pedido para "15" por cento de desconto
 	Then Erro "Desconto exede o permitido"
 
 
 Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELA_UNICA PJ
-	Given Pedido base PJ COD_FORMA_PAGTO_PARCELA_UNICA
+	Given Pedido base "PJ" com forma pagamento "COD_FORMA_PAGTO_PARCELA_UNICA"
 	Given Modificar pedido para "15" por cento de desconto
-	And Informo "op_pu_forma_pagto" = "1"
 	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_nivel2_pj" = "20"
 	And Alterar registro em "t_PARAMETRO", busca "id" = "especial: loja atual", campo "PercMaxComissaoEDesconto_Nivel2_MeiosPagto" = "1"
+	When Informo "op_pu_forma_pagto" = "1"
 	Then Sem nenhum erro
 
 Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELA_UNICA PF
-	Given Pedido base PF COD_FORMA_PAGTO_PARCELA_UNICA
+	Given Pedido base "PF" com forma pagamento "COD_FORMA_PAGTO_PARCELA_UNICA"
 	Given Modificar pedido para "15" por cento de desconto
-	And Informo "op_pu_forma_pagto" = "1"
 	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_nivel2" = "20"
 	And Alterar registro em "t_PARAMETRO", busca "id" = "especial: loja atual", campo "PercMaxComissaoEDesconto_Nivel2_MeiosPagto" = "1"
+	When Informo "op_pu_forma_pagto" = "1"
 	Then Sem nenhum erro
 
 
@@ -171,12 +171,12 @@ Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELA
 	#						end if
 	#					next
 	#				end if
-	Given Pedido base PJ COD_FORMA_PAGTO_PARCELADO_CARTAO
+	Given Pedido base "PJ" com forma pagamento "COD_FORMA_PAGTO_PARCELADO_CARTAO"
 	Given Modificar pedido para "15" por cento de desconto
 	Then Erro "Desconto exede o permitido"
 
 Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELADO_CARTAO PJ
-	Given Pedido base PJ COD_FORMA_PAGTO_PARCELADO_CARTAO
+	Given Pedido base "PJ" com forma pagamento "COD_FORMA_PAGTO_PARCELADO_CARTAO"
 	Given Modificar pedido para "15" por cento de desconto
 	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_nivel2_pj" = "20"
 	#	Const ID_FORMA_PAGTO_CARTAO = "5"
@@ -184,7 +184,7 @@ Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELA
 	Then Sem nenhum erro
 
 Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELADO_CARTAO PF
-	Given Pedido base PF COD_FORMA_PAGTO_PARCELADO_CARTAO
+	Given Pedido base "PF" com forma pagamento "COD_FORMA_PAGTO_PARCELADO_CARTAO"
 	Given Modificar pedido para "15" por cento de desconto
 	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_nivel2" = "20"
 	And Alterar registro em "t_PARAMETRO", busca "id" = "especial: loja atual", campo "PercMaxComissaoEDesconto_Nivel2_MeiosPagto" = "5"
@@ -207,12 +207,12 @@ Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELA
 	#						end if
 	#					next
 	#				end if
-	Given Pedido base PJ COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA
+	Given Pedido base "PJ" com forma pagamento "COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA"
 	Given Modificar pedido para "15" por cento de desconto
 	Then Erro "Desconto exede o permitido"
 
 Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA PJ
-	Given Pedido base PJ COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA
+	Given Pedido base "PJ" com forma pagamento "COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA"
 	Given Modificar pedido para "15" por cento de desconto
 	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_nivel2_pj" = "20"
 	#	Const ID_FORMA_PAGTO_CARTAO_MAQUINETA = "7"
@@ -220,7 +220,7 @@ Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELA
 	Then Sem nenhum erro
 
 Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA PF
-	Given Pedido base PF COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA
+	Given Pedido base "PF" com forma pagamento "COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA"
 	Given Modificar pedido para "15" por cento de desconto
 	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_nivel2" = "20"
 	And Alterar registro em "t_PARAMETRO", busca "id" = "especial: loja atual", campo "PercMaxComissaoEDesconto_Nivel2_MeiosPagto" = "7"
@@ -276,65 +276,65 @@ Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELA
 	#					end if
 	#				end if
 	#
-	Given Pedido base PJ COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA com 10% de entrada
+	Given Pedido base "PJ" com forma pagamento "COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA" com percentual de desconto "10" de entrada
 	Given Modificar pedido para "15" por cento de desconto
 	Then Erro "Desconto exede o permitido"
 
 
 Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA PJ tudo preferencial
-	Given Pedido base PJ COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA com 10% de entrada
+	Given Pedido base "PJ" com forma pagamento "COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA" com percentual de desconto "10" de entrada
 	Given Modificar pedido para "15" por cento de desconto
-	And Informo "op_pce_entrada_forma_pagto" = "1"
-	And Informo "op_pce_prestacao_forma_pagto" = "1"
 	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_nivel2_pj" = "20"
 	And Alterar registro em "t_PARAMETRO", busca "id" = "especial: loja atual", campo "PercMaxComissaoEDesconto_Nivel2_MeiosPagto" = "1"
+	When Informo "op_pce_entrada_forma_pagto" = "1"
+	When Informo "op_pce_prestacao_forma_pagto" = "1"
 	Then Sem nenhum erro
 
 Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA PF tudo preferencial
-	Given Pedido base PF COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA com 10% de entrada
+	Given Pedido base "PF" com forma pagamento "COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA" com percentual de desconto "10" de entrada
 	Given Modificar pedido para "15" por cento de desconto
-	And Informo "op_pu_forma_pagto" = "1"
-	And Informo "op_pce_prestacao_forma_pagto" = "1"
 	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_nivel2" = "20"
 	And Alterar registro em "t_PARAMETRO", busca "id" = "especial: loja atual", campo "PercMaxComissaoEDesconto_Nivel2_MeiosPagto" = "1"
+	When Informo "op_pu_forma_pagto" = "1"
+	When Informo "op_pce_prestacao_forma_pagto" = "1"
 	Then Sem nenhum erro
 
 
 Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA PJ entrada preferencial
-	Given Pedido base PJ COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA com 10% de entrada
+	Given Pedido base "PJ" com forma pagamento "COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA" com percentual de desconto "10" de entrada
 	Given Modificar pedido para "15" por cento de desconto
-	And Informo "op_pce_entrada_forma_pagto" = "1"
-	And Informo "op_pce_prestacao_forma_pagto" = "2"
 	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_nivel2_pj" = "20"
 	And Alterar registro em "t_PARAMETRO", busca "id" = "especial: loja atual", campo "PercMaxComissaoEDesconto_Nivel2_MeiosPagto" = "1"
+	When Informo "op_pce_entrada_forma_pagto" = "1"
+	When Informo "op_pce_prestacao_forma_pagto" = "2"
 	Then Erro "Desconto exede o permitido"
 
 Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA PF entrada preferencial
-	Given Pedido base PF COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA com 10% de entrada
+	Given Pedido base "PF" com forma pagamento "COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA" com percentual de desconto "10" de entrada
 	Given Modificar pedido para "15" por cento de desconto
-	And Informo "op_pu_forma_pagto" = "1"
-	And Informo "op_pce_prestacao_forma_pagto" = "2"
 	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_nivel2" = "20"
 	And Alterar registro em "t_PARAMETRO", busca "id" = "especial: loja atual", campo "PercMaxComissaoEDesconto_Nivel2_MeiosPagto" = "1"
+	When Informo "op_pu_forma_pagto" = "1"
+	When Informo "op_pce_prestacao_forma_pagto" = "2"
 	Then Erro "Desconto exede o permitido"
 
 
 Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA PJ prestacao preferencial
-	Given Pedido base PJ COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA com 10% de entrada
+	Given Pedido base "PJ" com forma pagamento "COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA" com percentual de desconto "10" de entrada
 	Given Modificar pedido para "15" por cento de desconto
-	And Informo "op_pce_entrada_forma_pagto" = "1"
-	And Informo "op_pce_prestacao_forma_pagto" = "2"
 	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_nivel2_pj" = "20"
 	And Alterar registro em "t_PARAMETRO", busca "id" = "especial: loja atual", campo "PercMaxComissaoEDesconto_Nivel2_MeiosPagto" = "2"
+	When Informo "op_pce_entrada_forma_pagto" = "1"
+	When Informo "op_pce_prestacao_forma_pagto" = "2"
 	Then Sem nenhum erro
 
 Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA PF prestacao preferencial
-	Given Pedido base PF COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA com 10% de entrada
+	Given Pedido base "PF" com forma pagamento "COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA" com percentual de desconto "10" de entrada
 	Given Modificar pedido para "15" por cento de desconto
-	And Informo "op_pu_forma_pagto" = "1"
-	And Informo "op_pce_prestacao_forma_pagto" = "2"
 	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_nivel2" = "20"
 	And Alterar registro em "t_PARAMETRO", busca "id" = "especial: loja atual", campo "PercMaxComissaoEDesconto_Nivel2_MeiosPagto" = "2"
+	When Informo "op_pu_forma_pagto" = "1"
+	When Informo "op_pce_prestacao_forma_pagto" = "2"
 	Then Sem nenhum erro
 
 
@@ -389,64 +389,64 @@ Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELA
 #			end if
 #		end if
 
-	Given Pedido base PJ COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA com 10% de primeira prestação
+	Given Pedido base "PJ" com forma pagamento "COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA" com percentual de desconto "10" de primeira prestação
 	Given Modificar pedido para "15" por cento de desconto
 	Then Erro "Desconto exede o permitido"
 
 
 Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA PJ tudo preferencial
-	Given Pedido base PJ COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA com 10% de primeira prestação
+	Given Pedido base "PJ" com forma pagamento "COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA" com percentual de desconto "10" de primeira prestação
 	Given Modificar pedido para "15" por cento de desconto
-	And Informo "op_pse_prim_prest_forma_pagto" = "1"
-	And Informo "op_pse_demais_prest_forma_pagto" = "1"
 	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_nivel2_pj" = "20"
 	And Alterar registro em "t_PARAMETRO", busca "id" = "especial: loja atual", campo "PercMaxComissaoEDesconto_Nivel2_MeiosPagto" = "1"
+	When Informo "op_pse_prim_prest_forma_pagto" = "1"
+	When Informo "op_pse_demais_prest_forma_pagto" = "1"
 	Then Sem nenhum erro
 
 Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA PF tudo preferencial
-	Given Pedido base PF COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA com 10% de primeira prestação
+	Given Pedido base "PF" com forma pagamento "COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA" com percentual de desconto "10" de primeira prestação
 	Given Modificar pedido para "15" por cento de desconto
-	And Informo "op_pse_prim_prest_forma_pagto" = "1"
-	And Informo "op_pse_demais_prest_forma_pagto" = "1"
 	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_nivel2" = "20"
 	And Alterar registro em "t_PARAMETRO", busca "id" = "especial: loja atual", campo "PercMaxComissaoEDesconto_Nivel2_MeiosPagto" = "1"
+	When Informo "op_pse_prim_prest_forma_pagto" = "1"
+	When Informo "op_pse_demais_prest_forma_pagto" = "1"
 	Then Sem nenhum erro
 
 
 Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA PJ entrada preferencial
-	Given Pedido base PJ COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA com 10% de primeira prestação
+	Given Pedido base "PJ" com forma pagamento "COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA" com percentual de desconto "10" de primeira prestação
 	Given Modificar pedido para "15" por cento de desconto
-	And Informo "op_pse_prim_prest_forma_pagto" = "1"
-	And Informo "op_pse_demais_prest_forma_pagto" = "2"
 	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_nivel2_pj" = "20"
 	And Alterar registro em "t_PARAMETRO", busca "id" = "especial: loja atual", campo "PercMaxComissaoEDesconto_Nivel2_MeiosPagto" = "1"
+	When Informo "op_pse_prim_prest_forma_pagto" = "1"
+	When Informo "op_pse_demais_prest_forma_pagto" = "2"
 	Then Erro "Desconto exede o permitido"
 
 Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA PF entrada preferencial
-	Given Pedido base PF COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA com 10% de primeira prestação
+	Given Pedido base "PF" com forma pagamento "COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA" com percentual de desconto "10" de primeira prestação
 	Given Modificar pedido para "15" por cento de desconto
-	And Informo "op_pse_prim_prest_forma_pagto" = "1"
-	And Informo "op_pse_demais_prest_forma_pagto" = "2"
 	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_nivel2" = "20"
 	And Alterar registro em "t_PARAMETRO", busca "id" = "especial: loja atual", campo "PercMaxComissaoEDesconto_Nivel2_MeiosPagto" = "1"
+	When Informo "op_pse_prim_prest_forma_pagto" = "1"
+	When Informo "op_pse_demais_prest_forma_pagto" = "2"
 	Then Erro "Desconto exede o permitido"
 
 
 Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA PJ prestacao preferencial
-	Given Pedido base PJ COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA com 10% de primeira prestação
+	Given Pedido base "PJ" com forma pagamento "COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA" com percentual de desconto "10" de primeira prestação
 	Given Modificar pedido para "15" por cento de desconto
-	And Informo "op_pse_prim_prest_forma_pagto" = "1"
-	And Informo "op_pse_demais_prest_forma_pagto" = "2"
 	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_nivel2_pj" = "20"
 	And Alterar registro em "t_PARAMETRO", busca "id" = "especial: loja atual", campo "PercMaxComissaoEDesconto_Nivel2_MeiosPagto" = "2"
+	When Informo "op_pse_prim_prest_forma_pagto" = "1"
+	When Informo "op_pse_demais_prest_forma_pagto" = "2"
 	Then Sem nenhum erro
 
 Scenario: Verifica o perc_comissao_e_desconto_a_utilizar COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA PF prestacao preferencial
-	Given Pedido base PF COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA com 10% de primeira prestação
+	Given Pedido base "PF" com forma pagamento "COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA" com percentual de desconto "10" de primeira prestação
 	Given Modificar pedido para "15" por cento de desconto
-	And Informo "op_pse_prim_prest_forma_pagto" = "1"
-	And Informo "op_pse_demais_prest_forma_pagto" = "2"
 	And Alterar registro em "t_LOJA", busca "loja" = "especial: loja atual", campo "perc_max_comissao_e_desconto_nivel2" = "20"
 	And Alterar registro em "t_PARAMETRO", busca "id" = "especial: loja atual", campo "PercMaxComissaoEDesconto_Nivel2_MeiosPagto" = "2"
+	When Informo "op_pse_prim_prest_forma_pagto" = "1"
+	When Informo "op_pse_demais_prest_forma_pagto" = "2"
 	Then Sem nenhum erro
 
