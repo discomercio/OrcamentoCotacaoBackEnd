@@ -31,7 +31,7 @@ namespace Pedido.Criacao.Passo40
             if (Pedido.ListaProdutos.Count > 12)
                 Retorno.ListaErros.Add("São permitidos no máximo 12 itens por pedido.");
             if (Pedido.ListaProdutos.Count == 0)
-                Retorno.ListaErros.Add("Pedido sem nenhum produto na lista.");
+                Retorno.ListaErros.Add("Não há itens na lista de produtos!");
         }
 
         private async Task Usuario()
