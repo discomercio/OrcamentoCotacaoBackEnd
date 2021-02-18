@@ -69,6 +69,13 @@ Scenario: validar telefone - tel_cel sucesso
 	When Informo "EndEtg_tel_cel" = "12345678"
 	Then Sem nenhum erro 
 
+Scenario: validar telefone - tel_cel com simbolos
+	Given Pedido base
+	When Informo "OutroEndereco" = "true"
+	When Informo "EndEtg_ddd_cel" = "12"
+	When Informo "EndEtg_tel_cel" = "1234-5678"
+	Then Sem nenhum erro
+
 	
 
 	

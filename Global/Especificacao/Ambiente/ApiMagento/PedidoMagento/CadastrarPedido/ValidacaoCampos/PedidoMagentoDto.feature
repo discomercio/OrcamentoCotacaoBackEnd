@@ -10,8 +10,6 @@ Feature: PedidoMagentoDto
 #Verificação de campos de appsettings CadastrarPedido.EspecificacaoAdicional.CamposLidosAppsettingsFeature
 #Verificação de produtos composto e preço que vier estão em CadastrarPedido.EspecificacaoAdicional.EspecificacaoMagentoFeature
 #Verificação de frete e ponto de referência estão em CadastrarPedido.EspecificacaoAdicional.FretePontoReferenciaFeature
-
-
 Scenario: InfCriacaoPedido Pedido_bs_x_ac
 	Given Pedido base
 	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = ""
@@ -32,7 +30,6 @@ Scenario: InfCriacaoPedido Pedido_bs_x_ac
 	Given Pedido base
 	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "223456799"
 	Then Sem nenhum erro
-
 
 Scenario: InfCriacaoPedido Pedido_bs_x_ac somente digitos
 	# afazer - criar essa verificação
@@ -63,7 +60,6 @@ Scenario: Validar se o que expomos pelo ObterCodigoMarketplace foi informado - e
 	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "123456789"
 	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "123"
 	Then Erro "Código Marketplace não encontrado."
-
 
 Scenario: Validar se o que expomos pelo ObterCodigoMarketplace foi informado - sucesso
 	#precisa ser parcela única para poder ter o Marketplace_codigo_origem
@@ -98,15 +94,7 @@ Scenario: DetalhesPedidoMagentoDto
 	And Tabela "t_PEDIDO" registro criado, verificar campo "StBemUsoConsumo" = "1"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "InstaladorInstalaStatus" = "1"
 
-
-
 @ignore
-Scenario: Não aceitamos pedidos vazios - magento
-	#if (!ha_item) {
-	#	alert("Não há produtos na lista!!");
-	#	f.c_fabricante[0].focus();
-	#	return;
-	#	}
+Scenario: validação de Perc_RT
 	Given Pedido base
-	When Lista de itens com "0" itens
-	Then Erro "Não há produtos na lista!!"
+	Then Erro "ajustar esse teste"

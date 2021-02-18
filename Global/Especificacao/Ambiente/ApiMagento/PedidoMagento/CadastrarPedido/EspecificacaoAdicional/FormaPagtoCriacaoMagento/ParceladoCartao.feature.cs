@@ -165,9 +165,6 @@ this.FeatureBackground();
 #line 22
  testRunner.When("Lista de itens \"1\" informo \"Preco_NF\" = \"1200.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 23
- testRunner.When("Informo \"VlTotalDestePedido\" = \"3394.94\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 24
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -346,9 +343,6 @@ this.FeatureBackground();
 #line 51
  testRunner.When("Informo \"C_pc_valor\" = \"3132.90\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 52
- testRunner.When("Informo \"VlTotalDestePedido\" = \"3132.90\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 53
  testRunner.Then("Erro \"regex .*Coeficiente não cadastrado para o fabricante. Fabricante:*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -393,9 +387,6 @@ this.FeatureBackground();
 #line 57
  testRunner.When("Informo \"C_pc_valor\" = \"3132.90\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 58
- testRunner.When("Informo \"VlTotalDestePedido\" = \"3132.90\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 59
  testRunner.Then("Erro \"regex .*Coeficiente não cadastrado para o fabricante. Fabricante:*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -439,9 +430,6 @@ this.FeatureBackground();
 #line hidden
 #line 63
  testRunner.When("Informo \"C_pc_valor\" = \"3132.90\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 64
- testRunner.When("Informo \"VlTotalDestePedido\" = \"3132.90\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 65
  testRunner.Then("Erro \"Coeficiente não cadastrado para o fabricante. Fabricante: 003, TipoParcela:" +

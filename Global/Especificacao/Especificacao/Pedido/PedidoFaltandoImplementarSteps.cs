@@ -223,6 +223,42 @@ namespace Especificacao.Especificacao.Pedido
         {
             
         }
+
+        [Given(@"Usuário sem permissão OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD")]
+        public void GivenUsuarioSemPermissaoOP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD()
+        {
+            
+        }
+
+        [Given(@"Usuário com permissão OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD")]
+        public void GivenUsuarioComPermissaoOP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD()
+        {
+
+        }
+
+        [Given(@"Alterar pedido colocar RA de (.*) real")]
+        public void GivenAlterarPedidoColocarRADeReal(int p0)
+        {
+            
+        }
+
+        [When(@"Recalcular totais do pedido")]
+        public void WhenRecalcularTotaisDoPedido()
+        {
+           
+        }
+
+        [When(@"Deixar forma de pagamento consistente")]
+        public void WhenDeixarFormaDePagamentoConsistente()
+        {
+            
+        }
+
+        [Given(@"Pedido base COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA")]
+        public void GivenPedidoBaseCOD_FORMA_PAGTO_PARCELADO_COM_ENTRADA()
+        {
+            
+        }
     }
 }
 #pragma warning restore IDE0060 // Remove unued parameter

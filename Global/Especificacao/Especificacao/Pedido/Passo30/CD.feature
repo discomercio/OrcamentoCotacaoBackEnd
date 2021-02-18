@@ -1,5 +1,6 @@
-﻿@Especificacao.Pedido.Passo30
-@ignore
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
+#@Especificacao.Pedido.Passo30
+#@ignore
 Feature: Validação do CD
 todo: terminar Validação do CD
 
@@ -8,9 +9,9 @@ Background: Reiniciar banco
 	#ignoramos na API magneto porque sempre é CD automático
 	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 
-Scenario: Configuração
-	Given Nome deste item "Especificacao.Pedido.Passo30.CD"
-	Given Implementado em "Especificacao.Pedido.Pedido"
+#Scenario: Configuração
+#	Given Nome deste item "Especificacao.Pedido.Passo30.CD"
+#	Given Implementado em "Especificacao.Pedido.Pedido"
 
 Scenario: Validar permissão de CD
 	Given Pedido base
@@ -24,7 +25,7 @@ Scenario: Validar CD escolhido caso manual
 	And Usuário com permissão OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD
 	When Informo "selecao_cd" = "MODO_SELECAO_CD__MANUAL"
 	When Informo "c_id_nfe_emitente_selecao_manual" = "1"
-	Then Sem Erro "Usuário não tem permissão de especificar o CD"
+	Then Sem erro "Usuário não tem permissão de especificar o CD"
 
 
 Scenario: Validar que escolheu um CD

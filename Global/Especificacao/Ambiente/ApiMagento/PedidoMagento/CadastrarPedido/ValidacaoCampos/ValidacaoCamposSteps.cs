@@ -73,5 +73,12 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Valida
             Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensInformo(indice, campo, valor, this);
             cadastrarPedido.MagentoListaDeItensInformo(indice, campo, valor);
         }
+
+        [When(@"Lista de itens com ""(.*)"" itens")]
+        public void WhenListaDeItensComItens(int numeroItens)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensComXitens(numeroItens, this);
+            cadastrarPedido.MagentoListaDeItensComXitens(numeroItens);
+        }
     }
 }

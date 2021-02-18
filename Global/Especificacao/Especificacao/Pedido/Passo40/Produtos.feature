@@ -1,5 +1,7 @@
-﻿@ignore
-@Especificacao.Pedido.Passo40
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
+#@ignore
+#@Especificacao.Pedido.Passo40
+
 Feature: Produtos
 
 Scenario: Sem quantidade zero
@@ -71,7 +73,7 @@ Scenario: Produto disponível para a loja
 #					elseif .qtde > rs("qtde_max_venda") then
 #						alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & ": quantidade " & cstr(.qtde) & " excede o máximo permitido."
 
-	When Validação feita em outro arquivo: "Especificacao\Pedido\Passo40\PedidoNovoProdCompostoMask_t_PRODUTO_LOJA.feature"
+	# Validação feita em outro arquivo: "Especificacao\Pedido\Passo40\PedidoNovoProdCompostoMask_t_PRODUTO_LOJA.feature"
 
 
 Scenario: Máximo de itens por pedido

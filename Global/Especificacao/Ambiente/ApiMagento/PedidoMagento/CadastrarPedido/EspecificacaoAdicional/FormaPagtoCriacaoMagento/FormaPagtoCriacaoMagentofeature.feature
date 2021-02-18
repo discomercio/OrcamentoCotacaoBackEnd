@@ -15,7 +15,7 @@ Background:
 	When Lista de itens "0" informo "Qtde" = "2"
 	When Lista de itens "0" informo "Preco_Venda" = "509.24"
 	When Lista de itens "0" informo "Preco_NF" = "520.00"
-	When Informo "VlTotalDestePedido" = "1018.48"
+	#When Informo "VlTotalDestePedido" = "1018.48"
 	Given Reiniciar banco ao terminar cenário
 
 Scenario: Verificar se o produto não existe na t_PRODUTO_LOJA
@@ -26,8 +26,8 @@ Scenario: Tipo_Parcelamento - parcelado única - t_PERCENTUAL_CUSTO_FINANCEIRO_F
 	Given Limpar tabela "t_PERCENTUAL_CUSTO_FINANCEIRO_FORNECEDOR"
 	Then Erro "Coeficiente não cadastrado para o fabricante. Fabricante: 001, TipoParcela: SE"
 
-@ignore
+
 Scenario: Tipo_Parcelamento - não existe
 Given Pedido base
 When Informo "Tipo_Parcelamento" = "12"
-Then Erro "pegar erro"
+Then Erro "regex .*Coeficiente não cadastrado para o fabricante.*"

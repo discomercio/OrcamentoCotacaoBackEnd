@@ -62,7 +62,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Criaca
                 texto += i.ToString();
             }
 
-            //Testes.Utils.LogTestes.LogOperacoes2.Informo(p0, p1, this);
+            Testes.Utils.LogTestes.LogOperacoes2.Informo(p0, p1.ToString(), this);
             cadastrarPedido.WhenInformo(p0, texto);
         }
 

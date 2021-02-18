@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xunit;
 
@@ -119,7 +120,8 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         //3 versoes da mesma rotina...
         public static void EstaticoDeixarFormaDePagamentoConsistente(MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoDto prePedidoUnisDto)
         {
-            var total = prePedidoUnisDto.VlTotalDestePedido;
+            //var total = prePedidoUnisDto.VlTotalDestePedido;
+            var total = prePedidoUnisDto.ListaProdutos.Select(x => Math.Round(x.Preco_Venda * x.Qtde, 2)).Sum();
             var fp = prePedidoUnisDto.FormaPagtoCriacao;
             switch (fp.Tipo_Parcelamento.ToString())
             {
