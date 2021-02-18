@@ -16,7 +16,7 @@ namespace Especificacao.Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApi
             return ret;
         }
 
-        public static readonly string Usuario = "USUARIOPREPEDIDOAPI";
+        public static readonly string Usuario = "USRPAPI";
 
         public static global::PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido.PrePedidoDto PrepedidoParceladoAvista()
         {

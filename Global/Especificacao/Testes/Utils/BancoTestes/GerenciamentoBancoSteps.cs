@@ -57,6 +57,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
                     throw new ArgumentException($"Especificacao.Testes.Utils.BancoTestes.InicializarBancoGeral.LimparTabela nome de tabela desconhecido: {tabela}");
             }
             db.SaveChanges();
+            db.transacao.Commit();
         }
 
         public static void LimparTabelaDbSet<TipoDados>(Microsoft.EntityFrameworkCore.DbSet<TipoDados> dbSet)
@@ -179,6 +180,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             var registro = (from operacao in db.Toperacaos where operacao.Id == valorInt select operacao).First();
             db.Toperacaos.Remove(registro);
             db.SaveChanges();
+            db.transacao.Commit();
         }
 
         [Given(@"Tabela ""t_USUARIO"" apagar registro com campo ""(.*)"" = ""(.*)""")]
@@ -203,6 +205,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             var registro = (from usuario in db.Tusuarios where usuario.Usuario == valor select usuario).First();
             db.Tusuarios.Remove(registro);
             db.SaveChanges();
+            db.transacao.Commit();
         }
 
         [Given(@"Tabela t_CLIENTE registro com cpf_cnpj = ""(.*)"" alterar campo ""(.*)"" = ""(.*)""")]
@@ -222,6 +225,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
                        
             db.Update(registro);
             db.SaveChanges();
+            db.transacao.Commit();
         }
 
 

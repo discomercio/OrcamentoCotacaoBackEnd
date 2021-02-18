@@ -811,7 +811,7 @@ namespace Prepedido
             List<RegrasBll> regraCrtlEstoque = (await ObtemCtrlEstoqueProdutoRegra(contextoProvider, prePedido, lstErros)).ToList();
             await UtilsProduto.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, regraCrtlEstoque, prePedido.DadosCliente.Uf, tipoPessoa, contextoProvider);
 
-            Produto.ProdutoGeralBll.VerificarRegrasAssociadasAosProdutos(regraCrtlEstoque, lstErros, prePedido.DadosCliente.Uf, prePedido.DadosCliente.Tipo);
+            Produto.ProdutoGeralBll.VerificarRegrasAssociadasAosProdutos(regraCrtlEstoque, lstErros, prePedido.DadosCliente.Uf, prePedido.DadosCliente.Tipo, 0);
             //obtendo qtde disponivel
             await UtilsProduto.VerificarEstoque(regraCrtlEstoque, contextoProvider);
 

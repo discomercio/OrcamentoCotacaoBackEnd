@@ -14,8 +14,9 @@ namespace Especificacao.Testes.Utils.BancoTestes
             this.contextoCepProvider = contextoCepProvider;
         }
 
-        public void Inicializar(bool apagarDadosExistentes)
+        public void Inicializar()
         {
+            bool apagarDadosExistentes = true;
             ContextoCepBd db = contextoCepProvider.GetContextoLeitura();
 
             if (apagarDadosExistentes)

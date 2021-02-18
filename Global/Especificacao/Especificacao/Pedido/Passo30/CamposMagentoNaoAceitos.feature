@@ -1,6 +1,6 @@
 ﻿@ignore
 Feature: CamposMagentoNaoAceitos
-#sel loja != NUMERO_LOJA_ECOMMERCE_AR_CLUBE then %>
+#se loja != NUMERO_LOJA_ECOMMERCE_AR_CLUBE then %>
 #nao pode ter campos c_numero_mktplace, c_origem_pedido, c_numero_magento
 #Pedido_bs_x_ac Pedido_bs_x_marketplace Marketplace_codigo_origem
 

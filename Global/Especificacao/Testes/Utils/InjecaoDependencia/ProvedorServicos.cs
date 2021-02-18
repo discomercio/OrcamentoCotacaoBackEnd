@@ -28,9 +28,18 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
 
             services.AddDbContext<InfraBanco.ContextoBdBasico>(options =>
             {
-                //options.UseSqlServer(Configuration.GetConnectionString("conexaoLocal"));
-                options.UseInMemoryDatabase("bancomemoria");
-                options.ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+                var usarSqlServer = false;
+                if (usarSqlServer)
+                {
+                    var conexaolocal = "server=ITS-DBDEV\\SQL2017;database=ARCLUBE_TESTES;Uid=appAirClube;Pwd=appAirClube;";
+                    options.UseSqlServer(conexaolocal);
+                }
+                else
+                {
+                    options.UseInMemoryDatabase("bancomemoria");
+                    options.ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+                }
+                options.EnableSensitiveDataLogging();
             });
             services.AddDbContext<InfraBanco.ContextoCepBd>(options =>
             {
@@ -52,7 +61,7 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
 
             //inicializa o banco de dados
             var bd = new Testes.Utils.BancoTestes.InicializarBancoGeral(Servicos.GetRequiredService<InfraBanco.ContextoBdProvider>(), Servicos.GetRequiredService<InfraBanco.ContextoCepProvider>());
-            bd.Inicializar(false);
+            bd.Inicializar();
 
             logTestes.LogMemoria("ProvedorServicos fim");
         }

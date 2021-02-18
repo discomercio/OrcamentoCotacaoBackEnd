@@ -29,7 +29,7 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
             foreach (var c in db.Tcontroles)
                 db.Tcontroles.Remove(c);
             db.SaveChanges();
-
+            db.transacao.Commit();
         }
 
 
@@ -50,6 +50,7 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
             {
                 dbgravacao.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = null });
                 dbgravacao.SaveChanges();
+                dbgravacao.transacao.Commit();
                 Assert.ThrowsAnyAsync<Exception>(() => global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES)).Wait();
             }
 
@@ -60,6 +61,7 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
             {
                 dbgravacao.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = "nao-numero" });
                 dbgravacao.SaveChanges();
+                dbgravacao.transacao.Commit();
                 Assert.ThrowsAnyAsync<Exception>(() => global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES)).Wait();
             }
 
@@ -75,6 +77,7 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
             {
                 dbgravacao.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = null });
                 dbgravacao.SaveChanges();
+                dbgravacao.transacao.Commit();
                 Assert.ThrowsAnyAsync<Exception>(() => global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES)).Wait();
             }
 
@@ -85,6 +88,7 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
             {
                 dbgravacao.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = "nao-numero" });
                 dbgravacao.SaveChanges();
+                dbgravacao.transacao.Commit();
                 Assert.ThrowsAnyAsync<Exception>(() => global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES)).Wait();
             }
 
@@ -99,6 +103,7 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
             using var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing();
             dbgravacao.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = "000000645506" });
             dbgravacao.SaveChanges();
+            dbgravacao.transacao.Commit();
             Assert.Equal("000000645507", global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
             Assert.Equal("000000645508", global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
             Assert.Equal("000000645509", global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
@@ -126,6 +131,7 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
                     Dt_Ult_Atualizacao = DateTime.Now
                 });
                 dbgravacao.SaveChanges();
+                dbgravacao.transacao.Commit();
                 Assert.Equal("001234567891", global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
                 Assert.Equal("001234567892", global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
             }
@@ -144,6 +150,7 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
                     Dt_Ult_Atualizacao = DateTime.Now.AddYears(-10)
                 });
                 dbgravacao.SaveChanges();
+                dbgravacao.transacao.Commit();
                 Assert.Equal("000000000001", global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
                 Assert.Equal("000000000002", global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
                 Assert.Equal("000000000003", global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);

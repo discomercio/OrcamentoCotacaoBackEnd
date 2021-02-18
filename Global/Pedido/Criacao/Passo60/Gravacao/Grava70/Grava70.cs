@@ -67,13 +67,10 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava70
 
         private async Task CalcularRaLiquido(Tpedido tpedido, int indice_pedido)
         {
-            // if Not calcula_total_RA_liquido_BD(id_pedido, vl_total_RA_liquido, msg_erro) then
-            //	No pai e nos filhotes, atualiza campos de RA (Passo70/calcula_total_RA_liquido_BD.feture)
+			// if Not calcula_total_RA_liquido_BD(id_pedido, vl_total_RA_liquido, msg_erro) then
+			//	No pai e nos filhotes, atualiza campos de RA (Passo70/calcula_total_RA_liquido_BD.feture)
 
-            if (indice_pedido != 1)
-                return;
-
-            /*
+			/*
 			 * 
 					if Not calcula_total_RA_liquido_BD(id_pedido, vl_total_RA_liquido, msg_erro) then
 						end if
@@ -92,7 +89,10 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava70
 						rs.Update
 						end if
 						*/
-            tpedido.Vl_Total_RA_Liquido = Calcula_total_RA_liquido_BD(tpedido);
+			if (indice_pedido != 1)
+				return;
+
+			tpedido.Vl_Total_RA_Liquido = Calcula_total_RA_liquido_BD(tpedido);
             tpedido.Qtde_Parcelas_Desagio_RA = 0;
             if (Pedido.Valor.PedidoPossuiRa())
                 tpedido.St_Tem_Desagio_RA = 1;
@@ -103,16 +103,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava70
         }
         private decimal Calcula_total_RA_liquido_BD(Tpedido tpedido)
         {
-            //todo: verificar com hamilton, não faz muito sentido porque ele inclui no cálculo sometne os pedidos que já foram gravados no banco
-            //e só atualiza no pai; ou seja, só entram os itens que fazem parte do pai. Isso faz sentido?
-
-            var vl_total_RA = Pedido.Valor.Vl_total_RA;
-            //o campo perc_desagio_RA_liquida já deve ter sido determinado
-            var percentual_desagio_RA_liquido = tpedido.Perc_Desagio_RA_Liquida;
-            var vl_total_RA_liquido = (vl_total_RA - (Convert.ToDecimal(percentual_desagio_RA_liquido / 100)) * vl_total_RA);
-            return vl_total_RA_liquido;
-
-            /*
+			/*
 
 
 ' ___________________________________________________________________________
@@ -179,11 +170,15 @@ end function
 
 	*/
 
-            //todo: grava70
+			var vl_total_RA = Pedido.Valor.Vl_total_RA;
+			//o campo perc_desagio_RA_liquida já deve ter sido determinado
+			var percentual_desagio_RA_liquido = tpedido.Perc_Desagio_RA_Liquida;
+			var vl_total_RA_liquido = (vl_total_RA - (Convert.ToDecimal(percentual_desagio_RA_liquido / 100)) * vl_total_RA);
+			return vl_total_RA_liquido;
 
-        }
+		}
 
-        private async Task RegistrarSenhasDesconto()
+		private async Task RegistrarSenhasDesconto()
         {
             // SENHAS DE AUTORIZAÇÃO PARA DESCONTO SUPERIOR
             //	Caso tenha usado algum desconto superior ao limite, liberado pela t_DESCONTO, marca como usado(Passo70/ Senhas_de_autorizacao_para_desconto_superior.feature)

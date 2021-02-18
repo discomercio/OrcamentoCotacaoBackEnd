@@ -20,7 +20,7 @@ namespace Especificacao.Ambiente.ApiMagento
                 var acessoMagentoBll = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<MagentoBusiness.MagentoBll.AcessoBll.AcessoMagentoBll>();
                 var loginResultadoUnisDto = acessoMagentoBll.FazerLogin(new MagentoBusiness.MagentoDto.LoginMagentoDto()
                 {
-                    Usuario = "USUARIOAPIMAGENTO",
+                    Usuario = "USRMAG",
                     Senha = "123456"
                 }, "local", "testes").Result;
                 Assert.Empty(loginResultadoUnisDto.ListaErros);
@@ -77,7 +77,7 @@ namespace Especificacao.Ambiente.ApiMagento
 
             configuracaoApiMagento.SegredoToken = "appSettings.SegredoToken";
             configuracaoApiMagento.ValidadeTokenMinutos = 2628000;
-            configuracaoApiMagento.ApelidoPerfilLiberaAcessoApiMagento = "USUARIOAPIMAGENTO";
+            configuracaoApiMagento.ApelidoPerfilLiberaAcessoApiMagento = "USRMAG";
 
             configuracaoApiMagento.DadosIndicador.Indicador = "FRETE";
             configuracaoApiMagento.DadosIndicador.Loja = "202";

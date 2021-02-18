@@ -65,7 +65,6 @@ namespace Pedido.Criacao.Passo50
         }
         private void ValidarTamanhos()
         {
-            //todo: passo50 tamanhos
             //#s = "" + f.c_obs1.value;
             //#if (s.length > MAX_TAM_OBS1) {
             //#	alert('Conteúdo de "Observações " excede em ' + (s.length-MAX_TAM_OBS1) + ' caracteres o tamanho máximo de ' + MAX_TAM_OBS1 + '!!');
@@ -75,16 +74,23 @@ namespace Pedido.Criacao.Passo50
                     " caracteres o tamanho máximo de " + Constantes.MAX_TAM_OBS1 + "!");
 
 
-            //todo: passo50 tamanhos
             //#s = "" + f.c_nf_texto.value;
             //#if (s.length > MAX_TAM_NF_TEXTO) {
             //#    alert('Conteúdo de "Constar na NF" excede em ' + (s.length-MAX_TAM_NF_TEXTO) + ' caracteres o tamanho máximo de ' + MAX_TAM_NF_TEXTO + '!!');
+            if (!String.IsNullOrEmpty(Pedido.Extra.Nfe_Texto_Constar))
+                if (Pedido.Extra.Nfe_Texto_Constar?.Length > Constantes.MAX_TAM_NF_TEXTO)
+                    Retorno.ListaErros.Add("Conteúdo de \"Constar na NF\" excede em " +
+                        (Pedido.Extra.Nfe_Texto_Constar?.Length - Constantes.MAX_TAM_NF_TEXTO) +
+                        " caracteres o tamanho máximo de " + Constantes.MAX_TAM_NF_TEXTO + "!");
 
-
-            //todo: passo50 tamanhos
             //#s = "" + f.c_forma_pagto.value;
             //#if (s.length > MAX_TAM_FORMA_PAGTO) {
             //#	alert('Conteúdo de "Forma de Pagamento" excede em ' + (s.length-MAX_TAM_FORMA_PAGTO) + ' caracteres o tamanho máximo de ' + MAX_TAM_FORMA_PAGTO + '!!');
+            if (!String.IsNullOrEmpty(Pedido.FormaPagtoCriacao.C_forma_pagto))
+                if (Pedido.FormaPagtoCriacao.C_forma_pagto?.Length > Constantes.MAX_TAM_FORMA_PAGTO)
+                    Retorno.ListaErros.Add("Conteúdo de \"Forma de Pagamento\" excede em " +
+                        (Pedido.FormaPagtoCriacao.C_forma_pagto?.Length - Constantes.MAX_TAM_FORMA_PAGTO) +
+                        " caracteres o tamanho máximo de " + Constantes.MAX_TAM_FORMA_PAGTO + "!");
         }
 
         private void EntregaImediata()

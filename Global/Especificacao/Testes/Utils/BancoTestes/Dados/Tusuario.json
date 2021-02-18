@@ -1,6 +1,6 @@
 ﻿[
   {
-    "usuario": "USUARIOAPIUNIS",
+    "usuario": "USRAPUN",
     "nivel": " ",
     "loja": "",
     "senha": "TDaTFZiPPu",
@@ -31,7 +31,7 @@
     "DtHrSessionTokenModuloLoja": null
   },
   {
-    "usuario": "USUARIOPREPEDIDOAPI",
+    "usuario": "USRPAPI",
     "nivel": " ",
     "loja": "",
     "senha": "TDaTFZiPPu",
@@ -62,7 +62,7 @@
     "DtHrSessionTokenModuloLoja": null
   },
   {
-    "usuario": "USUARIOAPIMAGENTO",
+    "usuario": "USRMAG",
     "nivel": " ",
     "loja": "",
     "senha": "TDaTFZiPPu",
@@ -93,7 +93,7 @@
     "DtHrSessionTokenModuloLoja": null
   },
   {
-    "usuario": "USUARIOLOJA",
+    "usuario": "USRLOJA",
     "nivel": " ",
     "loja": "",
     "senha": "TDaTFZiPPu",

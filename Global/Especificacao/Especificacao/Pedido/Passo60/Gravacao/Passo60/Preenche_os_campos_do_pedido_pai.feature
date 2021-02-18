@@ -91,7 +91,7 @@ Scenario: Preenche_os_campos_do_pedido_pai - pagamento
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_forma_pagto_possui_parcela_cartao_maquineta" = "0"
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_forma_pagto_somente_cartao" = "1"
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_forma_pagto_possui_parcela_cartao" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "usuario_st_pagto" = "USUARIOAPIMAGENTO"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "usuario_st_pagto" = "USRMAG"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "custoFinancFornecTipoParcelamento" = "AV"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "custoFinancFornecQtdeParcelas" = "0"
 
@@ -136,7 +136,7 @@ Scenario: Preenche_os_campos_do_pedido - campos soltos
 	Given Pedido base
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "loja" = "202"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vendedor" = "USUARIOAPIMAGENTO"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vendedor" = "USRMAG"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "midia" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "servicos" = ""
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_servicos" = "0.0000"
@@ -150,7 +150,7 @@ Scenario: Preenche_os_campos_do_pedido - campos soltos
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "id_nfe_emitente" = "4903"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "NFe_texto_constar" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "NFe_xPed" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "usuario_cadastro" = "USUARIOAPIMAGENTO"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "usuario_cadastro" = "USRMAG"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "plataforma_origem_pedido" = "1"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "sistema_responsavel_cadastro" = "5"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "sistema_responsavel_atualizacao" = "5"
@@ -241,13 +241,13 @@ Scenario: Preenche_os_campos_do_pedido - instalador, bem de uso, entrega imediat
 	Given Pedido base
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_etg_imediata" = "2"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "etg_imediata_usuario" = "USUARIOAPIMAGENTO"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "etg_imediata_usuario" = "USRMAG"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "PrevisaoEntregaUsuarioUltAtualiz" = "null"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "StBemUsoConsumo" = "1"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "InstaladorInstalaStatus" = "1"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "InstaladorInstalaUsuarioUltAtualiz" = "USUARIOAPIMAGENTO"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "InstaladorInstalaUsuarioUltAtualiz" = "USRMAG"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "GarantiaIndicadorStatus" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "GarantiaIndicadorUsuarioUltAtualiz" = "USUARIOAPIMAGENTO"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "GarantiaIndicadorUsuarioUltAtualiz" = "USRMAG"
 
 Scenario: Preenche_os_campos_do_pedido - campos de OBS
 	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
@@ -333,6 +333,7 @@ Scenario: Preenche_os_campos_do_pedido - frete, romaneio e danfe
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "danfe_a_imprimir_usuario" = ""
 	#Obs: No momento esses campos não existem na tabela t_PEDIDO e alguns são utilizados apenas na Central
 
+@ignore
 Scenario: Preenche_os_campos_do_pedido - referente a RA
 	Given Pedido base
 	Then Sem nenhum erro

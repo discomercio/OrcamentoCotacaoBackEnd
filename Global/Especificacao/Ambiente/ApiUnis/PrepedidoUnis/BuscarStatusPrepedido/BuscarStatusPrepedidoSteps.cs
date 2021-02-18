@@ -127,6 +127,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarStatusPrepedido
             db.Update(pedido);
 
             db.SaveChanges();
+            db.transacao.Commit();
         }
 
         [Given(@"Resposta ""(.*)"" = ""(.*)""")]

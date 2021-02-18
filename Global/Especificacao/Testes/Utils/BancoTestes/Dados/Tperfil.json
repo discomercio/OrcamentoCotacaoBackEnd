@@ -14,7 +14,7 @@
   },
   {
     "id": "000000020008",
-    "apelido": "USUARIOAPIMAGENTO",
+    "apelido": "USRMAG",
     "descricao": "USUARIOAPIMAGENTO",
     "dt_cadastro": "2020-06-16T03:00:00Z",
     "usuario_cadastro": "PRAGMATICA",
@@ -27,7 +27,7 @@
   },
   {
     "id": "000000020009",
-    "apelido": "USUARIOLOJA",
+    "apelido": "USRLOJA",
     "descricao": "USUARIOLOJA",
     "dt_cadastro": "2020-06-16T03:00:00Z",
     "usuario_cadastro": "PRAGMATICA",

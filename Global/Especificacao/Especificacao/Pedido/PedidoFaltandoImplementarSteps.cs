@@ -3,6 +3,7 @@ using Especificacao.Testes.Utils.ListaDependencias;
 using System;
 using TechTalk.SpecFlow;
 
+#pragma warning disable IDE0060 // Remove unued parameter
 namespace Especificacao.Especificacao.Pedido
 {
     //todo: precisa fazer os testes que usem esta classe
@@ -260,3 +261,4 @@ namespace Especificacao.Especificacao.Pedido
         }
     }
 }
+#pragma warning restore IDE0060 // Remove unued parameter

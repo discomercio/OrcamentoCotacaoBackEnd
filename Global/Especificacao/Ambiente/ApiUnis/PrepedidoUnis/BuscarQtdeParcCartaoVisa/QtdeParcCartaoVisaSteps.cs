@@ -38,6 +38,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa
             using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
             db.TprazoPagtoVisanets.Add(tprazoPagtoVisanet);
             db.SaveChanges();
+            db.transacao.Commit();
         }
 
         [Given(@"Novo registro na tabela ""(.*)""")]
