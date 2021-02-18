@@ -904,7 +904,7 @@ namespace UtilsGlobais
             return retorno;
         }
 
-        private static async Task<bool> IsLojaBonshop(string loja, ContextoBdProvider contextoProvider)
+        public static async Task<bool> IsLojaBonshop(string loja, ContextoBdProvider contextoProvider)
         {
             bool retorno = false;
 
