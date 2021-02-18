@@ -25,7 +25,7 @@ namespace Pedido.Criacao.Passo50
             Validar_instalador_instala();
             Validar_garantia_indicador();
 
-            //todo: passo50 tamanhos
+            //todo: passo50 campos adicionais
             //c_indicador c_perc_RT rb_RA garantia_indicador somente se for indicacao
         }
 

@@ -20,8 +20,6 @@ namespace Pedido.Criacao.Passo60.Validacao
 
         public async Task Executar()
         {
-            //todo: validar estes campos e colocar nos .feature estas validações
-
             /*
              * 
              campo NFe_xPed:
@@ -34,7 +32,7 @@ var letra;
 
 */
 
-            //todo: passo60 validação, listar todos os .feature
+            //todo: passo60 validação, listar todos os .feature em Global\Especificacao\Especificacao\Pedido\Passo60\Validacao
 
         }
 

@@ -300,9 +300,9 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                 tpedido.InstaladorInstalaDtHrUltAtualiz = Gravacao.DataHoraCriacao;
             }
 
-            tpedido.Pedido_Bs_X_Ac = Pedido.Marketplace.Pedido_bs_x_ac;
-            tpedido.Pedido_Bs_X_Marketplace = Pedido.Marketplace.Pedido_bs_x_marketplace;
-            tpedido.Marketplace_codigo_origem = Pedido.Marketplace.Marketplace_codigo_origem;
+            tpedido.Pedido_Bs_X_Ac = Pedido.Marketplace.Pedido_bs_x_ac; //s_pedido_ac id do pedido magento
+            tpedido.Pedido_Bs_X_Marketplace = Pedido.Marketplace.Pedido_bs_x_marketplace; //num pedido_marketplace
+            tpedido.Marketplace_codigo_origem = Pedido.Marketplace.Marketplace_codigo_origem; //s_origem_pedido
 
             tpedido.Nfe_Texto_Constar = Pedido.Extra.Nfe_Texto_Constar ?? "";
             tpedido.Nfe_XPed = Pedido.Extra.Nfe_XPed ?? "";
@@ -607,13 +607,6 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                     }
                 }
             }
-
-            /*
-             * todo: perc_rt
-            pergunta hamilton: o que é o perc_rt? Lemos da T_CODIGO_DESCRICAO, certo?
-            usar o fluxo autal, procurar PedidoECommerce_Origem_Grupo. temos que ler conforme a origem e ler o valor percentual.
-            ver PedidoNovoConfirma.asp '	OBTÉM O PERCENTUAL DE COMISSÃO DO MARKETPLACE
-            */
 
             //'	CUSTO FINANCEIRO FORNECEDOR
             tpedido.CustoFinancFornecTipoParcelamento = Execucao.C_custoFinancFornecTipoParcelamento;

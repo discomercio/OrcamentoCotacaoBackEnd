@@ -11,7 +11,7 @@ namespace Pedido.Dados.Criacao
         public List<string> ListaErros { get; } = new List<string>();
         public List<string> ListaErrosValidacao { get; } = new List<string>();
 
-        public void LimparPedidos()
+        public void RemoverPedidos()
         {
             Id = null;
             ListaIdPedidosFilhotes = new List<string>();

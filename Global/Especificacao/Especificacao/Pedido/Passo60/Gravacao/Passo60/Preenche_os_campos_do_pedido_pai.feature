@@ -318,7 +318,6 @@ Scenario: Preenche_os_campos_do_pedido - campos de data e hora
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "dt_hr_st_pagto" = "2021-01-20 18:31:30"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "PrevisaoEntregaData" = ""
 
-@ignore
 Scenario: Preenche_os_campos_do_pedido - frete, romaneio e danfe
 	Given Pedido base
 	Then Sem nenhum erro
@@ -333,8 +332,22 @@ Scenario: Preenche_os_campos_do_pedido - frete, romaneio e danfe
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "danfe_a_imprimir_usuario" = ""
 	#Obs: No momento esses campos não existem na tabela t_PEDIDO e alguns são utilizados apenas na Central
 
-@ignore
-Scenario: Preenche_os_campos_do_pedido - referente a RA
+Scenario: Preenche_os_campos_do_pedido - referente a RA - magento
+	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
+	Given Pedido base
+	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_desagio_RA" = "0.0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_limite_RA_sem_desagio" = "0.0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_tem_desagio_RA" = "0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "qtde_parcelas_desagio_RA" = "0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_desagio_RA_liquida" = "0.0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "permite_RA_status" = "1"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_violado_permite_RA_status" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "usuario_violado_permite_RA_status" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "opcao_possui_RA" = "N"
+
+Scenario: Preenche_os_campos_do_pedido - referente a RA - loja
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_desagio_RA" = "0.0"

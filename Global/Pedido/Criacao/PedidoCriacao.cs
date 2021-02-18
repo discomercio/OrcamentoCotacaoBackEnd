@@ -66,36 +66,23 @@ namespace Pedido.Criacao
 
             /*
 Fluxo no módulo loja:
-1 - Passo10: Escolher cliente já cadastrado
+05 - Passo05: ajustando dados (garantindo cpf/cnpj e telefones somente com dígitos, etc)
+10 - Passo10: Escolher cliente já cadastrado
 	Se o cliente não existir, ele deve ser cadastrado primeiro. (arquivo CLiente/FLuxoCadastroCliente - criar esse arquivo)
-2 - Passo20: Confirmar (ou editar) dados cadastrais e informar endereço de entrega
+20 - Passo20: Confirmar (ou editar) dados cadastrais e informar endereço de entrega
 	se editar dados cadastrais, salva na t_cliente
-2.5 - Passo 25: somente na API. Validar dados cadastrais. Não existe na tela porque sempre se usa o atual do cliente.
-3 - Passo30: Escolher indicador e RA e Modo de Seleção do CD 
-4 - Passo40: Escolher produtos, quantidades e alterar valores e forma de pagamento
-5 - Passo50: Informar observações (entrega imediata, instalador instala, etc) 
-6 - Passo60: Salvar o pedido
+25 - Passo 25: somente na API. Validar dados cadastrais. Não existe na tela porque sempre se usa o atual do cliente.
+30 - Passo30: Escolher indicador e RA e Modo de Seleção do CD 
+40 - Passo40: Escolher produtos, quantidades e alterar valores e forma de pagamento
+50 - Passo50: Informar observações (entrega imediata, instalador instala, etc) 
+60 - Passo60: Salvar o pedido
 */
+
+            //05 - Passo05: ajustando dados (garantindo cpf/cnpj e telefones somente com dígitos, etc)
+            new Passo05.Passo05(pedido, retorno, this).Executar();
 
             //setup dados
             await Execucao.ConfigurarExecucaoInicial(pedido);
-
-            //todo: separar em outro passo 05, normalizacao de campos
-            pedido.EnderecoCadastralCliente.Endereco_cnpj_cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(pedido.EnderecoCadastralCliente.Endereco_cnpj_cpf);
-            pedido.EnderecoCadastralCliente.Endereco_cep = UtilsGlobais.Util.Cep_SoDigito(pedido.EnderecoCadastralCliente.Endereco_cep);
-            pedido.EnderecoCadastralCliente.Endereco_tel_res = UtilsGlobais.Util.Telefone_SoDigito(pedido.EnderecoCadastralCliente.Endereco_tel_res);
-            pedido.EnderecoCadastralCliente.Endereco_tel_cel = UtilsGlobais.Util.Telefone_SoDigito(pedido.EnderecoCadastralCliente.Endereco_tel_cel);
-            pedido.EnderecoCadastralCliente.Endereco_tel_com = UtilsGlobais.Util.Telefone_SoDigito(pedido.EnderecoCadastralCliente.Endereco_tel_com);
-            pedido.EnderecoCadastralCliente.Endereco_tel_com_2 = UtilsGlobais.Util.Telefone_SoDigito(pedido.EnderecoCadastralCliente.Endereco_tel_com_2);
-            if (pedido.EnderecoEntrega.OutroEndereco)
-            {
-                pedido.EnderecoEntrega.EndEtg_cnpj_cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(pedido.EnderecoEntrega.EndEtg_cnpj_cpf);
-                pedido.EnderecoEntrega.EndEtg_cep = UtilsGlobais.Util.Cep_SoDigito(pedido.EnderecoEntrega.EndEtg_cep);
-                pedido.EnderecoEntrega.EndEtg_tel_res = UtilsGlobais.Util.Telefone_SoDigito(pedido.EnderecoEntrega.EndEtg_tel_res);
-                pedido.EnderecoEntrega.EndEtg_tel_cel = UtilsGlobais.Util.Telefone_SoDigito(pedido.EnderecoEntrega.EndEtg_tel_cel);
-                pedido.EnderecoEntrega.EndEtg_tel_com = UtilsGlobais.Util.Telefone_SoDigito(pedido.EnderecoEntrega.EndEtg_tel_com);
-                pedido.EnderecoEntrega.EndEtg_tel_com_2 = UtilsGlobais.Util.Telefone_SoDigito(pedido.EnderecoEntrega.EndEtg_tel_com_2);
-            }
 
             var passo10 = new Criacao.Passo10.Passo10(pedido, retorno, this);
             passo10.Permissoes();
@@ -133,7 +120,7 @@ Fluxo no módulo loja:
             //se tiver algum erro, limpa os numeros de pedidos gerados
             if (retorno.AlgumErro())
             {
-                retorno.LimparPedidos();
+                retorno.RemoverPedidos();
             }
             return retorno;
 

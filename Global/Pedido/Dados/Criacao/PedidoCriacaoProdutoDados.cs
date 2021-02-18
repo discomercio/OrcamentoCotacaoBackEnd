@@ -26,8 +26,7 @@ namespace Pedido.Dados.Criacao
         public short Qtde { get; }
         public float? Desc_Dado { get; }
         public decimal Preco_Venda { get; }
-        //todo: tirar o set desta propriedade. Já deve vir calculado corretamente
-        public decimal Preco_Lista { get; set; }
+        public decimal Preco_Lista { get; }
         public decimal Preco_NF { get; }
 
         //estes campos são usados somente para conferência
