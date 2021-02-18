@@ -16,7 +16,8 @@ namespace Pedido.Dados.Criacao
         }
 
         //Armazena o percentual de comissão para o indicador selecionado (reserva técnica).
-        public float Perc_RT { get; }
+        //precisa ser alterado no caso da API do magento ou no semi-automático porque no magento esse valor vem de uma variável
+        public float Perc_RT { get; set; }
 
         /*
         No banco de dados, o campo OpcaoPossuiRa é gravado da seguinte forma::

@@ -329,7 +329,8 @@ namespace Pedido
                     if (percCusto != null)
                     {
                         coeficiente = percCusto.Coeficiente;
-                        i.Preco_Lista = (decimal)coeficiente * (i.CustoFinancFornecPrecoListaBase_Conferencia);
+                        if (i.Preco_Lista != (decimal)coeficiente * (i.CustoFinancFornecPrecoListaBase_Conferencia))
+                            lstErros.Add("Preco_Lista  inconsistente");
                     }
                     else
                     {

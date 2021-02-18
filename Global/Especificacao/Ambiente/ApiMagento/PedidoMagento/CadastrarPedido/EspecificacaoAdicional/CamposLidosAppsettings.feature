@@ -28,6 +28,11 @@ Scenario: Indicador = "FRETE" (vamos ler do appsettings)
 Scenario: Loja = "201" (vamos ler do appsettings)
 	Given Pedido base
 	And Informo "appsettings.Loja" = "201"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "123"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "123456789"
+	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "019"
+	When Informo "Tipo_Parcelamento" = "5"
+	When Informo "C_pu_valor" = "3132.90"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "loja" = "201"
 
