@@ -356,12 +356,14 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="validar telefone - tel_res com simbolos")]
         [Xunit.TraitAttribute("FeatureTitle", "tel_res")]
         [Xunit.TraitAttribute("Description", "validar telefone - tel_res com simbolos")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void ValidarTelefone_Tel_ResComSimbolos()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validar telefone - tel_res com simbolos", null, tagsOfScenario, argumentsOfScenario);
-#line 73
+#line 74
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -384,20 +386,24 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 74
+#line 75
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 75
+#line 76
  testRunner.When("Informo \"OutroEndereco\" = \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 76
- testRunner.When("Informo \"EndEtg_ddd_com_2\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 77
- testRunner.When("Informo \"EndEtg_tel_com_2\" = \"1234-5678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_ddd_res\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 78
+ testRunner.When("Informo \"EndEtg_tel_res\" = \"1234-5678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 79
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 80
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"Endereco_tel_res\" = \"12345678" +
+                        "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

@@ -487,12 +487,14 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="validar telefone - tel_com_2 com simbolos")]
         [Xunit.TraitAttribute("FeatureTitle", "tel_com_2")]
         [Xunit.TraitAttribute("Description", "validar telefone - tel_com_2 com simbolos")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void ValidarTelefone_Tel_Com_2ComSimbolos()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validar telefone - tel_com_2 com simbolos", null, tagsOfScenario, argumentsOfScenario);
-#line 110
+#line 111
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -515,20 +517,24 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 111
+#line 112
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 112
+#line 113
  testRunner.When("Informo \"OutroEndereco\" = \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 113
+#line 114
  testRunner.When("Informo \"EndEtg_ddd_com_2\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 114
+#line 115
  testRunner.When("Informo \"EndEtg_tel_com_2\" = \"1234-5678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 115
+#line 116
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 117
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"Endereco_tel_com2\" = \"1234567" +
+                        "8\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

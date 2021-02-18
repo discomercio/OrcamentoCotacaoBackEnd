@@ -356,12 +356,14 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="validar telefone - tel_cel com simbolos")]
         [Xunit.TraitAttribute("FeatureTitle", "tel_cel")]
         [Xunit.TraitAttribute("Description", "validar telefone - tel_cel com simbolos")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void ValidarTelefone_Tel_CelComSimbolos()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validar telefone - tel_cel com simbolos", null, tagsOfScenario, argumentsOfScenario);
-#line 72
+#line 73
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -384,20 +386,24 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 73
+#line 74
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 74
+#line 75
  testRunner.When("Informo \"OutroEndereco\" = \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 75
+#line 76
  testRunner.When("Informo \"EndEtg_ddd_cel\" = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 76
+#line 77
  testRunner.When("Informo \"EndEtg_tel_cel\" = \"1234-5678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 77
+#line 78
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 79
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"Endereco_tel_cel\" = \"12345678" +
+                        "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

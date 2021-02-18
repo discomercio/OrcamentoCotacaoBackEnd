@@ -102,9 +102,11 @@ Scenario: validar telefone - tel_com sucesso
 	When Informo "EndEtg_ramal_com" = "21"
 	Then Sem nenhum erro
 
+@ignore
 Scenario: validar telefone - tel_com com simbolos
 	Given Pedido base
 	When Informo "OutroEndereco" = "true"
 	When Informo "EndEtg_ddd_com" = "12"
 	When Informo "EndEtg_tel_com" = "1234-5678"
 	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro criado, verificar campo "Endereco_tel_com" = "12345678"
