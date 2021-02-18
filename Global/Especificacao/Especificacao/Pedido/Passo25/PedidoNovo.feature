@@ -131,17 +131,6 @@ Scenario: MUNICÍPIO DE ENTREGA DE ACORDO C/ TABELA DO IBGE?
 			if Not consiste_municipio_IBGE_ok(EndEtg_cidade, EndEtg_uf, s_lista_sugerida_municipios, msg_erro) then
 	When Fazer esta validação
 
-Scenario: 		'VERIFICA SE O MESMO CÓDIGO FOI DIGITADO REPETIDO EM VÁRIAS LINHAS
-	#alerta=alerta & "Produto " & vDuplic(i).produto & " do fabricante " & vDuplic(i).fabricante & ": linha " & renumera_com_base1(LBound(vDuplic),i) & " repete o mesmo produto da linha " & renumera_com_base1(LBound(vDuplic),j)
-	Given Pedido base
-	And Duplicar um produto
-	Then Erro "regex *.repete o mesmo produto da linha.*"
-
-Scenario: 		alert("Não há produtos na lista!!");
-	Given Pedido base
-	And Limpar lista de produtos
-	Then Erro "Não há produtos na lista!!"
-
 Scenario: 		Especifique a loja que fez a indicação
 	#if (f.vendedor_externo.value=="S") {
 	#if (trim(f.loja_indicou.options[f.loja_indicou.selectedIndex].value)=="") {
