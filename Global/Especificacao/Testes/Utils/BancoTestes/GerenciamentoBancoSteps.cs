@@ -159,7 +159,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         }
 
         [Given(@"Tabela ""t_OPERACAO"" apagar registro com campo ""id"" = ""(.*)""")]
-        public void GivenTabelaApagarRegistroComCampo(string valorBusca)
+        public void GivenTabelaT_operacao_ApagarRegistroComCampo(string valorBusca)
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaApagarRegistroComCampo("t_OPERACAO", "id", valorBusca, this);
 

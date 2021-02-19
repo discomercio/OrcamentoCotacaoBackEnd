@@ -1,4 +1,4 @@
-﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente
+﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
 @GerenciamentoBanco
 Feature: tel_com
 
@@ -102,7 +102,6 @@ Scenario: validar telefone - tel_com sucesso
 	When Informo "EndEtg_ramal_com" = "21"
 	Then Sem nenhum erro
 
-@ignore
 Scenario: validar telefone - tel_com com simbolos
 	Given Pedido base
 	When Informo "OutroEndereco" = "true"

@@ -58,8 +58,7 @@ namespace Pedido.Criacao.Passo30
             Validar_digito_Pedido_bs_x_ac("2");
         }
 
-
-
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0054:Use compound assignment", Justification = "<Pending>")]
         private async Task ConfigurarBlnPedidoECommerceCreditoOkAutomatico()
         {
 

@@ -1,4 +1,4 @@
-﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente
+﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
 @GerenciamentoBanco
 Feature: tel_res
 
@@ -70,7 +70,6 @@ Scenario: validar telefones - tel_res sucesso
 	When Informo "EndEtg_tel_res" = "12345678"
 	Then Sem nenhum erro
 
-@ignore
 Scenario: validar telefone - tel_res com simbolos
 	Given Pedido base
 	When Informo "OutroEndereco" = "true"

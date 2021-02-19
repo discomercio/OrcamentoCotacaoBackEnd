@@ -155,18 +155,19 @@ namespace InfraBanco
         public DbSet<TestoqueMovimento> TestoqueMovimentos { get; set; }
 
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
-        public DbSet<Tdesconto> Tdescontos { get; set; }
-        public DbSet<TtransportadoraCep> TtransportadoraCeps { get; set; }
-        public DbSet<TestoqueLog> TestoqueLogs { get; set; }
-        public DbSet<TfinControle> TfinControles { get; set; }
-        public DbSet<TpedidoAnaliseEndereco> TpedidoAnaliseEnderecos { get; set; }
-        public DbSet<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseConfrontacaos { get; set; }
-        public DbSet<TusuarioXLoja> TusuarioXLojas { get; set; }
         public DbSet<Taviso> Tavisos { get; set; }
         public DbSet<TavisoExibido> TavisoExibidos { get; set; }
         public DbSet<TavisoLido> TavisoLidos { get; set; }
+        public DbSet<Tdesconto> Tdescontos { get; set; }
+        public DbSet<TestoqueLog> TestoqueLogs { get; set; }
+        public DbSet<TfinControle> TfinControles { get; set; }
         public DbSet<Toperacao> Toperacaos { get; set; }
+        public DbSet<TpedidoAnaliseEndereco> TpedidoAnaliseEnderecos { get; set; }
+        public DbSet<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseConfrontacaos { get; set; }
+        public DbSet<TpedidoDevolucao> TpedidoDevolucaos { get; set; }
         public DbSet<TperfilItem> TperfilItens { get; set; }
+        public DbSet<TtransportadoraCep> TtransportadoraCeps { get; set; }
+        public DbSet<TusuarioXLoja> TusuarioXLojas { get; set; }
 #endif
         //daqui para a frente só é necessário para os testes automatizados
 #if DEBUG_BANCO_DEBUG
