@@ -138,7 +138,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
 
             var db = this.contextoBdProvider.GetContextoLeitura();
             var registros = (from registro in db.TpedidoItems
-                             where registro.Pedido.Contains(pedido) && 
+                             where registro.Pedido.Contains(pedido) &&
                              registro.Sequencia == item
                              select registro).ToList();
             //deve ter um ou mais registros
@@ -222,13 +222,162 @@ namespace Especificacao.Testes.Utils.BancoTestes
 
             if (!WhenInformoCampo.InformarCampo(campo, valor, registro))
                 Assert.Equal("campo desconhecido", campo);
-                       
+
             db.Update(registro);
             db.SaveChanges();
             db.transacao.Commit();
         }
 
+        [Given(@"Novo registro em ""(.*)"", campo ""(.*)"" = ""(.*)""")]
+        public void GivenNovoRegistroEmCampo(string tabela, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.NovoRegistroEmCampo(tabela, campo, valor, this);
 
+            switch (tabela)
+            {
+                case "t_PRAZO_PAGTO_VISANET":
+                    NovoRegistroEm_t_PRAZO_PAGTO_VISANET(tabela, campo, valor);
+                    break;
+                case "t_PRODUTO_LOJA":
+                    NovoRegistroEm_t_PRODUTO_LOJA(tabela, campo, valor);
+                    break;
+
+                default:
+                    Assert.Equal("", $"{tabela} desconhecido");
+                    break;
+            }
+        }
+
+        [Given(@"Novo registro na tabela ""(.*)""")]
+        public void GivenNovoRegistroNaTabela(string tabela)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.NovoRegistroNaTabela(tabela, this);
+            switch (tabela)
+            {
+                case "t_PRAZO_PAGTO_VISANET":
+                    Assert.Equal("t_PRAZO_PAGTO_VISANET", tabela);
+                    tprazoPagtoVisanet = new TprazoPagtoVisanet();
+                    break;
+                case "t_PRODUTO_LOJA":
+                    Assert.Equal("t_PRODUTO_LOJA", tabela);
+                    tprodutoLoja = new TprodutoLoja();
+                    break;
+
+                default:
+                    Assert.Equal("", $"{tabela} desconhecido");
+                    break;
+            }
+        }
+
+        [Given(@"Gravar registro em ""(.*)""")]
+        public void GivenGravarRegistroEm(string tabela)
+        {
+            switch (tabela)
+            {
+                case "t_PRAZO_PAGTO_VISANET":
+                    GravarRegistroNa_t_PRAZO_PAGTO_VISANET(tabela);
+                    break;
+                case "t_PRODUTO_LOJA":
+                    GravarRegistroNa_t_PRODUTO_LOJA(tabela);
+                    break;
+
+                default:
+                    Assert.Equal("", $"{tabela} desconhecido");
+                    break;
+            }
+        }
+
+        #region Criação de novo registro t_PRAZO_PAGTO_VISANET
+        private TprazoPagtoVisanet tprazoPagtoVisanet = new InfraBanco.Modelos.TprazoPagtoVisanet();
+        private void GravarRegistroNa_t_PRAZO_PAGTO_VISANET(string tabela)
+        {
+            Assert.Equal("t_PRAZO_PAGTO_VISANET", tabela);
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.GravarRegistroEm(tabela, this);
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            db.TprazoPagtoVisanets.Add(tprazoPagtoVisanet);
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+        private void NovoRegistroEm_t_PRAZO_PAGTO_VISANET(string tabela, string campo, string valor)
+        {
+            Assert.Equal("t_PRAZO_PAGTO_VISANET", tabela);
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.NovoRegistroEmCampo(tabela, campo, valor, this);
+            switch (campo)
+            {
+                case "tipo":
+                    switch (valor)
+                    {
+                        case "Constantes.COD_VISANET_PRAZO_PAGTO_LOJA":
+                            tprazoPagtoVisanet.Tipo = Constantes.COD_VISANET_PRAZO_PAGTO_LOJA;
+                            break;
+                        default:
+                            Assert.Equal("", $"{valor} desconhecido");
+                            break;
+                    }
+                    break;
+                case "qtde_parcelas":
+                    if (!short.TryParse(valor, out short qtdeParcelas))
+                        Assert.Equal("", $"{valor} não é numero");
+                    tprazoPagtoVisanet.Qtde_parcelas = qtdeParcelas;
+                    break;
+
+                default:
+                    Assert.Equal("", $"{campo} desconhecido");
+                    break;
+            }
+        }
+        #endregion
+
+        #region Criação de novo registro t_PRODUTO_LOJA
+        private TprodutoLoja tprodutoLoja = new TprodutoLoja();
+        private void GravarRegistroNa_t_PRODUTO_LOJA(string tabela)
+        {
+            Assert.Equal("t_PRODUTO_LOJA", tabela);
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.GravarRegistroEm(tabela, this);
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            db.TprodutoLojas.Add(tprodutoLoja);
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+        private void NovoRegistroEm_t_PRODUTO_LOJA(string tabela, string campo, string valor)
+        {
+            Assert.Equal("t_PRODUTO_LOJA", tabela);
+            switch (campo)
+            {
+                case "fabricante":
+                    tprodutoLoja.Fabricante = valor;
+                    break;
+                case "produto":
+                    tprodutoLoja.Produto = valor;
+                    break;
+                case "loja":
+                    tprodutoLoja.Loja = valor;
+                    break;
+                case "preco_lista":
+                    if (!decimal.TryParse(valor, out decimal preco_lista))
+                        Assert.Equal("", $"{valor} não é um decimal");
+                    tprodutoLoja.Preco_Lista = preco_lista;
+                    break;
+                case "vendavel":
+                    tprodutoLoja.Vendavel = valor;
+                    break;
+                case "excluido_status":
+                    if (!short.TryParse(valor, out short saida))
+                        Assert.Equal("", $"{valor} não é número");
+                    tprodutoLoja.Excluido_status = saida;
+                    break;
+                case "qtde_max_venda":
+                    if (!short.TryParse(valor, out short qtdeMax))
+                        Assert.Equal("", $"{valor} não é número");
+                    tprodutoLoja.Qtde_Max_Venda = qtdeMax;
+                    break;
+
+                default:
+                    Assert.Equal("", $"{campo} desconhecido");
+                    break;
+            }
+        }
+        #endregion
     }
 }
 
