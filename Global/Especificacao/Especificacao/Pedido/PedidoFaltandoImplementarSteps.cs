@@ -259,6 +259,55 @@ namespace Especificacao.Especificacao.Pedido
         {
             
         }
+
+        [Given(@"Reinciar banco ao terminar cenário")]
+        public void GivenReinciarBancoAoTerminarCenario()
+        {
+            
+        }
+
+        [Given(@"Alterar registro em ""(.*)"", busca ""(.*)"" = ""(.*)"", campo ""(.*)"" = ""(.*)""")]
+        public void GivenAlterarRegistroEmBuscaCampo(string p0, string p1, string p2, string p3, int p4)
+        {
+            
+        }
+
+        [Given(@"Modificar pedido para ""(.*)"" por cento de desconto")]
+        public void GivenModificarPedidoParaPorCentoDeDesconto(int p0)
+        {
+            
+        }
+
+        [Given(@"Pedido base PJ")]
+        public void GivenPedidoBasePJ()
+        {
+            
+        }
+
+        [Given(@"Pedido base PF")]
+        public void GivenPedidoBasePF()
+        {
+            
+        }
+
+        [Given(@"Pedido base ""(.*)"" com forma pagamento ""(.*)"" com percentual de desconto ""(.*)"" de primeira prestação")]
+        public void GivenPedidoBaseComFormaPagamentoComPercentualDeDescontoDePrimeiraPrestacao(string p0, string p1, int p2)
+        {
+            
+        }
+
+        [Given(@"Pedido base ""(.*)"" com forma pagamento ""(.*)""")]
+        public void GivenPedidoBaseComFormaPagamento(string p0, string p1)
+        {
+            
+        }
+
+        [Given(@"Pedido base ""(.*)"" com forma pagamento ""(.*)"" com percentual de desconto ""(.*)"" de entrada")]
+        public void GivenPedidoBaseComFormaPagamentoComPercentualDeDescontoDeEntrada(string p0, string p1, int p2)
+        {
+            
+        }
+
     }
 }
 #pragma warning restore IDE0060 // Remove unued parameter
