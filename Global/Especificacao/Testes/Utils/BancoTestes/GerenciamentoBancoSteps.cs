@@ -228,6 +228,46 @@ namespace Especificacao.Testes.Utils.BancoTestes
             db.transacao.Commit();
         }
 
+        [Given(@"Tabela ""t_LOJA"" com loja = ""(.*)"" alterar campo ""(.*)"" = ""(.*)""")]
+        public void GivenTabelaT_LOJARegistroComLojaAlterarCampo(string valor_loja, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_LOJA", "loja", valor, this);
+
+            var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
+            var registro = (from loja in db.Tlojas
+                            where loja.Loja == valor_loja
+                            select loja).FirstOrDefault();
+
+            Assert.NotNull(registro);
+
+            if (!WhenInformoCampo.InformarCampo(campo, valor, registro))
+                Assert.Equal("campo desconhecido", campo);
+
+            db.Update(registro);
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+
+        [Given(@"Tabela ""t_PARAMETRO"" com id = ""(.*)"" alterar campo ""(.*)"" = ""(.*)""")]
+        public void GivenTabelaT_PARAMETRORegistroComIdAlterarCampo(string valor_id, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_PARAMETRO", "loja", valor, this);
+
+            var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
+            var registro = (from parametro in db.Tparametros
+                            where parametro.Id == valor_id
+                            select parametro).FirstOrDefault();
+
+            Assert.NotNull(registro);
+
+            if (!WhenInformoCampo.InformarCampo(campo, valor, registro))
+                Assert.Equal("campo desconhecido", campo);
+
+            db.Update(registro);
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+
         [Given(@"Novo registro em ""(.*)"", campo ""(.*)"" = ""(.*)""")]
         public void GivenNovoRegistroEmCampo(string tabela, string campo, string valor)
         {
@@ -240,6 +280,9 @@ namespace Especificacao.Testes.Utils.BancoTestes
                     break;
                 case "t_PRODUTO_LOJA":
                     NovoRegistroEm_t_PRODUTO_LOJA(tabela, campo, valor);
+                    break;
+                case "t_DESCONTO":
+                    NovoRegistroEm_t_DESCONTO(tabela, campo, valor);
                     break;
 
                 default:
@@ -262,6 +305,10 @@ namespace Especificacao.Testes.Utils.BancoTestes
                     Assert.Equal("t_PRODUTO_LOJA", tabela);
                     tprodutoLoja = new TprodutoLoja();
                     break;
+                case "t_DESCONTO":
+                    Assert.Equal("t_DESCONTO", tabela);
+                    tdesconto = new Tdesconto();
+                    break;
 
                 default:
                     Assert.Equal("", $"{tabela} desconhecido");
@@ -280,12 +327,62 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 case "t_PRODUTO_LOJA":
                     GravarRegistroNa_t_PRODUTO_LOJA(tabela);
                     break;
-
+                case "t_DESCONTO":
+                    GravarRegistroNa_t_DESCONTO(tabela);
+                    break;
                 default:
                     Assert.Equal("", $"{tabela} desconhecido");
                     break;
             }
         }
+
+        #region Criação de novo registro t_DESCONTO
+        private Tdesconto tdesconto = new Tdesconto();
+        private void GravarRegistroNa_t_DESCONTO(string tabela)
+        {
+            Assert.Equal("t_DESCONTO", tabela);
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.GravarRegistroEm(tabela, this);
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            db.TprazoPagtoVisanets.Add(tprazoPagtoVisanet);
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+        private void NovoRegistroEm_t_DESCONTO(string tabela, string campo, string valor)
+        {
+            Assert.Equal("t_DESCONTO", tabela);
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.NovoRegistroEmCampo(tabela, campo, valor, this);
+            switch (campo)
+            {
+                case "usado_status":
+                    if (!short.TryParse(valor, out short usado_status))
+                        Assert.Equal("", $"{valor} não é numero");
+                    tdesconto.Usado_status = usado_status;
+                    break;
+                case "cancelado_status":
+                    if (!short.TryParse(valor, out short cancelado_status))
+                        Assert.Equal("", $"{valor} não é numero");
+                    tdesconto.Cancelado_status = cancelado_status;
+                    break;
+                case "fabricante":
+                    tdesconto.Fabricante = valor;
+                    break;
+                case "produto":
+                    tdesconto.Produto = valor;
+                    break;
+                case "loja":
+                    tdesconto.Loja = valor;
+                    break;
+                case "data":
+                    if (!DateTime.TryParse(valor, out DateTime data))
+                        Assert.Equal("", $"{valor} não é uma Data");
+                    tdesconto.Data = data;
+                    break;
+                default:
+                    Assert.Equal("", $"{campo} desconhecido");
+                    break;
+            }
+        }
+        #endregion
 
         #region Criação de novo registro t_PRAZO_PAGTO_VISANET
         private TprazoPagtoVisanet tprazoPagtoVisanet = new InfraBanco.Modelos.TprazoPagtoVisanet();

@@ -21,6 +21,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo17
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
     [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo40")]
+    [Xunit.TraitAttribute("Category", "GerenciamentoBanco")]
     public partial class LimiteDesconto_T_DESCONTOFeature : object, Xunit.IClassFixture<LimiteDesconto_T_DESCONTOFeature.FixtureData>, System.IDisposable
     {
         
@@ -28,7 +29,8 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo17
         
         private string[] _featureTags = new string[] {
                 "ignore",
-                "Especificacao.Pedido.Passo40"};
+                "Especificacao.Pedido.Passo40",
+                "GerenciamentoBanco"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -46,7 +48,8 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo17
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "LimiteDesconto_t_DESCONTO", null, ProgrammingLanguage.CSharp, new string[] {
                         "ignore",
-                        "Especificacao.Pedido.Passo40"});
+                        "Especificacao.Pedido.Passo40",
+                        "GerenciamentoBanco"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -86,58 +89,74 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo17
 #line 6
 #line hidden
 #line 7
- testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 9
- testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
-                    "max_comissao\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 10
- testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
-                    "max_comissao_e_desconto_nivel2\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 11
- testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
-                    "max_comissao_e_desconto_nivel2_pj\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 12
- testRunner.And("Alterar registro em \"t_LOJA\", busca \"loja\" = \"especial: loja atual\", campo \"perc_" +
-                    "max_comissao_e_desconto_pj\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 14
- testRunner.And("Alterar registro em \"t_PARAMETRO\", busca \"id\" = \"especial: loja atual\", campo \"Pe" +
-                    "rcMaxComissaoEDesconto_Nivel2_MeiosPagto\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 16
- testRunner.And("Limpar tabela \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 18
- testRunner.And("Novo registro na tabela \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 19
- testRunner.And("Novo registro em \"t_DESCONTO\", campo \"usado_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 20
- testRunner.And("Novo registro em \"t_DESCONTO\", campo \"cancelado_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 21
- testRunner.And("Novo registro em \"t_DESCONTO\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 22
- testRunner.And("Novo registro em \"t_DESCONTO\", campo \"produto\" = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 23
- testRunner.And("Novo registro em \"t_DESCONTO\", campo \"loja\" = \"especial: loja do pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 24
- testRunner.And("Novo registro em \"t_DESCONTO\", campo \"data\" = \"especial: data atual\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 27
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
+#line 8
+ testRunner.When("Lista de itens \"0\" informo \"Fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 9
+ testRunner.When("Lista de itens \"0\" informo \"Produto\" = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 10
+ testRunner.When("Lista de itens \"0\" informo \"Desc_Dado\" = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 12
+ testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 14
+ testRunner.And("Tabela \"t_LOJA\" com loja = \"202\" alterar campo \"perc_max_comissao\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 15
+ testRunner.And("Tabela \"t_LOJA\" com loja = \"202\" alterar campo \"perc_max_comissao_e_desconto_nive" +
+                    "l2\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 16
+ testRunner.And("Tabela \"t_LOJA\" com loja = \"202\" alterar campo \"perc_max_comissao_e_desconto_nive" +
+                    "l2_pj\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 17
+ testRunner.And("Tabela \"t_LOJA\" com loja = \"202\" alterar campo \"perc_max_comissao_e_desconto_pj\" " +
+                    "= \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 19
+ testRunner.And("Tabela \"t_PARAMETRO\" com id = \"PercMaxComissaoEDesconto_Nivel2_MeiosPagto\" altera" +
+                    "r campo \"campo_texto\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 21
+ testRunner.And("Limpar tabela \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 23
+ testRunner.And("Novo registro na tabela \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 24
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"usado_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 25
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"cancelado_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 26
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 27
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"produto\" = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
 #line 28
- testRunner.Given("Modificar item do pedido, fabricante \"003\", produto \"003220\", colocar \"20\" por ce" +
-                    "nto de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 29
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"data\" = \"especial: data atual\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 31
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 32
+ testRunner.When("Lista de itens \"0\" informo \"Fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 33
+ testRunner.When("Lista de itens \"0\" informo \"Produto\" = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 34
+ testRunner.When("Lista de itens \"0\" informo \"Desc_Dado\" = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
         }
         
@@ -157,7 +176,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo17
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verifica se todos os produtos cujo desconto excedem o máximo permitido possuem se" +
                     "nha de desconto disponível", null, tagsOfScenario, argumentsOfScenario);
-#line 30
+#line 37
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -192,47 +211,6 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sem t_DESCONTO", null, tagsOfScenario, argumentsOfScenario);
-#line 114
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 6
-this.FeatureBackground();
-#line hidden
-#line 115
- testRunner.Given("Limpar tabela \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 116
- testRunner.Then("Erro \"desconto excedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="Com t_DESCONTO certo")]
-        [Xunit.TraitAttribute("FeatureTitle", "LimiteDesconto_t_DESCONTO")]
-        [Xunit.TraitAttribute("Description", "Com t_DESCONTO certo")]
-        public virtual void ComT_DESCONTOCerto()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Com t_DESCONTO certo", null, tagsOfScenario, argumentsOfScenario);
 #line 118
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -257,31 +235,24 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 119
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Limpar tabela \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 120
- testRunner.Given("Modificar item do pedido, fabricante \"003\", produto \"003220\", colocar \"20\" por ce" +
-                        "nto de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 121
- testRunner.And("Gravar registro em \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 122
- testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Erro \"desconto excedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Com t_DESCONTO usado_status errado")]
+        [Xunit.SkippableFactAttribute(DisplayName="Com t_DESCONTO certo")]
         [Xunit.TraitAttribute("FeatureTitle", "LimiteDesconto_t_DESCONTO")]
-        [Xunit.TraitAttribute("Description", "Com t_DESCONTO usado_status errado")]
-        public virtual void ComT_DESCONTOUsado_StatusErrado()
+        [Xunit.TraitAttribute("Description", "Com t_DESCONTO certo")]
+        public virtual void ComT_DESCONTOCerto()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Com t_DESCONTO usado_status errado", null, tagsOfScenario, argumentsOfScenario);
-#line 124
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Com t_DESCONTO certo", null, tagsOfScenario, argumentsOfScenario);
+#line 122
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -305,19 +276,71 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 125
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 126
- testRunner.Given("Modificar item do pedido, fabricante \"003\", produto \"003220\", colocar \"20\" por ce" +
-                        "nto de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Com t_DESCONTO usado_status errado")]
+        [Xunit.TraitAttribute("FeatureTitle", "LimiteDesconto_t_DESCONTO")]
+        [Xunit.TraitAttribute("Description", "Com t_DESCONTO usado_status errado")]
+        public virtual void ComT_DESCONTOUsado_StatusErrado()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Com t_DESCONTO usado_status errado", null, tagsOfScenario, argumentsOfScenario);
 #line 127
- testRunner.And("Novo registro em \"t_DESCONTO\", campo \"usado_status\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+this.ScenarioInitialize(scenarioInfo);
 #line hidden
-#line 128
- testRunner.And("Gravar registro em \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 6
+this.FeatureBackground();
 #line hidden
 #line 129
+ testRunner.Given("Limpar tabela \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 130
+ testRunner.Given("Novo registro na tabela \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 131
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"usado_status\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 132
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"cancelado_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 133
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 134
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"produto\" = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 135
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 136
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"data\" = \"especial: data atual\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 137
+ testRunner.And("Gravar registro em \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 138
  testRunner.Then("Erro \"desconto excedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -332,7 +355,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Com t_DESCONTO cancelado_status errado", null, tagsOfScenario, argumentsOfScenario);
-#line 131
+#line 140
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -355,20 +378,34 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 132
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 142
+ testRunner.Given("Limpar tabela \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 133
- testRunner.Given("Modificar item do pedido, fabricante \"003\", produto \"003220\", colocar \"20\" por ce" +
-                        "nto de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 143
+ testRunner.Given("Novo registro na tabela \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 134
+#line 144
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"usado_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 145
  testRunner.And("Novo registro em \"t_DESCONTO\", campo \"cancelado_status\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 135
+#line 146
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 147
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"produto\" = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 148
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 149
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"data\" = \"especial: data atual\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 150
  testRunner.And("Gravar registro em \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 136
+#line 151
  testRunner.Then("Erro \"desconto excedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -383,7 +420,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Com t_DESCONTO fabricante errado", null, tagsOfScenario, argumentsOfScenario);
-#line 138
+#line 153
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -406,20 +443,34 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 139
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 155
+ testRunner.Given("Limpar tabela \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 140
- testRunner.Given("Modificar item do pedido, fabricante \"003\", produto \"003220\", colocar \"20\" por ce" +
-                        "nto de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 156
+ testRunner.Given("Novo registro na tabela \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 141
+#line 157
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"usado_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 158
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"cancelado_status\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 159
  testRunner.And("Novo registro em \"t_DESCONTO\", campo \"fabricante\" = \"004\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 142
+#line 160
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"produto\" = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 161
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 162
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"data\" = \"especial: data atual\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 163
  testRunner.And("Gravar registro em \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 143
+#line 164
  testRunner.Then("Erro \"desconto excedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -434,7 +485,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Com t_DESCONTO produto errado", null, tagsOfScenario, argumentsOfScenario);
-#line 145
+#line 166
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -457,20 +508,34 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 146
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 168
+ testRunner.Given("Limpar tabela \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 147
- testRunner.Given("Modificar item do pedido, fabricante \"003\", produto \"003220\", colocar \"20\" por ce" +
-                        "nto de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 169
+ testRunner.Given("Novo registro na tabela \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 148
+#line 170
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"usado_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 171
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"cancelado_status\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 172
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 173
  testRunner.And("Novo registro em \"t_DESCONTO\", campo \"produto\" = \"903220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 149
+#line 174
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 175
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"data\" = \"especial: data atual\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 176
  testRunner.And("Gravar registro em \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 150
+#line 177
  testRunner.Then("Erro \"desconto excedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -485,7 +550,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Com t_DESCONTO loja errado", null, tagsOfScenario, argumentsOfScenario);
-#line 152
+#line 179
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -508,20 +573,34 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 153
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 181
+ testRunner.Given("Limpar tabela \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 154
- testRunner.Given("Modificar item do pedido, fabricante \"003\", produto \"003220\", colocar \"20\" por ce" +
-                        "nto de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 182
+ testRunner.Given("Novo registro na tabela \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 155
+#line 183
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"usado_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 184
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"cancelado_status\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 185
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 186
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"produto\" = \"903220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 187
  testRunner.And("Novo registro em \"t_DESCONTO\", campo \"loja\" = \"987\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 156
+#line 188
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"data\" = \"especial: data atual\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 189
  testRunner.And("Gravar registro em \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 157
+#line 190
  testRunner.Then("Erro \"desconto excedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -536,7 +615,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Com t_DESCONTO data errado", null, tagsOfScenario, argumentsOfScenario);
-#line 159
+#line 192
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -559,21 +638,35 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 160
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 195
+ testRunner.Given("Limpar tabela \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 161
- testRunner.Given("Modificar item do pedido, fabricante \"003\", produto \"003220\", colocar \"20\" por ce" +
-                        "nto de desconto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 196
+ testRunner.Given("Novo registro na tabela \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 163
+#line 197
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"usado_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 198
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"cancelado_status\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 199
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 200
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"produto\" = \"903220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 201
+ testRunner.And("Novo registro em \"t_DESCONTO\", campo \"loja\" = \"987\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 202
  testRunner.And("Novo registro em \"t_DESCONTO\", campo \"data\" = \"especial: data atual menos 1 hora\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 164
+#line 203
  testRunner.And("Gravar registro em \"t_DESCONTO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 165
+#line 204
  testRunner.Then("Erro \"desconto excedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
