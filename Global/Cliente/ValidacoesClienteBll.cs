@@ -233,11 +233,12 @@ namespace Cliente
                     if (dadosCliente.Nascimento.Value.Year <= 1900 ||
                         dadosCliente.Nascimento.Value.Year.ToString().Length < 4)
                         lstErros.Add("Data de nascimento inválida!");
-                    if (dadosCliente.Nascimento.Value.Day >= DateTime.Now.Day &&
-                        dadosCliente.Nascimento.Value.Month >= DateTime.Now.Month &&
-                        dadosCliente.Nascimento.Value.Year >= DateTime.Now.Year)
+                    //if (dadosCliente.Nascimento.Value.Day >= DateTime.Now.Day &&
+                    //    dadosCliente.Nascimento.Value.Month >= DateTime.Now.Month &&
+                    //    dadosCliente.Nascimento.Value.Year >= DateTime.Now.Year)
+                    if (dadosCliente.Nascimento.Value.Date >= DateTime.Now.Date)
                         lstErros.Add("Data de nascimento não pode ser igual ou maior que a data atual!");
-                }                
+                }
             }
         }
 

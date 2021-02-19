@@ -1,5 +1,6 @@
 ﻿using Especificacao.Testes.Pedido;
 using Especificacao.Testes.Utils.ListaDependencias;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using TechTalk.SpecFlow;
@@ -23,8 +24,10 @@ namespace Especificacao.Especificacao.Pedido
     [Scope(Tag = "Especificacao.Pedido.Passo60")]
     public class PedidoComunsSteps : PedidoPassosComuns
     {
+        private readonly InfraBanco.ContextoBdProvider contextoBdProvider;
         public PedidoComunsSteps(FeatureContext featureContext)
         {
+            this.contextoBdProvider = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<InfraBanco.ContextoBdProvider>();
             var tags = featureContext.FeatureInfo.Tags.ToList();
 
             if (tags.Contains("Especificacao.Pedido.Passo10.CamposSimples"))
@@ -295,5 +298,65 @@ namespace Especificacao.Especificacao.Pedido
             base.TabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo(campo, valor);
         }
 
+        private InfraBanco.Modelos.TprodutoLoja tprodutoLoja = new InfraBanco.Modelos.TprodutoLoja();
+        [Given(@"Novo registro na tabela ""(.*)""")]
+        public void GivenNovoRegistroNaTabela(string p0)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.NovoRegistroNaTabela(p0, this);
+            Assert.Equal("t_PRODUTO_LOJA", p0);
+            tprodutoLoja = new InfraBanco.Modelos.TprodutoLoja();
+        }
+
+        [Given(@"Novo registro em ""(.*)"", campo ""(.*)"" = ""(.*)""")]
+        public void GivenNovoRegistroEmCampo(string tabela, string campo, string valor)
+        {
+            Assert.Equal("t_PRODUTO_LOJA", tabela);
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.NovoRegistroEmCampo(tabela, campo, valor, this);
+            switch (campo)
+            {
+                case "fabricante":
+                    tprodutoLoja.Fabricante = valor;
+                    break;
+                case "produto":
+                    tprodutoLoja.Produto = valor;
+                    break;
+                case "loja":
+                    tprodutoLoja.Loja = valor;
+                    break;
+                case "preco_lista":
+                    if (!decimal.TryParse(valor, out decimal preco_lista))
+                        Assert.Equal("", $"{valor} não é um decimal");
+                    tprodutoLoja.Preco_Lista = preco_lista;
+                    break;
+                case "vendavel":
+                    tprodutoLoja.Vendavel = valor;
+                    break;
+                case "excluido_status":
+                    if (!short.TryParse(valor, out short saida))
+                        Assert.Equal("", $"{valor} não é número");
+                    tprodutoLoja.Excluido_status = saida;
+                    break;
+                case "qtde_max_venda":
+                    if (!short.TryParse(valor, out short qtdeMax))
+                        Assert.Equal("", $"{valor} não é número");
+                    tprodutoLoja.Qtde_Max_Venda = qtdeMax;
+                    break;
+
+                default:
+                    Assert.Equal("", $"{campo} desconhecido");
+                    break;
+            }
+        }
+
+        [Given(@"Gravar registro em ""(.*)""")]
+        public void GivenGravarRegistroEm(string tabela)
+        {
+            Assert.Equal("t_PRODUTO_LOJA", tabela);
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.GravarRegistroEm(tabela, this);
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            db.TprodutoLojas.Add(tprodutoLoja);
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
     }
 }
