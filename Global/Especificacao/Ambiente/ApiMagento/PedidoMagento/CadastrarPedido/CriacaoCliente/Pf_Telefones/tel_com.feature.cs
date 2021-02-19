@@ -19,7 +19,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Criaca
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente")]
+    [Xunit.TraitAttribute("Category", "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional")]
     [Xunit.TraitAttribute("Category", "GerenciamentoBanco")]
     public partial class Tel_ComFeature : object, Xunit.IClassFixture<Tel_ComFeature.FixtureData>, System.IDisposable
     {
@@ -27,7 +27,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Criaca
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente",
+                "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional",
                 "GerenciamentoBanco"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
@@ -45,7 +45,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Criaca
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "tel_com", null, ProgrammingLanguage.CSharp, new string[] {
-                        "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente",
+                        "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional",
                         "GerenciamentoBanco"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -547,6 +547,10 @@ this.FeatureBackground();
 #line hidden
 #line 110
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 111
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"Endereco_tel_com\" = \"12345678" +
+                        "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

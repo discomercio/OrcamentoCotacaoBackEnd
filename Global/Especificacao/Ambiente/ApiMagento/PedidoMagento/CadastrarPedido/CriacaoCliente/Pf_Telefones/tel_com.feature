@@ -1,4 +1,4 @@
-﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente
+﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
 @GerenciamentoBanco
 Feature: tel_com
 
@@ -108,3 +108,4 @@ Scenario: validar telefone - tel_com com simbolos
 	When Informo "EndEtg_ddd_com" = "12"
 	When Informo "EndEtg_tel_com" = "1234-5678"
 	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro criado, verificar campo "Endereco_tel_com" = "12345678"

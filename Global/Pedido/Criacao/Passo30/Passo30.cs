@@ -19,7 +19,7 @@ namespace Pedido.Criacao.Passo30
         public async Task ExecutarAsync()
         {
             PermissaoPercRt();
-            CamposMagentoExigidos();
+            await CamposMagentoExigidos(); //esta rotina também determina o perc_Rt para o magento
             CamposMagentoNaoAceitos();
             Cd();
             Cod_site_assistencia_tecnica();

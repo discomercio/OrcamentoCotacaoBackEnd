@@ -1,4 +1,6 @@
-﻿@ignore
+﻿#fazemos somente no magento
+@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.ValidacaoCampos
+@GerenciamentoBanco
 Feature: PedidoMagentoRepetido
 #2) Seria necessário tratar a possibilidade de ocorrer acesso concorrente entre o cadastramento semi-automático e a integração.
 #Em ambos os casos, seria importante verificar no instante final antes da efetivar o cadastramento do pedido se o número Magento e,
@@ -7,7 +9,7 @@ Feature: PedidoMagentoRepetido
 #Isto está feito no ASP abaixo:
 #loja/PedidoNovoConfirma.asp
 #ATENÇÃO: fazer com 2 campos separadamente; pedido_bs_x_marketplace e pedido_bs_x_ac
-#se loja = NUMERO_LOJA_ECOMMERCE_AR_CLUBE
+#no asp:
 #'	VERIFICA SE HÁ PEDIDO JÁ CADASTRADO COM O MESMO Nº PEDIDO MAGENTO (POSSÍVEL CADASTRO EM DUPLICIDADE)
 #	if alerta = "" then
 #		if s_pedido_ac <> "" then
@@ -19,39 +21,7 @@ Feature: PedidoMagentoRepetido
 #					" tU.nome AS nome_vendedor," & _
 #					" tP.endereco_cnpj_cpf AS cnpj_cpf," & _
 #					" tP.endereco_nome AS nome_cliente" & _
-#				" FROM t_PEDIDO tP" & _
-#					" LEFT JOIN t_USUARIO tU ON (tP.vendedor = tU.usuario)" & _
-#				" WHERE" & _
-#					" (tP.st_entrega <> '" & ST_ENTREGA_CANCELADO & "')" & _
-#					" AND (pedido_bs_x_ac = '" & s_pedido_ac & "')" & _
-#					" AND (" & _
-#						"tP.pedido NOT IN (" & _
-#							"SELECT DISTINCT" & _
-#								" pedido" & _
-#							" FROM t_PEDIDO_DEVOLUCAO tPD" & _
-#							" WHERE" & _
-#								" (tPD.pedido = tP.pedido)" & _
-#								" AND (tPD.status IN (" & _
-#									COD_ST_PEDIDO_DEVOLUCAO__FINALIZADA & "," & _
-#									COD_ST_PEDIDO_DEVOLUCAO__MERCADORIA_RECEBIDA & "," & _
-#									COD_ST_PEDIDO_DEVOLUCAO__EM_ANDAMENTO & "," & _
-#									COD_ST_PEDIDO_DEVOLUCAO__CADASTRADA & _
-#									")" & _
-#								")" & _
-#							")" & _
-#						")" & _
-#					" AND (" & _
-#						"tP.pedido NOT IN (" & _
-#							"SELECT DISTINCT" & _
-#								" pedido" & _
-#							" FROM t_PEDIDO_ITEM_DEVOLVIDO tPID" & _
-#							" WHERE" & _
-#								" (tPID.pedido = tP.pedido)" & _
-#							")" & _
-#						")"
-#			set rs = cn.execute(s)
-#			if Not rs.Eof then
-#				alerta=texto_add_br(alerta)
+#........................
 #				alerta=alerta & "O nº pedido Magento " & Trim("" & rs("pedido_bs_x_ac")) & " já está cadastrado no pedido " & Trim("" & rs("pedido"))
 #				alerta=texto_add_br(alerta)
 #				alerta=alerta & "Data de cadastramento do pedido: " & formata_data_hora_sem_seg(rs("data_hora"))
@@ -64,6 +34,37 @@ Feature: PedidoMagentoRepetido
 #			end if 'if s_pedido_ac <> ""
 #		end if 'if alerta = ""
 
-Scenario: Pedido_bs_x_marketplace e Marketplace_codigo_origem já existem
-	When Fazer esta validação
+Scenario: Pedido_bs_x_marketplace e Pedido_bs_x_ac já existem
+	Given Reiniciar banco ao terminar cenário
 
+	Given Pedido base
+	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "128"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "103456789"
+	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "019"
+	When Informo "Tipo_Parcelamento" = "5"
+	When Informo "C_pu_valor" = "3132.90"
+	Then Sem nenhum erro
+
+	Given Pedido base
+	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "138"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "103456789"
+	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "019"
+	When Informo "Tipo_Parcelamento" = "5"
+	When Informo "C_pu_valor" = "3132.90"
+	Then Erro "regex O nº pedido Magento Pedido_Bs_X_Ac 103456789 .*"
+
+	Given Pedido base
+	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "128"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "100456789"
+	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "019"
+	When Informo "Tipo_Parcelamento" = "5"
+	When Informo "C_pu_valor" = "3132.90"
+	Then Erro "regex O nº pedido Magento Pedido_Bs_X_Marketplace 128 .*"
+
+	Given Pedido base
+	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "138"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "100456789"
+	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "019"
+	When Informo "Tipo_Parcelamento" = "5"
+	When Informo "C_pu_valor" = "3132.90"
+	Then Sem nenhum erro

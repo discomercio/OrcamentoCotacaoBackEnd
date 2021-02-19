@@ -1,4 +1,4 @@
-﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente
+﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
 @GerenciamentoBanco
 Feature: tel_res
 
@@ -73,15 +73,7 @@ Scenario: validar telefones - tel_res sucesso
 Scenario: validar telefone - tel_res com simbolos
 	Given Pedido base
 	When Informo "OutroEndereco" = "true"
-	When Informo "EndEtg_ddd_com_2" = "12"
-	When Informo "EndEtg_tel_com_2" = "1234-5678"
+	When Informo "EndEtg_ddd_res" = "12"
+	When Informo "EndEtg_tel_res" = "1234-5678"
 	Then Sem nenhum erro
-	
-
-	
-
-	
-
-	
-
-
+	And Tabela "t_PEDIDO" registro criado, verificar campo "Endereco_tel_res" = "12345678"
