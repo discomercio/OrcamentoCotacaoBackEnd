@@ -19,16 +19,16 @@ namespace Especificacao.Especificacao.Pedido.Passo40
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "ignore")]
     [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo40")]
+    [Xunit.TraitAttribute("Category", "GerenciamentoBanco")]
     public partial class EnderecoEProdutos_T_PRODUTO_LOJAFeature : object, Xunit.IClassFixture<EnderecoEProdutos_T_PRODUTO_LOJAFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore",
-                "Especificacao.Pedido.Passo40"};
+                "Especificacao.Pedido.Passo40",
+                "GerenciamentoBanco"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -45,8 +45,8 @@ namespace Especificacao.Especificacao.Pedido.Passo40
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Endereco e produtos - t_PRODUTO_LOJA", "Validações do PedidoNovoProdCompostoMask", ProgrammingLanguage.CSharp, new string[] {
-                        "ignore",
-                        "Especificacao.Pedido.Passo40"});
+                        "Especificacao.Pedido.Passo40",
+                        "GerenciamentoBanco"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -88,6 +88,16 @@ namespace Especificacao.Especificacao.Pedido.Passo40
 #line 8
  testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
+#line 9
+ testRunner.Given("No ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido\" m" +
+                    "apear erro \"Produto cód.(003220) do fabricante cód.(003) não existe!\" para \"rege" +
+                    "x .*Produto não cadastrado para a loja.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 10
+ testRunner.Given("No ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido\" m" +
+                    "apear erro \"Produto cód.(003221) do fabricante cód.(003) não existe!\" para \"rege" +
+                    "x .*Produto não cadastrado para a loja.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
         }
         
         void System.IDisposable.Dispose()
@@ -103,7 +113,7 @@ namespace Especificacao.Especificacao.Pedido.Passo40
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verificar produtos em t_PRODUTO_LOJA", null, tagsOfScenario, argumentsOfScenario);
-#line 10
+#line 13
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -138,7 +148,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verificar produtos - sem erro", null, tagsOfScenario, argumentsOfScenario);
-#line 32
+#line 35
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -161,10 +171,10 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line hidden
-#line 34
+#line 37
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 35
+#line 38
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -179,7 +189,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verificar produtos - sem t_PRODUTO_LOJA", null, tagsOfScenario, argumentsOfScenario);
-#line 37
+#line 40
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -202,14 +212,14 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line hidden
-#line 38
+#line 41
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 39
+#line 42
  testRunner.And("Limpar tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 41
- testRunner.Then("Erro \"Produto não cadastrado para loja\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 44
+ testRunner.Then("Erro \"Produto cód.(003220) do fabricante cód.(003) não existe!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -223,7 +233,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verificar produtos - registro montado na mão - OK", null, tagsOfScenario, argumentsOfScenario);
-#line 43
+#line 46
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -246,61 +256,67 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line hidden
-#line 44
+#line 47
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 45
+#line 48
  testRunner.And("Limpar tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 47
- testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 48
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
 #line 49
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 50
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"especial: loja do pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 51
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"excluido_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 52
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"vendavel\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 53
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"qtde_max_venda\" = \"10000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 54
- testRunner.And("Gravar registro em \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 56
- testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 57
  testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 58
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003221\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 51
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 59
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"especial: loja do pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 52
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 60
+#line 53
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"preco_lista\" = \"626.58\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 54
  testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"excluido_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 61
+#line 55
  testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"vendavel\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 62
+#line 56
  testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"qtde_max_venda\" = \"10000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 63
+#line 57
  testRunner.And("Gravar registro em \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 58
+ testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 59
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 60
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003221\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 61
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 62
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"preco_lista\" = \"939.87\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 63
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"excluido_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 64
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"vendavel\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
 #line 65
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"qtde_max_venda\" = \"10000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 66
+ testRunner.And("Gravar registro em \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 67
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -310,12 +326,18 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="Verificar produtos - excluido_status")]
         [Xunit.TraitAttribute("FeatureTitle", "Endereco e produtos - t_PRODUTO_LOJA")]
         [Xunit.TraitAttribute("Description", "Verificar produtos - excluido_status")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void VerificarProdutos_Excluido_Status()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verificar produtos - excluido_status", null, tagsOfScenario, argumentsOfScenario);
-#line 67
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verificar produtos - excluido_status", @"	Esse teste não esta passando!
+	Seguindo o código comentado do ""AjaxConsultaDadosProdutoBD.asp"" ele tem a condição de que se 
+	o fabricante estiver vazio ele busca por ""excluido_status = 0""
+	o campo ""excluido_status = 0"" não era utilizado, ele foi inserido para esse teste
+	essa busca de produtos não existe em nossa aplicação!!", tagsOfScenario, argumentsOfScenario);
+#line 70
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -338,50 +360,29 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line hidden
-#line 68
+#line 77
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 69
+#line 78
  testRunner.And("Limpar tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 71
+#line 79
  testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 72
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 73
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 74
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"especial: loja do pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 75
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"excluido_status\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 76
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"vendavel\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 77
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"qtde_max_venda\" = \"10000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 78
- testRunner.And("Gravar registro em \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 80
- testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 81
  testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 81
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
 #line 82
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003221\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 83
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"especial: loja do pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"preco_lista\" = \"626.58\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 84
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"excluido_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"excluido_status\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 85
  testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"vendavel\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -392,8 +393,35 @@ this.FeatureBackground();
 #line 87
  testRunner.And("Gravar registro em \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 88
+ testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
 #line 89
- testRunner.Then("Erro \"Produto não cadastrado para loja\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 90
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003221\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 91
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 92
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"preco_lista\" = \"939.87\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 93
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"excluido_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 94
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"vendavel\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 95
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"qtde_max_venda\" = \"10000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 96
+ testRunner.And("Gravar registro em \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 97
+ testRunner.Then("Erro \"Produto cód.(003220) do fabricante cód.(003) não existe!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -402,12 +430,14 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="Verificar produtos - excluido_status 2")]
         [Xunit.TraitAttribute("FeatureTitle", "Endereco e produtos - t_PRODUTO_LOJA")]
         [Xunit.TraitAttribute("Description", "Verificar produtos - excluido_status 2")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void VerificarProdutos_Excluido_Status2()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verificar produtos - excluido_status 2", null, tagsOfScenario, argumentsOfScenario);
-#line 91
+#line 100
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -430,62 +460,62 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line hidden
-#line 92
+#line 101
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 93
+#line 102
  testRunner.And("Limpar tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 95
+#line 103
  testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 96
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 97
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 98
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"especial: loja do pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 99
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"excluido_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 100
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"vendavel\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 101
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"qtde_max_venda\" = \"10000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 102
- testRunner.And("Gravar registro em \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 104
- testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 105
  testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 105
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
 #line 106
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003221\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 107
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"especial: loja do pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"excluido_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 108
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"excluido_status\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 109
  testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"vendavel\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 110
+#line 109
  testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"qtde_max_venda\" = \"10000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 111
+#line 110
  testRunner.And("Gravar registro em \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 111
+ testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 112
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
 #line 113
- testRunner.Then("Erro \"Produto não cadastrado para loja\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003221\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 114
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 115
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"excluido_status\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 116
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"vendavel\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 117
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"qtde_max_venda\" = \"10000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 118
+ testRunner.And("Gravar registro em \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 119
+ testRunner.Then("Erro \"Produto cód.(003220) do fabricante cód.(003) não existe!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -499,7 +529,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verificar produtos - outra loja", null, tagsOfScenario, argumentsOfScenario);
-#line 115
+#line 122
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -522,62 +552,62 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line hidden
-#line 116
+#line 123
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 117
+#line 124
  testRunner.And("Limpar tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 119
- testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 120
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 121
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 122
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"987\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 123
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"excluido_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 124
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"vendavel\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
 #line 125
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"qtde_max_venda\" = \"10000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 126
- testRunner.And("Gravar registro em \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 128
- testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 129
  testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 130
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003221\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 127
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 131
+#line 128
  testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"987\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 132
+#line 129
  testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"excluido_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 133
+#line 130
  testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"vendavel\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 134
+#line 131
  testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"qtde_max_venda\" = \"10000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 135
+#line 132
  testRunner.And("Gravar registro em \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 133
+ testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 134
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 135
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003221\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 136
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"987\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
 #line 137
- testRunner.Then("Erro \"Produto não cadastrado para loja\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"excluido_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 138
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"vendavel\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 139
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"qtde_max_venda\" = \"10000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 140
+ testRunner.And("Gravar registro em \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 141
+ testRunner.Then("Erro \"Produto cód.(003220) do fabricante cód.(003) não existe!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -591,7 +621,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verificar produtos - incompleto (sem todos os produtos)", null, tagsOfScenario, argumentsOfScenario);
-#line 139
+#line 143
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -614,62 +644,68 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line hidden
-#line 140
+#line 144
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 141
+#line 145
  testRunner.And("Limpar tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 143
- testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 144
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 145
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 146
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"especial: loja do pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
 #line 147
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"excluido_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 148
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"vendavel\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 149
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"qtde_max_venda\" = \"10000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 150
- testRunner.And("Gravar registro em \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 152
- testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 153
  testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 155
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"903221\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 149
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 156
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"especial: loja do pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 150
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 157
+#line 151
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"preco_lista\" = \"626.58\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 152
  testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"excluido_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 158
+#line 153
  testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"vendavel\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 159
+#line 154
  testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"qtde_max_venda\" = \"10000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 160
+#line 155
  testRunner.And("Gravar registro em \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 157
+ testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 158
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 160
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"903221\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 161
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
 #line 162
- testRunner.Then("Erro \"Produto não cadastrado para loja\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"preco_lista\" = \"939.87\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 163
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"excluido_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 164
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"vendavel\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 165
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"qtde_max_venda\" = \"10000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 166
+ testRunner.And("Gravar registro em \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 168
+ testRunner.Then("Erro \"Produto cód.(003221) do fabricante cód.(003) não existe!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -683,7 +719,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verificar produtos t_PRODUTO_LOJA - vendavel", null, tagsOfScenario, argumentsOfScenario);
-#line 169
+#line 175
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -706,62 +742,68 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line hidden
-#line 170
+#line 176
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 171
+#line 177
  testRunner.And("Limpar tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 173
- testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 174
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 175
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 176
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"especial: loja do pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 177
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"excluido_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 178
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"vendavel\" = \"N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
 #line 179
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"qtde_max_venda\" = \"10000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 180
- testRunner.And("Gravar registro em \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 182
- testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 183
  testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 181
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 182
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 183
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"preco_lista\" = \"626.58\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
 #line 184
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003221\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 185
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"especial: loja do pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 186
  testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"excluido_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 187
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"vendavel\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 185
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"vendavel\" = \"N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 188
+#line 186
  testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"qtde_max_venda\" = \"10000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 189
+#line 187
  testRunner.And("Gravar registro em \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 189
+ testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 190
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
 #line 191
- testRunner.Then("Erro \"regex .*NÃO está disponível para venda.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003221\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 192
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 193
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"preco_lista\" = \"939.87\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 194
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"excluido_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 195
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"vendavel\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 196
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"qtde_max_venda\" = \"10000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 197
+ testRunner.And("Gravar registro em \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 199
+ testRunner.Then("Erro \"Produto cód.(003220) do fabricante cód.(003) não existe!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -770,12 +812,14 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="Verificar produtos t_PRODUTO_LOJA - qtde_max_venda")]
         [Xunit.TraitAttribute("FeatureTitle", "Endereco e produtos - t_PRODUTO_LOJA")]
         [Xunit.TraitAttribute("Description", "Verificar produtos t_PRODUTO_LOJA - qtde_max_venda")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void VerificarProdutosT_PRODUTO_LOJA_Qtde_Max_Venda()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verificar produtos t_PRODUTO_LOJA - qtde_max_venda", null, tagsOfScenario, argumentsOfScenario);
-#line 193
+#line 202
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -798,61 +842,67 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line hidden
-#line 194
+#line 204
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 195
+#line 205
  testRunner.And("Limpar tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 197
- testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 198
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 199
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 200
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"especial: loja do pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 201
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"excluido_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 202
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"vendavel\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 203
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"qtde_max_venda\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 204
- testRunner.And("Gravar registro em \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 206
- testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
 #line 207
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 208
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003221\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 209
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"especial: loja do pedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 210
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"excluido_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 211
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"vendavel\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"preco_lista\" = \"626.58\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 212
- testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"qtde_max_venda\" = \"10000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"excluido_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 213
- testRunner.And("Gravar registro em \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"vendavel\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 214
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"qtde_max_venda\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 215
+ testRunner.And("Gravar registro em \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 217
+ testRunner.And("Novo registro na tabela \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 218
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"fabricante\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 219
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"produto\" = \"003221\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 220
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 221
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"preco_lista\" = \"939.87\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 222
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"excluido_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 223
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"vendavel\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 224
+ testRunner.And("Novo registro em \"t_PRODUTO_LOJA\", campo \"qtde_max_venda\" = \"10000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 225
+ testRunner.And("Gravar registro em \"t_PRODUTO_LOJA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 227
  testRunner.Then("Erro \"regex .*excede o máximo permitido.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
