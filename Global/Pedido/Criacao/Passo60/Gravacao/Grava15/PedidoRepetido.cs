@@ -8,30 +8,38 @@ using System.Text;
 using System.Threading.Tasks;
 using Pedido.Dados.Criacao;
 
-namespace Pedido
+namespace Pedido.Criacao.Passo60.Gravacao.Grava15
 {
-    public class PedidoRepetidoBll
+    public static class PedidoRepetido
     {
-        private readonly ContextoBdProvider contextoProvider;
-
-        public PedidoRepetidoBll(ContextoBdProvider contextoProvider)
+        public static async Task PedidoJaCadastrado(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, List<string> listaErros)
         {
-            this.contextoProvider = contextoProvider;
+            await PedidoJaCadastradoPOrCpfCnpj(contextoBdGravacao, pedido, listaErros);
+            await PedidoJaCadastradoExatamenteIguais(contextoBdGravacao, pedido, listaErros);
         }
-
-        public async Task PedidoJaCadastrado(PedidoCriacaoDados pedido, List<string> listaErros, string id_cliente)
+        private static async Task PedidoJaCadastradoExatamenteIguais(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, List<string> listaErros)
         {
             DateTime dataLimite = DateTime.Now.AddSeconds(-1 * pedido.Configuracao.LimitePedidosExatamenteIguais_TempoSegundos);
-            var repetidos = await PedidoJaCadastradoDesdeData(pedido, dataLimite, id_cliente);
+            var repetidos = await PedidoJaCadastradoDesdeData(contextoBdGravacao, pedido, dataLimite, true);
             if (repetidos.Count() < pedido.Configuracao.LimitePedidosExatamenteIguais_Numero)
                 return;
 
             foreach (var pedidoJaCadastrado in repetidos)
-                listaErros.Add($"Esta solicitação já foi gravada com o número {pedidoJaCadastrado}");
+                listaErros.Add($"Um pedido idêntico já foi gravado com o número {pedidoJaCadastrado}");
+        }
+        private static async Task PedidoJaCadastradoPOrCpfCnpj(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, List<string> listaErros)
+        {
+            DateTime dataLimite = DateTime.Now.AddSeconds(-1 * pedido.Configuracao.LimitePedidosMesmoCpfCnpj_TempoSegundos);
+            var repetidos = await PedidoJaCadastradoDesdeData(contextoBdGravacao, pedido, dataLimite, false);
+            if (repetidos.Count() < pedido.Configuracao.LimitePedidosMesmoCpfCnpj_Numero)
+                return;
+
+            foreach (var pedidoJaCadastrado in repetidos)
+                listaErros.Add($"Um pedido para o mesmo CPF/CNPJ foi gravado recentemente com o número {pedidoJaCadastrado}");
         }
 
-        public async Task<List<string>> PedidoJaCadastradoDesdeData(PedidoCriacaoDados pedido, DateTime dataLimite,
-            string id_cliente)
+        private static async Task<List<string>> PedidoJaCadastradoDesdeData(ContextoBdGravacao contextoBdGravacao,
+            PedidoCriacaoDados pedido, DateTime dataLimite, bool exatamenteIgual)
         {
             List<string> ret = new List<string>();
             //"SELECT t_PEDIDO.pedido, fabricante, produto, qtde, preco_venda FROM t_PEDIDO INNER JOIN t_PEDIDO_ITEM ON (t_PEDIDO.pedido=t_PEDIDO_ITEM.pedido)" & _
@@ -42,7 +50,7 @@ namespace Pedido
             //" AND (st_entrega<>'" & ST_ENTREGA_CANCELADO & "')" & _
             //" ORDER BY t_PEDIDO_ITEM.pedido, sequencia"
 
-            var db = contextoProvider.GetContextoLeitura();
+            var db = contextoBdGravacao;
             var hora = UtilsGlobais.Util.HoraParaBanco(dataLimite);
             //com muitas combinações, o entitty não está conseguindo otimizar a 
             //passamos de 13 para 4 segundos na criação do pedido
@@ -60,7 +68,7 @@ namespace Pedido
                                            select new { pedidoBanco.Pedido, item.Fabricante, item.Produto, item.Qtde, item.Preco_Venda }).ToListAsync();
                                            */
             var pedidosFiltradosSemData = await (from pedidoBanco in db.Tpedidos
-                                                 where pedidoBanco.Id_Cliente == id_cliente &&
+                                                 where pedidoBanco.Id_Cliente == pedido.Cliente.Id_cliente &&
                                                       pedidoBanco.Loja == pedido.Ambiente.Loja &&
                                                       pedidoBanco.Usuario_Cadastro == pedido.Ambiente.Usuario &&
                                                       pedidoBanco.St_Entrega != InfraBanco.Constantes.Constantes.ST_ENTREGA_CANCELADO
@@ -72,10 +80,10 @@ namespace Pedido
                                         hora.CompareTo(pedidoBanco.Hora) <= 0
                                     select pedidoBanco).ToList();
             var pedidosFiltradsPedidos = (from p in pedidosFiltrados select p.Pedido).Distinct();
-            var pedidosExistentes = (from item in db.TpedidoItems
-                                     where pedidosFiltradsPedidos.Contains(item.Pedido)  //precisa ds=esta linha para aplicar o where
-                                     orderby item.Pedido, item.Sequencia
-                                     select new { item.Pedido, item.Fabricante, item.Produto, item.Qtde, item.Preco_Venda }).ToList();
+            var pedidosExistentes = await (from item in db.TpedidoItems
+                                           where pedidosFiltradsPedidos.Contains(item.Pedido)  //precisa desta linha para aplicar o where
+                                           orderby item.Pedido, item.Sequencia
+                                           select new { item.Pedido, item.Fabricante, item.Produto, item.Qtde, item.Preco_Venda }).ToListAsync();
 
             var pedExistentes = (from p in pedidosExistentes select p.Pedido).Distinct();
 
@@ -112,28 +120,12 @@ namespace Pedido
                         }
                     }
 
-                    if (!algumDiferente)
+                    if (!algumDiferente || !exatamenteIgual)
                         ret.Add(existente);
                 }
             }
             return ret;
         }
 
-        public async Task<List<string>> PedidoPorIdCLiente(string idCliente, DateTime dataLimite)
-        {
-            List<string> ret = new List<string>();
-
-            var banco = contextoProvider.GetContextoLeitura();
-            var hora = UtilsGlobais.Util.HoraParaBanco(dataLimite);
-            var pedidosExistentes = await (from pedidoBanco in banco.Tpedidos
-                                           where pedidoBanco.Id_Cliente == idCliente
-                                              && (pedidoBanco.Data.HasValue && pedidoBanco.Data.Value.Date == dataLimite.Date)
-                                              && hora.CompareTo(pedidoBanco.Hora) <= 0
-                                           select new { pedidoBanco.Pedido }).ToListAsync();
-
-            //agora já está na memória, as operações são rápidas
-            var pedExistentes = (from pedido in pedidosExistentes select pedido.Pedido).Distinct();
-            return pedExistentes.ToList();
-        }
     }
 }

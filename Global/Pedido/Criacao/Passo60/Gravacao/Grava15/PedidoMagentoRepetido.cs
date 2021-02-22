@@ -2,6 +2,7 @@
 using InfraBanco.Constantes;
 using Microsoft.EntityFrameworkCore;
 using Pedido.Dados.Criacao;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -45,20 +46,20 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava15
 
             */
 
-            IQueryable<InfraBanco.Modelos.Tpedido>? existentesQuery = null;
+            IQueryable<string>? existentesQuery = null;
             if (campo_pedido_bs_x_marketplace && !string.IsNullOrWhiteSpace(Pedido.Marketplace.Pedido_bs_x_marketplace))
             {
                 existentesQuery = from p in ContextoBdGravacao.Tpedidos
                                   where p.Pedido_Bs_X_Marketplace == Pedido.Marketplace.Pedido_bs_x_marketplace
                                   && p.St_Entrega != Constantes.ST_ENTREGA_CANCELADO
-                                  select p;
+                                  select p.Pedido;
             }
             if (!campo_pedido_bs_x_marketplace && !string.IsNullOrWhiteSpace(Pedido.Marketplace.Pedido_bs_x_ac))
             {
                 existentesQuery = from p in ContextoBdGravacao.Tpedidos
                                   where p.Pedido_Bs_X_Ac == Pedido.Marketplace.Pedido_bs_x_ac
                                   && p.St_Entrega != Constantes.ST_ENTREGA_CANCELADO
-                                  select p;
+                                  select p.Pedido;
             }
             if (existentesQuery == null)
                 return;
@@ -67,7 +68,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava15
             if (!existentesLista.Any())
                 return;
 
-            var pedidoLista = (from p in existentesLista select p.Pedido).ToList();
+            var pedidoLista = (from p in existentesLista select p).ToList();
 
 
             /*
@@ -88,11 +89,13 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava15
             #							")" & _
             #						")" & _
             */
-            var statusPermitidos = new List<byte>();
-            statusPermitidos.Add(byte.Parse(Constantes.COD_ST_PEDIDO_DEVOLUCAO__FINALIZADA));
-            statusPermitidos.Add(byte.Parse(Constantes.COD_ST_PEDIDO_DEVOLUCAO__MERCADORIA_RECEBIDA));
-            statusPermitidos.Add(byte.Parse(Constantes.COD_ST_PEDIDO_DEVOLUCAO__EM_ANDAMENTO));
-            statusPermitidos.Add(byte.Parse(Constantes.COD_ST_PEDIDO_DEVOLUCAO__CADASTRADA));
+            var statusPermitidos = new List<byte>
+            {
+                byte.Parse(Constantes.COD_ST_PEDIDO_DEVOLUCAO__FINALIZADA),
+                byte.Parse(Constantes.COD_ST_PEDIDO_DEVOLUCAO__MERCADORIA_RECEBIDA),
+                byte.Parse(Constantes.COD_ST_PEDIDO_DEVOLUCAO__EM_ANDAMENTO),
+                byte.Parse(Constantes.COD_ST_PEDIDO_DEVOLUCAO__CADASTRADA)
+            };
             var t_pedido_devolucao_task = (from tpd in ContextoBdGravacao.TpedidoDevolucaos
                                            where pedidoLista.Contains(tpd.Pedido)
                                            && statusPermitidos.Contains(tpd.Status)
@@ -116,9 +119,24 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava15
             var t_pedido_devolucao = await t_pedido_devolucao_task;
             var t_pedido_item_devolvido = await t_pedido_item_devolvido_task;
             //agora verificamos se sobra algum
-            var sobrando = (from p in existentesLista where !t_pedido_devolucao.Contains(p.Pedido) && !t_pedido_item_devolvido.Contains(p.Pedido) select p).FirstOrDefault();
-            if (sobrando == null)
+            var sobrandoPedido = (from p in existentesLista
+                                  where !t_pedido_devolucao.Contains(p) && !t_pedido_item_devolvido.Contains(p)
+                                  select p)
+                            .FirstOrDefault();
+            if (sobrandoPedido == null)
                 return;
+            var sobrando = (from p in ContextoBdGravacao.Tpedidos
+                            where p.Pedido == sobrandoPedido
+                            select new
+                            {
+                                p.Pedido,
+                                p.Pedido_Bs_X_Ac,
+                                p.Pedido_Bs_X_Marketplace,
+                                p.Vendedor,
+                                p.Data_Hora,
+                                p.Endereco_cnpj_cpf,
+                                p.Endereco_nome
+                            }).First();
 
             /*
         #			if Not rs.Eof then
@@ -144,7 +162,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava15
             var msg = "";
             msg += "O nº pedido Magento " + nomeCampo + " já está cadastrado no pedido " + sobrando.Pedido;
             msg += UtilsGlobais.Util.EnterParaMensagemErro();
-            msg += "Data de cadastramento do pedido: " + sobrando.Data_Hora?.ToShortDateString() + " " + sobrando.Data_Hora?.ToShortTimeString();
+            msg += "Data de cadastramento do pedido: " + (sobrando.Data_Hora?.ToShortDateString() ?? "Sem data") + " " + (sobrando.Data_Hora?.ToShortTimeString());
             msg += UtilsGlobais.Util.EnterParaMensagemErro();
             msg += "Cadastrado por: " + (sobrando.Vendedor ?? "");
             if ((sobrando.Vendedor ?? "").ToUpper().Trim() != (sobrando_nome_vendedor ?? "").ToUpper().Trim())

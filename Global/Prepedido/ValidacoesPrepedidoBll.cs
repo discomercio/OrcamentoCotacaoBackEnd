@@ -170,6 +170,30 @@ namespace Prepedido
                 if (p.Preco_Venda <= 0)
                     lstErros.Add($"Produto {p.Fabricante} {p.Produto} com Preco_Venda menor ou igual a zero!");
             }
+
+            //# loja/PedidoNovoConsiste.asp
+            //# alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & ": linha " & renumera_com_base1(Lbound(v_item),i) & " repete o mesmo produto da linha " & renumera_com_base1(Lbound(v_item),j) & "."
+            var agrupados = (from p in lstProdutos group p by new { p.Fabricante, p.Produto } into g select g).ToList();
+            var repetidos = (from p in agrupados where p.Count() > 1 select p.Key).ToList();
+            //para saber a linha precisamos de um loop
+            for (int ilinha = 0; ilinha < lstProdutos.Count(); ilinha++)
+            {
+                var esteproduto = lstProdutos[ilinha];
+                if (!(from repetido in repetidos where repetido.Produto == esteproduto.Produto && repetido.Fabricante == esteproduto.Fabricante select repetido).Any())
+                    continue;
+
+                //está repetido sim
+                for (int ilinha2 = ilinha + 1; ilinha2 < lstProdutos.Count(); ilinha2++)
+                {
+                    var esterepetido = lstProdutos[ilinha2];
+                    if (esteproduto.Fabricante == esterepetido.Fabricante && esteproduto.Produto == esterepetido.Produto)
+                    {
+                        var msg = "Produto " + esteproduto.Produto + " do fabricante " + esteproduto.Fabricante
+                            + ": linha " + (ilinha + 1).ToString() + " repete o mesmo produto da linha " + (ilinha2 + 1).ToString() + ".";
+                        lstErros.Add(msg);
+                    }
+                }
+            }
         }
 
         public async Task<IEnumerable<CoeficienteDados>> BuscarListaCoeficientesFornecedores(List<string> lstFornecedores, int qtdeParcelas, string siglaFP)
@@ -848,7 +872,7 @@ namespace Prepedido
             {
                 if (string.IsNullOrEmpty(endEtg.EndEtg_tel_res))
                     lstErros.Add("Endereço de entrega: preencha o telfone residencial.");
-                else if (Util.Telefone_SoDigito(endEtg.EndEtg_tel_res).Length < 6 || 
+                else if (Util.Telefone_SoDigito(endEtg.EndEtg_tel_res).Length < 6 ||
                     Util.Telefone_SoDigito(endEtg.EndEtg_tel_res).Length > 11)
                     lstErros.Add("Endereço de entrega: telefone residencial inválido.");
 

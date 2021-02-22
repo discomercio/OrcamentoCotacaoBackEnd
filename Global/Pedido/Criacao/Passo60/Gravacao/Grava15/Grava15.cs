@@ -15,11 +15,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava15
         public async Task ExecutarAsync()
         {
             await PedidoMagentoRepetido();
-
-            //todo: Passo15: Verificar pedidos repetidos
-
-            //Passo15: Verificar pedidos repetidos
-
+            await PedidoRepetido.PedidoJaCadastrado(ContextoBdGravacao, Pedido, Retorno.ListaErros);
         }
     }
 }

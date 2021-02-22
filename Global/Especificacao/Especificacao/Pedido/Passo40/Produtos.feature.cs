@@ -480,14 +480,12 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="Produto repetidos")]
         [Xunit.TraitAttribute("FeatureTitle", "Produtos")]
         [Xunit.TraitAttribute("Description", "Produto repetidos")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void ProdutoRepetidos()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Produto repetidos", null, tagsOfScenario, argumentsOfScenario);
-#line 167
+#line 166
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -507,34 +505,34 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 170
+#line 169
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 171
+#line 170
  testRunner.When("Lista de itens \"0\" informo \"Fabricante\" = \"001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 172
+#line 171
  testRunner.When("Lista de itens \"0\" informo \"Produto\" = \"001000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 173
+#line 172
  testRunner.When("Lista de itens \"0\" informo \"Qtde\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 174
+#line 173
  testRunner.When("Lista de itens \"1\" informo \"Fabricante\" = \"001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 175
+#line 174
  testRunner.When("Lista de itens \"1\" informo \"Produto\" = \"001000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 176
+#line 175
  testRunner.When("Lista de itens \"1\" informo \"Qtde\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 177
+#line 176
  testRunner.And("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 178
+#line 177
  testRunner.And("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 179
+#line 178
  testRunner.Then("Erro \"regex .*repete o mesmo produto da linha.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -549,7 +547,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sem produtos", null, tagsOfScenario, argumentsOfScenario);
-#line 181
+#line 180
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -569,13 +567,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 182
+#line 181
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 183
+#line 182
  testRunner.When("Lista de itens com \"0\" itens", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 184
+#line 183
  testRunner.Then("Erro \"Não há itens na lista de produtos!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -590,7 +588,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Consistência para valor zerado", null, tagsOfScenario, argumentsOfScenario);
-#line 186
+#line 185
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -610,19 +608,19 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 221
+#line 220
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 222
+#line 221
  testRunner.When("Lista de itens \"0\" informo \"preco_venda\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 223
+#line 222
  testRunner.And("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 224
+#line 223
  testRunner.And("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 225
+#line 224
  testRunner.Then("Erro \"regex .* com preco_venda menor ou igual a zero!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -637,7 +635,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Consistência para valor zerado 2", null, tagsOfScenario, argumentsOfScenario);
-#line 227
+#line 226
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -657,19 +655,19 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 228
+#line 227
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 229
+#line 228
  testRunner.When("Lista de itens \"0\" informo \"preco_venda\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 230
+#line 229
  testRunner.And("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 231
+#line 230
  testRunner.And("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 232
+#line 231
  testRunner.Then("Erro \"regex .* com preco_venda menor ou igual a zero!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -684,7 +682,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Consistência para valor negativos", null, tagsOfScenario, argumentsOfScenario);
-#line 237
+#line 236
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -704,49 +702,49 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 242
+#line 241
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 243
+#line 242
  testRunner.When("Lista de itens \"0\" informo \"preco_NF\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 244
+#line 243
  testRunner.And("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 244
+ testRunner.And("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 245
- testRunner.And("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("Erro \"regex .* com preco_NF menor ou igual a zero!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 246
- testRunner.Then("Erro \"regex .* com preco_NF menor ou igual a zero!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 247
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 248
  testRunner.When("Lista de itens \"1\" informo \"preco_NF\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 249
+#line 248
  testRunner.And("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 249
+ testRunner.And("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 250
- testRunner.And("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 251
  testRunner.Then("Erro \"regex .* com preco_NF menor ou igual a zero!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 252
+#line 251
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 253
+#line 252
  testRunner.When("Lista de itens \"1\" informo \"preco_NF\" = \"-1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 254
+#line 253
  testRunner.And("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 255
+#line 254
  testRunner.And("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 256
+#line 255
  testRunner.Then("Erro \"regex .* com preco_NF menor ou igual a zero!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

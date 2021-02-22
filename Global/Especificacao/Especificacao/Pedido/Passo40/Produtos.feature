@@ -163,10 +163,9 @@ Scenario: Máximo de itens por pedido
 	#
 	Then Erro "regex .*12 itens*"
 
-@ignore
 Scenario: Produto repetidos
 	#loja/PedidoNovoConsiste.asp
-	#						alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & ": linha " & renumera_com_base1(Lbound(v_item),i) & " repete o mesmo produto da linha " & renumera_com_base1(Lbound(v_item),j) & "."
+	#alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & ": linha " & renumera_com_base1(Lbound(v_item),i) & " repete o mesmo produto da linha " & renumera_com_base1(Lbound(v_item),j) & "."
 	Given Pedido base
 	When Lista de itens "0" informo "Fabricante" = "001"
 	When Lista de itens "0" informo "Produto" = "001000"

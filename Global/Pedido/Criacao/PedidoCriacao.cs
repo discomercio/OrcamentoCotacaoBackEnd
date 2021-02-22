@@ -172,7 +172,10 @@ Fluxo no módulo loja:
                 });
             };
 
-            await new Pedido.PedidoRepetidoBll(ContextoProvider).PedidoJaCadastrado(pedido, pedidoRetorno.ListaErros, tcliente.Id);
+            using (var contextoBdGravacao = ContextoProvider.GetContextoGravacaoParaUsing())
+            {
+                await Pedido.Criacao.Passo60.Gravacao.Grava15.PedidoRepetido.PedidoJaCadastrado(contextoBdGravacao, pedido, pedidoRetorno.ListaErros);
+            }
 
             //se tiver erro vamos retornar
             if (pedidoRetorno.ListaErros.Count > 0)
