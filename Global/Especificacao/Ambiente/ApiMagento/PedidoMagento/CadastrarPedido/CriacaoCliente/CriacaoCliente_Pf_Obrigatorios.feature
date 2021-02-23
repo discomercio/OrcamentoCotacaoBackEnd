@@ -273,6 +273,7 @@ Scenario: Endereço de entrega - tamanho número 2
 	When Informo "EndEtg_endereco_numero" = "12345678901234567890123456789012345678901234567890123456789"
 	Then Sem erro "NÚMERO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES"
 
+@ignore
 Scenario: Endereço de entrega - tamanho complemento
 	Given Pedido base
 	When Informo "EndEtg_endereco_complemento" = "1234567890123456789012345678901234567890123456789012345678901"

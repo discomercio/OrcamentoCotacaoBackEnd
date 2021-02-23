@@ -431,14 +431,12 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="c_nf_texto tamanho")]
         [Xunit.TraitAttribute("FeatureTitle", "Magento CriacaoCliente_Pf_Opcionais")]
         [Xunit.TraitAttribute("Description", "c_nf_texto tamanho")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void C_Nf_TextoTamanho()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("c_nf_texto tamanho", null, tagsOfScenario, argumentsOfScenario);
-#line 102
+#line 101
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -461,23 +459,14 @@ this.ScenarioInitialize(scenarioInfo);
 #line 34
 this.FeatureBackground();
 #line hidden
-#line 108
+#line 107
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 108
+ testRunner.When("Informo \"EnderecoEntrega.PontoReferencia\" com \"801\" caracteres", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 109
- testRunner.When("Informo \"nf_texto\" = \"texto com 801 caracteres\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 110
- testRunner.Then("Erro \"Conteúdo de \"Constar na NF\" excede em.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 111
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 112
- testRunner.When("Informo \"nf_texto\" = \"texto com 800 caracteres\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 113
- testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Erro \"regex .*Conteúdo de \\\"Constar na NF\\\" excede em.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
