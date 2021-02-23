@@ -50,7 +50,7 @@ namespace Pedido.Criacao.Passo60.Validacao
                 if (valorBd.Count() > 0)
                 {
                     CultureInfo FormatarEmPortugues = new CultureInfo("pt-BR");
-                    decimal.Parse(valorBd[0], FormatarEmPortugues);
+                    Criacao.Execucao.Vl_aprov_auto_analise_credito = decimal.Parse(valorBd[0], FormatarEmPortugues);
                 }
             }
             /*

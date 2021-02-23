@@ -24,11 +24,50 @@ namespace Pedido.Criacao.Passo50
             Validar_bem_uso_consumo();
             Validar_instalador_instala();
             Validar_garantia_indicador();
-
-            //todo: passo50 campos adicionais
-            //c_indicador c_perc_RT rb_RA garantia_indicador somente se for indicacao
+            Validar_c_indicador_etc();
         }
 
+        private void Validar_c_indicador_etc()
+        {
+            //todo: passo50 c_indicador c_perc_RT rb_RA garantia_indicador somente se for indicacao
+/*
+ Scenario: c_indicador c_perc_RT rb_RA garantia_indicador somente se for indicacao
+#loja/PedidoNovoConfirma.asp
+#if rb_indicacao = "S" then
+#	c_indicador = Trim(Request.Form("c_indicador"))
+#	c_perc_RT = Trim(Request.Form("c_perc_RT"))
+#	rb_RA = Trim(Request.Form("rb_RA"))
+#	rb_garantia_indicador = Trim(Request.Form("rb_garantia_indicador"))
+#else
+#	c_indicador = ""
+#	c_perc_RT = ""
+#	rb_RA = ""
+#	rb_garantia_indicador = COD_GARANTIA_INDICADOR_STATUS__NAO
+#	end if
+
+	Given Pedido base
+	When Informo "indicador" = "ZEZINHO"
+	And Informo "indicacao" = "N"
+	Then Tabela "t_PEDIDO" registro pai criado, verificar campo "indicador" = ""
+
+	Given Pedido base
+	When Informo "perc_RT" = "123"
+	And Informo "indicacao" = "N"
+	Then Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_RT" = ""
+
+	Given Pedido base
+	When Informo "RA" = "True"
+	And Informo "indicacao" = "N"
+	Then Tabela "t_PEDIDO" registro pai criado, verificar campo "RA" = "false"
+
+	Given Pedido base
+	When Informo "garantia_indicador" = "COD_GARANTIA_INDICADOR_STATUS__SIM"
+	And Informo "indicacao" = "N"
+	Then Tabela "t_PEDIDO" registro pai criado, verificar campo "RA" = "false"
+	Then Tabela "t_PEDIDO" registro pai criado, verificar campo "RA" = "COD_GARANTIA_INDICADOR_STATUS__NAO"
+
+*/
+        }
         private void Validar_garantia_indicador()
         {
             //# alert('Preencha o campo "Garantia Indicador"');
