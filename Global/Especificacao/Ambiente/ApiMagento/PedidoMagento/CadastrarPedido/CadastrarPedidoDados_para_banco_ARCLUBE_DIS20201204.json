@@ -2,9 +2,9 @@
   "TokenAcesso": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJzdXBvcnRlIDEiLCJ1bmlxdWVfbmFtZSI6IkdVSUxIRVJNRSBHT01FUyBQSUVEQURFIC0gUyIsInJvbGUiOiJBcGlNYWdlbnRvIiwibmJmIjoxNjAxMDYzMzE3LCJleHAiOjE3NTg3NDMzMTcsImlhdCI6MTYwMTA2MzMxN30.wU56GsuPwyISJc8BnG08waX1j20KTZ1yghhvYzyf21Q",
   "Cnpj_Cpf": "14039603052",
   "InfCriacaoPedido": {
-    "Pedido_bs_x_ac": "123456789",
-    "Marketplace_codigo_origem": "",
-    "Pedido_bs_x_marketplace": ""
+    "Pedido_bs_x_ac": "100456789",
+    "Marketplace_codigo_origem": "004",
+    "Pedido_bs_x_marketplace": "100456789"
   },
   "EnderecoCadastralCliente": {
     "Endereco_logradouro": "Rua Francisco Pecoraro",
@@ -70,10 +70,9 @@
       "Preco_NF": 494.41
     }
   ],
-  "VlTotalDestePedido": 494.41,
   "FormaPagtoCriacao": {
-    "Tipo_Parcelamento": 1,
-    "C_pu_valor": 0,
+    "Tipo_Parcelamento": 5,
+    "C_pu_valor": 494.41,
     "C_pc_qtde": 0,
     "C_pc_valor": 0
   },

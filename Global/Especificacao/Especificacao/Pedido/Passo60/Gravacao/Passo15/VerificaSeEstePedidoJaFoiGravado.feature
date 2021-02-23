@@ -1,4 +1,4 @@
-﻿@ignore
+﻿@Especificacao.Pedido.FluxoCriacaoPedido
 Feature: VerificaSeEstePedidoJaFoiGravado
 
 Scenario: VerificaSeEstePedidoJaFoiGravado
@@ -51,5 +51,9 @@ Scenario: VerificaSeEstePedidoJaFoiGravado
 #				end if
 #			next
 #		end if
-		When Fazer esta validação
+
+#o códgio só está aqui por documentação
+#é implementado em LimitePedidosRepetidosMagento.feature, LimitePedidosRepetidosLoja, LimitePedidosRepetidosApiUnis, LimitePedidosRepetidosApiAngular
+	When Pedido base
+	Then Sem nenhum erro
 

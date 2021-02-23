@@ -32,7 +32,7 @@ namespace InfraBanco.Modelos
         [Column("excluido_status")]
         public short Excluido_status { get; set; }
 
-        [Column("timestamp")]
-        public byte? Timestamp { get; }
+        //[Column("timestamp")]
+        //public byte? Timestamp { get; }
     }
 }

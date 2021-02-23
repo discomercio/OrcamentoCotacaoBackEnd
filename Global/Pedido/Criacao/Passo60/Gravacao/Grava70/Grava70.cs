@@ -180,10 +180,10 @@ end function
 
 		private async Task RegistrarSenhasDesconto()
         {
-            // SENHAS DE AUTORIZAÇÃO PARA DESCONTO SUPERIOR
-            //	Caso tenha usado algum desconto superior ao limite, liberado pela t_DESCONTO, marca como usado(Passo70/ Senhas_de_autorizacao_para_desconto_superior.feature)
+			// SENHAS DE AUTORIZAÇÃO PARA DESCONTO SUPERIOR
+			//	Caso tenha usado algum desconto superior ao limite, liberado pela t_DESCONTO, marca como usado(Passo70/ Senhas_de_autorizacao_para_desconto_superior.feature)
 
-            /*
+			/*
 							if indice_pedido = 1 then
 						'		SENHAS DE AUTORIZAÇÃO PARA DESCONTO SUPERIOR
 								for k = Lbound(v_desconto) to Ubound(v_desconto)
@@ -219,7 +219,7 @@ end function
 								end if
 								*/
 
-            //todo: grava70
-        }
-    }
+			//todo: grava70 RegistrarSenhasDesconto
+		}
+	}
 }

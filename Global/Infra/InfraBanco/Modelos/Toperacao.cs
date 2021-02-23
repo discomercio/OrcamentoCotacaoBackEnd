@@ -31,8 +31,8 @@ namespace InfraBanco.Modelos
         [Column("descricao")]
         public string Descricao { get; set; }
 
-        [Column("timestamp")]
-        public byte? Timestamp { get; }
+        //[Column("timestamp")]
+        //public byte? Timestamp { get; }
 
         [Required]
         [Column("st_inativo")]
