@@ -44,8 +44,8 @@ Scenario: Ponto de Referência - diferente de EndEtg_endereco_complemento
 	When Informo "EnderecoEntrega.PontoReferencia" = "teste de ponto de referencia"
 	When Informo "EndEtg_endereco_complemento" = "outro texto"
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro criado, verificar campo "NFe_texto_constar" = "teste de ponto de referencia"
-	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_endereco_complemento" = "outro texto"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "NFe_texto_constar" = "Ponto de referência: teste de ponto de referencia"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_complemento" = "outro texto"
 
 Scenario:  Ponto de Referência - igual de EndEtg_endereco_complemento
 	#Comparar o conteúdo do ponto de referência
@@ -56,6 +56,7 @@ Scenario:  Ponto de Referência - igual de EndEtg_endereco_complemento
 	When Informo "EndEtg_endereco_complemento" = "teste de ponto de referencia"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "NFe_texto_constar" = ""
+	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_complemento" = "teste de ponto de referencia"
 
 Scenario:  Ponto de Referência - EndEtg_endereco_complemento com mais de 60 caracteres
 	#Se o campo complemento exceder o tamanho do BD e precisar ser truncado,

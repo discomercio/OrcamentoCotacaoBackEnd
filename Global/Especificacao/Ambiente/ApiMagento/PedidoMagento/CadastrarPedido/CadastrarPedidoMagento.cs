@@ -161,9 +161,15 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
                 case "limitePedidos.pedidoIgual":
                     configuracaoApiMagento.LimitePedidos.LimitePedidosExatamenteIguais_Numero = int.Parse(valor);
                     return;
+                case "limitePedidos.pedidoIgual_tempo_em_segundos":
+                    configuracaoApiMagento.LimitePedidos.LimitePedidosExatamenteIguais_TempoSegundos = int.Parse(valor);
+                    return;
                 case "limitePedidos.porCpf":
                     configuracaoApiMagento.LimitePedidos.LimitePedidosMesmoCpfCnpj_Numero = int.Parse(valor);
                     return;
+                case "limitePedidos.pedidosMesmoCpfCnpj_TempoSegundos":
+                    configuracaoApiMagento.LimitePedidos.LimitePedidosMesmoCpfCnpj_TempoSegundos = int.Parse(valor);
+                    return;                    
                 case "appsettings.Indicador":
                     configuracaoApiMagento.DadosIndicador.Indicador = valor;
                     return;

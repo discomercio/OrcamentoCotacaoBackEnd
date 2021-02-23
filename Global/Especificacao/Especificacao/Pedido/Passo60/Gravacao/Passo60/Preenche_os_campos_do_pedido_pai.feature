@@ -1,4 +1,5 @@
 ﻿@Especificacao.Pedido.Passo60
+@GerenciamentoBanco
 Feature: Preenche_os_campos_do_pedido_pai
 
 #Campos que existem em todos os pedidos: pedido, loja, data, hora
@@ -12,6 +13,7 @@ Feature: Preenche_os_campos_do_pedido_pai
 Background: Setup
 	#ignoramos no prepedio inteiro
 	Given Ignorar cenário no ambiente "Especificacao.Prepedido.PrepedidoSteps"
+	Given Reiniciar banco ao terminar cenário
 
 #a maioria no pai e filhotes, alguns só no pai, alguns só nos filhotes
 #loja/PedidoNovoConfirma.asp

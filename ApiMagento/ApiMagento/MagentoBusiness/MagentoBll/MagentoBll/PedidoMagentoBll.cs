@@ -63,7 +63,8 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
                 nfe_Texto_Constar = "Complemento do endereço: " + pedidoMagento.EnderecoEntrega?.EndEtg_endereco_complemento;
 
             if (pedidoMagento.EnderecoEntrega?.PontoReferencia?.ToUpper() !=
-                pedidoMagento.EnderecoEntrega?.EndEtg_endereco_complemento?.ToUpper())
+                pedidoMagento.EnderecoEntrega?.EndEtg_endereco_complemento?.ToUpper() &&
+                !string.IsNullOrEmpty(pedidoMagento.EnderecoEntrega?.PontoReferencia))
             {
                 if (!string.IsNullOrEmpty(nfe_Texto_Constar))
                     nfe_Texto_Constar += "\n";
