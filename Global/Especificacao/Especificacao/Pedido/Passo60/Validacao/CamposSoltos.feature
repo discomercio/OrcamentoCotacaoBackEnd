@@ -15,6 +15,7 @@ Scenario: campos soltos 1 - loja que indicou
 	#				end if
 	#			end if
 	#		end if
+	#tratado no código em \arclube\Global\Pedido\Criacao\Passo60\Validacao\ConfigurarVariaveis.cs ConfigurarVariaveisExecutar
 	Given Pedido base
 	When Informo "DadosCliente.Vendedor" = "S"
 	When Informo "Loja_Indicou" = "203"
@@ -50,6 +51,7 @@ Scenario: campos soltos 2 - nome do indicador
 	#		elseif rb_indicacao = "S" then
 	#			if c_indicador = "" then
 	#				alerta = "Informe quem é o indicador."
+	#tratado no código em \arclube\Global\Pedido\Criacao\Passo40\Passo40.cs
 	Given Pedido base
 	When Informo "ComIndicador" = "1"
 	When Informo "NomeIndicador" = ""

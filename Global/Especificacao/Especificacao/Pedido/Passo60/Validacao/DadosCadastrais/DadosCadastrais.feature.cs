@@ -91,7 +91,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao.DadosCadastrais
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar", null, tagsOfScenario, argumentsOfScenario);
-#line 134
+#line 138
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);

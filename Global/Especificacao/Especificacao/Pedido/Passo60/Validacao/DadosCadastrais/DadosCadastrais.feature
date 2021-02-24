@@ -8,9 +8,13 @@ Feature: DadosCadastrais
 #				rs("endereco_uf") = EndCob_uf
 #				rs("endereco_cep") = EndCob_cep
 
+#tratado no código em \arclube\Global\Pedido\Criacao\Passo10\Passo10.cs ValidarCliente
+
 #No magento, a validação do endereço é diferente: somente validamos a cidade no IBGE e a UF. 
 #Exigimos CEP mas não precisa existir na nossa base.
 #mas temos que validar os limites de tamanho!
+#validado em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\ValidacaoEndereco\ValidacaoEnderecoFeature.feature
+#mas estas regras continuam valendo para o magento (que os campos existam)
 
 #'	CONSISTÊNCIAS
 #	if alerta = "" then

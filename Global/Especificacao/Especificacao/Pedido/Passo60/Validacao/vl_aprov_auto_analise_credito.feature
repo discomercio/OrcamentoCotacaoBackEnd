@@ -2,7 +2,7 @@
 Feature: vl_aprov_auto_analise_credito
 #loja/PedidoNovoCOnfirma.asp
 
-#implementado no código em \arclube\Global\Pedido\Criacao\Passo60\Validacao\ConfigurarVariaveis.cs:ConfigurarVariaveisExecutar() Criacao.Execucao.Vl_aprov_auto_analise_credito
+#tratado no código em \arclube\Global\Pedido\Criacao\Passo60\Validacao\ConfigurarVariaveis.cs:ConfigurarVariaveisExecutar() Criacao.Execucao.Vl_aprov_auto_analise_credito
 #'	OBTÉM O VALOR LIMITE P/ APROVAÇÃO AUTOMÁTICA DA ANÁLISE DE CRÉDITO
 #	if alerta = "" then
 #		s = "SELECT nsu FROM t_CONTROLE WHERE (id_nsu = '" & ID_PARAM_CAD_VL_APROV_AUTO_ANALISE_CREDITO & "')"

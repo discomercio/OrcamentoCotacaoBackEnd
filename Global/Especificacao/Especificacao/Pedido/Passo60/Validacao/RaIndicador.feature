@@ -1,7 +1,7 @@
 ﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
 Feature: RaIndicador
 
-Scenario: sem indicador não pode ter RA
+Scenario: sem indicador não pode ter RA - sem erro
 	#loja/PedidoNovoConfirma.asp
 	#Se não tiver indicador e tentar criar um pedido com RA, tem que dar erro
 	#	dim permite_RA_status
@@ -19,3 +19,22 @@ Scenario: sem indicador não pode ter RA
 	When Informo "NomeIndicador" = "POLITÉCNIC"
 	When Informo "OpcaoPossuiRA" = "S"
 	Then Sem nenhum erro
+
+Scenario: sem indicador não pode ter RA - erro
+	Given Pedido base
+	When Informo "NomeIndicador" = ""
+	When Informo "OpcaoPossuiRA" = "S"
+	Then Erro "pegar o erro"
+
+Scenario: sem indicador não pode ter RA - indicador nao existe
+	Given Pedido base
+	When Informo "NomeIndicador" = "XPXPXPX"
+	When Informo "OpcaoPossuiRA" = "S"
+	Then Erro "pegar o erro"
+
+Scenario: sem indicador não pode ter RA - indicador nao existe 2
+	Given Pedido base
+	When Informo "NomeIndicador" = "XPXPXPX"
+	When Informo "OpcaoPossuiRA" = "N"
+	Then Erro "pegar o erro"
+

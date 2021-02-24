@@ -19,6 +19,7 @@ namespace Pedido.Criacao.Passo10
 
         public async Task ValidarCliente()
         {
+            //estas validações estão especificadas em Especificacao\Pedido\Passo60\Validacao\DadosCadastrais\DadosCadastrais.feature
             var idCLiente = await Cliente.ClienteBll.BuscarIdCliente(Pedido.Cliente.Cnpj_Cpf, Criacao.ContextoProvider.GetContextoLeitura());
             if (idCLiente == null)
             {

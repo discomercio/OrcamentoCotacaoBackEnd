@@ -216,6 +216,10 @@ namespace Especificacao.Especificacao.Pedido
             
         }
 
+        [When(@"Fazer esta validação")]
+        public void WhenFazerEstaValidacao()
+        {
+        }
 
         [Given(@"No ambiente ""(.*)"" erro ""(.*)"" é ""(.*)""")]
         [Given(@"No ambiente ""(.*)"" mapear erro ""(.*)"" para ""(.*)""")]

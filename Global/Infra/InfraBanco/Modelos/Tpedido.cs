@@ -679,9 +679,11 @@ namespace InfraBanco.Modelos
         [MaxLength(10)]
         public string Split_Usuario { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         [Column("data_hora")]
         public DateTime? Data_Hora { get; private set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         [Column("st_forma_pagto_possui_parcela_cartao_maquineta")]
         public byte? St_forma_pagto_possui_parcela_cartao_maquineta { get; private set; }
 

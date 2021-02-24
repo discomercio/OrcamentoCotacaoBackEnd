@@ -2,6 +2,7 @@
 Feature: blnPedidoECommerceCreditoOkAutomatico
 
 #tratado no código em \arclube\Global\Pedido\Criacao\Passo30\CamposMagentoExigidos.cs:ConfigurarBlnPedidoECommerceCreditoOkAutomatico()
+#
 #'TRATAMENTO PARA CADASTRAMENTO DE PEDIDOS DO SITE MAGENTO DO ARCLUBE
 #	verifica se deve colocar crédito OK automaticamente
 #loja/PedidoNOvoConfirma.asp

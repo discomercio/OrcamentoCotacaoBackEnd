@@ -132,3 +132,11 @@ Scenario: c_indicador c_perc_RT rb_RA garantia_indicador somente se for indicaca
 	Then Tabela "t_PEDIDO" registro pai criado, verificar campo "RA" = "false"
 	Then Tabela "t_PEDIDO" registro pai criado, verificar campo "RA" = "COD_GARANTIA_INDICADOR_STATUS__NAO"
 
+Scenario: campo NFe_xPed
+	#function filtra_nome_identificador() {
+	#var letra;
+	#letra=String.fromCharCode(window.event.keyCode);
+	#if ((letra=="|")||(window.event.keyCode==34)||(window.event.keyCode==39)) window.event.keyCode=0;
+	#}
+	When Fazer esta validação
+
