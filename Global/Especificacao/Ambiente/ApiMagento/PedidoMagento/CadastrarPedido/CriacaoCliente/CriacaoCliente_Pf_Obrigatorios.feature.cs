@@ -1288,12 +1288,14 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="Endereço de entrega - tamanho complemento")]
         [Xunit.TraitAttribute("FeatureTitle", "Magento CriacaoCliente_Pf_Obrigatorios")]
         [Xunit.TraitAttribute("Description", "Endereço de entrega - tamanho complemento")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void EnderecoDeEntrega_TamanhoComplemento()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Endereço de entrega - tamanho complemento", null, tagsOfScenario, argumentsOfScenario);
-#line 276
+#line 277
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1316,14 +1318,14 @@ this.ScenarioInitialize(scenarioInfo);
 #line 31
 this.FeatureBackground();
 #line hidden
-#line 277
+#line 278
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 278
+#line 279
  testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"1234567890123456789012345678901234567890" +
                         "123456789012345678901\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 279
+#line 280
  testRunner.Then("Erro \"COMPLEMENTO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTE" +
                         "RES<br>TAMANHO MÁXIMO: 60 CARACTERES\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -1339,7 +1341,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Endereço de entrega - tamanho complemento 2", null, tagsOfScenario, argumentsOfScenario);
-#line 281
+#line 282
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1362,14 +1364,14 @@ this.ScenarioInitialize(scenarioInfo);
 #line 31
 this.FeatureBackground();
 #line hidden
-#line 282
+#line 283
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 284
+#line 285
  testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"1234567890123456789012345678901234567890" +
                         "1234567890123456789\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 285
+#line 286
  testRunner.Then("Sem erro \"COMPLEMENTO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CAR" +
                         "ACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -1385,7 +1387,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Endereço de entrega - tamanho bairro", null, tagsOfScenario, argumentsOfScenario);
-#line 287
+#line 288
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1408,14 +1410,14 @@ this.ScenarioInitialize(scenarioInfo);
 #line 31
 this.FeatureBackground();
 #line hidden
-#line 288
+#line 289
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 289
+#line 290
  testRunner.When("Informo \"EndEtg_bairro\" = \"123456789012345678901234567890123456789012345678901234" +
                         "5678901\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 290
+#line 291
  testRunner.Then("Erro \"BAIRRO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<b" +
                         "r>TAMANHO MÁXIMO: 60 CARACTERES\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -1431,7 +1433,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Endereço de entrega - tamanho bairro 2", null, tagsOfScenario, argumentsOfScenario);
-#line 292
+#line 293
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1454,14 +1456,14 @@ this.ScenarioInitialize(scenarioInfo);
 #line 31
 this.FeatureBackground();
 #line hidden
-#line 293
+#line 294
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 295
+#line 296
  testRunner.When("Informo \"EndEtg_bairro\" = \"123456789012345678901234567890123456789012345678901234" +
                         "56789\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 296
+#line 297
  testRunner.Then("Sem erro \"BAIRRO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTER" +
                         "ES<br>TAMANHO MÁXIMO: 60 CARACTERES\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -1477,7 +1479,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Endereço de entrega - tamanho cidade", null, tagsOfScenario, argumentsOfScenario);
-#line 298
+#line 299
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1500,14 +1502,14 @@ this.ScenarioInitialize(scenarioInfo);
 #line 31
 this.FeatureBackground();
 #line hidden
-#line 299
+#line 300
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 300
+#line 301
  testRunner.When("Informo \"EndEtg_cidade\" = \"123456789012345678901234567890123456789012345678901234" +
                         "5678901\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 301
+#line 302
  testRunner.Then("Erro \"CIDADE EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<b" +
                         "r>TAMANHO MÁXIMO: 60 CARACTERES\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -1523,7 +1525,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Endereço de entrega - tamanho cidade 2", null, tagsOfScenario, argumentsOfScenario);
-#line 303
+#line 304
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1546,14 +1548,14 @@ this.ScenarioInitialize(scenarioInfo);
 #line 31
 this.FeatureBackground();
 #line hidden
-#line 304
+#line 305
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 306
+#line 307
  testRunner.When("Informo \"EndEtg_cidade\" = \"123456789012345678901234567890123456789012345678901234" +
                         "56789\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 307
+#line 308
  testRunner.Then("Sem erro \"CIDADE EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTER" +
                         "ES<br>TAMANHO MÁXIMO: 60 CARACTERES\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

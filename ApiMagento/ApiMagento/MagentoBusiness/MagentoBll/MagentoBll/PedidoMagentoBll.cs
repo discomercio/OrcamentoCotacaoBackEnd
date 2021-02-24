@@ -57,6 +57,20 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             if (resultado.ListaErros.Count > 0)
                 return resultado;
 
+            //truncar EndEtg_endereco_complemento
+            string? nfe_Texto_Constar = null;
+            if (pedidoMagento.EnderecoEntrega?.EndEtg_endereco_complemento?.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO_COMPLEMENTO)
+                nfe_Texto_Constar = "Complemento do endereço: " + pedidoMagento.EnderecoEntrega?.EndEtg_endereco_complemento;
+
+            if (pedidoMagento.EnderecoEntrega?.PontoReferencia?.ToUpper() !=
+                pedidoMagento.EnderecoEntrega?.EndEtg_endereco_complemento?.ToUpper() &&
+                !string.IsNullOrEmpty(pedidoMagento.EnderecoEntrega?.PontoReferencia))
+            {
+                if (!string.IsNullOrEmpty(nfe_Texto_Constar))
+                    nfe_Texto_Constar += "\n";
+                nfe_Texto_Constar = nfe_Texto_Constar + "Ponto de referência: " + pedidoMagento.EnderecoEntrega?.PontoReferencia;
+            }
+
             //Cadastrar cliente
             //#    Endereço
             //#    Se o cliente for PF, sempre será usado somente o endereço de entrega como sendo o único endereço do cliente.
@@ -90,7 +104,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             //ex: se o cliente já cadastrado, utilizamos o que vem em PedidoMagentoDto.EnderecoCadastralClienteMagentoDto
             Pedido.Dados.Criacao.PedidoCriacaoDados? pedidoDados = await CriarPedidoCriacaoDados(pedidoMagento,
                 indicador_vendedor_loja, resultado.ListaErros, id_cliente: cliente.Id, dadosClienteMidia: cliente.Midia,
-                dadosClienteIndicador: cliente.Indicador);
+                dadosClienteIndicador: cliente.Indicador, nfe_Texto_Constar);
             if (resultado.ListaErros.Count != 0)
                 return resultado;
             if (pedidoDados == null)
@@ -178,7 +192,8 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
 
         private async Task<Pedido.Dados.Criacao.PedidoCriacaoDados?> CriarPedidoCriacaoDados(PedidoMagentoDto pedidoMagento,
             Indicador_vendedor_loja indicador_Vendedor_Loja, List<string> lstErros,
-            string id_cliente, string? dadosClienteMidia, string? dadosClienteIndicador)
+            string id_cliente, string? dadosClienteMidia, string? dadosClienteIndicador, 
+            string? nfe_Texto_Constar)
         {
             var sistemaResponsavelCadastro = Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO;
 
@@ -211,7 +226,8 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
                 lstErros,
                 configuracaoApiMagento,
                 dadosClienteMidia: dadosClienteMidia,
-                dadosClienteIndicador: dadosClienteIndicador);
+                dadosClienteIndicador: dadosClienteIndicador,
+                nfe_Texto_Constar);
 
             return pedidoDadosCriacao;
         }

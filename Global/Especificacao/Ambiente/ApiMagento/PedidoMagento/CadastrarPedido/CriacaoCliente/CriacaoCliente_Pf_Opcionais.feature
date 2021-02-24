@@ -98,7 +98,6 @@ Scenario: obs1 tamanho
 	When Informo "Obs_1" com "500" caracteres
 	Then Sem nenhum erro
 
-@ignore
 Scenario: c_nf_texto tamanho
 	#NA CRIAÇÃO DO PEDIDO NO MAGENTO ESSE CAMPO ESTA SENDO CRIADO COMO NULL
 	#loja/PedidoNovoConsiste.asp
@@ -106,8 +105,8 @@ Scenario: c_nf_texto tamanho
 	#if (s.length > MAX_TAM_NF_TEXTO) {
 	#    alert('Conteúdo de "Constar na NF" excede em ' + (s.length-MAX_TAM_NF_TEXTO) + ' caracteres o tamanho máximo de ' + MAX_TAM_NF_TEXTO + '!!');
 	Given Pedido base
-	When Informo "nf_texto" = "texto com 801 caracteres"
-	Then Erro "Conteúdo de "Constar na NF" excede em.*"
-	Given Pedido base
-	When Informo "nf_texto" = "texto com 800 caracteres"
-	Then Sem nenhum erro
+	When Informo "EnderecoEntrega.PontoReferencia" com "801" caracteres
+	Then Erro "regex .*Conteúdo de \"Constar na NF\" excede em.*"
+	#Given Pedido base
+	#When Informo "EnderecoEntrega.PontoReferencia" com "800" caracteres
+	#Then Sem nenhum erro

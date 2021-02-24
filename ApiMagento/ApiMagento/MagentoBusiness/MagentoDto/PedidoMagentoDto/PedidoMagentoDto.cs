@@ -71,7 +71,8 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             List<string> lstErros, UtilsMagento.ConfiguracaoApiMagento configuracaoApiMagento,
             string? dadosClienteMidia,
-            string? dadosClienteIndicador)
+            string? dadosClienteIndicador,
+            string? nfe_texto_constar)
         {
             if (!Constantes.TipoPessoa.TipoValido(dadosClienteMagento.Tipo))
             {
@@ -102,7 +103,6 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                 //Armazena o valor total de pedido com RA
                 vl_total_NF: lstProdutosMagento.Select(x => x.TotalItemRA() ?? 0).Sum()
                 );
-
 
             Pedido.Dados.Criacao.PedidoCriacaoDados pedidoCriacao = new Pedido.Dados.Criacao.PedidoCriacaoDados(
                 detalhesPedido: pedidoCriacaoDetalhesPedido,
@@ -135,7 +135,9 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                     ),
 
                 extra: new Pedido.Dados.Criacao.PedidoCriacaoExtraDados(
-                    pedido_bs_x_at: null, nfe_Texto_Constar: null, nfe_XPed: null),
+                    pedido_bs_x_at: null,
+                    nfe_Texto_Constar: nfe_texto_constar,
+                    nfe_XPed: null),
 
                 //Armazena os dados cadastrados do cliente
                 cliente: Pedido.Dados.Criacao.PedidoCriacaoClienteDados.PedidoCriacaoClienteDados_de_DadosClienteCadastroDados(

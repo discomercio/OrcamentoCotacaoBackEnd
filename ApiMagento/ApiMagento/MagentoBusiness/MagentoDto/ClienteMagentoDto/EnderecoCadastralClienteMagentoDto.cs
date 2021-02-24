@@ -243,6 +243,10 @@ Ao cadastrar o cliente:
             ret.Endereco_tipo_pessoa = origem.EndEtg_tipo_pessoa;
             ret.Endereco_cnpj_cpf = origem.EndEtg_cnpj_cpf;
             //este não temos: ret.Endereco_contato 
+            //vamos truncar origem.EndEtg_endereco_complemento
+            if (origem.EndEtg_endereco_complemento?.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO_COMPLEMENTO)
+                ret.Endereco_complemento = origem.EndEtg_endereco_complemento.Substring(0, Constantes.MAX_TAMANHO_CAMPO_ENDERECO_COMPLEMENTO);
+            
             ret.PontoReferencia = origem.PontoReferencia;
             return ret;
         }

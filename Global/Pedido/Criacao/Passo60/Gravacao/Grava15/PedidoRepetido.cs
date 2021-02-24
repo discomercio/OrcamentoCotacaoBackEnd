@@ -76,7 +76,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava15
             var pedidosFiltrados = (from pedidoBanco in pedidosFiltradosSemData
                                     where
                                         (pedidoBanco.Data.HasValue && pedidoBanco.Data.Value.Date == dataLimite.Date) &&
-                                        dataLimite.CompareTo(pedidoBanco.Data) <= 0 &&
+                                        //dataLimite.CompareTo(pedidoBanco.Data) <= 0 &&
                                         hora.CompareTo(pedidoBanco.Hora) <= 0
                                     select pedidoBanco).ToList();
             var pedidosFiltradsPedidos = (from p in pedidosFiltrados select p.Pedido).Distinct();

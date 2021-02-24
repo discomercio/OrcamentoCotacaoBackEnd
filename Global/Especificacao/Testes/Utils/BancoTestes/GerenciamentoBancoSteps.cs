@@ -118,17 +118,21 @@ namespace Especificacao.Testes.Utils.BancoTestes
             //deve ter um ou mais registros
             Assert.True(registros.Any());
 
+            if (valor_desejado.Contains("\\n")) valor_desejado = valor_desejado.Replace("\\n", "\n");
+
             foreach (var registro in registros)
             {
                 //tiramos um clone
                 string original = Newtonsoft.Json.JsonConvert.SerializeObject(registro);
                 Tpedido copia = Newtonsoft.Json.JsonConvert.DeserializeObject<Tpedido>(original);
+
                 if (!WhenInformoCampo.InformarCampo(campo, valor_desejado, copia))
                     throw new Exception($"Campo {campo} não encontrado em Tpedido");
                 string desejado = Newtonsoft.Json.JsonConvert.SerializeObject(copia);
                 if (desejado != original)
                     LogTestes.LogTestes.ErroNosTestes($"ThenTabelaRegistroComCampoVerificarCampo t_PEDIDO campo {campo} valor errado, {desejado}, {original}");
                 Assert.Equal(desejado, original);
+
             }
         }
 
