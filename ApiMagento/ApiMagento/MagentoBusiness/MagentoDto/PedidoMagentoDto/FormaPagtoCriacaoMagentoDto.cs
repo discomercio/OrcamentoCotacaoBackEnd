@@ -40,14 +40,15 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         //CustoFinancFornecQtdeParcelas = C_pc_qtde se Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELADO_CARTAO
 
         public static Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados FormaPagtoCriacaoDados_De_FormaPagtoCriacaoMagentoDto(
-            FormaPagtoCriacaoMagentoDto formaPagtoCriacaoMagento,
-            ConfiguracaoApiMagento configuracaoApiMagento, string? marketplace_codigo_origem)
+            FormaPagtoCriacaoMagentoDto formaPagtoCriacaoMagento, ConfiguracaoApiMagento configuracaoApiMagento,
+            InfCriacaoPedidoMagentoDto infCriacaoPedidostring)
         {
             Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados ret = new Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados();
             //Verificar com Edu se essa condição está correta
             if (formaPagtoCriacaoMagento.Tipo_Parcelamento.ToString() ==
                 InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_A_VISTA &&
-                string.IsNullOrEmpty(marketplace_codigo_origem))
+                !string.IsNullOrEmpty(infCriacaoPedidostring.Pedido_bs_x_ac) &&
+                infCriacaoPedidostring.Marketplace_codigo_origem == InfraBanco.Constantes.Constantes.COD_MARKETPLACE_ARCLUBE)
             {
                 ret.CustoFinancFornecQtdeParcelas = 0;
                 ret.Op_av_forma_pagto = configuracaoApiMagento.FormaPagto.Magento.Op_av_forma_pagto;//boleto
@@ -56,7 +57,8 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             }
             if (formaPagtoCriacaoMagento.Tipo_Parcelamento.ToString() ==
                 InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_PARCELA_UNICA &&
-                !string.IsNullOrEmpty(marketplace_codigo_origem))
+                !string.IsNullOrEmpty(infCriacaoPedidostring.Pedido_bs_x_marketplace) &&
+                infCriacaoPedidostring.Marketplace_codigo_origem != InfraBanco.Constantes.Constantes.COD_MARKETPLACE_ARCLUBE)
             {
                 ret.CustoFinancFornecQtdeParcelas = 1;
                 ret.C_pu_valor = formaPagtoCriacaoMagento.C_pu_valor;
@@ -67,7 +69,8 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             }
             if (formaPagtoCriacaoMagento.Tipo_Parcelamento.ToString() ==
                 InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO &&
-                string.IsNullOrEmpty(marketplace_codigo_origem))
+                !string.IsNullOrEmpty(infCriacaoPedidostring.Pedido_bs_x_ac) &&
+                infCriacaoPedidostring.Marketplace_codigo_origem == InfraBanco.Constantes.Constantes.COD_MARKETPLACE_ARCLUBE)
             {
                 ret.CustoFinancFornecQtdeParcelas = formaPagtoCriacaoMagento.C_pc_qtde ?? 1;
                 ret.C_pc_qtde = formaPagtoCriacaoMagento.C_pc_qtde;

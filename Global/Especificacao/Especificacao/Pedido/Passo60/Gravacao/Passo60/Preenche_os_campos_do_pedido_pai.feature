@@ -373,7 +373,7 @@ Scenario: Preenche_os_campos_do_pedido - Marketplace e magento
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "pedido_bs_x_ac" = "123456789"
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "pedido_bs_x_ac_reverso" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pedido_bs_x_marketplace" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "marketplace_codigo_origem" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "marketplace_codigo_origem" = "001"
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "MarketplacePedidoRecebidoRegistrarStatus" = "0"
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "MarketplacePedidoRecebidoRegistrarUsuario" = ""
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "MarketplacePedidoRecebidoRegistradoStatus" = "0"

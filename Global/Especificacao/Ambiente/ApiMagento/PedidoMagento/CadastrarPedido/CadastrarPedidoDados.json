@@ -3,7 +3,7 @@
   "Cnpj_Cpf": "14039603052",
   "InfCriacaoPedido": {
     "Pedido_bs_x_ac": "123456789",
-    "Marketplace_codigo_origem": "",
+    "Marketplace_codigo_origem": "001",
     "Pedido_bs_x_marketplace": ""
   },
   "EnderecoCadastralCliente": {

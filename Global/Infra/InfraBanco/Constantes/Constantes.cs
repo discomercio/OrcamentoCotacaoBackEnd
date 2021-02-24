@@ -41,6 +41,8 @@ namespace InfraBanco.Constantes
 
         //'	Criptografia em SessionCtrl (tratamento da sessão expirada)
         public const int FATOR_CRIPTO_SESSION_CTRL = 1329;
+
+        public const string COD_MARKETPLACE_ARCLUBE = "001";
 #endif
 
         public const int MAX_TAM_OBS1 = 500;
