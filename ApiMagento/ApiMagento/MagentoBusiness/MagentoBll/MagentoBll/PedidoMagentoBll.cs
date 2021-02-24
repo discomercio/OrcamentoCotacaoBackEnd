@@ -62,8 +62,8 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             if (pedidoMagento.EnderecoEntrega?.EndEtg_endereco_complemento?.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO_COMPLEMENTO)
                 nfe_Texto_Constar = "Complemento do endereço: " + pedidoMagento.EnderecoEntrega?.EndEtg_endereco_complemento;
 
-            if (pedidoMagento.EnderecoEntrega?.PontoReferencia?.ToUpper() !=
-                pedidoMagento.EnderecoEntrega?.EndEtg_endereco_complemento?.ToUpper() &&
+            if (pedidoMagento.EnderecoEntrega?.PontoReferencia?.ToUpper().Trim() !=
+                pedidoMagento.EnderecoEntrega?.EndEtg_endereco_complemento?.ToUpper().Trim() &&
                 !string.IsNullOrEmpty(pedidoMagento.EnderecoEntrega?.PontoReferencia))
             {
                 if (!string.IsNullOrEmpty(nfe_Texto_Constar))
@@ -192,7 +192,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
 
         private async Task<Pedido.Dados.Criacao.PedidoCriacaoDados?> CriarPedidoCriacaoDados(PedidoMagentoDto pedidoMagento,
             Indicador_vendedor_loja indicador_Vendedor_Loja, List<string> lstErros,
-            string id_cliente, string? dadosClienteMidia, string? dadosClienteIndicador, 
+            string id_cliente, string? dadosClienteMidia, string? dadosClienteIndicador,
             string? nfe_Texto_Constar)
         {
             var sistemaResponsavelCadastro = Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO;
