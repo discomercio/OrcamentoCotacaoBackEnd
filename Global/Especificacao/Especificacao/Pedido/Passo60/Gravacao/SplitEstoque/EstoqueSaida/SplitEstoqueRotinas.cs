@@ -74,6 +74,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.Estoq
             {
                 Id_estoque = Insercao.Id_estoque.ToString(),
                 Data_ult_movimento = DateTime.Now,
+                Data_entrada = DateTime.Now,
                 Id_nfe_emitente = Id_nfe_emitente
             });
             db.TestoqueItems.Add(new InfraBanco.Modelos.TestoqueItem()

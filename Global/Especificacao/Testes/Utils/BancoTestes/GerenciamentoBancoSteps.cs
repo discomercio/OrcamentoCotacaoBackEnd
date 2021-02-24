@@ -97,16 +97,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             var registro = (from cliente in db.Tclientes where cliente.Cnpj_Cpf == valor_cnpj_cpf select cliente).ToList();
             //só deve ter um registro
             Assert.Single(registro);
-
-            //tiramos um clone
-            string original = Newtonsoft.Json.JsonConvert.SerializeObject(registro[0]);
-            Tcliente copia = Newtonsoft.Json.JsonConvert.DeserializeObject<Tcliente>(original);
-            if (!WhenInformoCampo.InformarCampo(campo, valor_desejado, copia))
-                throw new Exception($"Campo {campo} não encontrado em Tcliente");
-            string desejado = Newtonsoft.Json.JsonConvert.SerializeObject(copia);
-            if (desejado != original)
-                LogTestes.LogTestes.ErroNosTestes($"ThenTabelaRegistroComCampoVerificarCampo t_CLIENTE campo {campo} valor errado, {desejado}, {original}");
-            Assert.Equal(desejado, original);
+            VerificarCampoEmRegistro.VerificarRegistro<Tcliente>(campo, valor_desejado, registro[0]);
         }
 
         public void TabelaT_PEDIDORegistroVerificarCampo(List<string> listaPedidos, string campo, string valor_desejado)
@@ -118,21 +109,10 @@ namespace Especificacao.Testes.Utils.BancoTestes
             //deve ter um ou mais registros
             Assert.True(registros.Any());
 
-            if (valor_desejado.Contains("\\n")) valor_desejado = valor_desejado.Replace("\\n", "\n");
 
             foreach (var registro in registros)
             {
-                //tiramos um clone
-                string original = Newtonsoft.Json.JsonConvert.SerializeObject(registro);
-                Tpedido copia = Newtonsoft.Json.JsonConvert.DeserializeObject<Tpedido>(original);
-
-                if (!WhenInformoCampo.InformarCampo(campo, valor_desejado, copia))
-                    throw new Exception($"Campo {campo} não encontrado em Tpedido");
-                string desejado = Newtonsoft.Json.JsonConvert.SerializeObject(copia);
-                if (desejado != original)
-                    LogTestes.LogTestes.ErroNosTestes($"ThenTabelaRegistroComCampoVerificarCampo t_PEDIDO campo {campo} valor errado, {desejado}, {original}");
-                Assert.Equal(desejado, original);
-
+                VerificarCampoEmRegistro.VerificarRegistro<Tpedido>(campo, valor_desejado, registro);
             }
         }
 
@@ -150,15 +130,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
 
             foreach (var registro in registros)
             {
-                //tiramos um clone
-                string original = Newtonsoft.Json.JsonConvert.SerializeObject(registro);
-                TpedidoItem copia = Newtonsoft.Json.JsonConvert.DeserializeObject<TpedidoItem>(original);
-                if (!WhenInformoCampo.InformarCampo(campo, valor_desejado, copia))
-                    throw new Exception($"Campo {campo} não encontrado em TpedidoItem");
-                string desejado = Newtonsoft.Json.JsonConvert.SerializeObject(copia);
-                if (desejado != original)
-                    LogTestes.LogTestes.ErroNosTestes($"ThenTabelaRegistroComCampoVerificarCampo t_PEDIDO_ITEM campo {campo} valor errado, {desejado}, {original}");
-                Assert.Equal(desejado, original);
+                VerificarCampoEmRegistro.VerificarRegistro<TpedidoItem>(campo, valor_desejado, registro);
             }
         }
 

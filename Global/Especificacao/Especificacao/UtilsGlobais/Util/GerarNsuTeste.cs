@@ -45,21 +45,13 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
         public void NsuNull()
         {
             //null dá erro
-            Apagar_t_CONTROLE();
-            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
-            {
-                dbgravacao.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = null });
-                dbgravacao.SaveChanges();
-                dbgravacao.transacao.Commit();
-                Assert.ThrowsAnyAsync<Exception>(() => global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES)).Wait();
-            }
-
+            //mas o banco não permite Nsu = null! então não tem como ser gerado mesmo
 
             //sem numero dá erro
             Apagar_t_CONTROLE();
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
             {
-                dbgravacao.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = "nao-numero" });
+                dbgravacao.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = "nao-numero", Dt_Ult_Atualizacao = DateTime.Now.AddDays(-720) /* 2 anos para trás */ });
                 dbgravacao.SaveChanges();
                 dbgravacao.transacao.Commit();
                 Assert.ThrowsAnyAsync<Exception>(() => global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES)).Wait();
@@ -71,22 +63,11 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
         [Fact]
         public void Nsu_Sem_seq_anual()
         {
-            //null dá erro
-            Apagar_t_CONTROLE();
-            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
-            {
-                dbgravacao.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = null });
-                dbgravacao.SaveChanges();
-                dbgravacao.transacao.Commit();
-                Assert.ThrowsAnyAsync<Exception>(() => global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES)).Wait();
-            }
-
-
             //sem numero dá erro
             Apagar_t_CONTROLE();
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
             {
-                dbgravacao.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = "nao-numero" });
+                dbgravacao.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = "nao-numero", Dt_Ult_Atualizacao = DateTime.Now.AddDays(-720) /* 2 anos para trás */ });
                 dbgravacao.SaveChanges();
                 dbgravacao.transacao.Commit();
                 Assert.ThrowsAnyAsync<Exception>(() => global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES)).Wait();
@@ -101,7 +82,7 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
             //agora um que funciona...
             Apagar_t_CONTROLE();
             using var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing();
-            dbgravacao.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = "000000645506" });
+            dbgravacao.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = "000000645506", Dt_Ult_Atualizacao = DateTime.Now.AddDays(-720) /* 2 anos para trás */ });
             dbgravacao.SaveChanges();
             dbgravacao.transacao.Commit();
             Assert.Equal("000000645507", global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
@@ -145,8 +126,8 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
                     Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES,
                     Nsu = "001234567890",
                     Seq_Anual = 1,
-                    Ano_Letra_Seq="A",
-                    Ano_Letra_Step=2,
+                    Ano_Letra_Seq = "A",
+                    Ano_Letra_Step = 2,
                     Dt_Ult_Atualizacao = DateTime.Now.AddYears(-10)
                 });
                 dbgravacao.SaveChanges();
