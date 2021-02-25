@@ -32,11 +32,11 @@ namespace Pedido
             this.PrepedidoBll = prepedidoBll;
         }
 
-        public float VerificarPagtoPreferencial(Tparametro tParametro, PedidoCriacaoDados pedido,
+        public float VerificarPagtoPreferencial(Tparametro? tParametro, PedidoCriacaoDados pedido,
             float percDescComissaoUtilizar, Pedido.Criacao.Execucao.UtilsLoja.PercentualMaxDescEComissao percentualMax, decimal vl_total)
         {
             List<string> lstOpcoesPagtoPrefericiais = new List<string>();
-            if (!string.IsNullOrEmpty(tParametro.Id))
+            if (tParametro != null && !string.IsNullOrEmpty(tParametro.Id))
             {
                 //a verificação é feita na linha 380 ate 388
                 lstOpcoesPagtoPrefericiais = tParametro.Campo_texto.Split(',').ToList();

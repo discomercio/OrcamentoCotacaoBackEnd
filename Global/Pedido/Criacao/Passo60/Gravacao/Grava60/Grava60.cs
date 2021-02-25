@@ -356,7 +356,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                 tpedido.Transportadora_Usuario = Pedido.Ambiente.Usuario;
                 tpedido.Transportadora_Selecao_Auto_Status = Execucao.Transportadora.Transportadora_Selecao_Auto_status();
                 tpedido.Transportadora_Selecao_Auto_Cep = Execucao.Transportadora.Transportadora_Selecao_Auto_Cep;
-                tpedido.Transportadora_Selecao_Auto_Transportadora = Execucao.Transportadora.Transportadora_Selecao_Auto_Transportadora;
+                tpedido.Transportadora_Selecao_Auto_Transportadora = Execucao.Transportadora.Transportadora_Id;
                 tpedido.Transportadora_Selecao_Auto_Tipo_Endereco = Execucao.Transportadora.Transportadora_Selecao_Auto_Tipo_Endereco;
                 tpedido.Transportadora_Selecao_Auto_Data_Hora = Gravacao.DataHoraCriacao;
             }

@@ -192,7 +192,7 @@ namespace Pedido.Criacao.Execucao
         private Transportadora? _transportadora = null;
         private async Task Transportadora_Inicializar(PedidoCriacaoDados pedido)
         {
-            Transportadora = await Transportadora.CriarInstancia(pedido);
+            Transportadora = await Transportadora.CriarInstancia(pedido, Criacao.ContextoProvider);
         }
         #endregion
 
@@ -251,16 +251,19 @@ namespace Pedido.Criacao.Execucao
 
             Tparametro rParametro = await UtilsGlobais.Util.BuscarRegistroParametro(
                 Constantes.ID_PARAMETRO_MagentoPedidoComIndicadorListaLojaErp, Criacao.ContextoProvider);
-            string sListaLojaMagentoPedidoComIndicador = (rParametro.Campo_texto ?? "").Trim();
-            if (!String.IsNullOrWhiteSpace(sListaLojaMagentoPedidoComIndicador))
+            if (rParametro != null)
             {
-                var vLoja = sListaLojaMagentoPedidoComIndicador.Split(',');
-                foreach (var vLojai in vLoja)
+                string sListaLojaMagentoPedidoComIndicador = (rParametro.Campo_texto ?? "").Trim();
+                if (!String.IsNullOrWhiteSpace(sListaLojaMagentoPedidoComIndicador))
                 {
-                    if (vLojai.Trim() == pedido.Ambiente.Loja)
+                    var vLoja = sListaLojaMagentoPedidoComIndicador.Split(',');
+                    foreach (var vLojai in vLoja)
                     {
-                        _blnMagentoPedidoComIndicador = true;
-                        break;
+                        if (vLojai.Trim() == pedido.Ambiente.Loja)
+                        {
+                            _blnMagentoPedidoComIndicador = true;
+                            break;
+                        }
                     }
                 }
             }
@@ -282,8 +285,13 @@ namespace Pedido.Criacao.Execucao
         private float? _parametroPercDesagioRALiquida = null;
         private async Task ParametroPercDesagioRALiquida_Inicializar()
         {
-            //todo: fazer ParametroPercDesagioRALiquida
+            //rotina getParametroPercDesagioRALiquida do ASP
             ParametroPercDesagioRALiquida = 0;
+            Tparametro tParametro = await UtilsGlobais.Util.BuscarRegistroParametro(
+                Constantes.ID_PARAMETRO_PERC_DESAGIO_RA_LIQUIDA, Criacao.ContextoProvider);
+
+            if (tParametro != null)
+                ParametroPercDesagioRALiquida = tParametro.Campo_Real;
         }
 
         #endregion

@@ -356,7 +356,7 @@ Scenario: Preenche_os_campos_do_pedido - referente a RA - loja
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_limite_RA_sem_desagio" = "0.0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_tem_desagio_RA" = "0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "qtde_parcelas_desagio_RA" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_desagio_RA_liquida" = "0.0"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_desagio_RA_liquida" = "25.0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "permite_RA_status" = "0"
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_violado_permite_RA_status" = "0"
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "usuario_violado_permite_RA_status" = ""

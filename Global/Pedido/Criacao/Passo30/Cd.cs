@@ -11,18 +11,6 @@ namespace Pedido.Criacao.Passo30
 			//todo: passo30 Cd
 			/*
 @Especificacao.Pedido.Passo30
-@ignore
-Feature: Validação do CD
-
-Background: Reiniciar banco
-	Given Reiniciar permissões do usuário quando terminar o cenário
-	#ignoramos na API magneto porque sempre é CD automático
-	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
-
-Scenario: Configuração
-	Given Nome deste item "Especificacao.Pedido.Passo30.CD"
-	Given Implementado em "Especificacao.Pedido.Pedido"
-
 Scenario: Validar permissão de CD
 	Given Pedido base
 	And Usuário sem permissão OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD
