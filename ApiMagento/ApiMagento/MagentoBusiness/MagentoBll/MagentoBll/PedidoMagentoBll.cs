@@ -213,7 +213,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
 
             Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacao =
                 FormaPagtoCriacaoMagentoDto.FormaPagtoCriacaoDados_De_FormaPagtoCriacaoMagentoDto(pedidoMagento.FormaPagtoCriacao,
-                configuracaoApiMagento, pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem);
+                configuracaoApiMagento, pedidoMagento.InfCriacaoPedido);
 
             List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> listaProdutos =
                 (await ConverterProdutosMagento(pedidoMagento, formaPagtoCriacao, configuracaoApiMagento.DadosIndicador.Loja, lstErros)).ToList();
@@ -234,38 +234,47 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
 
         private async Task ValidarPedidoMagentoEMarketplace(PedidoMagentoDto pedidoMagento, List<string> lstErros)
         {
+            /* ALTERAÇÕES NA VALIDAÇÃO conversa com Hamilton - 23/02/2021
+             * O campo "Marketplace_codigo_origem" é obrigatório e deve ser sempre enviado
+             * no caso de Marketplace_codigo_origem = 001 veio da Arclube
+             */
             var db = contextoProvider.GetContextoLeitura();
-            //vamos validar o número do pedido magento
-            if (string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac))
-                lstErros.Add("Favor informar o número do pedido Magento(Pedido_bs_x_ac)!");
-
-            if (pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac.Length != Constantes.MAX_TAMANHO_ID_PEDIDO_MAGENTO)
-                lstErros.Add("Nº pedido Magento(Pedido_bs_x_ac) com formato inválido!");
-
-            if (UtilsGlobais.Util.ExisteLetras(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac))
-                lstErros.Add("O número Magento deve conter apenas dígitos!");
-
-            /*
-             * Pedido_bs_x_marketplace e Marketplace_codigo_origem
-             * ou os dois existem ou nenhum dos dois existe
-             * */
-            if (string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace) && !string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem))
-                lstErros.Add("Informe o Pedido_bs_x_marketplace.");
-            if (!string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace) && string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem))
+            
+            //validar o Marketplace_codigo_origem
+            if (string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem))
                 lstErros.Add("Informe o Marketplace_codigo_origem.");
 
-            //validar o Marketplace_codigo_origem
             if (!string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem))
             {
-                if (!await UtilsGlobais.Util.ListarCodigoMarketPlace(contextoProvider)
-                    .Where(x => x.Codigo == pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem)
-                    .AnyAsync())
-                {
-                    lstErros.Add("Código Marketplace não encontrado.");
-                }
-            }
-        }
+                var codigoMarketplace = await UtilsGlobais.Util.ListarCodigoMarketPlace(contextoProvider)
+                           .Where(x => x.Codigo == pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem).FirstOrDefaultAsync();
 
+                if (codigoMarketplace == null)
+                    lstErros.Add("Código Marketplace não encontrado.");
+
+                if(codigoMarketplace?.Codigo == Constantes.COD_MARKETPLACE_ARCLUBE)
+                {
+                    //vamos validar o número do pedido magento
+                    if (string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac))
+                        lstErros.Add("Favor informar o número do pedido Magento(Pedido_bs_x_ac)!");
+
+                    if (pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac.Length != Constantes.MAX_TAMANHO_ID_PEDIDO_MAGENTO)
+                        lstErros.Add("Nº pedido Magento(Pedido_bs_x_ac) com formato inválido!");
+
+                    if (UtilsGlobais.Util.ExisteLetras(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac))
+                        lstErros.Add("O número Magento deve conter apenas dígitos!");
+                }
+
+                if(codigoMarketplace?.Codigo != Constantes.COD_MARKETPLACE_ARCLUBE)
+                {
+                    //vamos validar o número do pedido marketplace
+                    if (string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace))
+                        lstErros.Add("Informe o Pedido_bs_x_marketplace.");
+                }
+                
+            }
+            
+        }
 
     }
 }
