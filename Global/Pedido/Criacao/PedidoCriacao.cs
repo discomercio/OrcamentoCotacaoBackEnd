@@ -214,7 +214,7 @@ Fluxo no módulo loja:
             //antes vamos validar o CD 
 
             if (pedido.Ambiente.Id_nfe_emitente_selecao_manual != 0)
-                if (usuarioPermissao.Permitido(Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD))
+                if (usuarioPermissao.Operacao_permitida(Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO_SELECAO_MANUAL_CD))
                     pedidoRetorno.ListaErros.Add("Usuário não tem permissão de especificar o CD!");
 
             //Se tiver erro retorna

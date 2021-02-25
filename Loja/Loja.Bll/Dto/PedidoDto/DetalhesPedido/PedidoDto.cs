@@ -96,7 +96,8 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                     opcaoVendaSemEstoque: pedidoDto.OpcaoVendaSemEstoque,
                     vendedor: usuario,
                     loja_indicou: "",
-                    operacao_origem: ""
+                    operacao_origem: InfraBanco.Constantes.Constantes.Op_origem__pedido_novo.OP_ORIGEM__NAO_DETERMINADO,
+                    id_param_site: InfraBanco.Constantes.Constantes.Cod_site.COD_SITE_ARTVEN_BONSHOP
                     ),
                 extra: new Pedido.Dados.Criacao.PedidoCriacaoExtraDados(pedido_bs_x_at: null, nfe_Texto_Constar: null, nfe_XPed: null),
                 cliente: Pedido.Dados.Criacao.PedidoCriacaoClienteDados.PedidoCriacaoClienteDados_de_DadosClienteCadastroDados(

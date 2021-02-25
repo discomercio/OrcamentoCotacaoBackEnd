@@ -4,7 +4,7 @@ using System.Text;
 
 namespace InfraBanco.Constantes
 {
-    public static class Constantes
+    public static partial class Constantes
     {
         public static int FATOR_CRIPTO = 1209;
         public static int TAMANHO_SENHA_FORMATADA = 32;  // Procurar usar sempre potência de 2

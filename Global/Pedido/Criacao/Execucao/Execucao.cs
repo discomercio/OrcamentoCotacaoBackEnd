@@ -246,7 +246,7 @@ namespace Pedido.Criacao.Execucao
                 end if
             */
             _blnMagentoPedidoComIndicador = false;
-            if (pedido.Ambiente.Operacao_origem != Constantes.OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO)
+            if (pedido.Ambiente.Operacao_origem != Constantes.Op_origem__pedido_novo.OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO)
                 return;
 
             Tparametro rParametro = await UtilsGlobais.Util.BuscarRegistroParametro(

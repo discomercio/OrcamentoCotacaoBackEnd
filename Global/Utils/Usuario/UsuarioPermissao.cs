@@ -15,7 +15,7 @@ namespace UtilsGlobais.Usuario
         private readonly List<int> listaPermissoes;
         public List<int> ObterListaPermissoes() => listaPermissoes;
 
-        public bool Permitido(int permissao)
+        public bool Operacao_permitida(int permissao)
         {
             return listaPermissoes.Contains(permissao);
         }

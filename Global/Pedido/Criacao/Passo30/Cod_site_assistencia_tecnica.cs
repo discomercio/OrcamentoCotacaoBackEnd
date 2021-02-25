@@ -8,7 +8,7 @@ namespace Pedido.Criacao.Passo30
     {
         private void Cod_site_assistencia_tecnica()
         {
-            //todo: passo30 Cod_site_assistencia_tecnica
+            //todo: SOMENTE PARA LOJA: passo30 Cod_site_assistencia_tecnica
             /*
 @ignore
 Feature: Coisas válidas somente para ID_PARAM_SITE = COD_SITE_ASSISTENCIA_TECNICA 
@@ -48,7 +48,6 @@ Scenario: pedBonshop (campo pedido_bs_x_at)
     # set cn2 = nothing%>
 			 #       </select>
 
-#todo: verificar com o Hamilton o que fazer
 
              * */
         }

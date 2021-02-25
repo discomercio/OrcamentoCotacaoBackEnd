@@ -9,7 +9,8 @@ namespace Pedido.Dados.Criacao
     public class PedidoCriacaoAmbienteDados
     {
         public PedidoCriacaoAmbienteDados(string loja, string vendedor, string usuario, bool comIndicador, string indicador, string orcamentista, int id_nfe_emitente_selecao_manual, bool venda_Externa, bool opcaoVendaSemEstoque, string loja_indicou,
-            string operacao_origem)
+            InfraBanco.Constantes.Constantes.Op_origem__pedido_novo operacao_origem,
+            InfraBanco.Constantes.Constantes.Cod_site id_param_site)
         {
             //pode vir com null
             indicador ??= "";
@@ -28,7 +29,8 @@ namespace Pedido.Dados.Criacao
             Loja_indicou = loja_indicou ?? throw new ArgumentNullException(nameof(loja_indicou));
 
             //vazio ou OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO
-            Operacao_origem = operacao_origem ?? "";
+            Operacao_origem = operacao_origem;
+            Id_param_site = id_param_site;
         }
 
         //Armazena a loja do usuário logado
@@ -58,6 +60,7 @@ namespace Pedido.Dados.Criacao
 
         public string Loja_indicou { get; }
 
-        public string Operacao_origem { get; }
+        public InfraBanco.Constantes.Constantes.Op_origem__pedido_novo Operacao_origem { get; }
+        public InfraBanco.Constantes.Constantes.Cod_site Id_param_site { get; }
     }
 }

@@ -131,7 +131,8 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
                     loja_indicou: "",
 
-                    operacao_origem: Constantes.OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO
+                    operacao_origem: Constantes.Op_origem__pedido_novo.OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO,
+                    id_param_site: InfraBanco.Constantes.Constantes.Cod_site.COD_SITE_ARTVEN_BONSHOP
                     ),
 
                 extra: new Pedido.Dados.Criacao.PedidoCriacaoExtraDados(

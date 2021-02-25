@@ -26,7 +26,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava90
         public async Task ExecutarAsync()
         {
             //salvamos aqui proque o GravaLog faz o savechanges sem ser async
-            await ContextoBdGravacao.SaveChangesAsync(); 
+            await ContextoBdGravacao.SaveChangesAsync();
 
             //Passo90: log(Passo90 / Log.feature)
             string s_log = "";
@@ -264,7 +264,7 @@ Detalhes do auto-split: Modo de seleção do CD = AUTOMATICO
             }
 
 
-            if (Pedido.Ambiente.Operacao_origem == Constantes.OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO)
+            if (Pedido.Ambiente.Operacao_origem == Constantes.Op_origem__pedido_novo.OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO)
             {
                 if (!string.IsNullOrWhiteSpace(s_log))
                     s_log = s_log + ";";

@@ -52,7 +52,7 @@ namespace Pedido.Criacao.Passo10
 	        #em loja/ClienteEdita.asp
 	        #<% if operacao_permitida(OP_LJA_CADASTRA_NOVO_PEDIDO, s_lista_operacoes_permitidas) then %>
             */
-            if (!Criacao.Execucao.UsuarioPermissao.Permitido(Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO))
+            if (!Criacao.Execucao.UsuarioPermissao.Operacao_permitida(Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO))
                 Retorno.ListaErros.Add("Usuário não tem permissão para criar pedido (OP_LJA_CADASTRA_NOVO_PEDIDO)");
             /*
             #loja/PedidoNovoConsiste.asp
@@ -60,7 +60,7 @@ namespace Pedido.Criacao.Passo10
             #nesse caso, instalador_instala fica vazio
             #temos que verificar que não posso dar essa iinformação se não tiver a permissão
             */
-            if (!Criacao.Execucao.UsuarioPermissao.Permitido(Constantes.OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_PEDIDO))
+            if (!Criacao.Execucao.UsuarioPermissao.Operacao_permitida(Constantes.OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_PEDIDO))
                 if (Pedido.DetalhesPedido.InstaladorInstala != (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO_DEFINIDO)
                     Retorno.ListaErros.Add("Usuário não tem permissão para informar o campo InstaladorInstala (OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_PEDIDO)");
         }

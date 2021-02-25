@@ -21,9 +21,9 @@ namespace Pedido.Criacao.Passo30
             PermissaoPercRt();
             await CamposMagentoExigidos(); //esta rotina também determina o perc_Rt para o magento
             CamposMagentoNaoAceitos();
-            Cd();
+            await Cd();
             Cod_site_assistencia_tecnica();
-            Indicador();
+            await Indicador();
             Opcao_possui_RA();
             Perc_RT();
         }
@@ -35,7 +35,7 @@ namespace Pedido.Criacao.Passo30
 
 
             bool erro = false;
-            if (!Criacao.Execucao.UsuarioPermissao.Permitido(Constantes.OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO))
+            if (!Criacao.Execucao.UsuarioPermissao.Operacao_permitida(Constantes.OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO))
                 erro = true;
             //NUMERO_LOJA_ECOMMERCE_AR_CLUBE nunca pode
             if (Pedido.Ambiente.Loja == Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE)

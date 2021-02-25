@@ -59,7 +59,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                     permite_RA_status = Execucao.TOrcamentista_Permite_RA_Status != 0;
                 }
 
-                if ((Pedido.Ambiente.Operacao_origem == Constantes.OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO)
+                if ((Pedido.Ambiente.Operacao_origem == Constantes.Op_origem__pedido_novo.OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO)
                                 && Execucao.BlnMagentoPedidoComIndicador)
                 {
                     permite_RA_status = true;
@@ -420,7 +420,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
             tpedido.Endereco_rg = Pedido.EnderecoCadastralCliente.Endereco_rg;
             tpedido.Endereco_contato = Pedido.EnderecoCadastralCliente.Endereco_contato ?? "";
 
-            if ((Pedido.Ambiente.Operacao_origem == Constantes.OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO)
+            if ((Pedido.Ambiente.Operacao_origem == Constantes.Op_origem__pedido_novo.OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO)
                 || ((Pedido.Ambiente.Loja == Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE) && !string.IsNullOrEmpty(Pedido.Marketplace.Pedido_bs_x_ac)))
             {
                 tpedido.Plataforma_Origem_Pedido = (int)Constantes.Cod_plataforma_origem.COD_PLATAFORMA_ORIGEM_PEDIDO__MAGENTO;
