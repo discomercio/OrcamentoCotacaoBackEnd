@@ -1,18 +1,34 @@
 ﻿@ignore
 Feature: CamposMagentoNaoAceitos
+
 #se loja != NUMERO_LOJA_ECOMMERCE_AR_CLUBE then %>
 #nao pode ter campos c_numero_mktplace, c_origem_pedido, c_numero_magento
 #Pedido_bs_x_ac Pedido_bs_x_marketplace Marketplace_codigo_origem
+Background:
+Para fazer esse teste precisamos incluir os campos de InfCriacaoPedido do magento para o módulo loja
+na condição Pedido/Criacao/Passo30/CamposMagentoNaoAceitos.cs se estiver vindo do magento ele não irá fazer
+essa validação
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 
 Scenario: InfCriacaoPedido.Pedido_bs_x_ac
 	Given Pedido base
-	And Loja diferente de NUMERO_LOJA_ECOMMERCE_AR_CLUBE
+	And Informo "loja" = "212"
+	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "001"
 	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "223456799"
-	Then Erro "Pedido_bs_x_ac somente pode ser informado para a loja NUMERO_LOJA_ECOMMERCE_AR_CLUBE"
+	Then Erro "O campo Pedido_bs_x_ac não pode ser informado se loja != 201"
 
 Scenario: InfCriacaoPedido.Pedido_bs_x_marketplace
-	Given Fazer esta validação
+	Given Pedido base
+	And Informo "loja" = "212"
+	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "010"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "212456799"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "846"
+	Then Erro "O campo Pedido_bs_x_marketplace não pode ser informado se loja != 201"
 
 Scenario: InfCriacaoPedido.Marketplace_codigo_origem
-	Given Fazer esta validação
-
+	Given Pedido base
+	And Informo "loja" = "212"
+	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "010"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "987654123"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "946"
+	Then Erro "O campo Marketplace_codigo_origem não pode ser informado se loja != 201"
