@@ -1,7 +1,12 @@
 ﻿@ignore
+@Especificacao.Pedido.Passo60
+@GerenciamentoBanco
 Feature: Desconto_na_t_item
-#Garantir que o desconto utilizado seja gravado na t_pedido_item
 
+Background: 
+	Given Reiniciar banco ao terminar cenário
+
+#Garantir que o desconto utilizado seja gravado na t_pedido_item
 #loja/PedidoNovoConfirma.asp de linha 798 a 908 (VERIFICA CADA UM DOS PRODUTOS SELECIONADOS)
 #'	VERIFICA CADA UM DOS PRODUTOS SELECIONADOS
 #	dim desc_dado_arredondado
@@ -42,7 +47,7 @@ Feature: Desconto_na_t_item
 #					.ncm = Trim("" & rs("ncm"))
 #					.cst = Trim("" & rs("cst"))
 #					.descontinuado = Trim("" & rs("descontinuado"))
-#					
+#
 #					.custoFinancFornecPrecoListaBase = .preco_lista
 #					if c_custoFinancFornecTipoParcelamento = COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA then
 #						coeficiente = 1
@@ -64,15 +69,15 @@ Feature: Desconto_na_t_item
 #							end if
 #						end if
 #					.custoFinancFornecCoeficiente = coeficiente
-#					
-#					if .preco_lista = 0 then 
+#
+#					if .preco_lista = 0 then
 #						.desc_dado = 0
 #						desc_dado_arredondado = 0
 #					else
 #						.desc_dado = 100*(.preco_lista-.preco_venda)/.preco_lista
 #						desc_dado_arredondado = converte_numero(formata_perc_desc(.desc_dado))
 #						end if
-#					
+#
 #					if desc_dado_arredondado > perc_comissao_e_desconto_a_utilizar then
 #						if rs.State <> 0 then rs.Close
 #						s = "SELECT " & _
@@ -114,9 +119,46 @@ Feature: Desconto_na_t_item
 #				end with
 #			next
 #		end if
-#	
+#
+Scenario: Autorizacao de desconto - sucesso
+	colocar valor de preco_venda abaixo de preco_lista
+	Given Pedido base
+	When Lista de itens com "1" itens
+	When Lista de itens "0" informo "Fabricante" = "001"
+	When Lista de itens "0" informo "Produto" = "001000"
+	When Lista de itens "0" informo "Qtde" = "1"
+	When Lista de itens "0" informo "Desc_Dado" = "1"
+	When Lista de itens "0" informo "Preco_Venda" = "colocar um valor que não ultrapasse desc_max" da "t_DESCONTO"
+	When Lista de itens "0" informo "Preco_Fabricante" = "338.85"
+	When Lista de itens "0" informo "Preco_Lista" = "338.85"
+	When Lista de itens "0" informo "Preco_NF" = "340.00"
+	Then Sem nenhum erro
+	
+Scenario: Autorizacao de desconto - erro 1
+	Given Limpar tabela "t_DESCONTO"
+	Given Pedido base
+	When Lista de itens com "1" itens
+	When Lista de itens "0" informo "Fabricante" = "001"
+	When Lista de itens "0" informo "Produto" = "001000"
+	When Lista de itens "0" informo "Qtde" = "1"
+	When Lista de itens "0" informo "Desc_Dado" = "1"
+	When Lista de itens "0" informo "Preco_Venda" = "colocar um valor que não ultrapasse desc_max" da "t_DESCONTO"
+	When Lista de itens "0" informo "Preco_Fabricante" = "338.85"
+	When Lista de itens "0" informo "Preco_Lista" = "338.85"
+	When Lista de itens "0" informo "Preco_NF" = "340.00"
+	Then Erro "regex .*% excede o máximo permitido.*"
 
-
-Scenario: Autorizacao de desconto
-	Given Verificar que as ifns são gravadas na t_pedido_item
+Scenario: Autorizacao de desconto - erro 2
+	Given Limpar tabela "t_DESCONTO"
+	Given Pedido base
+	When Lista de itens com "1" itens
+	When Lista de itens "0" informo "Fabricante" = "001"
+	When Lista de itens "0" informo "Produto" = "001000"
+	When Lista de itens "0" informo "Qtde" = "1"
+	When Lista de itens "0" informo "Desc_Dado" = "1"
+	When Lista de itens "0" informo "Preco_Venda" = "colocar um valor que não ultrapasse desc_max" da "t_DESCONTO"
+	When Lista de itens "0" informo "Preco_Fabricante" = "338.85"
+	When Lista de itens "0" informo "Preco_Lista" = "338.85"
+	When Lista de itens "0" informo "Preco_NF" = "340.00"
+	Then Erro "regex .*% excede o máximo permitido.*"
 
