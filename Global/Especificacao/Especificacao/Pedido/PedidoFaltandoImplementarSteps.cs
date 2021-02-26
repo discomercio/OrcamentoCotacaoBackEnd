@@ -145,7 +145,7 @@ namespace Especificacao.Especificacao.Pedido
             
         }
 
-        [Then(@"Sem erro ""(.*)""")]
+        [Then(@"Sem [Ee]rro ""(.*)""")]
         public void ThenSemErro(string p0)
         {
             
@@ -311,6 +311,8 @@ namespace Especificacao.Especificacao.Pedido
         {
             
         }
+
+       
 
     }
 }
