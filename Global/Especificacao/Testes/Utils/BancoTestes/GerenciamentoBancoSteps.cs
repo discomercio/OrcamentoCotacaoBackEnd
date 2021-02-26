@@ -148,6 +148,9 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 case "OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_PEDIDO":
                     valorInt = Constantes.OP_LJA_EXIBIR_CAMPO_INSTALADOR_INSTALA_AO_CADASTRAR_NOVO_PEDIDO;
                     break;
+                case "OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO":
+                    valorInt = Constantes.OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO;
+                    break;
                 default:
                     throw new ArgumentException($"GivenTabelaApagarRegistroComCampo desconhecido: {valorBusca}");
             }

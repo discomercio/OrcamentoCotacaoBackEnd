@@ -69,7 +69,10 @@ namespace Especificacao.Especificacao.Pedido
             }
             if (tags.Contains("Especificacao.Pedido.Passo30"))
             {
-                throw new NotImplementedException("Implementar as dependências");
+                var imp = new Especificacao.Pedido.PedidoSteps();
+                base.AdicionarImplementacao(imp);
+                //paramos de fazer o registro de dependencias
+                return;
             }
             if (tags.Contains("Especificacao.Pedido.Passo40"))
             {
