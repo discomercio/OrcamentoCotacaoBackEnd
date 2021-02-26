@@ -52,6 +52,10 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 case "t_CLIENTE":
                     LimparTabelaDbSet<Tcliente>(db.Tclientes);
                     break;
+                case "t_PEDIDO":
+                    LimparTabelaDbSet<Tpedido>(db.Tpedidos);
+                    LimparTabelaDbSet<TpedidoItem>(db.TpedidoItems);
+                    break;
                 default:
                     Testes.Utils.LogTestes.LogOperacoes2.Excecao($"Especificacao.Testes.Utils.BancoTestes.InicializarBancoGeral.LimparTabela nome de tabela desconhecido: {tabela}" + $"StackTrace: '{Environment.StackTrace}'", this);
                     throw new ArgumentException($"Especificacao.Testes.Utils.BancoTestes.InicializarBancoGeral.LimparTabela nome de tabela desconhecido: {tabela}");

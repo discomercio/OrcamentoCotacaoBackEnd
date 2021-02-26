@@ -5,6 +5,7 @@ Feature: LimitePedidoRepetidosMagento
 Background:
 	Given Reiniciar appsettings
 	Given Reiniciar banco ao terminar cenário
+	Given Limpar tabela "t_PEDIDO"
 
 Scenario: LimitePedidosRepetidos iguais Api Magento - sucesso
 	When Informo "limitePedidos.pedidoIgual_tempo_em_segundos" = "5600"
@@ -15,7 +16,6 @@ Scenario: LimitePedidosRepetidos iguais Api Magento - sucesso
 	Then Sem nenhum erro
 
 Scenario: LimitePedidosRepetidos iguais Api Magento - erro
-	#falta implementar a validação
 	When Informo "limitePedidos.pedidoIgual_tempo_em_segundos" = "5600"
 	When Informo "limitePedidos.pedidoIgual" = "2"
 	Given Pedido base
@@ -34,7 +34,6 @@ Scenario: LimitePedidosRepetidos por cpf Api Magento - sucesso
 	Then Sem nenhum erro
 
 Scenario: LimitePedidosRepetidos por cpf Api Magento - erro
-	#falta implementar a validação
 	When Informo "limitePedidos.porCpf" = "2"
 	Given Pedido base
 	Then Sem nenhum erro

@@ -1,9 +1,9 @@
-﻿@ignore
-@Especificacao.Pedido.Passo40
-@GerenciamentoBanco
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
 Feature: LojaIndicou
 
 Background: Configurar lojas para teste
+	#No magento não temos o campo loja_indicou
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	#set r = cn.Execute("SELECT * FROM t_LOJA WHERE (comissao_indicacao > 0) ORDER BY CONVERT(smallint,loja)")
 	Given Reiniciar banco ao terminar cenário
 	And Limpar tabela "t_LOJA"

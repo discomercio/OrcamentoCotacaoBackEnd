@@ -52,10 +52,11 @@ Especificacao\Comuns\Api\Autenticacao\AutenticacaoListaDependencias.feature
 Quer dizer, Especificacao\Comuns\Api\Autenticacao\Autenticacao.feature lista como testamos a autenticação.
 Esse teste é feito em vários lugares; por exemplo, em:
 	And Implementado em ""Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedidoListaDependencias""
-	And Implementado em ""Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.BuscarQtdeParcCartaoVisaListaDependencias""	
-	And Implementado em ""Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace.ObterCodigoMarketplaceListaDependencias""	
+	And Implementado em ""Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.BuscarQtdeParcCartaoVisaListaDependencias""
+	And Implementado em ""Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace.ObterCodigoMarketplaceListaDependencias""
 
-Com esses registros, a gente amrca exatamente onde cada teste é feito.", ProgrammingLanguage.CSharp, new string[] {
+Com esses registros, a gente marca exatamente onde cada teste é feito.
+Desabilitamos pq não estamos usando mais, vamos removeer as listas de dependências", ProgrammingLanguage.CSharp, new string[] {
                         "Especificacao.Testes.Utils.ListaDependencias"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -99,11 +100,9 @@ Com esses registros, a gente amrca exatamente onde cada teste é feito.", Progra
         [Xunit.SkippableFactAttribute(DisplayName="VerificacaoFinalListaDependencias")]
         [Xunit.TraitAttribute("FeatureTitle", "VerificacaoFinalListaDependencias")]
         [Xunit.TraitAttribute("Description", "VerificacaoFinalListaDependencias")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void VerificacaoFinalListaDependencias()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("VerificacaoFinalListaDependencias", null, tagsOfScenario, argumentsOfScenario);
 #line 20
@@ -126,10 +125,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 23
- testRunner.Given("VerificacaoFinalListaDependencias", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 24
+#line 25
  testRunner.Given("ApagarMapaComChamadas.txt", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
