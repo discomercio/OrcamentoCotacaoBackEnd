@@ -244,6 +244,28 @@ namespace Especificacao.Testes.Utils.BancoTestes
             db.transacao.Commit();
         }
 
+        [Given(@"Tabela ""t_PRODUTO"" com fabricante = ""(.*)"" e produto = ""(.*)"" alterar campo ""(.*)"" = ""(.*)""")]
+        public void GivenTabelaComFabricanteEProdutoAlterarCampo(string fabricante, string produto, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_PRODUTO", "loja", valor, this);
+
+            var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
+            var registro = (from tproduto in db.Tprodutos
+                            where tproduto.Fabricante == fabricante &&
+                            tproduto.Produto == produto
+                            select tproduto).FirstOrDefault();
+
+            Assert.NotNull(registro);
+
+            if (!WhenInformoCampo.InformarCampo(campo, valor, registro))
+                Assert.Equal("campo desconhecido", campo);
+
+            db.Update(registro);
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+
+
         [Given(@"Novo registro em ""(.*)"", campo ""(.*)"" = ""(.*)""")]
         public void GivenNovoRegistroEmCampo(string tabela, string campo, string valor)
         {
