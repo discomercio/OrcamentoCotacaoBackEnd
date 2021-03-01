@@ -28,5 +28,8 @@ namespace InfraBanco.Modelos
         [Column("qtde")]
         [Required]
         public short Qtde { get; set; }
+
+        [Column("excluido_status")]
+        public short Excluido_status { get; set; }
     }
 }

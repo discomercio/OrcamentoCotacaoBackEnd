@@ -12,7 +12,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
     {
         private readonly CadastrarPedido cadastrarPedido = new CadastrarPedido();
         private readonly Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
-
+        private readonly Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.EstoqueSaida.SplitEstoqueRotinas SplitEstoqueRotinas = new Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.EstoqueSaida.SplitEstoqueRotinas();
         public CamposLidosAppsettingsSteps()
         {
         }
@@ -132,6 +132,11 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
             Ambiente.ApiMagento.InjecaoDependencias.InicializarConfiguracaoApiMagento(configuracaoApiMagento);
         }
 
+        [Given(@"Zerar todo o estoque")]
+        public void GivenZerarTodoOEstoque()
+        {
+            SplitEstoqueRotinas.ZerarTodoOEstoque();
+        }
 
     }
 }

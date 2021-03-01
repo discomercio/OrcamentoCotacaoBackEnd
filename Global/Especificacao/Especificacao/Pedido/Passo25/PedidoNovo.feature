@@ -1,17 +1,15 @@
-﻿@ignore
-@Especificacao.Pedido.Passo30
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
+#@ignore
+#@Especificacao.Pedido.Passo30
 Feature: Validações do PedidoNovo
 
 #todas as validações que no ASP são feitas na r_cliente passamos a fazer nos campos do endereço de cobrança.
 #No ASP, o pedido sempre é criado com os dados da t_cliente, por isso a t_cliente é validada
 #Exceto quando o orçamento vira pedido, aí sim são usados os campos de memorização de endereço (endereço de cobrança) do orçamento
 #mas este levantamento foi feito a partir da criação do pedido
-
-Scenario: Configuração
-	Given Nome deste item "Especificacao.Pedido.Passo30.PedidoNovo"
-	Given Implementado em "Especificacao.Pedido.Pedido"
-
-
+#Scenario: Configuração
+#	Given Nome deste item "Especificacao.Pedido.Passo30.PedidoNovo"
+#	Given Implementado em "Especificacao.Pedido.Pedido"
 Scenario: Validar CEP
 	#	if Trim("" & r_cliente.cep) <> "" then
 	#		if Len(retorna_so_digitos(Trim("" & r_cliente.cep))) < 8 then
@@ -28,22 +26,20 @@ Scenario: Validar CEP
 	#				end if
 	#			end if
 	#		end if
-	When Pedido base
-	And Informo "cep" = "1234567"
+	Given Pedido base
+	When Informo "cep" = "1234567"
 	Then Erro "regex O CEP do cadastro do cliente está incompleto.*"
-	When Pedido base
-	And Informo "cep" = ""
+	Given Pedido base
+	When Informo "cep" = ""
 	Then Erro "regex O CEP do cadastro do cliente está incompleto.*"
 
 Scenario: Validar CEP EndEtg_cep
-	When Pedido base com endereço de entrega
-	And Informo "cep" = "1234567"
+	Given Pedido base com endereco de entrega
+	When Informo "cep" = "1234567"
 	Then Erro "regex O CEP do endereço de entrega está incompleto.*"
-	When Pedido base
-	And Informo "cep" = ""
+	Given Pedido base
+	When Informo "cep" = ""
 	Then Erro "regex O CEP do endereço de entrega está incompleto.*"
-
-
 
 Scenario: ddd_res
 	#'	DDD VÁLIDO?
@@ -51,34 +47,29 @@ Scenario: ddd_res
 	#		if alerta <> "" then alerta = alerta & "<br><br>" & String(80,"=") & "<br><br>"
 	#		alerta = alerta & "DDD do telefone residencial é inválido!!"
 	#		end if
-	When Pedido base
-	And Informo "ddd_res" = "1"
+	Given Pedido base
+	When Informo "ddd_res" = "1"
 	Then Erro "DDD do telefone residencial é inválido!!"
-
-	When Pedido base
-	And Informo "ddd_res" = "123"
+	Given Pedido base
+	When Informo "ddd_res" = "123"
 	Then Erro "DDD do telefone residencial é inválido!!"
-
-	When Pedido base
-	And Informo "ddd_res" = "12"
+	Given Pedido base
+	When Informo "ddd_res" = "12"
 	Then Sem erro "DDD do telefone residencial é inválido!!"
 
 Scenario: ddd_com
-#if Not ddd_ok(r_cliente.ddd_com) then
-#	if alerta <> "" then alerta = alerta & "<br><br>" & String(80,"=") & "<br><br>"
-#	alerta = alerta & "DDD do telefone comercial é inválido!!"
-#	end if
-
-	When Pedido base
-	And Informo "ddd_com" = "1"
+	#if Not ddd_ok(r_cliente.ddd_com) then
+	#	if alerta <> "" then alerta = alerta & "<br><br>" & String(80,"=") & "<br><br>"
+	#	alerta = alerta & "DDD do telefone comercial é inválido!!"
+	#	end if
+	Given Pedido base
+	When Informo "ddd_com" = "1"
 	Then Erro "DDD do telefone comercial é inválido!!"
-
-	When Pedido base
-	And Informo "ddd_com" = "123"
+	Given Pedido base
+	When Informo "ddd_com" = "123"
 	Then Erro "DDD do telefone comercial é inválido!!"
-
-	When Pedido base
-	And Informo "ddd_com" = "12"
+	Given Pedido base
+	When Informo "ddd_com" = "12"
 	Then Sem erro "DDD do telefone comercial é inválido!!"
 
 Scenario: I.E. É VÁLIDA?
@@ -97,7 +88,7 @@ Scenario: I.E. É VÁLIDA?
 
 Scenario: Validar IE  erro 2 - com outro estado
 	Given Pedido base cliente PF
-	When Endereço cadastral do estado "BA"
+	When Informo "EnderecoCadastralCliente.Uf" = "BA"
 	When Informo "EnderecoCadastralCliente.ie" = "51.313.629"
 	When Informo "EnderecoCadastralCliente.icms_status" = "COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM"
 	When Informo "EnderecoCadastralCliente.produtor_rural_status" = "COD_ST_CLIENTE_PRODUTOR_RURAL_SIM"
@@ -105,33 +96,36 @@ Scenario: Validar IE  erro 2 - com outro estado
 
 Scenario: Validar IE  erro 2 - com outro estado 2
 	Given Pedido base cliente PF
-	When Endereço cadastral  do estado "SP"
+	When Informo "EnderecoCadastralCliente.Uf" = "SP"
 	When Informo "EnderecoCadastralCliente.ie" = "304480484"
 	When Informo "EnderecoCadastralCliente.contribuinte_icms_status" = "COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM"
 	When Informo "EnderecoCadastralCliente.produtor_rural_status" = "COD_ST_CLIENTE_PRODUTOR_RURAL_SIM"
 	Then Sem erro "regex .*Corrija a IE (Inscrição Estadual) com um número válido.*"
-
 	Given Pedido base cliente PF
-	When Endereço cadastral  do estado "SP"
+	When Informo "EnderecoCadastralCliente.Uf" = "SP"
 	#este está errado
 	When Informo "EnderecoCadastralCliente.ie" = "30448048499"
 	When Informo "EnderecoCadastralCliente.contribuinte_icms_status" = "COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM"
 	When Informo "EnderecoCadastralCliente.produtor_rural_status" = "COD_ST_CLIENTE_PRODUTOR_RURAL_SIM"
 	Then Erro "regex .*Corrija a IE (Inscrição Estadual) com um número válido.*"
 
-
 Scenario: MUNICÍPIO DE ACORDO C/ TABELA DO IBGE?
 		if Not consiste_municipio_IBGE_ok(r_cliente.cidade, r_cliente.uf, s_lista_sugerida_municipios, msg_erro) then
-	When Fazer esta validação
-
+	Given Pedido base
+	When Informo "Uf" = "BA"
+	When Informo "cep" = "02045080"
+	Then Erro "ajustar mensagem"
 
 Scenario: MUNICÍPIO DE ENTREGA DE ACORDO C/ TABELA DO IBGE?
 		if rb_end_entrega = "S" then
 		'	MUNICÍPIO DE ACORDO C/ TABELA DO IBGE?
 			if Not consiste_municipio_IBGE_ok(EndEtg_cidade, EndEtg_uf, s_lista_sugerida_municipios, msg_erro) then
-	When Fazer esta validação
+	Given Pedido base com endereco de entrega
+	When Informo "EndEtg_uf" = "BA"
+	When Informo "EndEtg_cep" = "02045080"
+	Then Erro "pegar erro"
 
-Scenario: 		Especifique a loja que fez a indicação
+Scenario: Especifique a loja que fez a indicação
 	#if (f.vendedor_externo.value=="S") {
 	#if (trim(f.loja_indicou.options[f.loja_indicou.selectedIndex].value)=="") {
 	#	alert('Especifique a loja que fez a indicação!!');
@@ -140,13 +134,12 @@ Scenario: 		Especifique a loja que fez a indicação
 	#}
 	Given Pedido base
 	When Informo "vendedor_externo" = "S"
-	And Informo "loja_indicou" = ""
+	When Informo "loja_indicou" = ""
 	Then Erro "Especifique a loja que fez a indicação!!"
 
-
 Scenario: Selecione o "indicador" - lista completa
+	
 #este é o código todo que vamos testar, mais para baixo testamos por partes
-
 #	if (f.c_ExibirCamposComSemIndicacao.value!="S") {
 #		blnIndicacaoOk=true;
 #	}
@@ -191,20 +184,17 @@ Scenario: Selecione o "indicador" - lista completa
 #			return;
 #		}
 #	}
-
 Scenario: Selecione o "indicador" 2
-#	if (f.c_ExibirCamposComSemIndicacao.value!="S") {
-#		blnIndicacaoOk=true;
-#	}
-#<%	if operacao_permitida(OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO, s_lista_operacoes_permitidas) then
-#		strAux="S"
-
+	#	if (f.c_ExibirCamposComSemIndicacao.value!="S") {
+	#		blnIndicacaoOk=true;
+	#	}
+	#<%	if operacao_permitida(OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO, s_lista_operacoes_permitidas) then
+	#		strAux="S"
 	Given Pedido base
-	When Usuário sem permissão "OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO"
-	And Informo "rb_indicacao" = "S"
-	And Informo "c_indicador" = "Outro 205"
+	Given Usuário sem permissão "OP_LJA_EXIBIR_CAMPOS_COM_SEM_INDICACAO_AO_CADASTRAR_NOVO_PEDIDO"
+	When Informo "rb_indicacao" = "S"
+	When Informo "c_indicador" = "Outro 205"
 	Then Erro "Sem permissão para especificar o indicador"
-
 
 Scenario: Selecione o "indicador" 3
 	#		if (f.rb_indicacao[idx].checked) {
@@ -214,8 +204,8 @@ Scenario: Selecione o "indicador" 3
 	#				return;
 	#			}
 	Given Pedido base
-	And Informo "rb_indicacao" = "S"
-	And Informo "c_indicador" = ""
+	When Informo "rb_indicacao" = "S"
+	When Informo "c_indicador" = ""
 	Then Erro "Selecione o "indicador"!!"
 
 Scenario: Selecione o "indicador" 4
@@ -224,9 +214,8 @@ Scenario: Selecione o "indicador" 4
 	#				return;
 	#			}
 	Given Pedido base
-	And Informo "rb_RA" = ""
+	When Informo "rb_RA" = ""
 	Then Erro "Informe se o pedido possui RA ou não!!"
-
 
 Scenario: Selecione o "indicador" 5
 	#		if (!blnIndicacaoOk) {
@@ -234,43 +223,37 @@ Scenario: Selecione o "indicador" 5
 	#			return;
 	#		}
 	Given Pedido base
-	And Informo "rb_indicacao" = "XX"
+	When Informo "rb_indicacao" = "XX"
 	Then Erro "Informe se o pedido é com indicação ou não!!"
 
-
-
 Scenario: 	Somente na tela: avisar O indicador selecionado é diferente do indicador que consta no cadastro deste cliente
+
 #não fazemos esta validação porque este teste está sendo feito somente no servidor
 #quando fizermos o teste da tela, aí sim devemos fazer este teste
-
 Scenario: 	Não foi informada a forma de pagamento!
-	When Pedido base
-	And Informo "custoFinancFornecTipoParcelamento" = ""
+	Given Pedido base
+	When Informo "custoFinancFornecTipoParcelamento" = ""
 	Then Erro "Não foi informada a forma de pagamento!"
-
-	When Pedido base
-	And Informo "custoFinancFornecTipoParcelamento" = "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA"
+	Given Pedido base
+	When Informo "custoFinancFornecTipoParcelamento" = "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA"
 	Then Sem Erro "Não foi informada a forma de pagamento!"
 
 Scenario: 	Não foi informada a quantidade de parcelas da forma de pagamento!
-	When Pedido base
-	And Informo "custoFinancFornecTipoParcelamento" = "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA"
-	And Informo "custoFinancFornecQtdeParcelas" = "0"
+	Given Pedido base
+	When Informo "custoFinancFornecTipoParcelamento" = "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA"
+	When Informo "custoFinancFornecQtdeParcelas" = "0"
 	Then Erro "Não foi informada a quantidade de parcelas da forma de pagamento!"
-
-	When Pedido base
-	And Informo "custoFinancFornecTipoParcelamento" = "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA"
-	And Informo "custoFinancFornecQtdeParcelas" = "1"
+	Given Pedido base
+	When Informo "custoFinancFornecTipoParcelamento" = "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA"
+	When Informo "custoFinancFornecQtdeParcelas" = "1"
 	Then Sem Erro "Não foi informada a quantidade de parcelas da forma de pagamento!"
-
-	When Pedido base
-	And Informo "custoFinancFornecTipoParcelamento" = "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA"
-	And Informo "custoFinancFornecQtdeParcelas" = "0"
+	Given Pedido base
+	When Informo "custoFinancFornecTipoParcelamento" = "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA"
+	When Informo "custoFinancFornecQtdeParcelas" = "0"
 	Then Erro "Não foi informada a quantidade de parcelas da forma de pagamento!"
-
-	When Pedido base
-	And Informo "custoFinancFornecTipoParcelamento" = "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA"
-	And Informo "custoFinancFornecQtdeParcelas" = "1"
+	Given Pedido base
+	When Informo "custoFinancFornecTipoParcelamento" = "COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA"
+	When Informo "custoFinancFornecQtdeParcelas" = "1"
 	Then Sem Erro "Não foi informada a quantidade de parcelas da forma de pagamento!"
 
 Scenario: A forma de pagamento não está disponível para o(s) produto(s)
@@ -287,5 +270,4 @@ Scenario: A forma de pagamento não está disponível para o(s) produto(s)
 #	alert(strMsgErro);
 #	return;
 #	}
-
 #feito em Especificacao\Pedido\Passo40\FormaPagamentoProdutos.feature

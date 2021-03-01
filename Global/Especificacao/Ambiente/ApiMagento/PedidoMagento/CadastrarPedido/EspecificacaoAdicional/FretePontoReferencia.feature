@@ -1,17 +1,17 @@
 ﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
 Feature: FretePontoReferencia
 
-@ignore
+#@ignore
 Scenario: campo "frete" -> se for <> 0, vamos usar o indicador. se for 0, sem indicador
 	#Frete/RA
 	#Valor de Frete: analisar se há valor de frete para definir se o pedido terá RA ou não.
 	#- campo "frete" -> se for <> 0, vamos usar o indicador. se for 0, sem indicador
 	#Se houver frete, deve-se automaticamente informar que o pedido possui RA e selecionar o indicador 'FRETE'.
 	Given Pedido base
-	#And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "223456799"
-	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = ""
+	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "001"
+	When Lista de itens "0" informo "Preco_venda" = "610.58"
 	When Informo "Frete" = "10.00"
-	When Informo "appsettings.Loja" = "201"	
+	When Informo "appsettings.Loja" = "201"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "indicador" = "FRETE"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "permite_RA_status" = "1"
@@ -32,7 +32,6 @@ Scenario: campo "frete" salvo em t_PEDIDO.vl_frete
 	#Por enquanto, todos os registros estão c/ esse valor zerado e o campo não é usado em nenhum lugar, mas já que temos
 	#a possibilidade de salvar essa informação, creio que deveríamos gravar nesse campo
 	When Fazer esta validação
-
 
 Scenario: Ponto de Referência - diferente de EndEtg_endereco_complemento
 	#Colocar a informação do ponto de referência no campo 'Constar na NF'. Comparar o conteúdo do ponto de referência
@@ -64,7 +63,7 @@ Scenario:  Ponto de Referência - EndEtg_endereco_complemento com mais de 60 car
 	#obs => truncar 57 caracteres e colocar (...)
 	Given Pedido base
 	When Informo "EnderecoEntrega.PontoReferencia" = "teste de ponto de referencia"
-	#                                                      10        20        30        40        50        60          
+	#                                                      10        20        30        40        50        60
 	When Informo "EndEtg_endereco_complemento" = "complemento endereço entrega 12 complemento endereço entrega 12"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "NFe_texto_constar" = "Complemento do endereço: complemento endereço entrega 12 complemento endereço entrega 12\nPonto de referência: teste de ponto de referencia"
