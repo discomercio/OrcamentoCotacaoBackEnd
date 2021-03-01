@@ -28,7 +28,7 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
 
             services.AddDbContext<InfraBanco.ContextoBdBasico>(options =>
             {
-                var usarSqlServer = true;
+                var usarSqlServer = false;
                 if (usarSqlServer)
                 {
                     var conexaolocal = "server=ITS-DBDEV\\SQL2017;database=ARCLUBE_TESTES;Uid=appAirClube;Pwd=appAirClube;MultipleActiveResultSets=True;";
