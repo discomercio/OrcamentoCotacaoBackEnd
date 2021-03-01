@@ -1,7 +1,7 @@
-﻿@ignore
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
 Feature: vl_aprov_auto_analise_credito
-#loja/PedidoNovoCOnfirma.asp
 
+#loja/PedidoNovoCOnfirma.asp
 #tratado no código em \arclube\Global\Pedido\Criacao\Passo60\Validacao\ConfigurarVariaveis.cs:ConfigurarVariaveisExecutar() Criacao.Execucao.Vl_aprov_auto_analise_credito
 #'	OBTÉM O VALOR LIMITE P/ APROVAÇÃO AUTOMÁTICA DA ANÁLISE DE CRÉDITO
 #	if alerta = "" then
@@ -17,11 +17,11 @@ Feature: vl_aprov_auto_analise_credito
 #						rs("analise_credito")=Clng(COD_AN_CREDITO_OK)
 #						rs("analise_credito_data")=Now
 #						rs("analise_credito_usuario")="AUTOMÁTICO"
-
 Scenario: vl_aprov_auto_analise_credito automatica
 	#precisa testar a formatação no NSU: 1,00 = 1, mas 1.00 = 100
-	Given Fazer esta validacao
+	Given Pedido base
 
+#Given Fazer esta validacao
 Scenario: vl_aprov_auto_analise_credito sem automatica
-	Given Fazer esta validacao
-
+	Given Pedido base
+#Given Fazer esta validacao
