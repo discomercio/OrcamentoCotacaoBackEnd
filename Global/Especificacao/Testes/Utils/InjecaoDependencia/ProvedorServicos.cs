@@ -31,7 +31,7 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
                 var usarSqlServer = false;
                 if (usarSqlServer)
                 {
-                    var conexaolocal = "server=ITS-DBDEV\\SQL2017;database=ARCLUBE_TESTES;Uid=appAirClube;Pwd=appAirClube;";
+                    var conexaolocal = "server=ITS-DBDEV\\SQL2017;database=ARCLUBE_TESTES;Uid=appAirClube;Pwd=appAirClube;MultipleActiveResultSets=True;";
                     options.UseSqlServer(conexaolocal);
                 }
                 else

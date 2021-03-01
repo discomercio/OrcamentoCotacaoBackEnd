@@ -28,13 +28,13 @@ Background: Limita o RA a um percentual do valor do pedido
 #	s = "SELECT nsu FROM t_CONTROLE WHERE (id_nsu = '" & id_nsu & "')"
 #Const ID_PARAM_PercVlPedidoLimiteRA					= "PercVlPedidoLimiteRA"			' NESTE CASO, O REGISTRO É USADO P/ ARMAZENAR UM PARÂMETRO E NÃO P/ GERAR UM NSU!!
 
-	#Const NUMERO_LOJA_ECOMMERCE_AR_CLUBE = "201"
-	#Const NUMERO_LOJA_OLD03 = "300"
-	#Const NUMERO_LOJA_OLD03_BONIFICACAO = "301"
-	#Const NUMERO_LOJA_OLD03_ASSISTENCIA = "302"
-	#Const NUMERO_LOJA_MARCELO_ARTVEN = "305"
-	#Const NUMERO_LOJA_TRANSFERENCIA = "01"
-	#Const NUMERO_LOJA_KITS = "02"
+#Const NUMERO_LOJA_ECOMMERCE_AR_CLUBE = "201"
+#Const NUMERO_LOJA_OLD03 = "300"
+#Const NUMERO_LOJA_OLD03_BONIFICACAO = "301"
+#Const NUMERO_LOJA_OLD03_ASSISTENCIA = "302"
+#Const NUMERO_LOJA_MARCELO_ARTVEN = "305"
+#Const NUMERO_LOJA_TRANSFERENCIA = "01"
+#Const NUMERO_LOJA_KITS = "02"
 
 Scenario: loja 301
 	Given Loja atual = "301"
@@ -49,3 +49,6 @@ Scenario: loja 301 sem RA
 	When Informo "total_RA" = "especial: total do pedido"
 	Then Sem nenhum erro
 
+Scenario: validar Desc_Dado
+	#verificar se o Desc_Dado está consistente com o Preco_NF, Preco_Lista, Preco_Venda
+	Given fazer esta validacao
