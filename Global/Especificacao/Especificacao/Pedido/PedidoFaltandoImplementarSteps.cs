@@ -344,10 +344,7 @@ namespace Especificacao.Especificacao.Pedido
         {
         }
 
-        [Given(@"Loja do usuário = ""(.*)""")]
-        public void GivenLojaDoUsuario(string p0)
-        {
-        }
+        
         [When(@"Informo ""(.*)"" = (.*)")]
         public void WhenInformo(string p0, int p1)
         {
@@ -362,6 +359,12 @@ namespace Especificacao.Especificacao.Pedido
         public void GivenTabelaT_LojaRegistroAtualPerc_Max_Comissao(int p0)
         {
         }
+
+        [Given(@"Tabela ""(.*)"" com loja = ""(.*)"" alterar campo ""(.*)"" = ""(.*)""")]
+        public void GivenTabelaComLojaAlterarCampo(string p0, int p1, string p2, int p3)
+        {
+        }
+
     }
 }
 #pragma warning restore IDE0060 // Remove unued parameter
