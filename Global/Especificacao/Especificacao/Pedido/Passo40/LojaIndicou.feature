@@ -1,9 +1,9 @@
-﻿@ignore
-@Especificacao.Pedido.Passo40
-@GerenciamentoBanco
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
 Feature: LojaIndicou
 
 Background: Configurar lojas para teste
+	#No magento não temos o campo loja_indicou
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	#set r = cn.Execute("SELECT * FROM t_LOJA WHERE (comissao_indicacao > 0) ORDER BY CONVERT(smallint,loja)")
 	Given Reiniciar banco ao terminar cenário
 	And Limpar tabela "t_LOJA"
@@ -18,6 +18,8 @@ Background: Configurar lojas para teste
 	And Gravar registro em "t_LOJA"
 
 
+#lojas permitidas:
+#set r = cn.Execute("SELECT * FROM t_LOJA WHERE (comissao_indicacao > 0) ORDER BY CONVERT(smallint,loja)")
 
 #loja/PedidoNovoConsiste.asp
 #dim s_loja_indicou, s_nome_loja_indicou
@@ -41,9 +43,10 @@ Background: Configurar lojas para teste
 #		end if
 #	end if
 
-Scenario: Configuração
-	Given Nome deste item "Especificacao.Pedido.Passo40.LojaIndicou"
-	Given Implementado em "Especificacao.Pedido.Pedido"
+#@ListaDependencias
+#Scenario: Configuração
+#	Given Nome deste item "Especificacao.Pedido.Passo40.LojaIndicou"
+#	Given Implementado em "Especificacao.Pedido.Pedido"
 
 Scenario: Seomnte pode existir se for vendedor externo
 

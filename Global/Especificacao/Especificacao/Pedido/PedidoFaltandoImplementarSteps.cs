@@ -23,6 +23,30 @@ namespace Especificacao.Especificacao.Pedido
         {
 
         }
+        [When(@"Usuario logado ""(.*)"" = ""(.*)""")]
+        public void WhenUsuarioLogado(string p0, int p1)
+        {
+        }
+        [Then(@"Sem erro")]
+        public void ThenSemErro()
+        {
+        }
+        [Given(@"Reiniciar banco quando terminar o teste")]
+        public void GivenReiniciarBancoQuandoTerminarOTeste()
+        {
+        }
+        [Given(@"Novo registro em ""(.*)""")]
+        public void GivenNovoRegistroEm(string p0)
+        {
+        }
+        [Given(@"Novo registro ""(.*)"" = ""(.*)""")]
+        public void GivenNovoRegistro(string p0, int p1)
+        {
+        }
+        [Given(@"Gravar registro")]
+        public void GivenGravarRegistro()
+        {
+        }
         [Given(@"Pedido base com endereco de entrega")]
         public void GivenPedidoBaseComEnderecoDeEntrega()
         {
@@ -109,17 +133,6 @@ namespace Especificacao.Especificacao.Pedido
             
         }
 
-        [Given(@"Novo registro em ""(.*)"", campo ""(.*)"" = ""(.*)""")]
-        public void GivenNovoRegistroEmCampo(string tabela, string p0, string p1)
-        {
-            
-        }
-
-        [Given(@"Gravar registro em ""(.*)""")]
-        public void GivenGravarRegistroEm(string p0)
-        {
-            
-        }
 
         [Given(@"Reiniciar permissões do usuário quando terminar o cenário")]
         public void GivenReiniciarPermissoesDoUsuarioQuandoTerminarOCenario()
@@ -317,7 +330,38 @@ namespace Especificacao.Especificacao.Pedido
         {
         }
 
+        [Given(@"Gravar registro em ""(.*)""")]
+        public void GivenGravarRegistroEm(string p0)
+        {
+        }
+        [Given(@"Tabela ""(.*)"" apagar registro com campo ""(.*)"" = ""(.*)""")]
+        public void GivenTabelaApagarRegistroComCampo(string p0, string p1, string p2)
+        {
+        }
 
+        [When(@"Pedido [Bb]ase")]
+        public void WhenPedidoBase()
+        {
+        }
+
+        [Given(@"Loja do usuário = ""(.*)""")]
+        public void GivenLojaDoUsuario(string p0)
+        {
+        }
+        [When(@"Informo ""(.*)"" = (.*)")]
+        public void WhenInformo(string p0, int p1)
+        {
+        }
+
+        [Given(@"Tabela t_loja registro com loja = NUMERO_LOJA_BONSHOP")]
+        public void GivenTabelaT_LojaRegistroComLojaNUMERO_LOJA_BONSHOP()
+        {
+        }
+
+        [Given(@"Tabela t_loja registro atual perc_max_comissao = (.*)")]
+        public void GivenTabelaT_LojaRegistroAtualPerc_Max_Comissao(int p0)
+        {
+        }
     }
 }
 #pragma warning restore IDE0060 // Remove unued parameter

@@ -24,6 +24,7 @@ namespace Pedido.Criacao.Passo40
             NumeroProdutos();
             await ListaProdutosFormaPagamento();
             await Usuario();
+            Validar_qtde_max_venda();
         }
 
         private void NumeroProdutos()
@@ -166,5 +167,28 @@ namespace Pedido.Criacao.Passo40
             }
         }
 
+
+        private void Validar_qtde_max_venda()
+        {
+            foreach (var prod in Pedido.ListaProdutos)
+            {
+                TprodutoLoja prodLoja = (from c in Criacao.Execucao.TabelasBanco.TprodutoLoja_Include_Tprodtuo_Tfabricante
+                                         where c.Tproduto.Produto == prod.Produto &&
+                                         c.Tproduto.Fabricante == prod.Fabricante &&
+                                         c.Loja == Pedido.Ambiente.Loja
+                                         select c).FirstOrDefault();
+
+                if (prodLoja == null)
+                {
+                    Retorno.ListaErros.Add("Produto " + prod.Produto + " não localizado para a loja " + Pedido.Ambiente.Loja + ".");
+                    continue;
+                }
+                if(prodLoja.Qtde_Max_Venda.HasValue && prodLoja.Qtde_Max_Venda < prod.Qtde)
+                {
+                    Retorno.ListaErros.Add($"Quantidade do Produto {prod.Produto} excede o máximo permitido. Solicitado: {prod.Qtde}, Qtde_Max_Venda:{prodLoja.Qtde_Max_Venda}.");
+                }
+
+            }
+        }
     }
 }

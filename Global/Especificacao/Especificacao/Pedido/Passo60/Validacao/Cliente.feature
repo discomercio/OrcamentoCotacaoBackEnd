@@ -1,5 +1,4 @@
-﻿@ignore
-Feature: Passo 60 Validação cliente
+﻿Feature: Passo 60 Validação cliente
 
 @Especificacao.Pedido.PedidoFaltandoImplementarSteps
 Scenario: Cliente com CEP

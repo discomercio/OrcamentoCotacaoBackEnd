@@ -4,16 +4,21 @@
 #@Especificacao.Pedido.Passo30
 Feature: Validações do perc_RT
 
-#Background: Reiniciar banco
-#	Given Reiniciar permissões do usuário quando terminar o teste
-#	Given Reiniciar t_loja quando terminar o teste
+Background: Reiniciar banco
+	Given Reiniciar banco ao terminar cenário
+	#ignoramos no prepedido inteiro, não tem perc_rt
+	Given Ignorar cenário no ambiente "Especificacao.Prepedido.PrepedidoSteps"
+	#magento não tem o campo perc_rt
+	And Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
+
 
 
 Scenario: Verificar se pode ser editado - precisa da permissão OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO
-	Given Usuário sem permissão "OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO"
-	And Loja do usuário = "NUMERO_LOJA_BONSHOP"
-	Given Pedido base
-	When Informo "perc_RT" = "1"
+	#Given Usuário sem permissão "OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO"
+	Given Tabela "t_OPERACAO" apagar registro com campo "id" = "OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO"
+	#And Loja do usuário = "NUMERO_LOJA_BONSHOP"
+	When Pedido base
+	And Informo "perc_RT" = "1"
 	Then Erro "Usuário não pode editar perc_RT (permissão OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO)"
 
 Scenario: Verificar se pode ser editado 2

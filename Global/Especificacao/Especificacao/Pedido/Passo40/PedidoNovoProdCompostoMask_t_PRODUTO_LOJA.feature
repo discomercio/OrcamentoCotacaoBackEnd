@@ -198,9 +198,10 @@ Scenario: Verificar produtos t_PRODUTO_LOJA - vendavel
 
 	Then Erro "Produto cód.(003220) do fabricante cód.(003) não existe!"
 
-@ignore
 Scenario: Verificar produtos t_PRODUTO_LOJA - qtde_max_venda
-	#Falta implementar essa verificação
+	#no prepedido esta validação não eiste
+	Given Ignorar cenário no ambiente "Especificacao.Prepedido.PrepedidoSteps"
+
 	Given Pedido base
 	And Limpar tabela "t_PRODUTO_LOJA"
 
