@@ -1,5 +1,5 @@
 ﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
-Feature: blnPedidoECommerceCreditoOkAutomatico
+Feature: CreditoAutomaticoECommerce
 
 #tratado no código em \arclube\Global\Pedido\Criacao\Passo30\CamposMagentoExigidos.cs:ConfigurarBlnPedidoECommerceCreditoOkAutomatico()
 #
@@ -89,6 +89,44 @@ Feature: blnPedidoECommerceCreditoOkAutomatico
 #	rs("analise_credito")=Clng(COD_AN_CREDITO_OK)
 #	rs("analise_credito_data")=Now
 #	rs("analise_credito_usuario")="AUTOMÁTICO"
+Scenario: CreditoAutomaticoECommerce - NUMERO_LOJA_ECOMMERCE_AR_CLUBE
+	#essa opção é usada se loja for NUMERO_LOJA_ECOMMERCE_AR_CLUBE ou se a origem for a API do magento
+	Given Pedido base
+	When Informo "Tipo_Parcelamento" = "COD_FORMA_PAGTO_PARCELA_UNICA"
+	When Informo "C_pu_valor" = "3132.90"
+	When Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "010"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "123"
+	When Informo "appsettings.Loja" = "201"
+	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro criado, verificar campo "tipo_parcelamento" = "5"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vendedor" = "USRMAG"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito" = "2"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito_usuario" = "AUTOMÁTICO"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_endereco_tratar_status" = "0"
 
+Scenario: CreditoAutomaticoECommerce - NUMERO_LOJA_ECOMMERCE_AR_CLUBE á vista
+	#teste 4 =>
+	#	loja = 201 && pagamento á vista && pagamento em boleto
+	#	tpedido.Analise_Credito = 8;
+	#    tpedido.Analise_Credito_Usuario = AUTOMÁTICO;
+	#	Analise_Credito_Pendente_Vendas_Motivo = 006
+	Given Pedido base
+	When Informo "appsettings.Loja" = "201"
+	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro criado, verificar campo "tipo_parcelamento" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "av_forma_pagto" = "6"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vendedor" = "USRMAG"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito" = "8"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito_usuario" = "AUTOMÁTICO"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_endereco_tratar_status" = "0"
 
-#Testes para serem montados para a Loja
+Scenario: CreditoAutomaticoECommerce - Loja diferente de NUMERO_LOJA_ECOMMERCE_AR_CLUBE
+	#essa opção é usada se loja for NUMERO_LOJA_ECOMMERCE_AR_CLUBE ou se a origem for a API do magento
+	#Pedido_bs_x_marketplace e Marketplace_codigo_origem
+	Given Pedido base
+	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro criado, verificar campo "tipo_parcelamento" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vendedor" = "USRMAG"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito" = "9"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito_usuario" = "AUTOMÁTICO"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_endereco_tratar_status" = "0"
