@@ -47,6 +47,8 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60
             var listaErros = new List<string>();
             using var ContextoBdGravacao = contextoBdProvider.GetContextoGravacaoParaUsing();
             var idPedidoBase = global::Pedido.Criacao.Passo60.Gravacao.Grava60.Gera_num_pedido.Gera_num_pedido_pai(listaErros, ContextoBdGravacao).Result;
+            ContextoBdGravacao.SaveChanges();
+            ContextoBdGravacao.transacao.Commit();
             Assert.Empty(listaErros);
             Assert.Equal(p0, idPedidoBase);
         }
@@ -58,6 +60,8 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60
             using var ContextoBdGravacao = contextoBdProvider.GetContextoGravacaoParaUsing();
             var idPedidoBase = global::Pedido.Criacao.Passo60.Gravacao.Grava60.Gera_num_pedido.Gera_num_pedido_pai(listaErros, ContextoBdGravacao).Result;
             //somente um erro
+            ContextoBdGravacao.SaveChanges();
+            ContextoBdGravacao.transacao.Commit();
             Assert.Single(listaErros);
             Assert.Contains(p0, listaErros[0]);
         }

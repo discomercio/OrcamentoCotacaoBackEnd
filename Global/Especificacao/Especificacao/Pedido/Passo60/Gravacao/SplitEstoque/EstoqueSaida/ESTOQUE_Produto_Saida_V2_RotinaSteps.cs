@@ -12,7 +12,7 @@ using Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.EstoqueSa
 namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
 {
     [Binding, Scope(Tag = "Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.ESTOQUE_Produto_Saida_V2_RotinaSteps")]
-    public class ESTOQUE_Produto_Saida_V2_RotinaSteps: SplitEstoqueRotinas
+    public class ESTOQUE_Produto_Saida_V2_RotinaSteps : SplitEstoqueRotinas
     {
         private readonly SplitEstoqueRotinas SplitEstoqueRotinas = new SplitEstoqueRotinas();
         public ESTOQUE_Produto_Saida_V2_RotinaSteps()
@@ -50,6 +50,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
                 Valor = UltimoAcesso.qtde_estoque_sem_presenca
             };
 
+            UltimoAcesso.LstErros = new List<string>();
             using var db = SplitEstoqueRotinas.contextoBdProvider.GetContextoGravacaoParaUsing();
             UltimoAcesso.Retorno = Produto.Estoque.Estoque.Estoque_produto_saida_v2(SplitEstoqueRotinas.Id_usuario,
                 id_pedido: SplitEstoqueRotinas.Id_pedido,
@@ -65,8 +66,15 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
             UltimoAcesso.qtde_estoque_vendido = qtde_estoque_vendido.Valor;
             UltimoAcesso.qtde_estoque_sem_presenca = qtde_estoque_sem_presenca.Valor;
 
-            db.SaveChanges();
-            db.transacao.Commit();
+            if (UltimoAcesso.LstErros.Any())
+            {
+                db.transacao.Rollback();
+            }
+            else
+            {
+                db.SaveChanges();
+                db.transacao.Commit();
+            }
         }
 
         [Then(@"Retorno sucesso, qtde_estoque_vendido = ""(.*)"", qtde_estoque_sem_presenca = ""(.*)""")]
