@@ -312,7 +312,11 @@ namespace Especificacao.Especificacao.Pedido
             
         }
 
-       
+        [Given(@"Loja do usuário = ""(.*)""")]
+        public void GivenLojaDoUsuario(string p0)
+        {
+        }
+
 
     }
 }
