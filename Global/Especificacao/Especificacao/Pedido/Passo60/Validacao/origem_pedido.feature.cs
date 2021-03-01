@@ -19,14 +19,14 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo60")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.PedidoFaltandoImplementarSteps")]
     public partial class Origem_PedidoFeature : object, Xunit.IClassFixture<Origem_PedidoFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "Especificacao.Pedido.Passo60"};
+                "Especificacao.Pedido.PedidoFaltandoImplementarSteps"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -43,7 +43,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "origem_pedido", null, ProgrammingLanguage.CSharp, new string[] {
-                        "Especificacao.Pedido.Passo60"});
+                        "Especificacao.Pedido.PedidoFaltandoImplementarSteps"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -80,12 +80,12 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
         
         public virtual void FeatureBackground()
         {
-#line 6
+#line 7
 #line hidden
-#line 8
+#line 9
  testRunner.Given("Ignorar cenário no ambiente \"Especificacao.Prepedido.PrepedidoSteps\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 10
+#line 11
  testRunner.Given("Ignorar cenário no ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Ca" +
                     "dastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
@@ -104,7 +104,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("somente para resolver a lista de dependencias", null, tagsOfScenario, argumentsOfScenario);
-#line 12
+#line 13
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -124,10 +124,10 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 6
+#line 7
 this.FeatureBackground();
 #line hidden
-#line 13
+#line 14
  testRunner.Given("Ignorar cenário no ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Ca" +
                         "dastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
@@ -145,7 +145,7 @@ this.FeatureBackground();
                     "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar origem_pedido", null, tagsOfScenario, argumentsOfScenario);
-#line 16
+#line 17
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -165,31 +165,31 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 6
+#line 7
 this.FeatureBackground();
 #line hidden
-#line 26
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 27
- testRunner.When("Informo \"DadosCliente.Loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 28
- testRunner.When("Informo \"InfCriacaoPedido.Marketplace_codigo_origem\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 29
- testRunner.Then("Erro \"Selecione a origem do pedido (marketplace)!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 30
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 31
  testRunner.When("Informo \"DadosCliente.Loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 37
- testRunner.When("Informo \"InfCriacaoPedido.Marketplace_codigo_origem\" = \"001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 29
+ testRunner.When("Informo \"InfCriacaoPedido.Marketplace_codigo_origem\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 30
+ testRunner.Then("Erro \"Selecione a origem do pedido (marketplace)!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 31
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 32
+ testRunner.When("Informo \"DadosCliente.Loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 38
+ testRunner.When("Informo \"InfCriacaoPedido.Marketplace_codigo_origem\" = \"001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 39
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -206,7 +206,7 @@ this.FeatureBackground();
                     "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar origem_pedido2", null, tagsOfScenario, argumentsOfScenario);
-#line 41
+#line 42
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -226,22 +226,22 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 6
+#line 7
 this.FeatureBackground();
 #line hidden
-#line 50
+#line 51
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 51
+#line 52
  testRunner.When("Informo \"DadosCliente.Loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 52
+#line 53
  testRunner.When("Informo \"InfCriacaoPedido.Marketplace_codigo_origem\" = \"001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 53
+#line 54
  testRunner.When("Informo \"InfCriacaoPedido.Pedido_bs_x_ac\" = \"1234567AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 54
+#line 55
  testRunner.Then("Erro \"O número Magento deve conter apenas dígitos!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -258,7 +258,7 @@ this.FeatureBackground();
                     "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar origem_pedido3", null, tagsOfScenario, argumentsOfScenario);
-#line 57
+#line 58
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -278,22 +278,22 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 6
+#line 7
 this.FeatureBackground();
 #line hidden
-#line 70
+#line 71
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 71
+#line 72
  testRunner.When("Informo \"DadosCliente.Loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 72
+#line 73
  testRunner.When("Informo \"InfCriacaoPedido.Marketplace_codigo_origem\" = \"001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 73
+#line 74
  testRunner.When("Informo \"InfCriacaoPedido.Pedido_bs_x_ac\" = \"1234567AA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 74
+#line 75
  testRunner.Then("Erro \"O número Magento deve conter apenas dígitos!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -310,7 +310,7 @@ this.FeatureBackground();
                     "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar origem_pedido4", null, tagsOfScenario, argumentsOfScenario);
-#line 77
+#line 78
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -330,22 +330,22 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 6
+#line 7
 this.FeatureBackground();
 #line hidden
-#line 78
+#line 79
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 79
+#line 80
  testRunner.When("Informo \"DadosCliente.Loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 80
+#line 81
  testRunner.When("Informo \"InfCriacaoPedido.Marketplace_codigo_origem\" = \"001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 81
+#line 82
  testRunner.When("Informo \"InfCriacaoPedido.Pedido_bs_x_ac\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 82
+#line 83
  testRunner.Then("Erro \"ver qual o erro\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

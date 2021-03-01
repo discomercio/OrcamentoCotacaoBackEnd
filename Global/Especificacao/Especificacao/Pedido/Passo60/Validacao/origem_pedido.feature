@@ -1,5 +1,6 @@
-﻿#ignorando porque naõ se aplica ao magento e na loja vamos verificar quando implementar
-@Especificacao.Pedido.Passo60
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
+#ignorando porque naõ se aplica ao magento e na loja vamos verificar quando implementar
+#@Especificacao.Pedido.Passo60
 Feature: origem_pedido
 
 
