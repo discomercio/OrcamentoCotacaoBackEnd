@@ -263,7 +263,8 @@ namespace Prepedido
                                                                     where c.Produto == x.Produto &&
                                                                           c.Fabricante == x.Fabricante &&
                                                                           c.Vendavel == "S" &&
-                                                                          c.Loja == loja
+                                                                          c.Loja == loja && 
+                                                                          c.Excluido_status == 0
                                                                     select new PrepedidoProdutoPrepedidoDados
                                                                     {
                                                                         Fabricante = c.Fabricante,

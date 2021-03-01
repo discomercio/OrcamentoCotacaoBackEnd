@@ -66,7 +66,7 @@ Scenario: Verificar produtos - registro montado na mão - OK
 	And Gravar registro em "t_PRODUTO_LOJA"
 	Then Sem nenhum erro
 
-@ignore
+
 Scenario: Verificar produtos - excluido_status
 	Esse teste não esta passando!
 	Seguindo o código comentado do "AjaxConsultaDadosProdutoBD.asp" ele tem a condição de que se 
@@ -96,7 +96,6 @@ Scenario: Verificar produtos - excluido_status
 	And Gravar registro em "t_PRODUTO_LOJA"
 	Then Erro "Produto cód.(003220) do fabricante cód.(003) não existe!"
 
-@ignore
 Scenario: Verificar produtos - excluido_status 2
 	Given Pedido base
 	And Limpar tabela "t_PRODUTO_LOJA"
@@ -104,6 +103,7 @@ Scenario: Verificar produtos - excluido_status 2
 	And Novo registro em "t_PRODUTO_LOJA", campo "fabricante" = "003"
 	And Novo registro em "t_PRODUTO_LOJA", campo "produto" = "003220"
 	And Novo registro em "t_PRODUTO_LOJA", campo "loja" = "202"
+	And Novo registro em "t_PRODUTO_LOJA", campo "preco_lista" = "626.58"
 	And Novo registro em "t_PRODUTO_LOJA", campo "excluido_status" = "0"
 	And Novo registro em "t_PRODUTO_LOJA", campo "vendavel" = "S"
 	And Novo registro em "t_PRODUTO_LOJA", campo "qtde_max_venda" = "10000"
@@ -112,11 +112,12 @@ Scenario: Verificar produtos - excluido_status 2
 	And Novo registro em "t_PRODUTO_LOJA", campo "fabricante" = "003"
 	And Novo registro em "t_PRODUTO_LOJA", campo "produto" = "003221"
 	And Novo registro em "t_PRODUTO_LOJA", campo "loja" = "202"
+	And Novo registro em "t_PRODUTO_LOJA", campo "preco_lista" = "939.87"
 	And Novo registro em "t_PRODUTO_LOJA", campo "excluido_status" = "1"
 	And Novo registro em "t_PRODUTO_LOJA", campo "vendavel" = "S"
 	And Novo registro em "t_PRODUTO_LOJA", campo "qtde_max_venda" = "10000"
 	And Gravar registro em "t_PRODUTO_LOJA"
-	Then Erro "Produto cód.(003220) do fabricante cód.(003) não existe!"
+	Then Erro "Produto cód.(003221) do fabricante cód.(003) não existe!"
 
 #
 Scenario: Verificar produtos - outra loja
