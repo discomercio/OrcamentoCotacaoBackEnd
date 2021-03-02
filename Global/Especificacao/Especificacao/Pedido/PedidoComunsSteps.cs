@@ -301,5 +301,22 @@ namespace Especificacao.Especificacao.Pedido
             base.TabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo(campo, valor);
         }
 
+        private readonly Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.EstoqueSaida.SplitEstoqueRotinas SplitEstoqueRotinas = new Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.EstoqueSaida.SplitEstoqueRotinas();
+        [Given(@"Zerar todo o estoque")]
+        public void GivenZerarTodoOEstoque()
+        {
+            SplitEstoqueRotinas.ZerarTodoOEstoque();
+        }
+
+        [Given(@"Definir saldo de estoque = ""(\d*)"" para produto ""(.*)""")]
+        public void GivenDefinirSaldoDeEstoqueParaProduto(int qde, string nomeProduto)
+        {
+            SplitEstoqueRotinas.DefinirSaldoDeEstoqueParaProdutoComValor(qde, nomeProduto, 987);
+        }
+        [Given(@"Usar produto ""(.*)"" como fabricante = ""(.*)"", produto = ""(.*)""")]
+        public void GivenUsarProdutoComoFabricanteProduto(string nome, string fabricante, string produto)
+        {
+            SplitEstoqueRotinas.UsarProdutoComoFabricanteProduto(nome, fabricante, produto);
+        }
     }
 }
