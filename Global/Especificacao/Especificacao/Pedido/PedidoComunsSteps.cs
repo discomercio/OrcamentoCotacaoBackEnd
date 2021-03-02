@@ -2,6 +2,7 @@
 using Especificacao.Testes.Utils.ListaDependencias;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow;
 using Xunit;
@@ -318,5 +319,67 @@ namespace Especificacao.Especificacao.Pedido
         {
             SplitEstoqueRotinas.UsarProdutoComoFabricanteProduto(nome, fabricante, produto);
         }
+
+        #region ultimo acesso
+        class UltimoAcessoDados
+        {
+            public bool Retorno = false;
+            public short qtde_estoque_vendido;
+            public short qtde_estoque_sem_presenca;
+            public List<string> LstErros = new List<string>();
+        }
+        private readonly UltimoAcessoDados UltimoAcesso = new UltimoAcessoDados();
+        #endregion
+        [When(@"Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = ""(.*)"", qtde_a_sair = ""(.*)"", qtde_autorizada_sem_presenca = ""(.*)""")]
+        public void WhenChamarESTOQUE_PRODUTO_SAIDA_VComProdutoQtde_A_SairQtde_Autorizada_Sem_Presenca(string nomeProduto, int qtde_a_sair, int qtde_autorizada_sem_presenca)
+        {
+            var produto = SplitEstoqueRotinas.Produtos.Produtos[nomeProduto];
+
+            Produto.Estoque.Estoque.QuantidadeEncapsulada qtde_estoque_vendido = new Produto.Estoque.Estoque.QuantidadeEncapsulada
+            {
+                Valor = UltimoAcesso.qtde_estoque_vendido
+            };
+            Produto.Estoque.Estoque.QuantidadeEncapsulada qtde_estoque_sem_presenca = new Produto.Estoque.Estoque.QuantidadeEncapsulada
+            {
+                Valor = UltimoAcesso.qtde_estoque_sem_presenca
+            };
+
+            UltimoAcesso.LstErros = new List<string>();
+            using var db = SplitEstoqueRotinas.contextoBdProvider.GetContextoGravacaoParaUsing();
+            UltimoAcesso.Retorno = Produto.Estoque.Estoque.Estoque_produto_saida_v2(SplitEstoqueRotinas.Id_usuario,
+                id_pedido: SplitEstoqueRotinas.Id_pedido,
+                id_nfe_emitente: SplitEstoqueRotinas.Id_nfe_emitente,
+                id_fabricante: produto.Fabricante,
+                id_produto: produto.Produto,
+                qtde_a_sair: qtde_a_sair, qtde_autorizada_sem_presenca: qtde_autorizada_sem_presenca,
+                qtde_estoque_vendido: qtde_estoque_vendido, qtde_estoque_sem_presenca: qtde_estoque_sem_presenca,
+                lstErros: UltimoAcesso.LstErros,
+                dbGravacao: db
+                ).Result;
+
+            UltimoAcesso.qtde_estoque_vendido = qtde_estoque_vendido.Valor;
+            UltimoAcesso.qtde_estoque_sem_presenca = qtde_estoque_sem_presenca.Valor;
+
+            if (UltimoAcesso.LstErros.Any())
+            {
+                db.transacao.Rollback();
+            }
+            else
+            {
+                db.SaveChanges();
+                db.transacao.Commit();
+            }
+
+        }
+
+
+        [Then(@"Tabela ""t_ESTOQUE_MOVIMENTO"" registro pai e produto = ""(.*)"", verificar campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaRegistroPaiEProdutoVerificarCampo(string produto, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_ESTOQUE_MOVIMENTO", "produto", "verificar campos", campo, valor, this);
+            base.TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(produto, campo, valor);
+        }
+
+
     }
 }

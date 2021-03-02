@@ -18,5 +18,6 @@
         void RecalcularTotaisDoPedido();
         void DeixarFormaDePagamentoConsistente();
         void ListaDeItensComXitens(int numeroItens);
+        void TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(string produto, string campo, string valor);
     }
 }
