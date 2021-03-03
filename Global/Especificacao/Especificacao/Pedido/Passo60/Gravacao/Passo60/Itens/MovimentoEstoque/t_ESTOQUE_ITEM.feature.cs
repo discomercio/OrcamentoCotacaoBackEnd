@@ -166,14 +166,12 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="Verificar t_ESTOQUE_ITEM - Qtde_utilizada")]
         [Xunit.TraitAttribute("FeatureTitle", "t_ESTOQUE_ITEM")]
         [Xunit.TraitAttribute("Description", "Verificar t_ESTOQUE_ITEM - Qtde_utilizada")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void VerificarT_ESTOQUE_ITEM_Qtde_Utilizada()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verificar t_ESTOQUE_ITEM - Qtde_utilizada", null, tagsOfScenario, argumentsOfScenario);
-#line 33
+#line 32
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -196,8 +194,31 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
+#line 34
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
 #line 35
- testRunner.Given("fazer essa validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Definir saldo de estoque = \"40\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 36
+ testRunner.When("Lista de itens \"0\" informo \"Qtde\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 37
+ testRunner.When("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 38
+ testRunner.When("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 39
+ testRunner.When("Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = \"um\", qtde_a_sair = \"10\", qtde_auto" +
+                        "rizada_sem_presenca = \"50\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 40
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 41
+ testRunner.And("Tabela \"t_ESTOQUE_ITEM\" registro pai e produto = \"003220\", verificar campo \"qtde_" +
+                        "utilizada\" = \"30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

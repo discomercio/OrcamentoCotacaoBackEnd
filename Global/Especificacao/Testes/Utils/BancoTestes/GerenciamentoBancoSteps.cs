@@ -159,6 +159,29 @@ namespace Especificacao.Testes.Utils.BancoTestes
             }
         }
 
+        public void TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(TpedidoItem item, string campo, string valor, string pedido)
+        {
+            var id_estoque = BuscarIdEstoqueMovimento(item);
+            if (string.IsNullOrEmpty(id_estoque))
+            {
+                Assert.Equal("pedido gerado sem id_estoque", campo);
+            }
+
+            var db = this.contextoBdProvider.GetContextoLeitura();
+            var registros = (from estoqueItem in db.TestoqueItems
+                             where estoqueItem.Id_estoque == id_estoque &&
+                                   estoqueItem.Fabricante == item.Fabricante &&
+                                   estoqueItem.Produto == item.Produto
+                             select estoqueItem);
+
+            Assert.True(registros.Any());
+
+            foreach(var registro in registros)
+            {
+                VerificarCampoEmRegistro.VerificarRegistro<TestoqueItem>(campo, valor, registro);
+            }
+        }
+
         [Given(@"Tabela ""t_OPERACAO"" apagar registro com campo ""id"" = ""(.*)""")]
         public void GivenTabelaT_operacao_ApagarRegistroComCampo(string valorBusca)
         {
@@ -292,37 +315,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             db.SaveChanges();
             db.transacao.Commit();
         }
-
-        public void ThenTabelaVerificarCampo(string tabela, string campo, string valor, TpedidoItem pedidoItem)
-        {
-            switch (tabela)
-            {
-                case "t_ESTOQUE_ITEM":
-                    VerificarTEstoqueItem(campo, valor, pedidoItem);
-                    break;
-                default:
-                    Assert.Equal("", $"{tabela} desconhecido");
-                    break;
-            }
-        }
-
-        private void VerificarTEstoqueItem(string campo, string valor, TpedidoItem pedidoItem)
-        {
-            var id_estoque = BuscarIdEstoqueMovimento(pedidoItem);
-
-            var db = contextoBdProvider.GetContextoLeitura();
-            var registros = (from estoqueItem in db.TestoqueItems
-                             where estoqueItem.Id_estoque == id_estoque
-                             select estoqueItem).ToList();
-
-            Assert.True(registros.Any());
-
-            foreach (var registro in registros)
-            {
-                VerificarCampoEmRegistro.VerificarRegistro<TestoqueItem>(campo, valor, registro);
-            }
-        }
-
+                
         public string? BuscarIdEstoqueMovimento(TpedidoItem pedidoItem)
         {
             var db = contextoBdProvider.GetContextoLeitura();

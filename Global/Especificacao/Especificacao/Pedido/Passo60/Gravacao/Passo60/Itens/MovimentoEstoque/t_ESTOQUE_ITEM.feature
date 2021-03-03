@@ -29,7 +29,14 @@ Scenario: Verificar qtde_disponivel - erro
 	When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "100", qtde_autorizada_sem_presenca = "50"
 	Then Erro "regex .*Produto 003220 do fabricante 003: faltam 10 unidades no estoque"
 
-@ignore
 Scenario: Verificar t_ESTOQUE_ITEM - Qtde_utilizada
 	#testoqueItem.Qtde_utilizada = (short)(qtde_utilizada_aux + qtde_movto);
-	Given fazer essa validação
+	Given Pedido base
+	Given Definir saldo de estoque = "40" para produto "um"
+	When Lista de itens "0" informo "Qtde" = "10"
+	When Deixar forma de pagamento consistente
+	When Recalcular totais do pedido
+	When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "10", qtde_autorizada_sem_presenca = "50"
+	Then Sem nenhum erro
+	And Tabela "t_ESTOQUE_ITEM" registro pai e produto = "003220", verificar campo "qtde_utilizada" = "30"
+	

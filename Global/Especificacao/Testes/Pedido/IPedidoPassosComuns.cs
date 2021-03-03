@@ -19,5 +19,6 @@
         void DeixarFormaDePagamentoConsistente();
         void ListaDeItensComXitens(int numeroItens);
         void TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(string produto, string campo, string valor);
+        void TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(string produto, string campo, string valor);
     }
 }

@@ -213,12 +213,12 @@ namespace Especificacao.Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApi
             throw new NotImplementedException();
         }
 
-        public void ThenTabelaVerificarCampo(string tabela, string campo, string valor)
+        public void TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(string produto, string campo, string valor)
         {
             throw new NotImplementedException();
         }
 
-        public void TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(string produto, string campo, string valor)
+        public void TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(string produto, string campo, string valor)
         {
             throw new NotImplementedException();
         }

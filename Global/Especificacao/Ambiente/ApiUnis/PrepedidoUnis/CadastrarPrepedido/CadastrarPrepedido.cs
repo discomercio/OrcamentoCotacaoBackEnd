@@ -370,5 +370,10 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         {
             throw new NotImplementedException();
         }
+
+        public void TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(string produto, string campo, string valor)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
