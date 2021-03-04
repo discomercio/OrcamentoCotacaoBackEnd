@@ -218,6 +218,43 @@ namespace Especificacao.Testes.Utils.BancoTestes
 
         }
 
+        public void TabelaT_ESTOQUE_LOGPedidoGeradoVerificarCampo(string pedido, string operacao, string produto, string campo, string valor)
+        {
+            //OP_ESTOQUE_LOG_VENDA
+            //OP_ESTOQUE_LOG_VENDA_SEM_PRESENCA
+            switch (operacao)
+            {
+                case "OP_ESTOQUE_LOG_VENDA":
+                    operacao = InfraBanco.Constantes.Constantes.OP_ESTOQUE_LOG_VENDA;
+                    break;
+                case "OP_ESTOQUE_LOG_VENDA_SEM_PRESENCA":
+                    operacao = InfraBanco.Constantes.Constantes.OP_ESTOQUE_LOG_VENDA_SEM_PRESENCA;
+                    break;
+                default:
+                    Assert.Equal("Operação", $"{operacao} desconhecido");
+                    break;
+            }
+            var db = contextoBdProvider.GetContextoLeitura();
+            var registros = (from estoqueLog in db.TestoqueLogs
+                             where estoqueLog.Pedido_estoque_destino == pedido &&
+                                   estoqueLog.Produto == produto &&
+                                   estoqueLog.Operacao == operacao
+                             select estoqueLog).ToList();
+
+            Assert.True(registros.Any());
+            string valor_desejado = "";
+            foreach (var registro in registros)
+            {
+                
+                if (valor == "data atual")
+                    valor_desejado = Newtonsoft.Json.JsonConvert.SerializeObject(DateTime.Now.Date).Replace("\"", "");
+                else
+                    valor_desejado = valor;
+
+                VerificarCampoEmRegistro.VerificarRegistro<TestoqueLog>(campo, valor_desejado, registro);
+            }
+        }
+
         [Given(@"Tabela ""t_OPERACAO"" apagar registro com campo ""id"" = ""(.*)""")]
         public void GivenTabelaT_operacao_ApagarRegistroComCampo(string valorBusca)
         {

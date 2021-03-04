@@ -227,5 +227,10 @@ namespace Especificacao.Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApi
         {
             throw new NotImplementedException();
         }
+
+        public void TabelaT_ESTOQUE_LOGPedidoGeradoVerificarCampo(string produto, string operacao, string campo, string valor)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

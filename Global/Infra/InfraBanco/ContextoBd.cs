@@ -84,6 +84,7 @@ namespace InfraBanco
         public IQueryable<TavisoLido> TavisoLidos { get => contexto.TavisoLidos.AsNoTracking(); }
         public IQueryable<Toperacao> Toperacaos { get => contexto.Toperacaos.AsNoTracking(); }
         public IQueryable<TperfilItem> TperfilItens { get => contexto.TperfilItens.AsNoTracking(); }
+        public IQueryable<TestoqueLog> TestoqueLogs { get => contexto.TestoqueLogs.AsNoTracking(); }
 #endif
 
     }

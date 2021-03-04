@@ -21,5 +21,6 @@
         void TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(string produto, string campo, string valor);
         void TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(string produto, string campo, string valor);
         void TabelaT_ESTOQUERegistroPaiVerificarCampo(string campo, string valor);
+        void TabelaT_ESTOQUE_LOGPedidoGeradoVerificarCampo(string produto, string operacao, string campo, string valor);
     }
 }

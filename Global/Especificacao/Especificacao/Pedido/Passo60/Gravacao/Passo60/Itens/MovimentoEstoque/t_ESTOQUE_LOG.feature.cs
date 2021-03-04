@@ -107,17 +107,38 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60.Itens.Movi
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Verificar log da movimentação")]
+        [Xunit.SkippableTheoryAttribute(DisplayName="Verificar log da movimentação")]
         [Xunit.TraitAttribute("FeatureTitle", "t_ESTOQUE_LOG")]
         [Xunit.TraitAttribute("Description", "Verificar log da movimentação")]
-        [Xunit.TraitAttribute("Category", "ignore")]
-        public virtual void VerificarLogDaMovimentacao()
+        [Xunit.InlineDataAttribute("003220", "data", "data atual", new string[0])]
+        [Xunit.InlineDataAttribute("003220", "fabricante", "003", new string[0])]
+        [Xunit.InlineDataAttribute("003220", "produto", "003220", new string[0])]
+        [Xunit.InlineDataAttribute("003220", "loja_estoque_origem", "", new string[0])]
+        [Xunit.InlineDataAttribute("003220", "loja_estoque_destino", "", new string[0])]
+        [Xunit.InlineDataAttribute("003220", "pedido_estoque_origem", "", new string[0])]
+        [Xunit.InlineDataAttribute("003220", "documento", "", new string[0])]
+        [Xunit.InlineDataAttribute("003220", "complemento", "", new string[0])]
+        [Xunit.InlineDataAttribute("003220", "id_ordem_servico", "", new string[0])]
+        [Xunit.InlineDataAttribute("003220", "id_nfe_emitente", "4903", new string[0])]
+        [Xunit.InlineDataAttribute("003221", "data", "data atual", new string[0])]
+        [Xunit.InlineDataAttribute("003221", "fabricante", "003", new string[0])]
+        [Xunit.InlineDataAttribute("003221", "produto", "003221", new string[0])]
+        [Xunit.InlineDataAttribute("003221", "loja_estoque_origem", "", new string[0])]
+        [Xunit.InlineDataAttribute("003221", "loja_estoque_destino", "", new string[0])]
+        [Xunit.InlineDataAttribute("003221", "pedido_estoque_origem", "", new string[0])]
+        [Xunit.InlineDataAttribute("003221", "documento", "", new string[0])]
+        [Xunit.InlineDataAttribute("003221", "complemento", "", new string[0])]
+        [Xunit.InlineDataAttribute("003221", "id_ordem_servico", "", new string[0])]
+        [Xunit.InlineDataAttribute("003221", "id_nfe_emitente", "4903", new string[0])]
+        public virtual void VerificarLogDaMovimentacao(string produto, string campo, string valor, string[] exampleTags)
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = exampleTags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("produto", produto);
+            argumentsOfScenario.Add("campo", campo);
+            argumentsOfScenario.Add("valor", valor);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verificar log da movimentação", null, tagsOfScenario, argumentsOfScenario);
-#line 13
+#line 12
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -140,8 +161,319 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
+#line 13
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
 #line 14
- testRunner.Then("afazer essa validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("Definir saldo de estoque = \"1000\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 15
+ testRunner.Given("Definir saldo de estoque = \"1000\" para produto \"dois\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 16
+ testRunner.When("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 17
+ testRunner.When("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 18
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 19
+ testRunner.And(string.Format("Tabela \"t_ESTOQUE_LOG\" pedido gerado e produto = \"{0}\" e operacao = \"OP_ESTOQUE_L" +
+                            "OG_VENDA\", verificar campo \"{1}\" = \"{2}\"", produto, campo, valor), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableTheoryAttribute(DisplayName="verificar - VDO")]
+        [Xunit.TraitAttribute("FeatureTitle", "t_ESTOQUE_LOG")]
+        [Xunit.TraitAttribute("Description", "verificar - VDO")]
+        [Xunit.InlineDataAttribute("003220", "qtde_solicitada", "10", new string[0])]
+        [Xunit.InlineDataAttribute("003220", "qtde_atendida", "10", new string[0])]
+        [Xunit.InlineDataAttribute("003220", "operacao", "VDA", new string[0])]
+        [Xunit.InlineDataAttribute("003220", "cod_estoque_origem", "VDA", new string[0])]
+        [Xunit.InlineDataAttribute("003220", "cod_estoque_destino", "VDO", new string[0])]
+        [Xunit.InlineDataAttribute("003221", "qtde_solicitada", "10", new string[0])]
+        [Xunit.InlineDataAttribute("003221", "qtde_atendida", "10", new string[0])]
+        [Xunit.InlineDataAttribute("003221", "operacao", "VDA", new string[0])]
+        [Xunit.InlineDataAttribute("003221", "cod_estoque_origem", "VDA", new string[0])]
+        [Xunit.InlineDataAttribute("003221", "cod_estoque_destino", "VDO", new string[0])]
+        public virtual void Verificar_VDO(string produto, string campo, string valor, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("produto", produto);
+            argumentsOfScenario.Add("campo", campo);
+            argumentsOfScenario.Add("valor", valor);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("verificar - VDO", null, tagsOfScenario, argumentsOfScenario);
+#line 44
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 45
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 46
+ testRunner.When("Lista de itens \"0\" informo \"Qtde\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 47
+ testRunner.When("Lista de itens \"1\" informo \"Qtde\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 48
+ testRunner.Given("Definir saldo de estoque = \"20\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 49
+ testRunner.Given("Definir saldo de estoque = \"20\" para produto \"dois\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 50
+ testRunner.When("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 51
+ testRunner.When("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 52
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 53
+ testRunner.And(string.Format("Tabela \"t_ESTOQUE_LOG\" pedido gerado e produto = \"{0}\" e operacao = \"OP_ESTOQUE_L" +
+                            "OG_VENDA\", verificar campo \"{1}\" = \"{2}\"", produto, campo, valor), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableTheoryAttribute(DisplayName="verificar - SPE")]
+        [Xunit.TraitAttribute("FeatureTitle", "t_ESTOQUE_LOG")]
+        [Xunit.TraitAttribute("Description", "verificar - SPE")]
+        [Xunit.InlineDataAttribute("003220", "qtde_solicitada", "1", new string[0])]
+        [Xunit.InlineDataAttribute("003220", "qtde_atendida", "1", new string[0])]
+        [Xunit.InlineDataAttribute("003220", "operacao", "VSP", new string[0])]
+        [Xunit.InlineDataAttribute("003220", "cod_estoque_origem", "", new string[0])]
+        [Xunit.InlineDataAttribute("003220", "cod_estoque_destino", "SPE", new string[0])]
+        [Xunit.InlineDataAttribute("003221", "qtde_solicitada", "1", new string[0])]
+        [Xunit.InlineDataAttribute("003221", "qtde_atendida", "1", new string[0])]
+        [Xunit.InlineDataAttribute("003221", "operacao", "VSP", new string[0])]
+        [Xunit.InlineDataAttribute("003221", "cod_estoque_origem", "", new string[0])]
+        [Xunit.InlineDataAttribute("003221", "cod_estoque_destino", "SPE", new string[0])]
+        public virtual void Verificar_SPE(string produto, string campo, string valor, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("produto", produto);
+            argumentsOfScenario.Add("campo", campo);
+            argumentsOfScenario.Add("valor", valor);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("verificar - SPE", null, tagsOfScenario, argumentsOfScenario);
+#line 68
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 69
+ testRunner.Given("Ignorar cenário no ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Ca" +
+                        "dastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 71
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 72
+ testRunner.When("Lista de itens \"0\" informo \"Qtde\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 73
+ testRunner.When("Lista de itens \"1\" informo \"Qtde\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 74
+ testRunner.Given("Definir saldo de estoque = \"1\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 75
+ testRunner.Given("Definir saldo de estoque = \"1\" para produto \"dois\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 76
+ testRunner.When("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 77
+ testRunner.When("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 78
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 79
+ testRunner.And(string.Format("Tabela \"t_ESTOQUE_LOG\" pedido gerado e produto = \"{0}\" e operacao = \"OP_ESTOQUE_L" +
+                            "OG_VENDA_SEM_PRESENCA\", verificar campo \"{1}\" = \"{2}\"", produto, campo, valor), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableTheoryAttribute(DisplayName="Verificar usuario e número de pedido - magento")]
+        [Xunit.TraitAttribute("FeatureTitle", "t_ESTOQUE_LOG")]
+        [Xunit.TraitAttribute("Description", "Verificar usuario e número de pedido - magento")]
+        [Xunit.InlineDataAttribute("003220", "pedido_estoque_destino", "176368N", new string[0])]
+        [Xunit.InlineDataAttribute("003220", "usuario", "USRMAG", new string[0])]
+        [Xunit.InlineDataAttribute("003221", "pedido_estoque_destino", "176368N", new string[0])]
+        [Xunit.InlineDataAttribute("003221", "usuario", "USRMAG", new string[0])]
+        public virtual void VerificarUsuarioENumeroDePedido_Magento(string produto, string campo, string valor, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("produto", produto);
+            argumentsOfScenario.Add("campo", campo);
+            argumentsOfScenario.Add("valor", valor);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verificar usuario e número de pedido - magento", null, tagsOfScenario, argumentsOfScenario);
+#line 94
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 95
+ testRunner.Given("Ignorar cenário no ambiente \"Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadas" +
+                        "trarPedido.CadastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 96
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 97
+ testRunner.Given("Definir saldo de estoque = \"1000\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 98
+ testRunner.Given("Definir saldo de estoque = \"1000\" para produto \"dois\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 99
+ testRunner.When("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 100
+ testRunner.When("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 101
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 102
+ testRunner.And(string.Format("Tabela \"t_ESTOQUE_LOG\" pedido gerado e produto = \"{0}\" e operacao = \"OP_ESTOQUE_L" +
+                            "OG_VENDA\", verificar campo \"{1}\" = \"{2}\"", produto, campo, valor), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableTheoryAttribute(DisplayName="Verificar usuario e número de pedido - Loja")]
+        [Xunit.TraitAttribute("FeatureTitle", "t_ESTOQUE_LOG")]
+        [Xunit.TraitAttribute("Description", "Verificar usuario e número de pedido - Loja")]
+        [Xunit.InlineDataAttribute("003220", "usuario", "USRLOJA", new string[0])]
+        [Xunit.InlineDataAttribute("003220", "pedido_estoque_destino", "176368N", new string[0])]
+        [Xunit.InlineDataAttribute("003221", "usuario", "USRLOJA", new string[0])]
+        [Xunit.InlineDataAttribute("003221", "pedido_estoque_destino", "176368N", new string[0])]
+        public virtual void VerificarUsuarioENumeroDePedido_Loja(string produto, string campo, string valor, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("produto", produto);
+            argumentsOfScenario.Add("campo", campo);
+            argumentsOfScenario.Add("valor", valor);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verificar usuario e número de pedido - Loja", null, tagsOfScenario, argumentsOfScenario);
+#line 111
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 112
+ testRunner.Given("Ignorar cenário no ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Ca" +
+                        "dastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 113
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 114
+ testRunner.Given("Definir saldo de estoque = \"1000\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 115
+ testRunner.Given("Definir saldo de estoque = \"1000\" para produto \"dois\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 116
+ testRunner.When("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 117
+ testRunner.When("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 118
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 119
+ testRunner.And(string.Format("Tabela \"t_ESTOQUE_LOG\" pedido gerado e produto = \"{0}\" e operacao = \"OP_ESTOQUE_L" +
+                            "OG_VENDA\", verificar campo \"{1}\" = \"{2}\"", produto, campo, valor), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
