@@ -120,7 +120,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             }
         }
 
-        
+
 
         public void TabelaT_PEDIDO_ITEMRegistroVerificarCampo(int item, string pedido, string campo, string valor_desejado)
         {
@@ -176,10 +176,46 @@ namespace Especificacao.Testes.Utils.BancoTestes
 
             Assert.True(registros.Any());
 
-            foreach(var registro in registros)
+            foreach (var registro in registros)
             {
                 VerificarCampoEmRegistro.VerificarRegistro<TestoqueItem>(campo, valor, registro);
             }
+        }
+
+        public void TabelaT_ESTOQUERegistroPaiVerificarCampo(List<TpedidoItem> itens, string campo, string valor, string pedido)
+        {
+            foreach (var item in itens)
+            {
+                var id_estoque = BuscarIdEstoqueMovimento(item);
+                if (string.IsNullOrEmpty(id_estoque))
+                {
+                    Assert.Equal("pedido gerado sem id_estoque", campo);
+                }
+
+                var db = this.contextoBdProvider.GetContextoLeitura();
+                var registros = (from estoque in db.Testoques
+                                 where estoque.Id_estoque == id_estoque
+                                 select estoque);
+
+                Assert.True(registros.Any());
+
+                string valor_desejado = "";
+                foreach (var registro in registros)
+                {
+                    switch (valor)
+                    {
+                        case "data atual":
+                            valor_desejado = Newtonsoft.Json.JsonConvert.SerializeObject(DateTime.Now.Date).Replace("\"", "");
+                            break;
+
+                        default:
+                            Assert.Equal("", $"{valor} desconhecido");
+                            break;
+                    }
+                    VerificarCampoEmRegistro.VerificarRegistro<Testoque>(campo, valor_desejado, registro);
+                }
+            }
+
         }
 
         [Given(@"Tabela ""t_OPERACAO"" apagar registro com campo ""id"" = ""(.*)""")]
@@ -315,7 +351,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             db.SaveChanges();
             db.transacao.Commit();
         }
-                
+
         public string? BuscarIdEstoqueMovimento(TpedidoItem pedidoItem)
         {
             var db = contextoBdProvider.GetContextoLeitura();
@@ -332,8 +368,8 @@ namespace Especificacao.Testes.Utils.BancoTestes
         {
             var db = contextoBdProvider.GetContextoLeitura();
             var itensPedido = (from itens in db.TpedidoItems
-                         where itens.Pedido == pedido
-                         select itens).ToList();
+                               where itens.Pedido == pedido
+                               select itens).ToList();
 
             return itensPedido;
         }

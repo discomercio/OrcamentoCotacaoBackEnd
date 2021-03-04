@@ -22,12 +22,13 @@ Scenario: Verificar qtde_disponivel - erro
 	#                   ") para poder atender ao pedido.");
 	#               return false;
 	#           }
-	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido"
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
-	Given Definir saldo de estoque = "40" para produto "um"
-	When Lista de itens "0" informo "Qtde" = "100"
-	When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "100", qtde_autorizada_sem_presenca = "50"
-	Then Erro "regex .*Produto 003220 do fabricante 003: faltam 10 unidades no estoque"
+	Given Definir saldo de estoque = "10" para produto "um"
+	When Lista de itens "0" informo "Qtde" = "200"
+	When Deixar forma de pagamento consistente
+	When Recalcular totais do pedido
+	Then Erro "regex .*Produto 003220 do fabricante 003: faltam 20 unidades no estoque"
 
 Scenario: Verificar t_ESTOQUE_ITEM - Qtde_utilizada
 	#testoqueItem.Qtde_utilizada = (short)(qtde_utilizada_aux + qtde_movto);
@@ -36,7 +37,6 @@ Scenario: Verificar t_ESTOQUE_ITEM - Qtde_utilizada
 	When Lista de itens "0" informo "Qtde" = "10"
 	When Deixar forma de pagamento consistente
 	When Recalcular totais do pedido
-	When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "10", qtde_autorizada_sem_presenca = "50"
+	#When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "10", qtde_autorizada_sem_presenca = "50"
 	Then Sem nenhum erro
-	And Tabela "t_ESTOQUE_ITEM" registro pai e produto = "003220", verificar campo "qtde_utilizada" = "30"
-	
+	And Tabela "t_ESTOQUE_ITEM" registro pai e produto = "003220", verificar campo "qtde_utilizada" = "20"

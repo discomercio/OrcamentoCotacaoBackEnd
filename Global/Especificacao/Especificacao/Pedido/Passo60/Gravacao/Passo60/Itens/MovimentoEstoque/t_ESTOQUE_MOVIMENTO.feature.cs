@@ -335,10 +335,6 @@ this.FeatureBackground();
 #line 102
  testRunner.Given("Definir saldo de estoque = \"49\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 103
- testRunner.When("Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = \"um\", qtde_a_sair = \"100\", qtde_aut" +
-                        "orizada_sem_presenca = \"49\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 104
  testRunner.Then("Erro \"Ajustar teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

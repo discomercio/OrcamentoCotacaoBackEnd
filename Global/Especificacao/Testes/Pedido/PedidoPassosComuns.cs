@@ -111,6 +111,13 @@ namespace Especificacao.Testes.Pedido
             base.Executar(i => i.TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(produto, campo, valor));
         }
 
+        public void TabelaT_ESTOQUERegistroPaiVerificarCampo(string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_ESTOQUE", "pedido", "verificar campos", campo, valor, this);
+            base.Executar(i => i.TabelaT_ESTOQUERegistroPaiVerificarCampo(campo, valor));
+        }
+
         public void ListaDeItensComXitens(int p0)
         {
             if (ignorarFeature) return;

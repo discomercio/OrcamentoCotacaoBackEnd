@@ -110,14 +110,12 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60.Itens.Movi
         [Xunit.SkippableFactAttribute(DisplayName="Verificar data da última movimentação")]
         [Xunit.TraitAttribute("FeatureTitle", "t_ESTOQUE")]
         [Xunit.TraitAttribute("Description", "Verificar data da última movimentação")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void VerificarDataDaUltimaMovimentacao()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verificar data da última movimentação", null, tagsOfScenario, argumentsOfScenario);
-#line 13
+#line 12
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -140,54 +138,45 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 14
- testRunner.Given("fazer essa validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 13
+ testRunner.Given("Ignorar cenário no ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Ca" +
+                        "dastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 15
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 16
+ testRunner.Given("Definir saldo de estoque = \"40\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 17
+ testRunner.Given("Definir saldo de estoque = \"40\" para produto \"dois\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 18
+ testRunner.When("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 19
+ testRunner.When("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 21
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 22
+ testRunner.And("Tabela \"t_ESTOQUE\" registro pai, verificar campo \"data_ult_movimento\" = \"data atu" +
+                        "al\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableTheoryAttribute(DisplayName="verificar alteração de último movimento estoque")]
+        [Xunit.SkippableFactAttribute(DisplayName="teste com estoque zerado - magento")]
         [Xunit.TraitAttribute("FeatureTitle", "t_ESTOQUE")]
-        [Xunit.TraitAttribute("Description", "verificar alteração de último movimento estoque")]
-        [Xunit.TraitAttribute("Category", "ignore")]
-        [Xunit.InlineDataAttribute("id_estoque", "000000119328", new string[0])]
-        [Xunit.InlineDataAttribute("data_entrada", "2020-12-29 00:00:00", new string[0])]
-        [Xunit.InlineDataAttribute("hora_entrada", "135628", new string[0])]
-        [Xunit.InlineDataAttribute("fabricante", "003", new string[0])]
-        [Xunit.InlineDataAttribute("documento", "tstenovo", new string[0])]
-        [Xunit.InlineDataAttribute("usuario", "PRAGMATICA", new string[0])]
-        [Xunit.InlineDataAttribute("data_ult_movimento", "2021-01-20 00:00:00", new string[0])]
-        [Xunit.InlineDataAttribute("[timestamp]", "[x[", new string[0])]
-        [Xunit.InlineDataAttribute("kit", "0", new string[0])]
-        [Xunit.InlineDataAttribute("entrada_especial", "0", new string[0])]
-        [Xunit.InlineDataAttribute("devolucao_status", "0", new string[0])]
-        [Xunit.InlineDataAttribute("devolucao_data", "null", new string[0])]
-        [Xunit.InlineDataAttribute("devolucao_hora", "null", new string[0])]
-        [Xunit.InlineDataAttribute("devolucao_usuario", "null", new string[0])]
-        [Xunit.InlineDataAttribute("devolucao_loja", "null", new string[0])]
-        [Xunit.InlineDataAttribute("devolucao_pedido", "null", new string[0])]
-        [Xunit.InlineDataAttribute("devolucao_id_item_devolvido", "null", new string[0])]
-        [Xunit.InlineDataAttribute("devolucao_id_estoque", "null", new string[0])]
-        [Xunit.InlineDataAttribute("obs", "teste", new string[0])]
-        [Xunit.InlineDataAttribute("id_nfe_emitente", "4903", new string[0])]
-        [Xunit.InlineDataAttribute("entrada_tipo", "0", new string[0])]
-        [Xunit.InlineDataAttribute("perc_agio", "0.0", new string[0])]
-        [Xunit.InlineDataAttribute("data_emissao_NF_entrada", "null", new string[0])]
-        public virtual void VerificarAlteracaoDeUltimoMovimentoEstoque(string campo, string valor, string[] exampleTags)
+        [Xunit.TraitAttribute("Description", "teste com estoque zerado - magento")]
+        public virtual void TesteComEstoqueZerado_Magento()
         {
-            string[] @__tags = new string[] {
-                    "ignore"};
-            if ((exampleTags != null))
-            {
-                @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
-            }
-            string[] tagsOfScenario = @__tags;
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            argumentsOfScenario.Add("campo", campo);
-            argumentsOfScenario.Add("valor", valor);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("verificar alteração de último movimento estoque", null, tagsOfScenario, argumentsOfScenario);
-#line 17
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("teste com estoque zerado - magento", null, tagsOfScenario, argumentsOfScenario);
+#line 24
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -210,15 +199,18 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 18
+#line 25
+ testRunner.Given("Ignorar cenário no ambiente \"Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadas" +
+                        "trarPedido.CadastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 26
+ testRunner.Given("Definir saldo de estoque = \"0\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 27
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 19
- testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 20
- testRunner.And(string.Format("Tabela \"t_ESTOQUE\" registro com campo \"id_estoque\" = \"id_estoque\", verificar camp" +
-                            "o \"{0}\" = \"{1}\"", campo, valor), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 28
+ testRunner.Then("Sem erro \"Produto 003220 do fabricante 003: faltam 5 unidades\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

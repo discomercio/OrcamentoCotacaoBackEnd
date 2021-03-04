@@ -387,5 +387,13 @@ namespace Especificacao.Especificacao.Pedido
             base.TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(produto, campo, valor);
         }
 
+        [Then(@"Tabela ""t_ESTOQUE"" registro pai, verificar campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaT_ESTOQUERegistroPaiVerificarCampo(string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_ESTOQUE", "pedido", "verificar campos", campo, valor, this);
+            base.TabelaT_ESTOQUERegistroPaiVerificarCampo(campo, valor);
+        }
+
+
     }
 }

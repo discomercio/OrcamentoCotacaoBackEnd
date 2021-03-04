@@ -313,5 +313,22 @@ namespace Especificacao.Testes.Pedido
             gerenciamentoBanco.TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(itemPedido, campo, valor, pedidoPaiGerado);
         }
 
+        public void TabelaT_ESTOQUERegistroPaiVerificarCampo(string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_ESTOQUE", "pedido", "verificar campos", campo, valor, this);
+            var pedidoPaiGerado = AbstractPedidoPaiGerado();
+            if (string.IsNullOrEmpty(pedidoPaiGerado))
+            {
+                Assert.Equal("sem pedido gerado", pedidoPaiGerado ?? "");
+                throw new ArgumentNullException();
+            }
+
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            var itemPedido = gerenciamentoBanco.BuscarItensPedido(pedidoPaiGerado).ToList();
+
+            gerenciamentoBanco.TabelaT_ESTOQUERegistroPaiVerificarCampo(itemPedido, campo, valor, pedidoPaiGerado);
+
+        }
     }
 }
