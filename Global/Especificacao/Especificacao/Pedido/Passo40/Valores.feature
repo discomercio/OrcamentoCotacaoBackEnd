@@ -1,10 +1,10 @@
-﻿@ignore
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
 Feature: Valores
 
 Background: Limita o RA a um percentual do valor do pedido
 	Given Pedido base
 	Given Reiniciar banco ao terminar cenário
-	Given Atualizar tabela "t_CONTROLE", campo "id" = "PercVlPedidoLimiteRA", alterar "nsu" para "10"
+	Given Tabela "t_CONTROLE" campo "id" = "PercVlPedidoLimiteRA", alterar "nsu" para "10"
 	When Informo "total_RA" = "especial: metade do total do pedido"
 
 #loja/PedidoNovoConsiste.asp
@@ -37,18 +37,18 @@ Background: Limita o RA a um percentual do valor do pedido
 #Const NUMERO_LOJA_KITS = "02"
 
 Scenario: loja 301
-	Given Loja atual = "301"
+	When Informo "Loja" = "301"
 	Then Erro "O valor total de RA excede o limite permitido para este pedido!!"
 
 Scenario: loja NUMERO_LOJA_ECOMMERCE_AR_CLUBE
-	Given Loja atual = "201"
+	When Informo "Loja" = "201"
 	Then Sem nenhum erro
 
 Scenario: loja 301 sem RA
-	Given Loja atual = "301"
+	When Informo "Loja" = "301"
 	When Informo "total_RA" = "especial: total do pedido"
 	Then Sem nenhum erro
 
 Scenario: validar Desc_Dado
 	#verificar se o Desc_Dado está consistente com o Preco_NF, Preco_Lista, Preco_Venda
-	Given fazer esta validacao
+	Given Pedido base
