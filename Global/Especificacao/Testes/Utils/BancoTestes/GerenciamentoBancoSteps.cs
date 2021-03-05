@@ -120,6 +120,8 @@ namespace Especificacao.Testes.Utils.BancoTestes
             }
         }
 
+
+
         public void TabelaT_PEDIDO_ITEMRegistroVerificarCampo(int item, string pedido, string campo, string valor_desejado)
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO_ITEM", "pedido", pedido, campo, valor_desejado, this);
@@ -135,6 +137,121 @@ namespace Especificacao.Testes.Utils.BancoTestes
             foreach (var registro in registros)
             {
                 VerificarCampoEmRegistro.VerificarRegistro<TpedidoItem>(campo, valor_desejado, registro);
+            }
+        }
+
+        public void TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(TpedidoItem item, string campo, string valor, string pedido)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("_ESTOQUE_MOVIMENTO", "pedido", pedido, campo, valor, this);
+
+            var db = this.contextoBdProvider.GetContextoLeitura();
+            var registros = (from registro in db.TestoqueMovimentos
+                             where registro.Pedido.Contains(pedido) &&
+                                   registro.Produto == item.Produto &&
+                                   registro.Fabricante == item.Fabricante
+                             select registro).ToList();
+            //deve ter um ou mais registros
+            Assert.True(registros.Any());
+
+            foreach (var registro in registros)
+            {
+                VerificarCampoEmRegistro.VerificarRegistro<TestoqueMovimento>(campo, valor, registro);
+            }
+        }
+
+        public void TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(TpedidoItem item, string campo, string valor, string pedido)
+        {
+            var id_estoque = BuscarIdEstoqueMovimento(item);
+            if (string.IsNullOrEmpty(id_estoque))
+            {
+                Assert.Equal("pedido gerado sem id_estoque", campo);
+            }
+
+            var db = this.contextoBdProvider.GetContextoLeitura();
+            var registros = (from estoqueItem in db.TestoqueItems
+                             where estoqueItem.Id_estoque == id_estoque &&
+                                   estoqueItem.Fabricante == item.Fabricante &&
+                                   estoqueItem.Produto == item.Produto
+                             select estoqueItem);
+
+            Assert.True(registros.Any());
+
+            foreach (var registro in registros)
+            {
+                VerificarCampoEmRegistro.VerificarRegistro<TestoqueItem>(campo, valor, registro);
+            }
+        }
+
+        public void TabelaT_ESTOQUERegistroPaiVerificarCampo(List<TpedidoItem> itens, string campo, string valor, string pedido)
+        {
+            foreach (var item in itens)
+            {
+                var id_estoque = BuscarIdEstoqueMovimento(item);
+                if (string.IsNullOrEmpty(id_estoque))
+                {
+                    Assert.Equal("pedido gerado sem id_estoque", campo);
+                }
+
+                var db = this.contextoBdProvider.GetContextoLeitura();
+                var registros = (from estoque in db.Testoques
+                                 where estoque.Id_estoque == id_estoque
+                                 select estoque);
+
+                Assert.True(registros.Any());
+
+                string valor_desejado = "";
+                foreach (var registro in registros)
+                {
+                    switch (valor)
+                    {
+                        case "data atual":
+                            valor_desejado = Newtonsoft.Json.JsonConvert.SerializeObject(DateTime.Now.Date).Replace("\"", "");
+                            break;
+
+                        default:
+                            Assert.Equal("", $"{valor} desconhecido");
+                            break;
+                    }
+                    VerificarCampoEmRegistro.VerificarRegistro<Testoque>(campo, valor_desejado, registro);
+                }
+            }
+
+        }
+
+        public void TabelaT_ESTOQUE_LOGPedidoGeradoVerificarCampo(string pedido, string operacao, string produto, string campo, string valor)
+        {
+            //OP_ESTOQUE_LOG_VENDA
+            //OP_ESTOQUE_LOG_VENDA_SEM_PRESENCA
+            switch (operacao)
+            {
+                case "OP_ESTOQUE_LOG_VENDA":
+                    operacao = InfraBanco.Constantes.Constantes.OP_ESTOQUE_LOG_VENDA;
+                    break;
+                case "OP_ESTOQUE_LOG_VENDA_SEM_PRESENCA":
+                    operacao = InfraBanco.Constantes.Constantes.OP_ESTOQUE_LOG_VENDA_SEM_PRESENCA;
+                    break;
+                default:
+                    Assert.Equal("Operação", $"{operacao} desconhecido");
+                    break;
+            }
+            var db = contextoBdProvider.GetContextoLeitura();
+            var registros = (from estoqueLog in db.TestoqueLogs
+                             where estoqueLog.Pedido_estoque_destino == pedido &&
+                                   estoqueLog.Produto == produto &&
+                                   estoqueLog.Operacao == operacao
+                             select estoqueLog).ToList();
+
+            Assert.True(registros.Any());
+            string valor_desejado = "";
+            foreach (var registro in registros)
+            {
+                
+                if (valor == "data atual")
+                    valor_desejado = Newtonsoft.Json.JsonConvert.SerializeObject(DateTime.Now.Date).Replace("\"", "");
+                else
+                    valor_desejado = valor;
+
+                VerificarCampoEmRegistro.VerificarRegistro<TestoqueLog>(campo, valor_desejado, registro);
             }
         }
 
@@ -272,6 +389,27 @@ namespace Especificacao.Testes.Utils.BancoTestes
             db.transacao.Commit();
         }
 
+        public string? BuscarIdEstoqueMovimento(TpedidoItem pedidoItem)
+        {
+            var db = contextoBdProvider.GetContextoLeitura();
+            var idEstoque = (from estoque in db.TestoqueMovimentos
+                             where estoque.Pedido == pedidoItem.Pedido &&
+                                   estoque.Produto == pedidoItem.Produto &&
+                                   estoque.Fabricante == pedidoItem.Fabricante
+                             select estoque.Id_Estoque).FirstOrDefault();
+
+            return idEstoque;
+        }
+
+        public List<TpedidoItem> BuscarItensPedido(string pedido)
+        {
+            var db = contextoBdProvider.GetContextoLeitura();
+            var itensPedido = (from itens in db.TpedidoItems
+                               where itens.Pedido == pedido
+                               select itens).ToList();
+
+            return itensPedido;
+        }
 
         [Given(@"Novo registro em ""(.*)"", campo ""(.*)"" = ""(.*)""")]
         public void GivenNovoRegistroEmCampo(string tabela, string campo, string valor)

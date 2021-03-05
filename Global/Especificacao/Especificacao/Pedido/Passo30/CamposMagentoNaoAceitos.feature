@@ -1,4 +1,4 @@
-﻿@ignore
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
 Feature: CamposMagentoNaoAceitos
 
 #se loja != NUMERO_LOJA_ECOMMERCE_AR_CLUBE then %>
@@ -12,14 +12,14 @@ essa validação
 
 Scenario: InfCriacaoPedido.Pedido_bs_x_ac
 	Given Pedido base
-	And Informo "loja" = "212"
+	When Informo "appsettings.Loja" = "212"
 	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "001"
 	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "223456799"
 	Then Erro "O campo Pedido_bs_x_ac não pode ser informado se loja != 201"
 
 Scenario: InfCriacaoPedido.Pedido_bs_x_marketplace
 	Given Pedido base
-	And Informo "loja" = "212"
+	When Informo "appsettings.Loja" = "212"
 	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "010"
 	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "212456799"
 	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "846"
@@ -27,7 +27,7 @@ Scenario: InfCriacaoPedido.Pedido_bs_x_marketplace
 
 Scenario: InfCriacaoPedido.Marketplace_codigo_origem
 	Given Pedido base
-	And Informo "loja" = "212"
+	When Informo "appsettings.Loja" = "212"
 	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "010"
 	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "987654123"
 	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "946"

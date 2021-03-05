@@ -95,7 +95,9 @@ namespace InfraBanco
                 .HasForeignKey(x => new { x.Fabricante, x.Produto });
 
             modelBuilder.Entity<TestoqueLog>()
-               .HasKey(x => new { x.Pedido_estoque_destino, x.Pedido_estoque_origem, x.Fabricante, x.Produto, x.Qtde_atendida });
+               .HasKey(x => new { x.Pedido_estoque_destino, 
+                   x.Pedido_estoque_origem, x.Fabricante, x.Produto, x.Qtde_atendida, x.Usuario, x.Operacao, 
+                   x.Cod_estoque_destino, x.Cod_estoque_origem });
 
             modelBuilder.Entity<TavisoExibido>()
                 .HasKey(x => new { x.Id, x.Usuario });

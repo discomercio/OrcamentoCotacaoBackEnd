@@ -68,6 +68,10 @@ namespace Especificacao.Testes.Utils
                         case "Boolean":
                             p.SetValue(destino, System.Boolean.Parse(valor));
                             break;
+                        case "DateTime":
+                            if (DateTime.TryParse(valor, out DateTime data))
+                                p.SetValue(destino, System.DateTime.Parse(valor));
+                            break;
                         default:
                             valor = ConverterCustoFinancFornecTipoParcelamento(campoSimples, valor);
                             if (valor.ToLower() == "null")

@@ -19,14 +19,14 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo60")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.PedidoFaltandoImplementarSteps")]
     public partial class Origem_PedidoFeature : object, Xunit.IClassFixture<Origem_PedidoFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "Especificacao.Pedido.Passo60"};
+                "Especificacao.Pedido.PedidoFaltandoImplementarSteps"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -43,7 +43,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "origem_pedido", null, ProgrammingLanguage.CSharp, new string[] {
-                        "Especificacao.Pedido.Passo60"});
+                        "Especificacao.Pedido.PedidoFaltandoImplementarSteps"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -80,12 +80,12 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
         
         public virtual void FeatureBackground()
         {
-#line 6
+#line 7
 #line hidden
-#line 8
+#line 9
  testRunner.Given("Ignorar cenário no ambiente \"Especificacao.Prepedido.PrepedidoSteps\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 10
+#line 11
  testRunner.Given("Ignorar cenário no ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Ca" +
                     "dastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
@@ -104,7 +104,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Validacao
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("somente para resolver a lista de dependencias", null, tagsOfScenario, argumentsOfScenario);
-#line 12
+#line 13
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -124,10 +124,10 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 6
+#line 7
 this.FeatureBackground();
 #line hidden
-#line 13
+#line 14
  testRunner.Given("Ignorar cenário no ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Ca" +
                         "dastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
@@ -138,11 +138,9 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="Validar origem_pedido")]
         [Xunit.TraitAttribute("FeatureTitle", "origem_pedido")]
         [Xunit.TraitAttribute("Description", "Validar origem_pedido")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void ValidarOrigem_Pedido()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar origem_pedido", null, tagsOfScenario, argumentsOfScenario);
 #line 16
@@ -165,7 +163,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 6
+#line 7
 this.FeatureBackground();
 #line hidden
 #line 26
@@ -199,11 +197,9 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="Validar origem_pedido2")]
         [Xunit.TraitAttribute("FeatureTitle", "origem_pedido")]
         [Xunit.TraitAttribute("Description", "Validar origem_pedido2")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void ValidarOrigem_Pedido2()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar origem_pedido2", null, tagsOfScenario, argumentsOfScenario);
 #line 41
@@ -226,7 +222,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 6
+#line 7
 this.FeatureBackground();
 #line hidden
 #line 50
@@ -251,11 +247,9 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="Validar origem_pedido3")]
         [Xunit.TraitAttribute("FeatureTitle", "origem_pedido")]
         [Xunit.TraitAttribute("Description", "Validar origem_pedido3")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void ValidarOrigem_Pedido3()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar origem_pedido3", null, tagsOfScenario, argumentsOfScenario);
 #line 57
@@ -278,7 +272,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 6
+#line 7
 this.FeatureBackground();
 #line hidden
 #line 70
@@ -303,11 +297,9 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="Validar origem_pedido4")]
         [Xunit.TraitAttribute("FeatureTitle", "origem_pedido")]
         [Xunit.TraitAttribute("Description", "Validar origem_pedido4")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void ValidarOrigem_Pedido4()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar origem_pedido4", null, tagsOfScenario, argumentsOfScenario);
 #line 77
@@ -330,7 +322,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 6
+#line 7
 this.FeatureBackground();
 #line hidden
 #line 78

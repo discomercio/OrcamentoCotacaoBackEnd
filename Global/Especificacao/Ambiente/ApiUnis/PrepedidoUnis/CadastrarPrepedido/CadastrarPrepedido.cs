@@ -360,5 +360,30 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             //não é implementado aqui porque nunca deve ser executado dentro de um prepedido
             throw new NotImplementedException();
         }
+
+        public void ThenTabelaVerificarCampo(string tabela, string campo, string valor)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(string produto, string campo, string valor)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(string produto, string campo, string valor)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void TabelaT_ESTOQUERegistroPaiVerificarCampo(string campo, string valor)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void TabelaT_ESTOQUE_LOGPedidoGeradoVerificarCampo(string produto, string operacao, string campo, string valor)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

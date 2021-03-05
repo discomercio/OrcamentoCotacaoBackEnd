@@ -364,6 +364,11 @@ namespace Especificacao.Especificacao.Pedido
         public void GivenTabelaComLojaAlterarCampo(string p0, int p1, string p2, int p3)
         {
         }
+        [Given(@"Tabela ""t_CONTROLE"" campo ""(.*)"" = ""(.*)"", alterar ""(.*)"" para ""(.*)""")]
+        public void GivenTabelaT_CONTROLECampoAlterarPara(string campo_tabela, string valor_tabela, string campo, int valor)
+        {
+
+        }
 
     }
 }

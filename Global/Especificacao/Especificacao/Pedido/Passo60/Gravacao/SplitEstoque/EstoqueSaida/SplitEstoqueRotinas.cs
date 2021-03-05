@@ -55,9 +55,11 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.Estoq
         public readonly string Id_pedido = "222292N";
         #endregion
 
-         public void ZerarTodoOEstoque()
+        public void ZerarTodoOEstoque()
         {
             using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            Insercao.Id_estoque = int.Parse((from c in db.Testoques
+                                             select c.Id_estoque).FirstOrDefault());
             GerenciamentoBancoSteps.LimparTabelaDbSet(db.TestoqueMovimentos);
             GerenciamentoBancoSteps.LimparTabelaDbSet(db.TestoqueItems);
             GerenciamentoBancoSteps.LimparTabelaDbSet(db.Testoques);
@@ -70,6 +72,12 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.Estoq
             var produto = Produtos.Produtos[nomeProduto];
 
             using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            //var idEstoque = (from c in db.Testoques
+            //                 where c.Id_nfe_emitente == Id_nfe_emitente
+            //                 select c.Id_estoque).FirstOrDefault();
+
+            //GerenciamentoBancoSteps.LimparTabelaDbSet(db.Testoques);
+
             db.Testoques.Add(new InfraBanco.Modelos.Testoque()
             {
                 Id_estoque = Insercao.Id_estoque.ToString(),
@@ -87,7 +95,6 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.Estoq
                 Id_estoque = Insercao.Id_estoque.ToString(),
                 Data_ult_movimento = DateTime.Now
             }); ;
-
 
             Insercao.Id_estoque++;
 
