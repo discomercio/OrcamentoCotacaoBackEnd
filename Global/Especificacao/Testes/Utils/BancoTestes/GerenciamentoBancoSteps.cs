@@ -205,7 +205,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
                     switch (valor)
                     {
                         case "data atual":
-                            valor_desejado = Newtonsoft.Json.JsonConvert.SerializeObject(DateTime.Now.Date).Replace("\"", "");
+                            valor_desejado = ProcessarDataAtual();
                             break;
 
                         default:
@@ -216,6 +216,16 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 }
             }
 
+        }
+
+        private static string ProcessarDataAtual()
+        {
+            string valor_desejado;
+            if (!ProvedorServicos.UsarSqlServerNosTestesAutomatizados)
+                valor_desejado = Newtonsoft.Json.JsonConvert.SerializeObject(DateTime.Now.Date).Replace("\"", "");
+            else
+                valor_desejado = DateTime.Now.Date.ToString();
+            return valor_desejado;
         }
 
         public void TabelaT_ESTOQUE_LOGPedidoGeradoVerificarCampo(string pedido, string operacao, string produto, string campo, string valor)
@@ -247,7 +257,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             {
                 
                 if (valor == "data atual")
-                    valor_desejado = Newtonsoft.Json.JsonConvert.SerializeObject(DateTime.Now.Date).Replace("\"", "");
+                    valor_desejado = ProcessarDataAtual();
                 else
                     valor_desejado = valor;
 
