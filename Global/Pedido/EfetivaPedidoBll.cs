@@ -1,5 +1,4 @@
-﻿
-using InfraBanco;
+﻿using InfraBanco;
 using InfraBanco.Modelos;
 using Microsoft.EntityFrameworkCore;
 using Pedido.Dados.Criacao;
@@ -11,6 +10,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using static Produto.Estoque.Estoque;
+using Pedido.Criacao.Passo60.Gravacao.Grava80;
+
 
 #nullable enable
 
@@ -368,7 +369,7 @@ namespace Pedido
                     opercao_origem, dbGravacao, lstErros);
             }
 
-            //VERIFICA SE O ENDEREÇO JÁ FOI USADO ANTERIORMENTE POR OUTRO CLIENTE(POSSÍVEL FRAUDE)
+            //VERIFICA SE O ENDEREÇO JÁ FOI USADO ANTERIORMENTE POR OUTRO CLIENTE (POSSÍVEL FRAUDE)
             //ENDEREÇO DO CADASTRO linha 2264
             if (indice_pedido == 1)
             {
@@ -835,7 +836,7 @@ namespace Pedido
             //passar o db ContextoBdGravacao
             var dbgravacao = contextoBdGravacao;
 
-            s_num = await UtilsGlobais.Util.GerarNsu(contextoBdGravacao, InfraBanco.Constantes.Constantes.NSU_PEDIDO_TEMPORARIO);
+            s_num = await UtilsGlobais.Nsu.GerarNsu(contextoBdGravacao, InfraBanco.Constantes.Constantes.NSU_PEDIDO_TEMPORARIO);
 
             if (!string.IsNullOrEmpty(s_num))
             {
@@ -904,158 +905,6 @@ namespace Pedido
             vl_total_RA_liquido = (vl_total - ((decimal)percentual_desagio_RA_liquido / 100) * vl_total);
 
             return vl_total_RA_liquido;
-        }
-
-        public bool CompararEnderecoParceiro(string end_logradouro_1, int end_numero_1, int end_cep_1,
-            string end_logradouro_2, int end_numero_2, int end_cep_2)
-        {
-            bool retorno = false;
-
-            const string PREFIXOS = "|R|RUA|AV|AVEN|AVENIDA|TV|TRAV|TRAVESSA|AL|ALAM|ALAMEDA|PC|PRACA|PQ|PARQUE|EST|ESTR|ESTRADA|CJ|CONJ|CONJUNTO|";
-            string[] v1, v2;
-            string s, s1, s2;
-            bool blnFlag, blnNumeroIgual;
-            string[] v_end_numero_1, v_end_numero_2;
-            int n_end_numero_1, n_end_numero_2;
-
-
-            string pedido_end_logradouro_1 = UtilsGlobais.Util.RemoverAcentos(end_logradouro_1);
-            int pedido_end_numero_1 = int.Parse(end_numero_1.ToString().Replace("-", ""));
-            int pedido_end_cep_1 = int.Parse(end_cep_1.ToString().Replace("-", ""));
-
-            string orcamentista_end_logradouro_2 = UtilsGlobais.Util.RemoverAcentos(end_logradouro_2);
-            int orcamentista_end_numero_2 = int.Parse(end_numero_2.ToString().Replace("-", ""));
-            int orcamentista_end_cep_2 = int.Parse(end_cep_2.ToString().Replace("-", ""));
-
-            if (pedido_end_cep_1 != orcamentista_end_cep_2)
-                return retorno;
-
-            blnNumeroIgual = false;
-
-            if (pedido_end_numero_1 == orcamentista_end_numero_2)
-                blnNumeroIgual = true;
-
-            if (!blnNumeroIgual)
-            {
-                v_end_numero_1 = pedido_end_numero_1.ToString().Split("/");
-                n_end_numero_1 = 0;
-
-                foreach (var v in v_end_numero_1)
-                {
-                    if (!string.IsNullOrEmpty(v))
-                        n_end_numero_1++;
-                }
-
-                v_end_numero_2 = orcamentista_end_numero_2.ToString().Split("/");
-                n_end_numero_2 = 0;
-
-                foreach (var v in v_end_numero_2)
-                {
-                    if (!string.IsNullOrEmpty(v))
-                        n_end_numero_2++;
-                }
-
-                if (n_end_numero_1 == 1 && n_end_numero_2 == 1)
-                {
-                    if (pedido_end_numero_1 != orcamentista_end_numero_2)
-                        return retorno;
-                }
-                else
-                {
-                    foreach (var vend1 in v_end_numero_1)
-                    {
-                        if (!string.IsNullOrEmpty(vend1))
-                        {
-                            foreach (var vend2 in v_end_numero_2)
-                            {
-                                if (!string.IsNullOrEmpty(vend2))
-                                {
-                                    if (vend1.Trim() == vend2.Trim())
-                                    {
-                                        blnNumeroIgual = true;
-                                        break;
-                                    }
-                                }
-                            }
-                            if (blnNumeroIgual)
-                                break;
-                        }
-                    }
-                }
-            }
-
-            if (!blnNumeroIgual)
-                return retorno;
-
-            pedido_end_logradouro_1 = Regex.Replace(pedido_end_logradouro_1, "[^0-9a-zA-Z]+", "");
-            orcamentista_end_logradouro_2 = Regex.Replace(orcamentista_end_logradouro_2, "[^0-9a-zA-Z]+", "");
-
-            v1 = pedido_end_logradouro_1.Split(" ");
-            v2 = orcamentista_end_logradouro_2.Split(" ");
-
-            s1 = "";
-
-            foreach (var vend1 in v1)
-            {
-                blnFlag = false;
-
-                s = vend1.Trim();
-
-                if (!string.IsNullOrEmpty(s))
-                {
-                    if (string.IsNullOrEmpty(s1))
-                    {
-                        if (PREFIXOS.IndexOf("|" + s + "|") != -1)
-                            blnFlag = true;
-                    }
-                    else
-                        blnFlag = false;
-
-                    if (blnFlag)
-                    {
-                        if (!string.IsNullOrEmpty(s1))
-                            s1 += " ";
-
-                        s1 += " ";
-                    }
-
-                }
-            }
-
-            s2 = "";
-
-            foreach (var vend2 in v2)
-            {
-                blnFlag = false;
-
-                s = vend2.Trim();
-
-                if (!string.IsNullOrEmpty(s))
-                {
-                    if (string.IsNullOrEmpty(s2))
-                    {
-                        if (PREFIXOS.IndexOf("|" + s + "|") != -1)
-                            blnFlag = true;
-                    }
-                    else
-                        blnFlag = false;
-
-                    if (blnFlag)
-                    {
-                        if (!string.IsNullOrEmpty(s2))
-                            s2 += " ";
-
-                        s2 += " ";
-                    }
-
-                }
-            }
-
-            if (s1 != s2)
-                return retorno;
-
-            return retorno = true;
-
         }
 
         public string Normaliza_num_pedido(string id_pedido)
@@ -1246,13 +1095,13 @@ namespace Pedido
 
                     foreach (var tPedidoEndConfrontacao in lstTpedidoEndConfrontacao)
                     {
-                        if (CompararEnderecoParceiro(cliente.Endereco,
-                            int.Parse(cliente.Endereco_Numero), int.Parse(cliente.Cep),
+                        if (Pedido.Criacao.Passo60.Gravacao.Grava80.CompararEndereco.IsEnderecoIgual(cliente.Endereco,
+                            cliente.Endereco_Numero, cliente.Cep,
                             tPedidoEndConfrontacao.Pedido.Endereco_logradouro,
-                            int.Parse(tPedidoEndConfrontacao.Pedido.Endereco_numero),
-                            int.Parse(tPedidoEndConfrontacao.Pedido.Endereco_cep)))
+                            tPedidoEndConfrontacao.Pedido.Endereco_numero,
+                            tPedidoEndConfrontacao.Pedido.Endereco_cep))
                         {
-                            vAnEndConfrontacao.Add(new Cl_ANALISE_ENDERECO_CONFRONTACAO(tPedidoEndConfrontacao));
+                            vAnEndConfrontacao.Add(Cl_ANALISE_ENDERECO_CONFRONTACAO.Construir(tPedidoEndConfrontacao));
                             if (vAnEndConfrontacao.Count >=
                                 InfraBanco.Constantes.Constantes.MAX_AN_ENDERECO_QTDE_PEDIDOS_CADASTRAMENTO)
                             {
@@ -1308,18 +1157,18 @@ namespace Pedido
 
                     //verificar se o endereço é igual
                     //CompararEndereco do cadastro do cliente com o orçamentista aqui
-                    if (CompararEnderecoParceiro(pedidonovoTrocaId.Endereco_logradouro,
-                        int.Parse(pedidonovoTrocaId.Endereco_numero),
-                        int.Parse(pedidonovo.Endereco_cep.Replace("-", "")),
+                    if (Pedido.Criacao.Passo60.Gravacao.Grava80.CompararEndereco.IsEnderecoIgual(pedidonovoTrocaId.Endereco_logradouro,
+                        pedidonovoTrocaId.Endereco_numero,
+                        pedidonovo.Endereco_cep.Replace("-", ""),
                         torcamentista.Endereco,
-                        int.Parse(torcamentista.Endereco_Numero),
-                        int.Parse(torcamentista.Cep.Replace("-", ""))))
+                        torcamentista.Endereco_Numero,
+                        torcamentista.Cep.Replace("-", "")))
                     {
                         blnAnalisaEndereco_ComUsaEndParcrceiro = true;
 
                         //gerar fin_gera_nsu
-                        intNsuPai = await pedidoBll.Fin_gera_nsu(InfraBanco.Constantes.Constantes.T_PEDIDO_ANALISE_ENDERECO,
-                            lstErros, dbGravacao);
+                        intNsuPai = await UtilsGlobais.Nsu.Fin_gera_nsu(InfraBanco.Constantes.Constantes.T_PEDIDO_ANALISE_ENDERECO,
+                            dbGravacao);
 
                         if (intNsuPai == 0)
                         {
@@ -1406,15 +1255,15 @@ namespace Pedido
 
             foreach (var tPedidoEndConfrontacao in lstTpedidoEndConfrontacao)
             {
-                if (CompararEnderecoParceiro(cliente.Endereco,
-                    int.Parse(cliente.Endereco_Numero), int.Parse(cliente.Cep),
+                if (Pedido.Criacao.Passo60.Gravacao.Grava80.CompararEndereco.IsEnderecoIgual(cliente.Endereco,
+                    cliente.Endereco_Numero, cliente.Cep,
                     tPedidoEndConfrontacao.Pedido.Endereco_logradouro,
-                    int.Parse(tPedidoEndConfrontacao.Pedido.Endereco_numero),
-                    int.Parse(tPedidoEndConfrontacao.Pedido.Endereco_cep)))
+                    tPedidoEndConfrontacao.Pedido.Endereco_numero,
+                    tPedidoEndConfrontacao.Pedido.Endereco_cep))
                 {
                     //if (vAnEndConfrontacao.Count != 0)
                     //{
-                    vAnEndConfrontacao.Add(new Cl_ANALISE_ENDERECO_CONFRONTACAO(tPedidoEndConfrontacao));
+                    vAnEndConfrontacao.Add(Cl_ANALISE_ENDERECO_CONFRONTACAO.Construir(tPedidoEndConfrontacao));
 
                     if (vAnEndConfrontacao.Count >=
                         InfraBanco.Constantes.Constantes.MAX_AN_ENDERECO_QTDE_PEDIDOS_CADASTRAMENTO)
@@ -1443,8 +1292,8 @@ namespace Pedido
                     if (!blnGravouRegPai)
                     {
                         blnGravouRegPai = true;
-                        intNsuPai = await pedidoBll.Fin_gera_nsu(InfraBanco.Constantes.Constantes.T_PEDIDO_ANALISE_ENDERECO,
-                            lstErros, dbGravacao);
+                        intNsuPai = await UtilsGlobais.Nsu.Fin_gera_nsu(InfraBanco.Constantes.Constantes.T_PEDIDO_ANALISE_ENDERECO,
+                            dbGravacao);
 
                         if (intNsuPai == 0)
                         {
@@ -1477,8 +1326,8 @@ namespace Pedido
                         }
                     }
 
-                    intNsu = await pedidoBll.Fin_gera_nsu(InfraBanco.Constantes.Constantes.T_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO,
-                        lstErros, dbGravacao);
+                    intNsu = await UtilsGlobais.Nsu.Fin_gera_nsu(InfraBanco.Constantes.Constantes.T_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO,
+                        dbGravacao);
 
                     if (intNsu == 0)
                     {
@@ -1521,16 +1370,16 @@ namespace Pedido
             TorcamentistaEindicador torcamentista = await prepedidoBll.BuscarTorcamentista(pedidonovoTrocaId.Indicador);
 
             //verificar se o endereço é igual
-            if (CompararEnderecoParceiro(pedidonovo.EndEtg_Endereco, int.Parse(pedidonovoTrocaId.EndEtg_Endereco_Numero),
-                int.Parse(pedidonovoTrocaId.EndEtg_Cep.Replace("-", "")), torcamentista.Endereco,
-                int.Parse(torcamentista.Endereco_Numero),
-                int.Parse(torcamentista.Cep.Replace("-", ""))))
+            if (Pedido.Criacao.Passo60.Gravacao.Grava80.CompararEndereco.IsEnderecoIgual(pedidonovo.EndEtg_Endereco, pedidonovoTrocaId.EndEtg_Endereco_Numero,
+                pedidonovoTrocaId.EndEtg_Cep.Replace("-", ""), torcamentista.Endereco,
+                torcamentista.Endereco_Numero,
+                torcamentista.Cep.Replace("-", "")))
             {
                 //blnAnEnderecoEndEntregaUsaEndParceiro = true;
                 blnAnalisarEndereco = true;
 
-                intNsuPai = await pedidoBll.Fin_gera_nsu(InfraBanco.Constantes.Constantes.T_PEDIDO_ANALISE_ENDERECO,
-                            lstErros, dbGravacao);
+                intNsuPai = await UtilsGlobais.Nsu.Fin_gera_nsu(InfraBanco.Constantes.Constantes.T_PEDIDO_ANALISE_ENDERECO,
+                            dbGravacao);
 
                 if (intNsuPai == 0)
                 {
@@ -1539,8 +1388,8 @@ namespace Pedido
                 }
                 else
                 {
-                    intNsu = await pedidoBll.Fin_gera_nsu(InfraBanco.Constantes.Constantes.T_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO,
-                            lstErros, dbGravacao);
+                    intNsu = await UtilsGlobais.Nsu.Fin_gera_nsu(InfraBanco.Constantes.Constantes.T_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO,
+                            dbGravacao);
 
                     TpedidoAnaliseEndereco tpedidoAnaliseEnd = new TpedidoAnaliseEndereco();
 
@@ -1563,8 +1412,8 @@ namespace Pedido
 
                 if (lstErros.Count == 0)
                 {
-                    intNsu = await pedidoBll.Fin_gera_nsu(InfraBanco.Constantes.Constantes.T_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO,
-                            lstErros, dbGravacao);
+                    intNsu = await UtilsGlobais.Nsu.Fin_gera_nsu(InfraBanco.Constantes.Constantes.T_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO,
+                            dbGravacao);
 
                     if (intNsuPai == 0)
                     {

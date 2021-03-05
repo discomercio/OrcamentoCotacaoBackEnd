@@ -1,16 +1,16 @@
-﻿using System;
+﻿using Pedido.Dados.Criacao;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Pedido.Dados.Criacao
+namespace Pedido.Criacao.Passo60.Gravacao.Grava80
 {
     public class Cl_ANALISE_ENDERECO_CONFRONTACAO
     {
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
-        public Cl_ANALISE_ENDERECO_CONFRONTACAO(TpedidoEnderecoConfrontacaoDados tPedidoEndConfrontacao)
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        //todo: apagar esta rotina
+        public static Cl_ANALISE_ENDERECO_CONFRONTACAO Construir(TpedidoEnderecoConfrontacaoDados tPedidoEndConfrontacao)
         {
-            Construir(
+            return new Cl_ANALISE_ENDERECO_CONFRONTACAO(
                 pedido: tPedidoEndConfrontacao.Pedido.Pedido,
                 id_cliente: tPedidoEndConfrontacao.Pedido.Id_Cliente,
                 tipo_endereco: tPedidoEndConfrontacao.TipoEndreco,
@@ -24,17 +24,16 @@ namespace Pedido.Dados.Criacao
             );
         }
 
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
-        public Cl_ANALISE_ENDERECO_CONFRONTACAO(string pedido, string id_cliente,
-            string tipo_endereco, string endereco_logradouro, string endereco_bairro,
-            string endereco_cidade, string endereco_uf, string endereco_cep,
-            string endereco_numero, string endereco_complemento)
-#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
+        public Cl_ANALISE_ENDERECO_CONFRONTACAO()
         {
-            Construir(pedido, id_cliente, tipo_endereco, endereco_logradouro, endereco_bairro, endereco_cidade, endereco_uf, endereco_cep, endereco_numero, endereco_complemento);
+            //temos um construtor sem parâmetors porque ficou bem mais claro no Grava80 porque não podemos usar parâmetros nomeados dentro do select
+            //e por isso as propriedads tem get e set
         }
 
-        private void Construir(string pedido, string id_cliente, string tipo_endereco, string endereco_logradouro, string endereco_bairro, string endereco_cidade, string endereco_uf, string endereco_cep, string endereco_numero, string endereco_complemento)
+        public Cl_ANALISE_ENDERECO_CONFRONTACAO(string? pedido, string? id_cliente,
+            string? tipo_endereco, string? endereco_logradouro, string? endereco_bairro,
+            string? endereco_cidade, string? endereco_uf, string? endereco_cep,
+            string? endereco_numero, string? endereco_complemento)
         {
             Pedido = pedido;
             Id_cliente = id_cliente;
@@ -48,16 +47,20 @@ namespace Pedido.Dados.Criacao
             Endereco_complemento = endereco_complemento;
         }
 
-        public string Pedido { get; private set; }
-        public string Id_cliente { get; private set; }
-        public string Tipo_endereco { get; private set; }
-        public string Endereco_logradouro { get; private set; }
-        public string Endereco_bairro { get; private set; }
-        public string Endereco_cidade { get; private set; }
-        public string Endereco_uf { get; private set; }
-        public string Endereco_cep { get; private set; }
-        public string Endereco_numero { get; private set; }
-        public string Endereco_complemento { get; private set; }
+
+        //temos um construtor sem parâmetors porque ficou bem mais claro no Grava80 porque não podemos usar parâmetros nomeados dentro do select
+        //e por isso as propriedads tem get e set
+        public string? Pedido { get; set; }
+        public string? Id_cliente { get; set; }
+        public string? Tipo_endereco { get; set; }
+        public string? Endereco_logradouro { get; set; }
+        public string? Endereco_bairro { get; set; }
+        public string? Endereco_cidade { get; set; }
+        public string? Endereco_uf { get; set; }
+        public string? Endereco_cep { get; set; }
+        public string? Endereco_numero { get; set; }
+        public string? Endereco_complemento { get; set; }
+        public DateTime? Data_hora { get; set; }
 
     }
 }

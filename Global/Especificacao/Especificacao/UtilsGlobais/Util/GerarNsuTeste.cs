@@ -37,8 +37,8 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
         public void TesteSemNsu()
         {
             using var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing();
-            Assert.ThrowsAnyAsync<ArgumentException>(() => global::UtilsGlobais.Util.GerarNsu(dbgravacao, null)).Wait();
-            Assert.ThrowsAnyAsync<ArgumentException>(() => global::UtilsGlobais.Util.GerarNsu(dbgravacao, "um nsu que não existe")).Wait();
+            Assert.ThrowsAnyAsync<ArgumentException>(() => global::UtilsGlobais.Nsu.GerarNsu(dbgravacao, null)).Wait();
+            Assert.ThrowsAnyAsync<ArgumentException>(() => global::UtilsGlobais.Nsu.GerarNsu(dbgravacao, "um nsu que não existe")).Wait();
         }
 
         [Fact]
@@ -54,7 +54,7 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
                 dbgravacao.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = "nao-numero", Dt_Ult_Atualizacao = DateTime.Now.AddDays(-720) /* 2 anos para trás */ });
                 dbgravacao.SaveChanges();
                 dbgravacao.transacao.Commit();
-                Assert.ThrowsAnyAsync<Exception>(() => global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES)).Wait();
+                Assert.ThrowsAnyAsync<Exception>(() => global::UtilsGlobais.Nsu.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES)).Wait();
             }
 
         }
@@ -70,7 +70,7 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
                 dbgravacao.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = "nao-numero", Dt_Ult_Atualizacao = DateTime.Now.AddDays(-720) /* 2 anos para trás */ });
                 dbgravacao.SaveChanges();
                 dbgravacao.transacao.Commit();
-                Assert.ThrowsAnyAsync<Exception>(() => global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES)).Wait();
+                Assert.ThrowsAnyAsync<Exception>(() => global::UtilsGlobais.Nsu.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES)).Wait();
             }
 
             Funcionando();
@@ -85,13 +85,13 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
             dbgravacao.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = "000000645506", Dt_Ult_Atualizacao = DateTime.Now.AddDays(-720) /* 2 anos para trás */ });
             dbgravacao.SaveChanges();
             dbgravacao.transacao.Commit();
-            Assert.Equal("000000645507", global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
-            Assert.Equal("000000645508", global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
-            Assert.Equal("000000645509", global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
-            Assert.Equal("000000645510", global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
-            Assert.Equal("000000645511", global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
-            Assert.Equal("000000645512", global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
-            Assert.Equal("000000645513", global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
+            Assert.Equal("000000645507", global::UtilsGlobais.Nsu.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
+            Assert.Equal("000000645508", global::UtilsGlobais.Nsu.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
+            Assert.Equal("000000645509", global::UtilsGlobais.Nsu.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
+            Assert.Equal("000000645510", global::UtilsGlobais.Nsu.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
+            Assert.Equal("000000645511", global::UtilsGlobais.Nsu.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
+            Assert.Equal("000000645512", global::UtilsGlobais.Nsu.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
+            Assert.Equal("000000645513", global::UtilsGlobais.Nsu.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
         }
 
 
@@ -113,8 +113,8 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
                 });
                 dbgravacao.SaveChanges();
                 dbgravacao.transacao.Commit();
-                Assert.Equal("001234567891", global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
-                Assert.Equal("001234567892", global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
+                Assert.Equal("001234567891", global::UtilsGlobais.Nsu.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
+                Assert.Equal("001234567892", global::UtilsGlobais.Nsu.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
             }
 
             //agora mudamos a data
@@ -132,12 +132,12 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
                 });
                 dbgravacao.SaveChanges();
                 dbgravacao.transacao.Commit();
-                Assert.Equal("000000000001", global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
-                Assert.Equal("000000000002", global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
-                Assert.Equal("000000000003", global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
-                Assert.Equal("000000000004", global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
-                Assert.Equal("000000000005", global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
-                Assert.Equal("000000000006", global::UtilsGlobais.Util.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
+                Assert.Equal("000000000001", global::UtilsGlobais.Nsu.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
+                Assert.Equal("000000000002", global::UtilsGlobais.Nsu.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
+                Assert.Equal("000000000003", global::UtilsGlobais.Nsu.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
+                Assert.Equal("000000000004", global::UtilsGlobais.Nsu.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
+                Assert.Equal("000000000005", global::UtilsGlobais.Nsu.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
+                Assert.Equal("000000000006", global::UtilsGlobais.Nsu.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES).Result);
 
                 //tem que ter mudado a letra e a data
                 var controle = (from c in dbgravacao.Tcontroles where c.Id_Nsu == Constantes.NSU_CADASTRO_CLIENTES select c).First();

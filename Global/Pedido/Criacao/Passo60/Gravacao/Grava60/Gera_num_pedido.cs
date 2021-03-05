@@ -14,7 +14,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
         {
             string s_num = "";
 
-            s_num = await UtilsGlobais.Util.GerarNsu(contextoBdGravacao, InfraBanco.Constantes.Constantes.NSU_PEDIDO);
+            s_num = await UtilsGlobais.Nsu.GerarNsu(contextoBdGravacao, InfraBanco.Constantes.Constantes.NSU_PEDIDO);
 
             if (string.IsNullOrEmpty(s_num))
             {
