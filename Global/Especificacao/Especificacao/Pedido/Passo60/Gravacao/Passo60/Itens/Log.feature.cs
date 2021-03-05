@@ -85,6 +85,12 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60.Itens
         {
 #line 5
 #line hidden
+#line 6
+ testRunner.Given("Ignorar cenário no ambiente \"Especificacao.Prepedido.PrepedidoSteps\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 7
+ testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
         }
         
         void System.IDisposable.Dispose()
@@ -102,7 +108,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60.Itens
                     "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Log dos itens - acho que esse é de split", null, tagsOfScenario, argumentsOfScenario);
-#line 9
+#line 11
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -125,7 +131,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 18
+#line 20
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             }
@@ -140,7 +146,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Log dos itens - pedido pai", null, tagsOfScenario, argumentsOfScenario);
-#line 20
+#line 22
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -163,22 +169,19 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 45
- testRunner.Given("Ignorar cenário no ambiente \"Especificacao.Prepedido.PrepedidoSteps\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 46
+#line 47
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 47
+#line 48
  testRunner.When("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 48
+#line 49
  testRunner.When("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 49
+#line 50
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 50
+#line 51
  testRunner.And(@"Tabela ""t_LOG"" pedido gerado e operacao = ""OP_LOG_PEDIDO_NOVO"", verificar campo ""complemento"" = ""2x003220(003); preco_lista=626,58; desc_dado=0; preco_venda=626,58; preco_NF=626,58; custoFinancFornecCoeficiente=1; custoFinancFornecPrecoListaBase=626,58; estoque_vendido=2;\r 2x003221(003); preco_lista=939,87; desc_dado=0; preco_venda=939,87; preco_NF=939,87; custoFinancFornecCoeficiente=1; custoFinancFornecPrecoListaBase=939,87; estoque_vendido=2""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -193,7 +196,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Log dos itens - sem presenca de estoque", null, tagsOfScenario, argumentsOfScenario);
-#line 52
+#line 53
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -216,40 +219,34 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 53
- testRunner.Given("Ignorar cenário no ambiente \"Especificacao.Prepedido.PrepedidoSteps\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 54
- testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 55
  testRunner.Given("Usar produto \"um\" como fabricante = \"003\", produto = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 56
+#line 55
  testRunner.And("Usar produto \"dois\" como fabricante = \"003\", produto = \"003221\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 57
+#line 56
  testRunner.And("Zerar todo o estoque", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 58
+#line 57
  testRunner.Given("Definir saldo de estoque = \"0\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 59
+#line 58
  testRunner.Given("Definir saldo de estoque = \"0\" para produto \"dois\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 60
+#line 59
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 61
+#line 60
  testRunner.When("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 62
+#line 61
  testRunner.When("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 63
+#line 62
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 64
+#line 63
  testRunner.And(@"Tabela ""t_LOG"" pedido gerado e operacao = ""OP_LOG_PEDIDO_NOVO"", verificar campo ""complemento"" = ""2x003220(003); preco_lista=626,58; desc_dado=0; preco_venda=626,58; preco_NF=626,58; custoFinancFornecCoeficiente=1; custoFinancFornecPrecoListaBase=626,58; estoque_sem_presenca=2;\r 2x003221(003); preco_lista=939,87; desc_dado=0; preco_venda=939,87; preco_NF=939,87; custoFinancFornecCoeficiente=1; custoFinancFornecPrecoListaBase=939,87; estoque_sem_presenca=2""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -264,7 +261,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Log dos itens - estoque vendido e sem presenca de estoque Magento", null, tagsOfScenario, argumentsOfScenario);
-#line 66
+#line 65
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -287,44 +284,41 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 67
+#line 66
  testRunner.Given("Ignorar cenário no ambiente \"Especificacao.Prepedido.PrepedidoSteps\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 69
+#line 68
  testRunner.Given("Ignorar cenário no ambiente \"Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadas" +
                         "trarPedido.CadastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 70
- testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 71
+#line 69
  testRunner.Given("Usar produto \"um\" como fabricante = \"003\", produto = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 72
+#line 70
  testRunner.And("Usar produto \"dois\" como fabricante = \"003\", produto = \"003221\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 73
+#line 71
  testRunner.And("Zerar todo o estoque", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 74
+#line 72
  testRunner.Given("Definir saldo de estoque = \"1\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 75
+#line 73
  testRunner.Given("Definir saldo de estoque = \"1\" para produto \"dois\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 76
+#line 74
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 77
+#line 75
  testRunner.When("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 78
+#line 76
  testRunner.When("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 79
+#line 77
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 80
+#line 78
  testRunner.And(@"Tabela ""t_LOG"" pedido gerado e operacao = ""OP_LOG_PEDIDO_NOVO"", verificar campo ""complemento"" = ""2x003220(003); preco_lista=626,58; desc_dado=0; preco_venda=626,58; preco_NF=626,58; custoFinancFornecCoeficiente=1; custoFinancFornecPrecoListaBase=626,58; estoque_vendido=1; estoque_sem_presenca=1;\r 2x003221(003); preco_lista=939,87; desc_dado=0; preco_venda=939,87; preco_NF=939,87; custoFinancFornecCoeficiente=1; custoFinancFornecPrecoListaBase=939,87; estoque_vendido=1; estoque_sem_presenca=1""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -339,7 +333,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Log dos itens - estoque vendido e sem presenca de estoque Loja", null, tagsOfScenario, argumentsOfScenario);
-#line 82
+#line 80
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -362,45 +356,105 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 83
+#line 81
  testRunner.Given("Ignorar cenário no ambiente \"Especificacao.Prepedido.PrepedidoSteps\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 85
+#line 83
  testRunner.Given("Ignorar cenário no ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Ca" +
                         "dastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 86
- testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 87
+#line 84
  testRunner.Given("Usar produto \"um\" como fabricante = \"003\", produto = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 88
+#line 85
  testRunner.And("Usar produto \"dois\" como fabricante = \"003\", produto = \"003221\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 89
+#line 86
  testRunner.And("Zerar todo o estoque", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 90
+#line 87
  testRunner.Given("Definir saldo de estoque = \"1\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 91
+#line 88
  testRunner.Given("Definir saldo de estoque = \"1\" para produto \"dois\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 92
+#line 89
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 93
+#line 90
  testRunner.When("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 94
+#line 91
  testRunner.When("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 95
+#line 92
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 96
+#line 93
  testRunner.And(@"Tabela ""t_LOG"" pedido gerado e operacao = ""OP_LOG_PEDIDO_NOVO"", verificar campo ""complemento"" = ""2x003220(003); preco_lista=626,58; desc_dado=0; preco_venda=626,58; preco_NF=626,58; custoFinancFornecCoeficiente=1; custoFinancFornecPrecoListaBase=626,58; estoque_vendido=1; estoque_sem_presenca=1;\r 2x003221(003); preco_lista=939,87; desc_dado=0; preco_venda=939,87; preco_NF=939,87; custoFinancFornecCoeficiente=1; custoFinancFornecPrecoListaBase=939,87; estoque_vendido=1; estoque_sem_presenca=1""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableTheoryAttribute(DisplayName="Verificar t_LOG - Magento")]
+        [Xunit.TraitAttribute("FeatureTitle", "Especificacao\\Pedido\\Passo60\\Gravacao\\Passo60\\Itens\\Log")]
+        [Xunit.TraitAttribute("Description", "Verificar t_LOG - Magento")]
+        [Xunit.InlineDataAttribute("OP_LOG_PEDIDO_NOVO", "data", "data atual", new string[0])]
+        [Xunit.InlineDataAttribute("OP_LOG_PEDIDO_NOVO", "usuario", "USRMAG", new string[0])]
+        [Xunit.InlineDataAttribute("OP_LOG_PEDIDO_NOVO", "pedido", "176368N", new string[0])]
+        [Xunit.InlineDataAttribute("OP_LOG_PEDIDO_NOVO", "id_cliente", "000000645637", new string[0])]
+        [Xunit.InlineDataAttribute("OP_LOG_PEDIDO_NOVO", "loja", "202", new string[0])]
+        public virtual void VerificarT_LOG_Magento(string operacao, string campo, string valor, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("operacao", operacao);
+            argumentsOfScenario.Add("campo", campo);
+            argumentsOfScenario.Add("valor", valor);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verificar t_LOG - Magento", null, tagsOfScenario, argumentsOfScenario);
+#line 95
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 96
+ testRunner.Given("Ignorar cenário no ambiente \"Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadas" +
+                        "trarPedido.CadastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 98
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 100
+ testRunner.When("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 101
+ testRunner.When("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 102
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 103
+ testRunner.And(string.Format("Tabela \"t_LOG\" pedido gerado e operacao = \"OP_LOG_PEDIDO_NOVO\", verificar campo \"" +
+                            "{0}\" = \"{1}\"", campo, valor), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

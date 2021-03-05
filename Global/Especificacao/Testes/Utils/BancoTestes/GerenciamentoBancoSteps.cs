@@ -286,6 +286,26 @@ namespace Especificacao.Testes.Utils.BancoTestes
             {
                 switch (campo)
                 {
+                    case "usuario":
+                        Assert.Equal(registro.Usuario.ToUpper(), valor.ToUpper());
+                        break;
+                    case "loja":
+                        Assert.Equal(registro.Loja, valor);
+                        break;
+                    case "pedido":
+                        Assert.Equal(registro.Pedido.ToUpper(), valor.ToUpper());
+                        break;
+                    case "id_cliente":
+                        if (registro.Id_Cliente.Count() != 12)
+                            Assert.Equal("", $"{campo} não contém a quantidade correta de carcateres.");
+                        Assert.Equal(registro.Id_Cliente, valor);
+                        break;
+                    case "data":
+                        DateTime data_atual = DateTime.Now;
+                        Assert.Equal(registro.Data.Date, data_atual.Date);
+                        Assert.Equal(registro.Data.Hour, data_atual.Hour);
+                        Assert.Equal(registro.Data.Minute, data_atual.Minute);
+                        break;
                     case "complemento":
                         if (valor.Contains("\\r")) valor = valor.Replace("\\r", "\r");
                         Assert.Contains(valor.ToLower(), registro.Complemento.ToLower());
