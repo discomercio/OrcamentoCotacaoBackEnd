@@ -255,7 +255,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             string valor_desejado = "";
             foreach (var registro in registros)
             {
-                
+
                 if (valor == "data atual")
                     valor_desejado = ProcessarDataAtual();
                 else
@@ -264,6 +264,50 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 VerificarCampoEmRegistro.VerificarRegistro<TestoqueLog>(campo, valor_desejado, registro);
             }
         }
+
+        public void TabelaT_LOGPedidoGeradoEOperacaoVerificarCampo(string pedido, string operacao, string campo, string valor)
+        {
+            //OP_LOG_PEDIDO_NOVO
+            //OP_LOG_ORCAMENTO_NOVO
+            switch (operacao)
+            {
+                case "OP_LOG_PEDIDO_NOVO":
+                    operacao = InfraBanco.Constantes.Constantes.OP_LOG_PEDIDO_NOVO;
+                    break;
+                case "OP_LOG_ORCAMENTO_NOVO":
+                    operacao = InfraBanco.Constantes.Constantes.OP_LOG_ORCAMENTO_NOVO;
+                    break;
+                default:
+                    Assert.Equal("Operação", $"{operacao} desconhecido");
+                    break;
+            }
+            var db = contextoBdProvider.GetContextoLeitura();
+            var registros = (from log in db.Tlogs
+                             where log.Pedido == pedido &&
+                                   log.Operacao == operacao
+                             select log).ToList();
+
+            Assert.True(registros.Any());
+
+            if (registros.Count > 1)
+                Assert.Equal("Erro", $"t_LOG tem mais de um registro para o pedido ({pedido}) com operação ({operacao}).");
+
+            foreach (var registro in registros)
+            {
+                switch (campo)
+                {
+                    case "complemento":
+                        if (valor.Contains("\\r")) valor = valor.Replace("\\r", "\r");
+                        Assert.Contains(valor.ToLower(), registro.Complemento.ToLower());
+                        break;
+
+                    default:
+                        Assert.Equal("", $"{campo} desconhecido");
+                        break;
+                }
+            }
+        }
+
 
         [Given(@"Tabela ""t_OPERACAO"" apagar registro com campo ""id"" = ""(.*)""")]
         public void GivenTabelaT_operacao_ApagarRegistroComCampo(string valorBusca)

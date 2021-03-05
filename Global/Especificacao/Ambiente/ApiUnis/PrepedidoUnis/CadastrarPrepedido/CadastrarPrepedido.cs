@@ -385,5 +385,10 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         {
             throw new NotImplementedException();
         }
+
+        public void TabelaT_LOGPedidoGeradoEOperacaoVerificarCampo(string operacao, string campo, string valor)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

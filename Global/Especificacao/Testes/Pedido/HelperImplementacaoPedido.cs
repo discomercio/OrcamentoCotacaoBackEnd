@@ -344,5 +344,21 @@ namespace Especificacao.Testes.Pedido
             Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
             gerenciamentoBanco.TabelaT_ESTOQUE_LOGPedidoGeradoVerificarCampo(pedidoPaiGerado, operacao, produto, campo, valor);
         }
+
+        public void TabelaT_LOGPedidoGeradoEOperacaoVerificarCampo(string operacao, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_LOG", "pedido", "verificar campos", campo, valor, this);
+            var pedidoPaiGerado = AbstractPedidoPaiGerado();
+            if (string.IsNullOrEmpty(pedidoPaiGerado))
+            {
+                Assert.Equal("sem pedido gerado", pedidoPaiGerado ?? "");
+                throw new ArgumentNullException();
+            }
+
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            gerenciamentoBanco.TabelaT_LOGPedidoGeradoEOperacaoVerificarCampo(pedidoPaiGerado, operacao, campo, valor);
+
+        }
     }
 }

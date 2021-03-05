@@ -1,8 +1,10 @@
-﻿@ignore
-@Especificacao.Pedido.Passo60
+﻿@Especificacao.Pedido.Passo60
 Feature: calcula_total_RA_liquido_BD
 
-Scenario: calcula_total_RA_liquido_BD
+Background:
+	Given Ignorar cenário no ambiente "Especificacao.Prepedido.PrepedidoSteps"
+
+Scenario: calcula_total_RA_liquido_BD - magento
 	#loja/PedidoNovoConfirma.asp
 	#Para o pedido pai: chama a rotina calcula_total_RA_liquido_BD linha 2225 e atualiza vl_total_RA_liquido qtde_parcelas_desagio_RA st_tem_desagio_RA
 	#calcula_total_RA_liquido_BD(id_pedido, vl_total_RA_liquido, msg_erro)
@@ -23,10 +25,20 @@ Scenario: calcula_total_RA_liquido_BD
 	#		rs.Update
 	#		end if
 	#	end if
+	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
-	When Informo "PermiteRAStatus" = "1"
+	When Informo "Frete" = "10"
 	When Lista de itens "0" informo "Preco_NF" = "704.05"
 	When Lista de itens "1" informo "Preco_NF" = "1051.07"
-	When Informo "ValorTotalDestePedidoComRA" = "3510.24"
-	Then Tabela "t_PEDIDO" registro criado, verificar campo "vl_total_RA_liquido" = "40.0000"
+	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_total_RA_liquido" = "377.34"
 
+@ignore
+Scenario: calcula_total_RA_liquido_BD - Loja
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
+	Given Pedido base
+	When Informo "PermiteRaStatus" = "1"
+	When Lista de itens "0" informo "Preco_NF" = "704.05"
+	When Lista de itens "1" informo "Preco_NF" = "1051.07"
+	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_total_RA_liquido" = "377.34"

@@ -33,7 +33,6 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 LogTestes.LogTestes.ErroNosTestes($"ThenTabelaRegistroComCampoVerificarCampo {typeof(T).Name} campo {campo} valor errado, {desejado}, {original}");
             Assert.Equal(desejado, original);
         }
-
     }
 
     /*

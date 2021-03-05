@@ -77,6 +77,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 InicializarTabela<TclienteRefComercial>(db.TclienteRefComercials, null, db, apagarDadosExistentes);
                 InicializarTabela<TclienteRefBancaria>(db.TclienteRefBancarias, null, db, apagarDadosExistentes);
                 InicializarTabela<TestoqueLog>(db.TestoqueLogs, null, db, apagarDadosExistentes);
+                InicializarTabela<Tlog>(db.Tlogs, null, db, apagarDadosExistentes);
 
                 InicializarTabela<Tcliente>(db.Tclientes, "Tcliente", db, apagarDadosExistentes);
                 InicializarTabela<TcodigoDescricao>(db.TcodigoDescricaos, "TcodigoDescricao", db, apagarDadosExistentes);
