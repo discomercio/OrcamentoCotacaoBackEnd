@@ -19,14 +19,16 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60.Itens
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "ignore")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo60")]
+    [Xunit.TraitAttribute("Category", "GerenciamentoBanco")]
     public partial class EspecificacaoPedidoPasso60GravacaoPasso60ItensLogFeature : object, Xunit.IClassFixture<EspecificacaoPedidoPasso60GravacaoPasso60ItensLogFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore"};
+                "Especificacao.Pedido.Passo60",
+                "GerenciamentoBanco"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -43,7 +45,8 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60.Itens
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Especificacao\\Pedido\\Passo60\\Gravacao\\Passo60\\Itens\\Log", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ignore"});
+                        "Especificacao.Pedido.Passo60",
+                        "GerenciamentoBanco"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -78,20 +81,28 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60.Itens
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 5
+#line hidden
+        }
+        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Log dos itens")]
+        [Xunit.SkippableFactAttribute(DisplayName="Log dos itens - acho que esse é de split")]
         [Xunit.TraitAttribute("FeatureTitle", "Especificacao\\Pedido\\Passo60\\Gravacao\\Passo60\\Itens\\Log")]
-        [Xunit.TraitAttribute("Description", "Log dos itens")]
-        public virtual void LogDosItens()
+        [Xunit.TraitAttribute("Description", "Log dos itens - acho que esse é de split")]
+        [Xunit.TraitAttribute("Category", "ignore")]
+        public virtual void LogDosItens_AchoQueEsseEDeSplit()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Log dos itens", null, tagsOfScenario, argumentsOfScenario);
-#line 4
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Log dos itens - acho que esse é de split", null, tagsOfScenario, argumentsOfScenario);
+#line 9
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -111,8 +122,64 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 14
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 18
  testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Log dos itens - pedido pai")]
+        [Xunit.TraitAttribute("FeatureTitle", "Especificacao\\Pedido\\Passo60\\Gravacao\\Passo60\\Itens\\Log")]
+        [Xunit.TraitAttribute("Description", "Log dos itens - pedido pai")]
+        public virtual void LogDosItens_PedidoPai()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Log dos itens - pedido pai", null, tagsOfScenario, argumentsOfScenario);
+#line 20
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 45
+ testRunner.Given("Ignorar cenário no ambiente \"Especificacao.Prepedido.PrepedidoSteps\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 46
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 47
+ testRunner.When("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 48
+ testRunner.When("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 49
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 50
+ testRunner.And(@"Tabela ""t_LOG"" pedido gerado e operacao = ""OP_LOG_PEDIDO_NOVO"", verificar campo ""complemento"" = ""2x003220(003); preco_lista=626,58; desc_dado=0; preco_venda=626,58; preco_NF=626,58; custoFinancFornecCoeficiente=1; custoFinancFornecPrecoListaBase=626,58; estoque_vendido=2;\r 2x003221(003); preco_lista=939,87; desc_dado=0; preco_venda=939,87; preco_NF=939,87; custoFinancFornecCoeficiente=1; custoFinancFornecPrecoListaBase=939,87; estoque_vendido=2""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

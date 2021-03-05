@@ -104,6 +104,7 @@ namespace InfraBanco
         public DbSet<TcodigoDescricao> TcodigoDescricaos { get => contexto.TcodigoDescricaos; }
         public DbSet<Tloja> Tlojas { get => contexto.Tlojas; }
         public DbSet<Toperacao> Toperacaos { get => contexto.Toperacaos; }
+        public DbSet<Tlog> Tlogs { get => contexto.Tlogs; }
 
 #endif
 

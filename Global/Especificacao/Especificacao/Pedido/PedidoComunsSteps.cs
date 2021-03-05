@@ -400,5 +400,13 @@ namespace Especificacao.Especificacao.Pedido
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_ESTOQUE_LOG", "pedido", "verificar campos", campo, valor, this);
             base.TabelaT_ESTOQUE_LOGPedidoGeradoVerificarCampo(produto, operacao, campo, valor);
         }
+
+        [Then(@"Tabela ""t_LOG"" pedido gerado e operacao = ""(.*)"", verificar campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaT_LOGPedidoGeradoEOperacaoVerificarCampo(string operacao, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_LOG", "pedido", "verificar campos", campo, valor, this);
+            base.TabelaT_LOGPedidoGeradoEOperacaoVerificarCampo(operacao, campo, valor);
+        }
+
     }
 }
