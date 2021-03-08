@@ -7,7 +7,7 @@ Background: Configuracao
 	Given Reiniciar banco ao terminar cenário
 
 #Given Reiniciar banco
-@ignore
+
 Scenario: Log dos itens - acho que esse é de split
 	#loja/PedidoNovoConfirma.asp
 	#'	LOG
@@ -17,7 +17,16 @@ Scenario: Log dos itens - acho que esse é de split
 	#				" Qtde Sem Presença Autorizada = " & Cstr(qtde_spe) & "," & _
 	#				" Qtde Estoque Vendido = " & Cstr(qtde_estoque_vendido_aux) & "," & _
 	#				" Qtde Sem Presença = " & Cstr(qtde_estoque_sem_presenca_aux)
-	When Fazer esta validação
+	Given Usar produto "um" como fabricante = "003", produto = "003220"
+	And Usar produto "dois" como fabricante = "003", produto = "003221"
+	And Zerar todo o estoque
+	Given Definir saldo de estoque = "0" para produto "um"
+	Given Definir saldo de estoque = "0" para produto "dois"
+	Given Pedido base
+	When Recalcular totais do pedido
+	When Deixar forma de pagamento consistente
+	Then Sem nenhum erro
+	And Tabela "t_LOG" pedido gerado e operacao = "OP_LOG_PEDIDO_NOVO", verificar campo "complemento" = "(003)003220: qtde solicitada = 2, qtde sem presença autorizada = 2, qtde estoque vendido = 0, qtde sem presença = 2\r(003)003221: qtde solicitada = 2, qtde sem presença autorizada = 2, qtde estoque vendido = 0, qtde sem presença = 2"
 
 Scenario: Log dos itens - pedido pai
 	#MONTA LOG DOS ITENS
