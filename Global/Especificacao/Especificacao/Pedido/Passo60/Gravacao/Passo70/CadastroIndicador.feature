@@ -24,10 +24,13 @@ Scenario: CadastroIndicador
 	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "35270445824", verificar campo "indicador" = "POLITÉCNIC"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "indicador" = "POLITÉCNIC"
 
-@ignore
-Scenario: Log indicador
-	#Given Tabela t_CLIENTE registro com cpf_cnpj = "14039603052" alterar campo "indicador" = ""
+
+Scenario: Log indicador - magento
+	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
+	Then Sem nenhum erro
+	Given Pedido base
+	Given Tabela t_CLIENTE registro com cpf_cnpj = "14039603052" alterar campo "indicador" = ""
 	When Informo "Frete" = "10.00"
 	Then Sem nenhum erro
 	And Tabela "t_LOG" pedido gerado e operacao = "OP_LOG_PEDIDO_NOVO", verificar campo "complemento" = "cadastrado o indicador 'frete' no cliente id=000000645637;"

@@ -106,7 +106,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
             argumentsOfScenario.Add("produtor_rural_status", produtor_Rural_Status);
             argumentsOfScenario.Add("resultado", resultado);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Testar multi_cd_regra_determina_tipo_pessoa", null, tagsOfScenario, argumentsOfScenario);
-#line 32
+#line 30
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -126,17 +126,9 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 33
- testRunner.Given(string.Format("tipo_cliente = {0}", tipo_Cliente), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 34
- testRunner.And(string.Format("contribuinte_icms_status = {0}", contribuinte_Icms_Status), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 35
- testRunner.And(string.Format("produtor_rural_status = {0}", produtor_Rural_Status), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 36
- testRunner.Then(string.Format("multi_cd_regra_determina_tipo_pessoa = {0}", resultado), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 31
+ testRunner.Then(string.Format("Chamar rotina MULTI_CD_REGRA_DETERMINA_TIPO_PESSOA tipo cliente = \"{0}\", contribu" +
+                            "inte = \"{1}\", produtor rural = \"{2}\" e resultado = \"{3}\"", tipo_Cliente, contribuinte_Icms_Status, produtor_Rural_Status, resultado), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
