@@ -32,6 +32,7 @@ namespace Pedido
             this.PrepedidoBll = prepedidoBll;
         }
 
+        //todo: revsiar VerificarPagtoPreferencial
         public float VerificarPagtoPreferencial(Tparametro? tParametro, PedidoCriacaoDados pedido,
             float percDescComissaoUtilizar, Pedido.Criacao.Execucao.UtilsLoja.PercentualMaxDescEComissao percentualMax, decimal vl_total)
         {
@@ -1140,66 +1141,6 @@ namespace Pedido
                                                           select c).FirstOrDefaultAsync();
 
             return transportadoraCep;
-        }
-
-        public async Task<int> Fin_gera_nsu(string id_nsu, List<string> lstErros, ContextoBdGravacao dbgravacao)
-        {
-            int intRetorno = 0;
-            //int intRecordsAffected = 0;
-            //int intQtdeTentativas, intNsuUltimo, intNsuNovo;
-            //bool blnSucesso = true;
-            int nsu = 0;
-
-            //conta a qtde de id
-            var qtdeIdFin = from c in dbgravacao.TfinControles
-                            where c.Id == id_nsu
-                            select c.Id;
-
-
-            if (qtdeIdFin != null)
-            {
-                intRetorno = await qtdeIdFin.CountAsync();
-            }
-
-            //não está cadastrado, então cadastra agora 
-            if (intRetorno == 0)
-            {
-                //criamos um novo para salvar
-                TfinControle tfinControle = new TfinControle();
-
-                tfinControle.Id = id_nsu;
-                tfinControle.Nsu = 0;
-                tfinControle.Dt_hr_ult_atualizacao = DateTime.Now;
-
-                dbgravacao.Add(tfinControle);
-
-            }
-
-            //laço de tentativas para gerar o nsu(devido a acesso concorrente)
-
-
-            //obtém o último nsu usado
-            var tfincontroleEditando = await (from c in dbgravacao.TfinControles
-                                              where c.Id == id_nsu
-                                              select c).FirstOrDefaultAsync();
-
-
-            if (tfincontroleEditando == null)
-            {
-                lstErros.Add("Falha ao localizar o registro para geração de NSU (" + id_nsu + ")!");
-                return nsu;
-            }
-
-
-            tfincontroleEditando.Id = id_nsu;
-            tfincontroleEditando.Nsu++;
-            tfincontroleEditando.Dt_hr_ult_atualizacao = DateTime.Now;
-            //tenta atualizar o banco de dados
-            dbgravacao.Update(tfincontroleEditando);
-
-            await dbgravacao.SaveChangesAsync();
-
-            return tfincontroleEditando.Nsu;
         }
 
     }

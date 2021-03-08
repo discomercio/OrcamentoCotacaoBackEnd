@@ -2028,7 +2028,7 @@ namespace Prepedido
         {
             string sufixoIdOrcamento = Constantes.SUFIXO_ID_ORCAMENTO;
 
-            var nsuTask = await Util.GerarNsu(dbgravacao, Constantes.NSU_ORCAMENTO);
+            var nsuTask = await Nsu.GerarNsu(dbgravacao, Constantes.NSU_ORCAMENTO);
             string nsu = nsuTask.ToString();
 
             int ndescarte = nsu.Length - Constantes.TAM_MIN_NUM_ORCAMENTO;

@@ -818,7 +818,7 @@ namespace Cliente
 
         private Task<string> GerarIdCliente(InfraBanco.ContextoBdGravacao dbgravacao, string id_nsu)
         {
-            return UtilsGlobais.Util.GerarNsu(dbgravacao, id_nsu);
+            return UtilsGlobais.Nsu.GerarNsu(dbgravacao, id_nsu);
         }
 
         public async Task<bool> ClienteExiste(string cpf_cnpj)

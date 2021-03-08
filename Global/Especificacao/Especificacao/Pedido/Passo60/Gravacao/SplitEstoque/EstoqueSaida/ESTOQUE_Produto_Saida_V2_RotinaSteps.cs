@@ -66,6 +66,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
             UltimoAcesso.qtde_estoque_vendido = qtde_estoque_vendido.Valor;
             UltimoAcesso.qtde_estoque_sem_presenca = qtde_estoque_sem_presenca.Valor;
 
+            //todo: tirar o MultipleActiveResultSets e ver como resolver. tudo funciona, acho que é só o teste que dá erro.
             if (UltimoAcesso.LstErros.Any())
             {
                 db.transacao.Rollback();

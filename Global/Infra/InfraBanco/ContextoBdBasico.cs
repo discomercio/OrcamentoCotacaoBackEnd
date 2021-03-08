@@ -94,10 +94,23 @@ namespace InfraBanco
                 .WithMany(x => x.TprodutoLoja)
                 .HasForeignKey(x => new { x.Fabricante, x.Produto });
 
+            //não tem chave no banco, mas é obrigatória para o entity. campos NULL não podem fazer parte.
+            //não é uma chave única, mas suficiente. Embora os campos permitam null, nãoe xiste nenhum null no banco.
             modelBuilder.Entity<TestoqueLog>()
-               .HasKey(x => new { x.Pedido_estoque_destino, 
-                   x.Pedido_estoque_origem, x.Fabricante, x.Produto, x.Qtde_atendida, x.Usuario, x.Operacao, 
-                   x.Cod_estoque_destino, x.Cod_estoque_origem });
+               .HasKey(x => new
+               {
+                   x.Pedido_estoque_destino,
+                   x.Pedido_estoque_origem,
+                   x.Fabricante,
+                   x.Produto,
+                   x.Qtde_atendida,
+                   x.Usuario,
+                   x.Operacao,
+                   x.Cod_estoque_destino,
+                   x.Cod_estoque_origem,
+                   x.Data_hora,
+                   x.Id_nfe_emitente
+               });
 
             modelBuilder.Entity<TavisoExibido>()
                 .HasKey(x => new { x.Id, x.Usuario });

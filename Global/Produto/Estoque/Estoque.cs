@@ -207,6 +207,7 @@ namespace Produto.Estoque
             //NÃO HÁ PRODUTOS SUFICIENTES NO ESTOQUE!!
             if ((qtde_a_sair - qtde_autorizada_sem_presenca) > qtde_disponivel)
             {
+                //todo: verificar que no magento isto não seja feito
                 lstErros.Add("Produto " + id_produto + " do fabricante " + id_fabricante + ": faltam " +
                     ((qtde_a_sair - qtde_autorizada_sem_presenca) - qtde_disponivel) + " unidades no estoque (" +
                     UtilsGlobais.Util.Obtem_apelido_empresa_NFe_emitente_Gravacao(id_nfe_emitente, dbGravacao) +
@@ -262,7 +263,7 @@ namespace Produto.Estoque
 
 
                 //REGISTRA O MOVIMENTO DE SAÍDA NO ESTOQUE
-                string id_estoqueMovimentoNovo = await UtilsGlobais.Util.GerarNsu(dbGravacao, InfraBanco.Constantes.Constantes.NSU_ID_ESTOQUE_MOVTO);
+                string id_estoqueMovimentoNovo = await UtilsGlobais.Nsu.GerarNsu(dbGravacao, InfraBanco.Constantes.Constantes.NSU_ID_ESTOQUE_MOVTO);
                 if (string.IsNullOrEmpty(id_estoqueMovimentoNovo))
                 {
                     lstErros.Add("Falha ao tentar gerar um número identificador para o registro de movimento no estoque. ");
@@ -317,7 +318,7 @@ namespace Produto.Estoque
             if (qtde_movimentada < qtde_a_sair)
             {
                 //REGISTRA O MOVIMENTO DE SAÍDA NO ESTOQUE
-                var id_estoque_movto = await UtilsGlobais.Util.GerarNsu(dbGravacao, InfraBanco.Constantes.Constantes.NSU_ID_ESTOQUE_MOVTO);
+                var id_estoque_movto = await UtilsGlobais.Nsu.GerarNsu(dbGravacao, InfraBanco.Constantes.Constantes.NSU_ID_ESTOQUE_MOVTO);
                 if (string.IsNullOrEmpty(id_estoque_movto))
                 {
                     lstErros.Add("Falha ao tentar gerar um número identificador para o registro de movimento no estoque.");

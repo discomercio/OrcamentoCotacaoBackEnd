@@ -58,7 +58,8 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
         [Fact]
         public void Endereco_cep()
         {
-            Teste(c => c.EnderecoCadastralCliente.Endereco_cep = "nao existe", "Cep não existe!");
+            Teste(c => c.EnderecoCadastralCliente.Endereco_cep = "nao existe", "INFORME O CEP.");
+            Teste(c => c.EnderecoCadastralCliente.Endereco_cep = "12nao existe", "Cep não existe!");
         }
 
         [Fact]

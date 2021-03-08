@@ -81,7 +81,7 @@ namespace Cliente.Dados
                 Email = endCadastral.Endereco_email,
                 EmailXml = endCadastral.Endereco_email_xml,
                 Vendedor = "",// esse campo não é utilizado em TCliente
-                Cep = endCadastral.Endereco_cep.Replace("-", ""),
+                Cep = UtilsGlobais.Util.Cep_SoDigito(endCadastral.Endereco_cep),
                 Endereco = endCadastral.Endereco_logradouro,
                 Numero = endCadastral.Endereco_numero,
                 Bairro = endCadastral.Endereco_bairro,

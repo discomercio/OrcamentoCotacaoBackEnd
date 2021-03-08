@@ -720,7 +720,7 @@ namespace Loja.Bll.ClienteBll
         }
         private Task<string> GerarIdCliente(InfraBanco.ContextoBdGravacao dbgravacao, string id_nsu)
         {
-            return UtilsGlobais.Util.GerarNsu(dbgravacao, id_nsu);
+            return UtilsGlobais.Nsu.GerarNsu(dbgravacao, id_nsu);
         }
 
         private async Task<string> CadastrarDadosClienteDto(InfraBanco.ContextoBdGravacao dbgravacao, DadosClienteCadastroDto clienteDto, string apelido, string log)

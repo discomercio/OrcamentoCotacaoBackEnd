@@ -186,7 +186,7 @@ Fluxo no módulo loja:
             //estamos alterando o v_item com descontos verificados e aplicados
             List<string> vdesconto = new List<string>();
             await PedidoBll.VerificarDescontoArredondado(this, pedido.Ambiente.Loja, v_item, pedidoRetorno.ListaErros, Execucao.C_custoFinancFornecTipoParcelamento,
-                Execucao.C_custoFinancFornecQtdeParcelas, tcliente.Id, Execucao.PercDescComissaoUtilizar, vdesconto);
+                Execucao.C_custoFinancFornecQtdeParcelas, tcliente.Id, Execucao.Perc_comissao_e_desconto_a_utilizar, vdesconto);
 
             /* 15- busca o coeficiente de cada produto do item 6 */
             //vou buscar a lista de coeficiente para calcular o valor de custoFinacFornec...
