@@ -80,7 +80,7 @@ namespace Pedido.Criacao.Execucao
         public decimal Vl_limite_mensal { get; private set; } = 0;
         public decimal Vl_limite_mensal_consumido { get; private set; } = 0;
         public decimal Vl_limite_mensal_disponivel { get; private set; } = 0;
-        public float PercDescComissaoUtilizar { get; private set; } = 0;
+        public float Perc_comissao_e_desconto_a_utilizar { get; private set; } = 0;
         public string C_custoFinancFornecTipoParcelamento { get; private set; } = "";
         public short C_custoFinancFornecQtdeParcelas { get; private set; } = 0;
         public bool IsLojaGarantia { get; private set; } = false;
@@ -93,9 +93,9 @@ namespace Pedido.Criacao.Execucao
             /* 10- valida se o pedido é com ou sem indicação
              * 11- valida percentual máximo de comissão */
             if (pedido.Cliente.Tipo.PessoaJuridica())
-                PercDescComissaoUtilizar = PercentualMaxDescEComissao.PercMaxComissaoEDescPJ;
+                Perc_comissao_e_desconto_a_utilizar = PercentualMaxDescEComissao.PercMaxComissaoEDescPJ;
             else
-                PercDescComissaoUtilizar = PercentualMaxDescEComissao.PercMaxComissaoEDesc;
+                Perc_comissao_e_desconto_a_utilizar = PercentualMaxDescEComissao.PercMaxComissaoEDesc;
 
             if (pedido.Ambiente.ComIndicador)
             {
@@ -115,7 +115,7 @@ namespace Pedido.Criacao.Execucao
             Tparametro tParametro = await UtilsGlobais.Util.BuscarRegistroParametro(
                 Constantes.ID_PARAMETRO_PercMaxComissaoEDesconto_Nivel2_MeiosPagto, Criacao.ContextoProvider);
 
-            PercDescComissaoUtilizar = Criacao.PedidoBll.VerificarPagtoPreferencial(tParametro, pedido, PercDescComissaoUtilizar,
+            Perc_comissao_e_desconto_a_utilizar = Criacao.PedidoBll.VerificarPagtoPreferencial(tParametro, pedido, Perc_comissao_e_desconto_a_utilizar,
                     PercentualMaxDescEComissao, pedido.Valor.Vl_total);
 
 
