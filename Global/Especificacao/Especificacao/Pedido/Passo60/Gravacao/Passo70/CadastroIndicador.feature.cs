@@ -81,6 +81,15 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo70
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 5
+#line hidden
+#line 6
+ testRunner.Given("Ignorar cenário no ambiente \"Especificacao.Prepedido.PrepedidoSteps\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+        }
+        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
@@ -96,7 +105,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo70
                     "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CadastroIndicador", null, tagsOfScenario, argumentsOfScenario);
-#line 16
+#line 18
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -116,24 +125,27 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 17
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 19
  testRunner.Given("Tabela t_CLIENTE registro com cpf_cnpj = \"35270445824\" alterar campo \"indicador\" " +
                         "= \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 18
+#line 20
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 19
+#line 21
  testRunner.When("Informo \"DadosCliente.Indicador_Orcamentista\" = \"POLITÉCNIC\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 20
+#line 22
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 21
+#line 23
  testRunner.And("Tabela \"t_CLIENTE\" registro com campo \"cnpj_cpf\" = \"35270445824\", verificar campo" +
                         " \"indicador\" = \"POLITÉCNIC\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 22
+#line 24
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"indicador\" = \"POLITÉCNIC\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -141,17 +153,15 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Log indicador")]
+        [Xunit.SkippableFactAttribute(DisplayName="CadastroIndicador - magento")]
         [Xunit.TraitAttribute("FeatureTitle", "CadastroIndicador")]
-        [Xunit.TraitAttribute("Description", "Log indicador")]
-        [Xunit.TraitAttribute("Category", "ignore")]
-        public virtual void LogIndicador()
+        [Xunit.TraitAttribute("Description", "CadastroIndicador - magento")]
+        public virtual void CadastroIndicador_Magento()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Log indicador", null, tagsOfScenario, argumentsOfScenario);
-#line 25
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CadastroIndicador - magento", null, tagsOfScenario, argumentsOfScenario);
+#line 26
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -171,8 +181,80 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 26
- testRunner.Given("fazer esse teste", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 27
+ testRunner.Given("Ignorar cenário no ambiente \"Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadas" +
+                        "trarPedido.CadastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 28
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 29
+ testRunner.When("Informo \"Frete\" = \"10.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 30
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 31
+ testRunner.And("Tabela \"t_CLIENTE\" registro com campo \"cnpj_cpf\" = \"14039603052\", verificar campo" +
+                        " \"indicador\" = \"FRETE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 32
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"indicador\" = \"FRETE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Log indicador - magento")]
+        [Xunit.TraitAttribute("FeatureTitle", "CadastroIndicador")]
+        [Xunit.TraitAttribute("Description", "Log indicador - magento")]
+        public virtual void LogIndicador_Magento()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Log indicador - magento", null, tagsOfScenario, argumentsOfScenario);
+#line 34
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 35
+ testRunner.Given("Ignorar cenário no ambiente \"Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadas" +
+                        "trarPedido.CadastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 36
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 37
+ testRunner.When("Informo \"Frete\" = \"10.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 38
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 39
+ testRunner.And("Tabela \"t_LOG\" pedido gerado e operacao = \"OP_LOG_CLIENTE_INCLUSAO\", verificar ca" +
+                        "mpo \"complemento\" = \"indicador=FRETE;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
