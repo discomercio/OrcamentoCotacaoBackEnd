@@ -109,3 +109,19 @@ Scenario Outline: Verificar t_LOG - Magento
 		| OP_LOG_PEDIDO_NOVO | pedido     | 176368N      |
 		| OP_LOG_PEDIDO_NOVO | id_cliente | 000000645637 |
 		| OP_LOG_PEDIDO_NOVO | loja       | 202          |
+
+Scenario Outline: Verificar t_LOG - Loja
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
+	Given Pedido base
+	When Recalcular totais do pedido
+	When Deixar forma de pagamento consistente
+	Then Sem nenhum erro
+	And Tabela "t_LOG" pedido gerado e operacao = "OP_LOG_PEDIDO_NOVO", verificar campo "<campo>" = "<valor>"
+
+	Examples:
+		| operacao           | campo      | valor        |
+		| OP_LOG_PEDIDO_NOVO | data       | data atual   |
+		| OP_LOG_PEDIDO_NOVO | usuario    | USRLOJA      |
+		| OP_LOG_PEDIDO_NOVO | pedido     | 176368N      |
+		| OP_LOG_PEDIDO_NOVO | id_cliente | 000000645478 |
+		| OP_LOG_PEDIDO_NOVO | loja       | 202          |

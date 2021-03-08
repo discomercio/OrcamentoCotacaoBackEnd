@@ -460,6 +460,69 @@ this.FeatureBackground();
             this.ScenarioCleanup();
         }
         
+        [Xunit.SkippableTheoryAttribute(DisplayName="Verificar t_LOG - Loja")]
+        [Xunit.TraitAttribute("FeatureTitle", "Especificacao\\Pedido\\Passo60\\Gravacao\\Passo60\\Itens\\Log")]
+        [Xunit.TraitAttribute("Description", "Verificar t_LOG - Loja")]
+        [Xunit.InlineDataAttribute("OP_LOG_PEDIDO_NOVO", "data", "data atual", new string[0])]
+        [Xunit.InlineDataAttribute("OP_LOG_PEDIDO_NOVO", "usuario", "USRLOJA", new string[0])]
+        [Xunit.InlineDataAttribute("OP_LOG_PEDIDO_NOVO", "pedido", "176368N", new string[0])]
+        [Xunit.InlineDataAttribute("OP_LOG_PEDIDO_NOVO", "id_cliente", "000000645478", new string[0])]
+        [Xunit.InlineDataAttribute("OP_LOG_PEDIDO_NOVO", "loja", "202", new string[0])]
+        public virtual void VerificarT_LOG_Loja(string operacao, string campo, string valor, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("operacao", operacao);
+            argumentsOfScenario.Add("campo", campo);
+            argumentsOfScenario.Add("valor", valor);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verificar t_LOG - Loja", null, tagsOfScenario, argumentsOfScenario);
+#line 113
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 114
+ testRunner.Given("Ignorar cenário no ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Ca" +
+                        "dastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 115
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 116
+ testRunner.When("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 117
+ testRunner.When("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 118
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 119
+ testRunner.And(string.Format("Tabela \"t_LOG\" pedido gerado e operacao = \"OP_LOG_PEDIDO_NOVO\", verificar campo \"" +
+                            "{0}\" = \"{1}\"", campo, valor), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
         [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
         [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
         public class FixtureData : System.IDisposable
