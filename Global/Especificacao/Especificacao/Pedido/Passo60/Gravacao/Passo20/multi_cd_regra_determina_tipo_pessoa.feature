@@ -1,5 +1,4 @@
-﻿@ignore
-@Especificacao.Pedido.Passo60.Gravacao.Passo20.multi_cd_regra_determina_tipo_pessoa
+﻿@Especificacao.Pedido.Passo60.Gravacao.Passo20.multi_cd_regra_determina_tipo_pessoa
 Feature: multi_cd_regra_determina_tipo_pessoa
 
 #BDD.asp

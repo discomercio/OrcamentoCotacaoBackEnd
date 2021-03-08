@@ -19,7 +19,6 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "ignore")]
     [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo60.Gravacao.Passo20.multi_cd_regra_determina_tipo_pesso" +
         "a")]
     public partial class Multi_Cd_Regra_Determina_Tipo_PessoaFeature : object, Xunit.IClassFixture<Multi_Cd_Regra_Determina_Tipo_PessoaFeature.FixtureData>, System.IDisposable
@@ -28,7 +27,6 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore",
                 "Especificacao.Pedido.Passo60.Gravacao.Passo20.multi_cd_regra_determina_tipo_pesso" +
                     "a"};
         
@@ -47,7 +45,6 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "multi_cd_regra_determina_tipo_pessoa", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ignore",
                         "Especificacao.Pedido.Passo60.Gravacao.Passo20.multi_cd_regra_determina_tipo_pesso" +
                             "a"});
             testRunner.OnFeatureStart(featureInfo);
@@ -106,7 +103,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
             argumentsOfScenario.Add("produtor_rural_status", produtor_Rural_Status);
             argumentsOfScenario.Add("resultado", resultado);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Testar multi_cd_regra_determina_tipo_pessoa", null, tagsOfScenario, argumentsOfScenario);
-#line 30
+#line 29
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -126,7 +123,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 31
+#line 30
  testRunner.Then(string.Format("Chamar rotina MULTI_CD_REGRA_DETERMINA_TIPO_PESSOA tipo cliente = \"{0}\", contribu" +
                             "inte = \"{1}\", produtor rural = \"{2}\" e resultado = \"{3}\"", tipo_Cliente, contribuinte_Icms_Status, produtor_Rural_Status, resultado), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
