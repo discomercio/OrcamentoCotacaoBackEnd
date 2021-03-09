@@ -23,5 +23,6 @@
         void TabelaT_ESTOQUERegistroPaiVerificarCampo(string campo, string valor);
         void TabelaT_ESTOQUE_LOGPedidoGeradoVerificarCampo(string produto, string operacao, string campo, string valor);
         void TabelaT_LOGPedidoGeradoEOperacaoVerificarCampo(string operacao, string campo, string valor);
+        void TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteEProdutoVerificarCampo(string fabricante, string produto, string campo, string valor);
     }
 }

@@ -132,6 +132,13 @@ namespace Especificacao.Testes.Pedido
             base.Executar(i => i.TabelaT_LOGPedidoGeradoEOperacaoVerificarCampo(operacao, campo, valor));
         }
 
+        public void TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteEProdutoVerificarCampo(string fabricante, string produto, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PRODUTO_X_WMS_REGRA_CD", "fabricante e produto", "verificar campos", campo, valor, this);
+            base.Executar(i => i.TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteEProdutoVerificarCampo(fabricante, produto, campo, valor));
+        }
+
         public void ListaDeItensComXitens(int p0)
         {
             if (ignorarFeature) return;

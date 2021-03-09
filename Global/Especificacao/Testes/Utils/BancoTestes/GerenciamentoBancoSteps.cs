@@ -290,8 +290,8 @@ namespace Especificacao.Testes.Utils.BancoTestes
             if (operacao.ToUpper() == InfraBanco.Constantes.Constantes.OP_LOG_CLIENTE_INCLUSAO)
             {
                 idCliente = (from c in db.Tpedidos
-                                 where c.Pedido == pedido
-                                 select c.Id_Cliente).FirstOrDefault();
+                             where c.Pedido == pedido
+                             select c.Id_Cliente).FirstOrDefault();
             }
             var registros = (from log in db.Tlogs
                              where (log.Pedido == pedido || log.Id_Cliente == idCliente) &&
@@ -340,6 +340,34 @@ namespace Especificacao.Testes.Utils.BancoTestes
             }
         }
 
+        public void TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteEProdutoVerificarCampo(string fabricante, string produto, string campo, string valor_desejado)
+        {
+            var db = this.contextoBdProvider.GetContextoLeitura();
+
+            var registros = (from prodRegraCd in db.TprodutoXwmsRegraCds
+                             where prodRegraCd.Fabricante == fabricante &&
+                                   prodRegraCd.Produto == produto
+                             select prodRegraCd).ToList();
+
+            Assert.True(registros.Any());
+
+            if (registros.Count > 1)
+                Assert.Equal("Erro", $"PRODUTO_X_WMS_REGRA_CD tem mais de um registro para o fabricante ({fabricante}) e produto ({produto}).");
+
+            foreach (var registro in registros)
+            {
+                switch (campo)
+                {
+                    case "id_wms_regra_cd":
+                        if (int.TryParse(valor_desejado, out int valor))
+                            Assert.Equal(valor, registro.Id_wms_regra_cd);
+                        break;
+                    default:
+                        Assert.Equal("", $"{campo} desconhecido");
+                        break;
+                }
+            }
+        }
 
         [Given(@"Tabela ""t_OPERACAO"" apagar registro com campo ""id"" = ""(.*)""")]
         public void GivenTabelaT_operacao_ApagarRegistroComCampo(string valorBusca)
@@ -443,6 +471,26 @@ namespace Especificacao.Testes.Utils.BancoTestes
             var registro = (from parametro in db.Tparametros
                             where parametro.Id == valor_id
                             select parametro).FirstOrDefault();
+
+            Assert.NotNull(registro);
+
+            if (!WhenInformoCampo.InformarCampo(campo, valor, registro))
+                Assert.Equal("campo desconhecido", campo);
+
+            db.Update(registro);
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+
+        [Given(@"Tabela ""t_PRODUTO_X_WMS_REGRA_CD"" fabricante = ""(.*)"" e produto = ""(.*)"", alterar registro do campo ""(.*)"" = ""(.*)""")]
+        public void TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteAlterarRegistroDoCampo(string fabricante, string produto, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_PRODUTO_X_WMS_REGRA_CD", campo, valor, this);
+            var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
+            var registro = (from prodRegraCd in db.TprodutoXwmsRegraCds
+                            where prodRegraCd.Fabricante == fabricante &&
+                                  prodRegraCd.Produto == produto
+                            select prodRegraCd).FirstOrDefault();
 
             Assert.NotNull(registro);
 
