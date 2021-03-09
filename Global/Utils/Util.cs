@@ -1064,7 +1064,7 @@ namespace UtilsGlobais
             if (!Util.VerificaCep(sCep))
                 return "";
 
-            cep = sCep.Substring(0, 4) + " - " + sCep.Substring(5, 3);
+            cep = sCep.Substring(0, 4) + "-" + sCep.Substring(5, 3);
 
             return cep;
         }

@@ -329,6 +329,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
                         break;
                     case "complemento":
                         if (valor.Contains("\\r")) valor = valor.Replace("\\r", "\r");
+                        //if (valor.Contains("\\n")) valor = valor.Replace("\\n", "\n");
                         Assert.Contains(valor.ToLower(), registro.Complemento.ToLower());
                         break;
 
