@@ -551,9 +551,12 @@ namespace Especificacao.Testes.Utils.BancoTestes
             var t_produtoXwmsRegraCds = (from prodRegraCd in db.TprodutoXwmsRegraCds
                                          where prodRegraCd.Fabricante == fabricante &&
                                                prodRegraCd.Produto == produto
-                                         select prodRegraCd).FirstOrDefault();
+                                         select prodRegraCd).ToList();
+
+            Assert.Single(t_produtoXwmsRegraCds);
+
             var registros = (from regraCd in db.TwmsRegraCds
-                             where regraCd.Id == t_produtoXwmsRegraCds.Id_wms_regra_cd
+                             where regraCd.Id == t_produtoXwmsRegraCds[0].Id_wms_regra_cd
                              select regraCd).ToList();
 
             foreach (var r in registros) db.Remove(r);
@@ -622,7 +625,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             db.transacao.Commit();
         }
 
-        [Given(@"Tabela t_WMS_REGRA_CD_X_UF_X_PESSOA duplicar registro id_wms_regra_cd_x_uf = ""(.*)"" e tipo de pessoa = ""(.*)"" com id = ""(.*)""")]
+        [Given(@"Tabela ""t_WMS_REGRA_CD_X_UF_X_PESSOA"" duplicar registro id_wms_regra_cd_x_uf = ""(.*)"" e tipo de pessoa = ""(.*)"" com id = ""(.*)""")]
         public void GivenTabelaT_WMS_REGRA_CD_X_UF_X_PESSOADuplicarRegistroIdETipoDePessoa(int Id_wms_regra_cd_x_uf, string tipo_pessoa, int id)
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.GravarRegistroEm("t_WMS_REGRA_CD_X_UF", this);
@@ -648,6 +651,28 @@ namespace Especificacao.Testes.Utils.BancoTestes
             db.SaveChanges();
             db.transacao.Commit();
         }
+
+        [Given(@"Tabela ""t_WMS_REGRA_CD_X_UF_X_PESSOA"" registro id_wms_regra_cd_x_uf = ""(.*)"" e tipo de pessoa = ""(.*)"", alterar campo ""(.*)"" = ""(.*)""")]
+        public void GivenTabelaT_WMS_REGRA_CD_X_UF_X_PESSOARegistroId_Wms_Regra_Cd_X_UfETipoDePessoaAlterarCampo(int id_wms_regra_cd_x_uf, string tipo_pessoa, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_WMS_REGRA_CD_X_UF_X_PESSOA", campo, valor, this);
+            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+
+            var registro = (from regraCdUFPessoa in db.TwmsRegraCdXUfPessoas
+                            where regraCdUFPessoa.Id_wms_regra_cd_x_uf == id_wms_regra_cd_x_uf &&
+                                  regraCdUFPessoa.Tipo_pessoa == tipo_pessoa
+                            select regraCdUFPessoa).FirstOrDefault();
+
+            Assert.NotNull(registro);
+
+            if (!WhenInformoCampo.InformarCampo(campo, valor, registro))
+                Assert.Equal("campo desconhecido", campo);
+
+            db.Update(registro);
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+
 
 
         [Given(@"Tabela ""t_PRODUTO"" com fabricante = ""(.*)"" e produto = ""(.*)"" alterar campo ""(.*)"" = ""(.*)""")]
