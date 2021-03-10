@@ -673,6 +673,30 @@ namespace Especificacao.Testes.Utils.BancoTestes
             db.transacao.Commit();
         }
 
+        [Given(@"Tabela ""t_NFe_EMITENTE"" registro tipo de pessoa = ""(.*)"" e id_wms_regra_cd_x_uf = ""(.*)"", alterar campo ""(.*)"" = ""(.*)""")]
+        public void GivenTabelaT_NFe_EMITENTERegistroTipoDePessoaAlterarCampo(string tipo_pessoa, int id_wms_regra_cd_x_uf, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_NFe_EMITENTE", campo, valor, this);
+            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            //TwmsRegraCdXUfPessoas.id_wms_regra_cd_x_uf = 134
+            //TwmsRegraCdXUfPessoas.Tipo_pessoa = PF e PR para prepedido
+            var registro = (from nfeEmitente in db.TnfEmitentes
+                            join regraCdUFPessoa in db.TwmsRegraCdXUfPessoas on nfeEmitente.Id equals regraCdUFPessoa.Spe_id_nfe_emitente
+                            where regraCdUFPessoa.Tipo_pessoa == tipo_pessoa &&
+                                  regraCdUFPessoa.Id_wms_regra_cd_x_uf == id_wms_regra_cd_x_uf
+                            select nfeEmitente).FirstOrDefault();
+
+            Assert.NotNull(registro);
+
+            if (campo == "st_ativo") campo = "St_Ativo";
+
+            if (!WhenInformoCampo.InformarCampo(campo, valor, registro))
+                Assert.Equal("campo desconhecido", campo);
+
+            db.Update(registro);
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
 
 
         [Given(@"Tabela ""t_PRODUTO"" com fabricante = ""(.*)"" e produto = ""(.*)"" alterar campo ""(.*)"" = ""(.*)""")]

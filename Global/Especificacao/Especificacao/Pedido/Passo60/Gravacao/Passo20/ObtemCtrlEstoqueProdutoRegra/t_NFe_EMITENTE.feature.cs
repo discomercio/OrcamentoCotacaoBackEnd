@@ -21,7 +21,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20.ObtemCtrlE
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo60")]
     [Xunit.TraitAttribute("Category", "GerenciamentoBanco")]
-    public partial class T_WMS_REGRA_CD_X_UFFeature : object, Xunit.IClassFixture<T_WMS_REGRA_CD_X_UFFeature.FixtureData>, System.IDisposable
+    public partial class T_NFe_EMITENTEFeature : object, Xunit.IClassFixture<T_NFe_EMITENTEFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -32,10 +32,10 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20.ObtemCtrlE
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "t_WMS_REGRA_CD_X_UF.feature"
+#line 1 "t_NFe_EMITENTE.feature"
 #line hidden
         
-        public T_WMS_REGRA_CD_X_UFFeature(T_WMS_REGRA_CD_X_UFFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public T_NFe_EMITENTEFeature(T_NFe_EMITENTEFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -44,7 +44,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20.ObtemCtrlE
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "t_WMS_REGRA_CD_X_UF", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "t_NFe_EMITENTE", null, ProgrammingLanguage.CSharp, new string[] {
                         "Especificacao.Pedido.Passo60",
                         "GerenciamentoBanco"});
             testRunner.OnFeatureStart(featureInfo);
@@ -95,15 +95,15 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20.ObtemCtrlE
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="t_WMS_REGRA_CD_X_UF - sem regra")]
-        [Xunit.TraitAttribute("FeatureTitle", "t_WMS_REGRA_CD_X_UF")]
-        [Xunit.TraitAttribute("Description", "t_WMS_REGRA_CD_X_UF - sem regra")]
-        public virtual void T_WMS_REGRA_CD_X_UF_SemRegra()
+        [Xunit.SkippableFactAttribute(DisplayName="t_NFe_EMITENTE - st_ativo = 0")]
+        [Xunit.TraitAttribute("FeatureTitle", "t_NFe_EMITENTE")]
+        [Xunit.TraitAttribute("Description", "t_NFe_EMITENTE - st_ativo = 0")]
+        public virtual void T_NFe_EMITENTE_St_Ativo0()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("t_WMS_REGRA_CD_X_UF - sem regra", null, tagsOfScenario, argumentsOfScenario);
-#line 11
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("t_NFe_EMITENTE - st_ativo = 0", null, tagsOfScenario, argumentsOfScenario);
+#line 12
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -125,65 +125,22 @@ this.ScenarioInitialize(scenarioInfo);
                 this.ScenarioStart();
 #line 5
 this.FeatureBackground();
-#line hidden
-#line 12
- testRunner.Given("Tabela \"t_WMS_REGRA_CD_X_UF\" apagar registro do id_wms_regra_cd = \"5\" da UF = \"SP" +
-                        "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 13
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Tabela \"t_NFe_EMITENTE\" registro tipo de pessoa = \"PF\" e id_wms_regra_cd_x_uf = \"" +
+                        "134\", alterar campo \"st_ativo\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 14
- testRunner.Then("Erro \"Falha na leitura da regra de consumo do estoque para a UF \'SP\' e \'Pessoa Fí" +
-                        "sica\': regra associada ao produto (003)003220 não está cadastrada para a UF \'SP\'" +
-                        " (Id=5)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("Tabela \"t_NFe_EMITENTE\" registro tipo de pessoa = \"PR\" e id_wms_regra_cd_x_uf = \"" +
+                        "134\", alterar campo \"st_ativo\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="t_WMS_REGRA_CD_X_UF - duplicado")]
-        [Xunit.TraitAttribute("FeatureTitle", "t_WMS_REGRA_CD_X_UF")]
-        [Xunit.TraitAttribute("Description", "t_WMS_REGRA_CD_X_UF - duplicado")]
-        public virtual void T_WMS_REGRA_CD_X_UF_Duplicado()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("t_WMS_REGRA_CD_X_UF - duplicado", null, tagsOfScenario, argumentsOfScenario);
-#line 16
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 5
-this.FeatureBackground();
-#line hidden
-#line 17
- testRunner.Given("Tabela \"t_WMS_REGRA_CD_X_UF\" duplicar registro do id_wms_regra_cd = \"5\" da UF = \"" +
-                        "SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 18
+#line 15
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 19
- testRunner.Then("Erro \"Falha na leitura da regra de consumo do estoque para a UF \'SP\' e \'Pessoa Fí" +
-                        "sica\': regra associada ao produto (003)003220 não está cadastrada para a UF \'SP\'" +
-                        " (Id=5)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 16
+ testRunner.Then("Erro \"Falha na regra de consumo do estoque para a UF \'SP\' e \'Pessoa Física\': regr" +
+                        "a associada ao produto (003)003220 especifica um CD para aguardar produtos sem p" +
+                        "resença no estoque que não está habilitado (Id=5)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -196,12 +153,12 @@ this.FeatureBackground();
             
             public FixtureData()
             {
-                T_WMS_REGRA_CD_X_UFFeature.FeatureSetup();
+                T_NFe_EMITENTEFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                T_WMS_REGRA_CD_X_UFFeature.FeatureTearDown();
+                T_NFe_EMITENTEFeature.FeatureTearDown();
             }
         }
     }
