@@ -80,3 +80,16 @@ Scenario: obtemCtrlEstoqueProdutoRegra - t_WMS_REGRA_CD_X_UF duplicado
 	Given Tabela "t_WMS_REGRA_CD_X_UF" duplicar registro do id_wms_regra_cd = "5" da UF = "SP"
 	Given Pedido base
 	Then Erro "Falha na leitura da regra de consumo do estoque para a UF 'SP' e 'Pessoa Física': regra associada ao produto (003)003220 não foi localizada no banco de dados (Id=5)"
+
+Scenario: obtemCtrlEstoqueProdutoRegra - t_WMS_REGRA_CD_X_UF_X_PESSOA
+	#	SELECT * FROM t_WMS_REGRA_CD_X_UF_X_PESSOA WHERE (id_wms_regra_cd_x_uf = t_WMS_REGRA_CD_X_UF.id) AND (tipo_pessoa = tipo_pessoa)
+	#		se nenhum registro, erro
+	#		se mais de um registro, erro (não está no ASP)
+	#		se t_WMS_REGRA_CD_X_UF_X_PESSOA.spe_id_nfe_emitente = 0, erro
+	Given Ignorar cenário no ambiente "Especificacao.Prepedido.PrepedidoSteps"
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
+	Given Tabela "t_WMS_REGRA_CD_X_UF_X_PESSOA" apagar registro id = "134" e tipo de pessoa = "PF"
+	#Para o prepedido 
+	Given Tabela "t_WMS_REGRA_CD_X_UF_X_PESSOA" apagar registro id = "134" e tipo de pessoa = "PR"
+	Given Pedido base
+	Then Erro "Falha na leitura da regra de consumo do estoque para a UF 'SP' e 'Pessoa Física': regra associada ao produto (003)003220 não está cadastrada para a UF 'SP' (Id=5)"

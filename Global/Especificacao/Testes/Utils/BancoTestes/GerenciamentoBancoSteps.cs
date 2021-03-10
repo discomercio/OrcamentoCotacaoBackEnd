@@ -605,6 +605,23 @@ namespace Especificacao.Testes.Utils.BancoTestes
 
         }
 
+        [Given(@"Tabela ""t_WMS_REGRA_CD_X_UF_X_PESSOA"" apagar registro id = ""(.*)"" e tipo de pessoa = ""(.*)""")]
+        public void GivenTabelaT_WMS_REGRA_CD_X_UF_X_PESSOAApagarRegistroId_Wms_Regra_Cd_X_UfPF(int id, string tipo_pessoa)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaApagarRegistroComCampo("t_WMS_REGRA_CD_X_UF_X_PESSOA", "id e tipo pessoa", "id_wms_regra_cd_x_uf:(" + id + ") e tipo pessoa:(" + tipo_pessoa + ")", this);
+            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+
+            var registros = (from regraCdUFPessoa in db.TwmsRegraCdXUfPessoas
+                            where regraCdUFPessoa.Id_wms_regra_cd_x_uf == id &&
+                                  regraCdUFPessoa.Tipo_pessoa == tipo_pessoa
+                            select regraCdUFPessoa).ToList();
+
+            foreach (var r in registros) db.Remove(r);
+
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+
 
 
         [Given(@"Tabela ""t_PRODUTO"" com fabricante = ""(.*)"" e produto = ""(.*)"" alterar campo ""(.*)"" = ""(.*)""")]
