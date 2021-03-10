@@ -339,7 +339,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 }
             }
         }
-
+        
         public void TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteEProdutoVerificarCampo(string fabricante, string produto, string campo, string valor_desejado)
         {
             var db = this.contextoBdProvider.GetContextoLeitura();
@@ -501,6 +501,47 @@ namespace Especificacao.Testes.Utils.BancoTestes
             db.SaveChanges();
             db.transacao.Commit();
         }
+
+        [Given(@"Tabela ""t_PRODUTO_X_WMS_REGRA_CD"" duplicar regra para fabricante = ""(.*)"" e produto = ""(.*)"" com id_wms_regra_cd = ""(.*)""")]
+        public void GivenTabelaT_PRODUTO_X_WMS_REGRA_CDDuplicarRegraParaFabricanteEProduto(string fabricante, string produto, int id_wms_regra_cd)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.GravarRegistroEm("t_PRODUTO_X_WMS_REGRA_CD", this);
+            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+
+            var registro = (from prodRegraCd in db.TprodutoXwmsRegraCds
+                            where prodRegraCd.Fabricante == fabricante &&
+                                  prodRegraCd.Produto == produto
+                            select prodRegraCd).FirstOrDefault();
+
+            TprodutoXwmsRegraCd duplicado = new TprodutoXwmsRegraCd()
+            {
+                Fabricante = registro.Fabricante,
+                Produto = registro.Produto,
+                Id_wms_regra_cd = id_wms_regra_cd
+            };
+
+            db.Add(duplicado);
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+
+        [Given(@"Tabela ""t_PRODUTO_X_WMS_REGRA_CD"" apagar registro do fabricante = ""(.*)"" e produto = ""(.*)""")]
+        public void GivenTabelaT_PRODUTO_X_WMS_REGRA_CDApagarRegistroDoFabricante(string fabricante, string produto)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaApagarRegistroComCampo("t_PRODUTO_X_WMS_REGRA_CD", "fabricante e produto", "Fabricante:(" + fabricante + ") e produto:(" + produto + ")", this);
+            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+
+            var registro = (from prodRegraCd in db.TprodutoXwmsRegraCds
+                            where prodRegraCd.Fabricante == fabricante &&
+                                  prodRegraCd.Produto == produto
+                            select prodRegraCd).FirstOrDefault();
+
+            db.Remove(registro);
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+
+
 
         [Given(@"Tabela ""t_PRODUTO"" com fabricante = ""(.*)"" e produto = ""(.*)"" alterar campo ""(.*)"" = ""(.*)""")]
         public void GivenTabelaComFabricanteEProdutoAlterarCampo(string fabricante, string produto, string campo, string valor)

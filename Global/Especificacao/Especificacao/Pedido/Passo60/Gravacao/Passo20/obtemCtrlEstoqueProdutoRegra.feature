@@ -48,5 +48,14 @@ Scenario: obtemCtrlEstoqueProdutoRegra - t_PRODUTO_X_WMS_REGRA_CD
 	And Tabela t_PRODUTO_X_WMS_REGRA_CD fabricante = "003" e produto = "003220", verificar campo "id_wms_regra_cd" = "0"
 
 @ignore
-Scenario: obtemCtrlEstoqueProdutoRegra - t_PRODUTO_X_WMS_REGRA_CD produto duplicado
-#preciso copiar a regra de um produto para obter o erro
+Scenario: obtemCtrlEstoqueProdutoRegra - t_PRODUTO_X_WMS_REGRA_CD produto duplicadoScenario: obtemCtrlEstoqueProdutoRegra - t_PRODUTO_X_WMS_REGRA_CD produto duplicado
+	#Não podemos fazer esse teste porque fabricante e produto são chaves
+	Given Tabela "t_PRODUTO_X_WMS_REGRA_CD" duplicar regra para fabricante = "003" e produto = "003221" com id_wms_regra_cd = "6"
+	Given Pedido base
+	Then Erro "Falha na leitura da regra de consumo do estoque para a UF 'SP' e 'Pessoa Física': produto (003)003221 não possui regra associada"
+
+Scenario: obtemCtrlEstoqueProdutoRegra - t_PRODUTO_X_WMS_REGRA_CD sem regra
+	Given Tabela "t_PRODUTO_X_WMS_REGRA_CD" apagar registro do fabricante = "003" e produto = "003220"
+	Given Pedido base
+	Then Erro "Falha na leitura da regra de consumo do estoque para a UF 'SP' e 'Pessoa Física': produto (003)003220 não possui regra associada"
+	

@@ -185,16 +185,19 @@ this.FeatureBackground();
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="obtemCtrlEstoqueProdutoRegra - t_PRODUTO_X_WMS_REGRA_CD produto duplicado")]
+        [Xunit.SkippableFactAttribute(DisplayName="obtemCtrlEstoqueProdutoRegra - t_PRODUTO_X_WMS_REGRA_CD produto duplicadoScenario" +
+            ": obtemCtrlEstoqueProdutoRegra - t_PRODUTO_X_WMS_REGRA_CD produto duplicado")]
         [Xunit.TraitAttribute("FeatureTitle", "obtemCtrlEstoqueProdutoRegra")]
-        [Xunit.TraitAttribute("Description", "obtemCtrlEstoqueProdutoRegra - t_PRODUTO_X_WMS_REGRA_CD produto duplicado")]
+        [Xunit.TraitAttribute("Description", "obtemCtrlEstoqueProdutoRegra - t_PRODUTO_X_WMS_REGRA_CD produto duplicadoScenario" +
+            ": obtemCtrlEstoqueProdutoRegra - t_PRODUTO_X_WMS_REGRA_CD produto duplicado")]
         [Xunit.TraitAttribute("Category", "ignore")]
-        public virtual void ObtemCtrlEstoqueProdutoRegra_T_PRODUTO_X_WMS_REGRA_CDProdutoDuplicado()
+        public virtual void ObtemCtrlEstoqueProdutoRegra_T_PRODUTO_X_WMS_REGRA_CDProdutoDuplicadoScenarioObtemCtrlEstoqueProdutoRegra_T_PRODUTO_X_WMS_REGRA_CDProdutoDuplicado()
         {
             string[] tagsOfScenario = new string[] {
                     "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("obtemCtrlEstoqueProdutoRegra - t_PRODUTO_X_WMS_REGRA_CD produto duplicado", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("obtemCtrlEstoqueProdutoRegra - t_PRODUTO_X_WMS_REGRA_CD produto duplicadoScenario" +
+                    ": obtemCtrlEstoqueProdutoRegra - t_PRODUTO_X_WMS_REGRA_CD produto duplicado", null, tagsOfScenario, argumentsOfScenario);
 #line 51
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -217,6 +220,63 @@ this.ScenarioInitialize(scenarioInfo);
                 this.ScenarioStart();
 #line 5
 this.FeatureBackground();
+#line hidden
+#line 53
+ testRunner.Given("Tabela \"t_PRODUTO_X_WMS_REGRA_CD\" duplicar regra para fabricante = \"003\" e produt" +
+                        "o = \"003221\" com id_wms_regra_cd = \"6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 54
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 55
+ testRunner.Then("Erro \"Falha na leitura da regra de consumo do estoque para a UF \'SP\' e \'Pessoa Fí" +
+                        "sica\': produto (003)003221 não possui regra associada\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="obtemCtrlEstoqueProdutoRegra - t_PRODUTO_X_WMS_REGRA_CD sem regra")]
+        [Xunit.TraitAttribute("FeatureTitle", "obtemCtrlEstoqueProdutoRegra")]
+        [Xunit.TraitAttribute("Description", "obtemCtrlEstoqueProdutoRegra - t_PRODUTO_X_WMS_REGRA_CD sem regra")]
+        public virtual void ObtemCtrlEstoqueProdutoRegra_T_PRODUTO_X_WMS_REGRA_CDSemRegra()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("obtemCtrlEstoqueProdutoRegra - t_PRODUTO_X_WMS_REGRA_CD sem regra", null, tagsOfScenario, argumentsOfScenario);
+#line 57
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 58
+ testRunner.Given("Tabela \"t_PRODUTO_X_WMS_REGRA_CD\" apagar registro do fabricante = \"003\" e produto" +
+                        " = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 59
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 60
+ testRunner.Then("Erro \"Falha na leitura da regra de consumo do estoque para a UF \'SP\' e \'Pessoa Fí" +
+                        "sica\': produto (003)003220 não possui regra associada\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
