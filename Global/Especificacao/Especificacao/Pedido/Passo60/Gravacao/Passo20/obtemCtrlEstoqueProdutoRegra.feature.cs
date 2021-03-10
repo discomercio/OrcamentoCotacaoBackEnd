@@ -477,6 +477,57 @@ this.FeatureBackground();
             this.ScenarioCleanup();
         }
         
+        [Xunit.SkippableFactAttribute(DisplayName="obtemCtrlEstoqueProdutoRegra - t_WMS_REGRA_CD_X_UF_X_PESSOA duplicado")]
+        [Xunit.TraitAttribute("FeatureTitle", "obtemCtrlEstoqueProdutoRegra")]
+        [Xunit.TraitAttribute("Description", "obtemCtrlEstoqueProdutoRegra - t_WMS_REGRA_CD_X_UF_X_PESSOA duplicado")]
+        public virtual void ObtemCtrlEstoqueProdutoRegra_T_WMS_REGRA_CD_X_UF_X_PESSOADuplicado()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("obtemCtrlEstoqueProdutoRegra - t_WMS_REGRA_CD_X_UF_X_PESSOA duplicado", null, tagsOfScenario, argumentsOfScenario);
+#line 95
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 96
+ testRunner.Given("Tabela t_WMS_REGRA_CD_X_UF_X_PESSOA duplicar registro id_wms_regra_cd_x_uf = \"134" +
+                        "\" e tipo de pessoa = \"PF\" com id = \"811\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 97
+ testRunner.Given("Tabela t_WMS_REGRA_CD_X_UF_X_PESSOA duplicar registro id_wms_regra_cd_x_uf = \"134" +
+                        "\" e tipo de pessoa = \"PR\" com id = \"812\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 98
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 99
+ testRunner.Then("Erro \"Falha na leitura da regra de consumo do estoque para a UF \'SP\' e \'Pessoa Fí" +
+                        "sica\': regra associada ao produto (003)003220 não está cadastrada para a UF \'SP\'" +
+                        " (Id=5)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
         [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
         [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
         public class FixtureData : System.IDisposable
