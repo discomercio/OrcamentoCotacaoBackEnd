@@ -339,7 +339,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 }
             }
         }
-        
+
         public void TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteEProdutoVerificarCampo(string fabricante, string produto, string campo, string valor_desejado)
         {
             var db = this.contextoBdProvider.GetContextoLeitura();
@@ -505,6 +505,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         [Given(@"Tabela ""t_PRODUTO_X_WMS_REGRA_CD"" duplicar regra para fabricante = ""(.*)"" e produto = ""(.*)"" com id_wms_regra_cd = ""(.*)""")]
         public void GivenTabelaT_PRODUTO_X_WMS_REGRA_CDDuplicarRegraParaFabricanteEProduto(string fabricante, string produto, int id_wms_regra_cd)
         {
+            //Não podemos duplicar um produto, porque fabricante e produto são chaves
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.GravarRegistroEm("t_PRODUTO_X_WMS_REGRA_CD", this);
             var db = contextoBdProvider.GetContextoGravacaoParaUsing();
 
@@ -539,6 +540,69 @@ namespace Especificacao.Testes.Utils.BancoTestes
             db.Remove(registro);
             db.SaveChanges();
             db.transacao.Commit();
+        }
+
+        [Given(@"Tabela ""t_WMS_REGRA_CD"" apagar registro do fabricante = ""(.*)"" e produto = ""(.*)""")]
+        public void GivenTabelaT_WMS_REGRA_CDApagarRegistroDoFabricante(string fabricante, string produto)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaApagarRegistroComCampo("t_WMS_REGRA_CD", "fabricante e produto", "Fabricante:(" + fabricante + ") e produto:(" + produto + ")", this);
+            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+
+            var t_produtoXwmsRegraCds = (from prodRegraCd in db.TprodutoXwmsRegraCds
+                                         where prodRegraCd.Fabricante == fabricante &&
+                                               prodRegraCd.Produto == produto
+                                         select prodRegraCd).FirstOrDefault();
+            var registros = (from regraCd in db.TwmsRegraCds
+                             where regraCd.Id == t_produtoXwmsRegraCds.Id_wms_regra_cd
+                             select regraCd).ToList();
+
+            foreach (var r in registros) db.Remove(r);
+
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+
+        [Given(@"Tabela ""t_WMS_REGRA_CD_X_UF"" apagar registro do id_wms_regra_cd = ""(.*)"" da UF = ""(.*)""")]
+        public void GivenTabelaT_WMS_REGRA_CD_X_UFApagarRegistroDoId_Wms_Regra_CdDaUF(int id_wms_regra_cd, string uf)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaApagarRegistroComCampo("t_WMS_REGRA_CD_X_UF", "id_wms_regra_cd e UF", "id_wms_regra_cd:(" + id_wms_regra_cd + ") e UF:(" + uf + ")", this);
+            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+
+            var registros = (from regraCdUF in db.TwmsRegraCdXUfs
+                            where regraCdUF.Id_wms_regra_cd == id_wms_regra_cd &&
+                                  regraCdUF.Uf == uf
+                            select regraCdUF).ToList();
+            foreach (var r in registros) db.Remove(r);
+
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+
+        [Given(@"Tabela ""t_WMS_REGRA_CD_X_UF"" duplicar registro do id_wms_regra_cd = ""(.*)"" da UF = ""(.*)""")]
+        public void GivenTabelaT_WMS_REGRA_CD_X_UFDuplicarRegistroDoId_Wms_Regra_CdDaUF(int id_wms_regra_cd, string uf)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.GravarRegistroEm("t_WMS_REGRA_CD_X_UF", this);
+            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+
+            var registro = (from regraCdUF in db.TwmsRegraCdXUfs
+                             where regraCdUF.Id_wms_regra_cd == id_wms_regra_cd &&
+                                   regraCdUF.Uf == uf
+                             select regraCdUF).FirstOrDefault();
+
+            Assert.NotNull(registro);
+
+            TwmsRegraCdXUf regraCdXUf = new TwmsRegraCdXUf()
+            {
+                Id = 163,
+                Id_wms_regra_cd = id_wms_regra_cd,
+                St_inativo = 0,
+                Uf = uf
+            };
+
+            db.Add(regraCdXUf);
+            db.SaveChanges();
+            db.transacao.Commit();
+
         }
 
 

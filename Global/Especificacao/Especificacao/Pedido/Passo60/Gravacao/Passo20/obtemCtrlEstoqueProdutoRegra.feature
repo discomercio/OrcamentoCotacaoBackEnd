@@ -58,4 +58,25 @@ Scenario: obtemCtrlEstoqueProdutoRegra - t_PRODUTO_X_WMS_REGRA_CD sem regra
 	Given Tabela "t_PRODUTO_X_WMS_REGRA_CD" apagar registro do fabricante = "003" e produto = "003220"
 	Given Pedido base
 	Then Erro "Falha na leitura da regra de consumo do estoque para a UF 'SP' e 'Pessoa Física': produto (003)003220 não possui regra associada"
-	
+
+Scenario: obtemCtrlEstoqueProdutoRegra - t_WMS_REGRA_CD
+	#	SELECT * FROM t_WMS_REGRA_CD WHERE id = id_wms_regra_cd
+	#		se nenhum registro, erro
+	#		se mais de um registro, erro (não está no ASP) -> Não podemos fazer esse teste porque fabricante e produto são chaves
+	Given Tabela "t_WMS_REGRA_CD" apagar registro do fabricante = "003" e produto = "003220"
+	Given Pedido base
+	Then Erro "Falha na leitura da regra de consumo do estoque para a UF 'SP' e 'Pessoa Física': regra associada ao produto (003)003220 não foi localizada no banco de dados (Id=5)"
+
+Scenario: obtemCtrlEstoqueProdutoRegra - t_WMS_REGRA_CD_X_UF
+	#	SELECT * FROM t_WMS_REGRA_CD_X_UF WHERE (id_wms_regra_cd = id_wms_regra_cd) AND (uf = UF)
+	#		se nenhum registro, erro
+	#		se mais de um registro, erro (não está no ASP)
+	Given Tabela "t_WMS_REGRA_CD_X_UF" apagar registro do id_wms_regra_cd = "5" da UF = "SP"
+	Given Pedido base
+	Then Erro "Falha na leitura da regra de consumo do estoque para a UF 'SP' e 'Pessoa Física': regra associada ao produto (003)003220 não está cadastrada para a UF 'SP' (Id=5)"
+
+Scenario: obtemCtrlEstoqueProdutoRegra - t_WMS_REGRA_CD_X_UF duplicado
+	Given No ambiente "Especificacao.Pedido.PedidoSteps" mapear erro "Falha na leitura da regra de consumo do estoque para a UF 'SP' e 'Pessoa Física': regra associada ao produto (003)003220 não foi localizada no banco de dados (Id=5)" para "Falha na leitura da regra de consumo do estoque para a UF 'SP' e 'Pessoa Física': regra associada ao produto (003)003220 não está cadastrada para a UF 'SP' (Id=5)"
+	Given Tabela "t_WMS_REGRA_CD_X_UF" duplicar registro do id_wms_regra_cd = "5" da UF = "SP"
+	Given Pedido base
+	Then Erro "Falha na leitura da regra de consumo do estoque para a UF 'SP' e 'Pessoa Física': regra associada ao produto (003)003220 não foi localizada no banco de dados (Id=5)"
