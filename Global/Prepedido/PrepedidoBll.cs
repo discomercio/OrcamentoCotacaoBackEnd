@@ -809,7 +809,7 @@ namespace Prepedido
 
             //List<RegrasBll> regraCrtlEstoque = new List<RegrasBll>();
             List<RegrasBll> regraCrtlEstoque = (await ObtemCtrlEstoqueProdutoRegra(contextoProvider, prePedido, lstErros)).ToList();
-            await UtilsProduto.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, regraCrtlEstoque, prePedido.DadosCliente.Uf, tipoPessoa, contextoProvider);
+            //await UtilsProduto.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, regraCrtlEstoque, prePedido.DadosCliente.Uf, tipoPessoa, contextoProvider);
             //estou incluindo essa validação, pois nos testes caso tenha erro ao obter o ctrl de estoque, estamos 
             //tendo erro de null na lista "regraCrtlEstoque"
             if (lstErros.Count != 0) return lstErros;

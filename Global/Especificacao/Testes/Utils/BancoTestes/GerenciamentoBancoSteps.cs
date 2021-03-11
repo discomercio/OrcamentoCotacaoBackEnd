@@ -572,9 +572,9 @@ namespace Especificacao.Testes.Utils.BancoTestes
             var db = contextoBdProvider.GetContextoGravacaoParaUsing();
 
             var registros = (from regraCdUF in db.TwmsRegraCdXUfs
-                            where regraCdUF.Id_wms_regra_cd == id_wms_regra_cd &&
-                                  regraCdUF.Uf == uf
-                            select regraCdUF).ToList();
+                             where regraCdUF.Id_wms_regra_cd == id_wms_regra_cd &&
+                                   regraCdUF.Uf == uf
+                             select regraCdUF).ToList();
             foreach (var r in registros) db.Remove(r);
 
             db.SaveChanges();
@@ -588,9 +588,9 @@ namespace Especificacao.Testes.Utils.BancoTestes
             var db = contextoBdProvider.GetContextoGravacaoParaUsing();
 
             var registro = (from regraCdUF in db.TwmsRegraCdXUfs
-                             where regraCdUF.Id_wms_regra_cd == id_wms_regra_cd &&
-                                   regraCdUF.Uf == uf
-                             select regraCdUF).FirstOrDefault();
+                            where regraCdUF.Id_wms_regra_cd == id_wms_regra_cd &&
+                                  regraCdUF.Uf == uf
+                            select regraCdUF).FirstOrDefault();
 
             Assert.NotNull(registro);
 
@@ -615,9 +615,9 @@ namespace Especificacao.Testes.Utils.BancoTestes
             var db = contextoBdProvider.GetContextoGravacaoParaUsing();
 
             var registros = (from regraCdUFPessoa in db.TwmsRegraCdXUfPessoas
-                            where regraCdUFPessoa.Id_wms_regra_cd_x_uf == id &&
-                                  regraCdUFPessoa.Tipo_pessoa == tipo_pessoa
-                            select regraCdUFPessoa).ToList();
+                             where regraCdUFPessoa.Id_wms_regra_cd_x_uf == id &&
+                                   regraCdUFPessoa.Tipo_pessoa == tipo_pessoa
+                             select regraCdUFPessoa).ToList();
 
             foreach (var r in registros) db.Remove(r);
 
@@ -632,9 +632,9 @@ namespace Especificacao.Testes.Utils.BancoTestes
             var db = contextoBdProvider.GetContextoGravacaoParaUsing();
 
             var registro = (from regraCdUFPessoa in db.TwmsRegraCdXUfPessoas
-                             where regraCdUFPessoa.Id_wms_regra_cd_x_uf == Id_wms_regra_cd_x_uf &&
-                                   regraCdUFPessoa.Tipo_pessoa == tipo_pessoa
-                             select regraCdUFPessoa).FirstOrDefault();
+                            where regraCdUFPessoa.Id_wms_regra_cd_x_uf == Id_wms_regra_cd_x_uf &&
+                                  regraCdUFPessoa.Tipo_pessoa == tipo_pessoa
+                            select regraCdUFPessoa).FirstOrDefault();
 
             Assert.NotNull(registro);
 
@@ -694,6 +694,23 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 Assert.Equal("campo desconhecido", campo);
 
             db.Update(registro);
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+        [Given(@"Tabela ""t_NFe_EMITENTE"" limpar registros")]
+        public void GivenTabelaLimparRegistros()
+        {
+            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            var registros = (from nfeEmitente in db.TnfEmitentes
+                             select nfeEmitente).ToList();
+            Assert.NotNull(registros);
+
+            foreach (var nfe in registros)
+            {
+                Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaApagarRegistroComCampo("t_NFe_EMITENTE", "id", "id:(" + nfe.Id + ")", this);
+                db.Remove(nfe);
+            }
+
             db.SaveChanges();
             db.transacao.Commit();
         }

@@ -103,7 +103,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20.ObtemCtrlE
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("t_NFe_EMITENTE - st_ativo = 0", null, tagsOfScenario, argumentsOfScenario);
-#line 12
+#line 11
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -126,21 +126,65 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 13
+#line 12
  testRunner.Given("Tabela \"t_NFe_EMITENTE\" registro tipo de pessoa = \"PF\" e id_wms_regra_cd_x_uf = \"" +
                         "134\", alterar campo \"st_ativo\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 14
+#line 13
  testRunner.Given("Tabela \"t_NFe_EMITENTE\" registro tipo de pessoa = \"PR\" e id_wms_regra_cd_x_uf = \"" +
                         "134\", alterar campo \"st_ativo\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 15
+#line 14
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 16
+#line 15
  testRunner.Then("Erro \"Falha na regra de consumo do estoque para a UF \'SP\' e \'Pessoa Física\': regr" +
                         "a associada ao produto (003)003220 especifica um CD para aguardar produtos sem p" +
                         "resença no estoque que não está habilitado (Id=5)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="t_NFe_EMITENTE - sem registro")]
+        [Xunit.TraitAttribute("FeatureTitle", "t_NFe_EMITENTE")]
+        [Xunit.TraitAttribute("Description", "t_NFe_EMITENTE - sem registro")]
+        public virtual void T_NFe_EMITENTE_SemRegistro()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("t_NFe_EMITENTE - sem registro", null, tagsOfScenario, argumentsOfScenario);
+#line 17
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 18
+ testRunner.Given("Tabela \"t_NFe_EMITENTE\" limpar registros", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 19
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 20
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
