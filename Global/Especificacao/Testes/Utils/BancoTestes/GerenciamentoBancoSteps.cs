@@ -56,6 +56,12 @@ namespace Especificacao.Testes.Utils.BancoTestes
                     LimparTabelaDbSet<Tpedido>(db.Tpedidos);
                     LimparTabelaDbSet<TpedidoItem>(db.TpedidoItems);
                     break;
+                case "t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD":
+                    LimparTabelaDbSet<TwmsRegraCdXUfXPessoaXCd>(db.TwmsRegraCdXUfXPessoaXCds);
+                    break;
+                case "t_NFe_EMITENTE":
+                    LimparTabelaDbSet<TnfEmitente>(db.TnfEmitentes);
+                    break;
                 default:
                     Testes.Utils.LogTestes.LogOperacoes2.Excecao($"Especificacao.Testes.Utils.BancoTestes.InicializarBancoGeral.LimparTabela nome de tabela desconhecido: {tabela}" + $"StackTrace: '{Environment.StackTrace}'", this);
                     throw new ArgumentException($"Especificacao.Testes.Utils.BancoTestes.InicializarBancoGeral.LimparTabela nome de tabela desconhecido: {tabela}");
@@ -119,8 +125,6 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 VerificarCampoEmRegistro.VerificarRegistro<Tpedido>(campo, valor_desejado, registro);
             }
         }
-
-
 
         public void TabelaT_PEDIDO_ITEMRegistroVerificarCampo(int item, string pedido, string campo, string valor_desejado)
         {
@@ -697,24 +701,6 @@ namespace Especificacao.Testes.Utils.BancoTestes
             db.SaveChanges();
             db.transacao.Commit();
         }
-        [Given(@"Tabela ""t_NFe_EMITENTE"" limpar registros")]
-        public void GivenTabelaLimparRegistros()
-        {
-            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
-            var registros = (from nfeEmitente in db.TnfEmitentes
-                             select nfeEmitente).ToList();
-            Assert.NotNull(registros);
-
-            foreach (var nfe in registros)
-            {
-                Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaApagarRegistroComCampo("t_NFe_EMITENTE", "id", "id:(" + nfe.Id + ")", this);
-                db.Remove(nfe);
-            }
-
-            db.SaveChanges();
-            db.transacao.Commit();
-        }
-
 
         [Given(@"Tabela ""t_PRODUTO"" com fabricante = ""(.*)"" e produto = ""(.*)"" alterar campo ""(.*)"" = ""(.*)""")]
         public void GivenTabelaComFabricanteEProdutoAlterarCampo(string fabricante, string produto, string campo, string valor)
