@@ -65,9 +65,9 @@ namespace Pedido
                         if (s_pg == op)
                         {
                             if (pedido.Cliente.Tipo.PessoaJuridica())
-                                percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
+                                percDescComissaoUtilizar = percentualMax.Perc_Max_Comissao_E_Desconto_Pj;
                             else
-                                percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;
+                                percDescComissaoUtilizar = percentualMax.Perc_Max_Comissao_E_Desconto;
                         }
                     }
                 }
@@ -120,9 +120,9 @@ namespace Pedido
                 if (vlNivel2 > (vl_total / 2))
                 {
                     if (pedido.Cliente.Tipo.PessoaJuridica())
-                        percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
+                        percDescComissaoUtilizar = percentualMax.Perc_Max_Comissao_E_Desconto_Pj;
                     else
-                        percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;
+                        percDescComissaoUtilizar = percentualMax.Perc_Max_Comissao_E_Desconto;
                 }
             }
             if (pedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA)
@@ -171,9 +171,9 @@ namespace Pedido
                 if (vlNivel2 > (vl_total / 2))
                 {
                     if (pedido.Cliente.Tipo.PessoaJuridica())
-                        percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
+                        percDescComissaoUtilizar = percentualMax.Perc_Max_Comissao_E_Desconto_Pj;
                     else
-                        percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;
+                        percDescComissaoUtilizar = percentualMax.Perc_Max_Comissao_E_Desconto;
                 }
             }
             return percDescComissaoUtilizar;
@@ -193,7 +193,7 @@ namespace Pedido
             //vamos vericar cada produto da lista
             foreach (var item in v_item)
             {
-                var produtoLojaTask = (from c in criacao.Execucao.TabelasBanco.TprodutoLoja_Include_Tprodtuo_Tfabricante
+                var produtoLojaTask = (from c in criacao.Execucao.TabelasBanco.TprodutoLoja_Include_Tprodtuo_Tfabricante_Validado
                                        where c.Tproduto.Fabricante == item.Fabricante &&
                                              c.Tproduto.Produto == item.Produto &&
                                              c.Loja == loja
@@ -331,7 +331,7 @@ namespace Pedido
                     {
                         coeficiente = percCusto.Coeficiente;
                         if (i.Preco_Lista != (decimal)coeficiente * (i.CustoFinancFornecPrecoListaBase_Conferencia))
-                            lstErros.Add("Preco_Lista  inconsistente");
+                            lstErros.Add("Preco_Lista inconsistente");
                     }
                     else
                     {

@@ -7,7 +7,7 @@ namespace Pedido.Dados.Criacao
 {
     public class PedidoCriacaoProdutoDados
     {
-        public PedidoCriacaoProdutoDados(string fabricante, string produto, short qtde, float? desc_Dado, decimal preco_Venda, decimal preco_Lista, decimal preco_NF, decimal custoFinancFornecPrecoListaBase_Conferencia, float custoFinancFornecCoeficiente_Conferencia, short? qtde_estoque_total_disponivel)
+        public PedidoCriacaoProdutoDados(string fabricante, string produto, short qtde, float? desc_Dado, decimal preco_Venda, decimal preco_Lista, decimal preco_NF, decimal custoFinancFornecPrecoListaBase_Conferencia, float custoFinancFornecCoeficiente_Conferencia, short? qtde_spe_usuario_aceitou)
         {
             Fabricante = fabricante ?? throw new ArgumentNullException(nameof(fabricante));
             Produto = produto ?? throw new ArgumentNullException(nameof(produto));
@@ -18,7 +18,7 @@ namespace Pedido.Dados.Criacao
             Preco_NF = preco_NF;
             CustoFinancFornecPrecoListaBase_Conferencia = custoFinancFornecPrecoListaBase_Conferencia;
             CustoFinancFornecCoeficiente_Conferencia = custoFinancFornecCoeficiente_Conferencia;
-            Qtde_estoque_total_disponivel = qtde_estoque_total_disponivel;
+            Qtde_spe_usuario_aceitou = qtde_spe_usuario_aceitou;
         }
 
         public string Fabricante { get; }
@@ -34,9 +34,12 @@ namespace Pedido.Dados.Criacao
         public float CustoFinancFornecCoeficiente_Conferencia { get; }
 
         //usado para avisar se mudou o número de produtos não disponíveis em estoque
-        //o usuário concordou em fazer o pedido com X unidades em estoque; 
+        //o usuário concordou em fazer o pedido com X unidades em estoque e aceita um pedido com Qtde_spe_aceita unidades sem presernça no estoque
         //se durante o processo outro pedido consumir esse estoque, devemos avisar o cliente que mudou a quantidade de produtos disponíveis para entrega
         //se null, não é verificado
+        public short? Qtde_spe_usuario_aceitou { get; set; }
+
+        //todo: remover esta variável
         public short? Qtde_estoque_total_disponivel { get; set; }
 
         //informações

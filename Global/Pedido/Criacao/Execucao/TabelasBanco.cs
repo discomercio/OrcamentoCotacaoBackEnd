@@ -23,12 +23,18 @@ namespace Pedido.Criacao.Execucao
 
         //este pode ser null sim
         public TorcamentistaEindicador? Indicador { get; private set; } = null;
+        private async Task Inicializarindicador()
+        {
+            if (!String.IsNullOrEmpty(Pedido.Ambiente.Indicador))
+                Indicador = await Criacao.PrepedidoBll.BuscarTorcamentista(Pedido.Ambiente.Indicador);
+        }
 
 
         public async Task Inicializar()
         {
             var tasks = new List<Task>
             {
+                Inicializarindicador(),
                 InicializarTpercentualCustoFinanceiroFornecedors(),
                 InicializarTprodutoLoja()
             };
@@ -76,21 +82,43 @@ namespace Pedido.Criacao.Execucao
         #endregion
 
         #region TprodutoLoja
-        public List<TprodutoLoja> TprodutoLoja_Include_Tprodtuo_Tfabricante { get; private set; } = new List<TprodutoLoja>();
+        public List<TprodutoLoja> TprodutoLoja_Include_Tprodtuo_Tfabricante_Validado { get; private set; } = new List<TprodutoLoja>();
+
+        private IEnumerable<TprodutoLoja> TprodutoLoja_Query(string fabricante, string produto)
+        {
+            return (from p in TprodutoLoja_Include_Tprodtuo_Tfabricante_Validado
+                    where p.Fabricante == fabricante && p.Produto == produto && p.Loja == Pedido.Ambiente.Loja
+                    select p);
+        }
 
         private async Task InicializarTprodutoLoja()
         {
-            if (!String.IsNullOrEmpty(Pedido.Ambiente.Indicador))
-                Indicador = await Criacao.PrepedidoBll.BuscarTorcamentista(Pedido.Ambiente.Indicador);
-
             var db = Criacao.ContextoProvider.GetContextoLeitura();
             //basta que tenha o produto!
             var listaProdutos = Pedido.ListaProdutos.Select(c => c.Produto).Distinct().ToList();
-            TprodutoLoja_Include_Tprodtuo_Tfabricante = await (from c in db.TprodutoLojas.Include(x => x.Tproduto).Include(x => x.Tfabricante)
-                                                               where listaProdutos.Contains(c.Tproduto.Produto) &&
-                                                               c.Loja == Pedido.Ambiente.Loja
-                                                               select c).ToListAsync();
+            TprodutoLoja_Include_Tprodtuo_Tfabricante_Validado = await (from c in db.TprodutoLojas.Include(x => x.Tproduto).Include(x => x.Tfabricante)
+                                                                        where listaProdutos.Contains(c.Tproduto.Produto) &&
+                                                                        c.Loja == Pedido.Ambiente.Loja
+                                                                        select c).ToListAsync();
+
+            //já validamos que todos os produtos da lista existem uma e somente uma vez
+            foreach (var linha_pedido in Pedido.ListaProdutos)
+            {
+                var query = TprodutoLoja_Query(linha_pedido.Fabricante, linha_pedido.Produto);
+                if (query.Count() != 1)
+                {
+                    Retorno.ListaErros.Add($"Produto {linha_pedido.Produto} do fabricante {linha_pedido.Fabricante} NÃO está cadastrado para a loja {Pedido.Ambiente.Loja}");
+                }
+                /*
+                onde validamos alguns campos: 
+                CustoFinancFornecPrecoListaBase_Conferencia: validado em Prepedido.ValidacoesPrepedidoBll.ConfrontarProdutos
+                CustoFinancFornecCoeficiente_Conferencia: validado em Prepedido.ValidacoesPrepedidoBll.ValidarCustoFinancFornecCoeficiente
+                Preco_Lista: validado em Prepedido.ValidacoesPrepedidoBll.ConfrontarProdutos
+                */
+
+            }
         }
+
         #endregion
 
     }

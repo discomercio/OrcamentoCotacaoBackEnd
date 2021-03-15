@@ -34,6 +34,20 @@ namespace Pedido.Criacao.Execucao
         private List<ProdutoGravacao>? _produtoGravacaoLista;
         #endregion
 
+        #region V_desconto
+        public List<string> V_desconto
+        {
+            get
+            {
+                if (_v_desconto == null)
+                    throw new ApplicationException($"_v_desconto acessado antes de ser calculado.");
+                return _v_desconto;
+            }
+            set => _v_desconto = value;
+        }
+        private List<string>? _v_desconto = null;
+        #endregion
+
         #region Tpedido_pai
         public Tpedido Tpedido_pai
         {
