@@ -14,7 +14,6 @@ namespace InfraBanco.Modelos
         [Required]
         public string Fabricante { get; set; }
 
-        [Key]
         [Column("produto")]
         [MaxLength(8)]
         [Required]

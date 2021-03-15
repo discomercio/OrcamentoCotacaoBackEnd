@@ -137,9 +137,12 @@ this.FeatureBackground();
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 18
- testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("Informo \"InfCriacaoPedido.Pedido_bs_x_ac\" = \"123457092\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 19
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 20
  testRunner.And("Tabela \"t_LOG\" pedido gerado e operacao = \"OP_LOG_PEDIDO_NOVO\", verificar campo \"" +
                         "complemento\" = \"vl total=3.132,90; ra=\"\"; indicador=\"\"; vl_total_nf=3.132,90; vl" +
                         "_total_ra=0,00; perc_rt=0; qtde_parcelas=1; st_etg_imediata=2; stbemusoconsumo=1" +

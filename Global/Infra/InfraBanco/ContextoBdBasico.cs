@@ -35,6 +35,8 @@ namespace InfraBanco
 
             modelBuilder.Entity<TprodutoXAlerta>()
                 .HasKey(x => new { x.Fabricante, x.Produto, x.Id_Alerta });
+            modelBuilder.Entity<TprodutoXwmsRegraCd>()
+                .HasKey(x => new { x.Fabricante, x.Produto });
 
             modelBuilder.Entity<TprodutoLoja>()
                 .HasKey(x => new { x.Fabricante, x.Produto, x.Loja });

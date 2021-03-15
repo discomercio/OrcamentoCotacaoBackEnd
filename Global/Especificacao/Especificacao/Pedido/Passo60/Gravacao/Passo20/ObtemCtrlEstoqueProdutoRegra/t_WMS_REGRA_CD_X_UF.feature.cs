@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
+namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20.ObtemCtrlEstoqueProdutoRegra
 {
     using TechTalk.SpecFlow;
     using System;
@@ -21,7 +21,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo60")]
     [Xunit.TraitAttribute("Category", "GerenciamentoBanco")]
-    public partial class ObtemCtrlEstoqueProdutoRegraFeature : object, Xunit.IClassFixture<ObtemCtrlEstoqueProdutoRegraFeature.FixtureData>, System.IDisposable
+    public partial class T_WMS_REGRA_CD_X_UFFeature : object, Xunit.IClassFixture<T_WMS_REGRA_CD_X_UFFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -32,10 +32,10 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "obtemCtrlEstoqueProdutoRegra.feature"
+#line 1 "t_WMS_REGRA_CD_X_UF.feature"
 #line hidden
         
-        public ObtemCtrlEstoqueProdutoRegraFeature(ObtemCtrlEstoqueProdutoRegraFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public T_WMS_REGRA_CD_X_UFFeature(T_WMS_REGRA_CD_X_UFFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -44,7 +44,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "obtemCtrlEstoqueProdutoRegra", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "t_WMS_REGRA_CD_X_UF", null, ProgrammingLanguage.CSharp, new string[] {
                         "Especificacao.Pedido.Passo60",
                         "GerenciamentoBanco"});
             testRunner.OnFeatureStart(featureInfo);
@@ -95,17 +95,15 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="obtemCtrlEstoqueProdutoRegra")]
-        [Xunit.TraitAttribute("FeatureTitle", "obtemCtrlEstoqueProdutoRegra")]
-        [Xunit.TraitAttribute("Description", "obtemCtrlEstoqueProdutoRegra")]
-        [Xunit.TraitAttribute("Category", "ignore")]
-        public virtual void ObtemCtrlEstoqueProdutoRegra()
+        [Xunit.SkippableFactAttribute(DisplayName="t_WMS_REGRA_CD_X_UF - sem regra")]
+        [Xunit.TraitAttribute("FeatureTitle", "t_WMS_REGRA_CD_X_UF")]
+        [Xunit.TraitAttribute("Description", "t_WMS_REGRA_CD_X_UF - sem regra")]
+        public virtual void T_WMS_REGRA_CD_X_UF_SemRegra()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("obtemCtrlEstoqueProdutoRegra", null, tagsOfScenario, argumentsOfScenario);
-#line 9
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("t_WMS_REGRA_CD_X_UF - sem regra", null, tagsOfScenario, argumentsOfScenario);
+#line 11
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -128,8 +126,64 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 37
- testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 12
+ testRunner.Given("Tabela \"t_WMS_REGRA_CD_X_UF\" apagar registro do id_wms_regra_cd = \"5\" da UF = \"SP" +
+                        "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 13
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 14
+ testRunner.Then("Erro \"Falha na leitura da regra de consumo do estoque para a UF \'SP\' e \'Pessoa Fí" +
+                        "sica\': regra associada ao produto (003)003220 não está cadastrada para a UF \'SP\'" +
+                        " (Id=5)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="t_WMS_REGRA_CD_X_UF - duplicado")]
+        [Xunit.TraitAttribute("FeatureTitle", "t_WMS_REGRA_CD_X_UF")]
+        [Xunit.TraitAttribute("Description", "t_WMS_REGRA_CD_X_UF - duplicado")]
+        public virtual void T_WMS_REGRA_CD_X_UF_Duplicado()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("t_WMS_REGRA_CD_X_UF - duplicado", null, tagsOfScenario, argumentsOfScenario);
+#line 16
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 17
+ testRunner.Given("Tabela \"t_WMS_REGRA_CD_X_UF\" duplicar registro do id_wms_regra_cd = \"5\" da UF = \"" +
+                        "SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 18
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 19
+ testRunner.Then("Erro \"Falha na leitura da regra de consumo do estoque para a UF \'SP\' e \'Pessoa Fí" +
+                        "sica\': regra associada ao produto (003)003220 não está cadastrada para a UF \'SP\'" +
+                        " (Id=5)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -142,12 +196,12 @@ this.FeatureBackground();
             
             public FixtureData()
             {
-                ObtemCtrlEstoqueProdutoRegraFeature.FeatureSetup();
+                T_WMS_REGRA_CD_X_UFFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                ObtemCtrlEstoqueProdutoRegraFeature.FeatureTearDown();
+                T_WMS_REGRA_CD_X_UFFeature.FeatureTearDown();
             }
         }
     }
