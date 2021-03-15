@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20.ObtemCtrlEstoqueProdutoRegra
+namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20.ObtemCtrlEstoqueProdutoRegra.T_WMS_REGRA_CD_X_UF_X_PESSOA_CD
 {
     using TechTalk.SpecFlow;
     using System;
@@ -136,6 +136,60 @@ this.FeatureBackground();
  testRunner.Then("Erro \"Falha na leitura da regra de consumo do estoque para a UF \'SP\' e \'Pessoa Fí" +
                         "sica\': regra associada ao produto (003)003220 não especifica nenhum CD para cons" +
                         "umo do estoque (Id=5)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD - considerar t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD." +
+            "st_inativo = 1")]
+        [Xunit.TraitAttribute("FeatureTitle", "t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD")]
+        [Xunit.TraitAttribute("Description", "t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD - considerar t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD." +
+            "st_inativo = 1")]
+        [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo60.Gravacao.Passo20.ObtemCtrlEstoqueProdutoRegra.t_WMS_" +
+            "REGRA_CD_X_UF_X_PESSOA_CD")]
+        public virtual void T_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD_ConsiderarT_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD_St_Inativo1()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Especificacao.Pedido.Passo60.Gravacao.Passo20.ObtemCtrlEstoqueProdutoRegra.t_WMS_" +
+                        "REGRA_CD_X_UF_X_PESSOA_CD"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD - considerar t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD." +
+                    "st_inativo = 1", null, tagsOfScenario, argumentsOfScenario);
+#line 23
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 24
+ testRunner.Given("Tabela \"t_NFe_EMITENTE\" registro tipo de pessoa = \"PR\" e id_wms_regra_cd_x_uf = \"" +
+                        "26\", alterar campo \"st_ativo\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 25
+ testRunner.Given("Chamar ObtemCtrlEstoqueProdutoRegra e verificar regra do produto = \"003220\" e id_" +
+                        "nfe_emitente = \"4001\", campo \"st_inativo\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 26
+ testRunner.Given("Tabela \"t_NFe_EMITENTE\" verificar registro tipo de pessoa = \"PR\" e id_wms_regra_c" +
+                        "d_x_uf = \"26\",campo \"st_ativo\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
             this.ScenarioCleanup();
