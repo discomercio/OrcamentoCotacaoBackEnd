@@ -19,14 +19,16 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo90
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "ignore")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo60")]
+    [Xunit.TraitAttribute("Category", "GerenciamentoBanco")]
     public partial class EspecificacaoPedidoPasso60GravacaoPasso90LogFeature : object, Xunit.IClassFixture<EspecificacaoPedidoPasso60GravacaoPasso90LogFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore"};
+                "Especificacao.Pedido.Passo60",
+                "GerenciamentoBanco"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -43,7 +45,8 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo90
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Especificacao\\Pedido\\Passo60\\Gravacao\\Passo90\\Log", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ignore"});
+                        "Especificacao.Pedido.Passo60",
+                        "GerenciamentoBanco"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -78,20 +81,32 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo90
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 5
+#line hidden
+#line 6
+ testRunner.Given("Ignorar cenário no ambiente \"Especificacao.Prepedido.PrepedidoSteps\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 7
+ testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+        }
+        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Log")]
+        [Xunit.SkippableFactAttribute(DisplayName="Log - pedido magento")]
         [Xunit.TraitAttribute("FeatureTitle", "Especificacao\\Pedido\\Passo60\\Gravacao\\Passo90\\Log")]
-        [Xunit.TraitAttribute("Description", "Log")]
-        public virtual void Log()
+        [Xunit.TraitAttribute("Description", "Log - pedido magento")]
+        public virtual void Log_PedidoMagento()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Log", null, tagsOfScenario, argumentsOfScenario);
-#line 9
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Log - pedido magento", null, tagsOfScenario, argumentsOfScenario);
+#line 14
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -111,8 +126,40 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 10
- testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 16
+ testRunner.Given("Ignorar cenário no ambiente \"Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadas" +
+                        "trarPedido.CadastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 17
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 18
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 19
+ testRunner.And("Tabela \"t_LOG\" pedido gerado e operacao = \"OP_LOG_PEDIDO_NOVO\", verificar campo \"" +
+                        "complemento\" = \"vl total=3.132,90; ra=\"\"; indicador=\"\"; vl_total_nf=3.132,90; vl" +
+                        "_total_ra=0,00; perc_rt=0; qtde_parcelas=1; st_etg_imediata=2; stbemusoconsumo=1" +
+                        "; instaladorinstalastatus=1; obs_1=teste magento; pedido_bs_x_ac = 123457092; ma" +
+                        "rketplace_codigo_origem = 001; status da análise crédito: 9 - crédito ok (aguard" +
+                        "ando depósito); tipo_parcelamento=1; av_forma_pagto=6; custofinancfornectipoparc" +
+                        "elamento=av; custofinancfornecqtdeparcelas=0; endereço cobrança=rua professor fá" +
+                        "bio fanucchi, 97 - jardim são paulo(zona norte) - são paulo - sp - 0204-080 (ema" +
+                        "il=testecad@gabriel.com, email_xml=, nome=vivian, ddd_res=11, tel_res=11111111, " +
+                        "ddd_com=11, tel_com=12345678, ramal_com=, ddd_cel=11, tel_cel=981603313, ddd_com" +
+                        "_2=, tel_com_2=, ramal_com_2=, tipo_pessoa=pf, cnpj_cpf=14039603052, contribuint" +
+                        "e_icms_status=0, produtor_rural_status=1, ie=, rg=, contato=); endereço entrega=" +
+                        "mesmo do cadastro; escolha automática de transportadora=n; garantiaindicadorstat" +
+                        "us=0; perc_desagio_ra_liquida=0; pedido_bs_x_at=; operação de origem: cadastrame" +
+                        "nto semi-automático de pedido do e-commerce (nº magento pedido_bs_x_ac=123457092" +
+                        ";\\r 2x003220(003); preco_lista=626,58; desc_dado=0; preco_venda=626,58; preco_nf" +
+                        "=626,58; custofinancforneccoeficiente=1; custofinancfornecprecolistabase=626,58;" +
+                        " estoque_vendido=2;\\r 2x003221(003); preco_lista=939,87; desc_dado=0; preco_vend" +
+                        "a=939,87; preco_nf=939,87; custofinancforneccoeficiente=1; custofinancfornecprec" +
+                        "olistabase=939,87; estoque_vendido=2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

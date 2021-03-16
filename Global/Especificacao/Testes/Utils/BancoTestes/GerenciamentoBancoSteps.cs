@@ -269,6 +269,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         {
             //OP_LOG_PEDIDO_NOVO
             //OP_LOG_ORCAMENTO_NOVO
+            //OP_LOG_CLIENTE_INCLUSAO
             switch (operacao)
             {
                 case "OP_LOG_PEDIDO_NOVO":
@@ -277,13 +278,23 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 case "OP_LOG_ORCAMENTO_NOVO":
                     operacao = InfraBanco.Constantes.Constantes.OP_LOG_ORCAMENTO_NOVO;
                     break;
+                case "OP_LOG_CLIENTE_INCLUSAO":
+                    operacao = InfraBanco.Constantes.Constantes.OP_LOG_CLIENTE_INCLUSAO;
+                    break;
                 default:
                     Assert.Equal("Operação", $"{operacao} desconhecido");
                     break;
             }
             var db = contextoBdProvider.GetContextoLeitura();
+            string idCliente = "";
+            if (operacao.ToUpper() == InfraBanco.Constantes.Constantes.OP_LOG_CLIENTE_INCLUSAO)
+            {
+                idCliente = (from c in db.Tpedidos
+                                 where c.Pedido == pedido
+                                 select c.Id_Cliente).FirstOrDefault();
+            }
             var registros = (from log in db.Tlogs
-                             where log.Pedido == pedido &&
+                             where (log.Pedido == pedido || log.Id_Cliente == idCliente) &&
                                    log.Operacao == operacao
                              select log).ToList();
 
@@ -318,6 +329,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
                         break;
                     case "complemento":
                         if (valor.Contains("\\r")) valor = valor.Replace("\\r", "\r");
+                        //if (valor.Contains("\\n")) valor = valor.Replace("\\n", "\n");
                         Assert.Contains(valor.ToLower(), registro.Complemento.ToLower());
                         break;
 
