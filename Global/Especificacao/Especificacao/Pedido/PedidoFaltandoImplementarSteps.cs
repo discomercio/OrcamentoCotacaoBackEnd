@@ -370,6 +370,13 @@ namespace Especificacao.Especificacao.Pedido
 
         }
 
+        [Given(@"Tabela ""t_PARAMETRO"" com id = ""(.*)"" alterar campo ""(.*)"" = ""(.*)""")]
+        public void GivenTabelaT_PARAMETRORegistroComIdAlterarCampo(string valor_id, string campo, string valor)
+        {
+            
+        }
+
+        
     }
 }
 #pragma warning restore IDE0060 // Remove unued parameter

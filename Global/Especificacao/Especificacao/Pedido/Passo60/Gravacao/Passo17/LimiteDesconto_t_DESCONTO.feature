@@ -1,6 +1,6 @@
-﻿@ignore
-@Especificacao.Pedido.Passo40
-@GerenciamentoBanco
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
+#@Especificacao.Pedido.Passo40
+#@GerenciamentoBanco
 Feature: LimiteDesconto_t_DESCONTO
 
 Background: Configurar descontos da loja
