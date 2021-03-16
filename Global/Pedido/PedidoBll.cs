@@ -32,153 +32,6 @@ namespace Pedido
             this.PrepedidoBll = prepedidoBll;
         }
 
-        //todo: revsiar VerificarPagtoPreferencial
-        public float VerificarPagtoPreferencial(Tparametro? tParametro, PedidoCriacaoDados pedido,
-            float percDescComissaoUtilizar, Pedido.Criacao.Execucao.UtilsLoja.PercentualMaxDescEComissao percentualMax, decimal vl_total)
-        {
-            List<string> lstOpcoesPagtoPrefericiais = new List<string>();
-            if (tParametro != null && !string.IsNullOrEmpty(tParametro.Id))
-            {
-                //a verificação é feita na linha 380 ate 388
-                lstOpcoesPagtoPrefericiais = tParametro.Campo_texto.Split(',').ToList();
-            }
-
-            string s_pg = "";
-            decimal? vlNivel1 = 0;
-            decimal? vlNivel2 = 0;
-
-            //identifica e verifica se é pagto preferencial e calcula  637 ate 712
-            if (pedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA)
-                s_pg = pedido.FormaPagtoCriacao.Op_av_forma_pagto;
-            if (pedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELA_UNICA)
-                s_pg = pedido.FormaPagtoCriacao.Op_pu_forma_pagto;
-            if (pedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO)
-                s_pg = Constantes.ID_FORMA_PAGTO_CARTAO;
-            if (pedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA)
-                s_pg = Constantes.ID_FORMA_PAGTO_CARTAO_MAQUINETA;
-            if (!string.IsNullOrEmpty(s_pg))
-            {
-                if (lstOpcoesPagtoPrefericiais.Count > 0)
-                {
-                    foreach (var op in lstOpcoesPagtoPrefericiais)
-                    {
-                        if (s_pg == op)
-                        {
-                            if (pedido.Cliente.Tipo.PessoaJuridica())
-                                percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
-                            else
-                                percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;
-                        }
-                    }
-                }
-            }
-
-            bool pgtoPreferencial = false;
-            if (pedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA)
-            {
-                s_pg = pedido.FormaPagtoCriacao.Op_pce_entrada_forma_pagto;
-
-                if (!string.IsNullOrEmpty(s_pg))
-                {
-                    if (lstOpcoesPagtoPrefericiais.Count > 0)
-                    {
-                        foreach (var op in lstOpcoesPagtoPrefericiais)
-                        {
-                            if (s_pg == op)
-                                pgtoPreferencial = true;
-                        }
-                    }
-                }
-                //verificamos a entrada
-                if (pgtoPreferencial)
-                    vlNivel2 = pedido.FormaPagtoCriacao.C_pce_entrada_valor;
-                else
-                    vlNivel1 = pedido.FormaPagtoCriacao.C_pce_entrada_valor;
-
-                //Identifica e contabiliza o valor das parcelas
-                pgtoPreferencial = false;
-                s_pg = pedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto;
-                if (!string.IsNullOrEmpty(s_pg))
-                {
-                    if (lstOpcoesPagtoPrefericiais.Count > 0)
-                    {
-                        foreach (var op in lstOpcoesPagtoPrefericiais)
-                        {
-                            if (s_pg == op)
-                                pgtoPreferencial = true;
-                        }
-                    }
-                }
-
-                if (pgtoPreferencial)
-                    vlNivel2 = vlNivel2 +
-                        (pedido.FormaPagtoCriacao.C_pce_prestacao_qtde * pedido.FormaPagtoCriacao.C_pce_prestacao_valor);
-                else
-                    vlNivel1 = vlNivel1 +
-                        (pedido.FormaPagtoCriacao.C_pce_prestacao_qtde * pedido.FormaPagtoCriacao.C_pce_prestacao_valor);
-
-                if (vlNivel2 > (vl_total / 2))
-                {
-                    if (pedido.Cliente.Tipo.PessoaJuridica())
-                        percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
-                    else
-                        percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;
-                }
-            }
-            if (pedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA)
-            {
-                s_pg = pedido.FormaPagtoCriacao.Op_pse_prim_prest_forma_pagto;
-
-                if (!string.IsNullOrEmpty(s_pg))
-                {
-                    if (lstOpcoesPagtoPrefericiais.Count > 0)
-                    {
-                        foreach (var op in lstOpcoesPagtoPrefericiais)
-                        {
-                            if (s_pg == op)
-                                pgtoPreferencial = true;
-                        }
-                    }
-                }
-                //verificamos a entrada
-                if (pgtoPreferencial)
-                    vlNivel2 = pedido.FormaPagtoCriacao.C_pse_prim_prest_valor;
-                else
-                    vlNivel1 = pedido.FormaPagtoCriacao.C_pse_prim_prest_valor;
-
-                //Identifica e contabiliza o valor das parcelas
-                pgtoPreferencial = false;
-                s_pg = pedido.FormaPagtoCriacao.Op_pse_demais_prest_forma_pagto;
-                if (!string.IsNullOrEmpty(s_pg))
-                {
-                    if (lstOpcoesPagtoPrefericiais.Count > 0)
-                    {
-                        foreach (var op in lstOpcoesPagtoPrefericiais)
-                        {
-                            if (s_pg == op)
-                                pgtoPreferencial = true;
-                        }
-                    }
-                }
-
-                if (pgtoPreferencial)
-                    vlNivel2 = vlNivel2 +
-                        (pedido.FormaPagtoCriacao.C_pse_demais_prest_qtde * pedido.FormaPagtoCriacao.C_pse_demais_prest_valor);
-                else
-                    vlNivel1 = vlNivel1 +
-                        (pedido.FormaPagtoCriacao.C_pse_demais_prest_qtde * pedido.FormaPagtoCriacao.C_pse_demais_prest_valor);
-
-                if (vlNivel2 > (vl_total / 2))
-                {
-                    if (pedido.Cliente.Tipo.PessoaJuridica())
-                        percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDescPJ;
-                    else
-                        percDescComissaoUtilizar = percentualMax.PercMaxComissaoEDesc;
-                }
-            }
-            return percDescComissaoUtilizar;
-        }
-
         public async Task VerificarDescontoArredondado(Criacao.PedidoCriacao criacao, string loja, List<Cl_ITEM_PEDIDO_NOVO> v_item,
             List<string> lstErros, string c_custoFinancFornecTipoParcelamento, short c_custoFinancFornecQtdeParcelas,
             string id_cliente, float percDescComissaoUtilizar, List<string> vdesconto)
@@ -193,7 +46,7 @@ namespace Pedido
             //vamos vericar cada produto da lista
             foreach (var item in v_item)
             {
-                var produtoLojaTask = (from c in criacao.Execucao.TabelasBanco.TprodutoLoja_Include_Tprodtuo_Tfabricante
+                var produtoLojaTask = (from c in criacao.Execucao.TabelasBanco.TprodutoLoja_Include_Tprodtuo_Tfabricante_Validado
                                        where c.Tproduto.Fabricante == item.Fabricante &&
                                              c.Tproduto.Produto == item.Produto &&
                                              c.Loja == loja
@@ -331,7 +184,7 @@ namespace Pedido
                     {
                         coeficiente = percCusto.Coeficiente;
                         if (i.Preco_Lista != (decimal)coeficiente * (i.CustoFinancFornecPrecoListaBase_Conferencia))
-                            lstErros.Add("Preco_Lista  inconsistente");
+                            lstErros.Add("Preco_Lista inconsistente");
                     }
                     else
                     {

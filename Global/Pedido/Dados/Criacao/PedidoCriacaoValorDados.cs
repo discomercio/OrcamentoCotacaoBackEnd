@@ -7,16 +7,15 @@ namespace Pedido.Dados.Criacao
 {
     public class PedidoCriacaoValorDados
     {
-        public PedidoCriacaoValorDados(float perc_RT, decimal vl_total, decimal vl_total_NF, bool permiteRAStatus)
+        public PedidoCriacaoValorDados(float perc_RT, decimal vl_total, decimal vl_total_NF)
         {
             Perc_RT = perc_RT;
             Vl_total = vl_total;
             Vl_total_NF = vl_total_NF;
-            PermiteRAStatus = permiteRAStatus;
         }
 
         //Armazena o percentual de comissão para o indicador selecionado (reserva técnica).
-        //precisa ser alterado no caso da API do magento ou no semi-automático porque no magento esse valor vem de uma variável
+        //precisa ser alterado no caso da API do magento ou no semi-automático porque no magento esse valor é determinado durante a gravação do pedido
         public float Perc_RT { get; set; }
 
         /*
@@ -25,7 +24,7 @@ namespace Pedido.Dados.Criacao
             'S' = pedido cadastrado informando que o RA será usado.
             'N' = pedido cadastrado informando que o RA não será usado.
             '-' = não se aplica (indicador não está habilitado p/ o uso de RA ou não há indicador cadastrado no pedido)
-            Quer dizer, este flag indica o estado do pedido; o PermiteRAStatus é se o indicador tem essa permissão
+            Quer dizer, este flag indica o estado do pedido
         */
         public bool PedidoPossuiRa() => Vl_total != Vl_total_NF;
 
@@ -37,13 +36,5 @@ namespace Pedido.Dados.Criacao
         //Armazena o valor total de pedido com RA
         //Caso o indicador selecionado permita RA esse campo deve receber o valor total do Pedido com RA
         public decimal Vl_total_NF { get; }
-
-        /*
-Flag que informa se o indicador pode ou não fazer uso de RA:
-	0 = Não permite RA
-	1 = Permite RA
-*/
-        //todo: remover esta variavel
-        public bool PermiteRAStatus { get; }
     }
 }

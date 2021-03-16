@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo30
+namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20.ObtemCtrlEstoqueProdutoRegra
 {
     using TechTalk.SpecFlow;
     using System;
@@ -21,7 +21,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo30
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo60")]
     [Xunit.TraitAttribute("Category", "GerenciamentoBanco")]
-    public partial class Estoque_Verifica_Disponibilidade_Integral_V2Feature : object, Xunit.IClassFixture<Estoque_Verifica_Disponibilidade_Integral_V2Feature.FixtureData>, System.IDisposable
+    public partial class T_NFe_EMITENTEFeature : object, Xunit.IClassFixture<T_NFe_EMITENTEFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -32,10 +32,10 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo30
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "estoque_verifica_disponibilidade_integral_v2.feature"
+#line 1 "t_NFe_EMITENTE.feature"
 #line hidden
         
-        public Estoque_Verifica_Disponibilidade_Integral_V2Feature(Estoque_Verifica_Disponibilidade_Integral_V2Feature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public T_NFe_EMITENTEFeature(T_NFe_EMITENTEFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -44,7 +44,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo30
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "estoque_verifica_disponibilidade_integral_v2", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "t_NFe_EMITENTE", null, ProgrammingLanguage.CSharp, new string[] {
                         "Especificacao.Pedido.Passo60",
                         "GerenciamentoBanco"});
             testRunner.OnFeatureStart(featureInfo);
@@ -88,15 +88,6 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo30
 #line 6
  testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 7
- testRunner.Given("Usar produto \"um\" como fabricante = \"003\", produto = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 8
- testRunner.And("Usar produto \"dois\" como fabricante = \"003\", produto = \"003221\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 9
- testRunner.And("Zerar todo o estoque", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
         }
         
         void System.IDisposable.Dispose()
@@ -104,17 +95,15 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo30
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Teste 1 - Estoque_Qtde_Estoque")]
-        [Xunit.TraitAttribute("FeatureTitle", "estoque_verifica_disponibilidade_integral_v2")]
-        [Xunit.TraitAttribute("Description", "Teste 1 - Estoque_Qtde_Estoque")]
-        [Xunit.TraitAttribute("Category", "Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo30")]
-        public virtual void Teste1_Estoque_Qtde_Estoque()
+        [Xunit.SkippableFactAttribute(DisplayName="t_NFe_EMITENTE - st_ativo = 0")]
+        [Xunit.TraitAttribute("FeatureTitle", "t_NFe_EMITENTE")]
+        [Xunit.TraitAttribute("Description", "t_NFe_EMITENTE - st_ativo = 0")]
+        public virtual void T_NFe_EMITENTE_St_Ativo0()
         {
-            string[] tagsOfScenario = new string[] {
-                    "Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo30"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Teste 1 - Estoque_Qtde_Estoque", null, tagsOfScenario, argumentsOfScenario);
-#line 12
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("t_NFe_EMITENTE - st_ativo = 0", null, tagsOfScenario, argumentsOfScenario);
+#line 11
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -137,41 +126,35 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
+#line 12
+ testRunner.Given("Tabela \"t_NFe_EMITENTE\" registro tipo de pessoa = \"PF\" e id_wms_regra_cd_x_uf = \"" +
+                        "134\", alterar campo \"st_ativo\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
 #line 13
- testRunner.Given("Definir saldo de estoque = \"8\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Tabela \"t_NFe_EMITENTE\" registro tipo de pessoa = \"PR\" e id_wms_regra_cd_x_uf = \"" +
+                        "134\", alterar campo \"st_ativo\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 14
- testRunner.Given("Definir saldo de estoque = \"5\" para produto \"dois\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 15
- testRunner.Given("Chamar ObtemCtrlEstoqueProdutoRegra", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 16
- testRunner.Given("Chamar Estoque_verifica_disponibilidade_integral_v2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 17
- testRunner.Then("Regra t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD do produto = \"um\", verificar campo \"estoq" +
-                        "ue_qtde_estoque\" = \"8\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 18
- testRunner.Then("Regra t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD do produto = \"dois\", verificar campo \"est" +
-                        "oque_qtde_estoque\" = \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Erro \"Falha na regra de consumo do estoque para a UF \'SP\' e \'Pessoa Física\': regr" +
+                        "a associada ao produto (003)003220 especifica um CD para aguardar produtos sem p" +
+                        "resença no estoque que não está habilitado (Id=5)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Teste 2 - Estoque_Qtde_Estoque_Global")]
-        [Xunit.TraitAttribute("FeatureTitle", "estoque_verifica_disponibilidade_integral_v2")]
-        [Xunit.TraitAttribute("Description", "Teste 2 - Estoque_Qtde_Estoque_Global")]
-        [Xunit.TraitAttribute("Category", "Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo30")]
-        public virtual void Teste2_Estoque_Qtde_Estoque_Global()
+        [Xunit.SkippableFactAttribute(DisplayName="t_NFe_EMITENTE - sem registro")]
+        [Xunit.TraitAttribute("FeatureTitle", "t_NFe_EMITENTE")]
+        [Xunit.TraitAttribute("Description", "t_NFe_EMITENTE - sem registro")]
+        public virtual void T_NFe_EMITENTE_SemRegistro()
         {
-            string[] tagsOfScenario = new string[] {
-                    "Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo30"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Teste 2 - Estoque_Qtde_Estoque_Global", null, tagsOfScenario, argumentsOfScenario);
-#line 21
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("t_NFe_EMITENTE - sem registro", null, tagsOfScenario, argumentsOfScenario);
+#line 17
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -194,25 +177,14 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 22
- testRunner.Given("Definir saldo de estoque = \"18\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 18
+ testRunner.Given("Limpar tabela \"t_NFe_EMITENTE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 23
- testRunner.Given("Definir saldo de estoque = \"25\" para produto \"dois\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 19
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 24
- testRunner.Given("Chamar ObtemCtrlEstoqueProdutoRegra", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 25
- testRunner.Given("Chamar Estoque_verifica_disponibilidade_integral_v2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 26
- testRunner.Then("Regra t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD do produto = \"um\", verificar campo \"estoq" +
-                        "ue_qtde_estoque_global\" = \"18\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 27
- testRunner.Then("Regra t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD do produto = \"dois\", verificar campo \"est" +
-                        "oque_qtde_estoque_global\" = \"25\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 20
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -225,12 +197,12 @@ this.FeatureBackground();
             
             public FixtureData()
             {
-                Estoque_Verifica_Disponibilidade_Integral_V2Feature.FeatureSetup();
+                T_NFe_EMITENTEFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                Estoque_Verifica_Disponibilidade_Integral_V2Feature.FeatureTearDown();
+                T_NFe_EMITENTEFeature.FeatureTearDown();
             }
         }
     }

@@ -751,16 +751,14 @@ namespace UtilsGlobais
             {
                 lstErros.Add("A forma de pagamento não foi informada (à vista, com entrada, sem entrada).");
             }
-            if (custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
-                custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
+
+            if (custoFinanceiroTipoParcelato == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA ||
+                custoFinanceiroTipoParcelato == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
             {
-                if (custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA)
+                if (c_custoFinancFornecQtdeParcelas <= 0)
                 {
-                    if (c_custoFinancFornecQtdeParcelas <= 0)
-                    {
-                        lstErros.Add("Não foi informada a quantidade de parcelas para a forma de pagamento selecionada " +
-                            "(" + DescricaoCustoFornecTipoParcelamento(custoFinanceiroTipoParcelato) + ")");
-                    }
+                    lstErros.Add("Não foi informada a quantidade de parcelas para a forma de pagamento selecionada " +
+                        "(" + DescricaoCustoFornecTipoParcelamento(custoFinanceiroTipoParcelato) + ")");
                 }
             }
         }
@@ -789,9 +787,9 @@ namespace UtilsGlobais
         {
             var db = contextoProvider.GetContextoLeitura();
             IQueryable<TcodigoDescricao> lstTcodigo = (from c in db.TcodigoDescricaos
-                             where c.Grupo == InfraBanco.Constantes.Constantes.GRUPO_T_CODIGO_DESCRICAO__PEDIDOECOMMERCE_ORIGEM &&
-                                   c.St_Inativo == 0
-                             select c);
+                                                       where c.Grupo == InfraBanco.Constantes.Constantes.GRUPO_T_CODIGO_DESCRICAO__PEDIDOECOMMERCE_ORIGEM &&
+                                                             c.St_Inativo == 0
+                                                       select c);
             return lstTcodigo;
         }
 
@@ -973,7 +971,7 @@ namespace UtilsGlobais
             if (!new EmailAddressAttribute().IsValid(email))
                 lstErros.Add("E-mail inválido!");
         }
-        
+
         public static void ValidarEmailXml(string emailxml, List<string> lstErros)
         {
             if (!new EmailAddressAttribute().IsValid(emailxml))
@@ -1153,7 +1151,7 @@ namespace UtilsGlobais
         public static string IsTextoValido(string texto, out string retorno)
         {
 #nullable enable
-            if(texto == null)
+            if (texto == null)
             {
                 retorno = "";
                 return retorno;

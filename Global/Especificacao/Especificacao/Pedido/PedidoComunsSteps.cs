@@ -408,5 +408,12 @@ namespace Especificacao.Especificacao.Pedido
             base.TabelaT_LOGPedidoGeradoEOperacaoVerificarCampo(operacao, campo, valor);
         }
 
+        [Then(@"Tabela t_PRODUTO_X_WMS_REGRA_CD fabricante = ""(.*)"" e produto = ""(.*)"", verificar campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteEProdutoVerificarCampo(string fabricante, string produto, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PRODUTO_X_WMS_REGRA_CD", "fabricante e produto", "verificar campos", campo, valor, this);
+            base.TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteEProdutoVerificarCampo(fabricante, produto, campo, valor);
+        }
+
     }
 }

@@ -56,6 +56,12 @@ namespace Especificacao.Testes.Utils.BancoTestes
                     LimparTabelaDbSet<Tpedido>(db.Tpedidos);
                     LimparTabelaDbSet<TpedidoItem>(db.TpedidoItems);
                     break;
+                case "t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD":
+                    LimparTabelaDbSet<TwmsRegraCdXUfXPessoaXCd>(db.TwmsRegraCdXUfXPessoaXCds);
+                    break;
+                case "t_NFe_EMITENTE":
+                    LimparTabelaDbSet<TnfEmitente>(db.TnfEmitentes);
+                    break;
                 default:
                     Testes.Utils.LogTestes.LogOperacoes2.Excecao($"Especificacao.Testes.Utils.BancoTestes.InicializarBancoGeral.LimparTabela nome de tabela desconhecido: {tabela}" + $"StackTrace: '{Environment.StackTrace}'", this);
                     throw new ArgumentException($"Especificacao.Testes.Utils.BancoTestes.InicializarBancoGeral.LimparTabela nome de tabela desconhecido: {tabela}");
@@ -119,8 +125,6 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 VerificarCampoEmRegistro.VerificarRegistro<Tpedido>(campo, valor_desejado, registro);
             }
         }
-
-
 
         public void TabelaT_PEDIDO_ITEMRegistroVerificarCampo(int item, string pedido, string campo, string valor_desejado)
         {
@@ -290,8 +294,8 @@ namespace Especificacao.Testes.Utils.BancoTestes
             if (operacao.ToUpper() == InfraBanco.Constantes.Constantes.OP_LOG_CLIENTE_INCLUSAO)
             {
                 idCliente = (from c in db.Tpedidos
-                                 where c.Pedido == pedido
-                                 select c.Id_Cliente).FirstOrDefault();
+                             where c.Pedido == pedido
+                             select c.Id_Cliente).FirstOrDefault();
             }
             var registros = (from log in db.Tlogs
                              where (log.Pedido == pedido || log.Id_Cliente == idCliente) &&
@@ -340,6 +344,34 @@ namespace Especificacao.Testes.Utils.BancoTestes
             }
         }
 
+        public void TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteEProdutoVerificarCampo(string fabricante, string produto, string campo, string valor_desejado)
+        {
+            var db = this.contextoBdProvider.GetContextoLeitura();
+
+            var registros = (from prodRegraCd in db.TprodutoXwmsRegraCds
+                             where prodRegraCd.Fabricante == fabricante &&
+                                   prodRegraCd.Produto == produto
+                             select prodRegraCd).ToList();
+
+            Assert.True(registros.Any());
+
+            if (registros.Count > 1)
+                Assert.Equal("Erro", $"PRODUTO_X_WMS_REGRA_CD tem mais de um registro para o fabricante ({fabricante}) e produto ({produto}).");
+
+            foreach (var registro in registros)
+            {
+                switch (campo)
+                {
+                    case "id_wms_regra_cd":
+                        if (int.TryParse(valor_desejado, out int valor))
+                            Assert.Equal(valor, registro.Id_wms_regra_cd);
+                        break;
+                    default:
+                        Assert.Equal("", $"{campo} desconhecido");
+                        break;
+                }
+            }
+        }
 
         [Given(@"Tabela ""t_OPERACAO"" apagar registro com campo ""id"" = ""(.*)""")]
         public void GivenTabelaT_operacao_ApagarRegistroComCampo(string valorBusca)
@@ -453,6 +485,278 @@ namespace Especificacao.Testes.Utils.BancoTestes
             db.SaveChanges();
             db.transacao.Commit();
         }
+
+        [Given(@"Tabela ""t_PRODUTO_X_WMS_REGRA_CD"" fabricante = ""(.*)"" e produto = ""(.*)"", alterar registro do campo ""(.*)"" = ""(.*)""")]
+        public void TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteAlterarRegistroDoCampo(string fabricante, string produto, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_PRODUTO_X_WMS_REGRA_CD", campo, valor, this);
+            var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
+            var registro = (from prodRegraCd in db.TprodutoXwmsRegraCds
+                            where prodRegraCd.Fabricante == fabricante &&
+                                  prodRegraCd.Produto == produto
+                            select prodRegraCd).FirstOrDefault();
+
+            Assert.NotNull(registro);
+
+            if (!WhenInformoCampo.InformarCampo(campo, valor, registro))
+                Assert.Equal("campo desconhecido", campo);
+
+            db.Update(registro);
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+
+        [Given(@"Tabela ""t_PRODUTO_X_WMS_REGRA_CD"" duplicar regra para fabricante = ""(.*)"" e produto = ""(.*)"" com id_wms_regra_cd = ""(.*)""")]
+        public void GivenTabelaT_PRODUTO_X_WMS_REGRA_CDDuplicarRegraParaFabricanteEProduto(string fabricante, string produto, int id_wms_regra_cd)
+        {
+            //Não podemos duplicar um produto, porque fabricante e produto são chaves
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.GravarRegistroEm("t_PRODUTO_X_WMS_REGRA_CD", this);
+            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+
+            var registro = (from prodRegraCd in db.TprodutoXwmsRegraCds
+                            where prodRegraCd.Fabricante == fabricante &&
+                                  prodRegraCd.Produto == produto
+                            select prodRegraCd).FirstOrDefault();
+
+            TprodutoXwmsRegraCd duplicado = new TprodutoXwmsRegraCd()
+            {
+                Fabricante = registro.Fabricante,
+                Produto = registro.Produto,
+                Id_wms_regra_cd = id_wms_regra_cd
+            };
+
+            db.Add(duplicado);
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+
+        [Given(@"Tabela ""t_PRODUTO_X_WMS_REGRA_CD"" apagar registro do fabricante = ""(.*)"" e produto = ""(.*)""")]
+        public void GivenTabelaT_PRODUTO_X_WMS_REGRA_CDApagarRegistroDoFabricante(string fabricante, string produto)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaApagarRegistroComCampo("t_PRODUTO_X_WMS_REGRA_CD", "fabricante e produto", "Fabricante:(" + fabricante + ") e produto:(" + produto + ")", this);
+            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+
+            var registro = (from prodRegraCd in db.TprodutoXwmsRegraCds
+                            where prodRegraCd.Fabricante == fabricante &&
+                                  prodRegraCd.Produto == produto
+                            select prodRegraCd).FirstOrDefault();
+
+            db.Remove(registro);
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+
+        [Given(@"Tabela ""t_WMS_REGRA_CD"" apagar registro do fabricante = ""(.*)"" e produto = ""(.*)""")]
+        public void GivenTabelaT_WMS_REGRA_CDApagarRegistroDoFabricante(string fabricante, string produto)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaApagarRegistroComCampo("t_WMS_REGRA_CD", "fabricante e produto", "Fabricante:(" + fabricante + ") e produto:(" + produto + ")", this);
+            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+
+            var t_produtoXwmsRegraCds = (from prodRegraCd in db.TprodutoXwmsRegraCds
+                                         where prodRegraCd.Fabricante == fabricante &&
+                                               prodRegraCd.Produto == produto
+                                         select prodRegraCd).ToList();
+
+            Assert.Single(t_produtoXwmsRegraCds);
+
+            var registros = (from regraCd in db.TwmsRegraCds
+                             where regraCd.Id == t_produtoXwmsRegraCds[0].Id_wms_regra_cd
+                             select regraCd).ToList();
+
+            foreach (var r in registros) db.Remove(r);
+
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+
+        [Given(@"Tabela ""t_WMS_REGRA_CD_X_UF"" apagar registro do id_wms_regra_cd = ""(.*)"" da UF = ""(.*)""")]
+        public void GivenTabelaT_WMS_REGRA_CD_X_UFApagarRegistroDoId_Wms_Regra_CdDaUF(int id_wms_regra_cd, string uf)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaApagarRegistroComCampo("t_WMS_REGRA_CD_X_UF", "id_wms_regra_cd e UF", "id_wms_regra_cd:(" + id_wms_regra_cd + ") e UF:(" + uf + ")", this);
+            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+
+            var registros = (from regraCdUF in db.TwmsRegraCdXUfs
+                             where regraCdUF.Id_wms_regra_cd == id_wms_regra_cd &&
+                                   regraCdUF.Uf == uf
+                             select regraCdUF).ToList();
+            foreach (var r in registros) db.Remove(r);
+
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+
+        [Given(@"Tabela ""t_WMS_REGRA_CD_X_UF"" duplicar registro do id_wms_regra_cd = ""(.*)"" da UF = ""(.*)""")]
+        public void GivenTabelaT_WMS_REGRA_CD_X_UFDuplicarRegistroDoId_Wms_Regra_CdDaUF(int id_wms_regra_cd, string uf)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.GravarRegistroEm("t_WMS_REGRA_CD_X_UF", this);
+            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+
+            var registro = (from regraCdUF in db.TwmsRegraCdXUfs
+                            where regraCdUF.Id_wms_regra_cd == id_wms_regra_cd &&
+                                  regraCdUF.Uf == uf
+                            select regraCdUF).FirstOrDefault();
+
+            Assert.NotNull(registro);
+
+            TwmsRegraCdXUf regraCdXUf = new TwmsRegraCdXUf()
+            {
+                Id = 163,
+                Id_wms_regra_cd = id_wms_regra_cd,
+                St_inativo = 0,
+                Uf = uf
+            };
+
+            db.Add(regraCdXUf);
+            db.SaveChanges();
+            db.transacao.Commit();
+
+        }
+
+        [Given(@"Tabela ""t_WMS_REGRA_CD_X_UF_X_PESSOA"" apagar registro id = ""(.*)"" e tipo de pessoa = ""(.*)""")]
+        public void GivenTabelaT_WMS_REGRA_CD_X_UF_X_PESSOAApagarRegistroId_Wms_Regra_Cd_X_UfPF(int id, string tipo_pessoa)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaApagarRegistroComCampo("t_WMS_REGRA_CD_X_UF_X_PESSOA", "id e tipo pessoa", "id_wms_regra_cd_x_uf:(" + id + ") e tipo pessoa:(" + tipo_pessoa + ")", this);
+            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+
+            var registros = (from regraCdUFPessoa in db.TwmsRegraCdXUfPessoas
+                             where regraCdUFPessoa.Id_wms_regra_cd_x_uf == id &&
+                                   regraCdUFPessoa.Tipo_pessoa == tipo_pessoa
+                             select regraCdUFPessoa).ToList();
+
+            foreach (var r in registros) db.Remove(r);
+
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+
+        [Given(@"Tabela ""t_WMS_REGRA_CD_X_UF_X_PESSOA"" duplicar registro id_wms_regra_cd_x_uf = ""(.*)"" e tipo de pessoa = ""(.*)"" com id = ""(.*)""")]
+        public void GivenTabelaT_WMS_REGRA_CD_X_UF_X_PESSOADuplicarRegistroIdETipoDePessoa(int Id_wms_regra_cd_x_uf, string tipo_pessoa, int id)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.GravarRegistroEm("t_WMS_REGRA_CD_X_UF", this);
+            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+
+            var registro = (from regraCdUFPessoa in db.TwmsRegraCdXUfPessoas
+                            where regraCdUFPessoa.Id_wms_regra_cd_x_uf == Id_wms_regra_cd_x_uf &&
+                                  regraCdUFPessoa.Tipo_pessoa == tipo_pessoa
+                            select regraCdUFPessoa).FirstOrDefault();
+
+            Assert.NotNull(registro);
+
+            TwmsRegraCdXUfPessoa regraCdXUfXPessoa = new TwmsRegraCdXUfPessoa()
+            {
+                Id = id,
+                Id_wms_regra_cd_x_uf = Id_wms_regra_cd_x_uf,
+                Spe_id_nfe_emitente = registro.Spe_id_nfe_emitente,
+                St_inativo = registro.St_inativo,
+                Tipo_pessoa = tipo_pessoa
+            };
+
+            db.Add(regraCdXUfXPessoa);
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+
+        [Given(@"Tabela ""t_WMS_REGRA_CD_X_UF_X_PESSOA"" registro id_wms_regra_cd_x_uf = ""(.*)"" e tipo de pessoa = ""(.*)"", alterar campo ""(.*)"" = ""(.*)""")]
+        public void GivenTabelaT_WMS_REGRA_CD_X_UF_X_PESSOARegistroId_Wms_Regra_Cd_X_UfETipoDePessoaAlterarCampo(int id_wms_regra_cd_x_uf, string tipo_pessoa, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_WMS_REGRA_CD_X_UF_X_PESSOA", campo, valor, this);
+            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+
+            var registro = (from regraCdUFPessoa in db.TwmsRegraCdXUfPessoas
+                            where regraCdUFPessoa.Id_wms_regra_cd_x_uf == id_wms_regra_cd_x_uf &&
+                                  regraCdUFPessoa.Tipo_pessoa == tipo_pessoa
+                            select regraCdUFPessoa).FirstOrDefault();
+
+            Assert.NotNull(registro);
+
+            if (!WhenInformoCampo.InformarCampo(campo, valor, registro))
+                Assert.Equal("campo desconhecido", campo);
+
+            db.Update(registro);
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+
+        [Given(@"Tabela ""t_NFe_EMITENTE"" registro tipo de pessoa = ""(.*)"" e id_wms_regra_cd_x_uf = ""(.*)"", alterar campo ""(.*)"" = ""(.*)""")]
+        public void GivenTabelaT_NFe_EMITENTERegistroTipoDePessoaAlterarCampo(string tipo_pessoa, int id_wms_regra_cd_x_uf, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_NFe_EMITENTE", campo, valor, this);
+            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            //TwmsRegraCdXUfPessoas.id_wms_regra_cd_x_uf = 134
+            //TwmsRegraCdXUfPessoas.Tipo_pessoa = PF e PR para prepedido
+            var registro = (from nfeEmitente in db.TnfEmitentes
+                            join regraCdUFPessoa in db.TwmsRegraCdXUfPessoas on nfeEmitente.Id equals regraCdUFPessoa.Spe_id_nfe_emitente
+                            where regraCdUFPessoa.Tipo_pessoa == tipo_pessoa &&
+                                  regraCdUFPessoa.Id_wms_regra_cd_x_uf == id_wms_regra_cd_x_uf
+                            select nfeEmitente).FirstOrDefault();
+
+            Assert.NotNull(registro);
+
+            if (campo == "st_ativo") campo = "St_Ativo";
+
+            if (!WhenInformoCampo.InformarCampo(campo, valor, registro))
+                Assert.Equal("campo desconhecido", campo);
+
+            db.Update(registro);
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+
+        [Given(@"Tabela ""t_NFe_EMITENTE"" verificar registro tipo de pessoa = ""(.*)"" e id_wms_regra_cd_x_uf = ""(.*)"",campo ""(.*)"" = ""(.*)""")]
+        public void GivenTabelaVerificarRegistroTipoDePessoaCampo(string tipo_pessoa, int id_wms_regra_cd_x_uf, string campo, int valor)
+        {
+            var db = contextoBdProvider.GetContextoLeitura();
+            var registro = (from nfeEmitente in db.TnfEmitentes
+                            join regraCdUFPessoa in db.TwmsRegraCdXUfPessoas on nfeEmitente.Id equals regraCdUFPessoa.Spe_id_nfe_emitente
+                            where regraCdUFPessoa.Tipo_pessoa == tipo_pessoa &&
+                                  regraCdUFPessoa.Id_wms_regra_cd_x_uf == id_wms_regra_cd_x_uf
+                            select nfeEmitente).FirstOrDefault();
+
+            Assert.NotNull(registro);
+
+            switch (campo)
+            {
+                case "st_ativo":
+                    Assert.Equal(registro.St_Ativo, valor);
+                    break;
+                default:
+                    Assert.Equal("", $"{campo} desconhecido");
+                    break;
+            }
+        }
+
+        [Given(@"Tabela ""t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD"" alterar registro id_wms_regra_cd_x_uf_x_pessoa = ""(.*)"" e id_nfe_emitente = ""(.*)"", campo ""(.*)"" = ""(.*)""")]
+        public void GivenTabelaAlterarRegistroId_Wms_Regra_Cd_X_UfSt_Inativo(int id_wms_regra_cd_x_uf_x_pessoa, int id_nfe_emitente, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD", campo, valor, this);
+            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+
+            var registro = (from regra in db.TwmsRegraCdXUfXPessoaXCds
+                            where regra.Id_nfe_emitente == id_nfe_emitente &&
+                                  regra.Id_wms_regra_cd_x_uf_x_pessoa == id_wms_regra_cd_x_uf_x_pessoa
+                            select regra).ToList();
+
+            Assert.True(registro.Any());
+            if(registro.Count > 1)
+                Assert.Equal("Erro", $"t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD tem mais de um registro para o id_wms_regra_cd_x_uf ({id_nfe_emitente}).");
+
+            foreach(var r in registro)
+            {
+                if (campo == "st_inativo") campo = "St_inativo";
+
+                if (!WhenInformoCampo.InformarCampo(campo, valor, r))
+                    Assert.Equal("campo desconhecido", campo);
+
+                db.Update(r);
+            }
+
+
+            
+            db.SaveChanges();
+            db.transacao.Commit();
+
+        }
+
 
         [Given(@"Tabela ""t_PRODUTO"" com fabricante = ""(.*)"" e produto = ""(.*)"" alterar campo ""(.*)"" = ""(.*)""")]
         public void GivenTabelaComFabricanteEProdutoAlterarCampo(string fabricante, string produto, string campo, string valor)

@@ -72,47 +72,49 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao
                     "ODUTO C/ ESTOQUE INSUFICIENTE (SOMANDO-SE O ESTOQUE DE TODAS AS EMPRESAS CANDIDA" +
                     "TAS) - linha 1127\r\n\r\n\tPorque: avisamos o usuário que existem produtos sem presen" +
                     "ça no estoque e, no momento de salvar, os produtos sem presença no estoque foram" +
-                    " alterados.\r\n\tNo caso da ApiMagento, não temos essa verificação\r\n\r\n\r\nPasso50: AN" +
-                    "ALISA A QUANTIDADE DE PEDIDOS QUE SERÃO CADASTRADOS (AUTO-SPLIT) - linha 1184\r\n\t" +
-                    "\t\t\'\tOS CD\'S ESTÃO ORDENADOS DE ACORDO C/ A PRIORIZAÇÃO DEFINIDA PELA REGRA DE CO" +
-                    "NSUMO DO ESTOQUE\r\n\t\t\t\'\tSE O PRIMEIRO CD HABILITADO NÃO PUDER ATENDER INTEGRALMEN" +
-                    "TE A QUANTIDADE SOLICITADA DO PRODUTO,\r\n\t\t\t\'\tA QUANTIDADE RESTANTE SERÁ CONSUMID" +
-                    "A DOS DEMAIS CD\'S.\r\n\t\t\t\'\tSE HOUVER ALGUMA QUANTIDADE RESIDUAL P/ FICAR NA LISTA " +
-                    "DE PRODUTOS SEM PRESENÇA NO ESTOQUE:\r\n\t\t\t\'\t\t1) SELEÇÃO AUTOMÁTICA DE CD: A QUANT" +
-                    "IDADE PENDENTE FICARÁ ALOCADA NO CD DEFINIDO P/ TAL\r\n\t\t\t\'\t\t2) SELEÇÃO MANUAL DE " +
-                    "CD: A QUANTIDADE PENDENTE FICARÁ ALOCADA NO CD SELECIONADO MANUALMENTE\r\n\r\n\tPara " +
-                    "cada produto:\r\n\t\tAloca a quantidade solicitada nos CDs ordenados até alocar todo" +
-                    "s.\r\n\t\tSe não conseguir alocar todos, marca a quantidade residual no CD manual ou" +
-                    " no CD de t_WMS_REGRA_CD_X_UF_X_PESSOA.spe_id_nfe_emitente\r\n\r\nPasso55: Contagem " +
-                    "de pedidos a serem gravados - Linha 1286\r\n\t\'\tCONTAGEM DE EMPRESAS QUE SERÃO USAD" +
-                    "AS NO AUTO-SPLIT, OU SEJA, A QUANTIDADE DE PEDIDOS QUE SERÁ CADASTRADA, \r\n\tJÁ QU" +
-                    "E CADA PEDIDO SE REFERE AO ESTOQUE DE UMA EMPRESA\r\n\r\n\tConta todos os CDs que tem" +
-                    " alguma quantidade solicitada.\r\n\r\n\r\nPasso60: criar pedidos - \'\tCADASTRA O PEDIDO" +
-                    " E PROCESSA A MOVIMENTAÇÃO NO ESTOQUE\r\n\tLoop nos CDs a utilizar\r\n\t\tGerar o númer" +
-                    "o do pedido: Passo60/Gerar_o_numero_do_pedido.feature\r\n\t\tAdiciona um novo pedido" +
-                    "\r\n\t\tPreenche os campos do pedido: Passo60/Preenche_os_campos_do_pedido.feature\r\n" +
-                    "\t\t\ta maioria no pai e filhotes, alguns só no pai, alguns só nos filhotes\r\n\t\tSalv" +
-                    "a o registro em t_pedido\r\n\r\n\t\tLoop nas regras: \r\n\t\t\tEspecificado em Passo60/Iten" +
-                    "s/Gerar_t_PEDIDO_ITEM.feature\r\n\t\t\t\tSe essa regra cobrir um dos itens do pedido, " +
-                    "adicionar registro em t_PEDIDO_ITEM (linha 2090 até 2122)\r\n\t\t\t\tNote que a quanti" +
-                    "dade rs(\"qtde\") é a que foi alocada para esse filhote pela regra, não a quantida" +
-                    "de total do pedido inteiro\r\n\t\t\t\tA sequencia do t_PEDIDO_ITEM para esse pedido (b" +
-                    "ase ou filhote) começa de 1 e é sequencial.\r\n\t\t\tSe qtde_solicitada > qtde_estoqu" +
-                    "e, qtde_spe (quantidade_sen_presença_estoque) fica com o número de itens faltand" +
-                    "o\r\n\t\t\tchama rotina ESTOQUE_produto_saida_v2, em Passo60/Itens/ESTOQUE_produto_sa" +
-                    "ida_v2.feature\r\n\t\t\t\tA quantidade deste item ou efetivamente sai do estoque (atua" +
-                    "lizando t_ESTOQUE_ITEM)\r\n\t\t\t\tou entra como venda sem presença no estoque (novo r" +
-                    "egistro na tabela t_ESTOQUE_MOVIMENTO, operacao = OP_ESTOQUE_VENDA, estoque = ID" +
-                    "_ESTOQUE_SEM_PRESENCA)\r\n\t\t\tMonta o log do item - Passo60/Itens/Log.feature\r\n\t\t\t\r" +
-                    "\n\t\tDetermina o status st_entrega deste pedido (Passo60/st_entrega.feature)\r\n\r\nPa" +
-                    "sso70: ajustes adicionais no pedido pai\r\n\tNo pai e nos filhotes, atualiza campos" +
-                    " de RA (Passo70/calcula_total_RA_liquido_BD.feture)\r\n\r\n\tCaso tenha usado algum d" +
-                    "esconto superior ao limite, liberado pela t_DESCONTO, marca como usado (Passo70/" +
-                    "Senhas_de_autorizacao_para_desconto_superior.feature)\r\n\r\n\tINDICADOR: SE ESTE PED" +
-                    "IDO É COM INDICADOR E O CLIENTE AINDA NÃO TEM UM INDICADOR NO CADASTRO, ENTÃO CA" +
-                    "DASTRA ESTE. (Passo70/CadastroIndicador.feature)\r\n\r\n\r\nPasso80: VERIFICA SE O END" +
-                    "EREÇO JÁ FOI USADO ANTERIORMENTE POR OUTRO CLIENTE (POSSÍVEL FRAUDE)\r\n\tPasso80/F" +
-                    "luxoVerificacaoEndereco.feature\r\n\r\n\r\nPasso90: log (Passo90/Log.feature)", ProgrammingLanguage.CSharp, new string[] {
+                    " alterados.\r\n\tNo caso da ApiMagento, não temos essa verificação\r\n\r\n\tTambém verif" +
+                    "ica se o produto consta como \'descontinuado\' e não há mais saldo suficiente no e" +
+                    "stoque para atender à quantidade solicitada.\r\n\r\nPasso50: ANALISA A QUANTIDADE DE" +
+                    " PEDIDOS QUE SERÃO CADASTRADOS (AUTO-SPLIT) - linha 1184\r\n\t\t\t\'\tOS CD\'S ESTÃO ORD" +
+                    "ENADOS DE ACORDO C/ A PRIORIZAÇÃO DEFINIDA PELA REGRA DE CONSUMO DO ESTOQUE\r\n\t\t\t" +
+                    "\'\tSE O PRIMEIRO CD HABILITADO NÃO PUDER ATENDER INTEGRALMENTE A QUANTIDADE SOLIC" +
+                    "ITADA DO PRODUTO,\r\n\t\t\t\'\tA QUANTIDADE RESTANTE SERÁ CONSUMIDA DOS DEMAIS CD\'S.\r\n\t" +
+                    "\t\t\'\tSE HOUVER ALGUMA QUANTIDADE RESIDUAL P/ FICAR NA LISTA DE PRODUTOS SEM PRESE" +
+                    "NÇA NO ESTOQUE:\r\n\t\t\t\'\t\t1) SELEÇÃO AUTOMÁTICA DE CD: A QUANTIDADE PENDENTE FICARÁ" +
+                    " ALOCADA NO CD DEFINIDO P/ TAL\r\n\t\t\t\'\t\t2) SELEÇÃO MANUAL DE CD: A QUANTIDADE PEND" +
+                    "ENTE FICARÁ ALOCADA NO CD SELECIONADO MANUALMENTE\r\n\r\n\tPara cada produto:\r\n\t\tAloc" +
+                    "a a quantidade solicitada nos CDs ordenados até alocar todos.\r\n\t\tSe não consegui" +
+                    "r alocar todos, marca a quantidade residual no CD manual ou no CD de t_WMS_REGRA" +
+                    "_CD_X_UF_X_PESSOA.spe_id_nfe_emitente\r\n\r\nPasso55: Contagem de pedidos a serem gr" +
+                    "avados - Linha 1286\r\n\t\'\tCONTAGEM DE EMPRESAS QUE SERÃO USADAS NO AUTO-SPLIT, OU " +
+                    "SEJA, A QUANTIDADE DE PEDIDOS QUE SERÁ CADASTRADA, \r\n\tJÁ QUE CADA PEDIDO SE REFE" +
+                    "RE AO ESTOQUE DE UMA EMPRESA\r\n\r\n\tConta todos os CDs que tem alguma quantidade so" +
+                    "licitada.\r\n\r\n\r\nPasso60: criar pedidos - \'\tCADASTRA O PEDIDO E PROCESSA A MOVIMEN" +
+                    "TAÇÃO NO ESTOQUE\r\n\tLoop nos CDs a utilizar\r\n\t\tGerar o número do pedido: Passo60/" +
+                    "Gerar_o_numero_do_pedido.feature\r\n\t\tAdiciona um novo pedido\r\n\t\tPreenche os campo" +
+                    "s do pedido: Passo60/Preenche_os_campos_do_pedido.feature\r\n\t\t\ta maioria no pai e" +
+                    " filhotes, alguns só no pai, alguns só nos filhotes\r\n\t\tSalva o registro em t_ped" +
+                    "ido\r\n\r\n\t\tLoop nas regras: \r\n\t\t\tEspecificado em Passo60/Itens/Gerar_t_PEDIDO_ITEM" +
+                    ".feature\r\n\t\t\t\tSe essa regra cobrir um dos itens do pedido, adicionar registro em" +
+                    " t_PEDIDO_ITEM (linha 2090 até 2122)\r\n\t\t\t\tNote que a quantidade rs(\"qtde\") é a q" +
+                    "ue foi alocada para esse filhote pela regra, não a quantidade total do pedido in" +
+                    "teiro\r\n\t\t\t\tA sequencia do t_PEDIDO_ITEM para esse pedido (base ou filhote) começ" +
+                    "a de 1 e é sequencial.\r\n\t\t\tSe qtde_solicitada > qtde_estoque, qtde_spe (quantida" +
+                    "de_sen_presença_estoque) fica com o número de itens faltando\r\n\t\t\tchama rotina ES" +
+                    "TOQUE_produto_saida_v2, em Passo60/Itens/ESTOQUE_produto_saida_v2.feature\r\n\t\t\t\tA" +
+                    " quantidade deste item ou efetivamente sai do estoque (atualizando t_ESTOQUE_ITE" +
+                    "M)\r\n\t\t\t\tou entra como venda sem presença no estoque (novo registro na tabela t_E" +
+                    "STOQUE_MOVIMENTO, operacao = OP_ESTOQUE_VENDA, estoque = ID_ESTOQUE_SEM_PRESENCA" +
+                    ")\r\n\t\t\tMonta o log do item - Passo60/Itens/Log.feature\r\n\t\t\t\r\n\t\tDetermina o status" +
+                    " st_entrega deste pedido (Passo60/st_entrega.feature)\r\n\r\nPasso70: ajustes adicio" +
+                    "nais no pedido pai\r\n\tNo pai e nos filhotes, atualiza campos de RA (Passo70/calcu" +
+                    "la_total_RA_liquido_BD.feture)\r\n\r\n\tCaso tenha usado algum desconto superior ao l" +
+                    "imite, liberado pela t_DESCONTO, marca como usado (Passo70/Senhas_de_autorizacao" +
+                    "_para_desconto_superior.feature)\r\n\r\n\tINDICADOR: SE ESTE PEDIDO É COM INDICADOR E" +
+                    " O CLIENTE AINDA NÃO TEM UM INDICADOR NO CADASTRO, ENTÃO CADASTRA ESTE. (Passo70" +
+                    "/CadastroIndicador.feature)\r\n\r\n\r\nPasso80: VERIFICA SE O ENDEREÇO JÁ FOI USADO AN" +
+                    "TERIORMENTE POR OUTRO CLIENTE (POSSÍVEL FRAUDE)\r\n\tPasso80/FluxoVerificacaoEndere" +
+                    "co.feature\r\n\r\n\r\nPasso90: log (Passo90/Log.feature)", ProgrammingLanguage.CSharp, new string[] {
                         "Especificacao.Pedido.FluxoCriacaoPedido"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -161,7 +163,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fluxo da gravação do pedido", null, tagsOfScenario, argumentsOfScenario);
-#line 110
+#line 111
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -181,10 +183,10 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 111
+#line 112
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 112
+#line 113
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

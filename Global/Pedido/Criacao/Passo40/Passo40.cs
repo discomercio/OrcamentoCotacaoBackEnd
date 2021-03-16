@@ -21,6 +21,13 @@ namespace Pedido.Criacao.Passo40
 
         public async Task ExecutarAsync()
         {
+            /*
+            onde validamos alguns campos: 
+            CustoFinancFornecPrecoListaBase_Conferencia: validado em Prepedido.ValidacoesPrepedidoBll.ConfrontarProdutos
+            CustoFinancFornecCoeficiente_Conferencia: validado em Prepedido.ValidacoesPrepedidoBll.ValidarCustoFinancFornecCoeficiente
+            Preco_Lista: validado em Prepedido.ValidacoesPrepedidoBll.ConfrontarProdutos
+            */
+
             NumeroProdutos();
             await ListaProdutosFormaPagamento();
             await Usuario();
@@ -153,7 +160,7 @@ namespace Pedido.Criacao.Passo40
                             Prepedido.PrepedidoBll.DecodificaCustoFinanFornecQtdeParcelas(Criacao.Execucao.C_custoFinancFornecTipoParcelamento, (short)Criacao.Execucao.C_custoFinancFornecQtdeParcelas) + " parcela(s).");
 
 
-                    TprodutoLoja prodLoja = (from c in Criacao.Execucao.TabelasBanco.TprodutoLoja_Include_Tprodtuo_Tfabricante
+                    TprodutoLoja prodLoja = (from c in Criacao.Execucao.TabelasBanco.TprodutoLoja_Include_Tprodtuo_Tfabricante_Validado
                                              where c.Tproduto.Produto == prod.Produto &&
                                              c.Tproduto.Fabricante == prod.Fabricante &&
                                              c.Loja == Pedido.Ambiente.Loja
@@ -172,7 +179,7 @@ namespace Pedido.Criacao.Passo40
         {
             foreach (var prod in Pedido.ListaProdutos)
             {
-                TprodutoLoja prodLoja = (from c in Criacao.Execucao.TabelasBanco.TprodutoLoja_Include_Tprodtuo_Tfabricante
+                TprodutoLoja prodLoja = (from c in Criacao.Execucao.TabelasBanco.TprodutoLoja_Include_Tprodtuo_Tfabricante_Validado
                                          where c.Tproduto.Produto == prod.Produto &&
                                          c.Tproduto.Fabricante == prod.Fabricante &&
                                          c.Loja == Pedido.Ambiente.Loja

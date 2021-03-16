@@ -56,12 +56,12 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                 qtde: produtoDto.Qtde,
                 custoFinancFornecPrecoListaBase_Conferencia: produtoDados.Preco_lista ?? 0,
                 preco_Lista: Math.Round((produtoDados.Preco_lista ?? 0) * (decimal)coeficiente, 2),//tinha um erro aqui - não estava calculando corretamente
-                desc_Dado: (float)(100 * ((precoListaBase ?? 0) - produtoDto.Preco_Venda) / (precoListaBase ?? 0)), 
+                desc_Dado: (float)(100 * ((precoListaBase ?? 0) - produtoDto.Preco_Venda) / (precoListaBase ?? 0)),
                 preco_Venda: produtoDto.Preco_Venda,
                 preco_NF: produtoDto.Preco_NF,
                 custoFinancFornecCoeficiente_Conferencia: coeficiente,
                 //no magento não validamos se o estoque mudou
-                qtde_estoque_total_disponivel: null
+                qtde_spe_usuario_aceitou: null
             );
 
             return ret;

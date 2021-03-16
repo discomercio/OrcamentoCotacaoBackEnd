@@ -37,17 +37,20 @@ namespace Pedido.Criacao.Passo60.Gravacao
 
             //Passo20: LER AS REGRAS DE CONSUMO DO ESTOQUE
             Gravacao.ListaRegrasControleEstoque = await new Grava20.Grava20(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao, Gravacao).ExecutarAsync();
+            
+            //estou alterando o local dessa validação, pois nos testes caso tenha erro ao obter o ctrl de 
+            //estoque, estamos tendo erro de null na lista "regraCrtlEstoque"
+            //se tiver erro, nao continua
+            if (Retorno.AlgumErro()) return;
 
             //Passo25:  VERIFICA SE AS REGRAS ASSOCIADAS AOS PRODUTOS ESTÃO OK - linha 1010
             await new Grava25.Grava25(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao, Gravacao).ExecutarAsync();
-            //se tiver erro, nao continua
-            if (Retorno.AlgumErro()) return;
 
             //Passo30: OBTÉM DISPONIBILIDADE DO PRODUTO NO ESTOQUE - linha 1083
             await new Grava30.Grava30(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao, Gravacao).ExecutarAsync();
 
             //Passo40: Verifica se a disponibilidade do estoque foi alterada - Linha 1159
-            await new Grava40.Grava40(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao, Gravacao).ExecutarAsync();
+            new Grava40.Grava40(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao, Gravacao).Executar();
 
             //Passo50: ANALISA A QUANTIDADE DE PEDIDOS QUE SERÃO CADASTRADOS (AUTO-SPLIT) - linha 1184
             new Grava50.Grava50(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao, Gravacao).Executar();

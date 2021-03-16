@@ -110,6 +110,7 @@ Scenario: c_indicador c_perc_RT rb_RA garantia_indicador somente se for indicaca
 #	rb_RA = ""
 #	rb_garantia_indicador = COD_GARANTIA_INDICADOR_STATUS__NAO
 #	end if
+#//alteração em relação ao ASP: damos erro se os dados forem inconsistentes
 
 	Given Pedido base
 	When Informo "indicador" = "ZEZINHO"

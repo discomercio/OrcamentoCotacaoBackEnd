@@ -231,7 +231,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 49
- testRunner.Then("Erro \"Produto cód.(001090) do fabricante cód.(001) não existe!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Erro \"regex Produto .*001090.* do fabricante .*001.* não *.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

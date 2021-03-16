@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
+namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20.ObtemCtrlEstoqueProdutoRegra
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,21 +19,23 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "ignore")]
-    public partial class ObtemCtrlEstoqueProdutoRegraFeature : object, Xunit.IClassFixture<ObtemCtrlEstoqueProdutoRegraFeature.FixtureData>, System.IDisposable
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo60")]
+    [Xunit.TraitAttribute("Category", "GerenciamentoBanco")]
+    public partial class T_WMS_REGRA_CDFeature : object, Xunit.IClassFixture<T_WMS_REGRA_CDFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore"};
+                "Especificacao.Pedido.Passo60",
+                "GerenciamentoBanco"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "obtemCtrlEstoqueProdutoRegra.feature"
+#line 1 "t_WMS_REGRA_CD.feature"
 #line hidden
         
-        public ObtemCtrlEstoqueProdutoRegraFeature(ObtemCtrlEstoqueProdutoRegraFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public T_WMS_REGRA_CDFeature(T_WMS_REGRA_CDFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,8 +44,9 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "obtemCtrlEstoqueProdutoRegra", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ignore"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "t_WMS_REGRA_CD", null, ProgrammingLanguage.CSharp, new string[] {
+                        "Especificacao.Pedido.Passo60",
+                        "GerenciamentoBanco"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -78,20 +81,29 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 5
+#line hidden
+#line 6
+ testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+        }
+        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="obtemCtrlEstoqueProdutoRegra")]
-        [Xunit.TraitAttribute("FeatureTitle", "obtemCtrlEstoqueProdutoRegra")]
-        [Xunit.TraitAttribute("Description", "obtemCtrlEstoqueProdutoRegra")]
-        public virtual void ObtemCtrlEstoqueProdutoRegra()
+        [Xunit.SkippableFactAttribute(DisplayName="t_WMS_REGRA_CD - sem regra")]
+        [Xunit.TraitAttribute("FeatureTitle", "t_WMS_REGRA_CD")]
+        [Xunit.TraitAttribute("Description", "t_WMS_REGRA_CD - sem regra")]
+        public virtual void T_WMS_REGRA_CD_SemRegra()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("obtemCtrlEstoqueProdutoRegra", null, tagsOfScenario, argumentsOfScenario);
-#line 4
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("t_WMS_REGRA_CD - sem regra", null, tagsOfScenario, argumentsOfScenario);
+#line 12
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -111,8 +123,20 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 33
- testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 13
+ testRunner.Given("Tabela \"t_WMS_REGRA_CD\" apagar registro do fabricante = \"003\" e produto = \"003220" +
+                        "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 14
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 15
+ testRunner.Then("Erro \"Falha na leitura da regra de consumo do estoque para a UF \'SP\' e \'Pessoa Fí" +
+                        "sica\': regra associada ao produto (003)003220 não foi localizada no banco de dad" +
+                        "os (Id=5)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -125,12 +149,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                ObtemCtrlEstoqueProdutoRegraFeature.FeatureSetup();
+                T_WMS_REGRA_CDFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                ObtemCtrlEstoqueProdutoRegraFeature.FeatureTearDown();
+                T_WMS_REGRA_CDFeature.FeatureTearDown();
             }
         }
     }

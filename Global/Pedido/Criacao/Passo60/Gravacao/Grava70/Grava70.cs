@@ -1,4 +1,5 @@
 ﻿using InfraBanco;
+using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using Microsoft.EntityFrameworkCore;
 using Pedido.Dados.Criacao;
@@ -18,8 +19,8 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava70
         public async Task Executar(Tpedido tpedido, int indice_pedido)
         {
             //Passo70: ajustes adicionais no pedido pai
-            await RegistrarSenhasDesconto();
-            await CalcularRaLiquido(tpedido, indice_pedido);
+            await RegistrarSenhasDesconto(indice_pedido);
+            CalcularRaLiquido(tpedido, indice_pedido);
             await AtualizarIndicador(indice_pedido);
         }
 
@@ -65,12 +66,12 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava70
         }
 
 
-        private async Task CalcularRaLiquido(Tpedido tpedido, int indice_pedido)
+        private void CalcularRaLiquido(Tpedido tpedido, int indice_pedido)
         {
-			// if Not calcula_total_RA_liquido_BD(id_pedido, vl_total_RA_liquido, msg_erro) then
-			//	No pai e nos filhotes, atualiza campos de RA (Passo70/calcula_total_RA_liquido_BD.feture)
+            // if Not calcula_total_RA_liquido_BD(id_pedido, vl_total_RA_liquido, msg_erro) then
+            //	No pai e nos filhotes, atualiza campos de RA (Passo70/calcula_total_RA_liquido_BD.feture)
 
-			/*
+            /*
 			 * 
 					if Not calcula_total_RA_liquido_BD(id_pedido, vl_total_RA_liquido, msg_erro) then
 						end if
@@ -89,10 +90,10 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava70
 						rs.Update
 						end if
 						*/
-			if (indice_pedido != 1)
-				return;
+            if (indice_pedido != 1)
+                return;
 
-			tpedido.Vl_Total_RA_Liquido = Calcula_total_RA_liquido_BD(tpedido);
+            tpedido.Vl_Total_RA_Liquido = Calcula_total_RA_liquido_BD(tpedido);
             tpedido.Qtde_Parcelas_Desagio_RA = 0;
             if (Pedido.Valor.PedidoPossuiRa())
                 tpedido.St_Tem_Desagio_RA = 1;
@@ -103,7 +104,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava70
         }
         private decimal Calcula_total_RA_liquido_BD(Tpedido tpedido)
         {
-			/*
+            /*
 
 
 ' ___________________________________________________________________________
@@ -170,56 +171,57 @@ end function
 
 	*/
 
-			var vl_total_RA = Pedido.Valor.Vl_total_RA;
-			//o campo perc_desagio_RA_liquida já deve ter sido determinado
-			var percentual_desagio_RA_liquido = tpedido.Perc_Desagio_RA_Liquida;
-			var vl_total_RA_liquido = (vl_total_RA - (Convert.ToDecimal(percentual_desagio_RA_liquido / 100)) * vl_total_RA);
-			return vl_total_RA_liquido;
+            var vl_total_RA = Pedido.Valor.Vl_total_RA;
+            //o campo perc_desagio_RA_liquida já deve ter sido determinado
+            var percentual_desagio_RA_liquido = tpedido.Perc_Desagio_RA_Liquida;
+            var vl_total_RA_liquido = (vl_total_RA - (Convert.ToDecimal(percentual_desagio_RA_liquido / 100)) * vl_total_RA);
+            return vl_total_RA_liquido;
 
-		}
+        }
 
-		private async Task RegistrarSenhasDesconto()
+        private async Task RegistrarSenhasDesconto(int indice_pedido)
         {
-			// SENHAS DE AUTORIZAÇÃO PARA DESCONTO SUPERIOR
-			//	Caso tenha usado algum desconto superior ao limite, liberado pela t_DESCONTO, marca como usado(Passo70/ Senhas_de_autorizacao_para_desconto_superior.feature)
+            // SENHAS DE AUTORIZAÇÃO PARA DESCONTO SUPERIOR
+            //	Caso tenha usado algum desconto superior ao limite, liberado pela t_DESCONTO, marca como usado(Passo70/Senhas_de_autorizacao_para_desconto_superior.feature)
 
-			/*
-							if indice_pedido = 1 then
-						'		SENHAS DE AUTORIZAÇÃO PARA DESCONTO SUPERIOR
-								for k = Lbound(v_desconto) to Ubound(v_desconto)
-									if Trim(v_desconto(k)) <> "" then
-										s = "SELECT * FROM t_DESCONTO" & _
-											" WHERE (usado_status=0)" & _
-											" AND (cancelado_status=0)" & _
-											" AND (id='" & Trim(v_desconto(k)) & "')"
-										if rs.State <> 0 then rs.Close
-										rs.open s, cn
-										if rs.Eof then
-											alerta = "Senha de autorização para desconto superior não encontrado."
-											exit for
-										else
-											rs("usado_status") = 1
-											rs("usado_data") = Now
-											if (operacao_origem = OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO) And blnMagentoPedidoComIndicador then
-												rs("vendedor") = sIdVendedor
-											else
-												rs("vendedor") = usuario
-												end if
-											rs("usado_usuario") = usuario
-											rs.Update
-											if Err <> 0 then
-											'	~~~~~~~~~~~~~~~~
-												cn.RollbackTrans
-											'	~~~~~~~~~~~~~~~~
-												Response.Redirect("aviso.asp?id=" & ERR_FALHA_OPERACAO_BD)
-												end if
-											end if
-										end if
-									next
-								end if
-								*/
+            if (indice_pedido != 1)
+                return;
 
-			//todo: grava70 RegistrarSenhasDesconto
-		}
-	}
+            //'		SENHAS DE AUTORIZAÇÃO PARA DESCONTO SUPERIOR
+            var gravacao_pendente = false;
+            foreach (var v_desconto_k in Gravacao.V_desconto)
+            {
+                /*
+					s = "SELECT * FROM t_DESCONTO" & _
+						" WHERE (usado_status=0)" & _
+						" AND (cancelado_status=0)" & _
+						" AND (id='" & Trim(v_desconto(k)) & "')"
+						*/
+                var descontos = await (from d in ContextoBdGravacao.Tdescontos
+                                       where d.Usado_status == 0
+                                                        && d.Cancelado_status == 0
+                                                        && d.Id == v_desconto_k
+                                       select d).ToListAsync();
+
+                if (descontos.Count() != 1)
+                {
+                    Retorno.ListaErros.Add($"Senha de autorização para desconto superior não encontrado (contagem diferente de 1).");
+                    break;
+                }
+                var desconto = descontos.First();
+                desconto.Usado_status = 1;
+                desconto.Usado_data = DateTime.Now;
+                if ((Pedido.Ambiente.Operacao_origem == Constantes.Op_origem__pedido_novo.OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO) && Execucao.BlnMagentoPedidoComIndicador)
+                    desconto.Vendedor = Pedido.Ambiente.Vendedor;
+                else
+                    desconto.Vendedor = Pedido.Ambiente.Usuario;
+                desconto.Usado_usuario = Pedido.Ambiente.Usuario;
+                ContextoBdGravacao.Update(desconto);
+                gravacao_pendente = true;
+            }
+
+            if (gravacao_pendente)
+                await ContextoBdGravacao.SaveChangesAsync();
+        }
+    }
 }

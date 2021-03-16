@@ -49,6 +49,7 @@ Passo40: Verifica se a disponibilidade do estoque foi alterada - Linha 1159
 	Porque: avisamos o usuário que existem produtos sem presença no estoque e, no momento de salvar, os produtos sem presença no estoque foram alterados.
 	No caso da ApiMagento, não temos essa verificação
 
+	Também verifica se o produto consta como 'descontinuado' e não há mais saldo suficiente no estoque para atender à quantidade solicitada.
 
 Passo50: ANALISA A QUANTIDADE DE PEDIDOS QUE SERÃO CADASTRADOS (AUTO-SPLIT) - linha 1184
 			'	OS CD'S ESTÃO ORDENADOS DE ACORDO C/ A PRIORIZAÇÃO DEFINIDA PELA REGRA DE CONSUMO DO ESTOQUE

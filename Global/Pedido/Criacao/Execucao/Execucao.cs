@@ -90,13 +90,6 @@ namespace Pedido.Criacao.Execucao
             if (TabelasBanco.Indicador != null)
                 TOrcamentista_Permite_RA_Status = TabelasBanco.Indicador.Permite_RA_Status;
 
-            /* 10- valida se o pedido é com ou sem indicação
-             * 11- valida percentual máximo de comissão */
-            if (pedido.Cliente.Tipo.PessoaJuridica())
-                Perc_comissao_e_desconto_a_utilizar = PercentualMaxDescEComissao.PercMaxComissaoEDescPJ;
-            else
-                Perc_comissao_e_desconto_a_utilizar = PercentualMaxDescEComissao.PercMaxComissaoEDesc;
-
             if (pedido.Ambiente.ComIndicador)
             {
                 //perc_desagio_RA
@@ -111,12 +104,8 @@ namespace Pedido.Criacao.Execucao
 
 
 
-            /* 4- busca get_registro_t_parametro(ID_PARAMETRO_PercMaxComissaoEDesconto_Nivel2_MeiosPagto) */
-            Tparametro tParametro = await UtilsGlobais.Util.BuscarRegistroParametro(
-                Constantes.ID_PARAMETRO_PercMaxComissaoEDesconto_Nivel2_MeiosPagto, Criacao.ContextoProvider);
-
-            Perc_comissao_e_desconto_a_utilizar = Criacao.PedidoBll.VerificarPagtoPreferencial(tParametro, pedido, Perc_comissao_e_desconto_a_utilizar,
-                    PercentualMaxDescEComissao, pedido.Valor.Vl_total);
+            Perc_comissao_e_desconto_a_utilizar = await VerificarPagtoPreferencial.Calcular_perc_comissao_e_desconto_a_utilizar(pedido,
+                    PercentualMaxDescEComissao, Criacao.ContextoProvider);
 
 
 

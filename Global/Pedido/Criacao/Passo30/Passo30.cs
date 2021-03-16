@@ -18,14 +18,20 @@ namespace Pedido.Criacao.Passo30
 
         public async Task ExecutarAsync()
         {
+            //esta rotina verifica o perc_rt infomrado pelo usuário. A rotina de baixo altera o valor, 
+            //então a validação nesse campo precisa ser feita antes para validr somente o que o usuário informou,
+            //e não o que o sistema alterou
             PermissaoPercRt();
-            await CamposMagentoExigidos(); //esta rotina também determina o perc_Rt para o magento
+
+            //esta rotina também determina o perc_Rt para o magento
+            //protanto precisa ser chama antes das outras que usam o perc_rt
+            await CamposMagentoExigidos(); 
+
             CamposMagentoNaoAceitos();
             await Cd();
-            Cod_site_assistencia_tecnica();
+            await Cod_site_assistencia_tecnica();
             await Indicador();
             Opcao_possui_RA();
-            Perc_RT();
         }
 
         private void PermissaoPercRt()
@@ -45,7 +51,7 @@ namespace Pedido.Criacao.Passo30
                 Retorno.ListaErros.Add("Usuário não pode editar perc_RT (permissão OP_LJA_EXIBIR_CAMPO_RT_AO_CADASTRAR_NOVO_PEDIDO)");
 
 
-            ValidarPercentualRT(Pedido.Valor.Perc_RT, Criacao.Execucao.PercentualMaxDescEComissao.PercMaxComissao, Retorno.ListaErros);
+            ValidarPercentualRT(Pedido.Valor.Perc_RT, Criacao.Execucao.PercentualMaxDescEComissao.Perc_Max_Comissao, Retorno.ListaErros);
         }
 
         private void ValidarPercentualRT(float percComissao, float percentualMax, List<string> lstErros)

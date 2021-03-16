@@ -342,7 +342,7 @@ namespace Pedido
 
             pedidonovoTrocaId.St_Entrega = status_entrega;
 
-            if (pedidoDados.Valor.PermiteRAStatus)
+            if (pedidoDados.Valor.PedidoPossuiRa())
             {
                 //calcula total ra liquido bd 
                 vl_total_RA_liquido = await CalculaTotalRALiquidoBD(idPedidoBase, dbGravacao, lstErros);
@@ -822,8 +822,8 @@ namespace Pedido
             pedidonovo.Sistema_responsavel_cadastro = (int)pedido.Configuracao.SistemaResponsavelCadastro;
 
             //RA
-            pedidonovo.Permite_RA_Status = (short)(pedido.Valor.PermiteRAStatus ? 1 : 0);
-            pedidonovo.Opcao_Possui_RA = pedido.Valor.PermiteRAStatus ? "S" : "-";
+            pedidonovo.Permite_RA_Status = (short)(pedido.Valor.PedidoPossuiRa() ? 1 : 0);
+            pedidonovo.Opcao_Possui_RA = pedido.Valor.PedidoPossuiRa() ? "S" : "-";
         }
 
         private async Task<string> GerarNumeroPedidoTemporario(List<string> lstErros, ContextoBdGravacao contextoBdGravacao)

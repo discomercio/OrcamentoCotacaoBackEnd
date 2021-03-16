@@ -1,8 +1,11 @@
 ﻿using InfraBanco;
+using InfraBanco.Constantes;
+using Microsoft.EntityFrameworkCore;
 using Pedido.Criacao.Execucao;
 using Pedido.Dados.Criacao;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Pedido.Criacao.Passo60.Gravacao.Grava17
@@ -23,129 +26,166 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava17
 
         private void MontarProdutoGravacao()
         {
-            //cria alista de produtos com as variaveis auxiliares
+            //cria a lista de produtos com as variaveis auxiliares
             List<ProdutoGravacao> listaProdutoGravacao = ProdutoGravacao.ListaProdutoGravacao(Pedido.ListaProdutos);
             Gravacao.ProdutoGravacaoLista = listaProdutoGravacao;
         }
 
         private async Task MontarDescontos()
         {
-            //todo: Passo17: descontos
+            //Passo17: descontos
+            // loja/PedidoNovoConfirma.asp
+            //região do 
+            //if desc_dado_arredondado > perc_comissao_e_desconto_a_utilizar then
+            //até
+            //v_desconto(UBound(v_desconto)) = Trim("" & rs("id"))
 
-            /*
-            '	VERIFICA CADA UM DOS PRODUTOS SELECIONADOS
-                dim desc_dado_arredondado
-                if alerta="" then
-                    for i=Lbound(v_item) to Ubound(v_item)
-                        with v_item(i)
-                            s = "SELECT " & _
-                                    "*" & _
-                                " FROM t_PRODUTO" & _
-                                    " INNER JOIN t_PRODUTO_LOJA" & _
-                                        " ON ((t_PRODUTO.fabricante=t_PRODUTO_LOJA.fabricante) AND (t_PRODUTO.produto=t_PRODUTO_LOJA.produto))" & _
-                                    " INNER JOIN t_FABRICANTE" & _
-                                        " ON (t_PRODUTO.fabricante=t_FABRICANTE.fabricante)" & _
-                                " WHERE" & _
-                                    " (t_PRODUTO.fabricante='" & .fabricante & "')" & _
-                                    " AND (t_PRODUTO.produto='" & .produto & "')" & _
-                                    " AND (loja='" & loja & "')"
-                            set rs = cn.execute(s)
-                            if rs.Eof then
-                                alerta=texto_add_br(alerta)
-                                alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & " NÃO está cadastrado para a loja " & loja
-                            else
-                                .preco_lista = rs("preco_lista")
-                                .margem = rs("margem")
-                                .desc_max = rs("desc_max")
-                                .comissao = rs("comissao")
-                                .preco_fabricante = rs("preco_fabricante")
-                                .vl_custo2 = rs("vl_custo2")
-                                .descricao = Trim("" & rs("descricao"))
-                                .descricao_html = Trim("" & rs("descricao_html"))
-                                .ean = Trim("" & rs("ean"))
-                                .grupo = Trim("" & rs("grupo"))
-                                .subgrupo = Trim("" & rs("subgrupo"))
-                                .peso = rs("peso")
-                                .qtde_volumes = rs("qtde_volumes")
-                                .markup_fabricante = rs("markup")
-                                .cubagem = rs("cubagem")
-                                .ncm = Trim("" & rs("ncm"))
-                                .cst = Trim("" & rs("cst"))
-                                .descontinuado = Trim("" & rs("descontinuado"))
+            decimal limiteArredondamentoValores = 0.01M; //1 centavo
+            double limiteArredondamentoPorcentagens = 0.01; //2 casas decimais
+            List<string> v_desconto = new List<string>();
 
-                                .custoFinancFornecPrecoListaBase = .preco_lista
-                                if c_custoFinancFornecTipoParcelamento = COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA then
-                                    coeficiente = 1
-                                else
-                                    s = "SELECT " & _
-                                            "*" & _
-                                        " FROM t_PERCENTUAL_CUSTO_FINANCEIRO_FORNECEDOR" & _
-                                        " WHERE" & _
-                                            " (fabricante = '" & .fabricante & "')" & _
-                                            " AND (tipo_parcelamento = '" & c_custoFinancFornecTipoParcelamento & "')" & _
-                                            " AND (qtde_parcelas = " & c_custoFinancFornecQtdeParcelas & ")"
-                                    set rs2 = cn.execute(s)
-                                    if rs2.Eof then
-                                        alerta=texto_add_br(alerta)
-                                        alerta=alerta & "Opção de parcelamento não disponível para fornecedor " & .fabricante & ": " & decodificaCustoFinancFornecQtdeParcelas(c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas) & " parcela(s)"
-                                    else
-                                        coeficiente = converte_numero(rs2("coeficiente"))
-                                        .preco_lista=converte_numero(formata_moeda(coeficiente*.preco_lista))
-                                        end if
-                                    end if
-                                .custoFinancFornecCoeficiente = coeficiente
+            foreach (var linha_pedido in Gravacao.ProdutoGravacaoLista)
+            {
+                //'	VERIFICA CADA UM DOS PRODUTOS SELECIONADOS
 
-                                if .preco_lista = 0 then 
-                                    .desc_dado = 0
-                                    desc_dado_arredondado = 0
-                                else
-                                    .desc_dado = 100*(.preco_lista-.preco_venda)/.preco_lista
-                                    desc_dado_arredondado = converte_numero(formata_perc_desc(.desc_dado))
-                                    end if
+                //só pode ter um e tem que ter um
+                var rsProduto = (from p in Execucao.TabelasBanco.TprodutoLoja_Include_Tprodtuo_Tfabricante_Validado
+                                 where p.Fabricante == linha_pedido.Pedido.Fabricante && p.Produto == linha_pedido.Pedido.Produto && p.Loja == Pedido.Ambiente.Loja
+                                 select p).First();
 
-                                if desc_dado_arredondado > perc_comissao_e_desconto_a_utilizar then
-                                    if rs.State <> 0 then rs.Close
-                                    s = "SELECT " & _
-                                            "*" & _
-                                        " FROM t_DESCONTO" & _
-                                        " WHERE" & _
-                                            " (usado_status=0)" & _
-                                            " AND (cancelado_status=0)" & _
-                                            " AND (id_cliente='" & cliente_selecionado & "')" & _
-                                            " AND (fabricante='" & .fabricante & "')" & _
-                                            " AND (produto='" & .produto & "')" & _
-                                            " AND (loja='" & loja & "')" & _
-                                            " AND (data >= " & bd_formata_data_hora(Now-converte_min_to_dec(TIMEOUT_DESCONTO_EM_MIN)) & ")" & _
-                                        " ORDER BY" & _
-                                            " data DESC"
-                                    set rs=cn.execute(s)
-                                    if rs.Eof then
-                                        alerta=texto_add_br(alerta)
-                                        alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & ": desconto de " & formata_perc_desc(.desc_dado) & "% excede o máximo permitido."
-                                    else
-                                        if .desc_dado > rs("desc_max") then
-                                            alerta=texto_add_br(alerta)
-                                            alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & ": desconto de " & formata_perc_desc(.desc_dado) & "% excede o máximo autorizado."
-                                        else
-                                            .abaixo_min_status=1
-                                            .abaixo_min_autorizacao=Trim("" & rs("id"))
-                                            .abaixo_min_autorizador=Trim("" & rs("autorizador"))
-                                            .abaixo_min_superv_autorizador=Trim("" & rs("supervisor_autorizador"))
-                                            If v_desconto(UBound(v_desconto)) <> "" Then
-                                                ReDim Preserve v_desconto(UBound(v_desconto) + 1)
-                                                v_desconto(UBound(v_desconto)) = ""
-                                                End If
-                                            v_desconto(UBound(v_desconto)) = Trim("" & rs("id"))
-                                            end if
-                                        end if
-                                    end if
-                                end if
-                            rs.Close
-                            end with
-                        next
+
+
+                var preco_lista = rsProduto.Preco_Lista ?? 0;
+                if (Math.Abs(linha_pedido.Pedido.CustoFinancFornecPrecoListaBase_Conferencia - preco_lista) > limiteArredondamentoValores)
+                {
+                    Retorno.ListaErros.Add($"Produto {linha_pedido.Pedido.Produto} do fabricante {linha_pedido.Pedido.Fabricante} está com " +
+                        $"CustoFinancFornecPrecoListaBase_Conferencia diferente do preco_lista de {preco_lista}");
+                }
+
+                float coeficiente;
+                if (Pedido.FormaPagtoCriacao.CustoFinancFornecTipoParcelamento == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA)
+                {
+                    coeficiente = 1;
+                }
+                else
+                {
+                    var custoFinancFornec = (from c in Criacao.Execucao.TabelasBanco.TpercentualCustoFinanceiroFornecedors_Coeficiente
+                                             where c.Fabricante == linha_pedido.Pedido.Fabricante &&
+                                                 c.Tipo_Parcelamento == Criacao.Execucao.C_custoFinancFornecTipoParcelamento &&
+                                                 c.Qtde_Parcelas == Criacao.Execucao.C_custoFinancFornecQtdeParcelas
+                                             select c).FirstOrDefault();
+                    if (custoFinancFornec == null)
+                    {
+                        coeficiente = 1;
+                        Retorno.ListaErros.Add("Opção de parcelamento não disponível para fornecedor " + linha_pedido.Pedido.Fabricante + ": " +
+                            Prepedido.PrepedidoBll.DecodificaCustoFinanFornecQtdeParcelas(Criacao.Execucao.C_custoFinancFornecTipoParcelamento, (short)Criacao.Execucao.C_custoFinancFornecQtdeParcelas) + " parcela(s).");
+                    }
+                    else
+                    {
+                        coeficiente = custoFinancFornec.Coeficiente;
+                        preco_lista = Convert.ToDecimal(coeficiente) * preco_lista;
+                    }
+                }
+
+                var custoFinancFornecCoeficiente = coeficiente;
+                if (Math.Abs(linha_pedido.Pedido.CustoFinancFornecCoeficiente_Conferencia - custoFinancFornecCoeficiente) > limiteArredondamentoPorcentagens)
+                {
+                    Retorno.ListaErros.Add($"Produto {linha_pedido.Pedido.Produto} do fabricante {linha_pedido.Pedido.Fabricante} está com " +
+                        $"custoFinancFornecCoeficiente {linha_pedido.Pedido.CustoFinancFornecCoeficiente_Conferencia} diferente do custoFinancFornecCoeficiente de {custoFinancFornecCoeficiente}");
+                }
+
+                /*
+
+                if .preco_lista = 0 then 
+                    .desc_dado = 0
+                    desc_dado_arredondado = 0
+                else
+                    .desc_dado = 100*(.preco_lista-.preco_venda)/.preco_lista
+                    desc_dado_arredondado = converte_numero(formata_perc_desc(.desc_dado))
                     end if
+
+                function formata_perc_desc(byval valor)
+	                formata_perc_desc=formata_numero(valor, 1)
+                end function
+                function formata_numero(byval valor, byval decimais)
+
+                quer dizer, arredondamos o desconto com 1 casa decimal
                 */
 
+                double desc_dado = 0;
+                double desc_dado_arredondado = 0;
+                if (preco_lista != 0)
+                {
+                    desc_dado = (double)(100 * (preco_lista - linha_pedido.Pedido.Preco_Venda) / preco_lista);
+                    desc_dado_arredondado = Math.Round(desc_dado, 1);
+                }
+
+                //validações
+                if (Math.Abs(linha_pedido.Pedido.Preco_Lista - preco_lista) > limiteArredondamentoValores)
+                {
+                    Retorno.ListaErros.Add($"Produto {linha_pedido.Pedido.Produto} do fabricante {linha_pedido.Pedido.Fabricante} está com " +
+                        $"preco_lista {linha_pedido.Pedido.Preco_Lista} diferente do preco_lista com coeficiente de {preco_lista}");
+                }
+                if (Math.Abs((linha_pedido.Pedido.Desc_Dado ?? 0) - desc_dado) > limiteArredondamentoPorcentagens)
+                {
+                    Retorno.ListaErros.Add($"Produto {linha_pedido.Pedido.Produto} do fabricante {linha_pedido.Pedido.Fabricante} está com " +
+                        $"desc_dado {linha_pedido.Pedido.Desc_Dado} diferente do desconto calculado de {desc_dado}");
+                }
+
+
+
+                //verifica se precisa de uma autorização para o desconto
+                if (desc_dado_arredondado > Execucao.Perc_comissao_e_desconto_a_utilizar)
+                {
+                    /*
+                                s = "SELECT " & _
+                                        "*" & _
+                                    " FROM t_DESCONTO" & _
+                                    " WHERE" & _
+                                        " (usado_status=0)" & _
+                                        " AND (cancelado_status=0)" & _
+                                        " AND (id_cliente='" & cliente_selecionado & "')" & _
+                                        " AND (fabricante='" & .fabricante & "')" & _
+                                        " AND (produto='" & .produto & "')" & _
+                                        " AND (loja='" & loja & "')" & _
+                                        " AND (data >= " & bd_formata_data_hora(Now-converte_min_to_dec(TIMEOUT_DESCONTO_EM_MIN)) & ")" & _
+                                    " ORDER BY" & _
+                                        " data DESC"
+                                        */
+                    var descontos = await (from d in ContextoBdGravacao.Tdescontos
+                                           where d.Usado_status == 0
+                                              && d.Cancelado_status == 0
+                                              && d.Id_cliente == Pedido.Cliente.Id_cliente
+                                              && d.Fabricante == linha_pedido.Pedido.Fabricante
+                                              && d.Produto == linha_pedido.Pedido.Produto
+                                              && d.Loja == Pedido.Ambiente.Loja
+                                              && d.Data >= Gravacao.DataHoraCriacao.AddMinutes(-1 * Constantes.TIMEOUT_DESCONTO_EM_MIN)
+                                           orderby d.Data descending
+                                           select new { d.Id, d.Desc_max, d.Autorizador, d.Supervisor_autorizador }).ToListAsync();
+
+                    var erro_desconto_excedido = true;
+                    if (descontos.Any())
+                    {
+                        var desconto = descontos.First();
+                        if (desconto.Desc_max.HasValue && desc_dado <= (float)(desconto.Desc_max.Value))
+                        {
+                            erro_desconto_excedido = false;
+                            linha_pedido.Abaixo_min_status = true;
+                            linha_pedido.Abaixo_min_autorizacao = desconto.Id;
+                            linha_pedido.Abaixo_min_autorizador = desconto.Autorizador;
+                            linha_pedido.Abaixo_min_superv_autorizador = desconto.Supervisor_autorizador;
+                            v_desconto.Add(desconto.Id);
+                        }
+                    }
+                    if (erro_desconto_excedido)
+                    {
+                        Retorno.ListaErros.Add($"Produto {linha_pedido.Pedido.Produto} do fabricante {linha_pedido.Pedido.Fabricante}: desconto de {desc_dado_arredondado}% excede o máximo permitido.");
+                    }
+                }
+
+            }
+
+            Gravacao.V_desconto = v_desconto;
         }
     }
 }
