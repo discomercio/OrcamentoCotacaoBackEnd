@@ -19,14 +19,16 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo25
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "ignore")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo60.Gravacao.Passo25")]
+    [Xunit.TraitAttribute("Category", "GerenciamentoBanco")]
     public partial class Verifica_Se_As_Regras_Associadas_Aos_Produtos_Estao_OkFeature : object, Xunit.IClassFixture<Verifica_Se_As_Regras_Associadas_Aos_Produtos_Estao_OkFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore"};
+                "Especificacao.Pedido.Passo60.Gravacao.Passo25",
+                "GerenciamentoBanco"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -43,7 +45,8 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo25
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "verifica_se_as_regras_associadas_aos_produtos_estao_ok", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ignore"});
+                        "Especificacao.Pedido.Passo60.Gravacao.Passo25",
+                        "GerenciamentoBanco"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -78,20 +81,32 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo25
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 5
+#line hidden
+#line 6
+ testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 7
+ testRunner.Given("Chamar ObtemCtrlEstoqueProdutoRegra", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+        }
+        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="VERIFICA SE AS REGRAS ASSOCIADAS AOS PRODUTOS ESTÃO OK")]
+        [Xunit.SkippableFactAttribute(DisplayName="Teste 1 - TwmsRegraCd.Id = 0")]
         [Xunit.TraitAttribute("FeatureTitle", "verifica_se_as_regras_associadas_aos_produtos_estao_ok")]
-        [Xunit.TraitAttribute("Description", "VERIFICA SE AS REGRAS ASSOCIADAS AOS PRODUTOS ESTÃO OK")]
-        public virtual void VERIFICASEASREGRASASSOCIADASAOSPRODUTOSESTAOOK()
+        [Xunit.TraitAttribute("Description", "Teste 1 - TwmsRegraCd.Id = 0")]
+        public virtual void Teste1_TwmsRegraCd_Id0()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("VERIFICA SE AS REGRAS ASSOCIADAS AOS PRODUTOS ESTÃO OK", null, tagsOfScenario, argumentsOfScenario);
-#line 4
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Teste 1 - TwmsRegraCd.Id = 0", null, tagsOfScenario, argumentsOfScenario);
+#line 82
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -111,8 +126,249 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 78
- testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 89
+ testRunner.Given("Lista de CtrlRegra alterar registro de TwmsRegraCd do produto = \"003220\", campo \"" +
+                        "id\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 90
+ testRunner.Given("Chamar VerificarRegrasAssociadasAosProdutos", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 91
+ testRunner.Then("Erro \"Produto (003)003220 não possui regra de consumo do estoque associada\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Teste 2 - TwmsRegraCd.St_inativo = 1")]
+        [Xunit.TraitAttribute("FeatureTitle", "verifica_se_as_regras_associadas_aos_produtos_estao_ok")]
+        [Xunit.TraitAttribute("Description", "Teste 2 - TwmsRegraCd.St_inativo = 1")]
+        public virtual void Teste2_TwmsRegraCd_St_Inativo1()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Teste 2 - TwmsRegraCd.St_inativo = 1", null, tagsOfScenario, argumentsOfScenario);
+#line 93
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 97
+ testRunner.Given("Lista de CtrlRegra alterar registro de TwmsRegraCd do produto = \"003220\", campo \"" +
+                        "st_inativo\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 98
+ testRunner.Given("Chamar VerificarRegrasAssociadasAosProdutos", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 99
+ testRunner.Then("Erro \"Regra de consumo do estoque \'Regra 05\' associada ao produto(003)003220 está" +
+                        " desativada\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Teste 3 - TwmsRegraCdUf.St_inativo = 1")]
+        [Xunit.TraitAttribute("FeatureTitle", "verifica_se_as_regras_associadas_aos_produtos_estao_ok")]
+        [Xunit.TraitAttribute("Description", "Teste 3 - TwmsRegraCdUf.St_inativo = 1")]
+        public virtual void Teste3_TwmsRegraCdUf_St_Inativo1()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Teste 3 - TwmsRegraCdUf.St_inativo = 1", null, tagsOfScenario, argumentsOfScenario);
+#line 101
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 106
+ testRunner.Given("Lista de CtrlRegra alterar registro de TwmsRegraCdUf do produto = \"003220\", campo" +
+                        " \"st_inativo\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 107
+ testRunner.Given("Chamar VerificarRegrasAssociadasAosProdutos", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 108
+ testRunner.Then("Erro \"Regra de consumo do estoque \'Regra 05\' associada ao produto (003)003220 est" +
+                        "á bloqueada para a UF \'SP\'\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Teste 4 - TwmsRegraCdXUfXPessoa.St_inativo = 1")]
+        [Xunit.TraitAttribute("FeatureTitle", "verifica_se_as_regras_associadas_aos_produtos_estao_ok")]
+        [Xunit.TraitAttribute("Description", "Teste 4 - TwmsRegraCdXUfXPessoa.St_inativo = 1")]
+        public virtual void Teste4_TwmsRegraCdXUfXPessoa_St_Inativo1()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Teste 4 - TwmsRegraCdXUfXPessoa.St_inativo = 1", null, tagsOfScenario, argumentsOfScenario);
+#line 110
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 115
+ testRunner.Given("Lista de CtrlRegra alterar registro de TwmsRegraCdXUfXPessoa do produto = \"003220" +
+                        "\", campo \"st_inativo\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 116
+ testRunner.Given("Chamar VerificarRegrasAssociadasAosProdutos", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 117
+ testRunner.Then("Erro \"Regra de consumo do estoque \'Regra 05\' associada ao produto (003)003220 est" +
+                        "á bloqueada para clientes \'PF\' da UF \'SP\'\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Teste 5 - TwmsRegraCdXUfXPessoa.Spe_id_nfe_emitente = 0")]
+        [Xunit.TraitAttribute("FeatureTitle", "verifica_se_as_regras_associadas_aos_produtos_estao_ok")]
+        [Xunit.TraitAttribute("Description", "Teste 5 - TwmsRegraCdXUfXPessoa.Spe_id_nfe_emitente = 0")]
+        public virtual void Teste5_TwmsRegraCdXUfXPessoa_Spe_Id_Nfe_Emitente0()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Teste 5 - TwmsRegraCdXUfXPessoa.Spe_id_nfe_emitente = 0", null, tagsOfScenario, argumentsOfScenario);
+#line 119
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 124
+ testRunner.Given("Lista de CtrlRegra alterar registro de TwmsRegraCdXUfXPessoa do produto = \"003220" +
+                        "\", campo \"spe_id_nfe_emitente\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 125
+ testRunner.Given("Chamar VerificarRegrasAssociadasAosProdutos", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 126
+ testRunner.Then("Erro \"Regra de consumo do estoque \'Regra 05\' associada ao produto (003)003220 não" +
+                        " especifica nenhum CD para aguardar produtos sem presença no estoque para client" +
+                        "es \'PF\' da UF \'SP\'\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Teste 6 - TwmsCdXUfXPessoaXCd.St_inativo = 0")]
+        [Xunit.TraitAttribute("FeatureTitle", "verifica_se_as_regras_associadas_aos_produtos_estao_ok")]
+        [Xunit.TraitAttribute("Description", "Teste 6 - TwmsCdXUfXPessoaXCd.St_inativo = 0")]
+        public virtual void Teste6_TwmsCdXUfXPessoaXCd_St_Inativo0()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Teste 6 - TwmsCdXUfXPessoaXCd.St_inativo = 0", null, tagsOfScenario, argumentsOfScenario);
+#line 128
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 146
+ testRunner.Given("Lista de CtrlRegra alterar registro de TwmsCdXUfXPessoaXCd do produto = \"003220\" " +
+                        "e id_nfe_emitente = \"4903\", campo \"st_inativo\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 147
+ testRunner.Given("Chamar VerificarRegrasAssociadasAosProdutos", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 148
+ testRunner.Then("Erro \"Regra de consumo do estoque \'Regra 05\' associada ao produto (003)003220 não" +
+                        " especifica nenhum CD ativo para clientes \'PF\' da UF \'SP\'\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

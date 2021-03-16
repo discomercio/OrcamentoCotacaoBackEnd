@@ -56,6 +56,12 @@ namespace Especificacao.Testes.Utils.BancoTestes
                     LimparTabelaDbSet<Tpedido>(db.Tpedidos);
                     LimparTabelaDbSet<TpedidoItem>(db.TpedidoItems);
                     break;
+                case "t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD":
+                    LimparTabelaDbSet<TwmsRegraCdXUfXPessoaXCd>(db.TwmsRegraCdXUfXPessoaXCds);
+                    break;
+                case "t_NFe_EMITENTE":
+                    LimparTabelaDbSet<TnfEmitente>(db.TnfEmitentes);
+                    break;
                 default:
                     Testes.Utils.LogTestes.LogOperacoes2.Excecao($"Especificacao.Testes.Utils.BancoTestes.InicializarBancoGeral.LimparTabela nome de tabela desconhecido: {tabela}" + $"StackTrace: '{Environment.StackTrace}'", this);
                     throw new ArgumentException($"Especificacao.Testes.Utils.BancoTestes.InicializarBancoGeral.LimparTabela nome de tabela desconhecido: {tabela}");
@@ -119,8 +125,6 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 VerificarCampoEmRegistro.VerificarRegistro<Tpedido>(campo, valor_desejado, registro);
             }
         }
-
-
 
         public void TabelaT_PEDIDO_ITEMRegistroVerificarCampo(int item, string pedido, string campo, string valor_desejado)
         {
@@ -697,22 +701,60 @@ namespace Especificacao.Testes.Utils.BancoTestes
             db.SaveChanges();
             db.transacao.Commit();
         }
-        [Given(@"Tabela ""t_NFe_EMITENTE"" limpar registros")]
-        public void GivenTabelaLimparRegistros()
-        {
-            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
-            var registros = (from nfeEmitente in db.TnfEmitentes
-                             select nfeEmitente).ToList();
-            Assert.NotNull(registros);
 
-            foreach (var nfe in registros)
+        [Given(@"Tabela ""t_NFe_EMITENTE"" verificar registro tipo de pessoa = ""(.*)"" e id_wms_regra_cd_x_uf = ""(.*)"",campo ""(.*)"" = ""(.*)""")]
+        public void GivenTabelaVerificarRegistroTipoDePessoaCampo(string tipo_pessoa, int id_wms_regra_cd_x_uf, string campo, int valor)
+        {
+            var db = contextoBdProvider.GetContextoLeitura();
+            var registro = (from nfeEmitente in db.TnfEmitentes
+                            join regraCdUFPessoa in db.TwmsRegraCdXUfPessoas on nfeEmitente.Id equals regraCdUFPessoa.Spe_id_nfe_emitente
+                            where regraCdUFPessoa.Tipo_pessoa == tipo_pessoa &&
+                                  regraCdUFPessoa.Id_wms_regra_cd_x_uf == id_wms_regra_cd_x_uf
+                            select nfeEmitente).FirstOrDefault();
+
+            Assert.NotNull(registro);
+
+            switch (campo)
             {
-                Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaApagarRegistroComCampo("t_NFe_EMITENTE", "id", "id:(" + nfe.Id + ")", this);
-                db.Remove(nfe);
+                case "st_ativo":
+                    Assert.Equal(registro.St_Ativo, valor);
+                    break;
+                default:
+                    Assert.Equal("", $"{campo} desconhecido");
+                    break;
+            }
+        }
+
+        [Given(@"Tabela ""t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD"" alterar registro id_wms_regra_cd_x_uf_x_pessoa = ""(.*)"" e id_nfe_emitente = ""(.*)"", campo ""(.*)"" = ""(.*)""")]
+        public void GivenTabelaAlterarRegistroId_Wms_Regra_Cd_X_UfSt_Inativo(int id_wms_regra_cd_x_uf_x_pessoa, int id_nfe_emitente, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD", campo, valor, this);
+            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+
+            var registro = (from regra in db.TwmsRegraCdXUfXPessoaXCds
+                            where regra.Id_nfe_emitente == id_nfe_emitente &&
+                                  regra.Id_wms_regra_cd_x_uf_x_pessoa == id_wms_regra_cd_x_uf_x_pessoa
+                            select regra).ToList();
+
+            Assert.True(registro.Any());
+            if(registro.Count > 1)
+                Assert.Equal("Erro", $"t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD tem mais de um registro para o id_wms_regra_cd_x_uf ({id_nfe_emitente}).");
+
+            foreach(var r in registro)
+            {
+                if (campo == "st_inativo") campo = "St_inativo";
+
+                if (!WhenInformoCampo.InformarCampo(campo, valor, r))
+                    Assert.Equal("campo desconhecido", campo);
+
+                db.Update(r);
             }
 
+
+            
             db.SaveChanges();
             db.transacao.Commit();
+
         }
 
 
