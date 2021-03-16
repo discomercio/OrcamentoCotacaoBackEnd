@@ -100,9 +100,9 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava30
                             {
                                 twmsCdXUfXPessoaXCd.Estoque_Fabricante = v_item_idxItem.Fabricante;
                                 twmsCdXUfXPessoaXCd.Estoque_Produto = v_item_idxItem.Produto;
-                                twmsCdXUfXPessoaXCd.Estoque_Descricao = Execucao.TabelasBanco.TprodutoLoja_Include_Tprodtuo_Tfabricante.Where
+                                twmsCdXUfXPessoaXCd.Estoque_Descricao = Execucao.TabelasBanco.TprodutoLoja_Include_Tprodtuo_Tfabricante_Validado.Where
                                     (r => r.Fabricante == v_item_idxItem.Fabricante && r.Produto == v_item_idxItem.Produto).Select(r => r.Tproduto.Descricao).FirstOrDefault();
-                                twmsCdXUfXPessoaXCd.Estoque_DescricaoHtml = Execucao.TabelasBanco.TprodutoLoja_Include_Tprodtuo_Tfabricante.Where
+                                twmsCdXUfXPessoaXCd.Estoque_DescricaoHtml = Execucao.TabelasBanco.TprodutoLoja_Include_Tprodtuo_Tfabricante_Validado.Where
                                     (r => r.Fabricante == v_item_idxItem.Fabricante && r.Produto == v_item_idxItem.Produto).Select(r => r.Tproduto.Descricao_Html).FirstOrDefault();
                                 twmsCdXUfXPessoaXCd.Estoque_Qtde_Solicitado = v_item_idxItem.Qtde;
                                 twmsCdXUfXPessoaXCd.Estoque_Qtde_Estoque = 0;

@@ -50,7 +50,7 @@ namespace Pedido.Criacao.Passo60.Gravacao
             await new Grava30.Grava30(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao, Gravacao).ExecutarAsync();
 
             //Passo40: Verifica se a disponibilidade do estoque foi alterada - Linha 1159
-            await new Grava40.Grava40(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao, Gravacao).ExecutarAsync();
+            new Grava40.Grava40(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao, Gravacao).Executar();
 
             //Passo50: ANALISA A QUANTIDADE DE PEDIDOS QUE SERÃO CADASTRADOS (AUTO-SPLIT) - linha 1184
             new Grava50.Grava50(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao, Gravacao).Executar();

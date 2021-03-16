@@ -16,7 +16,7 @@ namespace Pedido.Dados.Criacao
         }
 
         //Armazena o percentual de comissão para o indicador selecionado (reserva técnica).
-        //precisa ser alterado no caso da API do magento ou no semi-automático porque no magento esse valor vem de uma variável
+        //precisa ser alterado no caso da API do magento ou no semi-automático porque no magento esse valor é determinado durante a gravação do pedido
         public float Perc_RT { get; set; }
 
         /*
@@ -43,7 +43,7 @@ Flag que informa se o indicador pode ou não fazer uso de RA:
 	0 = Não permite RA
 	1 = Permite RA
 */
-        //todo: remover esta variavel
+        //todo: remover esta variavel (PermiteRAStatus)
         public bool PermiteRAStatus { get; }
     }
 }

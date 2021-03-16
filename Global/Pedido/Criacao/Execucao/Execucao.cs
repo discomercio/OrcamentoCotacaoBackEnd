@@ -93,9 +93,9 @@ namespace Pedido.Criacao.Execucao
             /* 10- valida se o pedido é com ou sem indicação
              * 11- valida percentual máximo de comissão */
             if (pedido.Cliente.Tipo.PessoaJuridica())
-                Perc_comissao_e_desconto_a_utilizar = PercentualMaxDescEComissao.PercMaxComissaoEDescPJ;
+                Perc_comissao_e_desconto_a_utilizar = PercentualMaxDescEComissao.Perc_Max_Comissao_E_Desconto_Pj;
             else
-                Perc_comissao_e_desconto_a_utilizar = PercentualMaxDescEComissao.PercMaxComissaoEDesc;
+                Perc_comissao_e_desconto_a_utilizar = PercentualMaxDescEComissao.Perc_Max_Comissao_E_Desconto;
 
             if (pedido.Ambiente.ComIndicador)
             {

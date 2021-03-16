@@ -6,10 +6,17 @@ Validações do PedidoNovoProdCompostoMask
 #no ASP, em loja/PedidoNovoProdCompostoMask.asp
 Background: Marca para reiniciar o banco
 	Given Reiniciar banco ao terminar cenário
-	Given No ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido" mapear erro "Produto cód.(003220) do fabricante cód.(003) não existe!" para "regex .*Produto não cadastrado para a loja."
-	Given No ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido" mapear erro "Produto cód.(003221) do fabricante cód.(003) não existe!" para "regex .*Produto não cadastrado para a loja."
+	Given No ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido" mapear erro "Produto cód.(003220) do fabricante cód.(003) não existe!" para "regex .*Produto.*não cadastrado para a loja."
+	Given No ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido" mapear erro "Produto cód.(003221) do fabricante cód.(003) não existe!" para "regex .*Produto.*não cadastrado para a loja."
+	Given No ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido" mapear erro "Erro do produto 003220 para mapear" para "regex .*Produto.*não cadastrado para a loja."
+	Given No ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido" mapear erro "Erro do produto 003221 para mapear" para "regex .*Produto.*não cadastrado para a loja."
+	Given No ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido" mapear erro "Erro do produto 003220 para mapear" para "regex .*Produto.*não está cadastrado para a loja."
+	Given No ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido" mapear erro "Erro do produto 003221 para mapear" para "regex .*Produto.*não está cadastrado para a loja."
+	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" mapear erro "Erro do produto 003220 para mapear" para "Produto cód.(003220) do fabricante cód.(003) não existe!"
+	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" mapear erro "Erro do produto 003221 para mapear" para "Produto cód.(003221) do fabricante cód.(003) não existe!"
+	Given No ambiente "Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApiBll.CadastrarPrepedido.CadastrarPrepedidoPrepedidoApi" mapear erro "Erro do produto 003220 para mapear" para "Produto cód.(003220) do fabricante cód.(003) não existe!"
+	Given No ambiente "Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApiBll.CadastrarPrepedido.CadastrarPrepedidoPrepedidoApi" mapear erro "Erro do produto 003221 para mapear" para "Produto cód.(003221) do fabricante cód.(003) não existe!"
 
-	
 Scenario: Verificar produtos em t_PRODUTO_LOJA
 
 #Loja/Global/AjaxConsultaDadosProdutoBD.asp
@@ -41,7 +48,8 @@ Scenario: Verificar produtos - sem t_PRODUTO_LOJA
 	Given Pedido base
 	And Limpar tabela "t_PRODUTO_LOJA"
 	#não gravamos nada em t_PRODUTO_LOJA
-	Then Erro "Produto cód.(003220) do fabricante cód.(003) não existe!"
+	#Then Erro "Produto cód.(003220) do fabricante cód.(003) não existe!"
+	Then Erro "Erro do produto 003220 para mapear"
 
 Scenario: Verificar produtos - registro montado na mão - OK
 	Given Pedido base
@@ -139,7 +147,8 @@ Scenario: Verificar produtos - outra loja
 	And Novo registro em "t_PRODUTO_LOJA", campo "vendavel" = "S"
 	And Novo registro em "t_PRODUTO_LOJA", campo "qtde_max_venda" = "10000"
 	And Gravar registro em "t_PRODUTO_LOJA"
-	Then Erro "Produto cód.(003220) do fabricante cód.(003) não existe!"
+	#Then Erro "Produto cód.(003220) do fabricante cód.(003) não existe!"
+	Then Erro "Erro do produto 003220 para mapear"
 
 Scenario: Verificar produtos - incompleto (sem todos os produtos)
 	Given Pedido base
@@ -166,7 +175,8 @@ Scenario: Verificar produtos - incompleto (sem todos os produtos)
 	And Novo registro em "t_PRODUTO_LOJA", campo "qtde_max_venda" = "10000"
 	And Gravar registro em "t_PRODUTO_LOJA"
 
-	Then Erro "Produto cód.(003221) do fabricante cód.(003) não existe!"
+	#Then Erro "Produto cód.(003221) do fabricante cód.(003) não existe!"
+	Then Erro "Erro do produto 003221 para mapear"
 #
 ##em loja/PedidoNovoConsiste.asp
 ##					if Ucase(Trim("" & rs("vendavel"))) <> "S" then
@@ -197,6 +207,7 @@ Scenario: Verificar produtos t_PRODUTO_LOJA - vendavel
 	And Novo registro em "t_PRODUTO_LOJA", campo "qtde_max_venda" = "10000"
 	And Gravar registro em "t_PRODUTO_LOJA"
 
+	#Then Erro "Erro do produto 003220 para mapear"
 	Then Erro "Produto cód.(003220) do fabricante cód.(003) não existe!"
 
 Scenario: Verificar produtos t_PRODUTO_LOJA - qtde_max_venda

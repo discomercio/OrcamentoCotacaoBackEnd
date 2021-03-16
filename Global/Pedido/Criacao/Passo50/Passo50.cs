@@ -31,16 +31,17 @@ namespace Pedido.Criacao.Passo50
         private void Validar_NFe_xPed()
         {
             /*
-             *             /*
-                         * 
-                         * todo: implementar campo NFe_xPed:
+             * não aceitamos: | page down e seta à direita. 
+             * Ou seja, só recusamos o |
+             * 
                         function filtra_nome_identificador() {
                         var letra;
                         letra=String.fromCharCode(window.event.keyCode);
                         if ((letra=="|")||(window.event.keyCode==34)||(window.event.keyCode==39)) window.event.keyCode=0;
                         }
-
-*/
+            */
+            if ((Pedido.Extra.Nfe_XPed ?? "").Contains("|"))
+                Retorno.ListaErros.Add("Campo Nfe_XPed não pode conter o caractere |");
 
         }
         private void Validar_c_indicador_etc()

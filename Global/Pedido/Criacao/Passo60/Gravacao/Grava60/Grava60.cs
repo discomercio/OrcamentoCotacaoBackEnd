@@ -223,8 +223,8 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
         private void Criar_TpedidoItem(string id_pedido_temp, short sequencia_item, t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD twmsCdXUfXPessoaXCd, ProdutoGravacao linha_pedido)
         {
             //só pode ter um e tem que ter um
-            var dados_produto = (from p in Execucao.TabelasBanco.TprodutoLoja_Include_Tprodtuo_Tfabricante
-                                 where p.Fabricante == linha_pedido.Pedido.Fabricante && p.Produto == linha_pedido.Pedido.Produto
+            var dados_produto = (from p in Execucao.TabelasBanco.TprodutoLoja_Include_Tprodtuo_Tfabricante_Validado
+                                 where p.Fabricante == linha_pedido.Pedido.Fabricante && p.Produto == linha_pedido.Pedido.Produto && p.Loja == Pedido.Ambiente.Loja
                                  select p).First();
 
             var tpedidoitem = new TpedidoItem();
@@ -274,7 +274,10 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
             tpedido.Id_Cliente = Execucao.Id_cliente;
             tpedido.Midia = Pedido.Cliente.Midia;
             tpedido.Servicos = "";
-            tpedido.Vendedor = Pedido.Ambiente.Vendedor;
+            if ((Pedido.Ambiente.Operacao_origem == Constantes.Op_origem__pedido_novo.OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO) && Execucao.BlnMagentoPedidoComIndicador)
+                tpedido.Vendedor = Pedido.Ambiente.Vendedor;
+            else
+                tpedido.Vendedor = Pedido.Ambiente.Usuario;
             tpedido.Usuario_Cadastro = Pedido.Ambiente.Usuario;
             tpedido.St_Entrega = "";
             tpedido.Pedido_Bs_X_At = Pedido.Extra.Pedido_bs_x_at ?? "";

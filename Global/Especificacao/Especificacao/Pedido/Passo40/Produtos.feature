@@ -46,7 +46,7 @@ Scenario: produtos: sempre virão divididos, nunca vai vir um produto composto.
 	When Lista de itens "0" informo "Preco_NF" = "1648.00"
 	And Recalcular totais do pedido
 	And Deixar forma de pagamento consistente
-	Then Erro "Produto cód.(001090) do fabricante cód.(001) não existe!"
+	Then Erro "regex Produto .*001090.* do fabricante .*001.* não *."
 
 #Scenario: Produto disponível para a loja
 
