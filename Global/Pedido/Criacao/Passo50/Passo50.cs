@@ -152,9 +152,6 @@ namespace Pedido.Criacao.Passo50
             if (string.IsNullOrEmpty(Pedido.Ambiente.Indicador) && Pedido.Valor.PedidoPossuiRa())
                 Retorno.ListaErros.Add("Necessário indicador para usar RA");
 
-            if (Pedido.Valor.PedidoPossuiRa() && !Pedido.Valor.PermiteRAStatus)
-                Retorno.ListaErros.Add("Pedido está usando RA mas está inconsistente com PermiteRAStatus.");
-
             //o resto só validamos se tiver RA
             if (!Pedido.Valor.PedidoPossuiRa())
                 return;

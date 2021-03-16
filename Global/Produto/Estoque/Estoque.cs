@@ -207,7 +207,9 @@ namespace Produto.Estoque
             //NÃO HÁ PRODUTOS SUFICIENTES NO ESTOQUE!!
             if ((qtde_a_sair - qtde_autorizada_sem_presenca) > qtde_disponivel)
             {
-                //todo: verificar que no magento isto não seja feito
+                //isto não deve ser feito na criação do pedido no magento
+                //na verdade, nunca é feito porque a variável qtde_autorizada_sem_presenca é ajustada
+                //exatamente para a quantidade de produtos faltando, então esta condição nunca acontece.
                 lstErros.Add("Produto " + id_produto + " do fabricante " + id_fabricante + ": faltam " +
                     ((qtde_a_sair - qtde_autorizada_sem_presenca) - qtde_disponivel) + " unidades no estoque (" +
                     UtilsGlobais.Util.Obtem_apelido_empresa_NFe_emitente_Gravacao(id_nfe_emitente, dbGravacao) +

@@ -95,7 +95,6 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
             var pedidoCriacaoValor = new Pedido.Dados.Criacao.PedidoCriacaoValorDados(
                 perc_RT: 0,
-                permiteRAStatus: true,
 
                 //Armazena o valor total do pedido
                 vl_total: lstProdutosMagento.Select(x => x.TotalItem()).Sum(),
