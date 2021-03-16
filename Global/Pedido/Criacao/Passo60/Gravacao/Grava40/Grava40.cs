@@ -1,6 +1,7 @@
 ﻿using InfraBanco;
 using Pedido.Dados.Criacao;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Pedido.Criacao.Passo60.Gravacao.Grava40
@@ -109,9 +110,39 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava40
                 //o v_item(i).qtde_estoque_total_disponivel foi calculado acima, está na variável qtde_estoque_total_disponivel
                 if (v_item_iItem.Pedido.Qtde > qtde_estoque_total_disponivel)
                 {
+                    /*
+                '	HÁ ALGUM PRODUTO DESCONTINUADO?
+                    if alerta = "" then
+                        for i=Lbound(v_item) to Ubound(v_item)
+                            if Trim(v_item(i).produto) <> "" then
+                                if Ucase(Trim(v_item(i).descontinuado)) = "S" then
+                                    if v_item(i).qtde > v_item(i).qtde_estoque_total_disponivel then
+                                        alerta=texto_add_br(alerta)
+                                        alerta=alerta & "Produto (" & v_item(i).fabricante & ")" & v_item(i).produto & " consta como 'descontinuado' e não há mais saldo suficiente no estoque para atender à quantidade solicitada."
+                                        end if
+                                    end if
+                                end if
+                            next
+                        end if
+                    */
+                    var produto = (from p in Execucao.TabelasBanco.TprodutoLoja_Include_Tprodtuo_Tfabricante_Validado
+                                   where p.Tproduto.Descontinuado.ToUpper().Trim() == "S"
+                                   && p.Produto == v_item_iItem.Pedido.Produto
+                                   && p.Fabricante == v_item_iItem.Pedido.Fabricante
+                                   && p.Loja == Pedido.Ambiente.Loja
+                                   select p);
+                    if (produto.Any())
+                    {
+                        Retorno.ListaErros.Add("Produto (" + v_item_iItem.Pedido.Fabricante + ")" + v_item_iItem.Pedido.Produto +
+                            " consta como 'descontinuado' e não há mais saldo suficiente " +
+                            "no estoque para atender à quantidade solicitada.");
+                    }
+
+
                     //erro_produto_indisponivel = true;
                     if (v_item_iItem.Pedido.Qtde_spe_usuario_aceitou.HasValue)
                     {
+                        //se Qtde_spe_usuario_aceitou for null, não verificamos
                         if (v_item_iItem.Pedido.Qtde_spe_usuario_aceitou == 0)
                         {
                             //mesangem quando o usuário não aceitou nenhum produto faltando

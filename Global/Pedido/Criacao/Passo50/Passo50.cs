@@ -46,9 +46,9 @@ namespace Pedido.Criacao.Passo50
         }
         private void Validar_c_indicador_etc()
         {
-            //todo: passo50 c_indicador c_perc_RT rb_RA garantia_indicador somente se for indicacao
+            //passo50 c_indicador c_perc_RT rb_RA garantia_indicador somente se for indicacao
+
             /*
-             Scenario: c_indicador c_perc_RT rb_RA garantia_indicador somente se for indicacao
             #loja/PedidoNovoConfirma.asp
             #if rb_indicacao = "S" then
             #	c_indicador = Trim(Request.Form("c_indicador"))
@@ -61,29 +61,22 @@ namespace Pedido.Criacao.Passo50
             #	rb_RA = ""
             #	rb_garantia_indicador = COD_GARANTIA_INDICADOR_STATUS__NAO
             #	end if
-
-                Given Pedido base
-                When Informo "indicador" = "ZEZINHO"
-                And Informo "indicacao" = "N"
-                Then Tabela "t_PEDIDO" registro pai criado, verificar campo "indicador" = ""
-
-                Given Pedido base
-                When Informo "perc_RT" = "123"
-                And Informo "indicacao" = "N"
-                Then Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_RT" = ""
-
-                Given Pedido base
-                When Informo "RA" = "True"
-                And Informo "indicacao" = "N"
-                Then Tabela "t_PEDIDO" registro pai criado, verificar campo "RA" = "false"
-
-                Given Pedido base
-                When Informo "garantia_indicador" = "COD_GARANTIA_INDICADOR_STATUS__SIM"
-                And Informo "indicacao" = "N"
-                Then Tabela "t_PEDIDO" registro pai criado, verificar campo "RA" = "false"
-                Then Tabela "t_PEDIDO" registro pai criado, verificar campo "RA" = "COD_GARANTIA_INDICADOR_STATUS__NAO"
-
             */
+
+            //alteração em relação ao ASP: damos erro se os dados forem inconsistentes
+            if (!Pedido.Ambiente.ComIndicador)
+            {
+                if (!string.IsNullOrWhiteSpace(Pedido.Ambiente.Indicador))
+                {
+                    Retorno.ListaErros.Add("O campo Indicador deve estar vazio se o campo ComIndicador for falso.");
+                }
+                if(Pedido.Valor.PedidoPossuiRa())
+                {
+                    Retorno.ListaErros.Add("O pedido não pode ter RA se o campo ComIndicador for falso.");
+                }
+
+                Pedido.DetalhesPedido.GarantiaIndicador = Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO;
+            }
         }
         private void Validar_garantia_indicador()
         {

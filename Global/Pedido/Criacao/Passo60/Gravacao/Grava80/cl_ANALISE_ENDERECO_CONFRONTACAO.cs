@@ -7,7 +7,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava80
 {
     public class Cl_ANALISE_ENDERECO_CONFRONTACAO
     {
-        //todo: apagar esta rotina
+        //todo: apagar esta rotina, remvoer EfetivaPedidoBll.cs MontarLogPedidoBll.cs PedidoBll.cs
         public static Cl_ANALISE_ENDERECO_CONFRONTACAO Construir(TpedidoEnderecoConfrontacaoDados tPedidoEndConfrontacao)
         {
             return new Cl_ANALISE_ENDERECO_CONFRONTACAO(

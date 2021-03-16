@@ -22,9 +22,11 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava80
         {
             //Passo80: VERIFICA SE O ENDEREÇO JÁ FOI USADO ANTERIORMENTE POR OUTRO CLIENTE (POSSÍVEL FRAUDE)
             //	Passo80 / FluxoVerificacaoEndereco.feature
-            var controle = new VerificarSeEnderecoJaFoiUsadoControle();
-            controle.saveChangesPendente = false;
-            controle.blnAnalisarEndereco = false;
+            var controle = new VerificarSeEnderecoJaFoiUsadoControle
+            {
+                saveChangesPendente = false,
+                blnAnalisarEndereco = false
+            };
 
 
             /*
@@ -70,6 +72,9 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava80
             public bool blnAnalisarEndereco;
             public bool saveChangesPendente;
         }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0017:Simplify object initialization", Justification = "<Pending>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0054:Use compound assignment", Justification = "<Pending>")]
         private static async Task VerificarSeEnderecoJaFoiUsado(bool PedidoAmbienteComIndicador,
                                                                 TorcamentistaEindicador? ExecucaoTabelasBancoIndicador,
                                                                 List<string> ListaErros,

@@ -182,14 +182,12 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="descontinuado")]
         [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEstoque3.feature")]
         [Xunit.TraitAttribute("Description", "descontinuado")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void Descontinuado()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("descontinuado", null, tagsOfScenario, argumentsOfScenario);
-#line 37
+#line 36
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -212,14 +210,17 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 38
+#line 39
  testRunner.Given("Tabela \"t_PRODUTO\" com fabricante = \"003\" e produto = \"003221\" alterar campo \"des" +
                         "continuado\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 39
+#line 40
+ testRunner.Given("Zerar todo o estoque", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 41
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 40
+#line 42
  testRunner.Then("Erro \"regex .*consta como \'descontinuado\' e não há mais saldo suficiente no estoq" +
                         "ue para atender à quantidade solicitada.*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
