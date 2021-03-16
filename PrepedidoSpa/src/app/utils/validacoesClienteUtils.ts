@@ -251,29 +251,33 @@ export class ValidacoesClienteUtils {
         //e ela é opcional, então não validamos nada!
         
         let dataAtual = new Date();
-        let data = dadosClienteCadastroDto.Nascimento.toString().split('-');
-        if (data[1].substring(0, 1) == "0")
-            data[1] = data[1].replace("0", "");
-        if (data[2].substring(0, 1) == "0")
-            data[2] = data[2].replace("0", "");
+        if (!!dadosClienteCadastroDto.Nascimento) {
+            let data = dadosClienteCadastroDto.Nascimento.toString().split('-');
+            if (data.length == 3) {
+                if (data[1].substring(0, 1) == "0")
+                    data[1] = data[1].replace("0", "");
+                if (data[2].substring(0, 1) == "0")
+                    data[2] = data[2].replace("0", "");
 
-        let nascimento: Date = new Date(data[0] + "/" + data[1] + "/" + data[2]);
-        let nascIsValid: boolean = true;
-        //verificamos o ano
-        if (parseInt(data[0]) < 1900)
-            nascIsValid = false;
-        if (!DataUtils.validarData(nascimento))
-            nascIsValid = false;
+                let nascimento: Date = new Date(data[0] + "/" + data[1] + "/" + data[2]);
+                let nascIsValid: boolean = true;
+                //verificamos o ano
+                if (parseInt(data[0]) < 1900)
+                    nascIsValid = false;
+                if (!DataUtils.validarData(nascimento))
+                    nascIsValid = false;
 
-        if (!nascIsValid)
-            ret.push("Data de nascimento inválida!");
+                if (!nascIsValid)
+                    ret.push("Data de nascimento inválida!");
 
-        if (nascimento.getDate() >= dataAtual.getDate() &&
-            nascimento.getMonth() >= dataAtual.getMonth() &&
-            nascimento.getFullYear() >= dataAtual.getFullYear())
-            ret.push("Data de nascimento não pode ser igual ou maior que a data atual!");
+                if (nascimento.getDate() >= dataAtual.getDate() &&
+                    nascimento.getMonth() >= dataAtual.getMonth() &&
+                    nascimento.getFullYear() >= dataAtual.getFullYear())
+                    ret.push("Data de nascimento não pode ser igual ou maior que a data atual!");
+            }
 
-        
+        }
+
         return ret;
     }
 
