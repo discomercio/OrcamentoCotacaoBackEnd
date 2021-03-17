@@ -1,4 +1,4 @@
-﻿@ignore
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
 Feature: Coisas válidas somente para ID_PARAM_SITE = COD_SITE_ASSISTENCIA_TECNICA
 
 Scenario: pedBonshop (campo pedido_bs_x_at)

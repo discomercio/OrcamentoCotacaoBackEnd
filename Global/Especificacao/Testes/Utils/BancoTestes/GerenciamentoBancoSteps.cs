@@ -62,6 +62,9 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 case "t_NFe_EMITENTE":
                     LimparTabelaDbSet<TnfEmitente>(db.TnfEmitentes);
                     break;
+                case "t_DESCONTO":
+                    LimparTabelaDbSet<Tdesconto>(db.Tdescontos);
+                    break;
                 default:
                     Testes.Utils.LogTestes.LogOperacoes2.Excecao($"Especificacao.Testes.Utils.BancoTestes.InicializarBancoGeral.LimparTabela nome de tabela desconhecido: {tabela}" + $"StackTrace: '{Environment.StackTrace}'", this);
                     throw new ArgumentException($"Especificacao.Testes.Utils.BancoTestes.InicializarBancoGeral.LimparTabela nome de tabela desconhecido: {tabela}");
@@ -737,10 +740,10 @@ namespace Especificacao.Testes.Utils.BancoTestes
                             select regra).ToList();
 
             Assert.True(registro.Any());
-            if(registro.Count > 1)
+            if (registro.Count > 1)
                 Assert.Equal("Erro", $"t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD tem mais de um registro para o id_wms_regra_cd_x_uf ({id_nfe_emitente}).");
 
-            foreach(var r in registro)
+            foreach (var r in registro)
             {
                 if (campo == "st_inativo") campo = "St_inativo";
 
@@ -751,7 +754,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             }
 
 
-            
+
             db.SaveChanges();
             db.transacao.Commit();
 
@@ -906,9 +909,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
                     tdesconto.Loja = valor;
                     break;
                 case "data":
-                    if (!DateTime.TryParse(valor, out DateTime data))
-                        Assert.Equal("", $"{valor} não é uma Data");
-                    tdesconto.Data = data;
+                    tdesconto.Data = DateTime.Now;
                     break;
                 default:
                     Assert.Equal("", $"{campo} desconhecido");

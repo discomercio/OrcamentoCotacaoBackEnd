@@ -1,9 +1,9 @@
-﻿@ignore
-@Especificacao.Pedido.Passo60
-@GerenciamentoBanco
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
+#@Especificacao.Pedido.Passo60
+#@GerenciamentoBanco
 Feature: Desconto_na_t_item
 
-Background: 
+Background: Configuracao
 	Given Reiniciar banco ao terminar cenário
 
 #Garantir que o desconto utilizado seja gravado na t_pedido_item
@@ -133,7 +133,7 @@ Scenario: Autorizacao de desconto - sucesso
 	When Lista de itens "0" informo "Preco_Lista" = "338.85"
 	When Lista de itens "0" informo "Preco_NF" = "340.00"
 	Then Sem nenhum erro
-	
+
 Scenario: Autorizacao de desconto - erro 1
 	Given Limpar tabela "t_DESCONTO"
 	Given Pedido base
@@ -161,4 +161,3 @@ Scenario: Autorizacao de desconto - erro 2
 	When Lista de itens "0" informo "Preco_Lista" = "338.85"
 	When Lista de itens "0" informo "Preco_NF" = "340.00"
 	Then Erro "regex .*% excede o máximo permitido.*"
-
