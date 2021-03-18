@@ -650,8 +650,9 @@ namespace Prepedido
             return await raStatus;
         }
 
-        public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDados prePedido, string apelido, decimal limiteArredondamento,
-            bool verificarPrepedidoRepetido, InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro)
+        public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDados prePedido, 
+            string apelido, decimal limiteArredondamento, bool verificarPrepedidoRepetido, 
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro, int limite_de_itens)
         {
             List<string> lstErros = new List<string>();
 
@@ -745,9 +746,9 @@ namespace Prepedido
                 return lstErros;
             }
 
-            if (prePedido.ListaProdutos.Count > 12)
+            if (prePedido.ListaProdutos.Count > limite_de_itens)
             {
-                lstErros.Add("É permitido apenas 12 itens.");
+                lstErros.Add($"É permitido apenas {limite_de_itens} itens.");
                 return lstErros;
             }
             if (!await Util.LojaHabilitadaProdutosECommerce(prePedido.DadosCliente.Loja, contextoProvider))
