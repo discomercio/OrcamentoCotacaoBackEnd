@@ -113,6 +113,9 @@ namespace Especificacao.Testes.Utils.BancoTestes
             VerificarCampoEmRegistro.VerificarRegistro<Tcliente>(campo, valor_desejado, registro[0]);
         }
 
+
+
+
         public void TabelaT_PEDIDORegistroVerificarCampo(List<string> listaPedidos, string campo, string valor_desejado)
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO", "pedido", String.Join("; ", listaPedidos), campo, valor_desejado, this);
@@ -425,6 +428,26 @@ namespace Especificacao.Testes.Utils.BancoTestes
             using var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
             var registro = (from usuario in db.Tusuarios where usuario.Usuario == valor select usuario).First();
             db.Tusuarios.Remove(registro);
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+
+        [Given(@"Tabela ""t_ORCAMENTISTA_E_INDICADOR"" registro apelido = ""(.*)"", alterar campo ""(.*)"" = ""(.*)""")]
+        public void GivenTabelaT_ORCAMENTISTA_E_INDICADORRegistroCampoAlterarCampo(string apelido, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_ORCAMENTISTA_E_INDICADOR", "apelido", valor, this);
+
+            var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
+            var registro = (from orcamentista in db.TorcamentistaEindicadors
+                            where orcamentista.Apelido.ToUpper() == apelido.ToUpper()
+                            select orcamentista).FirstOrDefault();
+
+            Assert.NotNull(registro);
+
+            if (!WhenInformoCampo.InformarCampo(campo, valor, registro))
+                Assert.Equal("campo desconhecido", campo);
+
+            db.Update(registro);
             db.SaveChanges();
             db.transacao.Commit();
         }
