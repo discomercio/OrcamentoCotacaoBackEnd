@@ -185,7 +185,7 @@ this.FeatureBackground();
 #line hidden
 #line 25
  testRunner.Given("Chamar ObtemCtrlEstoqueProdutoRegra e verificar regra do produto = \"003220\" e id_" +
-                        "nfe_emitente = \"4001\", campo \"st_inativo\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+                        "nfe_emitente = \"4001\", campo st_inativo = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 26
  testRunner.Given("Tabela \"t_NFe_EMITENTE\" verificar registro tipo de pessoa = \"PR\" e id_wms_regra_c" +

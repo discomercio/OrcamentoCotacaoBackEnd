@@ -166,7 +166,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             }
         }
 
-        public void TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(TpedidoItem item, string campo, string valor, string pedido)
+        public void TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(TpedidoItem item, string campo, string valor)
         {
             var id_estoque = BuscarIdEstoqueMovimento(item);
             if (string.IsNullOrEmpty(id_estoque))
@@ -189,7 +189,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             }
         }
 
-        public void TabelaT_ESTOQUERegistroPaiVerificarCampo(List<TpedidoItem> itens, string campo, string valor, string pedido)
+        public void TabelaT_ESTOQUERegistroPaiVerificarCampo(List<TpedidoItem> itens, string campo, string valor)
         {
             foreach (var item in itens)
             {

@@ -22,5 +22,5 @@ Scenario: t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD - sem registro
 @Especificacao.Pedido.Passo60.Gravacao.Passo20.ObtemCtrlEstoqueProdutoRegra.t_WMS_REGRA_CD_X_UF_X_PESSOA_CD
 Scenario: t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD - considerar t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD.st_inativo = 1
 	Given Tabela "t_NFe_EMITENTE" registro tipo de pessoa = "PR" e id_wms_regra_cd_x_uf = "26", alterar campo "st_ativo" = "0"
-	Given Chamar ObtemCtrlEstoqueProdutoRegra e verificar regra do produto = "003220" e id_nfe_emitente = "4001", campo "st_inativo" = "1"
+	Given Chamar ObtemCtrlEstoqueProdutoRegra e verificar regra do produto = "003220" e id_nfe_emitente = "4001", campo st_inativo = "1"
 	Given Tabela "t_NFe_EMITENTE" verificar registro tipo de pessoa = "PR" e id_wms_regra_cd_x_uf = "26",campo "st_ativo" = "0"

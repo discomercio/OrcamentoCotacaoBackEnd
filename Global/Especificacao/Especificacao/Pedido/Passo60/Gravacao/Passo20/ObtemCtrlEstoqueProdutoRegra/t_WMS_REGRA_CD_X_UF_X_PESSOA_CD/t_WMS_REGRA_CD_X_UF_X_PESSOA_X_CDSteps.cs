@@ -21,8 +21,8 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20.ObtemCtrlE
             this.contextoBdProvider = servicos.GetRequiredService<InfraBanco.ContextoBdProvider>();
         }
 
-        [Given(@"Chamar ObtemCtrlEstoqueProdutoRegra e verificar regra do produto = ""(.*)"" e id_nfe_emitente = ""(.*)"", campo ""(.*)"" = ""(.*)""")]
-        public void GivenChamarObtemCtrlEstoqueProdutoRegraEVerificarRegraEValor(string produto, int id_nfe_emitente, string campo, byte valor)
+        [Given(@"Chamar ObtemCtrlEstoqueProdutoRegra e verificar regra do produto = ""(.*)"" e id_nfe_emitente = ""(.*)"", campo st_inativo = ""(.*)""")]
+        public void GivenChamarObtemCtrlEstoqueProdutoRegraEVerificarRegraEValor(string produto, int id_nfe_emitente, byte valor)
         {
             //precisa chamar diretamente a rotina para verificar se regra t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD.st_inativo = 1  
             //List<RegrasBll> regraCrtlEstoque = (await ObtemCtrlEstoqueProdutoRegra(contextoProvider, prePedido, lstErros)).ToList();

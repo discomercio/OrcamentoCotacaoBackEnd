@@ -310,7 +310,7 @@ namespace Especificacao.Testes.Pedido
             Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
             var itemPedido = gerenciamentoBanco.BuscarItensPedido(pedidoPaiGerado).Where(x => x.Produto == produto).FirstOrDefault();
 
-            gerenciamentoBanco.TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(itemPedido, campo, valor, pedidoPaiGerado);
+            gerenciamentoBanco.TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(itemPedido, campo, valor);
         }
 
         public void TabelaT_ESTOQUERegistroPaiVerificarCampo(string campo, string valor)
@@ -327,7 +327,7 @@ namespace Especificacao.Testes.Pedido
             Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
             var itemPedido = gerenciamentoBanco.BuscarItensPedido(pedidoPaiGerado).ToList();
 
-            gerenciamentoBanco.TabelaT_ESTOQUERegistroPaiVerificarCampo(itemPedido, campo, valor, pedidoPaiGerado);
+            gerenciamentoBanco.TabelaT_ESTOQUERegistroPaiVerificarCampo(itemPedido, campo, valor);
         }
 
         public void TabelaT_ESTOQUE_LOGPedidoGeradoVerificarCampo(string produto, string operacao, string campo, string valor)
@@ -367,7 +367,7 @@ namespace Especificacao.Testes.Pedido
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PRODUTO_X_WMS_REGRA_CD", "fabricante e produto", "verificar campos", campo, valor, this);
 
             Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
-           gerenciamentoBanco.TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteEProdutoVerificarCampo(fabricante, produto, campo, valor);
+            gerenciamentoBanco.TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteEProdutoVerificarCampo(fabricante, produto, campo, valor);
 
         }
     }

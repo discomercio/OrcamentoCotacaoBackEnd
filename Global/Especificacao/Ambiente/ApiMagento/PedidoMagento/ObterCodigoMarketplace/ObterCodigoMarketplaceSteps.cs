@@ -14,7 +14,6 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace
     public class ObterCodigoMarketplaceSteps
     {
         private readonly global::ApiMagento.Controllers.PedidoMagentoController pedidoMagentoController;
-        private readonly Testes.Utils.LogTestes.LogTestes logTestes = Testes.Utils.LogTestes.LogTestes.GetInstance();
         private readonly InfraBanco.ContextoBdProvider contextoBdProvider;
 
         public ObterCodigoMarketplaceSteps()
