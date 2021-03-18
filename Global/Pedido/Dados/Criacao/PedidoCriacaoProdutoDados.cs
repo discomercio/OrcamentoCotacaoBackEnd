@@ -39,9 +39,6 @@ namespace Pedido.Dados.Criacao
         //se null, não é verificado
         public short? Qtde_spe_usuario_aceitou { get; set; }
 
-        //todo: remover esta variável
-        public short? Qtde_estoque_total_disponivel { get; set; }
-
         //informações
         public decimal TotalItem()
         {

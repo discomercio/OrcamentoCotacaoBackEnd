@@ -7,23 +7,6 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava80
 {
     public class Cl_ANALISE_ENDERECO_CONFRONTACAO
     {
-        //todo: apagar esta rotina, remvoer EfetivaPedidoBll.cs MontarLogPedidoBll.cs PedidoBll.cs
-        public static Cl_ANALISE_ENDERECO_CONFRONTACAO Construir(TpedidoEnderecoConfrontacaoDados tPedidoEndConfrontacao)
-        {
-            return new Cl_ANALISE_ENDERECO_CONFRONTACAO(
-                pedido: tPedidoEndConfrontacao.Pedido.Pedido,
-                id_cliente: tPedidoEndConfrontacao.Pedido.Id_Cliente,
-                tipo_endereco: tPedidoEndConfrontacao.TipoEndreco,
-                endereco_logradouro: tPedidoEndConfrontacao.Pedido.Endereco_logradouro,
-                endereco_bairro: tPedidoEndConfrontacao.Pedido.Endereco_bairro,
-                endereco_cidade: tPedidoEndConfrontacao.Pedido.Endereco_cidade,
-                endereco_uf: tPedidoEndConfrontacao.Pedido.Endereco_uf,
-                endereco_cep: tPedidoEndConfrontacao.Pedido.Endereco_cep,
-                endereco_numero: tPedidoEndConfrontacao.Pedido.Endereco_numero,
-                endereco_complemento: tPedidoEndConfrontacao.Pedido.Endereco_complemento
-            );
-        }
-
         public Cl_ANALISE_ENDERECO_CONFRONTACAO()
         {
             //temos um construtor sem parâmetors porque ficou bem mais claro no Grava80 porque não podemos usar parâmetros nomeados dentro do select
