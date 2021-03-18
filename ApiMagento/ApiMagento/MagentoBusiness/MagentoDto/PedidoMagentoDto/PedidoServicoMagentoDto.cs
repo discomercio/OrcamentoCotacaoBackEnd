@@ -33,16 +33,19 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         public short Qtde { get; set; }
 
         /// <summary>
-        /// Preco_bruto: preço de venda do item. Campo original_price.
-        /// <br />Comentário interno: gravado em t_PEDIDO_ITEM_SERVICO.preco_lista
+        /// Preco_bruto: preço de venda do item. 
+        /// Verificar no magento qual o campo correto, possivelmente: original_price.
+        /// <br />É gravado em t_PEDIDO_ITEM_SERVICO.preco_lista
         /// <hr />
         /// </summary>
         [Required]
         public decimal Preco_bruto { get; set; }
 
         /// <summary>
-        /// Preco_liquido: preço que seria impresso na nota fiscal. Campo row_total / campo qty_ordered.
-        /// <br />Comentário interno: gravado em t_PEDIDO_ITEM_SERVICO.preco_venda e preco_nf 
+        /// Preco_liquido: preço efetivamente cobrado, que seria impresso na nota fiscal. 
+        /// Verificar no magento como calcular este valor,
+        /// possivelmente: row_total / campo qty_ordered.
+        /// <br />É gravado em t_PEDIDO_ITEM_SERVICO.preco_venda e t_PEDIDO_ITEM_SERVICO.preco_nf 
         /// <hr />
         /// </summary>
         [Required]

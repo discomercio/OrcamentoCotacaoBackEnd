@@ -69,6 +69,11 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         [MaxLength(500)]
         public string? Obs_1 { get; set; }
 
+        /// <summary>
+        /// Valor liquido do frete
+        /// <br />É gravado em t_PEDIDO.magento_shipping_amount
+        /// <hr />
+        /// </summary>
         public decimal? Frete { get; set; }
 #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
