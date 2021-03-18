@@ -80,6 +80,10 @@ namespace Pedido.Criacao.Passo60.Validacao
                     var valor = valorBd[0];
                     Criacao.Execucao.Comissao_loja_indicou = valor;
                 }
+                else
+                {
+                    Retorno.ListaErros.Add($"Loja {Pedido.Ambiente.Loja_indicou} não está cadastrada.");
+                }
             }
         }
     }

@@ -61,6 +61,7 @@ namespace Pedido.Dados.Criacao
         //campos do marketplace
         public PedidoCriacaoMarketplaceDados Marketplace { get; }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0017:Simplify object initialization", Justification = "Estilo de código")]
         public static Prepedido.Dados.DetalhesPrepedido.PrePedidoDados PrePedidoDadosDePedidoCriacaoDados(PedidoCriacaoDados pedido, string id_cliente)
         {
             Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prepedido = new Prepedido.Dados.DetalhesPrepedido.PrePedidoDados();

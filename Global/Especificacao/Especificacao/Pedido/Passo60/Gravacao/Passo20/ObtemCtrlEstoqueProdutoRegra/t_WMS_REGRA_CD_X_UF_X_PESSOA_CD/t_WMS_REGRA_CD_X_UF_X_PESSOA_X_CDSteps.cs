@@ -11,6 +11,7 @@ using Xunit;
 namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20.ObtemCtrlEstoqueProdutoRegra.t_WMS_REGRA_CD_X_UF_X_PESSOA_CD
 {
     [Binding, Scope(Tag = "Especificacao.Pedido.Passo60.Gravacao.Passo20.ObtemCtrlEstoqueProdutoRegra.t_WMS_REGRA_CD_X_UF_X_PESSOA_CD")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
     public class t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CDSteps
     {
         public readonly InfraBanco.ContextoBdProvider contextoBdProvider;
@@ -55,7 +56,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20.ObtemCtrlE
 
         
 
-        private static string PrepedidoDados = @"
+        private static readonly string PrepedidoDados = @"
         {
           ""CorHeader"": null,
           ""TextoHeader"": null,

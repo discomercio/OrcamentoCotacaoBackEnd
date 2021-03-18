@@ -25,10 +25,8 @@ namespace Especificacao.Especificacao.Pedido
     [Scope(Tag = "Especificacao.Pedido.Passo60")]
     public class PedidoComunsSteps : PedidoPassosComuns
     {
-        private readonly InfraBanco.ContextoBdProvider contextoBdProvider;
         public PedidoComunsSteps(FeatureContext featureContext)
         {
-            this.contextoBdProvider = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<InfraBanco.ContextoBdProvider>();
             var tags = featureContext.FeatureInfo.Tags.ToList();
 
             if (tags.Contains("Especificacao.Pedido.Passo10.CamposSimples"))

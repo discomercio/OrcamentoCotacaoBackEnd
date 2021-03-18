@@ -89,7 +89,6 @@ namespace Loja.UI
             services.AddTransient<Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll, Loja.Bll.Bll.AcessoBll.UsuarioAcessoBll>();
             services.AddTransient<Loja.Bll.Bll.AcessoBll.AcessoAuthorizationHandlerBll, Loja.Bll.Bll.AcessoBll.AcessoAuthorizationHandlerBll>();
             services.AddTransient<Pedido.Criacao.PedidoCriacao, Pedido.Criacao.PedidoCriacao>();
-            services.AddTransient<Pedido.PedidoBll, Pedido.PedidoBll>();
             services.AddTransient<Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll, Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll>();
             services.AddTransient<Prepedido.FormaPagto.ValidacoesFormaPagtoBll, Prepedido.FormaPagto.ValidacoesFormaPagtoBll>();
             services.AddTransient<Prepedido.PrepedidoBll, Prepedido.PrepedidoBll>();

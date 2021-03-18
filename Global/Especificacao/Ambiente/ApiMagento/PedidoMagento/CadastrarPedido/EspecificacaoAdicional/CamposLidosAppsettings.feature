@@ -57,5 +57,5 @@ Scenario: Vendedor = usuário que fez o login (ler do token)
 Scenario: Vendedor diferente do token
 	Given Reiniciar banco ao terminar cenário
 	Given Pedido base
-	And Tabela "t_USUARIO" apagar registro com campo "usuario" = "USRMAG"
+	And Tabela "t_USUARIO" apagar registro com campo usuario = "USRMAG"
 	Then Erro "Usuário não encontrado."

@@ -30,7 +30,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace
             this.contextoBdProvider = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<InfraBanco.ContextoBdProvider>();
         }
 
-        private string tokenAcesso = Ambiente.ApiMagento.InjecaoDependencias.TokenAcessoApiMagento();
+        private readonly string tokenAcesso = Ambiente.ApiMagento.InjecaoDependencias.TokenAcessoApiMagento();
 
         [Then(@"Resposta com número certo de registros")]
         public void ThenRespostaComNumeroCertoDeRegistros()

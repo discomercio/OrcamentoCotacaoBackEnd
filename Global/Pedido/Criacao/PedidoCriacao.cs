@@ -21,7 +21,6 @@ namespace Pedido.Criacao
     public class PedidoCriacao
     {
         #region construtor
-        public readonly PedidoBll PedidoBll;
         public readonly InfraBanco.ContextoBdProvider ContextoProvider;
         public readonly Prepedido.FormaPagto.ValidacoesFormaPagtoBll ValidacoesFormaPagtoBll;
         public readonly Prepedido.PrepedidoBll PrepedidoBll;
@@ -33,12 +32,11 @@ namespace Pedido.Criacao
         internal readonly Execucao.Execucao Execucao;
         internal readonly Execucao.Gravacao Gravacao;
 
-        public PedidoCriacao(PedidoBll pedidoBll, InfraBanco.ContextoBdProvider contextoProvider,
+        public PedidoCriacao(InfraBanco.ContextoBdProvider contextoProvider,
             Prepedido.FormaPagto.ValidacoesFormaPagtoBll validacoesFormaPagtoBll, Prepedido.PrepedidoBll prepedidoBll,
             Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll, Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll,
             ClienteBll clienteBll, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio)
         {
-            this.PedidoBll = pedidoBll;
             this.ContextoProvider = contextoProvider;
             this.ValidacoesFormaPagtoBll = validacoesFormaPagtoBll;
             this.PrepedidoBll = prepedidoBll;

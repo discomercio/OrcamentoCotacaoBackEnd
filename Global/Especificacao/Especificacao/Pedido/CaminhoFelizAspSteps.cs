@@ -7,6 +7,7 @@ namespace Especificacao.Especificacao.Pedido
 	Está aqui somente por documentação, não é efetivamente testado
      * */
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
     [Binding, Scope(Tag = "Implementacao.PedidoCaminhoFelizAsp")]
     public class CaminhoFelizAspSteps
     {

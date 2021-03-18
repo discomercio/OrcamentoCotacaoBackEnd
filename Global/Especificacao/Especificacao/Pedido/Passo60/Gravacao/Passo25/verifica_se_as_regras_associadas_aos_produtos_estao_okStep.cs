@@ -11,6 +11,7 @@ using Xunit;
 namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo25
 {
     [Binding, Scope(Tag = "Especificacao.Pedido.Passo60.Gravacao.Passo25")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
     public class verifica_se_as_regras_associadas_aos_produtos_estao_okStep
     {
         public readonly InfraBanco.ContextoBdProvider contextoBdProvider;
@@ -22,8 +23,8 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo25
         }
 
         List<Produto.RegrasCrtlEstoque.RegrasBll> Lst_ctrlRegra = new List<Produto.RegrasCrtlEstoque.RegrasBll>();
-        List<string> lstErros = new List<string>();
-        PrePedidoDados prepedidoDados = Newtonsoft.Json.JsonConvert.DeserializeObject<PrePedidoDados>(PrepedidoDados);
+        readonly List<string> lstErros = new List<string>();
+        readonly PrePedidoDados prepedidoDados = Newtonsoft.Json.JsonConvert.DeserializeObject<PrePedidoDados>(PrepedidoDados);
 
 
         [Given(@"Chamar ObtemCtrlEstoqueProdutoRegra")]
@@ -139,7 +140,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo25
 
         }
 
-        private static string PrepedidoDados = @"
+        private static readonly string PrepedidoDados = @"
         {
           ""CorHeader"": null,
           ""TextoHeader"": null,

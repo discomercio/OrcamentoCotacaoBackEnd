@@ -49,13 +49,11 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
 
             //sem numero dá erro
             Apagar_t_CONTROLE();
-            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
-            {
-                dbgravacao.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = "nao-numero", Dt_Ult_Atualizacao = DateTime.Now.AddDays(-720) /* 2 anos para trás */ });
-                dbgravacao.SaveChanges();
-                dbgravacao.transacao.Commit();
-                Assert.ThrowsAnyAsync<Exception>(() => global::UtilsGlobais.Nsu.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES)).Wait();
-            }
+            using var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing();
+            dbgravacao.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = "nao-numero", Dt_Ult_Atualizacao = DateTime.Now.AddDays(-720) /* 2 anos para trás */ });
+            dbgravacao.SaveChanges();
+            dbgravacao.transacao.Commit();
+            Assert.ThrowsAnyAsync<Exception>(() => global::UtilsGlobais.Nsu.GerarNsu(dbgravacao, Constantes.NSU_CADASTRO_CLIENTES)).Wait();
 
         }
 

@@ -382,7 +382,9 @@ namespace Especificacao.Testes.Utils.BancoTestes
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaApagarRegistroComCampo("t_OPERACAO", "id", valorBusca, this);
 
             int valorInt = -1;
+#pragma warning disable IDE0066 // Convert switch statement to expression
             switch (valorBusca)
+#pragma warning restore IDE0066 // Convert switch statement to expression
             {
                 case "OP_LJA_CADASTRA_NOVO_PEDIDO":
                     valorInt = Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO;
@@ -404,8 +406,8 @@ namespace Especificacao.Testes.Utils.BancoTestes
             db.transacao.Commit();
         }
 
-        [Given(@"Tabela ""t_USUARIO"" apagar registro com campo ""(.*)"" = ""(.*)""")]
-        public void GivenTabelaT_USUARIOApagarRegistroComCampo(string campo, string valor)
+        [Given(@"Tabela ""t_USUARIO"" apagar registro com campo usuario = ""(.*)""")]
+        public void GivenTabelaT_USUARIOApagarRegistroComCampo(string valor)
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaApagarRegistroComCampo("t_USUARIO", "usuario", valor, this);
 

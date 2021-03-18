@@ -14,7 +14,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo30
     public class Estoque_verifica_disponibilidade_integral_v2Steps
     {
         public readonly InfraBanco.ContextoBdProvider contextoBdProvider;
-        List<string> lstErros = new List<string>();
+        readonly List<string> lstErros = new List<string>();
         List<Produto.RegrasCrtlEstoque.RegrasBll> CtrlEstoque = new List<Produto.RegrasCrtlEstoque.RegrasBll>();
         PrePedidoDados prepedidoDados = new PrePedidoDados();
         public Estoque_verifica_disponibilidade_integral_v2Steps()
@@ -31,7 +31,6 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo30
 
             prepedidoDados = Newtonsoft.Json.JsonConvert.DeserializeObject<PrePedidoDados>(PrepedidoDados);
 
-            var db = contextoBdProvider.GetContextoLeitura();
             CtrlEstoque = PrepedidoBll.ObtemCtrlEstoqueProdutoRegra(contextoBdProvider, prepedidoDados, lstErros).Result;
 
             Assert.NotNull(CtrlEstoque);
@@ -123,7 +122,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo30
 
         }
 
-        private static string PrepedidoDados = @"
+        private static readonly string PrepedidoDados = @"
         {
           ""CorHeader"": null,
           ""TextoHeader"": null,

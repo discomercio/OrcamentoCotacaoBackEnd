@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace Pedido.Criacao.Passo60.Gravacao.Grava80
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0054:Use compound assignment", Justification = "Estilo de código")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0017:Simplify object initialization", Justification = "Estilo de código")]
     class Grava80 : PassoBaseGravacao
     {
         public Grava80(ContextoBdGravacao contextoBdGravacao, PedidoCriacaoDados pedido, PedidoCriacaoRetornoDados retorno, PedidoCriacao criacao, Execucao.Execucao execucao, Execucao.Gravacao gravacao)
@@ -17,7 +19,6 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava80
         {
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0054:Use compound assignment", Justification = "<Pending>")]
         public async Task ExecutarAsync()
         {
             //Passo80: VERIFICA SE O ENDEREÇO JÁ FOI USADO ANTERIORMENTE POR OUTRO CLIENTE (POSSÍVEL FRAUDE)
@@ -73,8 +74,6 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava80
             public bool saveChangesPendente;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0017:Simplify object initialization", Justification = "<Pending>")]
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0054:Use compound assignment", Justification = "<Pending>")]
         private static async Task VerificarSeEnderecoJaFoiUsado(bool PedidoAmbienteComIndicador,
                                                                 TorcamentistaEindicador? ExecucaoTabelasBancoIndicador,
                                                                 List<string> ListaErros,
