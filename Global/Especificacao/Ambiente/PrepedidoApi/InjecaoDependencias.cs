@@ -30,6 +30,8 @@ namespace Especificacao.Ambiente.PrepedidoApi
             services.AddTransient<Prepedido.MontarLogPrepedidoBll, Prepedido.MontarLogPrepedidoBll>();
 
             services.AddTransient<Cep.IBancoNFeMunicipio, Testes.Utils.BancoTestes.TestesBancoNFeMunicipio>();
+
+
         }
 
     }

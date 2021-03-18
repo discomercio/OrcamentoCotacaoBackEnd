@@ -41,5 +41,8 @@ namespace PrepedidoUnisBusiness.Utils
         }
 
         public PrepedidoListarStatusPrepedidoParametrizacao ParamBuscaListagemStatusPrepedido { get; set; } = new PrepedidoListarStatusPrepedidoParametrizacao();
+
+        public int LimiteItens { get; set; } = 12;
+
     }
 }

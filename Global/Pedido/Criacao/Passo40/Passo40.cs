@@ -36,8 +36,8 @@ namespace Pedido.Criacao.Passo40
 
         private void NumeroProdutos()
         {
-            if (Pedido.ListaProdutos.Count > 12)
-                Retorno.ListaErros.Add("São permitidos no máximo 12 itens por pedido.");
+            if (Pedido.ListaProdutos.Count > Pedido.Configuracao.LimiteItens)
+                Retorno.ListaErros.Add($"São permitidos no máximo {Pedido.Configuracao.LimiteItens} itens por pedido.");
             if (Pedido.ListaProdutos.Count == 0)
                 Retorno.ListaErros.Add("Não há itens na lista de produtos!");
         }

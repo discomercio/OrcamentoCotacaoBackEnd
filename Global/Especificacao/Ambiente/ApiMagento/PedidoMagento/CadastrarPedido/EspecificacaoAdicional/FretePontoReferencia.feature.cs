@@ -192,16 +192,16 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="campo \"frete\" salvo em t_PEDIDO.vl_frete")]
+        [Xunit.SkippableFactAttribute(DisplayName="campo \"frete\" salvo em t_PEDIDO.magento_shipping_amount")]
         [Xunit.TraitAttribute("FeatureTitle", "FretePontoReferencia")]
-        [Xunit.TraitAttribute("Description", "campo \"frete\" salvo em t_PEDIDO.vl_frete")]
+        [Xunit.TraitAttribute("Description", "campo \"frete\" salvo em t_PEDIDO.magento_shipping_amount")]
         [Xunit.TraitAttribute("Category", "ignore")]
-        public virtual void CampoFreteSalvoEmT_PEDIDO_Vl_Frete()
+        public virtual void CampoFreteSalvoEmT_PEDIDO_Magento_Shipping_Amount()
         {
             string[] tagsOfScenario = new string[] {
                     "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("campo \"frete\" salvo em t_PEDIDO.vl_frete", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("campo \"frete\" salvo em t_PEDIDO.magento_shipping_amount", null, tagsOfScenario, argumentsOfScenario);
 #line 30
 this.ScenarioInitialize(scenarioInfo);
 #line hidden

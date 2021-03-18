@@ -75,7 +75,8 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
             List<string> lstErros,
             int limitePedidosExatamenteIguais_Numero, int limitePedidosExatamenteIguais_TempoSegundos, int limitePedidosMesmoCpfCnpj_Numero, int limitePedidosMesmoCpfCnpj_TempoSegundos,
             decimal limiteArredondamento,
-            decimal maxErroArredondamento)
+            decimal maxErroArredondamento,
+            int limite_de_itens)
         {
             if (!global::InfraBanco.Constantes.Constantes.TipoPessoa.TipoValido(pedidoDto.DadosCliente.Tipo))
             {
@@ -120,7 +121,8 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                     limitePedidosExatamenteIguais_Numero: limitePedidosExatamenteIguais_Numero,
                     limitePedidosExatamenteIguais_TempoSegundos: limitePedidosExatamenteIguais_TempoSegundos,
                     limitePedidosMesmoCpfCnpj_Numero: limitePedidosMesmoCpfCnpj_Numero,
-                    limitePedidosMesmoCpfCnpj_TempoSegundos: limitePedidosMesmoCpfCnpj_TempoSegundos
+                    limitePedidosMesmoCpfCnpj_TempoSegundos: limitePedidosMesmoCpfCnpj_TempoSegundos,
+                    limite_de_itens: limite_de_itens
                     ),
                 marketplace: new Pedido.Dados.Criacao.PedidoCriacaoMarketplaceDados(
                     pedido_bs_x_ac: pedido_bs_x_ac,

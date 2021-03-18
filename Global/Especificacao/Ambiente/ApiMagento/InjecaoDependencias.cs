@@ -85,6 +85,7 @@ namespace Especificacao.Ambiente.ApiMagento
             //para nao dar erro...
             configuracaoApiMagento.LimitePedidos.LimitePedidosExatamenteIguais_Numero = 1000;
             configuracaoApiMagento.LimitePedidos.LimitePedidosMesmoCpfCnpj_Numero = 10;
+            configuracaoApiMagento.LimitePedidos.LimiteItens = 12;
         }
     }
 }

@@ -327,7 +327,8 @@ namespace Loja.UI.Controllers
                 configuracao.LimitePedidosLoja.LimitePedidosMesmoCpfCnpj_Numero,
                 configuracao.LimitePedidosLoja.LimitePedidosMesmoCpfCnpj_TempoSegundos,
                 0.1M,
-                0.1M);
+                0.1M,
+                configuracao.LimitePedidosLoja.LimiteItens);
 
             return Ok(ret);
             //se esta tudo ok redirecionamos para a tela de Pedido

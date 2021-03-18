@@ -27,7 +27,7 @@ Scenario: pedido sem indicador
 
 #esse teste esta sendo verificado no teste acima
 @ignore
-Scenario: campo "frete" salvo em t_PEDIDO.vl_frete
+Scenario: campo "frete" salvo em t_PEDIDO.magento_shipping_amount
 	#O valor do frete no momento não estamos tratando no sistema, mas acho que podemos salvar a informação no campo t_PEDIDO.vl_frete
 	#Por enquanto, todos os registros estão c/ esse valor zerado e o campo não é usado em nenhum lugar, mas já que temos
 	#a possibilidade de salvar essa informação, creio que deveríamos gravar nesse campo

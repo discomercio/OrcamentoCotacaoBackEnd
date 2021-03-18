@@ -9,5 +9,7 @@ namespace PrepedidoApi.Utils
     {
         public string SegredoToken { get; set; }
         public int ValidadeTokenMinutos { get; set; }
+
+        public int LimiteItens { get; set; } = 12;
     }
 }

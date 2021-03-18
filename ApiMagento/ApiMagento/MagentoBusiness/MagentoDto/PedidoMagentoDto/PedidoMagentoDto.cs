@@ -164,7 +164,8 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                     limitePedidosExatamenteIguais_Numero: configuracaoApiMagento.LimitePedidos.LimitePedidosExatamenteIguais_Numero,
                     limitePedidosExatamenteIguais_TempoSegundos: configuracaoApiMagento.LimitePedidos.LimitePedidosExatamenteIguais_TempoSegundos,
                     limitePedidosMesmoCpfCnpj_Numero: configuracaoApiMagento.LimitePedidos.LimitePedidosMesmoCpfCnpj_Numero,
-                    limitePedidosMesmoCpfCnpj_TempoSegundos: configuracaoApiMagento.LimitePedidos.LimitePedidosMesmoCpfCnpj_TempoSegundos
+                    limitePedidosMesmoCpfCnpj_TempoSegundos: configuracaoApiMagento.LimitePedidos.LimitePedidosMesmoCpfCnpj_TempoSegundos,
+                    limite_de_itens:configuracaoApiMagento.LimitePedidos.LimiteItens
                     ),
                 marketplace: new Pedido.Dados.Criacao.PedidoCriacaoMarketplaceDados(
                         pedido_bs_x_ac: pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac,
