@@ -163,21 +163,23 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava17
                                            orderby d.Data descending
                                            select new { d.Id, d.Desc_max, d.Autorizador, d.Supervisor_autorizador }).ToListAsync();
 
-                    var erro_desconto_excedido = true;
                     if (descontos.Any())
                     {
                         var desconto = descontos.First();
                         if (desconto.Desc_max.HasValue && desc_dado <= (float)(desconto.Desc_max.Value))
                         {
-                            erro_desconto_excedido = false;
                             linha_pedido.Abaixo_min_status = true;
                             linha_pedido.Abaixo_min_autorizacao = desconto.Id;
                             linha_pedido.Abaixo_min_autorizador = desconto.Autorizador;
                             linha_pedido.Abaixo_min_superv_autorizador = desconto.Supervisor_autorizador;
                             v_desconto.Add(desconto.Id);
                         }
+                        else
+                        {
+                            Retorno.ListaErros.Add($"Produto {linha_pedido.Pedido.Produto} do fabricante {linha_pedido.Pedido.Fabricante}: desconto de {desc_dado_arredondado}% excede o máximo autorizado.");
+                        }
                     }
-                    if (erro_desconto_excedido)
+                    else
                     {
                         Retorno.ListaErros.Add($"Produto {linha_pedido.Pedido.Produto} do fabricante {linha_pedido.Pedido.Fabricante}: desconto de {desc_dado_arredondado}% excede o máximo permitido.");
                     }

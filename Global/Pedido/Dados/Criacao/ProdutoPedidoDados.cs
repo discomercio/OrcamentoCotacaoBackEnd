@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Pedido.Dados.Criacao
 {
+    //todo: apagar esta classe
     public class ProdutoPedidoDados : Produto.Dados.ProdutoDados
     {
         public short? QtdeSolicitada { get; set; }

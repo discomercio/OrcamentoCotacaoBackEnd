@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Pedido.Dados.Criacao
 {
+    //todo: apagar esta classe
     public class TpedidoEnderecoConfrontacaoDados
     {
         public TpedidoEnderecoConfrontacaoDados(Tpedido pedido, string tipoEndreco)

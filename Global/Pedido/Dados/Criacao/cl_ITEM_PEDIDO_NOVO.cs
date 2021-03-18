@@ -4,6 +4,7 @@ using System.Text;
 
 namespace Pedido.Dados.Criacao
 {
+    //todo: apagar esta classe
     public class Cl_ITEM_PEDIDO_NOVO
     {
         public Cl_ITEM_PEDIDO_NOVO(string fabricante, string produto, short qtde)
