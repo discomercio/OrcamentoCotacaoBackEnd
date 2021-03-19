@@ -476,7 +476,7 @@ this.FeatureBackground();
 #line 60
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 60
+#line 61
  testRunner.And("Tabela \"t_USUARIO\" apagar registro com campo usuario = \"USRMAG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 62
