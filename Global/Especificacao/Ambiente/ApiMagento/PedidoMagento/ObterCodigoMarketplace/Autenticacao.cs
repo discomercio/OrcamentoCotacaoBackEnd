@@ -8,7 +8,6 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace
     public class Autenticacao : Comuns.Api.Autenticacao.IAutenticacaoSteps
     {
         private readonly CadastrarPedido obterCodigoMarketplace = new CadastrarPedido();
-        private readonly Testes.Utils.LogTestes.LogTestes logTestes = Testes.Utils.LogTestes.LogTestes.GetInstance();
 
         public void WhenInformo(string p0, string p1)
         {

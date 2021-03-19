@@ -15,7 +15,7 @@ namespace MagentoBusiness.MagentoBll.AcessoBll
 
     public class ServicoValidarTokenApiMagento:IServicoValidarTokenApiMagento
     {
-        private byte[] key;
+        private readonly byte[] key;
         private readonly ILogger<ServicoValidarTokenApiMagento> logger;
 
         public ServicoValidarTokenApiMagento(ConfiguracaoApiMagento configuracaoApiUnis, ILogger<ServicoValidarTokenApiMagento> logger)

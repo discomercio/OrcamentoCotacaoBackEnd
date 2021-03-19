@@ -14,8 +14,10 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
         public static global::Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto PedidoBase(out string lojaUsuario, out string usuario, out bool vendedorExterno)
         {
             var ret = PedidoBaseComEnderecoDeEntrega(out lojaUsuario, out usuario, out vendedorExterno);
-            ret.EnderecoEntrega = new global::Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro();
-            ret.EnderecoEntrega.OutroEndereco = false;
+            ret.EnderecoEntrega = new global::Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro
+            {
+                OutroEndereco = false
+            };
             return ret;
         }
         public static global::Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto PedidoBaseComEnderecoDeEntrega(out string lojaUsuario, out string usuario, out bool vendedorExterno)

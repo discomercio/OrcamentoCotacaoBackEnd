@@ -39,9 +39,6 @@ namespace Pedido.Dados.Criacao
         //se null, não é verificado
         public short? Qtde_spe_usuario_aceitou { get; set; }
 
-        //todo: remover esta variável
-        public short? Qtde_estoque_total_disponivel { get; set; }
-
         //informações
         public decimal TotalItem()
         {
@@ -52,7 +49,7 @@ namespace Pedido.Dados.Criacao
             return Math.Round((Preco_NF * Qtde), 2);
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0017:Simplify object initialization", Justification = "<Pending>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0017:Simplify object initialization", Justification = "Estilo de código")]
         public static List<PrepedidoProdutoPrepedidoDados> PrepedidoProdutoPrepedidoDados_De_PedidoCriacaoProdutoDados(List<PedidoCriacaoProdutoDados> lstProdutoPedido)
         {
 

@@ -14,7 +14,6 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace
     public class ObterCodigoMarketplaceSteps
     {
         private readonly global::ApiMagento.Controllers.PedidoMagentoController pedidoMagentoController;
-        private readonly Testes.Utils.LogTestes.LogTestes logTestes = Testes.Utils.LogTestes.LogTestes.GetInstance();
         private readonly InfraBanco.ContextoBdProvider contextoBdProvider;
 
         public ObterCodigoMarketplaceSteps()
@@ -30,7 +29,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace
             this.contextoBdProvider = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<InfraBanco.ContextoBdProvider>();
         }
 
-        private string tokenAcesso = Ambiente.ApiMagento.InjecaoDependencias.TokenAcessoApiMagento();
+        private readonly string tokenAcesso = Ambiente.ApiMagento.InjecaoDependencias.TokenAcessoApiMagento();
 
         [Then(@"Resposta com número certo de registros")]
         public void ThenRespostaComNumeroCertoDeRegistros()

@@ -6,6 +6,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava80
 {
     public static class CompararEndereco
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0054:Use compound assignment", Justification = "Estilo de código")]
         public static bool IsEnderecoIgual(string? end_logradouro_1, string? end_numero_1, string? end_cep_1,
             string? end_logradouro_2, string? end_numero_2, string? end_cep_2)
         {

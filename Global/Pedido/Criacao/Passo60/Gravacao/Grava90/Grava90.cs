@@ -288,12 +288,12 @@ Detalhes do auto-split: Modo de seleção do CD = AUTOMATICO
 
                 s_log = s_log +
                         UtilsGlobais.Log.Log_produto_monta(produto.Pedido.Qtde, produto.Pedido.Fabricante, produto.Pedido.Produto) +
-                        "; preco_lista=" + Formata_texto_log_decimal(produto.Pedido.Preco_Lista) +
+                        "; preco_lista=" + Formata_moeda(produto.Pedido.Preco_Lista) +
                         "; desc_dado=" + Formata_texto_log_float(produto.Pedido.Desc_Dado) +
-                        "; preco_venda=" + Formata_texto_log_decimal(produto.Pedido.Preco_Venda) +
-                        "; preco_NF=" + Formata_texto_log_decimal(produto.Pedido.Preco_NF) +
+                        "; preco_venda=" + Formata_moeda(produto.Pedido.Preco_Venda) +
+                        "; preco_NF=" + Formata_moeda(produto.Pedido.Preco_NF) +
                         "; custoFinancFornecCoeficiente=" + Formata_texto_log_float(produto.Pedido.CustoFinancFornecCoeficiente_Conferencia) +
-                        "; custoFinancFornecPrecoListaBase=" + Formata_texto_log_decimal(produto.Pedido.CustoFinancFornecPrecoListaBase_Conferencia);
+                        "; custoFinancFornecPrecoListaBase=" + Formata_moeda(produto.Pedido.CustoFinancFornecPrecoListaBase_Conferencia);
                 if (produto.Qtde_estoque_vendido != 0)
                     s_log = s_log + "; estoque_vendido=" + Formata_texto_log_int(produto.Qtde_estoque_vendido);
                 if (produto.Qtde_estoque_sem_presenca != 0)

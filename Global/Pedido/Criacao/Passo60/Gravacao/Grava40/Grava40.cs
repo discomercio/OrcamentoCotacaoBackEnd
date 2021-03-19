@@ -13,6 +13,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava40
         {
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0054:Use compound assignment", Justification = "Estilo de código")]
         public void Executar()
         {
             //	Passo40: Verifica se a disponibilidade do estoque foi alterada - Linha 1159

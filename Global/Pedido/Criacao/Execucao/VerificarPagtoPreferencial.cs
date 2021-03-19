@@ -24,7 +24,7 @@ namespace Pedido.Criacao.Execucao
 		 * ou seja, o cáclulo do perc_comissao_e_desconto_a_utilizar
          * */
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0054:Use compound assignment", Justification = "<Pending>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0054:Use compound assignment", Justification = "Estilo de código")]
         public static async Task<float> Calcular_perc_comissao_e_desconto_a_utilizar(PedidoCriacaoDados pedido,
             Pedido.Criacao.Execucao.UtilsLoja.PercentualMaxDescEComissao PercentualMaxDescEComissao, ContextoBdProvider contextoBdProvider)
         {

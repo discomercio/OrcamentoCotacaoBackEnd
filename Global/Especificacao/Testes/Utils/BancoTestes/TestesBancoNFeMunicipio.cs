@@ -16,7 +16,9 @@ namespace Especificacao.Testes.Utils.BancoTestes
         public Task<IEnumerable<UFeMunicipiosDados>> BuscarSiglaTodosUf(ContextoBdProvider contextoProvider, string uf, string municipioParcial)
         {
             //nao fazemos nada...
+#pragma warning disable IDE0028 // Simplify collection initialization
             var ret = new List<UFeMunicipiosDados>();
+#pragma warning restore IDE0028 // Simplify collection initialization
 
             //para o prepedido
             ret.Add(new UFeMunicipiosDados()
