@@ -460,7 +460,7 @@ namespace Prepedido.PedidoVisualizacao
             var perdas = BuscarPerdas(numPedido);
             var TranspNomeTask = ObterNomeTransportadora(p.Transportadora_Id);
             var lstFormaPgtoTask = ObterFormaPagto(tPedidoPai);
-            var analiseCreditoTask = DescricaoAnaliseCreditoCadastroPedido(Convert.ToString(tPedidoPai.Analise_Credito));
+            var analiseCreditoTask = DescricaoAnaliseCreditoCadastroPedido(Convert.ToString(tPedidoPai.Analise_Credito), true, numPedido, apelido);
             string corAnalise = CorAnaliseCredito(Convert.ToString(tPedidoPai.Analise_Credito));
             string corStatusPagto = CorSatusPagto(tPedidoPai.St_Pagto);
             var saldo_a_pagarTask = CalculaSaldoAPagar(pedido_pai, await vl_TotalFamiliaDevolucaoPrecoNFTask);
@@ -872,7 +872,7 @@ namespace Prepedido.PedidoVisualizacao
             return await Task.FromResult(msg);
         }
 
-        public string DescricaoAnaliseCreditoCadastroPedido(string codigo)
+        public string DescricaoAnaliseCreditoCadastroPedido(string codigo, bool visualizacao, string numero_pedido, string apelido)
         {
             string retorno = "";
             switch (codigo)
@@ -910,6 +910,31 @@ namespace Prepedido.PedidoVisualizacao
                 case Constantes.COD_AN_CREDITO_PENDENTE_PAGTO_ANTECIPADO_BOLETO:
                     retorno = "Pendente - Pagto Antecipado Boleto";
                     break;
+            }
+
+            if (visualizacao)
+            {
+                var db = contextoProvider.GetContextoLeitura();
+
+                var ret = from c in db.Tpedidos
+                          where c.Pedido == numero_pedido && c.Indicador == apelido
+                          select new { analise_credito_data = c.Analise_credito_Data, analise_credito_usuario = c.Analise_Credito_Usuario };
+
+                var registro = ret.FirstOrDefault();
+                if (registro != null)
+                {
+                    if (registro.analise_credito_data.HasValue)
+                    {
+                        if (!string.IsNullOrEmpty(registro.analise_credito_usuario))
+                        {
+                            string maiuscula = (Char.ToUpper(registro.analise_credito_usuario[0]) +
+                                registro.analise_credito_usuario.Substring(1).ToLower());
+
+                            retorno = retorno + " (" + registro.analise_credito_data?.ToString("dd/MM/yyyy HH:mm") + " - "
+                                + maiuscula + ")";
+                        }
+                    }
+                }
             }
             return retorno;
         }
