@@ -590,10 +590,15 @@ namespace Especificacao.Testes.Utils.BancoTestes
             db.transacao.Commit();
         }
 
-        [Given(@"Tabela ""t_WMS_REGRA_CD_X_UF"" duplicar registro do id_wms_regra_cd = ""(.*)"" da UF = ""(.*)""")]
+        [Given(@"Tabela ""t_WMS_REGRA_CD_X_UF"" duplicar registro do id_wms_regra_cd = ""(.*)"" da UF = ""(.*)"" se não UsarSqlServerNosTestesAutomatizados")]
         public void GivenTabelaT_WMS_REGRA_CD_X_UFDuplicarRegistroDoId_Wms_Regra_CdDaUF(int id_wms_regra_cd, string uf)
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.GravarRegistroEm("t_WMS_REGRA_CD_X_UF", this);
+
+            //nao fazemos se estiver rodando contra o sql server real
+            if (Testes.Utils.InjecaoDependencia.ProvedorServicos.UsarSqlServerNosTestesAutomatizados)
+                return;
+
             var db = contextoBdProvider.GetContextoGravacaoParaUsing();
 
             var registro = (from regraCdUF in db.TwmsRegraCdXUfs
@@ -634,10 +639,15 @@ namespace Especificacao.Testes.Utils.BancoTestes
             db.transacao.Commit();
         }
 
-        [Given(@"Tabela ""t_WMS_REGRA_CD_X_UF_X_PESSOA"" duplicar registro id_wms_regra_cd_x_uf = ""(.*)"" e tipo de pessoa = ""(.*)"" com id = ""(.*)""")]
+        [Given(@"Tabela ""t_WMS_REGRA_CD_X_UF_X_PESSOA"" duplicar registro id_wms_regra_cd_x_uf = ""(.*)"" e tipo de pessoa = ""(.*)"" com id = ""(.*)"" se não UsarSqlServerNosTestesAutomatizados")]
         public void GivenTabelaT_WMS_REGRA_CD_X_UF_X_PESSOADuplicarRegistroIdETipoDePessoa(int Id_wms_regra_cd_x_uf, string tipo_pessoa, int id)
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.GravarRegistroEm("t_WMS_REGRA_CD_X_UF", this);
+
+            //nao fazemos se estiver rodando contra o sql erver real
+            if (Testes.Utils.InjecaoDependencia.ProvedorServicos.UsarSqlServerNosTestesAutomatizados)
+                return;
+
             var db = contextoBdProvider.GetContextoGravacaoParaUsing();
 
             var registro = (from regraCdUFPessoa in db.TwmsRegraCdXUfPessoas

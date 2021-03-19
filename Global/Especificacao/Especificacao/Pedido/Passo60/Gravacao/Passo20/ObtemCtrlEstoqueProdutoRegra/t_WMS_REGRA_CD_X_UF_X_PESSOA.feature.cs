@@ -177,18 +177,23 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 20
- testRunner.Given("Tabela \"t_WMS_REGRA_CD_X_UF_X_PESSOA\" duplicar registro id_wms_regra_cd_x_uf = \"1" +
-                        "34\" e tipo de pessoa = \"PF\" com id = \"811\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 21
- testRunner.Given("Tabela \"t_WMS_REGRA_CD_X_UF_X_PESSOA\" duplicar registro id_wms_regra_cd_x_uf = \"1" +
-                        "34\" e tipo de pessoa = \"PR\" com id = \"812\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Ignorar cenário no ambiente \"UsarSqlServerNosTestesAutomatizados\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 22
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Tabela \"t_WMS_REGRA_CD_X_UF_X_PESSOA\" duplicar registro id_wms_regra_cd_x_uf = \"1" +
+                        "34\" e tipo de pessoa = \"PF\" com id = \"811\" se não UsarSqlServerNosTestesAutomati" +
+                        "zados", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 23
+ testRunner.Given("Tabela \"t_WMS_REGRA_CD_X_UF_X_PESSOA\" duplicar registro id_wms_regra_cd_x_uf = \"1" +
+                        "34\" e tipo de pessoa = \"PR\" com id = \"812\" se não UsarSqlServerNosTestesAutomati" +
+                        "zados", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 24
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 25
  testRunner.Then("Erro \"Falha na leitura da regra de consumo do estoque para a UF \'SP\' e \'Pessoa Fí" +
                         "sica\': regra associada ao produto (003)003220 não está cadastrada para a UF \'SP\'" +
                         " (Id=5)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -205,7 +210,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("t_WMS_REGRA_CD_X_UF_X_PESSOA - spe_id_nfe_emitente = 0", null, tagsOfScenario, argumentsOfScenario);
-#line 25
+#line 27
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -228,18 +233,18 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 26
+#line 28
  testRunner.Given("Tabela \"t_WMS_REGRA_CD_X_UF_X_PESSOA\" registro id_wms_regra_cd_x_uf = \"134\" e tip" +
                         "o de pessoa = \"PF\", alterar campo \"spe_id_nfe_emitente\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 27
+#line 29
  testRunner.Given("Tabela \"t_WMS_REGRA_CD_X_UF_X_PESSOA\" registro id_wms_regra_cd_x_uf = \"134\" e tip" +
                         "o de pessoa = \"PR\", alterar campo \"spe_id_nfe_emitente\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 28
+#line 30
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 29
+#line 31
  testRunner.Then("Erro \"Falha na leitura da regra de consumo do estoque para a UF \'SP\' e \'Pessoa Fí" +
                         "sica\': regra associada ao produto (003)003220 não especifica nenhum CD para agua" +
                         "rdar produtos sem presença no estoque (Id=5)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");

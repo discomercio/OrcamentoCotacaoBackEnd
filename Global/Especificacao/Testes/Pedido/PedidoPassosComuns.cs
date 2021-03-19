@@ -155,6 +155,14 @@ namespace Especificacao.Testes.Pedido
 
         public static void IgnorarCenarioNoAmbiente(string p0, ref bool ignorarFeature, Type getType)
         {
+            //comando especial: desabilitar o teste se estiver rodando contra o sql server real
+            if(p0.ToUpper() == "UsarSqlServerNosTestesAutomatizados".ToUpper())
+            {
+                if(Testes.Utils.InjecaoDependencia.ProvedorServicos.UsarSqlServerNosTestesAutomatizados)
+                    ignorarFeature = true;
+                return;
+            }
+
             var typeFullName = getType.FullName;
             if (typeFullName == null)
             {
