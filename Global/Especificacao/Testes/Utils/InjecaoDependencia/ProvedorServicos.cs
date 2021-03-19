@@ -19,7 +19,8 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
         }
 
         private ServiceProvider Servicos { get; set; }
-        public static readonly bool UsarSqlServerNosTestesAutomatizados = true;
+        // 10 erros e rodando...
+        public static readonly bool UsarSqlServerNosTestesAutomatizados = false;
         private ProvedorServicos()
         {
             var logTestes = LogTestes.LogTestes.GetInstance();
@@ -32,8 +33,6 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
                 if (UsarSqlServerNosTestesAutomatizados)
                 {
                     var conexaolocal = "server=ITS-DBDEV\\SQL2017;database=ARCLUBE_TESTES;Uid=appAirClube;Pwd=appAirClube;";
-                    //com MultipleActiveResultSets=True; -> 17 erros
-                    // 10 erros e rodando...
                     options.UseSqlServer(conexaolocal);
                 }
                 else
