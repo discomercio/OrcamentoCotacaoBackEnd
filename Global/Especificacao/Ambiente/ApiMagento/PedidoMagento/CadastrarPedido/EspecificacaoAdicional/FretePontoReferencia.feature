@@ -22,8 +22,8 @@ Scenario: pedido sem indicador
 	When Informo "Frete" = "0"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "indicador" = ""
-	And Tabela "t_PEDIDO" registro criado, verificar campo "permite_RA_status" = "1"
-	And Tabela "t_PEDIDO" registro criado, verificar campo "Opcao_Possui_RA" = "N"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "permite_RA_status" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "Opcao_Possui_RA" = "-"
 
 #esse teste esta sendo verificado no teste acima
 @ignore

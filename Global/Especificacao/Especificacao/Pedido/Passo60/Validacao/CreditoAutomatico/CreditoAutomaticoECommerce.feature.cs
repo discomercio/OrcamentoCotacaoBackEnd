@@ -255,7 +255,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vendedor\" = \"USRMAG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 130
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_credito\" = \"9\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_credito\" = \"8\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 131
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_credito_usuario\" = \"A" +

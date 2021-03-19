@@ -15,10 +15,10 @@ Scenario: InfCriacaoPedido Pedido_bs_x_ac
 	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = ""
 	Then Erro "Favor informar o número do pedido Magento(Pedido_bs_x_ac)!"
 	Given Pedido base
-	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "12345678"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "22345678"
 	Then Erro "Nº pedido Magento(Pedido_bs_x_ac) com formato inválido!"
 	Given Pedido base
-	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "1234567890"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "2234567890"
 	Then Erro "Nº pedido Magento(Pedido_bs_x_ac) com formato inválido!"
 	Given Pedido base
 	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "123456789"
@@ -28,7 +28,7 @@ Scenario: InfCriacaoPedido Pedido_bs_x_ac
 	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "123456799"
 	Then Sem nenhum erro
 	Given Pedido base
-	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "223456799"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "123456790"
 	Then Sem nenhum erro
 
 Scenario: InfCriacaoPedido Pedido_bs_x_ac somente digitos

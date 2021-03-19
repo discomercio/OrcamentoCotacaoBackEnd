@@ -592,7 +592,7 @@ this.FeatureBackground();
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 140
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 141
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"vendedor\" = \"USRMAG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -876,7 +876,7 @@ this.FeatureBackground();
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 208
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"analise_credito\" = \"9\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"analise_credito\" = \"8\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 209
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"analise_credito_usuario\" " +
@@ -888,7 +888,7 @@ this.FeatureBackground();
 #line hidden
 #line 214
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"analise_credito_pendente_" +
-                        "vendas_motivo\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "vendas_motivo\" = \"006\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -1475,10 +1475,10 @@ this.FeatureBackground();
                         "= \"0.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 346
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"permite_RA_status\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"permite_RA_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 349
- testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"opcao_possui_RA\" = \"N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"opcao_possui_RA\" = \"-\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

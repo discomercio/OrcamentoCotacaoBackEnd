@@ -101,9 +101,11 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo90
         [Xunit.SkippableFactAttribute(DisplayName="Log - pedido magento")]
         [Xunit.TraitAttribute("FeatureTitle", "Especificacao\\Pedido\\Passo60\\Gravacao\\Passo90\\Log")]
         [Xunit.TraitAttribute("Description", "Log - pedido magento")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void Log_PedidoMagento()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Log - pedido magento", null, tagsOfScenario, argumentsOfScenario);
 #line 14

@@ -183,10 +183,10 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"indicador\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 25
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"permite_RA_status\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"permite_RA_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 26
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"Opcao_Possui_RA\" = \"N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"Opcao_Possui_RA\" = \"-\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

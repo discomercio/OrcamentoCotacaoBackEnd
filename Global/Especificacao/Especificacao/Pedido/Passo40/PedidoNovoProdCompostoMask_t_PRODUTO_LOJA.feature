@@ -52,7 +52,7 @@ Scenario: Verificar produtos - sem t_PRODUTO_LOJA
 	Then Erro "Erro do produto 003220 para mapear"
 
 Scenario: Verificar produtos - registro montado na mão - OK
-	Given Pedido base
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	And Limpar tabela "t_PRODUTO_LOJA"
 	And Novo registro na tabela "t_PRODUTO_LOJA"
 	And Novo registro em "t_PRODUTO_LOJA", campo "fabricante" = "003"
@@ -72,8 +72,33 @@ Scenario: Verificar produtos - registro montado na mão - OK
 	And Novo registro em "t_PRODUTO_LOJA", campo "vendavel" = "S"
 	And Novo registro em "t_PRODUTO_LOJA", campo "qtde_max_venda" = "10000"
 	And Gravar registro em "t_PRODUTO_LOJA"
+	Given Pedido base
 	Then Sem nenhum erro
 
+Scenario: Verificar produtos - registro montado na mão - OK Magento
+	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
+	Given Ignorar cenário no ambiente "Especificacao.Prepedido.PrepedidoSteps"
+	And Limpar tabela "t_PRODUTO_LOJA"
+	And Novo registro na tabela "t_PRODUTO_LOJA"
+	And Novo registro em "t_PRODUTO_LOJA", campo "fabricante" = "003"
+	And Novo registro em "t_PRODUTO_LOJA", campo "produto" = "003220"
+	And Novo registro em "t_PRODUTO_LOJA", campo "loja" = "201"
+	And Novo registro em "t_PRODUTO_LOJA", campo "preco_lista" = "626.58"
+	And Novo registro em "t_PRODUTO_LOJA", campo "excluido_status" = "0"
+	And Novo registro em "t_PRODUTO_LOJA", campo "vendavel" = "S"
+	And Novo registro em "t_PRODUTO_LOJA", campo "qtde_max_venda" = "10000"
+	And Gravar registro em "t_PRODUTO_LOJA"
+	And Novo registro na tabela "t_PRODUTO_LOJA"
+	And Novo registro em "t_PRODUTO_LOJA", campo "fabricante" = "003"
+	And Novo registro em "t_PRODUTO_LOJA", campo "produto" = "003221"
+	And Novo registro em "t_PRODUTO_LOJA", campo "loja" = "201"
+	And Novo registro em "t_PRODUTO_LOJA", campo "preco_lista" = "939.87"
+	And Novo registro em "t_PRODUTO_LOJA", campo "excluido_status" = "0"
+	And Novo registro em "t_PRODUTO_LOJA", campo "vendavel" = "S"
+	And Novo registro em "t_PRODUTO_LOJA", campo "qtde_max_venda" = "10000"
+	And Gravar registro em "t_PRODUTO_LOJA"
+	Given Pedido base
+	Then Sem nenhum erro
 
 Scenario: Verificar produtos - excluido_status
 	Esse teste não esta passando!
@@ -153,7 +178,6 @@ Scenario: Verificar produtos - outra loja
 Scenario: Verificar produtos - incompleto (sem todos os produtos)
 	Given Pedido base
 	And Limpar tabela "t_PRODUTO_LOJA"
-
 	And Novo registro na tabela "t_PRODUTO_LOJA"
 	And Novo registro em "t_PRODUTO_LOJA", campo "fabricante" = "003"
 	And Novo registro em "t_PRODUTO_LOJA", campo "produto" = "003220"
@@ -163,7 +187,6 @@ Scenario: Verificar produtos - incompleto (sem todos os produtos)
 	And Novo registro em "t_PRODUTO_LOJA", campo "vendavel" = "S"
 	And Novo registro em "t_PRODUTO_LOJA", campo "qtde_max_venda" = "10000"
 	And Gravar registro em "t_PRODUTO_LOJA"
-
 	And Novo registro na tabela "t_PRODUTO_LOJA"
 	And Novo registro em "t_PRODUTO_LOJA", campo "fabricante" = "003"
 	#produto errado
@@ -174,9 +197,9 @@ Scenario: Verificar produtos - incompleto (sem todos os produtos)
 	And Novo registro em "t_PRODUTO_LOJA", campo "vendavel" = "S"
 	And Novo registro em "t_PRODUTO_LOJA", campo "qtde_max_venda" = "10000"
 	And Gravar registro em "t_PRODUTO_LOJA"
-
 	#Then Erro "Produto cód.(003221) do fabricante cód.(003) não existe!"
 	Then Erro "Erro do produto 003221 para mapear"
+
 #
 ##em loja/PedidoNovoConsiste.asp
 ##					if Ucase(Trim("" & rs("vendavel"))) <> "S" then
@@ -186,7 +209,6 @@ Scenario: Verificar produtos - incompleto (sem todos os produtos)
 Scenario: Verificar produtos t_PRODUTO_LOJA - vendavel
 	Given Pedido base
 	And Limpar tabela "t_PRODUTO_LOJA"
-
 	And Novo registro na tabela "t_PRODUTO_LOJA"
 	And Novo registro em "t_PRODUTO_LOJA", campo "fabricante" = "003"
 	And Novo registro em "t_PRODUTO_LOJA", campo "produto" = "003220"
@@ -196,7 +218,6 @@ Scenario: Verificar produtos t_PRODUTO_LOJA - vendavel
 	And Novo registro em "t_PRODUTO_LOJA", campo "vendavel" = "N"
 	And Novo registro em "t_PRODUTO_LOJA", campo "qtde_max_venda" = "10000"
 	And Gravar registro em "t_PRODUTO_LOJA"
-
 	And Novo registro na tabela "t_PRODUTO_LOJA"
 	And Novo registro em "t_PRODUTO_LOJA", campo "fabricante" = "003"
 	And Novo registro em "t_PRODUTO_LOJA", campo "produto" = "003221"
@@ -206,17 +227,15 @@ Scenario: Verificar produtos t_PRODUTO_LOJA - vendavel
 	And Novo registro em "t_PRODUTO_LOJA", campo "vendavel" = "S"
 	And Novo registro em "t_PRODUTO_LOJA", campo "qtde_max_venda" = "10000"
 	And Gravar registro em "t_PRODUTO_LOJA"
-
 	#Then Erro "Erro do produto 003220 para mapear"
 	Then Erro "Produto cód.(003220) do fabricante cód.(003) não existe!"
 
 Scenario: Verificar produtos t_PRODUTO_LOJA - qtde_max_venda
 	#no prepedido esta validação não eiste
 	Given Ignorar cenário no ambiente "Especificacao.Prepedido.PrepedidoSteps"
-
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	And Limpar tabela "t_PRODUTO_LOJA"
-
 	And Novo registro na tabela "t_PRODUTO_LOJA"
 	And Novo registro em "t_PRODUTO_LOJA", campo "fabricante" = "003"
 	And Novo registro em "t_PRODUTO_LOJA", campo "produto" = "003220"
@@ -226,7 +245,6 @@ Scenario: Verificar produtos t_PRODUTO_LOJA - qtde_max_venda
 	And Novo registro em "t_PRODUTO_LOJA", campo "vendavel" = "S"
 	And Novo registro em "t_PRODUTO_LOJA", campo "qtde_max_venda" = "0"
 	And Gravar registro em "t_PRODUTO_LOJA"
-
 	And Novo registro na tabela "t_PRODUTO_LOJA"
 	And Novo registro em "t_PRODUTO_LOJA", campo "fabricante" = "003"
 	And Novo registro em "t_PRODUTO_LOJA", campo "produto" = "003221"
@@ -236,5 +254,30 @@ Scenario: Verificar produtos t_PRODUTO_LOJA - qtde_max_venda
 	And Novo registro em "t_PRODUTO_LOJA", campo "vendavel" = "S"
 	And Novo registro em "t_PRODUTO_LOJA", campo "qtde_max_venda" = "10000"
 	And Gravar registro em "t_PRODUTO_LOJA"
+	Then Erro "regex .*excede o máximo permitido."
 
+Scenario: Verificar produtos t_PRODUTO_LOJA - qtde_max_venda Magento
+	#no prepedido esta validação não eiste
+	Given Ignorar cenário no ambiente "Especificacao.Prepedido.PrepedidoSteps"
+	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
+	Given Pedido base
+	And Limpar tabela "t_PRODUTO_LOJA"
+	And Novo registro na tabela "t_PRODUTO_LOJA"
+	And Novo registro em "t_PRODUTO_LOJA", campo "fabricante" = "003"
+	And Novo registro em "t_PRODUTO_LOJA", campo "produto" = "003220"
+	And Novo registro em "t_PRODUTO_LOJA", campo "loja" = "201"
+	And Novo registro em "t_PRODUTO_LOJA", campo "preco_lista" = "626.58"
+	And Novo registro em "t_PRODUTO_LOJA", campo "excluido_status" = "0"
+	And Novo registro em "t_PRODUTO_LOJA", campo "vendavel" = "S"
+	And Novo registro em "t_PRODUTO_LOJA", campo "qtde_max_venda" = "0"
+	And Gravar registro em "t_PRODUTO_LOJA"
+	And Novo registro na tabela "t_PRODUTO_LOJA"
+	And Novo registro em "t_PRODUTO_LOJA", campo "fabricante" = "003"
+	And Novo registro em "t_PRODUTO_LOJA", campo "produto" = "003221"
+	And Novo registro em "t_PRODUTO_LOJA", campo "loja" = "201"
+	And Novo registro em "t_PRODUTO_LOJA", campo "preco_lista" = "939.87"
+	And Novo registro em "t_PRODUTO_LOJA", campo "excluido_status" = "0"
+	And Novo registro em "t_PRODUTO_LOJA", campo "vendavel" = "S"
+	And Novo registro em "t_PRODUTO_LOJA", campo "qtde_max_venda" = "10000"
+	And Gravar registro em "t_PRODUTO_LOJA"
 	Then Erro "regex .*excede o máximo permitido."

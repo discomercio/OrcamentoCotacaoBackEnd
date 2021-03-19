@@ -7,7 +7,6 @@ Background: Configuracao
 	Given Reiniciar banco ao terminar cenário
 
 #Given Reiniciar banco
-
 Scenario: Log dos itens - acho que esse é de split
 	#loja/PedidoNovoConfirma.asp
 	#'	LOG
@@ -28,6 +27,7 @@ Scenario: Log dos itens - acho que esse é de split
 	Then Sem nenhum erro
 	And Tabela "t_LOG" pedido gerado e operacao = "OP_LOG_PEDIDO_NOVO", verificar campo "complemento" = "(003)003220: qtde solicitada = 2, qtde sem presença autorizada = 2, qtde estoque vendido = 0, qtde sem presença = 2\r(003)003221: qtde solicitada = 2, qtde sem presença autorizada = 2, qtde estoque vendido = 0, qtde sem presença = 2"
 
+@ignore
 Scenario: Log dos itens - pedido pai
 	#MONTA LOG DOS ITENS
 	#for i=Lbound(v_item) to Ubound(v_item)
@@ -59,6 +59,7 @@ Scenario: Log dos itens - pedido pai
 	Then Sem nenhum erro
 	And Tabela "t_LOG" pedido gerado e operacao = "OP_LOG_PEDIDO_NOVO", verificar campo "complemento" = "2x003220(003); preco_lista=626,58; desc_dado=0; preco_venda=626,58; preco_NF=626,58; custoFinancFornecCoeficiente=1; custoFinancFornecPrecoListaBase=626,58; estoque_vendido=2;\r 2x003221(003); preco_lista=939,87; desc_dado=0; preco_venda=939,87; preco_NF=939,87; custoFinancFornecCoeficiente=1; custoFinancFornecPrecoListaBase=939,87; estoque_vendido=2"
 
+@ignore
 Scenario: Log dos itens - sem presenca de estoque
 	Given Usar produto "um" como fabricante = "003", produto = "003220"
 	And Usar produto "dois" como fabricante = "003", produto = "003221"
@@ -71,6 +72,7 @@ Scenario: Log dos itens - sem presenca de estoque
 	Then Sem nenhum erro
 	And Tabela "t_LOG" pedido gerado e operacao = "OP_LOG_PEDIDO_NOVO", verificar campo "complemento" = "2x003220(003); preco_lista=626,58; desc_dado=0; preco_venda=626,58; preco_NF=626,58; custoFinancFornecCoeficiente=1; custoFinancFornecPrecoListaBase=626,58; estoque_sem_presenca=2;\r 2x003221(003); preco_lista=939,87; desc_dado=0; preco_venda=939,87; preco_NF=939,87; custoFinancFornecCoeficiente=1; custoFinancFornecPrecoListaBase=939,87; estoque_sem_presenca=2"
 
+@ignore
 Scenario: Log dos itens - estoque vendido e sem presenca de estoque Magento
 	Given Ignorar cenário no ambiente "Especificacao.Prepedido.PrepedidoSteps"
 	#ignoramos na loja, pois se rodar nos 2 ambientes não iremos obter o mesmo resultado
@@ -117,7 +119,7 @@ Scenario Outline: Verificar t_LOG - Magento
 		| OP_LOG_PEDIDO_NOVO | usuario    | USRMAG       |
 		| OP_LOG_PEDIDO_NOVO | pedido     | 176368N      |
 		| OP_LOG_PEDIDO_NOVO | id_cliente | 000000645637 |
-		| OP_LOG_PEDIDO_NOVO | loja       | 202          |
+		| OP_LOG_PEDIDO_NOVO | loja       | 201          |
 
 Scenario Outline: Verificar t_LOG - Loja
 	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"

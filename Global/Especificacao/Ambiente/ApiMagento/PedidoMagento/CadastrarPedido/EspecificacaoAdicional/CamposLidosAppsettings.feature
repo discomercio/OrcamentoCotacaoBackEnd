@@ -39,6 +39,7 @@ Scenario: Loja = "201" (vamos ler do appsettings)
 Scenario: Loja = "202" (vamos ler do appsettings)
 	Given Pedido base
 	And Informo "appsettings.Loja" = "202"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "223456789"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "loja" = "202"
 

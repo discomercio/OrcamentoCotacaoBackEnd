@@ -127,6 +127,6 @@ Scenario: CreditoAutomaticoECommerce - Loja diferente de NUMERO_LOJA_ECOMMERCE_A
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "tipo_parcelamento" = "1"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "vendedor" = "USRMAG"
-	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito" = "9"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito" = "8"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito_usuario" = "AUTOMÁTICO"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_endereco_tratar_status" = "0"

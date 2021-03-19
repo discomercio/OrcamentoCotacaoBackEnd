@@ -10,7 +10,7 @@ Background: Configuracao
 #Monta o log do pedido (variável s_log)
 #Monta o log dos itens do pedido
 #Monta o log do auto-slipt (incluindo log dos filhotes)
-
+@ignore
 Scenario: Log - pedido magento
 	#Vamos validar o pedido magento
 	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"

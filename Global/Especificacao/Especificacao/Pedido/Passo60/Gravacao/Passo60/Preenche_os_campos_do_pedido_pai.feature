@@ -137,7 +137,7 @@ Scenario: Preenche_os_campos_do_pedido - campos soltos
 	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "loja" = "202"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "loja" = "201"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vendedor" = "USRMAG"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "midia" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "servicos" = ""
@@ -205,13 +205,13 @@ Scenario: Preenche_os_campos_do_pedido - analise de crédito
 	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_credito" = "9"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_credito" = "8"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_credito_usuario" = "AUTOMÁTICO"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_endereco_tratar_status" = "0"
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_endereco_tratado_status" = "0"
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_endereco_tratado_usuario" = ""
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_pedido_novo_analise_credito_msg_alerta" = "0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_credito_pendente_vendas_motivo" = "null"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_credito_pendente_vendas_motivo" = "006"
 
 @ignore
 Scenario: Preenche_os_campos_do_pedido - split
@@ -343,10 +343,10 @@ Scenario: Preenche_os_campos_do_pedido - referente a RA - magento
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_tem_desagio_RA" = "0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "qtde_parcelas_desagio_RA" = "0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_desagio_RA_liquida" = "0.0"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "permite_RA_status" = "1"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "permite_RA_status" = "0"
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_violado_permite_RA_status" = "0"
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "usuario_violado_permite_RA_status" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "opcao_possui_RA" = "N"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "opcao_possui_RA" = "-"
 
 Scenario: Preenche_os_campos_do_pedido - referente a RA - loja
 	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
