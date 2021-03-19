@@ -166,11 +166,9 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="Log dos itens - pedido pai")]
         [Xunit.TraitAttribute("FeatureTitle", "Especificacao\\Pedido\\Passo60\\Gravacao\\Passo60\\Itens\\Log")]
         [Xunit.TraitAttribute("Description", "Log dos itens - pedido pai")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void LogDosItens_PedidoPai()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Log dos itens - pedido pai", null, tagsOfScenario, argumentsOfScenario);
 #line 31
@@ -218,11 +216,9 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="Log dos itens - sem presenca de estoque")]
         [Xunit.TraitAttribute("FeatureTitle", "Especificacao\\Pedido\\Passo60\\Gravacao\\Passo60\\Itens\\Log")]
         [Xunit.TraitAttribute("Description", "Log dos itens - sem presenca de estoque")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void LogDosItens_SemPresencaDeEstoque()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Log dos itens - sem presenca de estoque", null, tagsOfScenario, argumentsOfScenario);
 #line 63
@@ -285,11 +281,9 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="Log dos itens - estoque vendido e sem presenca de estoque Magento")]
         [Xunit.TraitAttribute("FeatureTitle", "Especificacao\\Pedido\\Passo60\\Gravacao\\Passo60\\Itens\\Log")]
         [Xunit.TraitAttribute("Description", "Log dos itens - estoque vendido e sem presenca de estoque Magento")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void LogDosItens_EstoqueVendidoESemPresencaDeEstoqueMagento()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Log dos itens - estoque vendido e sem presenca de estoque Magento", null, tagsOfScenario, argumentsOfScenario);
 #line 76
