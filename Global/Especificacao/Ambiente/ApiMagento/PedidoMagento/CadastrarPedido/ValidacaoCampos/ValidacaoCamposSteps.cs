@@ -28,21 +28,21 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Valida
         [When(@"Informo ""(.*)"" = ""(.*)""")]
         public void GivenInformo(string p0, string p1)
         {
-            Testes.Utils.LogTestes.LogOperacoes2.Informo(p0,p1,this);
+            Testes.Utils.LogTestes.LogOperacoes2.Informo(p0, p1, this);
             cadastrarPedido.WhenInformo(p0, p1);
         }
 
         [Then(@"Erro ""(.*)""")]
         public void ThenErro(string p0)
         {
-            Testes.Utils.LogTestes.LogOperacoes2.Erro(p0,this);
+            Testes.Utils.LogTestes.LogOperacoes2.Erro(p0, this);
             cadastrarPedido.ThenErro(p0);
         }
 
         [Then(@"Sem erro ""(.*)""")]
         public void ThenSemErro(string p0)
         {
-            Testes.Utils.LogTestes.LogOperacoes2.SemErro(p0,this);
+            Testes.Utils.LogTestes.LogOperacoes2.SemErro(p0, this);
             cadastrarPedido.ThenSemErro(p0);
         }
 
@@ -79,6 +79,19 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Valida
         {
             Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensComXitens(numeroItens, this);
             cadastrarPedido.MagentoListaDeItensComXitens(numeroItens);
+        }
+
+        [Given(@"Reiniciar appsettings")]
+        public void GivenReiniciarAppsettings()
+        {
+            //so pra lembrar que a gente faz isso
+            AfterScenario();
+        }
+        [AfterScenario]
+        public void AfterScenario()
+        {
+            var configuracaoApiMagento = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<global::MagentoBusiness.UtilsMagento.ConfiguracaoApiMagento>();
+            Ambiente.ApiMagento.InjecaoDependencias.InicializarConfiguracaoApiMagento(configuracaoApiMagento);
         }
     }
 }

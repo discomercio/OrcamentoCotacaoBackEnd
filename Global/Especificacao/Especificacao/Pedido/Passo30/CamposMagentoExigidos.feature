@@ -1,7 +1,13 @@
-﻿@ignore
+﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.ValidacaoCampos
+@GerenciamentoBanco
 Feature: CamposMagentoExigidos
+
+Background: Configuracao
+	Given Reiniciar appsettings
+	Given Reiniciar banco ao terminar cenário
+
 #loja/PedidoNovoConfirma.asp
-#se loja == NUMERO_LOJA_ECOMMERCE_AR_CLUBE 
+#se loja == NUMERO_LOJA_ECOMMERCE_AR_CLUBE
 #s_origem_pedido é obrigatório
 #
 #if alerta = "" then
@@ -34,7 +40,7 @@ Feature: CamposMagentoExigidos
 #			alerta=alerta & "O número do pedido Magento inicia com dígito inválido para a loja " & loja
 #			end if
 #		end if 'if s_pedido_ac <> ""
-#			
+#
 #	s = "SELECT * FROM t_CODIGO_DESCRICAO WHERE (grupo = 'PedidoECommerce_Origem') AND (codigo = '" & s_origem_pedido & "')"
 #	set rs = cn.execute(s)
 #	if rs.Eof then
@@ -72,7 +78,72 @@ Feature: CamposMagentoExigidos
 #			alerta=alerta & "O número Marketplace deve conter apenas dígitos e hífen"
 #			end if
 #		end if
-
+@ignore
 Scenario: tudo
 	Given Fazer esta validação
 
+Scenario: Pedido_bs_x_marketplace - vazio
+	Given Pedido base
+	When Informo "Tipo_Parcelamento" = "5"
+	When Informo "C_pu_valor" = "3132.90"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = ""
+	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "010"
+	Then Erro "Informe o nº do pedido do marketplace (Mercado Livre)"
+
+Scenario: Pedido_bs_x_marketplace - somente digitos
+	Given Pedido base
+	When Informo "Tipo_Parcelamento" = "5"
+	When Informo "C_pu_valor" = "3132.90"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "123456789"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "123AA"
+	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "010"
+	Then Erro "O número Marketplace deve conter apenas dígitos e hífen"
+	Given Pedido base
+	When Informo "Tipo_Parcelamento" = "5"
+	When Informo "C_pu_valor" = "3132.90"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "123456789"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "12-3AA"
+	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "010"
+	Then Erro "O número Marketplace deve conter apenas dígitos e hífen"
+
+Scenario: Marketplace_codigo_origem - vazio
+	Given Pedido base
+	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "126"
+	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = ""
+	Then Erro "Informe o Marketplace_codigo_origem."
+
+Scenario: Marketplace_codigo_origem - não existe
+	Given Pedido base
+	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "127"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "123456789"
+	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "123"
+	Then Erro "Código Marketplace não encontrado."
+
+Scenario: Pedido_bs_x_ac - vazio
+	Given Pedido base
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = ""
+	Then Erro "Favor informar o número do pedido Magento(Pedido_bs_x_ac)!"
+
+Scenario: Pedido_bs_x_ac - formato inválido
+	Given Pedido base
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "12345678"
+	Then Erro "Nº pedido Magento(Pedido_bs_x_ac) com formato inválido!"
+	Given Pedido base
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "1234567890"
+	Then Erro "Nº pedido Magento(Pedido_bs_x_ac) com formato inválido!"
+
+Scenario: Pedido_bs_x_ac - somente digitos
+	Given Pedido base
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "1234567AA"
+	Then Erro "O número Magento deve conter apenas dígitos!"
+
+Scenario: Pedido_bs_x_ac - inicia com dígito inválido loja 201
+	Given Pedido base
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "223456778"
+	Then Erro "regex .*O número do pedido Magento inicia com dígito inválido para a loja"
+
+Scenario: Pedido_bs_x_ac - inicia com dígito inválido loja 202
+	Given Pedido base
+	And Informo "appsettings.Loja" = "202"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "123456778"
+	Then Erro "regex .*O número do pedido Magento inicia com dígito inválido para a loja"

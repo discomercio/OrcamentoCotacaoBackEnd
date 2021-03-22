@@ -44,9 +44,9 @@ Scenario: InfCriacaoPedido Marketplace_codigo_origem
 	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = ""
 	Then Erro "Informe o Marketplace_codigo_origem."
 	Given Pedido base
-	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = ""
+	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "126"
 	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "123"
-	Then Erro "Informe o Pedido_bs_x_marketplace."
+	Then Erro "Código Marketplace não encontrado."
 
 Scenario: Pedido_bs_x_marketplace e Marketplace_codigo_origem já existem
 #2) Seria necessário tratar a possibilidade de ocorrer acesso concorrente entre o cadastramento semi-automático e a integração.
@@ -106,4 +106,3 @@ Scenario: validação de Perc_RT
 	When Informo "appsettings.Loja" = "201"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "perc_RT" = "14.4"
-	#Then Erro "ajustar esse teste"
