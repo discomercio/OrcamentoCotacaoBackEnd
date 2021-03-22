@@ -78,9 +78,6 @@ Background: Configuracao
 #			alerta=alerta & "O número Marketplace deve conter apenas dígitos e hífen"
 #			end if
 #		end if
-@ignore
-Scenario: tudo
-	Given Fazer esta validação
 
 Scenario: Pedido_bs_x_marketplace - vazio
 	Given Pedido base
