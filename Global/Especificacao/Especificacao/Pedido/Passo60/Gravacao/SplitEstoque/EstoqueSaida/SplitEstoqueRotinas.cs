@@ -101,6 +101,35 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.Estoq
             db.SaveChanges();
             db.transacao.Commit();
         }
+        public void DefinirSaldoDeEstoqueParaProdutoComValorEIdNfeEmitente(int qde, string nomeProduto, int valor, short id_nfe_emitente)
+        {
+            var produto = Produtos.Produtos[nomeProduto];
+
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+
+            db.Testoques.Add(new InfraBanco.Modelos.Testoque()
+            {
+                Id_estoque = Insercao.Id_estoque.ToString(),
+                Data_ult_movimento = DateTime.Now,
+                Data_entrada = DateTime.Now,
+                Id_nfe_emitente = id_nfe_emitente
+            });
+            db.TestoqueItems.Add(new InfraBanco.Modelos.TestoqueItem()
+            {
+                Fabricante = produto.Fabricante,
+                Produto = produto.Produto,
+                Qtde = (short)qde,
+                Preco_fabricante = valor,
+                Qtde_utilizada = 0,
+                Id_estoque = Insercao.Id_estoque.ToString(),
+                Data_ult_movimento = DateTime.Now
+            }); ;
+
+            Insercao.Id_estoque++;
+
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
 
         public void SaldoDeEstoqueParaProdutoComValor(int saldo, string nomeProduto, int valor)
         {

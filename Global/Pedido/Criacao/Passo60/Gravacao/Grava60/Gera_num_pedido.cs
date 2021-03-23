@@ -69,7 +69,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                 return "";
 
             char letra = 'A';
-            s_letra = (((int)letra - 1) + indice_pedido).ToString();
+            s_letra = ((char)((letra - 1) + indice_pedido)).ToString();
             return s_letra;
         }
 
