@@ -145,15 +145,15 @@ Scenario: Preenche_os_campos_do_pedido_filhote - campos soltos
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "sistema_responsavel_cadastro" = "1"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "sistema_responsavel_atualizacao" = "1"
 
-@ignore
+
 Scenario: Preenche_os_campos_do_pedido_filhote - campos soltos com valores
+	##And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "vl_pago_familia" = "0.0000"
+	##And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "vl_previsto_cartao" = "0.0000"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "vl_total_familia" = "0.0000"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "vl_pago_familia" = "0.0000"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "vl_total_NF" = "0.0000"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "vl_total_RA" = "0.0000"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "vl_total_RA_liquido" = "0.0000"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "vl_previsto_cartao" = "0.0000"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "vl_frete" = "0.0000"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "comissao_loja_indicou" = "0.0"
 
