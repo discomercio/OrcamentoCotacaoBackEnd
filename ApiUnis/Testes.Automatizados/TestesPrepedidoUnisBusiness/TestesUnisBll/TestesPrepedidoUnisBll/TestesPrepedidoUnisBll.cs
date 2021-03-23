@@ -138,7 +138,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
             var prePedidoDto = PrePedidoUnisDto.PrePedidoDtoDePrePedidoUnisDto(prePedidoUnis, endCadastralArclube, lstProdutosArclube, clienteArclube.DadosCliente);
             string apelido = "KONAR";
             IEnumerable<string> resi = prepedidoBll.CadastrarPrepedido(PrePedidoDto.PrePedidoDados_De_PrePedidoDto(prePedidoDto), apelido.Trim(), 0.01M, false /* permitimos repetidos */,
-                InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS).Result;
+                InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS, 12).Result;
             var res = resi.ToList();
             if (incluirEsteErro)
             {

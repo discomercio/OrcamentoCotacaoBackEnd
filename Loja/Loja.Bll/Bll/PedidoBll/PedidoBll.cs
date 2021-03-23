@@ -3352,7 +3352,7 @@ namespace Loja.Bll.PedidoBll
                                                        NomeIniciaisEmMaiusculas = c.Tcliente.Nome_Iniciais_Em_Maiusculas,
                                                        St_Entrega = pedidoVisualizacaoBll.FormataSatusPedido(c.St_Entrega),
                                                        Vendedor = c.Vendedor,
-                                                       AnaliseCredito = pedidoVisualizacaoBll.DescricaoAnaliseCreditoCadastroPedido(Convert.ToString(c.Analise_Credito)),
+                                                       AnaliseCredito = pedidoVisualizacaoBll.DescricaoAnaliseCreditoCadastroPedido(Convert.ToString(c.Analise_Credito), false, c.Pedido, c.Orcamentista),
                                                        AnaliseCreditoPendenteVendasMotivo = c.Analise_Credito_Pendente_Vendas_Motivo
                                                    }).ToListAsync();
 

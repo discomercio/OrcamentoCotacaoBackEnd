@@ -650,8 +650,9 @@ namespace Prepedido
             return await raStatus;
         }
 
-        public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDados prePedido, string apelido, decimal limiteArredondamento,
-            bool verificarPrepedidoRepetido, InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro)
+        public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDados prePedido, 
+            string apelido, decimal limiteArredondamento, bool verificarPrepedidoRepetido, 
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro, int limite_de_itens)
         {
             List<string> lstErros = new List<string>();
 
@@ -745,9 +746,9 @@ namespace Prepedido
                 return lstErros;
             }
 
-            if (prePedido.ListaProdutos.Count > 12)
+            if (prePedido.ListaProdutos.Count > limite_de_itens)
             {
-                lstErros.Add("É permitido apenas 12 itens.");
+                lstErros.Add($"É permitido apenas {limite_de_itens} itens.");
                 return lstErros;
             }
             if (!await Util.LojaHabilitadaProdutosECommerce(prePedido.DadosCliente.Loja, contextoProvider))
@@ -2083,7 +2084,7 @@ namespace Prepedido
                             PedidoRecebidoStatus = pedidoPai.PedidoRecebidoStatus,
                             PedidoRecebidoData = pedidoPai.PedidoRecebidoData,
                             Analise_credito = pedidoPai.Analise_Credito,
-                            DescricaoAnaliseCredito = pedidoVisualizacaoBll.DescricaoAnaliseCreditoCadastroPedido(Convert.ToString(pedidoPai.Analise_Credito)),
+                            DescricaoAnaliseCredito = pedidoVisualizacaoBll.DescricaoAnaliseCreditoCadastroPedido(Convert.ToString(pedidoPai.Analise_Credito), false, pedidoPai.Pedido, pedidoPai.Orcamentista),
                             Analise_credito_data = pedidoPai.Analise_credito_Data,
                             St_pagto = pedidoPai.St_Pagto,
                             DescricaoStatusPagto = pedidoVisualizacaoBll.StatusPagto(pedidoPai.St_Pagto)
@@ -2110,7 +2111,7 @@ namespace Prepedido
                                     PedidoRecebidoStatus = filho.PedidoRecebidoStatus,
                                     PedidoRecebidoData = filho.PedidoRecebidoData,
                                     Analise_credito = pedidoPai.Analise_Credito,
-                                    DescricaoAnaliseCredito = pedidoVisualizacaoBll.DescricaoAnaliseCreditoCadastroPedido(Convert.ToString(pedidoPai.Analise_Credito)),
+                                    DescricaoAnaliseCredito = pedidoVisualizacaoBll.DescricaoAnaliseCreditoCadastroPedido(Convert.ToString(pedidoPai.Analise_Credito), false, filho.Pedido, filho.Orcamentista),
                                     Analise_credito_data = pedidoPai.Analise_credito_Data,
                                     St_pagto = pedidoPai.St_Pagto,
                                     DescricaoStatusPagto = pedidoVisualizacaoBll.StatusPagto(pedidoPai.St_Pagto)

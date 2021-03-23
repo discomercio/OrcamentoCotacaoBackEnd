@@ -114,7 +114,8 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
             List<string> lstRet = (await prepedidoBll.CadastrarPrepedido(prePedidoDados,
                 prePedidoUnis.Indicador_Orcamentista.ToUpper(),
                 Convert.ToDecimal(configuracaoApiUnis.LimiteArredondamentoPrecoVendaOrcamentoItem), false,
-                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS)).ToList();
+                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS, 
+                configuracaoApiUnis.LimiteItens)).ToList();
 
             if (lstRet.Count > 0)
             {
