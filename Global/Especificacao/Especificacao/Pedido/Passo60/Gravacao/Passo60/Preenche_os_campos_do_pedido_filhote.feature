@@ -157,16 +157,15 @@ Scenario: Preenche_os_campos_do_pedido_filhote - campos soltos com valores
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "vl_frete" = "0.0000"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "comissao_loja_indicou" = "0.0"
 
-@ignore
 Scenario: Preenche_os_campos_do_pedido_filhote - transportadora
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "transportadora_num_coleta" = "null"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "transportadora_contato" = "null"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "transportadora_conferente" = "null"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "transportadora_motorista" = "null"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "transportadora_placa_veiculo" = "null"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "transportadora_id" = "null"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "transportadora_usuario" = "null"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "transportadora_num_coleta" = "null"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "transportadora_contato" = "null"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "transportadora_conferente" = "null"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "transportadora_motorista" = "null"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "transportadora_placa_veiculo" = "null"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "transportadora_selecao_auto_status" = "0"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "transportadora_selecao_auto_cep" = "null"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "transportadora_selecao_auto_tipo_endereco" = "0"
