@@ -5,6 +5,7 @@ Feature: Preenche_os_campos_do_pedido_filhote
 Background: Setup
 	#ignoramos no prepedio inteiro
 	Given Ignorar cenário no ambiente "Especificacao.Prepedido.PrepedidoSteps"
+	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	Given Usar produto "um" como fabricante = "003", produto = "003220"
 	Given Usar produto "dois" como fabricante = "003", produto = "003221"
@@ -19,7 +20,6 @@ Background: Setup
 	Given Reiniciar banco ao terminar cenário
 
 Scenario: Preenche_os_campos_do_pedido_filhote - endereco
-	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "st_memorizacao_completa_enderecos" = "1"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_memorizado_status" = "1"
@@ -172,80 +172,73 @@ Scenario: Preenche_os_campos_do_pedido_filhote - transportadora
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "transportadora_selecao_auto_tipo_endereco" = "0"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "transportadora_selecao_auto_transportadora" = "null"
 
-@ignore
 Scenario: Preenche_os_campos_do_pedido_filhote - refente a entrega
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "entregue_usuario" = "null"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "a_entregar_status" = "0"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "a_entregar_usuario" = "null"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "PedidoRecebidoUsuarioUltAtualiz" = "null"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "st_recebido" = ""
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "st_entrega" = "SEP"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "entregue_usuario" = "null"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "a_entregar_status" = "0"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "a_entregar_data_marcada" = "null"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "a_entregar_usuario" = "null"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "PedidoRecebidoStatus" = "0"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "PedidoRecebidoUsuarioUltAtualiz" = "null"
 
-@ignore
 Scenario: Preenche_os_campos_do_pedido_filhote - analise de crédito
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "analise_endereco_tratar_status" = "0"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "analise_endereco_tratado_status" = "0"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "analise_endereco_tratado_usuario" = "null"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "st_pedido_novo_analise_credito_msg_alerta" = "0"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "analise_credito" = "0"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "analise_credito_usuario" = "null"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "analise_endereco_tratar_status" = "0"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "analise_endereco_tratado_status" = "0"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "analise_endereco_tratado_usuario" = "null"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "st_pedido_novo_analise_credito_msg_alerta" = "0"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "analise_credito_pendente_vendas_motivo" = "null"
 
 Scenario: Preenche_os_campos_do_pedido_filhote - split
-	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "split_status" = "1"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "split_usuario" = "SISTEMA"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "st_auto_split" = "1"
 
-@ignore
 Scenario: Preenche_os_campos_do_pedido_filhote - refente a cancelamento
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "cancelado_usuario" = "null"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "cancelado_auto_status" = "0"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "cancelado_auto_motivo" = "null"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "cancelado_codigo_motivo" = "null"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "cancelado_codigo_sub_motivo" = "null"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "cancelado_motivo" = "null"
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "cancelado_usuario" = "null"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "cancelado_auto_status" = "0"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "cancelado_auto_motivo" = "null"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "cancelado_codigo_motivo" = "null"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "cancelado_codigo_sub_motivo" = "null"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "cancelado_motivo" = "null"
 
-@ignore
 Scenario: Preenche_os_campos_do_pedido_filhote - instalador, bem de uso, entrega imediata e garantia
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "st_etg_imediata" = "2"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "etg_imediata_usuario" = "HAMILTON"
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "etg_imediata_usuario" = "USRMAG"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "PrevisaoEntregaUsuarioUltAtualiz" = "null"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "StBemUsoConsumo" = "1"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "InstaladorInstalaStatus" = "2"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "InstaladorInstalaUsuarioUltAtualiz" = "HAMILTON"
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "InstaladorInstalaStatus" = "1"
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "InstaladorInstalaUsuarioUltAtualiz" = "USRMAG"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "GarantiaIndicadorStatus" = "0"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "GarantiaIndicadorUsuarioUltAtualiz" = "HAMILTON"
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "GarantiaIndicadorUsuarioUltAtualiz" = "USRMAG"
 
-@ignore
 Scenario: Preenche_os_campos_do_pedido_filhote - campos de OBS
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "num_obs_2" = "0"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "num_obs_3" = "0"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "obs_1" = ""
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "obs_2" = ""
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "obs_3" = "null"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "num_obs_2" = "0"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "num_obs_3" = "0"
 
-@ignore
 Scenario: Preenche_os_campos_do_pedido_filhote - referente a indicação
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "comissao_paga" = "0"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "comissao_paga_ult_op" = "null"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "comissao_paga_usuario" = "null"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "indicador_editado_manual_status" = "0"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "indicador_editado_manual_usuario" = "null"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "indicador_editado_manual_indicador_original" = "null"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "loja_indicou" = ""
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "venda_externa" = "0"
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "venda_externa" = "1"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "indicador" = ""
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "perc_RT" = "0.0"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "comissao_paga" = "0"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "comissao_paga_ult_op" = "null"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "comissao_paga_usuario" = "null"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "indicador_editado_manual_status" = "0"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "indicador_editado_manual_usuario" = "null"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "indicador_editado_manual_indicador_original" = "null"
 
 @ignore
 Scenario: Preenche_os_campos_do_pedido_filhote - campos de data e hora
@@ -292,20 +285,21 @@ Scenario: Preenche_os_campos_do_pedido_filhote - campos de data e hora
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "PrevisaoEntregaDtHrUltAtualiz" = "null"
 
 Scenario: Preenche_os_campos_do_pedido_filhote - frete, romaneio e danfe
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "frete_status" = "0"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "frete_valor" = "0.0000"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "frete_usuario" = "null"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "romaneio_status" = "0"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "romaneio_usuario" = "null"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "danfe_impressa_status" = "0"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "danfe_impressa_usuario" = "null"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "danfe_a_imprimir_status" = "0"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "danfe_a_imprimir_usuario" = "null"
+	#Obs: No momento esses campos não existem na tabela t_PEDIDO e alguns são utilizados apenas na Central
 	Then Sem nenhum erro
-#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "frete_status" = "0"
-#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "frete_valor" = "0.0000"
-#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "frete_usuario" = "null"
-#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "romaneio_status" = "0"
-#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "romaneio_usuario" = "null"
-#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "danfe_impressa_status" = "0"
-#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "danfe_impressa_usuario" = "null"
-#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "danfe_a_imprimir_status" = "0"
-#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "danfe_a_imprimir_usuario" = "null"
-#Obs: No momento esses campos não existem na tabela t_PEDIDO e alguns são utilizados apenas na Central
 
 Scenario: Preenche_os_campos_do_pedido_filhote - referente a RA
-	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_violado_permite_RA_status" = "0"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "usuario_violado_permite_RA_status" = ""
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_desagio_RA" = "0.0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_limite_RA_sem_desagio" = "0.0"
@@ -313,12 +307,16 @@ Scenario: Preenche_os_campos_do_pedido_filhote - referente a RA
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "qtde_parcelas_desagio_RA" = "0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_desagio_RA_liquida" = "0.0"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "permite_RA_status" = "0"
-	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "st_violado_permite_RA_status" = "0"
-	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "usuario_violado_permite_RA_status" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "opcao_possui_RA" = "-"
 
 Scenario: Preenche_os_campos_do_pedido_filhote - Marketplace e magento
-	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "pedido_bs_x_ac_reverso" = ""
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "MarketplacePedidoRecebidoRegistrarStatus" = "0"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "MarketplacePedidoRecebidoRegistrarUsuario" = "null"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "MarketplacePedidoRecebidoRegistradoStatus" = "0"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "magento_installer_commission_value" = "0.0000"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "magento_installer_commission_discount" = "0.0000"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "magento_shipping_amount" = "0.0000"
 	Then Sem nenhum erro
 	#nao temos como validar este campo porque ele é gerado sempre com um númeor único
 	#mas deveriamos verificar que gravou algo!
@@ -326,10 +324,3 @@ Scenario: Preenche_os_campos_do_pedido_filhote - Marketplace e magento
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "pedido_bs_x_at" = ""
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "pedido_bs_x_marketplace" = ""
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "marketplace_codigo_origem" = "001"
-#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "pedido_bs_x_ac_reverso" = ""
-#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "MarketplacePedidoRecebidoRegistrarStatus" = "0"
-#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "MarketplacePedidoRecebidoRegistrarUsuario" = "null"
-#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "MarketplacePedidoRecebidoRegistradoStatus" = "0"
-#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "magento_installer_commission_value" = "0.0000"
-#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "magento_installer_commission_discount" = "0.0000"
-#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "magento_shipping_amount" = "0.0000"
