@@ -17,41 +17,42 @@ Background: Setup
 	Given Definir saldo estoque = "40" para produto = "um" e id_nfe_emitente = "4003"
 	Given Tabela "t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD" alterar registro id_wms_regra_cd_x_uf_x_pessoa = "666" e id_nfe_emitente = "4003", campo "st_inativo" = "0"
 	Given Reiniciar banco ao terminar cenário
+	
 
-@ignore
 Scenario: Preenche_os_campos_do_pedido_filhote - endereco
+	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "st_memorizacao_completa_enderecos" = "1"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_memorizado_status" = "1"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_logradouro" = "Rua Francisco Pecoraro"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_bairro" = "Água Fria"
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_logradouro" = "Rua Professor Fábio Fanucchi"
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_bairro" = "Jardim São Paulo(Zona Norte)"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_cidade" = "São Paulo"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_uf" = "SP"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_cep" = "02408150"
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_cep" = "02045080"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_numero" = "97"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_complemento" = "casa 01"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_email" = "gabriel.prada.teodoro@gmail.com"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_email_xml" = "teste@xml.com"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_nome" = "Gabriel Prada Teodoro"
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_complemento" = ""
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_email" = "testeCad@Gabriel.com"
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_email_xml" = ""
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_nome" = "Vivian"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_ddd_res" = "11"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_tel_res" = "25321634"
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_tel_res" = "11111111"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_ddd_com" = "11"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_tel_com" = "55788755"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_ramal_com" = "12"
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_tel_com" = "12345678"
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_ramal_com" = ""
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_ddd_cel" = "11"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_tel_cel" = "981603313"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_ddd_com_2" = ""
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_tel_com_2" = ""
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_ramal_com_2" = ""
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_tipo_pessoa" = "PF"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_cnpj_cpf" = "35270445824"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_contribuinte_icms_status" = "2"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_produtor_rural_status" = "2"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_ie" = "361.289.183.714"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_rg" = "304480484"
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_cnpj_cpf" = "14039603052"
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_contribuinte_icms_status" = "0"
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_produtor_rural_status" = "1"
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_ie" = ""
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_rg" = ""
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_contato" = ""
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_nome_iniciais_em_maiusculas" = "Gabriel Prada Teodoro"
 
+#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_nome_iniciais_em_maiusculas" = "Vivian"
 @ignore
 Scenario: Preenche_os_campos_do_pedido_filhote - pagamento
 	Then Sem nenhum erro
@@ -317,17 +318,19 @@ Scenario: Preenche_os_campos_do_pedido_filhote - referente a RA
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "usuario_violado_permite_RA_status" = "null"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "opcao_possui_RA" = "-"
 
-@ignore
 Scenario: Preenche_os_campos_do_pedido_filhote - Marketplace e magento
+	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "pedido_bs_x_at" = "null"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "pedido_bs_x_ac" = ""
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "pedido_bs_x_ac_reverso" = ""
+	#nao temos como validar este campo porque ele é gerado sempre com um númeor único
+	#mas deveriamos verificar que gravou algo!
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "pedido_bs_x_ac" = "123457006"
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "pedido_bs_x_at" = ""
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "pedido_bs_x_marketplace" = ""
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "marketplace_codigo_origem" = ""
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "MarketplacePedidoRecebidoRegistrarStatus" = "0"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "MarketplacePedidoRecebidoRegistrarUsuario" = "null"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "MarketplacePedidoRecebidoRegistradoStatus" = "0"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "magento_installer_commission_value" = "0.0000"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "magento_installer_commission_discount" = "0.0000"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "magento_shipping_amount" = "0.0000"
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "marketplace_codigo_origem" = "001"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "pedido_bs_x_ac_reverso" = ""
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "MarketplacePedidoRecebidoRegistrarStatus" = "0"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "MarketplacePedidoRecebidoRegistrarUsuario" = "null"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "MarketplacePedidoRecebidoRegistradoStatus" = "0"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "magento_installer_commission_value" = "0.0000"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "magento_installer_commission_discount" = "0.0000"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "magento_shipping_amount" = "0.0000"
