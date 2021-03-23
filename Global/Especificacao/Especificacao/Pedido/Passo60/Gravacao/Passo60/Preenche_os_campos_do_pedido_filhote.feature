@@ -1,15 +1,22 @@
 ﻿@Especificacao.Pedido.Passo60
+@GerenciamentoBanco
 Feature: Preenche_os_campos_do_pedido_filhote
 
 Background: Setup
 	#ignoramos no prepedio inteiro
 	Given Ignorar cenário no ambiente "Especificacao.Prepedido.PrepedidoSteps"
 	Given Pedido base
+	Given Usar produto "um" como fabricante = "003", produto = "003220"
+	Given Usar produto "dois" como fabricante = "003", produto = "003221"
 	When Lista de itens "0" informo "Qtde" = "100"
 	When Lista de itens "1" informo "Qtde" = "100"
-	When Informo "ValorTotalDestePedidoComRA" = "173512.00"
-	When Informo "VlTotalDestePedido" = ""
-	When Informo "FormaPagtoCriacao.C_pc_valor" = "173512.00"
+	And Recalcular totais do pedido
+	And Deixar forma de pagamento consistente
+	Given Zerar todo o estoque
+	Given Definir saldo de estoque = "40" para produto "um"
+	Given Definir saldo estoque = "40" para produto = "um" e id_nfe_emitente = "4003"
+	Given Tabela "t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD" alterar registro id_wms_regra_cd_x_uf_x_pessoa = "666" e id_nfe_emitente = "4003", campo "st_inativo" = "0"
+	Given Reiniciar banco ao terminar cenário
 
 @ignore
 Scenario: Preenche_os_campos_do_pedido_filhote - endereco
@@ -188,12 +195,12 @@ Scenario: Preenche_os_campos_do_pedido_filhote - analise de crédito
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "st_pedido_novo_analise_credito_msg_alerta" = "0"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "analise_credito_pendente_vendas_motivo" = "null"
 
-@ignore
 Scenario: Preenche_os_campos_do_pedido_filhote - split
+	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "split_status" = "1"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "split_usuario" = "HAMILTON"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "st_auto_split" = "0"
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "split_usuario" = "SISTEMA"
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "st_auto_split" = "1"
 
 @ignore
 Scenario: Preenche_os_campos_do_pedido_filhote - refente a cancelamento
