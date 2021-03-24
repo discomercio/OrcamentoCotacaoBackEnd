@@ -20,6 +20,7 @@ Background: Setup
 	Given Reiniciar banco ao terminar cenário
 
 Scenario: Preenche_os_campos_do_pedido_filhote - endereco
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_nome_iniciais_em_maiusculas" = "Vivian"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "st_memorizacao_completa_enderecos" = "1"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_memorizado_status" = "1"
@@ -51,9 +52,12 @@ Scenario: Preenche_os_campos_do_pedido_filhote - endereco
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_rg" = ""
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_contato" = ""
 
-#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "endereco_nome_iniciais_em_maiusculas" = "Vivian"
-@ignore
 Scenario: Preenche_os_campos_do_pedido_filhote - pagamento
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "st_forma_pagto_possui_parcela_cartao_maquineta" = "0"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "st_forma_pagto_somente_cartao" = "0"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "st_forma_pagto_possui_parcela_cartao" = "0"
+	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "BoletoConfeccionadoStatus" = "0"
+	Given Ignorar cenário no ambiente "Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApiBll.CadastrarPrepedido.CadastrarPrepedidoPrepedidoApi"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "st_pagto" = ""
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "qtde_parcelas" = "0"
@@ -78,16 +82,11 @@ Scenario: Preenche_os_campos_do_pedido_filhote - pagamento
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "pu_forma_pagto" = "0"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "pu_valor" = "0.0000"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "pu_vencto_apos" = "0"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "st_forma_pagto_possui_parcela_cartao_maquineta" = "0"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "st_forma_pagto_somente_cartao" = "0"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "st_forma_pagto_possui_parcela_cartao" = "0"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "usuario_st_pagto" = ""
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "pc_maquineta_qtde_parcelas" = "0"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "pc_maquineta_valor_parcela" = "0.0000"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "custoFinancFornecTipoParcelamento" = "null"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "custoFinancFornecQtdeParcelas" = "0"
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "BoletoConfeccionadoStatus" = "0"
-
 
 Scenario: Preenche_os_campos_do_pedido_filhote - endereco entrega
 	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
