@@ -144,25 +144,25 @@ this.FeatureBackground();
 #line hidden
 #line 20
  testRunner.And("Tabela \"t_LOG\" pedido gerado e operacao = \"OP_LOG_PEDIDO_NOVO\", verificar campo \"" +
-                        "complemento\" = \"vl total=3.132,90; ra=-; indicador=\"\"; vl_total_nf=3.132,90; vl_" +
-                        "total_ra=0,00; perc_rt=0; qtde_parcelas=1; st_etg_imediata=2; stbemusoconsumo=1;" +
-                        " instaladorinstalastatus=1; obs_1=teste magento; pedido_bs_x_ac = 123457092; mar" +
-                        "ketplace_codigo_origem = 001; status da análise crédito: 8 - pendente vendas; ti" +
-                        "po_parcelamento=1; av_forma_pagto=6; custofinancfornectipoparcelamento=av; custo" +
-                        "financfornecqtdeparcelas=0; endereço cobrança=rua professor fábio fanucchi, 97 -" +
-                        " jardim são paulo(zona norte) - são paulo - sp - 0204-080 (email=testecad@gabrie" +
-                        "l.com, email_xml=, nome=vivian, ddd_res=11, tel_res=11111111, ddd_com=11, tel_co" +
-                        "m=12345678, ramal_com=, ddd_cel=11, tel_cel=981603313, ddd_com_2=, tel_com_2=, r" +
-                        "amal_com_2=, tipo_pessoa=pf, cnpj_cpf=14039603052, contribuinte_icms_status=0, p" +
-                        "rodutor_rural_status=1, ie=, rg=, contato=); endereço entrega=mesmo do cadastro;" +
-                        " escolha automática de transportadora=n; garantiaindicadorstatus=0; perc_desagio" +
-                        "_ra_liquida=0; pedido_bs_x_at=; cod_origem_pedido=001; operação de origem: cadas" +
-                        "tramento semi-automático de pedido do e-commerce (nº magento pedido_bs_x_ac=1234" +
-                        "57092;\\r 2x003220(003); preco_lista=626,58; desc_dado=0; preco_venda=626,58; pre" +
-                        "co_nf=626,58; custofinancforneccoeficiente=1; custofinancfornecprecolistabase=62" +
-                        "6,58; estoque_vendido=2;\\r 2x003221(003); preco_lista=939,87; desc_dado=0; preco" +
-                        "_venda=939,87; preco_nf=939,87; custofinancforneccoeficiente=1; custofinancforne" +
-                        "cprecolistabase=939,87; estoque_vendido=2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "complemento\" = \"vl total=3.132,90; ra=\"\"; indicador=\"\"; vl_total_nf=3.132,90; vl" +
+                        "_total_ra=0,00; perc_rt=0; qtde_parcelas=1; st_etg_imediata=2; stbemusoconsumo=1" +
+                        "; instaladorinstalastatus=1; obs_1=teste magento; pedido_bs_x_ac = 123457092; ma" +
+                        "rketplace_codigo_origem = 001; status da análise crédito: 8 - pendente vendas; t" +
+                        "ipo_parcelamento=1; av_forma_pagto=6; custofinancfornectipoparcelamento=av; cust" +
+                        "ofinancfornecqtdeparcelas=0; endereço cobrança=rua professor fábio fanucchi, 97 " +
+                        "- jardim são paulo(zona norte) - são paulo - sp - 0204-080 (email=testecad@gabri" +
+                        "el.com, email_xml=, nome=vivian, ddd_res=11, tel_res=11111111, ddd_com=11, tel_c" +
+                        "om=12345678, ramal_com=, ddd_cel=11, tel_cel=981603313, ddd_com_2=, tel_com_2=, " +
+                        "ramal_com_2=, tipo_pessoa=pf, cnpj_cpf=14039603052, contribuinte_icms_status=0, " +
+                        "produtor_rural_status=1, ie=, rg=, contato=); endereço entrega=mesmo do cadastro" +
+                        "; escolha automática de transportadora=n; garantiaindicadorstatus=0; perc_desagi" +
+                        "o_ra_liquida=0; pedido_bs_x_at=; cod_origem_pedido=001; operação de origem: cada" +
+                        "stramento semi-automático de pedido do e-commerce (nº magento pedido_bs_x_ac=123" +
+                        "457092;\\r 2x003220(003); preco_lista=626,58; desc_dado=0; preco_venda=626,58; pr" +
+                        "eco_nf=626,58; custofinancforneccoeficiente=1; custofinancfornecprecolistabase=6" +
+                        "26,58; estoque_vendido=2;\\r 2x003221(003); preco_lista=939,87; desc_dado=0; prec" +
+                        "o_venda=939,87; preco_nf=939,87; custofinancforneccoeficiente=1; custofinancforn" +
+                        "ecprecolistabase=939,87; estoque_vendido=2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
