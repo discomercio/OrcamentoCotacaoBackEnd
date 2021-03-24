@@ -88,8 +88,9 @@ Scenario: Preenche_os_campos_do_pedido_filhote - pagamento
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "custoFinancFornecQtdeParcelas" = "0"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "BoletoConfeccionadoStatus" = "0"
 
-@ignore
+
 Scenario: Preenche_os_campos_do_pedido_filhote - endereco entrega
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "st_end_entrega" = "1"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "EndEtg_cod_justificativa" = "003"
