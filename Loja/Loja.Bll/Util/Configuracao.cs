@@ -108,6 +108,7 @@ namespace Loja.Bll.Util
             public int LimitePedidosExatamenteIguais_TempoSegundos { get; set; } = 10;
             public int LimitePedidosMesmoCpfCnpj_Numero { get; set; } = 10;
             public int LimitePedidosMesmoCpfCnpj_TempoSegundos { get; set; } = 3600;
+            public int LimiteItens { get; set; } = 12;
         }
 
         public LimitePedidos LimitePedidosLoja { get; set; } = new LimitePedidos();

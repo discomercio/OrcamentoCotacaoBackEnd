@@ -75,7 +75,8 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
             List<string> lstErros,
             int limitePedidosExatamenteIguais_Numero, int limitePedidosExatamenteIguais_TempoSegundos, int limitePedidosMesmoCpfCnpj_Numero, int limitePedidosMesmoCpfCnpj_TempoSegundos,
             decimal limiteArredondamento,
-            decimal maxErroArredondamento)
+            decimal maxErroArredondamento,
+            int limite_de_itens)
         {
             if (!global::InfraBanco.Constantes.Constantes.TipoPessoa.TipoValido(pedidoDto.DadosCliente.Tipo))
             {
@@ -102,7 +103,7 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                 extra: new Pedido.Dados.Criacao.PedidoCriacaoExtraDados(pedido_bs_x_at: null, nfe_Texto_Constar: null, nfe_XPed: null),
                 cliente: Pedido.Dados.Criacao.PedidoCriacaoClienteDados.PedidoCriacaoClienteDados_de_DadosClienteCadastroDados(
                     DadosClienteCadastroDto.DadosClienteCadastroDados_De_DadosClienteCadastroDto(pedidoDto.DadosCliente),
-                    midia: "", indicador: pedidoDto.NomeIndicador),
+                    midia: "", indicador: pedidoDto.DadosCliente.Indicador_Orcamentista),
                 enderecoCadastralCliente: DadosClienteCadastroDto.EnderecoCadastralClientePrepedidoDados_De_DadosClienteCadastroDto(pedidoDto.DadosCliente),
                 enderecoEntrega: EnderecoEntregaDtoClienteCadastro.EnderecoEntregaClienteCadastroDados_De_EnderecoEntregaDtoClienteCadastro(pedidoDto.EnderecoEntrega),
                 listaProdutos: PedidoProdutosDtoPedido.List_PedidoProdutoPedidoDados_De_PedidoProdutosDtoPedido(pedidoDto.ListaProdutos),
@@ -120,7 +121,8 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                     limitePedidosExatamenteIguais_Numero: limitePedidosExatamenteIguais_Numero,
                     limitePedidosExatamenteIguais_TempoSegundos: limitePedidosExatamenteIguais_TempoSegundos,
                     limitePedidosMesmoCpfCnpj_Numero: limitePedidosMesmoCpfCnpj_Numero,
-                    limitePedidosMesmoCpfCnpj_TempoSegundos: limitePedidosMesmoCpfCnpj_TempoSegundos
+                    limitePedidosMesmoCpfCnpj_TempoSegundos: limitePedidosMesmoCpfCnpj_TempoSegundos,
+                    limite_de_itens: limite_de_itens
                     ),
                 marketplace: new Pedido.Dados.Criacao.PedidoCriacaoMarketplaceDados(
                     pedido_bs_x_ac: pedido_bs_x_ac,

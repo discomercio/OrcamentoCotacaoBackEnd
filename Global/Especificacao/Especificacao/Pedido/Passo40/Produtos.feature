@@ -143,23 +143,23 @@ Scenario: Máximo de itens por pedido
 	When Lista de itens "9" informo "Preco_Venda" = "1208.63"
 	When Lista de itens "9" informo "Preco_NF" = "1210.63"
 	#item 11
-	When Lista de itens "12" informo "Fabricante" = "001"
-	When Lista de itens "12" informo "Produto" = "001012"
-	When Lista de itens "12" informo "Qtde" = "1"
-	When Lista de itens "12" informo "Preco_Venda" = "833.54"
-	When Lista de itens "12" informo "Preco_NF" = "835.54"
-	#item 12
-	When Lista de itens "11" informo "Fabricante" = "001"
-	When Lista de itens "11" informo "Produto" = "001013"
-	When Lista de itens "11" informo "Qtde" = "1"
-	When Lista de itens "11" informo "Preco_Venda" = "1916.50"
-	When Lista de itens "11" informo "Preco_NF" = "1918.50"
-	#item 13
 	When Lista de itens "10" informo "Fabricante" = "002"
 	When Lista de itens "10" informo "Produto" = "002000"
 	When Lista de itens "10" informo "Qtde" = "1"
 	When Lista de itens "10" informo "Preco_Venda" = "581.04"
 	When Lista de itens "10" informo "Preco_NF" = "583.04"
+	#item 12
+	When Lista de itens "12" informo "Fabricante" = "001"
+	When Lista de itens "12" informo "Produto" = "001012"
+	When Lista de itens "12" informo "Qtde" = "1"
+	When Lista de itens "12" informo "Preco_Venda" = "833.54"
+	When Lista de itens "12" informo "Preco_NF" = "835.54"
+	#item 13
+	When Lista de itens "11" informo "Fabricante" = "001"
+	When Lista de itens "11" informo "Produto" = "001013"
+	When Lista de itens "11" informo "Qtde" = "1"
+	When Lista de itens "11" informo "Preco_Venda" = "1916.50"
+	When Lista de itens "11" informo "Preco_NF" = "1918.50"
 	#
 	Then Erro "regex .*12 itens*"
 

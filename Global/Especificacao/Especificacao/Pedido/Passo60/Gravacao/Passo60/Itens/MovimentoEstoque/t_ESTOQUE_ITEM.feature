@@ -11,6 +11,7 @@ Background: Configuracao
 
 @ignore
 Scenario: Verificar qtde_disponivel - erro
+	#OBS => não consegui fazer esse teste
 	#Testar rotina ESTOQUE_produto_saida_v2
 	#testar o erros que deve retornar
 	#NÃO HÁ PRODUTOS SUFICIENTES NO ESTOQUE!!

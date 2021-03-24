@@ -312,6 +312,12 @@ namespace Especificacao.Especificacao.Pedido
         {
             SplitEstoqueRotinas.DefinirSaldoDeEstoqueParaProdutoComValor(qde, nomeProduto, 987);
         }
+        [Given(@"Definir saldo estoque = ""(\d*)"" para produto = ""(.*)"" e id_nfe_emitente = ""(.*)""")]
+        public void GivenDefinirSaldoEstoqueEId_Nfe_Emitente(int qtde, string nomeProduto, short id_nfe_emitente)
+        {
+            SplitEstoqueRotinas.DefinirSaldoDeEstoqueParaProdutoComValorEIdNfeEmitente(qtde, nomeProduto, 666, id_nfe_emitente);
+        }
+
         [Given(@"Usar produto ""(.*)"" como fabricante = ""(.*)"", produto = ""(.*)""")]
         public void GivenUsarProdutoComoFabricanteProduto(string nome, string fabricante, string produto)
         {

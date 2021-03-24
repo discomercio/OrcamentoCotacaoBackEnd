@@ -272,6 +272,7 @@ namespace Especificacao.Testes.Pedido
 
         public void TabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo(string campo, string valor)
         {
+            if (ignorarFeature) return;
             Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
             var filhotes = AbstractPedidosFilhotesGerados();
             gerenciamentoBanco.TabelaT_PEDIDORegistroVerificarCampo(filhotes, campo, valor);

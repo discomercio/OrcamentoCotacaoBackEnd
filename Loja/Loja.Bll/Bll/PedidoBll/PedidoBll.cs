@@ -3380,7 +3380,8 @@ namespace Loja.Bll.PedidoBll
             string lojaUsuario, string usuario, bool vendedorExterno,
             int limitePedidosExatamenteIguais_Numero, int limitePedidosExatamenteIguais_TempoSegundos, int limitePedidosMesmoCpfCnpj_Numero, int limitePedidosMesmoCpfCnpj_TempoSegundos,
             decimal limiteArredondamento,
-            decimal maxErroArredondamento)
+            decimal maxErroArredondamento,
+            int limite_de_itens)
         {
             pedidoDto.DadosCliente.Loja = lojaUsuario;
             PedidoCriacaoDados pedidoCriacaoDados;
@@ -3391,7 +3392,7 @@ namespace Loja.Bll.PedidoBll
                 lstErros,
                 limitePedidosExatamenteIguais_Numero, limitePedidosExatamenteIguais_TempoSegundos, limitePedidosMesmoCpfCnpj_Numero, limitePedidosMesmoCpfCnpj_TempoSegundos,
                 limiteArredondamento,
-                maxErroArredondamento);
+                maxErroArredondamento, limite_de_itens);
             if (lstErros.Any())
             {
                 var ret = new Pedido.Dados.Criacao.PedidoCriacaoRetornoDados();

@@ -248,30 +248,20 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             }
 
             var codigoMarketplace = await UtilsGlobais.Util.ListarCodigoMarketPlace(contextoProvider)
-                       .Where(x => x.Codigo == pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem).AnyAsync();
+                        .Where(x => x.Codigo == pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem).AnyAsync();
 
             if (!codigoMarketplace)
                 lstErros.Add("Código Marketplace não encontrado.");
 
-            if (pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem == Constantes.COD_MARKETPLACE_ARCLUBE)
-            {
-                //vamos validar o número do pedido magento
-                if (string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac))
-                    lstErros.Add("Favor informar o número do pedido Magento(Pedido_bs_x_ac)!");
+            //vamos validar o número do pedido magento
+            if (string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac))
+                lstErros.Add("Favor informar o número do pedido Magento(Pedido_bs_x_ac)!");
 
-                if (pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac.Length != Constantes.MAX_TAMANHO_ID_PEDIDO_MAGENTO)
-                    lstErros.Add("Nº pedido Magento(Pedido_bs_x_ac) com formato inválido!");
+            if (pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac.Length != Constantes.MAX_TAMANHO_ID_PEDIDO_MAGENTO)
+                lstErros.Add("Nº pedido Magento(Pedido_bs_x_ac) com formato inválido!");
 
-                if (UtilsGlobais.Util.ExisteLetras(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac))
-                    lstErros.Add("O número Magento deve conter apenas dígitos!");
-            }
-
-            if (pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem != Constantes.COD_MARKETPLACE_ARCLUBE)
-            {
-                //vamos validar o número do pedido marketplace
-                if (string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace))
-                    lstErros.Add("Informe o Pedido_bs_x_marketplace.");
-            }
+            if (UtilsGlobais.Util.ExisteLetras(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac))
+                lstErros.Add("O número Magento deve conter apenas dígitos!");
 
         }
 

@@ -9,7 +9,14 @@ namespace Pedido.Dados.Criacao
 {
     public class PedidoCriacaoConfiguracaoDados
     {
-        public PedidoCriacaoConfiguracaoDados(Constantes.CodSistemaResponsavel sistemaResponsavelCadastro, decimal limiteArredondamento, decimal maxErroArredondamento, int limitePedidosExatamenteIguais_Numero, int limitePedidosExatamenteIguais_TempoSegundos, int limitePedidosMesmoCpfCnpj_Numero, int limitePedidosMesmoCpfCnpj_TempoSegundos)
+        public PedidoCriacaoConfiguracaoDados(Constantes.CodSistemaResponsavel sistemaResponsavelCadastro, 
+            decimal limiteArredondamento, 
+            decimal maxErroArredondamento, 
+            int limitePedidosExatamenteIguais_Numero, 
+            int limitePedidosExatamenteIguais_TempoSegundos, 
+            int limitePedidosMesmoCpfCnpj_Numero, 
+            int limitePedidosMesmoCpfCnpj_TempoSegundos,
+            int limite_de_itens)
         {
             SistemaResponsavelCadastro = sistemaResponsavelCadastro;
             LimiteArredondamento = limiteArredondamento;
@@ -18,6 +25,7 @@ namespace Pedido.Dados.Criacao
             LimitePedidosExatamenteIguais_TempoSegundos = limitePedidosExatamenteIguais_TempoSegundos;
             LimitePedidosMesmoCpfCnpj_Numero = limitePedidosMesmoCpfCnpj_Numero;
             LimitePedidosMesmoCpfCnpj_TempoSegundos = limitePedidosMesmoCpfCnpj_TempoSegundos;
+            LimiteItens = limite_de_itens;
         }
 
         public InfraBanco.Constantes.Constantes.CodSistemaResponsavel SistemaResponsavelCadastro { get; }
@@ -27,6 +35,7 @@ namespace Pedido.Dados.Criacao
         public int LimitePedidosExatamenteIguais_TempoSegundos { get; }
         public int LimitePedidosMesmoCpfCnpj_Numero { get; }
         public int LimitePedidosMesmoCpfCnpj_TempoSegundos { get; }
+        public int LimiteItens { get; }
 
     }
 }

@@ -64,7 +64,7 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
         {
             var ret1 = pedidoBll.CadastrarPedido(pedidoDto, lojaUsuario, usuario, vendedorExterno,
                 100000, 100000, 100000, 100000,
-                0.1M, 0.1M);
+                0.1M, 0.1M, 12);
             UltimoPedidoCriacaoRetornoDados = ret1.Result;
             List<string> erros = new List<string>();
             erros.AddRange(UltimoPedidoCriacaoRetornoDados.ListaErros);

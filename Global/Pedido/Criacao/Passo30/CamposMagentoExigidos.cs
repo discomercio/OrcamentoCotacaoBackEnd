@@ -52,7 +52,7 @@ namespace Pedido.Criacao.Passo30
                     */
             if (!await UtilsGlobais.Util.IsLojaBonshop(Pedido.Ambiente.Loja, Criacao.ContextoProvider))
                 return;
-            if (Pedido.Ambiente.Loja != Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE)
+            if (Pedido.Ambiente.Operacao_origem != Constantes.Op_origem__pedido_novo.OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO)
                 return;
             Exigir_Pedido_bs_x_ac();
             Validar_digito_Pedido_bs_x_ac("2");

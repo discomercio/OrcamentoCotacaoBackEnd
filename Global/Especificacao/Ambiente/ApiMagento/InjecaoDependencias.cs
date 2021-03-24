@@ -80,11 +80,12 @@ namespace Especificacao.Ambiente.ApiMagento
             configuracaoApiMagento.ApelidoPerfilLiberaAcessoApiMagento = "USRMAG";
 
             configuracaoApiMagento.DadosIndicador.Indicador = "FRETE";
-            configuracaoApiMagento.DadosIndicador.Loja = "202";
+            configuracaoApiMagento.DadosIndicador.Loja = "201";
 
             //para nao dar erro...
             configuracaoApiMagento.LimitePedidos.LimitePedidosExatamenteIguais_Numero = 1000;
             configuracaoApiMagento.LimitePedidos.LimitePedidosMesmoCpfCnpj_Numero = 10;
+            configuracaoApiMagento.LimitePedidos.LimiteItens = 12;
         }
     }
 }
