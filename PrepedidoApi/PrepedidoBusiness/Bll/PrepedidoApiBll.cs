@@ -27,11 +27,12 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDto prePedido, string apelido, 
             decimal limiteArredondamento, bool verificarPrepedidoRepetido, 
-            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro, 
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             int limite_de_itens)
         {
             PrePedidoDados prePedidoDados = PrePedidoDto.PrePedidoDados_De_PrePedidoDto(prePedido);
-            var ret = await prepedidoBll.CadastrarPrepedido(prePedidoDados, apelido, limiteArredondamento, verificarPrepedidoRepetido, sistemaResponsavelCadastro, limite_de_itens);
+            var ret = await prepedidoBll.CadastrarPrepedido(prePedidoDados, apelido, 
+                limiteArredondamento, verificarPrepedidoRepetido, sistemaResponsavelCadastro, limite_de_itens);
             return ret;
         }
 
