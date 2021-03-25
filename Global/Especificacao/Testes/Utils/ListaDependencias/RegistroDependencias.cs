@@ -5,6 +5,7 @@ using System.Linq;
 using Xunit;
 using System.IO;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Concurrent;
 
 #nullable enable
 
@@ -12,6 +13,10 @@ namespace Especificacao.Testes.Utils.ListaDependencias
 {
     public class RegistroDependencias
     {
+        /*
+         * usamos ConcurrentDictionary e ConcurrentBag para poder executar os testes de carga com várias threads
+         * */
+
         private class TextoInstancia
         {
             public string? Texto;
@@ -20,22 +25,22 @@ namespace Especificacao.Testes.Utils.ListaDependencias
 
         //esta existe porque lista TODAS as especificacoes que tenham sido criadas
         //o primeiro níel é a implementação; o segundo é a especificação
-        private static readonly Dictionary<string, List<TextoInstancia>> ambientesRegistrados = new Dictionary<string, List<TextoInstancia>>();
+        private static readonly ConcurrentDictionary<string, ConcurrentBag<TextoInstancia>> ambientesRegistrados = new ConcurrentDictionary<string, ConcurrentBag<TextoInstancia>>();
 
         //as que já foram verificadas
-        private static readonly Dictionary<string, List<TextoInstancia>> ambientesImplementados = new Dictionary<string, List<TextoInstancia>>();
-        private static readonly Dictionary<string, List<TextoInstancia>> ambientesEspecificados = new Dictionary<string, List<TextoInstancia>>();
+        private static readonly ConcurrentDictionary<string, ConcurrentBag<TextoInstancia>> ambientesImplementados = new ConcurrentDictionary<string, ConcurrentBag<TextoInstancia>>();
+        private static readonly ConcurrentDictionary<string, ConcurrentBag<TextoInstancia>> ambientesEspecificados = new ConcurrentDictionary<string, ConcurrentBag<TextoInstancia>>();
 
         //aqui todas as mensagens de log
-        private static readonly List<TextoInstancia> mensagensLog = new List<TextoInstancia>();
+        private static readonly ConcurrentBag<TextoInstancia> mensagensLog = new ConcurrentBag<TextoInstancia>();
         public static void AdicionarMensagemLog(string msg, object instancia) => mensagensLog.Add(new TextoInstancia() { Texto = msg, Instancia = instancia });
 
         public static void AdicionarDependencia(string ambiente, object? instancia, string especificacao) => AdicionarDependenciaInterno(ambiente, instancia, especificacao, ambientesRegistrados);
 
-        private static void AdicionarDependenciaInterno(string ambiente, object? instancia, string especificacao, Dictionary<string, List<TextoInstancia>> ambientes)
+        private static void AdicionarDependenciaInterno(string ambiente, object? instancia, string especificacao, ConcurrentDictionary<string, ConcurrentBag<TextoInstancia>> ambientes)
         {
             if (!ambientes.ContainsKey(ambiente))
-                ambientes.Add(ambiente, new List<TextoInstancia>());
+                ambientes.AddOrUpdate(ambiente, new ConcurrentBag<TextoInstancia>(), (s, i) => i);
             if (!ambientes[ambiente].Where(r => r.Texto == especificacao && r.Instancia == instancia).Any())
                 ambientes[ambiente].Add(new TextoInstancia() { Texto = especificacao, Instancia = instancia });
         }
@@ -106,18 +111,18 @@ namespace Especificacao.Testes.Utils.ListaDependencias
             System.IO.File.Delete(configuracaoTestes.DiretorioLogs + @"\MapaComChamadas.txt");
         }
 
-        private static void DumpMapaInvertido(Dictionary<string, List<TextoInstancia>> ambientes, string arquivo)
+        private static void DumpMapaInvertido(ConcurrentDictionary<string, ConcurrentBag<TextoInstancia>> ambientes, string arquivo)
         {
             //invertemos o mapa: ao invés de primeiro a implementação e depois a especificação, fazemos ao contrário
             //nao fazemos o dump das mensagens em si
-            Dictionary<string, List<TextoInstancia>> ambientesInvertidos = new Dictionary<string, List<TextoInstancia>>();
+            ConcurrentDictionary<string, ConcurrentBag<TextoInstancia>> ambientesInvertidos = new ConcurrentDictionary<string, ConcurrentBag<TextoInstancia>>();
             foreach (var ambiente in ambientes.Keys.ToList().OrderBy(r => r))
             {
                 var lista = (from r in ambientes[ambiente] group r by r.Texto into g select new TextoInstancia() { Texto = g.Key, Instancia = null }).Distinct().OrderBy(r => r.Texto);
                 foreach (var especificacao in lista)
                 {
                     if (!ambientesInvertidos.ContainsKey(especificacao.Texto ?? ""))
-                        ambientesInvertidos.Add(especificacao.Texto ?? "", new List<TextoInstancia>());
+                        ambientesInvertidos.AddOrUpdate(especificacao.Texto ?? "", new ConcurrentBag<TextoInstancia>(), (s, i) => i);
 
                     if (!ambientesInvertidos[especificacao.Texto ?? ""].Select(r => r.Texto).ToList().Contains(ambiente))
                         ambientesInvertidos[especificacao.Texto ?? ""].Add(new TextoInstancia() { Texto = ambiente, Instancia = null });
@@ -127,7 +132,7 @@ namespace Especificacao.Testes.Utils.ListaDependencias
             DumpMapa(ambientesInvertidos, false, arquivo);
         }
 
-        private static void DumpMapa(Dictionary<string, List<TextoInstancia>> ambientes, bool detalhesChamadas, string arquivo)
+        private static void DumpMapa(ConcurrentDictionary<string, ConcurrentBag<TextoInstancia>> ambientes, bool detalhesChamadas, string arquivo)
         {
             using StreamWriter writerMapa = new StreamWriter(new FileStream(arquivo, FileMode.Create))
             {
@@ -139,8 +144,8 @@ namespace Especificacao.Testes.Utils.ListaDependencias
             writerMapa.Write("\r\n");
             writerMapa.Write("\r\n");
         }
-        private static void DumpMapaItem(StreamWriter writerMapa, Dictionary<string, List<TextoInstancia>> ambientesFiltrados,
-            Dictionary<string, List<TextoInstancia>> ambientesTodos,
+        private static void DumpMapaItem(StreamWriter writerMapa, ConcurrentDictionary<string, ConcurrentBag<TextoInstancia>> ambientesFiltrados,
+            ConcurrentDictionary<string, ConcurrentBag<TextoInstancia>> ambientesTodos,
             bool detalhesChamadas, int identacao = 0)
         {
             if (identacao > 20)
@@ -173,17 +178,15 @@ namespace Especificacao.Testes.Utils.ListaDependencias
 
                     if (ambientesTodos.ContainsKey(especificacao.Texto ?? ""))
                     {
-                        var filtrado = new Dictionary<string, List<TextoInstancia>>
-                        {
-                            { especificacao.Texto ?? "", ambientesTodos[especificacao.Texto ?? ""] }
-                        };
+                        var filtrado = new ConcurrentDictionary<string, ConcurrentBag<TextoInstancia>>();
+                        filtrado.AddOrUpdate(especificacao.Texto ?? "", ambientesTodos[especificacao.Texto ?? ""], (s, i) => i);
                         DumpMapaItem(writerMapa, filtrado, ambientesTodos, detalhesChamadas, identacao + 1);
                     }
                 }
             }
         }
 
-        private static void VerificarUmaLista(Dictionary<string, List<TextoInstancia>> ambientesVerificados)
+        private static void VerificarUmaLista(ConcurrentDictionary<string, ConcurrentBag<TextoInstancia>> ambientesVerificados)
         {
             var listaregistrados = ambientesRegistrados.Keys.ToList();
             var listaverificados = ambientesVerificados.Keys.ToList();

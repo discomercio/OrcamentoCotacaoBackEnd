@@ -23,7 +23,7 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
         //se tira as transações não dá erro. com transação, dá erro de timeout.
         //System.Data.IsolationLevel.ReadUncommitted dá 3 erros, dizendo MultipleActiveResultSets
         //System.Data.IsolationLevel.Serializable dá 12 erros, dizendo timeout e MultipleActiveResultSets
-        public static readonly bool UsarSqlServerNosTestesAutomatizados = false;
+        public static readonly bool UsarSqlServerNosTestesAutomatizados = true;
         private ProvedorServicos()
         {
             var logTestes = LogTestes.LogTestes.GetInstance();
