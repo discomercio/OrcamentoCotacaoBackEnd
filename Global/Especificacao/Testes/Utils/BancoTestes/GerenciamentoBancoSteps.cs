@@ -434,6 +434,27 @@ namespace Especificacao.Testes.Utils.BancoTestes
             db.transacao.Commit();
         }
 
+        [Given(@"Tabela ""T_CODIGO_DESCRICAO"" registro com campo grupo ""(.*)"" e codigo ""(.*)"", alterar campo ""(.*)"" = ""(.*)""")]
+        public void GivenTabelaT_CODIGO_DESCRICAORegistroComCampoGrupoECodigoParametro__Campo_Flag(string grupo, string codigo, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("T_CODIGO_DESCRICAO", "apelido", valor, this);
+            var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
+            var registro = (from r in db.TcodigoDescricaos
+                            where r.Grupo == grupo &&
+                                  r.Codigo == codigo
+                            select r).FirstOrDefault();
+
+            Assert.NotNull(registro);
+
+            if (!WhenInformoCampo.InformarCampo(campo, valor, registro))
+                Assert.Equal("campo desconhecido", campo);
+
+            db.Update(registro);
+            db.SaveChanges();
+            db.transacao.Commit();
+        }
+
+
         [Given(@"Tabela ""t_ORCAMENTISTA_E_INDICADOR"" registro apelido = ""(.*)"", alterar campo ""(.*)"" = ""(.*)""")]
         public void GivenTabelaT_ORCAMENTISTA_E_INDICADORRegistroCampoAlterarCampo(string apelido, string campo, string valor)
         {
