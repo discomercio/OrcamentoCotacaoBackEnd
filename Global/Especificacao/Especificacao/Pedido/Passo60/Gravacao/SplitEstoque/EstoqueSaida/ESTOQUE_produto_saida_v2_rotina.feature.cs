@@ -223,7 +223,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Produtos spe", null, tagsOfScenario, argumentsOfScenario);
-#line 48
+#line 47
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -246,23 +246,23 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 49
+#line 48
  testRunner.Given("Definir saldo de estoque = \"40\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 50
+#line 49
  testRunner.When("Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = \"um\", qtde_a_sair = \"50\", qtde_auto" +
                         "rizada_sem_presenca = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 51
+#line 50
  testRunner.Then("Retorno sucesso, qtde_estoque_vendido = \"40\", qtde_estoque_sem_presenca = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 52
+#line 51
  testRunner.And("Saldo de estoque = \"0\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 53
+#line 52
  testRunner.And("Movimento de estoque = \"40\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 54
+#line 53
  testRunner.And("Movimento ID_ESTOQUE_SEM_PRESENCA = \"10\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -277,7 +277,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("muitos produtos sem presenca", null, tagsOfScenario, argumentsOfScenario);
-#line 56
+#line 55
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -300,23 +300,23 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 58
+#line 57
  testRunner.Given("Definir saldo de estoque = \"40\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 59
+#line 58
  testRunner.When("Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = \"um\", qtde_a_sair = \"50\", qtde_auto" +
                         "rizada_sem_presenca = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 60
+#line 59
  testRunner.Then("Retorno sucesso, qtde_estoque_vendido = \"40\", qtde_estoque_sem_presenca = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 61
+#line 60
  testRunner.And("Saldo de estoque = \"0\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 62
+#line 61
  testRunner.And("Movimento de estoque = \"40\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 63
+#line 62
  testRunner.And("Movimento ID_ESTOQUE_SEM_PRESENCA = \"10\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -331,7 +331,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sem produtos", null, tagsOfScenario, argumentsOfScenario);
-#line 65
+#line 64
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -354,14 +354,14 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 67
+#line 66
  testRunner.Given("Definir saldo de estoque = \"40\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 68
+#line 67
  testRunner.When("Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = \"um\", qtde_a_sair = \"50\", qtde_auto" +
                         "rizada_sem_presenca = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 69
+#line 68
  testRunner.Then("msg_erro \"Produto 003220 do fabricante 003: faltam 10 unidades\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -376,7 +376,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sem produtos - 2", null, tagsOfScenario, argumentsOfScenario);
-#line 71
+#line 70
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -399,14 +399,14 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 72
+#line 71
  testRunner.Given("Definir saldo de estoque = \"40\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 73
+#line 72
  testRunner.When("Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = \"um\", qtde_a_sair = \"50\", qtde_auto" +
                         "rizada_sem_presenca = \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 74
+#line 73
  testRunner.Then("msg_erro \"Produto 003220 do fabricante 003: faltam 5 unidades\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -421,7 +421,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("chamadas acumuladas - com erro", null, tagsOfScenario, argumentsOfScenario);
-#line 78
+#line 76
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -444,46 +444,46 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 79
+#line 77
  testRunner.Given("Definir saldo de estoque = \"40\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 80
+#line 78
  testRunner.When("Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = \"um\", qtde_a_sair = \"20\", qtde_auto" +
                         "rizada_sem_presenca = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 81
+#line 79
  testRunner.Then("Retorno sucesso, qtde_estoque_vendido = \"20\", qtde_estoque_sem_presenca = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 82
+#line 80
  testRunner.And("Saldo de estoque = \"20\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 83
+#line 81
  testRunner.And("Movimento de estoque = \"20\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 84
+#line 82
  testRunner.And("Movimento ID_ESTOQUE_SEM_PRESENCA = \"0\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 86
+#line 83
  testRunner.When("Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = \"um\", qtde_a_sair = \"15\", qtde_auto" +
                         "rizada_sem_presenca = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 87
+#line 84
  testRunner.Then("Retorno sucesso, qtde_estoque_vendido = \"15\", qtde_estoque_sem_presenca = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 88
+#line 85
  testRunner.And("Saldo de estoque = \"5\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 89
+#line 86
  testRunner.And("Movimento de estoque = \"35\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 90
+#line 87
  testRunner.And("Movimento ID_ESTOQUE_SEM_PRESENCA = \"0\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 92
+#line 88
  testRunner.When("Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = \"um\", qtde_a_sair = \"10\", qtde_auto" +
                         "rizada_sem_presenca = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 95
+#line 91
  testRunner.Then("msg_erro \"Produto 003220 do fabricante 003: faltam 5 unidades\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -498,7 +498,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("chamadas acumuladas", null, tagsOfScenario, argumentsOfScenario);
-#line 98
+#line 94
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -521,47 +521,63 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 99
+#line 95
  testRunner.Given("Definir saldo de estoque = \"40\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 100
+#line 96
  testRunner.When("Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = \"um\", qtde_a_sair = \"20\", qtde_auto" +
                         "rizada_sem_presenca = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 101
+#line 97
  testRunner.Then("Retorno sucesso, qtde_estoque_vendido = \"20\", qtde_estoque_sem_presenca = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 102
+#line 98
  testRunner.And("Saldo de estoque = \"20\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 103
+#line 99
  testRunner.And("Movimento de estoque = \"20\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 104
+#line 100
  testRunner.And("Movimento ID_ESTOQUE_SEM_PRESENCA = \"0\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 106
+#line 101
  testRunner.When("Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = \"um\", qtde_a_sair = \"15\", qtde_auto" +
                         "rizada_sem_presenca = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 107
+#line 102
  testRunner.Then("Retorno sucesso, qtde_estoque_vendido = \"15\", qtde_estoque_sem_presenca = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 108
+#line 103
  testRunner.And("Saldo de estoque = \"5\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 109
+#line 104
  testRunner.And("Movimento de estoque = \"35\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 110
+#line 105
  testRunner.And("Movimento ID_ESTOQUE_SEM_PRESENCA = \"0\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 112
+#line 106
  testRunner.When("Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = \"um\", qtde_a_sair = \"11\", qtde_auto" +
                         "rizada_sem_presenca = \"8\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 113
+#line 107
  testRunner.Then("Retorno sucesso, qtde_estoque_vendido = \"5\", qtde_estoque_sem_presenca = \"6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 108
+ testRunner.And("Saldo de estoque = \"0\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 109
+ testRunner.And("Movimento de estoque = \"40\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 110
+ testRunner.And("Movimento ID_ESTOQUE_SEM_PRESENCA = \"6\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 112
+ testRunner.When("Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = \"um\", qtde_a_sair = \"12\", qtde_auto" +
+                        "rizada_sem_presenca = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 113
+ testRunner.Then("Retorno sucesso, qtde_estoque_vendido = \"0\", qtde_estoque_sem_presenca = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 114
  testRunner.And("Saldo de estoque = \"0\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -570,22 +586,6 @@ this.FeatureBackground();
  testRunner.And("Movimento de estoque = \"40\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 116
- testRunner.And("Movimento ID_ESTOQUE_SEM_PRESENCA = \"6\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 119
- testRunner.When("Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = \"um\", qtde_a_sair = \"12\", qtde_auto" +
-                        "rizada_sem_presenca = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 120
- testRunner.Then("Retorno sucesso, qtde_estoque_vendido = \"0\", qtde_estoque_sem_presenca = \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 121
- testRunner.And("Saldo de estoque = \"0\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 122
- testRunner.And("Movimento de estoque = \"40\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 123
  testRunner.And("Movimento ID_ESTOQUE_SEM_PRESENCA = \"18\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -600,7 +600,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Respeita ordem FIFO", null, tagsOfScenario, argumentsOfScenario);
-#line 125
+#line 118
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -623,23 +623,23 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 126
+#line 119
  testRunner.Given("Definir2 saldo de estoque = \"12\" para produto \"um\" com valor \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 127
+#line 120
  testRunner.Given("Definir2 saldo de estoque = \"14\" para produto \"um\" com valor \"222\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 128
+#line 121
  testRunner.When("Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = \"um\", qtde_a_sair = \"15\", qtde_auto" +
                         "rizada_sem_presenca = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 129
+#line 122
  testRunner.Then("Saldo2 de estoque = \"0\" para produto \"um\" com valor \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 130
+#line 123
  testRunner.Then("Saldo2 de estoque = \"11\" para produto \"um\" com valor \"222\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 131
+#line 124
  testRunner.And("Movimento ID_ESTOQUE_SEM_PRESENCA = \"0\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -654,7 +654,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("FIFO com mais de um produto", null, tagsOfScenario, argumentsOfScenario);
-#line 135
+#line 127
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -677,43 +677,94 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 136
+#line 128
  testRunner.Given("Definir2 saldo de estoque = \"10\" para produto \"um\" com valor \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 137
+#line 129
  testRunner.Given("Definir2 saldo de estoque = \"14\" para produto \"um\" com valor \"222\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 138
+#line 130
  testRunner.Given("Definir2 saldo de estoque = \"21\" para produto \"dois\" com valor \"333\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 139
+#line 131
  testRunner.Given("Definir2 saldo de estoque = \"24\" para produto \"dois\" com valor \"444\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 141
+#line 132
  testRunner.When("Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = \"dois\", qtde_a_sair = \"44\", qtde_au" +
                         "torizada_sem_presenca = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 142
+#line 133
  testRunner.Then("Saldo2 de estoque = \"0\" para produto \"dois\" com valor \"333\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 143
+#line 134
  testRunner.Then("Saldo2 de estoque = \"1\" para produto \"dois\" com valor \"444\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 144
+#line 135
  testRunner.And("Movimento ID_ESTOQUE_SEM_PRESENCA = \"0\" para produto \"dois\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 146
+#line 136
  testRunner.When("Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = \"um\", qtde_a_sair = \"15\", qtde_auto" +
                         "rizada_sem_presenca = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 147
+#line 137
  testRunner.Then("Saldo2 de estoque = \"0\" para produto \"um\" com valor \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 148
+#line 138
  testRunner.Then("Saldo2 de estoque = \"9\" para produto \"um\" com valor \"222\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 149
+#line 139
  testRunner.And("Movimento ID_ESTOQUE_SEM_PRESENCA = \"0\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Não conseguiu movimentar qtde suficiente")]
+        [Xunit.TraitAttribute("FeatureTitle", "ESTOQUE_produto_saida_v2_rotina")]
+        [Xunit.TraitAttribute("Description", "Não conseguiu movimentar qtde suficiente")]
+        [Xunit.TraitAttribute("Category", "ignore")]
+        public virtual void NaoConseguiuMovimentarQtdeSuficiente()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Não conseguiu movimentar qtde suficiente", @"esta duplicado pois estou tendo entrar no erro
+Produto "" + id_produto + "" do fabricante "" + id_fabricante + 
+"": faltam "" + ((qtde_a_sair - qtde_autorizada_sem_presenca) - qtde_movimentada) + 
+"" unidades no estoque para poder atender ao pedido.
+Não consigo entrar na mensagem de erro que quero", tagsOfScenario, argumentsOfScenario);
+#line 142
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 6
+this.FeatureBackground();
+#line hidden
+#line 148
+ testRunner.Given("Definir saldo de estoque = \"50\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 149
+ testRunner.When("Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = \"um\", qtde_a_sair = \"51\", qtde_auto" +
+                        "rizada_sem_presenca = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 150
+ testRunner.Then("msg_erro \"Ajustar\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

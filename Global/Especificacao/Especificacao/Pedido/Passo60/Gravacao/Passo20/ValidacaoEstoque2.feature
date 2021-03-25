@@ -1,7 +1,7 @@
 ﻿@ignore
 Feature: ValidacaoEstoque2.feature
 
-Scenario: Validar estoque 2
+Scenario: Validar estoque 2 - Feito em outro arquivo
 #loja/PedidoNovoConsiste.asp
 #loja/PedidoNovoConfirma.asp
 #exatamente o mesmo código nas duas

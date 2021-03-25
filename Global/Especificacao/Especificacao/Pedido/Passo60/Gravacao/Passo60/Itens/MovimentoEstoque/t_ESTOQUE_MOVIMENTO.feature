@@ -99,6 +99,8 @@ Scenario: Verificar qtde movimentada - erro
 	When Lista de itens "0" informo "Qtde" = "100"
 	When Deixar forma de pagamento consistente
 	When Recalcular totais do pedido
-	Given Definir saldo de estoque = "49" para produto "um"
+	Given Definir saldo de estoque = "50" para produto "um"
+	Then Sem nenhum erro
+	Given Pedido base
 	#When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "100", qtde_autorizada_sem_presenca = "49"
 	Then Erro "Ajustar teste"
