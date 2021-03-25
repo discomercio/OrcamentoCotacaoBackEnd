@@ -65,7 +65,7 @@ Detalhes do auto-split: Modo de seleção do CD = AUTOMATICO
             var tpedido_pai = Gravacao.Tpedido_pai;
 
             s_log = s_log + "vl total=" + Formata_moeda(tpedido_pai.Vl_Total_Familia); //a variável vl_total é salva em vl_total_familia
-            s_log = s_log + "; RA=" + Formata_texto_log(tpedido_pai.Opcao_Possui_RA == "N" ? "" : tpedido_pai.Opcao_Possui_RA); //levemente diferente; colocamos no log o que salvamos no banco porque não recebemos esse flag
+            s_log = s_log + "; RA=" + Formata_texto_log(tpedido_pai.Opcao_Possui_RA == "-" ? "" : tpedido_pai.Opcao_Possui_RA); //levemente diferente; colocamos no log o que salvamos no banco porque não recebemos esse flag
             s_log = s_log + "; indicador=" + Formata_texto_log(tpedido_pai.Indicador);
             s_log = s_log + "; vl_total_NF=" + Formata_moeda(tpedido_pai.Vl_Total_NF);
             s_log = s_log + "; vl_total_RA=" + Formata_moeda(tpedido_pai.Vl_Total_RA);

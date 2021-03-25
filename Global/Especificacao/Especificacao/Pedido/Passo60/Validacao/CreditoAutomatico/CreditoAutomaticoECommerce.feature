@@ -2,6 +2,9 @@
 @GerenciamentoBanco
 Feature: CreditoAutomaticoECommerce
 
+Background: Configuracao
+	Given Reiniciar banco ao terminar cenário
+
 #tratado no código em \arclube\Global\Pedido\Criacao\Passo30\CamposMagentoExigidos.cs:ConfigurarBlnPedidoECommerceCreditoOkAutomatico()
 #
 #'TRATAMENTO PARA CADASTRAMENTO DE PEDIDOS DO SITE MAGENTO DO ARCLUBE
