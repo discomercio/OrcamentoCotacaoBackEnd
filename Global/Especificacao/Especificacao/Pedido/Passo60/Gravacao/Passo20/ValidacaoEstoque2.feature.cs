@@ -83,14 +83,14 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar estoque 2")]
+        [Xunit.SkippableFactAttribute(DisplayName="Validar estoque 2 - Feito em outro arquivo")]
         [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEstoque2.feature")]
-        [Xunit.TraitAttribute("Description", "Validar estoque 2")]
-        public virtual void ValidarEstoque2()
+        [Xunit.TraitAttribute("Description", "Validar estoque 2 - Feito em outro arquivo")]
+        public virtual void ValidarEstoque2_FeitoEmOutroArquivo()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar estoque 2", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar estoque 2 - Feito em outro arquivo", null, tagsOfScenario, argumentsOfScenario);
 #line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden

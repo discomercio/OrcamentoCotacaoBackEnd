@@ -1,5 +1,9 @@
 ﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
+@GerenciamentoBanco
 Feature: CreditoAutomaticoECommerce
+
+Background: Configuracao
+	Given Reiniciar banco ao terminar cenário
 
 #tratado no código em \arclube\Global\Pedido\Criacao\Passo30\CamposMagentoExigidos.cs:ConfigurarBlnPedidoECommerceCreditoOkAutomatico()
 #
@@ -99,6 +103,18 @@ Scenario: CreditoAutomaticoECommerce - NUMERO_LOJA_ECOMMERCE_AR_CLUBE
 	When Informo "appsettings.Loja" = "201"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro criado, verificar campo "tipo_parcelamento" = "5"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "vendedor" = "USRMAG"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito" = "2"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito_usuario" = "AUTOMÁTICO"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_endereco_tratar_status" = "0"
+
+Scenario: CreditoAutomaticoECommerce - parametro_1_campo_flag = 1
+	#if rs2("parametro_1_campo_flag") = 1 then blnPedidoECommerceCreditoOkAutomatico = True
+	Given Pedido base
+	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "123"
+	Given Tabela "T_CODIGO_DESCRICAO" registro com campo grupo "PedidoECommerce_Origem_Grupo" e codigo "001", alterar campo "parametro_1_campo_flag" = "1"
+	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro criado, verificar campo "tipo_parcelamento" = "1"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "vendedor" = "USRMAG"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito" = "2"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito_usuario" = "AUTOMÁTICO"

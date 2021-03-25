@@ -89,7 +89,14 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo90
  testRunner.Given("Ignorar cenário no ambiente \"Especificacao.Prepedido.PrepedidoSteps\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 7
+ testRunner.Given("Ignorar cenário no ambiente \"Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadas" +
+                    "trarPedido.CadastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 8
  testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 9
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
         
@@ -98,15 +105,15 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo90
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Log - pedido magento")]
+        [Xunit.SkippableFactAttribute(DisplayName="Log - pedido magento sem indicador")]
         [Xunit.TraitAttribute("FeatureTitle", "Especificacao\\Pedido\\Passo60\\Gravacao\\Passo90\\Log")]
-        [Xunit.TraitAttribute("Description", "Log - pedido magento")]
-        public virtual void Log_PedidoMagento()
+        [Xunit.TraitAttribute("Description", "Log - pedido magento sem indicador")]
+        public virtual void Log_PedidoMagentoSemIndicador()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Log - pedido magento", null, tagsOfScenario, argumentsOfScenario);
-#line 14
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Log - pedido magento sem indicador", null, tagsOfScenario, argumentsOfScenario);
+#line 15
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -129,20 +136,13 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 16
- testRunner.Given("Ignorar cenário no ambiente \"Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadas" +
-                        "trarPedido.CadastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 17
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 18
  testRunner.When("Informo \"InfCriacaoPedido.Pedido_bs_x_ac\" = \"123457092\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 19
+#line 18
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 20
+#line 19
  testRunner.And("Tabela \"t_LOG\" pedido gerado e operacao = \"OP_LOG_PEDIDO_NOVO\", verificar campo \"" +
                         "complemento\" = \"vl total=3.132,90; ra=\"\"; indicador=\"\"; vl_total_nf=3.132,90; vl" +
                         "_total_ra=0,00; perc_rt=0; qtde_parcelas=1; st_etg_imediata=2; stbemusoconsumo=1" +
@@ -163,6 +163,153 @@ this.FeatureBackground();
                         "26,58; estoque_vendido=2;\\r 2x003221(003); preco_lista=939,87; desc_dado=0; prec" +
                         "o_venda=939,87; preco_nf=939,87; custofinancforneccoeficiente=1; custofinancforn" +
                         "ecprecolistabase=939,87; estoque_vendido=2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 20
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"opcao_possui_ra\" = \"-\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Log - pedido magento com indicador")]
+        [Xunit.TraitAttribute("FeatureTitle", "Especificacao\\Pedido\\Passo60\\Gravacao\\Passo90\\Log")]
+        [Xunit.TraitAttribute("Description", "Log - pedido magento com indicador")]
+        public virtual void Log_PedidoMagentoComIndicador()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Log - pedido magento com indicador", null, tagsOfScenario, argumentsOfScenario);
+#line 22
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 23
+ testRunner.When("Informo \"InfCriacaoPedido.Pedido_bs_x_ac\" = \"123456789\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 24
+ testRunner.When("Informo \"Frete\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 25
+ testRunner.When("Lista de itens \"0\" informo \"Preco_NF\" = \"704.05\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 26
+ testRunner.When("Lista de itens \"1\" informo \"Preco_NF\" = \"1051.07\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 27
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 28
+ testRunner.And("Tabela \"t_LOG\" pedido gerado e operacao = \"OP_LOG_PEDIDO_NOVO\", verificar campo \"" +
+                        "complemento\" = \"vl total=3.132,90; ra=S; indicador=frete; vl_total_nf=3.510,24; " +
+                        "vl_total_ra=377,34; perc_rt=0; qtde_parcelas=1; st_etg_imediata=2; stbemusoconsu" +
+                        "mo=1; instaladorinstalastatus=1; obs_1=teste magento; pedido_bs_x_ac = 123456789" +
+                        "; marketplace_codigo_origem = 001; status da análise crédito: 8 - pendente venda" +
+                        "s; tipo_parcelamento=1; av_forma_pagto=6; custofinancfornectipoparcelamento=av; " +
+                        "custofinancfornecqtdeparcelas=0; endereço cobrança=rua professor fábio fanucchi," +
+                        " 97 - jardim são paulo(zona norte) - são paulo - sp - 0204-080 (email=testecad@g" +
+                        "abriel.com, email_xml=, nome=vivian, ddd_res=11, tel_res=11111111, ddd_com=11, t" +
+                        "el_com=12345678, ramal_com=, ddd_cel=11, tel_cel=981603313, ddd_com_2=, tel_com_" +
+                        "2=, ramal_com_2=, tipo_pessoa=pf, cnpj_cpf=14039603052, contribuinte_icms_status" +
+                        "=0, produtor_rural_status=1, ie=, rg=, contato=); endereço entrega=mesmo do cada" +
+                        "stro; escolha automática de transportadora=n; garantiaindicadorstatus=0; perc_de" +
+                        "sagio_ra_liquida=0; pedido_bs_x_at=; cod_origem_pedido=001; operação de origem: " +
+                        "cadastramento semi-automático de pedido do e-commerce (nº magento pedido_bs_x_ac" +
+                        "=123456789;\\r 2x003220(003); preco_lista=626,58; desc_dado=0; preco_venda=626,58" +
+                        "; preco_nf=704,05; custofinancforneccoeficiente=1; custofinancfornecprecolistaba" +
+                        "se=626,58; estoque_vendido=2;\\r 2x003221(003); preco_lista=939,87; desc_dado=0; " +
+                        "preco_venda=939,87; preco_nf=1.051,07; custofinancforneccoeficiente=1; custofina" +
+                        "ncfornecprecolistabase=939,87; estoque_vendido=2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 29
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"opcao_possui_ra\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Log - pedido magento com indicador e sem valor de RA")]
+        [Xunit.TraitAttribute("FeatureTitle", "Especificacao\\Pedido\\Passo60\\Gravacao\\Passo90\\Log")]
+        [Xunit.TraitAttribute("Description", "Log - pedido magento com indicador e sem valor de RA")]
+        public virtual void Log_PedidoMagentoComIndicadorESemValorDeRA()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Log - pedido magento com indicador e sem valor de RA", null, tagsOfScenario, argumentsOfScenario);
+#line 31
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 33
+ testRunner.When("Informo \"InfCriacaoPedido.Pedido_bs_x_ac\" = \"123456789\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 34
+ testRunner.When("Informo \"Frete\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 35
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 36
+ testRunner.And("Tabela \"t_LOG\" pedido gerado e operacao = \"OP_LOG_PEDIDO_NOVO\", verificar campo \"" +
+                        "complemento\" = \"vl total=3.132,90; ra=N; indicador=frete; vl_total_nf=3.132,90; " +
+                        "vl_total_ra=0,00; perc_rt=0; qtde_parcelas=1; st_etg_imediata=2; stbemusoconsumo" +
+                        "=1; instaladorinstalastatus=1; obs_1=teste magento; pedido_bs_x_ac = 123456789; " +
+                        "marketplace_codigo_origem = 001; status da análise crédito: 8 - pendente vendas;" +
+                        " tipo_parcelamento=1; av_forma_pagto=6; custofinancfornectipoparcelamento=av; cu" +
+                        "stofinancfornecqtdeparcelas=0; endereço cobrança=rua professor fábio fanucchi, 9" +
+                        "7 - jardim são paulo(zona norte) - são paulo - sp - 0204-080 (email=testecad@gab" +
+                        "riel.com, email_xml=, nome=vivian, ddd_res=11, tel_res=11111111, ddd_com=11, tel" +
+                        "_com=12345678, ramal_com=, ddd_cel=11, tel_cel=981603313, ddd_com_2=, tel_com_2=" +
+                        ", ramal_com_2=, tipo_pessoa=pf, cnpj_cpf=14039603052, contribuinte_icms_status=0" +
+                        ", produtor_rural_status=1, ie=, rg=, contato=); endereço entrega=mesmo do cadast" +
+                        "ro; escolha automática de transportadora=n; garantiaindicadorstatus=0; perc_desa" +
+                        "gio_ra_liquida=0; pedido_bs_x_at=; cod_origem_pedido=001; operação de origem: ca" +
+                        "dastramento semi-automático de pedido do e-commerce (nº magento pedido_bs_x_ac=1" +
+                        "23456789;\\r 2x003220(003); preco_lista=626,58; desc_dado=0; preco_venda=626,58; " +
+                        "preco_nf=626,58; custofinancforneccoeficiente=1; custofinancfornecprecolistabase" +
+                        "=626,58; estoque_vendido=2;\\r 2x003221(003); preco_lista=939,87; desc_dado=0; pr" +
+                        "eco_venda=939,87; preco_nf=939,87; custofinancforneccoeficiente=1; custofinancfo" +
+                        "rnecprecolistabase=939,87; estoque_vendido=2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 37
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"opcao_possui_ra\" = \"N\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
