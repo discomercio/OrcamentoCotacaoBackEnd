@@ -371,7 +371,7 @@ this.FeatureBackground();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("configurações da t_CODIGO_DESCRICAO para PedidoECommerce_Origem_Grupo (testar o b" +
                     "lnPedidoECommerceCreditoOkAutomatico e a exigência de nº do pedido do marketplac" +
                     "e)", null, tagsOfScenario, argumentsOfScenario);
-#line 135
+#line 151
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -391,7 +391,10 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 162
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 178
  testRunner.Given("Fazer este teste", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
