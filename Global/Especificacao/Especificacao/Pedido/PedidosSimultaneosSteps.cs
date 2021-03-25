@@ -27,7 +27,7 @@ namespace Especificacao.Especificacao.Pedido
             //conta o número de pedidos
             var pedidos = (from p in contextoBdProvider.GetContextoLeitura().Tpedidos select p).Count();
             var multiplicadorPorPedido = 2; //magento e loja
-            var pedidosPorThread = 4; //magento e loja
+            var pedidosPorThread = 5;
             var numeroThreads = 10;
 
             CadastrarPedidoIncialECliente();
@@ -39,7 +39,8 @@ namespace Especificacao.Especificacao.Pedido
 
             //verifica o total de pedidos criados
             var novosPedidos = (from p in contextoBdProvider.GetContextoLeitura().Tpedidos select p).Count();
-            Assert.Equal(pedidos + numeroThreads * pedidosPorThread * multiplicadorPorPedido, novosPedidos);
+            //tem um multiplicadorPorPedido a mais por causa do CadastrarPedidoIncialECliente
+            Assert.Equal(pedidos + multiplicadorPorPedido + numeroThreads * pedidosPorThread * multiplicadorPorPedido, novosPedidos);
         }
 
         private static void CriarThreads(int pedidosPorThread, int numeroThreads, List<Thread> threads)
@@ -48,14 +49,23 @@ namespace Especificacao.Especificacao.Pedido
             {
                 threads.Add(new Thread(s =>
                 {
-                    PedidoSteps pedidoSteps = new PedidoSteps();
-                    pedidoSteps.GivenIgnorarCenarioNoAmbiente("Especificacao.Prepedido.PrepedidoSteps");
-                    //fazemos um pedido antes para o magento cadastrar o cliente
-                    for (var i2 = 0; i2 < pedidosPorThread - 1; i2++)
+                    for (var i2 = 0; i2 < pedidosPorThread; i2++)
                     {
-                        Thread.Sleep(10);
-                        pedidoSteps.GivenPedidoBase();
-                        pedidoSteps.ThenSemNenhumErro();
+                        PedidoSteps pedidoSteps = new PedidoSteps();
+                        pedidoSteps.GivenIgnorarCenarioNoAmbiente("Especificacao.Prepedido.PrepedidoSteps");
+                        try
+                        {
+                            //dorme um tempo aleatório apra deslocar as threads
+                            Thread.Sleep(new Random().Next(1, 500));
+                            Testes.Utils.LogTestes.LogTestes.LogMensagemOperacao($"CriarThreads iniciar pedido thread {Thread.CurrentThread.ManagedThreadId} número {i2}", typeof(PedidosSimultaneosSteps));
+                            pedidoSteps.GivenPedidoBase();
+                            pedidoSteps.ThenSemNenhumErro();
+                        }
+                        catch (Exception e)
+                        {
+                            Testes.Utils.LogTestes.LogTestes.ErroNosTestes($"EXCECAO: ERRO: na criacao do pedido: {e.Message} {e.StackTrace} {e.ToString()}");
+                            throw;
+                        }
                     }
                 }));
             }

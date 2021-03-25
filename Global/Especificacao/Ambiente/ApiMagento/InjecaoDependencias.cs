@@ -83,8 +83,8 @@ namespace Especificacao.Ambiente.ApiMagento
             configuracaoApiMagento.DadosIndicador.Loja = "201";
 
             //colocamos um limite alto no número de pedidos para nao dar erro nos testes porque geramos muitos pedidos
-            configuracaoApiMagento.LimitePedidos.LimitePedidosExatamenteIguais_Numero = 1000;
-            configuracaoApiMagento.LimitePedidos.LimitePedidosMesmoCpfCnpj_Numero = 10;
+            configuracaoApiMagento.LimitePedidos.LimitePedidosExatamenteIguais_Numero = 10000;
+            configuracaoApiMagento.LimitePedidos.LimitePedidosMesmoCpfCnpj_Numero = 10000;
             configuracaoApiMagento.LimitePedidos.LimiteItens = 12;
         }
     }

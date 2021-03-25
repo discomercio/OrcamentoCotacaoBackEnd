@@ -35,7 +35,13 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
             {
                 if (UsarSqlServerNosTestesAutomatizados)
                 {
-                    var conexaolocal = "server=ITS-DBDEV\\SQL2017;database=ARCLUBE_TESTES;Uid=appAirClube;Pwd=appAirClube;";
+                    string conexaolocal;
+                    //algumas tentativas:
+                    conexaolocal = "server=ITS-DBDEV\\SQL2017;database=ARCLUBE_TESTES;Uid=appAirClube;Pwd=appAirClube;Pooling=false;Max Pool Size=1;";
+                    conexaolocal = "server=ITS-DBDEV\\SQL2017;database=ARCLUBE_TESTES;Uid=appAirClube;Pwd=appAirClube;Pooling=true;Max Pool Size=400;";
+                    conexaolocal = "server=ITS-DBDEV\\SQL2017;database=ARCLUBE_TESTES;Uid=appAirClube;Pwd=appAirClube;MultipleActiveResultSets=true;";
+                    //a que temos no appsettngs
+                    conexaolocal = "server=ITS-DBDEV\\SQL2017;database=ARCLUBE_TESTES;Uid=appAirClube;Pwd=appAirClube;";
                     options.UseSqlServer(conexaolocal);
                 }
                 else

@@ -43,8 +43,11 @@ namespace Especificacao.Testes.Utils.LogTestes
             string typeFullName = NomeTipo(getType);
 
             string msglog = DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss:ffff") + " - " + typeFullName + " " + msg;
-            GetInstance().Writer.WriteLine(msglog);
-            GetInstance().Writer.Flush();
+            lock (GetInstance().Writer)
+            {
+                GetInstance().Writer.WriteLine(msglog);
+                GetInstance().Writer.Flush();
+            }
         }
 
         public static string NomeTipo(Type getType)
@@ -59,8 +62,11 @@ namespace Especificacao.Testes.Utils.LogTestes
         public void LogMensagem(string msg)
         {
             string msglog = DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss:ffff") + " - " + msg;
-            Writer.WriteLine(msglog);
-            Writer.Flush();
+            lock (Writer)
+            {
+                Writer.WriteLine(msglog);
+                Writer.Flush();
+            }
         }
 
         public static void ErroNosTestes(string msg)
@@ -85,8 +91,11 @@ namespace Especificacao.Testes.Utils.LogTestes
         {
             var este = GetInstance();
             string msglog = DateTime.Now.ToString("yyyy.MM.dd HH:mm:ss:ffff") + " - " + $"StackTrace: '{Environment.StackTrace}'";
-            este.Writer.WriteLine(msglog);
-            este.Writer.Flush();
+            lock (este.Writer)
+            {
+                este.Writer.WriteLine(msglog);
+                este.Writer.Flush();
+            }
         }
 
         #region IDisposable Support

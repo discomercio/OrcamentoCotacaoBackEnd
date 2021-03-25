@@ -37,12 +37,16 @@ namespace Especificacao.Testes.Utils.ListaDependencias
 
         public static void AdicionarDependencia(string ambiente, object? instancia, string especificacao) => AdicionarDependenciaInterno(ambiente, instancia, especificacao, ambientesRegistrados);
 
+        private static readonly object _lockObject = new object();
         private static void AdicionarDependenciaInterno(string ambiente, object? instancia, string especificacao, ConcurrentDictionary<string, ConcurrentBag<TextoInstancia>> ambientes)
         {
-            if (!ambientes.ContainsKey(ambiente))
-                ambientes.AddOrUpdate(ambiente, new ConcurrentBag<TextoInstancia>(), (s, i) => i);
-            if (!ambientes[ambiente].Where(r => r.Texto == especificacao && r.Instancia == instancia).Any())
-                ambientes[ambiente].Add(new TextoInstancia() { Texto = especificacao, Instancia = instancia });
+            lock (_lockObject)
+            {
+                if (!ambientes.ContainsKey(ambiente))
+                    ambientes.AddOrUpdate(ambiente, new ConcurrentBag<TextoInstancia>(), (s, i) => i);
+                if (!ambientes[ambiente].Where(r => r.Texto == especificacao && r.Instancia == instancia).Any())
+                    ambientes[ambiente].Add(new TextoInstancia() { Texto = especificacao, Instancia = instancia });
+            }
         }
 
         public static void GivenEspecificadoEm(string ambiente, string especificacao)
