@@ -122,7 +122,7 @@ Detalhes do auto-split: Modo de seleção do CD = AUTOMATICO
             else
             {
                 s_log = s_log + "; status da análise crédito: " + Formata_texto_log_short(tpedido_pai.Analise_Credito) + " - "
-                    + Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll.Descricao_analise_credito_CadastroPedido(Convert.ToString(tpedido_pai.Analise_Credito));
+                    + Criacao.pedidoVisualizacaoBll.DescricaoAnaliseCreditoCadastroPedido(Convert.ToString(tpedido_pai.Analise_Credito), false, tpedido_pai.Pedido, tpedido_pai.Orcamentista);
             }
 
 

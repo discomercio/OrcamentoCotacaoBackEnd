@@ -24,7 +24,6 @@ namespace PrepedidoApi.Controllers
         private readonly FormaPagtoPrepedidoBll formaPagtoPrepedidoBll;
         private readonly CoeficientePrepedidoBll coeficientePrepedidoBll;
         private readonly IConfiguration configuration;
-
         public PrepedidoController(Prepedido.PrepedidoBll prepedidoBll,
             PrepedidoBusiness.Bll.PrepedidoApiBll prepedidoApiBll,
             InfraIdentity.IServicoDecodificarToken servicoDecodificarToken,

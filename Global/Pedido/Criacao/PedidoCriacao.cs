@@ -12,6 +12,7 @@ using Produto.RegrasCrtlEstoque;
 using Cliente.Dados;
 using Cliente;
 using Cep;
+using Prepedido.PedidoVisualizacao;
 
 #nullable enable
 
@@ -26,6 +27,7 @@ namespace Pedido.Criacao
         public readonly Prepedido.PrepedidoBll PrepedidoBll;
         public readonly Prepedido.FormaPagto.FormaPagtoBll FormaPagtoBll;
         public readonly Prepedido.ValidacoesPrepedidoBll ValidacoesPrepedidoBll;
+        public readonly PedidoVisualizacaoBll pedidoVisualizacaoBll;
         public readonly ClienteBll ClienteBll;
         public readonly CepBll CepBll;
         public readonly IBancoNFeMunicipio BancoNFeMunicipio;
@@ -35,6 +37,7 @@ namespace Pedido.Criacao
         public PedidoCriacao(InfraBanco.ContextoBdProvider contextoProvider,
             Prepedido.FormaPagto.ValidacoesFormaPagtoBll validacoesFormaPagtoBll, Prepedido.PrepedidoBll prepedidoBll,
             Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll, Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll,
+            Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll pedidoVisualizacaoBll,
             ClienteBll clienteBll, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio)
         {
             this.ContextoProvider = contextoProvider;
@@ -42,6 +45,7 @@ namespace Pedido.Criacao
             this.PrepedidoBll = prepedidoBll;
             this.FormaPagtoBll = formaPagtoBll;
             this.ValidacoesPrepedidoBll = validacoesPrepedidoBll;
+            this.pedidoVisualizacaoBll = pedidoVisualizacaoBll;
             this.ClienteBll = clienteBll;
             this.CepBll = cepBll;
             this.BancoNFeMunicipio = bancoNFeMunicipio;
