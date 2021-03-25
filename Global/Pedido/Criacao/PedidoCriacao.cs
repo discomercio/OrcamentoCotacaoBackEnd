@@ -64,6 +64,9 @@ namespace Pedido.Criacao
             /*
             precisamos deste lock porque temos erros de timeout com acessos simultâneos. Não entendi porque isso ocorre. 
             Se removemos as transações não dá mais erro, mas precisamos das transações.
+            Alémd o timeout, tb recebemos este erro:
+                An exception has been raised that is likely due to a transient failure. Consider enabling transient error resiliency by adding 'EnableRetryOnFailure()' to the 'UseSqlServer' call.
+            Mas usar a sugestão da mensagem de erro só empurra o problema porque precisa mudar a forma como a transação é iniciada.
             Também poderíamos deixar a exceção sendo lançada, mas isso só iria causar problemas.
             Este lock não tem possibilidade de gerar deadlock e não tem efeito sobre o desempenho
             porque a criação do pedido é feita em uma transação que bloqueia outras criações simultâneas.

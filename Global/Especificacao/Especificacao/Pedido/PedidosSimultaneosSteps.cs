@@ -22,15 +22,12 @@ namespace Especificacao.Especificacao.Pedido
         [Given(@"Testar pedidos simultâneos")]
         public void GivenTestarPedidosSimultaneos()
         {
-
-
             //conta o número de pedidos
             var pedidos = (from p in contextoBdProvider.GetContextoLeitura().Tpedidos select p).Count();
             var multiplicadorPorPedido = 2; //magento e loja
             var pedidosPorThread = 5;
             var numeroThreads = 10;
 
-            CadastrarPedidoIncialECliente();
             var threads = new List<Thread>();
             CriarThreads(pedidosPorThread, numeroThreads, threads);
             IniciarTHreads(threads);
@@ -39,8 +36,7 @@ namespace Especificacao.Especificacao.Pedido
 
             //verifica o total de pedidos criados
             var novosPedidos = (from p in contextoBdProvider.GetContextoLeitura().Tpedidos select p).Count();
-            //tem um multiplicadorPorPedido a mais por causa do CadastrarPedidoIncialECliente
-            Assert.Equal(pedidos + multiplicadorPorPedido + numeroThreads * pedidosPorThread * multiplicadorPorPedido, novosPedidos);
+            Assert.Equal(pedidos + numeroThreads * pedidosPorThread * multiplicadorPorPedido, novosPedidos);
         }
 
         private static void CriarThreads(int pedidosPorThread, int numeroThreads, List<Thread> threads)
@@ -88,19 +84,5 @@ namespace Especificacao.Especificacao.Pedido
                 t.Join();
         }
 
-
-        private static void CadastrarPedidoIncialECliente()
-        {
-            /*
-            como o magento cadastra o cliente se não existir, nesse processo dá sim problema com multiplas threads:
-            ele verifica que o cliente não está cadastrado, começa a cadastrar o cliente,
-            nisso outra thread verifica que não está cadastrado, começa a cadastrar e dá erro porque a primeira thread terminou de cadastrar
-            */
-
-            PedidoSteps pedidoSteps = new PedidoSteps();
-            pedidoSteps.GivenIgnorarCenarioNoAmbiente("Especificacao.Prepedido.PrepedidoSteps");
-            pedidoSteps.GivenPedidoBase();
-            pedidoSteps.ThenSemNenhumErro();
-        }
     }
 }

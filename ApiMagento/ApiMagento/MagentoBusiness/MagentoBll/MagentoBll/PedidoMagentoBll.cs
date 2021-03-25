@@ -43,7 +43,25 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             this.pedidoMagentoClienteBll = pedidoMagentoClienteBll;
         }
 
+        private static readonly object _lockObjectCadastrarPedidoMagento = new object();
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<PedidoResultadoMagentoDto> CadastrarPedidoMagento(PedidoMagentoDto pedidoMagento, string usuario)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        {
+            /*
+            como o magento cadastra o cliente se não existir, nesse processo dá sim problema com multiplas threads:
+            ele verifica que o cliente não está cadastrado, começa a cadastrar o cliente,
+            nisso outra thread verifica que não está cadastrado, começa a cadastrar e dá erro porque a primeira thread 
+            terminou de cadastrar.
+
+            Para evitar esse problema, que seria muito raro de qq forma, colocamos esse lock.
+            */
+            lock (_lockObjectCadastrarPedidoMagento)
+            {
+                return CadastrarPedidoMagentoProtegido(pedidoMagento, usuario).Result;
+            }
+        }
+        private async Task<PedidoResultadoMagentoDto> CadastrarPedidoMagentoProtegido(PedidoMagentoDto pedidoMagento, string usuario)
         {
             PedidoResultadoMagentoDto resultado = new PedidoResultadoMagentoDto();
 
