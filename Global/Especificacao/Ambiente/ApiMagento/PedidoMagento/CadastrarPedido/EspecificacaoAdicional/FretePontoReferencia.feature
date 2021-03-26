@@ -25,13 +25,18 @@ Scenario: pedido sem indicador
 	And Tabela "t_PEDIDO" registro criado, verificar campo "permite_RA_status" = "0"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "Opcao_Possui_RA" = "-"
 
-#esse teste esta sendo verificado no teste acima
-@ignore
 Scenario: campo "frete" salvo em t_PEDIDO.magento_shipping_amount
 	#O valor do frete no momento não estamos tratando no sistema, mas acho que podemos salvar a informação no campo t_PEDIDO.vl_frete
 	#Por enquanto, todos os registros estão c/ esse valor zerado e o campo não é usado em nenhum lugar, mas já que temos
 	#a possibilidade de salvar essa informação, creio que deveríamos gravar nesse campo
-	When Fazer esta validação
+	#em 210316 reuniao semanal
+	#campo apimagento.frete (colocar comentário no swagger: valor liquido do frete) e gravar em t_pedido.magento_shipping_amount
+	#porque o frete está todo com 0, e pode ser que afete alguma coisa no sistema. COmo esse frete do magento é somente ifnormativo, decidimos guardar nesse campo
+	Given Pedido base
+	When Informo "Frete" = "123"
+	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro criado, verificar campo "Frete_valor" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "magento_shipping_amount" = "123"
 
 Scenario: Ponto de Referência - diferente de EndEtg_endereco_complemento
 	#Colocar a informação do ponto de referência no campo 'Constar na NF'. Comparar o conteúdo do ponto de referência

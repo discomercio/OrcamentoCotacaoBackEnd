@@ -62,10 +62,11 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
                     "s não atende completamente; o produto 1 é vendido sem presença\r\n\t440 - Idem mas " +
                     "não atende completamente; o produto 1 e 2 são vendidos sem presença\r\n500 - Três " +
                     "produtos atendidos por CDs com duas regras com prioridades diferentes\r\n600 - Tes" +
-                    "tar status de ativo das regras\r\n\r\n\r\nTestes não atuomatizados:\r\nFazer um roteiro " +
-                    "manual para criar pedidos, dar entrada no estoque pelo ASP\r\ne verficiar que a ro" +
-                    "tina que processa os produtos pendentes atende esses pedidos\r\ne que o estoque fi" +
-                    "cou consistente.", ProgrammingLanguage.CSharp, new string[] {
+                    "tar status de ativo das regras\r\n\tJá é feito na etapa 200 (desativamos as regras " +
+                    "nas diferentes tabelas)\r\n\r\n\r\nTestes não atuomatizados:\r\nFazer um roteiro manual " +
+                    "para criar pedidos, dar entrada no estoque pelo ASP\r\ne verficiar que a rotina qu" +
+                    "e processa os produtos pendentes atende esses pedidos\r\ne que o estoque ficou con" +
+                    "sistente.", ProgrammingLanguage.CSharp, new string[] {
                         "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -114,7 +115,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("fazer", null, tagsOfScenario, argumentsOfScenario);
-#line 62
+#line 63
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -134,7 +135,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 63
+#line 64
  testRunner.Given("falta fazer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }

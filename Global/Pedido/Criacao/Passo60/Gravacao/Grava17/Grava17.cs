@@ -176,12 +176,12 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava17
                         }
                         else
                         {
-                            Retorno.ListaErros.Add($"Produto {linha_pedido.Pedido.Produto} do fabricante {linha_pedido.Pedido.Fabricante}: desconto de {desc_dado_arredondado}% excede o máximo autorizado.");
+                            Retorno.ListaErros.Add($"Produto {linha_pedido.Pedido.Produto} do fabricante {linha_pedido.Pedido.Fabricante}: desconto de {desc_dado_arredondado}% excede o máximo autorizado de {desconto.Desc_max}.");
                         }
                     }
                     else
                     {
-                        Retorno.ListaErros.Add($"Produto {linha_pedido.Pedido.Produto} do fabricante {linha_pedido.Pedido.Fabricante}: desconto de {desc_dado_arredondado}% excede o máximo permitido.");
+                        Retorno.ListaErros.Add($"Produto {linha_pedido.Pedido.Produto} do fabricante {linha_pedido.Pedido.Fabricante}: desconto de {desc_dado_arredondado}% excede o máximo permitido de {Execucao.Perc_comissao_e_desconto_a_utilizar}.");
                     }
                 }
 

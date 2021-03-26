@@ -1065,6 +1065,11 @@ namespace Especificacao.Testes.Utils.BancoTestes
             }
         }
         #endregion
+        [Given(@"Validação feita em outro arquivo")]
+        public void GivenValidacaoFeitaEmOutroArquivo()
+        {
+            //não fazemos nada mesmo, é só documentação
+        }
     }
 }
 

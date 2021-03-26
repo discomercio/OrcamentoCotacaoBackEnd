@@ -107,6 +107,17 @@ Scenario: Sem validação de cidade X CEP
 	When Informo "EndEtg_bairro" = "teste"
 	Then Sem nenhum erro
 
+	#o mesmo CEP agora com outra cidade
+	Given Pedido base
+	When Informo "EndEtg_cidade" = "Santos"
+	When Informo "EndEtg_uf" = "SP"
+	When Informo "EndEtg_cep" = "02045080"
+	When Informo "EndEtg_endereco" = "teste"
+	When Informo "EndEtg_endereco_numero" = "97"
+	When Informo "EndEtg_endereco_complemento" = "teste"
+	When Informo "EndEtg_bairro" = "teste"
+	Then Sem nenhum erro
+
 @GerenciamentoBanco
 @ignore
 Scenario: Sem validação de endereço X CEP

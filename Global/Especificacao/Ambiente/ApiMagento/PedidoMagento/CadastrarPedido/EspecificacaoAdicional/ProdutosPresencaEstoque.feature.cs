@@ -182,14 +182,12 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="Produtos")]
         [Xunit.TraitAttribute("FeatureTitle", "ProdutosPresencaEstoque")]
         [Xunit.TraitAttribute("Description", "Produtos")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void Produtos()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Produtos", null, tagsOfScenario, argumentsOfScenario);
-#line 32
+#line 31
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -210,12 +208,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 34
- testRunner.Given("fazer esta validacao", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 35
- testRunner.When("Implementado em Especificacao.Especificacao.Ambiente.ApiMagento.PedidoMagento.Cad" +
-                        "astrarPedido.EspecificacaoAdicional.EspecificacaoMagentoFeature.preço: aceitamos" +
-                        " o valor que vier do magento.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Validação feita em outro arquivo", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
             this.ScenarioCleanup();

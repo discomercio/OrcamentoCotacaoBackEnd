@@ -619,6 +619,10 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
             tpedido.Perc_RT = Pedido.Valor.Perc_RT;
             tpedido.Perc_Desagio_RA = Execucao.Perc_desagio_RA;
             tpedido.Perc_Limite_RA_Sem_Desagio = Execucao.Perc_limite_RA_sem_desagio;
+
+
+            //frete, gravado somente no pedido pai
+            tpedido.Magento_shipping_amount = Pedido.Valor.Magento_shipping_amount;
         }
 
         //vamos inicializar os valores padrão
@@ -697,7 +701,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
             tpedido.Plataforma_Origem_Pedido = 0;
             //tpedido.magento_installer_commission_value = 0;
             //tpedido.magento_installer_commission_discount = 0;
-            //tpedido.magento_shipping_amount = 0;
+            tpedido.Magento_shipping_amount = 0;
             tpedido.Pc_Maquineta_Qtde_Parcelas = 0;
             tpedido.Pc_Maquineta_Valor_Parcela = 0;
             tpedido.Sistema_responsavel_cadastro = 0;

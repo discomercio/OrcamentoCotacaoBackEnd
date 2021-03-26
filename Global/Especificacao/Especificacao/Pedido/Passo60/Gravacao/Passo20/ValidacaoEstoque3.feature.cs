@@ -98,14 +98,12 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
         [Xunit.SkippableFactAttribute(DisplayName="Validar estoque 3 - feito em outros arquivos")]
         [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEstoque3.feature")]
         [Xunit.TraitAttribute("Description", "Validar estoque 3 - feito em outros arquivos")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void ValidarEstoque3_FeitoEmOutrosArquivos()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar estoque 3 - feito em outros arquivos", null, tagsOfScenario, argumentsOfScenario);
-#line 9
+#line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -128,12 +126,8 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 22
- testRunner.When("Validação feita em outro lugar: \"Todo este fluxo é validado pelos testes de aloca" +
-                        "ção nos CDs (em Especificacao\\Pedido\\Passo60\\Gravacao\\SplitEstoque\\*)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 23
- testRunner.When("Testado em \"Especificacao\\Pedido\\Passo60\\Gravacao\\SplitEstoque\\*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Validação feita em outro arquivo", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
             this.ScenarioCleanup();

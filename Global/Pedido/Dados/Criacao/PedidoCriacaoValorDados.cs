@@ -7,11 +7,12 @@ namespace Pedido.Dados.Criacao
 {
     public class PedidoCriacaoValorDados
     {
-        public PedidoCriacaoValorDados(float perc_RT, decimal vl_total, decimal vl_total_NF)
+        public PedidoCriacaoValorDados(float perc_RT, decimal vl_total, decimal vl_total_NF, decimal magento_shipping_amount)
         {
             Perc_RT = perc_RT;
             Vl_total = vl_total;
             Vl_total_NF = vl_total_NF;
+            Magento_shipping_amount = magento_shipping_amount;
         }
 
         //Armazena o percentual de comissão para o indicador selecionado (reserva técnica).
@@ -36,5 +37,7 @@ namespace Pedido.Dados.Criacao
         //Armazena o valor total de pedido com RA
         //Caso o indicador selecionado permita RA esse campo deve receber o valor total do Pedido com RA
         public decimal Vl_total_NF { get; }
+
+        public decimal Magento_shipping_amount { get; }
     }
 }
