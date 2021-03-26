@@ -90,6 +90,12 @@ namespace Especificacao.Testes.Pedido
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO", "pedido", "registro pai criado", campo, valor, this);
             base.Executar(i => i.TabelaT_PEDIDORegistroPaiCriadoVerificarCampo(campo, valor));
         }
+        public void TabelaT_PEDIDO_ITEMRegistroCriadoVerificarCampo(int item, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO_ITEM", "pedido", "registro pai criado", campo, valor, this);
+            base.Executar(i => i.TabelaT_PEDIDO_ITEMRegistroCriadoVerificarCampo(item, campo, valor));
+        }
         public void TabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo(string campo, string valor)
         {
             if (ignorarFeature) return;
@@ -156,9 +162,9 @@ namespace Especificacao.Testes.Pedido
         public static void IgnorarCenarioNoAmbiente(string p0, ref bool ignorarFeature, Type getType)
         {
             //comando especial: desabilitar o teste se estiver rodando contra o sql server real
-            if(p0.ToUpper() == "UsarSqlServerNosTestesAutomatizados".ToUpper())
+            if (p0.ToUpper() == "UsarSqlServerNosTestesAutomatizados".ToUpper())
             {
-                if(Testes.Utils.InjecaoDependencia.ProvedorServicos.UsarSqlServerNosTestesAutomatizados)
+                if (Testes.Utils.InjecaoDependencia.ProvedorServicos.UsarSqlServerNosTestesAutomatizados)
                     ignorarFeature = true;
                 return;
             }

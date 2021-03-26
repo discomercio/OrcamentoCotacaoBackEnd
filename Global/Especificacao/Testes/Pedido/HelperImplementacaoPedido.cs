@@ -270,6 +270,21 @@ namespace Especificacao.Testes.Pedido
             gerenciamentoBanco.TabelaT_PEDIDORegistroVerificarCampo(somentePai, campo, valor);
         }
 
+        public void TabelaT_PEDIDO_ITEMRegistroCriadoVerificarCampo(int item, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            var pedidoPaiGerado = AbstractPedidoPaiGerado();
+            if (string.IsNullOrEmpty(pedidoPaiGerado))
+            {
+                Assert.Equal("sem pedido gerado", pedidoPaiGerado ?? "");
+                throw new ArgumentNullException();
+            }
+
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            gerenciamentoBanco.TabelaT_PEDIDO_ITEMRegistroVerificarCampo(item, pedidoPaiGerado, campo, valor);
+
+        }
+
         public void TabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo(string campo, string valor)
         {
             if (ignorarFeature) return;

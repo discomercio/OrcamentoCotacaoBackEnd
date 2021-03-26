@@ -14,6 +14,7 @@
         void ThenSemNenhumErro();
         void ListaDeItensInformo(int numeroItem, string campo, string valor);
         void TabelaT_PEDIDORegistroPaiCriadoVerificarCampo(string campo, string valor);
+        void TabelaT_PEDIDO_ITEMRegistroCriadoVerificarCampo(int item, string campo, string valor);
         void TabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo(string campo, string valor);
         void RecalcularTotaisDoPedido();
         void DeixarFormaDePagamentoConsistente();

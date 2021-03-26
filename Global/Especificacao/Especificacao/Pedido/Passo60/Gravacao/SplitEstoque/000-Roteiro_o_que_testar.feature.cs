@@ -50,22 +50,23 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
                     "totalmente atendido\r\n\tPedido com slipt faltando produto\r\n\r\n200 - Um único produt" +
                     "o com um mais de um CD\r\n\tResumo dos tests:\r\n\r\n\t\t210 - Definição de regras\r\n\t\t\t.." +
                     "....\r\n\t\t\tRegra de consumo para esperar mercadoria CD1 para tipo_pessoa para esta" +
-                    "do UF\r\n\t\t\t......\r\n\t\t\r\n\t\t220 - ser atendido pelo CD 1 e pelo CD 2\r\n\t\t230 - atende" +
-                    "r pelo CD2 e o resto sem presença\r\n\t\t240 - ficar com todos os produtos sem prese" +
-                    "nça\r\n\r\n\t\t250 - Novas regras\r\n\t\t\t......\r\n\t\t\tRegra de consumo para esperar mercado" +
-                    "ria CD2 para tipo_pessoa para estado UF\r\n\t\t\t......\r\n\r\n\t\t260 - ser atendido pelo " +
-                    "CD 1 e pelo CD 2, esperando no CD2\r\n\t\t270 - atender pelo CD2 e o resto sem prese" +
-                    "nça\r\n\t\t280 - ficar com todos os produtos sem presença\r\n\r\n\r\n400 - Três produtos a" +
-                    "tendidos por CDs com a mesma prioridade\r\n\tOs três produtos possuem a mesma regra" +
-                    " de consumo de estoque\r\n\t410 - O primeiro CD tem estoque para todos\r\n\t420 - O pr" +
-                    "imeiro CD tem estoque para o produto 1 e o CD 2 para o produto 2\r\n\t430 - Idem ma" +
-                    "s não atende completamente; o produto 1 é vendido sem presença\r\n\t440 - Idem mas " +
-                    "não atende completamente; o produto 1 e 2 são vendidos sem presença\r\n500 - Três " +
-                    "produtos atendidos por CDs com duas regras com prioridades diferentes\r\n600 - Tes" +
-                    "tar status de ativo das regras\r\n\r\n\r\nTestes não atuomatizados:\r\nFazer um roteiro " +
-                    "manual para criar pedidos, dar entrada no estoque pelo ASP\r\ne verficiar que a ro" +
-                    "tina que processa os produtos pendentes atende esses pedidos\r\ne que o estoque fi" +
-                    "cou consistente.", ProgrammingLanguage.CSharp, new string[] {
+                    "do UF\r\n\t\t\t......\r\n\t\t\r\n\t\t220 - ser atendido pelo CD 1 e pelo CD 2 = gera 01 filho" +
+                    "te\r\n\t\t230 - atender pelo CD2 e o resto sem presença = gera 01 filhote\r\n\t\t240 - f" +
+                    "icar com todos os produtos sem presença = somente pedido pai\r\n\r\n\t\t250 - Novas re" +
+                    "gras\r\n\t\t\t......\r\n\t\t\tRegra de consumo para esperar mercadoria CD2 para tipo_pesso" +
+                    "a para estado UF\r\n\t\t\t......\r\n\r\n\t\t260 - ser atendido pelo CD 1 e pelo CD 2, esper" +
+                    "ando no CD2 = gera 02 filhote\r\n\t\t270 - atender pelo CD2 e o resto sem presença\r\n" +
+                    "\t\t280 - ficar com todos os produtos sem presença\r\n\r\n\r\n400 - Três produtos atendi" +
+                    "dos por CDs com a mesma prioridade\r\n\tOs três produtos possuem a mesma regra de c" +
+                    "onsumo de estoque\r\n\t410 - O primeiro CD tem estoque para todos\r\n\t420 - O primeir" +
+                    "o CD tem estoque para o produto 1 e o CD 2 para o produto 2\r\n\t430 - Idem mas não" +
+                    " atende completamente; o produto 1 é vendido sem presença\r\n\t440 - Idem mas não a" +
+                    "tende completamente; o produto 1 e 2 são vendidos sem presença\r\n500 - Três produ" +
+                    "tos atendidos por CDs com duas regras com prioridades diferentes\r\n600 - Testar s" +
+                    "tatus de ativo das regras\r\n\r\n\r\nTestes não atuomatizados:\r\nFazer um roteiro manua" +
+                    "l para criar pedidos, dar entrada no estoque pelo ASP\r\ne verficiar que a rotina " +
+                    "que processa os produtos pendentes atende esses pedidos\r\ne que o estoque ficou c" +
+                    "onsistente.", ProgrammingLanguage.CSharp, new string[] {
                         "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -114,7 +115,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("fazer", null, tagsOfScenario, argumentsOfScenario);
-#line 62
+#line 61
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -134,7 +135,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 63
+#line 62
  testRunner.Given("falta fazer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }

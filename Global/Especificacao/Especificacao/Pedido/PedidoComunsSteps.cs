@@ -292,6 +292,12 @@ namespace Especificacao.Especificacao.Pedido
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO", "pedido", "registro pai criado", campo, valor, this);
             base.TabelaT_PEDIDORegistroPaiCriadoVerificarCampo(campo, valor);
         }
+        [Then(@"Tabela ""t_PEDIDO_ITEM"" registro criado, verificar item ""(.*)"" campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaT_PEDIDO_ITEMRegistroCriadoVerificarCampo(int item, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO_ITEM", "pedido", "registro pai criado", campo, valor, this);
+            base.TabelaT_PEDIDO_ITEMRegistroCriadoVerificarCampo(item, campo, valor);
+        }
 
         [Then(@"Tabela ""t_PEDIDO"" registros filhotes criados, verificar campo ""(.*)"" = ""(.*)""")]
         public void ThenTabelaRegistrosFilhotesCriadosVerificarCampo(string campo, string valor)
@@ -419,5 +425,6 @@ namespace Especificacao.Especificacao.Pedido
             base.TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteEProdutoVerificarCampo(fabricante, produto, campo, valor);
         }
 
+        
     }
 }
