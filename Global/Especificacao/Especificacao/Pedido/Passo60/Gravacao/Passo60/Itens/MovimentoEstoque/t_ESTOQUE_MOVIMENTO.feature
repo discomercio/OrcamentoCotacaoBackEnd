@@ -31,55 +31,55 @@ Background: Configuracao
 Scenario Outline: Verificar estoque movimento
 	Given Pedido base
 	Then Sem nenhum erro
-	And Tabela "t_ESTOQUE_MOVIMENTO" registro pai e produto = "<produto>", verificar campo "<campo>" = "<valor>"
+	And Tabela "t_ESTOQUE_MOVIMENTO" registro pai e produto = "<produto>" e estoque = "<estoque>", verificar campo "<campo>" = "<valor>"
 
 	#esses campos ficam mudando
 	#| 003220  | id_movimento   | 000002801471 |
 	#| 003221  | id_movimento   | 000002801470 |
 	Examples:
-		| produto | campo          | valor  |
-		| 003220  | id_estoque     |        |
-		| 003220  | fabricante     | 003    |
-		| 003220  | produto        | 003220 |
-		| 003220  | qtde           | 2      |
-		| 003220  | operacao       | VDA    |
-		| 003220  | estoque        | SPE    |
-		| 003220  | loja           |        |
-		| 003220  | anulado_status | 0      |
-		| 003220  | kit            | 0      |
-		| 003220  | kit_id_estoque |        |
-		| 003221  | id_estoque     |        |
-		| 003221  | fabricante     | 003    |
-		| 003221  | produto        | 003221 |
-		| 003221  | qtde           | 2      |
-		| 003221  | operacao       | VDA    |
-		| 003221  | estoque        | SPE    |
-		| 003221  | loja           |        |
-		| 003221  | anulado_status | 0      |
-		| 003221  | kit            | 0      |
-		| 003221  | kit_id_estoque |        |
+		| estoque | produto | campo          | valor  |
+		| SPE     | 003220  | id_estoque     |        |
+		| SPE     | 003220  | fabricante     | 003    |
+		| SPE     | 003220  | produto        | 003220 |
+		| SPE     | 003220  | qtde           | 2      |
+		| SPE     | 003220  | operacao       | VDA    |
+		| SPE     | 003220  | estoque        | SPE    |
+		| SPE     | 003220  | loja           |        |
+		| SPE     | 003220  | anulado_status | 0      |
+		| SPE     | 003220  | kit            | 0      |
+		| SPE     | 003220  | kit_id_estoque |        |
+		| SPE     | 003221  | id_estoque     |        |
+		| SPE     | 003221  | fabricante     | 003    |
+		| SPE     | 003221  | produto        | 003221 |
+		| SPE     | 003221  | qtde           | 2      |
+		| SPE     | 003221  | operacao       | VDA    |
+		| SPE     | 003221  | estoque        | SPE    |
+		| SPE     | 003221  | loja           |        |
+		| SPE     | 003221  | anulado_status | 0      |
+		| SPE     | 003221  | kit            | 0      |
+		| SPE     | 003221  | kit_id_estoque |        |
 
 Scenario Outline: Verificar estoque movimento usuario - magento
 	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	Then Sem nenhum erro
-	And Tabela "t_ESTOQUE_MOVIMENTO" registro pai e produto = "<produto>", verificar campo "<campo>" = "<valor>"
+	And Tabela "t_ESTOQUE_MOVIMENTO" registro pai e produto = "<produto>" e estoque = "<estoque>", verificar campo "<campo>" = "<valor>"
 
 	Examples:
-		| produto | campo   | valor  |
-		| 003220  | usuario | USRMAG |
-		| 003221  | usuario | USRMAG |
+		| estoque | produto | campo   | valor  |
+		| SPE     | 003220  | usuario | USRMAG |
+		| SPE     | 003221  | usuario | USRMAG |
 
 Scenario Outline: Verificar estoque movimento usuario - loja
 	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	Then Sem nenhum erro
-	And Tabela "t_ESTOQUE_MOVIMENTO" registro pai e produto = "<produto>", verificar campo "<campo>" = "<valor>"
+	And Tabela "t_ESTOQUE_MOVIMENTO" registro pai e produto = "<produto>" e estoque = "<estoque>", verificar campo "<campo>" = "<valor>"
 
 	Examples:
-		| produto | campo   | valor   |
-		| 003220  | usuario | USRLOJA |
-		| 003221  | usuario | USRLOJA |
+	| estoque | produto | campo   | valor   |
+	| SPE     | 003220  | usuario | USRLOJA |
+	| SPE     | 003221  | usuario | USRLOJA |
 
 #não conseguiu movimentar a quantidade suficiente
 #           if (qtde_movimentada < (qtde_a_sair - qtde_autorizada_sem_presenca))
@@ -95,7 +95,7 @@ Scenario Outline: Verificar estoque movimento usuario - loja
 @ignore
 Scenario: Verificar qtde movimentada - erro
 	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
-	Given Pedido base	
+	Given Pedido base
 	When Lista de itens "0" informo "Qtde" = "100"
 	When Deixar forma de pagamento consistente
 	When Recalcular totais do pedido

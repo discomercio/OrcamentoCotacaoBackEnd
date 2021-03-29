@@ -295,7 +295,7 @@ namespace Especificacao.Testes.Pedido
 
 
 
-        public void TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(string produto, string campo, string valor)
+        public void TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(string produto, string tipo_estoque, string campo, string valor)
         {
             if (ignorarFeature) return;
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_ESTOQUE_MOVIMENTO", "produto", "verificar campos", campo, valor, this);
@@ -309,7 +309,7 @@ namespace Especificacao.Testes.Pedido
             Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
             var itemPedido = gerenciamentoBanco.BuscarItensPedido(pedidoPaiGerado).Where(x => x.Produto == produto).FirstOrDefault();
 
-            gerenciamentoBanco.TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(itemPedido, campo, valor, pedidoPaiGerado);
+            gerenciamentoBanco.TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(itemPedido, tipo_estoque, campo, valor, pedidoPaiGerado);
         }
 
         public void TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(string produto, string campo, string valor)

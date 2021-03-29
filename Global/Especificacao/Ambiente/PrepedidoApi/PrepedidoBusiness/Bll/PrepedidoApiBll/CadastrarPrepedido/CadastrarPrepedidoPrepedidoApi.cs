@@ -221,7 +221,7 @@ namespace Especificacao.Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApi
             throw new NotImplementedException();
         }
 
-        public void TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(string produto, string campo, string valor)
+        public void TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(string produto, string tipo_estoque, string campo, string valor)
         {
             throw new NotImplementedException();
         }

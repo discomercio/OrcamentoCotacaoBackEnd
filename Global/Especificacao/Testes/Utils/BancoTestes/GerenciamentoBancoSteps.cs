@@ -150,7 +150,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             }
         }
 
-        public void TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(TpedidoItem item, string campo, string valor, string pedido)
+        public void TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(TpedidoItem item, string tipo_estoque, string campo, string valor, string pedido)
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("_ESTOQUE_MOVIMENTO", "pedido", pedido, campo, valor, this);
 
@@ -158,7 +158,8 @@ namespace Especificacao.Testes.Utils.BancoTestes
             var registros = (from registro in db.TestoqueMovimentos
                              where registro.Pedido.Contains(pedido) &&
                                    registro.Produto == item.Produto &&
-                                   registro.Fabricante == item.Fabricante
+                                   registro.Fabricante == item.Fabricante &&
+                                   registro.Estoque == tipo_estoque.ToUpper()
                              select registro).ToList();
             //deve ter um ou mais registros
             Assert.True(registros.Any());
