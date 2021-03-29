@@ -58,7 +58,8 @@ namespace Especificacao.Testes.Utils.BancoTestes
             {
                 Cep_dig = cep,
                 Loc_nu_sequencial = Loc_nu_sequencial,
-                Loc_nosub = cidade
+                Loc_nosub = cidade,
+                Ufe_sg = uf
             });
 
             string[] Log_no_array = endereco.Split(' ');
