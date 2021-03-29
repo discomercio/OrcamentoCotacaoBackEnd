@@ -62,6 +62,23 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         [Required]
         public FormaPagtoCriacaoMagentoDto FormaPagtoCriacao { get; set; }
 
+        /// <summary>
+        /// Valor total sem frete
+        /// <hr />
+        /// </summary>
+        [Required]
+        public decimal Subtotal { get; set; }
+
+        /// <summary>
+        /// Valor total com frete
+        /// <hr />
+        /// </summary>
+        [Required]
+        public decimal Total { get; set; }
+
+        public float Desconto { get; set; }
+
+
         //CDManual = false
         //PercRT = calculado automaticamente
         //OpcaoPossuiRA = sim

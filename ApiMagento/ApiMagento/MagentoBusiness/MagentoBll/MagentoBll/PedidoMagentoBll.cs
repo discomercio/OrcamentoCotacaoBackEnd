@@ -174,8 +174,8 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacao, string loja, List<string> lstErros)
         {
             List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> listaProdutos = new List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados>();
-            List<string> lstFornec = pedidoMagento.ListaProdutos.Select(x => x.Fabricante).Distinct().ToList();
-
+            //List<string> lstFornec = pedidoMagento.ListaProdutos.Select(x => x.Fabricante).Distinct().ToList();
+            List<string> lstFornec = new List<string>();
             //preciso da lista de coeficientes de cada fabricante da lista de produtos
             //preciso obter a qtde de parcelas e a sigla de pagto
             var qtdeParcelas = PrepedidoBll.ObterCustoFinancFornecQtdeParcelasDeFormaPagto(formaPagtoCriacao);
@@ -183,24 +183,38 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             List<Produto.Dados.CoeficienteDados> lstCoeficiente = (await validacoesPrepedidoBll.MontarListaCoeficiente(
                 lstFornec, qtdeParcelas, siglaParc)).ToList();
 
-            List<string> lstProdutosDistintos = pedidoMagento.ListaProdutos.Select(x => x.Produto).Distinct().ToList();
+            //List<string> lstProdutosDistintos = pedidoMagento.ListaProdutos.Select(x => x.Produto).Distinct().ToList();
+            List<string> lstProdutosDistintos = new List<string>();
             List<Produto.Dados.ProdutoDados> lstProdutosUsados = (await produtoGeralBll.BuscarProdutosEspecificos(loja, lstProdutosDistintos)).ToList();
 
             foreach (var y in pedidoMagento.ListaProdutos)
             {
+                //Produto.Dados.ProdutoDados produto = (from c in lstProdutosUsados
+                //                                      where c.Fabricante == y.Fabricante && c.Produto == y.Produto
+                //                                      select c).FirstOrDefault();
                 Produto.Dados.ProdutoDados produto = (from c in lstProdutosUsados
-                                                      where c.Fabricante == y.Fabricante && c.Produto == y.Produto
+                                                      where c.Fabricante == "" && c.Produto == ""
                                                       select c).FirstOrDefault();
 
+                //Produto.Dados.CoeficienteDados coeficiente = (from c in lstCoeficiente
+                //                                              where c.Fabricante == y.Fabricante &&
+                //                                                    c.TipoParcela == siglaParc
+                //                                              select c).FirstOrDefault();
                 Produto.Dados.CoeficienteDados coeficiente = (from c in lstCoeficiente
-                                                              where c.Fabricante == y.Fabricante &&
+                                                              where c.Fabricante == "" &&
                                                                     c.TipoParcela == siglaParc
                                                               select c).FirstOrDefault();
 
+                //if (produto == null)
+                //    lstErros.Add($"Produto não cadastrado para a loja. Produto: {y.Produto}, loja: {loja}");
+                //if (coeficiente == null)
+                //    lstErros.Add($"Coeficiente não cadastrado para o fabricante. Fabricante: {y.Fabricante}, TipoParcela: {siglaParc}");
+                //if (produto != null && coeficiente != null)
+                //    listaProdutos.Add(PedidoProdutoMagentoDto.PedidoCriacaoProdutoDados_De_PedidoProdutoMagentoDto(y, produto, coeficiente.Coeficiente));
                 if (produto == null)
-                    lstErros.Add($"Produto não cadastrado para a loja. Produto: {y.Produto}, loja: {loja}");
+                    lstErros.Add($"Produto não cadastrado para a loja. Produto: falta implementar, loja: falta implementar");
                 if (coeficiente == null)
-                    lstErros.Add($"Coeficiente não cadastrado para o fabricante. Fabricante: {y.Fabricante}, TipoParcela: {siglaParc}");
+                    lstErros.Add($"Coeficiente não cadastrado para o fabricante. Fabricante: falta implementar, TipoParcela: {siglaParc}");
                 if (produto != null && coeficiente != null)
                     listaProdutos.Add(PedidoProdutoMagentoDto.PedidoCriacaoProdutoDados_De_PedidoProdutoMagentoDto(y, produto, coeficiente.Coeficiente));
             }
