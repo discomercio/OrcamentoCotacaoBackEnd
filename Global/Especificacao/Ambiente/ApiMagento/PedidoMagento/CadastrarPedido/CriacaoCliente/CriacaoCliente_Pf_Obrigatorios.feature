@@ -300,3 +300,12 @@ Scenario: Endereço de entrega - tamanho cidade 2
 	#                                          10        20        30       40         50        60
 	When Informo "EndEtg_cidade" = "12345678901234567890123456789012345678901234567890123456789"
 	Then Sem erro "CIDADE EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES"
+
+	#vamos gavar na t_cliente
+	Given Pedido base
+	Then Sem nenhum erro
+	Given Pedido base
+	#e agora verificamos que está limitando o tamanho mesmo que o cliente já esteja cadastrado
+	#                                        10        20        30       40         50        60
+	When Informo "EndEtg_cidade" = "1234567890123456789012345678901234567890123456789012345678901"
+	Then Erro "CIDADE EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES"
