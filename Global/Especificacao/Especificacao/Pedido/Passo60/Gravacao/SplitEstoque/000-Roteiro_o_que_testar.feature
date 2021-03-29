@@ -49,6 +49,7 @@ Testes:
 	440 - Idem mas não atende completamente; o produto 1 e 2 são vendidos sem presença
 500 - Três produtos atendidos por CDs com duas regras com prioridades diferentes
 600 - Testar status de ativo das regras
+	Já é feito na etapa 200 (desativamos as regras nas diferentes tabelas)
 
 
 Testes não atuomatizados:

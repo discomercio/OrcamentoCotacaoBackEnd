@@ -31,10 +31,35 @@ namespace Especificacao.Testes.Utils.BancoTestes
             });
             ret.Add(new UFeMunicipiosDados()
             {
+                SiglaUF = "SP",
+                ListaMunicipio = new List<MunicipioDados>() { new MunicipioDados() {
+                    Descricao = "Santo André",
+                    DescricaoSemAcento="Santo André"
+                } }
+            });
+            ret.Add(new UFeMunicipiosDados()
+            {
                 SiglaUF = "BA",
                 ListaMunicipio = new List<MunicipioDados>() { new MunicipioDados() {
                     Descricao = "Salvador",
                     DescricaoSemAcento="Salvador"
+                } }
+            });
+
+            ret.Add(new UFeMunicipiosDados()
+            {
+                SiglaUF = "SP",
+                ListaMunicipio = new List<MunicipioDados>() { new MunicipioDados() {
+                    Descricao = "Uma cidade em SP",
+                    DescricaoSemAcento="Uma cidade em SP"
+                } }
+            });
+            ret.Add(new UFeMunicipiosDados()
+            {
+                SiglaUF = "SP",
+                ListaMunicipio = new List<MunicipioDados>() { new MunicipioDados() {
+                    Descricao = "Outra cidade em SP",
+                    DescricaoSemAcento="Outra cidade em SP"
                 } }
             });
             return Task.FromResult(ret.AsEnumerable());

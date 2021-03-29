@@ -473,28 +473,36 @@ namespace Prepedido
                     lstErros.Add("CEP INVÁLIDO NO ENDEREÇO DE ENTREGA.");
             }
 
+            //todo: vamos verificar a quantidade de caracteres de cada campo
+            //VerificarQtdeCaracteresDoEndereco(dadosCliente, lstErros);
+            //todo: no pedido também precisamos verificar o tamanho maximo dos campos, valor por exemplo Pedido.EnderecoCadastralCliente.Endereco_logradouro
+
             if (lstErros.Count == 0)
             {
-                //vamos comparar endereço
-                string cepSoDigito = endEntrega.EndEtg_cep.Replace(".", "").Replace("-", "");
-                List<Cep.Dados.CepDados> lstCepDados = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
+                //todo: validações não-magento
+                //validações não-magento
+                {
+                    //vamos comparar endereço
+                    string cepSoDigito = endEntrega.EndEtg_cep.Replace(".", "").Replace("-", "");
+                    List<Cep.Dados.CepDados> lstCepDados = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
 
-                if (lstCepDados.Count == 0)
-                {
-                    lstErros.Add("Endereço Entrega: cep inválido!");
-                }
-                else
-                {
-                    Cep.Dados.CepDados cep = new Cep.Dados.CepDados()
+                    if (lstCepDados.Count == 0)
                     {
-                        Cep = endEntrega.EndEtg_cep,
-                        Endereco = endEntrega.EndEtg_endereco,
-                        Bairro = endEntrega.EndEtg_bairro,
-                        Cidade = endEntrega.EndEtg_cidade,
-                        Uf = endEntrega.EndEtg_uf
-                    };
-                    await Cliente.ValidacoesClienteBll.VerificarEndereco(cep, lstCepDados, lstErros, contextoProvider,
-                        bancoNFeMunicipio);
+                        lstErros.Add("Endereço Entrega: cep inválido!");
+                    }
+                    else
+                    {
+                        Cep.Dados.CepDados cep = new Cep.Dados.CepDados()
+                        {
+                            Cep = endEntrega.EndEtg_cep,
+                            Endereco = endEntrega.EndEtg_endereco,
+                            Bairro = endEntrega.EndEtg_bairro,
+                            Cidade = endEntrega.EndEtg_cidade,
+                            Uf = endEntrega.EndEtg_uf
+                        };
+                        await Cliente.ValidacoesClienteBll.VerificarEndereco(cep, lstCepDados, lstErros, contextoProvider,
+                            bancoNFeMunicipio);
+                    }
                 }
 
                 await CepBll.ConsisteMunicipioIBGE(endEntrega.EndEtg_cidade,

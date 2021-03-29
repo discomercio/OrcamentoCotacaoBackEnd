@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
+namespace Especificacao.Especificacao.Pedido
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,7 +20,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    public partial class _000_Roteiro_O_Que_TestarFeature : object, Xunit.IClassFixture<_000_Roteiro_O_Que_TestarFeature.FixtureData>, System.IDisposable
+    public partial class TesteExterno_UsoConcomitanteSistemasFeature : object, Xunit.IClassFixture<TesteExterno_UsoConcomitanteSistemasFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -30,10 +30,10 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "000-Roteiro_o_que_testar.feature"
+#line 1 "TesteExterno-UsoConcomitanteSistemas.feature"
 #line hidden
         
-        public _000_Roteiro_O_Que_TestarFeature(_000_Roteiro_O_Que_TestarFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public TesteExterno_UsoConcomitanteSistemasFeature(TesteExterno_UsoConcomitanteSistemasFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,31 +42,9 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "000-Roteiro_o_que_testar", "Roteiro de cada teste:\r\n\r\n1 - Escrever regra de consumo de estoque\r\n2 - Definir e" +
-                    "stoque\r\n3 - Cadastrar pedido\r\n4 - Verificar slipt e quantidades dos pedidos cria" +
-                    "dos\r\n5 - Verificar posicao e movimento de estoque\r\n\r\nVamos colocar as tabelas co" +
-                    "mpletas de homologacao, as tabelas *WMS*, para ter massa de dados.\r\n\r\nTestes:\r\n\r" +
-                    "\n\r\n100 - Um único produto com um único CD\r\n\tPedido sem slipt\r\n\tPedido com slipt " +
-                    "totalmente atendido\r\n\tPedido com slipt faltando produto\r\n\r\n200 - Um único produt" +
-                    "o com um mais de um CD\r\n\tResumo dos tests:\r\n\r\n\t\t210 - Definição de regras\r\n\t\t\t.." +
-                    "....\r\n\t\t\tRegra de consumo para esperar mercadoria CD1 para tipo_pessoa para esta" +
-                    "do UF\r\n\t\t\t......\r\n\t\t\r\n\t\t220 - ser atendido pelo CD 1 e pelo CD 2\r\n\t\t230 - atende" +
-                    "r pelo CD2 e o resto sem presença\r\n\t\t240 - ficar com todos os produtos sem prese" +
-                    "nça\r\n\r\n\t\t250 - Novas regras\r\n\t\t\t......\r\n\t\t\tRegra de consumo para esperar mercado" +
-                    "ria CD2 para tipo_pessoa para estado UF\r\n\t\t\t......\r\n\r\n\t\t260 - ser atendido pelo " +
-                    "CD 1 e pelo CD 2, esperando no CD2\r\n\t\t270 - atender pelo CD2 e o resto sem prese" +
-                    "nça\r\n\t\t280 - ficar com todos os produtos sem presença\r\n\r\n\r\n400 - Três produtos a" +
-                    "tendidos por CDs com a mesma prioridade\r\n\tOs três produtos possuem a mesma regra" +
-                    " de consumo de estoque\r\n\t410 - O primeiro CD tem estoque para todos\r\n\t420 - O pr" +
-                    "imeiro CD tem estoque para o produto 1 e o CD 2 para o produto 2\r\n\t430 - Idem ma" +
-                    "s não atende completamente; o produto 1 é vendido sem presença\r\n\t440 - Idem mas " +
-                    "não atende completamente; o produto 1 e 2 são vendidos sem presença\r\n500 - Três " +
-                    "produtos atendidos por CDs com duas regras com prioridades diferentes\r\n600 - Tes" +
-                    "tar status de ativo das regras\r\n\tJá é feito na etapa 200 (desativamos as regras " +
-                    "nas diferentes tabelas)\r\n\r\n\r\nTestes não atuomatizados:\r\nFazer um roteiro manual " +
-                    "para criar pedidos, dar entrada no estoque pelo ASP\r\ne verficiar que a rotina qu" +
-                    "e processa os produtos pendentes atende esses pedidos\r\ne que o estoque ficou con" +
-                    "sistente.", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "TesteExterno-UsoConcomitanteSistemas", "\tVamos testar os vários sistemas em uso simultâneo.\r\n\tEscreemos o roteiro de test" +
+                    "es aqui mas estes testes não são automatizados;\r\n\tmarcamos aqui quando fizermos." +
+                    "", ProgrammingLanguage.CSharp, new string[] {
                         "ignore"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -107,15 +85,17 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="fazer")]
-        [Xunit.TraitAttribute("FeatureTitle", "000-Roteiro_o_que_testar")]
-        [Xunit.TraitAttribute("Description", "fazer")]
-        public virtual void Fazer()
+        [Xunit.SkippableFactAttribute(DisplayName="TesteExterno-UsoConcomitanteSistemas")]
+        [Xunit.TraitAttribute("FeatureTitle", "TesteExterno-UsoConcomitanteSistemas")]
+        [Xunit.TraitAttribute("Description", "TesteExterno-UsoConcomitanteSistemas")]
+        public virtual void TesteExterno_UsoConcomitanteSistemas()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("fazer", null, tagsOfScenario, argumentsOfScenario);
-#line 63
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TesteExterno-UsoConcomitanteSistemas", "Colocar a API do magento no servidor\r\nFazer um batch para gerar, digamos, 20 pedi" +
+                    "dos pelo magento (em curl ou de qualquer forma que for fácil)\r\nEnquanto essa car" +
+                    "ga estiver rodando, criar um pedido pelo verdinho", tagsOfScenario, argumentsOfScenario);
+#line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -135,8 +115,8 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 64
- testRunner.Given("falta fazer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 12
+ testRunner.Given("Fazer este teste", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -149,12 +129,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                _000_Roteiro_O_Que_TestarFeature.FeatureSetup();
+                TesteExterno_UsoConcomitanteSistemasFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                _000_Roteiro_O_Que_TestarFeature.FeatureTearDown();
+                TesteExterno_UsoConcomitanteSistemasFeature.FeatureTearDown();
             }
         }
     }

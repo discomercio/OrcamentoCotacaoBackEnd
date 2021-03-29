@@ -572,6 +572,10 @@ namespace InfraBanco.Modelos
         [Required]
         public string Usuario_Cadastro { get; set; }
 
+        [Column("magento_shipping_amount")]
+        [Required]
+        public decimal Magento_shipping_amount { get; set; }
+
         [Column("pedido_bs_x_at")]
         [MaxLength(9)]
         public string Pedido_Bs_X_At { get; set; }

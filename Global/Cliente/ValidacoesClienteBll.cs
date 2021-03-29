@@ -347,14 +347,6 @@ namespace Cliente
         private static async Task ValidarEnderecoCadastroCliente(Cliente.Dados.DadosClienteCadastroDados dadosCliente,
             List<string> lstErros, CepBll cepBll, ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio)
         {
-            string cepSoDigito = dadosCliente.Cep.Replace(".", "").Replace("-", "");
-            List<Cep.Dados.CepDados> lstCepDados = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
-
-            if (lstCepDados.Count == 0)
-            {
-                lstErros.Add(MensagensErro.Cep_nao_existe);
-            }
-
             if (string.IsNullOrEmpty(dadosCliente.Endereco))
             {
                 lstErros.Add("PREENCHA O ENDEREÇO.");
@@ -398,19 +390,30 @@ namespace Cliente
             //vamos verificar a quantidade de caracteres de cada campo
             VerificarQtdeCaracteresDoEndereco(dadosCliente, lstErros);
 
-            //vamos buscar o cep e comparar os endereços 
-            Cep.Dados.CepDados cepCliente = new Cep.Dados.CepDados()
+            //todo: acertar a validação do magento
+            //verificações não-magento
             {
-                Cep = dadosCliente.Cep,
-                Endereco = dadosCliente.Endereco,
-                Bairro = dadosCliente.Bairro,
-                Cidade = dadosCliente.Cidade,
-                Uf = dadosCliente.Uf
-            };
+                string cepSoDigito = dadosCliente.Cep.Replace(".", "").Replace("-", "");
+                List<Cep.Dados.CepDados> lstCepDados = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
+
+                if (lstCepDados.Count == 0)
+                {
+                    lstErros.Add(MensagensErro.Cep_nao_existe);
+                }
 
 
+                //vamos buscar o cep e comparar os endereços 
+                Cep.Dados.CepDados cepCliente = new Cep.Dados.CepDados()
+                {
+                    Cep = dadosCliente.Cep,
+                    Endereco = dadosCliente.Endereco,
+                    Bairro = dadosCliente.Bairro,
+                    Cidade = dadosCliente.Cidade,
+                    Uf = dadosCliente.Uf
+                };
 
-            await VerificarEndereco(cepCliente, lstCepDados, lstErros, contextoProvider, bancoNFeMunicipio);
+                await VerificarEndereco(cepCliente, lstCepDados, lstErros, contextoProvider, bancoNFeMunicipio);
+            }
         }
 
         private static void VerificarQtdeCaracteresDoEndereco(Cliente.Dados.DadosClienteCadastroDados dadosCliente,

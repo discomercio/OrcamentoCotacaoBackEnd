@@ -113,7 +113,9 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                 vl_total: lstProdutosMagento.Select(x => x.TotalItem()).Sum(),
 
                 //Armazena o valor total de pedido com RA
-                vl_total_NF: lstProdutosMagento.Select(x => x.TotalItemRA() ?? 0).Sum()
+                vl_total_NF: lstProdutosMagento.Select(x => x.TotalItemRA() ?? 0).Sum(),
+
+                magento_shipping_amount: pedidoMagento.Frete ?? 0M
                 );
 
             Pedido.Dados.Criacao.PedidoCriacaoDados pedidoCriacao = new Pedido.Dados.Criacao.PedidoCriacaoDados(
@@ -178,7 +180,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                     limitePedidosExatamenteIguais_TempoSegundos: configuracaoApiMagento.LimitePedidos.LimitePedidosExatamenteIguais_TempoSegundos,
                     limitePedidosMesmoCpfCnpj_Numero: configuracaoApiMagento.LimitePedidos.LimitePedidosMesmoCpfCnpj_Numero,
                     limitePedidosMesmoCpfCnpj_TempoSegundos: configuracaoApiMagento.LimitePedidos.LimitePedidosMesmoCpfCnpj_TempoSegundos,
-                    limite_de_itens:configuracaoApiMagento.LimitePedidos.LimiteItens
+                    limite_de_itens: configuracaoApiMagento.LimitePedidos.LimiteItens
                     ),
                 marketplace: new Pedido.Dados.Criacao.PedidoCriacaoMarketplaceDados(
                         pedido_bs_x_ac: pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac,

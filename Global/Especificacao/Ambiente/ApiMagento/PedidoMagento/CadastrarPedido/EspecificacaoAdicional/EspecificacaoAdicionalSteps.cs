@@ -137,6 +137,5 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
         {
             SplitEstoqueRotinas.ZerarTodoOEstoque();
         }
-
     }
 }

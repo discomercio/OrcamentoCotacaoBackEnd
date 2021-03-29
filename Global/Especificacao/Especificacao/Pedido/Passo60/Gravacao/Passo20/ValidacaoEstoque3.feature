@@ -5,7 +5,6 @@ Feature: ValidacaoEstoque3.feature
 Background:
 	Given Reiniciar banco ao terminar cenário
 
-@ignore
 Scenario: Validar estoque 3 - feito em outros arquivos
 	#loja/PedidoNovoConsiste.asp
 	#loja/PedidoNovoConfirma.asp
@@ -19,8 +18,9 @@ Scenario: Validar estoque 3 - feito em outros arquivos
 	#'	CONTAGEM DE EMPRESAS QUE SERÃO USADAS NO AUTO-SPLIT, OU SEJA, A QUANTIDADE DE PEDIDOS QUE SERÁ CADASTRADA, JÁ QUE CADA PEDIDO SE REFERE AO ESTOQUE DE UMA EMPRESA
 	#	dim qtde_empresa_selecionada, lista_empresa_selecionada
 	#(inclusive esse bloco)
-	When Validação feita em outro lugar: "Todo este fluxo é validado pelos testes de alocação nos CDs (em Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\*)"
-	When Testado em "Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\*"
+	#Validação feita em outro lugar: "Todo este fluxo é validado pelos testes de alocação nos CDs (em Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\*)"
+	#Testado em "Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\*"
+	Given Validação feita em outro arquivo
 
 @ignore
 Scenario: Validar estoque 3 - produto sem alocação
