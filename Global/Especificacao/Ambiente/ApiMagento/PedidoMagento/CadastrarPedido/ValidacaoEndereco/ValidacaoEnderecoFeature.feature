@@ -1,5 +1,4 @@
-﻿@ignore
-@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
+﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
 @GerenciamentoBanco
 Feature: ValidacaoEnderecoFeature
 
@@ -14,7 +13,7 @@ Feature: ValidacaoEnderecoFeature
 #CEP sem 8 digitos rejeitamos, mas CEP que não tem na nossa base aceitamos
 
 #Muitos testes fazemos duas vezes para testar tanto cadastrando o cliente quanto com o cliente já cadastrado
-#Quer dizer, as verificações devem ser feitas tnto no cadastro do cliente quanto se o cliente já estiver cadastrado.
+#Quer dizer, as verificações devem ser feitas tanto no cadastro do cliente quanto se o cliente já estiver cadastrado.
 Scenario: Validação de cidade X IBGE e UF X CEP - sucesso
 	Given Pedido base
 	When Informo "EndEtg_cidade" = "São Paulo"
@@ -116,7 +115,7 @@ Scenario: Validação de CEP que não existe na base - CEP vazio
 
 
 #se o não CEP existir e a cidade não estiver no IBGE, não podemos aceitar o pedido porque a nota fiscal não será emitida.
-Scenario: Validação de cidade que não consta no IBGE se o não CEP existir - erro
+Scenario: Validação de cidade que não consta no IBGE se o CEP não existir - erro
 	Given Limpar tabela "t_CLIENTE"
 	Given Reiniciar banco ao terminar cenário
 
@@ -126,7 +125,7 @@ Scenario: Validação de cidade que não consta no IBGE se o não CEP existir - 
 	When Informo "EndEtg_cidade" = "Abacate da Pedreira"
 	When Informo "EndEtg_uf" = "AP"
 	When Informo "EndEtg_cep" = "01010900"
-	Then Erro "Pegar erro"
+	Then Erro "Município 'Abacate da Pedreira' não consta na relação de municípios do IBGE para a UF de 'AP'!"
 	#agora cadastramos o cliente
 	Given Pedido base
 	Then Sem nenhum erro
@@ -135,7 +134,7 @@ Scenario: Validação de cidade que não consta no IBGE se o não CEP existir - 
 	When Informo "EndEtg_cidade" = "Abacate da Pedreira"
 	When Informo "EndEtg_uf" = "AP"
 	When Informo "EndEtg_cep" = "01010900"
-	Then Erro "Pegar erro"
+	Then Erro "Município 'Abacate da Pedreira' não consta na relação de municípios do IBGE para a UF de 'AP'!"
 
 
 #se o CEP existir e a cidade não estiver no IBGE, não podemos aceitar o pedido porque a nota fiscal não será emitida.
@@ -149,7 +148,7 @@ Scenario: Validação de cidade que não consta no IBGE se o CEP existir - erro
 	When Informo "EndEtg_cidade" = "Abacate da Pedreira"
 	When Informo "EndEtg_uf" = "SP"
 	When Informo "EndEtg_cep" = "02045080"
-	Then Erro "Pegar erro"
+	Then Erro "Município 'Abacate da Pedreira' não consta na relação de municípios do IBGE para a UF de 'SP'!"
 	#agora cadastramos o cliente
 	Given Pedido base
 	Then Sem nenhum erro
@@ -158,7 +157,7 @@ Scenario: Validação de cidade que não consta no IBGE se o CEP existir - erro
 	When Informo "EndEtg_cidade" = "Abacate da Pedreira"
 	When Informo "EndEtg_uf" = "SP"
 	When Informo "EndEtg_cep" = "02045080"
-	Then Erro "Pegar erro"
+	Then Erro "Município 'Abacate da Pedreira' não consta na relação de municípios do IBGE para a UF de 'SP'!"
 
 Scenario: Sem validação de cidade X CEP
 	Given Limpar tabela "t_CLIENTE"
@@ -211,15 +210,27 @@ Scenario: Sem validação de bairro X CEP
 	Then Sem nenhum erro
 
 Scenario: Sem validação de UF X CEP
+	#Pedidos do magento validamos Cidade contra o IGBE e UF contra o CEP informado. Não validamos nenhum outro campo do endereço.
 	Given Limpar tabela "t_CLIENTE"
 	Given Reiniciar banco ao terminar cenário
 	Given Pedido base
 	When Informo "EndEtg_cidade" = "Santo André"
 	When Informo "EndEtg_uf" = "RJ"
+	#o CEP 02045080 está com UF SP
+	When Informo "EndEtg_cep" = "02045080"
+	When Informo "EndEtg_endereco" = "outro endereco"
+	When Informo "EndEtg_endereco_numero" = "97"
+	When Informo "EndEtg_endereco_complemento" = "teste"
+	When Informo "EndEtg_bairro" = "outro bairro"
+	Then Erro "Estado não confere!"
+
+	Given Pedido base
+	When Informo "EndEtg_cidade" = "Santo André"
+	When Informo "EndEtg_uf" = "SP"
+	#o CEP 02045080 está com UF SP
 	When Informo "EndEtg_cep" = "02045080"
 	When Informo "EndEtg_endereco" = "outro endereco"
 	When Informo "EndEtg_endereco_numero" = "97"
 	When Informo "EndEtg_endereco_complemento" = "teste"
 	When Informo "EndEtg_bairro" = "outro bairro"
 	Then Sem nenhum erro
-

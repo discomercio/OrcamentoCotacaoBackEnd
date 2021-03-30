@@ -18,7 +18,8 @@ namespace Pedido.Criacao.Passo20
         {
             /* valida endereço de entrega */
             await Criacao.ValidacoesPrepedidoBll.ValidarEnderecoEntrega(Pedido.EnderecoEntrega, Retorno.ListaErros,
-                Pedido.Ambiente.Indicador, Pedido.Cliente.Tipo.ParaString(), false, Pedido.Ambiente.Loja);
+                Pedido.Ambiente.Indicador, Pedido.Cliente.Tipo.ParaString(), false, Pedido.Ambiente.Loja,
+                Pedido.Configuracao.SistemaResponsavelCadastro);
         }
     }
 }
