@@ -288,6 +288,7 @@ Scenario: Preenche_os_campos_do_pedido - referente a indicação
 Scenario: Preenche_os_campos_do_pedido - campos de data e hora
 	Given Pedido base
 	Then Sem nenhum erro
+	#podemos usar os seguintes valores: "especial: data atual, com hora", "especial: data atual, sem hora" e "especial: hora atual, formato HoraParaBanco"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "entregue_data" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "a_entregar_data" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "a_entregar_hora" = ""
