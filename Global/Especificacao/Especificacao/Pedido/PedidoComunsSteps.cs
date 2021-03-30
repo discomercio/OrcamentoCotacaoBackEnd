@@ -292,6 +292,12 @@ namespace Especificacao.Especificacao.Pedido
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO", "pedido", "registro pai criado", campo, valor, this);
             base.TabelaT_PEDIDORegistroPaiCriadoVerificarCampo(campo, valor);
         }
+        [Then(@"Tabela ""t_PEDIDO_ITEM"" registro criado, verificar item ""(.*)"" campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaT_PEDIDO_ITEMRegistroCriadoVerificarCampo(int item, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO_ITEM", "pedido", "registro pai criado", campo, valor, this);
+            base.TabelaT_PEDIDO_ITEMRegistroCriadoVerificarCampo(item, campo, valor);
+        }
 
         [Then(@"Tabela ""t_PEDIDO"" registros filhotes criados, verificar campo ""(.*)"" = ""(.*)""")]
         public void ThenTabelaRegistrosFilhotesCriadosVerificarCampo(string campo, string valor)
@@ -377,11 +383,11 @@ namespace Especificacao.Especificacao.Pedido
         }
 
 
-        [Then(@"Tabela ""t_ESTOQUE_MOVIMENTO"" registro pai e produto = ""(.*)"", verificar campo ""(.*)"" = ""(.*)""")]
-        public void ThenTabelaRegistroPaiEProdutoVerificarCampo(string produto, string campo, string valor)
+        [Then(@"Tabela ""t_ESTOQUE_MOVIMENTO"" registro pai e produto = ""(.*)"" e estoque = ""(.*)"", verificar campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaRegistroPaiEProdutoVerificarCampo(string produto, string tipo_estoque, string campo, string valor)
         {
-            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_ESTOQUE_MOVIMENTO", "produto", "verificar campos", campo, valor, this);
-            base.TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(produto, campo, valor);
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_ESTOQUE_MOVIMENTO", $"produto {produto} e estoque{tipo_estoque}", "verificar campos", campo, valor, this);
+            base.TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(produto, tipo_estoque, campo, valor);
         }
 
         [Then(@"Tabela ""t_ESTOQUE_ITEM"" registro pai e produto = ""(.*)"", verificar campo ""(.*)"" = ""(.*)""")]
@@ -418,6 +424,7 @@ namespace Especificacao.Especificacao.Pedido
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PRODUTO_X_WMS_REGRA_CD", "fabricante e produto", "verificar campos", campo, valor, this);
             base.TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteEProdutoVerificarCampo(fabricante, produto, campo, valor);
         }
+
 
     }
 }

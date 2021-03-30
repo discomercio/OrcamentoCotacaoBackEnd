@@ -19,7 +19,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "ignore")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo60")]
     [Xunit.TraitAttribute("Category", "GerenciamentoBanco")]
     public partial class _100_Split_Com_Um_CdFeature : object, Xunit.IClassFixture<_100_Split_Com_Um_CdFeature.FixtureData>, System.IDisposable
     {
@@ -27,7 +27,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore",
+                "Especificacao.Pedido.Passo60",
                 "GerenciamentoBanco"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
@@ -45,7 +45,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "100-Split_com_um_cd", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ignore",
+                        "Especificacao.Pedido.Passo60",
                         "GerenciamentoBanco"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -86,13 +86,10 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
 #line 6
 #line hidden
 #line 7
- testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Ignorar cenário no ambiente \"Especificacao.Prepedido.PrepedidoSteps\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 8
- testRunner.And("Regra de consumo para CD1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 9
- testRunner.And("Zerar o estoque do produto e colocar estoque de outros produtos", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
         
@@ -109,7 +106,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pedido totalmente atendido e sobrando", null, tagsOfScenario, argumentsOfScenario);
-#line 11
+#line 10
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -133,32 +130,57 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 12
- testRunner.When("Estoque CD1 de 40", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Zerar todo o estoque", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 13
- testRunner.And("Criar pedido com 20 itens", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 14
- testRunner.And("Gerar 1 pedido pai sem filhotes", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("Lista de itens com \"1\" itens", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 15
- testRunner.And("Pedido pai status = SEP", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("Usar produto \"um\" como fabricante = \"003\", produto = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 16
- testRunner.And("Pedido pai id_nfe_emitente = CD1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("Lista de itens \"0\" informo \"Qtde\" = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 17
- testRunner.And("Pedido pai t_pedido_item quantidade = 40", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("Definir saldo de estoque = \"40\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 18
- testRunner.And("Saldo de estoque na t_ESTOQUE_ITEM no CD1 = (40 - 20)", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 19
- testRunner.And("t_ESTOQUE_MOVIMENTO pedido = \"pedido pai\" com 1 registros", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 20
- testRunner.And("t_ESTOQUE_MOVIMENTO pedido = \"pedido pai\", qtde = 20, estoque = VDO, operacao = V" +
-                        "DA", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 21
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"st_entrega\" = \"SEP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 22
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"id_nfe_emitente\" = \"4903\"" +
+                        "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 23
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado, verificar item \"1\" campo \"qtde\" = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 24
+ testRunner.And("Tabela \"t_ESTOQUE_ITEM\" registro pai e produto = \"003220\", verificar campo \"qtde_" +
+                        "utilizada\" = \"40\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 25
+ testRunner.And("Tabela \"t_ESTOQUE_MOVIMENTO\" registro pai e produto = \"003220\" e estoque = \"VDO\"," +
+                        " verificar campo \"qtde\" = \"20\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 26
+ testRunner.And("Tabela \"t_ESTOQUE_MOVIMENTO\" registro pai e produto = \"003220\" e estoque = \"VDO\"," +
+                        " verificar campo \"estoque\" = \"VDO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 27
+ testRunner.And("Tabela \"t_ESTOQUE_MOVIMENTO\" registro pai e produto = \"003220\" e estoque = \"VDO\"," +
+                        " verificar campo \"operacao\" = \"VDA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -172,7 +194,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pedido totalmente atendido e zerando estoque", null, tagsOfScenario, argumentsOfScenario);
-#line 23
+#line 29
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -195,33 +217,62 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 24
- testRunner.When("Estoque CD1 de 45", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 25
- testRunner.And("Criar pedido com 45 itens", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 26
- testRunner.And("Gerar 1 pedido pai sem filhotes", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 27
- testRunner.And("Pedido pai status = SEP", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 28
- testRunner.And("Pedido pai id_nfe_emitente = CD1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 29
- testRunner.And("Pedido pai t_pedido_item quantidade = 45", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
 #line 30
- testRunner.And("Saldo de estoque na t_ESTOQUE_ITEM no CD1 = 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("Ignorar cenário no ambiente \"Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadas" +
+                        "trarPedido.CadastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 31
- testRunner.And("t_ESTOQUE_MOVIMENTO pedido = \"pedido pai\" com 1 registros", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("Zerar todo o estoque", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 32
- testRunner.And("t_ESTOQUE_MOVIMENTO pedido = \"pedido pai\", qtde = 45, estoque = VDO, operacao = V" +
-                        "DA", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 33
+ testRunner.When("Lista de itens com \"1\" itens", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 34
+ testRunner.Given("Usar produto \"um\" como fabricante = \"003\", produto = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 35
+ testRunner.When("Lista de itens \"0\" informo \"Qtde\" = \"50\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 36
+ testRunner.Given("Definir saldo de estoque = \"90\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 37
+ testRunner.When("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 38
+ testRunner.And("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 39
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 40
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"st_entrega\" = \"SEP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 41
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"id_nfe_emitente\" = \"4903\"" +
+                        "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 42
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado, verificar item \"1\" campo \"qtde\" = \"50\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 43
+ testRunner.And("Tabela \"t_ESTOQUE_ITEM\" registro pai e produto = \"003220\", verificar campo \"qtde_" +
+                        "utilizada\" = \"50\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 44
+ testRunner.And("Tabela \"t_ESTOQUE_MOVIMENTO\" registro pai e produto = \"003220\" e estoque = \"VDO\"," +
+                        " verificar campo \"qtde\" = \"50\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 45
+ testRunner.And("Tabela \"t_ESTOQUE_MOVIMENTO\" registro pai e produto = \"003220\" e estoque = \"VDO\"," +
+                        " verificar campo \"estoque\" = \"VDO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 46
+ testRunner.And("Tabela \"t_ESTOQUE_MOVIMENTO\" registro pai e produto = \"003220\" e estoque = \"VDO\"," +
+                        " verificar campo \"operacao\" = \"VDA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -235,7 +286,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pedido faltando produto", null, tagsOfScenario, argumentsOfScenario);
-#line 35
+#line 48
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -258,37 +309,74 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
 this.FeatureBackground();
 #line hidden
-#line 36
- testRunner.When("Estoque CD1 de 50", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 50
+ testRunner.Given("Ignorar cenário no ambiente \"Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadas" +
+                        "trarPedido.CadastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 37
- testRunner.And("Criar pedido com 77 itens", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 51
+ testRunner.Given("Zerar todo o estoque", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 38
- testRunner.And("Gerar 1 pedido pai sem filhotes", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 52
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 39
- testRunner.And("Pedido pai status = SPL", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 53
+ testRunner.When("Lista de itens com \"1\" itens", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 40
- testRunner.And("Pedido pai id_nfe_emitente = CD1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 54
+ testRunner.Given("Usar produto \"um\" como fabricante = \"003\", produto = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 41
- testRunner.And("Pedido pai t_pedido_item quantidade = 77", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 55
+ testRunner.When("Lista de itens \"0\" informo \"Qtde\" = \"77\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 42
- testRunner.And("Saldo de estoque na t_ESTOQUE_ITEM no CD1 = 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 56
+ testRunner.Given("Definir saldo de estoque = \"50\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 43
- testRunner.And("t_ESTOQUE_MOVIMENTO pedido = \"pedido pai\" com 2 registros", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 57
+ testRunner.When("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 44
- testRunner.And("t_ESTOQUE_MOVIMENTO pedido = \"pedido pai\", qtde = 50, estoque = VDO, operacao = V" +
-                        "DA", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 58
+ testRunner.And("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 45
- testRunner.And("t_ESTOQUE_MOVIMENTO pedido = \"pedido pai\", qtde = 27, estoque = SPE, operacao = V" +
-                        "DA", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 59
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 60
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"st_entrega\" = \"SPL\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 61
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"id_nfe_emitente\" = \"4903\"" +
+                        "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 62
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado, verificar item \"1\" campo \"qtde\" = \"77\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 63
+ testRunner.And("Tabela \"t_ESTOQUE_ITEM\" registro pai e produto = \"003220\", verificar campo \"qtde_" +
+                        "utilizada\" = \"50\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 64
+ testRunner.And("Tabela \"t_ESTOQUE_MOVIMENTO\" registro pai e produto = \"003220\" e estoque = \"VDO\"," +
+                        " verificar campo \"qtde\" = \"50\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 65
+ testRunner.And("Tabela \"t_ESTOQUE_MOVIMENTO\" registro pai e produto = \"003220\" e estoque = \"VDO\"," +
+                        " verificar campo \"estoque\" = \"VDO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 66
+ testRunner.And("Tabela \"t_ESTOQUE_MOVIMENTO\" registro pai e produto = \"003220\" e estoque = \"VDO\"," +
+                        " verificar campo \"operacao\" = \"VDA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 67
+ testRunner.And("Tabela \"t_ESTOQUE_MOVIMENTO\" registro pai e produto = \"003220\" e estoque = \"SPE\"," +
+                        " verificar campo \"qtde\" = \"27\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 68
+ testRunner.And("Tabela \"t_ESTOQUE_MOVIMENTO\" registro pai e produto = \"003220\" e estoque = \"SPE\"," +
+                        " verificar campo \"estoque\" = \"SPE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 69
+ testRunner.And("Tabela \"t_ESTOQUE_MOVIMENTO\" registro pai e produto = \"003220\" e estoque = \"SPE\"," +
+                        " verificar campo \"operacao\" = \"VDA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

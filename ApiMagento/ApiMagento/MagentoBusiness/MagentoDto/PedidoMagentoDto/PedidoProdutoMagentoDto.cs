@@ -23,14 +23,14 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         public short Qtde { get; set; }
 
         /// <summary>
-        /// Preço de venda do item sem o rateio do frete
+        /// Preco_Venda: preço de venda do item sem o rateio do frete
         /// <hr />
         /// </summary>
         [Required]
         public decimal Preco_Venda { get; set; }
 
         /// <summary>
-        /// Preco_NF preço que será impresso na nota fiscal, inclui o rateio do frete
+        /// Preco_NF: preço que será impresso na nota fiscal, inclui o rateio do frete
         /// <hr />
         /// </summary>
         [Required]

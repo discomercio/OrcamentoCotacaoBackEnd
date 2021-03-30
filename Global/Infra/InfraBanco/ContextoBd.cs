@@ -9,6 +9,13 @@ namespace InfraBanco
 {
     public class ContextoBd
     {
+        /*
+         * todo: coloca os sequingttes scripts, somente para a loja:
+         * K:\desenvolvimento\Ar Clube\banco de dados - atualizacoes
+         * 0187-atualiza-Ajustes-API-Magento2.sql
+         * 0190-atualiza-t_PEDIDO_ITEM_SERVICO.sql
+         * */
+
         private readonly ContextoBdBasico contexto;
         internal ContextoBd(ContextoBdBasico contexto)
         {

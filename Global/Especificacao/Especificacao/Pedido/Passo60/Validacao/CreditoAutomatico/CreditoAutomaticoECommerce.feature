@@ -120,6 +120,18 @@ Scenario: CreditoAutomaticoECommerce - parametro_1_campo_flag = 1
 	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito_usuario" = "AUTOMÁTICO"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_endereco_tratar_status" = "0"
 
+Scenario: CreditoAutomaticoECommerce - parametro_2_campo_flag = 1 exigir pedido marketplace
+	#				'	Nº PEDIDO MARKETPLACE É OBRIGATÓRIO?
+	#					if rs2("parametro_2_campo_flag") = 1 then
+	#						if s_numero_mktplace = "" then
+	#							alerta=texto_add_br(alerta)
+	#							alerta=alerta & "Informe o nº do pedido do marketplace (" & Trim("" & rs("descricao")) & ")"
+	
+	Given Pedido base
+	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = ""
+	Given Tabela "T_CODIGO_DESCRICAO" registro com campo grupo "PedidoECommerce_Origem_Grupo" e codigo "001", alterar campo "parametro_2_campo_flag" = "1"
+	Then Erro "Informe o nº do pedido do marketplace (Arclube (e-commerce))"
+
 Scenario: CreditoAutomaticoECommerce - NUMERO_LOJA_ECOMMERCE_AR_CLUBE á vista
 	#teste 4 =>
 	#	loja = 201 && pagamento á vista && pagamento em boleto
@@ -146,35 +158,4 @@ Scenario: CreditoAutomaticoECommerce - Loja diferente de NUMERO_LOJA_ECOMMERCE_A
 	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito" = "8"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_credito_usuario" = "AUTOMÁTICO"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "analise_endereco_tratar_status" = "0"
-
-@ignore
-Scenario: configurações da t_CODIGO_DESCRICAO para PedidoECommerce_Origem_Grupo (testar o blnPedidoECommerceCreditoOkAutomatico e a exigência de nº do pedido do marketplace)
-	#			s = "SELECT * FROM t_CODIGO_DESCRICAO WHERE (grupo = 'PedidoECommerce_Origem') AND (codigo = '" & s_origem_pedido & "')"
-	#			set rs = cn.execute(s)
-	#			if rs.Eof then
-	#				alerta=texto_add_br(alerta)
-	#				alerta=alerta & "Código de origem do pedido (marketplace) não cadastrado: " & s_origem_pedido
-	#			else
-	#			'	PROCESSA OS PARÂMETROS DEFINIDOS PARA A ORIGEM (GRUPO)
-	#				s = "SELECT * FROM T_CODIGO_DESCRICAO WHERE (grupo = 'PedidoECommerce_Origem_Grupo') AND (codigo = '" & Trim("" & rs("codigo_pai")) & "')"
-	#				set rs2 = cn.execute(s)
-	#				if Not rs2.Eof then
-	#				'	OBTÉM O PERCENTUAL DE COMISSÃO DO MARKETPLACE
-	#					perc_RT = rs2("parametro_campo_real")
-	#				'	DEVE COLOCAR AUTOMATICAMENTE COM 'CRÉDITO OK'?
-	#					if rs2("parametro_1_campo_flag") = 1 then blnPedidoECommerceCreditoOkAutomatico = True
-	#				'	Nº PEDIDO MARKETPLACE É OBRIGATÓRIO?
-	#					if rs2("parametro_2_campo_flag") = 1 then
-	#						if s_numero_mktplace = "" then
-	#							alerta=texto_add_br(alerta)
-	#							alerta=alerta & "Informe o nº do pedido do marketplace (" & Trim("" & rs("descricao")) & ")"
-	#							end if
-	#						end if
-	#					end if 'if Not rs2.Eof then
-	#				end if 'if rs.Eof
-	#			if rs.State <> 0 then rs.Close
-	#			end if 'if alerta = "" then
-	#
-	Given Fazer este teste
-
 

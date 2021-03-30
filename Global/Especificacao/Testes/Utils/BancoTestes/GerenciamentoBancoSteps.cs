@@ -156,7 +156,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             }
         }
 
-        public void TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(TpedidoItem item, string campo, string valor, string pedido)
+        public void TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(TpedidoItem item, string tipo_estoque, string campo, string valor, string pedido)
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("_ESTOQUE_MOVIMENTO", "pedido", pedido, campo, valor, this);
 
@@ -164,7 +164,8 @@ namespace Especificacao.Testes.Utils.BancoTestes
             var registros = (from registro in db.TestoqueMovimentos
                              where registro.Pedido.Contains(pedido) &&
                                    registro.Produto == item.Produto &&
-                                   registro.Fabricante == item.Fabricante
+                                   registro.Fabricante == item.Fabricante &&
+                                   registro.Estoque == tipo_estoque.ToUpper()
                              select registro).ToList();
             //deve ter um ou mais registros
             Assert.True(registros.Any());
@@ -178,15 +179,15 @@ namespace Especificacao.Testes.Utils.BancoTestes
         public void TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(TpedidoItem item, string campo, string valor)
         {
             var id_estoque = BuscarIdEstoqueMovimento(item);
-            if (string.IsNullOrEmpty(id_estoque))
-            {
-                Assert.Equal("pedido gerado sem id_estoque", campo);
-            }
-
+            //if (string.IsNullOrEmpty(id_estoque))
+            //{
+            //    //se tiver sem id_estoque é porque esta sem presença no estoque
+            //    Assert.Equal("pedido gerado sem id_estoque", campo);
+            //}
+            //estoqueItem.Id_estoque == id_estoque &&
             var db = this.contextoBdProvider.GetContextoLeitura();
             var registros = (from estoqueItem in db.TestoqueItems
-                             where estoqueItem.Id_estoque == id_estoque &&
-                                   estoqueItem.Fabricante == item.Fabricante &&
+                             where estoqueItem.Fabricante == item.Fabricante &&
                                    estoqueItem.Produto == item.Produto
                              select estoqueItem);
 

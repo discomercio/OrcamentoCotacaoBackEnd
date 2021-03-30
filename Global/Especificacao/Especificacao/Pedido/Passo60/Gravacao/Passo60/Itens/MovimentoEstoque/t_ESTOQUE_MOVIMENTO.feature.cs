@@ -110,30 +110,31 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60.Itens.Movi
         [Xunit.SkippableTheoryAttribute(DisplayName="Verificar estoque movimento")]
         [Xunit.TraitAttribute("FeatureTitle", "t_ESTOQUE_MOVIMENTO")]
         [Xunit.TraitAttribute("Description", "Verificar estoque movimento")]
-        [Xunit.InlineDataAttribute("003220", "id_estoque", "", new string[0])]
-        [Xunit.InlineDataAttribute("003220", "fabricante", "003", new string[0])]
-        [Xunit.InlineDataAttribute("003220", "produto", "003220", new string[0])]
-        [Xunit.InlineDataAttribute("003220", "qtde", "2", new string[0])]
-        [Xunit.InlineDataAttribute("003220", "operacao", "VDA", new string[0])]
-        [Xunit.InlineDataAttribute("003220", "estoque", "SPE", new string[0])]
-        [Xunit.InlineDataAttribute("003220", "loja", "", new string[0])]
-        [Xunit.InlineDataAttribute("003220", "anulado_status", "0", new string[0])]
-        [Xunit.InlineDataAttribute("003220", "kit", "0", new string[0])]
-        [Xunit.InlineDataAttribute("003220", "kit_id_estoque", "", new string[0])]
-        [Xunit.InlineDataAttribute("003221", "id_estoque", "", new string[0])]
-        [Xunit.InlineDataAttribute("003221", "fabricante", "003", new string[0])]
-        [Xunit.InlineDataAttribute("003221", "produto", "003221", new string[0])]
-        [Xunit.InlineDataAttribute("003221", "qtde", "2", new string[0])]
-        [Xunit.InlineDataAttribute("003221", "operacao", "VDA", new string[0])]
-        [Xunit.InlineDataAttribute("003221", "estoque", "SPE", new string[0])]
-        [Xunit.InlineDataAttribute("003221", "loja", "", new string[0])]
-        [Xunit.InlineDataAttribute("003221", "anulado_status", "0", new string[0])]
-        [Xunit.InlineDataAttribute("003221", "kit", "0", new string[0])]
-        [Xunit.InlineDataAttribute("003221", "kit_id_estoque", "", new string[0])]
-        public virtual void VerificarEstoqueMovimento(string produto, string campo, string valor, string[] exampleTags)
+        [Xunit.InlineDataAttribute("SPE", "003220", "id_estoque", "", new string[0])]
+        [Xunit.InlineDataAttribute("SPE", "003220", "fabricante", "003", new string[0])]
+        [Xunit.InlineDataAttribute("SPE", "003220", "produto", "003220", new string[0])]
+        [Xunit.InlineDataAttribute("SPE", "003220", "qtde", "2", new string[0])]
+        [Xunit.InlineDataAttribute("SPE", "003220", "operacao", "VDA", new string[0])]
+        [Xunit.InlineDataAttribute("SPE", "003220", "estoque", "SPE", new string[0])]
+        [Xunit.InlineDataAttribute("SPE", "003220", "loja", "", new string[0])]
+        [Xunit.InlineDataAttribute("SPE", "003220", "anulado_status", "0", new string[0])]
+        [Xunit.InlineDataAttribute("SPE", "003220", "kit", "0", new string[0])]
+        [Xunit.InlineDataAttribute("SPE", "003220", "kit_id_estoque", "", new string[0])]
+        [Xunit.InlineDataAttribute("SPE", "003221", "id_estoque", "", new string[0])]
+        [Xunit.InlineDataAttribute("SPE", "003221", "fabricante", "003", new string[0])]
+        [Xunit.InlineDataAttribute("SPE", "003221", "produto", "003221", new string[0])]
+        [Xunit.InlineDataAttribute("SPE", "003221", "qtde", "2", new string[0])]
+        [Xunit.InlineDataAttribute("SPE", "003221", "operacao", "VDA", new string[0])]
+        [Xunit.InlineDataAttribute("SPE", "003221", "estoque", "SPE", new string[0])]
+        [Xunit.InlineDataAttribute("SPE", "003221", "loja", "", new string[0])]
+        [Xunit.InlineDataAttribute("SPE", "003221", "anulado_status", "0", new string[0])]
+        [Xunit.InlineDataAttribute("SPE", "003221", "kit", "0", new string[0])]
+        [Xunit.InlineDataAttribute("SPE", "003221", "kit_id_estoque", "", new string[0])]
+        public virtual void VerificarEstoqueMovimento(string estoque, string produto, string campo, string valor, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("estoque", estoque);
             argumentsOfScenario.Add("produto", produto);
             argumentsOfScenario.Add("campo", campo);
             argumentsOfScenario.Add("valor", valor);
@@ -168,8 +169,8 @@ this.FeatureBackground();
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 34
- testRunner.And(string.Format("Tabela \"t_ESTOQUE_MOVIMENTO\" registro pai e produto = \"{0}\", verificar campo \"{1}" +
-                            "\" = \"{2}\"", produto, campo, valor), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("Tabela \"t_ESTOQUE_MOVIMENTO\" registro pai e produto = \"{0}\" e estoque = \"{1}\", ve" +
+                            "rificar campo \"{2}\" = \"{3}\"", produto, estoque, campo, valor), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -178,12 +179,13 @@ this.FeatureBackground();
         [Xunit.SkippableTheoryAttribute(DisplayName="Verificar estoque movimento usuario - magento")]
         [Xunit.TraitAttribute("FeatureTitle", "t_ESTOQUE_MOVIMENTO")]
         [Xunit.TraitAttribute("Description", "Verificar estoque movimento usuario - magento")]
-        [Xunit.InlineDataAttribute("003220", "usuario", "USRMAG", new string[0])]
-        [Xunit.InlineDataAttribute("003221", "usuario", "USRMAG", new string[0])]
-        public virtual void VerificarEstoqueMovimentoUsuario_Magento(string produto, string campo, string valor, string[] exampleTags)
+        [Xunit.InlineDataAttribute("SPE", "003220", "usuario", "USRMAG", new string[0])]
+        [Xunit.InlineDataAttribute("SPE", "003221", "usuario", "USRMAG", new string[0])]
+        public virtual void VerificarEstoqueMovimentoUsuario_Magento(string estoque, string produto, string campo, string valor, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("estoque", estoque);
             argumentsOfScenario.Add("produto", produto);
             argumentsOfScenario.Add("campo", campo);
             argumentsOfScenario.Add("valor", valor);
@@ -222,8 +224,8 @@ this.FeatureBackground();
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 66
- testRunner.And(string.Format("Tabela \"t_ESTOQUE_MOVIMENTO\" registro pai e produto = \"{0}\", verificar campo \"{1}" +
-                            "\" = \"{2}\"", produto, campo, valor), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("Tabela \"t_ESTOQUE_MOVIMENTO\" registro pai e produto = \"{0}\" e estoque = \"{1}\", ve" +
+                            "rificar campo \"{2}\" = \"{3}\"", produto, estoque, campo, valor), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -232,12 +234,13 @@ this.FeatureBackground();
         [Xunit.SkippableTheoryAttribute(DisplayName="Verificar estoque movimento usuario - loja")]
         [Xunit.TraitAttribute("FeatureTitle", "t_ESTOQUE_MOVIMENTO")]
         [Xunit.TraitAttribute("Description", "Verificar estoque movimento usuario - loja")]
-        [Xunit.InlineDataAttribute("003220", "usuario", "USRLOJA", new string[0])]
-        [Xunit.InlineDataAttribute("003221", "usuario", "USRLOJA", new string[0])]
-        public virtual void VerificarEstoqueMovimentoUsuario_Loja(string produto, string campo, string valor, string[] exampleTags)
+        [Xunit.InlineDataAttribute("SPE", "003220", "usuario", "USRLOJA", new string[0])]
+        [Xunit.InlineDataAttribute("SPE", "003221", "usuario", "USRLOJA", new string[0])]
+        public virtual void VerificarEstoqueMovimentoUsuario_Loja(string estoque, string produto, string campo, string valor, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("estoque", estoque);
             argumentsOfScenario.Add("produto", produto);
             argumentsOfScenario.Add("campo", campo);
             argumentsOfScenario.Add("valor", valor);
@@ -276,8 +279,8 @@ this.FeatureBackground();
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 77
- testRunner.And(string.Format("Tabela \"t_ESTOQUE_MOVIMENTO\" registro pai e produto = \"{0}\", verificar campo \"{1}" +
-                            "\" = \"{2}\"", produto, campo, valor), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("Tabela \"t_ESTOQUE_MOVIMENTO\" registro pai e produto = \"{0}\" e estoque = \"{1}\", ve" +
+                            "rificar campo \"{2}\" = \"{3}\"", produto, estoque, campo, valor), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

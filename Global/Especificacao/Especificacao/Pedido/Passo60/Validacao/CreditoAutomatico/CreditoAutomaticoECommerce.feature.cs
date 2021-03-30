@@ -233,14 +233,17 @@ this.FeatureBackground();
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="CreditoAutomaticoECommerce - NUMERO_LOJA_ECOMMERCE_AR_CLUBE á vista")]
+        [Xunit.SkippableFactAttribute(DisplayName="CreditoAutomaticoECommerce - parametro_2_campo_flag = 1 exigir pedido marketplace" +
+            "")]
         [Xunit.TraitAttribute("FeatureTitle", "CreditoAutomaticoECommerce")]
-        [Xunit.TraitAttribute("Description", "CreditoAutomaticoECommerce - NUMERO_LOJA_ECOMMERCE_AR_CLUBE á vista")]
-        public virtual void CreditoAutomaticoECommerce_NUMERO_LOJA_ECOMMERCE_AR_CLUBEAVista()
+        [Xunit.TraitAttribute("Description", "CreditoAutomaticoECommerce - parametro_2_campo_flag = 1 exigir pedido marketplace" +
+            "")]
+        public virtual void CreditoAutomaticoECommerce_Parametro_2_Campo_Flag1ExigirPedidoMarketplace()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CreditoAutomaticoECommerce - NUMERO_LOJA_ECOMMERCE_AR_CLUBE á vista", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CreditoAutomaticoECommerce - parametro_2_campo_flag = 1 exigir pedido marketplace" +
+                    "", null, tagsOfScenario, argumentsOfScenario);
 #line 123
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -264,48 +267,32 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 129
+#line 130
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 130
- testRunner.When("Informo \"appsettings.Loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
 #line 131
- testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Informo \"InfCriacaoPedido.Pedido_bs_x_marketplace\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 132
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"tipo_parcelamento\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("Tabela \"T_CODIGO_DESCRICAO\" registro com campo grupo \"PedidoECommerce_Origem_Grup" +
+                        "o\" e codigo \"001\", alterar campo \"parametro_2_campo_flag\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 133
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"av_forma_pagto\" = \"6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 134
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vendedor\" = \"USRMAG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 135
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_credito\" = \"8\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 136
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_credito_usuario\" = \"A" +
-                        "UTOMÁTICO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 137
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_endereco_tratar_statu" +
-                        "s\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("Erro \"Informe o nº do pedido do marketplace (Arclube (e-commerce))\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="CreditoAutomaticoECommerce - Loja diferente de NUMERO_LOJA_ECOMMERCE_AR_CLUBE")]
+        [Xunit.SkippableFactAttribute(DisplayName="CreditoAutomaticoECommerce - NUMERO_LOJA_ECOMMERCE_AR_CLUBE á vista")]
         [Xunit.TraitAttribute("FeatureTitle", "CreditoAutomaticoECommerce")]
-        [Xunit.TraitAttribute("Description", "CreditoAutomaticoECommerce - Loja diferente de NUMERO_LOJA_ECOMMERCE_AR_CLUBE")]
-        public virtual void CreditoAutomaticoECommerce_LojaDiferenteDeNUMERO_LOJA_ECOMMERCE_AR_CLUBE()
+        [Xunit.TraitAttribute("Description", "CreditoAutomaticoECommerce - NUMERO_LOJA_ECOMMERCE_AR_CLUBE á vista")]
+        public virtual void CreditoAutomaticoECommerce_NUMERO_LOJA_ECOMMERCE_AR_CLUBEAVista()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CreditoAutomaticoECommerce - Loja diferente de NUMERO_LOJA_ECOMMERCE_AR_CLUBE", null, tagsOfScenario, argumentsOfScenario);
-#line 139
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CreditoAutomaticoECommerce - NUMERO_LOJA_ECOMMERCE_AR_CLUBE á vista", null, tagsOfScenario, argumentsOfScenario);
+#line 135
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -328,8 +315,11 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 142
+#line 141
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 142
+ testRunner.When("Informo \"appsettings.Loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 143
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -338,16 +328,19 @@ this.FeatureBackground();
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"tipo_parcelamento\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 145
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vendedor\" = \"USRMAG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"av_forma_pagto\" = \"6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 146
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_credito\" = \"8\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vendedor\" = \"USRMAG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 147
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_credito\" = \"8\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 148
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_credito_usuario\" = \"A" +
                         "UTOMÁTICO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 148
+#line 149
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_endereco_tratar_statu" +
                         "s\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -355,22 +348,14 @@ this.FeatureBackground();
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="configurações da t_CODIGO_DESCRICAO para PedidoECommerce_Origem_Grupo (testar o b" +
-            "lnPedidoECommerceCreditoOkAutomatico e a exigência de nº do pedido do marketplac" +
-            "e)")]
+        [Xunit.SkippableFactAttribute(DisplayName="CreditoAutomaticoECommerce - Loja diferente de NUMERO_LOJA_ECOMMERCE_AR_CLUBE")]
         [Xunit.TraitAttribute("FeatureTitle", "CreditoAutomaticoECommerce")]
-        [Xunit.TraitAttribute("Description", "configurações da t_CODIGO_DESCRICAO para PedidoECommerce_Origem_Grupo (testar o b" +
-            "lnPedidoECommerceCreditoOkAutomatico e a exigência de nº do pedido do marketplac" +
-            "e)")]
-        [Xunit.TraitAttribute("Category", "ignore")]
-        public virtual void ConfiguracoesDaT_CODIGO_DESCRICAOParaPedidoECommerce_Origem_GrupoTestarOBlnPedidoECommerceCreditoOkAutomaticoEAExigenciaDeNºDoPedidoDoMarketplace()
+        [Xunit.TraitAttribute("Description", "CreditoAutomaticoECommerce - Loja diferente de NUMERO_LOJA_ECOMMERCE_AR_CLUBE")]
+        public virtual void CreditoAutomaticoECommerce_LojaDiferenteDeNUMERO_LOJA_ECOMMERCE_AR_CLUBE()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("configurações da t_CODIGO_DESCRICAO para PedidoECommerce_Origem_Grupo (testar o b" +
-                    "lnPedidoECommerceCreditoOkAutomatico e a exigência de nº do pedido do marketplac" +
-                    "e)", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CreditoAutomaticoECommerce - Loja diferente de NUMERO_LOJA_ECOMMERCE_AR_CLUBE", null, tagsOfScenario, argumentsOfScenario);
 #line 151
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -394,8 +379,28 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 178
- testRunner.Given("Fazer este teste", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 154
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 155
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 156
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"tipo_parcelamento\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 157
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vendedor\" = \"USRMAG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 158
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_credito\" = \"8\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 159
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_credito_usuario\" = \"A" +
+                        "UTOMÁTICO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 160
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"analise_endereco_tratar_statu" +
+                        "s\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

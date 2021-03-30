@@ -206,6 +206,14 @@ namespace Especificacao.Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApi
         }
 
 #pragma warning disable IDE0060 // Remove unused parameter
+        public void TabelaT_PEDIDO_ITEMRegistroCriadoVerificarCampo(int item, string campo, string valor)
+#pragma warning restore IDE0060 // Remove unused parameter
+        {
+            //não é implementado aqui porque nunca deve ser executado dentro de um prepedido
+            throw new NotImplementedException();
+        }
+
+#pragma warning disable IDE0060 // Remove unused parameter
         public void TabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo(string campo, string valor)
 #pragma warning restore IDE0060 // Remove unused parameter
         {
@@ -213,7 +221,7 @@ namespace Especificacao.Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApi
             throw new NotImplementedException();
         }
 
-        public void TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(string produto, string campo, string valor)
+        public void TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(string produto, string tipo_estoque, string campo, string valor)
         {
             throw new NotImplementedException();
         }

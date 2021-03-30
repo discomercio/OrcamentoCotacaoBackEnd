@@ -27,16 +27,16 @@ Testes:
 			Regra de consumo para esperar mercadoria CD1 para tipo_pessoa para estado UF
 			......
 		
-		220 - ser atendido pelo CD 1 e pelo CD 2
-		230 - atender pelo CD2 e o resto sem presença
-		240 - ficar com todos os produtos sem presença
+		220 - ser atendido pelo CD 1 e pelo CD 2 = gera 01 filhote
+		230 - atender pelo CD2 e o resto sem presença = gera 01 filhote
+		240 - ficar com todos os produtos sem presença = somente pedido pai
 
 		250 - Novas regras
 			......
 			Regra de consumo para esperar mercadoria CD2 para tipo_pessoa para estado UF
 			......
 
-		260 - ser atendido pelo CD 1 e pelo CD 2, esperando no CD2
+		260 - ser atendido pelo CD 1 e pelo CD 2, esperando no CD2 = gera 02 filhote
 		270 - atender pelo CD2 e o resto sem presença
 		280 - ficar com todos os produtos sem presença
 
@@ -56,7 +56,6 @@ Testes não atuomatizados:
 Fazer um roteiro manual para criar pedidos, dar entrada no estoque pelo ASP
 e verficiar que a rotina que processa os produtos pendentes atende esses pedidos
 e que o estoque ficou consistente.
-
 
 
 

@@ -37,13 +37,21 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
         public EnderecoEntregaClienteMagentoDto? EnderecoEntrega { get; set; }
 
+        /// <summary>
+        /// ListaProdutos: lista de itens que são produtos.
+        /// <hr />
+        /// </summary>
         [Required]
         public List<PedidoProdutoMagentoDto> ListaProdutos { get; set; }
 
-        //PermiteRAStatus = true, sempre
+        /// <summary>
+        /// ListaServicos: lista de itens que são serviços. O valor dos serviços não é incluído no total do pedido.
+        /// <hr />
+        /// </summary>
+        [Required]
+        public List<PedidoServicoMagentoDto> ListaServicos { get; set; }
 
-        //[Required]
-        //public decimal VlTotalDestePedido { get; set; }
+        //PermiteRAStatus = true, sempre
 
         //nao existe o DetalhesPedidoMagentoDto. Os valores a usar são:
         //St_Entrega_Imediata: se for PF, sim. Se for PJ, não
@@ -55,12 +63,17 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         public FormaPagtoCriacaoMagentoDto FormaPagtoCriacao { get; set; }
 
         //CDManual = false
-        //PercRT = calculado automaticamente{ get; set; }
+        //PercRT = calculado automaticamente
         //OpcaoPossuiRA = sim
 
         [MaxLength(500)]
         public string? Obs_1 { get; set; }
 
+        /// <summary>
+        /// Valor liquido do frete
+        /// <br />É gravado em t_PEDIDO.magento_shipping_amount
+        /// <hr />
+        /// </summary>
         public decimal? Frete { get; set; }
 #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
