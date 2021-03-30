@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo40
+namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60.Itens.MovimentoEstoque
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,23 +19,25 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo40
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.PedidoFaltandoImplementarSteps")]
+    [Xunit.TraitAttribute("Category", "ignore")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo60")]
     [Xunit.TraitAttribute("Category", "GerenciamentoBanco")]
-    public partial class Grava40_FeatureFeature : object, Xunit.IClassFixture<Grava40_FeatureFeature.FixtureData>, System.IDisposable
+    public partial class T_ESTOQUE_MOVIMENTO_Estoque_VDOFeature : object, Xunit.IClassFixture<T_ESTOQUE_MOVIMENTO_Estoque_VDOFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "Especificacao.Pedido.PedidoFaltandoImplementarSteps",
+                "ignore",
+                "Especificacao.Pedido.Passo60",
                 "GerenciamentoBanco"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "Grava40.feature"
+#line 1 "t_ESTOQUE_MOVIMENTO_estoque_VDO.feature"
 #line hidden
         
-        public Grava40_FeatureFeature(Grava40_FeatureFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public T_ESTOQUE_MOVIMENTO_Estoque_VDOFeature(T_ESTOQUE_MOVIMENTO_Estoque_VDOFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -44,8 +46,9 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo40
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Grava40.feature", null, ProgrammingLanguage.CSharp, new string[] {
-                        "Especificacao.Pedido.PedidoFaltandoImplementarSteps",
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "t_ESTOQUE_MOVIMENTO_estoque_VDO", "Verificar a tabela t_ESTOQUE_MOVIMENTO com estoque VDO", ProgrammingLanguage.CSharp, new string[] {
+                        "ignore",
+                        "Especificacao.Pedido.Passo60",
                         "GerenciamentoBanco"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -86,15 +89,15 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo40
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Passo40: Verifica se a disponibilidade do estoque foi alterada - Linha 1159")]
-        [Xunit.TraitAttribute("FeatureTitle", "Grava40.feature")]
-        [Xunit.TraitAttribute("Description", "Passo40: Verifica se a disponibilidade do estoque foi alterada - Linha 1159")]
-        public virtual void Passo40VerificaSeADisponibilidadeDoEstoqueFoiAlterada_Linha1159()
+        [Xunit.SkippableFactAttribute(DisplayName="Falta fazer")]
+        [Xunit.TraitAttribute("FeatureTitle", "t_ESTOQUE_MOVIMENTO_estoque_VDO")]
+        [Xunit.TraitAttribute("Description", "Falta fazer")]
+        public virtual void FaltaFazer()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Passo40: Verifica se a disponibilidade do estoque foi alterada - Linha 1159", null, tagsOfScenario, argumentsOfScenario);
-#line 32
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Falta fazer", null, tagsOfScenario, argumentsOfScenario);
+#line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -114,7 +117,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 33
+#line 10
  testRunner.Given("Fazer este teste", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
@@ -128,12 +131,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                Grava40_FeatureFeature.FeatureSetup();
+                T_ESTOQUE_MOVIMENTO_Estoque_VDOFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                Grava40_FeatureFeature.FeatureTearDown();
+                T_ESTOQUE_MOVIMENTO_Estoque_VDOFeature.FeatureTearDown();
             }
         }
     }

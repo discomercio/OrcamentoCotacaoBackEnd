@@ -1,10 +1,7 @@
-﻿@ignore
-@Especificacao.Pedido.Passo60
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
 @GerenciamentoBanco
 Feature: Grava40.feature
 
-Background:
-	Given Reiniciar banco ao terminar cenário
 
 #precisamos testar isto:
 #        if erro_produto_indisponivel then
