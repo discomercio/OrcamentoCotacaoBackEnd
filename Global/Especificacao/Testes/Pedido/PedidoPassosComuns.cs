@@ -96,6 +96,12 @@ namespace Especificacao.Testes.Pedido
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO_ITEM", "pedido", "registro pai criado", campo, valor, this);
             base.Executar(i => i.TabelaT_PEDIDO_ITEMRegistroCriadoVerificarCampo(item, campo, valor));
         }
+        public void TabelaT_PEDIDO_ITEMFilhoteRegistroCriadoVerificarCampo(int item, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO_ITEM", "pedido", "registro pai criado", campo, valor, this);
+            base.Executar(i => i.TabelaT_PEDIDO_ITEMFilhoteRegistroCriadoVerificarCampo(item, campo, valor));
+        }
         public void TabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo(string campo, string valor)
         {
             if (ignorarFeature) return;
@@ -110,11 +116,24 @@ namespace Especificacao.Testes.Pedido
             base.Executar(i => i.TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(produto, tipo_estoque, campo, valor));
         }
 
+        public void VerificarPedidoGeradoSaldoDeID_ESTOQUE_SEM_PRESENCA(int indicePedido, int qtde)
+        {
+            if (ignorarFeature) return;
+            base.Executar(i => i.VerificarPedidoGeradoSaldoDeID_ESTOQUE_SEM_PRESENCA(indicePedido, qtde));
+
+        }
+
         public void TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(string produto, string campo, string valor)
         {
             if (ignorarFeature) return;
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_ESTOQUE_ITEM", "produto", "verificar campos", campo, valor, this);
             base.Executar(i => i.TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(produto, campo, valor));
+        }
+
+        public void TabelaT_ESTOQUE_ITEMVerificarSaldo(string id_nfe_emitente, int saldo)
+        {
+            if (ignorarFeature) return;
+            base.Executar(i => i.TabelaT_ESTOQUE_ITEMVerificarSaldo(id_nfe_emitente, saldo));
         }
 
         public void TabelaT_ESTOQUERegistroPaiVerificarCampo(string campo, string valor)
@@ -190,6 +209,10 @@ namespace Especificacao.Testes.Pedido
             base.Executar(i => i.GivenPedidoBaseComEnderecoDeEntrega());
         }
 
-
+        public void GeradoPedidos(int qtde_pedidos)
+        {
+            if (ignorarFeature) return;
+            base.Executar(i => i.GeradoPedidos(qtde_pedidos));
+        }
     }
 }

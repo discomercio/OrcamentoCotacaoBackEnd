@@ -138,7 +138,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
 
             var db = this.contextoBdProvider.GetContextoLeitura();
             var registros = (from registro in db.TpedidoItems
-                             where registro.Pedido.Contains(pedido) &&
+                             where registro.Pedido == pedido &&
                              registro.Sequencia == item
                              select registro).ToList();
             //deve ter um ou mais registros
@@ -170,6 +170,30 @@ namespace Especificacao.Testes.Utils.BancoTestes
             }
         }
 
+        public void TabelaT_ESTOQUE_MOVIMENTORegistroDoPedidoVerificarCampo(TpedidoItem item, string tipo_estoque, string campo, int valor, string pedido)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("_ESTOQUE_MOVIMENTO", "pedido", pedido, campo, valor.ToString(), this);
+
+            var db = this.contextoBdProvider.GetContextoLeitura();
+            var registros = (from registro in db.TestoqueMovimentos
+                             where registro.Pedido == pedido &&
+                                   registro.Produto == item.Produto &&
+                                   registro.Fabricante == item.Fabricante &&
+                                   registro.Estoque == tipo_estoque.ToUpper()
+                             select registro.Qtde).ToList();
+            if(registros == null)
+                Assert.Equal(0, valor);
+
+            if(registros != null)
+            {
+                foreach (var registro in registros)
+                {
+                    int reg = registro ?? 0;
+                    Assert.Equal(reg, valor);
+                }
+            }            
+        }
+
         public void TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(TpedidoItem item, string campo, string valor)
         {
             var id_estoque = BuscarIdEstoqueMovimento(item);
@@ -191,6 +215,26 @@ namespace Especificacao.Testes.Utils.BancoTestes
             {
                 VerificarCampoEmRegistro.VerificarRegistro<TestoqueItem>(campo, valor, registro);
             }
+        }
+
+        public void TabelaT_ESTOQUE_ITEMVerificarSaldo(int id_nfe_emitente, int saldo, TpedidoItem item)
+        {
+            var db = this.contextoBdProvider.GetContextoLeitura();
+            var lotes = (from ei in db.TestoqueItems
+                         join e in db.Testoques on ei.Id_estoque equals e.Id_estoque
+                         where e.Id_nfe_emitente == id_nfe_emitente &&
+                               ei.Fabricante == item.Fabricante &&
+                               ei.Produto == item.Produto
+                         orderby e.Data_entrada, ei.Id_estoque
+                         select new
+                         {
+                             Saldo = (short?)(ei.Qtde - ei.Qtde_utilizada)
+                         });
+            Assert.True(lotes.Any());
+
+            var saldoTotal = lotes.Select(x => x).Sum(x => x.Saldo);
+
+            Assert.Equal(saldo, saldoTotal);
         }
 
         public void TabelaT_ESTOQUERegistroPaiVerificarCampo(List<TpedidoItem> itens, string campo, string valor)

@@ -300,7 +300,7 @@ namespace Especificacao.Especificacao.Pedido
         }
 
         [Then(@"Tabela ""t_PEDIDO"" registros filhotes criados, verificar campo ""(.*)"" = ""(.*)""")]
-        public void ThenTabelaRegistrosFilhotesCriadosVerificarCampo(string campo, string valor)
+        public void ThenTabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo(string campo, string valor)
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO", "pedido", "registros filhotes criados", campo, valor, this);
             base.TabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo(campo, valor);
@@ -318,6 +318,8 @@ namespace Especificacao.Especificacao.Pedido
         {
             SplitEstoqueRotinas.DefinirSaldoDeEstoqueParaProdutoComValor(qde, nomeProduto, 987);
         }
+
+
         [Given(@"Definir saldo estoque = ""(\d*)"" para produto = ""(.*)"" e id_nfe_emitente = ""(.*)""")]
         public void GivenDefinirSaldoEstoqueEId_Nfe_Emitente(int qtde, string nomeProduto, short id_nfe_emitente)
         {
@@ -423,6 +425,51 @@ namespace Especificacao.Especificacao.Pedido
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PRODUTO_X_WMS_REGRA_CD", "fabricante e produto", "verificar campos", campo, valor, this);
             base.TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteEProdutoVerificarCampo(fabricante, produto, campo, valor);
+        }
+
+        [Then(@"Gerado (.*) pedidos")]
+        public void ThenGeradoPedidos(int qtde_pedidos)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.Verificacao("Verificar quantidade de pedidos gerados: ", qtde_pedidos);
+            base.GeradoPedidos(qtde_pedidos);
+        }
+
+        [Then(@"Pedido gerado ""(.*)"", verificar st_entrega = ""(.*)""")]
+        public void ThenPedidoGeradoVerificarSt_EntregaSEP(int indicePedido, string st_entrega)
+        {
+            //se indicePedido for 0 é pedido pai
+            if (indicePedido == 0)
+                ThenTabelaT_PEDIDORegistroPaiCriadoVerificarCampo("st_entrega", st_entrega);
+            if (indicePedido == 1)
+                ThenTabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo("st_entrega", st_entrega);
+        }
+
+        [Then(@"Pedido gerado (.*), verificar id_nfe_emitente = (.*) e qde = (.*)")]
+        public void ThenPedidoGeradoVerificarId_Nfe_EmitenteEQde(int indicePedido, string id_nfe_emitente, string qtde)
+        {
+            if (indicePedido == 0)
+            {
+                ThenTabelaT_PEDIDORegistroPaiCriadoVerificarCampo("id_nfe_emitente", id_nfe_emitente);
+                base.TabelaT_PEDIDO_ITEMRegistroCriadoVerificarCampo(1, "qtde", qtde);
+
+            }
+            if (indicePedido == 1)
+            {
+                ThenTabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo("id_nfe_emitente", id_nfe_emitente);
+                base.TabelaT_PEDIDO_ITEMFilhoteRegistroCriadoVerificarCampo(1, "qtde", qtde);
+            }
+        }
+
+        [Then(@"Verificar estoque id_nfe_emitente = (.*), saldo de estoque = (.*)")]
+        public void ThenVerificarEstoqueId_Nfe_EmitenteSaldoDeEstoque(string id_nfe_emitente, int saldo)
+        {
+            base.TabelaT_ESTOQUE_ITEMVerificarSaldo(id_nfe_emitente, saldo);
+        }
+
+        [Then(@"Verificar pedido gerado ""(.*)"", saldo de ID_ESTOQUE_SEM_PRESENCA = ""(.*)""")]
+        public void ThenVerificarPedidoGeradoSaldoDeID_ESTOQUE_SEM_PRESENCA(int indicePedido, int qtde)
+        {
+            base.VerificarPedidoGeradoSaldoDeID_ESTOQUE_SEM_PRESENCA(indicePedido, qtde);
         }
 
 
