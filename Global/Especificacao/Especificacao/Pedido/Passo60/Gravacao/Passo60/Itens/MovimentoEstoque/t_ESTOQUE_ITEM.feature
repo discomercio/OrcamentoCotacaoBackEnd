@@ -11,18 +11,21 @@ Background: Configuracao
 
 @ignore
 Scenario: Verificar qtde_disponivel - erro
-	#OBS => não consegui fazer esse teste
-	#Testar rotina ESTOQUE_produto_saida_v2
-	#testar o erros que deve retornar
-	#NÃO HÁ PRODUTOS SUFICIENTES NO ESTOQUE!!
-	#           if ((qtde_a_sair - qtde_autorizada_sem_presenca) > qtde_disponivel)
-	#           {
-	#               lstErros.Add("Produto " + id_produto + " do fabricante " + id_fabricante + ": faltam " +
-	#                   ((qtde_a_sair - qtde_autorizada_sem_presenca) - qtde_disponivel) + " unidades no estoque (" +
-	#                   UtilsGlobais.Util.ObterApelidoEmpresaNfeEmitentesGravacao(id_nfe_emitente, dbGravacao) +
-	#                   ") para poder atender ao pedido.");
-	#               return false;
-	#           }
+#NÃO HÁ PRODUTOS SUFICIENTES NO ESTOQUE!!
+#           if ((qtde_a_sair - qtde_autorizada_sem_presenca) > qtde_disponivel)
+#           {
+#               lstErros.Add("Produto " + id_produto + " do fabricante " + id_fabricante + ": faltam " +
+#                   ((qtde_a_sair - qtde_autorizada_sem_presenca) - qtde_disponivel) + " unidades no estoque (" +
+#                   UtilsGlobais.Util.ObterApelidoEmpresaNfeEmitentesGravacao(id_nfe_emitente, dbGravacao) +
+#                   ") para poder atender ao pedido.");
+#               return false;
+#           }
+
+#este erro nunca pode acontecer no magento porque não verificamos qtde_autorizada_sem_presenca
+
+	#//nunca é feito porque a variável qtde_autorizada_sem_presenca é ajustada
+	#//exatamente para a quantidade de produtos faltando, então esta condição nunca acontece.
+	#//Essa verificação é feita em Pedido.Criacao.Passo60.Gravacao.Grava40:Executar(), mensagem quando o usuário não aceitou nenhum produto faltando
 	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	Given Definir saldo de estoque = "10" para produto "um"

@@ -236,17 +236,16 @@ Scenario: Preenche_os_campos_do_pedido - split
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "split_usuario" = "SISTEMA"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "st_auto_split" = "1"
 
-@ignore
 Scenario: Preenche_os_campos_do_pedido - refente a cancelamento
-	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_usuario" = ""
-	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_auto_status" = "0"
-	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_auto_motivo" = ""
-	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_codigo_motivo" = ""
-	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_codigo_sub_motivo" = ""
-	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_motivo" = ""
-	#Obs: esses campo ainda não existem mas, serão utilizados para visualização
 	Given Pedido base
 	Then Sem nenhum erro
+#Obs: esses campo ainda não existem mas, serão utilizados para visualização
+#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_usuario" = ""
+#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_auto_status" = "0"
+#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_auto_motivo" = ""
+#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_codigo_motivo" = ""
+#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_codigo_sub_motivo" = ""
+#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_motivo" = ""
 
 Scenario: Preenche_os_campos_do_pedido - instalador, bem de uso, entrega imediata e garantia
 	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
