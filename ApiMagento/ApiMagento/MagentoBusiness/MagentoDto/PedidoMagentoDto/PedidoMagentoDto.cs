@@ -70,13 +70,20 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         public decimal Subtotal { get; set; }
 
         /// <summary>
-        /// Valor total com frete
+        /// Valor liquido do frete
+        /// <br />É gravado em t_PEDIDO.magento_shipping_amount
+        /// <hr />
+        /// </summary>
+        public decimal? Frete { get; set; }
+
+        /// <summary>
+        /// Valor total da nota fiscal emitida
         /// <hr />
         /// </summary>
         [Required]
         public decimal Total { get; set; }
 
-        public float Desconto { get; set; }
+        //public float Desconto { get; set; }
 
 
         //CDManual = false
@@ -87,11 +94,11 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         public string? Obs_1 { get; set; }
 
         /// <summary>
-        /// Valor liquido do frete
-        /// <br />É gravado em t_PEDIDO.magento_shipping_amount
-        /// <hr />
+        /// StatusPedido: APROVADO = 0, NAO_APROVADO = 1
         /// </summary>
-        public decimal? Frete { get; set; }
+        [Required]
+        public int StatusPedido { get; set; }
+
 #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         public static Pedido.Dados.Criacao.PedidoCriacaoDados? PedidoDadosCriacaoDePedidoMagentoDto(Cliente.Dados.DadosClienteCadastroDados dadosClienteMagento,
