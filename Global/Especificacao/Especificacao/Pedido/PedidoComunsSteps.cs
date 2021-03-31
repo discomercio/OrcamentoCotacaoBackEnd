@@ -472,6 +472,17 @@ namespace Especificacao.Especificacao.Pedido
             base.VerificarPedidoGeradoSaldoDeID_ESTOQUE_SEM_PRESENCA(indicePedido, qtde);
         }
 
-
+        [Given(@"Reiniciar appsettings")]
+        public void GivenReiniciarAppsettings()
+        {
+            //so pra lembrar que a gente faz isso
+            AfterScenario();
+        }
+        [AfterScenario]
+        public void AfterScenario()
+        {
+            var configuracaoApiMagento = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<global::MagentoBusiness.UtilsMagento.ConfiguracaoApiMagento>();
+            Ambiente.ApiMagento.InjecaoDependencias.InicializarConfiguracaoApiMagento(configuracaoApiMagento);
+        }
     }
 }

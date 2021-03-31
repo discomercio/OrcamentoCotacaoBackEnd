@@ -239,6 +239,7 @@ Scenario: Preenche_os_campos_do_pedido - split
 Scenario: Preenche_os_campos_do_pedido - refente a cancelamento
 	Given Pedido base
 	Then Sem nenhum erro
+
 #Obs: esses campo ainda não existem mas, serão utilizados para visualização
 #And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_usuario" = ""
 #And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_auto_status" = "0"
@@ -246,7 +247,6 @@ Scenario: Preenche_os_campos_do_pedido - refente a cancelamento
 #And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_codigo_motivo" = ""
 #And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_codigo_sub_motivo" = ""
 #And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_motivo" = ""
-
 Scenario: Preenche_os_campos_do_pedido - instalador, bem de uso, entrega imediata e garantia
 	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
@@ -391,23 +391,26 @@ Scenario: Preenche_os_campos_do_pedido - Marketplace e magento
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pedido_bs_x_marketplace" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "marketplace_codigo_origem" = "001"
 
-@ignore
-Scenario: perc_desagio_RA_liquida
+Scenario: perc_desagio_RA_liquida - magento
+	#gravado no pai e nos filhotes, depende da loja (NUMERO_LOJA_ECOMMERCE_AR_CLUBE nunca é gravado)
+	#
+	#loja/PedidoNovoConfirma.asp
+	#			'01/02/2018: os pedidos do Arclube usam o RA para incluir o valor do frete e, portanto, não devem ter deságio do RA
+	#			if (Cstr(loja) <> Cstr(NUMERO_LOJA_ECOMMERCE_AR_CLUBE)) And (Not blnMagentoPedidoComIndicador) then rs("perc_desagio_RA_liquida") = getParametroPercDesagioRALiquida
+	#set rP = get_registro_t_parametro(ID_PARAMETRO_PERC_DESAGIO_RA_LIQUIDA)
+	#if Trim("" & rP.campo_real) <> "" then getParametroPercDesagioRALiquida = rP.campo_real
+	#s = "SELECT " & _
+	#		"*" & _
+	#	" FROM t_PARAMETRO" & _
+	#	" WHERE" & _
+	#		" (id = '" & id_registro & "')"
+	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
+	Given Tabela "t_PARAMETRO" com id = "MagentoPedidoComIndicadorListaLojaErp" alterar campo "campo_texto" = "201"
+	Given Pedido base
+	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_desagio_ra_liquida" = "0.0"
 
-#gravado no pai e nos filhotes, depende da loja (NUMERO_LOJA_ECOMMERCE_AR_CLUBE nunca é gravado)
-#
-#loja/PedidoNovoConfirma.asp
-#			'01/02/2018: os pedidos do Arclube usam o RA para incluir o valor do frete e, portanto, não devem ter deságio do RA
-#			if (Cstr(loja) <> Cstr(NUMERO_LOJA_ECOMMERCE_AR_CLUBE)) And (Not blnMagentoPedidoComIndicador) then rs("perc_desagio_RA_liquida") = getParametroPercDesagioRALiquida
-#set rP = get_registro_t_parametro(ID_PARAMETRO_PERC_DESAGIO_RA_LIQUIDA)
-#if Trim("" & rP.campo_real) <> "" then getParametroPercDesagioRALiquida = rP.campo_real
-#s = "SELECT " & _
-#		"*" & _
-#	" FROM t_PARAMETRO" & _
-#	" WHERE" & _
-#		" (id = '" & id_registro & "')"
-@ignore
-Scenario: perc_desagio_RA_liquida 2
+Scenario: perc_desagio_RA_liquida 2 - magento
 	#gravado no pai e nos filhotes, depende da loja (NUMERO_LOJA_ECOMMERCE_AR_CLUBE nunca é gravado)
 	#
 	#loja/PedidoNovoConfirma.asp
@@ -421,4 +424,12 @@ Scenario: perc_desagio_RA_liquida 2
 	#	" WHERE" & _
 	#		" (id = '" & id_registro & "')"
 	#
-	When Fazer esta validação
+	Given Reiniciar appsettings
+	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
+	Given Tabela "t_PARAMETRO" com id = "MagentoPedidoComIndicadorListaLojaErp" alterar campo "campo_texto" = "201"
+	Given Pedido base
+	When Informo "appsettings.Loja" = "202"
+	When Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "203456777"
+	And Deixar forma de pagamento consistente
+	Then Sem nenhum erro
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_desagio_ra_liquida" = "25.0"
