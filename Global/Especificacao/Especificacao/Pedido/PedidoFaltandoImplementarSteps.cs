@@ -376,7 +376,11 @@ namespace Especificacao.Especificacao.Pedido
             
         }
 
-        
+        [Given(@"Fazer este teste")]
+        public void GivenFazerEsteTeste()
+        {
+        }
+
     }
 }
 #pragma warning restore IDE0060 // Remove unued parameter

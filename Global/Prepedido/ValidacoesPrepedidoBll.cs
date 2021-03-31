@@ -12,6 +12,7 @@ using Cep;
 using Produto;
 using Prepedido.Dados.DetalhesPrepedido;
 using Produto.Dados;
+using Cep.Dados;
 
 namespace Prepedido
 {
@@ -263,7 +264,7 @@ namespace Prepedido
                                                                     where c.Produto == x.Produto &&
                                                                           c.Fabricante == x.Fabricante &&
                                                                           c.Vendavel == "S" &&
-                                                                          c.Loja == loja && 
+                                                                          c.Loja == loja &&
                                                                           c.Excluido_status == 0
                                                                     select new PrepedidoProdutoPrepedidoDados
                                                                     {
@@ -375,12 +376,13 @@ namespace Prepedido
 
 
         public async Task ValidarEnderecoEntrega(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEntrega,
-            List<string> lstErros, string orcamentista, string tipoCliente, bool usarLojaOrcamentista, string loja)
+            List<string> lstErros, string orcamentista, string tipoCliente, bool usarLojaOrcamentista, string loja,
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel tipoValidacaoEndereco)
         {
 
             if (endEntrega.OutroEndereco)
             {
-                await ValidarDadosEnderecoEntrega(endEntrega, lstErros, contextoProvider, usarLojaOrcamentista, loja, orcamentista);
+                await ValidarDadosEnderecoEntrega(endEntrega, lstErros, contextoProvider, usarLojaOrcamentista, loja, orcamentista, tipoValidacaoEndereco);
 
                 ValidarDadosPessoaEnderecoEntrega(endEntrega, lstErros, false, tipoCliente);
                 VerificarCaracteresInvalidosEnderecoEntregaClienteCadastro(endEntrega, lstErros);
@@ -418,7 +420,8 @@ namespace Prepedido
 
         private async Task ValidarDadosEnderecoEntrega(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEntrega,
             List<string> lstErros,
-            ContextoBdProvider contextoProvider, bool usarLojaOrcamentista, string loja, string orcamentista)
+            ContextoBdProvider contextoProvider, bool usarLojaOrcamentista, string loja, string orcamentista,
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel tipoValidacaoEndereco)
         {
             if (!endEntrega.OutroEndereco)
                 return;
@@ -473,37 +476,20 @@ namespace Prepedido
                     lstErros.Add("CEP INVÁLIDO NO ENDEREÇO DE ENTREGA.");
             }
 
-            //todo: vamos verificar a quantidade de caracteres de cada campo
-            //VerificarQtdeCaracteresDoEndereco(dadosCliente, lstErros);
-            //todo: no pedido também precisamos verificar o tamanho maximo dos campos, valor por exemplo Pedido.EnderecoCadastralCliente.Endereco_logradouro
-
             if (lstErros.Count == 0)
             {
-                //todo: validações não-magento
-                //validações não-magento
+                //vamos comparar endereço
+                Cep.Dados.CepDados cep = new Cep.Dados.CepDados()
                 {
-                    //vamos comparar endereço
-                    string cepSoDigito = endEntrega.EndEtg_cep.Replace(".", "").Replace("-", "");
-                    List<Cep.Dados.CepDados> lstCepDados = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
-
-                    if (lstCepDados.Count == 0)
-                    {
-                        lstErros.Add("Endereço Entrega: cep inválido!");
-                    }
-                    else
-                    {
-                        Cep.Dados.CepDados cep = new Cep.Dados.CepDados()
-                        {
-                            Cep = endEntrega.EndEtg_cep,
-                            Endereco = endEntrega.EndEtg_endereco,
-                            Bairro = endEntrega.EndEtg_bairro,
-                            Cidade = endEntrega.EndEtg_cidade,
-                            Uf = endEntrega.EndEtg_uf
-                        };
-                        await Cliente.ValidacoesClienteBll.VerificarEndereco(cep, lstCepDados, lstErros, contextoProvider,
-                            bancoNFeMunicipio);
-                    }
-                }
+                    Cep = endEntrega.EndEtg_cep,
+                    Endereco = endEntrega.EndEtg_endereco,
+                    Bairro = endEntrega.EndEtg_bairro,
+                    Cidade = endEntrega.EndEtg_cidade,
+                    Uf = endEntrega.EndEtg_uf
+                };
+                var msgErro = "Endereço Entrega: cep inválido!";
+                await Cliente.ValidacoesClienteBll.VerificarEndereco(lstErros, cepBll, contextoProvider,
+                    bancoNFeMunicipio, msgErro, cep, tipoValidacaoEndereco);
 
                 await CepBll.ConsisteMunicipioIBGE(endEntrega.EndEtg_cidade,
                     endEntrega.EndEtg_uf, lstErros, contextoProvider, bancoNFeMunicipio, true);

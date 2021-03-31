@@ -146,7 +146,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava40
                         //se Qtde_spe_usuario_aceitou for null, não verificamos
                         if (v_item_iItem.Pedido.Qtde_spe_usuario_aceitou == 0)
                         {
-                            //mesangem quando o usuário não aceitou nenhum produto faltando
+                            //mensagem quando o usuário não aceitou nenhum produto faltando
                             Retorno.ListaErros.Add($"Produto {v_item_iItem.Pedido.Produto} do fabricante {v_item_iItem.Pedido.Fabricante}: falta(m) " +
                                 $"{Math.Abs(qtde_estoque_total_disponivel - v_item_iItem.Pedido.Qtde)} unidade(s) no estoque.");
                         }

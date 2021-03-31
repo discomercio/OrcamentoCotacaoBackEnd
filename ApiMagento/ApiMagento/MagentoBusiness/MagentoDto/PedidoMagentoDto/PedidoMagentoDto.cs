@@ -140,9 +140,6 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                     //Armazena o id do centro de distribuição selecionado manualmente
                     id_nfe_emitente_selecao_manual: 0, //será sempre automático
 
-                    //Flag para saber se o cliente aceitou finalizar o pedido mesmo com produto sem estoque
-                    opcaoVendaSemEstoque: true,
-
                     loja_indicou: "",
 
                     operacao_origem: Constantes.Op_origem__pedido_novo.OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO,

@@ -236,17 +236,16 @@ Scenario: Preenche_os_campos_do_pedido - split
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "split_usuario" = "SISTEMA"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "st_auto_split" = "1"
 
-@ignore
 Scenario: Preenche_os_campos_do_pedido - refente a cancelamento
-	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_usuario" = ""
-	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_auto_status" = "0"
-	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_auto_motivo" = ""
-	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_codigo_motivo" = ""
-	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_codigo_sub_motivo" = ""
-	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_motivo" = ""
-	#Obs: esses campo ainda não existem mas, serão utilizados para visualização
 	Given Pedido base
 	Then Sem nenhum erro
+#Obs: esses campo ainda não existem mas, serão utilizados para visualização
+#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_usuario" = ""
+#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_auto_status" = "0"
+#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_auto_motivo" = ""
+#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_codigo_motivo" = ""
+#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_codigo_sub_motivo" = ""
+#And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_motivo" = ""
 
 Scenario: Preenche_os_campos_do_pedido - instalador, bem de uso, entrega imediata e garantia
 	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
@@ -289,24 +288,26 @@ Scenario: Preenche_os_campos_do_pedido - referente a indicação
 Scenario: Preenche_os_campos_do_pedido - campos de data e hora
 	Given Pedido base
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "entregue_data" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "a_entregar_data" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "a_entregar_hora" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "PedidoRecebidoData" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "PedidoRecebidoDtHrUltAtualiz" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_credito_data" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_endereco_tratado_data" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_endereco_tratado_data_hora" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_credito_data_sem_hora" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "split_data" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "split_hora" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "PrevisaoEntregaDtHrUltAtualiz" = ""
+	#podemos usar os seguintes valores: "especial: data atual, com hora", "especial: data atual, sem hora" e "especial: hora atual, formato HoraParaBanco"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "entregue_data" = "null"
+	#campos comentados: ainda não temos na nossa t_PEDIDO
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "a_entregar_data" = "null"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "a_entregar_hora" = "null"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "PedidoRecebidoData" = "null"
+	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "PedidoRecebidoDtHrUltAtualiz" = "null"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_credito_data" = "especial: data atual, com hora"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_endereco_tratado_data" = "null"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_endereco_tratado_data_hora" = "null"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "analise_credito_data_sem_hora" = "null"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "split_data" = "null"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "split_hora" = "null"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "PrevisaoEntregaDtHrUltAtualiz" = "null"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "etg_imediata_data" = "2021-01-20 18:31:31"
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_data" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_selecao_auto_data_hora" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_data" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "comissao_paga_data" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "frete_data" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_data" = "null"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "transportadora_selecao_auto_data_hora" = "null"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "cancelado_data" = "null"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "comissao_paga_data" = "null"
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "frete_data" = "null"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "InstaladorInstalaDtHrUltAtualiz" = "2021-01-20 18:31:31"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "GarantiaIndicadorDtHrUltAtualiz" = "2021-01-20 18:31:31"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "romaneio_data" = ""

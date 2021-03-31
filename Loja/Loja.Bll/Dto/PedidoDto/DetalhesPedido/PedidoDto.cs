@@ -94,7 +94,6 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                     orcamentista: "",
                     id_nfe_emitente_selecao_manual: pedidoDto.CDManual,
                     venda_Externa: venda_externa,
-                    opcaoVendaSemEstoque: pedidoDto.OpcaoVendaSemEstoque,
                     vendedor: usuario,
                     loja_indicou: "",
                     operacao_origem: InfraBanco.Constantes.Constantes.Op_origem__pedido_novo.OP_ORIGEM__NAO_DETERMINADO,

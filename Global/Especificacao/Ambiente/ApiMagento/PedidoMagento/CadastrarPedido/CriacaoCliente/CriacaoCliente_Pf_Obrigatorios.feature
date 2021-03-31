@@ -224,7 +224,7 @@ Scenario: validar cep contra endereço
 	When Informo "EndEtg_endereco" = "Rua Professor Fábio Fanucchi"
 	When Informo "EndEtg_endereco_numero" = "1"
 	When Informo "EndEtg_bairro" = "Jardim São Paulo(Zona Norte)"
-	When Informo "EndEtg_cidade" = "Santos"
+	When Informo "EndEtg_cidade" = "Cidade não no IBGE"
 	When Informo "EndEtg_uf" = "SP"
 	When Informo "EndEtg_cep" = "02045080"
 	When Informo "EndEtg_nome" = "Vivian"
@@ -232,7 +232,10 @@ Scenario: validar cep contra endereço
 	When Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = "PF"
 	When Informo "EndEtg_cnpj_cpf" = "29756194804"
 	When Informo "cnpj_cpf" = "29756194804"
-	Then Erro "Cidade não confere"
+	#quando o magento verifica o CEP, dava este erro: Then Erro "Cidade não confere"
+	#foi alterado para que a api do magento não faça a validação do CEP, então agora testamos pelo IGBE:
+	Then Erro "Município 'Cidade não no IBGE' não consta na relação de municípios do IBGE para a UF de 'SP'!"
+
 	Given Pedido base
 	And Limpar dados cadastrais e endereço de entrega
 	When Informo "OutroEndereco" = "true"

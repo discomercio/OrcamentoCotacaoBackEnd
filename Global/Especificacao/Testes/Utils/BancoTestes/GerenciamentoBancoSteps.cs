@@ -82,6 +82,15 @@ namespace Especificacao.Testes.Utils.BancoTestes
         #endregion
 
         #region Reiniciar banco 
+        [Given(@"Reiniciar banco imediatamente")]
+        public void GivenReiniciarBancoImediatamente()
+        {
+            var servicos = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos();
+            //precisa restaurar o banco
+            var bd = new Testes.Utils.BancoTestes.InicializarBancoGeral(servicos.GetRequiredService<InfraBanco.ContextoBdProvider>(), servicos.GetRequiredService<InfraBanco.ContextoCepProvider>());
+            bd.InicializarForcado();
+        }
+
         private bool reiniciarBancoAoTerminarCenario = false;
         [Given(@"Reiniciar banco ao terminar cenário")]
         public void GivenReiniciarBancoAoTerminarCenario()
@@ -93,10 +102,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         {
             if (!reiniciarBancoAoTerminarCenario)
                 return;
-            var servicos = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos();
-            //precisa restaurar o banco
-            var bd = new Testes.Utils.BancoTestes.InicializarBancoGeral(servicos.GetRequiredService<InfraBanco.ContextoBdProvider>(), servicos.GetRequiredService<InfraBanco.ContextoCepProvider>());
-            bd.InicializarForcado();
+            GivenReiniciarBancoImediatamente();
         }
         #endregion
 

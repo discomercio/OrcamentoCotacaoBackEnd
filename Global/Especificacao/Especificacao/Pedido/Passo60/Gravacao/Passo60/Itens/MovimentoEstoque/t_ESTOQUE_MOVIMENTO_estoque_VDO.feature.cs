@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
+namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60.Itens.MovimentoEstoque
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,23 +19,25 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [Xunit.TraitAttribute("Category", "ignore")]
     [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo60")]
     [Xunit.TraitAttribute("Category", "GerenciamentoBanco")]
-    public partial class ValidacaoEstoque3_FeatureFeature : object, Xunit.IClassFixture<ValidacaoEstoque3_FeatureFeature.FixtureData>, System.IDisposable
+    public partial class T_ESTOQUE_MOVIMENTO_Estoque_VDOFeature : object, Xunit.IClassFixture<T_ESTOQUE_MOVIMENTO_Estoque_VDOFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
+                "ignore",
                 "Especificacao.Pedido.Passo60",
                 "GerenciamentoBanco"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "ValidacaoEstoque3.feature"
+#line 1 "t_ESTOQUE_MOVIMENTO_estoque_VDO.feature"
 #line hidden
         
-        public ValidacaoEstoque3_FeatureFeature(ValidacaoEstoque3_FeatureFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public T_ESTOQUE_MOVIMENTO_Estoque_VDOFeature(T_ESTOQUE_MOVIMENTO_Estoque_VDOFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -44,7 +46,8 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ValidacaoEstoque3.feature", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "t_ESTOQUE_MOVIMENTO_estoque_VDO", "Verificar a tabela t_ESTOQUE_MOVIMENTO com estoque VDO", ProgrammingLanguage.CSharp, new string[] {
+                        "ignore",
                         "Especificacao.Pedido.Passo60",
                         "GerenciamentoBanco"});
             testRunner.OnFeatureStart(featureInfo);
@@ -81,28 +84,19 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
             testRunner.CollectScenarioErrors();
         }
         
-        public virtual void FeatureBackground()
-        {
-#line 5
-#line hidden
-#line 6
- testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-        }
-        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validar estoque 3 - feito em outros arquivos")]
-        [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEstoque3.feature")]
-        [Xunit.TraitAttribute("Description", "Validar estoque 3 - feito em outros arquivos")]
-        public virtual void ValidarEstoque3_FeitoEmOutrosArquivos()
+        [Xunit.SkippableFactAttribute(DisplayName="Falta fazer")]
+        [Xunit.TraitAttribute("FeatureTitle", "t_ESTOQUE_MOVIMENTO_estoque_VDO")]
+        [Xunit.TraitAttribute("Description", "Falta fazer")]
+        public virtual void FaltaFazer()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar estoque 3 - feito em outros arquivos", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Falta fazer", null, tagsOfScenario, argumentsOfScenario);
 #line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -123,49 +117,8 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
-this.FeatureBackground();
-#line hidden
-#line 23
- testRunner.Given("Validação feita em outro arquivo", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="Validar estoque 3 - produto sem alocação")]
-        [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEstoque3.feature")]
-        [Xunit.TraitAttribute("Description", "Validar estoque 3 - produto sem alocação")]
-        public virtual void ValidarEstoque3_ProdutoSemAlocacao()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validar estoque 3 - produto sem alocação", null, tagsOfScenario, argumentsOfScenario);
-#line 25
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 5
-this.FeatureBackground();
-#line hidden
-#line 35
- testRunner.Given("Ignorar cenário no ambiente \"Especificacao.Prepedido.PrepedidoSteps\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 10
+ testRunner.Given("Fazer este teste", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -178,12 +131,12 @@ this.FeatureBackground();
             
             public FixtureData()
             {
-                ValidacaoEstoque3_FeatureFeature.FeatureSetup();
+                T_ESTOQUE_MOVIMENTO_Estoque_VDOFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                ValidacaoEstoque3_FeatureFeature.FeatureTearDown();
+                T_ESTOQUE_MOVIMENTO_Estoque_VDOFeature.FeatureTearDown();
             }
         }
     }

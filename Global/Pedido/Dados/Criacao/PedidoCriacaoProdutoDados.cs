@@ -37,6 +37,8 @@ namespace Pedido.Dados.Criacao
         //o usuário concordou em fazer o pedido com X unidades em estoque e aceita um pedido com Qtde_spe_aceita unidades sem presernça no estoque
         //se durante o processo outro pedido consumir esse estoque, devemos avisar o cliente que mudou a quantidade de produtos disponíveis para entrega
         //se null, não é verificado
+        //cuidado ao buscar pela variável qtde_autorizada_sem_presenca; 
+        //ela quer dizer a mesma coisa no ASP mas não é a variável que o usuário enviou; ao invés disso, no ASP ela é calculada
         public short? Qtde_spe_usuario_aceitou { get; set; }
 
         //informações
