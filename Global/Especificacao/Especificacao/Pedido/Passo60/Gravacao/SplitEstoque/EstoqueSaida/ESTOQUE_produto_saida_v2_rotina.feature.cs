@@ -722,17 +722,11 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="Não conseguiu movimentar qtde suficiente")]
         [Xunit.TraitAttribute("FeatureTitle", "ESTOQUE_produto_saida_v2_rotina")]
         [Xunit.TraitAttribute("Description", "Não conseguiu movimentar qtde suficiente")]
-        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void NaoConseguiuMovimentarQtdeSuficiente()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Não conseguiu movimentar qtde suficiente", @"esta duplicado pois estou tendo entrar no erro
-Produto "" + id_produto + "" do fabricante "" + id_fabricante + 
-"": faltam "" + ((qtde_a_sair - qtde_autorizada_sem_presenca) - qtde_movimentada) + 
-"" unidades no estoque para poder atender ao pedido.
-Não consigo entrar na mensagem de erro que quero", tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Não conseguiu movimentar qtde suficiente", null, tagsOfScenario, argumentsOfScenario);
 #line 142
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -755,16 +749,6 @@ this.ScenarioInitialize(scenarioInfo);
                 this.ScenarioStart();
 #line 6
 this.FeatureBackground();
-#line hidden
-#line 148
- testRunner.Given("Definir saldo de estoque = \"50\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 149
- testRunner.When("Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = \"um\", qtde_a_sair = \"51\", qtde_auto" +
-                        "rizada_sem_presenca = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 150
- testRunner.Then("msg_erro \"Ajustar\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
