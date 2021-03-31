@@ -138,13 +138,13 @@ Scenario: FIFO com mais de um produto
 	Then Saldo2 de estoque = "9" para produto "um" com valor "222"
 	And Movimento ID_ESTOQUE_SEM_PRESENCA = "0" para produto "um"
 
-@ignore
+
 Scenario: Não conseguiu movimentar qtde suficiente
-esta duplicado pois estou tendo entrar no erro
-Produto " + id_produto + " do fabricante " + id_fabricante + 
-": faltam " + ((qtde_a_sair - qtde_autorizada_sem_presenca) - qtde_movimentada) + 
-" unidades no estoque para poder atender ao pedido.
-Não consigo entrar na mensagem de erro que quero
-	Given Definir saldo de estoque = "50" para produto "um"
-	When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "51", qtde_autorizada_sem_presenca = "1"
-	Then msg_erro "Ajustar"
+#esta duplicado pois estou tendo entrar no erro
+#Produto " + id_produto + " do fabricante " + id_fabricante + 
+#": faltam " + ((qtde_a_sair - qtde_autorizada_sem_presenca) - qtde_movimentada) + 
+#" unidades no estoque para poder atender ao pedido.
+#Não consigo entrar na mensagem de erro que quero
+#	Given Definir saldo de estoque = "50" para produto "um"
+#	When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "51", qtde_autorizada_sem_presenca = "1"
+#	Then msg_erro "Ajustar"
