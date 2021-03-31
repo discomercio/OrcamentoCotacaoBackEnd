@@ -169,7 +169,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
                     return;
                 case "limitePedidos.pedidosMesmoCpfCnpj_TempoSegundos":
                     configuracaoApiMagento.LimitePedidos.LimitePedidosMesmoCpfCnpj_TempoSegundos = int.Parse(valor);
-                    return;                    
+                    return;
                 case "appsettings.Indicador":
                     configuracaoApiMagento.DadosIndicador.Indicador = valor;
                     return;
@@ -258,6 +258,27 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
                 return new List<string>();
 
             return ultimo.IdsPedidosFilhotes;
+        }
+
+        protected override List<string> AbstractPedidosGerados()
+        {
+            var ultimo = UltimoPedidoResultadoMagentoDto();
+            if (ultimo == null)
+                return new List<string>();
+
+            List<string> lstPedidos = new List<string>();
+            if (!string.IsNullOrEmpty(ultimo.IdPedidoCadastrado))
+                lstPedidos.Add(ultimo.IdPedidoCadastrado);
+
+            if(ultimo.IdsPedidosFilhotes.Count > 0)
+            {
+                foreach(var filhotes in ultimo.IdsPedidosFilhotes)
+                {
+                    lstPedidos.Add(filhotes);
+                }
+            }
+
+            return lstPedidos;
         }
     }
 }

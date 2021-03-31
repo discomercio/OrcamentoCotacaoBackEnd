@@ -212,6 +212,13 @@ namespace Especificacao.Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApi
             //não é implementado aqui porque nunca deve ser executado dentro de um prepedido
             throw new NotImplementedException();
         }
+#pragma warning disable IDE0060 // Remove unused parameter
+        public void TabelaT_PEDIDO_ITEMFilhoteRegistroCriadoVerificarCampo(int item, string campo, string valor)
+#pragma warning restore IDE0060 // Remove unused parameter
+        {
+            //não é implementado aqui porque nunca deve ser executado dentro de um prepedido
+            throw new NotImplementedException();
+        }
 
 #pragma warning disable IDE0060 // Remove unused parameter
         public void TabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo(string campo, string valor)
@@ -225,7 +232,10 @@ namespace Especificacao.Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApi
         {
             throw new NotImplementedException();
         }
-
+        public void VerificarPedidoGeradoSaldoDeID_ESTOQUE_SEM_PRESENCA(int indicePedido, int qtde)
+        {
+            throw new NotImplementedException();
+        }
         public void TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(string produto, string campo, string valor)
         {
             throw new NotImplementedException();
@@ -254,6 +264,16 @@ namespace Especificacao.Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApi
             Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
             gerenciamentoBanco.TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteEProdutoVerificarCampo(fabricante, produto, campo, valor);
 
+        }
+
+        public void GeradoPedidos(int qtde_pedidos)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void TabelaT_ESTOQUE_ITEMVerificarSaldo(string id_nfe_emitente, int saldo)
+        {
+            throw new NotImplementedException();
         }
     }
 }

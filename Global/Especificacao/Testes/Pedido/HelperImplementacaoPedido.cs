@@ -24,6 +24,7 @@ namespace Especificacao.Testes.Pedido
         protected abstract List<string> AbstractListaErros();
         protected abstract string? AbstractPedidoPaiGerado();
         protected abstract List<string> AbstractPedidosFilhotesGerados();
+        protected abstract List<string> AbstractPedidosGerados();
         #endregion
 
         protected bool ignorarFeature = false;
@@ -284,6 +285,20 @@ namespace Especificacao.Testes.Pedido
             gerenciamentoBanco.TabelaT_PEDIDO_ITEMRegistroVerificarCampo(item, pedidoPaiGerado, campo, valor);
 
         }
+        public void TabelaT_PEDIDO_ITEMFilhoteRegistroCriadoVerificarCampo(int item, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            var filhotes = AbstractPedidosFilhotesGerados();
+
+            Assert.True(filhotes.Any());
+
+            foreach (var filho in filhotes)
+            {
+                gerenciamentoBanco.TabelaT_PEDIDO_ITEMRegistroVerificarCampo(item, filho, campo, valor);
+            }
+
+        }
 
         public void TabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo(string campo, string valor)
         {
@@ -312,6 +327,43 @@ namespace Especificacao.Testes.Pedido
             gerenciamentoBanco.TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(itemPedido, tipo_estoque, campo, valor, pedidoPaiGerado);
         }
 
+        public void VerificarPedidoGeradoSaldoDeID_ESTOQUE_SEM_PRESENCA(int indicePedido, int qtde)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            List<InfraBanco.Modelos.TpedidoItem> itensPedido = new List<InfraBanco.Modelos.TpedidoItem>();
+            if (indicePedido == 0)
+            {
+                //pai
+                var pedidoPaiGerado = AbstractPedidoPaiGerado();
+                if (string.IsNullOrEmpty(pedidoPaiGerado))
+                {
+                    Assert.Equal("sem pedido gerado", pedidoPaiGerado ?? "");
+                    throw new ArgumentNullException();
+                }
+
+                itensPedido = gerenciamentoBanco.BuscarItensPedido(pedidoPaiGerado);
+                foreach (var item in itensPedido)
+                {
+                    gerenciamentoBanco.TabelaT_ESTOQUE_MOVIMENTORegistroDoPedidoVerificarCampo(item, "SPE", "qtde", qtde, pedidoPaiGerado);
+                }
+            }
+            if (indicePedido == 1)
+            {
+                //filho
+                var filhotes = AbstractPedidosFilhotesGerados();
+                Assert.True(filhotes.Any());
+                foreach (var filho in filhotes)
+                {
+                    itensPedido = gerenciamentoBanco.BuscarItensPedido(filho);
+                    foreach (var item in itensPedido)
+                    {
+                        gerenciamentoBanco.TabelaT_ESTOQUE_MOVIMENTORegistroDoPedidoVerificarCampo(item, "SPE", "qtde", qtde, filho);
+                    }
+                }
+            }
+        }
+
         public void TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(string produto, string campo, string valor)
         {
             if (ignorarFeature) return;
@@ -328,6 +380,8 @@ namespace Especificacao.Testes.Pedido
 
             gerenciamentoBanco.TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(itemPedido, campo, valor);
         }
+
+
 
         public void TabelaT_ESTOQUERegistroPaiVerificarCampo(string campo, string valor)
         {
@@ -384,6 +438,38 @@ namespace Especificacao.Testes.Pedido
 
             Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
             gerenciamentoBanco.TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteEProdutoVerificarCampo(fabricante, produto, campo, valor);
+
+        }
+
+        public void GeradoPedidos(int qtde_pedidos)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+
+            var ultimo_retorno = AbstractPedidosGerados();
+
+            Assert.Equal(qtde_pedidos, ultimo_retorno.Count());
+        }
+
+        public void TabelaT_ESTOQUE_ITEMVerificarSaldo(string id_nfe_emitente, int saldo)
+        {
+            if (ignorarFeature) return;
+            var pedidoPaiGerado = AbstractPedidoPaiGerado();
+            if (string.IsNullOrEmpty(pedidoPaiGerado))
+            {
+                Assert.Equal("sem pedido gerado", pedidoPaiGerado ?? "");
+                throw new ArgumentNullException();
+            }
+
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            var itemPedido = gerenciamentoBanco.BuscarItensPedido(pedidoPaiGerado);
+
+            Assert.True(itemPedido.Any());
+
+            foreach (var item in itemPedido)
+            {
+                gerenciamentoBanco.TabelaT_ESTOQUE_ITEMVerificarSaldo(int.Parse(id_nfe_emitente), saldo, item);
+            }
 
         }
     }

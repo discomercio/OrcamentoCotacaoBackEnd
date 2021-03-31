@@ -1639,17 +1639,15 @@ this.FeatureBackground();
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="perc_desagio_RA_liquida")]
+        [Xunit.SkippableFactAttribute(DisplayName="perc_desagio_RA_liquida - magento")]
         [Xunit.TraitAttribute("FeatureTitle", "Preenche_os_campos_do_pedido_pai")]
-        [Xunit.TraitAttribute("Description", "perc_desagio_RA_liquida")]
-        [Xunit.TraitAttribute("Category", "ignore")]
-        public virtual void Perc_Desagio_RA_Liquida()
+        [Xunit.TraitAttribute("Description", "perc_desagio_RA_liquida - magento")]
+        public virtual void Perc_Desagio_RA_Liquida_Magento()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("perc_desagio_RA_liquida", null, tagsOfScenario, argumentsOfScenario);
-#line 395
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("perc_desagio_RA_liquida - magento", null, tagsOfScenario, argumentsOfScenario);
+#line 394
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1671,22 +1669,38 @@ this.ScenarioInitialize(scenarioInfo);
                 this.ScenarioStart();
 #line 13
 this.FeatureBackground();
+#line hidden
+#line 407
+ testRunner.Given("Ignorar cenário no ambiente \"Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadas" +
+                        "trarPedido.CadastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 408
+ testRunner.Given("Tabela \"t_PARAMETRO\" com id = \"MagentoPedidoComIndicadorListaLojaErp\" alterar cam" +
+                        "po \"campo_texto\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 409
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 410
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 411
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"perc_desagio_ra_liquida\" " +
+                        "= \"0.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="perc_desagio_RA_liquida 2")]
+        [Xunit.SkippableFactAttribute(DisplayName="perc_desagio_RA_liquida 2 - magento")]
         [Xunit.TraitAttribute("FeatureTitle", "Preenche_os_campos_do_pedido_pai")]
-        [Xunit.TraitAttribute("Description", "perc_desagio_RA_liquida 2")]
-        [Xunit.TraitAttribute("Category", "ignore")]
-        public virtual void Perc_Desagio_RA_Liquida2()
+        [Xunit.TraitAttribute("Description", "perc_desagio_RA_liquida 2 - magento")]
+        public virtual void Perc_Desagio_RA_Liquida2_Magento()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("perc_desagio_RA_liquida 2", null, tagsOfScenario, argumentsOfScenario);
-#line 410
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("perc_desagio_RA_liquida 2 - magento", null, tagsOfScenario, argumentsOfScenario);
+#line 413
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1709,8 +1723,35 @@ this.ScenarioInitialize(scenarioInfo);
 #line 13
 this.FeatureBackground();
 #line hidden
-#line 424
- testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 427
+ testRunner.Given("Reiniciar appsettings", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 428
+ testRunner.Given("Ignorar cenário no ambiente \"Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadas" +
+                        "trarPedido.CadastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 429
+ testRunner.Given("Tabela \"t_PARAMETRO\" com id = \"MagentoPedidoComIndicadorListaLojaErp\" alterar cam" +
+                        "po \"campo_texto\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 430
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 431
+ testRunner.When("Informo \"appsettings.Loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 432
+ testRunner.When("Informo \"InfCriacaoPedido.Pedido_bs_x_ac\" = \"203456777\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 433
+ testRunner.And("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 434
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 435
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"perc_desagio_ra_liquida\" " +
+                        "= \"25.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
