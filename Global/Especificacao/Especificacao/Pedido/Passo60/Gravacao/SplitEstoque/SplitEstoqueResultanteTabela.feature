@@ -37,7 +37,6 @@ Scenario Outline: Teste de auto-slipt - magento
 	And Verificar estoque id_nfe_emitente = <CD>, saldo de estoque = <estoque>
 	And Verificar pedido gerado "<pedido>", saldo de ID_ESTOQUE_SEM_PRESENCA = "<spe>"
 
-	#pergunta hamilton: ID_ESTOQUE_SEM_PRESENCA fica atreado a um CD? Fica no pedido gerado, mas não no t_estoque_movimento
 	Examples:
 		| Caso | qde | inicial1 | inicial2 | NroPedidos | pedido | st_entrega | CD   | iqde | estoque | spe | Comentários                                                |
 		| 1    | 10  | 40       | 40       | 1          | 0      | SEP        | 4903 | 10   | 30      | 0   | Pedido totalmente atendido pelo CD 1                       |
