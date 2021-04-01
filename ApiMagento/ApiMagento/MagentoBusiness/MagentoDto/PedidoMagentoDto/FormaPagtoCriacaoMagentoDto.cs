@@ -9,6 +9,9 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
     public class FormaPagtoCriacaoMagentoDto
     {
         /// <summary>
+        /// FormaPagtoCriacao: a forma de pagamento dos produtos. Os serviços não são incluídos aqui.
+        /// <br />
+        /// <hr />
         /// Pedido que vier do Markeplace deve ser Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELA_UNICA = "5"  
         /// e Op_pu_forma_pagto = "2" "Depósito" e C_pu_vencto_apos = 30 dias (Definido no appsettings)
         /// <br />

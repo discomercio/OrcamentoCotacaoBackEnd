@@ -15,25 +15,21 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         /// </summary>
         [Required]
         [MaxLength(8)]
-        public string SKU { get; set; } //Produto
+        public string Sku { get; set; } //Produto
 
         /// <summary>
-        /// Campo name
+        /// Descricao: descrição (nome) do serviço
         /// <hr />
         /// </summary>
         [Required]
         [MaxLength(120)]
         public string Descricao { get; set; }
 
-        /// <summary>
-        /// Campo qty_ordered
-        /// <hr />
-        /// </summary>
         [Required]
         public short Quantidade { get; set; }
 
         /// <summary>
-        /// Subtotal: valor total do serviço sem desconto aplicado
+        /// Subtotal: valor total da linha (todos os serviços da linha) sem desconto aplicado
         /// <hr />
         /// </summary>
         [Required]
@@ -50,7 +46,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         public decimal DiscountAmount { get; set; }
 
         /// <summary>
-        /// RowTotal> valor total do serviço com desconto aplicado
+        /// RowTotal: valor total da linha (todos os serviços da linha) com desconto aplicado
         /// <hr />
         /// </summary>
         [Required]

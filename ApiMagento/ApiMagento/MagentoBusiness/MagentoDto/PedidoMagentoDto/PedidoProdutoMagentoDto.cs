@@ -17,14 +17,14 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         /// </summary>
         [Required]
         [MaxLength(6)]
-        public string SKU { get; set; } //tamanho mínimo de 6, vamos normalizar os zeros à esquerda
+        public string Sku { get; set; } //tamanho mínimo de 6, vamos normalizar os zeros à esquerda
 #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         [Required]
         public short Quantidade { get; set; }
 
         /// <summary>
-        /// Subtotal: valor total do produto sem desconto aplicado
+        /// Subtotal: valor total da linha (todos os produtos da linha) sem desconto aplicado
         /// <hr />
         /// </summary>
         [Required]
@@ -41,7 +41,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         public decimal DiscountAmount { get; set; }
 
         /// <summary>
-        /// RowTotal: valor total do produto com desconto aplicado
+        /// RowTotal: valor total da linha (todos os produtos da linha) com desconto aplicado
         /// <hr />
         /// </summary>
         [Required]
@@ -60,7 +60,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         public static Pedido.Dados.Criacao.PedidoCriacaoProdutoDados PedidoCriacaoProdutoDados_De_PedidoProdutoMagentoDto(
             PedidoProdutoMagentoDto produtoDto, Produto.Dados.ProdutoDados produtoDados, float coeficiente)
         {
-            /*Obs: o valor de produtoDados.Preco_lista não esta calculado com o coeficiente e para fazer o cálculo 
+            /* o valor de produtoDados.Preco_lista não esta calculado com o coeficiente e para fazer o cálculo 
              * de desconto corretamente deve estar calculado com o coeficiente 
              * por isso, criei essa váriavel precoListaBase
              */
