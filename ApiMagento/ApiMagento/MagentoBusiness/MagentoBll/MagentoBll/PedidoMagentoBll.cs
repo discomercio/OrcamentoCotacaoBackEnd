@@ -159,7 +159,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
         {
             //campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
             string? indicador = null;
-            if (pedidoMagento.Frete.HasValue && pedidoMagento.Frete != 0)
+            if (pedidoMagento.TotaisPedido.FreteBruto.HasValue && pedidoMagento.TotaisPedido.FreteBruto != 0)
             {
                 indicador = configuracaoApiMagento.DadosIndicador.Indicador;
                 if (!await prepedidoBll.TorcamentistaExiste(indicador))

@@ -22,6 +22,10 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         [Required]
         public string Cnpj_Cpf { get; set; }
 
+        /// <summary>
+        /// Armazena os números dos pedidos e código de origem
+        /// <hr />
+        /// </summary>
         [Required]
         public InfCriacaoPedidoMagentoDto InfCriacaoPedido { get; set; }
 
@@ -63,27 +67,11 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         public FormaPagtoCriacaoMagentoDto FormaPagtoCriacao { get; set; }
 
         /// <summary>
-        /// Valor total sem frete
+        /// TotaisPedido: armazena os valores totais do pedido
         /// <hr />
         /// </summary>
         [Required]
-        public decimal Subtotal { get; set; }
-
-        /// <summary>
-        /// Valor liquido do frete
-        /// <br />É gravado em t_PEDIDO.magento_shipping_amount
-        /// <hr />
-        /// </summary>
-        public decimal? Frete { get; set; }
-
-        /// <summary>
-        /// Valor total da nota fiscal emitida
-        /// <hr />
-        /// </summary>
-        [Required]
-        public decimal Total { get; set; }
-
-        //public float Desconto { get; set; }
+        public PedidoTotaisMagentoDto TotaisPedido { get; set; }
 
 
         //CDManual = false
@@ -95,6 +83,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
         /// <summary>
         /// StatusPedido: APROVADO = 0, NAO_APROVADO = 1
+        /// <hr />
         /// </summary>
         [Required]
         public int StatusPedido { get; set; }
@@ -139,7 +128,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                 //Armazena o valor total de pedido com RA
                 vl_total_NF: lstProdutosMagento.Select(x => x.TotalItemRA() ?? 0).Sum(),
 
-                magento_shipping_amount: pedidoMagento.Frete ?? 0M
+                magento_shipping_amount: pedidoMagento.TotaisPedido.FreteBruto ?? 0M
                 );
 
             Pedido.Dados.Criacao.PedidoCriacaoDados pedidoCriacao = new Pedido.Dados.Criacao.PedidoCriacaoDados(
@@ -154,11 +143,11 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
                     //Flag para saber se tem indicador selecionado 
                     //campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
-                    comIndicador: ((pedidoMagento.Frete ?? 0) != 0) ? true : false,
+                    comIndicador: ((pedidoMagento.TotaisPedido.FreteBruto ?? 0) != 0) ? true : false,
 
                     //Armazena o nome do indicador selecionado
                     //campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
-                    indicador: ((pedidoMagento.Frete ?? 0) != 0) ? configuracaoApiMagento.DadosIndicador.Indicador : "",
+                    indicador: ((pedidoMagento.TotaisPedido.FreteBruto ?? 0) != 0) ? configuracaoApiMagento.DadosIndicador.Indicador : "",
                     orcamentista: "",
 
                     //Armazena o id do centro de distribuição selecionado manualmente

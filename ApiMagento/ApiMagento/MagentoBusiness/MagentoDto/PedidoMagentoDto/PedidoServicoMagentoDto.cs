@@ -30,25 +30,38 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         /// <hr />
         /// </summary>
         [Required]
-        public short Qtde { get; set; }
+        public short Quantidade { get; set; }
 
-        // Verificar no magento qual o campo correto, possivelmente: original_price.
         /// <summary>
-        /// Preco_bruto: preço de venda do item. 
-        /// <br />É gravado em t_PEDIDO_ITEM_SERVICO.preco_lista
+        /// Subtotal: valor total do serviço sem desconto aplicado
         /// <hr />
         /// </summary>
         [Required]
-        public decimal Preco_bruto { get; set; }
+        public decimal Subtotal { get; set; }
 
-        // Verificar no magento como calcular este valor, possivelmente: row_total / campo qty_ordered.
+        [Required]
+        public float TaxAmount { get; set; }
+
         /// <summary>
-        /// Preco_liquido: preço efetivamente cobrado, que seria impresso na nota fiscal. 
-        /// <br />É gravado em t_PEDIDO_ITEM_SERVICO.preco_venda e t_PEDIDO_ITEM_SERVICO.preco_nf 
+        /// DiscountAmount: valor de desconto
         /// <hr />
         /// </summary>
         [Required]
-        public decimal Preco_liquido { get; set; }
+        public decimal DiscountAmount { get; set; }
+
+        /// <summary>
+        /// RowTotal> valor total do serviço com desconto aplicado
+        /// <hr />
+        /// </summary>
+        [Required]
+        public decimal RowTotal { get; set; }
+
+        /* DETALHES DE COMO FAZER OS CÁLCULOS
+         * ==================================
+         * t_PEDIDO_ITEM_SERVICO.preco_venda e t_PEDIDO_ITEM_SERVICO.preco_nf = RowTotal / Quantidade
+         * t_PEDIDO_ITEM_SERVICO.preco_lista = Subtotal / Quantidade
+         * t_PEDIDO_ITEM_SERVICO.desc_dado = 100 * (preco_lista - preco_venda) / preco_lista
+         */
 
 #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
     }
