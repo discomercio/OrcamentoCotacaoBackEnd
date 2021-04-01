@@ -92,15 +92,15 @@ Scenario Outline: Verificar estoque movimento usuario - loja
 #When precisa alterar para que a qtde_movimentada seja menor que (qtde_a_sair - qtde_autorizada_sem_presenca)
 #Then Erro "Produto " + id_produto + " do fabricante " + id_fabricante + ": faltam " + ((qtde_a_sair - qtde_autorizada_sem_presenca) - qtde_movimentada) + " unidades no estoque para poder atender ao pedido."
 #And afazer - ajustar a mensagem de erro
-@ignore
-Scenario: Verificar qtde movimentada - erro
-	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
-	Given Pedido base
-	When Lista de itens "0" informo "Qtde" = "100"
-	When Deixar forma de pagamento consistente
-	When Recalcular totais do pedido
-	Given Definir saldo de estoque = "50" para produto "um"
-	Then Sem nenhum erro
-	Given Pedido base
-	#When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "100", qtde_autorizada_sem_presenca = "49"
-	Then Erro "Ajustar teste"
+
+Scenario: Verificar qtde movimentada - erro - somente Loja
+	#Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
+	#Given Pedido base
+	#When Lista de itens "0" informo "Qtde" = "100"
+	#When Deixar forma de pagamento consistente
+	#When Recalcular totais do pedido
+	#Given Definir saldo de estoque = "50" para produto "um"
+	#Then Sem nenhum erro
+	#Given Pedido base
+	##When Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = "um", qtde_a_sair = "100", qtde_autorizada_sem_presenca = "49"
+	#Then Erro "Ajustar teste"

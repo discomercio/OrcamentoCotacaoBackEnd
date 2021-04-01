@@ -286,16 +286,14 @@ this.FeatureBackground();
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Verificar qtde movimentada - erro")]
+        [Xunit.SkippableFactAttribute(DisplayName="Verificar qtde movimentada - erro - somente Loja")]
         [Xunit.TraitAttribute("FeatureTitle", "t_ESTOQUE_MOVIMENTO")]
-        [Xunit.TraitAttribute("Description", "Verificar qtde movimentada - erro")]
-        [Xunit.TraitAttribute("Category", "ignore")]
-        public virtual void VerificarQtdeMovimentada_Erro()
+        [Xunit.TraitAttribute("Description", "Verificar qtde movimentada - erro - somente Loja")]
+        public virtual void VerificarQtdeMovimentada_Erro_SomenteLoja()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verificar qtde movimentada - erro", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Verificar qtde movimentada - erro - somente Loja", null, tagsOfScenario, argumentsOfScenario);
 #line 96
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -318,34 +316,6 @@ this.ScenarioInitialize(scenarioInfo);
                 this.ScenarioStart();
 #line 5
 this.FeatureBackground();
-#line hidden
-#line 97
- testRunner.Given("Ignorar cenário no ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Ca" +
-                        "dastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 98
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 99
- testRunner.When("Lista de itens \"0\" informo \"Qtde\" = \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 100
- testRunner.When("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 101
- testRunner.When("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 102
- testRunner.Given("Definir saldo de estoque = \"50\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 103
- testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 104
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 106
- testRunner.Then("Erro \"Ajustar teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
