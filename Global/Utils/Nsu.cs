@@ -88,6 +88,7 @@ namespace UtilsGlobais
         }
 
 
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public static async Task<int> Fin_gera_nsu(string id_nsu, ContextoBdGravacao dbgravacao)
         {
             //verifica se o id_nsu já existe
@@ -123,6 +124,7 @@ namespace UtilsGlobais
 
             return tfincontroleEditando.Nsu;
         }
+#endif
 
     }
 }
