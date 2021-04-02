@@ -66,10 +66,6 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         [Required]
         public FormaPagtoCriacaoMagentoDto FormaPagtoCriacao { get; set; }
 
-        /// <summary>
-        /// TotaisPedido: armazena os valores totais do pedido
-        /// <hr />
-        /// </summary>
         [Required]
         public PedidoTotaisMagentoDto TotaisPedido { get; set; }
 

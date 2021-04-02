@@ -28,6 +28,13 @@ Scenario: Tipo_Parcelamento - parcelado única - t_PERCENTUAL_CUSTO_FINANCEIRO_F
 
 
 Scenario: Tipo_Parcelamento - não existe
-Given Pedido base
-When Informo "Tipo_Parcelamento" = "12"
-Then Erro "regex .*Coeficiente não cadastrado para o fabricante.*"
+	Given Pedido base
+	When Informo "Tipo_Parcelamento" = "12"
+	Then Erro "regex .*Coeficiente não cadastrado para o fabricante.*"
+
+@ignore
+Scenario: Tipo_Parcelamento conforme origem
+	#/// Pedido que vier do Markeplace deve ser Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELA_UNICA = "5"
+	#/// Pedido que vier do Magento deve ser Tipo_Parcelamento = COD_FORMA_PAGTO_A_VISTA = "1" ou Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELADO_CARTAO = "2"
+	#Se não obedecer essas condições, dar erro
+	Given Fazer este teste
