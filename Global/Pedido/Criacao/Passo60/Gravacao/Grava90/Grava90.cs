@@ -19,7 +19,6 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava90
         private string Formata_texto_log_float(float? valor) => UtilsGlobais.Log.Formata_texto_log_numeros<float?>(valor);
         private string Formata_texto_log_short(short? valor) => UtilsGlobais.Log.Formata_texto_log_numeros<short?>(valor);
         private string Formata_texto_log_int(int? valor) => UtilsGlobais.Log.Formata_texto_log_numeros<int?>(valor);
-        private string Formata_texto_log_decimal(decimal? valor) => UtilsGlobais.Log.Formata_texto_log_numeros<decimal?>(valor);
         private string Formata_data(DateTime? valor) => UtilsGlobais.Log.Formata_data_log(valor);
         private string Formata_perc_comissao(float? valor) => UtilsGlobais.Log.Formata_perc_comissao_log(valor);
 

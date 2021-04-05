@@ -107,3 +107,30 @@ Scenario: IsEnderecoIgual caixa
 	When IsEnderecoIgual: "end_cep_2"        = "02408150"
 	Then IsEnderecoIgual: sim
 
+Scenario: IsEnderecoIgual pontuação
+	When IsEnderecoIgual: "end_logradouro_1" = "rua francisco pecoraro"
+	When IsEnderecoIgual: "end_numero_1"     = "101"
+	When IsEnderecoIgual: "end_cep_1"        = "02408150"
+	When IsEnderecoIgual: "end_logradouro_2" = "AVENIDA.FRANCISCO PECORARO"
+	When IsEnderecoIgual: "end_numero_2"     = "101"
+	When IsEnderecoIgual: "end_cep_2"        = "02408150"
+	Then IsEnderecoIgual: sim
+
+Scenario: IsEnderecoIgual pontuação2
+	When IsEnderecoIgual: "end_logradouro_1" = "rua francisco pecoraro"
+	When IsEnderecoIgual: "end_numero_1"     = "101"
+	When IsEnderecoIgual: "end_cep_1"        = "02408150"
+	When IsEnderecoIgual: "end_logradouro_2" = "AVENIDA:FRANCISCO PECORARO"
+	When IsEnderecoIgual: "end_numero_2"     = "101"
+	When IsEnderecoIgual: "end_cep_2"        = "02408150"
+	Then IsEnderecoIgual: sim
+
+Scenario: IsEnderecoIgual pontuação3
+	When IsEnderecoIgual: "end_logradouro_1" = "rua francisco pecoraro"
+	When IsEnderecoIgual: "end_numero_1"     = "101"
+	When IsEnderecoIgual: "end_cep_1"        = "02408150"
+	When IsEnderecoIgual: "end_logradouro_2" = "AVENIDA: FRANCISCO PECORARO"
+	When IsEnderecoIgual: "end_numero_2"     = "101"
+	When IsEnderecoIgual: "end_cep_2"        = "02408150"
+	Then IsEnderecoIgual: sim
+

@@ -121,7 +121,6 @@ namespace PrepedidoAPIUnis
             string conexaoBasica = Configuration.GetConnectionString("conexao");
             services.AddDbContext<InfraBanco.ContextoBdBasico>(options =>
             {
-                //options.UseSqlServer(Configuration.GetConnectionString("conexaoLocal"));
                 options.UseSqlServer(conexaoBasica);
                 options.EnableSensitiveDataLogging();
             });
