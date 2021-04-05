@@ -2,6 +2,7 @@
 using InfraBanco.Constantes;
 using Pedido.Dados.Criacao;
 using System;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Pedido.Criacao.Passo60.Gravacao.Grava90
@@ -28,7 +29,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava90
             await ContextoBdGravacao.SaveChangesAsync();
 
             //Passo90: log(Passo90 / Log.feature)
-            string s_log = "";
+            StringBuilder s_log = new StringBuilder();
 
             /*
              * loja/PedidoNovoConfirma.asp
@@ -63,17 +64,17 @@ Detalhes do auto-split: Modo de seleção do CD = AUTOMATICO
 */
             var tpedido_pai = Gravacao.Tpedido_pai;
 
-            s_log = s_log + "vl total=" + Formata_moeda(tpedido_pai.Vl_Total_Familia); //a variável vl_total é salva em vl_total_familia
-            s_log = s_log + "; RA=" + Formata_texto_log(tpedido_pai.Opcao_Possui_RA == "-" ? "" : tpedido_pai.Opcao_Possui_RA); //levemente diferente; colocamos no log o que salvamos no banco porque não recebemos esse flag
-            s_log = s_log + "; indicador=" + Formata_texto_log(tpedido_pai.Indicador);
-            s_log = s_log + "; vl_total_NF=" + Formata_moeda(tpedido_pai.Vl_Total_NF);
-            s_log = s_log + "; vl_total_RA=" + Formata_moeda(tpedido_pai.Vl_Total_RA);
-            s_log = s_log + "; perc_RT=" + Formata_texto_log_float(tpedido_pai.Perc_RT);
-            s_log = s_log + "; qtde_parcelas=" + Formata_texto_log_short(tpedido_pai.Qtde_Parcelas);
+            s_log.Append("vl total=" + Formata_moeda(tpedido_pai.Vl_Total_Familia)); //a variável vl_total é salva em vl_total_familia
+            s_log.Append("; RA=" + Formata_texto_log(tpedido_pai.Opcao_Possui_RA == "-" ? "" : tpedido_pai.Opcao_Possui_RA)); //levemente diferente; colocamos no log o que salvamos no banco porque não recebemos esse flag
+            s_log.Append("; indicador=" + Formata_texto_log(tpedido_pai.Indicador));
+            s_log.Append("; vl_total_NF=" + Formata_moeda(tpedido_pai.Vl_Total_NF));
+            s_log.Append("; vl_total_RA=" + Formata_moeda(tpedido_pai.Vl_Total_RA));
+            s_log.Append("; perc_RT=" + Formata_texto_log_float(tpedido_pai.Perc_RT));
+            s_log.Append("; qtde_parcelas=" + Formata_texto_log_short(tpedido_pai.Qtde_Parcelas));
             if (!string.IsNullOrWhiteSpace(tpedido_pai.Forma_Pagto))
-                s_log = s_log + "; forma_pagto= " + Formata_texto_log(tpedido_pai.Forma_Pagto);
+                s_log.Append("; forma_pagto= " + Formata_texto_log(tpedido_pai.Forma_Pagto));
             if (!string.IsNullOrWhiteSpace(tpedido_pai.Servicos))
-                s_log = s_log + "; servicos = " + Formata_texto_log(tpedido_pai.Servicos);
+                s_log.Append("; servicos = " + Formata_texto_log(tpedido_pai.Servicos));
 
 
 
@@ -86,101 +87,101 @@ Detalhes do auto-split: Modo de seleção do CD = AUTOMATICO
                 */
 
             if (!string.IsNullOrWhiteSpace(tpedido_pai.St_Recebido))
-                s_log = s_log + "; st_recebido=" + Formata_texto_log(tpedido_pai.St_Recebido);
+                s_log.Append("; st_recebido=" + Formata_texto_log(tpedido_pai.St_Recebido));
 
             //este campo sempre tem um valor: if (!string.IsNullOrWhiteSpace(tpedido_pai.St_Etg_Imediata))
             //a mesma coisa aocntece com diversos campos que são numéricos
-            s_log = s_log + "; st_etg_imediata=" + Formata_texto_log_short(tpedido_pai.St_Etg_Imediata);
+            s_log.Append("; st_etg_imediata=" + Formata_texto_log_short(tpedido_pai.St_Etg_Imediata));
             if (tpedido_pai.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO)
-                s_log = s_log + " (previsão de entrega: " + Formata_data(tpedido_pai.PrevisaoEntregaData) + ")";
-            s_log = s_log + "; StBemUsoConsumo=" + Formata_texto_log_short(tpedido_pai.StBemUsoConsumo);
-            s_log = s_log + "; InstaladorInstalaStatus=" + Formata_texto_log_short(tpedido_pai.InstaladorInstalaStatus);
+                s_log.Append(" (previsão de entrega: " + Formata_data(tpedido_pai.PrevisaoEntregaData) + ")");
+            s_log.Append("; StBemUsoConsumo=" + Formata_texto_log_short(tpedido_pai.StBemUsoConsumo));
+            s_log.Append("; InstaladorInstalaStatus=" + Formata_texto_log_short(tpedido_pai.InstaladorInstalaStatus));
             if (!string.IsNullOrWhiteSpace(tpedido_pai.Obs_1))
-                s_log = s_log + "; obs_1=" + Formata_texto_log(tpedido_pai.Obs_1);
+                s_log.Append("; obs_1=" + Formata_texto_log(tpedido_pai.Obs_1));
             if (!string.IsNullOrWhiteSpace(tpedido_pai.Nfe_Texto_Constar))
-                s_log = s_log + "; NFe_texto_constar = " + Formata_texto_log(tpedido_pai.Nfe_Texto_Constar);
+                s_log.Append("; NFe_texto_constar = " + Formata_texto_log(tpedido_pai.Nfe_Texto_Constar));
             if (!string.IsNullOrWhiteSpace(tpedido_pai.Nfe_XPed))
-                s_log = s_log + "; NFe_xPed = " + Formata_texto_log(tpedido_pai.Nfe_XPed);
+                s_log.Append("; NFe_xPed = " + Formata_texto_log(tpedido_pai.Nfe_XPed));
             if (!string.IsNullOrWhiteSpace(tpedido_pai.Obs_2))
-                s_log = s_log + "; obs_2 = " + Formata_texto_log(tpedido_pai.Obs_2);
+                s_log.Append("; obs_2 = " + Formata_texto_log(tpedido_pai.Obs_2));
             if (!string.IsNullOrWhiteSpace(tpedido_pai.Pedido_Bs_X_Ac))
-                s_log = s_log + "; pedido_bs_x_ac = " + Formata_texto_log(tpedido_pai.Pedido_Bs_X_Ac);
+                s_log.Append("; pedido_bs_x_ac = " + Formata_texto_log(tpedido_pai.Pedido_Bs_X_Ac));
             if (!string.IsNullOrWhiteSpace(tpedido_pai.Pedido_Bs_X_Marketplace))
-                s_log = s_log + "; pedido_bs_x_marketplace = " + Formata_texto_log(tpedido_pai.Pedido_Bs_X_Marketplace);
+                s_log.Append("; pedido_bs_x_marketplace = " + Formata_texto_log(tpedido_pai.Pedido_Bs_X_Marketplace));
             if (!string.IsNullOrWhiteSpace(tpedido_pai.Marketplace_codigo_origem))
-                s_log = s_log + "; marketplace_codigo_origem = " + Formata_texto_log(tpedido_pai.Marketplace_codigo_origem);
+                s_log.Append("; marketplace_codigo_origem = " + Formata_texto_log(tpedido_pai.Marketplace_codigo_origem));
             if (!string.IsNullOrWhiteSpace(tpedido_pai.Loja_Indicou))
             {
-                s_log = s_log + "; loja_indicou=" + Formata_texto_log(tpedido_pai.Loja_Indicou);
-                s_log = s_log + "; comissao_loja_indicou=" + Formata_perc_comissao(tpedido_pai.Comissao_Loja_Indicou) + "%";
+                s_log.Append("; loja_indicou=" + Formata_texto_log(tpedido_pai.Loja_Indicou));
+                s_log.Append("; comissao_loja_indicou=" + Formata_perc_comissao(tpedido_pai.Comissao_Loja_Indicou) + "%");
             }
             if (tpedido_pai.Analise_Credito.ToString() == Constantes.COD_AN_CREDITO_OK)
             {
-                s_log = s_log + "; análise crédito OK (<=" + Formata_moeda(Execucao.Vl_aprov_auto_analise_credito) + ")";
+                s_log.Append("; análise crédito OK (<=" + Formata_moeda(Execucao.Vl_aprov_auto_analise_credito) + ")");
             }
             else
             {
-                s_log = s_log + "; status da análise crédito: " + Formata_texto_log_short(tpedido_pai.Analise_Credito) + " - "
-                    + Criacao.pedidoVisualizacaoBll.DescricaoAnaliseCreditoCadastroPedido(Convert.ToString(tpedido_pai.Analise_Credito), false, tpedido_pai.Pedido, tpedido_pai.Orcamentista);
+                s_log.Append("; status da análise crédito: " + Formata_texto_log_short(tpedido_pai.Analise_Credito) + " - "
+                    + Criacao.pedidoVisualizacaoBll.DescricaoAnaliseCreditoCadastroPedido(Convert.ToString(tpedido_pai.Analise_Credito), false, tpedido_pai.Pedido, tpedido_pai.Orcamentista));
             }
 
 
             //'	Forma de Pagamento (nova versão)
             //a variável rb_forma_pagto é salva em rs("tipo_parcelamento")
-            s_log = s_log + "; tipo_parcelamento=" + Formata_texto_log_short(tpedido_pai.Tipo_Parcelamento);
+            s_log.Append("; tipo_parcelamento=" + Formata_texto_log_short(tpedido_pai.Tipo_Parcelamento));
             if (tpedido_pai.Tipo_Parcelamento == short.Parse(Constantes.COD_FORMA_PAGTO_A_VISTA))
             {
-                s_log = s_log + "; av_forma_pagto=" + Formata_texto_log_short(tpedido_pai.Av_Forma_Pagto);
+                s_log.Append("; av_forma_pagto=" + Formata_texto_log_short(tpedido_pai.Av_Forma_Pagto));
             }
             else if (tpedido_pai.Tipo_Parcelamento == short.Parse(Constantes.COD_FORMA_PAGTO_PARCELA_UNICA))
             {
-                s_log = s_log + "; pu_forma_pagto=" + Formata_texto_log_short(tpedido_pai.Pu_Forma_Pagto);
-                s_log = s_log + "; pu_valor=" + Formata_moeda(tpedido_pai.Pu_Valor);
-                s_log = s_log + "; pu_vencto_apos=" + Formata_texto_log_short(tpedido_pai.Pu_Vencto_Apos);
+                s_log.Append("; pu_forma_pagto=" + Formata_texto_log_short(tpedido_pai.Pu_Forma_Pagto));
+                s_log.Append("; pu_valor=" + Formata_moeda(tpedido_pai.Pu_Valor));
+                s_log.Append("; pu_vencto_apos=" + Formata_texto_log_short(tpedido_pai.Pu_Vencto_Apos));
             }
             else if (tpedido_pai.Tipo_Parcelamento == short.Parse(Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO))
             {
-                s_log = s_log + "; pc_qtde_parcelas=" + Formata_texto_log_short(tpedido_pai.Pc_Qtde_Parcelas);
-                s_log = s_log + "; pc_valor_parcela=" + Formata_moeda(tpedido_pai.Pc_Valor_Parcela);
+                s_log.Append("; pc_qtde_parcelas=" + Formata_texto_log_short(tpedido_pai.Pc_Qtde_Parcelas));
+                s_log.Append("; pc_valor_parcela=" + Formata_moeda(tpedido_pai.Pc_Valor_Parcela));
             }
             else if (tpedido_pai.Tipo_Parcelamento == short.Parse(Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA))
             {
-                s_log = s_log + "; pc_maquineta_qtde_parcelas=" + Formata_texto_log_short(tpedido_pai.Pc_Maquineta_Qtde_Parcelas);
-                s_log = s_log + "; pc_maquineta_valor_parcela=" + Formata_moeda(tpedido_pai.Pc_Maquineta_Valor_Parcela);
+                s_log.Append("; pc_maquineta_qtde_parcelas=" + Formata_texto_log_short(tpedido_pai.Pc_Maquineta_Qtde_Parcelas));
+                s_log.Append("; pc_maquineta_valor_parcela=" + Formata_moeda(tpedido_pai.Pc_Maquineta_Valor_Parcela));
             }
             else if (tpedido_pai.Tipo_Parcelamento == short.Parse(Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA))
             {
-                s_log = s_log + "; pce_forma_pagto_entrada=" + Formata_texto_log_short(tpedido_pai.Pce_Forma_Pagto_Entrada);
-                s_log = s_log + "; pce_forma_pagto_prestacao=" + Formata_texto_log_short(tpedido_pai.Pce_Forma_Pagto_Prestacao);
-                s_log = s_log + "; pce_entrada_valor=" + Formata_moeda(tpedido_pai.Pce_Entrada_Valor);
-                s_log = s_log + "; pce_prestacao_qtde=" + Formata_texto_log_short(tpedido_pai.Pce_Prestacao_Qtde);
-                s_log = s_log + "; pce_prestacao_valor=" + Formata_moeda(tpedido_pai.Pce_Prestacao_Valor);
-                s_log = s_log + "; pce_prestacao_periodo=" + Formata_texto_log_short(tpedido_pai.Pce_Prestacao_Periodo);
+                s_log.Append("; pce_forma_pagto_entrada=" + Formata_texto_log_short(tpedido_pai.Pce_Forma_Pagto_Entrada));
+                s_log.Append("; pce_forma_pagto_prestacao=" + Formata_texto_log_short(tpedido_pai.Pce_Forma_Pagto_Prestacao));
+                s_log.Append("; pce_entrada_valor=" + Formata_moeda(tpedido_pai.Pce_Entrada_Valor));
+                s_log.Append("; pce_prestacao_qtde=" + Formata_texto_log_short(tpedido_pai.Pce_Prestacao_Qtde));
+                s_log.Append("; pce_prestacao_valor=" + Formata_moeda(tpedido_pai.Pce_Prestacao_Valor));
+                s_log.Append("; pce_prestacao_periodo=" + Formata_texto_log_short(tpedido_pai.Pce_Prestacao_Periodo));
             }
             else if (tpedido_pai.Tipo_Parcelamento == short.Parse(Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA))
             {
-                s_log = s_log + "; pse_forma_pagto_prim_prest=" + Formata_texto_log_short(tpedido_pai.Pse_Forma_Pagto_Prim_Prest);
-                s_log = s_log + "; pse_forma_pagto_demais_prest=" + Formata_texto_log_short(tpedido_pai.Pse_Forma_Pagto_Demais_Prest);
-                s_log = s_log + "; pse_prim_prest_valor=" + Formata_moeda(tpedido_pai.Pse_Prim_Prest_Valor);
-                s_log = s_log + "; pse_prim_prest_apos=" + Formata_texto_log_short(tpedido_pai.Pse_Prim_Prest_Apos);
-                s_log = s_log + "; pse_demais_prest_qtde=" + Formata_texto_log_short(tpedido_pai.Pse_Demais_Prest_Qtde);
-                s_log = s_log + "; pse_demais_prest_valor=" + Formata_moeda(tpedido_pai.Pse_Demais_Prest_Valor);
-                s_log = s_log + "; pse_demais_prest_periodo=" + Formata_texto_log_short(tpedido_pai.Pse_Demais_Prest_Periodo);
+                s_log.Append("; pse_forma_pagto_prim_prest=" + Formata_texto_log_short(tpedido_pai.Pse_Forma_Pagto_Prim_Prest));
+                s_log.Append("; pse_forma_pagto_demais_prest=" + Formata_texto_log_short(tpedido_pai.Pse_Forma_Pagto_Demais_Prest));
+                s_log.Append("; pse_prim_prest_valor=" + Formata_moeda(tpedido_pai.Pse_Prim_Prest_Valor));
+                s_log.Append("; pse_prim_prest_apos=" + Formata_texto_log_short(tpedido_pai.Pse_Prim_Prest_Apos));
+                s_log.Append("; pse_demais_prest_qtde=" + Formata_texto_log_short(tpedido_pai.Pse_Demais_Prest_Qtde));
+                s_log.Append("; pse_demais_prest_valor=" + Formata_moeda(tpedido_pai.Pse_Demais_Prest_Valor));
+                s_log.Append("; pse_demais_prest_periodo=" + Formata_texto_log_short(tpedido_pai.Pse_Demais_Prest_Periodo));
             }
 
-            s_log = s_log + "; custoFinancFornecTipoParcelamento=" + Formata_texto_log(tpedido_pai.CustoFinancFornecTipoParcelamento);
-            s_log = s_log + "; custoFinancFornecQtdeParcelas=" + Formata_texto_log_short(tpedido_pai.CustoFinancFornecQtdeParcelas);
+            s_log.Append("; custoFinancFornecTipoParcelamento=" + Formata_texto_log(tpedido_pai.CustoFinancFornecTipoParcelamento));
+            s_log.Append("; custoFinancFornecQtdeParcelas=" + Formata_texto_log_short(tpedido_pai.CustoFinancFornecQtdeParcelas));
 
 
 
-            s_log = s_log + "; Endereço cobrança=" + UtilsGlobais.Util.Formata_endereco(
+            s_log.Append("; Endereço cobrança=" + UtilsGlobais.Util.Formata_endereco(
                 tpedido_pai.Endereco_logradouro, tpedido_pai.Endereco_numero,
                 tpedido_pai.Endereco_complemento, tpedido_pai.Endereco_bairro,
-                tpedido_pai.Endereco_cidade, tpedido_pai.Endereco_uf, tpedido_pai.Endereco_cep);
+                tpedido_pai.Endereco_cidade, tpedido_pai.Endereco_uf, tpedido_pai.Endereco_cep));
 
             //if blnUsarMemorizacaoCompletaEnderecos then
-            s_log = s_log
-                    + " ("
+            s_log.Append(
+                      " ("
                     + "email=" + (tpedido_pai.Endereco_email ?? "")
                     + ", email_xml=" + (tpedido_pai.Endereco_email_xml ?? "")
                     + ", nome=" + (tpedido_pai.Endereco_nome ?? "")
@@ -201,19 +202,20 @@ Detalhes do auto-split: Modo de seleção do CD = AUTOMATICO
                     + ", ie=" + (tpedido_pai.Endereco_ie ?? "")
                     + ", rg=" + (tpedido_pai.Endereco_rg ?? "")
                     + ", contato=" + (tpedido_pai.Endereco_contato ?? "")
-                    + ")";
+                    + ")"
+                    );
 
 
             if (tpedido_pai.St_End_Entrega != 0)
             {
-                s_log = s_log + "; Endereço entrega=" + UtilsGlobais.Util.Formata_endereco(
+                s_log.Append("; Endereço entrega=" + UtilsGlobais.Util.Formata_endereco(
                     tpedido_pai.EndEtg_Endereco, tpedido_pai.EndEtg_Endereco_Numero,
                     tpedido_pai.EndEtg_Endereco_Complemento, tpedido_pai.EndEtg_Bairro,
                     tpedido_pai.EndEtg_Cidade, tpedido_pai.EndEtg_UF, tpedido_pai.EndEtg_Cep)
-                    + " [EndEtg_cod_justificativa=" + tpedido_pai.EndEtg_Cod_Justificativa + "]";
+                    + " [EndEtg_cod_justificativa=" + tpedido_pai.EndEtg_Cod_Justificativa + "]");
                 //if blnUsarMemorizacaoCompletaEnderecos then
-                s_log = s_log
-                            + " ("
+                s_log.Append(
+                              " ("
                             + "email=" + (tpedido_pai.EndEtg_email ?? "")
                             + ", email_xml=" + (tpedido_pai.EndEtg_email_xml ?? "")
                             + ", nome=" + (tpedido_pai.EndEtg_nome ?? "")
@@ -233,78 +235,81 @@ Detalhes do auto-split: Modo de seleção do CD = AUTOMATICO
                             + ", produtor_rural_status=" + (tpedido_pai.EndEtg_produtor_rural_status.ToString())
                             + ", ie=" + (tpedido_pai.EndEtg_ie ?? "")
                             + ", rg=" + (tpedido_pai.EndEtg_rg ?? "")
-                            + ")";
+                            + ")"
+                            );
             }
             else
-                s_log = s_log + "; Endereço entrega=mesmo do cadastro";
+                s_log.Append("; Endereço entrega=mesmo do cadastro");
 
 
             if (string.IsNullOrEmpty(Execucao.Transportadora.Transportadora_Id))
             {
 
-                s_log = s_log + "; Escolha automática de transportadora=N";
+                s_log.Append("; Escolha automática de transportadora=N");
             }
             else
             {
-                s_log = s_log + "; Escolha automática de transportadora=S";
-                s_log = s_log + "; Transportadora=" + (Execucao.Transportadora.Transportadora_Id ?? "");
-                s_log = s_log + "; CEP relacionado=" + UtilsGlobais.Util.Cep_formata(Execucao.Transportadora.Transportadora_Selecao_Auto_Cep);
+                s_log.Append("; Escolha automática de transportadora=S");
+                s_log.Append("; Transportadora=" + (Execucao.Transportadora.Transportadora_Id ?? ""));
+                s_log.Append("; CEP relacionado=" + UtilsGlobais.Util.Cep_formata(Execucao.Transportadora.Transportadora_Selecao_Auto_Cep));
             }
 
-            s_log = s_log + "; GarantiaIndicadorStatus=" + (tpedido_pai.GarantiaIndicadorStatus.ToString());
-            s_log = s_log + "; perc_desagio_RA_liquida=" + Formata_texto_log_float(tpedido_pai.Perc_Desagio_RA_Liquida);
-            s_log = s_log + "; pedido_bs_x_at=" + (tpedido_pai.Pedido_Bs_X_At ?? "");
+            s_log.Append("; GarantiaIndicadorStatus=" + (tpedido_pai.GarantiaIndicadorStatus.ToString()));
+            s_log.Append("; perc_desagio_RA_liquida=" + Formata_texto_log_float(tpedido_pai.Perc_Desagio_RA_Liquida));
+            s_log.Append("; pedido_bs_x_at=" + (tpedido_pai.Pedido_Bs_X_At ?? ""));
 
             if (tpedido_pai.Loja == Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE)
             {
                 if (!string.IsNullOrWhiteSpace(tpedido_pai.Pedido_Bs_X_Marketplace))
-                    s_log = s_log + "; numero_pedido_marketplace=" + (tpedido_pai.Pedido_Bs_X_Marketplace ?? "");
-                s_log = s_log + "; cod_origem_pedido=" + (tpedido_pai.Marketplace_codigo_origem ?? "");
+                    s_log.Append("; numero_pedido_marketplace=" + (tpedido_pai.Pedido_Bs_X_Marketplace ?? ""));
+                s_log.Append("; cod_origem_pedido=" + (tpedido_pai.Marketplace_codigo_origem ?? ""));
             }
 
 
             if (Pedido.Ambiente.Operacao_origem == Constantes.Op_origem__pedido_novo.OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO)
             {
-                if (!string.IsNullOrWhiteSpace(s_log))
-                    s_log = s_log + ";";
-                s_log = s_log + " Operação de origem: cadastramento semi-automático de pedido do e-commerce (nº Magento Pedido_bs_x_ac="
-                    + (Pedido.Marketplace.Pedido_bs_x_ac ?? "");
+                if (s_log.Length != 0)
+                    s_log.Append(";");
+                s_log.Append(" Operação de origem: cadastramento semi-automático de pedido do e-commerce (nº Magento Pedido_bs_x_ac="
+                    + (Pedido.Marketplace.Pedido_bs_x_ac ?? ""));
                 //nao tesmo estas variáveis!
                 //+ c_numero_magento + ", t_MAGENTO_API_PEDIDO_XML.id=" + id_magento_api_pedido_xml + ")";
             }
 
             if (!string.IsNullOrWhiteSpace(Gravacao.Log_cliente_indicador))
             {
-                if (!string.IsNullOrWhiteSpace(s_log))
-                    s_log = s_log + "; ";
-                s_log = s_log + Gravacao.Log_cliente_indicador;
+                if (s_log.Length != 0)
+                    s_log.Append("; ");
+                s_log.Append(Gravacao.Log_cliente_indicador);
             }
 
             foreach (var produto in Gravacao.ProdutoGravacaoLista)
             {
-                if (!string.IsNullOrWhiteSpace(s_log))
-                    s_log = s_log + ";" + UtilsGlobais.Log.EnterParaLogBanco();
+                if (s_log.Length != 0)
+                    s_log.Append(";" + UtilsGlobais.Log.EnterParaLogBanco());
 
-                s_log = s_log +
+                s_log.Append(
                         UtilsGlobais.Log.Log_produto_monta(produto.Pedido.Qtde, produto.Pedido.Fabricante, produto.Pedido.Produto) +
                         "; preco_lista=" + Formata_moeda(produto.Pedido.Preco_Lista) +
                         "; desc_dado=" + Formata_texto_log_float(produto.Pedido.Desc_Dado) +
                         "; preco_venda=" + Formata_moeda(produto.Pedido.Preco_Venda) +
                         "; preco_NF=" + Formata_moeda(produto.Pedido.Preco_NF) +
                         "; custoFinancFornecCoeficiente=" + Formata_texto_log_float(produto.Pedido.CustoFinancFornecCoeficiente_Conferencia) +
-                        "; custoFinancFornecPrecoListaBase=" + Formata_moeda(produto.Pedido.CustoFinancFornecPrecoListaBase_Conferencia);
+                        "; custoFinancFornecPrecoListaBase=" + Formata_moeda(produto.Pedido.CustoFinancFornecPrecoListaBase_Conferencia)
+                        );
                 if (produto.Qtde_estoque_vendido != 0)
-                    s_log = s_log + "; estoque_vendido=" + Formata_texto_log_int(produto.Qtde_estoque_vendido);
+                    s_log.Append("; estoque_vendido=" + Formata_texto_log_int(produto.Qtde_estoque_vendido));
                 if (produto.Qtde_estoque_sem_presenca != 0)
-                    s_log = s_log + "; estoque_sem_presenca=" + Formata_texto_log_int(produto.Qtde_estoque_sem_presenca);
+                    s_log.Append("; estoque_sem_presenca=" + Formata_texto_log_int(produto.Qtde_estoque_sem_presenca));
 
                 if (produto.Abaixo_min_status)
                 {
-                    s_log = s_log +
+                    s_log.Append(
                             "; abaixo_min_status=" + Formata_texto_log_int(produto.Abaixo_min_status ? 1 : 0) +
                             "; abaixo_min_autorizacao=" + Formata_texto_log(produto.Abaixo_min_autorizacao) +
                             "; abaixo_min_autorizador=" + Formata_texto_log(produto.Abaixo_min_autorizador) +
-                            "; abaixo_min_superv_autorizador=" + Formata_texto_log(produto.Abaixo_min_superv_autorizador);
+                            "; abaixo_min_superv_autorizador=" + Formata_texto_log(produto.Abaixo_min_superv_autorizador)
+                            );
                 }
             }
             //'	ADICIONA DETALHES SOBRE O AUTO-SPLIT
@@ -313,28 +318,28 @@ Detalhes do auto-split: Modo de seleção do CD = AUTOMATICO
             {
                 if (!String.IsNullOrWhiteSpace(vLogAutoSplit_i))
                 {
-                    if (!string.IsNullOrWhiteSpace(s_log))
-                        s_log = s_log + UtilsGlobais.Log.EnterParaLogBanco();
+                    if (s_log.Length != 0)
+                        s_log.Append(UtilsGlobais.Log.EnterParaLogBanco());
 
                     if (!blnAchou)
                     {
-                        s_log = s_log + "Detalhes do auto-split: Modo de seleção do CD = ";
+                        s_log.Append("Detalhes do auto-split: Modo de seleção do CD = ");
                         if (Pedido.Ambiente.Id_nfe_emitente_selecao_manual == 0)
-                            s_log = s_log + Constantes.MODO_SELECAO_CD__AUTOMATICO;
+                            s_log.Append(Constantes.MODO_SELECAO_CD__AUTOMATICO);
                         else
-                            s_log = s_log + Constantes.MODO_SELECAO_CD__MANUAL;
+                            s_log.Append(Constantes.MODO_SELECAO_CD__MANUAL);
 
                         if (Pedido.Ambiente.Id_nfe_emitente_selecao_manual != 0)
-                            s_log = s_log + "; id_nfe_emitente = " + Formata_texto_log_int(Pedido.Ambiente.Id_nfe_emitente_selecao_manual);
-                        s_log = s_log + UtilsGlobais.Log.EnterParaLogBanco();
+                            s_log.Append("; id_nfe_emitente = " + Formata_texto_log_int(Pedido.Ambiente.Id_nfe_emitente_selecao_manual));
+                        s_log.Append(UtilsGlobais.Log.EnterParaLogBanco());
                         blnAchou = true;
                     }
-                    s_log = s_log + vLogAutoSplit_i;
+                    s_log.Append(vLogAutoSplit_i);
                 }
             }
 
             if (!UtilsGlobais.Util.GravaLog(ContextoBdGravacao, Pedido.Ambiente.Usuario, Pedido.Ambiente.Loja, tpedido_pai.Pedido,
-                           Pedido.Cliente.Id_cliente, InfraBanco.Constantes.Constantes.OP_LOG_PEDIDO_NOVO, s_log))
+                           Pedido.Cliente.Id_cliente, InfraBanco.Constantes.Constantes.OP_LOG_PEDIDO_NOVO, s_log.ToString()))
                 Retorno.ListaErros.Add("Falha ao gravar log.");
 
         }

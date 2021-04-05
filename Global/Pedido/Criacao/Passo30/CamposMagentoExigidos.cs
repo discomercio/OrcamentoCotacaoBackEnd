@@ -140,7 +140,7 @@ namespace Pedido.Criacao.Passo30
                                                where l.Grupo == Constantes.GRUPO_T_CODIGO_DESCRICAO__PEDIDOECOMMERCE_ORIGEM
                                                   && l.Codigo == Pedido.Marketplace.Marketplace_codigo_origem
                                                select new { l.Descricao, l.Codigo_pai }).ToListAsync();
-            if (codigoDescricaoOrigem.Count() <= 0)
+            if (!codigoDescricaoOrigem.Any())
             {
                 Retorno.ListaErros.Add("Código de origem do pedido (marketplace) não cadastrado: " + (Pedido.Marketplace.Marketplace_codigo_origem ?? ""));
             }
@@ -176,7 +176,7 @@ namespace Pedido.Criacao.Passo30
                                                             l.Parametro_1_campo_flag,
                                                             l.Parametro_2_campo_flag
                                                         }).ToListAsync();
-                if (codigoDescricaoOrigemGrupo.Count() > 0)
+                if (codigoDescricaoOrigemGrupo.Any())
                 {
                     var codigoDescricaoOrigemGrupoRegistro = codigoDescricaoOrigemGrupo[0];
                     //'	OBTÉM O PERCENTUAL DE COMISSÃO DO MARKETPLACE

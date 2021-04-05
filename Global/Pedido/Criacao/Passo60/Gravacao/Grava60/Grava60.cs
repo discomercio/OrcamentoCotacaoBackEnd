@@ -7,6 +7,7 @@ using Produto.RegrasCrtlEstoque;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Pedido.Criacao.Passo60.Gravacao.Grava60
@@ -117,7 +118,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                 short sequencia_item = 0;
                 var total_estoque_vendido = 0;
                 var total_estoque_sem_presenca = 0;
-                var s_log_item_autosplit = "";
+                StringBuilder s_log_item_autosplit = new StringBuilder();
                 foreach (var vProdRegra_iRegra in Gravacao.ListaRegrasControleEstoque)
                 {
                     //vProdRegra(iRegra).regra.regraUF.regraPessoa.vCD(iCD) é twmsCdXUfXPessoaXCd
@@ -177,13 +178,13 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                                 total_estoque_sem_presenca = total_estoque_sem_presenca + qtde_estoque_sem_presenca_aux.Valor;
 
                                 //'	LOG
-                                if (s_log_item_autosplit != "")
-                                    s_log_item_autosplit = s_log_item_autosplit + UtilsGlobais.Log.EnterParaLogBanco();
-                                s_log_item_autosplit = s_log_item_autosplit + "(" + linha_pedido.Pedido.Fabricante + ")" + linha_pedido.Pedido.Produto + ":" +
+                                if (s_log_item_autosplit.Length != 0)
+                                    s_log_item_autosplit.Append(UtilsGlobais.Log.EnterParaLogBanco());
+                                s_log_item_autosplit.Append("(" + linha_pedido.Pedido.Fabricante + ")" + linha_pedido.Pedido.Produto + ":" +
                                             " Qtde Solicitada = " + twmsCdXUfXPessoaXCd.Estoque_Qtde_Solicitado.ToString() + "," +
                                             " Qtde Sem Presença Autorizada = " + qtde_spe.ToString() + "," +
                                             " Qtde Estoque Vendido = " + qtde_estoque_vendido_aux.Valor.ToString() + "," +
-                                            " Qtde Sem Presença = " + qtde_estoque_sem_presenca_aux.Valor.ToString();
+                                            " Qtde Sem Presença = " + qtde_estoque_sem_presenca_aux.Valor.ToString());
                             }
                         }
                     }
@@ -192,7 +193,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
                 //'	LOG
                 Gravacao.VlogAutoSplit.Add(id_pedido + " ("
                     + await (UtilsGlobais.Util.Obtem_apelido_empresa_NFe_emitente_Gravacao(vEmpresaAutoSplit_iv.Id_nfe_emitente, ContextoBdGravacao)) + ")"
-                    + UtilsGlobais.Log.EnterParaLogBanco() + s_log_item_autosplit);
+                    + UtilsGlobais.Log.EnterParaLogBanco() + s_log_item_autosplit.ToString());
 
 
                 //'	STATUS DE ENTREGA

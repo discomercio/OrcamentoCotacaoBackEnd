@@ -256,7 +256,6 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
              * O campo "Marketplace_codigo_origem" é obrigatório e deve ser sempre enviado
              * no caso de Marketplace_codigo_origem = 001 veio da Arclube
              */
-            var db = contextoProvider.GetContextoLeitura();
 
             //validar o Marketplace_codigo_origem
             if (string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem))

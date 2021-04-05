@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Pedido.Criacao.Execucao
 {
-    class VerificarPagtoPreferencial
+    static class VerificarPagtoPreferencial
     {
         /*
          * loja/PedidoNovoConfirma.asp
