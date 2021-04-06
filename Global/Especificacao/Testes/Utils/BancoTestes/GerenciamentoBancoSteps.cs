@@ -82,6 +82,15 @@ namespace Especificacao.Testes.Utils.BancoTestes
         #endregion
 
         #region Reiniciar banco 
+        [Given(@"Reiniciar banco imediatamente")]
+        public void GivenReiniciarBancoImediatamente()
+        {
+            var servicos = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos();
+            //precisa restaurar o banco
+            var bd = new Testes.Utils.BancoTestes.InicializarBancoGeral(servicos.GetRequiredService<InfraBanco.ContextoBdProvider>(), servicos.GetRequiredService<InfraBanco.ContextoCepProvider>());
+            bd.InicializarForcado();
+        }
+
         private bool reiniciarBancoAoTerminarCenario = false;
         [Given(@"Reiniciar banco ao terminar cenário")]
         public void GivenReiniciarBancoAoTerminarCenario()
@@ -93,10 +102,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         {
             if (!reiniciarBancoAoTerminarCenario)
                 return;
-            var servicos = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos();
-            //precisa restaurar o banco
-            var bd = new Testes.Utils.BancoTestes.InicializarBancoGeral(servicos.GetRequiredService<InfraBanco.ContextoBdProvider>(), servicos.GetRequiredService<InfraBanco.ContextoCepProvider>());
-            bd.InicializarForcado();
+            GivenReiniciarBancoImediatamente();
         }
         #endregion
 
@@ -138,7 +144,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
 
             var db = this.contextoBdProvider.GetContextoLeitura();
             var registros = (from registro in db.TpedidoItems
-                             where registro.Pedido.Contains(pedido) &&
+                             where registro.Pedido == pedido &&
                              registro.Sequencia == item
                              select registro).ToList();
             //deve ter um ou mais registros
@@ -170,18 +176,42 @@ namespace Especificacao.Testes.Utils.BancoTestes
             }
         }
 
+        public void TabelaT_ESTOQUE_MOVIMENTORegistroDoPedidoVerificarCampo(TpedidoItem item, string tipo_estoque, string campo, int valor, string pedido)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("_ESTOQUE_MOVIMENTO", "pedido", pedido, campo, valor.ToString(), this);
+
+            var db = this.contextoBdProvider.GetContextoLeitura();
+            var registros = (from registro in db.TestoqueMovimentos
+                             where registro.Pedido == pedido &&
+                                   registro.Produto == item.Produto &&
+                                   registro.Fabricante == item.Fabricante &&
+                                   registro.Estoque == tipo_estoque.ToUpper()
+                             select registro.Qtde).ToList();
+            if(registros == null)
+                Assert.Equal(0, valor);
+
+            if(registros != null)
+            {
+                foreach (var registro in registros)
+                {
+                    int reg = registro ?? 0;
+                    Assert.Equal(reg, valor);
+                }
+            }            
+        }
+
         public void TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(TpedidoItem item, string campo, string valor)
         {
             var id_estoque = BuscarIdEstoqueMovimento(item);
-            if (string.IsNullOrEmpty(id_estoque))
-            {
-                Assert.Equal("pedido gerado sem id_estoque", campo);
-            }
-
+            //if (string.IsNullOrEmpty(id_estoque))
+            //{
+            //    //se tiver sem id_estoque é porque esta sem presença no estoque
+            //    Assert.Equal("pedido gerado sem id_estoque", campo);
+            //}
+            //estoqueItem.Id_estoque == id_estoque &&
             var db = this.contextoBdProvider.GetContextoLeitura();
             var registros = (from estoqueItem in db.TestoqueItems
-                             where estoqueItem.Id_estoque == id_estoque &&
-                                   estoqueItem.Fabricante == item.Fabricante &&
+                             where estoqueItem.Fabricante == item.Fabricante &&
                                    estoqueItem.Produto == item.Produto
                              select estoqueItem);
 
@@ -191,6 +221,26 @@ namespace Especificacao.Testes.Utils.BancoTestes
             {
                 VerificarCampoEmRegistro.VerificarRegistro<TestoqueItem>(campo, valor, registro);
             }
+        }
+
+        public void TabelaT_ESTOQUE_ITEMVerificarSaldo(int id_nfe_emitente, int saldo, TpedidoItem item)
+        {
+            var db = this.contextoBdProvider.GetContextoLeitura();
+            var lotes = (from ei in db.TestoqueItems
+                         join e in db.Testoques on ei.Id_estoque equals e.Id_estoque
+                         where e.Id_nfe_emitente == id_nfe_emitente &&
+                               ei.Fabricante == item.Fabricante &&
+                               ei.Produto == item.Produto
+                         orderby e.Data_entrada, ei.Id_estoque
+                         select new
+                         {
+                             Saldo = (short?)(ei.Qtde - ei.Qtde_utilizada)
+                         });
+            Assert.True(lotes.Any());
+
+            var saldoTotal = lotes.Select(x => x).Sum(x => x.Saldo);
+
+            Assert.Equal(saldo, saldoTotal);
         }
 
         public void TabelaT_ESTOQUERegistroPaiVerificarCampo(List<TpedidoItem> itens, string campo, string valor)

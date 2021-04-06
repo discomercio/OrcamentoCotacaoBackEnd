@@ -45,9 +45,7 @@ Scenario: Pedido totalmente atendido e zerando estoque
 	And Tabela "t_ESTOQUE_MOVIMENTO" registro pai e produto = "003220" e estoque = "VDO", verificar campo "estoque" = "VDO"
 	And Tabela "t_ESTOQUE_MOVIMENTO" registro pai e produto = "003220" e estoque = "VDO", verificar campo "operacao" = "VDA"
 
-@ignore
 Scenario: Pedido faltando produto
-	#estou confuso em fazer esse teste, depois volto nele
 	#Vamos ignorar na Loja para que podemos gerar um split possível
 	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Zerar todo o estoque
@@ -63,13 +61,9 @@ Scenario: Pedido faltando produto
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "id_nfe_emitente" = "4903"
 	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "qtde" = "77"
 	And Tabela "t_ESTOQUE_ITEM" registro pai e produto = "003220", verificar campo "qtde_utilizada" = "50"
-	#para verificar corretamente o que queremos precisamos passar o tipo de estoque que queremos
-	#nesse teste tivemos o problema de gerar 2 movimentos no estoque e sem especificar o tipo de estoque que
-	#queremos ele esta validando a qtde = 50 e estoque = VDO(vendido)
-	#e esta verificando se qtde = 27 e estoque = SPE(sem presenca de estoque)
 	And Tabela "t_ESTOQUE_MOVIMENTO" registro pai e produto = "003220" e estoque = "VDO", verificar campo "qtde" = "50"
 	And Tabela "t_ESTOQUE_MOVIMENTO" registro pai e produto = "003220" e estoque = "VDO", verificar campo "estoque" = "VDO"
 	And Tabela "t_ESTOQUE_MOVIMENTO" registro pai e produto = "003220" e estoque = "VDO", verificar campo "operacao" = "VDA"
-#And Tabela "t_ESTOQUE_MOVIMENTO" registro pai e produto = "003220" e estoque = "SPE", verificar campo "qtde" = "27"
-#And Tabela "t_ESTOQUE_MOVIMENTO" registro pai e produto = "003220" e estoque = "SPE", verificar campo "estoque" = "SPE"
-#And Tabela "t_ESTOQUE_MOVIMENTO" registro pai e produto = "003220" e estoque = "SPE", verificar campo "operacao" = "VDA"
+	And Tabela "t_ESTOQUE_MOVIMENTO" registro pai e produto = "003220" e estoque = "SPE", verificar campo "qtde" = "27"
+	And Tabela "t_ESTOQUE_MOVIMENTO" registro pai e produto = "003220" e estoque = "SPE", verificar campo "estoque" = "SPE"
+	And Tabela "t_ESTOQUE_MOVIMENTO" registro pai e produto = "003220" e estoque = "SPE", verificar campo "operacao" = "VDA"

@@ -203,5 +203,26 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
 
             return ultimo.ListaIdPedidosFilhotes;
         }
+
+        protected override List<string> AbstractPedidosGerados()
+        {
+            var ultimo = UltimoPedidoCriacaoRetornoDados;
+            if (ultimo == null)
+                return new List<string>();
+
+            List<string> lstPedidos = new List<string>();
+            if (!string.IsNullOrEmpty(ultimo.Id))
+                lstPedidos.Add(ultimo.Id);
+
+            if (ultimo.ListaIdPedidosFilhotes.Count > 0)
+            {
+                foreach (var filhotes in ultimo.ListaIdPedidosFilhotes)
+                {
+                    lstPedidos.Add(filhotes);
+                }
+            }
+
+            return lstPedidos;
+        }
     }
 }

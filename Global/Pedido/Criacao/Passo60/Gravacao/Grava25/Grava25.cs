@@ -1,6 +1,7 @@
 ﻿using InfraBanco;
 using Pedido.Dados.Criacao;
 using System;
+using System.Text;
 using System.Threading.Tasks;
 
 #pragma warning disable IDE0054 // Use compound assignment
@@ -76,7 +77,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava25
             if (Pedido.Ambiente.Id_nfe_emitente_selecao_manual == 0)
                 return;
 
-            string alerta_aux = "";
+            StringBuilder alerta_aux = new StringBuilder();
             foreach (var vProdRegra_iRegra in Gravacao.ListaRegrasControleEstoque)
             {
                 var blnAchou = false;
@@ -98,12 +99,12 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava25
                 }
                 if (!blnAchou)
                 {
-                    if (!String.IsNullOrWhiteSpace(alerta_aux))
-                        alerta_aux = alerta_aux + UtilsGlobais.Util.EnterParaMensagemErro();
-                    alerta_aux = alerta_aux + "Produto (" + vProdRegra_iRegra.Fabricante
+                    if (alerta_aux.Length > 0)
+                        alerta_aux.Append(UtilsGlobais.Util.EnterParaMensagemErro());
+                    alerta_aux.Append("Produto (" + vProdRegra_iRegra.Fabricante
                         + ")" + vProdRegra_iRegra.Produto + ": regra '" + vProdRegra_iRegra.TwmsRegraCd.Apelido
                         + "' (Id=" + vProdRegra_iRegra.TwmsRegraCd.Id + ") não permite o CD '"
-                        + await (UtilsGlobais.Util.Obtem_apelido_empresa_NFe_emitente_Gravacao(Pedido.Ambiente.Id_nfe_emitente_selecao_manual, ContextoBdGravacao)) + "'";
+                        + await (UtilsGlobais.Util.Obtem_apelido_empresa_NFe_emitente_Gravacao(Pedido.Ambiente.Id_nfe_emitente_selecao_manual, ContextoBdGravacao)) + "'");
                 }
                 else if (blnDesativado)
                 {
@@ -113,11 +114,11 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava25
                 }
             }
 
-            if (!String.IsNullOrWhiteSpace(alerta_aux))
+            if (alerta_aux.Length > 0)
             {
                 var alerta = "O CD selecionado manualmente não pode ser usado devido aos seguintes motivos:";
                 alerta = alerta + UtilsGlobais.Util.EnterParaMensagemErro();
-                alerta = alerta + alerta_aux;
+                alerta = alerta + alerta_aux.ToString();
                 Retorno.ListaErros.Add(alerta);
             }
 

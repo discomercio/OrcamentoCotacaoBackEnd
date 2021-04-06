@@ -9,6 +9,7 @@ using System.Reflection;
 using UtilsGlobais;
 using Cep;
 using Microsoft.EntityFrameworkCore;
+using Cep.Dados;
 
 namespace Cliente
 {
@@ -93,7 +94,7 @@ namespace Cliente
 
                     //validar endereço do cadastro                    
                     await ValidarEnderecoCadastroCliente(dadosCliente, lstErros, cepBll, contextoProvider,
-                        bancoNFeMunicipio);
+                        bancoNFeMunicipio, sistemaResponsavel);
                     VerificarCaracteresInvalidosEnderecoCadastral(dadosCliente, lstErros);
 
 
@@ -345,7 +346,8 @@ namespace Cliente
         }
 
         private static async Task ValidarEnderecoCadastroCliente(Cliente.Dados.DadosClienteCadastroDados dadosCliente,
-            List<string> lstErros, CepBll cepBll, ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio)
+            List<string> lstErros, CepBll cepBll, ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio,
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel tipoValidacaoEndereco)
         {
             if (string.IsNullOrEmpty(dadosCliente.Endereco))
             {
@@ -390,29 +392,94 @@ namespace Cliente
             //vamos verificar a quantidade de caracteres de cada campo
             VerificarQtdeCaracteresDoEndereco(dadosCliente, lstErros);
 
-            //todo: acertar a validação do magento
-            //verificações não-magento
+            var msgErro = MensagensErro.Cep_nao_existe;
+            Cep.Dados.CepDados cepCliente = new Cep.Dados.CepDados()
             {
-                string cepSoDigito = dadosCliente.Cep.Replace(".", "").Replace("-", "");
-                List<Cep.Dados.CepDados> lstCepDados = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
+                Cep = dadosCliente.Cep,
+                Endereco = dadosCliente.Endereco,
+                Bairro = dadosCliente.Bairro,
+                Cidade = dadosCliente.Cidade,
+                Uf = dadosCliente.Uf
+            };
+            await VerificarEndereco(lstErros, cepBll, contextoProvider, bancoNFeMunicipio, msgErro, cepCliente, tipoValidacaoEndereco);
+        }
+
+        public static async Task VerificarEndereco(List<string> lstErros, CepBll cepBll, ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio,
+            string msgErro, CepDados cepCliente,
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel tipoValidacaoEndereco)
+        {
+            string cepSoDigito = cepCliente.Cep.Replace(".", "").Replace("-", "");
+            List<Cep.Dados.CepDados> lstCepDados = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
+            if (tipoValidacaoEndereco != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO)
+            {
+                //verificações não-magento
 
                 if (lstCepDados.Count == 0)
                 {
-                    lstErros.Add(MensagensErro.Cep_nao_existe);
+                    lstErros.Add(msgErro);
                 }
-
-
-                //vamos buscar o cep e comparar os endereços 
-                Cep.Dados.CepDados cepCliente = new Cep.Dados.CepDados()
+                else
                 {
-                    Cep = dadosCliente.Cep,
-                    Endereco = dadosCliente.Endereco,
-                    Bairro = dadosCliente.Bairro,
-                    Cidade = dadosCliente.Cidade,
-                    Uf = dadosCliente.Uf
-                };
+                    //vamos buscar o cep e comparar os endereços 
+                    await VerificarEnderecoContraCep(cepCliente, lstCepDados, lstErros, contextoProvider, bancoNFeMunicipio);
+                }
+            }
+            else
+            {
+                //validação do magento
+                await VerificarEnderecoMagento(lstErros, contextoProvider, bancoNFeMunicipio, cepCliente, lstCepDados);
+            }
 
-                await VerificarEndereco(cepCliente, lstCepDados, lstErros, contextoProvider, bancoNFeMunicipio);
+        }
+        private static async Task VerificarEnderecoMagento(
+            List<string> lstErros,
+            ContextoBdProvider contextoProvider,
+            IBancoNFeMunicipio bancoNFeMunicipio,
+            CepDados cepCliente,
+            List<Cep.Dados.CepDados> lstCepDados)
+        {
+            /*
+            #Pedidos do magento validamos Cidade contra o IGBE e UF contra o CEP informado. 
+            Não validamos nenhum outro campo do endereço.
+            #Se o CEP não existir, aceitamos o que veio e só validar a cidade e a UF no IBGE.
+            #confirmando: se o magento mandar um CEP que não temos, aceitamos e só validamos a cidade e UF.
+            #A validação do município com relação ao cadastro do IBGE como fazemos no cadastramento do pré-pedido/pedido
+            #creio que seria melhor fazermos sim, senão isso só será percebido no momento do faturamento
+            #Mas os demais campos eu creio que é melhor não fazer
+            #Eventualmente surgem CEPs novos que precisamos cadastrar manualmente no sistema, já que não temos
+            #uma atualização regular da base
+            #CEP sem 8 digitos rejeitamos, mas CEP que não tem na nossa base aceitamos
+            */
+
+            //# Pedidos do magento validamos Cidade contra o IGBE e UF contra o CEP informado. 
+            //somente se o CEP existir
+            if (lstCepDados.Count() > 0)
+            {
+                string cepSoDigito = UtilsGlobais.Util.Cep_SoDigito(cepCliente.Cep);
+                var ufCerta = lstCepDados.Where(r =>
+                    r.Cep == cepSoDigito && (r.Uf ?? "").ToUpper() == (cepCliente.Uf ?? "").ToUpper()
+                    );
+                if (ufCerta.Count() == 0)
+                {
+                    //UF não bate com o CEP
+                    lstErros.Add(MensagensErro.Estado_nao_confere);
+                }
+            }
+
+            //# Se o CEP não existir, aceitamos o que veio e só validar a cidade e a UF no IBGE.
+            await CepBll.ConsisteMunicipioIBGE(cepCliente.Cidade, cepCliente.Uf, lstErros, contextoProvider, bancoNFeMunicipio, true);
+
+
+            //validação da UF
+            if(!UtilsGlobais.Util.VerificaUf(cepCliente.Uf))
+            {
+                lstErros.Add("UF INVÁLIDA.");
+            }
+
+            //#CEP sem 8 digitos rejeitamos, mas CEP que não tem na nossa base aceitamos
+            if (!UtilsGlobais.Util.VerificaCep(cepCliente.Cep))
+            {
+                lstErros.Add("CEP INVÁLIDO.");
             }
         }
 
@@ -748,13 +815,13 @@ namespace Cliente
                 ReflectionUtilsMemberAccess | BindingFlags.InvokeMethod, null, inst,
                 new object[2]
                 {
-                    ie, uf
+                                ie, uf
                 });
 
             return result;
         }
 
-        public static async Task VerificarEndereco(Cep.Dados.CepDados cepCliente, List<Cep.Dados.CepDados> lstCepDados,
+        private static async Task VerificarEnderecoContraCep(Cep.Dados.CepDados cepCliente, List<Cep.Dados.CepDados> lstCepDados,
             List<string> lstErros, ContextoBdProvider contextoProvider, IBancoNFeMunicipio bancoNFeMunicipio)
         {
             string cepSoDigito = cepCliente.Cep.Replace(".", "").Replace("-", "");

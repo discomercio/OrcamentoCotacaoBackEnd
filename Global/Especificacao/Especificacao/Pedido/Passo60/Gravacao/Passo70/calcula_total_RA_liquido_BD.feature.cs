@@ -150,16 +150,16 @@ this.FeatureBackground();
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="calcula_total_RA_liquido_BD - Loja")]
+        [Xunit.SkippableFactAttribute(DisplayName="somente Loja - calcula_total_RA_liquido_BD")]
         [Xunit.TraitAttribute("FeatureTitle", "calcula_total_RA_liquido_BD")]
-        [Xunit.TraitAttribute("Description", "calcula_total_RA_liquido_BD - Loja")]
+        [Xunit.TraitAttribute("Description", "somente Loja - calcula_total_RA_liquido_BD")]
         [Xunit.TraitAttribute("Category", "ignore")]
-        public virtual void Calcula_Total_RA_Liquido_BD_Loja()
+        public virtual void SomenteLoja_Calcula_Total_RA_Liquido_BD()
         {
             string[] tagsOfScenario = new string[] {
                     "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("calcula_total_RA_liquido_BD - Loja", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("somente Loja - calcula_total_RA_liquido_BD", null, tagsOfScenario, argumentsOfScenario);
 #line 37
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
