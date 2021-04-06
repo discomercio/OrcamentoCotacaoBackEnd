@@ -6,21 +6,43 @@ using System.Text;
 
 namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 {
+    /// <summary>
+    /// FormaPagtoCriacao: a forma de pagamento dos produtos. Os serviços não são incluídos aqui.
+    /// <hr />
+    /// </summary>
     public class FormaPagtoCriacaoMagentoDto
     {
         /// <summary>
-        /// Pedido que vier do Markeplace deve ser Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELA_UNICA = "5"  
-        /// e Op_pu_forma_pagto = "2" "Depósito" e C_pu_vencto_apos = 30 dias (Definido no appsettings)
-        /// <br />
-        /// Pedido que vier do Magento deve ser Tipo_Parcelamento = COD_FORMA_PAGTO_A_VISTA = "1" 
-        /// e Op_av_forma_pagto = "6" "Boleto" ou Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELADO_CARTAO = "2" 
-        /// <br />
         /// <br />
         /// Tipo_Parcelamento:
         ///     COD_FORMA_PAGTO_A_VISTA = "1",
         ///     COD_FORMA_PAGTO_PARCELADO_CARTAO = "2",
         ///     COD_FORMA_PAGTO_PARCELA_UNICA = "5",
         /// <hr />
+        /// Se Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELA_UNICA = "5" ou COD_FORMA_PAGTO_A_VISTA = "1", 
+        /// <br />
+        /// C_pu_valor = somatoria de RowTotal da lista de produtos + Valor liquido do frete
+        /// <br />
+        /// <br />
+        /// Se Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELADO_CARTAO = "2" 
+        /// <br />
+        /// C_pc_qtde * C_pc_valor = somatoria de RowTotal da lista de produtos + Valor liquido do frete
+        /// <br />
+        /// <hr />
+        /// Pedido que vier do Markeplace deve ter Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELA_UNICA = "5"  
+        /// <br />
+        /// Pedido que vier do Magento deve ter Tipo_Parcelamento = COD_FORMA_PAGTO_A_VISTA = "1" ou Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELADO_CARTAO = "2" 
+        /// <br />
+        /// <hr />
+        /// Valores lidos do appsettings.json:
+        /// <br />
+        /// Se Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELA_UNICA = "5"
+        /// <br />
+        /// - Op_pu_forma_pagto, default = "2" "Depósito" 
+        /// <br />
+        /// - C_pu_vencto_apos, default = 30 dias
+        /// <br />
+        /// <br />
         /// </summary>
         [Required]
         public short Tipo_Parcelamento { get; set; }//Tipo da forma de pagto

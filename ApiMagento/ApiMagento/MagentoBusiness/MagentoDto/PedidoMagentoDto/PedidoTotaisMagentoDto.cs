@@ -6,6 +6,8 @@ using System.Text;
 namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 {
     /// <summary>
+    /// TotaisPedido: armazena os valores totais do pedido
+    /// <br />
     /// Os campo estão com os mesmos nomes exibidos no Painel Admin na consulta do Pedido
     /// <hr />
     /// </summary>

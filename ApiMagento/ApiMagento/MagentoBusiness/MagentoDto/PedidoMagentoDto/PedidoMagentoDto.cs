@@ -42,14 +42,14 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         public EnderecoEntregaClienteMagentoDto? EnderecoEntrega { get; set; }
 
         /// <summary>
-        /// ListaProdutos: lista de itens que são produtos.
+        /// ListaProdutos: lista de itens que são produtos. São enviados pelo sistema e a nota fiscal deles é emitida pelo sistema.
         /// <hr />
         /// </summary>
         [Required]
         public List<PedidoProdutoMagentoDto> ListaProdutos { get; set; }
 
         /// <summary>
-        /// ListaServicos: lista de itens que são serviços. O valor dos serviços não é incluído no total do pedido.
+        /// ListaServicos: lista de itens que são serviços. Os serviços não são faturados e nem enviados pelo sistema.
         /// <hr />
         /// </summary>
         [Required]
@@ -66,10 +66,6 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         [Required]
         public FormaPagtoCriacaoMagentoDto FormaPagtoCriacao { get; set; }
 
-        /// <summary>
-        /// TotaisPedido: armazena os valores totais do pedido
-        /// <hr />
-        /// </summary>
         [Required]
         public PedidoTotaisMagentoDto TotaisPedido { get; set; }
 
