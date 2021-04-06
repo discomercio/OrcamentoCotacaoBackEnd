@@ -164,6 +164,20 @@ namespace Especificacao.Testes.Pedido
             base.Executar(i => i.TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteEProdutoVerificarCampo(fabricante, produto, campo, valor));
         }
 
+        public void TabelaT_PEDIDO_ANALISE_ENDERECORegistroCriadoVerificarCampo(string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO_ANALISE_ENDERECO", "campo", "valor", campo, valor, this);
+            base.Executar(i => i.TabelaT_PEDIDO_ANALISE_ENDERECORegistroCriadoVerificarCampo(campo, valor));
+        }
+
+        public void TabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAORegistroCriadoVerificarCampo(string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO", "campo", "valor", campo, valor, this);
+            base.Executar(i => i.TabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAORegistroCriadoVerificarCampo(campo, valor));
+        }
+
         public void ListaDeItensComXitens(int p0)
         {
             if (ignorarFeature) return;
@@ -213,6 +227,24 @@ namespace Especificacao.Testes.Pedido
         {
             if (ignorarFeature) return;
             base.Executar(i => i.GeradoPedidos(qtde_pedidos));
+        }
+
+        public void VerificarQtdePedidosSalvos(int qtde)
+        {
+            if (ignorarFeature) return;
+            base.Executar(i => i.VerificarQtdePedidosSalvos(qtde));
+        }
+
+        public void TabelaT_PEDIDO_ANALISE_ENDERECOVerificarQtdeDeItensSalvos(int qtde)
+        {
+            if (ignorarFeature) return;
+            base.Executar(i => i.TabelaT_PEDIDO_ANALISE_ENDERECOVerificarQtdeDeItensSalvos(qtde));
+        }
+
+        public void TabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAOVerificarQtdeDeItensSalvos(int qtde)
+        {
+            if (ignorarFeature) return;
+            base.Executar(i => i.TabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAOVerificarQtdeDeItensSalvos(qtde));
         }
     }
 }

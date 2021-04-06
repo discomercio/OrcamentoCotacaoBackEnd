@@ -92,6 +92,9 @@ namespace InfraBanco
         public IQueryable<Toperacao> Toperacaos { get => contexto.Toperacaos.AsNoTracking(); }
         public IQueryable<TperfilItem> TperfilItens { get => contexto.TperfilItens.AsNoTracking(); }
         public IQueryable<TestoqueLog> TestoqueLogs { get => contexto.TestoqueLogs.AsNoTracking(); }
+        public IQueryable<TpedidoAnaliseEndereco> TpedidoAnaliseEnderecos { get => contexto.TpedidoAnaliseEnderecos.AsNoTracking(); }
+        public IQueryable<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseEnderecoConfrontacaos { get => contexto.TpedidoAnaliseConfrontacaos.AsNoTracking(); }
+
 #endif
 
     }

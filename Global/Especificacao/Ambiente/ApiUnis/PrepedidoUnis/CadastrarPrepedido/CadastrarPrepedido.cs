@@ -431,5 +431,28 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         {
             throw new NotImplementedException();
         }
+
+        public void TabelaT_PEDIDO_ANALISE_ENDERECORegistroCriadoVerificarCampo(string campo, string valor)
+        {
+            throw new NotImplementedException();
+        }
+        public void TabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAORegistroCriadoVerificarCampo(string campo, string valor)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void VerificarQtdePedidosSalvos(int qtde)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void TabelaT_PEDIDO_ANALISE_ENDERECOVerificarQtdeDeItensSalvos(int qtde)
+        {
+            throw new NotImplementedException();
+        }
+        public void TabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAOVerificarQtdeDeItensSalvos(int qtde)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
