@@ -28,6 +28,13 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         public decimal DiscountAmount { get; set; }
 
         /// <summary>
+        /// BSellerInterest: á incluir
+        /// <hr />
+        /// </summary>
+        [Required]
+        public decimal BSellerInterest { get; set; }
+
+        /// <summary>
         /// FreteBruto: valor bruto do frete
         /// <hr />
         /// </summary>

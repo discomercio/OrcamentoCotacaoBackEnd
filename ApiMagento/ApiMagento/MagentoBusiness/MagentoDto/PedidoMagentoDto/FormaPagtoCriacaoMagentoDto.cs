@@ -43,16 +43,35 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         /// - C_pu_vencto_apos, default = 30 dias
         /// <br />
         /// <br />
-        /// Se Tipo_Parcelamento = COD_FORMA_PAGTO_A_VISTA = "1" 
-        /// <br />
-        /// - Op_av_forma_pagto, default = "6" "Boleto" 
         /// </summary>
         [Required]
         public short Tipo_Parcelamento { get; set; }//Tipo da forma de pagto
 
+        /// <summary>
+        /// Opção da forma de pagamento para tipo Á Vista
+        /// <br/>
+        /// Aceitamos apenas o valor de Op_av_forma_pagto = "6"
+        /// <hr />
+        /// </summary>
+        [MaxLength(1)]
+        public string? Op_av_forma_pagto { get; set; }
+
+        /// <summary>
+        /// C_pu_valor: valor para pagamento de Parcela Única
+        /// <hr />
+        /// </summary>
         public decimal? C_pu_valor { get; set; }
 
+        /// <summary>
+        /// C_pc_qtde: quantidade de parcelas para pagamento Parcelado no Cartão
+        /// <hr />
+        /// </summary>
         public int? C_pc_qtde { get; set; }
+
+        /// <summary>
+        /// C_pc_valor: valor das parcelas para pagamento Parcelado no Cartão
+        /// <hr />
+        /// </summary>
         public decimal? C_pc_valor { get; set; }
 
         //C_forma_pagto = "" (deixar em branco)
@@ -75,7 +94,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                 infCriacaoPedidostring.Marketplace_codigo_origem == InfraBanco.Constantes.Constantes.COD_MARKETPLACE_ARCLUBE)
             {
                 ret.CustoFinancFornecQtdeParcelas = 0;
-                ret.Op_av_forma_pagto = configuracaoApiMagento.FormaPagto.Magento.Op_av_forma_pagto;//boleto
+                ret.Op_av_forma_pagto = formaPagtoCriacaoMagento.Op_av_forma_pagto;//boleto
                 ret.CustoFinancFornecTipoParcelamento =
                     InfraBanco.Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA;
             }
