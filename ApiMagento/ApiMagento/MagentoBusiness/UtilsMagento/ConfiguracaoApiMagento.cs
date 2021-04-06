@@ -43,10 +43,7 @@ namespace MagentoBusiness.UtilsMagento
 
         public IndicadorMagento DadosIndicador { get; set; } = new IndicadorMagento();
 
-        public class Magento
-        {
-            public string Op_av_forma_pagto { get; set; } = "6";
-        }
+        
 
         public class Markeplace
         {
@@ -56,7 +53,6 @@ namespace MagentoBusiness.UtilsMagento
 
         public class PagtoMagento
         {
-            public Magento Magento { get; set; } = new Magento();
             public Markeplace Markeplace { get; set; } = new Markeplace();
 
         }

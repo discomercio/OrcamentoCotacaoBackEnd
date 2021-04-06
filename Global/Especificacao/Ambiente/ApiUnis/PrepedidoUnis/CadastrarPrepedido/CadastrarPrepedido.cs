@@ -123,7 +123,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
         {
             //var total = prePedidoUnisDto.VlTotalDestePedido;
             //var total = prePedidoUnisDto.ListaProdutos.Select(x => Math.Round(x.Preco_Venda * x.Qtde, 2)).Sum();
-            var total = prePedidoUnisDto.ListaProdutos.Select(x => Math.Round((decimal)0 * x.Qtde, 2)).Sum();
+            var total = prePedidoUnisDto.ListaProdutos.Select(x => Math.Round((decimal)0 * x.Quantidade, 2)).Sum();
             var fp = prePedidoUnisDto.FormaPagtoCriacao;
             switch (fp.Tipo_Parcelamento.ToString())
             {
