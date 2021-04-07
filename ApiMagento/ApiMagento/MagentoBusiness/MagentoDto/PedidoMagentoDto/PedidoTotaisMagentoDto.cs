@@ -28,7 +28,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         public decimal DiscountAmount { get; set; }
 
         /// <summary>
-        /// BSellerInterest: á incluir
+        /// BSellerInterest: nos casos em que seja diferente de zero, o pedido deve ser processado manualmente.
         /// <hr />
         /// </summary>
         [Required]

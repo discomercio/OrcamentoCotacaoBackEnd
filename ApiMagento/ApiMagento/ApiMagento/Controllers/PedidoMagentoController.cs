@@ -93,17 +93,13 @@ namespace ApiMagento.Controllers
         /// <summary>
         /// Chamada para alterar o status do pedido cadastrado.
         /// </summary>
-        /// <param name="tokenAcesso"></param>
-        /// <param name="pedido_bs_x_ac">Este é o número do pedido no magento (no ASP, é C_numero_magento; precisa ter 9 dígitos)</param>
-        /// <param name="statusPedido">APROVADO = 0 (pagamento confirmado),
-        /// <br/> NAO_APROVADO = 1 (pedido cadastrado e pagamento não confirmado)</param>
         /// <returns>StatusPedidoResultadoMagentoDto</returns>
         [AllowAnonymous]
         [HttpPost("alterarStatusPedido")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<ActionResult<StatusPedidoResultadoMagentoDto>> AlterarSatatusPedido(string tokenAcesso, string pedido_bs_x_ac, int statusPedido)
+        public async Task<ActionResult<AlterarStatusPedidoResultadoMagentoDto>> AlterarStatusPedido(AlterarStatusPedidoMagentoDto alterarStatusPedido)
         {
-            StatusPedidoResultadoMagentoDto ret = new StatusPedidoResultadoMagentoDto();
+            AlterarStatusPedidoResultadoMagentoDto ret = new AlterarStatusPedidoResultadoMagentoDto();
             return Ok(await Task.FromResult(ret));
         }
     }
