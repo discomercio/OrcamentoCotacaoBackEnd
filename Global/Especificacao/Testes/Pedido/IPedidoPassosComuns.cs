@@ -30,5 +30,11 @@
         void GeradoPedidos(int qtde_pedidos);
 
         void TabelaT_ESTOQUE_ITEMVerificarSaldo(string id_nfe_emitente, int saldo);
+        void TabelaT_PEDIDO_ANALISE_ENDERECORegistroCriadoVerificarCampo(string campo, string valor);
+        void TabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAORegistroCriadoVerificarCampo(string campo, string valor);
+
+        void VerificarQtdePedidosSalvos(int qtde);
+        void TabelaT_PEDIDO_ANALISE_ENDERECOVerificarQtdeDeItensSalvos(int qtde);
+        void TabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAOVerificarQtdeDeItensSalvos(int qtde);
     }
 }
