@@ -48,9 +48,9 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         public short Tipo_Parcelamento { get; set; }//Tipo da forma de pagto
 
         /// <summary>
-        /// Opção da forma de pagamento para tipo Á Vista
+        /// Opção da forma de pagamento para tipo A Vista 
         /// <br/>
-        /// Aceitamos apenas o valor de Op_av_forma_pagto = "6"
+        /// Se Tipo_Parcelamento = COD_FORMA_PAGTO_A_VISTA = "1", o valor de Op_av_forma_pagto deve ser "6". Caso contrário, deve zer vazio. No momento, os único valores permitidos são vazio e "6".
         /// <hr />
         /// </summary>
         [MaxLength(1)]

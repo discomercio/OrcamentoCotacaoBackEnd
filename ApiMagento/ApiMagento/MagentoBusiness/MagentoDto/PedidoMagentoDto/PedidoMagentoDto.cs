@@ -77,12 +77,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         [MaxLength(500)]
         public string? Obs_1 { get; set; }
 
-        /// <summary>
-        /// StatusPedido: APROVADO = 0, NAO_APROVADO = 1
-        /// <hr />
-        /// </summary>
-        [Required]
-        public int StatusPedido { get; set; }
+        public StatusPedidoMagentoDto StatusPedido { get; set; }
 
 #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
