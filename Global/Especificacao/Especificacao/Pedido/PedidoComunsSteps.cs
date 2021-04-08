@@ -427,6 +427,74 @@ namespace Especificacao.Especificacao.Pedido
             base.TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteEProdutoVerificarCampo(fabricante, produto, campo, valor);
         }
 
+        [Then(@"Tabela ""t_PEDIDO_ANALISE_ENDERECO"" registro criado, verificar campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaT_PEDIDO_ANALISE_ENDERECORegistroCriadoVerificarCampo(string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO_ANALISE_ENDERECO", "campo", "valor", campo, valor, this);
+            base.TabelaT_PEDIDO_ANALISE_ENDERECORegistroCriadoVerificarCampo(campo, valor);
+        }
+
+        [Then(@"Tabela ""t_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO"" registro criado, verificar campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAORegistroCriadoVerificarCampo(string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO", "campo", "valor", campo, valor, this);
+            base.TabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAORegistroCriadoVerificarCampo(campo, valor);
+        }
+        [Given(@"Cadastra 50 pedidos com o mesmo endereco")]
+        public void GivenCadastraPedidosComOMesmoEndereco()
+        {            
+            int qtdePedido = 50;
+            for (int i = 0; i <= qtdePedido; i++)
+            {
+                GivenPedidoBase();
+                WhenInformo("cnpj_cpf", GerarCpf());
+                ThenSemNenhumErro();
+            }
+        }
+        private static String GerarCpf()
+        {
+            int soma = 0, resto = 0;
+            int[] multiplicador1 = new int[9] { 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+            int[] multiplicador2 = new int[10] { 11, 10, 9, 8, 7, 6, 5, 4, 3, 2 };
+
+            Random rnd = new Random();
+            string semente = rnd.Next(100000000, 999999999).ToString();
+
+            for (int i = 0; i < 9; i++)
+                soma += int.Parse(semente[i].ToString()) * multiplicador1[i];
+
+            resto = soma % 11;
+            if (resto < 2)
+                resto = 0;
+            else
+                resto = 11 - resto;
+
+            semente = semente + resto;
+            soma = 0;
+
+            for (int i = 0; i < 10; i++)
+                soma += int.Parse(semente[i].ToString()) * multiplicador2[i];
+
+            resto = soma % 11;
+
+            if (resto < 2)
+                resto = 0;
+            else
+                resto = 11 - resto;
+
+            semente = semente + resto;
+            return semente;
+        }
+
+        [Then(@"Tabela ""t_PEDIDO"" verificar qtde de pedidos salvos ""(.*)""")]
+        public void ThenTabelaT_PEDIDOVerificarQtdeDePedidosSalvos(int qtde)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.Verificacao("Verificar quantidade de pedidos salvos: ", qtde);
+            base.VerificarQtdePedidosSalvos(qtde);
+
+        }
+
+
         [Then(@"Gerado (.*) pedidos")]
         public void ThenGeradoPedidos(int qtde_pedidos)
         {
@@ -472,6 +540,7 @@ namespace Especificacao.Especificacao.Pedido
             base.VerificarPedidoGeradoSaldoDeID_ESTOQUE_SEM_PRESENCA(indicePedido, qtde);
         }
 
+        #region Reiniciar appsettings e AfterScenario
         [Given(@"Reiniciar appsettings")]
         public void GivenReiniciarAppsettings()
         {
@@ -484,5 +553,23 @@ namespace Especificacao.Especificacao.Pedido
             var configuracaoApiMagento = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<global::MagentoBusiness.UtilsMagento.ConfiguracaoApiMagento>();
             Ambiente.ApiMagento.InjecaoDependencias.InicializarConfiguracaoApiMagento(configuracaoApiMagento);
         }
+        #endregion
+
+        [Then(@"Tabela ""t_PEDIDO_ANALISE_ENDERECO"" verificar qtde de itens salvos ""(.*)""")]
+        public void ThenTabelaT_PEDIDO_ANALISE_ENDERECOVerificarQtdeDeItensSalvos(int qtde)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.Verificacao("Verificar quantidade de itens salvos: ", qtde);
+            base.TabelaT_PEDIDO_ANALISE_ENDERECOVerificarQtdeDeItensSalvos(qtde);
+        }
+
+        [Then(@"Tabela ""t_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO"" verificar qtde de itens salvos ""(.*)""")]
+        public void ThenTabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAOVerificarQtdeDeItensSalvos(int qtde)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.Verificacao("Verificar quantidade de itens salvos: ", qtde);
+            base.TabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAOVerificarQtdeDeItensSalvos(qtde);
+        }
+
+
+
     }
 }

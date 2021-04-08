@@ -187,17 +187,17 @@ namespace Especificacao.Testes.Utils.BancoTestes
                                    registro.Fabricante == item.Fabricante &&
                                    registro.Estoque == tipo_estoque.ToUpper()
                              select registro.Qtde).ToList();
-            if(registros == null)
+            if (registros == null)
                 Assert.Equal(0, valor);
 
-            if(registros != null)
+            if (registros != null)
             {
                 foreach (var registro in registros)
                 {
                     int reg = registro ?? 0;
                     Assert.Equal(reg, valor);
                 }
-            }            
+            }
         }
 
         public void TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(TpedidoItem item, string campo, string valor)
@@ -426,6 +426,43 @@ namespace Especificacao.Testes.Utils.BancoTestes
                     default:
                         Assert.Equal("", $"{campo} desconhecido");
                         break;
+                }
+            }
+        }
+
+        public void TabelaT_PEDIDO_ANALISE_ENDERECORegistroCriadoVerificarCampo(string pedido, string campo, string valor)
+        {
+            var db = contextoBdProvider.GetContextoLeitura();
+            var registros = (from c in db.TpedidoAnaliseEnderecos
+                             where c.Pedido == pedido
+                             select c).ToList();
+            Assert.True(registros.Any());
+
+            foreach (var registro in registros)
+            {
+                VerificarCampoEmRegistro.VerificarRegistro<TpedidoAnaliseEndereco>(campo, valor, registro);
+            }
+
+        }
+
+        public void TabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAORegistroCriadoVerificarCampo(string pedido, string campo, string valor)
+        {
+            var db = contextoBdProvider.GetContextoLeitura();
+            var registros = (from c in db.TpedidoAnaliseEnderecos
+                             where c.Pedido == pedido
+                             select c).ToList();
+            Assert.True(registros.Any());
+
+            foreach (var registro in registros)
+            {
+                var registros2 = (from c in db.TpedidoAnaliseEnderecoConfrontacaos
+                                  where c.Id_pedido_analise_endereco == registro.Id
+                                  select c).ToList();
+                Assert.True(registros2.Any());
+
+                foreach(var registro2 in registros2)
+                {
+                    VerificarCampoEmRegistro.VerificarRegistro<TpedidoAnaliseEnderecoConfrontacao>(campo, valor, registro2);
                 }
             }
         }
@@ -1121,6 +1158,33 @@ namespace Especificacao.Testes.Utils.BancoTestes
         {
             //não fazemos nada mesmo, é só documentação
         }
+
+        public void VerificarQtdePedidosSalvos(int qtde)
+        {
+            var db = contextoBdProvider.GetContextoLeitura();
+            var registro = (from c in db.Tpedidos
+                            select c.Pedido).Count();
+
+            Assert.Equal(qtde, registro);
+        }
+
+        public void TabelaT_PEDIDO_ANALISE_ENDERECOVerificarQtdeDeItensSalvos(int qtde)
+        {
+            var db = contextoBdProvider.GetContextoLeitura();
+            var registro = (from c in db.TpedidoAnaliseEnderecos
+                            select c.Id).Count();
+
+            Assert.Equal(qtde, registro);
+        }
+        public void TabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAOVerificarQtdeDeItensSalvos(int qtde)
+        {
+            var db = contextoBdProvider.GetContextoLeitura();
+            var registro = (from c in db.TpedidoAnaliseEnderecoConfrontacaos
+                            select c.Id_pedido_analise_endereco).Count();
+
+            Assert.Equal(qtde, registro);
+        }
+
     }
 }
 
