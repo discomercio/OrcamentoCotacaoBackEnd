@@ -1,4 +1,5 @@
 rem compilar o projeto da ApiMagento
+echo off
 set aux_msbuild="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild.exe"
 
 IF EXIST %aux_msbuild% goto msbuild_encontrado
@@ -16,6 +17,8 @@ rem %aux_msbuild% ../../ApiMagento/ApiMagento/ApiMagento/ApiMagento.csproj -t:Re
 %aux_msbuild% ../../ArClube.sln -t:Rebuild -p:DeployOnBuild=true -p:PublishProfile=CompilarApiMagento /p:Configuration=Release_ApiMagento
 
 echo %date% %time% >> "PacoteApiMagento/publish/DataCompilacao.txt"
+git branch >> "PacoteApiMagento/publish/VersaoGit.txt"
+git show >> "PacoteApiMagento/publish/VersaoGit.txt"
 del PacoteApiMagento\publish\appsettings.json
 del PacoteApiMagento\publish\appsettings.Development.json
 del PacoteApiMagento\publish\nlog.config

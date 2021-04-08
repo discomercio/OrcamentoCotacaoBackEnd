@@ -200,7 +200,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava80
                                                };
 
                 var registrosLidos = await listaPedidos_cad_cliente_memorizado.ToListAsync();
-                registrosLidos.AddRange(await listaPedidos_cad_cliente_memorizado.ToListAsync());
+                registrosLidos.AddRange(await listaPedidos_end_entrega.ToListAsync());
                 registrosLidos = (from v in registrosLidos orderby v.Data_hora descending select v).Distinct().ToList();
 
                 int intQtdeTotalPedidosAnEndereco = 0;

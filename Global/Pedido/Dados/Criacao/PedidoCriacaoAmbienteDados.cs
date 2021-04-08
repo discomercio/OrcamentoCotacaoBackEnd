@@ -8,7 +8,7 @@ namespace Pedido.Dados.Criacao
 {
     public class PedidoCriacaoAmbienteDados
     {
-        public PedidoCriacaoAmbienteDados(string loja, string vendedor, string usuario, bool comIndicador, string indicador, string orcamentista, int id_nfe_emitente_selecao_manual, bool venda_Externa, bool opcaoVendaSemEstoque, string loja_indicou,
+        public PedidoCriacaoAmbienteDados(string loja, string vendedor, string usuario, bool comIndicador, string indicador, string orcamentista, int id_nfe_emitente_selecao_manual, bool venda_Externa, string loja_indicou,
             InfraBanco.Constantes.Constantes.Op_origem__pedido_novo operacao_origem,
             InfraBanco.Constantes.Constantes.Cod_site id_param_site)
         {
@@ -25,7 +25,6 @@ namespace Pedido.Dados.Criacao
             Orcamentista = orcamentista ?? throw new ArgumentNullException(nameof(orcamentista));
             Id_nfe_emitente_selecao_manual = id_nfe_emitente_selecao_manual;
             Venda_Externa = venda_Externa;
-            OpcaoVendaSemEstoque = opcaoVendaSemEstoque;
             Loja_indicou = loja_indicou ?? throw new ArgumentNullException(nameof(loja_indicou));
 
             //vazio ou OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO
@@ -54,9 +53,6 @@ namespace Pedido.Dados.Criacao
 
         //Armazena se é venda externa
         public bool Venda_Externa { get; }
-
-        //Flag para saber se o cliente aceitou finalizar o pedido mesmo com produto sem estoque
-        public bool OpcaoVendaSemEstoque { get; }
 
         public string Loja_indicou { get; }
 

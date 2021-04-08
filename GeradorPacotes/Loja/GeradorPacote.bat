@@ -1,4 +1,5 @@
 rem compilar o projeto da loja
+echo off
 set aux_msbuild="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild.exe"
 
 IF EXIST %aux_msbuild% goto msbuild_encontrado
@@ -23,6 +24,8 @@ goto final
 :continuar
 
 echo %date% %time% >> "PacoteLoja\lojamvc\DataCompilacao.txt"
+git branch >> "PacoteLoja\lojamvc\VersaoGit.txt"
+git show >> "PacoteLoja\lojamvc\VersaoGit.txt"
 del PacoteLoja\lojamvc\appsettings.json
 del PacoteLoja\lojamvc\appsettings.Development.json
 del PacoteLoja\lojamvc\nlog.config

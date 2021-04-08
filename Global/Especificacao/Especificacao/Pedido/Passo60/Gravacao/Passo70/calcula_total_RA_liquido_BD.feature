@@ -34,7 +34,7 @@ Scenario: calcula_total_RA_liquido_BD - magento
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_total_RA_liquido" = "377.34"
 
 @ignore
-Scenario: calcula_total_RA_liquido_BD - Loja
+Scenario: somente Loja - calcula_total_RA_liquido_BD 
 	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	When Informo "PermiteRaStatus" = "1"

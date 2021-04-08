@@ -145,8 +145,6 @@ namespace Pedido.Criacao.Passo40
         {
             if (Pedido.FormaPagtoCriacao.Rb_forma_pagto != Constantes.COD_FORMA_PAGTO_A_VISTA)
             {
-                var db = Criacao.ContextoProvider.GetContextoLeitura();
-
                 foreach (var prod in Pedido.ListaProdutos)
                 {
                     var custoFinancFornec = (from c in Criacao.Execucao.TabelasBanco.TpercentualCustoFinanceiroFornecedors_Coeficiente
@@ -157,7 +155,7 @@ namespace Pedido.Criacao.Passo40
 
                     if (custoFinancFornec == null)
                         lstErros.Add("Opção de parcelamento não disponível para fornecedor " + prod.Fabricante + ": " +
-                            Prepedido.PrepedidoBll.DecodificaCustoFinanFornecQtdeParcelas(Criacao.Execucao.C_custoFinancFornecTipoParcelamento, (short)Criacao.Execucao.C_custoFinancFornecQtdeParcelas) + " parcela(s).");
+                            Prepedido.PrepedidoBll.DecodificaCustoFinanFornecQtdeParcelas(Criacao.Execucao.C_custoFinancFornecTipoParcelamento, Criacao.Execucao.C_custoFinancFornecQtdeParcelas) + " parcela(s).");
 
 
                     TprodutoLoja prodLoja = (from c in Criacao.Execucao.TabelasBanco.TprodutoLoja_Include_Tprodtuo_Tfabricante_Validado
@@ -190,7 +188,7 @@ namespace Pedido.Criacao.Passo40
                     Retorno.ListaErros.Add("Produto " + prod.Produto + " não localizado para a loja " + Pedido.Ambiente.Loja + ".");
                     continue;
                 }
-                if(prodLoja.Qtde_Max_Venda.HasValue && prodLoja.Qtde_Max_Venda < prod.Qtde)
+                if (prodLoja.Qtde_Max_Venda.HasValue && prodLoja.Qtde_Max_Venda < prod.Qtde)
                 {
                     Retorno.ListaErros.Add($"Quantidade do Produto {prod.Produto} excede o máximo permitido. Solicitado: {prod.Qtde}, Qtde_Max_Venda:{prodLoja.Qtde_Max_Venda}.");
                 }

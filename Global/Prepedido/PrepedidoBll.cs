@@ -650,8 +650,8 @@ namespace Prepedido
             return await raStatus;
         }
 
-        public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDados prePedido, 
-            string apelido, decimal limiteArredondamento, bool verificarPrepedidoRepetido, 
+        public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDados prePedido,
+            string apelido, decimal limiteArredondamento, bool verificarPrepedidoRepetido,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro, int limite_de_itens)
         {
             List<string> lstErros = new List<string>();
@@ -759,7 +759,8 @@ namespace Prepedido
 
             //Validar endereço de entraga
             await validacoesPrepedidoBll.ValidarEnderecoEntrega(prePedido.EnderecoEntrega, lstErros,
-                prePedido.DadosCliente.Indicador_Orcamentista, prePedido.DadosCliente.Tipo, true, prePedido.DadosCliente.Loja);
+                prePedido.DadosCliente.Indicador_Orcamentista, prePedido.DadosCliente.Tipo, true, prePedido.DadosCliente.Loja,
+                sistemaResponsavelCadastro);
             if (lstErros.Any())
                 return lstErros;
 

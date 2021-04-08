@@ -54,7 +54,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
                     Parametro_5_campo_flag = x.Parametro_5_campo_flag,
                     Parametro_campo_texto = x.Parametro_campo_texto
                 });
-            };
+            }
 
             return resultado;
         }

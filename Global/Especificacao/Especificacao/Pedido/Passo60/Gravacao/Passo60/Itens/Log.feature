@@ -104,6 +104,7 @@ Scenario: Log dos itens - estoque vendido e sem presenca de estoque Loja
 	And Tabela "t_LOG" pedido gerado e operacao = "OP_LOG_PEDIDO_NOVO", verificar campo "complemento" = "2x003220(003); preco_lista=626,58; desc_dado=0; preco_venda=626,58; preco_NF=626,58; custoFinancFornecCoeficiente=1; custoFinancFornecPrecoListaBase=626,58; estoque_vendido=1; estoque_sem_presenca=1;\r 2x003221(003); preco_lista=939,87; desc_dado=0; preco_venda=939,87; preco_NF=939,87; custoFinancFornecCoeficiente=1; custoFinancFornecPrecoListaBase=939,87; estoque_vendido=1; estoque_sem_presenca=1"
 
 Scenario Outline: Verificar t_LOG - Magento
+	Given Reiniciar banco imediatamente
 	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	#Given Reiniciar appsettings
 	Given Pedido base

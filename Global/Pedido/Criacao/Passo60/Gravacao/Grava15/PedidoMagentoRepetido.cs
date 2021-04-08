@@ -157,7 +157,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava15
 
             var nomeCampo = "Pedido_Bs_X_Ac " + (sobrando.Pedido_Bs_X_Ac ?? "");
             if (campo_pedido_bs_x_marketplace)
-                nomeCampo = "Pedido_Bs_X_Marketplace " + (sobrando.Pedido_Bs_X_Marketplace ?? ""); ;
+                nomeCampo = "Pedido_Bs_X_Marketplace " + (sobrando.Pedido_Bs_X_Marketplace ?? "");
 
             var msg = "";
             msg += "O nº pedido Magento " + nomeCampo + " já está cadastrado no pedido " + sobrando.Pedido;

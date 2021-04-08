@@ -144,8 +144,6 @@ Fluxo no módulo loja:
                 retorno.RemoverPedidos();
             }
             return retorno;
-
-            //return await CadastrarPedido_anterior(pedido, Execucao.UsuarioPermissao);
         }
     }
 }
