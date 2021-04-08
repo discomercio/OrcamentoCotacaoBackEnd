@@ -20,7 +20,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         public string Pedido_magento { get; set; }
 
         [Required]
-        public StatusPedidoMagentoDto StatusPedido { get; set; }
+        public MagentoPedidoStatusDto MagentoPedidoStatus { get; set; }
 
 #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 

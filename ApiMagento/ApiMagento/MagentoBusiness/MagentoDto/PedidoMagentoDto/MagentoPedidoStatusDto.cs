@@ -2,7 +2,7 @@
 
 namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 {
-    public class StatusPedidoMagentoDto
+    public class MagentoPedidoStatusDto
     {
         /// <summary>
         /// Status: 
