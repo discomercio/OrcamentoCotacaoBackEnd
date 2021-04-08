@@ -50,7 +50,9 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         /// <summary>
         /// Opção da forma de pagamento para tipo A Vista 
         /// <br/>
-        /// Se Tipo_Parcelamento = COD_FORMA_PAGTO_A_VISTA = "1", o valor de Op_av_forma_pagto deve ser "6". Caso contrário, deve zer vazio. No momento, os único valores permitidos são vazio e "6".
+        /// Orbigatório se Tipo_Parcelamento = COD_FORMA_PAGTO_A_VISTA = "1",
+        /// <br/>
+        /// Caso contrário, deve zer vazio.
         /// <hr />
         /// </summary>
         [MaxLength(1)]
@@ -90,7 +92,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             //Verificar com Edu se essa condição está correta
             if (formaPagtoCriacaoMagento.Tipo_Parcelamento.ToString() ==
                 InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_A_VISTA &&
-                !string.IsNullOrEmpty(infCriacaoPedidostring.Pedido_bs_x_ac) &&
+                !string.IsNullOrEmpty(infCriacaoPedidostring.Pedido_magento) &&
                 infCriacaoPedidostring.Marketplace_codigo_origem == InfraBanco.Constantes.Constantes.COD_MARKETPLACE_ARCLUBE)
             {
                 ret.CustoFinancFornecQtdeParcelas = 0;
@@ -100,7 +102,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             }
             if (formaPagtoCriacaoMagento.Tipo_Parcelamento.ToString() ==
                 InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_PARCELA_UNICA &&
-                !string.IsNullOrEmpty(infCriacaoPedidostring.Pedido_bs_x_marketplace) &&
+                !string.IsNullOrEmpty(infCriacaoPedidostring.Pedido_marketplace) &&
                 infCriacaoPedidostring.Marketplace_codigo_origem != InfraBanco.Constantes.Constantes.COD_MARKETPLACE_ARCLUBE)
             {
                 ret.CustoFinancFornecQtdeParcelas = 1;
@@ -112,7 +114,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             }
             if (formaPagtoCriacaoMagento.Tipo_Parcelamento.ToString() ==
                 InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO &&
-                !string.IsNullOrEmpty(infCriacaoPedidostring.Pedido_bs_x_ac) &&
+                !string.IsNullOrEmpty(infCriacaoPedidostring.Pedido_magento) &&
                 infCriacaoPedidostring.Marketplace_codigo_origem == InfraBanco.Constantes.Constantes.COD_MARKETPLACE_ARCLUBE)
             {
                 ret.CustoFinancFornecQtdeParcelas = formaPagtoCriacaoMagento.C_pc_qtde ?? 1;

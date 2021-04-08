@@ -285,13 +285,13 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
                 lstErros.Add("Código Marketplace não encontrado.");
 
             //vamos validar o número do pedido magento
-            if (string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac))
+            if (string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Pedido_magento))
                 lstErros.Add("Favor informar o número do pedido Magento(Pedido_bs_x_ac)!");
 
-            if (pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac.Length != Constantes.MAX_TAMANHO_ID_PEDIDO_MAGENTO)
+            if (pedidoMagento.InfCriacaoPedido.Pedido_magento.Length != Constantes.MAX_TAMANHO_ID_PEDIDO_MAGENTO)
                 lstErros.Add("Nº pedido Magento(Pedido_bs_x_ac) com formato inválido!");
 
-            if (UtilsGlobais.Util.ExisteLetras(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac))
+            if (UtilsGlobais.Util.ExisteLetras(pedidoMagento.InfCriacaoPedido.Pedido_magento))
                 lstErros.Add("O número Magento deve conter apenas dígitos!");
 
         }

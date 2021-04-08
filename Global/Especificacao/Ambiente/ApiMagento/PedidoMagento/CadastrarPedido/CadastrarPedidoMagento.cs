@@ -226,11 +226,11 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
                         pedidoMagentoDto.OutroEndereco = valorBool;
                     return;
 
-                case "InfCriacaoPedido.Pedido_bs_x_ac":
-                    pedidoMagentoDto.InfCriacaoPedido.Pedido_bs_x_ac = valor;
+                case "InfCriacaoPedido.Pedido_magento":
+                    pedidoMagentoDto.InfCriacaoPedido.Pedido_magento = valor;
                     return;
-                case "InfCriacaoPedido.Pedido_bs_x_marketplace":
-                    pedidoMagentoDto.InfCriacaoPedido.Pedido_bs_x_marketplace = valor;
+                case "InfCriacaoPedido.Pedido_marketplace":
+                    pedidoMagentoDto.InfCriacaoPedido.Pedido_marketplace = valor;
                     return;
                 case "InfCriacaoPedido.Marketplace_codigo_origem":
                     pedidoMagentoDto.InfCriacaoPedido.Marketplace_codigo_origem = valor;

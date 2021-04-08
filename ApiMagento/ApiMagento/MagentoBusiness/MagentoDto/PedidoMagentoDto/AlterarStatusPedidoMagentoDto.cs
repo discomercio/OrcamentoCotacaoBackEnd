@@ -17,7 +17,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         /// </summary>
         [Required]
         [MaxLength(9)]
-        public string Pedido_bs_x_ac { get; set; }
+        public string Pedido_magento { get; set; }
 
         [Required]
         public StatusPedidoMagentoDto StatusPedido { get; set; }

@@ -184,9 +184,9 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                     limite_de_itens: configuracaoApiMagento.LimitePedidos.LimiteItens
                     ),
                 marketplace: new Pedido.Dados.Criacao.PedidoCriacaoMarketplaceDados(
-                        pedido_bs_x_ac: pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac,
+                        pedido_bs_x_ac: pedidoMagento.InfCriacaoPedido.Pedido_magento,
                         marketplace_codigo_origem: pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem,
-                        pedido_bs_x_marketplace: pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace)
+                        pedido_bs_x_marketplace: pedidoMagento.InfCriacaoPedido.Pedido_marketplace)
                 );
 
             return pedidoCriacao;
