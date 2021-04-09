@@ -12,7 +12,10 @@ Fazer um batch para gerar, digamos, 20 pedidos pelo magento
 Enquanto essa carga estiver rodando, criar um pedido pelo verdinho
 
 #em 08/04/2021
-#executadas duas intâncias do \arclube\Global\Testes\TestesApiMagento\TestesApiMagentoCadastrarPedido
-#e converti um prepedio em pedido pelo verdinho
+#edu: executadas duas intâncias do \arclube\Global\Testes\TestesApiMagento\TestesApiMagentoCadastrarPedido
+#e converti um prepedido em pedido pelo verdinho
 #tudo funcionou OK
+
+	#pedir para o gabriel fazer tb, convertendo um prepedido e criando um pedido do zero no verdinho
+	Given Fazer este teste
 
