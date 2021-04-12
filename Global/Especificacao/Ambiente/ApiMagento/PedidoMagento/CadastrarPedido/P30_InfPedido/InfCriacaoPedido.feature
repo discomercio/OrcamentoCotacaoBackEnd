@@ -1,5 +1,9 @@
 ﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.ValidacaoCampos
+@GerenciamentoBanco
 Feature: InfCriacaoPedido
+
+Background: Configuracoes
+	Given Reiniciar banco imediatamente
 
 Scenario: InfCriacaoPedido - Pedido_bs_x_ac
 	Given Pedido base

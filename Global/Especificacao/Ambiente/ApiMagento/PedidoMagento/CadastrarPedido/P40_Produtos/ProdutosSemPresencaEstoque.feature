@@ -1,6 +1,9 @@
 ﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
 @GerenciamentoBanco
-Feature: ProdutosPresencaEstoque
+Feature: ProdutosSemPresencaEstoque
+
+Background: Configuracoes
+	Given Reiniciar banco imediatamente
 
 Scenario: PresencaEstoque
 	#pergunta:
@@ -26,9 +29,3 @@ Scenario: PresencaEstoque
 	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "qtde" = "1"
 	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "preco_venda" = "338.85"
 	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "preco_NF" = "340.00"
-
-#esse teste esta sendo feito em "EspecificacaoMagento.feature/preço: aceitamos o valor que vier do magento."
-Scenario: Produtos
-	#	preço: aceitamos o valor que vier do magento. Não validamos o preço.
-	#Implementado em Especificacao.Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional.EspecificacaoMagentoFeature.preço: aceitamos o valor que vier do magento.
-	Given Validação feita em outro arquivo
