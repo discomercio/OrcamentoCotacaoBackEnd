@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente.Pf_Telefones
+namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P10_Cliente.Dados_Cliente.Pf_Telefones
 {
     using TechTalk.SpecFlow;
     using System;
