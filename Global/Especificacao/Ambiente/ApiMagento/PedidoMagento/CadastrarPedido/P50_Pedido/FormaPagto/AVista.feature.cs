@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional.FormaPagtoCriacaoMagento
+namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P50_Pedido.FormaPagto
 {
     using TechTalk.SpecFlow;
     using System;

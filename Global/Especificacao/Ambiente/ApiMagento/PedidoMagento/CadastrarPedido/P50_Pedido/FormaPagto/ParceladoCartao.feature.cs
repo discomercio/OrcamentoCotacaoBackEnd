@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional.FormaPagtoCriacaoMagento
+namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P50_Pedido.FormaPagto
 {
     using TechTalk.SpecFlow;
     using System;
@@ -434,6 +434,132 @@ this.FeatureBackground();
 #line 65
  testRunner.Then("Erro \"Coeficiente não cadastrado para o fabricante. Fabricante: 003, TipoParcela:" +
                         " SE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="COD_FORMA_PAGTO_PARCELADO_CARTAO - manter o mesmo valor")]
+        [Xunit.TraitAttribute("FeatureTitle", "ParceladoCartao")]
+        [Xunit.TraitAttribute("Description", "COD_FORMA_PAGTO_PARCELADO_CARTAO - manter o mesmo valor")]
+        public virtual void COD_FORMA_PAGTO_PARCELADO_CARTAO_ManterOMesmoValor()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("COD_FORMA_PAGTO_PARCELADO_CARTAO - manter o mesmo valor", null, tagsOfScenario, argumentsOfScenario);
+#line 69
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 70
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 71
+ testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO" +
+                        "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 72
+ testRunner.When("Informo \"FormaPagtoCriacao.C_pc_qtde\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 73
+ testRunner.When("Informo \"FormaPagtoCriacao.C_pc_valor\" = \"3440.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 74
+ testRunner.When("Informo \"Frete\" = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 75
+ testRunner.When("Lista de itens \"0\" informo \"Fabricante\" = \"001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 76
+ testRunner.When("Lista de itens \"0\" informo \"Produto\" = \"001000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 77
+ testRunner.When("Lista de itens \"0\" informo \"Qtde\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 78
+ testRunner.When("Lista de itens \"0\" informo \"Preco_Venda\" = \"509.24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 79
+ testRunner.When("Lista de itens \"0\" informo \"Preco_NF\" = \"520.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 80
+ testRunner.When("Lista de itens \"1\" informo \"Fabricante\" = \"001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 81
+ testRunner.When("Lista de itens \"1\" informo \"Produto\" = \"001001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 82
+ testRunner.When("Lista de itens \"1\" informo \"Qtde\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 83
+ testRunner.When("Lista de itens \"1\" informo \"Preco_Venda\" = \"1188.23\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 84
+ testRunner.When("Lista de itens \"1\" informo \"Preco_NF\" = \"1200.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 86
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 87
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"tipo_parcelamento\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 88
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pc_qtde_parcelas\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 89
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pc_valor_parcela\" = \"3440.00\"" +
+                        "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 90
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vl_total_NF\" = \"3440.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 91
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vl_total_familia\" = \"3394.94\"" +
+                        "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 92
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vl_total_RA\" = \"45.06\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 93
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado, verificar item \"1\" campo \"qtde\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 94
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado, verificar item \"1\" campo \"preco_venda\" = " +
+                        "\"509.24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 95
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado, verificar item \"1\" campo \"preco_NF\" = \"52" +
+                        "0.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 96
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado, verificar item \"2\" campo \"qtde\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 97
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado, verificar item \"2\" campo \"preco_venda\" = " +
+                        "\"1188.23\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 98
+ testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado, verificar item \"2\" campo \"preco_NF\" = \"12" +
+                        "00.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

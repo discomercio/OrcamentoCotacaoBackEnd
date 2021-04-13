@@ -137,5 +137,19 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
         {
             SplitEstoqueRotinas.ZerarTodoOEstoque();
         }
+
+        [When(@"Recalcular totais do pedido")]
+        public void WhenRecalcularTotaisDoPedido()
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.RecalcularTotaisDoPedido(this);
+            cadastrarPedido.RecalcularTotaisDoPedido();
+        }
+
+        [When(@"Deixar forma de pagamento consistente")]
+        public void WhenDeixarFormaDePagamentoConsistente()
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.DeixarFormaDePagamentoConsistente(this);
+            cadastrarPedido.DeixarFormaDePagamentoConsistente();
+        }
     }
 }
