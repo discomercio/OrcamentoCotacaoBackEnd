@@ -1,5 +1,68 @@
-﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
+﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 Feature: FLuxoCadastroPedidoMagento - PF
+
+============================
+Fluxo Magento:
+P10_Cliente: 
+		01 - Normaliza CPF: 
+				> remove pontuações do CPF
+			02 - Validar se cliente é PF, só aceitamos cliente PF.
+			03 - Truncar o campo complemento do endereço de entrega: 
+				> Se complemento do endereço de entrega for maior que Constantes.MAX_TAMANHO_CAMPO_ENDERECO_COMPLEMENTO, 
+					iremos passar o valor para nfe_Texto_Constar.			
+			04 - Verificar ponto de referência: 
+				> Se ponto de referência for diferente de complemento do endereço de entrega, adicionamos o valor 
+					para o campo nfe_Texto_Constar.
+			05 - Mover endereço de entrega para Dados cadastrais:
+				> Validamos se tem endereço de entrega que é obrigatório.
+				> Exigimos que o CPF do endereço de entrega seja igual ao CPF do pedido.
+			06 - Verificar se cliente existe e cadastrar cliente:
+				> Buscamos o cliente na base de dados, se existir retornamos.
+				> Caso não exista, cadastramos o cliente. 
+P20_Indicador: Se tiver valor de frete significa que tem indicador.
+		Teste em Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional.FretePontoReferencia.feature
+		Teste em Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional.CamposLidosAppsettings.feature
+			01 - Verificar se tem indicador e valida indicador:
+				> Se tiver valor de frete, então inserimos o indicador do appsettings. 
+				> Validamos se o indicador existe na base de dados.
+			02 - Verificar se loja existe
+				> Validamos se a loja que esta no appsettings existe na base de dados.
+P30_InfPedido:
+		Teste em Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.ValidacaoCampos.PedidoMagentoDto.feature
+			01 - Validar pedido magento, código de origem e pedido marketplace:
+				> Validamos se o código de origem do pedido magento esta preenchido.
+				> Validamos na base de dados se o código de origem existe na base de dados.
+				> Validamos se o pedido magento esta preenchido.
+				> Validamos se a quantidade de caracteres é diferente de Constantes.MAX_TAMANHO_ID_PEDIDO_MAGENTO
+				> Validamos se o pedido magento contém somente números.
+P40_Produtos: 
+		Teste em Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Passo40.Produtos.feature
+		PRECISAMOS CRIAR OS NOVOS TESTES PARA PRODUTO COMPOSTO E DILUIÇÃO DO VALOR DE FRETE ENTRE OS PRODUTOS
+			01 - Verificar se produto é composto e buscar os produtos que compõe o produto composto
+			02 - Alterar os produtos compostos para simples
+			03 - Ajustar a quantidade e valores de produtos repetidos
+			04 - Remover produtos duplicados
+			05 - Diluir o valor de frete entre os produtos
+			06 - Buscar valor de coeficiente dos produtos
+			07 - Buscar a sigla da forma de pagto
+			08 - Montar a lista de coeficientes
+			09 - Buscar os produtos especificos
+			10 - Converter os produtos magento para PedidoCriacaoProdutoDados e inserir os valores
+P50_Pedido:
+		O teste de criação de pedido magento esta no cenário "salvando o pedido base" localizado nesse arquivo
+		Todos os teste acima passam por esse fluxo, sendo assim está garantido que estamos executando esse teste
+			01 - Converter pedido para PedidoCriacaoDados:
+				01 - Converte Endereco Cadastral para DadosClienteCadastroDados:
+					Teste em Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente.CriacaoCliente_Pf.feature
+					> Cliente PF: Produtor Rural = 1 (Não), Contribuinte ICMS = 0 (Inicial), IE = vazio.
+				02 - Converter EnderecoCadastralClienteMagentoDto para EnderecoCadastralClientePrepedidoDados:
+				03 - Converter EnderecoEntregaClienteMagentoDto para EnderecoEntregaClienteCadastroDados:
+				04 - Converter FormaPagtoCriacaoMagentoDto para FormaPagtoCriacaoDados:
+					Teste em Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional.FormaPagtoCriacaoMagento
+					> Só aceitamos os pagamentos Á vista, Parcela Única, Parcelado no Cartão
+					
+P60_Cadastrar PedidoCriacaoDados 
+============================
 
 Scenario: salvando o pedido base
 	Given Pedido base

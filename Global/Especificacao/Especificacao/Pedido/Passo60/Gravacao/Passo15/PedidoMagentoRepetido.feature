@@ -1,5 +1,4 @@
-﻿#fazemos somente no magento
-@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.ValidacaoCampos
+﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 @GerenciamentoBanco
 Feature: PedidoMagentoRepetido
 #2) Seria necessário tratar a possibilidade de ocorrer acesso concorrente entre o cadastramento semi-automático e a integração.

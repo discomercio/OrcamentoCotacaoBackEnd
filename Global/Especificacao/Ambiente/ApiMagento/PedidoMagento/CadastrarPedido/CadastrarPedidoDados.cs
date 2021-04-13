@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 {
-    static class CadastrarPedidoDados
+    public static class CadastrarPedidoDados
     {
         public static MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoDto PedidoBase()
         {
@@ -54,5 +54,14 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
         {
             return PedidoBaseClientePJ();
         }
+
+
+        public static MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoDto PedidoBase_para_banco_ARCLUBE_DIS20201204()
+        {
+            var ret = Testes.Utils.LerJson.LerArquivoEmbutido<MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoDto>(
+                "Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedidoDados_para_banco_ARCLUBE_DIS20201204.json");
+            return ret;
+        }
+
     }
 }
