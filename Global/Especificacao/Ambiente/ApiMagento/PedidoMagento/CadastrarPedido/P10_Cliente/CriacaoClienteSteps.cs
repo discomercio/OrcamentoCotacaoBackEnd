@@ -1,7 +1,9 @@
 ﻿using Especificacao.Testes.Utils.ListaDependencias;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using TechTalk.SpecFlow;
+using Xunit;
 
 namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente
 {
@@ -86,6 +88,22 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Criaca
         {
             Testes.Utils.LogTestes.LogOperacoes2.SemNenhumErro(this);
             cadastrarPedido.ThenSemNenhumErro();
+        }
+
+        private readonly Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+
+        [Then(@"Tabela ""t_PEDIDO"" registro criado, verificar campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaT_PEDIDORegistroCriadoVerificarCampo(string campo, string valor)
+        {
+            var dto = cadastrarPedido.UltimoPedidoResultadoMagentoDto();
+            if (dto == null)
+                throw new Exception("erro");
+            Assert.Empty(dto.ListaErros);
+
+            List<string> somentePai = new List<string>()
+                { dto.IdPedidoCadastrado??"" };
+
+            gerenciamentoBanco.TabelaT_PEDIDORegistroVerificarCampo(somentePai, campo, valor);
         }
 
     }
