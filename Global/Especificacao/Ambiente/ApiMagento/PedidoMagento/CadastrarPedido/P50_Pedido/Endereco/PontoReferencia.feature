@@ -1,12 +1,8 @@
 ﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
-Feature: FretePontoReferencia
+Feature: PontoReferencia
+	O campo de Ponto de referencia deve ser salvo no campo t_PEDIDO.NFe_texto_constar
 
-#@ignore
-
-
-
-
-Scenario: Ponto de Referência - diferente de EndEtg_endereco_complemento
+Scenario: PontoReferencia - diferente de EndEtg_endereco_complemento
 	#Colocar a informação do ponto de referência no campo 'Constar na NF'. Comparar o conteúdo do ponto de referência
 	#com o campo complemento. Se forem iguais, não colocar em 'Constar na NF'.\n
 	#Se o campo complemento exceder o tamanho do BD e precisar ser truncado,
@@ -19,7 +15,7 @@ Scenario: Ponto de Referência - diferente de EndEtg_endereco_complemento
 	And Tabela "t_PEDIDO" registro criado, verificar campo "NFe_texto_constar" = "Ponto de referência: teste de ponto de referencia"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_complemento" = "outro texto"
 
-Scenario:  Ponto de Referência - igual de EndEtg_endereco_complemento
+Scenario: PontoReferencia - igual de EndEtg_endereco_complemento
 	#Comparar o conteúdo do ponto de referência
 	#com o campo complemento. Se forem iguais,
 	#não colocar em 'Constar na NF'.
@@ -30,7 +26,7 @@ Scenario:  Ponto de Referência - igual de EndEtg_endereco_complemento
 	And Tabela "t_PEDIDO" registro criado, verificar campo "NFe_texto_constar" = ""
 	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_complemento" = "teste de ponto de referencia"
 
-Scenario:  Ponto de Referência - EndEtg_endereco_complemento com mais de 60 caracteres
+Scenario: PontoReferencia - EndEtg_endereco_complemento com mais de 60 caracteres
 	#Se o campo complemento exceder o tamanho do BD e precisar ser truncado,
 	#copiá-lo no campo 'Constar na NF', junto com o ponto de referência.
 	#obs => truncar 57 caracteres e colocar (...)
@@ -42,7 +38,7 @@ Scenario:  Ponto de Referência - EndEtg_endereco_complemento com mais de 60 car
 	And Tabela "t_PEDIDO" registro criado, verificar campo "NFe_texto_constar" = "Complemento do endereço: complemento endereço entrega 12 complemento endereço entrega 12\nPonto de referência: teste de ponto de referencia"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "endereco_complemento" = "complemento endereço entrega 12 complemento endereço entrega"
 
-Scenario:  Ponto de Referência - EndEtg_endereco_complemento com mais de 60 caracteres sem Ponto de referencia
+Scenario: PontoReferencia - EndEtg_endereco_complemento com mais de 60 caracteres sem Ponto de referencia
 	#Se o campo complemento exceder o tamanho do BD e precisar ser truncado,
 	#copiá-lo no campo 'Constar na NF', junto com o ponto de referência.
 	#obs => truncar 57 caracteres e colocar (...)

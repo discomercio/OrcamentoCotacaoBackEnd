@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
+namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P50_Pedido.Endereco
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,7 +20,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional")]
-    public partial class FretePontoReferenciaFeature : object, Xunit.IClassFixture<FretePontoReferenciaFeature.FixtureData>, System.IDisposable
+    public partial class PontoReferenciaFeature : object, Xunit.IClassFixture<PontoReferenciaFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -30,10 +30,10 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "FretePontoReferencia.feature"
+#line 1 "PontoReferencia.feature"
 #line hidden
         
-        public FretePontoReferenciaFeature(FretePontoReferenciaFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public PontoReferenciaFeature(PontoReferenciaFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,7 +42,8 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FretePontoReferencia", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PontoReferencia", "\tO campo de Ponto de referencia deve ser salvo no campo t_PEDIDO.NFe_texto_consta" +
+                    "r", ProgrammingLanguage.CSharp, new string[] {
                         "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -83,15 +84,15 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Ponto de Referência - diferente de EndEtg_endereco_complemento")]
-        [Xunit.TraitAttribute("FeatureTitle", "FretePontoReferencia")]
-        [Xunit.TraitAttribute("Description", "Ponto de Referência - diferente de EndEtg_endereco_complemento")]
-        public virtual void PontoDeReferencia_DiferenteDeEndEtg_Endereco_Complemento()
+        [Xunit.SkippableFactAttribute(DisplayName="PontoReferencia - diferente de EndEtg_endereco_complemento")]
+        [Xunit.TraitAttribute("FeatureTitle", "PontoReferencia")]
+        [Xunit.TraitAttribute("Description", "PontoReferencia - diferente de EndEtg_endereco_complemento")]
+        public virtual void PontoReferencia_DiferenteDeEndEtg_Endereco_Complemento()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ponto de Referência - diferente de EndEtg_endereco_complemento", null, tagsOfScenario, argumentsOfScenario);
-#line 9
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PontoReferencia - diferente de EndEtg_endereco_complemento", null, tagsOfScenario, argumentsOfScenario);
+#line 5
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -111,23 +112,23 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 15
+#line 11
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 16
+#line 12
  testRunner.When("Informo \"EnderecoEntrega.PontoReferencia\" = \"teste de ponto de referencia\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 17
+#line 13
  testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"outro texto\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 18
+#line 14
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 19
+#line 15
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"NFe_texto_constar\" = \"Ponto d" +
                         "e referência: teste de ponto de referencia\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 20
+#line 16
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_complemento\" = \"outr" +
                         "o texto\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -135,15 +136,15 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Ponto de Referência - igual de EndEtg_endereco_complemento")]
-        [Xunit.TraitAttribute("FeatureTitle", "FretePontoReferencia")]
-        [Xunit.TraitAttribute("Description", "Ponto de Referência - igual de EndEtg_endereco_complemento")]
-        public virtual void PontoDeReferencia_IgualDeEndEtg_Endereco_Complemento()
+        [Xunit.SkippableFactAttribute(DisplayName="PontoReferencia - igual de EndEtg_endereco_complemento")]
+        [Xunit.TraitAttribute("FeatureTitle", "PontoReferencia")]
+        [Xunit.TraitAttribute("Description", "PontoReferencia - igual de EndEtg_endereco_complemento")]
+        public virtual void PontoReferencia_IgualDeEndEtg_Endereco_Complemento()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ponto de Referência - igual de EndEtg_endereco_complemento", null, tagsOfScenario, argumentsOfScenario);
-#line 22
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PontoReferencia - igual de EndEtg_endereco_complemento", null, tagsOfScenario, argumentsOfScenario);
+#line 18
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -163,22 +164,22 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 26
+#line 22
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 27
+#line 23
  testRunner.When("Informo \"EnderecoEntrega.PontoReferencia\" = \"teste de ponto de referencia\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 28
+#line 24
  testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"teste de ponto de referencia\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 29
+#line 25
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 30
+#line 26
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"NFe_texto_constar\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 31
+#line 27
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_complemento\" = \"test" +
                         "e de ponto de referencia\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -186,15 +187,15 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Ponto de Referência - EndEtg_endereco_complemento com mais de 60 caracteres")]
-        [Xunit.TraitAttribute("FeatureTitle", "FretePontoReferencia")]
-        [Xunit.TraitAttribute("Description", "Ponto de Referência - EndEtg_endereco_complemento com mais de 60 caracteres")]
-        public virtual void PontoDeReferencia_EndEtg_Endereco_ComplementoComMaisDe60Caracteres()
+        [Xunit.SkippableFactAttribute(DisplayName="PontoReferencia - EndEtg_endereco_complemento com mais de 60 caracteres")]
+        [Xunit.TraitAttribute("FeatureTitle", "PontoReferencia")]
+        [Xunit.TraitAttribute("Description", "PontoReferencia - EndEtg_endereco_complemento com mais de 60 caracteres")]
+        public virtual void PontoReferencia_EndEtg_Endereco_ComplementoComMaisDe60Caracteres()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ponto de Referência - EndEtg_endereco_complemento com mais de 60 caracteres", null, tagsOfScenario, argumentsOfScenario);
-#line 33
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PontoReferencia - EndEtg_endereco_complemento com mais de 60 caracteres", null, tagsOfScenario, argumentsOfScenario);
+#line 29
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -214,25 +215,25 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 37
+#line 33
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 38
+#line 34
  testRunner.When("Informo \"EnderecoEntrega.PontoReferencia\" = \"teste de ponto de referencia\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 40
+#line 36
  testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"complemento endereço entrega 12 compleme" +
                         "nto endereço entrega 12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 41
+#line 37
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 42
+#line 38
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"NFe_texto_constar\" = \"Complem" +
                         "ento do endereço: complemento endereço entrega 12 complemento endereço entrega 1" +
                         "2\\nPonto de referência: teste de ponto de referencia\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 43
+#line 39
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_complemento\" = \"comp" +
                         "lemento endereço entrega 12 complemento endereço entrega\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -240,18 +241,18 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Ponto de Referência - EndEtg_endereco_complemento com mais de 60 caracteres sem P" +
-            "onto de referencia")]
-        [Xunit.TraitAttribute("FeatureTitle", "FretePontoReferencia")]
-        [Xunit.TraitAttribute("Description", "Ponto de Referência - EndEtg_endereco_complemento com mais de 60 caracteres sem P" +
-            "onto de referencia")]
-        public virtual void PontoDeReferencia_EndEtg_Endereco_ComplementoComMaisDe60CaracteresSemPontoDeReferencia()
+        [Xunit.SkippableFactAttribute(DisplayName="PontoReferencia - EndEtg_endereco_complemento com mais de 60 caracteres sem Ponto" +
+            " de referencia")]
+        [Xunit.TraitAttribute("FeatureTitle", "PontoReferencia")]
+        [Xunit.TraitAttribute("Description", "PontoReferencia - EndEtg_endereco_complemento com mais de 60 caracteres sem Ponto" +
+            " de referencia")]
+        public virtual void PontoReferencia_EndEtg_Endereco_ComplementoComMaisDe60CaracteresSemPontoDeReferencia()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Ponto de Referência - EndEtg_endereco_complemento com mais de 60 caracteres sem P" +
-                    "onto de referencia", null, tagsOfScenario, argumentsOfScenario);
-#line 45
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PontoReferencia - EndEtg_endereco_complemento com mais de 60 caracteres sem Ponto" +
+                    " de referencia", null, tagsOfScenario, argumentsOfScenario);
+#line 41
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -271,25 +272,25 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 49
+#line 45
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 50
+#line 46
  testRunner.When("Informo \"EnderecoEntrega.PontoReferencia\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 51
+#line 47
  testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"complemento endereço entrega 12 compleme" +
                         "nto endereço entrega 12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 52
+#line 48
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 53
+#line 49
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"NFe_texto_constar\" = \"Complem" +
                         "ento do endereço: complemento endereço entrega 12 complemento endereço entrega 1" +
                         "2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 54
+#line 50
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_complemento\" = \"comp" +
                         "lemento endereço entrega 12 complemento endereço entrega\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -304,12 +305,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                FretePontoReferenciaFeature.FeatureSetup();
+                PontoReferenciaFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                FretePontoReferenciaFeature.FeatureTearDown();
+                PontoReferenciaFeature.FeatureTearDown();
             }
         }
     }
