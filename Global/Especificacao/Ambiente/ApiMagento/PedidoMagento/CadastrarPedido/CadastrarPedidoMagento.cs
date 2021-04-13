@@ -31,16 +31,16 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             Testes.Utils.StatusCodes.TestarStatusCode(statusCode, res);
         }
 
-        public MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto? UltimoPedidoResultadoMagentoDto()
+        public MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoResultadoDto? UltimoPedidoResultadoMagentoDto()
         {
             var temp = UltimoAcessoFeito?.Result;
             if (temp == null)
                 return null;
-            MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto pedidoResultadoMagentoDto
-            = (MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto)((Microsoft.AspNetCore.Mvc.OkObjectResult)temp).Value;
+            MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoResultadoDto pedidoResultadoMagentoDto
+            = (MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoResultadoDto)((Microsoft.AspNetCore.Mvc.OkObjectResult)temp).Value;
             return pedidoResultadoMagentoDto;
         }
-        public Microsoft.AspNetCore.Mvc.ActionResult<MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto>? UltimoAcessoFeito { get; private set; } = null;
+        public Microsoft.AspNetCore.Mvc.ActionResult<MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoResultadoDto>? UltimoAcessoFeito { get; private set; } = null;
         private ActionResult AcessarControladorMagento()
         {
             Testes.Utils.LogTestes.LogOperacoes2.ChamadaController(pedidoMagentoController.GetType(), "CadastrarPedido", this);
@@ -106,8 +106,8 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             if (res.GetType() != typeof(Microsoft.AspNetCore.Mvc.OkObjectResult))
                 Assert.Equal("", "Tipo não é OkObjectResult");
 
-            MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto pedidoResultadoMagentoDto
-                = (MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto)((Microsoft.AspNetCore.Mvc.OkObjectResult)res).Value;
+            MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoResultadoDto pedidoResultadoMagentoDto
+                = (MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoResultadoDto)((Microsoft.AspNetCore.Mvc.OkObjectResult)res).Value;
 
             return pedidoResultadoMagentoDto.ListaErros;
         }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 {
-    public class AlterarStatusPedidoMagentoDto
+    public class AlterarMagentoPedidoStatusDto
     {
 #pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         [Required]

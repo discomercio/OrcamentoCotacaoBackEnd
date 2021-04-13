@@ -106,8 +106,8 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarStatusPrepedido
             Assert.NotNull(cadastrarPedido.UltimoAcessoFeito);
             if (cadastrarPedido.UltimoAcessoFeito == null)
                 return;
-            MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto pedidoResultadoMagentoDto
-                            = (MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto)((Microsoft.AspNetCore.Mvc.OkObjectResult)cadastrarPedido.UltimoAcessoFeito.Result).Value;
+            MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoResultadoDto pedidoResultadoMagentoDto
+                            = (MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoResultadoDto)((Microsoft.AspNetCore.Mvc.OkObjectResult)cadastrarPedido.UltimoAcessoFeito.Result).Value;
 
             using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
             Assert.NotNull(cadastrarPrepedido.UltimoPrePedidoResultadoUnisDto);

@@ -45,7 +45,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
 
         private static readonly object _lockObjectCadastrarPedidoMagento = new object();
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task<PedidoResultadoMagentoDto> CadastrarPedidoMagento(PedidoMagentoDto pedidoMagento, string usuario)
+        public async Task<PedidoMagentoResultadoDto> CadastrarPedidoMagento(PedidoMagentoDto pedidoMagento, string usuario)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             /*
@@ -61,9 +61,9 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
                 return CadastrarPedidoMagentoProtegido(pedidoMagento, usuario).Result;
             }
         }
-        private async Task<PedidoResultadoMagentoDto> CadastrarPedidoMagentoProtegido(PedidoMagentoDto pedidoMagento, string usuario)
+        private async Task<PedidoMagentoResultadoDto> CadastrarPedidoMagentoProtegido(PedidoMagentoDto pedidoMagento, string usuario)
         {
-            PedidoResultadoMagentoDto resultado = new PedidoResultadoMagentoDto();
+            PedidoMagentoResultadoDto resultado = new PedidoMagentoResultadoDto();
 
             //normalizacao de campos
             pedidoMagento.Cnpj_Cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(pedidoMagento.Cnpj_Cpf);

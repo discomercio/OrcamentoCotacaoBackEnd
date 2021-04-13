@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 {
-    public class AlterarStatusPedidoResultadoMagentoDto
+    public class AlterarMagentoPedidoStatusResultadoDto
     {
         /// <summary>
         /// MensagemErro: diferente de vazio, deu erro.

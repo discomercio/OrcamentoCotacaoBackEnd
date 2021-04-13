@@ -42,7 +42,7 @@ namespace ApiMagento.Controllers
         [AllowAnonymous]
         [HttpPost("cadastrarPedido")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<ActionResult<PedidoResultadoMagentoDto>> CadastrarPedido(PedidoMagentoDto pedido)
+        public async Task<ActionResult<PedidoMagentoResultadoDto>> CadastrarPedido(PedidoMagentoDto pedido)
         {
             logger.LogInformation($"CadastrarPedido início - pedido: {System.Text.Json.JsonSerializer.Serialize(pedido)}");
 
@@ -93,13 +93,13 @@ namespace ApiMagento.Controllers
         /// <summary>
         /// Chamada para alterar o status do pedido cadastrado.
         /// </summary>
-        /// <returns>StatusPedidoResultadoMagentoDto</returns>
+        /// <returns>AlterarMagentoPedidoStatusResultadoDto</returns>
         [AllowAnonymous]
-        [HttpPost("alterarStatusPedido")]
+        [HttpPost("alterarMagentoPedidoStatus")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<ActionResult<AlterarStatusPedidoResultadoMagentoDto>> AlterarStatusPedido(AlterarStatusPedidoMagentoDto alterarStatusPedido)
+        public async Task<ActionResult<AlterarMagentoPedidoStatusResultadoDto>> AlterarMagentoPedidoStatus(AlterarMagentoPedidoStatusDto alterarPedidoStatus)
         {
-            AlterarStatusPedidoResultadoMagentoDto ret = new AlterarStatusPedidoResultadoMagentoDto();
+            AlterarMagentoPedidoStatusResultadoDto ret = new AlterarMagentoPedidoStatusResultadoDto();
             return Ok(await Task.FromResult(ret));
         }
     }
