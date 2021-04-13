@@ -39,11 +39,7 @@ Scenario: Validar se o que expomos pelo ObterCodigoMarketplace foi informado - s
 Scenario: EnderecoCadastralCliente
 
 #não precisamos validar porque o endereço de entregaécopiado sbre o endereço cadastral no caso de PF. E PJ não está sendo aceito pela API
-Scenario: EnderecoCadastralCliente CPF diferente do principal
-	Given Pedido base
-	And Informo "EnderecoCadastralCliente.Endereco_cnpj_cpf" = "1"
-	And Informo "pedidoMagentoDto.Cnpj_Cpf" = "2"
-	Then Erro "Cnpj_Cpf está diferente de EnderecoEntrega.EndEtg_cnpj_cpf."
+
 
 
 

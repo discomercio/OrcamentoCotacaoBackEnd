@@ -69,3 +69,9 @@ Scenario: DadosPessoais - sexo e data de nascimento em branco
 	#data de nascimento fica com null
 	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "29756194804", verificar campo "dt_nasc" = "null"
 	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "29756194804", verificar campo "sexo" = ""
+
+Scenario: EnderecoCadastralCliente CPF diferente do principal
+	Given Pedido base
+	And Informo "EnderecoCadastralCliente.Endereco_cnpj_cpf" = "1"
+	And Informo "pedidoMagentoDto.Cnpj_Cpf" = "2"
+	Then Erro "Cnpj_Cpf está diferente de EnderecoEntrega.EndEtg_cnpj_cpf."
