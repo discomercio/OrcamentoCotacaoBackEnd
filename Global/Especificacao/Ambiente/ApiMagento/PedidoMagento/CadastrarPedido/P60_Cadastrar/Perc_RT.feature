@@ -1,4 +1,4 @@
-﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
+﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 Feature: Perc_RT
 	
 

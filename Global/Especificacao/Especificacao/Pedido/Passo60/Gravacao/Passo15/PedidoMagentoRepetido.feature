@@ -1,4 +1,4 @@
-﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
+﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 @GerenciamentoBanco
 Feature: PedidoMagentoRepetido
 #2) Seria necessário tratar a possibilidade de ocorrer acesso concorrente entre o cadastramento semi-automático e a integração.

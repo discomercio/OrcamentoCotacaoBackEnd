@@ -1,5 +1,5 @@
 ﻿
-@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
+@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 Feature: Gerar_t_PEDIDO_ITEM
 
 

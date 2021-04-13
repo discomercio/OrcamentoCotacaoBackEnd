@@ -1,4 +1,4 @@
-﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
+﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 Feature: ParceladoCartao
 	Estamos testando o pagamento PARCELADO_CARTAO
 

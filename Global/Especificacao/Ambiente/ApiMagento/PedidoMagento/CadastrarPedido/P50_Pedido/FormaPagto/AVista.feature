@@ -1,4 +1,4 @@
-﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
+﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 Feature: AVista
 	Estamos testando o pagamento COD_FORMA_PAGTO_A_VISTA
 

@@ -1,5 +1,5 @@
 ﻿@GerenciamentoBanco
-@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
+@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 Feature: CriacaoComUsuario
 
 #do nosso lado, o que eles informarem como endereço de cobrança, usaremos p/ criar o cadastro principal,

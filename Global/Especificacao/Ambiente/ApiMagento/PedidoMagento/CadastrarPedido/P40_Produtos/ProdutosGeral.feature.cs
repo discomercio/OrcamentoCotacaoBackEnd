@@ -19,7 +19,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P40_Pr
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional")]
+    [Xunit.TraitAttribute("Category", "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido")]
     [Xunit.TraitAttribute("Category", "GerenciamentoBanco")]
     public partial class ProdutosGeralFeature : object, Xunit.IClassFixture<ProdutosGeralFeature.FixtureData>, System.IDisposable
     {
@@ -27,7 +27,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P40_Pr
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional",
+                "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido",
                 "GerenciamentoBanco"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
@@ -47,7 +47,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P40_Pr
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ProdutosGeral", "\tTestes soltos de Produtos\r\n\tDefinições da ApiMagento\r\n\tParadigma de salvamento: " +
                     "fazer o mesmo que acontece com o processo semi-automático.\r\n\tSe o semi-automátic" +
                     "o der erro, damos erro. Se aceitar, aceitamos.\r\n\tEstoque: não é um problema. ", ProgrammingLanguage.CSharp, new string[] {
-                        "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional",
+                        "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido",
                         "GerenciamentoBanco"});
             testRunner.OnFeatureStart(featureInfo);
         }

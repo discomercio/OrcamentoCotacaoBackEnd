@@ -1,22 +1,24 @@
-﻿using Especificacao.Testes.Utils.ListaDependencias;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using TechTalk.SpecFlow;
 using Xunit;
 
-namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
+namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 {
-    [Binding, Scope(Tag = "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional")]
-    public class CamposLidosAppsettingsSteps
+    [Binding, Scope(Tag = "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido")]
+    public sealed class PedidoMagentoSteps
     {
         private readonly CadastrarPedido cadastrarPedido = new CadastrarPedido();
         private readonly Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
         private readonly Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.EstoqueSaida.SplitEstoqueRotinas SplitEstoqueRotinas = new Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.EstoqueSaida.SplitEstoqueRotinas();
-        public CamposLidosAppsettingsSteps()
-        {
-        }
 
+        public PedidoMagentoSteps(ScenarioContext scenarioContext)
+        {
+            
+        }
         [Given(@"Esta é a especificação, está sendo testado em outros \.feature")]
         public void GivenEstaEAEspecificacaoEstaSendoTestadoEmOutros_Feature()
         {
@@ -151,5 +153,6 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
             Testes.Utils.LogTestes.LogOperacoes2.DeixarFormaDePagamentoConsistente(this);
             cadastrarPedido.DeixarFormaDePagamentoConsistente();
         }
+
     }
 }

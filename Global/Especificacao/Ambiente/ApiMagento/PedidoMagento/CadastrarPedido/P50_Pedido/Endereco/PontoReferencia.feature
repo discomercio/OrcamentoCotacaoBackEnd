@@ -1,4 +1,4 @@
-﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
+﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 Feature: PontoReferencia
 	O campo de Ponto de referencia deve ser salvo no campo t_PEDIDO.NFe_texto_constar
 

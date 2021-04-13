@@ -1,4 +1,4 @@
-﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
+﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 Feature: Frete
 	Caso o campo Frete seja diferente de zero ou vazio, significa que teremos indicador para ser cadastrado no pedido.
 	Se houver frete, deve-se automaticamente informar que o pedido possui RA e selecionar o indicador 'FRETE'
