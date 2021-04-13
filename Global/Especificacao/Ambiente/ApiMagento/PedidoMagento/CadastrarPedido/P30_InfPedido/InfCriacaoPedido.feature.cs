@@ -19,7 +19,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P30_In
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.ValidacaoCampos")]
+    [Xunit.TraitAttribute("Category", "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional")]
     [Xunit.TraitAttribute("Category", "GerenciamentoBanco")]
     public partial class InfCriacaoPedidoFeature : object, Xunit.IClassFixture<InfCriacaoPedidoFeature.FixtureData>, System.IDisposable
     {
@@ -27,7 +27,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P30_In
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.ValidacaoCampos",
+                "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional",
                 "GerenciamentoBanco"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
@@ -45,7 +45,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P30_In
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "InfCriacaoPedido", null, ProgrammingLanguage.CSharp, new string[] {
-                        "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.ValidacaoCampos",
+                        "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional",
                         "GerenciamentoBanco"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -228,14 +228,14 @@ this.FeatureBackground();
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="InfCriacaoPedido - Marketplace_codigo_origem")]
+        [Xunit.SkippableFactAttribute(DisplayName="InfCriacaoPedido - Marketplace_codigo_origem - erro")]
         [Xunit.TraitAttribute("FeatureTitle", "InfCriacaoPedido")]
-        [Xunit.TraitAttribute("Description", "InfCriacaoPedido - Marketplace_codigo_origem")]
-        public virtual void InfCriacaoPedido_Marketplace_Codigo_Origem()
+        [Xunit.TraitAttribute("Description", "InfCriacaoPedido - Marketplace_codigo_origem - erro")]
+        public virtual void InfCriacaoPedido_Marketplace_Codigo_Origem_Erro()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("InfCriacaoPedido - Marketplace_codigo_origem", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("InfCriacaoPedido - Marketplace_codigo_origem - erro", null, tagsOfScenario, argumentsOfScenario);
 #line 34
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -287,6 +287,62 @@ this.FeatureBackground();
             this.ScenarioCleanup();
         }
         
+        [Xunit.SkippableFactAttribute(DisplayName="InfCriacaoPedido - Marketplace_codigo_origem - sucesso")]
+        [Xunit.TraitAttribute("FeatureTitle", "InfCriacaoPedido")]
+        [Xunit.TraitAttribute("Description", "InfCriacaoPedido - Marketplace_codigo_origem - sucesso")]
+        public virtual void InfCriacaoPedido_Marketplace_Codigo_Origem_Sucesso()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("InfCriacaoPedido - Marketplace_codigo_origem - sucesso", null, tagsOfScenario, argumentsOfScenario);
+#line 45
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 47
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 48
+ testRunner.And("Informo \"InfCriacaoPedido.Pedido_bs_x_marketplace\" = \"128\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 49
+ testRunner.And("Informo \"InfCriacaoPedido.Pedido_bs_x_ac\" = \"103456789\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 50
+ testRunner.And("Informo \"InfCriacaoPedido.Marketplace_codigo_origem\" = \"019\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 51
+ testRunner.And("Informo \"Tipo_Parcelamento\" = \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 52
+ testRunner.And("Informo \"C_pu_valor\" = \"3132.90\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 53
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
         [Xunit.SkippableFactAttribute(DisplayName="InfCriacaoPedido - Pedido_bs_x_marketplace e Marketplace_codigo_origem já existem" +
             "")]
         [Xunit.TraitAttribute("FeatureTitle", "InfCriacaoPedido")]
@@ -298,7 +354,7 @@ this.FeatureBackground();
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("InfCriacaoPedido - Pedido_bs_x_marketplace e Marketplace_codigo_origem já existem" +
                     "", null, tagsOfScenario, argumentsOfScenario);
-#line 45
+#line 55
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);

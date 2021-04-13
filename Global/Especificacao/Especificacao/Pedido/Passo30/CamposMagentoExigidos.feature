@@ -1,4 +1,4 @@
-﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.ValidacaoCampos
+﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
 @GerenciamentoBanco
 Feature: CamposMagentoExigidos
 

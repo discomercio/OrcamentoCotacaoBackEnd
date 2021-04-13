@@ -472,8 +472,4 @@
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tcliente.json" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\P60_Cadastrar\" />
-  </ItemGroup>
-
 </Project>

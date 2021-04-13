@@ -1,4 +1,4 @@
-﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.ValidacaoCampos
+﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
 @GerenciamentoBanco
 Feature: InfCriacaoPedido
 
@@ -31,7 +31,7 @@ Scenario: InfCriacaoPedido - Pedido_bs_x_ac somente digitos
 	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "1234567AA"
 	Then Erro "O número Magento deve conter apenas dígitos!"
 
-Scenario: InfCriacaoPedido - Marketplace_codigo_origem
+Scenario: InfCriacaoPedido - Marketplace_codigo_origem - erro
 	# Número do pedido no marketplace (opcional, se o pedido é do magento este campo não existe)
 	Given Pedido base
 	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "126"
@@ -41,6 +41,16 @@ Scenario: InfCriacaoPedido - Marketplace_codigo_origem
 	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "126"
 	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "123"
 	Then Erro "Código Marketplace não encontrado."
+
+Scenario: InfCriacaoPedido - Marketplace_codigo_origem - sucesso
+	#precisa ser parcela única para poder ter o Marketplace_codigo_origem
+	Given Pedido base
+	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "128"
+	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "103456789"
+	And Informo "InfCriacaoPedido.Marketplace_codigo_origem" = "019"
+	And Informo "Tipo_Parcelamento" = "5"
+	And Informo "C_pu_valor" = "3132.90"
+	Then Sem nenhum erro
 
 Scenario: InfCriacaoPedido - Pedido_bs_x_marketplace e Marketplace_codigo_origem já existem
 #2) Seria necessário tratar a possibilidade de ocorrer acesso concorrente entre o cadastramento semi-automático e a integração.
