@@ -63,8 +63,8 @@ namespace TestesApiMagentoCadastrarPedido
             var numeroMagento = (new Random().Next(100000001, 199999999)).ToString();
             //pra dar erro
             //numeroMagento = (new Random().Next(00000001, 99999999)).ToString();
-            dto.InfCriacaoPedido.Pedido_bs_x_ac = numeroMagento;
-            dto.InfCriacaoPedido.Pedido_bs_x_marketplace = numeroMagento;
+            dto.InfCriacaoPedido.Pedido_magento = numeroMagento;
+            dto.InfCriacaoPedido.Pedido_marketplace = numeroMagento;
             return dto;
         }
 
