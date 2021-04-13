@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
+namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P20_Indicador
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,20 +20,22 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional")]
-    public partial class CamposLidosAppsettingsFeature : object, Xunit.IClassFixture<CamposLidosAppsettingsFeature.FixtureData>, System.IDisposable
+    [Xunit.TraitAttribute("Category", "GerenciamentoBanco")]
+    public partial class VendedorFeature : object, Xunit.IClassFixture<VendedorFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional"};
+                "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional",
+                "GerenciamentoBanco"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "CamposLidosAppsettings.feature"
+#line 1 "Vendedor.feature"
 #line hidden
         
-        public CamposLidosAppsettingsFeature(CamposLidosAppsettingsFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public VendedorFeature(VendedorFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,8 +44,9 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "CamposLidosAppsettings", null, ProgrammingLanguage.CSharp, new string[] {
-                        "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Vendedor", null, ProgrammingLanguage.CSharp, new string[] {
+                        "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional",
+                        "GerenciamentoBanco"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -80,9 +83,9 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
         
         public virtual void FeatureBackground()
         {
-#line 4
-#line hidden
 #line 5
+#line hidden
+#line 6
  testRunner.Given("Reiniciar appsettings", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
@@ -92,16 +95,14 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Especi
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="AdicionarDependencia")]
-        [Xunit.TraitAttribute("FeatureTitle", "CamposLidosAppsettings")]
-        [Xunit.TraitAttribute("Description", "AdicionarDependencia")]
-        [Xunit.TraitAttribute("Category", "ListaDependencias")]
-        public virtual void AdicionarDependencia()
+        [Xunit.SkippableFactAttribute(DisplayName="Vendedor = usuário que fez o login (ler do token)")]
+        [Xunit.TraitAttribute("FeatureTitle", "Vendedor")]
+        [Xunit.TraitAttribute("Description", "Vendedor = usuário que fez o login (ler do token)")]
+        public virtual void VendedorUsuarioQueFezOLoginLerDoToken()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ListaDependencias"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("AdicionarDependencia", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Vendedor = usuário que fez o login (ler do token)", null, tagsOfScenario, argumentsOfScenario);
 #line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -122,56 +123,16 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 4
+#line 5
 this.FeatureBackground();
 #line hidden
 #line 9
- testRunner.Given("AdicionarDependencia ambiente = \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedid" +
-                        "o.CadastrarPedidoListaDependencias\", especificacao = \"Ambiente.ApiMagento.Pedido" +
-                        "Magento.CadastrarPedido.EspecificacaoAdicional.CamposLidosAppsettings\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="Vendedor = usuário que fez o login (ler do token)")]
-        [Xunit.TraitAttribute("FeatureTitle", "CamposLidosAppsettings")]
-        [Xunit.TraitAttribute("Description", "Vendedor = usuário que fez o login (ler do token)")]
-        public virtual void VendedorUsuarioQueFezOLoginLerDoToken()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Vendedor = usuário que fez o login (ler do token)", null, tagsOfScenario, argumentsOfScenario);
-#line 12
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 4
-this.FeatureBackground();
-#line hidden
-#line 13
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 14
+#line 10
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 15
+#line 11
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vendedor\" = \"USRMAG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -179,16 +140,14 @@ this.FeatureBackground();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="Vendedor diferente do token")]
-        [Xunit.TraitAttribute("FeatureTitle", "CamposLidosAppsettings")]
+        [Xunit.TraitAttribute("FeatureTitle", "Vendedor")]
         [Xunit.TraitAttribute("Description", "Vendedor diferente do token")]
-        [Xunit.TraitAttribute("Category", "GerenciamentoBanco")]
         public virtual void VendedorDiferenteDoToken()
         {
-            string[] tagsOfScenario = new string[] {
-                    "GerenciamentoBanco"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Vendedor diferente do token", null, tagsOfScenario, argumentsOfScenario);
-#line 18
+#line 13
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -208,19 +167,19 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 4
+#line 5
 this.FeatureBackground();
 #line hidden
-#line 19
+#line 14
  testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 20
+#line 15
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 21
+#line 16
  testRunner.And("Tabela \"t_USUARIO\" apagar registro com campo usuario = \"USRMAG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 22
+#line 17
  testRunner.Then("Erro \"Usuário não encontrado.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -234,12 +193,12 @@ this.FeatureBackground();
             
             public FixtureData()
             {
-                CamposLidosAppsettingsFeature.FeatureSetup();
+                VendedorFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                CamposLidosAppsettingsFeature.FeatureTearDown();
+                VendedorFeature.FeatureTearDown();
             }
         }
     }

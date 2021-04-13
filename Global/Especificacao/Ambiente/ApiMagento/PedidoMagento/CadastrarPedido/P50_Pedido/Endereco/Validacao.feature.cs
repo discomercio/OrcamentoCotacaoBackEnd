@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.ValidacaoEndereco
+namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P50_Pedido.Endereco
 {
     using TechTalk.SpecFlow;
     using System;
@@ -21,7 +21,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Valida
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional")]
     [Xunit.TraitAttribute("Category", "GerenciamentoBanco")]
-    public partial class ValidacaoEnderecoFeatureFeature : object, Xunit.IClassFixture<ValidacaoEnderecoFeatureFeature.FixtureData>, System.IDisposable
+    public partial class ValidacaoFeature : object, Xunit.IClassFixture<ValidacaoFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -32,10 +32,10 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Valida
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "ValidacaoEnderecoFeature.feature"
+#line 1 "Validacao.feature"
 #line hidden
         
-        public ValidacaoEnderecoFeatureFeature(ValidacaoEnderecoFeatureFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public ValidacaoFeature(ValidacaoFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -44,7 +44,15 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Valida
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ValidacaoEnderecoFeature", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Validacao", @"	Pedidos do magento validamos Cidade contra o IGBE e UF contra o CEP informado. Não validamos nenhum outro campo do endereço.
+	Se o CEP não existir, aceitamos o que veio e só validar a cidade e a UF no IBGE.
+	confirmando: se o magento mandar um CEP que não temos, aceitamos e só validamos a cidade e UF.
+	A validação do município com relação ao cadastro do IBGE como fazemos no cadastramento do pré-pedido/pedido
+	creio que seria melhor fazermos sim, senão isso só será percebido no momento do faturamento
+	Mas os demais campos eu creio que é melhor não fazer
+	Eventualmente surgem CEPs novos que precisamos cadastrar manualmente no sistema, já que não temos
+	uma atualização regular da base
+	CEP sem 8 digitos rejeitamos, mas CEP que não tem na nossa base aceitamos", ProgrammingLanguage.CSharp, new string[] {
                         "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional",
                         "GerenciamentoBanco"});
             testRunner.OnFeatureStart(featureInfo);
@@ -86,15 +94,15 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Valida
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validação de cidade X IBGE e UF X CEP - sucesso")]
-        [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEnderecoFeature")]
-        [Xunit.TraitAttribute("Description", "Validação de cidade X IBGE e UF X CEP - sucesso")]
-        public virtual void ValidacaoDeCidadeXIBGEEUFXCEP_Sucesso()
+        [Xunit.SkippableFactAttribute(DisplayName="Validacao - cidade X IBGE e UF X CEP - sucesso")]
+        [Xunit.TraitAttribute("FeatureTitle", "Validacao")]
+        [Xunit.TraitAttribute("Description", "Validacao - cidade X IBGE e UF X CEP - sucesso")]
+        public virtual void Validacao_CidadeXIBGEEUFXCEP_Sucesso()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validação de cidade X IBGE e UF X CEP - sucesso", null, tagsOfScenario, argumentsOfScenario);
-#line 17
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validacao - cidade X IBGE e UF X CEP - sucesso", null, tagsOfScenario, argumentsOfScenario);
+#line 14
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -114,46 +122,46 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 18
+#line 15
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 16
+ testRunner.When("Informo \"EndEtg_cidade\" = \"São Paulo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 17
+ testRunner.When("Informo \"EndEtg_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 18
+ testRunner.When("Informo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 19
- testRunner.When("Informo \"EndEtg_cidade\" = \"São Paulo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_endereco\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 20
- testRunner.When("Informo \"EndEtg_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_endereco_numero\" = \"97\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 21
- testRunner.When("Informo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 22
- testRunner.When("Informo \"EndEtg_endereco\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_bairro\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 23
- testRunner.When("Informo \"EndEtg_endereco_numero\" = \"97\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 24
- testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 25
- testRunner.When("Informo \"EndEtg_bairro\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 26
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validação de cidade X IBGE e UF X CEP - sucesso no cadastro de cliente")]
-        [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEnderecoFeature")]
-        [Xunit.TraitAttribute("Description", "Validação de cidade X IBGE e UF X CEP - sucesso no cadastro de cliente")]
-        public virtual void ValidacaoDeCidadeXIBGEEUFXCEP_SucessoNoCadastroDeCliente()
+        [Xunit.SkippableFactAttribute(DisplayName="Validacao - cidade X IBGE e UF X CEP - sucesso no cadastro de cliente")]
+        [Xunit.TraitAttribute("FeatureTitle", "Validacao")]
+        [Xunit.TraitAttribute("Description", "Validacao - cidade X IBGE e UF X CEP - sucesso no cadastro de cliente")]
+        public virtual void Validacao_CidadeXIBGEEUFXCEP_SucessoNoCadastroDeCliente()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validação de cidade X IBGE e UF X CEP - sucesso no cadastro de cliente", null, tagsOfScenario, argumentsOfScenario);
-#line 28
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validacao - cidade X IBGE e UF X CEP - sucesso no cadastro de cliente", null, tagsOfScenario, argumentsOfScenario);
+#line 25
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -173,79 +181,79 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 29
+#line 26
  testRunner.Given("Limpar tabela \"t_CLIENTE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 27
+ testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 28
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 29
+ testRunner.When("Informo \"EndEtg_cidade\" = \"São Paulo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 30
- testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.When("Informo \"EndEtg_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 31
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.When("Informo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 32
- testRunner.When("Informo \"EndEtg_cidade\" = \"São Paulo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_endereco\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 33
- testRunner.When("Informo \"EndEtg_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_endereco_numero\" = \"97\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 34
- testRunner.When("Informo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 35
- testRunner.When("Informo \"EndEtg_endereco\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_bairro\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 36
- testRunner.When("Informo \"EndEtg_endereco_numero\" = \"97\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 37
- testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 38
- testRunner.When("Informo \"EndEtg_bairro\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 39
- testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 41
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 42
  testRunner.When("Informo \"EndEtg_cidade\" = \"São Paulo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 43
+#line 40
  testRunner.When("Informo \"EndEtg_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 44
+#line 41
  testRunner.When("Informo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 45
+#line 42
  testRunner.When("Informo \"EndEtg_endereco\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 43
+ testRunner.When("Informo \"EndEtg_endereco_numero\" = \"97\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 44
+ testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 45
+ testRunner.When("Informo \"EndEtg_bairro\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 46
- testRunner.When("Informo \"EndEtg_endereco_numero\" = \"97\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 47
- testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 48
- testRunner.When("Informo \"EndEtg_bairro\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 49
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validação de CEP que não existe na base - sucesso")]
-        [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEnderecoFeature")]
-        [Xunit.TraitAttribute("Description", "Validação de CEP que não existe na base - sucesso")]
-        public virtual void ValidacaoDeCEPQueNaoExisteNaBase_Sucesso()
+        [Xunit.SkippableFactAttribute(DisplayName="Validacao - CEP que não existe na base - sucesso")]
+        [Xunit.TraitAttribute("FeatureTitle", "Validacao")]
+        [Xunit.TraitAttribute("Description", "Validacao - CEP que não existe na base - sucesso")]
+        public virtual void Validacao_CEPQueNaoExisteNaBase_Sucesso()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validação de CEP que não existe na base - sucesso", null, tagsOfScenario, argumentsOfScenario);
-#line 51
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validacao - CEP que não existe na base - sucesso", null, tagsOfScenario, argumentsOfScenario);
+#line 48
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -265,79 +273,79 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 52
+#line 49
  testRunner.Given("Limpar tabela \"t_CLIENTE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 53
+#line 50
  testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 55
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 56
+ testRunner.When("Informo \"EndEtg_cidade\" = \"São Paulo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 57
+ testRunner.When("Informo \"EndEtg_uf\" = \"MG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 58
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.When("Informo \"EndEtg_cep\" = \"01010900\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 59
- testRunner.When("Informo \"EndEtg_cidade\" = \"São Paulo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_endereco\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 60
- testRunner.When("Informo \"EndEtg_uf\" = \"MG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_endereco_numero\" = \"97\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 61
- testRunner.When("Informo \"EndEtg_cep\" = \"01010900\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 62
- testRunner.When("Informo \"EndEtg_endereco\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_bairro\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 63
- testRunner.When("Informo \"EndEtg_endereco_numero\" = \"97\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 64
- testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 65
- testRunner.When("Informo \"EndEtg_bairro\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 66
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 68
+#line 65
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 69
+#line 66
  testRunner.When("Informo \"EndEtg_cidade\" = \"São Paulo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 70
+#line 67
  testRunner.When("Informo \"EndEtg_uf\" = \"MG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 71
+#line 68
  testRunner.When("Informo \"EndEtg_cep\" = \"01010900\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 72
+#line 69
  testRunner.When("Informo \"EndEtg_endereco\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 73
+#line 70
  testRunner.When("Informo \"EndEtg_endereco_numero\" = \"97\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 74
+#line 71
  testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 75
+#line 72
  testRunner.When("Informo \"EndEtg_bairro\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 76
+#line 73
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validação de CEP que não existe na base - CEP menor que 8 dígitos")]
-        [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEnderecoFeature")]
-        [Xunit.TraitAttribute("Description", "Validação de CEP que não existe na base - CEP menor que 8 dígitos")]
-        public virtual void ValidacaoDeCEPQueNaoExisteNaBase_CEPMenorQue8Digitos()
+        [Xunit.SkippableFactAttribute(DisplayName="Validacao - CEP que não existe na base - CEP menor que 8 dígitos")]
+        [Xunit.TraitAttribute("FeatureTitle", "Validacao")]
+        [Xunit.TraitAttribute("Description", "Validacao - CEP que não existe na base - CEP menor que 8 dígitos")]
+        public virtual void Validacao_CEPQueNaoExisteNaBase_CEPMenorQue8Digitos()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validação de CEP que não existe na base - CEP menor que 8 dígitos", null, tagsOfScenario, argumentsOfScenario);
-#line 78
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validacao - CEP que não existe na base - CEP menor que 8 dígitos", null, tagsOfScenario, argumentsOfScenario);
+#line 75
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -357,61 +365,61 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 79
+#line 76
  testRunner.Given("Limpar tabela \"t_CLIENTE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 80
+#line 77
  testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 82
+#line 79
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 83
+#line 80
  testRunner.When("Informo \"EndEtg_cidade\" = \"São Paulo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 84
+#line 81
  testRunner.When("Informo \"EndEtg_uf\" = \"MG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 85
+#line 82
  testRunner.When("Informo \"EndEtg_cep\" = \"0101090\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 86
+#line 83
  testRunner.Then("Erro \"CEP INVÁLIDO.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 85
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 86
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 88
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 89
- testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 91
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 92
  testRunner.When("Informo \"EndEtg_cidade\" = \"São Paulo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 93
+#line 90
  testRunner.When("Informo \"EndEtg_uf\" = \"MG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 94
+#line 91
  testRunner.When("Informo \"EndEtg_cep\" = \"0101090\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 95
+#line 92
  testRunner.Then("Erro \"CEP INVÁLIDO.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validação de CEP que não existe na base - CEP vazio")]
-        [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEnderecoFeature")]
-        [Xunit.TraitAttribute("Description", "Validação de CEP que não existe na base - CEP vazio")]
-        public virtual void ValidacaoDeCEPQueNaoExisteNaBase_CEPVazio()
+        [Xunit.SkippableFactAttribute(DisplayName="Validacao - CEP vazio")]
+        [Xunit.TraitAttribute("FeatureTitle", "Validacao")]
+        [Xunit.TraitAttribute("Description", "Validacao - CEP vazio")]
+        public virtual void Validacao_CEPVazio()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validação de CEP que não existe na base - CEP vazio", null, tagsOfScenario, argumentsOfScenario);
-#line 97
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validacao - CEP vazio", null, tagsOfScenario, argumentsOfScenario);
+#line 94
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -431,61 +439,61 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 98
+#line 95
  testRunner.Given("Limpar tabela \"t_CLIENTE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 99
+#line 96
  testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 101
+#line 98
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 102
+#line 99
  testRunner.When("Informo \"EndEtg_cidade\" = \"São Paulo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 103
+#line 100
  testRunner.When("Informo \"EndEtg_uf\" = \"MG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 104
+#line 101
  testRunner.When("Informo \"EndEtg_cep\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 105
+#line 102
  testRunner.Then("Erro \"INFORME O CEP.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 104
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 105
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 107
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 108
- testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 110
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 111
  testRunner.When("Informo \"EndEtg_cidade\" = \"São Paulo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 112
+#line 109
  testRunner.When("Informo \"EndEtg_uf\" = \"MG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 113
+#line 110
  testRunner.When("Informo \"EndEtg_cep\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 114
+#line 111
  testRunner.Then("Erro \"INFORME O CEP.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validação de cidade que não consta no IBGE se o CEP não existir - erro")]
-        [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEnderecoFeature")]
-        [Xunit.TraitAttribute("Description", "Validação de cidade que não consta no IBGE se o CEP não existir - erro")]
-        public virtual void ValidacaoDeCidadeQueNaoConstaNoIBGESeOCEPNaoExistir_Erro()
+        [Xunit.SkippableFactAttribute(DisplayName="Validacao - cidade que não consta no IBGE se o CEP não existir - erro")]
+        [Xunit.TraitAttribute("FeatureTitle", "Validacao")]
+        [Xunit.TraitAttribute("Description", "Validacao - cidade que não consta no IBGE se o CEP não existir - erro")]
+        public virtual void Validacao_CidadeQueNaoConstaNoIBGESeOCEPNaoExistir_Erro()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validação de cidade que não consta no IBGE se o CEP não existir - erro", null, tagsOfScenario, argumentsOfScenario);
-#line 118
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validacao - cidade que não consta no IBGE se o CEP não existir - erro", null, tagsOfScenario, argumentsOfScenario);
+#line 115
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -505,47 +513,47 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 119
+#line 116
  testRunner.Given("Limpar tabela \"t_CLIENTE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 117
+ testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 120
- testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 121
+ testRunner.When("Informo \"EndEtg_cidade\" = \"Abacate da Pedreira\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 122
+ testRunner.When("Informo \"EndEtg_uf\" = \"AP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 123
+ testRunner.When("Informo \"EndEtg_cep\" = \"01010900\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 124
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 125
- testRunner.When("Informo \"EndEtg_cidade\" = \"Abacate da Pedreira\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("Erro \"Município \'Abacate da Pedreira\' não consta na relação de municípios do IBGE" +
+                        " para a UF de \'AP\'!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 126
- testRunner.When("Informo \"EndEtg_uf\" = \"AP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 127
- testRunner.When("Informo \"EndEtg_cep\" = \"01010900\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 128
- testRunner.Then("Erro \"Município \'Abacate da Pedreira\' não consta na relação de municípios do IBGE" +
-                        " para a UF de \'AP\'!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 129
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 130
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 131
- testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 133
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 134
  testRunner.When("Informo \"EndEtg_cidade\" = \"Abacate da Pedreira\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 135
+#line 131
  testRunner.When("Informo \"EndEtg_uf\" = \"AP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 136
+#line 132
  testRunner.When("Informo \"EndEtg_cep\" = \"01010900\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 137
+#line 133
  testRunner.Then("Erro \"Município \'Abacate da Pedreira\' não consta na relação de municípios do IBGE" +
                         " para a UF de \'AP\'!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -553,15 +561,15 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Validação de cidade que não consta no IBGE se o CEP existir - erro")]
-        [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEnderecoFeature")]
-        [Xunit.TraitAttribute("Description", "Validação de cidade que não consta no IBGE se o CEP existir - erro")]
-        public virtual void ValidacaoDeCidadeQueNaoConstaNoIBGESeOCEPExistir_Erro()
+        [Xunit.SkippableFactAttribute(DisplayName="Validacao - cidade que não consta no IBGE se o CEP existir - erro")]
+        [Xunit.TraitAttribute("FeatureTitle", "Validacao")]
+        [Xunit.TraitAttribute("Description", "Validacao - cidade que não consta no IBGE se o CEP existir - erro")]
+        public virtual void Validacao_CidadeQueNaoConstaNoIBGESeOCEPExistir_Erro()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validação de cidade que não consta no IBGE se o CEP existir - erro", null, tagsOfScenario, argumentsOfScenario);
-#line 141
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validacao - cidade que não consta no IBGE se o CEP existir - erro", null, tagsOfScenario, argumentsOfScenario);
+#line 137
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -581,47 +589,47 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 142
+#line 138
  testRunner.Given("Limpar tabela \"t_CLIENTE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 139
+ testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 142
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 143
- testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.When("Informo \"EndEtg_cidade\" = \"Abacate da Pedreira\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 147
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 144
+ testRunner.When("Informo \"EndEtg_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 145
+ testRunner.When("Informo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 146
+ testRunner.Then("Erro \"Município \'Abacate da Pedreira\' não consta na relação de municípios do IBGE" +
+                        " para a UF de \'SP\'!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 148
- testRunner.When("Informo \"EndEtg_cidade\" = \"Abacate da Pedreira\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 149
- testRunner.When("Informo \"EndEtg_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 150
- testRunner.When("Informo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 151
- testRunner.Then("Erro \"Município \'Abacate da Pedreira\' não consta na relação de municípios do IBGE" +
-                        " para a UF de \'SP\'!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 153
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 154
- testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 156
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 157
+#line 152
  testRunner.When("Informo \"EndEtg_cidade\" = \"Abacate da Pedreira\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 158
+#line 153
  testRunner.When("Informo \"EndEtg_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 159
+#line 154
  testRunner.When("Informo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 160
+#line 155
  testRunner.Then("Erro \"Município \'Abacate da Pedreira\' não consta na relação de municípios do IBGE" +
                         " para a UF de \'SP\'!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -629,15 +637,15 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Sem validação de cidade X CEP")]
-        [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEnderecoFeature")]
-        [Xunit.TraitAttribute("Description", "Sem validação de cidade X CEP")]
-        public virtual void SemValidacaoDeCidadeXCEP()
+        [Xunit.SkippableFactAttribute(DisplayName="Validacao - Sem validação de cidade X CEP")]
+        [Xunit.TraitAttribute("FeatureTitle", "Validacao")]
+        [Xunit.TraitAttribute("Description", "Validacao - Sem validação de cidade X CEP")]
+        public virtual void Validacao_SemValidacaoDeCidadeXCEP()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sem validação de cidade X CEP", null, tagsOfScenario, argumentsOfScenario);
-#line 162
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validacao - Sem validação de cidade X CEP", null, tagsOfScenario, argumentsOfScenario);
+#line 157
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -657,144 +665,144 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 163
+#line 158
  testRunner.Given("Limpar tabela \"t_CLIENTE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 164
+#line 159
  testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 165
+#line 160
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 166
+#line 161
  testRunner.When("Informo \"EndEtg_cidade\" = \"Uma cidade em SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 167
+#line 162
  testRunner.When("Informo \"EndEtg_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 163
+ testRunner.When("Informo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 164
+ testRunner.When("Informo \"EndEtg_endereco\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 165
+ testRunner.When("Informo \"EndEtg_endereco_numero\" = \"97\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 166
+ testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 167
+ testRunner.When("Informo \"EndEtg_bairro\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 168
- testRunner.When("Informo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 169
- testRunner.When("Informo \"EndEtg_endereco\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 170
- testRunner.When("Informo \"EndEtg_endereco_numero\" = \"97\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 171
- testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 172
- testRunner.When("Informo \"EndEtg_bairro\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 173
- testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 176
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 177
  testRunner.When("Informo \"EndEtg_cidade\" = \"Outra cidade em SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 178
+#line 173
  testRunner.When("Informo \"EndEtg_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 179
+#line 174
  testRunner.When("Informo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 180
+#line 175
  testRunner.When("Informo \"EndEtg_endereco\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 181
+#line 176
  testRunner.When("Informo \"EndEtg_endereco_numero\" = \"97\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 182
+#line 177
  testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 178
+ testRunner.When("Informo \"EndEtg_bairro\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 179
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Validacao - Sem validação de endereço X CEP")]
+        [Xunit.TraitAttribute("FeatureTitle", "Validacao")]
+        [Xunit.TraitAttribute("Description", "Validacao - Sem validação de endereço X CEP")]
+        public virtual void Validacao_SemValidacaoDeEnderecoXCEP()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validacao - Sem validação de endereço X CEP", null, tagsOfScenario, argumentsOfScenario);
+#line 181
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 182
+ testRunner.Given("Limpar tabela \"t_CLIENTE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 183
- testRunner.When("Informo \"EndEtg_bairro\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 184
- testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="Sem validação de endereço X CEP")]
-        [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEnderecoFeature")]
-        [Xunit.TraitAttribute("Description", "Sem validação de endereço X CEP")]
-        public virtual void SemValidacaoDeEnderecoXCEP()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sem validação de endereço X CEP", null, tagsOfScenario, argumentsOfScenario);
+#line 185
+ testRunner.When("Informo \"EndEtg_cidade\" = \"Santo André\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
 #line 186
-this.ScenarioInitialize(scenarioInfo);
+ testRunner.When("Informo \"EndEtg_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
 #line 187
- testRunner.Given("Limpar tabela \"t_CLIENTE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.When("Informo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 188
- testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.When("Informo \"EndEtg_endereco\" = \"outro endereco\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 189
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.When("Informo \"EndEtg_endereco_numero\" = \"97\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 190
- testRunner.When("Informo \"EndEtg_cidade\" = \"Santo André\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 191
- testRunner.When("Informo \"EndEtg_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 192
- testRunner.When("Informo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 193
- testRunner.When("Informo \"EndEtg_endereco\" = \"outro endereco\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 194
- testRunner.When("Informo \"EndEtg_endereco_numero\" = \"97\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 195
- testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 196
  testRunner.When("Informo \"EndEtg_bairro\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 197
+#line 192
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Sem validação de bairro X CEP")]
-        [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEnderecoFeature")]
-        [Xunit.TraitAttribute("Description", "Sem validação de bairro X CEP")]
-        public virtual void SemValidacaoDeBairroXCEP()
+        [Xunit.SkippableFactAttribute(DisplayName="Validacao - Sem validação de bairro X CEP")]
+        [Xunit.TraitAttribute("FeatureTitle", "Validacao")]
+        [Xunit.TraitAttribute("Description", "Validacao - Sem validação de bairro X CEP")]
+        public virtual void Validacao_SemValidacaoDeBairroXCEP()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sem validação de bairro X CEP", null, tagsOfScenario, argumentsOfScenario);
-#line 199
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validacao - Sem validação de bairro X CEP", null, tagsOfScenario, argumentsOfScenario);
+#line 194
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -814,52 +822,52 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 200
+#line 195
  testRunner.Given("Limpar tabela \"t_CLIENTE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 196
+ testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 197
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 198
+ testRunner.When("Informo \"EndEtg_cidade\" = \"Santo André\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 199
+ testRunner.When("Informo \"EndEtg_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 200
+ testRunner.When("Informo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 201
- testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 202
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 203
- testRunner.When("Informo \"EndEtg_cidade\" = \"Santo André\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 204
- testRunner.When("Informo \"EndEtg_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 205
- testRunner.When("Informo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 206
  testRunner.When("Informo \"EndEtg_endereco\" = \"outro endereco\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 207
+#line 202
  testRunner.When("Informo \"EndEtg_endereco_numero\" = \"97\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 208
+#line 203
  testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 209
+#line 204
  testRunner.When("Informo \"EndEtg_bairro\" = \"outro bairro\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 210
+#line 205
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Sem validação de UF X CEP")]
-        [Xunit.TraitAttribute("FeatureTitle", "ValidacaoEnderecoFeature")]
-        [Xunit.TraitAttribute("Description", "Sem validação de UF X CEP")]
-        public virtual void SemValidacaoDeUFXCEP()
+        [Xunit.SkippableFactAttribute(DisplayName="Validacao - Sem validação de UF X CEP")]
+        [Xunit.TraitAttribute("FeatureTitle", "Validacao")]
+        [Xunit.TraitAttribute("Description", "Validacao - Sem validação de UF X CEP")]
+        public virtual void Validacao_SemValidacaoDeUFXCEP()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Sem validação de UF X CEP", null, tagsOfScenario, argumentsOfScenario);
-#line 212
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validacao - Sem validação de UF X CEP", null, tagsOfScenario, argumentsOfScenario);
+#line 207
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -879,65 +887,109 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 214
+#line 209
  testRunner.Given("Limpar tabela \"t_CLIENTE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 215
+#line 210
  testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 216
+#line 211
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 217
+#line 212
  testRunner.When("Informo \"EndEtg_cidade\" = \"Santo André\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 218
+#line 213
  testRunner.When("Informo \"EndEtg_uf\" = \"RJ\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 220
+#line 215
  testRunner.When("Informo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 221
+#line 216
  testRunner.When("Informo \"EndEtg_endereco\" = \"outro endereco\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 222
+#line 217
  testRunner.When("Informo \"EndEtg_endereco_numero\" = \"97\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 223
+#line 218
  testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 224
+#line 219
  testRunner.When("Informo \"EndEtg_bairro\" = \"outro bairro\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 225
+#line 220
  testRunner.Then("Erro \"Estado não confere!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 227
+#line 222
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 228
+#line 223
  testRunner.When("Informo \"EndEtg_cidade\" = \"Santo André\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 229
+#line 224
  testRunner.When("Informo \"EndEtg_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 231
+#line 226
  testRunner.When("Informo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 232
+#line 227
  testRunner.When("Informo \"EndEtg_endereco\" = \"outro endereco\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 233
+#line 228
  testRunner.When("Informo \"EndEtg_endereco_numero\" = \"97\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 234
+#line 229
  testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"teste\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 235
+#line 230
  testRunner.When("Informo \"EndEtg_bairro\" = \"outro bairro\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 231
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Validacao - Garante que não grava endereço de entrega")]
+        [Xunit.TraitAttribute("FeatureTitle", "Validacao")]
+        [Xunit.TraitAttribute("Description", "Validacao - Garante que não grava endereço de entrega")]
+        public virtual void Validacao_GaranteQueNaoGravaEnderecoDeEntrega()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validacao - Garante que não grava endereço de entrega", null, tagsOfScenario, argumentsOfScenario);
+#line 233
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 235
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 236
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 237
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_cnpj_cpf\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 238
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_endereco\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -950,12 +1002,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                ValidacaoEnderecoFeatureFeature.FeatureSetup();
+                ValidacaoFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                ValidacaoEnderecoFeatureFeature.FeatureTearDown();
+                ValidacaoFeature.FeatureTearDown();
             }
         }
     }

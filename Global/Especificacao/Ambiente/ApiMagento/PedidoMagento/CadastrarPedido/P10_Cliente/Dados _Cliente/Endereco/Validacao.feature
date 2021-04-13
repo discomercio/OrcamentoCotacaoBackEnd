@@ -1,6 +1,7 @@
 ﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente
 @GerenciamentoBanco
 Feature: Validacao
+	Todos os testes estão gravando um novo cliente.
 
 Background: Configuracoes
 	Given Reiniciar banco ao terminar cenário
@@ -100,9 +101,3 @@ Scenario: Validacao - tamanho cidade 2
 	When Informo "EndEtg_cidade" = "1234567890123456789012345678901234567890123456789012345678901"
 	Then Erro "CIDADE EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES"
 
-Scenario: EnderecoEntrega PF
-	#Garantir que o pedido PF nunca entra com endereço de entrega
-	Given Pedido base
-	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_cnpj_cpf" = "null"
-	And Tabela "t_PEDIDO" registro criado, verificar campo "EndEtg_endereco" = "null"

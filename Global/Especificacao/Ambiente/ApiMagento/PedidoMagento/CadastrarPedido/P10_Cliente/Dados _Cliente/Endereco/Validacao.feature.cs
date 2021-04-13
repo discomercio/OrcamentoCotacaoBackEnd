@@ -44,7 +44,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P10_Cl
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Validacao", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Validacao", "\tTodos os testes estão gravando um novo cliente.", ProgrammingLanguage.CSharp, new string[] {
                         "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente",
                         "GerenciamentoBanco"});
             testRunner.OnFeatureStart(featureInfo);
@@ -83,54 +83,54 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P10_Cl
         
         public virtual void FeatureBackground()
         {
-#line 5
-#line hidden
 #line 6
- testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 7
- testRunner.And("Limpar tabela \"t_CLIENTE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 8
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And("Limpar tabela \"t_CLIENTE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 9
- testRunner.And("Limpar dados cadastrais e endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 10
- testRunner.When("Informo \"OutroEndereco\" = \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("Limpar dados cadastrais e endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 11
- testRunner.When("Informo \"EndEtg_endereco\" = \"Rua Professor Fábio Fanucchi\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"OutroEndereco\" = \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 12
- testRunner.When("Informo \"EndEtg_endereco_numero\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_endereco\" = \"Rua Professor Fábio Fanucchi\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 13
- testRunner.When("Informo \"EndEtg_bairro\" = \"Jardim São Paulo(Zona Norte)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_endereco_numero\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 14
- testRunner.When("Informo \"EndEtg_cidade\" = \"São Paulo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_bairro\" = \"Jardim São Paulo(Zona Norte)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 15
- testRunner.When("Informo \"EndEtg_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_cidade\" = \"São Paulo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 16
- testRunner.When("Informo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 17
- testRunner.When("Informo \"EndEtg_nome\" = \"Vivian\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 18
- testRunner.When("Informo \"EndEtg_tipo_pessoa\" = \"PF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_nome\" = \"Vivian\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 19
- testRunner.When("Informo \"EnderecoCadastralCliente.Endereco_tipo_pessoa\" = \"PF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EndEtg_tipo_pessoa\" = \"PF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 20
- testRunner.When("Informo \"EndEtg_cnpj_cpf\" = \"29756194804\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"EnderecoCadastralCliente.Endereco_tipo_pessoa\" = \"PF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 21
+ testRunner.When("Informo \"EndEtg_cnpj_cpf\" = \"29756194804\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 22
  testRunner.When("Informo \"cnpj_cpf\" = \"29756194804\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
         }
@@ -150,7 +150,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P10_Cl
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validacao - CEP vs endereco", "\tQuando o magento verifica o CEP, dava este erro: Then Erro \"Cidade não confere\"\r" +
                     "\n\tfoi alterado para que a api do magento não faça a validação do CEP, então agor" +
                     "a testamos pelo IGBE:", tagsOfScenario, argumentsOfScenario);
-#line 23
+#line 24
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -170,13 +170,13 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 6
 this.FeatureBackground();
 #line hidden
-#line 26
+#line 27
  testRunner.When("Informo \"EndEtg_cidade\" = \"Cidade não no IBGE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 27
+#line 28
  testRunner.Then("Erro \"Município \'Cidade não no IBGE\' não consta na relação de municípios do IBGE " +
                         "para a UF de \'SP\'!\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -192,7 +192,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validacao - tamanho endereço", null, tagsOfScenario, argumentsOfScenario);
-#line 29
+#line 30
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -212,14 +212,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 6
 this.FeatureBackground();
 #line hidden
-#line 30
+#line 31
  testRunner.When("Informo \"EndEtg_endereco\" = \"1234567890123456789012345678901234567890123456789012" +
                         "345678901\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 31
+#line 32
  testRunner.Then("Erro \"ENDEREÇO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES" +
                         "<br>TAMANHO MÁXIMO: 60 CARACTERES\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -235,7 +235,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validacao - tamanho endereço 2", null, tagsOfScenario, argumentsOfScenario);
-#line 33
+#line 34
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -255,14 +255,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 6
 this.FeatureBackground();
 #line hidden
-#line 35
+#line 36
  testRunner.When("Informo \"EndEtg_endereco\" = \"1234567890123456789012345678901234567890123456789012" +
                         "3456789\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 36
+#line 37
  testRunner.Then("Sem erro \"ENDEREÇO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACT" +
                         "ERES<br>TAMANHO MÁXIMO: 60 CARACTERES\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -278,7 +278,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validacao - tamanho número", null, tagsOfScenario, argumentsOfScenario);
-#line 38
+#line 39
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -298,14 +298,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 6
 this.FeatureBackground();
 #line hidden
-#line 39
+#line 40
  testRunner.When("Informo \"EndEtg_endereco_numero\" = \"123456789012345678901234567890123456789012345" +
                         "6789012345678901\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 40
+#line 41
  testRunner.Then("Erro \"NÚMERO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<b" +
                         "r>TAMANHO MÁXIMO: 60 CARACTERES\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -321,7 +321,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validacao - tamanho número 2", null, tagsOfScenario, argumentsOfScenario);
-#line 42
+#line 43
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -341,14 +341,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 6
 this.FeatureBackground();
 #line hidden
-#line 44
+#line 45
  testRunner.When("Informo \"EndEtg_endereco_numero\" = \"123456789012345678901234567890123456789012345" +
                         "67890123456789\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 45
+#line 46
  testRunner.Then("Sem erro \"NÚMERO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTER" +
                         "ES<br>TAMANHO MÁXIMO: 60 CARACTERES\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -364,7 +364,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validacao - tamanho complemento 2", null, tagsOfScenario, argumentsOfScenario);
-#line 47
+#line 48
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -384,14 +384,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 6
 this.FeatureBackground();
 #line hidden
-#line 49
+#line 50
  testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"1234567890123456789012345678901234567890" +
                         "1234567890123456789\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 50
+#line 51
  testRunner.Then("Sem erro \"COMPLEMENTO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CAR" +
                         "ACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -407,7 +407,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validacao - tamanho bairro", null, tagsOfScenario, argumentsOfScenario);
-#line 52
+#line 53
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -427,14 +427,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 6
 this.FeatureBackground();
 #line hidden
-#line 53
+#line 54
  testRunner.When("Informo \"EndEtg_bairro\" = \"123456789012345678901234567890123456789012345678901234" +
                         "5678901\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 54
+#line 55
  testRunner.Then("Erro \"BAIRRO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<b" +
                         "r>TAMANHO MÁXIMO: 60 CARACTERES\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -450,7 +450,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validacao - tamanho bairro 2", null, tagsOfScenario, argumentsOfScenario);
-#line 56
+#line 57
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -470,14 +470,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 6
 this.FeatureBackground();
 #line hidden
-#line 58
+#line 59
  testRunner.When("Informo \"EndEtg_bairro\" = \"123456789012345678901234567890123456789012345678901234" +
                         "56789\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 59
+#line 60
  testRunner.Then("Sem erro \"BAIRRO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTER" +
                         "ES<br>TAMANHO MÁXIMO: 60 CARACTERES\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -493,7 +493,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validacao - tamanho cidade", null, tagsOfScenario, argumentsOfScenario);
-#line 61
+#line 62
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -513,14 +513,14 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 6
 this.FeatureBackground();
 #line hidden
-#line 62
+#line 63
  testRunner.When("Informo \"EndEtg_cidade\" = \"123456789012345678901234567890123456789012345678901234" +
                         "5678901\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 63
+#line 64
  testRunner.Then("Erro \"CIDADE EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<b" +
                         "r>TAMANHO MÁXIMO: 60 CARACTERES\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -536,7 +536,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Validacao - tamanho cidade 2", null, tagsOfScenario, argumentsOfScenario);
-#line 65
+#line 66
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -556,155 +556,108 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 6
 this.FeatureBackground();
 #line hidden
-#line 67
+#line 68
  testRunner.When("Informo \"EndEtg_cidade\" = \"123456789012345678901234567890123456789012345678901234" +
                         "56789\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 68
+#line 69
  testRunner.Then("Sem erro \"CIDADE EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTER" +
                         "ES<br>TAMANHO MÁXIMO: 60 CARACTERES\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 70
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 71
- testRunner.And("Limpar dados cadastrais e endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 72
- testRunner.When("Informo \"OutroEndereco\" = \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 73
- testRunner.When("Informo \"EndEtg_endereco\" = \"Rua Professor Fábio Fanucchi\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 74
- testRunner.When("Informo \"EndEtg_endereco_numero\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 75
- testRunner.When("Informo \"EndEtg_bairro\" = \"Jardim São Paulo(Zona Norte)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 76
- testRunner.When("Informo \"EndEtg_cidade\" = \"São Paulo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 77
- testRunner.When("Informo \"EndEtg_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 78
- testRunner.When("Informo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 79
- testRunner.When("Informo \"EndEtg_nome\" = \"Vivian\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 80
- testRunner.When("Informo \"EndEtg_tipo_pessoa\" = \"PF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 81
- testRunner.When("Informo \"EnderecoCadastralCliente.Endereco_tipo_pessoa\" = \"PF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 82
- testRunner.When("Informo \"EndEtg_cnpj_cpf\" = \"29756194804\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 83
- testRunner.When("Informo \"cnpj_cpf\" = \"29756194804\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 84
- testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 86
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 87
  testRunner.And("Limpar dados cadastrais e endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 88
+#line 73
  testRunner.When("Informo \"OutroEndereco\" = \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 89
+#line 74
  testRunner.When("Informo \"EndEtg_endereco\" = \"Rua Professor Fábio Fanucchi\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 90
+#line 75
  testRunner.When("Informo \"EndEtg_endereco_numero\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 91
+#line 76
  testRunner.When("Informo \"EndEtg_bairro\" = \"Jardim São Paulo(Zona Norte)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 92
+#line 77
+ testRunner.When("Informo \"EndEtg_cidade\" = \"São Paulo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 78
  testRunner.When("Informo \"EndEtg_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 93
+#line 79
  testRunner.When("Informo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 94
+#line 80
  testRunner.When("Informo \"EndEtg_nome\" = \"Vivian\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 95
+#line 81
  testRunner.When("Informo \"EndEtg_tipo_pessoa\" = \"PF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 96
+#line 82
  testRunner.When("Informo \"EnderecoCadastralCliente.Endereco_tipo_pessoa\" = \"PF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 97
+#line 83
  testRunner.When("Informo \"EndEtg_cnpj_cpf\" = \"29756194804\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 98
+#line 84
  testRunner.When("Informo \"cnpj_cpf\" = \"29756194804\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 100
+#line 85
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 87
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 88
+ testRunner.And("Limpar dados cadastrais e endereço de entrega", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 89
+ testRunner.When("Informo \"OutroEndereco\" = \"true\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 90
+ testRunner.When("Informo \"EndEtg_endereco\" = \"Rua Professor Fábio Fanucchi\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 91
+ testRunner.When("Informo \"EndEtg_endereco_numero\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 92
+ testRunner.When("Informo \"EndEtg_bairro\" = \"Jardim São Paulo(Zona Norte)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 93
+ testRunner.When("Informo \"EndEtg_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 94
+ testRunner.When("Informo \"EndEtg_cep\" = \"02045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 95
+ testRunner.When("Informo \"EndEtg_nome\" = \"Vivian\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 96
+ testRunner.When("Informo \"EndEtg_tipo_pessoa\" = \"PF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 97
+ testRunner.When("Informo \"EnderecoCadastralCliente.Endereco_tipo_pessoa\" = \"PF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 98
+ testRunner.When("Informo \"EndEtg_cnpj_cpf\" = \"29756194804\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 99
+ testRunner.When("Informo \"cnpj_cpf\" = \"29756194804\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 101
  testRunner.When("Informo \"EndEtg_cidade\" = \"123456789012345678901234567890123456789012345678901234" +
                         "5678901\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 101
+#line 102
  testRunner.Then("Erro \"CIDADE EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<b" +
                         "r>TAMANHO MÁXIMO: 60 CARACTERES\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="EnderecoEntrega PF")]
-        [Xunit.TraitAttribute("FeatureTitle", "Validacao")]
-        [Xunit.TraitAttribute("Description", "EnderecoEntrega PF")]
-        public virtual void EnderecoEntregaPF()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("EnderecoEntrega PF", null, tagsOfScenario, argumentsOfScenario);
-#line 103
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 5
-this.FeatureBackground();
-#line hidden
-#line 105
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 106
- testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 107
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_cnpj_cpf\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 108
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"EndEtg_endereco\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
