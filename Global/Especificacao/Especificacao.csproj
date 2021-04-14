@@ -473,7 +473,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Ambiente\ApiMagento\PedidoMagento\AlterarStatusPedido\" />
+    <Folder Include="Ambiente\ApiMagento\PedidoMagento\AlterarMagentoPedidoStatus\" />
   </ItemGroup>
 
 </Project>
