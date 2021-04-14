@@ -20,15 +20,12 @@ P10_Cliente:
 				> Buscamos o cliente na base de dados, se existir retornamos.
 				> Caso não exista, cadastramos o cliente. 
 P20_Indicador: Se tiver valor de frete significa que tem indicador.
-		Teste em Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional.FretePontoReferencia.feature
-		Teste em Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional.CamposLidosAppsettings.feature
 			01 - Verificar se tem indicador e valida indicador:
 				> Se tiver valor de frete, então inserimos o indicador do appsettings. 
 				> Validamos se o indicador existe na base de dados.
 			02 - Verificar se loja existe
 				> Validamos se a loja que esta no appsettings existe na base de dados.
 P30_InfPedido:
-		Teste em Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.ValidacaoCampos.PedidoMagentoDto.feature
 			01 - Validar pedido magento, código de origem e pedido marketplace:
 				> Validamos se o código de origem do pedido magento esta preenchido.
 				> Validamos na base de dados se o código de origem existe na base de dados.
@@ -36,7 +33,6 @@ P30_InfPedido:
 				> Validamos se a quantidade de caracteres é diferente de Constantes.MAX_TAMANHO_ID_PEDIDO_MAGENTO
 				> Validamos se o pedido magento contém somente números.
 P40_Produtos: 
-		Teste em Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Passo40.Produtos.feature
 		PRECISAMOS CRIAR OS NOVOS TESTES PARA PRODUTO COMPOSTO E DILUIÇÃO DO VALOR DE FRETE ENTRE OS PRODUTOS
 			01 - Verificar se produto é composto e buscar os produtos que compõe o produto composto
 			02 - Alterar os produtos compostos para simples
@@ -53,12 +49,10 @@ P50_Pedido:
 		Todos os teste acima passam por esse fluxo, sendo assim está garantido que estamos executando esse teste
 			01 - Converter pedido para PedidoCriacaoDados:
 				01 - Converte Endereco Cadastral para DadosClienteCadastroDados:
-					Teste em Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CriacaoCliente.CriacaoCliente_Pf.feature
 					> Cliente PF: Produtor Rural = 1 (Não), Contribuinte ICMS = 0 (Inicial), IE = vazio.
 				02 - Converter EnderecoCadastralClienteMagentoDto para EnderecoCadastralClientePrepedidoDados:
 				03 - Converter EnderecoEntregaClienteMagentoDto para EnderecoEntregaClienteCadastroDados:
 				04 - Converter FormaPagtoCriacaoMagentoDto para FormaPagtoCriacaoDados:
-					Teste em Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional.FormaPagtoCriacaoMagento
 					> Só aceitamos os pagamentos Á vista, Parcela Única, Parcelado no Cartão
 					
 P60_Cadastrar PedidoCriacaoDados 
