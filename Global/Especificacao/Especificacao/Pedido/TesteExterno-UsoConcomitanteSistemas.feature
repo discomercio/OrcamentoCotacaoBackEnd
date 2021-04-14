@@ -15,7 +15,12 @@ Enquanto essa carga estiver rodando, criar um pedido pelo verdinho
 #edu: executadas duas intâncias do \arclube\Global\Testes\TestesApiMagento\TestesApiMagentoCadastrarPedido
 #e converti um prepedido em pedido pelo verdinho
 #tudo funcionou OK
-
-	#pedir para o gabriel fazer tb, convertendo um prepedido e criando um pedido do zero no verdinho
+#
+#em 14/04/20121
+#gabriel: alterei a quantidade de pedido a ser inserido "TestesApiMagentoCadastrarPedido.exe", 
+#executadas duas instâncias do \arclube\Global\Testes\TestesApiMagento\TestesApiMagentoCadastrarPedido
+#enquanto as duas intâncias inseriam pedidos, fui inserindo pedido usando o verdinho
+#as 2 instâncias pararam de inserir pedidos sem gerar exception, 
+#olhei o log no appdev e tinha erro de deadlock
 	Given Fazer este teste
 
