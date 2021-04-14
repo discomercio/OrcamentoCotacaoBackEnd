@@ -128,7 +128,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("Lista de itens \"0\" informo \"Quantidade\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 12
- testRunner.And("Lista de itens \"0\" informo \"Subtotal\" = \"650.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Lista de itens \"0\" informo \"Subtotal\" = \"1300.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 13
  testRunner.And("Informo \"PedidoTotaisMagentoDto.Subtotal\" = \"1300.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -178,7 +178,7 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("Lista de itens \"0\" informo \"Quantidade\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 20
- testRunner.And("Lista de itens \"0\" informo \"Subtotal\" = \"650.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Lista de itens \"0\" informo \"Subtotal\" = \"1300.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 21
  testRunner.And("Informo \"PedidoTotaisMagentoDto.Subtotal\" = \"1100.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
