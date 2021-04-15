@@ -19,12 +19,14 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoSt
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [Xunit.TraitAttribute("Category", "Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoStatus")]
     public partial class AlterarMagentoPedidoStatusFeature : object, Xunit.IClassFixture<AlterarMagentoPedidoStatusFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = ((string[])(null));
+        private string[] _featureTags = new string[] {
+                "Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoStatus"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -59,7 +61,8 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoSt
 	  existe rotina em c# que faz o cancelamento automático!! em C:\Users\Eduardo.Perez\source\repos\arclube\colors\Modulos\FinanceiroService
  	  ver com o hamilton se devemos reutlizar o código e o quanto. não está em entity. está organziado para ser um serviço.
       Talvez: colocar um bloco na tela inicial do verdinho listando os pedidos parados em aprovação pendente há mais de X dias.
-      ter mais um status de analise de crédito: esperando aprovação pelo magento.", ProgrammingLanguage.CSharp, ((string[])(null)));
+      ter mais um status de analise de crédito: esperando aprovação pelo magento.", ProgrammingLanguage.CSharp, new string[] {
+                        "Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoStatus"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -99,15 +102,16 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoSt
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="AlterarMagentoPedidoStatus -")]
+        [Xunit.SkippableFactAttribute(DisplayName="AlterarMagentoPedidoStatus - aprovacao pendente")]
         [Xunit.TraitAttribute("FeatureTitle", "AlterarMagentoPedidoStatus")]
-        [Xunit.TraitAttribute("Description", "AlterarMagentoPedidoStatus -")]
-        public virtual void AlterarMagentoPedidoStatus_()
+        [Xunit.TraitAttribute("Description", "AlterarMagentoPedidoStatus - aprovacao pendente")]
+        public virtual void AlterarMagentoPedidoStatus_AprovacaoPendente()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("AlterarMagentoPedidoStatus -", null, tagsOfScenario, argumentsOfScenario);
-#line 23
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("AlterarMagentoPedidoStatus - aprovacao pendente", "\taprovação pendente -> analise_credito = esperando aprovação pelo magento (o novo" +
+                    " status)", tagsOfScenario, argumentsOfScenario);
+#line 24
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -127,7 +131,221 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 24
+#line 26
+ testRunner.Then("Sem nenhum Erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="AlterarMagentoPedidoStatus - aprovado")]
+        [Xunit.TraitAttribute("FeatureTitle", "AlterarMagentoPedidoStatus")]
+        [Xunit.TraitAttribute("Description", "AlterarMagentoPedidoStatus - aprovado")]
+        public virtual void AlterarMagentoPedidoStatus_Aprovado()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("AlterarMagentoPedidoStatus - aprovado", "\taprovado -> quando for para aprovado, \r\n\tpassa para analise_credito = credito_ok" +
+                    " se o marketplace permitir (ver o fluxo de criação do pedido)", tagsOfScenario, argumentsOfScenario);
+#line 28
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 31
+ testRunner.Then("Sem nenhum Erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="AlterarMagentoPedidoStatus - rejeitado")]
+        [Xunit.TraitAttribute("FeatureTitle", "AlterarMagentoPedidoStatus")]
+        [Xunit.TraitAttribute("Description", "AlterarMagentoPedidoStatus - rejeitado")]
+        public virtual void AlterarMagentoPedidoStatus_Rejeitado()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("AlterarMagentoPedidoStatus - rejeitado", "\trejeitado -> cancelamos automaticamente o pedido, ter um flag por marketplace pa" +
+                    "ra habilitar o \r\n\tcancelamento automático (definr o flag em t_codigo_descricao)", tagsOfScenario, argumentsOfScenario);
+#line 33
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 36
+ testRunner.Then("Sem nenhum Erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="AlterarMagentoPedidoStatus - pedido cancelado")]
+        [Xunit.TraitAttribute("FeatureTitle", "AlterarMagentoPedidoStatus")]
+        [Xunit.TraitAttribute("Description", "AlterarMagentoPedidoStatus - pedido cancelado")]
+        public virtual void AlterarMagentoPedidoStatus_PedidoCancelado()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("AlterarMagentoPedidoStatus - pedido cancelado", "\tse o pedido estiver com status = cancelado, não podemos mexer no pedido. Se acon" +
+                    "tecer, \r\n\tmandar email para karina e retornar erro.", tagsOfScenario, argumentsOfScenario);
+#line 38
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 41
+ testRunner.Then("Sem nenhum Erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="AlterarMagentoPedidoStatus - pedido entregue")]
+        [Xunit.TraitAttribute("FeatureTitle", "AlterarMagentoPedidoStatus")]
+        [Xunit.TraitAttribute("Description", "AlterarMagentoPedidoStatus - pedido entregue")]
+        public virtual void AlterarMagentoPedidoStatus_PedidoEntregue()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("AlterarMagentoPedidoStatus - pedido entregue", "\tse o pedido estiver com status = entregue, não podemos mexer no pedido. Se acont" +
+                    "ecer, \r\n\tmandar email para karina e retornar erro.", tagsOfScenario, argumentsOfScenario);
+#line 43
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 46
+ testRunner.Then("Sem nenhum Erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="AlterarMagentoPedidoStatus - verificar bloco de notas no pedido")]
+        [Xunit.TraitAttribute("FeatureTitle", "AlterarMagentoPedidoStatus")]
+        [Xunit.TraitAttribute("Description", "AlterarMagentoPedidoStatus - verificar bloco de notas no pedido")]
+        public virtual void AlterarMagentoPedidoStatus_VerificarBlocoDeNotasNoPedido()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("AlterarMagentoPedidoStatus - verificar bloco de notas no pedido", "\tna transição de status, incluir um bloco de notas no pedido", tagsOfScenario, argumentsOfScenario);
+#line 48
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 50
+ testRunner.Then("Sem nenhum Erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="AlterarMagentoPedidoStatus - verificar log")]
+        [Xunit.TraitAttribute("FeatureTitle", "AlterarMagentoPedidoStatus")]
+        [Xunit.TraitAttribute("Description", "AlterarMagentoPedidoStatus - verificar log")]
+        public virtual void AlterarMagentoPedidoStatus_VerificarLog()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("AlterarMagentoPedidoStatus - verificar log", "\tna transição de status, insere log", tagsOfScenario, argumentsOfScenario);
+#line 52
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 54
  testRunner.Then("Sem nenhum Erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
