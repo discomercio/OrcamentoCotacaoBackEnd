@@ -1,5 +1,5 @@
 ﻿@ignore
-Feature: 000-Roteiro_o_que_testar
+Feature: P000-Roteiro_o_que_testar
 
 Roteiro de cada teste:
 
