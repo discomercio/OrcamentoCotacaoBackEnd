@@ -18,7 +18,7 @@
 #
 #Resumo: API do Magento para PJ não aceita nenhum pedido, tods serão feitos no semi-automático
 
-@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional
+@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 Scenario: Fluxo de cadastro do magento - PJ - não é aceito
 	Given Pedido base cliente PJ
 	Then Erro "A API Magento somente aceita pedidos para PF (EnderecoCadastralCliente.Endereco_tipo_pessoa)."

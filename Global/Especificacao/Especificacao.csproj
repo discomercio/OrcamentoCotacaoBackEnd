@@ -58,8 +58,7 @@
   <ItemGroup>
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf_Opcionais - Copy.feature.cs" />
-    <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\Pf_Telefones\Sucesso - Copy.feature.cs" />
-    <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\EspecificacaoAdicional\ListaDependencias.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\Dados _Cliente\Pf_Telefones\Sucesso - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\ObterCodigoMarketplaceListaDependencias.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\ObterCodigoMarketplace\BuscarQtdeParcCartaoVisaListaDependencias.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\ObterCodigoMarketplace\QtdeParcCartaoVisa.feature.cs" />
@@ -130,23 +129,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoListaDependencias.feature.cs">
-      <DependentUpon>CadastrarPedidoListaDependencias.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\Pf_Telefones\tel_res.feature.cs">
+    <Compile Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\Dados _Cliente\Pf_Telefones\tel_res.feature.cs">
       <DependentUpon>tel_res.feature</DependentUpon>
     </Compile>
-    <Compile Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\Pf_Telefones\Sucesso.feature.cs">
+    <Compile Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\Dados _Cliente\Pf_Telefones\Sucesso.feature.cs">
       <DependentUpon>Sucesso.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf_Opcionais.feature.cs">
-      <DependentUpon>CriacaoCliente_Pf_Opcionais.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf_Obrigatorios.feature.cs">
-      <DependentUpon>CriacaoCliente_Pf_Obrigatorios.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\EspecificacaoAdicional\ListaDependencias.feature.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Ambiente\ApiMagento\PedidoMagento\ObterCodigoMarketplace\ObterCodigoMarketplaceListaDependencias.feature.cs">
       <DependentUpon>ObterCodigoMarketplaceListaDependencias.feature</DependentUpon>
@@ -259,27 +246,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoListaDependencias.feature">
+    <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\Dados _Cliente\Pf_Telefones\tel_res.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\Pf_Telefones\tel_res.feature">
-      <Visible>$(UsingMicrosoftNETSdk)</Visible>
-      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-    </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\Pf_Telefones\Sucesso.feature">
-      <Visible>$(UsingMicrosoftNETSdk)</Visible>
-      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-    </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf_Opcionais.feature">
-      <Visible>$(UsingMicrosoftNETSdk)</Visible>
-      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-    </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf_Obrigatorios.feature">
-      <Visible>$(UsingMicrosoftNETSdk)</Visible>
-      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-    </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\EspecificacaoAdicional\ListaDependencias.feature">
+    <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\Dados _Cliente\Pf_Telefones\Sucesso.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>

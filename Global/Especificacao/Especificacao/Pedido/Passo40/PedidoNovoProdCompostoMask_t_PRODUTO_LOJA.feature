@@ -12,6 +12,7 @@ Background: Marca para reiniciar o banco
 	Given No ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido" mapear erro "Erro do produto 003221 para mapear" para "regex .*Produto.*não cadastrado para a loja."
 	Given No ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido" mapear erro "Erro do produto 003220 para mapear" para "regex .*Produto.*não está cadastrado para a loja."
 	Given No ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido" mapear erro "Erro do produto 003221 para mapear" para "regex .*Produto.*não está cadastrado para a loja."
+	Given No ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido" mapear erro "regex .*Produto não cadastrado para a loja. Produto:*" para "Produto 001000 do fabricante 001 NÃO está cadastrado para a loja 202"	
 	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" mapear erro "Erro do produto 003220 para mapear" para "Produto cód.(003220) do fabricante cód.(003) não existe!"
 	Given No ambiente "Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedido" mapear erro "Erro do produto 003221 para mapear" para "Produto cód.(003221) do fabricante cód.(003) não existe!"
 	Given No ambiente "Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApiBll.CadastrarPrepedido.CadastrarPrepedidoPrepedidoApi" mapear erro "Erro do produto 003220 para mapear" para "Produto cód.(003220) do fabricante cód.(003) não existe!"
@@ -281,3 +282,16 @@ Scenario: Verificar produtos t_PRODUTO_LOJA - qtde_max_venda Magento
 	And Novo registro em "t_PRODUTO_LOJA", campo "qtde_max_venda" = "10000"
 	And Gravar registro em "t_PRODUTO_LOJA"
 	Then Erro "regex .*excede o máximo permitido."
+
+Scenario: Verificar se o produto não existe na t_PRODUTO_LOJA
+	Given Ignorar cenário no ambiente "Especificacao.Prepedido.PrepedidoSteps"
+	Given Pedido base
+	When Lista de itens com "1" itens
+	When Lista de itens "0" informo "Fabricante" = "001"
+	When Lista de itens "0" informo "Produto" = "001000"
+	When Lista de itens "0" informo "Qtde" = "2"
+	When Lista de itens "0" informo "Preco_Venda" = "509.24"
+	When Lista de itens "0" informo "Preco_NF" = "520.00"
+	Given Reiniciar banco ao terminar cenário
+	Given Limpar tabela "t_PRODUTO_LOJA"
+	Then Erro "regex .*Produto não cadastrado para a loja. Produto:*"

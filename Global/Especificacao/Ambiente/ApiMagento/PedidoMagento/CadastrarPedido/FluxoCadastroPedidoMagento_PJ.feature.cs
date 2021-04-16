@@ -83,11 +83,11 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
         [Xunit.SkippableFactAttribute(DisplayName="Fluxo de cadastro do magento - PJ - não é aceito")]
         [Xunit.TraitAttribute("FeatureTitle", "FLuxoCadastroPedidoMagento - PJ")]
         [Xunit.TraitAttribute("Description", "Fluxo de cadastro do magento - PJ - não é aceito")]
-        [Xunit.TraitAttribute("Category", "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional")]
+        [Xunit.TraitAttribute("Category", "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido")]
         public virtual void FluxoDeCadastroDoMagento_PJ_NaoEAceito()
         {
             string[] tagsOfScenario = new string[] {
-                    "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdicional"};
+                    "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fluxo de cadastro do magento - PJ - não é aceito", null, tagsOfScenario, argumentsOfScenario);
 #line 22
