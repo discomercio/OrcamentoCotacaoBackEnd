@@ -1,4 +1,5 @@
-﻿@Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoStatus
+﻿@ignore
+@Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoStatus
 Feature: AlterarMagentoPedidoStatus
 	- statuspedido:
 	  gravar campo na t_pedido

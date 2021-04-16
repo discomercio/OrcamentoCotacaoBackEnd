@@ -1,4 +1,5 @@
-﻿@Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoStatus
+﻿@ignore
+@Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoStatus
 Feature: FluxoAlterarMagentoPedidoStatus
 
 Scenario: AlterarMagentoPedidoStatus

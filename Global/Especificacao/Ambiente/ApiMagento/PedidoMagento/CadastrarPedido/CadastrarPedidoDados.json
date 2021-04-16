@@ -81,6 +81,7 @@
   ],
   "FormaPagtoCriacao": {
     "Tipo_Parcelamento": 1,
+    "Op_av_forma_pagto": "6",
     "C_pu_valor": 0,
     "C_pc_qtde": 0,
     "C_pc_valor": 0
