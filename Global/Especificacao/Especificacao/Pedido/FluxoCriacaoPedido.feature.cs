@@ -60,12 +60,12 @@ namespace Especificacao.Especificacao.Pedido
                     "de entrega\r\n\tse editar dados cadastrais, salva na t_cliente\r\n25 - Passo 25: some" +
                     "nte na API. Validar dados cadastrais. Não existe na tela porque sempre se usa o " +
                     "atual do cliente.\r\n30 - Passo30: Escolher indicador e RA e Modo de Seleção do CD" +
-                    " \r\n40 - Passo40: Escolher produtos, quantidades e alterar valores e forma de pag" +
-                    "amento\r\n50 - Passo50: Informar observações (entrega imediata, instalador instala" +
-                    ", etc) \r\n60 - Passo60: Salvar o pedido\r\n--- \r\nFluxo na ApaiMagento:\r\n1 - Validar" +
-                    " o pedido\r\n2 - se o cliente não existir, cadastrar o cliente\r\n3 - salvar o pedid" +
-                    "o\r\n--- \r\nFluxo na API:\r\nSalvar o pedido (Passo60/Gravacao)\r\n\tEnviar todos os dad" +
-                    "os para cadastrar o pedido", ProgrammingLanguage.CSharp, new string[] {
+                    ", Perc_rt, campos magento, etc.\r\n40 - Passo40: Escolher produtos, quantidades e " +
+                    "alterar valores e forma de pagamento\r\n50 - Passo50: Informar observações (entreg" +
+                    "a imediata, instalador instala, etc) \r\n60 - Passo60: Salvar o pedido\r\n--- \r\nFlux" +
+                    "o na ApaiMagento:\r\n1 - Validar o pedido\r\n2 - se o cliente não existir, cadastrar" +
+                    " o cliente\r\n3 - salvar o pedido\r\n--- \r\nFluxo na API:\r\nSalvar o pedido (Passo60/G" +
+                    "ravacao)\r\n\tEnviar todos os dados para cadastrar o pedido", ProgrammingLanguage.CSharp, new string[] {
                         "Especificacao.Pedido.FluxoCriacaoPedido"});
             testRunner.OnFeatureStart(featureInfo);
         }

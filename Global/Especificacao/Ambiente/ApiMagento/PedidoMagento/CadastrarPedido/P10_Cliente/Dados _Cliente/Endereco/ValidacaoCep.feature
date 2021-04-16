@@ -1,6 +1,6 @@
 ﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 @GerenciamentoBanco
-Feature: Validacao
+Feature: ValidacaoCep
 	Pedidos do magento validamos Cidade contra o IGBE e UF contra o CEP informado. Não validamos nenhum outro campo do endereço.
 	Se o CEP não existir, aceitamos o que veio e só validar a cidade e a UF no IBGE.
 	confirmando: se o magento mandar um CEP que não temos, aceitamos e só validamos a cidade e UF.

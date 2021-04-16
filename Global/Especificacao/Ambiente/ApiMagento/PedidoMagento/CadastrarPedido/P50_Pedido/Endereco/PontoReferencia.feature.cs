@@ -215,25 +215,25 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 33
+#line 32
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 34
+#line 33
  testRunner.When("Informo \"EnderecoEntrega.PontoReferencia\" = \"teste de ponto de referencia\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 36
+#line 35
  testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"complemento endereço entrega 12 compleme" +
                         "nto endereço entrega 12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 37
+#line 36
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 38
+#line 37
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"NFe_texto_constar\" = \"Complem" +
                         "ento do endereço: complemento endereço entrega 12 complemento endereço entrega 1" +
                         "2\\nPonto de referência: teste de ponto de referencia\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 39
+#line 38
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_complemento\" = \"comp" +
                         "lemento endereço entrega 12 complemento endereço entrega\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -252,7 +252,7 @@ this.ScenarioInitialize(scenarioInfo);
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PontoReferencia - EndEtg_endereco_complemento com mais de 60 caracteres sem Ponto" +
                     " de referencia", null, tagsOfScenario, argumentsOfScenario);
-#line 41
+#line 40
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -272,25 +272,25 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 45
+#line 43
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 46
+#line 44
  testRunner.When("Informo \"EnderecoEntrega.PontoReferencia\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 47
+#line 45
  testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"complemento endereço entrega 12 compleme" +
                         "nto endereço entrega 12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 48
+#line 46
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 49
+#line 47
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"NFe_texto_constar\" = \"Complem" +
                         "ento do endereço: complemento endereço entrega 12 complemento endereço entrega 1" +
                         "2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 50
+#line 48
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"endereco_complemento\" = \"comp" +
                         "lemento endereço entrega 12 complemento endereço entrega\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
