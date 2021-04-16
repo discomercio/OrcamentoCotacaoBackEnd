@@ -3,10 +3,10 @@
 @GerenciamentoBanco
 Feature: ProdutosCompostos
 	Verifica se a Api Magento está aceitando o pedido com produtos compostos.
-	Obs: Esse processo é novo! Passaremos a permitir que o Magento envie os produtos compostos para que a ApiMagento
-		 faça a separação dos produtos compostos antes de inserir o pedido
+	O Magento pode enviar os produtos compostos para que a ApiMagento faça a separação dos produtos compostos antes de inserir o pedido
 
 Scenario: ProdutosCompostos - Sucesso
+	#Um produto composto (1090) sendo dividido em dois
 	Given Pedido base
 	When Lista de itens com "1" itens
 	#item 1
@@ -54,6 +54,7 @@ Scenario: ProdutosCompostos - produtos repetidos
 	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "preco_nf" = "ajustar valor"
 
 Scenario: ProdutosCompostos - com desconto
+	#Um produto composto (1090) - verificar o cálculo do desconto
 	Given Pedido base
 	When Lista de itens com "1" itens
 	#item 1
@@ -77,6 +78,7 @@ Scenario: ProdutosCompostos - com desconto
 	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "preco_nf" = "ajustar valor"
 
 Scenario: ProdutosCompostos - produtos repetidos com desconto
+	#Um produto composto (1090) sendo dividido em dois - calculando os descontos corretamente
 	Given Pedido base
 	When Lista de itens com "2" itens
 	#item 1
@@ -106,8 +108,9 @@ Scenario: ProdutosCompostos - produtos repetidos com desconto
 	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "preco_nf" = "ajustar valor"
 
 Scenario: ProdutosCompostos - diluir frete
+	#Dois produtos compostos - diluindo o frete entre eles
 	Given Pedido base
-	When Informo "PedidoTotaisMagentoDto.FreteBruto" = "69.90"	
+	When Informo "PedidoTotaisMagentoDto.FreteBruto" = "69.90"
 	And Lista de itens com "2" itens
 	#item 1
 	When Lista de itens "0" informo "Sku" = "001090"
@@ -148,6 +151,10 @@ Scenario: ProdutosCompostos - diluir frete
 	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "4" campo "desc_dado" = "ajustar valor"
 	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "4" campo "preco_venda" = "ajustar valor"
 	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "4" campo "preco_nf" = "ajustar valor"
+
+Scenario: ProdutosCompostos - com desconto e diluir frete
+	#Um produto composto (1090), um produto solto, com desconto nos produtos e com frete
+	When Fazer esta validação
 
 Scenario: ProdutosCompostos - não existe
 	Given Pedido base

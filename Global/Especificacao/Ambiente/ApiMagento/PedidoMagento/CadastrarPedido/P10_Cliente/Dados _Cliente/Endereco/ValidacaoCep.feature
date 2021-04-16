@@ -53,6 +53,7 @@ Scenario: Validacao - CEP que não existe na base - sucesso
 	#a cidade consta no IBGE
 	#não deve validar UF, Endereço, Bairro
 	Given Pedido base
+	When Informo "Endereco_cnpj_cpf" = "14039603052"
 	When Informo "EndEtg_cidade" = "São Paulo"
 	When Informo "EndEtg_uf" = "MG"
 	When Informo "EndEtg_cep" = "01010900"
@@ -61,6 +62,7 @@ Scenario: Validacao - CEP que não existe na base - sucesso
 	When Informo "EndEtg_endereco_complemento" = "teste"
 	When Informo "EndEtg_bairro" = "teste"
 	Then Sem nenhum erro
+	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "14039603052", verificar campo "cep" = "01010900"
 	#pedido sem cadastrar o cliente
 	Given Pedido base
 	When Informo "EndEtg_cidade" = "São Paulo"

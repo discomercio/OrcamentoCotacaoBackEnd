@@ -22,8 +22,7 @@ Background: Configuracoes
 	When Informo "cnpj_cpf" = "29756194804"
 
 Scenario: Validacao - CEP vs endereco
-	Quando o magento verifica o CEP, dava este erro: Then Erro "Cidade não confere"
-	foi alterado para que a api do magento não faça a validação do CEP, então agora testamos pelo IGBE:
+	a api do magento faz a validação do CEP, então testamos pelo IGBE:
 	When Informo "EndEtg_cidade" = "Cidade não no IBGE"
 	Then Erro "Município 'Cidade não no IBGE' não consta na relação de municípios do IBGE para a UF de 'SP'!"
 
@@ -46,9 +45,11 @@ Scenario: Validacao - tamanho número 2
 	Then Sem erro "NÚMERO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES"
 
 Scenario: Validacao - tamanho complemento 2
-	#                                          10        20        30       40         50        60
-	When Informo "EndEtg_endereco_complemento" = "12345678901234567890123456789012345678901234567890123456789"
+	#                                                      10        20        30       40         50        60
+	When Informo "EndEtg_endereco_complemento" = "1234567890123456789012345678901234567890123456789012345678901"
 	Then Sem erro "COMPLEMENTO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES"
+	When Informo "EndEtg_endereco_complemento" = "12345678901234567890123456789012345678901234567890123456789"
+	Then Erro "COMPLEMENTO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES"
 
 Scenario: Validacao - tamanho bairro
 	When Informo "EndEtg_bairro" = "1234567890123456789012345678901234567890123456789012345678901"

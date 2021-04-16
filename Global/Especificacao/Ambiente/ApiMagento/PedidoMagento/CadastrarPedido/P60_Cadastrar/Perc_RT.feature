@@ -1,6 +1,8 @@
 ﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 Feature: Perc_RT
 	
+perc_rt: Lemos da T_CODIGO_DESCRICAO, procurar PedidoECommerce_Origem_Grupo. temos que ler conforme a origem e ler o valor percentual.
+ver PedidoNovoConfirma.asp '	OBTÉM O PERCENTUAL DE COMISSÃO DO MARKETPLACE
 
 Scenario: validação de Perc_RT
 	Given Pedido base
@@ -11,5 +13,6 @@ Scenario: validação de Perc_RT
 	And Informo "Frete" = "10.00"
 	When Lista de itens "0" informo "Preco_venda" = "610.58"
 	When Informo "appsettings.Loja" = "201"
+	And informar na T_CODIGO_DESCRICAO o perc_ret de 78.12
 	Then Sem nenhum erro
-	And Tabela "t_PEDIDO" registro criado, verificar campo "perc_RT" = "14.4"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "perc_RT" = "78.12"

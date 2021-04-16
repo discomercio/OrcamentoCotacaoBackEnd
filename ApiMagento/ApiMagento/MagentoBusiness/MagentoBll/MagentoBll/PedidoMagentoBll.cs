@@ -189,6 +189,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
 
             foreach (var y in pedidoMagento.ListaProdutos)
             {
+                //deu erro na hora de compilar com os novos DTOs
                 //Produto.Dados.ProdutoDados produto = (from c in lstProdutosUsados
                 //                                      where c.Fabricante == y.Fabricante && c.Produto == y.Produto
                 //                                      select c).FirstOrDefault();
