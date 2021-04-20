@@ -4,6 +4,7 @@ using PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto;
 using PrepedidoUnisBusiness.UnisDto.FormaPagtoUnisDto;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xunit;
 
@@ -51,15 +52,23 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 
         protected override void AbstractRecalcularTotaisDoPedido()
         {
-            //decimal totalCompare = 0;
-            //decimal totalRaCompare = 0;
-            //foreach (var x in pedidoMagentoDto.ListaProdutos)
-            //{
-            //    totalCompare += Math.Round((decimal)(x.Preco_Venda * x.Qtde), 2);
-            //    totalRaCompare += Math.Round((decimal)(x.Preco_NF * x.Qtde), 2);
-            //}
-            //pedidoMagentoDto.VlTotalDestePedido = totalCompare;
-            //nao temos este campo: pedidoMagentoDto.ValorTotalDestePedidoComRA = totalRaCompare;
+            decimal totalCompare = 0;
+            decimal totalRaCompare = 0;
+
+            foreach (var produto in pedidoMagentoDto.ListaProdutos)
+            {
+                //sabemos que os podutos tem quantidade = 2, 
+                //então vamos dividir por 2 para multiplicar pela quantidade informada e alterar os valores dos produtos
+                decimal subtotal_um_produto = Math.Round(produto.Subtotal / 2, 2);
+                decimal rowTotal_um_produto = Math.Round(produto.RowTotal / 2, 2);
+                produto.Subtotal = Math.Round(subtotal_um_produto * produto.Quantidade, 2);
+                produto.RowTotal = Math.Round(rowTotal_um_produto * produto.Quantidade, 2);
+
+            }
+            totalCompare = Math.Round(pedidoMagentoDto.ListaProdutos.Sum(x => x.Subtotal), 2);
+            totalRaCompare = Math.Round(pedidoMagentoDto.ListaProdutos.Sum(x => x.RowTotal), 2);
+            pedidoMagentoDto.TotaisPedido.Subtotal = totalCompare;
+            pedidoMagentoDto.TotaisPedido.GrandTotal = totalRaCompare;
         }
         protected override void AbstractListaDeItensComXitens(int numeroItens)
         {
@@ -148,6 +157,35 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
         {
             if (ignorarFeature) return;
             Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensInformo(numeroItem, campo, valor, this);
+            switch (campo)
+            {
+                case "Preco_venda":
+                case "Preco_Venda":
+                case "preco_venda":
+                    campo = "Subtotal";
+                    if (decimal.TryParse(valor, out decimal val))
+                        valor = (val * pedidoMagentoDto.ListaProdutos[numeroItem].Quantidade).ToString();
+                    break;
+                case "Preco_nf":
+                case "Preco_NF":
+                case "preco_nf":
+                case "preco_NF":
+                    campo = "RowTotal";
+                    if (decimal.TryParse(valor, out decimal value))
+                        valor = (value * pedidoMagentoDto.ListaProdutos[numeroItem].Quantidade).ToString();
+                    break;
+                case "Produto":
+                    campo = "Sku";
+                    break;
+                case "Qtde":
+                case "qtde":
+                    campo = "Quantidade";
+                    break;
+                case "fabricante":
+                case "Fabricante":
+                    return;
+
+            }
             var item = pedidoMagentoDto.ListaProdutos[numeroItem];
             if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, item))
                 return;
@@ -203,6 +241,19 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
                     pedidoMagentoDto.EnderecoEntrega ??= new MagentoBusiness.MagentoDto.ClienteMagentoDto.EnderecoEntregaClienteMagentoDto();
                     pedidoMagentoDto.EnderecoEntrega.EndEtg_tipo_pessoa = valor;
                     return;
+                //ajustes de nomes de campos para não alterar os testes já existentes
+                case "InfCriacaoPedido.Pedido_bs_x_marketplace":
+                    campo = "InfCriacaoPedido.Pedido_marketplace";
+                    break;
+                case "InfCriacaoPedido.Pedido_bs_x_ac":
+                    campo = "InfCriacaoPedido.Pedido_magento";
+                    break;
+                case "frete":
+                case "Frete":
+                    campo = "FreteBruto";
+                    break;
+
+                    //Os produtos foram alterados
             }
 
             //acertos em campos
@@ -217,6 +268,8 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, pedidoMagentoDto.EnderecoEntrega))
                 return;
             if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, pedidoMagentoDto.EnderecoCadastralCliente))
+                return;
+            if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, pedidoMagentoDto.TotaisPedido))
                 return;
 
             switch (campo)
@@ -270,9 +323,9 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             if (!string.IsNullOrEmpty(ultimo.IdPedidoCadastrado))
                 lstPedidos.Add(ultimo.IdPedidoCadastrado);
 
-            if(ultimo.IdsPedidosFilhotes.Count > 0)
+            if (ultimo.IdsPedidosFilhotes.Count > 0)
             {
-                foreach(var filhotes in ultimo.IdsPedidosFilhotes)
+                foreach (var filhotes in ultimo.IdsPedidosFilhotes)
                 {
                     lstPedidos.Add(filhotes);
                 }

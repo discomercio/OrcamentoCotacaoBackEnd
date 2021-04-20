@@ -388,7 +388,7 @@ Scenario: Preenche_os_campos_do_pedido - Marketplace e magento
 	Given Pedido base
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pedido_bs_x_at" = ""
-	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pedido_bs_x_marketplace" = ""
+	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pedido_bs_x_marketplace" = "null"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "marketplace_codigo_origem" = "001"
 
 Scenario: perc_desagio_RA_liquida - magento

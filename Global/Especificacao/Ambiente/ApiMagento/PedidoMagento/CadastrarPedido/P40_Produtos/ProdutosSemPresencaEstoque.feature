@@ -17,7 +17,7 @@ Scenario: PresencaEstoque - produto simples
 	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "123"
 	When Informo "Frete" = "10"
 	When Lista de itens com "1" itens
-	When Lista de itens "0" informo "Fabricante" = "001"
+	#When Lista de itens "0" informo "Fabricante" = "001"
 	When Lista de itens "0" informo "Produto" = "001000"
 	When Lista de itens "0" informo "Qtde" = "1"
 	When Lista de itens "0" informo "Preco_Venda" = "338.85"
@@ -30,6 +30,7 @@ Scenario: PresencaEstoque - produto simples
 	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "preco_venda" = "338.85"
 	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "preco_NF" = "340.00"
 
+@ignore
 Scenario: PresencaEstoque - produto composto
 	Given Pedido base
 	When Lista de itens com "2" itens
