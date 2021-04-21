@@ -193,93 +193,90 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.When("Lista de itens \"5\" informo \"RowTotal\" = \"899.03\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 40
- testRunner.When("Lista de itens \"6\" informo \"Fabricante\" = \"001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 41
  testRunner.When("Lista de itens \"6\" informo \"Sku\" = \"001006\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 42
+#line 41
  testRunner.When("Lista de itens \"6\" informo \"Quantidade\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 43
+#line 42
  testRunner.When("Lista de itens \"6\" informo \"Subtotal\" = \"471.91\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 44
+#line 43
  testRunner.When("Lista de itens \"6\" informo \"RowTotal\" = \"471.91\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 46
+#line 45
  testRunner.When("Lista de itens \"7\" informo \"Sku\" = \"001007\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 47
+#line 46
  testRunner.When("Lista de itens \"7\" informo \"Quantidade\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 48
+#line 47
  testRunner.When("Lista de itens \"7\" informo \"Subtotal\" = \"956.05\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 49
+#line 48
  testRunner.When("Lista de itens \"7\" informo \"RowTotal\" = \"956.05\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 51
+#line 50
  testRunner.When("Lista de itens \"8\" informo \"Sku\" = \"001008\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 52
+#line 51
  testRunner.When("Lista de itens \"8\" informo \"Quantidade\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 53
+#line 52
  testRunner.When("Lista de itens \"8\" informo \"Subtotal\" = \"597.30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 54
+#line 53
  testRunner.When("Lista de itens \"8\" informo \"RowTotal\" = \"597.30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 56
+#line 55
  testRunner.When("Lista de itens \"9\" informo \"Sku\" = \"001009\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 57
+#line 56
  testRunner.When("Lista de itens \"9\" informo \"Quantidade\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 58
+#line 57
  testRunner.When("Lista de itens \"9\" informo \"Subtotal\" = \"1210.63\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 59
+#line 58
  testRunner.When("Lista de itens \"9\" informo \"RowTotal\" = \"1210.63\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 61
+#line 60
  testRunner.When("Lista de itens \"12\" informo \"Sku\" = \"001012\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 62
+#line 61
  testRunner.When("Lista de itens \"12\" informo \"Quantidade\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 63
+#line 62
  testRunner.When("Lista de itens \"12\" informo \"Subtotal\" = \"835.54\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 64
+#line 63
  testRunner.When("Lista de itens \"12\" informo \"RowTotal\" = \"835.54\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 66
+#line 65
  testRunner.When("Lista de itens \"11\" informo \"Sku\" = \"001013\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 67
+#line 66
  testRunner.When("Lista de itens \"11\" informo \"Quantidade\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 68
+#line 67
  testRunner.When("Lista de itens \"11\" informo \"Subtotal\" = \"1918.50\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 69
+#line 68
  testRunner.When("Lista de itens \"11\" informo \"RowTotal\" = \"1918.50\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 71
+#line 70
  testRunner.When("Lista de itens \"10\" informo \"Sku\" = \"002000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 72
+#line 71
  testRunner.When("Lista de itens \"10\" informo \"Quantidade\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 73
+#line 72
  testRunner.When("Lista de itens \"10\" informo \"Subtotal\" = \"583.04\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 74
+#line 73
  testRunner.When("Lista de itens \"10\" informo \"RowTotal\" = \"583.04\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 76
+#line 75
  testRunner.Then("Erro \"São permitidos no máximo 12 itens por pedido.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -289,9 +286,11 @@ this.ScenarioInitialize(scenarioInfo);
         [Xunit.SkippableFactAttribute(DisplayName="QtdeMaxItens - excede qtde de itens com os produtos compostos")]
         [Xunit.TraitAttribute("FeatureTitle", "QtdeMaxItens")]
         [Xunit.TraitAttribute("Description", "QtdeMaxItens - excede qtde de itens com os produtos compostos")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void QtdeMaxItens_ExcedeQtdeDeItensComOsProdutosCompostos()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("QtdeMaxItens - excede qtde de itens com os produtos compostos", null, tagsOfScenario, argumentsOfScenario);
 #line 78

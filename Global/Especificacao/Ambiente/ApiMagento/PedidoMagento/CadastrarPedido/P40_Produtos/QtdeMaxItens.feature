@@ -37,7 +37,6 @@ Scenario: QtdeMaxItens - excede qtde de itens com os produtos já separados
 	When Lista de itens "5" informo "Subtotal" = "899.03"
 	When Lista de itens "5" informo "RowTotal" = "899.03"
 	#item 7
-	When Lista de itens "6" informo "Fabricante" = "001"
 	When Lista de itens "6" informo "Sku" = "001006"
 	When Lista de itens "6" informo "Quantidade" = "1"
 	When Lista de itens "6" informo "Subtotal" = "471.91"
@@ -75,6 +74,7 @@ Scenario: QtdeMaxItens - excede qtde de itens com os produtos já separados
 	#
 	Then Erro "São permitidos no máximo 12 itens por pedido."
 
+@ignore
 Scenario: QtdeMaxItens - excede qtde de itens com os produtos compostos
 	Given Pedido base
 	When Informo "appsettings.Loja" = "201"

@@ -11,12 +11,10 @@ Background:
 	And Informo "InfCriacaoPedido.Pedido_bs_x_marketplace" = "123"
 	And Informo "frete" = "10"
 	When Lista de itens com "1" itens
-	When Lista de itens "0" informo "Fabricante" = "001"
 	When Lista de itens "0" informo "Produto" = "001000"
 	When Lista de itens "0" informo "Qtde" = "2"
 	When Lista de itens "0" informo "Preco_Venda" = "509.24"
 	When Lista de itens "0" informo "Preco_NF" = "520.00"
-	#When Informo "VlTotalDestePedido" = "1018.48"
 	Given Reiniciar banco ao terminar cenário
 
 Scenario: COD_FORMA_PAGTO_PARCELA_UNICA - verifica campos na tabela t_PEDIDO

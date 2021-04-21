@@ -88,9 +88,11 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P60_Ca
         [Xunit.SkippableFactAttribute(DisplayName="validação de Perc_RT")]
         [Xunit.TraitAttribute("FeatureTitle", "Perc_RT")]
         [Xunit.TraitAttribute("Description", "validação de Perc_RT")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void ValidacaoDePerc_RT()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("validação de Perc_RT", null, tagsOfScenario, argumentsOfScenario);
 #line 7
@@ -137,10 +139,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 15
  testRunner.When("Informo \"appsettings.Loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 16
- testRunner.And("informar na T_CODIGO_DESCRICAO o perc_ret de 78.12", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 17
+#line 14
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 18

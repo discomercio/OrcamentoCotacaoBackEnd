@@ -45,11 +45,25 @@ Scenario: Validacao - tamanho número 2
 	Then Sem erro "NÚMERO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES"
 
 Scenario: Validacao - tamanho complemento 2
-	#                                                      10        20        30       40         50        60
+	#                                                      10        20        30        40        50        60
 	When Informo "EndEtg_endereco_complemento" = "1234567890123456789012345678901234567890123456789012345678901"
 	Then Sem erro "COMPLEMENTO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES"
+	Given Pedido base
+	When Informo "OutroEndereco" = "true"
+	When Informo "EndEtg_endereco" = "Rua Professor Fábio Fanucchi"
+	When Informo "EndEtg_endereco_numero" = "1"
+	When Informo "EndEtg_bairro" = "Jardim São Paulo(Zona Norte)"
+	When Informo "EndEtg_cidade" = "São Paulo"
+	When Informo "EndEtg_uf" = "SP"
+	When Informo "EndEtg_cep" = "02045080"
+	When Informo "EndEtg_nome" = "Vivian"
+	When Informo "EndEtg_tipo_pessoa" = "PF"
+	When Informo "EnderecoCadastralCliente.Endereco_tipo_pessoa" = "PF"
+	When Informo "EndEtg_cnpj_cpf" = "29756194804"
+	When Informo "cnpj_cpf" = "29756194804"
+	#                                                      10        20        30        40        50        60
 	When Informo "EndEtg_endereco_complemento" = "12345678901234567890123456789012345678901234567890123456789"
-	Then Erro "COMPLEMENTO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES"
+	Then Sem erro "COMPLEMENTO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES"
 
 Scenario: Validacao - tamanho bairro
 	When Informo "EndEtg_bairro" = "1234567890123456789012345678901234567890123456789012345678901"
@@ -101,4 +115,3 @@ Scenario: Validacao - tamanho cidade 2
 	#                                        10        20        30       40         50        60
 	When Informo "EndEtg_cidade" = "1234567890123456789012345678901234567890123456789012345678901"
 	Then Erro "CIDADE EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES"
-

@@ -65,6 +65,8 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
              * por isso, criei essa váriavel precoListaBase
              */
             decimal? precoListaBase = Math.Round((produtoDados.Preco_lista ?? 0) * (decimal)coeficiente, 2);
+            decimal preco_venda = produtoDto.Subtotal / (produtoDto.Quantidade == 0 ? 1 : produtoDto.Quantidade);
+            decimal preco_nf = produtoDto.RowTotal / (produtoDto.Quantidade == 0 ? 1 : produtoDto.Quantidade);
 
             var ret = new Pedido.Dados.Criacao.PedidoCriacaoProdutoDados(
                 fabricante: produtoDados.Fabricante,
@@ -72,9 +74,9 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                 qtde: produtoDto.Quantidade,
                 custoFinancFornecPrecoListaBase_Conferencia: produtoDados.Preco_lista ?? 0,
                 preco_Lista: Math.Round((produtoDados.Preco_lista ?? 0) * (decimal)coeficiente, 2),//tinha um erro aqui - não estava calculando corretamente
-                desc_Dado: (float)(100 * ((precoListaBase ?? 0) - 0 /*produtoDto.Preco_Venda*/) / (precoListaBase ?? 0)),
-                preco_Venda: 0, //produtoDto.Preco_Venda,
-                preco_NF: 0, //produtoDto.Preco_NF,
+                desc_Dado: (float)(100 * ((precoListaBase ?? 0) - preco_venda) / (precoListaBase ?? 0)),
+                preco_Venda: preco_venda,
+                preco_NF: preco_nf,
                 custoFinancFornecCoeficiente_Conferencia: coeficiente,
                 //no magento não validamos se o estoque mudou
                 qtde_spe_usuario_aceitou: null

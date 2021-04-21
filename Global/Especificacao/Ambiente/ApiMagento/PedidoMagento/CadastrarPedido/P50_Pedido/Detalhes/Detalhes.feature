@@ -15,4 +15,4 @@ Scenario: DetalhesPedidoMagentoDto
 	And Tabela "t_PEDIDO" registro criado, verificar campo "PrevisaoEntregaData" = "null"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "StBemUsoConsumo" = "1"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "InstaladorInstalaStatus" = "1"
-	And Tabela "t_PEDIDO" registro criado, verificar campo "GarantiaIndicador" = "0"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "GarantiaIndicadorStatus" = "0"
