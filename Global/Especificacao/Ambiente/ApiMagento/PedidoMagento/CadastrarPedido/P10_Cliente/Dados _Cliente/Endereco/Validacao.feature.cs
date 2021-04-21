@@ -434,19 +434,11 @@ this.FeatureBackground();
 #line hidden
 #line 65
  testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"1234567890123456789012345678901234567890" +
-                        "123456789012345678901\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                        "1234567890123456789\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 66
  testRunner.Then("Sem erro \"COMPLEMENTO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CAR" +
                         "ACTERES<br>TAMANHO MÁXIMO: 60 CARACTERES\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 51
- testRunner.When("Informo \"EndEtg_endereco_complemento\" = \"1234567890123456789012345678901234567890" +
-                        "1234567890123456789\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 52
- testRunner.Then("Erro \"COMPLEMENTO EXCEDE O TAMANHO MÁXIMO PERMITIDO:<br>TAMANHO ATUAL: 61 CARACTE" +
-                        "RES<br>TAMANHO MÁXIMO: 60 CARACTERES\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -650,7 +642,7 @@ this.FeatureBackground();
 #line 95
  testRunner.When("Informo \"EndEtg_nome\" = \"Vivian\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 81
+#line 96
  testRunner.When("Informo \"EndEtg_tipo_pessoa\" = \"PF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 97

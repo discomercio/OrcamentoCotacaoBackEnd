@@ -44,7 +44,23 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoSt
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FluxoAlterarMagentoPedidoStatus", null, ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FluxoAlterarMagentoPedidoStatus", @"Status:
+1 = aprovação pendente (pedido cadastrado e pagamento não confirmado)
+2 = aprovado (pagamento confirmado)
+3 = rejeitado (pedido cancelado)
+
+Fluxo:
+	Verificar se o Pedido_magento existe
+	Se o pedido ou qualquer filhote estiver com status = cancelado ou entregue, não podemos mexer no pedido. 
+		Se acontecer, mandar email para karina e retornar erro.
+	Transições possíveis: de 1 para 2, de 1 para 3. Qualquer outra transição resulta em erro.
+
+	gravar campo na t_pedido
+	Na transição de status, incluir um bloco de notas no pedido e também um log
+??????????	  campo controlado somente pelo pedido pai
+      possíveis:
+      - aprovado -> quando for para aprovado, passa para analise_credito = credito_ok se o marketplace permitir (ver o fluxo de criação do pedido)
+      - rejeitado -> cancelamos automaticamente o pedido, ter um flag por marketplace para habilitar o cancelamento automático (definr o flag em t_codigo_descricao)", ProgrammingLanguage.CSharp, new string[] {
                         "ignore",
                         "Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoStatus"});
             testRunner.OnFeatureStart(featureInfo);
@@ -94,7 +110,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoSt
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("AlterarMagentoPedidoStatus", null, tagsOfScenario, argumentsOfScenario);
-#line 5
+#line 23
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -114,7 +130,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 6
+#line 24
  testRunner.Then("afazer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

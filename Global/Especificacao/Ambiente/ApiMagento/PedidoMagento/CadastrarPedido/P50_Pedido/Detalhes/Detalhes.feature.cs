@@ -137,6 +137,10 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"InstaladorInstalaStatus\" = \"1" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 18
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"GarantiaIndicadorStatus\" = \"0" +
+                        "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
             }
             this.ScenarioCleanup();
         }
