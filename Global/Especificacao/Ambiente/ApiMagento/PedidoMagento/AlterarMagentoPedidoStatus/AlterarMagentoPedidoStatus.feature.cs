@@ -58,8 +58,6 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoSt
       - aprovado -> quando for para aprovado, passa para analise_credito = credito_ok se o marketplace permitir (ver o fluxo de criação do pedido)
       - rejeitado -> cancelamos automaticamente o pedido, ter um flag por marketplace para habilitar o 
 	     cancelamento automático (definr o flag em t_codigo_descricao)
-	  existe rotina em c# que faz o cancelamento automático!! em C:\Users\Eduardo.Perez\source\repos\arclube\colors\Modulos\FinanceiroService
- 	  ver com o hamilton se devemos reutlizar o código e o quanto. não está em entity. está organziado para ser um serviço.
       Talvez: colocar um bloco na tela inicial do verdinho listando os pedidos parados em aprovação pendente há mais de X dias.
       ter mais um status de analise de crédito: esperando aprovação pelo magento.", ProgrammingLanguage.CSharp, new string[] {
                         "Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoStatus"});
@@ -111,7 +109,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoSt
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("AlterarMagentoPedidoStatus - aprovacao pendente", "\taprovação pendente -> analise_credito = esperando aprovação pelo magento (o novo" +
                     " status)", tagsOfScenario, argumentsOfScenario);
-#line 24
+#line 22
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -131,7 +129,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 26
+#line 24
  testRunner.Then("Sem nenhum Erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -147,7 +145,7 @@ this.ScenarioInitialize(scenarioInfo);
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("AlterarMagentoPedidoStatus - aprovado", "\taprovado -> quando for para aprovado, \r\n\tpassa para analise_credito = credito_ok" +
                     " se o marketplace permitir (ver o fluxo de criação do pedido)", tagsOfScenario, argumentsOfScenario);
-#line 28
+#line 26
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -167,7 +165,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 31
+#line 29
  testRunner.Then("Sem nenhum Erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -183,7 +181,7 @@ this.ScenarioInitialize(scenarioInfo);
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("AlterarMagentoPedidoStatus - rejeitado", "\trejeitado -> cancelamos automaticamente o pedido, ter um flag por marketplace pa" +
                     "ra habilitar o \r\n\tcancelamento automático (definr o flag em t_codigo_descricao)", tagsOfScenario, argumentsOfScenario);
-#line 33
+#line 31
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -203,7 +201,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 36
+#line 34
  testRunner.Then("Sem nenhum Erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -219,7 +217,7 @@ this.ScenarioInitialize(scenarioInfo);
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("AlterarMagentoPedidoStatus - pedido cancelado", "\tse o pedido estiver com status = cancelado, não podemos mexer no pedido. Se acon" +
                     "tecer, \r\n\tmandar email para karina e retornar erro.", tagsOfScenario, argumentsOfScenario);
-#line 38
+#line 36
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -239,7 +237,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 41
+#line 39
  testRunner.Then("Sem nenhum Erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -255,7 +253,7 @@ this.ScenarioInitialize(scenarioInfo);
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("AlterarMagentoPedidoStatus - pedido entregue", "\tse o pedido estiver com status = entregue, não podemos mexer no pedido. Se acont" +
                     "ecer, \r\n\tmandar email para karina e retornar erro.", tagsOfScenario, argumentsOfScenario);
-#line 43
+#line 41
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -275,7 +273,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 46
+#line 44
  testRunner.Then("Sem nenhum Erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -290,7 +288,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("AlterarMagentoPedidoStatus - verificar bloco de notas no pedido", "\tna transição de status, incluir um bloco de notas no pedido", tagsOfScenario, argumentsOfScenario);
-#line 48
+#line 46
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -310,7 +308,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 50
+#line 48
  testRunner.Then("Sem nenhum Erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -325,7 +323,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("AlterarMagentoPedidoStatus - verificar log", "\tna transição de status, insere log", tagsOfScenario, argumentsOfScenario);
-#line 52
+#line 50
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -345,7 +343,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 54
+#line 52
  testRunner.Then("Sem nenhum Erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

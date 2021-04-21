@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoStatus
+namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P60_Cadastrar
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,21 +19,19 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoSt
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoStatus")]
-    public partial class FluxoAlterarMagentoPedidoStatusFeature : object, Xunit.IClassFixture<FluxoAlterarMagentoPedidoStatusFeature.FixtureData>, System.IDisposable
+    public partial class MagentoPedidoStatus_Na_T_PEDIDOFeature : object, Xunit.IClassFixture<MagentoPedidoStatus_Na_T_PEDIDOFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = new string[] {
-                "Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoStatus"};
+        private string[] _featureTags = ((string[])(null));
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "FluxoAlterarMagentoPedidoStatus.feature"
+#line 1 "MagentoPedidoStatus_na_t_PEDIDO.feature"
 #line hidden
         
-        public FluxoAlterarMagentoPedidoStatusFeature(FluxoAlterarMagentoPedidoStatusFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public MagentoPedidoStatus_Na_T_PEDIDOFeature(MagentoPedidoStatus_Na_T_PEDIDOFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,24 +40,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoSt
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FluxoAlterarMagentoPedidoStatus", @"Status:
-1 = aprovação pendente (pedido cadastrado e pagamento não confirmado)
-2 = aprovado (pagamento confirmado)
-3 = rejeitado (pedido cancelado)
-
-Fluxo:
-	Verificar se o Pedido_magento existe
-	Se o pedido ou qualquer filhote estiver com status = cancelado ou entregue, não podemos mexer no pedido. 
-		Se acontecer, mandar email para karina e retornar erro.
-	Transições possíveis: de 1 para 2, de 1 para 3. Qualquer outra transição resulta em erro.
-
-	gravar campo na t_pedido
-	Na transição de status, incluir um bloco de notas no pedido e também um log
-??????????	  campo controlado somente pelo pedido pai
-      possíveis:
-      - aprovado -> quando for para aprovado, passa para analise_credito = credito_ok se o marketplace permitir (ver o fluxo de criação do pedido)
-      - rejeitado -> cancelamos automaticamente o pedido, ter um flag por marketplace para habilitar o cancelamento automático (definr o flag em t_codigo_descricao)", ProgrammingLanguage.CSharp, new string[] {
-                        "Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoStatus"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "MagentoPedidoStatus_na_t_PEDIDO", "gravar campo MagentoPedidoStatus na t_PEDIDO", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -99,15 +80,15 @@ Fluxo:
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="AlterarMagentoPedidoStatus")]
-        [Xunit.TraitAttribute("FeatureTitle", "FluxoAlterarMagentoPedidoStatus")]
-        [Xunit.TraitAttribute("Description", "AlterarMagentoPedidoStatus")]
-        public virtual void AlterarMagentoPedidoStatus()
+        [Xunit.SkippableFactAttribute(DisplayName="MagentoPedidoStatus_na_t_PEDIDO")]
+        [Xunit.TraitAttribute("FeatureTitle", "MagentoPedidoStatus_na_t_PEDIDO")]
+        [Xunit.TraitAttribute("Description", "MagentoPedidoStatus_na_t_PEDIDO")]
+        public virtual void MagentoPedidoStatus_Na_T_PEDIDO()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("AlterarMagentoPedidoStatus", null, tagsOfScenario, argumentsOfScenario);
-#line 22
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MagentoPedidoStatus_na_t_PEDIDO", null, tagsOfScenario, argumentsOfScenario);
+#line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -127,8 +108,8 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 23
- testRunner.Then("afazer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 5
+ testRunner.Given("Fazer este teste", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -141,12 +122,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                FluxoAlterarMagentoPedidoStatusFeature.FeatureSetup();
+                MagentoPedidoStatus_Na_T_PEDIDOFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                FluxoAlterarMagentoPedidoStatusFeature.FeatureTearDown();
+                MagentoPedidoStatus_Na_T_PEDIDOFeature.FeatureTearDown();
             }
         }
     }

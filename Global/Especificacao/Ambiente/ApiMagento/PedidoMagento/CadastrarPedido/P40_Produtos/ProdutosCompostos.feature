@@ -5,6 +5,11 @@ Feature: ProdutosCompostos
 	Verifica se a Api Magento está aceitando o pedido com produtos compostos.
 	O Magento pode enviar os produtos compostos para que a ApiMagento faça a separação dos produtos compostos antes de inserir o pedido
 
+SKU:	001090	
+É composto por:	
+001 / 001000	x 1
+001 / 001001	x 1
+
 Scenario: ProdutosCompostos - Sucesso
 	#Um produto composto (1090) sendo dividido em dois
 	Given Pedido base

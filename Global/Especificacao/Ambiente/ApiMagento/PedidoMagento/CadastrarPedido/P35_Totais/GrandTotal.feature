@@ -2,10 +2,11 @@
 @Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 @GerenciamentoBanco
 Feature: GrandTotal
-	GrandTotal: 
-	Iremos fazer 2 validações
-	1) PedidoTotaisMagentoDto.Subtotal - PedidoTotaisMagentoDto.DiscountAmount + PedidoTotaisMagentoDto.FreteBruto = PedidoTotaisMagentoDto.GrandTotal
-	2) Somar o campo PedidoProdutoMagentoDto.RowTotal da lista de produtos incluindo serviços + PedidoTotaisMagentoDto.FreteBruto = PedidoTotaisMagentoDto.GrandTotal
+PedidoTotaisMagentoDto.GrandTotal = 
+	PedidoTotaisMagentoDto.Subtotal
+	+ PedidoTotaisMagentoDto.FreteBruto
+	- PedidoTotaisMagentoDto.DiscountAmount
+	dentro do arredondamento
 
 Scenario: GrandTotal - sucesso
 	Given Pedido base

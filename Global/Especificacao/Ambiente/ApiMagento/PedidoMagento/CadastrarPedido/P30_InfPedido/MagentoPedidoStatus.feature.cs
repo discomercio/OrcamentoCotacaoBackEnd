@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido.Passo30
+namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P30_InfPedido
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,21 +19,19 @@ namespace Especificacao.Especificacao.Pedido.Passo30
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.PedidoFaltandoImplementarSteps")]
-    public partial class CamposMagentoNaoAceitosFeature : object, Xunit.IClassFixture<CamposMagentoNaoAceitosFeature.FixtureData>, System.IDisposable
+    public partial class MagentoPedidoStatusFeature : object, Xunit.IClassFixture<MagentoPedidoStatusFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = new string[] {
-                "Especificacao.Pedido.PedidoFaltandoImplementarSteps"};
+        private string[] _featureTags = ((string[])(null));
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "CamposMagentoNaoAceitos.feature"
+#line 1 "MagentoPedidoStatus.feature"
 #line hidden
         
-        public CamposMagentoNaoAceitosFeature(CamposMagentoNaoAceitosFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public MagentoPedidoStatusFeature(MagentoPedidoStatusFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,8 +40,10 @@ namespace Especificacao.Especificacao.Pedido.Passo30
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "CamposMagentoNaoAceitos", null, ProgrammingLanguage.CSharp, new string[] {
-                        "Especificacao.Pedido.PedidoFaltandoImplementarSteps"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "MagentoPedidoStatus", @"	MagentoPedidoStatus deve ser aprovado ou aprovação pendente
+	Gravar campo MagentoPedidoStatus na t_PEDIDO
+      - aprovação pendente -> analise_credito = esperando aprovação pelo magento (o novo status)
+      - aprovado -> analise_credito = credito_ok se o marketplace permitir (ver o fluxo de criação do pedido)", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -78,29 +78,92 @@ namespace Especificacao.Especificacao.Pedido.Passo30
             testRunner.CollectScenarioErrors();
         }
         
-        public virtual void FeatureBackground()
-        {
-#line 7
-#line hidden
-#line 11
- testRunner.Given("Ignorar cenário no ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Ca" +
-                    "dastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-        }
-        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Configurações da loja 201")]
-        [Xunit.TraitAttribute("FeatureTitle", "CamposMagentoNaoAceitos")]
-        [Xunit.TraitAttribute("Description", "Configurações da loja 201")]
-        public virtual void ConfiguracoesDaLoja201()
+        [Xunit.SkippableFactAttribute(DisplayName="MagentoPedidoStatus deve ser aprovado ou aprovação pendente")]
+        [Xunit.TraitAttribute("FeatureTitle", "MagentoPedidoStatus")]
+        [Xunit.TraitAttribute("Description", "MagentoPedidoStatus deve ser aprovado ou aprovação pendente")]
+        public virtual void MagentoPedidoStatusDeveSerAprovadoOuAprovacaoPendente()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Configurações da loja 201", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MagentoPedidoStatus deve ser aprovado ou aprovação pendente", null, tagsOfScenario, argumentsOfScenario);
+#line 7
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 8
+ testRunner.Given("Fazer este teste", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Gravar campo MagentoPedidoStatus na t_PEDIDO")]
+        [Xunit.TraitAttribute("FeatureTitle", "MagentoPedidoStatus")]
+        [Xunit.TraitAttribute("Description", "Gravar campo MagentoPedidoStatus na t_PEDIDO")]
+        public virtual void GravarCampoMagentoPedidoStatusNaT_PEDIDO()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Gravar campo MagentoPedidoStatus na t_PEDIDO", null, tagsOfScenario, argumentsOfScenario);
+#line 10
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 11
+ testRunner.Given("Fazer este teste", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="aprovação pendente -> analise_credito = esperando aprovação pelo magento (o novo " +
+            "status)")]
+        [Xunit.TraitAttribute("FeatureTitle", "MagentoPedidoStatus")]
+        [Xunit.TraitAttribute("Description", "aprovação pendente -> analise_credito = esperando aprovação pelo magento (o novo " +
+            "status)")]
+        public virtual void AprovacaoPendente_Analise_CreditoEsperandoAprovacaoPeloMagentoONovoStatus()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("aprovação pendente -> analise_credito = esperando aprovação pelo magento (o novo " +
+                    "status)", null, tagsOfScenario, argumentsOfScenario);
 #line 13
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -121,167 +184,46 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 7
-this.FeatureBackground();
-#line hidden
 #line 14
- testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Fazer este teste", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="InfCriacaoPedido.Pedido_bs_x_ac")]
-        [Xunit.TraitAttribute("FeatureTitle", "CamposMagentoNaoAceitos")]
-        [Xunit.TraitAttribute("Description", "InfCriacaoPedido.Pedido_bs_x_ac")]
-        public virtual void InfCriacaoPedido_Pedido_Bs_X_Ac()
+        [Xunit.SkippableFactAttribute(DisplayName="aprovado -> analise_credito = credito_ok se o marketplace permitir (ver o fluxo d" +
+            "e criação do pedido)")]
+        [Xunit.TraitAttribute("FeatureTitle", "MagentoPedidoStatus")]
+        [Xunit.TraitAttribute("Description", "aprovado -> analise_credito = credito_ok se o marketplace permitir (ver o fluxo d" +
+            "e criação do pedido)")]
+        public virtual void Aprovado_Analise_CreditoCredito_OkSeOMarketplacePermitirVerOFluxoDeCriacaoDoPedido()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("InfCriacaoPedido.Pedido_bs_x_ac", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("aprovado -> analise_credito = credito_ok se o marketplace permitir (ver o fluxo d" +
+                    "e criação do pedido)", "se não, fica em qual status???", tagsOfScenario, argumentsOfScenario);
+#line 16
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
 #line 18
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 7
-this.FeatureBackground();
-#line hidden
-#line 19
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 20
- testRunner.When("Informo \"appsettings.Loja\" = \"212\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 21
- testRunner.And("Informo \"InfCriacaoPedido.Marketplace_codigo_origem\" = \"001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 22
- testRunner.And("Informo \"InfCriacaoPedido.Pedido_bs_x_ac\" = \"223456799\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 23
- testRunner.Then("Erro \"O campo Pedido_bs_x_ac não pode ser informado se loja != 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="InfCriacaoPedido.Pedido_bs_x_marketplace")]
-        [Xunit.TraitAttribute("FeatureTitle", "CamposMagentoNaoAceitos")]
-        [Xunit.TraitAttribute("Description", "InfCriacaoPedido.Pedido_bs_x_marketplace")]
-        public virtual void InfCriacaoPedido_Pedido_Bs_X_Marketplace()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("InfCriacaoPedido.Pedido_bs_x_marketplace", null, tagsOfScenario, argumentsOfScenario);
-#line 25
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 7
-this.FeatureBackground();
-#line hidden
-#line 26
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 27
- testRunner.When("Informo \"appsettings.Loja\" = \"212\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 28
- testRunner.And("Informo \"InfCriacaoPedido.Marketplace_codigo_origem\" = \"010\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 29
- testRunner.And("Informo \"InfCriacaoPedido.Pedido_bs_x_ac\" = \"212456799\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 30
- testRunner.And("Informo \"InfCriacaoPedido.Pedido_bs_x_marketplace\" = \"846\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 31
- testRunner.Then("Erro \"O campo Pedido_bs_x_marketplace não pode ser informado se loja != 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="InfCriacaoPedido.Marketplace_codigo_origem")]
-        [Xunit.TraitAttribute("FeatureTitle", "CamposMagentoNaoAceitos")]
-        [Xunit.TraitAttribute("Description", "InfCriacaoPedido.Marketplace_codigo_origem")]
-        public virtual void InfCriacaoPedido_Marketplace_Codigo_Origem()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("InfCriacaoPedido.Marketplace_codigo_origem", null, tagsOfScenario, argumentsOfScenario);
-#line 33
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 7
-this.FeatureBackground();
-#line hidden
-#line 34
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 35
- testRunner.When("Informo \"appsettings.Loja\" = \"212\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 36
- testRunner.And("Informo \"InfCriacaoPedido.Marketplace_codigo_origem\" = \"010\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 37
- testRunner.And("Informo \"InfCriacaoPedido.Pedido_bs_x_ac\" = \"987654123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 38
- testRunner.And("Informo \"InfCriacaoPedido.Pedido_bs_x_marketplace\" = \"946\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 39
- testRunner.Then("Erro \"O campo Marketplace_codigo_origem não pode ser informado se loja != 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("Fazer este teste", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -294,12 +236,12 @@ this.FeatureBackground();
             
             public FixtureData()
             {
-                CamposMagentoNaoAceitosFeature.FeatureSetup();
+                MagentoPedidoStatusFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                CamposMagentoNaoAceitosFeature.FeatureTearDown();
+                MagentoPedidoStatusFeature.FeatureTearDown();
             }
         }
     }

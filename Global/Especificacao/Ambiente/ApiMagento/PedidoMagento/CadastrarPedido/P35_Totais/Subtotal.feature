@@ -2,8 +2,10 @@
 @Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 @GerenciamentoBanco
 Feature: Subtotal
-	Subtotal: Somar o campo Subtotal da lista de produtos incluindo os serviços
-	Ex: PedidoProdutoMagentoDto.Subtotal = PedidoTotaisMagentoDto.Subtotal
+	Subtotal: Somar o campo Subtotal da lista de produtos (incluindo os serviços)
+	PedidoTotaisMagentoDto.Subtotal = 
+		soma de PedidoProdutoMagentoDto.Subtotal
+		+ soma de PedidoServicoMagentoDto.Subtotal
 
 Scenario: Subtotal - sucesso
 	Given Pedido base

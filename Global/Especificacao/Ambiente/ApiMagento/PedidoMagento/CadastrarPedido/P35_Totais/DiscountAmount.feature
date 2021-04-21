@@ -3,7 +3,11 @@
 @GerenciamentoBanco
 Feature: DiscountAmount
 	DiscountAmount: Somar o campo DiscountAmount da lista de produtos incluindo serviços + o valor de desconto do frete.
-	Ex: PedidoProdutoMagentoDto.DiscountAmount + PedidoTotaisMagentoDto.DescontoFrete = PedidoTotaisMagentoDto.DiscountAmount
+	PedidoTotaisMagentoDto.DiscountAmount = 
+		soma de PedidoProdutoMagentoDto.DiscountAmount 
+		+ soma de PedidoServicoMagentoDto.DiscountAmount 
+		+ PedidoTotaisMagentoDto.DescontoFrete
+		dentro do arredondamento
 
 Scenario: DiscountAmount - sucesso
 	Given Pedido base

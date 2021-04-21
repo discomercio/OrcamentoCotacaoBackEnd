@@ -50,9 +50,9 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         /// <summary>
         /// Opção da forma de pagamento para tipo A Vista 
         /// <br/>
-        /// Orbigatório se Tipo_Parcelamento = COD_FORMA_PAGTO_A_VISTA = "1",
+        /// Obrigatório se Tipo_Parcelamento = COD_FORMA_PAGTO_A_VISTA = "1", o valor "6" significa "Boleto - conforme campo id da tabela t_FORMA_PAGTO".
         /// <br/>
-        /// Caso contrário, deve zer vazio.
+        /// Se Tipo_Parcelamento != COD_FORMA_PAGTO_A_VISTA , deve zer vazio.
         /// <hr />
         /// </summary>
         [MaxLength(1)]
