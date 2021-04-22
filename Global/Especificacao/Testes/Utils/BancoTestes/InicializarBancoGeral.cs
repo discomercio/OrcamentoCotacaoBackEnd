@@ -102,8 +102,18 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 InicializarTabela<Tproduto>(db.Tprodutos, "Tproduto", db, apagarDadosExistentes);
                 InicializarTabela<TprodutoLoja>(db.TprodutoLojas, "TprodutoLoja", db, apagarDadosExistentes);
                 InicializarTabela<TprodutoXwmsRegraCd>(db.TprodutoXwmsRegraCds, "TprodutoXwmsRegraCd", db, apagarDadosExistentes);
+                db.SaveChanges();
+                db.transacao.Commit();
+            }
+            using (var db = contextoBdProvider.GetContextoGravacaoParaUsing())
+            {
                 InicializarTabela<Tusuario>(db.Tusuarios, "Tusuario", db, apagarDadosExistentes);
                 InicializarTabela<TwmsRegraCd>(db.TwmsRegraCds, "TwmsRegraCd", db, apagarDadosExistentes);
+                db.SaveChanges();
+                db.transacao.Commit();
+            }
+            using (var db = contextoBdProvider.GetContextoGravacaoParaUsing())
+            {
                 InicializarTabela<TwmsRegraCdXUf>(db.TwmsRegraCdXUfs, "TwmsRegraCdXUf", db, apagarDadosExistentes);
                 InicializarTabela<TwmsRegraCdXUfPessoa>(db.TwmsRegraCdXUfPessoas, "TwmsRegraCdXUfPessoa", db, apagarDadosExistentes);
                 InicializarTabela<TwmsRegraCdXUfXPessoaXCd>(db.TwmsRegraCdXUfXPessoaXCds, "TwmsRegraCdXUfXPessoaXCd", db, apagarDadosExistentes);
@@ -171,7 +181,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 Apelido = Dados.Orcamentista.Apelido_com_ra.ToUpper(),
                 Vendedor = Dados.Orcamentista.Apelido_com_ra.ToUpper(),
                 Loja = Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE,
-                Razao_Social_Nome= "Teste",
+                Razao_Social_Nome = "Teste",
                 Permite_RA_Status = 1
             });
             db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()

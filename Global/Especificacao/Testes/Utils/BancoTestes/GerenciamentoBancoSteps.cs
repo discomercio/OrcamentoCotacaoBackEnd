@@ -162,7 +162,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
 
             var db = this.contextoBdProvider.GetContextoLeitura();
             var registros = (from registro in db.TestoqueMovimentos
-                             where registro.Pedido.Contains(pedido) &&
+                             where registro.Pedido == pedido &&
                                    registro.Produto == item.Produto &&
                                    registro.Fabricante == item.Fabricante &&
                                    registro.Estoque == tipo_estoque.ToUpper()
@@ -460,7 +460,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
                                   select c).ToList();
                 Assert.True(registros2.Any());
 
-                foreach(var registro2 in registros2)
+                foreach (var registro2 in registros2)
                 {
                     VerificarCampoEmRegistro.VerificarRegistro<TpedidoAnaliseEnderecoConfrontacao>(campo, valor, registro2);
                 }
@@ -526,7 +526,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         public void GivenTabelaT_CODIGO_DESCRICAORegistroComCampoGrupoECodigoParametro__Campo_Flag(string grupo, string codigo, string campo, string valor)
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("T_CODIGO_DESCRICAO", "apelido", valor, this);
-            var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
             var registro = (from r in db.TcodigoDescricaos
                             where r.Grupo == grupo &&
                                   r.Codigo == codigo
@@ -548,7 +548,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_ORCAMENTISTA_E_INDICADOR", "apelido", valor, this);
 
-            var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
             var registro = (from orcamentista in db.TorcamentistaEindicadors
                             where orcamentista.Apelido.ToUpper() == apelido.ToUpper()
                             select orcamentista).FirstOrDefault();
@@ -568,7 +568,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_CLIENTE", "cpf_cnpj", valor, this);
 
-            var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
             var registro = (from cliente in db.Tclientes
                             where cliente.Cnpj_Cpf == valor_cnpj_cpf
                             select cliente).FirstOrDefault();
@@ -588,7 +588,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_LOJA", "loja", valor, this);
 
-            var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
             var registro = (from loja in db.Tlojas
                             where loja.Loja == valor_loja
                             select loja).FirstOrDefault();
@@ -608,7 +608,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_PARAMETRO", "loja", valor, this);
 
-            var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
             var registro = (from parametro in db.Tparametros
                             where parametro.Id == valor_id
                             select parametro).FirstOrDefault();
@@ -627,7 +627,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         public void TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteAlterarRegistroDoCampo(string fabricante, string produto, string campo, string valor)
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_PRODUTO_X_WMS_REGRA_CD", campo, valor, this);
-            var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
             var registro = (from prodRegraCd in db.TprodutoXwmsRegraCds
                             where prodRegraCd.Fabricante == fabricante &&
                                   prodRegraCd.Produto == produto
@@ -648,7 +648,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         {
             //Não podemos duplicar um produto, porque fabricante e produto são chaves
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.GravarRegistroEm("t_PRODUTO_X_WMS_REGRA_CD", this);
-            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
 
             var registro = (from prodRegraCd in db.TprodutoXwmsRegraCds
                             where prodRegraCd.Fabricante == fabricante &&
@@ -671,7 +671,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         public void GivenTabelaT_PRODUTO_X_WMS_REGRA_CDApagarRegistroDoFabricante(string fabricante, string produto)
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaApagarRegistroComCampo("t_PRODUTO_X_WMS_REGRA_CD", "fabricante e produto", "Fabricante:(" + fabricante + ") e produto:(" + produto + ")", this);
-            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
 
             var registro = (from prodRegraCd in db.TprodutoXwmsRegraCds
                             where prodRegraCd.Fabricante == fabricante &&
@@ -687,7 +687,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         public void GivenTabelaT_WMS_REGRA_CDApagarRegistroDoFabricante(string fabricante, string produto)
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaApagarRegistroComCampo("t_WMS_REGRA_CD", "fabricante e produto", "Fabricante:(" + fabricante + ") e produto:(" + produto + ")", this);
-            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
 
             var t_produtoXwmsRegraCds = (from prodRegraCd in db.TprodutoXwmsRegraCds
                                          where prodRegraCd.Fabricante == fabricante &&
@@ -710,7 +710,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         public void GivenTabelaT_WMS_REGRA_CD_X_UFApagarRegistroDoId_Wms_Regra_CdDaUF(int id_wms_regra_cd, string uf)
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaApagarRegistroComCampo("t_WMS_REGRA_CD_X_UF", "id_wms_regra_cd e UF", "id_wms_regra_cd:(" + id_wms_regra_cd + ") e UF:(" + uf + ")", this);
-            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
 
             var registros = (from regraCdUF in db.TwmsRegraCdXUfs
                              where regraCdUF.Id_wms_regra_cd == id_wms_regra_cd &&
@@ -731,7 +731,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             if (Testes.Utils.InjecaoDependencia.ProvedorServicos.UsarSqlServerNosTestesAutomatizados)
                 return;
 
-            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
 
             var registro = (from regraCdUF in db.TwmsRegraCdXUfs
                             where regraCdUF.Id_wms_regra_cd == id_wms_regra_cd &&
@@ -758,7 +758,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         public void GivenTabelaT_WMS_REGRA_CD_X_UF_X_PESSOAApagarRegistroId_Wms_Regra_Cd_X_UfPF(int id, string tipo_pessoa)
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaApagarRegistroComCampo("t_WMS_REGRA_CD_X_UF_X_PESSOA", "id e tipo pessoa", "id_wms_regra_cd_x_uf:(" + id + ") e tipo pessoa:(" + tipo_pessoa + ")", this);
-            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
 
             var registros = (from regraCdUFPessoa in db.TwmsRegraCdXUfPessoas
                              where regraCdUFPessoa.Id_wms_regra_cd_x_uf == id &&
@@ -780,7 +780,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             if (Testes.Utils.InjecaoDependencia.ProvedorServicos.UsarSqlServerNosTestesAutomatizados)
                 return;
 
-            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
 
             var registro = (from regraCdUFPessoa in db.TwmsRegraCdXUfPessoas
                             where regraCdUFPessoa.Id_wms_regra_cd_x_uf == Id_wms_regra_cd_x_uf &&
@@ -807,7 +807,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         public void GivenTabelaT_WMS_REGRA_CD_X_UF_X_PESSOARegistroId_Wms_Regra_Cd_X_UfETipoDePessoaAlterarCampo(int id_wms_regra_cd_x_uf, string tipo_pessoa, string campo, string valor)
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_WMS_REGRA_CD_X_UF_X_PESSOA", campo, valor, this);
-            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
 
             var registro = (from regraCdUFPessoa in db.TwmsRegraCdXUfPessoas
                             where regraCdUFPessoa.Id_wms_regra_cd_x_uf == id_wms_regra_cd_x_uf &&
@@ -828,7 +828,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         public void GivenTabelaT_NFe_EMITENTERegistroTipoDePessoaAlterarCampo(string tipo_pessoa, int id_wms_regra_cd_x_uf, string campo, string valor)
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_NFe_EMITENTE", campo, valor, this);
-            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
             //TwmsRegraCdXUfPessoas.id_wms_regra_cd_x_uf = 134
             //TwmsRegraCdXUfPessoas.Tipo_pessoa = PF e PR para prepedido
             var registro = (from nfeEmitente in db.TnfEmitentes
@@ -876,7 +876,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         public void GivenTabelaAlterarRegistroId_Wms_Regra_Cd_X_UfSt_Inativo(int id_wms_regra_cd_x_uf_x_pessoa, int id_nfe_emitente, string campo, string valor)
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD", campo, valor, this);
-            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
 
             var registro = (from regra in db.TwmsRegraCdXUfXPessoaXCds
                             where regra.Id_nfe_emitente == id_nfe_emitente &&
@@ -910,7 +910,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_PRODUTO", "loja", valor, this);
 
-            var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = this.contextoBdProvider.GetContextoGravacaoParaUsing();
             var registro = (from tproduto in db.Tprodutos
                             where tproduto.Fabricante == fabricante &&
                             tproduto.Produto == produto

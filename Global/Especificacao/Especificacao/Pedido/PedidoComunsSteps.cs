@@ -345,6 +345,7 @@ namespace Especificacao.Especificacao.Pedido
         [When(@"Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = ""(.*)"", qtde_a_sair = ""(.*)"", qtde_autorizada_sem_presenca = ""(.*)""")]
         public void WhenChamarESTOQUE_PRODUTO_SAIDA_VComProdutoQtde_A_SairQtde_Autorizada_Sem_Presenca(string nomeProduto, int qtde_a_sair, int qtde_autorizada_sem_presenca)
         {
+            var id_pedido = "222292N";
             var produto = SplitEstoqueRotinas.Produtos.Produtos[nomeProduto];
 
             Produto.Estoque.Estoque.QuantidadeEncapsulada qtde_estoque_vendido = new Produto.Estoque.Estoque.QuantidadeEncapsulada
@@ -359,7 +360,7 @@ namespace Especificacao.Especificacao.Pedido
             UltimoAcesso.LstErros = new List<string>();
             using var db = SplitEstoqueRotinas.contextoBdProvider.GetContextoGravacaoParaUsing();
             UltimoAcesso.Retorno = Produto.Estoque.Estoque.Estoque_produto_saida_v2(SplitEstoqueRotinas.Id_usuario,
-                id_pedido: SplitEstoqueRotinas.Id_pedido,
+                id_pedido: id_pedido,
                 id_nfe_emitente: SplitEstoqueRotinas.Id_nfe_emitente,
                 id_fabricante: produto.Fabricante,
                 id_produto: produto.Produto,

@@ -20,7 +20,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    public partial class _000_Roteiro_O_Que_TestarFeature : object, Xunit.IClassFixture<_000_Roteiro_O_Que_TestarFeature.FixtureData>, System.IDisposable
+    public partial class P000_Roteiro_O_Que_TestarFeature : object, Xunit.IClassFixture<P000_Roteiro_O_Que_TestarFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -30,10 +30,10 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "000-Roteiro_o_que_testar.feature"
+#line 1 "p000-Roteiro_o_que_testar.feature"
 #line hidden
         
-        public _000_Roteiro_O_Que_TestarFeature(_000_Roteiro_O_Que_TestarFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public P000_Roteiro_O_Que_TestarFeature(P000_Roteiro_O_Que_TestarFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,7 +42,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "000-Roteiro_o_que_testar", "Roteiro de cada teste:\r\n\r\n1 - Escrever regra de consumo de estoque\r\n2 - Definir e" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "P000-Roteiro_o_que_testar", "Roteiro de cada teste:\r\n\r\n1 - Escrever regra de consumo de estoque\r\n2 - Definir e" +
                     "stoque\r\n3 - Cadastrar pedido\r\n4 - Verificar slipt e quantidades dos pedidos cria" +
                     "dos\r\n5 - Verificar posicao e movimento de estoque\r\n\r\nVamos colocar as tabelas co" +
                     "mpletas de homologacao, as tabelas *WMS*, para ter massa de dados.\r\n\r\nTestes:\r\n\r" +
@@ -109,7 +109,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="fazer")]
-        [Xunit.TraitAttribute("FeatureTitle", "000-Roteiro_o_que_testar")]
+        [Xunit.TraitAttribute("FeatureTitle", "P000-Roteiro_o_que_testar")]
         [Xunit.TraitAttribute("Description", "fazer")]
         public virtual void Fazer()
         {
@@ -150,12 +150,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                _000_Roteiro_O_Que_TestarFeature.FeatureSetup();
+                P000_Roteiro_O_Que_TestarFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                _000_Roteiro_O_Que_TestarFeature.FeatureTearDown();
+                P000_Roteiro_O_Que_TestarFeature.FeatureTearDown();
             }
         }
     }

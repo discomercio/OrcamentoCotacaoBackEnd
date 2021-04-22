@@ -40,6 +40,8 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.Estoq
 
         public void UsarProdutoComoFabricanteProduto(string nome, string fabricante, string produto)
         {
+            if (Produtos.Produtos.ContainsKey(nome))
+                Produtos.Produtos.Remove(nome);
             Produtos.Produtos.Add(nome, new FabricanteProdutoDados.FabricanteProdutoItem(fabricante: fabricante, produto: produto));
         }
 
@@ -52,7 +54,6 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.Estoq
         //qual CD usamos apra tstar
         public readonly short Id_nfe_emitente = 4903;
         public readonly string Id_usuario = "TESTE";
-        public readonly string Id_pedido = "222292N";
         #endregion
 
         public void ZerarTodoOEstoque()

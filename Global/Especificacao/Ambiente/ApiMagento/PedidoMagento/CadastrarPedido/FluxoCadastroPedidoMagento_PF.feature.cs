@@ -42,73 +42,57 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FLuxoCadastroPedidoMagento - PF", "============================\r\nFluxo Magento:\r\nP10_Cliente: \r\n\t- Só aceitamos clie" +
-                    "nte PF.\r\n\t- Mover endereço de entrega para Dados cadastrais\r\n\t- Cliente PF: Prod" +
-                    "utor Rural = 1 (Não), Contribuinte ICMS = 0 (Inicial), IE = vazio.\r\n\t\tTeste em A" +
-                    "mbiente\\ApiMagento\\PedidoMagento\\CadastrarPedido\\P10_Cliente\\Dados _Cliente\\Dado" +
-                    "sPessoais.feature\r\n\t- Não exigimos telefones\r\n\t- Endereço: pedidos do magento va" +
-                    "lidamos Cidade contra o IGBE e UF contra o CEP informado. Não validamos nenhum o" +
-                    "utro campo do endereço. \r\n\t\tSe o CEP não existir, aceitamos o que veio e só vali" +
-                    "dar a cidade contra o IBGE.\r\n\t\tTeste em Ambiente\\ApiMagento\\PedidoMagento\\Cadast" +
-                    "rarPedido\\P10_Cliente\\Dados _Cliente\\Endereco\\ValidacaoCep.feature\r\n\t- Caso o cl" +
-                    "iente não exista, cadastramos o cliente. \r\n\r\nP20_Indicador: Se tiver valor de fr" +
-                    "ete significa que tem indicador.\r\n\t- Se tiver valor de frete, inserimos o indica" +
-                    "dor do appsettings e validamos se o indicador existe na base de dados.\r\n\t- Valid" +
-                    "amos se a loja que esta no appsettings existe na base de dados.\r\n\r\nP30_InfPedido" +
-                    ": Validar pedido magento, código de origem e pedido marketplace e MagentoPedidoS" +
-                    "tatus:\r\n\tPedido_magento obrigatório, contém somente números, quantidade de carac" +
-                    "teres menor que Constantes.MAX_TAMANHO_ID_PEDIDO_MAGENTO\r\n\tMarketplace_codigo_or" +
-                    "igem obrigatório e existe na base de dados, t_CODIGO_DESCRICAO Grupo == InfraBan" +
-                    "co.Constantes.Constantes.GRUPO_T_CODIGO_DESCRICAO__PEDIDOECOMMERCE_ORIGEM \r\n\tExi" +
-                    "ste validação adicional em Especificacao\\Pedido\\Passo30\\CamposMagentoExigidos.fe" +
-                    "ature e Especificacao\\Pedido\\Passo30\\CamposMagentoNaoAceitos.feature\r\n\tMagentoPe" +
-                    "didoStatus deve ser aprovado ou aprovação pendente\r\n\r\nP35_Totais: validações de " +
-                    "PedidoTotaisMagentoDto\r\n\tCampos não validados: FreteBruto e DescontoFrete\r\n\tCamp" +
-                    "os com sua feature: Subtotal, DiscountAmount, BSellerInterest, GrandTotal\r\n\r\nP39" +
-                    "_Servicos: para cada linha, consistir Quantidade > 0, RowTotal = Subtotal - Disc" +
-                    "ountAmount dentro do arredondamento\r\n\r\nP40_Produtos: transfromar produtos compos" +
-                    "tos e lançar os descontos\r\n\tP05: para cada linha, consistir Quantidade > 0, RowT" +
-                    "otal = Subtotal - DiscountAmount dentro do arredondamento\r\n\tP10: Transformar pro" +
-                    "dutos compostos em simples\r\n\t\tBuscamos na t_EC_PRODUTO_COMPOSTO e expandimos os " +
-                    "produtos conforme t_EC_PRODUTO_COMPOSTO_ITEM. Se não for composto, mantemos.\r\n\t\t" +
-                    "Agrupamos produtos iguais, mantendo a ordem original.\r\n\t\tVerificamos se todos es" +
-                    "tão cadastrados em t_PRODUTO_LOJA\r\n\tP20: Carregar valores dos produtos do banco\r" +
-                    "\n\t\tCarregar valores base (t_PRODUTO, t_PRODUTO_LOJA) e coeficientes (t_PERCENTUA" +
-                    "L_CUSTO_FINANCEIRO_FORNECEDOR ou fixo) conforme forma de pagamento\r\n\tP30_Calcula" +
-                    "rDesconto: Inserir os descontos de forma a chegar nos valores do magento com o f" +
-                    "rete diluído\r\n\t\tVer planilha, resumo das fórmulas:\r\n\t\t\tdesconto_preco_nf: (valor" +
-                    " total do pedido no verdinho - valor total no magento) / valor total do pedido n" +
-                    "o verdinho\r\n\t\t\tdesc_dado = (total do verdinho - total do magento sem o frete) / " +
-                    "total do verdinho\r\n\t\t\tpreco_lista = valor base\r\n\t\t\tpreco_nf = valor base * (1 - " +
-                    "desconto_preco_nf)\r\n\t\t\tpreco_venda = valor base * (1 - desc_dado)\r\n\t\t\tTodos os v" +
-                    "alores são arredondados para 2 casas decimais (não o desconto)\r\n\t\tGarantir o men" +
-                    "or arredondamento possível\r\n\t\t\tDesejado: GrandTotal = soma (qde * preco_nf) + to" +
-                    "tal de serviços\r\n\t\t\tajuste_arredondamento: GrandTotal - (soma (qde * preco_nf) +" +
-                    " total de serviços) com todos com 2 casas decimais\r\n\t\t\tEscolher a linha com a me" +
-                    "nor resto de ( abs(ajuste_arredondamento) / qde) e, nesssas, com a menor qde \r\n\t" +
-                    "\t\talterar preco_nf = preco_nf - ajuste_arredondamento / qde (arredondado para 2 " +
-                    "casas decimais)\r\n\t\t\tIsso já faz o melhor ajuste possível para RA também\r\n\t\t\t* te" +
-                    "star com ajustes positivos e negativos\r\n\t\tConsistências (todas com arredondament" +
-                    "o): \r\n\t\t\tRA = soma (qde * preco_nf) - soma (qde * preco_venda)\r\n\t\t\tRA = FreteBru" +
-                    "to - DescontoFrete\r\n\t\t\tGrandTotal = soma (qde * preco_nf) + total de serviços\r\n\t" +
-                    "P80: Garatir que tem menos ou igual a 12 itens (conforme configuração)\r\nP50_Pedi" +
-                    "do: verificaçoes adicionais e converter estruturas de dados\r\n\tTratar PontoRefere" +
-                    "ncia, endereco_complemento e NFe_texto_constar: Colocar a informação do ponto de" +
-                    " referência no campo \'Constar na NF\'.\r\n\t\tTeste em Ambiente\\ApiMagento\\PedidoMage" +
-                    "nto\\CadastrarPedido\\P50_Pedido\\Endereco\\PontoReferencia.feature\r\n\tGarantiaIndica" +
-                    "dor = Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO\r\n\t\tTeste em Ambiente\\ApiMage" +
-                    "nto\\PedidoMagento\\CadastrarPedido\\P50_Pedido\\Detalhes\\Detalhes.feature\r\n\tSó acei" +
-                    "tamos os pagamentos Á vista, Parcela Única, Parcelado no Cartão\r\n\t\tTeste em Ambi" +
-                    "ente\\ApiMagento\\PedidoMagento\\CadastrarPedido\\P50_Pedido\\FormaPagto\\*.feature\r\n\r" +
-                    "\n\tConverter pedido para PedidoCriacaoDados\r\n\tConverter Endereco Cadastral para D" +
-                    "adosClienteCadastroDados\r\n\tConverter EnderecoCadastralClienteMagentoDto para End" +
-                    "erecoCadastralClientePrepedidoDados\r\n\tConverter EnderecoEntregaClienteMagentoDto" +
-                    " para EnderecoEntregaClienteCadastroDados\r\n\tConverter FormaPagtoCriacaoMagentoDt" +
-                    "o para FormaPagtoCriacaoDados\r\n\r\nP60_Cadastrar: fazer o cadastro do pedido na ro" +
-                    "tina global, conforme fluxo Especificacao\\Pedido\\FluxoCriacaoPedido.feature\r\n\t- " +
-                    "caso aconteça um pedido igual com número diferente no magento, mandar aviso por " +
-                    "e-mail \r\n\t\t(enviar uma notificação para a equipe da karina)\r\n\r\n\r\n===============" +
-                    "=============", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "FLuxoCadastroPedidoMagento - PF", "============================\r\nFluxo Magento:\r\nP10_Cliente: \r\n\t\t01 - Normaliza CPF" +
+                    ": \r\n\t\t\t\t> remove pontuações do CPF\r\n\t\t\t02 - Validar se cliente é PF, só aceitamo" +
+                    "s cliente PF.\r\n\t\t\t03 - Truncar o campo complemento do endereço de entrega: \r\n\t\t\t" +
+                    "\t> Se complemento do endereço de entrega for maior que Constantes.MAX_TAMANHO_CA" +
+                    "MPO_ENDERECO_COMPLEMENTO, \r\n\t\t\t\t\tiremos passar o valor para nfe_Texto_Constar.\t\t" +
+                    "\t\r\n\t\t\t04 - Verificar ponto de referência: \r\n\t\t\t\t> Se ponto de referência for dif" +
+                    "erente de complemento do endereço de entrega, adicionamos o valor \r\n\t\t\t\t\tpara o " +
+                    "campo nfe_Texto_Constar.\r\n\t\t\t05 - Mover endereço de entrega para Dados cadastrai" +
+                    "s:\r\n\t\t\t\t> Validamos se tem endereço de entrega que é obrigatório.\r\n\t\t\t\t> Exigimo" +
+                    "s que o CPF do endereço de entrega seja igual ao CPF do pedido.\r\n\t\t\t06 - Verific" +
+                    "ar se cliente existe e cadastrar cliente:\r\n\t\t\t\t> Buscamos o cliente na base de d" +
+                    "ados, se existir retornamos.\r\n\t\t\t\t> Caso não exista, cadastramos o cliente. \r\nP2" +
+                    "0_Indicador: Se tiver valor de frete significa que tem indicador.\r\n\t\tTeste em Es" +
+                    "pecificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.EspecificacaoAdici" +
+                    "onal.FretePontoReferencia.feature\r\n\t\tTeste em Especificacao.Ambiente.ApiMagento." +
+                    "PedidoMagento.CadastrarPedido.EspecificacaoAdicional.CamposLidosAppsettings.feat" +
+                    "ure\r\n\t\t\t01 - Verificar se tem indicador e valida indicador:\r\n\t\t\t\t> Se tiver valo" +
+                    "r de frete, então inserimos o indicador do appsettings. \r\n\t\t\t\t> Validamos se o i" +
+                    "ndicador existe na base de dados.\r\n\t\t\t02 - Verificar se loja existe\r\n\t\t\t\t> Valid" +
+                    "amos se a loja que esta no appsettings existe na base de dados.\r\nP30_InfPedido:\r" +
+                    "\n\t\tTeste em Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Vali" +
+                    "dacaoCampos.PedidoMagentoDto.feature\r\n\t\t\t01 - Validar pedido magento, código de " +
+                    "origem e pedido marketplace:\r\n\t\t\t\t> Validamos se o código de origem do pedido ma" +
+                    "gento esta preenchido.\r\n\t\t\t\t> Validamos na base de dados se o código de origem e" +
+                    "xiste na base de dados.\r\n\t\t\t\t> Validamos se o pedido magento esta preenchido.\r\n\t" +
+                    "\t\t\t> Validamos se a quantidade de caracteres é diferente de Constantes.MAX_TAMAN" +
+                    "HO_ID_PEDIDO_MAGENTO\r\n\t\t\t\t> Validamos se o pedido magento contém somente números" +
+                    ".\r\nP40_Produtos: \r\n\t\tTeste em Especificacao.Ambiente.ApiMagento.PedidoMagento.Ca" +
+                    "dastrarPedido.Passo40.Produtos.feature\r\n\t\tPRECISAMOS CRIAR OS NOVOS TESTES PARA " +
+                    "PRODUTO COMPOSTO E DILUIÇÃO DO VALOR DE FRETE ENTRE OS PRODUTOS\r\n\t\t\t01 - Verific" +
+                    "ar se produto é composto e buscar os produtos que compõe o produto composto\r\n\t\t\t" +
+                    "02 - Alterar os produtos compostos para simples\r\n\t\t\t03 - Ajustar a quantidade e " +
+                    "valores de produtos repetidos\r\n\t\t\t04 - Remover produtos duplicados\r\n\t\t\t05 - Dilu" +
+                    "ir o valor de frete entre os produtos\r\n\t\t\t06 - Buscar valor de coeficiente dos p" +
+                    "rodutos\r\n\t\t\t07 - Buscar a sigla da forma de pagto\r\n\t\t\t08 - Montar a lista de coe" +
+                    "ficientes\r\n\t\t\t09 - Buscar os produtos especificos\r\n\t\t\t10 - Converter os produtos" +
+                    " magento para PedidoCriacaoProdutoDados e inserir os valores\r\nP50_Pedido:\r\n\t\tO t" +
+                    "este de criação de pedido magento esta no cenário \"salvando o pedido base\" local" +
+                    "izado nesse arquivo\r\n\t\tTodos os teste acima passam por esse fluxo, sendo assim e" +
+                    "stá garantido que estamos executando esse teste\r\n\t\t\t01 - Converter pedido para P" +
+                    "edidoCriacaoDados:\r\n\t\t\t\t01 - Converte Endereco Cadastral para DadosClienteCadast" +
+                    "roDados:\r\n\t\t\t\t\tTeste em Especificacao.Ambiente.ApiMagento.PedidoMagento.Cadastra" +
+                    "rPedido.CriacaoCliente.CriacaoCliente_Pf.feature\r\n\t\t\t\t\t> Cliente PF: Produtor Ru" +
+                    "ral = 1 (Não), Contribuinte ICMS = 0 (Inicial), IE = vazio.\r\n\t\t\t\t02 - Converter " +
+                    "EnderecoCadastralClienteMagentoDto para EnderecoCadastralClientePrepedidoDados:\r" +
+                    "\n\t\t\t\t03 - Converter EnderecoEntregaClienteMagentoDto para EnderecoEntregaCliente" +
+                    "CadastroDados:\r\n\t\t\t\t04 - Converter FormaPagtoCriacaoMagentoDto para FormaPagtoCr" +
+                    "iacaoDados:\r\n\t\t\t\t\tTeste em Especificacao.Ambiente.ApiMagento.PedidoMagento.Cadas" +
+                    "trarPedido.EspecificacaoAdicional.FormaPagtoCriacaoMagento\r\n\t\t\t\t\t> Só aceitamos " +
+                    "os pagamentos Á vista, Parcela Única, Parcelado no Cartão\r\n\t\t\t\t\t\r\nP60_Cadastrar " +
+                    "PedidoCriacaoDados \r\n============================", ProgrammingLanguage.CSharp, new string[] {
                         "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -157,7 +141,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("salvando o pedido base", null, tagsOfScenario, argumentsOfScenario);
-#line 83
+#line 67
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -177,10 +161,10 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 84
+#line 68
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 85
+#line 69
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -195,7 +179,7 @@ this.ScenarioInitialize(scenarioInfo);
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fluxo de cadastro do magento", null, tagsOfScenario, argumentsOfScenario);
-#line 87
+#line 71
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -215,7 +199,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 88
+#line 72
  testRunner.Given("Esta é a especificação, está sendo testado em outros .feature", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
