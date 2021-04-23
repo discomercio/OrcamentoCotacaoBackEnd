@@ -8,6 +8,12 @@ using Xunit;
 
 namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 {
+    /*
+todo: fluxo do cancelamento
+todo: ver os pendentes K:\desenvolvimento\Ar Clube\reunioes\210322 calculo valores api magento\pendentes
+todo: executar os cripts de banco
+*/
+
     [Binding, Scope(Tag = "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido")]
     public sealed class PedidoMagentoSteps
     {

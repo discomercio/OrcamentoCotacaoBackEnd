@@ -22,8 +22,9 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
 
             //incializamos o produto com o pedido do magento
             var dados = Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedidoDados.PedidoBase();
-            fabricante = dados.ListaProdutos[0].Fabricante;
-            produto = dados.ListaProdutos[0].Produto;
+            //todo: acerto DTO magento
+            //fabricante = dados.ListaProdutos[0].Fabricante;
+            //produto = dados.ListaProdutos[0].Produto;
 
             listaTipo_Pessoa = new List<string>();
             listaTipo_Pessoa.AddRange("PF PR PJC PJNC PJI".Split(' '));

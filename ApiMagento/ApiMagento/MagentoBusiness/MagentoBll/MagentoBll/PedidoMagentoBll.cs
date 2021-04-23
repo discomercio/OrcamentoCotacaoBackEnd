@@ -13,6 +13,7 @@ using MagentoBusiness.UtilsMagento;
 using MagentoBusiness.MagentoDto;
 using MagentoBusiness.MagentoDto.MarketplaceDto;
 using Cliente;
+using static InfraBanco.Constantes.Constantes;
 
 #nullable enable
 
@@ -109,6 +110,9 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             if (resultado.ListaErros.Count > 0)
                 return resultado;
 
+            PedidoMagentoPassos.P30_InfPedido_MagentoPedidoStatus(pedidoMagento, resultado.ListaErros);
+            PedidoMagentoPassos.P35_Totais(pedidoMagento, resultado.ListaErros, configuracaoApiMagento.LimiteArredondamentoTotais);
+
             /* ====================================
              * Inclui a verificação de loja aqui pois caso a loja não exista a rotina "CriarPedidoCriacaoDados" abaixo irá             
              * gerar erro ao complementar os produtos "ConverterProdutosMagento"
@@ -119,7 +123,6 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
                 resultado.ListaErros.Add("Loja não existe!");
 
             //estamos criando o pedido com os dados do cliente que vem e não com os dados do cliente que esta na base
-            //ex: se o cliente já cadastrado, utilizamos o que vem em PedidoMagentoDto.EnderecoCadastralClienteMagentoDto
             Pedido.Dados.Criacao.PedidoCriacaoDados? pedidoDados = await CriarPedidoCriacaoDados(pedidoMagento,
                 indicador_vendedor_loja, resultado.ListaErros, id_cliente: cliente.Id, dadosClienteMidia: cliente.Midia,
                 dadosClienteIndicador: cliente.Indicador, nfe_Texto_Constar);
@@ -187,7 +190,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
 
             foreach (var y in pedidoMagento.ListaProdutos)
             {
-                string fabricante = lstProdutosUsados.Where(x => x.Produto == y.Sku).Select(x => x.Fabricante).FirstOrDefault();    
+                string fabricante = lstProdutosUsados.Where(x => x.Produto == y.Sku).Select(x => x.Fabricante).FirstOrDefault();
                 Produto.Dados.ProdutoDados produto = (from c in lstProdutosUsados
                                                       where c.Produto == y.Sku
                                                       select c).FirstOrDefault();

@@ -2728,5 +2728,29 @@ namespace InfraBanco.Constantes
         public const string SESSION_CTRL_MODULO_ORCAMENTO = "ORCTO";
         public const string SESSION_CTRL_MODULO_APIUNIS = "APIUN";
         public const string SESSION_CTRL_MODULO_APIMAGENTO = "APIMA";
+
+
+        //Para o t_LOJA.magento_api_versao
+        /*
+        -- 0 = Default, API usada inicialmente na integração com o Magento v1.8 (SOAP/XML)
+        -- 2 = API do Magento 2 em REST/JSON
+        */
+
+        public const int VERSAO_API_MAGENTO_V1_SOAP_XML = 0;
+        public const int VERSAO_API_MAGENTO_V2_REST_JSON = 2;
+
+        public enum MagentoPedidoStatusEnum
+        {
+            //0 = pedido não é do Magento ou é pedido cadastrado antes da implantação da API para o Magento
+            //0 também é usado para filhotes
+            // 1 = aprovação pendente  (pedido cadastrado e pagamento não confirmado)
+            // 2 = aprovado (pagamento confirmado)
+            // 3 = rejeitado (pedido cancelado)
+            MAGENTO_PEDIDO_STATUS_NAO_MAGENTO,
+            MAGENTO_PEDIDO_STATUS_APROVACAO_PENDENTE,
+            MAGENTO_PEDIDO_STATUS_APROVADO,
+            MAGENTO_PEDIDO_STATUS_REJEITADO
+        };
+
     }
 }

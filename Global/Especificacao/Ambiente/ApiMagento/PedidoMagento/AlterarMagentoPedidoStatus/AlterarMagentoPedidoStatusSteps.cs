@@ -10,5 +10,10 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoSt
     public class AlterarMagentoPedidoStatusSteps
     {
         private readonly string tokenAcesso = Ambiente.ApiMagento.InjecaoDependencias.TokenAcessoApiMagento();
+
+        [Then(@"Testes implementados em ""AlterarMagentoPedidoStatus.feature""")]
+        public void ThenTestesImplementadosEm()
+        {
+        }
     }
 }

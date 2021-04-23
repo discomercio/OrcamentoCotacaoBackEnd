@@ -35,10 +35,13 @@ P40_Produtos: transfromar produtos compostos e lançar os descontos
 	P05: para cada linha, consistir Quantidade > 0, RowTotal = Subtotal - DiscountAmount dentro do arredondamento
 	P10: Transformar produtos compostos em simples
 		Buscamos na t_EC_PRODUTO_COMPOSTO e expandimos os produtos conforme t_EC_PRODUTO_COMPOSTO_ITEM. Se não for composto, mantemos.
+			t_EC_PRODUTO_COMPOSTO.produto_composto == Sku
+				se achar registro, busca em t_EC_PRODUTO_COMPOSTO_ITEM com t_EC_PRODUTO_COMPOSTO_ITEM.produto_composto == Sku && t_EC_PRODUTO_COMPOSTO_ITEM.fabricante_composto == t_EC_PRODUTO_COMPOSTO.fabricante_composto
+				se não achar busca em t_PRODUTO com t_PRODUTO.produto == Sku 
 		Agrupamos produtos iguais, mantendo a ordem original.
-		Verificamos se todos estão cadastrados em t_PRODUTO_LOJA
 	P20: Carregar valores dos produtos do banco
 		Carregar valores base (t_PRODUTO, t_PRODUTO_LOJA) e coeficientes (t_PERCENTUAL_CUSTO_FINANCEIRO_FORNECEDOR ou fixo) conforme forma de pagamento
+		Verificamos se todos estão cadastrados em t_PRODUTO_LOJA
 	P30_CalcularDesconto: Inserir os descontos de forma a chegar nos valores do magento com o frete diluído
 		Ver planilha, resumo das fórmulas:
 			desconto_preco_nf: (valor total do pedido no verdinho - valor total no magento) / valor total do pedido no verdinho

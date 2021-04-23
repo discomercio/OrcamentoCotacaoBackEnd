@@ -7,7 +7,10 @@
 Scenario: MagentoPedidoStatus deve ser aprovado ou aprovação pendente
 	Given Fazer este teste
 
-Scenario: Gravar campo MagentoPedidoStatus na t_PEDIDO
+Scenario: Gravar campo MagentoPedidoStatus na t_PEDIDO pai
+	Given Fazer este teste
+
+Scenario: Gravar campo MagentoPedidoStatus na t_PEDIDO filhote
 	Given Fazer este teste
 
 Scenario:  aprovação pendente -> analise_credito = esperando aprovação pelo magento (o novo status)

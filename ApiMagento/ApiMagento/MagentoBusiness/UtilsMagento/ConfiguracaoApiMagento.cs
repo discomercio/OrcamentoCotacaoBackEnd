@@ -20,7 +20,8 @@ namespace MagentoBusiness.UtilsMagento
 
         public VersaoApiMagento VersaoApi { get; set; } = new VersaoApiMagento();
 
-        public decimal LimiteArredondamentoPrecoVendaOrcamentoItem { get; set; } = 0.1M;
+        public decimal LimiteArredondamentoPorItem { get; set; } = 0.1M;
+        public decimal LimiteArredondamentoTotais { get; set; } = 0.1M;
 
         public class LimitePedidoMagento
         {
@@ -43,7 +44,7 @@ namespace MagentoBusiness.UtilsMagento
 
         public IndicadorMagento DadosIndicador { get; set; } = new IndicadorMagento();
 
-        
+
 
         public class Markeplace
         {

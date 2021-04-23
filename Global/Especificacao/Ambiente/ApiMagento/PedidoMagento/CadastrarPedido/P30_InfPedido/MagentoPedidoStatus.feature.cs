@@ -118,14 +118,14 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Gravar campo MagentoPedidoStatus na t_PEDIDO")]
+        [Xunit.SkippableFactAttribute(DisplayName="Gravar campo MagentoPedidoStatus na t_PEDIDO pai")]
         [Xunit.TraitAttribute("FeatureTitle", "MagentoPedidoStatus")]
-        [Xunit.TraitAttribute("Description", "Gravar campo MagentoPedidoStatus na t_PEDIDO")]
-        public virtual void GravarCampoMagentoPedidoStatusNaT_PEDIDO()
+        [Xunit.TraitAttribute("Description", "Gravar campo MagentoPedidoStatus na t_PEDIDO pai")]
+        public virtual void GravarCampoMagentoPedidoStatusNaT_PEDIDOPai()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Gravar campo MagentoPedidoStatus na t_PEDIDO", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Gravar campo MagentoPedidoStatus na t_PEDIDO pai", null, tagsOfScenario, argumentsOfScenario);
 #line 10
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -153,17 +153,14 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="aprovação pendente -> analise_credito = esperando aprovação pelo magento (o novo " +
-            "status)")]
+        [Xunit.SkippableFactAttribute(DisplayName="Gravar campo MagentoPedidoStatus na t_PEDIDO filhote")]
         [Xunit.TraitAttribute("FeatureTitle", "MagentoPedidoStatus")]
-        [Xunit.TraitAttribute("Description", "aprovação pendente -> analise_credito = esperando aprovação pelo magento (o novo " +
-            "status)")]
-        public virtual void AprovacaoPendente_Analise_CreditoEsperandoAprovacaoPeloMagentoONovoStatus()
+        [Xunit.TraitAttribute("Description", "Gravar campo MagentoPedidoStatus na t_PEDIDO filhote")]
+        public virtual void GravarCampoMagentoPedidoStatusNaT_PEDIDOFilhote()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("aprovação pendente -> analise_credito = esperando aprovação pelo magento (o novo " +
-                    "status)", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Gravar campo MagentoPedidoStatus na t_PEDIDO filhote", null, tagsOfScenario, argumentsOfScenario);
 #line 13
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -191,17 +188,17 @@ this.ScenarioInitialize(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="aprovado -> analise_credito = credito_ok se o marketplace permitir (ver o fluxo d" +
-            "e criação do pedido)")]
+        [Xunit.SkippableFactAttribute(DisplayName="aprovação pendente -> analise_credito = esperando aprovação pelo magento (o novo " +
+            "status)")]
         [Xunit.TraitAttribute("FeatureTitle", "MagentoPedidoStatus")]
-        [Xunit.TraitAttribute("Description", "aprovado -> analise_credito = credito_ok se o marketplace permitir (ver o fluxo d" +
-            "e criação do pedido)")]
-        public virtual void Aprovado_Analise_CreditoCredito_OkSeOMarketplacePermitirVerOFluxoDeCriacaoDoPedido()
+        [Xunit.TraitAttribute("Description", "aprovação pendente -> analise_credito = esperando aprovação pelo magento (o novo " +
+            "status)")]
+        public virtual void AprovacaoPendente_Analise_CreditoEsperandoAprovacaoPeloMagentoONovoStatus()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("aprovado -> analise_credito = credito_ok se o marketplace permitir (ver o fluxo d" +
-                    "e criação do pedido)", "se não, fica em qual status???", tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("aprovação pendente -> analise_credito = esperando aprovação pelo magento (o novo " +
+                    "status)", null, tagsOfScenario, argumentsOfScenario);
 #line 16
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -222,7 +219,45 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 18
+#line 17
+ testRunner.Given("Fazer este teste", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="aprovado -> analise_credito = credito_ok se o marketplace permitir (ver o fluxo d" +
+            "e criação do pedido)")]
+        [Xunit.TraitAttribute("FeatureTitle", "MagentoPedidoStatus")]
+        [Xunit.TraitAttribute("Description", "aprovado -> analise_credito = credito_ok se o marketplace permitir (ver o fluxo d" +
+            "e criação do pedido)")]
+        public virtual void Aprovado_Analise_CreditoCredito_OkSeOMarketplacePermitirVerOFluxoDeCriacaoDoPedido()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("aprovado -> analise_credito = credito_ok se o marketplace permitir (ver o fluxo d" +
+                    "e criação do pedido)", "se não, fica em qual status???", tagsOfScenario, argumentsOfScenario);
+#line 19
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 21
  testRunner.Given("Fazer este teste", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }

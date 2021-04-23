@@ -4,6 +4,8 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 {
     public class MagentoPedidoStatusDto
     {
+        //0 = pedido não é do Magento ou é pedido cadastrado antes da implantação da API para o Magento
+
         /// <summary>
         /// Status: 
         /// <br />

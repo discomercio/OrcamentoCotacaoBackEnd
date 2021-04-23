@@ -23,6 +23,12 @@ namespace Especificacao.Comuns.Api.Autenticacao
                 RegistroDependencias.AdicionarDependencia("Ambiente.ApiUnis.PrepedidoUnis.BuscarQtdeParcCartaoVisa.BuscarQtdeParcCartaoVisaListaDependencias", imp,
                     "Especificacao.Comuns.Api.Autenticacao");
             }
+            {
+                var imp = new Ambiente.ApiUnis.PrepedidoUnis.BuscarStatusPrepedido.Autenticacao();
+                base.AdicionarImplementacao(imp);
+                RegistroDependencias.AdicionarDependencia("Ambiente.ApiUnis.PrepedidoUnis.BuscarStatusPrepedido.BuscarStatusPrepedidoListaDependencias", imp,
+                    "Especificacao.Comuns.Api.Autenticacao");
+            }
 
             {
                 var imp = new Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace.Autenticacao();
@@ -38,10 +44,8 @@ namespace Especificacao.Comuns.Api.Autenticacao
                     "Especificacao.Comuns.Api.Autenticacao");
             }
             {
-                var imp = new Ambiente.ApiUnis.PrepedidoUnis.BuscarStatusPrepedido.Autenticacao();
+                var imp = new Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoStatus.Autenticacao();
                 base.AdicionarImplementacao(imp);
-                RegistroDependencias.AdicionarDependencia("Ambiente.ApiUnis.PrepedidoUnis.BuscarStatusPrepedido.BuscarStatusPrepedidoListaDependencias", imp,
-                    "Especificacao.Comuns.Api.Autenticacao");
             }
         }
 

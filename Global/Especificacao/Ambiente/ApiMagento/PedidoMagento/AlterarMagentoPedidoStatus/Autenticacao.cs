@@ -6,7 +6,8 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.AlterarMagentoPedidoSt
 {
     public class Autenticacao: Comuns.Api.Autenticacao.IAutenticacaoSteps
     {
-        private readonly CadastrarPedido cadastrarPedido = new CadastrarPedido();
+        //todo: fazer testes do AlterarMagentoPedidoStatus
+        private readonly AlterarMagentoPedidoStatusChamada cadastrarPedido = new AlterarMagentoPedidoStatusChamada();
 
         public void WhenInformo(string p0, string p1)
         {

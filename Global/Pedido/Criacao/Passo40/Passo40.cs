@@ -101,7 +101,7 @@ namespace Pedido.Criacao.Passo40
                 Criacao.Execucao.C_custoFinancFornecQtdeParcelas);
 
             Criacao.ValidacoesFormaPagtoBll.ValidarFormaPagto(Pedido.FormaPagtoCriacao, Retorno.ListaErros,
-                Pedido.Configuracao.LimiteArredondamento, Pedido.Configuracao.MaxErroArredondamento, Criacao.Execucao.C_custoFinancFornecTipoParcelamento, formasPagto,
+                Pedido.Configuracao.LimiteArredondamentoPorItem, Pedido.Configuracao.LimiteArredondamentoTotais, Criacao.Execucao.C_custoFinancFornecTipoParcelamento, formasPagto,
                 Criacao.Execucao.TOrcamentista_Permite_RA_Status, Pedido.Valor.Vl_total_NF, Pedido.Valor.Vl_total);
 
             //vamos fazer a validação de Especificacao/Especificacao/Pedido/Passo40/FormaPagamentoProdutos.feature
@@ -112,7 +112,7 @@ namespace Pedido.Criacao.Passo40
                 Pedido, Criacao.Execucao.Id_cliente);
             await Criacao.ValidacoesPrepedidoBll.MontarProdutosParaComparacao(prepedido,
                         Criacao.Execucao.C_custoFinancFornecTipoParcelamento, Criacao.Execucao.C_custoFinancFornecQtdeParcelas,
-                        Pedido.Ambiente.Loja, Retorno.ListaErros, (decimal)Criacao.Execucao.Perc_limite_RA_sem_desagio, Pedido.Configuracao.LimiteArredondamento,
+                        Pedido.Ambiente.Loja, Retorno.ListaErros, (decimal)Criacao.Execucao.Perc_limite_RA_sem_desagio, Pedido.Configuracao.LimiteArredondamentoPorItem,
                         Prepedido.ValidacoesPrepedidoBll.AmbienteValidacao.PedidoValidacao);
 
             //se tiver erro vamos retornar

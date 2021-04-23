@@ -174,8 +174,8 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                 valor: pedidoCriacaoValor,
 
                 configuracao: new Pedido.Dados.Criacao.PedidoCriacaoConfiguracaoDados(
-                    limiteArredondamento: configuracaoApiMagento.LimiteArredondamentoPrecoVendaOrcamentoItem,
-                    maxErroArredondamento: 0.1M,
+                    limiteArredondamentoPorItem: configuracaoApiMagento.LimiteArredondamentoPorItem,
+                    limiteArredondamentoTotais: configuracaoApiMagento.LimiteArredondamentoTotais,
                     sistemaResponsavelCadastro: sistemaResponsavelCadastro,
                     limitePedidosExatamenteIguais_Numero: configuracaoApiMagento.LimitePedidos.LimitePedidosExatamenteIguais_Numero,
                     limitePedidosExatamenteIguais_TempoSegundos: configuracaoApiMagento.LimitePedidos.LimitePedidosExatamenteIguais_TempoSegundos,
