@@ -301,7 +301,6 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
     if (this.jaFezAfterViewInit) {
       if (this.atualizarDadosEnderecoCadastralClienteTela_Dados != null) {
         this.atualizarDadosEnderecoCadastralClienteTela_Executar();
-        this.enderecoCadastralClientePrepedidoDto = this.desconverterTelefonesEnderecoDadosCadastrais(enderecoCadastralClientePrepedidoDto);
       }
     }
 
