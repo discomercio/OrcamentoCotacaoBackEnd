@@ -89,10 +89,10 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
               this.fase2 = true;
               this.fase1e2juntas = false;
 
-              if(this.novoPrepedidoDadosService.prePedidoDto.EnderecoCadastroClientePrepedido.Endereco_cnpj_cpf == null){
+              if (this.novoPrepedidoDadosService.prePedidoDto.EnderecoCadastroClientePrepedido.Endereco_cnpj_cpf == null) {
                 this.fase1 = true;
-              this.fase2 = false;
-              this.fase1e2juntas = false;
+                this.fase2 = false;
+                this.fase1e2juntas = false;
               }
             }
           }
@@ -128,15 +128,6 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       this.fase2 = true;
       this.fase1e2juntas = true;
     }
-
-    // if (!this.telaDesktop) {
-
-    //   if (!!this.novoPrepedidoDadosService.prePedidoDto) {
-    //     this.fase1 = false;
-    //     this.fase2 = true;
-    //     this.fase1e2juntas = false;
-    //   }
-    // }
 
     //para pegar o enter
     document.getElementById("idcontinuar").focus();
@@ -337,7 +328,6 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     this.continuarEfetivo();
   }
   continuarEfetivo(): void {
-
     let validacoes: string[] = new Array();
 
     if (this.fase1 || this.fase1e2juntas) {
@@ -368,9 +358,6 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
         }
     }
 
-
-    //ATÉ AQUI ESTA FUNCIONANDO BEM NOS 2 MODOS
-
     //se estamos na fase 2, cotninua
     //caso contrário, volta para a fase 1
     if (this.fase2 || this.fase1e2juntas) {
@@ -384,7 +371,6 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
 
       if (validacoes.length > 0) {
         this.alertaService.mostrarMensagem("Campos inválidos. Preencha os campos marcados como obrigatórios. \nLista de erros: \n" + validacoes.join("\n"));
-        this.clienteCorpo.desconverterTelefonesEnderecoDadosCadastrais(this.endCadastralClientePrepedidoDto);
         this.confirmarEndereco.desconverterTelefonesEnderecoEntrega(this.enderecoEntregaDtoClienteCadastro);
 
         if (this.confirmarEndereco.enderecoEntregaDtoClienteCadastro.OutroEndereco) {
