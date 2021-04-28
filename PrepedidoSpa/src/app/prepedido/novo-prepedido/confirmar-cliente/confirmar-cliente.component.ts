@@ -17,7 +17,6 @@ import { ValidacoesClienteUtils } from 'src/app/utils/validacoesClienteUtils';
 import { EnderecoCadastralClientePrepedidoDto } from 'src/app/dto/Prepedido/EnderecoCadastralClientePrepedidoDto';
 import { ClienteCorpoComponent } from 'src/app/cliente/cliente-corpo/cliente-corpo.component';
 import { FormatarTelefone } from 'src/app/utils/formatarTelefone';
-import { debuglog } from 'util';
 
 @Component({
   selector: 'app-confirmar-cliente',
@@ -44,6 +43,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
   }
 
   ngOnInit() {
+
     this.endCadastralClientePrepedidoDto = new EnderecoCadastralClientePrepedidoDto();
     this.dadosClienteCadastroDto = null;
     if (this.router.getCurrentNavigation()) {
@@ -82,20 +82,8 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
 
           //se tiver prepedido é pq veio de DetalhesPrepedido e precisamos passar para o serviço, 
           //pois a loja do dadoscliente esta com o nome e não o código da loja e teremos problemas para buscar os produtos
-          if (this.novoPrepedidoDadosService.prePedidoDto != null) {
+          if (this.novoPrepedidoDadosService.prePedidoDto != null)
             this.novoPrepedidoDadosService.prePedidoDto.DadosCliente = r.DadosCliente;
-            if (!this.telaDesktop) {
-              this.fase1 = false;
-              this.fase2 = true;
-              this.fase1e2juntas = false;
-
-              if (this.novoPrepedidoDadosService.prePedidoDto.EnderecoCadastroClientePrepedido.Endereco_cnpj_cpf == null) {
-                this.fase1 = true;
-                this.fase2 = false;
-                this.fase1e2juntas = false;
-              }
-            }
-          }
           this.dadosClienteCadastroDto = r.DadosCliente;
           this.clienteCadastroDto = r;
 
@@ -122,7 +110,10 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       //inicializamos
       this.salvarAtivoInicializar();
     }
-    //vamos verificar se é tela desktop
+    //inicializar as fases
+    this.fase1 = true;
+    this.fase2 = false;
+    this.fase1e2juntas = false;
     if (this.telaDesktop) {
       this.fase1 = true;
       this.fase2 = true;
@@ -135,17 +126,20 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
 
 
   verificarCriarNovoPrepedido() {
+
     if (!!this.novoPrepedidoDadosService.prePedidoDto) {
 
       let existente = this.novoPrepedidoDadosService.prePedidoDto.DadosCliente.Id;
       if (existente == this.dadosClienteCadastroDto.Id) {
         //nao criamos! usamos o que já está no serviço
         this.dadosClienteCadastroDto = this.novoPrepedidoDadosService.prePedidoDto.DadosCliente;
-        this.enderecoEntregaDtoClienteCadastro = this.novoPrepedidoDadosService.prePedidoDto.EnderecoEntrega;
-        this.endCadastralClientePrepedidoDto = this.novoPrepedidoDadosService.prePedidoDto.EnderecoCadastroClientePrepedido;
-        this.endCadastralClientePrepedidoDto = this.clienteCorpo.desconverterTelefonesEnderecoDadosCadastrais(this.endCadastralClientePrepedidoDto);
+        //precisamos verificar se tem dado para não perder a seleção do this.enderecoEntregaDtoClienteCadastro.OutroEndereço
+        if (this.novoPrepedidoDadosService.prePedidoDto.EnderecoEntrega.OutroEndereco)
+          this.enderecoEntregaDtoClienteCadastro = this.novoPrepedidoDadosService.prePedidoDto.EnderecoEntrega;
 
-        if (this.confirmarEndereco != undefined)
+        this.endCadastralClientePrepedidoDto = this.novoPrepedidoDadosService.prePedidoDto.EnderecoCadastroClientePrepedido;
+
+        if (this.confirmarEndereco)
           this.confirmarEndereco.atualizarDadosEnderecoTela(this.enderecoEntregaDtoClienteCadastro);
 
         this.clienteCorpo.atualizarDadosEnderecoCadastralClienteTela(this.endCadastralClientePrepedidoDto);
@@ -284,15 +278,10 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       this.location.back();
       return;
     }
-    //se estiver na fase2 precisamos desconverter os telefones
 
-    this.clienteCorpo.desconverterTelefonesEnderecoDadosCadastrais(this.endCadastralClientePrepedidoDto);
-    this.converteu_tel_endCadastralClientePrepedidoDto = false;
-    this.confirmarEndereco.prepararAvancar();
+    //vltamos para a fase 1
     this.fase1 = true;
     this.fase2 = false;
-
-
 
   }
   //precisa do static: false porque está dentro de um ngif
@@ -329,45 +318,30 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
 
     this.continuarEfetivo();
   }
-  converteu_tel_endCadastralClientePrepedidoDto = false;
   continuarEfetivo(): void {
-    let validacoes: string[] = new Array();
-
-
-    if (!this.converteu_tel_endCadastralClientePrepedidoDto) {
-      this.endCadastralClientePrepedidoDto = this.clienteCorpo.converterTelefones(this.endCadastralClientePrepedidoDto);
-      this.converteu_tel_endCadastralClientePrepedidoDto = true;
-    }
-    validacoes = ValidacoesClienteUtils.validarEnderecoCadastralClientePrepedidoDto(this.endCadastralClientePrepedidoDto,
-      this.clienteCorpo.componenteCepDadosCadastrais.lstCidadeIBGE);
-
-    if (validacoes.length == 0) {
-      if (this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF) {
-        if (this.dadosClienteCadastroDto.Contribuinte_Icms_Status == this.constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) {
-          if (this.dadosClienteCadastroDto.Ie != "") {
-            if (this.dadosClienteCadastroDto.Uf.trim().toUpperCase() !=
-              this.endCadastralClientePrepedidoDto.Endereco_uf.trim().toUpperCase()) {
-              validacoes = validacoes.concat("Dados cadastrais: Inscrição estadual inválida pra esse estado (" + this.endCadastralClientePrepedidoDto.Endereco_uf.trim().toUpperCase() + "). " +
-                "Caso o cliente esteja em outro estado, entre em contato com o suporte para alterar o cadastro do cliente.");
-            }
-          }
-        }
-      }
-    }
-
-    if (validacoes.length > 0) {
-      this.alertaService.mostrarMensagem("Campos inválidos. Preencha os campos marcados como obrigatórios. \nLista de erros: \n" + validacoes.join("\n"));
-      this.clienteCorpo.desconverterTelefonesEnderecoDadosCadastrais(this.endCadastralClientePrepedidoDto);
-      this.converteu_tel_endCadastralClientePrepedidoDto = false;
-      this.clienteCorpo.componenteCepDadosCadastrais.required = true;
-      this.desabilita = false;
-      return;
-    }
-
-
     //se estamos na fase 2, cotninua
     //caso contrário, volta para a fase 1
     if (this.fase2 || this.fase1e2juntas) {
+      //vamos validar o endereço
+      let validacoes: string[] = new Array();
+
+      this.endCadastralClientePrepedidoDto = this.clienteCorpo.converterTelefones(this.endCadastralClientePrepedidoDto);
+      validacoes = ValidacoesClienteUtils.validarEnderecoCadastralClientePrepedidoDto(this.endCadastralClientePrepedidoDto,
+        this.clienteCorpo.componenteCepDadosCadastrais.lstCidadeIBGE);
+
+      if (validacoes.length == 0)
+        if (this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF) {
+          if (this.dadosClienteCadastroDto.Contribuinte_Icms_Status == this.constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) {
+            if (this.dadosClienteCadastroDto.Ie != "") {
+              if (this.dadosClienteCadastroDto.Uf.trim().toUpperCase() !=
+                this.endCadastralClientePrepedidoDto.Endereco_uf.trim().toUpperCase()) {
+                validacoes = validacoes.concat("Dados cadastrais: Inscrição estadual inválida pra esse estado (" + this.endCadastralClientePrepedidoDto.Endereco_uf.trim().toUpperCase() + "). " +
+                  "Caso o cliente esteja em outro estado, entre em contato com o suporte para alterar o cadastro do cliente.");
+
+              }
+            }
+          }
+        }
       //estou removendo o código abaixo de dentro da condição de "OutroEndereco", pois mesmo que o outro endereço esteja como false
       //ele pode ter preenchido os dados
       this.enderecoEntregaDtoClienteCadastro = this.confirmarEndereco.converterTelefones(this.enderecoEntregaDtoClienteCadastro);
@@ -375,18 +349,10 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
         validacoes = validacoes.concat(ValidacoesClienteUtils.validarEnderecoEntregaDtoClienteCadastro(this.enderecoEntregaDtoClienteCadastro,
           this.endCadastralClientePrepedidoDto, this.confirmarEndereco.componenteCep.lstCidadeIBGE));
       }
-      //peguei um caso que não foi selecionado OutroEndereco e salvou o pedido, olhando o pedido estava tudo certo
-      //Para forçar a seleção de outro endereço vamos verificar se é undefined
-      if (this.enderecoEntregaDtoClienteCadastro.OutroEndereco == undefined) {
-        validacoes = validacoes.concat("Informe se o endereço de entrega será o mesmo endereço do cadastro ou não!");
-      }
+
       if (validacoes.length > 0) {
         this.alertaService.mostrarMensagem("Campos inválidos. Preencha os campos marcados como obrigatórios. \nLista de erros: \n" + validacoes.join("\n"));
-
-        if (this.fase2 || this.fase1e2juntas) {
-          this.clienteCorpo.desconverterTelefonesEnderecoDadosCadastrais(this.endCadastralClientePrepedidoDto);
-          this.converteu_tel_endCadastralClientePrepedidoDto = false;
-        }
+        this.clienteCorpo.desconverterTelefonesEnderecoDadosCadastrais(this.endCadastralClientePrepedidoDto);
         this.confirmarEndereco.desconverterTelefonesEnderecoEntrega(this.enderecoEntregaDtoClienteCadastro);
 
         if (this.confirmarEndereco.enderecoEntregaDtoClienteCadastro.OutroEndereco) {
@@ -398,6 +364,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
         return;
       }
       //salvar no serviço
+      //afazer: incluir a passagem de EnderecoCadastralClientePrepedidoDto para salavar no serviço
       this.novoPrepedidoDadosService.setarDTosParciais(this.dadosClienteCadastroDto, this.enderecoEntregaDtoClienteCadastro,
         this.endCadastralClientePrepedidoDto);
 
@@ -406,8 +373,9 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       return;
     }
     this.fase2 = true;
-    this.desabilita = false;
     this.fase1 = false;
+    this.desabilita = false;
+
   }
 }
 

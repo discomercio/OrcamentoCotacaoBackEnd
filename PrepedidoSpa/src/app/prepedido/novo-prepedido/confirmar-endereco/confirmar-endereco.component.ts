@@ -25,22 +25,12 @@ export class ConfirmarEnderecoComponent implements OnInit {
 
   buscarClienteServiceJustificativaEndEntregaComboTemporario: EnderecoEntregaJustificativaDto[];
   ngOnInit() {
-    //sempre vamos carregar a lista
+    
+    this.inicializarCamposEndereco(this.enderecoEntregaDtoClienteCadastro);
+
+    this.enderecoEntregaDtoClienteCadastro.OutroEndereco = false;
+
     this.buscarClienteServiceJustificativaEndEntregaComboTemporario = this.buscarClienteService.JustificativaEndEntregaComboTemporario();
-
-    if (this.enderecoEntregaDtoClienteCadastro.OutroEndereco == undefined) {
-      this.inicializarCamposEndereco(this.enderecoEntregaDtoClienteCadastro);
-      this.enderecoEntregaDtoClienteCadastro.OutroEndereco = false;
-      this.buscarClienteServiceJustificativaEndEntregaComboTemporario = this.buscarClienteService.JustificativaEndEntregaComboTemporario();
-
-    }
-
-    if (this.enderecoEntregaDtoClienteCadastro.OutroEndereco) {
-      setTimeout(() => {
-        this.atualizarDadosEnderecoTela(this.enderecoEntregaDtoClienteCadastro);
-      }, 300);
-      
-    }
 
 
   }
@@ -221,16 +211,12 @@ export class ConfirmarEnderecoComponent implements OnInit {
   public desconverterTelefonesEnderecoEntrega(enderecoEntrega: EnderecoEntregaDtoClienteCadastro): EnderecoEntregaDtoClienteCadastro {
     if (enderecoEntrega != undefined) {
       enderecoEntrega.EndEtg_tel_res = enderecoEntrega.EndEtg_ddd_res + enderecoEntrega.EndEtg_tel_res;
-      enderecoEntrega.EndEtg_ddd_res = "";
 
       enderecoEntrega.EndEtg_tel_cel = enderecoEntrega.EndEtg_ddd_cel + enderecoEntrega.EndEtg_tel_cel;
-      enderecoEntrega.EndEtg_ddd_cel = "";
 
       enderecoEntrega.EndEtg_tel_com = enderecoEntrega.EndEtg_ddd_com + enderecoEntrega.EndEtg_tel_com;
-      enderecoEntrega.EndEtg_ddd_com = "";
 
       enderecoEntrega.EndEtg_tel_com_2 = enderecoEntrega.EndEtg_ddd_com_2 + enderecoEntrega.EndEtg_tel_com_2;
-      enderecoEntrega.EndEtg_ddd_com_2 = "";
     }
 
 
