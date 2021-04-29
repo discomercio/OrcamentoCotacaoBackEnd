@@ -280,6 +280,9 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     }
 
     //vltamos para a fase 1
+    this.clienteCorpo.desconverterTelefonesEnderecoDadosCadastrais(this.endCadastralClientePrepedidoDto);
+    this.converteu_tel_endCadastralClientePrepedidoDto = false;
+    this.confirmarEndereco.prepararAvancar();
     this.fase1 = true;
     this.fase2 = false;
 
@@ -318,30 +321,47 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
 
     this.continuarEfetivo();
   }
+
+  converteu_tel_endCadastralClientePrepedidoDto = false;
   continuarEfetivo(): void {
-    //se estamos na fase 2, cotninua
-    //caso contrário, volta para a fase 1
-    if (this.fase2 || this.fase1e2juntas) {
-      //vamos validar o endereço
-      let validacoes: string[] = new Array();
 
+    let validacoes: string[] = new Array();
+
+
+    if (!this.converteu_tel_endCadastralClientePrepedidoDto) {
       this.endCadastralClientePrepedidoDto = this.clienteCorpo.converterTelefones(this.endCadastralClientePrepedidoDto);
-      validacoes = ValidacoesClienteUtils.validarEnderecoCadastralClientePrepedidoDto(this.endCadastralClientePrepedidoDto,
-        this.clienteCorpo.componenteCepDadosCadastrais.lstCidadeIBGE);
+      this.converteu_tel_endCadastralClientePrepedidoDto = true;
+    }
+    validacoes = ValidacoesClienteUtils.validarEnderecoCadastralClientePrepedidoDto(this.endCadastralClientePrepedidoDto,
+      this.clienteCorpo.componenteCepDadosCadastrais.lstCidadeIBGE);
 
-      if (validacoes.length == 0)
-        if (this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF) {
-          if (this.dadosClienteCadastroDto.Contribuinte_Icms_Status == this.constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) {
-            if (this.dadosClienteCadastroDto.Ie != "") {
-              if (this.dadosClienteCadastroDto.Uf.trim().toUpperCase() !=
-                this.endCadastralClientePrepedidoDto.Endereco_uf.trim().toUpperCase()) {
-                validacoes = validacoes.concat("Dados cadastrais: Inscrição estadual inválida pra esse estado (" + this.endCadastralClientePrepedidoDto.Endereco_uf.trim().toUpperCase() + "). " +
-                  "Caso o cliente esteja em outro estado, entre em contato com o suporte para alterar o cadastro do cliente.");
-
-              }
+    if (validacoes.length == 0) {
+      if (this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF) {
+        if (this.dadosClienteCadastroDto.Contribuinte_Icms_Status == this.constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) {
+          if (this.dadosClienteCadastroDto.Ie != "") {
+            if (this.dadosClienteCadastroDto.Uf.trim().toUpperCase() !=
+              this.endCadastralClientePrepedidoDto.Endereco_uf.trim().toUpperCase()) {
+              validacoes = validacoes.concat("Dados cadastrais: Inscrição estadual inválida pra esse estado (" + this.endCadastralClientePrepedidoDto.Endereco_uf.trim().toUpperCase() + "). " +
+                "Caso o cliente esteja em outro estado, entre em contato com o suporte para alterar o cadastro do cliente.");
             }
           }
         }
+      }
+    }
+
+    if (validacoes.length > 0) {
+      this.alertaService.mostrarMensagem("Campos inválidos. Preencha os campos marcados como obrigatórios. \nLista de erros: \n" + validacoes.join("\n"));
+      this.clienteCorpo.desconverterTelefonesEnderecoDadosCadastrais(this.endCadastralClientePrepedidoDto);
+      this.converteu_tel_endCadastralClientePrepedidoDto = false;
+      this.clienteCorpo.componenteCepDadosCadastrais.required = true;
+      this.desabilita = false;
+      return;
+    }
+    
+    //se estamos na fase 2, cotninua
+    //caso contrário, volta para a fase 1
+    if (this.fase2 || this.fase1e2juntas) {
+      
       //estou removendo o código abaixo de dentro da condição de "OutroEndereco", pois mesmo que o outro endereço esteja como false
       //ele pode ter preenchido os dados
       this.enderecoEntregaDtoClienteCadastro = this.confirmarEndereco.converterTelefones(this.enderecoEntregaDtoClienteCadastro);
@@ -350,9 +370,18 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
           this.endCadastralClientePrepedidoDto, this.confirmarEndereco.componenteCep.lstCidadeIBGE));
       }
 
+      //Apenas para consistir que a opção da entrega foi selecionada
+      if (this.enderecoEntregaDtoClienteCadastro.OutroEndereco == undefined) {
+        validacoes = validacoes.concat("Informe se o endereço de entrega será o mesmo endereço do cadastro ou não!");
+      }
+
       if (validacoes.length > 0) {
         this.alertaService.mostrarMensagem("Campos inválidos. Preencha os campos marcados como obrigatórios. \nLista de erros: \n" + validacoes.join("\n"));
-        this.clienteCorpo.desconverterTelefonesEnderecoDadosCadastrais(this.endCadastralClientePrepedidoDto);
+        
+        if (this.fase2 || this.fase1e2juntas) {
+          this.clienteCorpo.desconverterTelefonesEnderecoDadosCadastrais(this.endCadastralClientePrepedidoDto);
+          this.converteu_tel_endCadastralClientePrepedidoDto = false;
+        }
         this.confirmarEndereco.desconverterTelefonesEnderecoEntrega(this.enderecoEntregaDtoClienteCadastro);
 
         if (this.confirmarEndereco.enderecoEntregaDtoClienteCadastro.OutroEndereco) {
