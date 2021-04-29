@@ -53,6 +53,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
         //é que, se for simplesmente setado, ele não "percebe" que foi carregado
 
         setTimeout(() => {
+
           this.dadosClienteCadastroDto = clienteCadastroDto.DadosCliente;
 
           this.verificarCriarNovoPrepedido();
@@ -137,7 +138,8 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
         if (this.novoPrepedidoDadosService.prePedidoDto.EnderecoEntrega.OutroEndereco)
           this.enderecoEntregaDtoClienteCadastro = this.novoPrepedidoDadosService.prePedidoDto.EnderecoEntrega;
 
-        this.endCadastralClientePrepedidoDto = this.novoPrepedidoDadosService.prePedidoDto.EnderecoCadastroClientePrepedido;
+        if (this.novoPrepedidoDadosService.prePedidoDto.EnderecoCadastroClientePrepedido.Endereco_cnpj_cpf)
+          this.endCadastralClientePrepedidoDto = this.novoPrepedidoDadosService.prePedidoDto.EnderecoCadastroClientePrepedido;
 
         if (this.confirmarEndereco)
           this.confirmarEndereco.atualizarDadosEnderecoTela(this.enderecoEntregaDtoClienteCadastro);
@@ -285,6 +287,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     this.confirmarEndereco.prepararAvancar();
     this.fase1 = true;
     this.fase2 = false;
+    this.confirmarEndereco.desconverterTelefonesEnderecoEntrega(this.enderecoEntregaDtoClienteCadastro);
 
   }
   //precisa do static: false porque está dentro de um ngif
@@ -357,14 +360,15 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
       this.desabilita = false;
       return;
     }
-    
+
     //se estamos na fase 2, cotninua
     //caso contrário, volta para a fase 1
     if (this.fase2 || this.fase1e2juntas) {
-      
+
       //estou removendo o código abaixo de dentro da condição de "OutroEndereco", pois mesmo que o outro endereço esteja como false
       //ele pode ter preenchido os dados
-      this.enderecoEntregaDtoClienteCadastro = this.confirmarEndereco.converterTelefones(this.enderecoEntregaDtoClienteCadastro);
+      if (!this.confirmarEndereco.converteu_tel_enderecoEntrega)
+        this.enderecoEntregaDtoClienteCadastro = this.confirmarEndereco.converterTelefones(this.enderecoEntregaDtoClienteCadastro);
       if (this.enderecoEntregaDtoClienteCadastro.OutroEndereco) {
         validacoes = validacoes.concat(ValidacoesClienteUtils.validarEnderecoEntregaDtoClienteCadastro(this.enderecoEntregaDtoClienteCadastro,
           this.endCadastralClientePrepedidoDto, this.confirmarEndereco.componenteCep.lstCidadeIBGE));
@@ -377,7 +381,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
 
       if (validacoes.length > 0) {
         this.alertaService.mostrarMensagem("Campos inválidos. Preencha os campos marcados como obrigatórios. \nLista de erros: \n" + validacoes.join("\n"));
-        
+
         if (this.fase2 || this.fase1e2juntas) {
           this.clienteCorpo.desconverterTelefonesEnderecoDadosCadastrais(this.endCadastralClientePrepedidoDto);
           this.converteu_tel_endCadastralClientePrepedidoDto = false;
