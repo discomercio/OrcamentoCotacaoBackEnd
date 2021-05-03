@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 import { CepService } from 'src/app/servicos/cep/cep.service';
 import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.service';
@@ -16,16 +16,14 @@ import { debugOutputAstAsTypeScript } from '@angular/compiler';
 @Component({
   selector: 'app-cep',
   templateUrl: './cep.component.html',
-  styleUrls: ['./cep.component.scss', '../../../estilos/endereco.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./cep.component.scss', '../../../estilos/endereco.scss']
 })
 export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
 
   constructor(private readonly alertaService: AlertaService,
     public readonly cepService: CepService,
     public readonly dialog: MatDialog,
-    telaDesktopService: TelaDesktopService,
-    private cdRef: ChangeDetectorRef
+    telaDesktopService: TelaDesktopService
   ) {
     super(telaDesktopService);
   }
@@ -34,10 +32,6 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
 
   }
 
-  //para informar que teve alteração depois que já foi checado
-  ngAfterContentChecked() {
-    this.cdRef.detectChanges();
-  }
 
   //sempre usamos no modo auto
   public floatLabel(): string {
@@ -106,21 +100,21 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
       this.cep_retorno = "";
       return false;
     }
-
+    
     if (this.cep_retorno != undefined) {
       if (StringUtils.retorna_so_digitos(this.cep_retorno) == StringUtils.retorna_so_digitos(this.Cep)) {
         return;
       }
     }
-    if (this.Cep != undefined && this.Cep != "") {
+    if(this.Cep != undefined && this.Cep != ""){
       this.zerarCamposEndEntrega();
       //vamos fazer a busca
       this.carregando = true;
-
+  
       this.cepService.buscarCep(this.Cep, null, null, null).toPromise()
         .then((r) => {
           this.carregando = false;
-
+  
           if (!r || r.length !== 1) {
             this.cep_retorno = "";
             this.mostrarCepNaoEncontrado();
@@ -128,7 +122,7 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
           }
           //recebemos um endereço
           const end = r[0];
-
+  
           this.cep_retorno = this.Cep;
           if (!!end.Bairro) {
             this.Bairro = end.Bairro;
@@ -142,7 +136,7 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
               this.Cidade = end.Cidade;
               this.temCidade = true;
             }
-
+  
           }
           if (!!end.Endereco) {
             this.Endereco = end.Endereco;
@@ -151,16 +145,16 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
             this.Uf = end.Uf;
             this.temUf = true;
           }
-
+  
         }).catch((r) => {
           //deu erro na busca
           //ou não achou nada...
-
+          
           this.carregando = false;
           this.alertaService.mostrarErroInternet(r);
         });
     }
-
+    
 
 
 
@@ -199,7 +193,7 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         let end: CepDto = dialogRef.componentInstance.lstEnderecos[dialogRef.componentInstance.endereco_selecionado];
-
+        
         if (!!end.Uf) {
           this.Uf = end.Uf;
           this.temUf = true;
