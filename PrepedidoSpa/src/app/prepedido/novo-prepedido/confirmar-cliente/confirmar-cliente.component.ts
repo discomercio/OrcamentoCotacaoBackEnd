@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild, AfterContentInit, AfterViewInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, AfterContentInit, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DadosClienteCadastroDto } from 'src/app/dto/ClienteCadastro/DadosClienteCadastroDto';
 import { BuscarClienteService } from 'src/app/servicos/cliente/buscar-cliente.service';
@@ -17,13 +17,11 @@ import { ValidacoesClienteUtils } from 'src/app/utils/validacoesClienteUtils';
 import { EnderecoCadastralClientePrepedidoDto } from 'src/app/dto/Prepedido/EnderecoCadastralClientePrepedidoDto';
 import { ClienteCorpoComponent } from 'src/app/cliente/cliente-corpo/cliente-corpo.component';
 import { FormatarTelefone } from 'src/app/utils/formatarTelefone';
-import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-confirmar-cliente',
   templateUrl: './confirmar-cliente.component.html',
-  styleUrls: ['./confirmar-cliente.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./confirmar-cliente.component.scss']
 })
 export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implements OnInit {
 
@@ -40,8 +38,7 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     public readonly dialog: MatDialog,
     private readonly alertaService: AlertaService,
     private readonly novoPrepedidoDadosService: NovoPrepedidoDadosService,
-    private readonly buscarClienteService: BuscarClienteService,
-    private cdRef: ChangeDetectorRef) {
+    private readonly buscarClienteService: BuscarClienteService) {
     super(telaDesktopService);
   }
 
@@ -56,7 +53,6 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
         //é que, se for simplesmente setado, ele não "percebe" que foi carregado
 
         setTimeout(() => {
-
           this.dadosClienteCadastroDto = clienteCadastroDto.DadosCliente;
 
           this.verificarCriarNovoPrepedido();
@@ -86,10 +82,8 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
 
           //se tiver prepedido é pq veio de DetalhesPrepedido e precisamos passar para o serviço, 
           //pois a loja do dadoscliente esta com o nome e não o código da loja e teremos problemas para buscar os produtos
-
           if (this.novoPrepedidoDadosService.prePedidoDto != null)
             this.novoPrepedidoDadosService.prePedidoDto.DadosCliente = r.DadosCliente;
-
           this.dadosClienteCadastroDto = r.DadosCliente;
           this.clienteCadastroDto = r;
 
@@ -107,9 +101,6 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
 
           this.verificarCriarNovoPrepedido();
           this.salvarAtivoInicializar();
-
-
-
         }).catch((r) => {
           //erro, voltamos para a tela anterior
           this.router.navigate(["/novo-prepedido"]);
@@ -123,41 +114,17 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     this.fase1 = true;
     this.fase2 = false;
     this.fase1e2juntas = false;
-    
-    //para pegar o enter
-    document.getElementById("idcontinuar").focus();
-  }
-
-  //para informar que teve alteração depois que já foi checado
-  ngAfterContentChecked() {
-    this.cdRef.detectChanges();
-  }
-
-  ngAfterViewInit(): void {
     if (this.telaDesktop) {
       this.fase1 = true;
       this.fase2 = true;
       this.fase1e2juntas = true;
-      return;
     }
 
-    if (!this.telaDesktop) {
-      this.fase1 = true;
-      this.fase2 = false;
-      this.fase1e2juntas = false;
-
-      if (!!this.novoPrepedidoDadosService.prePedidoDto &&
-        !!this.novoPrepedidoDadosService.prePedidoDto.ListaProdutos &&
-        this.novoPrepedidoDadosService.prePedidoDto.EnderecoCadastroClientePrepedido.Endereco_cnpj_cpf != null) {
-        this.fase1 = false;
-        this.fase2 = true;
-        this.fase1e2juntas = false;
-      }
-    }
+    //para pegar o enter
+    document.getElementById("idcontinuar").focus();
   }
 
   verificarCriarNovoPrepedido() {
-
     if (!!this.novoPrepedidoDadosService.prePedidoDto) {
 
       let existente = this.novoPrepedidoDadosService.prePedidoDto.DadosCliente.Id;
@@ -176,6 +143,14 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
 
         this.clienteCorpo.atualizarDadosEnderecoCadastralClienteTela(this.endCadastralClientePrepedidoDto);
 
+        //trata se estivermos voltando da tela de itens, para ficarmos na fase 2
+        //se estamos passando aqui é porque os dados já existem no novoPrepedidoDadosService
+        if (!this.telaDesktop && this.novoPrepedidoDadosService.clicadoBotaoVoltarDaTelaItens) {
+          this.fase1 = false;
+          this.fase2 = true;
+          this.fase1e2juntas = false;
+        }
+        this.novoPrepedidoDadosService.clicadoBotaoVoltarDaTelaItens = false;
         return;
       }
     }

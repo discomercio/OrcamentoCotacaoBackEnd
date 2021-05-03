@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, Inject, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, Inject } from '@angular/core';
 import { DadosClienteCadastroDto } from 'src/app/dto/ClienteCadastro/DadosClienteCadastroDto';
 import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
 import { ClienteCadastroUtils } from 'src/app/utils/ClienteCadastroUtils';
@@ -17,44 +17,29 @@ import { MatSelect } from '@angular/material';
   styleUrls: [
     './confirmar-endereco.component.scss',
     '../../../estilos/endereco.scss'
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  ]
 })
 export class ConfirmarEnderecoComponent implements OnInit {
 
-  constructor(private readonly buscarClienteService: BuscarClienteService,
-    private cdRef: ChangeDetectorRef) { }
+  constructor(private readonly buscarClienteService: BuscarClienteService) { }
 
   buscarClienteServiceJustificativaEndEntregaComboTemporario: EnderecoEntregaJustificativaDto[];
   ngOnInit() {
-
-    this.inicializarCamposEndereco(this.enderecoEntregaDtoClienteCadastro);
-
-    this.buscarClienteServiceJustificativaEndEntregaComboTemporario = this.buscarClienteService.JustificativaEndEntregaComboTemporario();
-    //até aqui tem dado de entrega
-    this.enderecoEntregaDtoClienteCadastro.OutroEndereco = false;
-
-    if (!this.enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa) {
+    //se OutroEndereco for undefined, precisamos inicializar
+    if (!this.enderecoEntregaDtoClienteCadastro.OutroEndereco) {
+      this.enderecoEntregaDtoClienteCadastro.OutroEndereco = false;
       this.inicializarCamposEndereco(this.enderecoEntregaDtoClienteCadastro);
     }
-  }
 
-  //para informar que teve alteração depois que já foi checado
-  ngAfterContentChecked() {
-    this.cdRef.detectChanges();
+    this.buscarClienteServiceJustificativaEndEntregaComboTemporario = this.buscarClienteService.JustificativaEndEntregaComboTemporario();
   }
 
   ngAfterViewInit(): void {
-    //vamos verificar se tem justificativa de endereço de entrega pq setamos OutroEndereco = false na inicialização
-    //se tiver justificativa é pq temos dados de entrega
-    if (!!this.enderecoEntregaDtoClienteCadastro.EndEtg_cod_justificativa) {
-      //já que setamos OutroEndereco = false na inicialização e temos valor em EndEtg_cod_justificativa
-      //vamos informar OutroEndereco = true para que seja selacionado que é outro endereço de entrega.
-      this.enderecoEntregaDtoClienteCadastro.OutroEndereco = true;
+    setTimeout(() => {
+      //fazendo por timeout, como em cliente-corpo.component.ts
       if (this.componenteCep)
         this.atualizarDadosEnderecoTela(this.enderecoEntregaDtoClienteCadastro);
-      return;
-    }
+    }, 0);
 
   }
 
@@ -151,35 +136,34 @@ export class ConfirmarEnderecoComponent implements OnInit {
   constantes: Constantes = new Constantes();
 
   inicializarCamposEndereco(enderecoEntrega: EnderecoEntregaDtoClienteCadastro) {
-    //para teste
-    if (!enderecoEntrega.OutroEndereco) {
-      enderecoEntrega.EndEtg_cnpj_cpf = "";
-      enderecoEntrega.EndEtg_nome = "";
-      enderecoEntrega.EndEtg_cep = "";
-      enderecoEntrega.EndEtg_endereco = "";
-      enderecoEntrega.EndEtg_endereco_numero = "";
-      enderecoEntrega.EndEtg_bairro = "";
-      enderecoEntrega.EndEtg_cidade = "";
-      enderecoEntrega.EndEtg_uf = "";
-      enderecoEntrega.EndEtg_endereco_complemento = "";
-      enderecoEntrega.EndEtg_ddd_cel = "";
-      enderecoEntrega.EndEtg_tel_cel = "";
-      enderecoEntrega.EndEtg_ddd_res = "";
-      enderecoEntrega.EndEtg_tel_res = "";
-      enderecoEntrega.EndEtg_ddd_com = "";
-      enderecoEntrega.EndEtg_tel_com = "";
-      enderecoEntrega.EndEtg_ramal_com = "";
-      enderecoEntrega.EndEtg_ddd_com_2 = "";
-      enderecoEntrega.EndEtg_tel_com_2 = "";
-      enderecoEntrega.EndEtg_ramal_com_2 = "";
-      enderecoEntrega.EndEtg_produtor_rural_status = 0;
-      enderecoEntrega.EndEtg_contribuinte_icms_status = 0;
-      enderecoEntrega.EndEtg_ie = "";
-      enderecoEntrega.EndEtg_tipo_pessoa = "";
-      enderecoEntrega.EndEtg_email = "";
-      enderecoEntrega.EndEtg_email_xml = "";
-      enderecoEntrega.EndEtg_cod_justificativa = "";
-    }
+    if (!enderecoEntrega) return;
+    //sempre volamos porque, se mudar entre PF e PJ, precisa limpar os telefones
+    enderecoEntrega.EndEtg_cnpj_cpf = "";
+    enderecoEntrega.EndEtg_nome = "";
+    enderecoEntrega.EndEtg_cep = "";
+    enderecoEntrega.EndEtg_endereco = "";
+    enderecoEntrega.EndEtg_endereco_numero = "";
+    enderecoEntrega.EndEtg_bairro = "";
+    enderecoEntrega.EndEtg_cidade = "";
+    enderecoEntrega.EndEtg_uf = "";
+    enderecoEntrega.EndEtg_endereco_complemento = "";
+    enderecoEntrega.EndEtg_ddd_cel = "";
+    enderecoEntrega.EndEtg_tel_cel = "";
+    enderecoEntrega.EndEtg_ddd_res = "";
+    enderecoEntrega.EndEtg_tel_res = "";
+    enderecoEntrega.EndEtg_ddd_com = "";
+    enderecoEntrega.EndEtg_tel_com = "";
+    enderecoEntrega.EndEtg_ramal_com = "";
+    enderecoEntrega.EndEtg_ddd_com_2 = "";
+    enderecoEntrega.EndEtg_tel_com_2 = "";
+    enderecoEntrega.EndEtg_ramal_com_2 = "";
+    enderecoEntrega.EndEtg_produtor_rural_status = 0;
+    enderecoEntrega.EndEtg_contribuinte_icms_status = 0;
+    enderecoEntrega.EndEtg_ie = "";
+    enderecoEntrega.EndEtg_tipo_pessoa = "";
+    enderecoEntrega.EndEtg_email = "";
+    enderecoEntrega.EndEtg_email_xml = "";
+    enderecoEntrega.EndEtg_cod_justificativa = "";
   }
   pessoaEntregaEhPJ: boolean;
   pessoaEntregaEhPF: boolean;
