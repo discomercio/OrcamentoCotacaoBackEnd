@@ -6,34 +6,7 @@ export class CepEntrega {
     constructor() {
         $(document).ready(() => {
             this.tipoClienteEntrega = Constantes.ID_PF;
-            $("#EndEntregaTipoPF").prop("checked", true);
-            $("#divEntregaPF").show();
-            // cliente PJ em entrega PF
-            ($("#endEntregaTelRes") as any).mask("(99) 9999-9999");
-            ($("#endEntregaCel") as any).mask("(99) 99999-9999");
-
-            //cliente PJ em entrega PJ
-            ($("#endEntregaTelCom1") as any).mask("(99) 9999-9999");
-            ($("#endEntregaTelCom2") as any).mask("(99) 9999-9999");
-
-
-            $("#rb_endEntrega_pf").click(() => {
-                this.tipoClienteEntrega = Constantes.ID_PF;
-                $("#divEntregaPF").show();
-                $("#divEntregaPJ").hide();
-                $("#EndEntregaTipoPF").prop("checked", true);
-                if ($("#EndEntregaTipoPJ").is(":checked") == true)
-                    $("#EndEntregaTipoPJ").prop("checked", false);
-
-            });
-            $("#rb_endEntrega_pj").click(() => {
-                this.tipoClienteEntrega = Constantes.ID_PJ;
-                $("#divEntregaPJ").show();
-                $("#divEntregaPF").hide();
-                $("#EndEntregaTipoPJ").prop("checked", true);
-                if ($("#EndEntregaTipoPF").is(":checked") == true)
-                    $("#EndEntregaTipoPF").prop("checked", false);
-            });
+            $("#EndEntregaTipoPF").click();            
         });
     }
 
@@ -50,7 +23,7 @@ export class CepEntrega {
         $('#numEntrega').val('');
     }
 
-    public atribuirDadosParaEntrega(end:CepDto):void {
+    public atribuirDadosParaEntrega(end: CepDto): void {
         $("#cepEntrega").val(end.Cep);
         ($("#cepEntrega") as any).mask("99999-999");
         $("#lblcep").addClass('active');
@@ -62,7 +35,7 @@ export class CepEntrega {
         if (!!end.Cidade) {
             if (!!end.ListaCidadeIBGE && end.ListaCidadeIBGE.length > 0) {
                 $("#cidadeEntrega").prop("readonly", false);
-                
+
                 //lstIBGE_Entrega1 = end.ListaCidadeIBGE;
             }
             else {
@@ -72,7 +45,7 @@ export class CepEntrega {
             }
         }
         if (!!end.Endereco) {
-            $("#endereco").val(end.Endereco);
+            $("#enderecoEntrega").val(end.Endereco);
             $("#lbEntrega").addClass('active');
         }
         if (!!end.Uf) {
@@ -84,7 +57,7 @@ export class CepEntrega {
         $("#compEntrega").val('');
     }
 
-    public converterEntregaParaEnderecoEntregaClienteCadastroDto(): EnderecoEntregaClienteCadastroDto{
+    public converterEntregaParaEnderecoEntregaClienteCadastroDto(): EnderecoEntregaClienteCadastroDto {
         let enderecoEntregaClienteDto: EnderecoEntregaClienteCadastroDto = new EnderecoEntregaClienteCadastroDto();
 
         enderecoEntregaClienteDto.EndEtg_endereco = $("#enderecoEntrega").val() as string;
@@ -129,19 +102,22 @@ export class CepEntrega {
     }
 }
 
+declare var window: any;
 
-//endereço de entrega para cliente PJ setado em PF
+window.IncluirMascara = (el: JQuery<HTMLInputElement>) => {
+    MascaraTelefones(el);
+}
 
+window.TipoPessoaEntrega = (el: JQuery<HTMLInputElement>) => {
+    let tipoPessoa: string = (el.val() as string)
+    if (tipoPessoa == Constantes.ID_PF)
+        PessoaFisica();
+    if (tipoPessoa == Constantes.ID_PJ)
+        PessoaJuridica();
+}
 
-//Controla os campos de endereço de entrega para PJ
+window.buscarCep = (el: JQuery<HTMLInputElement>) => {
 
-declare var window: Window & typeof globalThis;
-//declare var lstIBGE_Entrega1: Array<string>;
-//lstIBGE_Entrega1 = new Array<string>();
-//declare var tipoClienteEntrega: string;
-
-(window as any).buscarCep = (el: JQuery<HTMLInputElement>) => {
-    
     if (!!el.val()) {
         $('.container_cep').addClass('carregando');
 
@@ -174,3 +150,43 @@ declare var window: Window & typeof globalThis;
         swal("Erro", "É necessário informar um CEP válido!");
     }
 }
+
+/*============== Funções =================*/
+function MascaraTelefones(el: JQuery<HTMLInputElement>): void {
+    (el as any).mask("(00) 0000-00009");
+    (el as any).focusout(function (event) {
+        let target, phone, element;
+        target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+        phone = target.value.replace(/\D/g, '');
+        element = $(target);
+        element.unmask();
+        if (phone.length > 10) {
+            element.mask("(00) 00000-0009");
+        } else {
+            element.mask("(00) 0000-0009");
+        }
+    });
+}
+
+function PessoaFisica(): void {
+    $("#divEntregaPF").show();
+    $("#divEntregaPJ").hide();
+    $("#EndEntregaTipoPF").prop("checked", true);
+    if ($("#EndEntregaTipoPJ").is(":checked") == true)
+        $("#EndEntregaTipoPJ").prop("checked", false);
+    MascaraTelefones($("#endEntregaTelRes"));
+    MascaraTelefones($("#endEntregaCel"));
+
+}
+
+function PessoaJuridica(): void {
+    $("#divEntregaPJ").show();
+    $("#divEntregaPF").hide();
+    $("#EndEntregaTipoPJ").prop("checked", true);
+    if ($("#EndEntregaTipoPF").is(":checked") == true)
+        $("#EndEntregaTipoPF").prop("checked", false);
+
+    MascaraTelefones($("#endEntregaTelCom1"));
+    MascaraTelefones($("#endEntregaTelCom2"));
+}
+

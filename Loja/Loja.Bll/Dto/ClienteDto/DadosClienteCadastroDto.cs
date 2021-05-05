@@ -135,7 +135,7 @@ namespace Loja.Bll.Dto.ClienteDto
                 Tipo = dadosClienteCadastroDto.Tipo,
                 Observacao_Filiacao = dadosClienteCadastroDto.Observacao_Filiacao,
                 Nascimento = dadosClienteCadastroDto.Nascimento,
-                Sexo = dadosClienteCadastroDto.Sexo,
+                Sexo = dadosClienteCadastroDto.Sexo??"",
                 Nome = dadosClienteCadastroDto.Nome,
                 ProdutorRural = dadosClienteCadastroDto.ProdutorRural,
                 Endereco = dadosClienteCadastroDto.Endereco,

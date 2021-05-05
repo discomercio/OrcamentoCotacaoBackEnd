@@ -43,78 +43,6 @@ $(function () {
     ($('#cep') as any).mask("00000-000");
     ($('#ie') as any).mask("000.000.000.000");
 
-    $('#celular').blur(function () {
-        if ($('#celular').val().toString().length == 14) {
-            ($('#celular') as any).mask("(99) 9999-9999");
-        }
-        else {
-            ($('#celular') as any).mask("(99) 99999-9999");
-        }
-    });
-
-    $('#telCom').blur(function () {
-        if ($('#telCom').val() != "") {
-            $('#telCom').removeClass("is-invalid");
-        }
-    });
-
-    $('#telCom2').blur(function () {
-        if ($('#telCom2').val().toString().length == 14) {
-            ($('#telCom2') as any).mask("(99) 9999-9999");
-        }
-        else {
-            ($('#telCom2') as any).mask("(99) 99999-9999");
-        }
-    })
-
-    $('#addRefComercial').on('click', function () {
-
-        let index: number = Number($('#index').val());
-
-        if (index == undefined) {
-            index = 1;
-            $('#index').val(index);
-        }
-
-        if (index == 3) {
-            swal("", "Máximo de 3 referências comerciais.");
-            return false;
-        }
-
-        let linha: string = "<hr /><div class='form-group row'>";
-        linha += "<div class='col-sm-4' style='text-align: initial;'>";
-        linha += "<label class='col-form-label' for='Nome_Empresa'>NOME DA EMPRESA</label>";
-        linha += "<input name='[" + index + "].Nome_Empresa' id='" + index + "-Nome_Empresa' type='text' class='form-control' />";
-        linha += "</div>";
-        linha += "<div class='col-sm-4' style='text-align: initial;'>";
-        linha += "<label class='col-form-label' for='Contato'>CONTATO</label>";
-        linha += "<input name='[" + index + "].Contato' id='" + index + "-Contato' type='text' class='form-control'/>";
-        linha += "</div>";
-        linha += "<div class='col-sm-4' style='text-align: initial;'>";
-        linha += "<label class='col-form-label' for='Telefone'>TELEFONE</label>";
-        linha += "<input name='[" + index + "].Telefone' id='" + index + "-Telefone' type='text' class='form-control' onblur='IncluirMascara($(this))' onfocus='RemoveMascara($(this))' />";
-        linha += "</div>"
-        linha += "<input type='hidden' id='" + index + "'-Ordem' name='[" + index + "].Ordem' value='" + (index + 1) + "' /> ";
-        linha += "</div>";
-
-        $('#collapsible-body-comercial').append(linha);
-        ($('#' + index + '-Telefone') as any).mask("(00) 0000-0000");
-
-        index++;
-        $('#index').val(index);
-    });
-
-    $('#addRefBancaria').on('click', function () {
-        let indiceBancaria: string = $("#indiceBancaria").val() as string;
-        if (!$("#RefBancariabody-" + indiceBancaria + "").is(":visible")) {
-            $("#RefBancariabody-" + indiceBancaria + "").show();
-            $("#RefBancariabody-" + indiceBancaria + "").css('display', 'inline-flex');
-            return;
-        }
-
-        swal("Erro", "Máximo de 1 referência bancária.");
-        return false;
-    });
 
     //verificar produtor rural no inicio da tela
     if ($("#tipo").val() == Constantes.ID_PF) {
@@ -125,154 +53,12 @@ $(function () {
     }
 
     MontarTelefonesTela();
-    ColocarMascaraNosTelefones();
-
-});
-
-/* =============== CONTROLE DE CAMPOS ================== */
-//Tipo PF
-//Dados pessoais
-$("#nome").blur(() => {
-    if ($("#nome").val() == "") $("#nome").addClass("is-invalid");
-    if ($("#nome").val()?.toString().length > 0 && $("#nome").val() != "") {
-        $("#nome").removeClass("is-invalid");
-    }
-});
-$("#cpf_cnpj").blur(() => {
-    if ($("#cpf_cnpj").val() == "") $("#cpf_cnpj").addClass("is-invalid");
-    if ($("#cpf_cnpj").val()?.toString().length > 0 && $("#cpf_cnpj").val() != "") {
-        $("#cpf_cnpj").removeClass("is-invalid");
-    }
-});
-$("#nascimento").blur(() => {
-
-    if (!new Date($("#nascimento").val()?.toString()).getTime()) {
-        $("#nascimento").addClass("is-invalid");
-    }
-    else {
-        $("#nascimento").removeClass("is-invalid");
-        return false;
-    };
-
-    if (new Date($("#nascimento").val()?.toString()).getTime()) {
-        $("#nascimento").removeClass("is-invalid");
-    }
-});
-/*=========== Endereço ===========*/
-$("#cep").blur(() => {
-    if ($("#cep").val() == "") $("#cep").addClass("is-invalid");
-    if ($("#cep").val()?.toString().length > 0 && $("#cep").val() != "") {
-        $("#cep").removeClass("is-invalid");
-    }
-});
-$("#cep").blur(() => {
-    if ($("#cep").val() == "") $("#cep").addClass("is-invalid");
-    if ($("#cep").val()?.toString().length > 0 && $("#cep").val() != "") {
-        $("#cep").removeClass("is-invalid");
-    }
-});
-$("#numero").blur(() => {
-    if ($("#numero").val() == "") $("#numero").addClass("is-invalid");
-    if ($("#numero").val()?.toString().length > 0 && $("#numero").val() != "") {
-        $("#numero").removeClass("is-invalid");
-    }
-});
-if ($("#numero").val() != "") {
-    $("#numero").removeClass("is-invalid");
-}
-$("#bairro").blur(() => {
-    if ($("#bairro").val() == "") $("#bairro").addClass("is-invalid");
-    if ($("#bairro").val()?.toString().length > 0 && $("#bairro").val() != "") {
-        $("#bairro").removeClass("is-invalid");
-    }
-});
-//para caso seja preenchido de forma automática
-$("#bairro").change(function () {
-    if ($("#bairro").val() != "") {
-        $("#bairro").removeClass("is-invalid");
-    }
-});
-
-$("#cidade").blur(() => {
-    if ($("#cidade").val() == "") $("#cidade").addClass("is-invalid");
-    if ($("#cidade").val()?.toString().length > 0 && $("#cidade").val() != "") {
-        $("#cidade").removeClass("is-invalid");
-    }
-});
-$("#uf").blur(() => {
-    if ($("#uf").val() == "") {
-        $("#uf").addClass("is-invalid");
-    }
-    if ($("#uf").val()?.toString().length > 0 && $("#uf").val() != "") {
-        $("#uf").removeClass("is-invalid");
-    }
-});
-/*=========== TELEFONES PF ===========*/
-$("#telRes").blur(() => {
-    if ($("#telRes").val() != '' ||
-        $("#celular").val() != '' ||
-        $("#telCom").val() != '') {
-        $("#telRes").removeClass("is-invalid");
-        $("#celular").removeClass("is-invalid");
-        $("#telCom").removeClass("is-invalid");
-    };
-});
-$("#celular").blur(() => {
-    if ($("#telRes").val() != '' ||
-        $("#celular").val() != '' ||
-        $("#telCom").val() != '') {
-        $("#telRes").removeClass("is-invalid");
-        $("#celular").removeClass("is-invalid");
-        $("#telCom").removeClass("is-invalid");
-    };
-});
-$("#telCom").blur(() => {
-    if ($("#telRes").val() != '' ||
-        $("#celular").val() != '' ||
-        $("#telCom").val() != '') {
-        $("#telRes").removeClass("is-invalid");
-        $("#celular").removeClass("is-invalid");
-        $("#telCom").removeClass("is-invalid");
-    };
-});
-/*=========== TELEFONES PJ ===========*/
-$("#telCom").blur(() => {
-    if ($("#telCom").val() != "" ||
-        $("#telCom2").val() != "") {
-        $("#telCom").removeClass("is-invalid");
-        $("#telCom2").removeClass("is-invalid");
-    }
-});
-$("#telCom2").blur(() => {
-    if ($("#telCom").val() != "" ||
-        $("#telCom2").val() != "") {
-        $("#telCom").removeClass("is-invalid");
-        $("#telCom2").removeClass("is-invalid");
-    }
-});
-
-/*=========== E-mail ===========*/
-$("#email").blur(() => {
-    if ($("#email").val() == "") $("#email").addClass("is-invalid");
-    if ($("#email").val()?.toString().length > 0 && $("#email").val() != "") {
-        $("#email").removeClass("is-invalid");
-        //validar se o email esta ok
-    }
-});
-/*=========== E-mail XML ===========*/
-$("#emailXml").blur(() => {
-    if ($("#emailXml").val() == "") $("#emailXml").addClass("is-invalid");
-    if ($("#emailXml").val()?.toString().length > 0 && $("#emailXml").val() != "") {
-        $("#emailXml").removeClass("is-invalid");
-        //verificar se o email esta ok
-    }
-});
-/*=========== Produtor Rural ===========*/
-$("#produtor").change(() => {
-    if ($("#produtor").val() == "") $("#produtor").addClass("is-invalid");
-    if ($("#produtor").val()?.toString().length > 0 && $("#produtor").val() != "") {
-        $("#produtor").removeClass("is-invalid");
-    }
+    MaskTelRefComercial();
+    MaskTelRefBancaria();
+    //afazer: no carregamento de tela, verificar 
+    //se é PF : não produtor, contribuinte e IE serão bloqueados
+    //Se PJ : não contribuite, IE será bloqueado
+    //obs: fazer um onchange para controlar o bloqueio e desbloqueio
 });
 /*=========== Não sei o CEP ===========*/
 $("#btnModificar").click(function () {
@@ -328,23 +114,6 @@ $(".btnCepCadastro").click(function () {
     return false;
 });
 
-//PJ
-$("#razao").blur(function () {
-    if ($("#razao").val() != "") {
-        $("#razao").removeClass("is-invalid");
-    }
-});
-$("#contribuinte").blur(function () {
-    if ($("#contribuinte").val() != "") {
-        $("#contribuinte").removeClass("is-invalid");
-    }
-});
-$("#contatoNaEmpresa").blur(function () {
-    if ($("#contatoNaEmpresa").val() != "") {
-        $("#contatoNaEmpresa").removeClass("is-invalid");
-    }
-});
-
 
 $("#modal1").on("hidden.bs.modal", function () {
     let tbody: JQuery<HTMLTableElement> = $(this).find("#tableBody") as JQuery<HTMLTableElement>;
@@ -357,33 +126,90 @@ $("#modal1").on("hidden.bs.modal", function () {
 /*================FIM CONROLE DE CAMPOS =================*/
 
 /* ========== CHAMADAS DIRETAS DA TELA ====================================*/
-window.RemoveMascara = (el: JQuery<HTMLInputElement>) => {
-    let valor: string = StringUtils.retorna_so_digitos(el.val() as string);
-    (el as any).unmask();
-    el.val(valor);
+/* VALIDAÇÃO DE NOME */
+window.VerificaCampo = (el: JQuery<HTMLInputElement>) => {
+    let valor: string = el.val() as string;
+    if (valor == "") el.addClass("is-invalid");
+    if (!!valor && valor.toString().length > 0) el.removeClass("is-invalid");
 }
-//inclui mascara para Ref's
-window.IncluirMascara = (el: JQuery<HTMLInputElement>) => {
 
-    let valor: string = StringUtils.retorna_so_digitos(el.val() as string);
-    if (!!valor) {
-        if (valor.length < 6) {
-            swal("Erro", "Telefone inválido!");
-            return false;
-        }
-        if (valor.length >= 6 && valor.length <= 8) {
-            //não tem ddd            
-            (el as any).mask(MascaraParaTelefones("", valor));
-        }
-        if (valor.length > 8) {
-            //tem ddd
-            let s = FormatarTelefone.SepararTelefone(valor);
-            el.next().val(s.Ddd);
-            (el as any).mask(MascaraParaTelefones(s.Ddd, s.Telefone));
-        }
+window.VerificarTelefonePF = () => {
+    let resTel: string = $("#telRes").val() as string;
+    let celTel: string = $("#celular").val() as string;
+    let comTel: string = $("#telCom").val() as string;
+    
+    if (!resTel || !celTel || !comTel) {
+        $("#telRes").removeClass("is-invalid");
+        $("#celular").removeClass("is-invalid");
+        $("#telCom").removeClass("is-invalid");
     }
 }
-//mostra a div de endereço de entrega
+
+window.VerificarTelefonePJ = () => {
+    let telCom: string = $("#telCom").val() as string;
+    let telCom2: string = $("#telCom2").val() as string;
+
+    if (!telCom || !telCom2) {
+        $("#telCom").removeClass("is-invalid");
+        $("#telCom2").removeClass("is-invalid");
+    }
+}
+
+/* ADICIONAR REFERÊNCIA COMERCIAL */
+window.AddRefComercial = () => {
+    let index: number = Number($('#index').val());
+
+    if (index > 2) {
+        swal("", "Máximo de 3 referências comerciais.");
+        return false;
+    }
+
+    let linha: string = "<hr /><div class='form-group row'>";
+    linha += "<div class='col-sm-4' style='text-align: initial;'>";
+    linha += "<label class='col-form-label' for='Nome_Empresa'>NOME DA EMPRESA</label>";
+    linha += "<input name='[" + index + "].Nome_Empresa' id='" + index + "-Nome_Empresa' type='text' class='form-control' />";
+    linha += "</div>";
+    linha += "<div class='col-sm-4' style='text-align: initial;'>";
+    linha += "<label class='col-form-label' for='Contato'>CONTATO</label>";
+    linha += "<input name='[" + index + "].Contato' id='" + index + "-Contato' type='text' class='form-control'/>";
+    linha += "</div>";
+    linha += "<div class='col-sm-4' style='text-align: initial;'>";
+    linha += "<label class='col-form-label' for='Telefone'>TELEFONE</label>";
+    linha += "<input name='[" + index + "].Telefone' id='" + index + "-Telefone' type='text' class='form-control' onkeyup='IncluirMascara($(this))'  />";
+    linha += "</div>"
+    linha += "<input type='hidden' id='" + index + "'-Ordem' name='[" + index + "].Ordem' value='" + (index + 1) + "' /> ";
+    linha += "</div>";
+
+    $('#collapsible-body-comercial').append(linha);
+    ($('#' + index + '-Telefone') as any).mask("(00) 0000-0000");
+
+    index++;
+    $('#index').val(index);
+}
+/* ADICIONAR REFERÊNCIA BANCÁRIA */
+window.AddRefBancaria = () => {
+    let indice: number = Number($('#indice').val());
+    debugger;
+    if (indice > 0) {
+        swal("", "Máximo de 1 referência bancária.");
+        return false;
+    }
+    let clone: any = $('#modelo_refBancaria').clone();
+    let idNovo: string = "RefBancariabody-" + indice;
+    clone.attr("id", idNovo);
+    $("#card-body-bancaria").append(clone);
+    clone.css("display", "inline-flex");
+    $("#" + idNovo + "").click();
+    indice++;
+    $('#indice').val(indice);
+}
+
+/* MASCARA PARA TELEFONE */
+window.IncluirMascara = (el: JQuery<HTMLInputElement>) => {
+    MascaraTelefones(el);
+}
+
+/* MOSTRA A DIV DE ENDEREÇO DE ENTREGA */
 window.mostraDiv = (el: JQuery<HTMLInputElement>) => {
 
     let div_outro_endereco: JQuery<HTMLDivElement> = $("#outro_endereco") as JQuery<HTMLDivElement>;
@@ -395,7 +221,8 @@ window.mostraDiv = (el: JQuery<HTMLInputElement>) => {
         $('#mesmo').prop('checked', false);
     }
 }
-//esconde a div de endereço de entrega
+
+/* ESCONDE A DIV DE ENDEREÇO DE ENTREGA */
 window.fechaDiv = (el: JQuery<HTMLInputElement>) => {
 
     let div_outro_endereco: JQuery<HTMLDivElement> = $("#outro_endereco") as JQuery<HTMLDivElement>;
@@ -407,7 +234,8 @@ window.fechaDiv = (el: JQuery<HTMLInputElement>) => {
         $('#outro').prop('checked', false);
     }
 }
-//Mostra os campos de contribuinte e IE
+
+/* MOSTRA OS CAMPOS DE CONTRIBUINTE E IE */
 window.MostrarDivs = () => {
     if (Number($("#produtor").val()) == Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM) {
         $("#div_ie").css('visibility', 'visible');
@@ -418,68 +246,64 @@ window.MostrarDivs = () => {
         $("#div_contribuinte").css('visibility', 'hidden');
     }
 }
-//Busca o cep ao sair do campo de cep do cadastro do cliente
+
+/* BUSCA O CEP AO SAIR DO CAMPO DE CEP DO CADASTRO DO CLIENTE */
 window.DigitouCepCadastro = () => {
     let cep: string = $('#cep').val() as string;
-
-    if (!!cep) {
-
-        $.ajax({
-            url: "../Cep/BuscarCep/",
-            type: "GET",
-            data: { cep: $('#cep').val() },
-            dataType: "json",
-            success: function (data) {
-                if (!data || data.length !== 1) {
-                    swal("Erro", "CEP inválido ou não encontrado.");
-                    return false;
-                }
-
-                //vamos limpar os campos
+    $.ajax({
+        url: "../Cep/BuscarCep/",
+        type: "GET",
+        data: { cep: $('#cep').val() },
+        dataType: "json",
+        success: function (data) {
+            if (!data || data.length !== 1) {
+                debugger;
                 limparCamposEndereco();
-                //temos endereço
-                let end: CepDto = data[0];
-
-                $("#cep").val(end.Cep);
-                ($("#cep") as any).mask("99999-999");
-
-                if (!!end.Bairro) {
-                    $("#bairro").val(end.Bairro);
-                    $("#lblBairro").addClass('active');
-                }
-                if (!!end.Cidade) {
-                    if (!!end.ListaCidadeIBGE && end.ListaCidadeIBGE.length > 0) {
-                        $("#cidade").prop("readonly", false);
-                        lstIBGE = end.ListaCidadeIBGE;
-                    }
-                    else {
-                        $("#cidade").prop("readonly", true);
-                        $("#cidade").val(end.Cidade);
-                        $("#lblCidade").addClass('active');
-                    }
-                }
-                if (!!end.Endereco) {
-                    $("#endereco").val(end.Endereco);
-                    $("#lbEntrega").addClass('active');
-                }
-                if (!!end.Uf) {
-                    $("#uf").val(end.Uf);
-                    $("#lblUf").addClass('active');
-                }
-
-                $("#numero").val('');
-                $("#complemento").val('');
-            },
-            error: function (data) {
-                swal("Erro", "Falha ao buscar o cep!");
+                return false;
             }
-        })
-    }
-    else {
-        swal("Erro", "É necessário informar um CEP válido!");
-    }
+
+            //vamos limpar os campos
+            limparCamposEndereco();
+            //temos endereço
+            let end: CepDto = data[0];
+
+            $("#cep").val(end.Cep);
+            ($("#cep") as any).mask("99999-999");
+
+            if (!!end.Bairro) {
+                $("#bairro").val(end.Bairro);
+                $("#lblBairro").addClass('active');
+            }
+            if (!!end.Cidade) {
+                if (!!end.ListaCidadeIBGE && end.ListaCidadeIBGE.length > 0) {
+                    $("#cidade").prop("readonly", false);
+                    lstIBGE = end.ListaCidadeIBGE;
+                }
+                else {
+                    $("#cidade").prop("readonly", true);
+                    $("#cidade").val(end.Cidade);
+                    $("#lblCidade").addClass('active');
+                }
+            }
+            if (!!end.Endereco) {
+                $("#endereco").val(end.Endereco);
+                $("#lbEntrega").addClass('active');
+            }
+            if (!!end.Uf) {
+                $("#uf").val(end.Uf);
+                $("#lblUf").addClass('active');
+            }
+
+            $("#numero").val('');
+            $("#complemento").val('');
+        },
+        error: function (data) {
+            swal("Erro", "Falha ao buscar o cep!");
+        }
+    })
 }
-//Validação de formulário
+
+/* VALIDAÇÃO DE FORMULÁRIO */
 window.ValidarFormulario = () => {
     Loading.Carregando(true);
 
@@ -501,7 +325,7 @@ window.ValidarFormulario = () => {
             clienteCadastro = converterParaClienteCadastroDto();
 
             //vamos validar em outro arquivo os dados do cliente
-            debugger;
+
             //ESTOU AQUI!!
             //PRECISO VALIDAR O ENDEREÇO DE ENTREGA CASO NÃO ESTEJA CADASTRANDO
             msg = validacoesCliente.ValidarDadosClienteCadastro(dadosClienteCadastroDto, lstIBGE, clienteCadastro);
@@ -548,10 +372,35 @@ window.ChecarLinha = (el: JQuery<HTMLTableElement>) => {
     el.children().find(".check").prop("checked", true);
 }
 
+window.AjustaData = (el: JQuery<HTMLInputElement>) => {
+    filtra_data();
+    if (tem_info((el.val() as string)) && !IsDate(el)) {
+        swal("Erro", "Data inválida!");
+
+        $("#nascimento").val("");
+        return false;
+    }
+}
 
 /* ============ FIM DE CHAMADAS DIRETAS DA TELA ===========*/
 
 /* ============ FUNÇÕES ===========*/
+function MascaraTelefones(el: JQuery<HTMLInputElement>): void {
+    (el as any).mask("(00) 0000-00009");
+    (el as any).focusout(function (event) {
+        let target, phone, element;
+        target = (event.currentTarget) ? event.currentTarget : event.srcElement;
+        phone = target.value.replace(/\D/g, '');
+        element = $(target);
+        element.unmask();
+        if (phone.length > 10) {
+            element.mask("(00) 00000-0009");
+        } else {
+            element.mask("(00) 0000-0009");
+        }
+    });
+}
+
 function MontarTelefonesTela(): void {
     //Montar telefones PF
     if ($("#tipo").val() == Constantes.ID_PF)
@@ -566,91 +415,62 @@ function MontarTelefonesPF(): void {
     //RESIDENCIAL
     let dddRes: string = $('#dddRes').val() as string;
     let telRes: string = $('#telRes').val() as string;
-    if (!!dddRes && !!telRes) {
-        $('#telRes').val(dddRes + telRes);
-    }
-    ($('#telRes') as any).mask(MascaraParaTelefones(dddRes, telRes));
+    $('#telRes').val(dddRes + telRes);
+    MascaraTelefones($('#telRes'));
+
     //CELULAR
     let dddCel: string = $('#dddCel').val() as string;
     let celular: string = $('#celular').val() as string;
-    if (!!dddCel && !!celular)
-        $('#celular').val(dddCel + celular);
-    ($('#celular') as any).mask(MascaraParaTelefones(dddCel, celular));
+    $('#celular').val(dddCel + celular);
+    MascaraTelefones($('#celular'));
+
     //COMERCIAL
     let dddCom: string = $('#dddCom').val() as string;
     let telCom: string = $('#telCom').val() as string;
-    if (!!dddCom && !!telCom)
-        $('#telCom').val(dddCom + telCom);
-    ($('#telCom') as any).mask(MascaraParaTelefones(dddCom, telCom));
+    $('#telCom').val(dddCom + telCom);
+    MascaraTelefones($('#telCom'));
 }
 
 function MontarTelefonesPJ(): void {
-
     //COMERCIAL
     let pj_dddCom: string = $('#dddCom').val() as string;
     let pj_telCom: string = $('#telCom').val() as string;
-    if (!!pj_dddCom && !!pj_telCom)
-        $('#telCom').val(pj_dddCom + pj_telCom);
-    ($('#telCom') as any).mask(MascaraParaTelefones(pj_dddCom, pj_telCom));
+    $('#telCom').val(pj_dddCom + pj_telCom);
+    MascaraTelefones($('#telCom'));
+
     //COMERCIAL2
     let dddCom2: string = $('#dddCom2').val() as string;
     let telCom2: string = $('#telCom2').val() as string;
-    if (!!dddCom2 && !!telCom2)
-        $('#telCom2').val(dddCom2 + telCom2);
-    ($('#telCom2') as any).mask(MascaraParaTelefones(dddCom2, telCom2));
+    $('#telCom2').val(dddCom2 + telCom2);
+    MascaraTelefones($('#telCom2'));
+
 }
 
-function MascaraParaTelefones(ddd: string, tel: string): string {
-    let mascara: string = "";
-    if (!!ddd) {
-        mascara = "(99) ";
-    }
-    if (!!tel) {
-        //é celular
-        if (tel.length > 8)
-            mascara = mascara + "99999-9999";
-        if (tel.length == 8)
-            mascara = mascara + "9999-9999";
-        if (tel.length < 8)
-            mascara = mascara + "999-9999";
-    }
-
-    return mascara;
-}
-
-function ColocarMascaraNosTelefones() {
-
-    //mascara de telefone para ref bancaria
+function MaskTelRefBancaria() {
     let indice: number = $("#indiceBancaria").val() as number;
     if (!!indice) {
-        let cont: number = indice > 0 ? indice - 1 : 0;
         for (let i = 0; i <= indice; i++) {
-            let telBanco: string = $("#" + cont + "-telBanco").val() as string;
-            let dddBanco: string = $("#" + cont + "-dddBanco").val() as string;
+            let telBanco: string = $("#" + i + "-telBanco").val() as string;
+            let dddBanco: string = $("#" + i + "-dddBanco").val() as string;
 
             if (!!dddBanco && !!telBanco) {
-                $("#" + cont + "-telBanco").val(dddBanco + telBanco);
+                $("#" + i + "-telBanco").val(dddBanco + telBanco);
             }
-            ($("#" + cont + "-telBanco") as any).mask(MascaraParaTelefones(dddBanco, telBanco));
+            MascaraTelefones($("#" + i + "-telBanco"));
         }
     }
 
-    //mascara de telefone para ref comercial
-    let index = $("#index").val();
+}
+
+function MaskTelRefComercial() {
+    let index: number = $("#index").val() as number;
     if (!!index) {
-        let cont: number = index > 0 ? indice - 1 : 0;
-        for (let i = 0; i <= index; i++) {
-            let telComercial: string = $("#" + cont + "-Telefone").val() as string;
-            let dddComercial: string = $("#" + cont + "-Ddd").val() as string;
-
-            if (!!dddComercial && !!telComercial) {
-                $("#" + cont + "-Telefone").val(dddComercial + telComercial);
-            }
-            ($("#" + cont + "-Telefone") as any).mask(MascaraParaTelefones(dddComercial, telComercial));
-            cont++;
+        for (let i = 0; i < index; i++) {
+            let telComercial: string = $("#" + i + "-Telefone").val() as string;
+            let dddComercial: string = $("#" + i + "-Ddd").val() as string;
+            MascaraTelefones($("#" + i + "-Telefone"));
         }
     }
-
 }
 
 function converterParaDadosClienteCadastroDto(): DadosClienteCadastroDto {
@@ -1104,8 +924,7 @@ function atribuirDadosParaEnderecoCadastro(cepDto: CepDto) {
 }
 
 function limparCamposEndereco() {
-    $("#cep").val('');
-    $("#cep").removeClass('is-invalid');
+
     $("#endereco").val("");
     $("#endereco").removeClass('is-invalid');
     $("#numero").val("");
@@ -1126,4 +945,90 @@ function limparCepDto() {
     cepDto.Endereco = "";
 }
 
+function filtra_data(): void {
+    let letra: string;
+    letra = String.fromCharCode(window.event.keyCode);
+    if (!isDigit(letra) && (window.event.keyCode != 47) && (window.event.keyCode != 8) && (window.event.keyCode != 13)) {
+        window.event.keyCode = 0;
+    }
+}
+function isDigit(d: string): boolean {
+    return ((d >= '0') && (d <= '9'))
+}
+function tem_info(texto: string): boolean {
+    let s: string;
+    s = "" + texto;
+    s = s.trim();
+    if (s.length > 0) return true;
+    return false;
+}
+function IsDate(el: JQuery<HTMLInputElement>): boolean {
+    let val: string, s: string;
+
+    //d.value = trim(d.value);
+    //val = d.value;
+    val = (el.val() as string).trim();
+    if (val == "") return true;
+
+    /* SEPARADOR */
+    let sep1: number = val.indexOf("/");
+    let sep2: number = val.indexOf("/", sep1 + 1);
+    if ((val.length == 6) && (sep1 == -1) && (sep2 == -1)) {
+        val = val.substr(0, 2) + "/" + val.substr(2, 2) + "/" + val.substr(4, 2);
+        sep1 = val.indexOf("/");
+        sep2 = val.indexOf("/", sep1 + 1);
+    }
+    if ((val.length == 8) && (sep1 == -1) && (sep2 == -1)) {
+        val = val.substr(0, 2) + "/" + val.substr(2, 2) + "/" + val.substr(4, 4);
+        sep1 = val.indexOf("/");
+        sep2 = val.indexOf("/", sep1 + 1);
+    }
+
+    let len: number = val.length;
+
+    s = val.substr(0, sep1);
+    if (s.length == 0) return false;
+    let dd: number = parseInt(s, 10);
+
+    s = val.substr(sep1 + 1, sep2 - sep1 - 1);
+    if (s.length == 0) return false;
+    let mm: number = parseInt(s, 10);
+
+    s = val.substr(sep2 + 1, len - sep2 - 1);
+    if (s.length == 0) return false;
+    let yy: number = parseInt(s, 10);
+
+    /* ANO */
+    if (yy <= 90) yy += 2000;
+    if ((yy > 90) && (yy < 100)) yy += 1900;
+    if ((yy < 1900) || (yy > 2099)) {
+        return false;
+    }
+
+    let leap: boolean = ((yy == (yy / 4 * 4)) && !(yy == (yy / 100 * 100)));
+
+    /* MES */
+    if (!((mm >= 1) && (mm <= 12))) {
+        return false;
+    }
+
+    /* DIA */
+    let dom: number;
+    if ((mm == 2) && (leap)) dom = 29;
+    if ((mm == 2) && !(leap)) dom = 28;
+    if ((mm == 1) || (mm == 3) || (mm == 5) || (mm == 7) || (mm == 8) || (mm == 10) || (mm == 12)) dom = 31;
+    if ((mm == 4) || (mm == 6) || (mm == 9) || (mm == 11)) dom = 30;
+    if (dd > dom) {
+        return false;
+    }
+
+    let dia: string;
+    let mes: string;
+    if (dd < 10) dia = '0' + dd; else dia = dd.toString();
+    if (mm < 10) mes = '0' + mm;
+
+    el.val(dia + '/' + mes + '/' + yy);
+
+    return true;
+}
 /* ========== FIM DAS FUNÇÕES =========== */

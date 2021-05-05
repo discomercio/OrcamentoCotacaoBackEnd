@@ -521,7 +521,7 @@ namespace Cliente
 
         }
 
-        private static void ValidarIE(Cliente.Dados.DadosClienteCadastroDados dadosCliente, List<string> lstErros, 
+        private static void ValidarIE(Cliente.Dados.DadosClienteCadastroDados dadosCliente, List<string> lstErros,
             bool flagMsg_IE_Cadastro_PF)
         {
             if (!string.IsNullOrEmpty(dadosCliente.Ie))
@@ -606,20 +606,16 @@ namespace Cliente
                         " está duplicada " + lsteRefComercialRepetido[0].Qtde + " vezes!");
                 }
 
-                    int i = 1;
-                    lstRefComercial.ForEach(x =>
+                int i = 1;
+                lstRefComercial.ForEach(x =>
+                {
+                    if (string.IsNullOrEmpty(x.Nome_Empresa))
                     {
-                        if (string.IsNullOrEmpty(x.Nome_Empresa))
-                        {
-                            lstErros.Add("Ref Comercial (" + x.Ordem + "): informe o nome da empresa.");
-                            retorno = false;
-                        }
-                        x.Ordem = i++;
-                    });
-                }
+                        lstErros.Add("Ref Comercial (" + x.Ordem + "): informe o nome da empresa.");
+                    }
+                    x.Ordem = i++;
+                });
             }
-
-            return retorno;
         }
 
         public static void VerificarInscricaoEstadualValida(string ie, string uf, List<string> listaErros,

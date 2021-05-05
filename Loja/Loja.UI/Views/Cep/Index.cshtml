@@ -10,12 +10,22 @@
     <div class="row pt-3">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <label id="rb_endEntrega_pf">
-                <input class='check' type='radio' id="EndEntregaTipoPF" value='PF' name="EndEtg_tipo_pessoa" />
+                <input class='check' 
+                       type='radio' 
+                       id="EndEntregaTipoPF" 
+                       value='PF' 
+                       name="EndEtg_tipo_pessoa" 
+                       onclick="TipoPessoaEntrega($(this))"/>
                 <span>Pessoa Física</span>
             </label>
             &nbsp;
             <label id="rb_endEntrega_pj">
-                <input class='check' type='radio' id="EndEntregaTipoPJ" value='PJ' name="EndEtg_tipo_pessoa" />
+                <input class='check' 
+                       type='radio' 
+                       id="EndEntregaTipoPJ" 
+                       value='PJ' 
+                       name="EndEtg_tipo_pessoa" 
+                       onclick="TipoPessoaEntrega($(this))"/>
                 <span>Pessoa Jurídica</span>
             </label>
         </div>
@@ -34,12 +44,20 @@
         </div>
         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
             <label class="col-form-label" for="endEntregaTelRes">Fone Residencial</label>
-            <input type="text" class="form-control" id="endEntregaTelRes" name="EndEtg_tel_res" />
+            <input type="text" 
+                   class="form-control" 
+                   id="endEntregaTelRes" 
+                   name="EndEtg_tel_res" 
+                   onkeyup="IncluirMascara($(this))" />
 
         </div>
         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
             <label class="col-form-label" for="endEntregaCel">Celular</label>
-            <input type="text" class="form-control" id="endEntregaCel" name="EndEtg_tel_cel" />
+            <input type="text" 
+                   class="form-control" 
+                   id="endEntregaCel" 
+                   name="EndEtg_tel_cel" 
+                   onkeyup="IncluirMascara($(this))"/>
 
         </div>
         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
@@ -71,16 +89,27 @@
         </div>
         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-8">
             <label class="col-form-label" for="endEntregaTelCom1">Telefone Com 1</label>
-            <input type="text" class="form-control" id="endEntregaTelCom1" name="EndEtg_tel_com" />
+            <input type="text" 
+                   class="form-control" 
+                   id="endEntregaTelCom1" 
+                   name="EndEtg_tel_com" 
+                   onkeyup="IncluirMascara($(this))"/>
 
         </div>
         <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4">
             <label class="col-form-label" for="endEntregaRamal1">Ramal</label>
-            <input type="text" class="form-control" id="endEntregaRamal1" name="EndEtg_ramal_com" />
+            <input type="text" 
+                   class="form-control" 
+                   id="endEntregaRamal1" 
+                   name="EndEtg_ramal_com" />
         </div>
         <div class="col-xl-4 col-lg-4 col-md-4 col-sm-8">
             <label class="col-form-label" for="endEntregaTelCom2">Telefone Com 2</label>
-            <input type="text" class="form-control" id="endEntregaTelCom2" name="EndEtg_tel_com_2" />
+            <input type="text" 
+                   class="form-control" 
+                   id="endEntregaTelCom2" 
+                   name="EndEtg_tel_com_2" 
+                   onkeyup="IncluirMascara($(this))"/>
 
         </div>
         <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4">

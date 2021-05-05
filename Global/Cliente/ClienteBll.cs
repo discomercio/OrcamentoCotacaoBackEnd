@@ -52,7 +52,7 @@ namespace Cliente
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await ListarBancosCombo()).ToList();
 
             await Cliente.ValidacoesClienteBll.ValidarDadosCliente(clienteCadastroDados.DadosCliente, clienteCadastroDados.RefBancaria,
-                clienteCadastroDados.RefComercial, lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, true, sistemaResponsavel);
+                clienteCadastroDados.RefComercial, lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, true, sistemaResponsavel, false);
             if (lstErros.Count > 0)
                 return lstErros;
 
@@ -137,7 +137,7 @@ namespace Cliente
                 //endereco_complemento: teste => teste 2;
                 //PF => dt_nasc: 19 / 06 / 1984 => ""; filiacao: teste => teste2; email: gabriel @mail.com => gabriel2@mail.com;
                 //endereco_numero: 10 => 1; endereco_complemento: apenas teste => teste;
-                log += MontarLogAlteracao_CamposSoltos(cli, clienteCadastroDados.DadosCliente);
+                log_retorno += MontarLogAlteracao_CamposSoltos(cli, clienteCadastroDados.DadosCliente);
                 //contribuinte_icms_status: 1 => 2;
                 //contribuinte_icms_data: 08 / 01 / 2021 11:43:07 => 08 / 01 / 2021 11:48:22;
                 //contribuinte_icms_data_hora: 08 / 01 / 2021 11:43:07 => 08 / 01 / 2021 11:48:22;
@@ -146,7 +146,9 @@ namespace Cliente
                 //produtor_rural_data: 22 / 12 / 2020 16:07:20 => 06 / 01 / 2021 19:36:47
                 //produtor_rural_data_hora: 22 / 12 / 2020 16:07:20 => 06 / 01 / 2021 19:36:47
                 log_retorno += logProdutor;
-                //email_xml: teste1 @mailxml.com => teste2@mailxml.com; ddd_cel: "" => 11; tel_cel: "" => 981660033
+                //email_xml: teste1 @mailxml.com => teste2@mailxml.com; 
+                log_retorno += MontarLogAlteracao_EmailXML(cli, clienteCadastroDados.DadosCliente);
+                //ddd_cel: "" => 11; tel_cel: "" => 981660033
                 log_retorno += MontarLogAlteracao_Tel_Celular(cli, clienteCadastroDados.DadosCliente);
                 //ddd_com_2: 11 => 22; tel_com_2: 33667778 => 787887877; ramal_com_2: 2 => 22;
                 log_retorno += MontarLogAlteracao_Tel_Comercial2(cli, clienteCadastroDados.DadosCliente);
@@ -161,14 +163,7 @@ namespace Cliente
                 //Ref Comercial excluída: nome_empresa = Empresa 2; contato = Teste ref Com 2; ddd = 11; telefone = 565456544;
                 //Ref Comercial excluída: nome_empresa = Empresa 3; contato = Teste ref Com 3; ddd = 11; telefone = 987878987
                 log_retorno += await MontarLogAleracao_Ref_Comercial(cli, clienteCadastroDados, dbGravacao, lstErros, apelido);
-                //email_xml: "" => gabrie @xml.com
-                if (clienteCadastroDados.DadosCliente.EmailXml != cli.Email_Xml)
-                {
-                    string campo_vazio = "\"\"";
-                    log_retorno += "email_xml: " + (!string.IsNullOrEmpty(cli.Email_Xml) ? cli.Email_Xml : campo_vazio) +
-                        " => " + (!string.IsNullOrEmpty(clienteCadastroDados.DadosCliente.EmailXml) ? clienteCadastroDados.DadosCliente.EmailXml : campo_vazio) + "; ";
-                    cli.Email_Xml = clienteCadastroDados.DadosCliente.EmailXml;
-                }
+                
             }
 
             return log_retorno;
@@ -336,8 +331,8 @@ namespace Cliente
                 DateTime data_dados = dados.Nascimento ?? new DateTime();
                 if (data_dados != data_banco)
                 {
-                    log += "dt_nasc: " + (data_banco != new DateTime() ? data_banco.ToString() : campo_vazio) +
-                        " => " + (data_dados != new DateTime() ? data_dados.ToString() : campo_vazio) + "; ";
+                    log += "dt_nasc: " + (data_banco != new DateTime() ? data_banco.ToString("dd/MM/yyyy") : campo_vazio) +
+                        " => " + (data_dados != new DateTime() ? data_dados.ToString("dd/MM/yyyy") : campo_vazio) + "; ";
                     cli.Dt_Nasc = dados.Nascimento;
                 }
                 if (dados.Observacao_Filiacao != cli.Filiacao)
@@ -365,6 +360,20 @@ namespace Cliente
                 log += "endereco_complemento: " + (!string.IsNullOrEmpty(cli.Endereco_Complemento) ? cli.Endereco_Complemento : campo_vazio) +
                     " => " + (!string.IsNullOrEmpty(dados.Complemento) ? dados.Complemento : campo_vazio) + "; ";
                 cli.Endereco_Complemento = dados.Complemento;
+            }
+
+            return log;
+        }
+
+        private string MontarLogAlteracao_EmailXML(Tcliente cli, Cliente.Dados.DadosClienteCadastroDados dados)
+        {
+            string log = "";
+            if (dados.EmailXml != cli.Email_Xml)
+            {
+                string campo_vazio = "\"\"";
+                log += "email_xml: " + (!string.IsNullOrEmpty(cli.Email_Xml) ? cli.Email_Xml : campo_vazio) +
+                    " => " + (!string.IsNullOrEmpty(dados.EmailXml) ? dados.EmailXml : campo_vazio) + "; ";
+                cli.Email_Xml = dados.EmailXml;
             }
 
             return log;
@@ -456,14 +465,14 @@ namespace Cliente
 
                     switch (dados.ProdutorRural)
                     {
-                        case (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL:
-                            codProdutor = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL;
+                        case (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL:
+                            codProdutor = (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL;
                             break;
-                        case (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM:
-                            codProdutor = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
+                        case (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM:
+                            codProdutor = (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM;
                             break;
-                        case (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO:
-                            codProdutor = (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
+                        case (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO:
+                            codProdutor = (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
                             break;
                     }
                     //status
@@ -514,7 +523,7 @@ namespace Cliente
 
             if (dados.Tipo == Constantes.ID_PF)
             {
-                if (dados.ProdutorRural == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM &&
+                if (dados.ProdutorRural == (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM &&
                     dados.Contribuinte_Icms_Status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM)
                 {
                     //é obrigatório ser contribuinte
@@ -526,7 +535,7 @@ namespace Cliente
                         alterou = true;
                     }
                 }
-                if (dados.ProdutorRural != (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
+                if (dados.ProdutorRural != (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
                 {
                     if (dados.Contribuinte_Icms_Status != cli.Contribuinte_Icms_Status)
                     {
@@ -571,10 +580,10 @@ namespace Cliente
                 log += "contribuinte_icms_data_hora: " + cli.Contribuinte_Icms_Data_Hora + " => " + DateTime.Now + "; ";
                 cli.Contribuinte_Icms_Data_Hora = DateTime.Now;
 
-                if (cli.Contribuinte_Icms_Usuario.ToUpper() != apelido.ToUpper())
+                if ((!string.IsNullOrEmpty(cli.Contribuinte_Icms_Usuario) ? cli.Contribuinte_Icms_Usuario.ToUpper(): "") != apelido.ToUpper())
                 {
                     //contribuinte_icms_usuario: 
-                    log += "contribuinte_icms_usuario: " + cli.Contribuinte_Icms_Usuario.ToUpper() + " => " +
+                    log += "contribuinte_icms_usuario: " + (!string.IsNullOrEmpty(cli.Contribuinte_Icms_Usuario) ? cli.Contribuinte_Icms_Usuario : "") + " => " +
                         apelido.ToUpper() + "; ";
                     cli.Contribuinte_Icms_Usuario = apelido.ToUpper();
                 }
@@ -775,13 +784,13 @@ namespace Cliente
             //bool alterou = false;
             if (dados.Tipo == Constantes.ID_PF)
             {
-                if (dados.ProdutorRural == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)
+                if (dados.ProdutorRural == (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)
                 {
                     //não pode ter IE
                     log += "ie: " + cli.Ie + " => " + campo_vazio + "; ";
                     cli.Ie = dados.Ie;
                 }
-                if (dados.ProdutorRural == (byte)Constantes.ProdutorRual.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
+                if (dados.ProdutorRural == (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM)
                 {
                     //é obrigatório ser contribuinte o ICMS e ter IE
                     if (cli.Ie != dados.Ie)

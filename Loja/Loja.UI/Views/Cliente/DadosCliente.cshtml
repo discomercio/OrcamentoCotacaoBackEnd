@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "DadosCliente";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 
 
@@ -84,7 +85,10 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                             <div class="row">
                                                 <div class="col-xl-12">
                                                     <label for="nome">Nome</label>
-                                                    <input type="text" class="form-control" name="Nome" id="nome"
+                                                    <input type="text" class="form-control" 
+                                                           name="Nome" 
+                                                           id="nome"
+                                                           onblur="VerificaCampo($(this));"
                                                            placeholder="NOME"
                                                            value="@Model.DadosCliente?.Nome">
                                                 </div>
@@ -100,8 +104,8 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                 </div>
                                                 <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
                                                     <label class="col-form-label" for="nascimento">NASCIMENTO</label>
-                                                    <input class="form-control" name="Nascimento" id="nascimento" type="date"
-                                                           value="@Model.DadosCliente?.Nascimento?.ToString("yyyy-MM-dd")" />
+                                                    <input class="form-control" name="Nascimento" id="nascimento" type="date" onblur="AjustaData($(this))"
+                                                           value="@Model.DadosCliente?.Nascimento?.ToString("dd/MM/yyyy")" />
                                                 </div>
                                                 <div class="col-xl-2 col-lg-6 col-md-6 col-sm-12">
                                                     <label class="col-form-label" for="sexo">SEXO</label>
@@ -124,6 +128,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                     <label class="col-form-label">RAZÃO SOCIAL</label>
                                                     <input type="text" class="form-control" name="Nome" id="razao"
                                                            placeholder="RAZÃO SOCIAL"
+                                                           onblur="VerificaCampo($(this));"
                                                            value="@Model.DadosCliente?.Nome">
                                                     <span class="messages"></span>
                                                 </div>
@@ -142,7 +147,12 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                             <div class="col-xl-3 col-md-3 col-sm-6">
                                                 @* ao sair do campo chamar o metodo cep/buscarCep/ *@
                                                 <label class="col-form-label">CEP</label>
-                                                <input name="cep" type="text" id="cep" class="form-control" onblur="DigitouCepCadastro()" value="@Model.DadosCliente?.Cep" />
+                                                <input name="cep" 
+                                                       type="text" 
+                                                       id="cep" 
+                                                       class="form-control" 
+                                                       onblur="DigitouCepCadastro()" 
+                                                       value="@Model.DadosCliente?.Cep" />
                                             </div>
                                             <button class="btn btn-sm btn-primary waves-effect waves-light col-xl-2 col-md-3 col-sm-6 btnCepCadastro"
                                                     data-toggle="modal" data-target="#modal1" value="1"
@@ -151,11 +161,21 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                             </button>
                                             <div class="col-xl-5 col-md-6 col-sm-12">
                                                 <label class="col-form-label">ENDEREÇO </label>
-                                                <input name="endereco" id="endereco" type="text" class="form-control" value="@Model.DadosCliente?.Endereco" />
+                                                <input name="endereco" 
+                                                       id="endereco" 
+                                                       type="text" 
+                                                       class="form-control" 
+                                                       onblur="VerificaCampo($(this));"
+                                                       value="@Model.DadosCliente?.Endereco" />
                                             </div>
                                             <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3">
                                                 <label class="col-form-label">NÚMERO </label>
-                                                <input name="numero" id="numero" type="text" class="form-control" value="@Model.DadosCliente?.Numero" />
+                                                <input name="numero" 
+                                                       id="numero" 
+                                                       type="text" 
+                                                       class="form-control" 
+                                                       onblur="VerificaCampo($(this));"
+                                                       value="@Model.DadosCliente?.Numero" />
                                             </div>
                                             <div class="col-xl-6 col-lg-5 col-md-5 col-sm-9">
                                                 <label class="col-form-label">COMPLEMENTO</label>
@@ -165,17 +185,33 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                             </div>
                                             <div class="col-xl-6 col-lg-5 col-md-5 col-sm-12">
                                                 <label class="col-form-label">BAIRRO</label>
-                                                <input name="bairro" id="bairro" type="text" class="form-control" value="@Model.DadosCliente?.Bairro" />
+                                                <input name="bairro" 
+                                                       id="bairro" 
+                                                       type="text" 
+                                                       class="form-control" 
+                                                       onblur="VerificaCampo($(this));"
+                                                       onchange="VerificaCampo($(this));"
+                                                       value="@Model.DadosCliente?.Bairro" />
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                                 <label class="col-form-label">CIDADE</label>
-                                                <input name="cidade" id="cidade" type="text" class="form-control" value="@Model.DadosCliente?.Cidade" />
+                                                <input name="cidade" 
+                                                       id="cidade" 
+                                                       type="text" 
+                                                       class="form-control" 
+                                                       onblur="VerificaCampo($(this));"
+                                                       value="@Model.DadosCliente?.Cidade" />
                                             </div>
                                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                                 <label class="col-form-label">UF</label>
-                                                <input name="uf" id="uf" type="text" class="form-control" value="@Model.DadosCliente?.Uf" />
+                                                <input name="uf" 
+                                                       id="uf" 
+                                                       type="text" 
+                                                       class="form-control" 
+                                                       onblur="VerificaCampo($(this));"
+                                                       value="@Model.DadosCliente?.Uf" />
                                             </div>
                                         </div>
                                         //Permite edição PF
@@ -187,6 +223,8 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                     <label class="col-form-label">FONE RESIDENCIAL</label>
                                                     <input name="TelefoneResidencial" id="telRes" type="tel"
                                                            class="form-control"
+                                                           onkeyup="IncluirMascara($(this));"
+                                                           onblur="VerificarTelefonePF();"
                                                            value="@Model.DadosCliente?.TelefoneResidencial" />
                                                     <input name="DddResidencial" type="hidden" id="dddRes"
                                                            value="@Model.DadosCliente?.DddResidencial" />
@@ -195,6 +233,8 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                     <label class="col-form-label">CELULAR</label>
                                                     <input name="Celular" id="celular" type="tel"
                                                            class="form-control"
+                                                           onkeyup="IncluirMascara($(this));"
+                                                           onblur="VerificarTelefonePF();"
                                                            value="@Model.DadosCliente?.Celular" />
                                                     <input name="DddCelular" type="hidden" id="dddCel"
                                                            value="@Model.DadosCliente?.DddCelular" />
@@ -203,6 +243,8 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                     <label class="col-form-label">FONE COMERCIAL</label>
                                                     <input name="TelComercial" id="telCom" type="tel"
                                                            class="form-control"
+                                                           onkeyup="IncluirMascara();"
+                                                           onblur="VerificarTelefonePF();"
                                                            value="@Model.DadosCliente?.TelComercial" />
                                                     <input name="DddComercial" type="hidden" id="dddCom"
                                                            value="@Model.DadosCliente?.DddComercial" />
@@ -231,6 +273,8 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                     <label class="col-form-label">TELEFONE 1</label>
                                                     <input name="telComercial" id="telCom" type="tel"
                                                            class="form-control"
+                                                           onkeyup="IncluirMascara($(this));"
+                                                           onblur="VerificarTelefonePJ();"
                                                            value="@Model.DadosCliente?.TelComercial" />
                                                     <input name="DddComercial" type="hidden" id="dddCom"
                                                            value="@Model.DadosCliente?.DddComercial" />
@@ -245,6 +289,8 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                     <label class="col-form-label">TELEFONE 2</label>
                                                     <input name="telComercial2" id="telCom2" type="tel"
                                                            class="form-control"
+                                                           onkeyup="IncluirMascara($(this));"
+                                                           onblur="VerificarTelefonePJ();"
                                                            value="@Model.DadosCliente?.TelComercial2" />
                                                     <input name="DddComercial2" type="hidden" id="dddCom2"
                                                            value="@Model.DadosCliente?.DddComercial2" />
@@ -261,6 +307,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                     <label class="col-form-label">NOME DA PESSOA NA EMPRESA</label>
                                                     <input name="contato" id="contatoNaEmpresa" type="text"
                                                            class="form-control"
+
                                                            value="@Model.DadosCliente?.Contato" />
                                                 </div>
                                             </div>
@@ -271,6 +318,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                 <label class="col-form-label">E-MAIL</label>
                                                 <input name="email" id="email" type="email"
                                                        class="form-control"
+                                                       onblur="VerificaCampo($(this));"
                                                        value="@Model.DadosCliente?.Email" />
                                             </div>
                                         </div>
@@ -296,7 +344,8 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                     @id = "produtor",
                                                     @name = "ProdutorRural",
                                                     @class = "custom-select",
-                                                    @onchange = "MostrarDivs()"
+                                                    @onchange = "MostrarDivs()",
+                                                    @onblur = "VerificaCampo($(this))"
                                                     })
                                                 </div>
 
@@ -308,7 +357,8 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                     {
                                                     @id = "contribuinte",
                                                     @name = "Contribuinte_Icms_Status",
-                                                    @class = "custom-select"
+                                                    @class = "custom-select",
+                                                    @onblur = "VerificaCampo($(this))"
                                                     })
                                                 </div>
                                                 <div id="div_ie" class="col-xl-4 col-lg-4 col-md-4 col-sm-12" style="visibility:hidden">
@@ -332,7 +382,8 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                          {
                                                     @id = "contribuinte",
                                                     @name = "Contribuinte_Icms_Status",
-                                                    @class = "custom-select"
+                                                    @class = "custom-select",
+                                                    @onblur = "VerificaCampo($(this))"
                                                     })
                                                 </div>
                                                 <div class="col-lg-6 col-md-6 col-sm-12">
@@ -344,7 +395,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                             <div class="accordion pt-4" id="accordionBancaria">
                                                 <div class="card">
                                                     @* Cabeçalho do accordion *@
-                                                    <div class="card-header" id="headingOne">
+                                                    <div class="card-header" id="headingOne" style="padding:0px !important">
                                                         <h2 class="mb-0">
                                                             <a class="btn btn-link btn-block text-left" data-toggle="collapse" data-target="#collapseOneBancaria" aria-expanded="true" aria-controls="collapseOne">
                                                                 Referências Bancárias (@Model.RefBancaria?.Count)
@@ -353,18 +404,58 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                     </div>
                                                     @* Item do accordion *@
                                                     <div id="collapseOneBancaria" class="panel-collapse collapse in" aria-labelledby="headingOne" data-parent="#accordionBancaria">
-
                                                         @{
                                                             var indice = 0;
 
-
-                                                            <div class="card-body form-control-right">
-                                                                <hr />
-                                                                <a class="btn btn-link btn-block text-right" id="addRefBancaria" style="color:black !important;">
+                                                            <div class="card-body form-control-right" id="card-body-bancaria" style="padding-top:0px !important">
+                                                                <hr style="margin-top:0px !important; margin-bottom:0px !important" />
+                                                                <a class="btn btn-link btn-block text-right"
+                                                                   id="addRefBancaria"
+                                                                   onclick="AddRefBancaria();"
+                                                                   style="color:black !important;">
                                                                     Adicionar Referência
                                                                     <i class="fa fa-plus"></i>
                                                                 </a>
-                                                                <hr />
+                                                                <hr style="margin-top:0px !important; margin-bottom:0px !important" />
+                                                                @* PARA ADICIONAR REFERÊNCIA BANCÁRIA *@
+                                                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 row" id="modelo_refBancaria" style="display:none">
+                                                                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                                                        <label class="col-form-label" for="@indice-banco">BANCO</label>
+                                                                        @Html.DropDownList("[" + indice + "].Banco",
+                                                                       new SelectList(Model.LstComboBanco, "Value", "Text"),
+                                                                       new
+                                                                            {
+                                                                           @id = indice + "-banco",
+                                                                           @name = "[" + indice + "].BancoDescricao",
+                                                                           @class = "custom-select"
+                                                                       })
+                                                                    </div>
+                                                                    <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6">
+                                                                        <label class="col-form-label">AGÊNCIA</label>
+                                                                        <input name="[@indice].Agencia" id="@indice-agencia"
+                                                                               type="text"
+                                                                               class="form-control" />
+                                                                    </div>
+                                                                    <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6">
+                                                                        <label class="col-form-label" for="@indice-conta">CONTA</label>
+                                                                        <input name="[@indice].ContaBanco" id="@indice-conta"
+                                                                               type="text"
+                                                                               class="form-control" />
+                                                                    </div>
+                                                                    <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6">
+                                                                        <label class="col-form-label" for="@indice-telBanco">TELEFONE</label>
+                                                                        <input name="[@indice].TelefoneBanco" id="@indice-telBanco"
+                                                                               type="text" onblur="IncluirMascara($(this))"
+                                                                               class="form-control" />
+                                                                        <input name="[@indice].DddBanco" type="hidden" id="@indice-dddBanco" />
+                                                                    </div>
+                                                                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                                                                        <label class="col-form-label">CONTATO</label>
+                                                                        <input name="[@indice].ContatoBanco" id="@indice-contatoBanco"
+                                                                               type="text"
+                                                                               class="form-control" />
+                                                                    </div>
+                                                                </div>
 
                                                                 @if (Model.RefBancaria?.Count > 0)
                                                                 {
@@ -377,7 +468,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                                         }
 
 
-                                                                        <div class="row" id="RefBancariabody-@indice" style="@visible">
+                                                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 row" id="RefBancariabody-@indice" style="@visible">
                                                                             <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
                                                                                 <label class="col-form-label" for="@indice-banco">BANCO</label>
                                                                                 @Html.DropDownList("[" + indice + "].Banco",
@@ -423,9 +514,9 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                                         </div>
                                                                         indice++;
                                                                     }
-                                                                    <input type="hidden" id="indiceBancaria" value="@indice" />
-                                                                }
 
+                                                                }
+                                                                <input type="hidden" id="indice" value="@indice" />
                                                             </div>
                                                         }
 
@@ -436,7 +527,7 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                             <div class="accordion" id="accordionComercial">
                                                 <div class="card">
                                                     @* Cabeçalho do accordion *@
-                                                    <div class="card-header" id="headingOne">
+                                                    <div class="card-header" id="headingOne" style="padding:0px !important">
                                                         <h2 class="mb-0">
                                                             <a class="btn btn-link btn-block text-left" data-toggle="collapse" data-target="#collapseOneComercial" aria-expanded="true" aria-controls="collapseOne">
                                                                 Referências Comerciais (@Model.RefComercial?.Count)
@@ -445,18 +536,21 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                     </div>
                                                     <div id="collapseOneComercial" class="panel-collapse collapse in" aria-labelledby="headingOne" data-parent="#accordionComercial">
                                                         @{
-                                                            var index = 0;
+                                                            int index = 0;
+                                                            <div class="card-body form-control-right" id="collapsible-body-comercial" style="padding-top:0px !important">
+                                                                <hr style="margin-top:0px !important; margin-bottom:0px !important" />
+                                                                <a class="btn btn-link btn-block text-right"
+                                                                   id="addRefComercial"
+                                                                   onclick="AddRefComercial();"
+                                                                   style="color:black !important; ">
+                                                                    Adicionar Referência
+                                                                    <i class="fa fa-plus"></i>
+                                                                </a>
 
-                                                            @if (Model.RefComercial?.Count > 0)
-                                                            {
-                                                                <div class="card-body form-control-right" id="collapsible-body-comercial">
-                                                                    <hr />
-                                                                    <a class="btn btn-link btn-block text-right" id="addRefComercial" style="color:black !important;">
-                                                                        Adicionar Referência
-                                                                        <i class="fa fa-minus"></i>
-                                                                    </a>
-                                                                    <hr />
+                                                                @if (Model.RefComercial?.Count > 0)
+                                                                {
 
+                                                                    <hr style="margin-top:0px !important; margin-bottom:0px !important" />
                                                                     @foreach (var r in Model.RefComercial)
                                                                     {
                                                                         <hr />
@@ -478,31 +572,19 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                                             <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6">
                                                                                 <label for="Telefone" class="col-form-label">TELEFONE</label>
                                                                                 <input name="[@index].Telefone" id="@index-Telefone"
-                                                                                       type="text" onblur="IncluirMascara($(this))" onfocus="RemoveMascara($(this))"
-                                                                                       value="@r.Telefone"
+                                                                                       type="text" onkeyup="IncluirMascara($(this))"
+                                                                                       value="@r.Ddd@r.Telefone"
                                                                                        class="form-control" />
                                                                                 <input name="[@index].Ddd" type="hidden" id="@index-Ddd"
                                                                                        value="@r.Ddd" />
                                                                             </div>
                                                                         </div>
-                                                                        <input type="hidden" id="@index-Ordem" name="[@index].Ordem" value="@r.Ordem"/>
+                                                                        <input type="hidden" id="@index-Ordem" name="[@index].Ordem" value="@r.Ordem" />
                                                                         index++;
                                                                     }
-                                                                    <input type="hidden" id="index" value="@index" />
-                                                                    <input type="hidden" id="indiceComercial" value="@index" />
-                                                                </div>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="card-body form-control-right" id="collapsible-body-comercial">
-                                                                    <hr />
-                                                                    <a class="btn btn-link btn-block text-right" id="addRefComercial"
-                                                                       style="color:black !important;">
-                                                                        Adicionar Referência
-                                                                        <i class="fa fa-plus"></i>
-                                                                    </a>
-                                                                </div>
-                                                            }
+                                                                }
+                                                                <input type="hidden" id="index" value="@index" />
+                                                            </div>
                                                         }
                                                     </div>
                                                 </div>
