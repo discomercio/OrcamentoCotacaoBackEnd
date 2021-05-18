@@ -66,7 +66,6 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
       this.salvando = false;
       return false;
     }
-    debugger;
     if (!this.novoPrepedidoDadosService.prePedidoDto.EnderecoEntrega.OutroEndereco) {
       this.novoPrepedidoDadosService.prePedidoDto.EnderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
       this.novoPrepedidoDadosService.prePedidoDto.EnderecoEntrega.OutroEndereco = false;
