@@ -85,8 +85,8 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                             <div class="row">
                                                 <div class="col-xl-12">
                                                     <label for="nome">Nome</label>
-                                                    <input type="text" class="form-control" 
-                                                           name="Nome" 
+                                                    <input type="text" class="form-control"
+                                                           name="Nome"
                                                            id="nome"
                                                            onblur="VerificaCampo($(this));"
                                                            placeholder="NOME"
@@ -109,15 +109,8 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                 </div>
                                                 <div class="col-xl-2 col-lg-6 col-md-6 col-sm-12">
                                                     <label class="col-form-label" for="sexo">SEXO</label>
-                                                    @Html.DropDownList("Sexo", new SelectList(Model.LstSexo, "Value", "Text",
-                                                   Model.DadosCliente?.Sexo),
-                                                   new
-                                                        {
-                                                        @id = "sexo",
-                                                        @name = "Sexo",
-                                                        @class = "custom-select"
-                                                   })
-
+                                                    <select asp-for="DadosCliente.Sexo" asp-items="Model.LstSexo"
+                                                            id="sexo" class="custom-select"></select>
                                                 </div>
                                             </div>
                                         }
@@ -147,11 +140,11 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                             <div class="col-xl-3 col-md-3 col-sm-6">
                                                 @* ao sair do campo chamar o metodo cep/buscarCep/ *@
                                                 <label class="col-form-label">CEP</label>
-                                                <input name="cep" 
-                                                       type="text" 
-                                                       id="cep" 
-                                                       class="form-control" 
-                                                       onblur="DigitouCepCadastro()" 
+                                                <input name="cep"
+                                                       type="text"
+                                                       id="cep"
+                                                       class="form-control"
+                                                       onblur="DigitouCepCadastro()"
                                                        value="@Model.DadosCliente?.Cep" />
                                             </div>
                                             <button class="btn btn-sm btn-primary waves-effect waves-light col-xl-2 col-md-3 col-sm-6 btnCepCadastro"
@@ -161,19 +154,19 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                             </button>
                                             <div class="col-xl-5 col-md-6 col-sm-12">
                                                 <label class="col-form-label">ENDEREÇO </label>
-                                                <input name="endereco" 
-                                                       id="endereco" 
-                                                       type="text" 
-                                                       class="form-control" 
+                                                <input name="endereco"
+                                                       id="endereco"
+                                                       type="text"
+                                                       class="form-control"
                                                        onblur="VerificaCampo($(this));"
                                                        value="@Model.DadosCliente?.Endereco" />
                                             </div>
                                             <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3">
                                                 <label class="col-form-label">NÚMERO </label>
-                                                <input name="numero" 
-                                                       id="numero" 
-                                                       type="text" 
-                                                       class="form-control" 
+                                                <input name="numero"
+                                                       id="numero"
+                                                       type="text"
+                                                       class="form-control"
                                                        onblur="VerificaCampo($(this));"
                                                        value="@Model.DadosCliente?.Numero" />
                                             </div>
@@ -185,10 +178,10 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                             </div>
                                             <div class="col-xl-6 col-lg-5 col-md-5 col-sm-12">
                                                 <label class="col-form-label">BAIRRO</label>
-                                                <input name="bairro" 
-                                                       id="bairro" 
-                                                       type="text" 
-                                                       class="form-control" 
+                                                <input name="bairro"
+                                                       id="bairro"
+                                                       type="text"
+                                                       class="form-control"
                                                        onblur="VerificaCampo($(this));"
                                                        onchange="VerificaCampo($(this));"
                                                        value="@Model.DadosCliente?.Bairro" />
@@ -197,19 +190,19 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                         <div class="row">
                                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                                 <label class="col-form-label">CIDADE</label>
-                                                <input name="cidade" 
-                                                       id="cidade" 
-                                                       type="text" 
-                                                       class="form-control" 
+                                                <input name="cidade"
+                                                       id="cidade"
+                                                       type="text"
+                                                       class="form-control"
                                                        onblur="VerificaCampo($(this));"
                                                        value="@Model.DadosCliente?.Cidade" />
                                             </div>
                                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
                                                 <label class="col-form-label">UF</label>
-                                                <input name="uf" 
-                                                       id="uf" 
-                                                       type="text" 
-                                                       class="form-control" 
+                                                <input name="uf"
+                                                       id="uf"
+                                                       type="text"
+                                                       class="form-control"
                                                        onblur="VerificaCampo($(this));"
                                                        value="@Model.DadosCliente?.Uf" />
                                             </div>
@@ -307,7 +300,6 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                                     <label class="col-form-label">NOME DA PESSOA NA EMPRESA</label>
                                                     <input name="contato" id="contatoNaEmpresa" type="text"
                                                            class="form-control"
-
                                                            value="@Model.DadosCliente?.Contato" />
                                                 </div>
                                             </div>
@@ -337,29 +329,21 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
                                             <div class="row" style="align-items:flex-end;">
                                                 <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
                                                     <label class="col-form-label" for="produtor">PRODUTOR RURAL</label>
-                                                    @Html.DropDownList("ProdutorRural",
-                                                    new SelectList(Model.LstProdutoRural, "Value", "Text",
-                                                    Model.DadosCliente?.ProdutorRural), new
-                                                    {
-                                                    @id = "produtor",
-                                                    @name = "ProdutorRural",
-                                                    @class = "custom-select",
-                                                    @onchange = "MostrarDivs()",
-                                                    @onblur = "VerificaCampo($(this))"
-                                                    })
+                                                    <select asp-for="DadosCliente.ProdutorRural" asp-items="Model.LstProdutoRural" name="ProdutorRural"
+                                                            id="produtor"
+                                                            class="custom-select"
+                                                            onchange="MostrarDivs()"
+                                                            onblur="VerificaCampo($(this))">
+                                                    </select>
                                                 </div>
 
                                                 <div id="div_contribuinte" class="col-xl-4 col-lg-4 col-md-4 col-sm-12" style="visibility:hidden">
                                                     <label class="col-form-label" for="contribuinte">CONTRIBUINTE ICMS</label>
-                                                    @Html.DropDownList("Contribuinte_Icms_Status",
-                                                    new SelectList(Model.LstContribuinte, "Value", "Text",
-                                                    Model.DadosCliente?.Contribuinte_Icms_Status), new
-                                                    {
-                                                    @id = "contribuinte",
-                                                    @name = "Contribuinte_Icms_Status",
-                                                    @class = "custom-select",
-                                                    @onblur = "VerificaCampo($(this))"
-                                                    })
+                                                    <select asp-for="DadosCliente.Contribuinte_Icms_Status" asp-items="Model.LstContribuinte" name="Contribuinte_Icms_Status"
+                                                            class="custom-select"
+                                                            id="contribuinte"
+                                                            onblur="VerificaCampo($(this))">
+                                                    </select>
                                                 </div>
                                                 <div id="div_ie" class="col-xl-4 col-lg-4 col-md-4 col-sm-12" style="visibility:hidden">
                                                     <label class="col-form-label">IE</label>

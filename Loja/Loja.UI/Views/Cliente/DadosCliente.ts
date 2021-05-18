@@ -244,6 +244,8 @@ window.MostrarDivs = () => {
     if (Number($("#produtor").val()) != Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM) {
         $("#div_ie").css('visibility', 'hidden');
         $("#div_contribuinte").css('visibility', 'hidden');
+        $("#ie").val();
+        $("#contribuinte").val();
     }
 }
 
