@@ -232,7 +232,7 @@ namespace Prepedido.PedidoVisualizacao
             DadosClienteCadastroDados cadastroCliente = new DadosClienteCadastroDados
             {
                 Loja = await ObterRazaoSocial_Nome_Loja(pedido.Loja),
-                Indicador_Orcamentista = pedido.Orcamentista,
+                Indicador_Orcamentista = pedido.Indicador,
                 Vendedor = pedido.Vendedor,
                 Id = cli.Id,
                 Cnpj_Cpf = Util.FormatCpf_Cnpj_Ie(pedido.Endereco_cnpj_cpf),
@@ -400,7 +400,7 @@ namespace Prepedido.PedidoVisualizacao
             Tpedido tPedidoPai = await pedido.Select(x => x).Where(x => x.Pedido == pedido_pai).FirstOrDefaultAsync();
 
             //aqui vamos montar o pedido conforme o número do pedido que veio na entrada
-            Tpedido p = await pedido.Select(x => x).Where(x => x.Pedido == numPedido).FirstOrDefaultAsync();
+            Tpedido p = pedido.Select(x => x).Where(x => x.Pedido == numPedido && x.Indicador == apelido.ToUpper()).First();
 
             if (p == null)
                 return null;
@@ -460,7 +460,7 @@ namespace Prepedido.PedidoVisualizacao
             var perdas = BuscarPerdas(numPedido);
             var TranspNomeTask = ObterNomeTransportadora(p.Transportadora_Id);
             var lstFormaPgtoTask = ObterFormaPagto(tPedidoPai);
-            var analiseCreditoTask = ObterAnaliseCreditoVisualizacao(Convert.ToString(tPedidoPai.Analise_Credito), pedido_pai, apelido);
+            var analiseCreditoTask = DescricaoAnaliseCreditoCadastroPedido(Convert.ToString(tPedidoPai.Analise_Credito), true, numPedido, apelido);
             string corAnalise = CorAnaliseCredito(Convert.ToString(tPedidoPai.Analise_Credito));
             string corStatusPagto = CorSatusPagto(tPedidoPai.St_Pagto);
             var saldo_a_pagarTask = CalculaSaldoAPagar(pedido_pai, await vl_TotalFamiliaDevolucaoPrecoNFTask);
@@ -485,7 +485,7 @@ namespace Prepedido.PedidoVisualizacao
             detalhesFormaPagto.VlDevolucao = await vl_TotalFamiliaDevolucaoPrecoNFTask;
             detalhesFormaPagto.VlPerdas = TotalPerda;
             detalhesFormaPagto.SaldoAPagar = saldo_a_pagar;
-            detalhesFormaPagto.AnaliseCredito = await analiseCreditoTask;
+            detalhesFormaPagto.AnaliseCredito = analiseCreditoTask;
             detalhesFormaPagto.CorAnalise = corAnalise;
             detalhesFormaPagto.DataColeta = dataEntrega;
             detalhesFormaPagto.Transportadora = await TranspNomeTask;
@@ -586,126 +586,9 @@ namespace Prepedido.PedidoVisualizacao
                 dataFormatada = p.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm");
             //verificar se o retorno acima esta vazio
             if (!string.IsNullOrEmpty(dataFormatada))
-                retorno += " (" + IniciaisEmMaisculas(p.Etg_Imediata_Usuario) + " - " + dataFormatada + ")";
+                //retorno += " (" + IniciaisEmMaisculas(p.Etg_Imediata_Usuario) + " - " + dataFormatada + ")";
+                retorno += " (" + Texto.iniciaisEmMaiusculas(p.Etg_Imediata_Usuario) + " - " + dataFormatada + ")";
 
-
-            return retorno;
-        }
-
-        private string IniciaisEmMaisculas(string text)
-        {
-            string retorno = "";
-            string palavras_minusculas = "|A|AS|AO|AOS|À|ÀS|E|O|OS|UM|UNS|UMA|UMAS" +
-                "|DA|DAS|DE|DO|DOS|EM|NA|NAS|NO|NOS|COM|SEM|POR|PELO|PELA|PARA|PRA|P/|S/|C/|TEM|OU|E/OU|ATE|ATÉ|QUE|SE|QUAL|";
-            string palavras_maiusculas = "|II|III|IV|VI|VII|VIII|IX|XI|XII|XIII|XIV" +
-                "|XV|XVI|XVII|XVIII|XIX|XX|XXI|XXII|XXIII|S/A|S/C|AC|AL|AM|AP|BA|CE|DF|ES|GO" +
-                "|MA|MG|MS|MT|PA|PB|PE|PI|PR|RJ|RN|RO|RR|RS|SC|SE|SP|TO|ME|EPP|";
-
-            string letra;
-            string palavra = "";
-            string frase = "";
-            string s;
-            bool blnAltera;
-
-            string[] teste = text.Split(' ');
-
-            string char34 = Convert.ToString((char)34);
-
-            foreach (string t in teste)
-            {
-                string texto = t;
-                for (int i = 0; i < texto.Length; i++)
-                {
-                    letra = texto.Substring(i, 1);
-                    palavra += letra;
-
-                    if ((letra == " ") || (i == texto.Length - 1) || (letra == "(") || (letra == ")") || (letra == "[") || (letra == "]")
-                        || (letra == "'") || (letra == char34) || (letra == "-"))
-                    {
-                        s = "|" + palavra.ToUpper().Trim() + "|";
-                        if (palavras_minusculas.IndexOf(s) != 0 && frase != "")
-                        {
-                            //SE FOR FINAL DA FRASE, DEIXA INALTERADO(EX: BLOCO A)
-                            if (i < texto.Length && texto.Length < 1)
-                                palavra = palavra.ToLower();
-                        }
-                        else if (palavras_maiusculas.IndexOf(s) >= 0)
-                            palavra = palavra.ToUpper();
-                        else
-                        {
-                            //ANALISA SE CONVERTE O TEXTO OU NÃO
-                            blnAltera = true;
-                            if (TemDigito(palavra))
-                            {
-                                //ENDEREÇOS CUJO Nº DA RESIDÊNCIA SÃO SEPARADOS POR VÍRGULA, SEM NENHUM ESPAÇO EM BRANCO
-                                //CASO CONTRÁRIO, CONSIDERA QUE É ALGUM TIPO DE CÓDIGO
-                                if (palavra.IndexOf(",") != 0)
-                                    blnAltera = false;
-                            }
-                            if (palavra.IndexOf(".") >= 0)
-                            {
-                                if (palavra.IndexOf(palavra, palavra.IndexOf(".") + 1, StringComparison.OrdinalIgnoreCase.CompareTo(".")) != 0)
-                                    blnAltera = false;
-                            }
-                            if (palavra.IndexOf("/") != 0)
-                            {
-                                if (palavra.Length <= 4)
-                                    blnAltera = false;
-                            }
-                            //verifica se tem vogal
-                            if (!TemVogal(palavra))
-                                blnAltera = false;
-
-                            if (blnAltera)
-                                palavra = palavra.Substring(0, 1).ToUpper() + palavra.Substring(1, palavra.Length - 1).ToLower();
-                        }
-                        if (retorno.Length > 0)
-                        {
-                            frase = frase + " " + palavra;
-
-                        }
-                        else
-                        {
-                            frase = frase + palavra;
-                        }
-                        palavra = "";
-                        retorno += frase;
-                        frase = "";
-                    }
-                }
-            }
-
-            return retorno;
-        }
-
-
-
-
-        private bool TemVogal(string texto)
-        {
-            bool retorno = false;
-            string letra = "";
-
-            for (int i = 0; i < texto.Length; i++)
-            {
-                letra = texto.Substring(i, 1).ToUpper();
-                if (letra == "A" || letra == "E" || letra == "I" || letra == "O" || letra == "U")
-                    retorno = true;
-            }
-
-            return retorno;
-        }
-
-        private bool TemDigito(string texto)
-        {
-            int ehNumero;
-            bool retorno = false;
-
-            for (int i = 0; i < texto.Length; i++)
-            {
-                if (int.TryParse(texto.Substring(i, 1), out ehNumero))
-                    retorno = true;
-            }
 
             return retorno;
         }
@@ -907,6 +790,12 @@ namespace Prepedido.PedidoVisualizacao
                 case Constantes.COD_AN_CREDITO_OK_DEPOSITO_AGUARDANDO_DESBLOQUEIO:
                     retorno = "darkorange";
                     break;
+                case Constantes.COD_AN_CREDITO_OK_AGUARDANDO_PAGTO_BOLETO_AV:
+                    retorno = "darkorange";
+                    break;
+                case Constantes.COD_AN_CREDITO_PENDENTE_PAGTO_ANTECIPADO_BOLETO:
+                    retorno = "blue";
+                    break;
             }
 
             return retorno;
@@ -983,7 +872,7 @@ namespace Prepedido.PedidoVisualizacao
             return await Task.FromResult(msg);
         }
 
-        public string DescricaoAnaliseCreditoCadastroPedido(string codigo)
+        public string DescricaoAnaliseCreditoCadastroPedido(string codigo, bool visualizacao, string numero_pedido, string apelido)
         {
             string retorno = "";
             switch (codigo)
@@ -1015,109 +904,41 @@ namespace Prepedido.PedidoVisualizacao
                 case Constantes.COD_AN_CREDITO_PENDENTE_CARTAO:
                     retorno = "Pendente Cartão de Crédito";
                     break;
+                case Constantes.COD_AN_CREDITO_OK_AGUARDANDO_PAGTO_BOLETO_AV:
+                    retorno = "Crédito OK (aguardando pagto boleto AV)";
+                    break;
+                case Constantes.COD_AN_CREDITO_PENDENTE_PAGTO_ANTECIPADO_BOLETO:
+                    retorno = "Pendente - Pagto Antecipado Boleto";
+                    break;
+            }
+
+            if (visualizacao)
+            {
+                var db = contextoProvider.GetContextoLeitura();
+
+                var ret = from c in db.Tpedidos
+                          where c.Pedido == numero_pedido && c.Indicador == apelido
+                          select new { analise_credito_data = c.Analise_credito_Data, analise_credito_usuario = c.Analise_Credito_Usuario };
+
+                var registro = ret.FirstOrDefault();
+                if (registro != null)
+                {
+                    if (registro.analise_credito_data.HasValue)
+                    {
+                        if (!string.IsNullOrEmpty(registro.analise_credito_usuario))
+                        {
+                            string maiuscula = (Char.ToUpper(registro.analise_credito_usuario[0]) +
+                                registro.analise_credito_usuario.Substring(1).ToLower());
+
+                            retorno = retorno + " (" + registro.analise_credito_data?.ToString("dd/MM/yyyy HH:mm") + " - "
+                                + maiuscula + ")";
+                        }
+                    }
+                }
             }
             return retorno;
         }
 
-        public async Task<string> ObterAnaliseCreditoVisualizacao(string codigo, string numPedido, string apelido)
-        {
-            //duplicado com código acima
-            string retorno = "";
-
-            switch (codigo)
-            {
-                case Constantes.COD_AN_CREDITO_ST_INICIAL:
-                    retorno = "";
-                    break;
-                case Constantes.COD_AN_CREDITO_PENDENTE:
-                    retorno = "Pendente";
-                    break;
-                case Constantes.COD_AN_CREDITO_PENDENTE_VENDAS:
-                    retorno = "Pendente Vendas";
-                    break;
-                case Constantes.COD_AN_CREDITO_PENDENTE_ENDERECO:
-                    retorno = "Pendente Endereço";
-                    break;
-                case Constantes.COD_AN_CREDITO_OK:
-                    retorno = "Crédito OK";
-                    break;
-                case Constantes.COD_AN_CREDITO_OK_AGUARDANDO_DEPOSITO:
-                    retorno = "Crédito OK (aguardando depósito)";
-                    break;
-                case Constantes.COD_AN_CREDITO_OK_DEPOSITO_AGUARDANDO_DESBLOQUEIO:
-                    retorno = "Crédito OK (depósito aguardando desbloqueio)";
-                    break;
-                case Constantes.COD_AN_CREDITO_NAO_ANALISADO:
-                    retorno = "";
-                    break;
-                case Constantes.COD_AN_CREDITO_PENDENTE_CARTAO:
-                    retorno = "Pendente Cartão de Crédito";
-                    break;
-            }
-
-            if (retorno != "")
-            {
-                var db = contextoProvider.GetContextoLeitura();
-
-                var ret = from c in db.Tpedidos
-                          where c.Pedido == numPedido && c.Orcamentista == apelido
-                          select new { analise_credito_data = c.Analise_credito_Data, analise_credito_usuario = c.Analise_Credito_Usuario };
-
-                var registro = ret.FirstOrDefault();
-                if (registro != null)
-                {
-                    if (registro.analise_credito_data.HasValue)
-                    {
-                        if (!string.IsNullOrEmpty(registro.analise_credito_usuario))
-                        {
-                            string maiuscula = (Char.ToUpper(registro.analise_credito_usuario[0]) +
-                                registro.analise_credito_usuario.Substring(1).ToLower());
-
-                            retorno = retorno + " (" + registro.analise_credito_data?.ToString("dd/MM/yyyy HH:mm") + " - "
-                                + maiuscula + ")";
-                        }
-                    }
-                }
-            }
-
-            return await Task.FromResult(retorno);
-        }
-
-        public async Task<string> ObterAnaliseCreditoCadastroPedido(string codigo, string numPedido, string apelido)
-        {
-            //estou alterando esse método para poder utilizar o switch no cadastro do pedido
-            //virou método para aproveitar no cadastro do pedido
-            string retorno = "";
-
-            retorno = DescricaoAnaliseCreditoCadastroPedido(codigo);
-
-            if (retorno != "")
-            {
-                var db = contextoProvider.GetContextoLeitura();
-
-                var ret = from c in db.Tpedidos
-                          where c.Pedido == numPedido && c.Orcamentista == apelido
-                          select new { analise_credito_data = c.Analise_credito_Data, analise_credito_usuario = c.Analise_Credito_Usuario };
-
-                var registro = ret.FirstOrDefault();
-                if (registro != null)
-                {
-                    if (registro.analise_credito_data.HasValue)
-                    {
-                        if (!string.IsNullOrEmpty(registro.analise_credito_usuario))
-                        {
-                            string maiuscula = (Char.ToUpper(registro.analise_credito_usuario[0]) +
-                                registro.analise_credito_usuario.Substring(1).ToLower());
-
-                            retorno = retorno + " (" + registro.analise_credito_data?.ToString("dd/MM/yyyy HH:mm") + " - "
-                                + maiuscula + ")";
-                        }
-                    }
-                }
-            }
-
-            return await Task.FromResult(retorno);
-        }
 
         private async Task<decimal> CalculaSaldoAPagar(string numPedido, decimal vlDevNf)
         {

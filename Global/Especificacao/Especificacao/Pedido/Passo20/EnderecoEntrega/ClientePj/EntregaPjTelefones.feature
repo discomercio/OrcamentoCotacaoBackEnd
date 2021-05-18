@@ -1,6 +1,7 @@
 ﻿@ignore
 @Especificacao.Pedido.Passo20.EnderecoEntrega.ClientePj
 Feature: Pedido de cliente PJ com endereço de entrega PJ - validação de telefones
+
 #em loja/ClienteEdita.asp:
 #                /*
 #                telefones PJ:
@@ -11,13 +12,10 @@ Feature: Pedido de cliente PJ com endereço de entrega PJ - validação de telef
 #                EndEtg_tel_com_2
 #                EndEtg_ramal_com_2
 #*/
-
 #também em loja/PedidoNovoConsiste.asp
-
 Background: Api MAgento somente aceita pedidos PF
 	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	Given Pedido base cliente PJ com endereço de entrega PJ
-
 
 #-------------------------------------------------------------
 #-------------------------------------------------------------
@@ -32,15 +30,19 @@ Scenario: EndEtg_ddd_com 2
 	Then Erro "Endereço de entrega: DDD inválido!!"
 
 Scenario: EndEtg_tel_com
-#	if ((len(s_tel)=0) Or (len(s_tel)>=6)) then telefone_ok = True
+	#	if ((len(s_tel)=0) Or (len(s_tel)>=6)) then telefone_ok = True
 	When Informo "EndEtg_tel_com" = "123"
-	Then Erro "Endereço de entrega: telefone inválido!!"
+	Then Erro "Endereço de entrega: telefone comercial inválido!"
 
 Scenario: EndEtg_tel_com 2
 	When Informo "EndEtg_tel_com" = "12345"
-	Then Erro "Endereço de entrega: telefone inválido!!"
+	Then Erro "Endereço de entrega: telefone comercial inválido!"
 
 Scenario: EndEtg_tel_com 3
+	When Informo "EndEtg_tel_com" = "123456789012"
+	Then Erro "Endereço de entrega: telefone comercial inválido!"
+
+Scenario: EndEtg_tel_com 4
 	When Informo "EndEtg_tel_com" = "123456"
 	Then Sem erro "Endereço de entrega: telefone inválido!!"
 
@@ -72,15 +74,19 @@ Scenario: EndEtg_ddd_com_2 2
 	Then Erro "Endereço de entrega: DDD inválido!!"
 
 Scenario: EndEtg_tel_com_2
-#	if ((len(s_tel)=0) Or (len(s_tel)>=6)) then telefone_ok = True
+	#	if ((len(s_tel)=0) Or (len(s_tel)>=6)) then telefone_ok = True
 	When Informo "EndEtg_tel_com_2" = "123"
-	Then Erro "Endereço de entrega: telefone inválido!!"
+	Then Erro "Endereço de entrega: telefone comercial 2 inválido!"
 
 Scenario: EndEtg_tel_com_2 2
 	When Informo "EndEtg_tel_com_2" = "12345"
-	Then Erro "Endereço de entrega: telefone inválido!!"
+	Then Erro "Endereço de entrega: telefone comercial 2 inválido!"
 
 Scenario: EndEtg_tel_com_2 3
+	When Informo "EndEtg_tel_com_2" = "123456789012"
+	Then Erro "Endereço de entrega: telefone comercial 2 inválido!"
+
+Scenario: EndEtg_tel_com_2 4
 	When Informo "EndEtg_tel_com_2" = "123456"
 	Then Sem erro "Endereço de entrega: telefone inválido!!"
 
@@ -136,4 +142,3 @@ Scenario: nos telefones, os símbolos devem ser removidos 2
 	When Informo "EndEtg_tel_com" = "123,.;5678"
 	Then Sem nenhum erro
 	And No registro gravado, campo "EndEtg_tel_com" = "1235678"
-

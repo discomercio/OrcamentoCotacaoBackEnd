@@ -540,12 +540,12 @@ namespace Prepedido
                 {
                     if (!string.IsNullOrEmpty(endEntrega.EndEtg_ie))
                     {
-                            Cliente.ValidacoesClienteBll.VerificarInscricaoEstadualValida(endEntrega.EndEtg_ie,
-                            endEntrega.EndEtg_uf, lstErros, flagMsg_IE_Cadastro_PF);
-                        }
+                        Cliente.ValidacoesClienteBll.VerificarInscricaoEstadualValida(endEntrega.EndEtg_ie,
+                        endEntrega.EndEtg_uf, lstErros, flagMsg_IE_Cadastro_PF);
                     }
                 }
             }
+        }
 
         private void ValidarDadosPessoaEnderecoEntrega_PJ(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEtg, List<string> lstErros)
         {
@@ -644,7 +644,8 @@ namespace Prepedido
                 if (!string.IsNullOrEmpty(endEtg.EndEtg_tel_com) &&
                     !string.IsNullOrEmpty(endEtg.EndEtg_ddd_com))
                 {
-                    if (Util.Telefone_SoDigito(endEtg.EndEtg_tel_com).Length < 6)
+                    if (Util.Telefone_SoDigito(endEtg.EndEtg_tel_com).Length < 6 ||
+                        Util.Telefone_SoDigito(endEtg.EndEtg_tel_com).Length > 11)
                         lstErros.Add("Endereço de entrega: telefone comercial inválido!");
 
                     if (endEtg.EndEtg_ddd_com.Length != 2)
@@ -677,7 +678,8 @@ namespace Prepedido
                 if (!string.IsNullOrEmpty(endEtg.EndEtg_tel_com_2) &&
                     !string.IsNullOrEmpty(endEtg.EndEtg_ddd_com_2))
                 {
-                    if (Util.Telefone_SoDigito(endEtg.EndEtg_tel_com_2).Length < 6)
+                    if (Util.Telefone_SoDigito(endEtg.EndEtg_tel_com_2).Length < 6 ||
+                        Util.Telefone_SoDigito(endEtg.EndEtg_tel_com_2).Length > 11)
                         lstErros.Add("Endereço de entrega: telefone comercial 2 inválido!");
 
                     if (endEtg.EndEtg_ddd_com_2.Length != 2)
@@ -829,7 +831,8 @@ namespace Prepedido
             {
                 if (string.IsNullOrEmpty(endEtg.EndEtg_tel_res))
                     lstErros.Add("Endereço de entrega: preencha o telfone residencial.");
-                else if (Util.Telefone_SoDigito(endEtg.EndEtg_tel_res).Length < 6)
+                else if (Util.Telefone_SoDigito(endEtg.EndEtg_tel_res).Length < 6 || 
+                    Util.Telefone_SoDigito(endEtg.EndEtg_tel_res).Length > 11)
                     lstErros.Add("Endereço de entrega: telefone residencial inválido.");
 
 
@@ -849,7 +852,8 @@ namespace Prepedido
             {
                 if (string.IsNullOrEmpty(endEtg.EndEtg_tel_cel))
                     lstErros.Add("Endereço de entrega: preencha o telefone do celular.");
-                else if (Util.Telefone_SoDigito(endEtg.EndEtg_tel_cel).Length < 6)
+                else if (Util.Telefone_SoDigito(endEtg.EndEtg_tel_cel).Length < 6 ||
+                    Util.Telefone_SoDigito(endEtg.EndEtg_tel_cel).Length > 11)
                     lstErros.Add("Endereço de entrega: telefone celular inválido.");
 
                 if (string.IsNullOrEmpty(endEtg.EndEtg_ddd_cel))

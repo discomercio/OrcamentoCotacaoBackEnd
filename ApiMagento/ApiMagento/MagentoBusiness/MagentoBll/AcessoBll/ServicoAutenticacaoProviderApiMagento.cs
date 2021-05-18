@@ -101,82 +101,90 @@ namespace MagentoBusiness.MagentoBll.AcessoBll
             //if IsNull(dt_ult_alteracao_senha) then Response.Redirect("senha.asp" & "?" & MontaCampoQueryStringSessionCtrlInfo(Session("SessionCtrlInfo")))
             */
 
-
+            /* 14/05/2021 - Hamilton solicitou que não faça o login tantas vezes
+             * Iremos comentar a parte da transação para que não faça nenhuma gravação de login
+             * só iremos validar os dados de acesso.
+             */
+            #region Comentado Atualização e gravação de histórico
             //verificar com HAmilton se este formato está OK
-            var strSessionCtrlTicket = $"{usuarioMaisuculas} - {DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff")}";
+            //var strSessionCtrlTicket = $"{usuarioMaisuculas} - {DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff")}";
             //strSessionCtrlTicket = PrepedidoBusiness.Utils.Util.codificaDado(strSessionCtrlTicket, true);
 
 
             //atualizar dados
-            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
-            {
-                GravarTsessaoHistorico(dbgravacao, usuarioMaisuculas, strSessionCtrlTicket, ip, userAgent);
-                AtualizarTusuario(dbgravacao, usuarioMaisuculas, strSessionCtrlTicket);
+            //using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+            //{
+            //    GravarTsessaoHistorico(dbgravacao, usuarioMaisuculas, strSessionCtrlTicket, ip, userAgent);
+            //    AtualizarTusuario(dbgravacao, usuarioMaisuculas, strSessionCtrlTicket);
 
 
-                //inserir em TsessaoAbandonada
-                if (!string.IsNullOrEmpty(usuario.SessionCtrlTicket))
-                {
-                    //strMensagemAviso = "A sessão anterior não foi encerrada corretamente.<br>Para segurança da sua identidade, <i>sempre</i> encerre a sessão clicando no link <i>'encerra'</i>.<br>Esta ocorrência será gravada no histórico de auditoria."
-                    //strMensagemAvisoPopUp = "**********   A T E N Ç Ã O ! !   **********\nA sessão anterior não foi encerrada corretamente.\nPara segurança da sua identidade, SEMPRE encerre a sessão clicando no link ENCERRA.\nEsta ocorrência será gravada no histórico de auditoria!!"
-                    var sessaoAbandonada = new TsessaoAbandonada()
-                    {
-                        Usuario = usuarioOriginal,
-                        SessaoAbandonadaDtHrInicio = usuario.SessionCtrlDtHrLogon ?? DateTime.Now,
-                        SessaoAbandonadaLoja = usuario.SessionCtrlLoja,
-                        SessaoAbandonadaModulo = usuario.SessionCtrlModulo,
-                        SessaoSeguinteDtHrInicio = DateTime.Now,
-                        SessaoSeguinteLoja = "",
-                        SessaoSeguinteModulo = Constantes.SESSION_CTRL_MODULO_APIMAGENTO
-                    };
-                    dbgravacao.TsessaoAbandonadas.Add(sessaoAbandonada);
-                    await dbgravacao.SaveChangesAsync();
-                }
+            //    //inserir em TsessaoAbandonada
+            //    if (!string.IsNullOrEmpty(usuario.SessionCtrlTicket))
+            //    {
+            //        //strMensagemAviso = "A sessão anterior não foi encerrada corretamente.<br>Para segurança da sua identidade, <i>sempre</i> encerre a sessão clicando no link <i>'encerra'</i>.<br>Esta ocorrência será gravada no histórico de auditoria."
+            //        //strMensagemAvisoPopUp = "**********   A T E N Ç Ã O ! !   **********\nA sessão anterior não foi encerrada corretamente.\nPara segurança da sua identidade, SEMPRE encerre a sessão clicando no link ENCERRA.\nEsta ocorrência será gravada no histórico de auditoria!!"
+            //        var sessaoAbandonada = new TsessaoAbandonada()
+            //        {
+            //            Usuario = usuarioOriginal,
+            //            SessaoAbandonadaDtHrInicio = usuario.SessionCtrlDtHrLogon ?? DateTime.Now,
+            //            SessaoAbandonadaLoja = usuario.SessionCtrlLoja,
+            //            SessaoAbandonadaModulo = usuario.SessionCtrlModulo,
+            //            SessaoSeguinteDtHrInicio = DateTime.Now,
+            //            SessaoSeguinteLoja = "",
+            //            SessaoSeguinteModulo = Constantes.SESSION_CTRL_MODULO_APIMAGENTO
+            //        };
+            //        dbgravacao.TsessaoAbandonadas.Add(sessaoAbandonada);
+            //        await dbgravacao.SaveChangesAsync();
+            //    }
 
-                dbgravacao.transacao.Commit();
-            }
-
+            //    dbgravacao.transacao.Commit();
+            //}
+            #endregion
 
             ret.Nome = usuario.Nome;
             ret.Usuario = usuarioOriginal;
             return ret;
         }
 
-        private void GravarTsessaoHistorico(ContextoBdGravacao dbgravacao, string usuario, string strSessionCtrlTicket, string ip, string userAgent)
-        {
-            //inserir na t_SESSAO_HISTORICO
-            TsessaoHistorico sessaoHist = new TsessaoHistorico
-            {
-                Usuario = usuario,
-                SessionCtrlTicket = strSessionCtrlTicket,
-                DtHrInicio = DateTime.Now,
-                DtHrTermino = null,
-                Loja = "",
-                Modulo = Constantes.SESSION_CTRL_MODULO_APIMAGENTO,
-                IP = ip,
-                UserAgent = userAgent
-            };
+        #region Gravação de histórico
+        //private void GravarTsessaoHistorico(ContextoBdGravacao dbgravacao, string usuario, string strSessionCtrlTicket, string ip, string userAgent)
+        //{
+        //    //inserir na t_SESSAO_HISTORICO
+        //    TsessaoHistorico sessaoHist = new TsessaoHistorico
+        //    {
+        //        Usuario = usuario,
+        //        SessionCtrlTicket = strSessionCtrlTicket,
+        //        DtHrInicio = DateTime.Now,
+        //        DtHrTermino = null,
+        //        Loja = "",
+        //        Modulo = Constantes.SESSION_CTRL_MODULO_APIMAGENTO,
+        //        IP = ip,
+        //        UserAgent = userAgent
+        //    };
 
-            dbgravacao.TsessaoHistoricos.Add(sessaoHist);
-            dbgravacao.SaveChanges();
-        }
+        //    dbgravacao.TsessaoHistoricos.Add(sessaoHist);
+        //    dbgravacao.SaveChanges();
+        //}
+        #endregion
 
-        private void AtualizarTusuario(ContextoBdGravacao dbgravacao, string usuarioMaisuculas, string strSessionCtrlTicket)
-        {
-            var tusuario = (from u in dbgravacao.Tusuarios
-                            where u.Usuario.ToUpper() == usuarioMaisuculas
-                            select u).FirstOrDefault();
-            tusuario.Dt_Ult_Acesso = DateTime.Now;
-            tusuario.SessionCtrlDtHrLogon = DateTime.Now;
-            tusuario.SessionCtrlModulo = Constantes.SESSION_CTRL_MODULO_APIMAGENTO;
-            tusuario.SessionCtrlLoja = null;
-            tusuario.SessionCtrlTicket = strSessionCtrlTicket;
-            tusuario.SessionTokenModuloCentral = null;
-            tusuario.DtHrSessionTokenModuloCentral = null;
+        #region Atualizar dado do usuário 
+        //private void AtualizarTusuario(ContextoBdGravacao dbgravacao, string usuarioMaisuculas, string strSessionCtrlTicket)
+        //{
+        //    var tusuario = (from u in dbgravacao.Tusuarios
+        //                    where u.Usuario.ToUpper() == usuarioMaisuculas
+        //                    select u).FirstOrDefault();
+        //    tusuario.Dt_Ult_Acesso = DateTime.Now;
+        //    tusuario.SessionCtrlDtHrLogon = DateTime.Now;
+        //    tusuario.SessionCtrlModulo = Constantes.SESSION_CTRL_MODULO_APIMAGENTO;
+        //    tusuario.SessionCtrlLoja = null;
+        //    tusuario.SessionCtrlTicket = strSessionCtrlTicket;
+        //    tusuario.SessionTokenModuloCentral = null;
+        //    tusuario.DtHrSessionTokenModuloCentral = null;
 
-            dbgravacao.Update(tusuario);
-            dbgravacao.SaveChanges();
-        }
+        //    dbgravacao.Update(tusuario);
+        //    dbgravacao.SaveChanges();
+        //}
+        #endregion
 
         public async Task FazerLogout(string usuario, LogoutResultadoMagentoDto logoutResultadoUnisDto)
         {

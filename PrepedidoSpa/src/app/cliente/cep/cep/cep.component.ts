@@ -97,6 +97,7 @@ export class CepComponent extends TelaDesktopBaseComponent implements OnInit {
       this.Bairro = "";
       this.Cidade = "";
       this.Uf = "";
+      this.cep_retorno = "";
       return false;
     }
     

@@ -19,6 +19,8 @@ import { AutenticacaoService } from 'src/app/servicos/autenticacao/autenticacao.
 import { HttpParams } from '@angular/common/http';
 import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
 import { ClienteCadastroUtils } from 'src/app/utils/ClienteCadastroUtils';
+import { NovoPrepedidoDadosService } from '../../novo-prepedido/novo-prepedido-dados.service';
+import { EnderecoCadastralClientePrepedidoDto } from 'src/app/dto/Prepedido/EnderecoCadastralClientePrepedidoDto';
 
 @Component({
   selector: 'app-pedido-desktop',
@@ -36,7 +38,8 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
     telaDesktopService: TelaDesktopService,
     private readonly location: Location,
     public readonly dialog: MatDialog,
-    private readonly autenticacaoService: AutenticacaoService) {
+    private readonly autenticacaoService: AutenticacaoService,
+    private readonly novoPrepedidoDadosService: NovoPrepedidoDadosService) {
     super(telaDesktopService);
   }
   ngOnInit() {
@@ -206,5 +209,14 @@ export class PedidoDesktopComponent extends TelaDesktopBaseComponent implements 
   }
   //#endregion
 
+  editar() {
+    
+    let enderecoCadastroClientePrepedido = new EnderecoCadastralClientePrepedidoDto();
+    let enderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
+    this.novoPrepedidoDadosService.criarNovo(this.pedido.DadosCliente, enderecoEntrega, enderecoCadastroClientePrepedido);
+
+    this.router.navigate(['/novo-prepedido/confirmar-cliente',
+      this.stringUtils.retorna_so_digitos(this.pedido.DadosCliente.Cnpj_Cpf)]);
+  }
 }
 

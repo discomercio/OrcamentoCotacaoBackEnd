@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone, ViewChild } from '@angular/core';
+import { Component, OnInit, NgZone, ViewChild, Input } from '@angular/core';
 import { PassoPrepedidoBase } from '../passo-prepedido-base';
 import { TelaDesktopService } from 'src/app/servicos/telaDesktop/telaDesktop.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,6 +14,8 @@ import { parse } from 'path';
 import { DataUtils } from 'src/app/utils/dataUtils';
 import { RepositionScrollStrategy } from '@angular/cdk/overlay';
 import { ItensComponent } from '../itens/itens.component';
+import { ConfirmarEnderecoComponent } from '../confirmar-endereco/confirmar-endereco.component';
+import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
 
 
 @Component({
@@ -57,7 +59,6 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
     this.dadosParaModelo();
     this.location.back();
   }
-
   salvando: boolean;
   continuar() {
     this.salvando = true;
@@ -65,7 +66,11 @@ export class ObservacoesComponent extends PassoPrepedidoBase implements OnInit {
       this.salvando = false;
       return false;
     }
-    
+    if (!this.novoPrepedidoDadosService.prePedidoDto.EnderecoEntrega.OutroEndereco) {
+      this.novoPrepedidoDadosService.prePedidoDto.EnderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
+      this.novoPrepedidoDadosService.prePedidoDto.EnderecoEntrega.OutroEndereco = false;
+    }
+
     this.prepedidoBuscarService.cadastrarPrepedido(this.novoPrepedidoDadosService.prePedidoDto).subscribe({
       next: (r) => {
 

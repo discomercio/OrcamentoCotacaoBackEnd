@@ -6,6 +6,7 @@ using InfraBanco.Constantes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using PrepedidoBusiness.Bll;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 
@@ -22,13 +23,14 @@ namespace PrepedidoApi.Controllers
         private readonly Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll;
         private readonly FormaPagtoPrepedidoBll formaPagtoPrepedidoBll;
         private readonly CoeficientePrepedidoBll coeficientePrepedidoBll;
-
+        private readonly IConfiguration configuration;
         public PrepedidoController(Prepedido.PrepedidoBll prepedidoBll,
             PrepedidoBusiness.Bll.PrepedidoApiBll prepedidoApiBll,
             InfraIdentity.IServicoDecodificarToken servicoDecodificarToken,
             Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll,
             PrepedidoBusiness.Bll.FormaPagtoPrepedidoBll formaPagtoPrepedidoBll,
-            PrepedidoBusiness.Bll.CoeficientePrepedidoBll coeficientePrepedidoBll)
+            PrepedidoBusiness.Bll.CoeficientePrepedidoBll coeficientePrepedidoBll,
+            IConfiguration configuration)
         {
             this.prepedidoBll = prepedidoBll;
             this.prepedidoApiBll = prepedidoApiBll;
@@ -36,6 +38,7 @@ namespace PrepedidoApi.Controllers
             this.formaPagtoBll = formaPagtoBll;
             this.formaPagtoPrepedidoBll = formaPagtoPrepedidoBll;
             this.coeficientePrepedidoBll = coeficientePrepedidoBll;
+            this.configuration = configuration;
         }
 
         //para teste, anonimo
@@ -156,9 +159,11 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/prepedido/cadastrarPrepedido
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
+            var appSettingsSection = configuration.GetSection("AppSettings");
+            var appSettings = appSettingsSection.Get<Utils.Configuracao>();
             //LIMITE_ARREDONDAMENTO_PRECO_VENDA_ORCAMENTO_ITEM fixo em 1 centavo
             IEnumerable<string> ret = await prepedidoApiBll.CadastrarPrepedido(prePedido, apelido.Trim(), 0.01M, true,
-                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);
+                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS, appSettings.LimiteItens);
 
             return Ok(ret);
         }

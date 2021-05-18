@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { DadosClienteCadastroDto } from 'src/app/dto/ClienteCadastro/DadosClienteCadastroDto';
 import { Constantes } from 'src/app/dto/Constantes';
 import { StringUtils } from 'src/app/utils/stringUtils';
@@ -14,7 +14,6 @@ import { BuscarClienteService } from 'src/app/servicos/cliente/buscar-cliente.se
 import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 import { RefComercialDtoCliente } from 'src/app/dto/ClienteCadastro/Referencias/RefComercialDtoCliente';
 import { CepComponent } from '../cep/cep/cep.component';
-import { $ } from 'protractor';
 import { MatSelect } from '@angular/material';
 import { EnderecoCadastralClientePrepedidoDto } from 'src/app/dto/Prepedido/EnderecoCadastralClientePrepedidoDto';
 

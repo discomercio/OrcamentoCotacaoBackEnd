@@ -74,5 +74,9 @@ export class NovoPrepedidoDadosService {
     return this.prePedidoDto.ValorTotalDestePedidoComRA = this.moedaUtils.formatarDecimal(
       this.prePedidoDto.ListaProdutos.reduce((sum, current) => sum + this.moedaUtils.formatarDecimal(current.TotalItemRA), 0));
   }
+
+  //inidca se clicaou no botão Voltar da tela de itens; se estiver no celular,
+  //precisa voltar para a segunda tela 9a tela do endereço de entrega
+  public clicadoBotaoVoltarDaTelaItens:boolean = false;
 }
 

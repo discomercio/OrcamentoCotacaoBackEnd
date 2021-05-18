@@ -24,12 +24,12 @@ namespace PrepedidoUnisBusiness.UnisBll.PedidoUnisBll
 
             if (!string.IsNullOrEmpty(pedido))
             {
-                string orcamentista = (from c in db.Tpedidos
+                string indicador = (from c in db.Tpedidos
                                        where c.Pedido == pedido
-                                       select c.Orcamentista).FirstOrDefault();
+                                       select c.Indicador).FirstOrDefault();
 
 
-                Prepedido.PedidoVisualizacao.Dados.DetalhesPedido.PedidoDados pedidoDados = await pedidoVisualizacaoBll.BuscarPedido(orcamentista?.Trim(), pedido);
+                Prepedido.PedidoVisualizacao.Dados.DetalhesPedido.PedidoDados pedidoDados = await pedidoVisualizacaoBll.BuscarPedido(indicador?.Trim(), pedido);
 
                 if (pedidoDados != null)
                 {

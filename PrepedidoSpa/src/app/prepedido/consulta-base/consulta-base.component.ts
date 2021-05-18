@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, DebugElement, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { PrepedidoComboNumeroService } from '../../../../src/app/servicos/prepedido/prepedido-combo-numero.service';
 import { PrepedidoComboCpfcnpjService } from '../../../../src/app/servicos/prepedido/prepedido-combo-cpfcnpj.service';
 import { Observable } from 'rxjs';
@@ -13,6 +13,7 @@ import { environment } from '../../../../src/environments/environment';
 import { PedidoComboCpfcnpjService } from '../../../../src/app/servicos/pedido/pedido-combo-cpfcnpj.service';
 import { PedidoComboNumeroService } from '../../../../src/app/servicos/pedido/pedido-combo-numero.service';
 import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
+import { isDate } from 'util';
 
 @Component({
   selector: 'app-consulta-base',
@@ -82,9 +83,13 @@ export class ConsultaBaseComponent extends TelaDesktopBaseComponent implements O
         this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaAndamento = false;
         this.prepedidoListarService.paramsBuscaPrepedido.tipoBuscaPedido = false;
       }
-
+      //vamos validar a data antes de tentar formatar
       let dataInicial = DataUtils.formata_formulario_date(this.prepedidoListarService.paramsBuscaPrepedido.dataInicial);
 
+      if (!DataUtils.validarData(dataInicial)) {
+        this.alertaService.mostrarMensagem("Data inicial inválida!");
+        return;
+      }
 
       if (dataInicial < this.minDate) {
         this._snackBar.open("É permitido realizar a busca dentro de um periodo de 60 dias atrás da Data atual", "", {
@@ -92,6 +97,12 @@ export class ConsultaBaseComponent extends TelaDesktopBaseComponent implements O
         });
       }
 
+      //antes de mandar fazer a busca vamos validar a data final
+      let dataFinal: Date = DataUtils.formata_formulario_date(this.pedidoListarService.paramsBuscaPedido.dataFinal);
+      if (!DataUtils.validarData(dataFinal)) {
+        this.alertaService.mostrarMensagem("Data final inválida!");
+        return;
+      }
       this.prepedidoListarService.atualizar();
     }
     else {
@@ -108,12 +119,22 @@ export class ConsultaBaseComponent extends TelaDesktopBaseComponent implements O
 
       let dataInicial = DataUtils.formata_formulario_date(this.pedidoListarService.paramsBuscaPedido.dataInicial);
 
+      if (!DataUtils.validarData(dataInicial)) {
+        this.alertaService.mostrarMensagem("Data inicial inválida!");
+        return;
+      }
+
       if (dataInicial < this.minDate) {
         this._snackBar.open("É permitido realizar a busca dentro de um periodo de 60 dias atrás da Data atual", "", {
           duration: environment.esperaAvisos
         });
       }
-
+      //antes de mandar fazer a busca vamos validar a data final
+      let dataFinal: Date = DataUtils.formata_formulario_date(this.pedidoListarService.paramsBuscaPedido.dataFinal);
+      if (!DataUtils.validarData(dataFinal)) {
+        this.alertaService.mostrarMensagem("Data final inválida!");
+        return;
+      }
       this.pedidoListarService.atualizar();
     }
 

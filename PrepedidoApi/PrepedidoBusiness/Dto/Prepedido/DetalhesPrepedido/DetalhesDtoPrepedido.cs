@@ -40,16 +40,17 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
         public static DetalhesPrepedidoDados DetalhesPrepedidoDados_De_DetalhesDtoPrepedido(DetalhesDtoPrepedido origem)
         {
             if (origem == null) return null;
-            return new DetalhesPrepedidoDados()
+
+            DetalhesPrepedidoDados ret = new DetalhesPrepedidoDados()
             {
                 Observacoes = origem.Observacoes,
                 NumeroNF = origem.NumeroNF,
                 EntregaImediata = origem.EntregaImediata,
                 EntregaImediataData = origem.EntregaImediataData,
-                BemDeUso_Consumo = origem.BemDeUso_Consumo == "SIM" ?
+                BemDeUso_Consumo = origem.BemDeUso_Consumo == Convert.ToString((short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_SIM) ?
                     (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_SIM :
                     (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO,
-                InstaladorInstala = origem.InstaladorInstala == "SIM" ?
+                InstaladorInstala = origem.InstaladorInstala == Convert.ToString((short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_SIM) ?
                 (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_SIM :
                 (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO,
                 GarantiaIndicador = origem.GarantiaIndicador,
@@ -57,6 +58,8 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
                 DescricaoFormaPagamento = origem.DescricaoFormaPagamento,
                 PrevisaoEntrega = origem.PrevisaoEntrega
             };
+
+            return ret;
         }
     }
 }

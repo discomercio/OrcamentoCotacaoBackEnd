@@ -1,3 +1,4 @@
+
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NovoPrepedidoDadosService } from '../novo-prepedido-dados.service';
@@ -13,10 +14,7 @@ import { PrepedidoBuscarService } from 'src/app/servicos/prepedido/prepedido-bus
 import { EnumFormaPagto } from './enum-forma-pagto';
 import { CoeficienteDto } from 'src/app/dto/Produto/CoeficienteDto';
 import { EnumTipoPagto } from './tipo-forma-pagto';
-import { BreakpointObserver } from '@angular/cdk/layout';
 import { RecalcularComCoeficiente } from './recalcularComCoeficiente';
-import { FormaPagtoCriacaoDto } from 'src/app/dto/Prepedido/DetalhesPrepedido/FormaPagtoCriacaoDto';
-
 
 @Component({
   selector: 'app-dados-pagto',
@@ -110,7 +108,8 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     if (this.enumFormaPagto == 1) {
       //A vista      
       this.prePedidoDto.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
-      this.prePedidoDto.FormaPagtoCriacao.Op_av_forma_pagto = this.meioPagtoAVista.toString();//meio de pagamento
+      if (!!this.meioPagtoAVista)
+        this.prePedidoDto.FormaPagtoCriacao.Op_av_forma_pagto = this.meioPagtoAVista.toString();//meio de pagamento
       this.prePedidoDto.FormaPagtoCriacao.Qtde_Parcelas = 0;
     }
     if (this.enumFormaPagto == 2) {
@@ -124,7 +123,8 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
       //ParcComEnt
       this.prePedidoDto.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
       this.prePedidoDto.FormaPagtoCriacao.Op_pce_entrada_forma_pagto = this.meioPagtoEntrada.toString();//meio de pagamento
-      this.prePedidoDto.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto = this.meioPagtoEntradaPrest.toString();//meio de pagamento
+      if (this.meioPagtoEntradaPrest)
+        this.prePedidoDto.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto = this.meioPagtoEntradaPrest.toString();//meio de pagamento
       this.prePedidoDto.FormaPagtoCriacao.C_pce_entrada_valor = this.vlEntrada;
       this.prePedidoDto.FormaPagtoCriacao.C_pce_prestacao_qtde = this.qtde;
       this.prePedidoDto.FormaPagtoCriacao.C_pce_prestacao_valor = this.valor;
@@ -148,7 +148,8 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     if (this.enumFormaPagto == 5) {
       //ParcUnica
       this.prePedidoDto.FormaPagtoCriacao.Rb_forma_pagto = this.enumFormaPagto.toString();
-      this.prePedidoDto.FormaPagtoCriacao.Op_pu_forma_pagto = this.meioPagtoParcUnica.toString();//meio de pagamento
+      if (!!this.meioPagtoParcUnica)
+        this.prePedidoDto.FormaPagtoCriacao.Op_pu_forma_pagto = this.meioPagtoParcUnica.toString();//meio de pagamento
       this.prePedidoDto.FormaPagtoCriacao.C_pu_valor = this.valor;
       this.prePedidoDto.FormaPagtoCriacao.C_pu_vencto_apos = this.diasVencParcUnica != null ?
         parseInt(this.diasVencParcUnica.toString().replace("_", "")) : this.diasVencParcUnica;
@@ -423,7 +424,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     if (!this.validarFormaPagto(false)) {
       return false;
     }
-    
+
     this.lstNovoCoeficiente.RecalcularListaProdutos(this.formaPagtoNum, this.coeficienteDtoNovo, this.tipoFormaPagto,
       this.qtde);
   }
@@ -533,7 +534,7 @@ export class DadosPagtoComponent extends PassoPrepedidoBase implements OnInit {
     let retorno = "";
     this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento;
     this.recalcularValoresComCoeficiente(this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento);
-debugger;
+
     switch (this.prePedidoDto.FormaPagtoCriacao.Tipo_parcelamento.toString()) {
       case this.constantes.COD_FORMA_PAGTO_A_VISTA:
         retorno = this.prePedidoDto.FormaPagtoCriacao.Qtde_Parcelas + " X " +
