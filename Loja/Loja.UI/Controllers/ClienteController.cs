@@ -57,43 +57,19 @@ namespace Loja.UI.Controllers
             //return RedirectToAction("BuscarCliente", new { cpf_cnpj = cpf_cnpj, novoCliente = novoCliente }); //editar cliente
         }
 
+        
 
         public async Task<IActionResult> BuscarCliente(string cpf_cnpj, bool novoCliente)
-        {
-            /*Passo a passo da entrada 
-              pegar a session do usuario
-              pegar a session da loja
-              criar session de operações permitidas
-              verificar a operação permitida
-              buscar os dados do cliente
-              buscar indicadores 
-            */
-
+        {           
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
-
-            ClienteCadastroViewModel cliente = new ClienteCadastroViewModel();
-
-            cliente.PermiteEdicao = Loja.Bll.Util.Util.OpercaoPermitida(Loja.Bll.Constantes.Constantes.OP_LJA_EDITA_CLIENTE_DADOS_CADASTRAIS
+            bool permiteEditar = Loja.Bll.Util.Util.OpercaoPermitida(Loja.Bll.Constantes.Constantes.OP_LJA_EDITA_CLIENTE_DADOS_CADASTRAIS
                 , usuarioLogado.S_lista_operacoes_permitidas) ? true : false;
-            //vamos verificar se o cliente é novo
-
-            //somente para teste remover após concluir
-            //cliente.PermiteEdicao = false;
 
             ClienteCadastroDto clienteCadastroDto = new ClienteCadastroDto();
-
             if (!novoCliente)
-            {
                 clienteCadastroDto = await clienteBll.BuscarCliente(UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj), usuarioLogado.Usuario_atual);
-
-                //usuarioLogado.Cliente_Selecionado = clienteCadastroDto;
-
-                cliente.RefBancaria = clienteCadastroDto.RefBancaria;
-                cliente.RefComercial = clienteCadastroDto.RefComercial;
-                cliente.Cadastrando = false;
-            }
             if (novoCliente)
-            {
+            { 
                 clienteCadastroDto.DadosCliente = new DadosClienteCadastroDto();
                 clienteCadastroDto.DadosCliente.Cnpj_Cpf = cpf_cnpj;
 
@@ -101,84 +77,15 @@ namespace Loja.UI.Controllers
                     clienteCadastroDto.DadosCliente.Tipo = "PF";
                 if (UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj).Length == 14)
                     clienteCadastroDto.DadosCliente.Tipo = "PJ";
-
-                cliente.Cadastrando = true;
             }
-
-            cliente.DadosCliente = clienteCadastroDto.DadosCliente;
-
-            //Lista para carregar no select de Indicadores
-            var lstInd = (await clienteBll.BuscarListaIndicadores(cliente.DadosCliente?.Indicador_Orcamentista,
+            var lstInd = (await clienteBll.BuscarListaIndicadores(clienteCadastroDto.DadosCliente?.Indicador_Orcamentista,
                 usuarioLogado.Usuario_atual, usuarioLogado.Loja_atual_id)).ToList();
-
-            List<SelectListItem> lst = new List<SelectListItem>();
-            lst.Add(new SelectListItem { Value = "0", Text = "Selecione" });
-            for (int i = 0; i < lstInd.Count; i++)
-            {
-                lst.Add(new SelectListItem { Value = lstInd[i], Text = lstInd[i] });
-            }
-            cliente.LstIndicadores = new SelectList(lst, "Value", "Text");
-
-            var lstSexo = new[]
-            {
-                new SelectListItem{Value = "", Text = "Selecione"},
-                new SelectListItem{Value = "M", Text = "Masculino"},
-                new SelectListItem{Value = "F", Text = "Feminino"}
-            };
-            cliente.LstSexo = new SelectList(lstSexo, "Value", "Text");
-
-            //lista para carregar no select de Produtor Rural            
-            var lstProdR = new[]
-            {
-                new SelectListItem{Value = "", Text = "Selecione"},
-                new SelectListItem{Value = Bll.Constantes.Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO, Text = "Não"},
-                new SelectListItem{Value = Bll.Constantes.Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM, Text = "Sim"}
-            };
-            cliente.LstProdutoRural = new SelectList(lstProdR, "Value", "Text");
-
-            //lista para carregar o Contribuinte ICMS
-            var lstContrICMS = new[]
-            {
-                new SelectListItem{Value = Bll.Constantes.Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL, Text="Selecione"},
-                new SelectListItem{Value = Bll.Constantes.Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO, Text = "Isento"},
-                new SelectListItem{Value = Bll.Constantes.Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO, Text = "Não"},
-                new SelectListItem{Value = Bll.Constantes.Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM, Text = "Sim"}
-            };
-            cliente.LstContribuinte = new SelectList(lstContrICMS, "Value", "Text");
-
             var lstJustificativas = (await clienteBll.ListarComboJustificaEndereco(usuarioLogado.Usuario_atual)).ToList();
-            List<SelectListItem> lstSelect = new List<SelectListItem>();
-            lstSelect.Add(new SelectListItem { Value = "", Text = "Selecione" });
-            foreach (var i in lstJustificativas)
-            {
-                lstSelect.Add(new SelectListItem { Value = i.EndEtg_cod_justificativa, Text = i.EndEtg_descricao_justificativa });
-            }
-
-            cliente.EndJustificativa = new SelectList(lstSelect, "Value", "Text");
-
             var lstBancos = (await clienteBll.ListarBancosCombo()).ToList();
-            List<SelectListItem> lstbancos = new List<SelectListItem>();
-            lstbancos.Add(new SelectListItem { Value = "", Text = "Selecione" });
-            for (int i = 0; i < lstBancos.Count; i++)
-            {
-                lstbancos.Add(new SelectListItem
-                {
-                    Value = lstBancos[i].Codigo,
-                    Text = lstBancos[i].Descricao
-                });
-            }
-            cliente.LstComboBanco = new SelectList(lstbancos, "Value", "Text");
-
-            //vamos buscar a lista de IBGE para confrontar na validação de tela
-
-            //vamos carregar os select's de cep
-            cliente.Cep = new Models.Cep.CepViewModel();
-            cliente.Cep.ClienteTipo = cliente.DadosCliente.Tipo;
-            //lista para carregar no select de Produtor Rural              
-            cliente.Cep.LstProdutoRural = new SelectList(lstProdR, "Value", "Text");
-            //lista para carregar o Contribuinte ICMS           
-            cliente.Cep.LstContribuinte = new SelectList(lstContrICMS, "Value", "Text");
-
+            //receber tudo que ele precisa para ser criado corretamente.
+            ClienteCadastroViewModel cliente = new ClienteCadastroViewModel(permiteEditar, novoCliente, clienteCadastroDto,
+                lstInd, lstJustificativas, lstBancos);
+           
             return View("DadosCliente", cliente);
         }
 
@@ -241,7 +148,7 @@ namespace Loja.UI.Controllers
                 pedidoDto.EnderecoEntrega = EndEntrega;
             }
 
-            return RedirectToAction("Indicador_SelecaoCD", "Pedido", new { pedidoDto = pedidoDto});
+            return RedirectToAction("Indicador_SelecaoCD", "Pedido", new { pedidoDto = pedidoDto });
         }
     }
 }
