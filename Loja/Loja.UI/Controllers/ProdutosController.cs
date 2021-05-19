@@ -65,7 +65,8 @@ namespace Loja.UI.Controllers
 
 
         [HttpGet]
-        public async Task<ProdutoValidadoComEstoqueDto> VerificarRegraProdutoCD(string produto, string id_nfe_emitente_selecao_manual)
+        public async Task<ProdutoValidadoComEstoqueDto> VerificarRegraProdutoCD(string produto, 
+            string id_nfe_emitente_selecao_manual, string cpf_cnpj)
         {
             List<string> lstRetorno = new List<string>();
 
@@ -79,7 +80,7 @@ namespace Loja.UI.Controllers
             ProdutoValidadoComEstoqueDto produtoValidado = new ProdutoValidadoComEstoqueDto();
             //fazer a chamada do metodo
             produtoValidado = await produtoBll.VerificarRegrasDisponibilidadeEstoqueProdutoSelecionado(prod, 
-                Util.SoDigitosCpf_Cnpj(usuarioLogado.Cliente_Selecionado.DadosCliente.Cnpj_Cpf), int.Parse(id_nfe_emitente_selecao_manual));
+                Util.SoDigitosCpf_Cnpj(cpf_cnpj), int.Parse(id_nfe_emitente_selecao_manual));
 
             return produtoValidado;
         }

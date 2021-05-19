@@ -86,15 +86,14 @@ namespace Loja.UI.Controllers
             {
                 clienteCadastroDto = await clienteBll.BuscarCliente(UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj), usuarioLogado.Usuario_atual);
 
-                usuarioLogado.Cliente_Selecionado = clienteCadastroDto;
+                //usuarioLogado.Cliente_Selecionado = clienteCadastroDto;
 
                 cliente.RefBancaria = clienteCadastroDto.RefBancaria;
                 cliente.RefComercial = clienteCadastroDto.RefComercial;
                 cliente.Cadastrando = false;
             }
-            else
+            if (novoCliente)
             {
-                cliente.PermiteEdicao = true;
                 clienteCadastroDto.DadosCliente = new DadosClienteCadastroDto();
                 clienteCadastroDto.DadosCliente.Cnpj_Cpf = cpf_cnpj;
 
@@ -186,7 +185,7 @@ namespace Loja.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> CadastrarCliente(bool permiteEditar,
             Loja.Bll.Dto.ClienteDto.DadosClienteCadastroDto dados,
-            List<Loja.Bll.Dto.ClienteDto.RefComercialDtoCliente> lstRefCom,
+            List<Loja.Bll.Dto.ClienteDto.RefComercialDtoCliente> lstRefComercial,
             List<Loja.Bll.Dto.ClienteDto.RefBancariaDtoCliente> lstRefBancaria,
             Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro EndEntrega,
             bool cadastrando)
@@ -195,26 +194,17 @@ namespace Loja.UI.Controllers
              * CRIAR A TELA DE ERRO
              * Edu sugeriu usar o erro já existente no MVC
              */
-
-            /*Passo
-             * Aqui poderá receber todos os campos, pois pode ser que os campos sejam editaveis
-             * verificar se permite edição para não ter que verificar se os dados do cliente foram alterados
-             * ou fazer um update independente do que veio
-             * fazer a validação dos campos para poder criar um novo pedido
-             * montar ModelView para listagem de produtos, forma de pagamento
-             * 
-             */
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
+
+            ClienteCadastroDto clienteCadastroDto = new ClienteCadastroDto();
+            clienteCadastroDto.DadosCliente = dados;
+            clienteCadastroDto.RefBancaria = lstRefBancaria;
+            clienteCadastroDto.RefComercial = lstRefComercial;
 
             if (cadastrando)
             {
-                Bll.Dto.ClienteDto.ClienteCadastroDto novo_clienteCadastro = new Bll.Dto.ClienteDto.ClienteCadastroDto();
-
-                novo_clienteCadastro.DadosCliente = dados;
-                novo_clienteCadastro.RefBancaria = lstRefBancaria;
-                novo_clienteCadastro.RefComercial = lstRefCom;
                 //vamos cadastrar o cliente
-                List<string> lstRetorno = (await clienteBll.CadastrarCliente(novo_clienteCadastro, usuarioLogado.Usuario_atual)).ToList();
+                List<string> lstRetorno = (await clienteBll.CadastrarCliente(clienteCadastroDto, usuarioLogado.Usuario_atual)).ToList();
 
                 if (lstRetorno.Count > 1)
                 {
@@ -222,90 +212,36 @@ namespace Loja.UI.Controllers
                     //deu erro vamos redirecionar 
                     //return RedirectToAction("Error", "Home", new { lstErros = lstRetorno });
                 }
-                else if (lstRetorno.Count == 1)
-                {
-                    //vamos verificar se é o id do cliente cadastrado
-                    if (lstRetorno[0].Length != 12)
-                    {
-                        //é o id
-                        string idClienteNovo = lstRetorno[0];
-                        //depois de cadastrar, vamos redirecionar o usuário para a tela de cadastro do cliente cadastrado
-                        //para caso queira realizar um novo pedido
-                        return RedirectToAction("BuscarCliente", new { cpf_cnpj = idClienteNovo, novoCliente = false });
-                    }
-                }
+
+                return RedirectToAction("BuscarCliente", new { cpf_cnpj = clienteCadastroDto.DadosCliente.Cnpj_Cpf, novoCliente = false });
             }
 
             if (!cadastrando)
             {
-                /* OBS: será necessário criar uma nova rotina em Global/Cliente para fazer a 
-                 * alteração completa de cadastro do cliente.
-                 * Verificar se conseguimos utilizar a criação de log de AtualizaParcial
-                 * Será necessário realizar a confrontação de dados do cliente para criação de log
-                 * Será necessário realizar a confrontação de referências em caso de PJ
-                 * vai dar um trabalho!!!             
-                 */
-                //cliente existe entaão vamos atualizar os dados
-                Bll.Dto.ClienteDto.ClienteCadastroDto clienteCadastroDto = new Bll.Dto.ClienteDto.ClienteCadastroDto();
-
-                clienteCadastroDto.DadosCliente = dados;
-                clienteCadastroDto.RefBancaria = lstRefBancaria;
-                clienteCadastroDto.RefComercial = lstRefCom;
-
                 List<string> lstErros = (await clienteBll.AtualizarClienteParcial(usuarioLogado.Usuario_atual, clienteCadastroDto)).ToList();
-                if(lstErros.Count > 0)
+                if (lstErros.Count > 0)
                 {
-                    //deu erro
+                    //return RedirectToAction("Error", "Home", new { lstErros = lstRetorno });
                 }
             }
 
-
-
-            /* OBS 2: Não iremos utilizar "Session" para a criação de novo Pedido
-             * vamos validar os dados de cada tela mas, iremos devolver para a View e assim por diante.
-             */
-
-            //REFAZER DAQUI PARA BAIXO
-            /*==============================================================*/
-
-
-            //afazer: alterar essa session para utilizar no usuarioLogado
-            //string id_cliente = HttpContext.Session.GetString("cliente_selecionado");
-            dados.Id = usuarioLogado.Cliente_Selecionado.DadosCliente.Id;
-
-            Bll.Dto.ClienteDto.ClienteCadastroDto clienteCadastro = new Bll.Dto.ClienteDto.ClienteCadastroDto();
-
-            clienteCadastro.DadosCliente = dados;
-            clienteCadastro.RefBancaria = lstRefBancaria;
-            clienteCadastro.RefComercial = lstRefCom;
-
-            //validar os dados do cliente 
-            //alterar para fazer o cadastro pelo Global/Cliente
-            //var retorno = await clienteBll.CadastrarCliente(clienteCadastro, usuarioLogado.Usuario_atual,
-            //    usuarioLogado.Loja_atual_id);
-
-            //Não iremos mais armazenar em session. Iremos enviar o dto de pedido e retornar o 
-            //dto do pedido em cada página.
-            //Armazenando objeto na Session
-            Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto dtoPedido = new Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto();
-            dtoPedido.DadosCliente = new DadosClienteCadastroDto();
-            dtoPedido.DadosCliente = dados;
+            Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto pedidoDto = new Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto();
+            pedidoDto.DadosCliente = new DadosClienteCadastroDto();
+            pedidoDto.DadosCliente = dados;
 
             if (EndEntrega != null)
             {
                 if (EndEntrega.EndEtg_cep != null)
                 {
                     //vamos validar o endereço de entrega no Global/Prepedido
-                    dtoPedido.EnderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
+                    pedidoDto.EnderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
                     //vamos normalizar o cep enviado antes de armazenar na session
                     EndEntrega.EndEtg_cep = EndEntrega.EndEtg_cep.Replace("-", "");
                 }
-                dtoPedido.EnderecoEntrega = EndEntrega;
+                pedidoDto.EnderecoEntrega = EndEntrega;
             }
 
-            usuarioLogado.PedidoDto = dtoPedido;
-
-            return RedirectToAction("Indicador_SelecaoCD", "Pedido");
+            return RedirectToAction("Indicador_SelecaoCD", "Pedido", new { pedidoDto = pedidoDto});
         }
     }
 }

@@ -79,7 +79,8 @@ new { enctype = "multipart/form-data", onsubmit = "return ValidarFormulario()", 
 
                                     @if (Model.PermiteEdicao)//adicionar uma flag para dizer se é novo
                                     {
-                                        //Permite edição PF
+                                        //Permite edição PF - Nome | CPF | RG | Nascimento | Sexo
+                                        //Vamos mudar para partial view??
                                         @if (Model.DadosCliente?.Tipo == InfraBanco.Constantes.Constantes.ID_PF)
                                         {
                                             <div class="row">

@@ -163,7 +163,7 @@ namespace Cliente
                 //Ref Comercial excluída: nome_empresa = Empresa 2; contato = Teste ref Com 2; ddd = 11; telefone = 565456544;
                 //Ref Comercial excluída: nome_empresa = Empresa 3; contato = Teste ref Com 3; ddd = 11; telefone = 987878987
                 log_retorno += await MontarLogAleracao_Ref_Comercial(cli, clienteCadastroDados, dbGravacao, lstErros, apelido);
-                
+
             }
 
             return log_retorno;
@@ -580,7 +580,7 @@ namespace Cliente
                 log += "contribuinte_icms_data_hora: " + cli.Contribuinte_Icms_Data_Hora + " => " + DateTime.Now + "; ";
                 cli.Contribuinte_Icms_Data_Hora = DateTime.Now;
 
-                if ((!string.IsNullOrEmpty(cli.Contribuinte_Icms_Usuario) ? cli.Contribuinte_Icms_Usuario.ToUpper(): "") != apelido.ToUpper())
+                if ((!string.IsNullOrEmpty(cli.Contribuinte_Icms_Usuario) ? cli.Contribuinte_Icms_Usuario.ToUpper() : "") != apelido.ToUpper())
                 {
                     //contribuinte_icms_usuario: 
                     log += "contribuinte_icms_usuario: " + (!string.IsNullOrEmpty(cli.Contribuinte_Icms_Usuario) ? cli.Contribuinte_Icms_Usuario : "") + " => " +
@@ -827,17 +827,17 @@ namespace Cliente
                     //Obrigatório ter IE
                     if (cli.Ie != dados.Ie)
                     {
-                        log += "ie: " + ((!string.IsNullOrEmpty(cli.Ie)) ? cli.Ie : campo_vazio) + " => " + 
-                            (!string.IsNullOrEmpty(dados.Ie)? dados.Ie : campo_vazio) + "; ";
+                        log += "ie: " + ((!string.IsNullOrEmpty(cli.Ie)) ? cli.Ie : campo_vazio) + " => " +
+                            (!string.IsNullOrEmpty(dados.Ie) ? dados.Ie : campo_vazio) + "; ";
                         cli.Ie = dados.Ie;
                     }
                 }
-                if(dados.Contribuinte_Icms_Status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO)
+                if (dados.Contribuinte_Icms_Status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO)
                 {
                     if (cli.Ie != dados.Ie)
                     {
-                        log += "ie: " + ((!string.IsNullOrEmpty(cli.Ie)) ? cli.Ie : campo_vazio) + " => " + 
-                            (!string.IsNullOrEmpty(dados.Ie)? dados.Ie : campo_vazio) + "; ";
+                        log += "ie: " + ((!string.IsNullOrEmpty(cli.Ie)) ? cli.Ie : campo_vazio) + " => " +
+                            (!string.IsNullOrEmpty(dados.Ie) ? dados.Ie : campo_vazio) + "; ";
                         cli.Ie = dados.Ie;
                     }
                 }
@@ -1141,7 +1141,7 @@ namespace Cliente
             string id_cliente = "";
 
             var db = contextoProvider.GetContextoLeitura();
-            
+
             List<string> lstErros = new List<string>();
 
             //passar lista de bancos para validar
@@ -1155,9 +1155,9 @@ namespace Cliente
 
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
             {
-                    var verifica = await (from c in dbgravacao.Tclientes
-                                          where c.Cnpj_Cpf == clienteCadastroDados.DadosCliente.Cnpj_Cpf
-                                          select c.Id).FirstOrDefaultAsync();
+                var verifica = await (from c in dbgravacao.Tclientes
+                                      where c.Cnpj_Cpf == clienteCadastroDados.DadosCliente.Cnpj_Cpf
+                                      select c.Id).FirstOrDefaultAsync();
 
                 if (verifica != null)
                 {

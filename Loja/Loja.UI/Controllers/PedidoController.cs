@@ -65,13 +65,11 @@ namespace Loja.UI.Controllers
             return View();
         }
 
-        public async Task<IActionResult> IniciarNovoPedido(EnderecoEntregaDtoClienteCadastro enderecoEntrega)
+        public async Task<IActionResult> IniciarNovoPedido(PedidoDto pedidoDto)
         {
             //O ideal seria armazenar o endereço de entrega em uma Sesion, para conforme formos inserindo os dados
             //para o pedido eles sejam armazenados para cadastrar o pedido.
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
-
-            PedidoDto pedidoDto = usuarioLogado.PedidoDto;
 
             ProdutosFormaPagtoViewModel viewModel = new ProdutosFormaPagtoViewModel();
 
@@ -79,23 +77,18 @@ namespace Loja.UI.Controllers
 
             //buscamos os produtos
             //aqui esta demorando
-            var lstProdutosTask = produtoBll.ListaProdutosCombo(usuarioLogado.Loja_atual_id,
-                usuarioLogado.Cliente_Selecionado.DadosCliente.Id, pedidoDto);
+            var lstProdutosTask = produtoBll.ListaProdutosCombo(usuarioLogado.Loja_atual_id, pedidoDto.DadosCliente.Id, pedidoDto);
             viewModel.ProdutoCombo = await lstProdutosTask;
 
             //pegamos o clienteque esta na session
-            viewModel.NomeCliente = usuarioLogado.Cliente_Selecionado.DadosCliente.Nome;
-            viewModel.CpfCnpj = usuarioLogado.Cliente_Selecionado.DadosCliente.Cnpj_Cpf;
-            viewModel.TipoCliente = usuarioLogado.Cliente_Selecionado.DadosCliente.Tipo;
+            viewModel.NomeCliente = pedidoDto.DadosCliente.Nome;
+            viewModel.CpfCnpj = pedidoDto.DadosCliente.Cnpj_Cpf;
+            viewModel.TipoCliente = pedidoDto.DadosCliente.Tipo;
 
             //buscamos a lista com as possiveis formas de pagamentos
-            viewModel.FormaPagto = await formaPagtoBll.ObterFormaPagto(usuarioLogado.Usuario_atual,
-                usuarioLogado.Cliente_Selecionado.DadosCliente.Tipo, usuarioLogado.Loja_atual_id,
-                usuarioLogado.PedidoDto.ComIndicador);
+            viewModel.FormaPagto = await formaPagtoBll.ObterFormaPagto(usuarioLogado.Usuario_atual, pedidoDto.DadosCliente.Tipo, usuarioLogado.Loja_atual_id, pedidoDto.ComIndicador);
 
-            var lstEnumPagto = await formaPagtoBll.MontarListaFormaPagto(usuarioLogado.Usuario_atual,
-                usuarioLogado.Cliente_Selecionado.DadosCliente.Tipo, usuarioLogado.Loja_atual_id,
-                usuarioLogado.PedidoDto.ComIndicador);
+            var lstEnumPagto = await formaPagtoBll.MontarListaFormaPagto(usuarioLogado.Usuario_atual, pedidoDto.DadosCliente.Tipo, usuarioLogado.Loja_atual_id, pedidoDto.ComIndicador);
             viewModel.EnumFormaPagto = new SelectList(lstEnumPagto, "Value", "Text");
 
             //busca a lista de coeficientes para calcular as prestações do pedido
@@ -106,21 +99,21 @@ namespace Loja.UI.Controllers
             //busca Permite_RA_Status
             //afazer: corrigir, ler o arquivo Coisas a fazer na LOJA
             //deixarei aqui para testar a tela de itens
-            viewModel.Permite_RA_Status = usuarioLogado.PedidoDto.PermiteRAStatus;
+            viewModel.Permite_RA_Status = pedidoDto.PermiteRAStatus;
             //if (viewModel.Permite_RA_Status == 1)
             //{
             //    //vamos obter o percentual de RA
             //    viewModel.PercentualRA = await pedidoBll.ObtemPercentualVlPedidoRA();
             //}
 
-            viewModel.CdSelecionadoId = usuarioLogado.PedidoDto.CDSelecionado;
+            viewModel.CdSelecionadoId = pedidoDto.CDSelecionado;
 
             //busca qtde de parcelas visa
             viewModel.QtdeParcVisa = await formaPagtoBll.BuscarQtdeParcCartaoVisa();
 
             viewModel.PercMaxDescEComissao = await pedidoBll.BuscarPercMaxPorLoja(usuarioLogado.Loja_atual_id);
 
-            viewModel.PercComissao = usuarioLogado.PedidoDto.PercRT;
+            viewModel.PercComissao = pedidoDto.PercRT;
 
             //inicializar para atribuir
             viewModel.FormaPagtoCriacao = new FormaPagtoCriacaoDto();
@@ -135,7 +128,7 @@ namespace Loja.UI.Controllers
             //    usuarioLogado.Loja_atual_id)).ToList();
 
             //Montar o select do PedBonshop
-            List<string> lstPedidoBonshop = (await clienteBll.BuscarListaPedidosBonshop(usuarioLogado.Cliente_Selecionado.DadosCliente.Cnpj_Cpf)).ToList();
+            List<string> lstPedidoBonshop = (await clienteBll.BuscarListaPedidosBonshop(pedidoDto.DadosCliente.Cnpj_Cpf)).ToList();
             List<SelectListItem> lstPed = new List<SelectListItem>();
             lstPed.Add(new SelectListItem { Value = "0", Text = "Selecione" });
             for (int i = 0; i < lstPedidoBonshop.Count; i++)
@@ -152,6 +145,9 @@ namespace Loja.UI.Controllers
             List<PedidoProdutosDtoPedido> lst, FormaPagtoCriacaoDto pagtoForma, float percComissao,
             decimal totalValorRABrutoInput, decimal totalValorRALiquidoInput)
         {
+            //ALTERAR PARA RECEBER O PEDIDODTO
+            PedidoDto pedidoDto = new PedidoDto();
+
             //necessário formatar o valor de desconto para colocar ponto
 
             /*
@@ -168,19 +164,8 @@ namespace Loja.UI.Controllers
 
 
             //validar cliente
-            if (await clienteBll.ValidarCliente(
-                Util.SoDigitosCpf_Cnpj(usuarioLogado.Cliente_Selecionado.DadosCliente.Cnpj_Cpf)))
+            if (await clienteBll.ValidarCliente(Util.SoDigitosCpf_Cnpj(pedidoDto.DadosCliente.Cnpj_Cpf)))
             {
-                PedidoDto pedidoDtoSession = usuarioLogado.PedidoDto;
-
-                pedidoDtoSession.FormaPagtoCriacao = pagtoForma;
-                pedidoDtoSession.ListaProdutos = lst;
-
-                if (pedidoDtoSession.PercRT != percComissao)
-                {
-                    pedidoDtoSession.PercRT = percComissao;
-                }
-
                 //List<string> lstRetorno = (await pedidoBll.PreparaParaCadastrarPedido(usuarioLogado.Loja_atual_id,
                 //    usuarioLogado.Cliente_Selecionado.DadosCliente.Id, usuarioLogado.Usuario_atual,
                 //    usuarioLogado.S_lista_operacoes_permitidas, Util.SoDigitosCpf_Cnpj(usuarioLogado.Cliente_Selecionado.DadosCliente.Cnpj_Cpf),
@@ -197,10 +182,8 @@ namespace Loja.UI.Controllers
                 else
                 {
                     //vamos atribuir para session
-                    pedidoDtoSession.VlTotalDestePedido = totalDestePedido;
+                    pedidoDto.VlTotalDestePedido = totalDestePedido;
                     //pedidoDtoSession.PedBonshop = pedBonshop;
-                    //estamos atribuindo o pedidoDto com as inserções de dados
-                    usuarioLogado.PedidoDto = pedidoDtoSession;
 
                 }
             }
@@ -209,11 +192,11 @@ namespace Loja.UI.Controllers
                 //retornar erro para modal
             }
             //vamos mandar para um controller para montar a modelView de Observações
-            return RedirectToAction("ObservacoesPedido");
+            return RedirectToAction("ObservacoesPedido", new { pedidoDto = pedidoDto});
         }
 
 
-        public async Task<IActionResult> ObservacoesPedido()
+        public async Task<IActionResult> ObservacoesPedido(PedidoDto pedidoDto)
         {
             /*
              * montar a tela de observações 
@@ -232,24 +215,21 @@ namespace Loja.UI.Controllers
             //montar a viewModel
             ObservacoesViewModel viewModel = new ObservacoesViewModel();
 
-            //vamos pegar a session de pedido para atribuir valores para a view
-            PedidoDto pedidoDtoSession = usuarioLogado.PedidoDto;
+            viewModel.Cnpj_Cpf = pedidoDto.DadosCliente.Cnpj_Cpf;
+            viewModel.NomeCliente = pedidoDto.DadosCliente.Nome;
+            viewModel.VlTotalPedido = pedidoDto.VlTotalDestePedido.ToString();
 
-            viewModel.Cnpj_Cpf = pedidoDtoSession.DadosCliente.Cnpj_Cpf;
-            viewModel.NomeCliente = pedidoDtoSession.DadosCliente.Nome;
-            viewModel.VlTotalPedido = pedidoDtoSession.VlTotalDestePedido.ToString();
-
-            if (pedidoDtoSession.DetalhesNF != null)
+            if (pedidoDto.DetalhesNF != null)
             {
-                viewModel.Observacoes = pedidoDtoSession.DetalhesNF.Observacoes;
+                viewModel.Observacoes = pedidoDto.DetalhesNF.Observacoes;
 
-                viewModel.InstaladorInstala = pedidoDtoSession.DetalhesNF.InstaladorInstala == 2 ?
+                viewModel.InstaladorInstala = pedidoDto.DetalhesNF.InstaladorInstala == 2 ?
                     Constantes.COD_INSTALADOR_INSTALA_SIM : Constantes.COD_INSTALADOR_INSTALA_NAO;
 
-                viewModel.BemConsumo = pedidoDtoSession.DetalhesNF.StBemUsoConsumo != 0 ?
+                viewModel.BemConsumo = pedidoDto.DetalhesNF.StBemUsoConsumo != 0 ?
                     Constantes.COD_ST_BEM_USO_CONSUMO_SIM : Constantes.COD_ST_BEM_USO_CONSUMO_NAO;
 
-                viewModel.EntregaImediata = pedidoDtoSession.DetalhesNF.EntregaImediata != "1" ?
+                viewModel.EntregaImediata = pedidoDto.DetalhesNF.EntregaImediata != "1" ?
                     Constantes.COD_ETG_IMEDIATA_SIM : Constantes.COD_ETG_IMEDIATA_NAO;
             }
             else
@@ -263,29 +243,27 @@ namespace Loja.UI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CadastrarPedido(ObservacoesViewModel detalhesPedido)
+        public async Task<IActionResult> CadastrarPedido(ObservacoesViewModel detalhesPedido, PedidoDto pedidoDto)
         {
             // vamos pegar a session de pedido para atribuir valores para a view
 
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
 
-            PedidoDto pedidoDtoSession = usuarioLogado.PedidoDto;
-
-            pedidoDtoSession.DetalhesNF = new DetalhesNFPedidoDtoPedido();
+            pedidoDto.DetalhesNF = new DetalhesNFPedidoDtoPedido();
             //instaladorInstala é 1 = não | 2= sim
-            pedidoDtoSession.DetalhesNF.InstaladorInstala = detalhesPedido.InstaladorInstala == "2" ?
+            pedidoDto.DetalhesNF.InstaladorInstala = detalhesPedido.InstaladorInstala == "2" ?
                 short.Parse(Constantes.COD_INSTALADOR_INSTALA_SIM) :
                 short.Parse(Constantes.COD_INSTALADOR_INSTALA_NAO);
 
-            pedidoDtoSession.DetalhesNF.Observacoes = await Task.FromResult(detalhesPedido.Observacoes);
+            pedidoDto.DetalhesNF.Observacoes = await Task.FromResult(detalhesPedido.Observacoes);
 
             //StBenUsoConsumo é 1 = sim | 0 = não
-            pedidoDtoSession.DetalhesNF.StBemUsoConsumo = detalhesPedido.BemConsumo != "0" ?
+            pedidoDto.DetalhesNF.StBemUsoConsumo = detalhesPedido.BemConsumo != "0" ?
                 short.Parse(Constantes.COD_ST_BEM_USO_CONSUMO_SIM) :
                 short.Parse(Constantes.COD_ST_BEM_USO_CONSUMO_NAO);
 
             //entrega imediata é 1 = não | 2 = sim
-            pedidoDtoSession.DetalhesNF.EntregaImediata = detalhesPedido.EntregaImediata.ToString() != "1" ?
+            pedidoDto.DetalhesNF.EntregaImediata = detalhesPedido.EntregaImediata.ToString() != "1" ?
                 Constantes.COD_ETG_IMEDIATA_SIM : Constantes.COD_ETG_IMEDIATA_NAO;
 
             //teremos que passar a session para o metodo na bll para salvar o pedido
@@ -302,7 +280,7 @@ namespace Loja.UI.Controllers
             //}
 
             //todo: afazer: vamos remover estas conversões; estão aqui temporariamente até a gente mudar o HTML e javscript
-            foreach (var origem in pedidoDtoSession.ListaProdutos)
+            foreach (var origem in pedidoDto.ListaProdutos)
             {
                 origem.Produto = origem.NumProduto;
                 origem.CustoFinancFornecPrecoListaBase = origem.VlLista;
@@ -320,7 +298,7 @@ namespace Loja.UI.Controllers
 
 
 
-            Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret = await pedidoBll.CadastrarPedido(pedidoDtoSession,
+            Pedido.Dados.Criacao.PedidoCriacaoRetornoDados ret = await pedidoBll.CadastrarPedido(pedidoDto,
                 usuarioLogado.Loja_atual_id, usuarioLogado.Usuario_atual, usuarioLogado.Vendedor_externo,
                 configuracao.LimitePedidosLoja.LimitePedidosExatamenteIguais_Numero,
                 configuracao.LimitePedidosLoja.LimitePedidosExatamenteIguais_TempoSegundos,
@@ -351,23 +329,13 @@ namespace Loja.UI.Controllers
         }
 
         //afazer:montar um metodo para criar a nova tela de indicação e seleção do CD
-        public async Task<IActionResult> Indicador_SelecaoCD(EnderecoEntregaDtoClienteCadastro enderecoEntrega)
+        public async Task<IActionResult> Indicador_SelecaoCD(PedidoDto pedidoDto)
         {
-            var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
-
-            PedidoDto pedidoDto = usuarioLogado.PedidoDto;
-
             Indicador_SelecaoCDViewModel viewModel = new Indicador_SelecaoCDViewModel();
-            //pegamos o clienteque esta na session
-            viewModel.NomeCliente = usuarioLogado.Cliente_Selecionado.DadosCliente.Nome;
-            viewModel.CpfCnpj = usuarioLogado.Cliente_Selecionado.DadosCliente.Cnpj_Cpf;
-
-            //buscamos o indicador original para fazer a comparação
-            viewModel.IndicadorOriginal = usuarioLogado.Cliente_Selecionado.DadosCliente.Indicador_Orcamentista.ToString();
-
+            //Dados da sesion
+            var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
             //pegamos a loja atual para comparar no caso de indicador
             viewModel.LojaAtual = usuarioLogado.Loja_atual_id;
-
             //lista completa de indicadores
             List<IndicadorDto> lstIndicadores = (await pedidoBll.BuscarOrcamentistaEIndicadorListaCompleta(usuarioLogado.Usuario_atual,
                 usuarioLogado.S_lista_operacoes_permitidas, usuarioLogado.Loja_atual_id)).ToList();
@@ -377,8 +345,13 @@ namespace Loja.UI.Controllers
                 lstIndicador.Add(new SelectListItem { Value = i.Apelido, Text = i.Apelido + " - " + i.RazaoSocial });
             }
             viewModel.ListaIndicadores = new SelectList(lstIndicador, "Value", "Text");
-            //viewModel.ListaIndicadores = (await pedidoBll.BuscarOrcamentistaEIndicadorListaCompleta(usuarioLogado.Usuario_atual,
-            //    usuarioLogado.S_lista_operacoes_permitidas, usuarioLogado.Loja_atual_id)).ToList();
+            viewModel.ListaOperacoesPermitidas = usuarioLogado.S_lista_operacoes_permitidas;
+
+            //Dados do pedidoDto
+            viewModel.NomeCliente = pedidoDto.DadosCliente.Nome;
+            viewModel.CpfCnpj = pedidoDto.DadosCliente.Cnpj_Cpf;
+            //buscamos o indicador original para fazer a comparação
+            viewModel.IndicadorOriginal = pedidoDto.DadosCliente.Indicador_Orcamentista.ToString();
 
             //lista de cd's
             var lstSelecaoCd = (await produtoBll.WmsApelidoEmpresaNfeEmitenteMontaItensSelect(null)).ToList();
@@ -389,8 +362,6 @@ namespace Loja.UI.Controllers
                 lstCd.Add(new SelectListItem { Value = lstSelecaoCd[i][0], Text = lstSelecaoCd[i][1] });
             }
             viewModel.ListaCD = new SelectList(lstCd, "Value", "Text");
-
-            viewModel.ListaOperacoesPermitidas = usuarioLogado.S_lista_operacoes_permitidas;
 
             //viewModel.PercMaxPorLoja = await pedidoBll.BuscarPercMaxPorLoja(usuarioLogado.Loja_atual_id);
 
@@ -408,55 +379,53 @@ namespace Loja.UI.Controllers
             return View(viewModel);
         }
 
-
+        //Afazer: precisa receber o PedidoDto
         public async Task<IActionResult> Cadastrar_Indicador_SelecaoCD(string comIndicacao, int cdAutomatico, int cdManual,
             int ListaCD, float percComissao, int comRA, string indicador)
         {
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
             List<string> lstErros = new List<string>();
 
-            //vamos validar os dados e armazenar na session
-            if (await clienteBll.ValidarCliente(
-                Util.SoDigitosCpf_Cnpj(usuarioLogado.Cliente_Selecionado.DadosCliente.Cnpj_Cpf)))
-            {
-                //vamos validar em outro lugar, pois esta grande
-                List<string> lstRetorno = (await pedidoBll.ValidarIndicador_SelecaoCD(usuarioLogado.Loja_atual_id, usuarioLogado.PedidoDto.DadosCliente.Id,
-                    usuarioLogado.Usuario_atual, usuarioLogado.S_lista_operacoes_permitidas,
-                    Util.SoDigitosCpf_Cnpj(usuarioLogado.Cliente_Selecionado.DadosCliente.Cnpj_Cpf), int.Parse(comIndicacao),
-                    cdAutomatico, cdManual, ListaCD, percComissao, comRA, indicador)).ToList();
+            //if (await clienteBll.ValidarCliente(Util.SoDigitosCpf_Cnpj(usuarioLogado.Cliente_Selecionado.DadosCliente.Cnpj_Cpf)))
+            //{
+            //    //vamos validar em outro lugar, pois esta grande
+            //    List<string> lstRetorno = (await pedidoBll.ValidarIndicador_SelecaoCD(usuarioLogado.Loja_atual_id, usuarioLogado.PedidoDto.DadosCliente.Id,
+            //        usuarioLogado.Usuario_atual, usuarioLogado.S_lista_operacoes_permitidas,
+            //        Util.SoDigitosCpf_Cnpj(usuarioLogado.Cliente_Selecionado.DadosCliente.Cnpj_Cpf), int.Parse(comIndicacao),
+            //        cdAutomatico, cdManual, ListaCD, percComissao, comRA, indicador)).ToList();
 
 
-                if (lstErros.Count > 0)
-                {
-                    //vamos verificar as msgs que estão retornando e retornar os erros
+            //    if (lstErros.Count > 0)
+            //    {
+            //        //vamos verificar as msgs que estão retornando e retornar os erros
 
-                }
-                else
-                {
-                    //vamos atribuir para session
-                    //afazer: o usuarioLogado não esta alterando os valores do pedidoDto
-                    PedidoDto pedidoDto = new PedidoDto();
-                    pedidoDto = usuarioLogado.PedidoDto;
-                    pedidoDto.PercRT = percComissao;
-                    pedidoDto.PermiteRAStatus = (short)comRA;
-                    pedidoDto.OpcaoPossuiRA = comRA == 1 ? "S" : "N";
-                    pedidoDto.CDManual = cdManual == 0 ? (short)0 : (short)1;
-                    pedidoDto.CDSelecionado = cdManual == 1 ? ListaCD : 0;
-                    pedidoDto.ComIndicador = int.Parse(comIndicacao) != 0 ? 1 : 0;
-                    pedidoDto.NomeIndicador = int.Parse(comIndicacao) == 1 ? indicador : null;
-
-
-                    //afazer: PedBonShop
-                    pedidoDto.PedBonshop = "";
-
-                    usuarioLogado.PedidoDto = pedidoDto;
+            //    }
+            //    else
+            //    {
+            //        //vamos atribuir para session
+            //        //afazer: o usuarioLogado não esta alterando os valores do pedidoDto
+            //        PedidoDto pedidoDto = new PedidoDto();
+            //        pedidoDto = usuarioLogado.PedidoDto;
+            //        pedidoDto.PercRT = percComissao;
+            //        pedidoDto.PermiteRAStatus = (short)comRA;
+            //        pedidoDto.OpcaoPossuiRA = comRA == 1 ? "S" : "N";
+            //        pedidoDto.CDManual = cdManual == 0 ? (short)0 : (short)1;
+            //        pedidoDto.CDSelecionado = cdManual == 1 ? ListaCD : 0;
+            //        pedidoDto.ComIndicador = int.Parse(comIndicacao) != 0 ? 1 : 0;
+            //        pedidoDto.NomeIndicador = int.Parse(comIndicacao) == 1 ? indicador : null;
 
 
-                }
-            }
+            //        //afazer: PedBonShop
+            //        pedidoDto.PedBonshop = "";
+
+            //        usuarioLogado.PedidoDto = pedidoDto;
 
 
-            return RedirectToAction("IniciarNovoPedido");
+            //    }
+            //}
+            PedidoDto pedidoDto = new PedidoDto();
+
+            return RedirectToAction("IniciarNovoPedido", new { pedidoDto = pedidoDto});
         }
 
         public async Task<IActionResult> CancelamentoAutomatico()
