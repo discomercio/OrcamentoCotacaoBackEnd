@@ -592,6 +592,7 @@ namespace Cliente
             return lstRefComercial;
         }
 
+//todo: ao invés de proteger com um lock de c#, temos que proteger com um lock no banco que seja compatível com o verdinho
         private static object _lockCadastrarCliente = new object();
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<IEnumerable<string>> CadastrarCliente(Cliente.Dados.ClienteCadastroDados clienteCadastroDados, string indicador,
