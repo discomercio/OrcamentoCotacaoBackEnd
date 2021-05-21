@@ -14,7 +14,10 @@ Scenario: t_NFe_EMITENTE - st_ativo = 0
 	Given Pedido base
 	Then Erro "Falha na regra de consumo do estoque para a UF 'SP' e 'Pessoa Física': regra associada ao produto (003)003220 especifica um CD para aguardar produtos sem presença no estoque que não está habilitado (Id=5)"
 
-Scenario: t_NFe_EMITENTE - sem registro
-	Given Limpar tabela "t_NFe_EMITENTE"
-	Given Pedido base
-	Then Sem nenhum erro
+#nesta regra não está claro o que devemos fazer
+#dá erro no prepedido e não dá erro no pedido
+#mas o comportamento razoável não é claro porque não faz sentido ter um CD nas regras que não esteja definido na t_NFe_EMITENTE
+#Scenario: t_NFe_EMITENTE - sem registro
+#	Given Limpar tabela "t_NFe_EMITENTE"
+#	Given Pedido base
+#	Then Sem nenhum erro
