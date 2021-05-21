@@ -51,12 +51,12 @@ namespace Cliente
             List<string> lstErros = new List<string>();
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await ListarBancosCombo()).ToList();
 
-            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(clienteCadastroDados.DadosCliente, clienteCadastroDados.RefBancaria,
+            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(clienteCadastroDados.DadosCliente, true, clienteCadastroDados.RefBancaria,
                 clienteCadastroDados.RefComercial, lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, true, sistemaResponsavel, false);
             if (lstErros.Count > 0)
                 return lstErros;
 
-            string id = await BuscarIdCliente(clienteCadastroDados.DadosCliente.Cnpj_Cpf);
+            string id = await BuscarIdCliente(clienteCadastroDados.DadosCliente.Cnpj_Cpf, contextoProvider.GetContextoLeitura());
 
             if (id != null && id == clienteCadastroDados.DadosCliente.Id)
             {
@@ -69,7 +69,7 @@ namespace Cliente
                                               select c).FirstOrDefaultAsync();
 
                         log = await Verificar_AlterouClienteCadastroDados(cli, clienteCadastroDados, apelido, sistemaResponsavel, edicaoCompleta,
-                            dbgravacao, lstErros);
+                            dbgravacao, lstErros, lstBanco);
                         if (!string.IsNullOrEmpty(log))
                         {
                             log += MontarLogAlteracao_SistemaResponsavel(cli);
@@ -96,7 +96,8 @@ namespace Cliente
         }
 
         public async Task<string> Verificar_AlterouClienteCadastroDados(Tcliente cli, Cliente.Dados.ClienteCadastroDados clienteCadastroDados, string apelido,
-                    Constantes.CodSistemaResponsavel sistemaResponsavel, bool edicaoCompleta, ContextoBdGravacao dbGravacao, List<string> lstErros)
+                    Constantes.CodSistemaResponsavel sistemaResponsavel, bool edicaoCompleta, ContextoBdGravacao dbGravacao, 
+                    List<string> lstErros, List<ListaBancoDados> lstBanco)
         {
             string log = "";
             string log_retorno = "";
@@ -162,7 +163,7 @@ namespace Cliente
                 //Ref Comercial excluída: nome_empresa = Empresa 1; contato = Teste ref Com 1; ddd = 11; telefone = 65456545;
                 //Ref Comercial excluída: nome_empresa = Empresa 2; contato = Teste ref Com 2; ddd = 11; telefone = 565456544;
                 //Ref Comercial excluída: nome_empresa = Empresa 3; contato = Teste ref Com 3; ddd = 11; telefone = 987878987
-                log_retorno += await MontarLogAleracao_Ref_Comercial(cli, clienteCadastroDados, dbGravacao, lstErros, apelido);
+                log_retorno += await MontarLogAleracao_Ref_Comercial(cli, clienteCadastroDados, dbGravacao, lstErros, apelido, sistemaResponsavel, lstBanco);
 
             }
 
@@ -892,23 +893,12 @@ namespace Cliente
             return log;
         }
 
-        private async Task<string> MontarLogAleracao_Ref_Comercial(Tcliente cli,
-            Cliente.Dados.ClienteCadastroDados clienteCadastroDados, ContextoBdGravacao dbGravacao, List<string> lstErros, string apelido)
+        private async Task<string> MontarLogAleracao_Ref_Comercial(Tcliente cli, Cliente.Dados.ClienteCadastroDados clienteCadastroDados, 
+            ContextoBdGravacao dbGravacao, List<string> lstErros, string apelido, Constantes.CodSistemaResponsavel sistemaResponsavel, 
+            List<ListaBancoDados> lstBanco)
         {
             string log = "";
-
-            List<string> lstErros = new List<string>();
-
-            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDados, false, null, null, lstErros,
-                contextoProvider, cepBll, bancoNFeMunicipio, null, true, sistemaResponsavel, false);
-            if (lstErros.Count > 0)
-                return lstErros;
-
-
-            var dados = from c in db.Tclientes
-                        where c.Id == dadosClienteCadastroDados.Id
-                        select c;
-            var cli = await dados.FirstOrDefaultAsync();
+            string logRemove = "";
 
             if (clienteCadastroDados.DadosCliente.Tipo == Constantes.ID_PJ && clienteCadastroDados.RefComercial.Count > 0)
             {
