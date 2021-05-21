@@ -19,14 +19,16 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo30
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "ignore")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo60")]
+    [Xunit.TraitAttribute("Category", "GerenciamentoBanco")]
     public partial class Estoque_Verifica_Disponibilidade_Integral_V2Feature : object, Xunit.IClassFixture<Estoque_Verifica_Disponibilidade_Integral_V2Feature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore"};
+                "Especificacao.Pedido.Passo60",
+                "GerenciamentoBanco"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -43,7 +45,8 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo30
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "estoque_verifica_disponibilidade_integral_v2", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ignore"});
+                        "Especificacao.Pedido.Passo60",
+                        "GerenciamentoBanco"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -78,20 +81,40 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo30
             testRunner.CollectScenarioErrors();
         }
         
+        public virtual void FeatureBackground()
+        {
+#line 5
+#line hidden
+#line 6
+ testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 7
+ testRunner.Given("Usar produto \"um\" como fabricante = \"003\", produto = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 8
+ testRunner.And("Usar produto \"dois\" como fabricante = \"003\", produto = \"003221\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 9
+ testRunner.And("Zerar todo o estoque", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+        }
+        
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="estoque_verifica_disponibilidade_integral_v2")]
+        [Xunit.SkippableFactAttribute(DisplayName="Teste 1 - Estoque_Qtde_Estoque")]
         [Xunit.TraitAttribute("FeatureTitle", "estoque_verifica_disponibilidade_integral_v2")]
-        [Xunit.TraitAttribute("Description", "estoque_verifica_disponibilidade_integral_v2")]
-        public virtual void Estoque_Verifica_Disponibilidade_Integral_V2()
+        [Xunit.TraitAttribute("Description", "Teste 1 - Estoque_Qtde_Estoque")]
+        [Xunit.TraitAttribute("Category", "Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo30")]
+        public virtual void Teste1_Estoque_Qtde_Estoque()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo30"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("estoque_verifica_disponibilidade_integral_v2", null, tagsOfScenario, argumentsOfScenario);
-#line 4
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Teste 1 - Estoque_Qtde_Estoque", null, tagsOfScenario, argumentsOfScenario);
+#line 12
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -111,8 +134,85 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 6
- testRunner.When("Fazer esta validação", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 13
+ testRunner.Given("Definir saldo de estoque = \"8\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 14
+ testRunner.Given("Definir saldo de estoque = \"5\" para produto \"dois\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 15
+ testRunner.Given("Chamar ObtemCtrlEstoqueProdutoRegra", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 16
+ testRunner.Given("Chamar Estoque_verifica_disponibilidade_integral_v2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 17
+ testRunner.Then("Regra t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD do produto = \"um\", verificar campo \"estoq" +
+                        "ue_qtde_estoque\" = \"8\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 18
+ testRunner.Then("Regra t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD do produto = \"dois\", verificar campo \"est" +
+                        "oque_qtde_estoque\" = \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Teste 2 - Estoque_Qtde_Estoque_Global")]
+        [Xunit.TraitAttribute("FeatureTitle", "estoque_verifica_disponibilidade_integral_v2")]
+        [Xunit.TraitAttribute("Description", "Teste 2 - Estoque_Qtde_Estoque_Global")]
+        [Xunit.TraitAttribute("Category", "Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo30")]
+        public virtual void Teste2_Estoque_Qtde_Estoque_Global()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo30"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Teste 2 - Estoque_Qtde_Estoque_Global", null, tagsOfScenario, argumentsOfScenario);
+#line 21
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 5
+this.FeatureBackground();
+#line hidden
+#line 22
+ testRunner.Given("Definir saldo de estoque = \"18\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 23
+ testRunner.Given("Definir saldo de estoque = \"25\" para produto \"dois\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 24
+ testRunner.Given("Chamar ObtemCtrlEstoqueProdutoRegra", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 25
+ testRunner.Given("Chamar Estoque_verifica_disponibilidade_integral_v2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 26
+ testRunner.Then("Regra t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD do produto = \"um\", verificar campo \"estoq" +
+                        "ue_qtde_estoque_global\" = \"18\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 27
+ testRunner.Then("Regra t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD do produto = \"dois\", verificar campo \"est" +
+                        "oque_qtde_estoque_global\" = \"25\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xunit;
 
@@ -21,6 +23,9 @@ namespace Especificacao.Testes.Pedido
         protected abstract void AbstractLimparEnderecoDeEntrega();
         protected abstract void AbstractLimparDadosCadastraisEEnderecoDeEntrega();
         protected abstract List<string> AbstractListaErros();
+        protected abstract string? AbstractPedidoPaiGerado();
+        protected abstract List<string> AbstractPedidosFilhotesGerados();
+        protected abstract List<string> AbstractPedidosGerados();
         #endregion
 
         protected bool ignorarFeature = false;
@@ -250,5 +255,329 @@ namespace Especificacao.Testes.Pedido
             Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensComXitens(numeroItens, this);
             AbstractListaDeItensComXitens(numeroItens);
         }
+
+        public void TabelaT_PEDIDORegistroPaiCriadoVerificarCampo(string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            var pedidoPaiGerado = AbstractPedidoPaiGerado();
+            if (string.IsNullOrEmpty(pedidoPaiGerado))
+            {
+                Assert.Equal("sem pedido gerado", pedidoPaiGerado ?? "");
+                throw new ArgumentNullException();
+            }
+            List<string> somentePai = new List<string>()
+                { pedidoPaiGerado };
+
+            gerenciamentoBanco.TabelaT_PEDIDORegistroVerificarCampo(somentePai, campo, valor);
+        }
+
+        public void TabelaT_PEDIDO_ITEMRegistroCriadoVerificarCampo(int item, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            var pedidoPaiGerado = AbstractPedidoPaiGerado();
+            if (string.IsNullOrEmpty(pedidoPaiGerado))
+            {
+                Assert.Equal("sem pedido gerado", pedidoPaiGerado ?? "");
+                throw new ArgumentNullException();
+            }
+
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            gerenciamentoBanco.TabelaT_PEDIDO_ITEMRegistroVerificarCampo(item, pedidoPaiGerado, campo, valor);
+
+        }
+        public void TabelaT_PEDIDO_ITEMFilhoteRegistroCriadoVerificarCampo(int item, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            var filhotes = AbstractPedidosFilhotesGerados();
+
+            Assert.True(filhotes.Any());
+
+            foreach (var filho in filhotes)
+            {
+                gerenciamentoBanco.TabelaT_PEDIDO_ITEMRegistroVerificarCampo(item, filho, campo, valor);
+            }
+
+        }
+
+        public void TabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo(string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            var filhotes = AbstractPedidosFilhotesGerados();
+            gerenciamentoBanco.TabelaT_PEDIDORegistroVerificarCampo(filhotes, campo, valor);
+        }
+
+
+
+        public void TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(string produto, string tipo_estoque, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_ESTOQUE_MOVIMENTO", "produto", "verificar campos", campo, valor, this);
+            var pedidoPaiGerado = AbstractPedidoPaiGerado();
+            if (string.IsNullOrEmpty(pedidoPaiGerado))
+            {
+                Assert.Equal("sem pedido gerado", pedidoPaiGerado ?? "");
+                throw new ArgumentNullException();
+            }
+
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            var itemPedido = gerenciamentoBanco.BuscarItensPedido(pedidoPaiGerado).Where(x => x.Produto == produto).First();
+
+            gerenciamentoBanco.TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(itemPedido, tipo_estoque, campo, valor, pedidoPaiGerado);
+        }
+
+        public void TabelaT_ESTOQUE_MOVIMENTORegistroFilhotesEProdutoVerificarCampo(string produto, string tipo_estoque, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_ESTOQUE_MOVIMENTO", "produto", "verificar campos filhotes", campo, valor, this);
+            var pedidosFilhotesGerados= AbstractPedidosFilhotesGerados();
+            if (!pedidosFilhotesGerados.Any())
+            {
+                Assert.Equal("sem pedido gerado", "");
+                throw new ArgumentNullException();
+            }
+
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            foreach (var pedidoPaiGerado in pedidosFilhotesGerados)
+            {
+                var itemPedido = gerenciamentoBanco.BuscarItensPedido(pedidoPaiGerado).Where(x => x.Produto == produto).First();
+                gerenciamentoBanco.TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(itemPedido, tipo_estoque, campo, valor, pedidoPaiGerado);
+            }
+        }
+
+
+        public void TabelaT_ESTOQUE_MOVIMENTOPedidoPedidoPaiComRegistros(int registros)
+        {
+            if (ignorarFeature) return;
+            var pedidoPaiGerado = AbstractPedidoPaiGerado();
+            if (string.IsNullOrEmpty(pedidoPaiGerado))
+            {
+                Assert.Equal("sem pedido gerado", pedidoPaiGerado ?? "");
+                throw new ArgumentNullException();
+            }
+
+            ContarRegistrosTEstoqueMovimentos(registros, pedidoPaiGerado);
+        }
+
+        public void TabelaT_ESTOQUE_MOVIMENTOPedidoPedidoFilhoteComRegistros(int registros)
+        {
+            if (ignorarFeature) return;
+            var pedidosFilhotesGerados = AbstractPedidosFilhotesGerados();
+            Assert.Single(pedidosFilhotesGerados);
+
+            ContarRegistrosTEstoqueMovimentos(registros, pedidosFilhotesGerados.First());
+        }
+
+        private static void ContarRegistrosTEstoqueMovimentos(int registros, string pedidoPaiGerado)
+        {
+            var servicos = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos();
+            var contextoBdProvider = servicos.GetRequiredService<InfraBanco.ContextoBdProvider>();
+            var db = contextoBdProvider.GetContextoLeitura();
+            var registrosLidos = (from registro in db.TestoqueMovimentos
+                                  where registro.Pedido == pedidoPaiGerado
+                                  select registro).ToList();
+            Assert.Equal(registros, registrosLidos.Count());
+        }
+
+        public void VerificarPedidoGeradoSaldoDeID_ESTOQUE_SEM_PRESENCA(int indicePedido, int qtde)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            List<InfraBanco.Modelos.TpedidoItem> itensPedido = new List<InfraBanco.Modelos.TpedidoItem>();
+            if (indicePedido == 0)
+            {
+                //pai
+                var pedidoPaiGerado = AbstractPedidoPaiGerado();
+                if (string.IsNullOrEmpty(pedidoPaiGerado))
+                {
+                    Assert.Equal("sem pedido gerado", pedidoPaiGerado ?? "");
+                    throw new ArgumentNullException();
+                }
+
+                itensPedido = gerenciamentoBanco.BuscarItensPedido(pedidoPaiGerado);
+                foreach (var item in itensPedido)
+                {
+                    gerenciamentoBanco.TabelaT_ESTOQUE_MOVIMENTORegistroDoPedidoVerificarCampo(item, "SPE", "qtde", qtde, pedidoPaiGerado);
+                }
+            }
+            if (indicePedido == 1)
+            {
+                //filho
+                var filhotes = AbstractPedidosFilhotesGerados();
+                Assert.True(filhotes.Any());
+                foreach (var filho in filhotes)
+                {
+                    itensPedido = gerenciamentoBanco.BuscarItensPedido(filho);
+                    foreach (var item in itensPedido)
+                    {
+                        gerenciamentoBanco.TabelaT_ESTOQUE_MOVIMENTORegistroDoPedidoVerificarCampo(item, "SPE", "qtde", qtde, filho);
+                    }
+                }
+            }
+        }
+
+        public void TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(string produto, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_ESTOQUE_ITEM", "produto", "verificar campos", campo, valor, this);
+            var pedidoPaiGerado = AbstractPedidoPaiGerado();
+            if (string.IsNullOrEmpty(pedidoPaiGerado))
+            {
+                Assert.Equal("sem pedido gerado", pedidoPaiGerado ?? "");
+                throw new ArgumentNullException();
+            }
+
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            var itemPedido = gerenciamentoBanco.BuscarItensPedido(pedidoPaiGerado).Where(x => x.Produto == produto).FirstOrDefault();
+
+            gerenciamentoBanco.TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(itemPedido, campo, valor);
+        }
+
+
+
+        public void TabelaT_ESTOQUERegistroPaiVerificarCampo(string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_ESTOQUE", "pedido", "verificar campos", campo, valor, this);
+            var pedidoPaiGerado = AbstractPedidoPaiGerado();
+            if (string.IsNullOrEmpty(pedidoPaiGerado))
+            {
+                Assert.Equal("sem pedido gerado", pedidoPaiGerado ?? "");
+                throw new ArgumentNullException();
+            }
+
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            var itemPedido = gerenciamentoBanco.BuscarItensPedido(pedidoPaiGerado).ToList();
+
+            gerenciamentoBanco.TabelaT_ESTOQUERegistroPaiVerificarCampo(itemPedido, campo, valor);
+        }
+
+        public void TabelaT_ESTOQUE_LOGPedidoGeradoVerificarCampo(string produto, string operacao, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_ESTOQUE_LOG", "pedido", "verificar campos", campo, valor, this);
+            var pedidoPaiGerado = AbstractPedidoPaiGerado();
+            if (string.IsNullOrEmpty(pedidoPaiGerado))
+            {
+                Assert.Equal("sem pedido gerado", pedidoPaiGerado ?? "");
+                throw new ArgumentNullException();
+            }
+
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            gerenciamentoBanco.TabelaT_ESTOQUE_LOGPedidoGeradoVerificarCampo(pedidoPaiGerado, operacao, produto, campo, valor);
+        }
+
+        public void TabelaT_LOGPedidoGeradoEOperacaoVerificarCampo(string operacao, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_LOG", "pedido", "verificar campos", campo, valor, this);
+            var pedidoPaiGerado = AbstractPedidoPaiGerado();
+            if (string.IsNullOrEmpty(pedidoPaiGerado))
+            {
+                Assert.Equal("sem pedido gerado", pedidoPaiGerado ?? "");
+                throw new ArgumentNullException();
+            }
+
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            gerenciamentoBanco.TabelaT_LOGPedidoGeradoEOperacaoVerificarCampo(pedidoPaiGerado, operacao, campo, valor);
+
+        }
+
+        public void TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteEProdutoVerificarCampo(string fabricante, string produto, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PRODUTO_X_WMS_REGRA_CD", "fabricante e produto", "verificar campos", campo, valor, this);
+
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            gerenciamentoBanco.TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteEProdutoVerificarCampo(fabricante, produto, campo, valor);
+
+        }
+
+        public void TabelaT_PEDIDO_ANALISE_ENDERECORegistroCriadoVerificarCampo(string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            var pedidoPaiGerado = AbstractPedidoPaiGerado();
+            if (string.IsNullOrEmpty(pedidoPaiGerado))
+            {
+                Assert.Equal("sem pedido gerado", pedidoPaiGerado ?? "");
+                throw new ArgumentNullException();
+            }
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO_ANALISE_ENDERECO", "campo", "valor", campo, valor, this);
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            gerenciamentoBanco.TabelaT_PEDIDO_ANALISE_ENDERECORegistroCriadoVerificarCampo(pedidoPaiGerado, campo, valor);
+        }
+
+        public void TabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAORegistroCriadoVerificarCampo(string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            var pedidoPaiGerado = AbstractPedidoPaiGerado();
+            if (string.IsNullOrEmpty(pedidoPaiGerado))
+            {
+                Assert.Equal("sem pedido gerado", pedidoPaiGerado ?? "");
+                throw new ArgumentNullException();
+            }
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO", "campo", "valor", campo, valor, this);
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            gerenciamentoBanco.TabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAORegistroCriadoVerificarCampo(pedidoPaiGerado, campo, valor);
+
+        }
+
+        public void GeradoPedidos(int qtde_pedidos)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+
+            var ultimo_retorno = AbstractPedidosGerados();
+
+            Assert.Equal(qtde_pedidos, ultimo_retorno.Count());
+        }
+
+        public void TabelaT_ESTOQUE_ITEMVerificarSaldo(string id_nfe_emitente, int saldo)
+        {
+            if (ignorarFeature) return;
+            var pedidoPaiGerado = AbstractPedidoPaiGerado();
+            if (string.IsNullOrEmpty(pedidoPaiGerado))
+            {
+                Assert.Equal("sem pedido gerado", pedidoPaiGerado ?? "");
+                throw new ArgumentNullException();
+            }
+
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            var itemPedido = gerenciamentoBanco.BuscarItensPedido(pedidoPaiGerado);
+
+            Assert.True(itemPedido.Any());
+
+            foreach (var item in itemPedido)
+            {
+                gerenciamentoBanco.TabelaT_ESTOQUE_ITEMVerificarSaldo(int.Parse(id_nfe_emitente), saldo, item);
+            }
+
+        }
+
+        public void VerificarQtdePedidosSalvos(int qtde)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.Verificacao("Verificar quantidade de pedidos salvos: ", qtde);
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            gerenciamentoBanco.VerificarQtdePedidosSalvos(qtde);
+        }
+        public void TabelaT_PEDIDO_ANALISE_ENDERECOVerificarQtdeDeItensSalvos(int qtde)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.Verificacao("Verificar quantidade de itens salvos: ", qtde);
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            gerenciamentoBanco.TabelaT_PEDIDO_ANALISE_ENDERECOVerificarQtdeDeItensSalvos(qtde);
+        }
+
+        public void TabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAOVerificarQtdeDeItensSalvos(int qtde)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.Verificacao("Verificar quantidade de itens salvos: ", qtde);
+            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
+            gerenciamentoBanco.TabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAOVerificarQtdeDeItensSalvos(qtde);
+        }
+
     }
 }

@@ -84,6 +84,100 @@ namespace Especificacao.Testes.Pedido
             Testes.Utils.LogTestes.LogOperacoes2.DeixarFormaDePagamentoConsistente(this);
             base.Executar(i => i.DeixarFormaDePagamentoConsistente());
         }
+        public void TabelaT_PEDIDORegistroPaiCriadoVerificarCampo(string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO", "pedido", "registro pai criado", campo, valor, this);
+            base.Executar(i => i.TabelaT_PEDIDORegistroPaiCriadoVerificarCampo(campo, valor));
+        }
+        public void TabelaT_PEDIDO_ITEMRegistroCriadoVerificarCampo(int item, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO_ITEM", "pedido", "registro pai criado", campo, valor, this);
+            base.Executar(i => i.TabelaT_PEDIDO_ITEMRegistroCriadoVerificarCampo(item, campo, valor));
+        }
+        public void TabelaT_PEDIDO_ITEMFilhoteRegistroCriadoVerificarCampo(int item, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO_ITEM", "pedido", "registro pai criado", campo, valor, this);
+            base.Executar(i => i.TabelaT_PEDIDO_ITEMFilhoteRegistroCriadoVerificarCampo(item, campo, valor));
+        }
+        public void TabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo(string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO", "pedido", "registros filhotes criados", campo, valor, this);
+            base.Executar(i => i.TabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo(campo, valor));
+        }
+
+        public void TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(string produto, string tipo_estoque, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_ESTOQUE_MOVIMENTO", "produto", "verificar campos", campo, valor, this);
+            base.Executar(i => i.TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(produto, tipo_estoque, campo, valor));
+        }
+
+        public void VerificarPedidoGeradoSaldoDeID_ESTOQUE_SEM_PRESENCA(int indicePedido, int qtde)
+        {
+            if (ignorarFeature) return;
+            base.Executar(i => i.VerificarPedidoGeradoSaldoDeID_ESTOQUE_SEM_PRESENCA(indicePedido, qtde));
+
+        }
+
+        public void TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(string produto, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_ESTOQUE_ITEM", "produto", "verificar campos", campo, valor, this);
+            base.Executar(i => i.TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(produto, campo, valor));
+        }
+
+        public void TabelaT_ESTOQUE_ITEMVerificarSaldo(string id_nfe_emitente, int saldo)
+        {
+            if (ignorarFeature) return;
+            base.Executar(i => i.TabelaT_ESTOQUE_ITEMVerificarSaldo(id_nfe_emitente, saldo));
+        }
+
+        public void TabelaT_ESTOQUERegistroPaiVerificarCampo(string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_ESTOQUE", "pedido", "verificar campos", campo, valor, this);
+            base.Executar(i => i.TabelaT_ESTOQUERegistroPaiVerificarCampo(campo, valor));
+        }
+
+        public void TabelaT_ESTOQUE_LOGPedidoGeradoVerificarCampo(string produto, string operacao, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_ESTOQUE_LOG", "pedido", "verificar campos", campo, valor, this);
+            base.Executar(i => i.TabelaT_ESTOQUE_LOGPedidoGeradoVerificarCampo(produto, operacao, campo, valor));
+        }
+
+        public void TabelaT_LOGPedidoGeradoEOperacaoVerificarCampo(string operacao, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_LOG", "pedido", "verificar campos", campo, valor, this);
+            base.Executar(i => i.TabelaT_LOGPedidoGeradoEOperacaoVerificarCampo(operacao, campo, valor));
+        }
+
+        public void TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteEProdutoVerificarCampo(string fabricante, string produto, string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PRODUTO_X_WMS_REGRA_CD", "fabricante e produto", "verificar campos", campo, valor, this);
+            base.Executar(i => i.TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteEProdutoVerificarCampo(fabricante, produto, campo, valor));
+        }
+
+        public void TabelaT_PEDIDO_ANALISE_ENDERECORegistroCriadoVerificarCampo(string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO_ANALISE_ENDERECO", "campo", "valor", campo, valor, this);
+            base.Executar(i => i.TabelaT_PEDIDO_ANALISE_ENDERECORegistroCriadoVerificarCampo(campo, valor));
+        }
+
+        public void TabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAORegistroCriadoVerificarCampo(string campo, string valor)
+        {
+            if (ignorarFeature) return;
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO", "campo", "valor", campo, valor, this);
+            base.Executar(i => i.TabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAORegistroCriadoVerificarCampo(campo, valor));
+        }
+
         public void ListaDeItensComXitens(int p0)
         {
             if (ignorarFeature) return;
@@ -100,6 +194,14 @@ namespace Especificacao.Testes.Pedido
 
         public static void IgnorarCenarioNoAmbiente(string p0, ref bool ignorarFeature, Type getType)
         {
+            //comando especial: desabilitar o teste se estiver rodando contra o sql server real
+            if (p0.ToUpper() == "UsarSqlServerNosTestesAutomatizados".ToUpper())
+            {
+                if (Testes.Utils.InjecaoDependencia.ProvedorServicos.UsarSqlServerNosTestesAutomatizados)
+                    ignorarFeature = true;
+                return;
+            }
+
             var typeFullName = getType.FullName;
             if (typeFullName == null)
             {
@@ -119,6 +221,30 @@ namespace Especificacao.Testes.Pedido
         {
             if (ignorarFeature) return;
             base.Executar(i => i.GivenPedidoBaseComEnderecoDeEntrega());
+        }
+
+        public void GeradoPedidos(int qtde_pedidos)
+        {
+            if (ignorarFeature) return;
+            base.Executar(i => i.GeradoPedidos(qtde_pedidos));
+        }
+
+        public void VerificarQtdePedidosSalvos(int qtde)
+        {
+            if (ignorarFeature) return;
+            base.Executar(i => i.VerificarQtdePedidosSalvos(qtde));
+        }
+
+        public void TabelaT_PEDIDO_ANALISE_ENDERECOVerificarQtdeDeItensSalvos(int qtde)
+        {
+            if (ignorarFeature) return;
+            base.Executar(i => i.TabelaT_PEDIDO_ANALISE_ENDERECOVerificarQtdeDeItensSalvos(qtde));
+        }
+
+        public void TabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAOVerificarQtdeDeItensSalvos(int qtde)
+        {
+            if (ignorarFeature) return;
+            base.Executar(i => i.TabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAOVerificarQtdeDeItensSalvos(qtde));
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@ignore
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
 Feature: Senhas_de_autorizacao_para_desconto_superior
 #loja/PedidoNovoConfirma.asp
 #note que ele libera as senhas que foram usadas anteriormente para liberar o desconto superior, e somente essas

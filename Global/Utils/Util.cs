@@ -119,6 +119,14 @@ namespace UtilsGlobais
             return true;
         }
 
+        public static bool ExisteLetras(string palavra)
+        {
+            if (palavra.Where(c => char.IsLetter(c)).Count() > 0)
+                return true;
+
+            return false;
+        }
+
         public static bool ValidaCNPJ(string cnpj)
         {
             string p1 = "543298765432";
@@ -743,16 +751,14 @@ namespace UtilsGlobais
             {
                 lstErros.Add("A forma de pagamento não foi informada (à vista, com entrada, sem entrada).");
             }
-            if (custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA &&
-                custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
+
+            if (custoFinanceiroTipoParcelato == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__COM_ENTRADA ||
+                custoFinanceiroTipoParcelato == Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA)
             {
-                if (custoFinanceiroTipoParcelato != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA)
+                if (c_custoFinancFornecQtdeParcelas <= 0)
                 {
-                    if (c_custoFinancFornecQtdeParcelas <= 0)
-                    {
-                        lstErros.Add("Não foi informada a quantidade de parcelas para a forma de pagamento selecionada " +
-                            "(" + DescricaoCustoFornecTipoParcelamento(custoFinanceiroTipoParcelato) + ")");
-                    }
+                    lstErros.Add("Não foi informada a quantidade de parcelas para a forma de pagamento selecionada " +
+                        "(" + DescricaoCustoFornecTipoParcelamento(custoFinanceiroTipoParcelato) + ")");
                 }
             }
         }
@@ -777,88 +783,13 @@ namespace UtilsGlobais
             return retorno;
         }
 
-        public static async Task<string> GerarNsu(ContextoBdGravacao dbgravacao, string id_nsu)
-        {
-            if (string.IsNullOrEmpty(id_nsu))
-                throw new ArgumentException("Não foi especificado o NSU a ser gerado!");
-
-            var queryControle = from c in dbgravacao.Tcontroles
-                                where c.Id_Nsu == id_nsu
-                                select c;
-
-            var controle = await queryControle.FirstOrDefaultAsync();
-            if (controle == null)
-                throw new ArgumentException($"Não existe registro na tabela de controle para poder gerar este NSU! id_nsu:{id_nsu}");
-
-            int n_nsu = -1;
-            if (!string.IsNullOrEmpty(controle.Nsu))
-            {
-                if (int.TryParse(controle.Nsu, out _))
-                {
-                    if (controle.Seq_Anual != null && controle.Seq_Anual != 0)
-                    {
-                        //'	CASO O RELÓGIO DO SERVIDOR SEJA ALTERADO P/ DATAS FUTURAS E PASSADAS, EVITA QUE O CAMPO 'ano_letra_seq' SEJA INCREMENTADO VÁRIAS VEZES
-                        if (DateTime.Now.Year > controle.Dt_Ult_Atualizacao.Year)
-                        {
-                            string saux = "0";
-                            saux = Normaliza_Codigo(saux, Constantes.TAM_MAX_NSU);
-                            controle.Nsu = saux;
-                            controle.Dt_Ult_Atualizacao = DateTime.Now;
-                            if (!String.IsNullOrEmpty(controle.Ano_Letra_Seq))
-                            {
-                                int asc;
-                                char chr;
-                                asc = Encoding.ASCII.GetBytes(controle.Ano_Letra_Seq)[0] + controle.Ano_Letra_Step;
-                                chr = (char)asc;
-                                controle.Ano_Letra_Seq = chr.ToString();
-                            }
-                        }
-                    }
-                    n_nsu = int.Parse(controle.Nsu);
-                }
-            }
-
-
-            if (n_nsu < 0)
-            {
-                throw new ApplicationException($"O NSU gerado é inválido! id_nsu:{id_nsu}");
-            }
-
-            n_nsu += 1;
-            string s;
-            s = Convert.ToString(n_nsu);
-            s = Normaliza_Codigo(s, Constantes.TAM_MAX_NSU);
-            if (s.Length == 12)
-            {
-                //para salvar o novo numero
-                controle.Nsu = s;
-                if (DateTime.Now > controle.Dt_Ult_Atualizacao)
-                    controle.Dt_Ult_Atualizacao = DateTime.Now;
-
-                string retorno = controle.Nsu;
-
-                try
-                {
-                    dbgravacao.Update(controle);
-                    await dbgravacao.SaveChangesAsync();
-                    return retorno;
-                }
-                catch (Exception ex)
-                {
-                    throw new ApplicationException("Não foi possível gerar o NSU, pois ocorreu o seguinte erro: " + ex.HResult + ":" + ex.Message);
-                }
-            }
-
-            throw new ApplicationException($"Não foi possível gerar o NSU, tamanho diferente de 12.  id_nsu:{id_nsu}");
-        }
-
         public static IQueryable<TcodigoDescricao> ListarCodigoMarketPlace(ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();
             IQueryable<TcodigoDescricao> lstTcodigo = (from c in db.TcodigoDescricaos
-                             where c.Grupo == InfraBanco.Constantes.Constantes.GRUPO_T_CODIGO_DESCRICAO__PEDIDOECOMMERCE_ORIGEM &&
-                                   c.St_Inativo == 0
-                             select c);
+                                                       where c.Grupo == InfraBanco.Constantes.Constantes.GRUPO_T_CODIGO_DESCRICAO__PEDIDOECOMMERCE_ORIGEM &&
+                                                             c.St_Inativo == 0
+                                                       select c);
             return lstTcodigo;
         }
 
@@ -896,7 +827,7 @@ namespace UtilsGlobais
             return retorno;
         }
 
-        private static async Task<bool> IsLojaBonshop(string loja, ContextoBdProvider contextoProvider)
+        public static async Task<bool> IsLojaBonshop(string loja, ContextoBdProvider contextoProvider)
         {
             bool retorno = false;
 
@@ -964,10 +895,10 @@ namespace UtilsGlobais
         }
 
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
-        //Afazer: Edu o método "ObterApelidoEmpresaNfeEmitentes" está sendo duplicado porque é utilizado
+        //O método "ObterApelidoEmpresaNfeEmitentes" está sendo duplicado porque é utilizado
         //dentro da transação do cadastro de pedido que utiliza o contexto de gravação, 
         //não fazia sentido criar uma interface de contexto apenas para um método
-        public static async Task<string> ObterApelidoEmpresaNfeEmitentesGravacao(int id_nfe_emitente, ContextoBdGravacao dbGravacao)
+        public static async Task<string> Obtem_apelido_empresa_NFe_emitente_Gravacao(int id_nfe_emitente, ContextoBdGravacao dbGravacao)
         {
             string apelidoEmpresa = "";
 
@@ -989,6 +920,7 @@ namespace UtilsGlobais
 
         public static async Task<Tparametro> BuscarRegistroParametro(string id, ContextoBdProvider contextoProvider)
         {
+            //rotina get_registro_t_parametro no ASP
             var db = contextoProvider.GetContextoLeitura();
 
             var parametroTask = from c in db.Tparametros
@@ -1040,6 +972,11 @@ namespace UtilsGlobais
                 lstErros.Add("E-mail inválido!");
         }
 
+        public static void ValidarEmailXml(string emailxml, List<string> lstErros)
+        {
+            if (!new EmailAddressAttribute().IsValid(emailxml))
+                lstErros.Add("E-mail XML inválido!");
+        }
         public static async Task<int?> VerificarTelefoneRepetidos(string ddd, string tel, string cpf_cnpj, string tipoCliente,
             ContextoBdProvider contextoProvider, List<string> lstErros)
         {
@@ -1085,36 +1022,47 @@ namespace UtilsGlobais
             return qtdCliente + qtdOrcamentista;
         }
 
-        public static string FormatarEndereco(string endereco, string numero, string complemento,
+        public static string Formata_endereco(string endereco, string numero, string complemento,
             string bairro, string cidade, string uf, string cep)
         {
 
             string retorno = "";
             if (!string.IsNullOrEmpty(endereco))
+            {
                 retorno = endereco.Trim();
-            if (!string.IsNullOrEmpty(numero))
-                retorno += ", " + numero.Trim();
-            if (!string.IsNullOrEmpty(complemento))
-                retorno += " " + complemento.Trim();
-            if (!string.IsNullOrEmpty(bairro))
-                retorno += " - " + bairro.Trim();
-            if (!string.IsNullOrEmpty(cidade))
-                retorno += " - " + cidade.Trim();
-            if (!string.IsNullOrEmpty(uf))
-                retorno += " - " + uf.Trim();
-            if (!string.IsNullOrEmpty(cep))
-                retorno += " - " + FormatarCep(cep.Trim());
+                if (!string.IsNullOrEmpty(numero))
+                    retorno += ", " + numero.Trim();
+                if (!string.IsNullOrEmpty(complemento))
+                    retorno += " " + complemento.Trim();
+                if (!string.IsNullOrEmpty(bairro))
+                    retorno += " - " + bairro.Trim();
+                if (!string.IsNullOrEmpty(cidade))
+                    retorno += " - " + cidade.Trim();
+                if (!string.IsNullOrEmpty(uf))
+                    retorno += " - " + uf.Trim();
+                if (!string.IsNullOrEmpty(cep))
+                    retorno += " - " + Cep_formata(cep.Trim());
+            }
 
             return retorno;
         }
 
-        public static string FormatarCep(string cep)
+        public static string Cep_SoDigito(string cep)
         {
-            string sCep = cep.Replace("-", "");
+            if (cep == null)
+                cep = "";
+            cep = System.Text.RegularExpressions.Regex.Replace(cep, @"\D", "");
+            return cep;
+        }
+
+        public static string Cep_formata(string cep)
+        {
+            //a mesma rotina que para o telefone, ficamos osmnete com os digitos
+            string sCep = Cep_SoDigito(cep);
             if (!Util.VerificaCep(sCep))
                 return "";
 
-            cep = sCep.Substring(0, 4) + " - " + sCep.Substring(5, 3);
+            cep = sCep.Substring(0, 4) + "-" + sCep.Substring(5, 3);
 
             return cep;
         }
@@ -1200,22 +1148,10 @@ namespace UtilsGlobais
             return hora + minuto;
         }
 
-        public static string RemoverAcentos(string text)
-        {
-            StringBuilder sbReturn = new StringBuilder();
-            var arrayText = text.Normalize(NormalizationForm.FormD).ToCharArray();
-            foreach (char letter in arrayText)
-            {
-                if (CharUnicodeInfo.GetUnicodeCategory(letter) != UnicodeCategory.NonSpacingMark)
-                    sbReturn.Append(letter);
-            }
-            return sbReturn.ToString();
-        }
-
         public static string IsTextoValido(string texto, out string retorno)
         {
 #nullable enable
-            if(texto == null)
+            if (texto == null)
             {
                 retorno = "";
                 return retorno;
@@ -1243,6 +1179,10 @@ namespace UtilsGlobais
 #nullable disable
         }
 
-        
+        public static string EnterParaMensagemErro()
+        {
+            return "\n\r";
+        }
+
     }
 }

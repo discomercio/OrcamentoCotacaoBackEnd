@@ -27,12 +27,3 @@ namespace Especificacao
 }
 
 
-
-/*
-todo: implementar cadastro do prepedidoapi
-
- * todo: fazer validação dos dados cadastrais na API (no ERP, estas mensagens devem estar separadas pq vamos falar para o usuário editar o cliente antes de continuar)
-* 
-* 
- * 
-*/

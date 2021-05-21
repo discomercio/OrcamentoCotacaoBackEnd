@@ -48,7 +48,7 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                     fabricante: origem.Fabricante,
                     produto: origem.Produto,
                     qtde: origem.Qtde ?? 0,
-                    qtde_estoque_total_disponivel: origem.Qtde_estoque_total_disponivel,
+                    qtde_spe_usuario_aceitou: origem.Qtde_estoque_total_disponivel,
                     preco_Lista: origem.Preco_Lista ?? 0,
                     custoFinancFornecPrecoListaBase_Conferencia: origem.CustoFinancFornecPrecoListaBase,
                     preco_NF: origem.Preco_NF,

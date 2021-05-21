@@ -31,6 +31,15 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             Testes.Utils.StatusCodes.TestarStatusCode(statusCode, res);
         }
 
+        public MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto? UltimoPedidoResultadoMagentoDto()
+        {
+            var temp = UltimoAcessoFeito?.Result;
+            if (temp == null)
+                return null;
+            MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto pedidoResultadoMagentoDto
+            = (MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto)((Microsoft.AspNetCore.Mvc.OkObjectResult)temp).Value;
+            return pedidoResultadoMagentoDto;
+        }
         public Microsoft.AspNetCore.Mvc.ActionResult<MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto>? UltimoAcessoFeito { get; private set; } = null;
         private ActionResult AcessarControladorMagento()
         {
@@ -42,17 +51,22 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 
         protected override void AbstractRecalcularTotaisDoPedido()
         {
-            decimal totalCompare = 0;
-            decimal totalRaCompare = 0;
-            foreach (var x in pedidoMagentoDto.ListaProdutos)
-            {
-                totalCompare += Math.Round((decimal)(x.Preco_Venda * x.Qtde), 2);
-                totalRaCompare += Math.Round((decimal)(x.Preco_NF * x.Qtde), 2);
-            }
-            pedidoMagentoDto.VlTotalDestePedido = totalCompare;
+            //decimal totalCompare = 0;
+            //decimal totalRaCompare = 0;
+            //foreach (var x in pedidoMagentoDto.ListaProdutos)
+            //{
+            //    totalCompare += Math.Round((decimal)(x.Preco_Venda * x.Qtde), 2);
+            //    totalRaCompare += Math.Round((decimal)(x.Preco_NF * x.Qtde), 2);
+            //}
+            //pedidoMagentoDto.VlTotalDestePedido = totalCompare;
             //nao temos este campo: pedidoMagentoDto.ValorTotalDestePedidoComRA = totalRaCompare;
         }
         protected override void AbstractListaDeItensComXitens(int numeroItens)
+        {
+            MagentoListaDeItensComXitens(numeroItens);
+        }
+
+        public void MagentoListaDeItensComXitens(int numeroItens)
         {
             if (ignorarFeature) return;
             Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensComXitens(numeroItens, this);
@@ -64,6 +78,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             while (lp.Count > numeroItens)
                 lp.RemoveAt(lp.Count - 1);
         }
+
         protected override void AbstractLimparEnderecoDeEntrega()
         {
             if (ignorarFeature) return;
@@ -127,6 +142,10 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 
         protected override void AbstractListaDeItensInformo(int numeroItem, string campo, string valor)
         {
+            MagentoListaDeItensInformo(numeroItem, campo, valor);
+        }
+        public void MagentoListaDeItensInformo(int numeroItem, string campo, string valor)
+        {
             if (ignorarFeature) return;
             Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensInformo(numeroItem, campo, valor, this);
             var item = pedidoMagentoDto.ListaProdutos[numeroItem];
@@ -139,8 +158,23 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
         {
             switch (campo)
             {
-                case "appsettings.Orcamentista":
-                    configuracaoApiMagento.DadosOrcamentista.Orcamentista = valor;
+                case "limitePedidos.pedidoIgual":
+                    configuracaoApiMagento.LimitePedidos.LimitePedidosExatamenteIguais_Numero = int.Parse(valor);
+                    return;
+                case "limitePedidos.pedidoIgual_tempo_em_segundos":
+                    configuracaoApiMagento.LimitePedidos.LimitePedidosExatamenteIguais_TempoSegundos = int.Parse(valor);
+                    return;
+                case "limitePedidos.porCpf":
+                    configuracaoApiMagento.LimitePedidos.LimitePedidosMesmoCpfCnpj_Numero = int.Parse(valor);
+                    return;
+                case "limitePedidos.pedidosMesmoCpfCnpj_TempoSegundos":
+                    configuracaoApiMagento.LimitePedidos.LimitePedidosMesmoCpfCnpj_TempoSegundos = int.Parse(valor);
+                    return;
+                case "appsettings.Indicador":
+                    configuracaoApiMagento.DadosIndicador.Indicador = valor;
+                    return;
+                case "appsettings.Loja":
+                    configuracaoApiMagento.DadosIndicador.Loja = valor;
                     return;
 
                 case "TokenAcesso":
@@ -208,5 +242,43 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             }
         }
 
+        protected override string? AbstractPedidoPaiGerado()
+        {
+            var ultimo = UltimoPedidoResultadoMagentoDto();
+            if (ultimo == null)
+                return null;
+
+            return ultimo.IdPedidoCadastrado;
+        }
+
+        protected override List<string> AbstractPedidosFilhotesGerados()
+        {
+            var ultimo = UltimoPedidoResultadoMagentoDto();
+            if (ultimo == null)
+                return new List<string>();
+
+            return ultimo.IdsPedidosFilhotes;
+        }
+
+        protected override List<string> AbstractPedidosGerados()
+        {
+            var ultimo = UltimoPedidoResultadoMagentoDto();
+            if (ultimo == null)
+                return new List<string>();
+
+            List<string> lstPedidos = new List<string>();
+            if (!string.IsNullOrEmpty(ultimo.IdPedidoCadastrado))
+                lstPedidos.Add(ultimo.IdPedidoCadastrado);
+
+            if(ultimo.IdsPedidosFilhotes.Count > 0)
+            {
+                foreach(var filhotes in ultimo.IdsPedidosFilhotes)
+                {
+                    lstPedidos.Add(filhotes);
+                }
+            }
+
+            return lstPedidos;
+        }
     }
 }

@@ -15,9 +15,6 @@ namespace InfraBanco.Modelos
         //[Key]
         public string Id { get; set; }
 
-        public TperfilUsuario TperfilUsuario { get; set; }
-        public TperfilItem TperfilItem { get; set; }
-
         [Required]
         [MaxLength(12)]
         [Column("apelido")]
@@ -44,8 +41,8 @@ namespace InfraBanco.Modelos
         [Column("usuario_ult_atualizacao")]
         public string Usuario_ult_atualizacao { get; set; }
 
-        [Column("timestamp")]
-        public byte Timestamp { get; }
+        //[Column("timestamp")]
+        //public byte Timestamp { get; }
 
         [Required]
         [Column("nivel_acesso_bloco_notas_pedido")]

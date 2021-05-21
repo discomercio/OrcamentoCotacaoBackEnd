@@ -1,6 +1,8 @@
 ﻿using Especificacao.Testes.Pedido;
 using Especificacao.Testes.Utils.ListaDependencias;
+using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow;
 using Xunit;
@@ -20,6 +22,7 @@ namespace Especificacao.Especificacao.Pedido
     [Scope(Tag = "Especificacao.Pedido.FluxoCriacaoPedido")]
     [Scope(Tag = "Especificacao.Pedido.Passo30")]
     [Scope(Tag = "Especificacao.Pedido.Passo40")]
+    [Scope(Tag = "Especificacao.Pedido.Passo60")]
     public class PedidoComunsSteps : PedidoPassosComuns
     {
         public PedidoComunsSteps(FeatureContext featureContext)
@@ -30,6 +33,8 @@ namespace Especificacao.Especificacao.Pedido
             {
                 var imp = new Especificacao.Pedido.PedidoSteps();
                 base.AdicionarImplementacao(imp);
+                RegistroDependencias.AdicionarDependencia("Especificacao.Pedido.Pedido.PedidoListaDependencias", imp,
+                    "Especificacao.Pedido.Passo10.PermissoesListaDependencias");
                 RegistroDependencias.AdicionarDependencia("Especificacao.Pedido.Pedido.PedidoListaDependencias", imp,
                     "Especificacao.Pedido.Passo10.CamposSimplesPfListaDependencias");
                 RegistroDependencias.AdicionarDependencia("Especificacao.Pedido.Pedido.PedidoListaDependencias", imp,
@@ -63,7 +68,10 @@ namespace Especificacao.Especificacao.Pedido
             }
             if (tags.Contains("Especificacao.Pedido.Passo30"))
             {
-                throw new NotImplementedException("Implementar as dependências");
+                var imp = new Especificacao.Pedido.PedidoSteps();
+                base.AdicionarImplementacao(imp);
+                //paramos de fazer o registro de dependencias
+                return;
             }
             if (tags.Contains("Especificacao.Pedido.Passo40"))
             {
@@ -71,6 +79,14 @@ namespace Especificacao.Especificacao.Pedido
                 base.AdicionarImplementacao(imp);
                 RegistroDependencias.AdicionarDependencia("Especificacao.Pedido.Pedido.PedidoListaDependencias", imp,
                     "Especificacao.Pedido.Passo40.Passo40ListaDependencias");
+                return;
+            }
+            if (tags.Contains("Especificacao.Pedido.Passo60"))
+            {
+                var imp = new Especificacao.Pedido.PedidoSteps();
+                base.AdicionarImplementacao(imp);
+                RegistroDependencias.AdicionarDependencia("Especificacao.Pedido.Pedido.PedidoListaDependencias", imp,
+                    "Especificacao.Pedido.Passo60.Passo60ListaDependencias");
                 return;
             }
         }
@@ -207,7 +223,7 @@ namespace Especificacao.Especificacao.Pedido
             {
                 base.ThenSemNenhumErro();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 if (e.Message.Contains(p0))
                     lancouExcecao = true;
@@ -269,6 +285,258 @@ namespace Especificacao.Especificacao.Pedido
             Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensComXitens(p0, this);
             base.ListaDeItensComXitens(p0);
         }
+
+        [Then(@"Tabela ""t_PEDIDO"" registro pai criado, verificar campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaT_PEDIDORegistroPaiCriadoVerificarCampo(string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO", "pedido", "registro pai criado", campo, valor, this);
+            base.TabelaT_PEDIDORegistroPaiCriadoVerificarCampo(campo, valor);
+        }
+        [Then(@"Tabela ""t_PEDIDO_ITEM"" registro criado, verificar item ""(.*)"" campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaT_PEDIDO_ITEMRegistroCriadoVerificarCampo(int item, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO_ITEM", "pedido", "registro pai criado", campo, valor, this);
+            base.TabelaT_PEDIDO_ITEMRegistroCriadoVerificarCampo(item, campo, valor);
+        }
+
+        [Then(@"Tabela ""t_PEDIDO"" registros filhotes criados, verificar campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo(string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO", "pedido", "registros filhotes criados", campo, valor, this);
+            base.TabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo(campo, valor);
+        }
+
+        private readonly Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.EstoqueSaida.SplitEstoqueRotinas SplitEstoqueRotinas = new Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.EstoqueSaida.SplitEstoqueRotinas();
+        [Given(@"Zerar todo o estoque")]
+        public void GivenZerarTodoOEstoque()
+        {
+            SplitEstoqueRotinas.ZerarTodoOEstoque();
+        }
+
+        [Given(@"Definir saldo de estoque = ""(\d*)"" para produto ""(.*)""")]
+        public void GivenDefinirSaldoDeEstoqueParaProduto(int qde, string nomeProduto)
+        {
+            SplitEstoqueRotinas.DefinirSaldoDeEstoqueParaProdutoComValor(qde, nomeProduto, 987);
+        }
+
+
+        [Given(@"Definir saldo estoque = ""(\d*)"" para produto = ""(.*)"" e id_nfe_emitente = ""(.*)""")]
+        public void GivenDefinirSaldoEstoqueEId_Nfe_Emitente(int qtde, string nomeProduto, short id_nfe_emitente)
+        {
+            SplitEstoqueRotinas.DefinirSaldoDeEstoqueParaProdutoComValorEIdNfeEmitente(qtde, nomeProduto, 666, id_nfe_emitente);
+        }
+
+        [Given(@"Usar produto ""(.*)"" como fabricante = ""(.*)"", produto = ""(.*)""")]
+        public void GivenUsarProdutoComoFabricanteProduto(string nome, string fabricante, string produto)
+        {
+            SplitEstoqueRotinas.UsarProdutoComoFabricanteProduto(nome, fabricante, produto);
+        }
+
+        #region ultimo acesso
+        class UltimoAcessoDados
+        {
+            public bool Retorno = false;
+            public short qtde_estoque_vendido;
+            public short qtde_estoque_sem_presenca;
+            public List<string> LstErros = new List<string>();
+        }
+        private readonly UltimoAcessoDados UltimoAcesso = new UltimoAcessoDados();
+        #endregion
+        [When(@"Chamar ESTOQUE_PRODUTO_SAIDA_V2 com produto = ""(.*)"", qtde_a_sair = ""(.*)"", qtde_autorizada_sem_presenca = ""(.*)""")]
+        public void WhenChamarESTOQUE_PRODUTO_SAIDA_VComProdutoQtde_A_SairQtde_Autorizada_Sem_Presenca(string nomeProduto, int qtde_a_sair, int qtde_autorizada_sem_presenca)
+        {
+            var id_pedido = "222292N";
+            var produto = SplitEstoqueRotinas.Produtos.Produtos[nomeProduto];
+
+            Produto.Estoque.Estoque.QuantidadeEncapsulada qtde_estoque_vendido = new Produto.Estoque.Estoque.QuantidadeEncapsulada
+            {
+                Valor = UltimoAcesso.qtde_estoque_vendido
+            };
+            Produto.Estoque.Estoque.QuantidadeEncapsulada qtde_estoque_sem_presenca = new Produto.Estoque.Estoque.QuantidadeEncapsulada
+            {
+                Valor = UltimoAcesso.qtde_estoque_sem_presenca
+            };
+
+            UltimoAcesso.LstErros = new List<string>();
+            using var db = SplitEstoqueRotinas.contextoBdProvider.GetContextoGravacaoParaUsing();
+            UltimoAcesso.Retorno = Produto.Estoque.Estoque.Estoque_produto_saida_v2(SplitEstoqueRotinas.Id_usuario,
+                id_pedido: id_pedido,
+                id_nfe_emitente: SplitEstoqueRotinas.Id_nfe_emitente,
+                id_fabricante: produto.Fabricante,
+                id_produto: produto.Produto,
+                qtde_a_sair: qtde_a_sair, qtde_autorizada_sem_presenca: qtde_autorizada_sem_presenca,
+                qtde_estoque_vendido: qtde_estoque_vendido, qtde_estoque_sem_presenca: qtde_estoque_sem_presenca,
+                lstErros: UltimoAcesso.LstErros,
+                dbGravacao: db
+                ).Result;
+
+            UltimoAcesso.qtde_estoque_vendido = qtde_estoque_vendido.Valor;
+            UltimoAcesso.qtde_estoque_sem_presenca = qtde_estoque_sem_presenca.Valor;
+
+            if (UltimoAcesso.LstErros.Any())
+            {
+                db.transacao.Rollback();
+            }
+            else
+            {
+                db.SaveChanges();
+                db.transacao.Commit();
+            }
+
+        }
+
+
+        [Then(@"Tabela ""t_ESTOQUE_MOVIMENTO"" registro pai e produto = ""(.*)"" e estoque = ""(.*)"", verificar campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaRegistroPaiEProdutoVerificarCampo(string produto, string tipo_estoque, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_ESTOQUE_MOVIMENTO", $"produto {produto} e estoque{tipo_estoque}", "verificar campos", campo, valor, this);
+            base.TabelaT_ESTOQUE_MOVIMENTORegistroPaiEProdutoVerificarCampo(produto, tipo_estoque, campo, valor);
+        }
+
+        [Then(@"Tabela ""t_ESTOQUE_ITEM"" registro pai e produto = ""(.*)"", verificar campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(string produto, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_ESTOQUE_ITEM", "produto", "verificar campos", campo, valor, this);
+            base.TabelaT_ESTOQUE_ITEMRegistroPaiEProdutoVerificarCampo(produto, campo, valor);
+        }
+
+        [Then(@"Tabela ""t_ESTOQUE"" registro pai, verificar campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaT_ESTOQUERegistroPaiVerificarCampo(string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_ESTOQUE", "pedido", "verificar campos", campo, valor, this);
+            base.TabelaT_ESTOQUERegistroPaiVerificarCampo(campo, valor);
+        }
+
+        [Then(@"Tabela ""t_ESTOQUE_LOG"" pedido gerado e produto = ""(.*)"" e operacao = ""(.*)"", verificar campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaT_ESTOQUE_LOGPedidoGeradoVerificarCampo(string produto, string operacao, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_ESTOQUE_LOG", "pedido", "verificar campos", campo, valor, this);
+            base.TabelaT_ESTOQUE_LOGPedidoGeradoVerificarCampo(produto, operacao, campo, valor);
+        }
+
+        [Then(@"Tabela ""t_LOG"" pedido gerado e operacao = ""(.*)"", verificar campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaT_LOGPedidoGeradoEOperacaoVerificarCampo(string operacao, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_LOG", "pedido", "verificar campos", campo, valor, this);
+            base.TabelaT_LOGPedidoGeradoEOperacaoVerificarCampo(operacao, campo, valor);
+        }
+
+        [Then(@"Tabela t_PRODUTO_X_WMS_REGRA_CD fabricante = ""(.*)"" e produto = ""(.*)"", verificar campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteEProdutoVerificarCampo(string fabricante, string produto, string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PRODUTO_X_WMS_REGRA_CD", "fabricante e produto", "verificar campos", campo, valor, this);
+            base.TabelaT_PRODUTO_X_WMS_REGRA_CDFabricanteEProdutoVerificarCampo(fabricante, produto, campo, valor);
+        }
+
+        [Then(@"Tabela ""t_PEDIDO_ANALISE_ENDERECO"" registro criado, verificar campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaT_PEDIDO_ANALISE_ENDERECORegistroCriadoVerificarCampo(string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO_ANALISE_ENDERECO", "campo", "valor", campo, valor, this);
+            base.TabelaT_PEDIDO_ANALISE_ENDERECORegistroCriadoVerificarCampo(campo, valor);
+        }
+
+        [Then(@"Tabela ""t_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO"" registro criado, verificar campo ""(.*)"" = ""(.*)""")]
+        public void ThenTabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAORegistroCriadoVerificarCampo(string campo, string valor)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO", "campo", "valor", campo, valor, this);
+            base.TabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAORegistroCriadoVerificarCampo(campo, valor);
+        }
+        [Given(@"Cadastra 50 pedidos com o mesmo endereco")]
+        public void GivenCadastraPedidosComOMesmoEndereco()
+        {
+            int qtdePedido = 50;
+            for (int i = 0; i <= qtdePedido; i++)
+            {
+                GivenPedidoBase();
+                WhenInformo("cnpj_cpf", global::Especificacao.Testes.Utils.CpfCnpj.GerarCpf());
+                ThenSemNenhumErro();
+            }
+        }
+
+        [Then(@"Tabela ""t_PEDIDO"" verificar qtde de pedidos salvos ""(.*)""")]
+        public void ThenTabelaT_PEDIDOVerificarQtdeDePedidosSalvos(int qtde)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.Verificacao("Verificar quantidade de pedidos salvos: ", qtde);
+            base.VerificarQtdePedidosSalvos(qtde);
+
+        }
+
+
+        [Then(@"Gerado (.*) pedidos")]
+        public void ThenGeradoPedidos(int qtde_pedidos)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.Verificacao("Verificar quantidade de pedidos gerados: ", qtde_pedidos);
+            base.GeradoPedidos(qtde_pedidos);
+        }
+
+        [Then(@"Pedido gerado ""(.*)"", verificar st_entrega = ""(.*)""")]
+        public void ThenPedidoGeradoVerificarSt_EntregaSEP(int indicePedido, string st_entrega)
+        {
+            //se indicePedido for 0 é pedido pai
+            if (indicePedido == 0)
+                ThenTabelaT_PEDIDORegistroPaiCriadoVerificarCampo("st_entrega", st_entrega);
+            if (indicePedido == 1)
+                ThenTabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo("st_entrega", st_entrega);
+        }
+
+        [Then(@"Pedido gerado (.*), verificar id_nfe_emitente = (.*) e qde = (.*)")]
+        public void ThenPedidoGeradoVerificarId_Nfe_EmitenteEQde(int indicePedido, string id_nfe_emitente, string qtde)
+        {
+            if (indicePedido == 0)
+            {
+                ThenTabelaT_PEDIDORegistroPaiCriadoVerificarCampo("id_nfe_emitente", id_nfe_emitente);
+                base.TabelaT_PEDIDO_ITEMRegistroCriadoVerificarCampo(1, "qtde", qtde);
+
+            }
+            if (indicePedido == 1)
+            {
+                ThenTabelaT_PEDIDORegistrosFilhotesCriadosVerificarCampo("id_nfe_emitente", id_nfe_emitente);
+                base.TabelaT_PEDIDO_ITEMFilhoteRegistroCriadoVerificarCampo(1, "qtde", qtde);
+            }
+        }
+
+        [Then(@"Verificar estoque id_nfe_emitente = (.*), saldo de estoque = (.*)")]
+        public void ThenVerificarEstoqueId_Nfe_EmitenteSaldoDeEstoque(string id_nfe_emitente, int saldo)
+        {
+            base.TabelaT_ESTOQUE_ITEMVerificarSaldo(id_nfe_emitente, saldo);
+        }
+
+        [Then(@"Verificar pedido gerado ""(.*)"", saldo de ID_ESTOQUE_SEM_PRESENCA = ""(.*)""")]
+        public void ThenVerificarPedidoGeradoSaldoDeID_ESTOQUE_SEM_PRESENCA(int indicePedido, int qtde)
+        {
+            base.VerificarPedidoGeradoSaldoDeID_ESTOQUE_SEM_PRESENCA(indicePedido, qtde);
+        }
+
+        #region Reiniciar appsettings e AfterScenario
+        [Given(@"Reiniciar appsettings")]
+        public void GivenReiniciarAppsettings()
+        {
+            //so pra lembrar que a gente faz isso
+            AfterScenario();
+        }
+        [AfterScenario]
+        public void AfterScenario()
+        {
+            var configuracaoApiMagento = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<global::MagentoBusiness.UtilsMagento.ConfiguracaoApiMagento>();
+            Ambiente.ApiMagento.InjecaoDependencias.InicializarConfiguracaoApiMagento(configuracaoApiMagento);
+        }
+        #endregion
+
+        [Then(@"Tabela ""t_PEDIDO_ANALISE_ENDERECO"" verificar qtde de itens salvos ""(.*)""")]
+        public void ThenTabelaT_PEDIDO_ANALISE_ENDERECOVerificarQtdeDeItensSalvos(int qtde)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.Verificacao("Verificar quantidade de itens salvos: ", qtde);
+            base.TabelaT_PEDIDO_ANALISE_ENDERECOVerificarQtdeDeItensSalvos(qtde);
+        }
+
+        [Then(@"Tabela ""t_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO"" verificar qtde de itens salvos ""(.*)""")]
+        public void ThenTabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAOVerificarQtdeDeItensSalvos(int qtde)
+        {
+            Testes.Utils.LogTestes.LogOperacoes2.BancoDados.Verificacao("Verificar quantidade de itens salvos: ", qtde);
+            base.TabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAOVerificarQtdeDeItensSalvos(qtde);
+        }
+
+
 
     }
 }

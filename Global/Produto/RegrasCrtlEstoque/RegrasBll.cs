@@ -8,11 +8,11 @@ namespace Produto.RegrasCrtlEstoque
     {
         public string Fabricante { get; set; }
         public string Produto { get; set; }
-        public bool St_Regra { get; set; }
-        public t_WMS_REGRA_CD TwmsRegraCd { get; set; }
-        public t_WMS_REGRA_CD_X_UF TwmsRegraCdXUf { get; set; }
-        public t_WMS_REGRA_CD_X_UF_X_PESSOA TwmsRegraCdXUfXPessoa { get; set; }
-        public List<t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD> TwmsCdXUfXPessoaXCd { get; set; }
+        public bool St_Regra_ok { get; set; } //no asp: st_regra_ok
+        public t_WMS_REGRA_CD TwmsRegraCd { get; set; } //no asp: regra
+        public t_WMS_REGRA_CD_X_UF TwmsRegraCdXUf { get; set; } //no asp: regra.regraUF
+        public t_WMS_REGRA_CD_X_UF_X_PESSOA TwmsRegraCdXUfXPessoa { get; set; } //no asp: regra.regraUF.regraPessoa
+        public List<t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD> TwmsCdXUfXPessoaXCd { get; set; } //no asp: regra.regraUF.regraPessoa.vCD
     }
     public class t_WMS_REGRA_CD
     {
@@ -55,6 +55,7 @@ namespace Produto.RegrasCrtlEstoque
         public short? Estoque_Qtde_Solicitado { get; set; }
         public short Estoque_Qtde { get; set; }
         public short? Estoque_Qtde_Estoque_Global { get; set; }
+        public short? Estoque_Qtde_Estoque { get; set; }
     }
 
 }

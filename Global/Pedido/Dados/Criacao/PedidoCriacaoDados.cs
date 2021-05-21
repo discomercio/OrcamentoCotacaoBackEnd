@@ -4,17 +4,23 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-//todo: religar nullable
-#nullable disable
+#nullable enable
 
 namespace Pedido.Dados.Criacao
 {
     public class PedidoCriacaoDados
     {
-        public PedidoCriacaoDados(PedidoCriacaoAmbienteDados ambiente, PedidoCriacaoConfiguracaoDados configuracao, PedidoCriacaoClienteDados cliente, EnderecoCadastralClientePrepedidoDados enderecoCadastralCliente, EnderecoEntregaClienteCadastroDados enderecoEntrega, List<PedidoCriacaoProdutoDados> listaProdutos, PedidoCriacaoValorDados valor, FormaPagtoCriacaoDados formaPagtoCriacao, DetalhesPrepedidoDados detalhesPedido, PedidoCriacaoMarketplaceDados marketplace)
+        public PedidoCriacaoDados(
+            PedidoCriacaoAmbienteDados ambiente, PedidoCriacaoConfiguracaoDados configuracao,
+            PedidoCriacaoExtraDados extra, PedidoCriacaoClienteDados cliente,
+            EnderecoCadastralClientePrepedidoDados enderecoCadastralCliente,
+            EnderecoEntregaClienteCadastroDados enderecoEntrega, List<PedidoCriacaoProdutoDados> listaProdutos,
+            PedidoCriacaoValorDados valor, FormaPagtoCriacaoDados formaPagtoCriacao,
+            DetalhesPrepedidoDados detalhesPedido, PedidoCriacaoMarketplaceDados marketplace)
         {
             Ambiente = ambiente ?? throw new ArgumentNullException(nameof(ambiente));
             Configuracao = configuracao ?? throw new ArgumentNullException(nameof(configuracao));
+            Extra = extra ?? throw new ArgumentNullException(nameof(extra));
             Cliente = cliente ?? throw new ArgumentNullException(nameof(cliente));
             EnderecoCadastralCliente = enderecoCadastralCliente ?? throw new ArgumentNullException(nameof(enderecoCadastralCliente));
             EnderecoEntrega = enderecoEntrega ?? throw new ArgumentNullException(nameof(enderecoEntrega));
@@ -28,6 +34,8 @@ namespace Pedido.Dados.Criacao
         public PedidoCriacaoAmbienteDados Ambiente { get; }
 
         public PedidoCriacaoConfiguracaoDados Configuracao { get; }
+
+        public PedidoCriacaoExtraDados Extra { get; }
 
         //Armazena os dados cadastrados do cliente
         public PedidoCriacaoClienteDados Cliente { get; }
@@ -53,11 +61,12 @@ namespace Pedido.Dados.Criacao
         //campos do marketplace
         public PedidoCriacaoMarketplaceDados Marketplace { get; }
 
-        public static Prepedido.Dados.DetalhesPrepedido.PrePedidoDados PrePedidoDadosDePedidoCriacaoDados(PedidoCriacaoDados pedido)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0017:Simplify object initialization", Justification = "Estilo de código")]
+        public static Prepedido.Dados.DetalhesPrepedido.PrePedidoDados PrePedidoDadosDePedidoCriacaoDados(PedidoCriacaoDados pedido, string id_cliente)
         {
             Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prepedido = new Prepedido.Dados.DetalhesPrepedido.PrePedidoDados();
             prepedido.DadosCliente = global::Cliente.Dados.DadosClienteCadastroDados.DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(pedido.EnderecoCadastralCliente,
-                pedido.Ambiente.Indicador_Orcamentista, pedido.Ambiente.Loja, "", null, pedido.Cliente.Id_cliente);
+                pedido.Ambiente.Indicador, pedido.Ambiente.Loja, "", null, id_cliente);
             prepedido.ListaProdutos = Pedido.Dados.Criacao.PedidoCriacaoProdutoDados.PrepedidoProdutoPrepedidoDados_De_PedidoCriacaoProdutoDados(pedido.ListaProdutos);
             prepedido.FormaPagtoCriacao = pedido.FormaPagtoCriacao;
             prepedido.EnderecoEntrega = pedido.EnderecoEntrega;
@@ -65,7 +74,7 @@ namespace Pedido.Dados.Criacao
             prepedido.DetalhesPrepedido = pedido.DetalhesPedido;
             prepedido.Vl_total = pedido.Valor.Vl_total;
             prepedido.Vl_total_NF = pedido.Valor.Vl_total_NF;
-            prepedido.PermiteRAStatus = pedido.Valor.PermiteRAStatus;
+            prepedido.PermiteRAStatus = (short)(pedido.Valor.PedidoPossuiRa() ? 1 : 0);
 
             return prepedido;
         }

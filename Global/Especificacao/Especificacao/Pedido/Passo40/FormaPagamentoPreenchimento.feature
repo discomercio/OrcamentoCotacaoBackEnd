@@ -6,12 +6,12 @@ Background: não executado na api magento
 	#ignoramos na API magento porque é feito em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\EspecificacaoAdicional\FormaPagtoCriacaoMagentoDto.feature
 	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 
+	#está com muitas diferenças....
+	Given Ignorar cenário no ambiente "Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApiBll.CadastrarPrepedido.CadastrarPrepedidoPrepedidoApi"
+
 	#para testar, afazer, voltar isto para testar o pedido!!!
 	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 
-@ignore
-Scenario: tirar esta linha acima!!! não está estando na loja!!
-	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 
 
 #CUIDADO COM O NOME DA VARIÁVEL!!
@@ -134,18 +134,18 @@ Scenario: op_pu_forma_pagto
 	Then Erro "Indique a forma de pagamento da parcela única."
 
 Scenario: c_pu_valor
-	#loja/PedidoNovoConsiste.asp
-	#if (trim(f.c_pu_valor.value)=='') {
-	#		alert('Indique o valor da parcela única!!');
-	#loja/PedidoNovoConfirma.asp
-	#elseif c_pu_valor = "" then
-	#	alerta = "Indique o valor da parcela única."
+#loja/PedidoNovoConsiste.asp
+#if (trim(f.c_pu_valor.value)=='') {
+#		alert('Indique o valor da parcela única!!');
+#loja/PedidoNovoConfirma.asp
+#elseif c_pu_valor = "" then
+#	alerta = "Indique o valor da parcela única."
 
-	#nao temos como testar porque já é numérico
-	#Given Pedido base
-	#When Informo "tipo_parcelamento" = "COD_FORMA_PAGTO_PARCELA_UNICA"
-	#When Informo "c_pu_valor" = ""
-	#Then Erro "Indique o valor da parcela única!!"
+#nao temos como testar porque já é numérico
+#Given Pedido base
+#When Informo "tipo_parcelamento" = "COD_FORMA_PAGTO_PARCELA_UNICA"
+#When Informo "c_pu_valor" = ""
+#Then Erro "Indique o valor da parcela única!!"
 
 Scenario: c_pu_valor inválido
 	#loja/PedidoNovoConsiste.asp
@@ -170,18 +170,18 @@ Scenario: c_pu_valor inválido
 
 
 Scenario: c_pu_vencto_apos
-	#loja/PedidoNovoConsiste.asp
-	#if (trim(f.c_pu_vencto_apos.value)=='') {
-	#		alert('Indique o intervalo de vencimento da parcela única!!');
-	#loja/PedidoNovoConfirma.asp
-	#elseif c_pu_vencto_apos = "" then
-	#	alerta = "Indique o intervalo de vencimento da parcela única."
+#loja/PedidoNovoConsiste.asp
+#if (trim(f.c_pu_vencto_apos.value)=='') {
+#		alert('Indique o intervalo de vencimento da parcela única!!');
+#loja/PedidoNovoConfirma.asp
+#elseif c_pu_vencto_apos = "" then
+#	alerta = "Indique o intervalo de vencimento da parcela única."
 
-	#nao temos como testar porque já é numérico
-	#Given Pedido base cliente PJ
-	#When Informo "tipo_parcelamento" = "COD_FORMA_PAGTO_PARCELA_UNICA"
-	#When Informo "c_pu_vencto_apos" = ""
-	#Then Erro "Indique o intervalo de vencimento da parcela única!!"
+#nao temos como testar porque já é numérico
+#Given Pedido base cliente PJ
+#When Informo "tipo_parcelamento" = "COD_FORMA_PAGTO_PARCELA_UNICA"
+#When Informo "c_pu_vencto_apos" = ""
+#Then Erro "Indique o intervalo de vencimento da parcela única!!"
 
 Scenario: c_pu_vencto_apos inválido
 	#loja/PedidoNovoConsiste.asp
@@ -222,26 +222,26 @@ Scenario: c_pu_vencto_apos inválido
 
 #//	Parcelado no cartão (internet)
 Scenario: c_pc_qtde
-	#loja/PedidoNovoConsiste.asp
-	#if (trim(f.c_pc_qtde.value)=='') {
-	#		alert('Indique a quantidade de parcelas!!');
+#loja/PedidoNovoConsiste.asp
+#if (trim(f.c_pc_qtde.value)=='') {
+#		alert('Indique a quantidade de parcelas!!');
 
-		#nao temos como testar porque já é numérico
-	#Given Pedido base
-	#When Informo "tipo_parcelamento" = "COD_FORMA_PAGTO_PARCELADO_CARTAO"
-	#When Informo "c_pc_qtde" = ""
-	#Then Erro "Indique a quantidade de parcelas!!"
+#nao temos como testar porque já é numérico
+#Given Pedido base
+#When Informo "tipo_parcelamento" = "COD_FORMA_PAGTO_PARCELADO_CARTAO"
+#When Informo "c_pc_qtde" = ""
+#Then Erro "Indique a quantidade de parcelas!!"
 
 Scenario: c_pc_qtde inválida
-	#loja/PedidoNovoConfirma.asp
-	#if c_pc_qtde = "" then
-	#	alerta = "Indique a quantidade de parcelas (parcelado no cartão [internet])."
+#loja/PedidoNovoConfirma.asp
+#if c_pc_qtde = "" then
+#	alerta = "Indique a quantidade de parcelas (parcelado no cartão [internet])."
 
-	#nao temos como testar porque já é numérico
-	#Given Pedido base
-	#When Informo "tipo_parcelamento" = "COD_FORMA_PAGTO_PARCELADO_CARTAO"
-	#When Informo "c_pc_qtde" = ""
-	#Then Erro "Indique a quantidade de parcelas (parcelado no cartão [internet])."
+#nao temos como testar porque já é numérico
+#Given Pedido base
+#When Informo "tipo_parcelamento" = "COD_FORMA_PAGTO_PARCELADO_CARTAO"
+#When Informo "c_pc_qtde" = ""
+#Then Erro "Indique a quantidade de parcelas (parcelado no cartão [internet])."
 
 	#loja/PedidoNovoConsiste.asp
 	#n=converte_numero(f.c_pc_qtde.value);
@@ -266,18 +266,18 @@ Scenario: c_pc_qtde inválida
 	Then Sem Erro "regex .*Quantidade de parcelas inválida.*"
 
 Scenario: c_pc_valor
-	#loja/PedidoNovoConsiste.asp
-	#if (trim(f.c_pc_valor.value)=='') {
-	#		alert('Indique o valor da parcela!!');
-	#loja/PedidoNovoConfirma.asp
-	#elseif c_pc_valor = "" then
-	#	alerta = "Indique o valor da parcela (parcelado no cartão [internet])."
+#loja/PedidoNovoConsiste.asp
+#if (trim(f.c_pc_valor.value)=='') {
+#		alert('Indique o valor da parcela!!');
+#loja/PedidoNovoConfirma.asp
+#elseif c_pc_valor = "" then
+#	alerta = "Indique o valor da parcela (parcelado no cartão [internet])."
 
-	#nao temos como testar porque já é numérico
-	#Given Pedido base
-	#When Informo "tipo_parcelamento" = "COD_FORMA_PAGTO_PARCELADO_CARTAO"
-	#When Informo "c_pc_valor" = ""
-	#Then Erro "Indique o valor da parcela!!"
+#nao temos como testar porque já é numérico
+#Given Pedido base
+#When Informo "tipo_parcelamento" = "COD_FORMA_PAGTO_PARCELADO_CARTAO"
+#When Informo "c_pc_valor" = ""
+#Then Erro "Indique o valor da parcela!!"
 
 Scenario: c_pc_valorinválido
 	#loja/PedidoNovoConsiste.asp
@@ -305,18 +305,18 @@ Scenario: c_pc_valorinválido
 
 #//	Parcelado no cartão (maquineta)
 Scenario: c_pc_maquineta_qtde
-	#loja/PedidoNovoConsiste.asp
-	#if (trim(f.c_pc_maquineta_qtde.value)=='') {
-	#		alert('Indique a quantidade de parcelas!!');
-	#loja/PedidoNovoConfirma.asp
-	#if c_pc_maquineta_qtde = "" then
-	#	alerta = "Indique a quantidade de parcelas (parcelado no cartão [maquineta])."
+#loja/PedidoNovoConsiste.asp
+#if (trim(f.c_pc_maquineta_qtde.value)=='') {
+#		alert('Indique a quantidade de parcelas!!');
+#loja/PedidoNovoConfirma.asp
+#if c_pc_maquineta_qtde = "" then
+#	alerta = "Indique a quantidade de parcelas (parcelado no cartão [maquineta])."
 
-	#nao temos como testar porque já é numérico
-	#Given Pedido base
-	#When Informo "tipo_parcelamento" = "COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA"
-	#When Informo "c_pc_maquineta_qtde" = "null"
-	#Then Erro "Indique a quantidade de parcelas!!"
+#nao temos como testar porque já é numérico
+#Given Pedido base
+#When Informo "tipo_parcelamento" = "COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA"
+#When Informo "c_pc_maquineta_qtde" = "null"
+#Then Erro "Indique a quantidade de parcelas!!"
 
 Scenario: c_pc_maquineta_qtde inválida
 	#loja/PedidoNovoConsiste.asp
@@ -342,18 +342,18 @@ Scenario: c_pc_maquineta_qtde inválida
 	Then Sem erro "regex .*Quantidade de parcelas inválida.*"
 
 Scenario: c_pc_maquineta_valor
-	#loja/PedidoNovoConsiste.asp
-	#if (trim(f.c_pc_maquineta_valor.value)=='') {
-	#		alert('Indique o valor da parcela!!');
-	#loja/PedidoNovoConfirma.asp
-	#elseif c_pc_maquineta_valor = "" then
-	#	alerta = "Indique o valor da parcela (parcelado no cartão [maquineta])."
+#loja/PedidoNovoConsiste.asp
+#if (trim(f.c_pc_maquineta_valor.value)=='') {
+#		alert('Indique o valor da parcela!!');
+#loja/PedidoNovoConfirma.asp
+#elseif c_pc_maquineta_valor = "" then
+#	alerta = "Indique o valor da parcela (parcelado no cartão [maquineta])."
 
-	#nao temos como testar porque já é numérico
-	#Given Pedido base
-	#When Informo "tipo_parcelamento" = "COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA"
-	#When Informo "c_pc_maquineta_valor" = ""
-	#Then Erro "Indique o valor da parcela!!"
+#nao temos como testar porque já é numérico
+#Given Pedido base
+#When Informo "tipo_parcelamento" = "COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA"
+#When Informo "c_pc_maquineta_valor" = ""
+#Then Erro "Indique o valor da parcela!!"
 
 Scenario: c_pc_maquineta_valor invalido
 	#loja/PedidoNovoConsiste.asp
@@ -394,32 +394,32 @@ Scenario: c_pc_maquineta_valor invalido
 
 #//	Parcelado com entrada
 Scenario: op_pce_entrada_forma_pagto
-	#loja/PedidoNovoConsiste.asp
-	#if (trim(f.op_pce_entrada_forma_pagto.value)=='') {
-	#		alert('Indique a forma de pagamento da entrada!!');
-	#loja/PedidoNovoConfirma.asp
-	#if op_pce_entrada_forma_pagto = "" then
-	#	alerta = "Indique a forma de pagamento da entrada (parcelado com entrada)."
+#loja/PedidoNovoConsiste.asp
+#if (trim(f.op_pce_entrada_forma_pagto.value)=='') {
+#		alert('Indique a forma de pagamento da entrada!!');
+#loja/PedidoNovoConfirma.asp
+#if op_pce_entrada_forma_pagto = "" then
+#	alerta = "Indique a forma de pagamento da entrada (parcelado com entrada)."
 
-	#nao temos como testar porque já é numérico
-	#Given Pedido base
-	#When Informo "tipo_parcelamento" = "COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA"
-	#When Informo "op_pce_entrada_forma_pagto" = ""
-	#Then Erro "Indique a forma de pagamento da entrada!!"
+#nao temos como testar porque já é numérico
+#Given Pedido base
+#When Informo "tipo_parcelamento" = "COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA"
+#When Informo "op_pce_entrada_forma_pagto" = ""
+#Then Erro "Indique a forma de pagamento da entrada!!"
 
 Scenario: c_pce_entrada_valor
-	#loja/PedidoNovoConsiste.asp
-	#if (trim(f.c_pce_entrada_valor.value)=='') {
-	#		alert('Indique o valor da entrada!!');
-	#loja/PedidoNovoConfirma.asp
-	#elseif c_pce_entrada_valor = "" then
-	#	alerta = "Indique o valor da entrada (parcelado com entrada)."
+#loja/PedidoNovoConsiste.asp
+#if (trim(f.c_pce_entrada_valor.value)=='') {
+#		alert('Indique o valor da entrada!!');
+#loja/PedidoNovoConfirma.asp
+#elseif c_pce_entrada_valor = "" then
+#	alerta = "Indique o valor da entrada (parcelado com entrada)."
 
-	#nao temos como testar porque já é numérico
-	#Given Pedido base
-	#When Informo "tipo_parcelamento" = "COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA"
-	#When Informo "c_pce_entrada_valor" = ""
-	#Then Erro "Indique o valor da entrada!!"
+#nao temos como testar porque já é numérico
+#Given Pedido base
+#When Informo "tipo_parcelamento" = "COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA"
+#When Informo "c_pce_entrada_valor" = ""
+#Then Erro "Indique o valor da entrada!!"
 
 Scenario: c_pce_entrada_valor inválida
 	#loja/PedidoNovoConsiste.asp
@@ -453,17 +453,17 @@ Scenario: op_pce_prestacao_forma_pagto
 	Then Erro "Indique a forma de pagamento das prestações (parcelado com entrada)."
 
 Scenario: c_pce_prestacao_qtde
-	#loja/PedidoNovoConsiste.asp
-	#if (trim(f.c_pce_prestacao_qtde.value)=='') {
-	#		alert('Indique a quantidade de prestações!!');
-	#loja/PedidoNovoConfirma.asp
-	#elseif c_pce_prestacao_qtde = "" then
-	#	alerta = "Indique a quantidade de prestações (parcelado com entrada)."
+#loja/PedidoNovoConsiste.asp
+#if (trim(f.c_pce_prestacao_qtde.value)=='') {
+#		alert('Indique a quantidade de prestações!!');
+#loja/PedidoNovoConfirma.asp
+#elseif c_pce_prestacao_qtde = "" then
+#	alerta = "Indique a quantidade de prestações (parcelado com entrada)."
 
-	#nao temos como testar porque já é numérico
-	#Given Pedido base COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA
-	#When Informo "c_pce_prestacao_qtde" = ""
-	#Then Erro "Indique a quantidade de prestações!!"
+#nao temos como testar porque já é numérico
+#Given Pedido base COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA
+#When Informo "c_pce_prestacao_qtde" = ""
+#Then Erro "Indique a quantidade de prestações!!"
 
 Scenario: c_pce_prestacao_qtde inválida
 	#loja/PedidoNovoConsiste.asp
@@ -486,17 +486,17 @@ Scenario: c_pce_prestacao_qtde inválida
 	Then Sem Erro "Quantidade de prestações inválida (parcelado com entrada)."
 
 Scenario: c_pce_prestacao_valor
-	#loja/PedidoNovoConsiste.asp
-	#if (trim(f.c_pce_prestacao_valor.value)=='') {
-	#		alert('Indique o valor da prestação!!');
-	#loja/PedidoNovoConfirma.asp
-	#elseif c_pce_prestacao_valor = "" then
-	#	alerta = "Indique o valor da prestação (parcelado com entrada)."
+#loja/PedidoNovoConsiste.asp
+#if (trim(f.c_pce_prestacao_valor.value)=='') {
+#		alert('Indique o valor da prestação!!');
+#loja/PedidoNovoConfirma.asp
+#elseif c_pce_prestacao_valor = "" then
+#	alerta = "Indique o valor da prestação (parcelado com entrada)."
 
-	#nao temos como testar porque já é numérico
-	#Given Pedido base COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA
-	#When Informo "c_pce_prestacao_valor" = ""
-	#Then Erro "Indique o valor da prestação!!"
+#nao temos como testar porque já é numérico
+#Given Pedido base COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA
+#When Informo "c_pce_prestacao_valor" = ""
+#Then Erro "Indique o valor da prestação!!"
 
 
 Scenario: c_pce_prestacao_valor inválida
@@ -520,18 +520,18 @@ Scenario: c_pce_prestacao_valor inválida
 	Then Sem Erro "Valor de prestação inválido (parcelado com entrada)."
 
 Scenario: c_pce_prestacao_periodo
-	#loja/PedidoNovoConsiste.asp
-	#if (trim(f.c_pce_prestacao_periodo.value)=='') {
-	#		alert('Indique o intervalo de vencimento entre as parcelas!!');
-	#loja/PedidoNovoConfirma.asp
-	#elseif c_pce_prestacao_periodo = "" then
-	#	alerta = "Indique o intervalo de vencimento entre as parcelas (parcelado com entrada)."
+#loja/PedidoNovoConsiste.asp
+#if (trim(f.c_pce_prestacao_periodo.value)=='') {
+#		alert('Indique o intervalo de vencimento entre as parcelas!!');
+#loja/PedidoNovoConfirma.asp
+#elseif c_pce_prestacao_periodo = "" then
+#	alerta = "Indique o intervalo de vencimento entre as parcelas (parcelado com entrada)."
 
-	#nao temos como testar porque já é numérico
-	#Given Pedido base
-	#When Informo "tipo_parcelamento" = "COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA"
-	#When Informo "c_pce_prestacao_periodo" = ""
-	#Then Erro "Indique o intervalo de vencimento entre as parcelas!!"
+#nao temos como testar porque já é numérico
+#Given Pedido base
+#When Informo "tipo_parcelamento" = "COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA"
+#When Informo "c_pce_prestacao_periodo" = ""
+#Then Erro "Indique o intervalo de vencimento entre as parcelas!!"
 
 
 Scenario: c_pce_prestacao_periodo inválida
@@ -566,8 +566,8 @@ Scenario: forma_pagto invalida
 	When Informo "tipo_parcelamento" = "99"
 	Then Erro "Tipo do parcelamento inválido"
 
-	#nao temos como testar porque já é numérico
-	#Given Pedido base
-	#When Informo "tipo_parcelamento" = "XX"
-	#Then Erro "Tipo do parcelamento inválido"
+#nao temos como testar porque já é numérico
+#Given Pedido base
+#When Informo "tipo_parcelamento" = "XX"
+#Then Erro "Tipo do parcelamento inválido"
 

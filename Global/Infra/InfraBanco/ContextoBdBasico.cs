@@ -35,6 +35,8 @@ namespace InfraBanco
 
             modelBuilder.Entity<TprodutoXAlerta>()
                 .HasKey(x => new { x.Fabricante, x.Produto, x.Id_Alerta });
+            modelBuilder.Entity<TprodutoXwmsRegraCd>()
+                .HasKey(x => new { x.Fabricante, x.Produto });
 
             modelBuilder.Entity<TprodutoLoja>()
                 .HasKey(x => new { x.Fabricante, x.Produto, x.Loja });
@@ -94,8 +96,23 @@ namespace InfraBanco
                 .WithMany(x => x.TprodutoLoja)
                 .HasForeignKey(x => new { x.Fabricante, x.Produto });
 
+            //não tem chave no banco, mas é obrigatória para o entity. campos NULL não podem fazer parte.
+            //não é uma chave única, mas suficiente. Embora os campos permitam null, nãoe xiste nenhum null no banco.
             modelBuilder.Entity<TestoqueLog>()
-               .HasKey(x => new {x.Pedido_estoque_destino, x.Pedido_estoque_origem, x.Fabricante, x.Produto, x.Qtde_atendida });
+               .HasKey(x => new
+               {
+                   x.Pedido_estoque_destino,
+                   x.Pedido_estoque_origem,
+                   x.Fabricante,
+                   x.Produto,
+                   x.Qtde_atendida,
+                   x.Usuario,
+                   x.Operacao,
+                   x.Cod_estoque_destino,
+                   x.Cod_estoque_origem,
+                   x.Data_hora,
+                   x.Id_nfe_emitente
+               });
 
             modelBuilder.Entity<TavisoExibido>()
                 .HasKey(x => new { x.Id, x.Usuario });
@@ -144,7 +161,7 @@ namespace InfraBanco
         public DbSet<TprodutoXAlerta> TprodutoXAlertas { get; set; }
         public DbSet<TalertaProduto> TalertaProdutos { get; set; }
         public DbSet<TformaPagto> TformaPagtos { get; set; }
-        public DbSet<TorcamentistaEIndicadorRestricaoFormaPagto> torcamentistaEIndicadorRestricaoFormaPagtos { get; set; }
+        public DbSet<TorcamentistaEIndicadorRestricaoFormaPagto> TorcamentistaEIndicadorRestricaoFormaPagtos { get; set; }
         public DbSet<TprazoPagtoVisanet> TprazoPagtoVisanets { get; set; }
         public DbSet<TprodutoSubgrupo> TprodutoSubgrupos { get; set; }
         public DbSet<Tusuario> Tusuarios { get; set; }
@@ -155,16 +172,19 @@ namespace InfraBanco
         public DbSet<TestoqueMovimento> TestoqueMovimentos { get; set; }
 
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
-        public DbSet<Tdesconto> Tdescontos { get; set; }
-        public DbSet<TtransportadoraCep> TtransportadoraCeps { get; set; }
-        public DbSet<TestoqueLog> TestoqueLogs { get; set; }
-        public DbSet<TfinControle> TfinControles { get; set; }
-        public DbSet<TpedidoAnaliseEndereco> TpedidoAnaliseEnderecos { get; set; }
-        public DbSet<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseConfrontacaos { get; set; }
-        public DbSet<TusuarioXLoja> TusuarioXLojas { get; set; }
         public DbSet<Taviso> Tavisos { get; set; }
         public DbSet<TavisoExibido> TavisoExibidos { get; set; }
         public DbSet<TavisoLido> TavisoLidos { get; set; }
+        public DbSet<Tdesconto> Tdescontos { get; set; }
+        public DbSet<TestoqueLog> TestoqueLogs { get; set; }
+        public DbSet<TfinControle> TfinControles { get; set; }
+        public DbSet<Toperacao> Toperacaos { get; set; }
+        public DbSet<TpedidoAnaliseEndereco> TpedidoAnaliseEnderecos { get; set; }
+        public DbSet<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseConfrontacaos { get; set; }
+        public DbSet<TpedidoDevolucao> TpedidoDevolucaos { get; set; }
+        public DbSet<TperfilItem> TperfilItens { get; set; }
+        public DbSet<TtransportadoraCep> TtransportadoraCeps { get; set; }
+        public DbSet<TusuarioXLoja> TusuarioXLojas { get; set; }
 #endif
         //daqui para a frente só é necessário para os testes automatizados
 #if DEBUG_BANCO_DEBUG

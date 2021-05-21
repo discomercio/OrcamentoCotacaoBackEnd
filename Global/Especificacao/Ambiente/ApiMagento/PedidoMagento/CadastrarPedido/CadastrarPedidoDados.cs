@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 {
-    static class CadastrarPedidoDados
+    public static class CadastrarPedidoDados
     {
         public static MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoDto PedidoBase()
         {
@@ -21,10 +21,20 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
             */
             return ret;
         }
+
+        //temos que gear um novo Pedido_bs_x_ac em cada pedido
+        private static volatile int Pedido_bs_x_ac = 123456789;
+        private static readonly object _lockObject_Pedido_bs_x_ac = new object();
+
         public static MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoDto PedidoBaseComEnderecoDeEntrega()
         {
             var ret = Testes.Utils.LerJson.LerArquivoEmbutido<MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoDto>(
                 "Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedidoDados.json");
+            lock (_lockObject_Pedido_bs_x_ac)
+            {
+                ret.InfCriacaoPedido.Pedido_bs_x_ac = Pedido_bs_x_ac.ToString("d");
+                Pedido_bs_x_ac++;
+            }
             return ret;
         }
 
@@ -44,5 +54,14 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
         {
             return PedidoBaseClientePJ();
         }
+
+
+        public static MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoDto PedidoBase_para_banco_ARCLUBE_DIS20201204()
+        {
+            var ret = Testes.Utils.LerJson.LerArquivoEmbutido<MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoDto>(
+                "Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedidoDados_para_banco_ARCLUBE_DIS20201204.json");
+            return ret;
+        }
+
     }
 }

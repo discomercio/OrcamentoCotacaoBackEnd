@@ -22,7 +22,6 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
         private readonly InicializarBancoGeral inicializarBanco;
         private readonly ITestOutputHelper output;
         private readonly PrePedidoUnisBll prepedidoUnisBll;
-        private readonly ClienteUnisBll clienteUnisBll;
         private readonly PrepedidoBll prepedidoBll;
         private readonly ClienteBll clienteBll;
 
@@ -32,7 +31,6 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesP
             this.inicializarBanco = inicializarBanco;
             output = Output;
             this.prepedidoUnisBll = prepedidoUnisBll;
-            this.clienteUnisBll = clienteUnisBll;
             this.prepedidoBll = prepedidoBll;
             this.clienteBll = clienteBll;
 

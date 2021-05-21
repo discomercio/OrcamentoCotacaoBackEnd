@@ -1,8 +1,7 @@
-﻿@ignore
-@Especificacao.Pedido.Passo60.Gravacao.Passo20.multi_cd_regra_determina_tipo_pessoa
+﻿@Especificacao.Pedido.Passo60.Gravacao.Passo20.multi_cd_regra_determina_tipo_pessoa
 Feature: multi_cd_regra_determina_tipo_pessoa
-#BDD.asp
 
+#BDD.asp
 #function multi_cd_regra_determina_tipo_pessoa(byval tipo_cliente, byval contribuinte_icms_status, byval produtor_rural_status)
 #dim tipo_pessoa
 #	tipo_pessoa = ""
@@ -25,13 +24,12 @@ Feature: multi_cd_regra_determina_tipo_pessoa
 #
 #	multi_cd_regra_determina_tipo_pessoa = tipo_pessoa
 #end function
-
+#temos que testar a rotina UtilsProduto.MultiCdRegraDeterminaPessoa
+#se houver alugma outra versão dela, a que está sendo usada no produto é essa.
 Scenario Outline: Testar multi_cd_regra_determina_tipo_pessoa
-	Given tipo_cliente = <tipo_cliente>
-	And contribuinte_icms_status = <contribuinte_icms_status>
-	And produtor_rural_status = <produtor_rural_status>
-	Then multi_cd_regra_determina_tipo_pessoa = <resultado>
+	Then Chamar rotina MULTI_CD_REGRA_DETERMINA_TIPO_PESSOA tipo cliente = "<tipo_cliente>", contribuinte = "<contribuinte_icms_status>", produtor rural = "<produtor_rural_status>" e resultado = "<resultado>"
 
+	#criar um steps.cs dentro do mesmo diretório do feature
 	Examples:
 		| tipo_cliente | contribuinte_icms_status                | produtor_rural_status             | resultado                                                             |
 		| ID_PF        |                                         | COD_ST_CLIENTE_PRODUTOR_RURAL_SIM | COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PRODUTOR_RURAL                   |
@@ -39,7 +37,6 @@ Scenario Outline: Testar multi_cd_regra_determina_tipo_pessoa
 		| ID_PJ        | COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM    |                                   | COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_JURIDICA_CONTRIBUINTE     |
 		| ID_PJ        | COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO    |                                   | COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_JURIDICA_NAO_CONTRIBUINTE |
 		| ID_PJ        | COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO |                                   | COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_JURIDICA_ISENTO           |
-
 #descrevndo os códigos:
 #
 #  ' CÓDIGOS QUE IDENTIFICAM SE É PESSOA FÍSICA OU JURÍDICA
@@ -63,4 +60,3 @@ Scenario Outline: Testar multi_cd_regra_determina_tipo_pessoa
 #	Const COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_JURIDICA_CONTRIBUINTE = "PJC"
 #	Const COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_JURIDICA_NAO_CONTRIBUINTE = "PJNC"
 #	Const COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_JURIDICA_ISENTO = "PJI"
-

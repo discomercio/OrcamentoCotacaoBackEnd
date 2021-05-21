@@ -896,7 +896,19 @@ namespace Cliente
             Cliente.Dados.ClienteCadastroDados clienteCadastroDados, ContextoBdGravacao dbGravacao, List<string> lstErros, string apelido)
         {
             string log = "";
-            string logRemove = "";
+
+            List<string> lstErros = new List<string>();
+
+            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDados, false, null, null, lstErros,
+                contextoProvider, cepBll, bancoNFeMunicipio, null, true, sistemaResponsavel, false);
+            if (lstErros.Count > 0)
+                return lstErros;
+
+
+            var dados = from c in db.Tclientes
+                        where c.Id == dadosClienteCadastroDados.Id
+                        select c;
+            var cli = await dados.FirstOrDefaultAsync();
 
             if (clienteCadastroDados.DadosCliente.Tipo == Constantes.ID_PJ && clienteCadastroDados.RefComercial.Count > 0)
             {
@@ -1114,7 +1126,8 @@ namespace Cliente
             return lstRefComercial;
         }
 
-        private object _lockCadastrarCliente = new object();
+//todo: ao invés de proteger com um lock de c#, temos que proteger com um lock no banco que seja compatível com o verdinho
+        private static object _lockCadastrarCliente = new object();
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<IEnumerable<string>> CadastrarCliente(Cliente.Dados.ClienteCadastroDados clienteCadastroDados, string indicador,
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -1146,7 +1159,7 @@ namespace Cliente
 
             //passar lista de bancos para validar
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await ListarBancosCombo()).ToList();
-            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(clienteCadastroDados.DadosCliente,
+            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(clienteCadastroDados.DadosCliente, true,
                 clienteCadastroDados.RefBancaria,
                 clienteCadastroDados.RefComercial,
                 lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false, sistemaResponsavelCadastro, true);
@@ -1491,7 +1504,7 @@ namespace Cliente
 
         private Task<string> GerarIdCliente(InfraBanco.ContextoBdGravacao dbgravacao, string id_nsu)
         {
-            return UtilsGlobais.Util.GerarNsu(dbgravacao, id_nsu);
+            return UtilsGlobais.Nsu.GerarNsu(dbgravacao, id_nsu);
         }
 
         public async Task<bool> ClienteExiste(string cpf_cnpj)
@@ -1514,58 +1527,15 @@ namespace Cliente
             return retorno;
         }
 
-        public async Task<string> BuscarIdCliente(string cpf_cnpj)
+        public static async Task<string> BuscarIdCliente(string cpf_cnpj, ContextoBd db)
         {
             string retorno = "";
-
-            var db = contextoProvider.GetContextoLeitura();
 
             cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
 
             retorno = await (from c in db.Tclientes
                              where c.Cnpj_Cpf == cpf_cnpj
                              select c.Id).FirstOrDefaultAsync();
-            return retorno;
-        }
-
-
-        public async Task<string> BuscaListaOperacoesPermitidas(string apelido)
-        {
-            string retorno = "";
-            var db = contextoProvider.GetContextoLeitura();
-            //            SELECT DISTINCT id_operacao
-            //FROM t_PERFIL
-            //INNER JOIN t_PERFIL_ITEM ON t_PERFIL.id = t_PERFIL_ITEM.id_perfil
-            //INNER JOIN t_PERFIL_X_USUARIO ON t_PERFIL.id = t_PERFIL_X_USUARIO.id_perfil
-            //INNER JOIN t_OPERACAO ON(t_PERFIL_ITEM.id_operacao= t_OPERACAO.id)
-            //WHERE(t_PERFIL_X_USUARIO.usuario = 'pragmatica') AND
-            //      (t_PERFIL.st_inativo = 0) AND
-            //      (t_OPERACAO.st_inativo = 0)
-            //ORDER BY id_operacao
-
-            var lstTask = (from c in db.Tperfils
-                          .Include(r => r.TperfilItem)
-                          .Include(r => r.TperfilUsuario)
-                          .Include(r => r.TperfilItem.Toperacao)
-                           where c.TperfilUsuario.Usuario == apelido &&
-                                 c.St_inativo == 0 &&
-                                 c.TperfilItem.Toperacao.St_inativo == 0
-                           orderby c.TperfilItem.Id_operacao
-                           select c.TperfilItem.Id_operacao).Distinct();
-
-
-
-            foreach (var i in await lstTask.ToListAsync())
-            {
-                retorno = retorno + "|" + i;
-            }
-
-            if (!string.IsNullOrEmpty(retorno))
-            {
-                if (retorno.Substring(retorno.Length - 1, 1) != "" || retorno.Substring(retorno.Length - 1, 1) != "|")
-                    retorno = retorno + "|";
-            }
-
             return retorno;
         }
     }

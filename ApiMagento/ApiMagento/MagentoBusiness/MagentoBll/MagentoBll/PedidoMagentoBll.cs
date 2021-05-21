@@ -25,16 +25,14 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
         private readonly ValidacoesPrepedidoBll validacoesPrepedidoBll;
         private readonly PrepedidoBll prepedidoBll;
         private readonly ConfiguracaoApiMagento configuracaoApiMagento;
-        private readonly Pedido.PedidoCriacao pedidoCriacao;
+        private readonly Pedido.Criacao.PedidoCriacao pedidoCriacao;
         private readonly PedidoMagentoClienteBll pedidoMagentoClienteBll;
-        private readonly ClienteBll clienteBll;
 
         public PedidoMagentoBll(InfraBanco.ContextoBdProvider contextoProvider,
             Produto.ProdutoGeralBll produtoGeralBll,
             Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll, PrepedidoBll prepedidoBll,
-            ConfiguracaoApiMagento configuracaoApiMagento, Pedido.PedidoCriacao pedidoCriacao,
-            PedidoMagentoClienteBll pedidoMagentoClienteBll,
-            Cliente.ClienteBll clienteBll)
+            ConfiguracaoApiMagento configuracaoApiMagento, Pedido.Criacao.PedidoCriacao pedidoCriacao,
+            PedidoMagentoClienteBll pedidoMagentoClienteBll)
         {
             this.contextoProvider = contextoProvider;
             this.produtoGeralBll = produtoGeralBll;
@@ -43,10 +41,27 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             this.configuracaoApiMagento = configuracaoApiMagento;
             this.pedidoCriacao = pedidoCriacao;
             this.pedidoMagentoClienteBll = pedidoMagentoClienteBll;
-            this.clienteBll = clienteBll;
         }
 
+        private static readonly object _lockObjectCadastrarPedidoMagento = new object();
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<PedidoResultadoMagentoDto> CadastrarPedidoMagento(PedidoMagentoDto pedidoMagento, string usuario)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        {
+            /*
+            como o magento cadastra o cliente se não existir, nesse processo dá sim problema com multiplas threads:
+            ele verifica que o cliente não está cadastrado, começa a cadastrar o cliente,
+            nisso outra thread verifica que não está cadastrado, começa a cadastrar e dá erro porque a primeira thread 
+            terminou de cadastrar.
+
+            Para evitar esse problema, que seria muito raro de qq forma, colocamos esse lock.
+            */
+            lock (_lockObjectCadastrarPedidoMagento)
+            {
+                return CadastrarPedidoMagentoProtegido(pedidoMagento, usuario).Result;
+            }
+        }
+        private async Task<PedidoResultadoMagentoDto> CadastrarPedidoMagentoProtegido(PedidoMagentoDto pedidoMagento, string usuario)
         {
             PedidoResultadoMagentoDto resultado = new PedidoResultadoMagentoDto();
 
@@ -54,11 +69,25 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             pedidoMagento.Cnpj_Cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(pedidoMagento.Cnpj_Cpf);
 
 
-            var orcamentistaindicador_vendedor_loja = await Calcular_orcamentistaindicador_vendedor_loja(pedidoMagento, usuario, resultado.ListaErros);
+            var indicador_vendedor_loja = await Calcular_indicador_vendedor_loja(pedidoMagento, usuario, resultado.ListaErros);
             pedidoMagentoClienteBll.LimitarPedidosMagentoPJ(pedidoMagento, resultado.ListaErros);
             await ValidarPedidoMagentoEMarketplace(pedidoMagento, resultado.ListaErros);
             if (resultado.ListaErros.Count > 0)
                 return resultado;
+
+            //truncar EndEtg_endereco_complemento
+            string? nfe_Texto_Constar = null;
+            if (pedidoMagento.EnderecoEntrega?.EndEtg_endereco_complemento?.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO_COMPLEMENTO)
+                nfe_Texto_Constar = "Complemento do endereço: " + pedidoMagento.EnderecoEntrega?.EndEtg_endereco_complemento;
+
+            if (pedidoMagento.EnderecoEntrega?.PontoReferencia?.ToUpper().Trim() !=
+                pedidoMagento.EnderecoEntrega?.EndEtg_endereco_complemento?.ToUpper().Trim() &&
+                !string.IsNullOrEmpty(pedidoMagento.EnderecoEntrega?.PontoReferencia))
+            {
+                if (!string.IsNullOrEmpty(nfe_Texto_Constar))
+                    nfe_Texto_Constar += "\n";
+                nfe_Texto_Constar = nfe_Texto_Constar + "Ponto de referência: " + pedidoMagento.EnderecoEntrega?.PontoReferencia;
+            }
 
             //Cadastrar cliente
             //#    Endereço
@@ -71,16 +100,29 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             if (resultado.ListaErros.Count > 0)
                 return resultado;
 
-            await pedidoMagentoClienteBll.CadastrarClienteSeNaoExistir(pedidoMagento, resultado.ListaErros, orcamentistaindicador_vendedor_loja, usuario);
+            var cliente = await pedidoMagentoClienteBll.CadastrarClienteSeNaoExistir(pedidoMagento, resultado.ListaErros, indicador_vendedor_loja, usuario);
+            if (cliente == null)
+            {
+                resultado.ListaErros.Add("Erro ao cadastrar cliente");
+                return resultado;
+            }
             if (resultado.ListaErros.Count > 0)
                 return resultado;
+
+            /* ====================================
+             * Inclui a verificação de loja aqui pois caso a loja não exista a rotina "CriarPedidoCriacaoDados" abaixo irá             
+             * gerar erro ao complementar os produtos "ConverterProdutosMagento"
+            */
+            var db = contextoProvider.GetContextoLeitura();
+            var lojaExiste = await db.Tlojas.Where(c => c.Loja == indicador_vendedor_loja.loja).AnyAsync();
+            if (!lojaExiste)
+                resultado.ListaErros.Add("Loja não existe!");
 
             //estamos criando o pedido com os dados do cliente que vem e não com os dados do cliente que esta na base
             //ex: se o cliente já cadastrado, utilizamos o que vem em PedidoMagentoDto.EnderecoCadastralClienteMagentoDto
             Pedido.Dados.Criacao.PedidoCriacaoDados? pedidoDados = await CriarPedidoCriacaoDados(pedidoMagento,
-                orcamentistaindicador_vendedor_loja, resultado.ListaErros,
-                await clienteBll.BuscarIdCliente(pedidoMagento.Cnpj_Cpf)
-                );
+                indicador_vendedor_loja, resultado.ListaErros, id_cliente: cliente.Id, dadosClienteMidia: cliente.Midia,
+                dadosClienteIndicador: cliente.Indicador, nfe_Texto_Constar);
             if (resultado.ListaErros.Count != 0)
                 return resultado;
             if (pedidoDados == null)
@@ -99,33 +141,33 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             return resultado;
         }
 
-        internal class Orcamentistaindicador_vendedor_loja
+        internal class Indicador_vendedor_loja
         {
-            public readonly string? orcamentista_indicador;
+            public readonly string? indicador;
             public readonly string vendedor;
             public readonly string loja;
 
-            public Orcamentistaindicador_vendedor_loja(string? orcamentista_indicador, string vendedor, string loja)
+            public Indicador_vendedor_loja(string? indicador, string vendedor, string loja)
             {
-                this.orcamentista_indicador = orcamentista_indicador;
+                this.indicador = indicador;
                 this.vendedor = vendedor;
                 this.loja = loja;
             }
         }
 
-        private async Task<Orcamentistaindicador_vendedor_loja> Calcular_orcamentistaindicador_vendedor_loja(PedidoMagentoDto pedidoMagento, string usuario, List<string> listaErros)
+        private async Task<Indicador_vendedor_loja> Calcular_indicador_vendedor_loja(PedidoMagentoDto pedidoMagento, string usuario, List<string> listaErros)
         {
             //campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
-            string? orcamentista_indicador = null;
+            string? indicador = null;
             if (pedidoMagento.Frete.HasValue && pedidoMagento.Frete != 0)
             {
-                orcamentista_indicador = configuracaoApiMagento.DadosOrcamentista.Orcamentista;
-                if (!await prepedidoBll.TorcamentistaExiste(orcamentista_indicador))
-                    listaErros.Add("O Orçamentista não existe!");
+                indicador = configuracaoApiMagento.DadosIndicador.Indicador;
+                if (!await prepedidoBll.TorcamentistaExiste(indicador))
+                    listaErros.Add("O Indicador não existe!");
             }
             string vendedor = usuario;
-            string loja = configuracaoApiMagento.DadosOrcamentista.Loja;
-            return new Orcamentistaindicador_vendedor_loja(orcamentista_indicador, vendedor, loja);
+            string loja = configuracaoApiMagento.DadosIndicador.Loja;
+            return new Indicador_vendedor_loja(indicador, vendedor, loja);
         }
 
         private async Task<IEnumerable<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados>> ConverterProdutosMagento(PedidoMagentoDto pedidoMagento,
@@ -138,8 +180,8 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             //preciso obter a qtde de parcelas e a sigla de pagto
             var qtdeParcelas = PrepedidoBll.ObterCustoFinancFornecQtdeParcelasDeFormaPagto(formaPagtoCriacao);
             var siglaParc = prepedidoBll.ObterSiglaFormaPagto(formaPagtoCriacao);
-            List<Produto.Dados.CoeficienteDados> lstCoeficiente = (await validacoesPrepedidoBll.MontarListaCoeficiente(lstFornec, qtdeParcelas,
-                prepedidoBll.ObterSiglaFormaPagto(formaPagtoCriacao))).ToList();
+            List<Produto.Dados.CoeficienteDados> lstCoeficiente = (await validacoesPrepedidoBll.MontarListaCoeficiente(
+                lstFornec, qtdeParcelas, siglaParc)).ToList();
 
             List<string> lstProdutosDistintos = pedidoMagento.ListaProdutos.Select(x => x.Produto).Distinct().ToList();
             List<Produto.Dados.ProdutoDados> lstProdutosUsados = (await produtoGeralBll.BuscarProdutosEspecificos(loja, lstProdutosDistintos)).ToList();
@@ -167,16 +209,17 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
         }
 
         private async Task<Pedido.Dados.Criacao.PedidoCriacaoDados?> CriarPedidoCriacaoDados(PedidoMagentoDto pedidoMagento,
-            Orcamentistaindicador_vendedor_loja orcamentistaindicador_vendedor_loja, List<string> lstErros,
-            string id_cliente)
+            Indicador_vendedor_loja indicador_Vendedor_Loja, List<string> lstErros,
+            string id_cliente, string? dadosClienteMidia, string? dadosClienteIndicador,
+            string? nfe_Texto_Constar)
         {
-            var sistemaResponsavelCadastro = Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI;
+            var sistemaResponsavelCadastro = Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO;
 
             //o cliente existe então vamos converter os dados do cliente para DadosCliente e EnderecoCadastral
             Cliente.Dados.DadosClienteCadastroDados dadosCliente =
                 EnderecoCadastralClienteMagentoDto.DadosClienteDeEnderecoCadastralClienteMagentoDto(pedidoMagento.EnderecoCadastralCliente,
-                orcamentistaindicador_vendedor_loja.loja,
-                orcamentistaindicador_vendedor_loja.vendedor, configuracaoApiMagento.DadosOrcamentista.Orcamentista,
+                indicador_Vendedor_Loja.loja,
+                indicador_Vendedor_Loja.vendedor, configuracaoApiMagento.DadosIndicador.Indicador,
                 id_cliente);
 
             Cliente.Dados.EnderecoCadastralClientePrepedidoDados enderecoCadastral =
@@ -188,25 +231,45 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
 
             Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacao =
                 FormaPagtoCriacaoMagentoDto.FormaPagtoCriacaoDados_De_FormaPagtoCriacaoMagentoDto(pedidoMagento.FormaPagtoCriacao,
-                configuracaoApiMagento, pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem);
+                configuracaoApiMagento, pedidoMagento.InfCriacaoPedido);
 
             List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> listaProdutos =
-                (await ConverterProdutosMagento(pedidoMagento, formaPagtoCriacao, configuracaoApiMagento.DadosOrcamentista.Loja, lstErros)).ToList();
+                (await ConverterProdutosMagento(pedidoMagento, formaPagtoCriacao, configuracaoApiMagento.DadosIndicador.Loja, lstErros)).ToList();
 
             //Precisamos buscar os produtos para poder incluir os valores para incluir na classe de produto
             var pedidoDadosCriacao =
                 PedidoMagentoDto.PedidoDadosCriacaoDePedidoMagentoDto(dadosCliente, enderecoCadastral, enderecoEntrega,
-                listaProdutos, formaPagtoCriacao, pedidoMagento.VlTotalDestePedido, pedidoMagento,
+                listaProdutos, formaPagtoCriacao, pedidoMagento,
                 sistemaResponsavelCadastro,
                 lstErros,
-                configuracaoApiMagento);
+                configuracaoApiMagento,
+                dadosClienteMidia: dadosClienteMidia,
+                dadosClienteIndicador: dadosClienteIndicador,
+                nfe_Texto_Constar);
 
-            return await Task.FromResult(pedidoDadosCriacao);
+            return pedidoDadosCriacao;
         }
 
         private async Task ValidarPedidoMagentoEMarketplace(PedidoMagentoDto pedidoMagento, List<string> lstErros)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            /* ALTERAÇÕES NA VALIDAÇÃO conversa com Hamilton - 23/02/2021
+             * O campo "Marketplace_codigo_origem" é obrigatório e deve ser sempre enviado
+             * no caso de Marketplace_codigo_origem = 001 veio da Arclube
+             */
+
+            //validar o Marketplace_codigo_origem
+            if (string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem))
+            {
+                lstErros.Add("Informe o Marketplace_codigo_origem.");
+                return;
+            }
+
+            var codigoMarketplace = await UtilsGlobais.Util.ListarCodigoMarketPlace(contextoProvider)
+                        .Where(x => x.Codigo == pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem).AnyAsync();
+
+            if (!codigoMarketplace)
+                lstErros.Add("Código Marketplace não encontrado.");
+
             //vamos validar o número do pedido magento
             if (string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac))
                 lstErros.Add("Favor informar o número do pedido Magento(Pedido_bs_x_ac)!");
@@ -214,28 +277,10 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             if (pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac.Length != Constantes.MAX_TAMANHO_ID_PEDIDO_MAGENTO)
                 lstErros.Add("Nº pedido Magento(Pedido_bs_x_ac) com formato inválido!");
 
+            if (UtilsGlobais.Util.ExisteLetras(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac))
+                lstErros.Add("O número Magento deve conter apenas dígitos!");
 
-            /*
-             * Pedido_bs_x_marketplace e Marketplace_codigo_origem
-             * ou os dois existem ou nenhum dos dois existe
-             * */
-            if (string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace) && !string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem))
-                lstErros.Add("Informe o Pedido_bs_x_marketplace.");
-            if (!string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace) && string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem))
-                lstErros.Add("Informe o Marketplace_codigo_origem.");
-
-            //validar o Marketplace_codigo_origem
-            if (!string.IsNullOrEmpty(pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem))
-            {
-                if (!await UtilsGlobais.Util.ListarCodigoMarketPlace(contextoProvider)
-                    .Where(x => x.Codigo == pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem)
-                    .AnyAsync())
-                {
-                    lstErros.Add("Código Marketplace não encontrado.");
-                }
-            }
         }
-
 
     }
 }

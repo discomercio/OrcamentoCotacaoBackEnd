@@ -75,7 +75,8 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
             List<string> lstErros,
             int limitePedidosExatamenteIguais_Numero, int limitePedidosExatamenteIguais_TempoSegundos, int limitePedidosMesmoCpfCnpj_Numero, int limitePedidosMesmoCpfCnpj_TempoSegundos,
             decimal limiteArredondamento,
-            decimal maxErroArredondamento)
+            decimal maxErroArredondamento,
+            int limite_de_itens)
         {
             if (!global::InfraBanco.Constantes.Constantes.TipoPessoa.TipoValido(pedidoDto.DadosCliente.Tipo))
             {
@@ -89,25 +90,29 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                     loja: lojaUsuario,
                     usuario: usuario,
                     comIndicador: pedidoDto.ComIndicador != 0,
-                    indicador_Orcamentista: pedidoDto.NomeIndicador,
-                    idNfeSelecionadoManual: pedidoDto.CDManual,
+                    indicador: pedidoDto.NomeIndicador,
+                    orcamentista: "",
+                    id_nfe_emitente_selecao_manual: pedidoDto.CDManual,
                     venda_Externa: venda_externa,
-                    opcaoVendaSemEstoque: pedidoDto.OpcaoVendaSemEstoque,
-                    vendedor: usuario
+                    vendedor: usuario,
+                    loja_indicou: "",
+                    operacao_origem: InfraBanco.Constantes.Constantes.Op_origem__pedido_novo.OP_ORIGEM__NAO_DETERMINADO,
+                    id_param_site: InfraBanco.Constantes.Constantes.Cod_site.COD_SITE_ARTVEN_BONSHOP
                     ),
+                extra: new Pedido.Dados.Criacao.PedidoCriacaoExtraDados(pedido_bs_x_at: null, nfe_Texto_Constar: null, nfe_XPed: null),
                 cliente: Pedido.Dados.Criacao.PedidoCriacaoClienteDados.PedidoCriacaoClienteDados_de_DadosClienteCadastroDados(
-                    DadosClienteCadastroDto.DadosClienteCadastroDados_De_DadosClienteCadastroDto(pedidoDto.DadosCliente)),
+                    DadosClienteCadastroDto.DadosClienteCadastroDados_De_DadosClienteCadastroDto(pedidoDto.DadosCliente),
+                    midia: "", indicador: pedidoDto.DadosCliente.Indicador_Orcamentista),
                 enderecoCadastralCliente: DadosClienteCadastroDto.EnderecoCadastralClientePrepedidoDados_De_DadosClienteCadastroDto(pedidoDto.DadosCliente),
                 enderecoEntrega: EnderecoEntregaDtoClienteCadastro.EnderecoEntregaClienteCadastroDados_De_EnderecoEntregaDtoClienteCadastro(pedidoDto.EnderecoEntrega),
                 listaProdutos: PedidoProdutosDtoPedido.List_PedidoProdutoPedidoDados_De_PedidoProdutosDtoPedido(pedidoDto.ListaProdutos),
                 formaPagtoCriacao: pedidoDto.FormaPagtoCriacao,
                 detalhesPedido: DetalhesNFPedidoDtoPedido.DetalhesPrepedidoDados_De_DetalhesNFPedidoDtoPedido(pedidoDto.DetalhesNF),
                 valor: new Pedido.Dados.Criacao.PedidoCriacaoValorDados(
-                    percRT: pedidoDto.PercRT ?? 0,
-                    opcaoPossuiRa: pedidoDto.OpcaoPossuiRA == "S" ? true : false,
+                    perc_RT: pedidoDto.PercRT ?? 0,
                     vl_total: pedidoDto.VlTotalDestePedido ?? 0,
                     vl_total_NF: pedidoDto.ValorTotalDestePedidoComRA ?? 0,
-                    permiteRAStatus: pedidoDto.PermiteRAStatus
+                    magento_shipping_amount: 0M
                     ),
                 configuracao: new Pedido.Dados.Criacao.PedidoCriacaoConfiguracaoDados(
                     limiteArredondamento: limiteArredondamento,
@@ -116,7 +121,8 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                     limitePedidosExatamenteIguais_Numero: limitePedidosExatamenteIguais_Numero,
                     limitePedidosExatamenteIguais_TempoSegundos: limitePedidosExatamenteIguais_TempoSegundos,
                     limitePedidosMesmoCpfCnpj_Numero: limitePedidosMesmoCpfCnpj_Numero,
-                    limitePedidosMesmoCpfCnpj_TempoSegundos: limitePedidosMesmoCpfCnpj_TempoSegundos
+                    limitePedidosMesmoCpfCnpj_TempoSegundos: limitePedidosMesmoCpfCnpj_TempoSegundos,
+                    limite_de_itens: limite_de_itens
                     ),
                 marketplace: new Pedido.Dados.Criacao.PedidoCriacaoMarketplaceDados(
                     pedido_bs_x_ac: pedido_bs_x_ac,

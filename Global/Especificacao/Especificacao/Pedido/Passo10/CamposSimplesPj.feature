@@ -8,6 +8,10 @@ Background: Configuração
 	#também ignoramos na API magneto porque só aceita pedidos de PF
 	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 
+	#no pedido a mensagem é diferente
+	Given No ambiente "Especificacao.Pedido.PedidoSteps" mapear erro "CNPJ INVÁLIDO." para "regex O cliente não está cadastrado.*"
+
+
 @ListaDependencias
 Scenario: CamposSimples ListaDependencias Configuração
 	Given Nome deste item "Especificacao.Pedido.Passo10.CamposSimplesPjListaDependencias"

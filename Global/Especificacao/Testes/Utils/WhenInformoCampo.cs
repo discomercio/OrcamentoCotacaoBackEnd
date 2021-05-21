@@ -43,40 +43,46 @@ namespace Especificacao.Testes.Utils
                         propertyTypeName = Nullable.GetUnderlyingType(p.PropertyType)?.Name ?? "desconhecido";
 
                     //altera a propriedade
-                    switch (propertyTypeName)
+                    if (valor.ToLower() == "null")
                     {
-                        case "Byte":
-                            valor = ConverterContribuinteICMS(campoSimples, valor);
-                            valor = ConverterProdutorRural(campoSimples, valor);
-                            p.SetValue(destino, Byte.Parse(valor));
-                            break;
-                        case "Int16":
-                            valor = ConverterTipo_Parcelamento(campoSimples, valor);
-                            p.SetValue(destino, System.Int16.Parse(valor));
-                            break;
-                        case "Int32":
-                            valor = ConverterTipo_Parcelamento(campoSimples, valor);
-                            p.SetValue(destino, System.Int32.Parse(valor));
-                            break;
-                        case "Decimal":
-                            valor = ConverterTipo_Parcelamento(campoSimples, valor);
-                            p.SetValue(destino, System.Decimal.Parse(valor));
-                            break;
-                        case "Boolean":
-                            p.SetValue(destino, System.Boolean.Parse(valor));
-                            break;
-                        default:
-                            valor = ConverterCustoFinancFornecTipoParcelamento(campoSimples, valor);
-                            if (valor.ToLower() == "null")
-                            {
-                                p.SetValue(destino, null);
-                            }
-                            else
-                            {
-                                //se o tipo estiver errado vai dar erro, tudo bem...
+                        p.SetValue(destino, null);
+                    }
+                    else
+                    {
+                        switch (propertyTypeName)
+                        {
+                            case "Byte":
+                                valor = ConverterContribuinteICMS(campoSimples, valor);
+                                valor = ConverterProdutorRural(campoSimples, valor);
+                                p.SetValue(destino, Byte.Parse(valor));
+                                break;
+                            case "Int16":
+                                valor = ConverterTipo_Parcelamento(campoSimples, valor);
+                                p.SetValue(destino, System.Int16.Parse(valor));
+                                break;
+                            case "Int32":
+                                valor = ConverterTipo_Parcelamento(campoSimples, valor);
+                                p.SetValue(destino, System.Int32.Parse(valor));
+                                break;
+                            case "Decimal":
+                                valor = ConverterTipo_Parcelamento(campoSimples, valor);
+                                p.SetValue(destino, System.Decimal.Parse(valor));
+                                break;
+                            case "Single":
+                                p.SetValue(destino, System.Single.Parse(valor));
+                                break;
+                            case "Boolean":
+                                p.SetValue(destino, System.Boolean.Parse(valor));
+                                break;
+                            case "DateTime":
+                                p.SetValue(destino, System.DateTime.Parse(valor));
+                                break;
+                            default:
+                                valor = ConverterCustoFinancFornecTipoParcelamento(campoSimples, valor);
+                                //se o tipo estiver errado vai dar erro, então tudo bem...
                                 p.SetValue(destino, valor);
-                            }
-                            break;
+                                break;
+                        }
                     }
                     return true;
                 }

@@ -30,7 +30,7 @@ namespace InfraBanco.Modelos
         [Column("dt_ult_atualizacao")]
         public DateTime Dt_ult_atualizacao { get; set; }
 
-        [Column("timestamp")]
-        public byte[] Timestamp { get; }
+        //[Column("timestamp")]
+        //public byte[] Timestamp { get; }
     }
 }

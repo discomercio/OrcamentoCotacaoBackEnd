@@ -127,7 +127,9 @@ namespace Produto
                                                               where pl.Loja == loja &&
                                                                     pl.Vendavel == "S" &&
                                                                     c.Fabricante == pc.Fabricante_Composto &&
-                                                                    pc.Produto_Composto == pci.Produto_composto
+                                                                    pc.Produto_Composto == pci.Produto_composto &&
+                                                                    c.Excluido_status == 0 &&
+                                                                    pl.Excluido_status == 0
                                                               select new
                                                               {
                                                                   fabricante_pai = c.Fabricante,
@@ -172,7 +174,9 @@ namespace Produto
                                     join pl in db.TprodutoLojas on c.Produto equals pl.Produto
                                     join fab in db.Tfabricantes on c.Fabricante equals fab.Fabricante
                                     where pl.Vendavel == "S" &&
-                                          pl.Loja == loja
+                                          pl.Loja == loja &&
+                                          c.Excluido_status == 0 &&
+                                          pl.Excluido_status == 0
                                     select new Produto.Dados.ProdutoDados
                                     {
                                         Fabricante = c.Fabricante,
@@ -199,6 +203,8 @@ namespace Produto
                                     join fab in db.Tfabricantes on c.Fabricante equals fab.Fabricante
                                     where pl.Vendavel == "S" &&
                                           pl.Loja == loja &&
+                                          c.Excluido_status == 0 &&
+                                          pl.Excluido_status == 0 &&
                                           lstProdutos.Contains(c.Produto)
                                     select new Produto.Dados.ProdutoDados
                                     {
@@ -289,7 +295,8 @@ namespace Produto
 
         }
 
-        public static void VerificarRegrasAssociadasAosProdutos(List<RegrasBll> lstRegras, List<string> lstErros, string clienteUf, string clienteTipo)
+        public static void VerificarRegrasAssociadasAosProdutos(List<RegrasBll> lstRegras, List<string> lstErros, string clienteUf, string clienteTipo,
+            int id_nfe_emitente_selecao_manual)
         {
             foreach (var r in lstRegras)
             {
@@ -330,7 +337,8 @@ namespace Produto
                             }
                         }
                     }
-                    if (verificaErros == 0)
+                    //'A SELEÇÃO MANUAL DE CD PERMITE O USO DE CD DESATIVADO
+                    if (verificaErros == 0 && id_nfe_emitente_selecao_manual == 0)
                     {
                         lstErros.Add("Regra de consumo do estoque '" + r.TwmsRegraCd.Apelido + "' associada ao produto (" +
                             r.Fabricante + ")" + r.Produto + " não especifica nenhum CD ativo para clientes '" +

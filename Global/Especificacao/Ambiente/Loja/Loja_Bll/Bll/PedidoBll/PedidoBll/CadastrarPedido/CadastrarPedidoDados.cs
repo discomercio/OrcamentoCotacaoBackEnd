@@ -14,8 +14,10 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
         public static global::Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto PedidoBase(out string lojaUsuario, out string usuario, out bool vendedorExterno)
         {
             var ret = PedidoBaseComEnderecoDeEntrega(out lojaUsuario, out usuario, out vendedorExterno);
-            ret.EnderecoEntrega = new global::Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro();
-            ret.EnderecoEntrega.OutroEndereco = false;
+            ret.EnderecoEntrega = new global::Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro
+            {
+                OutroEndereco = false
+            };
             return ret;
         }
         public static global::Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto PedidoBaseComEnderecoDeEntrega(out string lojaUsuario, out string usuario, out bool vendedorExterno)
@@ -81,14 +83,15 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
 
             ret.VlTotalDestePedido = ret.ListaProdutos[0].Preco_Venda * ret.ListaProdutos[0].Qtde;
             ret.VlTotalDestePedido += ret.ListaProdutos[1].Preco_Venda * ret.ListaProdutos[1].Qtde;
+            ret.ValorTotalDestePedidoComRA = ret.VlTotalDestePedido;
             return ret;
         }
         public static global::Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto PedidoBaseParceladoCartao1vez(out string lojaUsuario, out string usuario, out bool vendedorExterno)
         {
             var ret = Testes.Utils.LerJson.LerArquivoEmbutido<global::Loja.Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto>(
                 "Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedidoDados.json");
-            lojaUsuario = "201";
-            usuario = "USUARIOLOJA";
+            lojaUsuario = "202";
+            usuario = "USRLOJA";
             vendedorExterno = true;
             return ret;
         }

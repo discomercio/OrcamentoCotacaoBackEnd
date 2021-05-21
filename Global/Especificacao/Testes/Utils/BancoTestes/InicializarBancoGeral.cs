@@ -37,15 +37,15 @@ namespace Especificacao.Testes.Utils.BancoTestes
         {
             this.contextoBdProvider = contextoBdProvider;
             this.contextoCepProvider = contextoCepProvider;
-            Inicializar(false);
+            Inicializar();
         }
 
         public void InicializarForcado()
         {
             _inicialziado = false;
-            Inicializar(true);
+            Inicializar();
         }
-        public void Inicializar(bool apagarDadosExistentes)
+        public void Inicializar()
         {
             if (!_inicialziado)
             {
@@ -53,16 +53,17 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 {
                     _inicialziado = true;
                     logTestes.LogMemoria("InicializarBancoGeral Inicializar inicio");
-                    InicalizarInterno(apagarDadosExistentes);
+                    InicalizarInterno();
                     logTestes.LogMensagem("InicializarBancoGeral CEP inicio");
-                    new InicializarBancoCep(contextoCepProvider).Inicializar(apagarDadosExistentes);
+                    new InicializarBancoCep(contextoCepProvider).Inicializar();
                     logTestes.LogMemoria("InicializarBancoGeral Inicializar fim");
                 }
             }
         }
 
-        private void InicalizarInterno(bool apagarDadosExistentes)
+        private void InicalizarInterno()
         {
+            var apagarDadosExistentes = true;
             using (var db = contextoBdProvider.GetContextoGravacaoParaUsing())
             {
                 //estas, só apagamos
@@ -75,35 +76,49 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 InicializarTabela<TusuarioXLoja>(db.TusuarioXLojas, null, db, apagarDadosExistentes);
                 InicializarTabela<TclienteRefComercial>(db.TclienteRefComercials, null, db, apagarDadosExistentes);
                 InicializarTabela<TclienteRefBancaria>(db.TclienteRefBancarias, null, db, apagarDadosExistentes);
+                InicializarTabela<TestoqueLog>(db.TestoqueLogs, null, db, apagarDadosExistentes);
+                InicializarTabela<Tlog>(db.Tlogs, null, db, apagarDadosExistentes);
 
                 InicializarTabela<Tcliente>(db.Tclientes, "Tcliente", db, apagarDadosExistentes);
                 InicializarTabela<TcodigoDescricao>(db.TcodigoDescricaos, "TcodigoDescricao", db, apagarDadosExistentes);
                 InicializarTabela<Tcontrole>(db.Tcontroles, "Tcontrole", db, apagarDadosExistentes);
                 InicializarTabela<Testoque>(db.Testoques, "Testoque", db, apagarDadosExistentes);
                 InicializarTabela<TestoqueItem>(db.TestoqueItems, "TestoqueItem", db, apagarDadosExistentes);
-                InicializarTabela<TestoqueLog>(db.TestoqueLogs, null, db, apagarDadosExistentes);
                 InicializarTabela<TestoqueMovimento>(db.TestoqueMovimentos, "TestoqueMovimento", db, apagarDadosExistentes);
                 InicializarTabela<Tfabricante>(db.Tfabricantes, "Tfabricante", db, apagarDadosExistentes);
                 InicializarTabela<TfinControle>(db.TfinControles, "TfinControle", db, apagarDadosExistentes);
                 InicializarTabela<TformaPagto>(db.TformaPagtos, "TformaPagto", db, apagarDadosExistentes);
                 InicializarTabela<Tloja>(db.Tlojas, "Tlojas", db, apagarDadosExistentes);
                 InicializarTabela<TnfEmitente>(db.TnfEmitentes, "TnfEmitente", db, apagarDadosExistentes);
+                InicializarTabela<Toperacao>(db.Toperacaos, "Toperacao", db, apagarDadosExistentes);
                 InicializarTabela<TorcamentistaEindicador>(db.TorcamentistaEindicadors, "TorcamentistaEindicador", db, apagarDadosExistentes);
-                InicializarTabela<TorcamentistaEIndicadorRestricaoFormaPagto>(db.torcamentistaEIndicadorRestricaoFormaPagtos, "TorcamentistaEIndicadorRestricaoFormaPagto", db, apagarDadosExistentes);
+                InicializarTabela<TorcamentistaEIndicadorRestricaoFormaPagto>(db.TorcamentistaEIndicadorRestricaoFormaPagtos, "TorcamentistaEIndicadorRestricaoFormaPagto", db, apagarDadosExistentes);
                 InicializarTabela<Tparametro>(db.Tparametros, "Tparametro", db, apagarDadosExistentes);
                 InicializarTabela<Tpedido>(db.Tpedidos, "Tpedido", db, apagarDadosExistentes);
                 InicializarTabela<TpercentualCustoFinanceiroFornecedor>(db.TpercentualCustoFinanceiroFornecedors, "TpercentualCustoFinanceiroFornecedors", db, apagarDadosExistentes);
                 InicializarTabela<Tperfil>(db.Tperfils, "Tperfil", db, apagarDadosExistentes);
+                InicializarTabela<TperfilItem>(db.TperfilItens, "TperfilItens", db, apagarDadosExistentes);
                 InicializarTabela<TperfilUsuario>(db.TperfilUsuarios, "TperfilUsuario", db, apagarDadosExistentes);
                 InicializarTabela<Tproduto>(db.Tprodutos, "Tproduto", db, apagarDadosExistentes);
                 InicializarTabela<TprodutoLoja>(db.TprodutoLojas, "TprodutoLoja", db, apagarDadosExistentes);
                 InicializarTabela<TprodutoXwmsRegraCd>(db.TprodutoXwmsRegraCds, "TprodutoXwmsRegraCd", db, apagarDadosExistentes);
+                db.SaveChanges();
+                db.transacao.Commit();
+            }
+            using (var db = contextoBdProvider.GetContextoGravacaoParaUsing())
+            {
                 InicializarTabela<Tusuario>(db.Tusuarios, "Tusuario", db, apagarDadosExistentes);
                 InicializarTabela<TwmsRegraCd>(db.TwmsRegraCds, "TwmsRegraCd", db, apagarDadosExistentes);
+                db.SaveChanges();
+                db.transacao.Commit();
+            }
+            using (var db = contextoBdProvider.GetContextoGravacaoParaUsing())
+            {
                 InicializarTabela<TwmsRegraCdXUf>(db.TwmsRegraCdXUfs, "TwmsRegraCdXUf", db, apagarDadosExistentes);
                 InicializarTabela<TwmsRegraCdXUfPessoa>(db.TwmsRegraCdXUfPessoas, "TwmsRegraCdXUfPessoa", db, apagarDadosExistentes);
                 InicializarTabela<TwmsRegraCdXUfXPessoaXCd>(db.TwmsRegraCdXUfXPessoaXCds, "TwmsRegraCdXUfXPessoaXCd", db, apagarDadosExistentes);
                 db.SaveChanges();
+                db.transacao.Commit();
             }
 
             Inicalizar_TorcamentistaEindicador();
@@ -150,10 +165,10 @@ namespace Especificacao.Testes.Utils.BancoTestes
         {
             static public class Orcamentista
             {
-                public static string Apelido_com_ra = "Apelido_com_ra";
-                public static string Apelido_sem_ra = "Apelido_sem_ra";
-                public static string Apelido_sem_vendedor = "Apelido_sem_vendedor";
-                public static string Apelido_sem_loja = "Apelido_sem_loja";
+                public static string Apelido_com_ra = "Ap_com_ra";
+                public static string Apelido_sem_ra = "Ap_sem_ra";
+                public static string Apelido_sem_vendedor = "Ap_sem_ven";
+                public static string Apelido_sem_loja = "Ap_sem_lj";
                 public static string ApelidoNaoExiste = "XXX";
             }
         }
@@ -166,6 +181,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 Apelido = Dados.Orcamentista.Apelido_com_ra.ToUpper(),
                 Vendedor = Dados.Orcamentista.Apelido_com_ra.ToUpper(),
                 Loja = Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE,
+                Razao_Social_Nome = "Teste",
                 Permite_RA_Status = 1
             });
             db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
@@ -173,22 +189,26 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 Apelido = Dados.Orcamentista.Apelido_sem_ra.ToUpper(),
                 Vendedor = Dados.Orcamentista.Apelido_sem_ra.ToUpper(),
                 Loja = Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE,
+                Razao_Social_Nome = "Teste",
                 Permite_RA_Status = 0
             });
             db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
             {
                 Apelido = Dados.Orcamentista.Apelido_sem_vendedor.ToUpper(),
                 Loja = Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE,
+                Razao_Social_Nome = "Teste",
                 Permite_RA_Status = 0
             });
             db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
             {
                 Apelido = Dados.Orcamentista.Apelido_sem_loja.ToUpper(),
                 Vendedor = Dados.Orcamentista.Apelido_sem_loja.ToUpper(),
-                Loja = "loja nao e-commerce",
+                Loja = "321",
+                Razao_Social_Nome = "Teste",
                 Permite_RA_Status = 1
             });
             db.SaveChanges();
+            db.transacao.Commit();
         }
 
     }

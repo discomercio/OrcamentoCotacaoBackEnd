@@ -19,16 +19,14 @@ namespace Especificacao.Especificacao.Pedido.Passo30
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "ignore")]
-    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo30")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.PedidoFaltandoImplementarSteps")]
     public partial class ValidacoesDoIndicadorFeature : object, Xunit.IClassFixture<ValidacoesDoIndicadorFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore",
-                "Especificacao.Pedido.Passo30"};
+                "Especificacao.Pedido.PedidoFaltandoImplementarSteps"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -45,8 +43,7 @@ namespace Especificacao.Especificacao.Pedido.Passo30
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Validações do Indicador", null, ProgrammingLanguage.CSharp, new string[] {
-                        "ignore",
-                        "Especificacao.Pedido.Passo30"});
+                        "Especificacao.Pedido.PedidoFaltandoImplementarSteps"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -83,96 +80,96 @@ namespace Especificacao.Especificacao.Pedido.Passo30
         
         public virtual void FeatureBackground()
         {
-#line 5
+#line 6
 #line hidden
-#line 7
- testRunner.Given("Ignorar scenario no ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 8
+ testRunner.Given("Ignorar cenário no ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 9
+#line 10
  testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 12
+#line 13
  testRunner.Given("Limpar tabela \"t_ORCAMENTISTA_E_INDICADOR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 13
- testRunner.And("Novo registro na tabela \"t_ORCAMENTISTA_E_INDICADOR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
 #line 14
- testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"apelido\" = \"Válido 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro na tabela \"t_ORCAMENTISTA_E_INDICADOR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 15
- testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"status\" = \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"apelido\" = \"Válido 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 16
- testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"status\" = \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 17
- testRunner.And("Gravar registro em \"t_ORCAMENTISTA_E_INDICADOR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 19
- testRunner.And("Novo registro na tabela \"t_ORCAMENTISTA_E_INDICADOR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 20
- testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"apelido\" = \"Inativo 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 21
- testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"status\" = \"I\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 22
  testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 23
+#line 18
  testRunner.And("Gravar registro em \"t_ORCAMENTISTA_E_INDICADOR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 25
+#line 20
  testRunner.And("Novo registro na tabela \"t_ORCAMENTISTA_E_INDICADOR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 21
+ testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"apelido\" = \"Inativo 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 22
+ testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"status\" = \"I\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 23
+ testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 24
+ testRunner.And("Gravar registro em \"t_ORCAMENTISTA_E_INDICADOR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 26
- testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"apelido\" = \"Válido 202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro na tabela \"t_ORCAMENTISTA_E_INDICADOR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 27
- testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"status\" = \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"apelido\" = \"Válido 202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 28
- testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"status\" = \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 29
- testRunner.And("Gravar registro em \"t_ORCAMENTISTA_E_INDICADOR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 31
- testRunner.And("Novo registro na tabela \"t_ORCAMENTISTA_E_INDICADOR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 30
+ testRunner.And("Gravar registro em \"t_ORCAMENTISTA_E_INDICADOR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 32
- testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"apelido\" = \"Válido 205\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 33
- testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"status\" = \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 34
- testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"loja\" = \"205\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 35
- testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"vendedor\" = \"usuario 205\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 36
- testRunner.And("Gravar registro em \"t_ORCAMENTISTA_E_INDICADOR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 38
  testRunner.And("Novo registro na tabela \"t_ORCAMENTISTA_E_INDICADOR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 39
- testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"apelido\" = \"Outro 205\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 33
+ testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"apelido\" = \"Válido 205\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 40
+#line 34
  testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"status\" = \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 41
+#line 35
  testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"loja\" = \"205\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 36
+ testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"vendedor\" = \"usuario 205\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 37
+ testRunner.And("Gravar registro em \"t_ORCAMENTISTA_E_INDICADOR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 39
+ testRunner.And("Novo registro na tabela \"t_ORCAMENTISTA_E_INDICADOR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 40
+ testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"apelido\" = \"Outro 205\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 41
+ testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"status\" = \"A\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
 #line 42
- testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"vendedor\" = \"Outro 205\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"loja\" = \"205\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 43
+ testRunner.And("Novo registro em \"t_ORCAMENTISTA_E_INDICADOR\", campo \"vendedor\" = \"Outro 205\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 44
  testRunner.And("Gravar registro em \"t_ORCAMENTISTA_E_INDICADOR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
         }
@@ -190,7 +187,7 @@ namespace Especificacao.Especificacao.Pedido.Passo30
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("indicador preenchido", null, tagsOfScenario, argumentsOfScenario);
-#line 46
+#line 47
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -210,37 +207,37 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 6
 this.FeatureBackground();
 #line hidden
-#line 56
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 57
- testRunner.When("Informo \"rb_indicacao\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 58
+ testRunner.When("Informo \"rb_indicacao\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 59
  testRunner.Then("Erro \"Informe se o pedido é com indicação ou não.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 60
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 61
- testRunner.When("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 62
- testRunner.When("Informo \"c_indicador\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 63
+ testRunner.When("Informo \"c_indicador\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 64
  testRunner.Then("Erro \"Informe quem é o indicador.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 65
+#line 66
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 66
+#line 67
  testRunner.When("Informo \"rb_RA\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 67
+#line 68
  testRunner.Then("Erro \"Informe se o pedido possui RA ou não.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -255,7 +252,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("indicador válido - ID_PARAM_SITE = COD_SITE_ASSISTENCIA_TECNICA", null, tagsOfScenario, argumentsOfScenario);
-#line 162
+#line 163
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -275,71 +272,71 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 6
 this.FeatureBackground();
 #line hidden
-#line 165
- testRunner.Given("Ignorar scenario no ambiente \"Especificacao.Prepedido.PrepedidoSteps\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 166
- testRunner.Given("Ignorar scenario no ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.C" +
-                        "adastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Ignorar cenário no ambiente \"Especificacao.Prepedido.PrepedidoSteps\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 176
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 167
+ testRunner.Given("Ignorar cenário no ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Ca" +
+                        "dastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 177
- testRunner.Given("Reiniciar appsettings ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 178
- testRunner.When("Informo \"ID_PARAM_SITE\" = \"COD_SITE_ASSISTENCIA_TECNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Reiniciar appsettings", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 179
- testRunner.When("Informo \"loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("Informo \"ID_PARAM_SITE\" = \"COD_SITE_ASSISTENCIA_TECNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 180
- testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("Informo \"loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 181
- testRunner.And("Informo \"c_indicador\" = \"Válido 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 182
+ testRunner.And("Informo \"c_indicador\" = \"Válido 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 183
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 184
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 185
- testRunner.When("Informo \"ID_PARAM_SITE\" = \"COD_SITE_ASSISTENCIA_TECNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 186
- testRunner.When("Informo \"loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 187
- testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 188
- testRunner.And("Informo \"c_indicador\" = \"Inativo 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 189
- testRunner.Then("Erro \"Indicador inválido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 192
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 193
  testRunner.When("Informo \"ID_PARAM_SITE\" = \"COD_SITE_ASSISTENCIA_TECNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 194
+#line 187
  testRunner.When("Informo \"loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 195
+#line 188
  testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 189
+ testRunner.And("Informo \"c_indicador\" = \"Inativo 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 190
+ testRunner.Then("Erro \"Indicador inválido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 193
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 194
+ testRunner.When("Informo \"ID_PARAM_SITE\" = \"COD_SITE_ASSISTENCIA_TECNICA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 195
+ testRunner.When("Informo \"loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
 #line 196
- testRunner.And("Informo \"c_indicador\" = \"Válido 202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 197
+ testRunner.And("Informo \"c_indicador\" = \"Válido 202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 198
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -354,7 +351,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("indicador válido - NUMERO_LOJA_ECOMMERCE_AR_CLUBE", null, tagsOfScenario, argumentsOfScenario);
-#line 201
+#line 202
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -374,52 +371,52 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 6
 this.FeatureBackground();
 #line hidden
-#line 212
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 213
- testRunner.When("Informo \"loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 214
- testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("Informo \"loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 215
- testRunner.And("Informo \"c_indicador\" = \"Válido 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 216
+ testRunner.And("Informo \"c_indicador\" = \"Válido 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 217
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 218
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 219
- testRunner.When("Informo \"loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 220
- testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 221
- testRunner.And("Informo \"c_indicador\" = \"Inativo 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 222
- testRunner.Then("Erro \"Indicador inválido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 224
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 225
  testRunner.When("Informo \"loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 226
+#line 221
  testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 222
+ testRunner.And("Informo \"c_indicador\" = \"Inativo 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 223
+ testRunner.Then("Erro \"Indicador inválido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 225
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 226
+ testRunner.When("Informo \"loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
 #line 227
- testRunner.And("Informo \"c_indicador\" = \"Válido 202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 228
+ testRunner.And("Informo \"c_indicador\" = \"Válido 202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 229
  testRunner.Then("Erro \"Indicador inválido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -434,7 +431,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("indicador válido - NUMERO_LOJA_OLD03", null, tagsOfScenario, argumentsOfScenario);
-#line 230
+#line 231
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -454,52 +451,52 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 6
 this.FeatureBackground();
 #line hidden
-#line 241
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 242
- testRunner.When("Informo \"loja\" = \"300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 243
- testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("Informo \"loja\" = \"300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 244
- testRunner.And("Informo \"c_indicador\" = \"Válido 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 245
+ testRunner.And("Informo \"c_indicador\" = \"Válido 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 246
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 247
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 248
- testRunner.When("Informo \"loja\" = \"300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 249
- testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 250
- testRunner.And("Informo \"c_indicador\" = \"Inativo 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 251
- testRunner.Then("Erro \"Indicador inválido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 254
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 255
  testRunner.When("Informo \"loja\" = \"300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 256
+#line 250
  testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 251
+ testRunner.And("Informo \"c_indicador\" = \"Inativo 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 252
+ testRunner.Then("Erro \"Indicador inválido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 255
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 256
+ testRunner.When("Informo \"loja\" = \"300\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
 #line 257
- testRunner.And("Informo \"c_indicador\" = \"Válido 202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 258
+ testRunner.And("Informo \"c_indicador\" = \"Válido 202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 259
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -514,7 +511,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("indicador válido - NUMERO_LOJA_OLD03_BONIFICACAO", null, tagsOfScenario, argumentsOfScenario);
-#line 260
+#line 261
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -534,52 +531,52 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 6
 this.FeatureBackground();
 #line hidden
-#line 261
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 262
- testRunner.When("Informo \"loja\" = \"301\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 263
- testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("Informo \"loja\" = \"301\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 264
- testRunner.And("Informo \"c_indicador\" = \"Válido 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 265
+ testRunner.And("Informo \"c_indicador\" = \"Válido 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 266
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 267
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 268
- testRunner.When("Informo \"loja\" = \"301\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 269
- testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 270
- testRunner.And("Informo \"c_indicador\" = \"Inativo 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 271
- testRunner.Then("Erro \"Indicador inválido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 274
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 275
  testRunner.When("Informo \"loja\" = \"301\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 276
+#line 270
  testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 271
+ testRunner.And("Informo \"c_indicador\" = \"Inativo 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 272
+ testRunner.Then("Erro \"Indicador inválido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 275
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 276
+ testRunner.When("Informo \"loja\" = \"301\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
 #line 277
- testRunner.And("Informo \"c_indicador\" = \"Válido 202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 278
+ testRunner.And("Informo \"c_indicador\" = \"Válido 202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 279
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -594,7 +591,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("indicador válido - OP_LJA_SELECIONAR_QUALQUER_INDICADOR_EM_PEDIDO_NOVO", null, tagsOfScenario, argumentsOfScenario);
-#line 281
+#line 282
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -614,58 +611,58 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 6
 this.FeatureBackground();
 #line hidden
-#line 282
+#line 283
  testRunner.Given("Reiniciar permissões do usuário quando terminar o cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 283
- testRunner.And("Usuário com permissão OP_LJA_SELECIONAR_QUALQUER_INDICADOR_EM_PEDIDO_NOVO", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 285
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 284
+ testRunner.And("Usuário com permissão \"OP_LJA_SELECIONAR_QUALQUER_INDICADOR_EM_PEDIDO_NOVO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 286
- testRunner.When("Informo \"loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 287
- testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("Informo \"loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 288
- testRunner.And("Informo \"c_indicador\" = \"Válido 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 289
+ testRunner.And("Informo \"c_indicador\" = \"Válido 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 290
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 291
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 292
- testRunner.When("Informo \"loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 293
- testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 294
- testRunner.And("Informo \"c_indicador\" = \"Inativo 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 295
- testRunner.Then("Erro \"Indicador inválido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 298
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 299
  testRunner.When("Informo \"loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 300
+#line 294
  testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 295
+ testRunner.And("Informo \"c_indicador\" = \"Inativo 201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 296
+ testRunner.Then("Erro \"Indicador inválido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 299
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 300
+ testRunner.When("Informo \"loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
 #line 301
- testRunner.And("Informo \"c_indicador\" = \"Válido 202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 302
+ testRunner.And("Informo \"c_indicador\" = \"Válido 202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 303
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -680,7 +677,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("indicador válido - outras lojas", null, tagsOfScenario, argumentsOfScenario);
-#line 305
+#line 306
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -700,49 +697,49 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 6
 this.FeatureBackground();
 #line hidden
-#line 319
+#line 320
  testRunner.Given("Reiniciar permissões do usuário quando terminar o cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 320
- testRunner.And("Usuário sem permissão OP_LJA_SELECIONAR_QUALQUER_INDICADOR_EM_PEDIDO_NOVO", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 323
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 321
+ testRunner.And("Usuário sem permissão \"OP_LJA_SELECIONAR_QUALQUER_INDICADOR_EM_PEDIDO_NOVO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 324
- testRunner.When("Informo \"loja\" = \"205\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 325
- testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 326
- testRunner.And("Informo \"c_indicador\" = \"Válido 205\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 327
- testRunner.And("Informo \"usuario\" = \"usuario 205\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 328
- testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 331
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 332
+#line 325
  testRunner.When("Informo \"loja\" = \"205\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 333
+#line 326
  testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 334
- testRunner.And("Informo \"c_indicador\" = \"Outro 205\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 327
+ testRunner.And("Informo \"c_indicador\" = \"Válido 205\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 335
+#line 328
  testRunner.And("Informo \"usuario\" = \"usuario 205\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+#line 329
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 332
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 333
+ testRunner.When("Informo \"loja\" = \"205\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 334
+ testRunner.And("Informo \"rb_indicacao\" = \"S\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 335
+ testRunner.And("Informo \"c_indicador\" = \"Outro 205\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
 #line 336
+ testRunner.And("Informo \"usuario\" = \"usuario 205\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 337
  testRunner.Then("Erro \"Indicador inválido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -757,7 +754,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("indicador pode informar permite_RA_status?", null, tagsOfScenario, argumentsOfScenario);
-#line 340
+#line 341
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -777,7 +774,42 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 5
+#line 6
+this.FeatureBackground();
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="indicador e perc_rt")]
+        [Xunit.TraitAttribute("FeatureTitle", "Validações do Indicador")]
+        [Xunit.TraitAttribute("Description", "indicador e perc_rt")]
+        public virtual void IndicadorEPerc_Rt()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("indicador e perc_rt", null, tagsOfScenario, argumentsOfScenario);
+#line 345
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            bool isScenarioIgnored = default(bool);
+            bool isFeatureIgnored = default(bool);
+            if ((tagsOfScenario != null))
+            {
+                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((this._featureTags != null))
+            {
+                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
+            }
+            if ((isScenarioIgnored || isFeatureIgnored))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 6
 this.FeatureBackground();
 #line hidden
             }

@@ -20,7 +20,7 @@ namespace Especificacao.Ambiente.ApiUnis
                 var acessoUnisBll = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<PrepedidoUnisBusiness.UnisBll.AcessoBll.AcessoUnisBll>();
                 PrepedidoApiUnisBusiness.UnisDto.AcessoDto.LoginResultadoUnisDto loginResultadoUnisDto = acessoUnisBll.FazerLogin(new PrepedidoApiUnisBusiness.UnisDto.AcessoDto.LoginUnisDto()
                 {
-                    Usuario = "UsuarioApiUnis",
+                    Usuario = "USRAPUN",
                     Senha = "123456"
                 }, "local", "testes").Result;
                 Assert.Empty(loginResultadoUnisDto.ListaErros);
@@ -77,6 +77,7 @@ namespace Especificacao.Ambiente.ApiUnis
                 //para nao dar erro...
                 ret.LimitePrepedidos.LimitePrepedidosExatamenteIguais_Numero = 1000;
                 ret.LimitePrepedidos.LimitePrepedidosMesmoCpfCnpj_Numero = 1000;
+                ret.LimiteItens = 12;
                 return ret;
             });
 

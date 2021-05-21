@@ -16,7 +16,9 @@ namespace Especificacao.Testes.Utils.BancoTestes
         public Task<IEnumerable<UFeMunicipiosDados>> BuscarSiglaTodosUf(ContextoBdProvider contextoProvider, string uf, string municipioParcial)
         {
             //nao fazemos nada...
+#pragma warning disable IDE0028 // Simplify collection initialization
             var ret = new List<UFeMunicipiosDados>();
+#pragma warning restore IDE0028 // Simplify collection initialization
 
             //para o prepedido
             ret.Add(new UFeMunicipiosDados()
@@ -29,10 +31,35 @@ namespace Especificacao.Testes.Utils.BancoTestes
             });
             ret.Add(new UFeMunicipiosDados()
             {
+                SiglaUF = "SP",
+                ListaMunicipio = new List<MunicipioDados>() { new MunicipioDados() {
+                    Descricao = "Santo André",
+                    DescricaoSemAcento="Santo André"
+                } }
+            });
+            ret.Add(new UFeMunicipiosDados()
+            {
                 SiglaUF = "BA",
                 ListaMunicipio = new List<MunicipioDados>() { new MunicipioDados() {
                     Descricao = "Salvador",
                     DescricaoSemAcento="Salvador"
+                } }
+            });
+
+            ret.Add(new UFeMunicipiosDados()
+            {
+                SiglaUF = "SP",
+                ListaMunicipio = new List<MunicipioDados>() { new MunicipioDados() {
+                    Descricao = "Uma cidade em SP",
+                    DescricaoSemAcento="Uma cidade em SP"
+                } }
+            });
+            ret.Add(new UFeMunicipiosDados()
+            {
+                SiglaUF = "SP",
+                ListaMunicipio = new List<MunicipioDados>() { new MunicipioDados() {
+                    Descricao = "Outra cidade em SP",
+                    DescricaoSemAcento="Outra cidade em SP"
                 } }
             });
             return Task.FromResult(ret.AsEnumerable());
@@ -45,11 +72,20 @@ namespace Especificacao.Testes.Utils.BancoTestes
             if (municipio == Cidade_somente_no_IBGE)
                 ret.Add(new NfeMunicipio() { Descricao = Cidade_somente_no_IBGE });
 
-            //para o prepedido
-            if (municipio == "São Paulo")
-                ret.Add(new NfeMunicipio() { Descricao = "São Paulo" });
-            if (municipio == "Salvador")
-                ret.Add(new NfeMunicipio() { Descricao = "Salvador" });
+            //cidades que aceitamos sempre
+            var listaMunicipios = new List<string>()
+            {
+                "São Paulo",
+                "Salvador",
+                "Santo André",
+                "Uma cidade em SP",
+                "Outra cidade em SP",
+            };
+            foreach (var este in listaMunicipios)
+            {
+                if (municipio == este)
+                    ret.Add(new NfeMunicipio() { Descricao = este });
+            }
 
             return Task.FromResult(ret.AsEnumerable());
         }

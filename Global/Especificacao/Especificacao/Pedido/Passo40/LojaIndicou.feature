@@ -1,22 +1,25 @@
-﻿@ignore
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
 Feature: LojaIndicou
 
 Background: Configurar lojas para teste
-	set r = cn.Execute("SELECT * FROM t_LOJA WHERE (comissao_indicacao > 0) ORDER BY CONVERT(smallint,loja)")
-	Given Reiniciar banco quando terminar o teste
-	Given Limpar tabela "t_LOJA"
+	#No magento não temos o campo loja_indicou
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
+	#set r = cn.Execute("SELECT * FROM t_LOJA WHERE (comissao_indicacao > 0) ORDER BY CONVERT(smallint,loja)")
+	Given Reiniciar banco ao terminar cenário
+	And Limpar tabela "t_LOJA"
+	And Novo registro na tabela "t_LOJA"
+	And Novo registro em "t_LOJA", campo "loja" = "100"
+	And Novo registro em "t_LOJA", campo "comissao_indicacao" = "0"
+	And Gravar registro em "t_LOJA"
 
-	And Novo registro em "t_LOJA"
-	And Novo registro "loja" = "100"
-	And Novo registro "comissao_indicacao" = "0"
-	And Gravar registro
-
-	And Novo registro em "t_LOJA"
-	And Novo registro "loja" = "200"
-	And Novo registro "comissao_indicacao" = "1"
-	And Gravar registro
+	And Novo registro na tabela "t_LOJA"
+	And Novo registro em "t_LOJA", campo "loja" = "200"
+	And Novo registro em "t_LOJA", campo "comissao_indicacao" = "1"
+	And Gravar registro em "t_LOJA"
 
 
+#lojas permitidas:
+#set r = cn.Execute("SELECT * FROM t_LOJA WHERE (comissao_indicacao > 0) ORDER BY CONVERT(smallint,loja)")
 
 #loja/PedidoNovoConsiste.asp
 #dim s_loja_indicou, s_nome_loja_indicou
@@ -40,9 +43,10 @@ Background: Configurar lojas para teste
 #		end if
 #	end if
 
-Scenario: Configuração
-	Given Nome deste item "Especificacao.Pedido.Passo40.LojaIndicou"
-	Given Implementado em "Especificacao.Pedido.Pedido"
+#@ListaDependencias
+#Scenario: Configuração
+#	Given Nome deste item "Especificacao.Pedido.Passo40.LojaIndicou"
+#	Given Implementado em "Especificacao.Pedido.Pedido"
 
 Scenario: Seomnte pode existir se for vendedor externo
 
@@ -92,11 +96,11 @@ Scenario: Vendedor externo
 	Given Pedido base
 	When Usuario logado "vendedor_externo" = "1"
 	And Informo "loja_indicou" = "200"
-	Then Sem erro
+	Then Sem nenhum erro
 
 Scenario: Vendedor externo sem loja
 	Given Pedido base
 	When Usuario logado "vendedor_externo" = "1"
 	And Informo "loja_indicou" = ""
-	Then Sem erro
+	Then Sem nenhum erro
 

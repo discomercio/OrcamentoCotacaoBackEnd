@@ -1,4 +1,4 @@
-﻿@ignore
+﻿@Especificacao.Pedido.PedidoFaltandoImplementarSteps
 Feature: CamposSoltos
 
 #var MAX_TAM_OBS1 = 500;
@@ -10,12 +10,14 @@ Scenario: obs1 tamanho
 	#s = "" + f.c_obs1.value;
 	#if (s.length > MAX_TAM_OBS1) {
 	#	alert('Conteúdo de "Observações " excede em ' + (s.length-MAX_TAM_OBS1) + ' caracteres o tamanho máximo de ' + MAX_TAM_OBS1 + '!!');
+	#Implementado em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf_Opcionais.feature
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
-	When Informo "obs1" = um texto com "501" caracteres
+	When Informo "obs1" = "texto com 500 caracteres"
 	Then Erro "regex .*Conteúdo de \"Observações \" excede em .*"
 
 	Given Pedido base
-	When Informo "obs1" = um texto com "500" caracteres
+	When Informo "obs1" = "texto com 500 caracteres"
 	Then Sem nenhum erro
 
 Scenario: c_nf_texto tamanho
@@ -23,12 +25,14 @@ Scenario: c_nf_texto tamanho
 	#s = "" + f.c_nf_texto.value;
 	#if (s.length > MAX_TAM_NF_TEXTO) {
 	#    alert('Conteúdo de "Constar na NF" excede em ' + (s.length-MAX_TAM_NF_TEXTO) + ' caracteres o tamanho máximo de ' + MAX_TAM_NF_TEXTO + '!!');
+	#Implementado em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\EspecificacaoAdicional\FretePontoReferencia.feature
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
-	When Informo "nf_texto" = um texto com "801" caracteres
-	Then Erro regex "Conteúdo de "Constar na NF" excede em.*"
+	When Informo "nf_texto" = "texto com 801 caracteres"
+	Then Erro "Conteúdo de "Constar na NF" excede em.*"
 
 	Given Pedido base
-	When Informo "nf_texto" = um texto com "800" caracteres
+	When Informo "nf_texto" = "texto com 800 caracteres"
 	Then Sem nenhum erro
 
 Scenario: forma_pagto tamanho
@@ -37,48 +41,20 @@ Scenario: forma_pagto tamanho
 	#if (s.length > MAX_TAM_FORMA_PAGTO) {
 	#	alert('Conteúdo de "Forma de Pagamento" excede em ' + (s.length-MAX_TAM_FORMA_PAGTO) + ' caracteres o tamanho máximo de ' + MAX_TAM_FORMA_PAGTO + '!!');
 	Given Pedido base
-	When Informo "forma_pagto" = um texto com "251" caracteres
-	Then Erro regex "Conteúdo de \"Forma de Pagamento\" excede em .*"
+	When Informo "forma_pagto" = "texto com 251 caracteres"
+	Then Erro "Conteúdo de \"Forma de Pagamento\" excede em .*"
 
 	Given Pedido base
-	When Informo "forma_pagto" = um texto com "250" caracteres
+	When Informo "forma_pagto" = "texto com 250 caracteres"
 	Then Sem nenhum erro
 
-Scenario: etg_imediata
-	#loja/PedidoNovoConsiste.asp
-	#if (!blnFlag) {
-	#	alert('Selecione uma opção para o campo "Entrega Imediata"');
-	Given Pedido base
-	When Informo "etg_imediata" = ""
-	Then Erro "Selecione uma opção para o campo "Entrega Imediata"
-
-Scenario: data_previsao_entrega
-	#loja/PedidoNovoConsiste.asp
-	#if (f.rb_etg_imediata[0].checked)
-	#{
-	#	if (trim(f.c_data_previsao_entrega.value) == "") {
-	#		alert("Informe a data de previsão de entrega!");
-	Given Pedido base
-	When Informo "etg_imediata" = "true"
-	When Informo "data_previsao_entrega" = ""
-	Then Erro "Informe a data de previsão de entrega!"
-
-	#if (retorna_so_digitos(formata_ddmmyyyy_yyyymmdd(f.c_data_previsao_entrega.value)) <= retorna_so_digitos(formata_ddmmyyyy_yyyymmdd('<%=formata_data(Date)%>'))) {
-	#	alert("Data de previsão de entrega deve ser uma data futura!");
-	Given Pedido base
-	When Informo "etg_imediata" = "true"
-	When Informo "data_previsao_entrega" = hoje
-	Then Erro "Data de previsão de entrega deve ser uma data futura!"
-
-	Given Pedido base
-	When Informo "etg_imediata" = "true"
-	When Informo "data_previsao_entrega" = amanhã
-	Then Sem nenhum erro
 
 Scenario: bem_uso_consumo
 	#loja/PedidoNovoConsiste.asp
 	#if (!blnFlag) {
 	#	alert('Informe se é "Bem de Uso/Consumo"');
+	#Implementado em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\ValidacaoCampos\PedidoMagentoDto.feature
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	When Informo "bem_uso_consumo" = "99"
 	Then Erro "Informe se é "Bem de Uso/Consumo""
@@ -123,35 +99,45 @@ Scenario: garantia_indicador
 
 Scenario: c_indicador c_perc_RT rb_RA garantia_indicador somente se for indicacao
 #loja/PedidoNovoConfirma.asp
-	#if rb_indicacao = "S" then
-	#	c_indicador = Trim(Request.Form("c_indicador"))
-	#	c_perc_RT = Trim(Request.Form("c_perc_RT"))
-	#	rb_RA = Trim(Request.Form("rb_RA"))
-	#	rb_garantia_indicador = Trim(Request.Form("rb_garantia_indicador"))
-	#else
-	#	c_indicador = ""
-	#	c_perc_RT = ""
-	#	rb_RA = ""
-	#	rb_garantia_indicador = COD_GARANTIA_INDICADOR_STATUS__NAO
-	#	end if
+#if rb_indicacao = "S" then
+#	c_indicador = Trim(Request.Form("c_indicador"))
+#	c_perc_RT = Trim(Request.Form("c_perc_RT"))
+#	rb_RA = Trim(Request.Form("rb_RA"))
+#	rb_garantia_indicador = Trim(Request.Form("rb_garantia_indicador"))
+#else
+#	c_indicador = ""
+#	c_perc_RT = ""
+#	rb_RA = ""
+#	rb_garantia_indicador = COD_GARANTIA_INDICADOR_STATUS__NAO
+#	end if
+#//alteração em relação ao ASP: damos erro se os dados forem inconsistentes
 
 	Given Pedido base
 	When Informo "indicador" = "ZEZINHO"
 	And Informo "indicacao" = "N"
-	Then No pedido gravado, verificar campo "indicador" = ""
+	Then Tabela "t_PEDIDO" registro pai criado, verificar campo "indicador" = ""
 
 	Given Pedido base
 	When Informo "perc_RT" = "123"
 	And Informo "indicacao" = "N"
-	Then No pedido gravado, verificar campo "perc_RT" = ""
+	Then Tabela "t_PEDIDO" registro pai criado, verificar campo "perc_RT" = ""
 
 	Given Pedido base
 	When Informo "RA" = "True"
 	And Informo "indicacao" = "N"
-	Then No pedido gravado, verificar campo "RA" = "false"
+	Then Tabela "t_PEDIDO" registro pai criado, verificar campo "RA" = "false"
 
 	Given Pedido base
 	When Informo "garantia_indicador" = "COD_GARANTIA_INDICADOR_STATUS__SIM"
 	And Informo "indicacao" = "N"
-	Then No pedido gravado, verificar campo "garantia_indicador" = "COD_GARANTIA_INDICADOR_STATUS__NAO"
+	Then Tabela "t_PEDIDO" registro pai criado, verificar campo "RA" = "false"
+	Then Tabela "t_PEDIDO" registro pai criado, verificar campo "RA" = "COD_GARANTIA_INDICADOR_STATUS__NAO"
+
+Scenario: campo NFe_xPed
+	#function filtra_nome_identificador() {
+	#var letra;
+	#letra=String.fromCharCode(window.event.keyCode);
+	#if ((letra=="|")||(window.event.keyCode==34)||(window.event.keyCode==39)) window.event.keyCode=0;
+	#}
+	When Fazer esta validação
 

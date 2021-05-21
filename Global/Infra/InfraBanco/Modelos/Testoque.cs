@@ -15,24 +15,21 @@ namespace InfraBanco.Modelos
         [MaxLength(12)]
         public string Id_estoque { get; set; }
 
+#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
+        [Column("data_entrada")]
+        [Required]
+        public DateTime Data_entrada { get; set; }
+
+        [Column("data_ult_movimento")]
+        [Required]
+        public DateTime Data_ult_movimento { get; set; }
+#endif
+
         [Column("id_nfe_emitente")]
         [Required]
         public short Id_nfe_emitente { get; set; }
 
         public ICollection<TestoqueItem> TestoqueItem { get; set; }
 
-#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
-        [Column("data_emissao_NF_entrada")]
-        public DateTime? Data_emissao_NF_entrada { get; set; }
-
-        [Column("data_ult_movimento")]
-        [Required]
-        public DateTime Data_ult_movimento { get; set; }
-
-        [Column("fabricante")]
-        [MaxLength(4)]
-        [Required]
-        public string Fabricante { get; set; }
-#endif
     }
 }

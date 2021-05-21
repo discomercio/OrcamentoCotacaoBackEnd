@@ -22,7 +22,7 @@ namespace InfraIdentity.ApiMagento
 
     public interface IServicoAutenticacaoProviderApiMagento
     {
-        Task<InfraIdentity.ApiMagento.UsuarioLoginApiMagento> ObterUsuarioApiMagento(string usuario, string senha, string ip, string userAgent, string ApelidoPerfilLiberaAcessoApiMagento);
+        Task<InfraIdentity.ApiMagento.UsuarioLoginApiMagento> ObterUsuarioApiMagento(string usuarioOriginal, string senha, string ip, string userAgent, string ApelidoPerfilLiberaAcessoApiMagento);
     }
 
     public class ServicoAutenticacaoApiMagento : IServicoAutenticacaoApiMagento

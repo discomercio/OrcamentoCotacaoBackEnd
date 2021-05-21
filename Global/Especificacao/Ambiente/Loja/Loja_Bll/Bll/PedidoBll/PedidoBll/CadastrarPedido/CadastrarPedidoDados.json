@@ -73,6 +73,7 @@
   },
   "ListaProdutos": [
     {
+      "Comentario": "Estes dados sao editamos na rotina PedidoBaseaVista de Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido",
       "Fabricante": "003",
       "Produto": "003220",
       "Qtde": 2,
@@ -80,7 +81,7 @@
       "Preco_Venda": 659.60,
       "Preco_Fabricante": 659.3,
       "Preco_Lista": 659.60,
-      "Preco_NF": 694.05,
+      "Preco_NF": 659.60,
       "CustoFinancFornecCoeficiente": 1.0527,
       "CustoFinancFornecPrecoListaBase": 626.58
     },
@@ -92,7 +93,7 @@
       "Preco_Venda": 989.40,
       "Preco_Fabricante": 988.95,
       "Preco_Lista": 989.40,
-      "Preco_NF": 1041.07,
+      "Preco_NF": 989.40,
       "CustoFinancFornecCoeficiente": 1.0527,
       "CustoFinancFornecPrecoListaBase": 939.87
     }
@@ -103,12 +104,13 @@
   "PermiteRAStatus": 0,
   "OpcaoPossuiRA": "N",
   "PercRT": 0.0,
-  "ValorTotalDestePedidoComRA": 3470.24,
+  "Comentario": "Os valores totais sao editamos na rotina PedidoBaseaVista de Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido",
+  "ValorTotalDestePedidoComRA": 3298,
   "VlTotalDestePedido": 3298,
   "FormaPagtoCriacao": {
     "Tipo_parcelamento": 2,
     "C_pc_qtde": 1,
-    "C_pc_valor": 3470.24,
+    "C_pc_valor": 3298,
     "CustoFinancFornecTipoParcelamento": "SE",
     "CustoFinancFornecQtdeParcelas": 1,
     "Qtde_Parcelas": 1,
@@ -146,10 +148,10 @@
     "EntregaImediata": "2",
     "StBemUsoConsumo": 1,
     "InstaladorInstala": 2,
-    "GarantiaIndicadorStatus": null,
+    "GarantiaIndicadorStatus": 1,
     "EntregaImediataData": null,
     "FormaDePagamento": null,
-    "DescricaoFormaPagamento": null,
+    "DescricaoFormaPagamento": "",
     "PrevisaoEntrega": null
   },
   "OpcaoVendaSemEstoque": false,

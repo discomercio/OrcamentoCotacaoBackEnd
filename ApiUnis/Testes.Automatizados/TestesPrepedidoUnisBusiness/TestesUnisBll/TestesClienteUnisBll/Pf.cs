@@ -286,7 +286,11 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
         {
             inicializarBanco.TclientesApagar();
 
+            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Email = "teste.com.br",
+                "E-mail inválido!", TipoPessoa.PF);
 
+            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.EmailXml = "xml.com.br",
+                "E-mail XML inválido!", TipoPessoa.PF);
             /*
 		if s_email <> "" then
 		'	CONSISTÊNCIA DESATIVADA TEMPORARIAMENTE

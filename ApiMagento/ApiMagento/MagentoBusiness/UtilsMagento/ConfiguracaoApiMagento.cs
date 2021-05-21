@@ -28,19 +28,20 @@ namespace MagentoBusiness.UtilsMagento
             public int LimitePedidosExatamenteIguais_TempoSegundos { get; set; } = 10;
             public int LimitePedidosMesmoCpfCnpj_Numero { get; set; } = 10;
             public int LimitePedidosMesmoCpfCnpj_TempoSegundos { get; set; } = 3600;
+            public int LimiteItens { get; set; } = 12;
         }
 
         public LimitePedidoMagento LimitePedidos { get; set; } = new LimitePedidoMagento();
 
         public string EndEtg_cod_justificativa { get; set; } = "007";   //Pedido Arclube
 
-        public class OrcamentistaMagento
+        public class IndicadorMagento
         {
-            public string Orcamentista { get; set; } = "FRETE";
+            public string Indicador { get; set; } = "FRETE";
             public string Loja { get; set; } = "201";
         }
 
-        public OrcamentistaMagento DadosOrcamentista { get; set; } = new OrcamentistaMagento();
+        public IndicadorMagento DadosIndicador { get; set; } = new IndicadorMagento();
 
         public class Magento
         {
@@ -50,7 +51,7 @@ namespace MagentoBusiness.UtilsMagento
         public class Markeplace
         {
             public string Op_pu_forma_pagto { get; set; } = "2";
-            public int C_pu_vencto_apos { get; set; }
+            public int C_pu_vencto_apos { get; set; } = 30;
         }
 
         public class PagtoMagento

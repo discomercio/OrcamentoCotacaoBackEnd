@@ -87,6 +87,10 @@ namespace Especificacao.Especificacao.Pedido.Passo40
                     "dastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 10
+ testRunner.Given("Ignorar cenário no ambiente \"Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.Prepedid" +
+                    "oApiBll.CadastrarPrepedido.CadastrarPrepedidoPrepedidoApi\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 13
  testRunner.Given("Ignorar cenário no ambiente \"Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadas" +
                     "trarPedido.CadastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
@@ -95,47 +99,6 @@ namespace Especificacao.Especificacao.Pedido.Passo40
         void System.IDisposable.Dispose()
         {
             this.TestTearDown();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="tirar esta linha acima!!! não está estando na loja!!")]
-        [Xunit.TraitAttribute("FeatureTitle", "FormaPagamentoPreenchimento")]
-        [Xunit.TraitAttribute("Description", "tirar esta linha acima!!! não está estando na loja!!")]
-        [Xunit.TraitAttribute("Category", "ignore")]
-        public virtual void TirarEstaLinhaAcimaNaoEstaEstandoNaLoja()
-        {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("tirar esta linha acima!!! não está estando na loja!!", null, tagsOfScenario, argumentsOfScenario);
-#line 13
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 5
-this.FeatureBackground();
-#line hidden
-#line 14
- testRunner.Given("Ignorar cenário no ambiente \"Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadas" +
-                        "trarPedido.CadastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            }
-            this.ScenarioCleanup();
         }
         
         [Xunit.SkippableFactAttribute(DisplayName="\"A forma de pagamento não foi informada (à vista, com entrada, sem entrada).\"")]

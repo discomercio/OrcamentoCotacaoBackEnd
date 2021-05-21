@@ -9,6 +9,13 @@ namespace InfraBanco
 {
     public class ContextoBd
     {
+        /*
+         * todo: coloca os sequingttes scripts, somente para a loja:
+         * K:\desenvolvimento\Ar Clube\banco de dados - atualizacoes
+         * 0187-atualiza-Ajustes-API-Magento2.sql
+         * 0190-atualiza-t_PEDIDO_ITEM_SERVICO.sql
+         * */
+
         private readonly ContextoBdBasico contexto;
         internal ContextoBd(ContextoBdBasico contexto)
         {
@@ -64,7 +71,7 @@ namespace InfraBanco
         public IQueryable<TprodutoXAlerta> TprodutoXAlertas { get => contexto.TprodutoXAlertas.AsNoTracking(); }
         public IQueryable<TalertaProduto> TalertaProdutos { get => contexto.TalertaProdutos.AsNoTracking(); }
         public IQueryable<TformaPagto> TformaPagtos { get => contexto.TformaPagtos.AsNoTracking(); }
-        public IQueryable<TorcamentistaEIndicadorRestricaoFormaPagto> torcamentistaEIndicadorRestricaoFormaPagtos { get => contexto.torcamentistaEIndicadorRestricaoFormaPagtos.AsNoTracking(); }
+        public IQueryable<TorcamentistaEIndicadorRestricaoFormaPagto> TorcamentistaEIndicadorRestricaoFormaPagtos { get => contexto.TorcamentistaEIndicadorRestricaoFormaPagtos.AsNoTracking(); }
         public IQueryable<TprazoPagtoVisanet> TprazoPagtoVisanets { get => contexto.TprazoPagtoVisanets.AsNoTracking(); }
         public IQueryable<TprodutoSubgrupo> TprodutoSubgrupos { get => contexto.TprodutoSubgrupos.AsNoTracking(); }
         public IQueryable<Tusuario> Tusuarios { get => contexto.Tusuarios.AsNoTracking(); }
@@ -76,12 +83,18 @@ namespace InfraBanco
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public IQueryable<Tdesconto> Tdescontos { get => contexto.Tdescontos.AsNoTracking(); }
 
-        public IQueryable<TtransportadoraCep>TtransportadoraCeps { get => contexto.TtransportadoraCeps.AsNoTracking(); }
+        public IQueryable<TtransportadoraCep> TtransportadoraCeps { get => contexto.TtransportadoraCeps.AsNoTracking(); }
 
         public IQueryable<TusuarioXLoja> TusuarioXLojas { get => contexto.TusuarioXLojas.AsNoTracking(); }
         public IQueryable<Taviso> Tavisos { get => contexto.Tavisos.AsNoTracking(); }
         public IQueryable<TavisoExibido> TavisoExibidos { get => contexto.TavisoExibidos.AsNoTracking(); }
         public IQueryable<TavisoLido> TavisoLidos { get => contexto.TavisoLidos.AsNoTracking(); }
+        public IQueryable<Toperacao> Toperacaos { get => contexto.Toperacaos.AsNoTracking(); }
+        public IQueryable<TperfilItem> TperfilItens { get => contexto.TperfilItens.AsNoTracking(); }
+        public IQueryable<TestoqueLog> TestoqueLogs { get => contexto.TestoqueLogs.AsNoTracking(); }
+        public IQueryable<TpedidoAnaliseEndereco> TpedidoAnaliseEnderecos { get => contexto.TpedidoAnaliseEnderecos.AsNoTracking(); }
+        public IQueryable<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseEnderecoConfrontacaos { get => contexto.TpedidoAnaliseConfrontacaos.AsNoTracking(); }
+
 #endif
 
     }

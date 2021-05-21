@@ -20,7 +20,6 @@ namespace Testes.Automatizados
         {
             services.AddDbContext<InfraBanco.ContextoBdBasico>(options =>
             {
-                //options.UseSqlServer(Configuration.GetConnectionString("conexaoLocal"));
                 options.UseInMemoryDatabase("bancomemoria");
                 options.ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning));
             });

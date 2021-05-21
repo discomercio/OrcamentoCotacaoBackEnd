@@ -7,20 +7,29 @@ namespace Pedido.Dados.Criacao
 {
     public class PedidoCriacaoValorDados
     {
-        public PedidoCriacaoValorDados(float percRT, bool opcaoPossuiRa, decimal vl_total, decimal vl_total_NF, short permiteRAStatus)
+        public PedidoCriacaoValorDados(float perc_RT, decimal vl_total, decimal vl_total_NF, decimal magento_shipping_amount)
         {
-            PercRT = percRT;
-            OpcaoPossuiRa = opcaoPossuiRa;
+            Perc_RT = perc_RT;
             Vl_total = vl_total;
             Vl_total_NF = vl_total_NF;
-            PermiteRAStatus = permiteRAStatus;
+            Magento_shipping_amount = magento_shipping_amount;
         }
 
-        //Armazena o percentual de comissão para o indicador selecionado
-        public float PercRT { get; }
+        //Armazena o percentual de comissão para o indicador selecionado (reserva técnica).
+        //precisa ser alterado no caso da API do magento ou no semi-automático porque no magento esse valor é determinado durante a gravação do pedido
+        public float Perc_RT { get; set; }
 
-        //Armazena "S" ou "N" para caso de o indicador selecionado permita RA
-        public bool OpcaoPossuiRa { get; }
+        /*
+        No banco de dados, o campo OpcaoPossuiRa é gravado da seguinte forma::
+        Quando o indicador está habilitado a fazer uso do RA, indica se o pedido foi cadastrado com a opção de usar ou não o RA:
+            'S' = pedido cadastrado informando que o RA será usado.
+            'N' = pedido cadastrado informando que o RA não será usado.
+            '-' = não se aplica (indicador não está habilitado p/ o uso de RA ou não há indicador cadastrado no pedido)
+            Quer dizer, este flag indica o estado do pedido
+        */
+        public bool PedidoPossuiRa() => Vl_total != Vl_total_NF;
+
+        public decimal Vl_total_RA => Vl_total_NF - Vl_total;
 
         //Armazena o valor total do pedido
         public decimal Vl_total { get; }
@@ -29,6 +38,6 @@ namespace Pedido.Dados.Criacao
         //Caso o indicador selecionado permita RA esse campo deve receber o valor total do Pedido com RA
         public decimal Vl_total_NF { get; }
 
-        public short PermiteRAStatus { get; }
+        public decimal Magento_shipping_amount { get; }
     }
 }

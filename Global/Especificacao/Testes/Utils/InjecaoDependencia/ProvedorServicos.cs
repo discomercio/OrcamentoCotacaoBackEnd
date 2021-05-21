@@ -19,6 +19,11 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
         }
 
         private ServiceProvider Servicos { get; set; }
+        //todo: dando 12 erros com o sql server
+        //se tira as transações não dá erro. com transação, dá erro de timeout.
+        //System.Data.IsolationLevel.ReadUncommitted dá 3 erros, dizendo MultipleActiveResultSets
+        //System.Data.IsolationLevel.Serializable dá 12 erros, dizendo timeout e MultipleActiveResultSets
+        public static readonly bool UsarSqlServerNosTestesAutomatizados = false;
         private ProvedorServicos()
         {
             var logTestes = LogTestes.LogTestes.GetInstance();
@@ -28,9 +33,23 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
 
             services.AddDbContext<InfraBanco.ContextoBdBasico>(options =>
             {
-                //options.UseSqlServer(Configuration.GetConnectionString("conexaoLocal"));
-                options.UseInMemoryDatabase("bancomemoria");
-                options.ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+                if (UsarSqlServerNosTestesAutomatizados)
+                {
+                    string conexaolocal;
+                    //algumas tentativas:
+                    conexaolocal = "server=ITS-DBDEV\\SQL2017;database=ARCLUBE_TESTES;Uid=appAirClube;Pwd=appAirClube;Pooling=false;Max Pool Size=1;";
+                    conexaolocal = "server=ITS-DBDEV\\SQL2017;database=ARCLUBE_TESTES;Uid=appAirClube;Pwd=appAirClube;Pooling=true;Max Pool Size=400;";
+                    conexaolocal = "server=ITS-DBDEV\\SQL2017;database=ARCLUBE_TESTES;Uid=appAirClube;Pwd=appAirClube;MultipleActiveResultSets=true;";
+                    //a que temos no appsettngs
+                    conexaolocal = "server=ITS-DBDEV\\SQL2017;database=ARCLUBE_TESTES;Uid=appAirClube;Pwd=appAirClube;";
+                    options.UseSqlServer(conexaolocal);
+                }
+                else
+                {
+                    options.UseInMemoryDatabase("bancomemoria");
+                    options.ConfigureWarnings(warnings => warnings.Ignore(InMemoryEventId.TransactionIgnoredWarning));
+                }
+                options.EnableSensitiveDataLogging();
             });
             services.AddDbContext<InfraBanco.ContextoCepBd>(options =>
             {
@@ -45,13 +64,14 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
             Ambiente.ApiUnis.InjecaoDependencias.ConfigurarDependencias(services);
             Ambiente.ApiMagento.InjecaoDependencias.ConfigurarDependencias(services);
             Ambiente.Loja.Loja_Bll.InjecaoDependencias.ConfigurarDependencias(services);
+            Ambiente.PrepedidoApi.InjecaoDependencias.ConfigurarDependencias(services);
 
             Servicos = services.BuildServiceProvider();
 
 
             //inicializa o banco de dados
             var bd = new Testes.Utils.BancoTestes.InicializarBancoGeral(Servicos.GetRequiredService<InfraBanco.ContextoBdProvider>(), Servicos.GetRequiredService<InfraBanco.ContextoCepProvider>());
-            bd.Inicializar(false);
+            bd.Inicializar();
 
             logTestes.LogMemoria("ProvedorServicos fim");
         }

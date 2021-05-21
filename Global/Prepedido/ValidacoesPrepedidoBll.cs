@@ -12,6 +12,7 @@ using Cep;
 using Produto;
 using Prepedido.Dados.DetalhesPrepedido;
 using Produto.Dados;
+using Cep.Dados;
 
 namespace Prepedido
 {
@@ -33,10 +34,17 @@ namespace Prepedido
             this.bancoNFeMunicipio = bancoNFeMunicipio;
         }
 
+
+        public enum AmbienteValidacao
+        {
+            PrepedidoValidacao, PedidoValidacao
+        }
+
         //vamos validar os produtos que foram enviados
         public async Task MontarProdutosParaComparacao(PrePedidoDados prepedido,
                     string siglaFormaPagto, int qtdeParcelas, string loja, List<string> lstErros, decimal percVlPedidoRA,
-                    decimal limiteArredondamento)
+                    decimal limiteArredondamento,
+                    AmbienteValidacao ambienteValidacao)
         {
 
 
@@ -73,7 +81,7 @@ namespace Prepedido
                     CalcularProdutoComCoeficiente(lstProdutosCompare, lstCoeficiente);
 
                 ConfrontarProdutos(prepedido, lstProdutosCompare, lstErros, limiteArredondamento);
-                ConfrontarTotaisEPercentualMaxRA(prepedido, lstErros, percVlPedidoRA);
+                ConfrontarTotaisEPercentualMaxRA(prepedido, lstErros, percVlPedidoRA, ambienteValidacao);
             }
         }
 
@@ -163,6 +171,30 @@ namespace Prepedido
                 if (p.Preco_Venda <= 0)
                     lstErros.Add($"Produto {p.Fabricante} {p.Produto} com Preco_Venda menor ou igual a zero!");
             }
+
+            //# loja/PedidoNovoConsiste.asp
+            //# alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & ": linha " & renumera_com_base1(Lbound(v_item),i) & " repete o mesmo produto da linha " & renumera_com_base1(Lbound(v_item),j) & "."
+            var agrupados = (from p in lstProdutos group p by new { p.Fabricante, p.Produto } into g select g).ToList();
+            var repetidos = (from p in agrupados where p.Count() > 1 select p.Key).ToList();
+            //para saber a linha precisamos de um loop
+            for (int ilinha = 0; ilinha < lstProdutos.Count(); ilinha++)
+            {
+                var esteproduto = lstProdutos[ilinha];
+                if (!(from repetido in repetidos where repetido.Produto == esteproduto.Produto && repetido.Fabricante == esteproduto.Fabricante select repetido).Any())
+                    continue;
+
+                //está repetido sim
+                for (int ilinha2 = ilinha + 1; ilinha2 < lstProdutos.Count(); ilinha2++)
+                {
+                    var esterepetido = lstProdutos[ilinha2];
+                    if (esteproduto.Fabricante == esterepetido.Fabricante && esteproduto.Produto == esterepetido.Produto)
+                    {
+                        var msg = "Produto " + esteproduto.Produto + " do fabricante " + esteproduto.Fabricante
+                            + ": linha " + (ilinha + 1).ToString() + " repete o mesmo produto da linha " + (ilinha2 + 1).ToString() + ".";
+                        lstErros.Add(msg);
+                    }
+                }
+            }
         }
 
         public async Task<IEnumerable<CoeficienteDados>> BuscarListaCoeficientesFornecedores(List<string> lstFornecedores, int qtdeParcelas, string siglaFP)
@@ -232,7 +264,8 @@ namespace Prepedido
                                                                     where c.Produto == x.Produto &&
                                                                           c.Fabricante == x.Fabricante &&
                                                                           c.Vendavel == "S" &&
-                                                                          c.Loja == loja
+                                                                          c.Loja == loja &&
+                                                                          c.Excluido_status == 0
                                                                     select new PrepedidoProdutoPrepedidoDados
                                                                     {
                                                                         Fabricante = c.Fabricante,
@@ -309,7 +342,7 @@ namespace Prepedido
         }
 
         private void ConfrontarTotaisEPercentualMaxRA(PrePedidoDados prepedido, List<string> lstErros,
-            decimal percVlPedidoRA)
+            decimal percVlPedidoRA, AmbienteValidacao ambienteValidacao)
         {
             decimal totalCompare = 0;
             decimal totalRaCompare = 0;
@@ -328,23 +361,28 @@ namespace Prepedido
                 if (totalRaCompare != (decimal)prepedido.Vl_total_NF)
                     lstErros.Add("Os valores totais de RA estão divergindo!");
 
-                //vamos verificar o valor de RA
-                decimal ra = totalRaCompare - totalCompare;
-                decimal perc = Math.Round((decimal)(percVlPedidoRA / 100), 2);
-                decimal percentual = Math.Round(perc * (decimal)prepedido.Vl_total, 2);
+                if (ambienteValidacao == AmbienteValidacao.PrepedidoValidacao)
+                {
+                    //vamos verificar o valor de RA
+                    decimal ra = totalRaCompare - totalCompare;
+                    decimal perc = Math.Round((decimal)(percVlPedidoRA / 100), 2);
+                    decimal percentual = Math.Round(perc * (decimal)prepedido.Vl_total, 2);
 
-                if (ra > percentual)
-                    lstErros.Add("O valor total de RA excede o limite permitido!");
+                    if (ra > percentual)
+                        lstErros.Add("O valor total de RA excede o limite permitido!");
+                }
             }
         }
 
 
         public async Task ValidarEnderecoEntrega(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEntrega,
-            List<string> lstErros, string orcamentista, string tipoCliente, bool usarLojaOrcamentista, string loja)
+            List<string> lstErros, string orcamentista, string tipoCliente, bool usarLojaOrcamentista, string loja,
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel tipoValidacaoEndereco)
         {
+
             if (endEntrega.OutroEndereco)
             {
-                await ValidarDadosEnderecoEntrega(endEntrega, lstErros, contextoProvider, usarLojaOrcamentista, loja, orcamentista);
+                await ValidarDadosEnderecoEntrega(endEntrega, lstErros, contextoProvider, usarLojaOrcamentista, loja, orcamentista, tipoValidacaoEndereco);
 
                 ValidarDadosPessoaEnderecoEntrega(endEntrega, lstErros, false, tipoCliente);
                 VerificarCaracteresInvalidosEnderecoEntregaClienteCadastro(endEntrega, lstErros);
@@ -382,7 +420,8 @@ namespace Prepedido
 
         private async Task ValidarDadosEnderecoEntrega(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEntrega,
             List<string> lstErros,
-            ContextoBdProvider contextoProvider, bool usarLojaOrcamentista, string loja, string orcamentista)
+            ContextoBdProvider contextoProvider, bool usarLojaOrcamentista, string loja, string orcamentista,
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel tipoValidacaoEndereco)
         {
             if (!endEntrega.OutroEndereco)
                 return;
@@ -440,33 +479,24 @@ namespace Prepedido
             if (lstErros.Count == 0)
             {
                 //vamos comparar endereço
-                string cepSoDigito = endEntrega.EndEtg_cep.Replace(".", "").Replace("-", "");
-                List<Cep.Dados.CepDados> lstCepDados = (await cepBll.BuscarPorCep(cepSoDigito)).ToList();
-
-                if (lstCepDados.Count == 0)
+                Cep.Dados.CepDados cep = new Cep.Dados.CepDados()
                 {
-                    lstErros.Add("Endereço Entrega: cep inválido!");
-                }
-                else
-                {
-                    Cep.Dados.CepDados cep = new Cep.Dados.CepDados()
-                    {
-                        Cep = endEntrega.EndEtg_cep,
-                        Endereco = endEntrega.EndEtg_endereco,
-                        Bairro = endEntrega.EndEtg_bairro,
-                        Cidade = endEntrega.EndEtg_cidade,
-                        Uf = endEntrega.EndEtg_uf
-                    };
-                    await Cliente.ValidacoesClienteBll.VerificarEndereco(cep, lstCepDados, lstErros, contextoProvider,
-                        bancoNFeMunicipio);
-                }
+                    Cep = endEntrega.EndEtg_cep,
+                    Endereco = endEntrega.EndEtg_endereco,
+                    Bairro = endEntrega.EndEtg_bairro,
+                    Cidade = endEntrega.EndEtg_cidade,
+                    Uf = endEntrega.EndEtg_uf
+                };
+                var msgErro = "Endereço Entrega: cep inválido!";
+                await Cliente.ValidacoesClienteBll.VerificarEndereco(lstErros, cepBll, contextoProvider,
+                    bancoNFeMunicipio, msgErro, cep, tipoValidacaoEndereco);
 
                 await CepBll.ConsisteMunicipioIBGE(endEntrega.EndEtg_cidade,
                     endEntrega.EndEtg_uf, lstErros, contextoProvider, bancoNFeMunicipio, true);
             }
         }
 
-        public bool ValidarDetalhesPrepedido(DetalhesPrepedidoDados detalhesPrepedido, List<string> lstErros)
+        public static bool ValidarDetalhesPrepedido(DetalhesPrepedidoDados detalhesPrepedido, List<string> lstErros)
         {
             bool retorno = true;
 
@@ -538,7 +568,13 @@ namespace Prepedido
                 //Cliente PF aceita IE com estado do endereço de endereço de entrega diferente
                 if (tipoCliente == Constantes.ID_PJ)
                 {
-                    if (!string.IsNullOrEmpty(endEntrega.EndEtg_ie))
+                    if ((endEntrega.EndEtg_tipo_pessoa == Constantes.ID_PF && endEntrega.EndEtg_produtor_rural_status ==
+                    (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM) ||
+                    (endEntrega.EndEtg_tipo_pessoa == Constantes.ID_PJ &&
+                    endEntrega.EndEtg_contribuinte_icms_status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM) ||
+                    (endEntrega.EndEtg_tipo_pessoa == Constantes.ID_PJ &&
+                    endEntrega.EndEtg_contribuinte_icms_status == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO)
+                    && !string.IsNullOrEmpty(endEntrega.EndEtg_ie))
                     {
                         Cliente.ValidacoesClienteBll.VerificarInscricaoEstadualValida(endEntrega.EndEtg_ie,
                         endEntrega.EndEtg_uf, lstErros, flagMsg_IE_Cadastro_PF);
@@ -831,7 +867,7 @@ namespace Prepedido
             {
                 if (string.IsNullOrEmpty(endEtg.EndEtg_tel_res))
                     lstErros.Add("Endereço de entrega: preencha o telfone residencial.");
-                else if (Util.Telefone_SoDigito(endEtg.EndEtg_tel_res).Length < 6 || 
+                else if (Util.Telefone_SoDigito(endEtg.EndEtg_tel_res).Length < 6 ||
                     Util.Telefone_SoDigito(endEtg.EndEtg_tel_res).Length > 11)
                     lstErros.Add("Endereço de entrega: telefone residencial inválido.");
 

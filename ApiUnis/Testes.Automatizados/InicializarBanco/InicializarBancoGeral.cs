@@ -155,7 +155,8 @@ namespace Testes.Automatizados.InicializarBanco
                     {
                         Fabricante = item.Fabricante,
                         Produto = item.Produto,
-                        Descontinuado = "N"
+                        Descontinuado = "N",
+                        Excluido_status = 0
                     });
 
                     db.TprodutoLojas.Add(new InfraBanco.Modelos.TprodutoLoja()
@@ -164,7 +165,8 @@ namespace Testes.Automatizados.InicializarBanco
                         Fabricante = item.Fabricante,
                         Vendavel = "S",
                         Loja = Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE,
-                        Preco_Lista = item.CustoFinancFornecPrecoListaBase
+                        Preco_Lista = item.CustoFinancFornecPrecoListaBase,
+                        Excluido_status = 0
                     });
 
                     {

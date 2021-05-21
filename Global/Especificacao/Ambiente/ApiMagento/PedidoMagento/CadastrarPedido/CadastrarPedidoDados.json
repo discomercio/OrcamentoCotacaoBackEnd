@@ -3,7 +3,7 @@
   "Cnpj_Cpf": "14039603052",
   "InfCriacaoPedido": {
     "Pedido_bs_x_ac": "123456789",
-    "Marketplace_codigo_origem": "",
+    "Marketplace_codigo_origem": "001",
     "Pedido_bs_x_marketplace": ""
   },
   "EnderecoCadastralCliente": {
@@ -59,8 +59,7 @@
     "EndEtg_cnpj_cpf": "14039603052",
     "EndEtg_contribuinte_icms_status": 1,
     "EndEtg_produtor_rural_status": 2,
-    "EndEtg_ie": "244.355.757.113",
-    "EndEtg_rg": "11997996-2"
+    "EndEtg_ie": "244.355.757.113"
   },
   "ListaProdutos": [
     {
@@ -78,7 +77,8 @@
       "Preco_NF": 939.87
     }
   ],
-  "VlTotalDestePedido": 3132.9,
+  "ListaServicos": [
+  ],
   "FormaPagtoCriacao": {
     "Tipo_Parcelamento": 1,
     "C_pu_valor": 0,

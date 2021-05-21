@@ -8,7 +8,7 @@ namespace Especificacao.Testes.Utils
     public static class MapeamentoMensagens
     {
         //fazemos como static para facilitar MUITO vida
-        private static Dictionary<string, Dictionary<string, string>> dicionarioMensagens = new Dictionary<string, Dictionary<string, string>>();
+        private static readonly Dictionary<string, Dictionary<string, string>> dicionarioMensagens = new Dictionary<string, Dictionary<string, string>>();
         public static void GivenNoAmbienteErroE(string ambiente, string msgOriginal, string msgSubstituta)
         {
             if (!dicionarioMensagens.ContainsKey(ambiente))

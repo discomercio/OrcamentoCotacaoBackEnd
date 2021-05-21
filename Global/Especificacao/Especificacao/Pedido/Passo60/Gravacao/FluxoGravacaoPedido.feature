@@ -3,8 +3,16 @@ Feature: FluxoGravacaoPedido
 
 arquivo loja/PedidoNovoConfirma.asp
 
+Passo01: Gerar o NSU do pedido (para bloquear transações concorrentes)
 
 Passo10: Fazer todas as validações (documentado em FluxoCriacaoPedido.feature e nos passos dele).
+
+Passo15: Verificar pedidos repetidos
+
+Passo17: Marcar t_DESCONTO que forem usados
+	Monta a lista de produtos para processamento, incluindo a autorização da t_DESCONTO
+	Monta a lista de registro da t_DESCONTO utilizadas
+	loja/PedidoNovoConfirma.asp de linha 798 a 908 (VERIFICA CADA UM DOS PRODUTOS SELECIONADOS)
 
 Passo20: LER AS REGRAS DE CONSUMO DO ESTOQUE
 	rotina obtemCtrlEstoqueProdutoRegra (arquivo bdd.asp)
@@ -14,11 +22,10 @@ Passo20: LER AS REGRAS DE CONSUMO DO ESTOQUE
 	Traduzindo: para cada produto:
 		Dado o produto, UF, tipo_cliente, contribuinte_icms_status, produtor_rural_status             
 		Descobrir em t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD os CDs que atendem em ordem de prioridade
-		Lê as tabelas t_PRODUTO_X_WMS_REGRA_CD, t_WMS_REGRA_CD_X_UF, t_WMS_REGRA_CD_X_UF_X_PESSOA, t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD
+		Lê as tabelas t_WMS_REGRA_CD, t_PRODUTO_X_WMS_REGRA_CD, t_WMS_REGRA_CD_X_UF, t_WMS_REGRA_CD_X_UF_X_PESSOA, t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD
 
 
-Passo25:  
-	VERIFICA SE AS REGRAS ASSOCIADAS AOS PRODUTOS ESTÃO OK - linha 1010
+Passo25:  VERIFICA SE AS REGRAS ASSOCIADAS AOS PRODUTOS ESTÃO OK - linha 1010
 		Verifica se todos os produtos possuem regra ativa e não bloqueada e ao menos um CD ativo.
 	'NO CASO DE SELEÇÃO MANUAL DO CD, VERIFICA SE O CD SELECIONADO ESTÁ HABILITADO EM TODAS AS REGRAS - linha 1047
 		No caso de CD manual, verifica se o CD tem regra ativa
@@ -42,6 +49,7 @@ Passo40: Verifica se a disponibilidade do estoque foi alterada - Linha 1159
 	Porque: avisamos o usuário que existem produtos sem presença no estoque e, no momento de salvar, os produtos sem presença no estoque foram alterados.
 	No caso da ApiMagento, não temos essa verificação
 
+	Também verifica se o produto consta como 'descontinuado' e não há mais saldo suficiente no estoque para atender à quantidade solicitada.
 
 Passo50: ANALISA A QUANTIDADE DE PEDIDOS QUE SERÃO CADASTRADOS (AUTO-SPLIT) - linha 1184
 			'	OS CD'S ESTÃO ORDENADOS DE ACORDO C/ A PRIORIZAÇÃO DEFINIDA PELA REGRA DE CONSUMO DO ESTOQUE
@@ -62,7 +70,7 @@ Passo55: Contagem de pedidos a serem gravados - Linha 1286
 	Conta todos os CDs que tem alguma quantidade solicitada.
 
 
-Passo60: criar pedidos
+Passo60: criar pedidos - '	CADASTRA O PEDIDO E PROCESSA A MOVIMENTAÇÃO NO ESTOQUE
 	Loop nos CDs a utilizar
 		Gerar o número do pedido: Passo60/Gerar_o_numero_do_pedido.feature
 		Adiciona um novo pedido
@@ -84,7 +92,7 @@ Passo60: criar pedidos
 		Determina o status st_entrega deste pedido (Passo60/st_entrega.feature)
 
 Passo70: ajustes adicionais no pedido pai
-	No pedido pai atualiza campos de RA (Passo70/calcula_total_RA_liquido_BD.feture)
+	No pai e nos filhotes, atualiza campos de RA (Passo70/calcula_total_RA_liquido_BD.feture)
 
 	Caso tenha usado algum desconto superior ao limite, liberado pela t_DESCONTO, marca como usado (Passo70/Senhas_de_autorizacao_para_desconto_superior.feature)
 

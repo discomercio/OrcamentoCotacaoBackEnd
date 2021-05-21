@@ -1,7 +1,8 @@
-﻿@ignore
+﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
+@GerenciamentoBanco
 Feature: ValidacaoEstoque2.feature
 
-Scenario: Validar estoque 2
+Scenario: Validar estoque 2 - Feito em outro arquivo
 #loja/PedidoNovoConsiste.asp
 #loja/PedidoNovoConfirma.asp
 #exatamente o mesmo código nas duas
@@ -48,6 +49,8 @@ Scenario: Validar estoque 2
 	#			if alerta <> "" then exit for
 	#			next
 	#		end if 'if alerta=""
-	When Validação feita em outro lugar: "A rotina estoque_verifica_disponibilidade_integral_v2 só dá erro se der erro no banco de dados. A lógiga em si está coberta pelo Especificacao\Pedido\Passo60\Gravacao\FluxoGravacaoPedido.feature"
+	#Validação feita em outro lugar: "A rotina estoque_verifica_disponibilidade_integral_v2 só dá erro se der erro no banco de dados. A lógiga em si está coberta pelo Especificacao\Pedido\Passo60\Gravacao\FluxoGravacaoPedido.feature"
+	Given Validação feita em outro arquivo
+
 
 

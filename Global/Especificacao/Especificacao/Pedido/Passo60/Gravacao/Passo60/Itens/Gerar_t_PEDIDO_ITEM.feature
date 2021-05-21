@@ -1,12 +1,86 @@
-﻿@ignore
+﻿
+@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 Feature: Gerar_t_PEDIDO_ITEM
 
-Scenario: Gerar_t_PEDIDO_ITEM
-#loja/PedidoNovoConfirma.asp
-#de linha 2088
-#s="SELECT * FROM t_PEDIDO_ITEM WHERE pedido='X'"
-#até linha
-#rs("descontinuado") = .descontinuado
-#rs.Update
 
-	When Fazer esta validação
+Scenario: Gerar_t_PEDIDO_ITEM
+	#loja/PedidoNovoConfirma.asp
+	#de linha 2088
+	#s="SELECT * FROM t_PEDIDO_ITEM WHERE pedido='X'"
+	#até linha
+	#rs("descontinuado") = .descontinuado
+	#rs.Update
+	Given Pedido base
+	Then Sem nenhum erro
+	#item 1
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "fabricante" = "003"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "produto" = "003220"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "qtde" = "2"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "desc_dado" = "0"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "preco_venda" = "626.58"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "preco_fabricante" = "0.0000"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "preco_lista" = "626.58"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "margem" = "0.0"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "desc_max" = "8.0"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "comissao" = "0.0"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "descricao" = "Evap. AR09MVSPBGMNAZ Inverter - FRIO"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "ean" = "7892509093149"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "grupo" = "IN"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "peso" = "10.2"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "qtde_volumes" = "1"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "abaixo_min_status" = "0"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "abaixo_min_autorizacao" = ""
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "abaixo_min_autorizador" = ""
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "sequencia" = "1"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "markup_fabricante" = "0"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "preco_NF" = "626.58"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "abaixo_min_superv_autorizador" = ""
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "vl_custo2" = "0.0000"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "descricao_html" = "Evap. <b>AR09MVS</b>PBGMNAZ <b>Inverter - FRIO</b>"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "custoFinancFornecCoeficiente" = "1.0"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "custoFinancFornecPrecoListaBase" = "626.58"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "cubagem" = "0.09"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "ncm" = "84151011"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "cst" = "000"
+	#And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "separacao_rel_nsu" = "0"
+	#And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "separacao_data" = "null"
+	#And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "separacao_data_hora" = "null"                                        
+	#And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "separacao_deposito_zona_id" = "0"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "descontinuado" = ""
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "subgrupo" = "null"
+	#item 2
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "fabricante" = "003"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "produto" = "003221"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "qtde" = "2"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "desc_dado" = "0"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "preco_venda" = "939.87"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "preco_fabricante" = "0.0000"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "preco_lista" = "939.87"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "margem" = "0.0"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "desc_max" = "8.0"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "comissao" = "0.0"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "descricao" = "Cond. AR09MVSPBGMXAZ Inverter - FRIO"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "ean" = "7892509093156"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "grupo" = "IN"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "peso" = "29.5"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "qtde_volumes" = "1"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "abaixo_min_status" = "0"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "abaixo_min_autorizacao" = ""
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "abaixo_min_autorizador" = ""
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "sequencia" = "2"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "markup_fabricante" = "0"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "preco_NF" = "939.87"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "abaixo_min_superv_autorizador" = ""
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "vl_custo2" = "0.0000"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "descricao_html" = "Cond. <b>AR09MVS</b>PBGMXAZ<b> Inverter - FRIO</b>"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "custoFinancFornecCoeficiente" = "1.0"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "custoFinancFornecPrecoListaBase" = "939.87"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "cubagem" = "0.19"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "ncm" = "84151011"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "cst" = "000"
+	#And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "separacao_rel_nsu" = "0"
+	#And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "separacao_data" = "null"
+	#And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "separacao_data_hora" = "null"
+	#And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "separacao_deposito_zona_id" = "0"
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "descontinuado" = ""
+	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "2" campo "subgrupo" = "null"

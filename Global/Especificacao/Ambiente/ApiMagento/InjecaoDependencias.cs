@@ -20,7 +20,7 @@ namespace Especificacao.Ambiente.ApiMagento
                 var acessoMagentoBll = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<MagentoBusiness.MagentoBll.AcessoBll.AcessoMagentoBll>();
                 var loginResultadoUnisDto = acessoMagentoBll.FazerLogin(new MagentoBusiness.MagentoDto.LoginMagentoDto()
                 {
-                    Usuario = "UsuarioApiMagento",
+                    Usuario = "USRMAG",
                     Senha = "123456"
                 }, "local", "testes").Result;
                 Assert.Empty(loginResultadoUnisDto.ListaErros);
@@ -77,13 +77,15 @@ namespace Especificacao.Ambiente.ApiMagento
 
             configuracaoApiMagento.SegredoToken = "appSettings.SegredoToken";
             configuracaoApiMagento.ValidadeTokenMinutos = 2628000;
-            configuracaoApiMagento.ApelidoPerfilLiberaAcessoApiMagento = "USUARIOAPIMAGENTO";
+            configuracaoApiMagento.ApelidoPerfilLiberaAcessoApiMagento = "USRMAG";
 
-            configuracaoApiMagento.DadosOrcamentista.Orcamentista = "FRETE";
-            configuracaoApiMagento.DadosOrcamentista.Loja = "202";
+            configuracaoApiMagento.DadosIndicador.Indicador = "FRETE";
+            configuracaoApiMagento.DadosIndicador.Loja = "201";
 
-            //para nao dar erro...
-            configuracaoApiMagento.LimitePedidos.LimitePedidosExatamenteIguais_Numero = 1000;
+            //colocamos um limite alto no número de pedidos para nao dar erro nos testes porque geramos muitos pedidos
+            configuracaoApiMagento.LimitePedidos.LimitePedidosExatamenteIguais_Numero = 10000;
+            configuracaoApiMagento.LimitePedidos.LimitePedidosMesmoCpfCnpj_Numero = 10000;
+            configuracaoApiMagento.LimitePedidos.LimiteItens = 12;
         }
     }
 }

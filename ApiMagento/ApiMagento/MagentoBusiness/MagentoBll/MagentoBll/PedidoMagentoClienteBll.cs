@@ -12,6 +12,7 @@ using Prepedido;
 using MagentoBusiness.UtilsMagento;
 using MagentoBusiness.MagentoDto;
 using MagentoBusiness.MagentoDto.MarketplaceDto;
+using InfraBanco.Modelos;
 
 #nullable enable
 
@@ -29,29 +30,32 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             this.configuracaoApiMagento = configuracaoApiMagento;
         }
 
-        internal async Task CadastrarClienteSeNaoExistir(PedidoMagentoDto pedidoMagento, List<string> listaErros,
-            PedidoMagentoBll.Orcamentistaindicador_vendedor_loja orcamentistaindicador_vendedor_loja, string usuario_cadastro)
+        internal async Task<Tcliente?> CadastrarClienteSeNaoExistir(PedidoMagentoDto pedidoMagento, List<string> listaErros,
+            PedidoMagentoBll.Indicador_vendedor_loja indicador_Vendedor_Loja, string usuario_cadastro)
         {
-            if (await clienteBll.ClienteExiste(pedidoMagento.Cnpj_Cpf))
-                return;
+            var idCliente = await clienteBll.BuscarTcliente(pedidoMagento.Cnpj_Cpf).FirstOrDefaultAsync();
+            if (idCliente != null)
+                return idCliente;
 
             Cliente.Dados.ClienteCadastroDados clienteCadastro = new Cliente.Dados.ClienteCadastroDados
             {
                 DadosCliente =
                 EnderecoCadastralClienteMagentoDto.DadosClienteDeEnderecoCadastralClienteMagentoDto(pedidoMagento.EnderecoCadastralCliente,
-                    orcamentistaindicador_vendedor_loja.loja, orcamentistaindicador_vendedor_loja.vendedor,
-                    configuracaoApiMagento.DadosOrcamentista.Orcamentista, ""),
+                    indicador_Vendedor_Loja.loja, indicador_Vendedor_Loja.vendedor,
+                    configuracaoApiMagento.DadosIndicador.Indicador, ""),
                 RefBancaria = new List<Cliente.Dados.Referencias.RefBancariaClienteDados>(),
                 RefComercial = new List<Cliente.Dados.Referencias.RefComercialClienteDados>()
             };
 
             List<string> lstRet = (await clienteBll.CadastrarCliente(clienteCadastro,
-                orcamentistaindicador_vendedor_loja.orcamentista_indicador,
-                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI,
+                indicador_Vendedor_Loja.indicador,
+                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO,
                 usuario_cadastro)).ToList();
 
             //tem erro?
             listaErros.AddRange(lstRet);
+            idCliente = await clienteBll.BuscarTcliente(pedidoMagento.Cnpj_Cpf).FirstOrDefaultAsync();
+            return idCliente;
         }
 
         internal void LimitarPedidosMagentoPJ(PedidoMagentoDto pedidoMagento, List<string> lstErros)

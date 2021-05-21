@@ -4,7 +4,7 @@ using System.Text;
 
 namespace InfraBanco.Constantes
 {
-    public static class Constantes
+    public static partial class Constantes
     {
         public static int FATOR_CRIPTO = 1209;
         public static int TAMANHO_SENHA_FORMATADA = 32;  // Procurar usar sempre potência de 2
@@ -15,19 +15,13 @@ namespace InfraBanco.Constantes
         public static string TEL_BONSHOP_2 = "1139344420";
         public static string TEL_BONSHOP_3 = "1139344411";
 
-        //todo: usar estes campos
-        public enum Cod_plataforma_origem
-        {
-            COD_PLATAFORMA_ORIGEM_PEDIDO__ERP = 0,
-            COD_PLATAFORMA_ORIGEM_PEDIDO__MAGENTO = 1
-        };
-
         public enum CodSistemaResponsavel
         {
             COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP = 1,
             COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS = 2,
             COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS = 3,
-            COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI = 4   //API magento
+            COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI = 4,   //Web api do ERP
+            COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO = 5   //API magento
         };
 
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
@@ -47,8 +41,11 @@ namespace InfraBanco.Constantes
 
         //'	Criptografia em SessionCtrl (tratamento da sessão expirada)
         public const int FATOR_CRIPTO_SESSION_CTRL = 1329;
+
+        public const string COD_MARKETPLACE_ARCLUBE = "001";
 #endif
 
+        public const int MAX_TAM_OBS1 = 500;
 
         public const int FATOR_BD = 1209;
 
@@ -681,9 +678,12 @@ namespace InfraBanco.Constantes
         public const string OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO = "PED_NOVO_EC_SEMI_AUTO";
 
 
-        public const int COD_PLATAFORMA_ORIGEM_PEDIDO__ERP = 0;
+        public enum Cod_plataforma_origem
+        {
+            COD_PLATAFORMA_ORIGEM_PEDIDO__ERP = 0,
+            COD_PLATAFORMA_ORIGEM_PEDIDO__MAGENTO = 1
+        };
 
-        public const int COD_PLATAFORMA_ORIGEM_PEDIDO__MAGENTO = 1;
 
         //' CÓDIGOS PARA NÍVEL DOS USUÁRIOS
 
@@ -1374,6 +1374,7 @@ namespace InfraBanco.Constantes
 
         //'   NÚMERO DE LINHAS DO CAMPO "TEXTO CONSTAR NF" DO PEDIDO
         public const int MAX_LINHAS_NF_TEXTO_CONSTAR = 2;
+        public const int MAX_TAM_NF_TEXTO = 800;
 
         //'	NÚMERO DE LINHAS DO CAMPO "MENSAGEM" AO CADASTRAR NOVA MENSAGEM NO BLOCO DE NOTAS DO PEDIDO
 
@@ -1398,8 +1399,8 @@ namespace InfraBanco.Constantes
         public const int MAX_LINHAS_MENSAGEM_CHAMADOS_EM_PEDIDOS = 5;
 
         //'	NÚMERO DE LINHAS DO CAMPO "FORMA DE PAGAMENTO" DO PEDIDO
-
         public const int MAX_LINHAS_FORMA_PAGTO = 5;
+        public const int MAX_TAM_FORMA_PAGTO = 250;
 
         //'	NÚMERO DE LINHAS DOS CAMPOS MULTI-LINHAS DA ORDEM DE SERVIÇO	
 
@@ -2720,6 +2721,7 @@ namespace InfraBanco.Constantes
         public const string COD_UNIDADE_NEGOCIO_LOJA__VRF = "VRF";
         public const string COD_UNIDADE_NEGOCIO_LOJA__BS = "BS";
         public const string COD_UNIDADE_NEGOCIO_LOJA__AC = "AC";
+        public const string COD_UNIDADE_NEGOCIO_LOJA__GARANTIA = "GAR";
 
         public const string SESSION_CTRL_MODULO_CENTRAL = "CENTR";
         public const string SESSION_CTRL_MODULO_LOJA = "LOJA";

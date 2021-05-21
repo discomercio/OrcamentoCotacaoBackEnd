@@ -15,26 +15,29 @@ namespace Cliente
     public class ValidacoesClienteTelefones
     {
         internal static async Task ValidarTelefones_PJ(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente, List<string> lstErros,
-            ContextoBdProvider contextoProvider)
+            ContextoBdProvider contextoProvider, InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel)
         {
             TelefonesSomenteComDigitos(dadosCliente);
 
-            if (!string.IsNullOrEmpty(dadosCliente.DddResidencial) ||
+            if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO)
+            {
+                if (!string.IsNullOrEmpty(dadosCliente.DddResidencial) ||
                 !string.IsNullOrEmpty(dadosCliente.TelefoneResidencial))
-            {
-                lstErros.Add("Se cliente é tipo PJ, não pode ter os campos de Telefone e DDD residencial preenchidos! ");
-            }
+                {
+                    lstErros.Add("Se cliente é tipo PJ, não pode ter os campos de Telefone e DDD residencial preenchidos! ");
+                }
 
-            if (!string.IsNullOrEmpty(dadosCliente.DddCelular) ||
-                !string.IsNullOrEmpty(dadosCliente.Celular))
-            {
-                lstErros.Add("Se cliente é tipo PJ, não pode ter os campos de Telefone e DDD celular preenchidos! ");
-            }
+                if (!string.IsNullOrEmpty(dadosCliente.DddCelular) ||
+                    !string.IsNullOrEmpty(dadosCliente.Celular))
+                {
+                    lstErros.Add("Se cliente é tipo PJ, não pode ter os campos de Telefone e DDD celular preenchidos! ");
+                }
 
-            if (dadosCliente.Tipo == Constantes.ID_PJ && string.IsNullOrEmpty(dadosCliente.TelComercial) &&
-                string.IsNullOrEmpty(dadosCliente.TelComercial2))
-            {
-                lstErros.Add("PREENCHA AO MENOS UM TELEFONE (COMERCIAL OU COMERCIAL 2)!");
+                if (dadosCliente.Tipo == Constantes.ID_PJ && string.IsNullOrEmpty(dadosCliente.TelComercial) &&
+                    string.IsNullOrEmpty(dadosCliente.TelComercial2))
+                {
+                    lstErros.Add("PREENCHA AO MENOS UM TELEFONE (COMERCIAL OU COMERCIAL 2)!");
+                }
             }
 
             //com
@@ -42,7 +45,7 @@ namespace Cliente
                 !string.IsNullOrEmpty(dadosCliente.DddComercial) ||
                 !string.IsNullOrEmpty(dadosCliente.Ramal))
             {
-                await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
+                await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider, sistemaResponsavel);
             }
 
             //com 2
@@ -50,58 +53,74 @@ namespace Cliente
                 !string.IsNullOrEmpty(dadosCliente.DddComercial2) ||
                 !string.IsNullOrEmpty(dadosCliente.Ramal2))
             {
-                await ValidarTelCom2(dadosCliente, cliente, lstErros, contextoProvider);
+                await ValidarTelCom2(dadosCliente, cliente, lstErros, contextoProvider, sistemaResponsavel);
             }
 
         }
 
         internal static async Task ValidarTelefones_PF(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
-            List<string> lstErros, ContextoBdProvider contextoProvider)
+            List<string> lstErros, ContextoBdProvider contextoProvider, InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel)
         {
             TelefonesSomenteComDigitos(dadosCliente);
 
 
-            if (dadosCliente.Tipo == Constantes.ID_PF)
+            if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO)
             {
-                if (!string.IsNullOrEmpty(dadosCliente.TelComercial2) ||
-                    !string.IsNullOrEmpty(dadosCliente.DddComercial2) ||
-                    !string.IsNullOrEmpty(dadosCliente.Ramal2))
+                if (dadosCliente.Tipo == Constantes.ID_PF)
                 {
-                    lstErros.Add("Se cliente é tipo PF, não pode ter os campos de Telefone, DDD e ramal comercial 2 preenchidos!");
+                    if (!string.IsNullOrEmpty(dadosCliente.TelComercial2) ||
+                        !string.IsNullOrEmpty(dadosCliente.DddComercial2) ||
+                        !string.IsNullOrEmpty(dadosCliente.Ramal2))
+                    {
+                        lstErros.Add("Se cliente é tipo PF, não pode ter os campos de Telefone, DDD e ramal comercial 2 preenchidos!");
+                    }
+                }
+
+                if (dadosCliente.Tipo == Constantes.ID_PF && string.IsNullOrEmpty(dadosCliente.TelefoneResidencial) &&
+                    string.IsNullOrEmpty(dadosCliente.TelComercial) && string.IsNullOrEmpty(dadosCliente.Celular))
+                {
+                    lstErros.Add("PREENCHA PELO MENOS UM TELEFONE (RESIDENCIAL, COMERCIAL OU CELULAR).");
                 }
             }
-
-            if (dadosCliente.Tipo == Constantes.ID_PF && string.IsNullOrEmpty(dadosCliente.TelefoneResidencial) &&
-                string.IsNullOrEmpty(dadosCliente.TelComercial) && string.IsNullOrEmpty(dadosCliente.Celular))
-            {
-                lstErros.Add("PREENCHA PELO MENOS UM TELEFONE (RESIDENCIAL, COMERCIAL OU CELULAR).");
-            }
-
 
             //CELULAR
             if (!string.IsNullOrEmpty(dadosCliente.Celular) || !string.IsNullOrEmpty(dadosCliente.DddCelular))
             {
-                await ValidarCelular(dadosCliente, cliente, lstErros, contextoProvider);
+                await ValidarCelular(dadosCliente, cliente, lstErros, contextoProvider, sistemaResponsavel);
             }
             //RESIDENCIAL
             if (!string.IsNullOrEmpty(dadosCliente.TelefoneResidencial) || !string.IsNullOrEmpty(dadosCliente.DddResidencial))
             {
-                await ValidarTelResidencial(dadosCliente, cliente, lstErros, contextoProvider);
+                await ValidarTelResidencial(dadosCliente, cliente, lstErros, contextoProvider, sistemaResponsavel);
             }
             //COMERCIA
             if (!string.IsNullOrEmpty(dadosCliente.TelComercial) ||
                 !string.IsNullOrEmpty(dadosCliente.DddComercial) ||
                 !string.IsNullOrEmpty(dadosCliente.Ramal))
             {
-                await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider);
+                await ValidarTelCom(dadosCliente, cliente, lstErros, contextoProvider, sistemaResponsavel);
             }
 
-            if (!string.IsNullOrEmpty(dadosCliente.TelComercial2) ||
+            if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO)
+            {
+                if (!string.IsNullOrEmpty(dadosCliente.TelComercial2) ||
                 !string.IsNullOrEmpty(dadosCliente.DddComercial2) ||
                 !string.IsNullOrEmpty(dadosCliente.Ramal2))
+                {
+                    lstErros.Add("Se cliente é tipo PF, não deve ter DDD comercial 2, " +
+                        "telefone comercial 2 e ramal comercial 2 preenchidos.");
+                }
+            }
+
+            //no magento, aceitamos com2, então temos que validar
+            if (sistemaResponsavel == Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO)
             {
-                lstErros.Add("Se cliente é tipo PF, não deve ter DDD comercial 2, " +
-                    "telefone comercial 2 e ramal comercial 2 preenchidos.");
+                if (!string.IsNullOrEmpty(dadosCliente.TelComercial2) ||
+                !string.IsNullOrEmpty(dadosCliente.DddComercial2) ||
+                !string.IsNullOrEmpty(dadosCliente.Ramal2))
+                {
+                    await ValidarTelCom2(dadosCliente, cliente, lstErros, contextoProvider, sistemaResponsavel);
+                }
             }
 
         }
@@ -142,7 +161,7 @@ namespace Cliente
         }
 
         private static async Task ValidarTelResidencial(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
-                List<string> lstErros, ContextoBdProvider contextoProvider)
+                List<string> lstErros, ContextoBdProvider contextoProvider, InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel)
         {
 
             if (!string.IsNullOrEmpty(dadosCliente.DddResidencial) &&
@@ -171,22 +190,25 @@ namespace Cliente
                 lstErros.Add("PREENCHA O DDD RESIDENCIAL.");
             }
 
-            if (lstErros.Count == 0)
+            if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO)
             {
-                if (!string.IsNullOrEmpty(dadosCliente.TelefoneResidencial) &&
-                    !string.IsNullOrEmpty(dadosCliente.DddResidencial))
+                if (lstErros.Count == 0)
                 {
-                    if (!await ConfrontarTelefones(dadosCliente.DddResidencial, dadosCliente.TelefoneResidencial,
-                    cliente?.Ddd_Res, cliente?.Tel_Res, dadosCliente.Cnpj_Cpf, dadosCliente.Tipo, lstErros, contextoProvider))
-                        lstErros.Add("TELEFONE RESIDENCIAL (" + dadosCliente.DddResidencial + ") " + Util.FormatarTelefones(dadosCliente.TelefoneResidencial) +
-                            " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. Não foi possível concluir o cadastro.");
+                    if (!string.IsNullOrEmpty(dadosCliente.TelefoneResidencial) &&
+                        !string.IsNullOrEmpty(dadosCliente.DddResidencial))
+                    {
+                        if (!await ConfrontarTelefones(dadosCliente.DddResidencial, dadosCliente.TelefoneResidencial,
+                        cliente?.Ddd_Res, cliente?.Tel_Res, dadosCliente.Cnpj_Cpf, dadosCliente.Tipo, lstErros, contextoProvider))
+                            lstErros.Add("TELEFONE RESIDENCIAL (" + dadosCliente.DddResidencial + ") " + Util.FormatarTelefones(dadosCliente.TelefoneResidencial) +
+                                " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. Não foi possível concluir o cadastro.");
+                    }
                 }
             }
 
         }
 
         private static async Task ValidarCelular(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
-            List<string> lstErros, ContextoBdProvider contextoProvider)
+            List<string> lstErros, ContextoBdProvider contextoProvider, InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel)
         {
 
             if (!string.IsNullOrEmpty(dadosCliente.DddCelular) &&
@@ -215,22 +237,24 @@ namespace Cliente
                 lstErros.Add("PREENCHA O TELEFONE CELULAR.");
             }
 
-
-            if (lstErros.Count == 0)
+            if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO)
             {
-                if (!string.IsNullOrEmpty(dadosCliente.DddCelular) && !string.IsNullOrEmpty(dadosCliente.Celular))
+                if (lstErros.Count == 0)
                 {
-                    if (!await ConfrontarTelefones(dadosCliente.DddCelular, dadosCliente.Celular,
-                    cliente?.Ddd_Cel, cliente?.Tel_Cel, dadosCliente.Cnpj_Cpf, dadosCliente.Tipo, lstErros, contextoProvider))
-                        lstErros.Add("TELEFONE CELULAR (" + dadosCliente.DddCelular + ") " + Util.FormatarTelefones(dadosCliente.Celular) +
-                            " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. Não foi possível concluir o cadastro.");
+                    if (!string.IsNullOrEmpty(dadosCliente.DddCelular) && !string.IsNullOrEmpty(dadosCliente.Celular))
+                    {
+                        if (!await ConfrontarTelefones(dadosCliente.DddCelular, dadosCliente.Celular,
+                        cliente?.Ddd_Cel, cliente?.Tel_Cel, dadosCliente.Cnpj_Cpf, dadosCliente.Tipo, lstErros, contextoProvider))
+                            lstErros.Add("TELEFONE CELULAR (" + dadosCliente.DddCelular + ") " + Util.FormatarTelefones(dadosCliente.Celular) +
+                                " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. Não foi possível concluir o cadastro.");
+                    }
                 }
             }
 
         }
 
         private static async Task ValidarTelCom(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
-            List<string> lstErros, ContextoBdProvider contextoProvider)
+            List<string> lstErros, ContextoBdProvider contextoProvider, InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel)
         {
 
             if (!string.IsNullOrEmpty(dadosCliente.TelComercial) &&
@@ -260,15 +284,18 @@ namespace Cliente
                 lstErros.Add("TELEFONE COMERCIAL INVÁLIDO.");
             }
 
-            if (lstErros.Count == 0)
+            if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO)
             {
-                if (!string.IsNullOrEmpty(dadosCliente.DddComercial) &&
-                    !string.IsNullOrEmpty(dadosCliente.TelComercial))
+                if (lstErros.Count == 0)
                 {
-                    if (!await ConfrontarTelefones(dadosCliente.DddComercial, dadosCliente.TelComercial,
-                    cliente?.Ddd_Com, cliente?.Tel_Com, dadosCliente.Cnpj_Cpf, dadosCliente.Tipo, lstErros, contextoProvider))
-                        lstErros.Add("TELEFONE COMERCIAL (" + dadosCliente.DddComercial + ") " + Util.FormatarTelefones(dadosCliente.TelComercial) +
-                            " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. Não foi possível concluir o cadastro.");
+                    if (!string.IsNullOrEmpty(dadosCliente.DddComercial) &&
+                        !string.IsNullOrEmpty(dadosCliente.TelComercial))
+                    {
+                        if (!await ConfrontarTelefones(dadosCliente.DddComercial, dadosCliente.TelComercial,
+                        cliente?.Ddd_Com, cliente?.Tel_Com, dadosCliente.Cnpj_Cpf, dadosCliente.Tipo, lstErros, contextoProvider))
+                            lstErros.Add("TELEFONE COMERCIAL (" + dadosCliente.DddComercial + ") " + Util.FormatarTelefones(dadosCliente.TelComercial) +
+                                " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. Não foi possível concluir o cadastro.");
+                    }
                 }
             }
 
@@ -281,7 +308,7 @@ namespace Cliente
         }
 
         private static async Task ValidarTelCom2(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
-            List<string> lstErros, ContextoBdProvider contextoProvider)
+            List<string> lstErros, ContextoBdProvider contextoProvider, InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel)
         {
             if (!string.IsNullOrEmpty(dadosCliente.TelComercial2))
             {
@@ -309,7 +336,7 @@ namespace Cliente
             if (!string.IsNullOrEmpty(dadosCliente.DddComercial2) &&
                 string.IsNullOrEmpty(dadosCliente.TelComercial2))
             {
-                lstErros.Add("PREENCHA O TELEFONE COMERCIAL.");
+                lstErros.Add("PREENCHA O TELEFONE COMERCIAL2.");
             }
 
             if (!string.IsNullOrEmpty(dadosCliente.DddComercial2) &&
@@ -318,15 +345,18 @@ namespace Cliente
                 lstErros.Add("DDD DO TELEFONE COMERCIAL2 INVÁLIDO.");
             }
 
-            if (lstErros.Count == 0)
+            if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO)
             {
-                if (!string.IsNullOrEmpty(dadosCliente.DddComercial2) &&
-                    !string.IsNullOrEmpty(dadosCliente.TelComercial2))
+                if (lstErros.Count == 0)
                 {
-                    if (!await ConfrontarTelefones(dadosCliente.DddComercial2, dadosCliente.TelComercial2,
-                    cliente?.Ddd_Com_2, cliente?.Tel_Com_2, dadosCliente.Cnpj_Cpf, dadosCliente.Tipo, lstErros, contextoProvider))
-                        lstErros.Add("TELEFONE COMERCIAL (" + dadosCliente.DddComercial2 + ") " + Util.FormatarTelefones(dadosCliente.TelComercial2) +
-                            " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. Não foi possível concluir o cadastro.");
+                    if (!string.IsNullOrEmpty(dadosCliente.DddComercial2) &&
+                        !string.IsNullOrEmpty(dadosCliente.TelComercial2))
+                    {
+                        if (!await ConfrontarTelefones(dadosCliente.DddComercial2, dadosCliente.TelComercial2,
+                        cliente?.Ddd_Com_2, cliente?.Tel_Com_2, dadosCliente.Cnpj_Cpf, dadosCliente.Tipo, lstErros, contextoProvider))
+                            lstErros.Add("TELEFONE COMERCIAL2 (" + dadosCliente.DddComercial2 + ") " + Util.FormatarTelefones(dadosCliente.TelComercial2) +
+                                " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. Não foi possível concluir o cadastro.");
+                    }
                 }
             }
 

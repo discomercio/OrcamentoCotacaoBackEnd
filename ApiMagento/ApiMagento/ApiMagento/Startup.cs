@@ -93,7 +93,6 @@ namespace ApiMagento
             string conexaoBasica = Configuration.GetConnectionString("conexao");
             services.AddDbContext<InfraBanco.ContextoBdBasico>(options =>
             {
-                //options.UseSqlServer(Configuration.GetConnectionString("conexaoLocal"));
                 options.UseSqlServer(conexaoBasica);
                 options.EnableSensitiveDataLogging();
             });
@@ -190,10 +189,7 @@ namespace ApiMagento
             services.AddTransient<Prepedido.ValidacoesPrepedidoBll, Prepedido.ValidacoesPrepedidoBll>();
             services.AddTransient<Prepedido.MontarLogPrepedidoBll, Prepedido.MontarLogPrepedidoBll>();
             services.AddTransient<Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll, Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll>();
-            services.AddTransient<Pedido.EfetivaPedidoBll, Pedido.EfetivaPedidoBll>();
-            services.AddTransient<Pedido.MontarLogPedidoBll, Pedido.MontarLogPedidoBll>();
-            services.AddTransient<Pedido.PedidoCriacao, Pedido.PedidoCriacao>();
-            services.AddTransient<Pedido.PedidoBll, Pedido.PedidoBll>();
+            services.AddTransient<Pedido.Criacao.PedidoCriacao, Pedido.Criacao.PedidoCriacao>();
 
             services.AddTransient<IServicoAutenticacaoApiMagento, ServicoAutenticacaoApiMagento>();
             //como singleton para melhorar a performance

@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoDados_para_banco_ARCLUBE_DIS20201204.json" />
     <None Remove="Ambiente\Loja\Loja_Bll\Bll\PedidoBll\PedidoBll\CadastrarPedido\CadastrarPedidoDados.json" />
     <None Remove="appsettings.testes.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tcliente.json" />
@@ -35,12 +36,14 @@
     <None Remove="Testes\Utils\BancoTestes\Dados\TformaPagto.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tlojas.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\TnfEmitente.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\Toperacao.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\TorcamentistaEindicador.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\TorcamentistaEIndicadorRestricaoFormaPagto.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tparametro.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tpedido.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\TpercentualCustoFinanceiroFornecedors.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tperfil.json" />
+    <None Remove="Testes\Utils\BancoTestes\Dados\TperfilItens.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\TperfilUsuario.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\Tproduto.json" />
     <None Remove="Testes\Utils\BancoTestes\Dados\TprodutoLoja.json" />
@@ -54,7 +57,8 @@
 
   <ItemGroup>
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf - Copy.feature.cs" />
-    <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\EspecificacaoAdicional\ListaDependencias.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf_Opcionais - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\Dados _Cliente\Pf_Telefones\Sucesso - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\ObterCodigoMarketplaceListaDependencias.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\ObterCodigoMarketplace\BuscarQtdeParcCartaoVisaListaDependencias.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiMagento\PedidoMagento\ObterCodigoMarketplace\QtdeParcCartaoVisa.feature.cs" />
@@ -64,6 +68,7 @@
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\BuscarStatusPrepedido\ListarStatusPrepedido.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\BuscarStatusPrepedido\ListarStatusPrepedidoListaDependencias.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\Loja\Loja_Bll\Bll\PedidoBll\PedidoBll\CadastrarPedido\CadastrarPedidoListaDependencias.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\PrepedidoApi\PrepedidoBusiness\Bll\PrepedidoApiBll\CadastrarPrepedido\CadastrarPrepedidoListaDependencias.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Comuns\Api\Autenticacao\Autenticacao - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\CaminhoFelizApi.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\CaminhoFelizAsp.feature.cs" />
@@ -81,9 +86,16 @@
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo40\FormaPagamentoPreenchimento - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo40\LimiteDesconto - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo40\PedidoNovoProdCompostoMask - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo50\CamposSoltos - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\Passo20\ValidacaoEstoque - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\Passo20\ValidacaoEstoque2 - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\Passo40\Descontinuado - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\Passo40\ValidacaoEstoque3.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\Passo60\Itens\ESTOQUE_produto_saida_v2 - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\000-Roteiro_o_que_testar - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\SplitComUnicoCd - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\SplitEstoqueResultante3casos - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Passo40ListaDependencias.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Validacao\Estoque.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Prepedido\Pedido.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\TesteExecucaoCruzadaPedido - Copy.feature.cs" />
@@ -104,6 +116,7 @@
     <PackageReference Include="SpecFlow" Version="3.3.57" />
     <PackageReference Include="SpecFlow.Tools.MsBuild.Generation" Version="3.3.57" />
     <PackageReference Include="SpecFlow.xUnit" Version="3.3.57" />
+    <PackageReference Include="System.Collections" Version="4.3.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.2">
       <PrivateAssets>all</PrivateAssets>
@@ -116,17 +129,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoListaDependencias.feature.cs">
-      <DependentUpon>CadastrarPedidoListaDependencias.feature</DependentUpon>
+    <Compile Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\Dados _Cliente\Pf_Telefones\tel_res.feature.cs">
+      <DependentUpon>tel_res.feature</DependentUpon>
     </Compile>
-    <Compile Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf_Opcionais.feature.cs">
-      <DependentUpon>CriacaoCliente_Pf_Opcionais.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf_Obrigatorios.feature.cs">
-      <DependentUpon>CriacaoCliente_Pf_Obrigatorios.feature</DependentUpon>
-    </Compile>
-    <Compile Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\EspecificacaoAdicional\ListaDependencias.feature.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
+    <Compile Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\Dados _Cliente\Pf_Telefones\Sucesso.feature.cs">
+      <DependentUpon>Sucesso.feature</DependentUpon>
     </Compile>
     <Compile Update="Ambiente\ApiMagento\PedidoMagento\ObterCodigoMarketplace\ObterCodigoMarketplaceListaDependencias.feature.cs">
       <DependentUpon>ObterCodigoMarketplaceListaDependencias.feature</DependentUpon>
@@ -148,6 +155,9 @@
     </Compile>
     <Compile Update="Ambiente\Loja\Loja_Bll\Bll\PedidoBll\PedidoBll\CadastrarPedido\CadastrarPedidoListaDependencias.feature.cs">
       <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Ambiente\PrepedidoApi\PrepedidoBusiness\Bll\PrepedidoApiBll\CadastrarPrepedido\CadastrarPrepedidoPrepedidoApiListaDependencias.feature.cs">
+      <DependentUpon>CadastrarPrepedidoPrepedidoApiListaDependencias.feature</DependentUpon>
     </Compile>
     <Compile Update="Especificacao\Comuns\Api\Autenticacao\AutenticacaoListaDependencias.feature.cs">
       <DependentUpon>AutenticacaoListaDependencias.feature</DependentUpon>
@@ -188,11 +198,14 @@
     <Compile Update="Especificacao\Pedido\Passo40\Passo40ListaDependencias.feature.cs">
       <DependentUpon>Passo40ListaDependencias.feature</DependentUpon>
     </Compile>
-    <Compile Update="Especificacao\Pedido\Passo40\LimiteDesconto_t_DESCONTO.feature.cs">
+    <Compile Update="Especificacao\Pedido\Passo60\Gravacao\Passo17\LimiteDesconto_t_DESCONTO.feature.cs">
       <DependentUpon>LimiteDesconto_t_DESCONTO.feature</DependentUpon>
     </Compile>
     <Compile Update="Especificacao\Pedido\Passo40\PedidoNovoProdCompostoMask_t_PRODUTO_LOJA.feature.cs">
       <DependentUpon>PedidoNovoProdCompostoMask_t_PRODUTO_LOJA.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Especificacao\Pedido\Passo50\EntregaImediata.feature.cs">
+      <DependentUpon>EntregaImediata.feature</DependentUpon>
     </Compile>
     <Compile Update="Especificacao\Pedido\Passo60\Gravacao\Passo20\ValidacaoEstoque3.feature.cs">
       <DependentUpon>ValidacaoEstoque3.feature</DependentUpon>
@@ -200,8 +213,29 @@
     <Compile Update="Especificacao\Pedido\Passo60\Gravacao\Passo20\ValidacaoEstoque2.feature.cs">
       <DependentUpon>ValidacaoEstoque2.feature</DependentUpon>
     </Compile>
+    <Compile Update="Especificacao\Pedido\Passo60\Gravacao\Passo40\Grava40.feature.cs">
+      <DependentUpon>Grava40.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Especificacao\Pedido\Passo60\Gravacao\Passo40\Descontinuado.feature.cs">
+      <DependentUpon>Descontinuado.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\P200-Um_produto_dois_cds.feature.cs">
+      <DependentUpon>P200-Um_produto_dois_cds.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\EstoqueSaida\ESTOQUE_produto_saida_v2_rotina.feature.cs">
+      <DependentUpon>ESTOQUE_produto_saida_v2_rotina.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\p000-Roteiro_o_que_testar.feature.cs">
+      <DependentUpon>P000-Roteiro_o_que_testar.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\P100-Split_com_um_cd.feature.cs">
+      <DependentUpon>P100-Split_com_um_cd.feature</DependentUpon>
+    </Compile>
     <Compile Update="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\SplitEstoqueResultanteCdManual.feature.cs">
       <DependentUpon>SplitEstoqueResultanteCdManual.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Especificacao\Pedido\Passo60\Passo60ListaDependencias.feature.cs">
+      <DependentUpon>Passo60ListaDependencias.feature</DependentUpon>
     </Compile>
     <Compile Update="Especificacao\Prepedido\Prepedido.feature.cs">
       <DependentUpon>Prepedido.feature</DependentUpon>
@@ -212,19 +246,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoListaDependencias.feature">
+    <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\Dados _Cliente\Pf_Telefones\tel_res.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf_Opcionais.feature">
-      <Visible>$(UsingMicrosoftNETSdk)</Visible>
-      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-    </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf_Obrigatorios.feature">
-      <Visible>$(UsingMicrosoftNETSdk)</Visible>
-      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
-    </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\EspecificacaoAdicional\ListaDependencias.feature">
+    <SpecFlowFeatureFiles Update="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\Dados _Cliente\Pf_Telefones\Sucesso.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
@@ -257,6 +283,10 @@
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Ambiente\Loja\Loja_Bll\Bll\PedidoBll\PedidoBll\CadastrarPedido\CadastrarPedidoListaDependencias.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Ambiente\PrepedidoApi\PrepedidoBusiness\Bll\PrepedidoApiBll\CadastrarPrepedido\CadastrarPrepedidoPrepedidoApiListaDependencias.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
@@ -324,6 +354,10 @@
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo30\CamposMagentoExigidos.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo40\FormaPagamentoPreenchimento_COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
@@ -332,11 +366,15 @@
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
-    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo40\LimiteDesconto_t_DESCONTO.feature">
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo60\Gravacao\Passo17\LimiteDesconto_t_DESCONTO.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo40\PedidoNovoProdCompostoMask_t_PRODUTO_LOJA.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo50\EntregaImediata.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
@@ -348,7 +386,35 @@
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo60\Gravacao\Passo40\Grava40.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo60\Gravacao\Passo40\Descontinuado.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\P200-Um_produto_dois_cds.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\EstoqueSaida\ESTOQUE_produto_saida_v2_rotina.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\P000-Roteiro_o_que_testar.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\P100-Split_com_um_cd.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\SplitEstoqueResultanteCdManual.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo60\Passo60ListaDependencias.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
@@ -373,6 +439,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoDados_para_banco_ARCLUBE_DIS20201204.json" />
     <EmbeddedResource Include="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CadastrarPedidoDados.json" />
     <EmbeddedResource Include="Ambiente\Loja\Loja_Bll\Bll\PedidoBll\PedidoBll\CadastrarPedido\CadastrarPedidoDados.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Testoque.json" />
@@ -383,6 +450,8 @@
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TorcamentistaEIndicadorRestricaoFormaPagto.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tpedido.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TpercentualCustoFinanceiroFornecedors.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Toperacao.json" />
+    <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TperfilItens.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TwmsRegraCdXUfXPessoaXCd.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TwmsRegraCdXUfPessoa.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TwmsRegraCdXUf.json" />

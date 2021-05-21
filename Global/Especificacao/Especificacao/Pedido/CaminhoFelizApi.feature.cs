@@ -19,18 +19,14 @@ namespace Especificacao.Especificacao.Pedido
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "ignore")]
-    [Xunit.TraitAttribute("Category", "Especificacao.Pedido")]
-    [Xunit.TraitAttribute("Category", "Implementacao.CaminhoFelizApi")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.PedidoFaltandoImplementarSteps")]
     public partial class CaminhoFelizApiFeature : object, Xunit.IClassFixture<CaminhoFelizApiFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore",
-                "Especificacao.Pedido",
-                "Implementacao.CaminhoFelizApi"};
+                "Especificacao.Pedido.PedidoFaltandoImplementarSteps"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -52,9 +48,7 @@ Levantado a partir do ERP/loja/PedidoNovoConfirma.asp
 
 Este teste não é executado na Api Magento porque o endereço de entrega é obrigatório;
 testado em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\CriacaoCliente_Pf_Obrigatorios.feature", ProgrammingLanguage.CSharp, new string[] {
-                        "ignore",
-                        "Especificacao.Pedido",
-                        "Implementacao.CaminhoFelizApi"});
+                        "Especificacao.Pedido.PedidoFaltandoImplementarSteps"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -102,7 +96,7 @@ testado em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\CriacaoCliente\Cria
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Cadastrar um pedido com o mínimo de informação possível", null, tagsOfScenario, argumentsOfScenario);
-#line 12
+#line 13
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -122,108 +116,105 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 13
+#line 14
  testRunner.Given("Ignorar cenário no ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Ca" +
                         "dastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 15
+#line 16
  testRunner.Given("Existe \"login\" = \"usuario_sistema\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 16
+#line 17
  testRunner.And("Existe \"loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 17
+#line 18
  testRunner.And("Existe cliente \"cliente_id\" = \"000000000001\" como PF", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 18
+#line 19
  testRunner.And("Existe produto \"Fabricante\" = \"001\", \"Produto\" = \"001001\", \"Preco\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 21
+#line 22
  testRunner.When("Fiz login como \"usuario_sistema\" e escolhi a loja \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 22
+#line 23
  testRunner.And("Pedido vazio", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 23
+#line 24
  testRunner.And("Informo \"Cnpj_Cpf\" = \"687.307.550-77\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 24
+#line 25
  testRunner.And("Informo \"indicacao\" = \"não\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 25
+#line 26
  testRunner.And("Informo \"SelecaoCd\" = \"AUTOMATICO\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 26
+#line 27
  testRunner.And("Informo \"OutroEndereco\" = \"não\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 29
+#line 30
  testRunner.And("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 31
+#line 32
  testRunner.And("Informo \"FormaPagtoCriacao.Op_av_forma_pagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 32
+#line 33
  testRunner.And("Informo \"FormaPagtoCriacao.CustoFinancFornecTipoParcelamento\" = \"AV\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 33
+#line 34
  testRunner.And("Informo \"FormaPagtoCriacao.CustoFinancFornecQtdeParcelas\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 36
+#line 37
  testRunner.And("Informo \"ListaProdutos.Fabricante\" = \"0001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 37
+#line 38
  testRunner.And("Informo \"ListaProdutos.Produto\" = \"001001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 38
+#line 39
  testRunner.And("Informo \"ListaProdutos.Qtde\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 39
+#line 40
  testRunner.And("Informo \"ListaProdutos.Desc_Dado\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 40
+#line 41
  testRunner.And("Informo \"ListaProdutos.Preco_Venda\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 41
+#line 42
  testRunner.And("Informo \"ListaProdutos.Preco_Fabricante\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 42
+#line 43
  testRunner.And("Informo \"ListaProdutos.Preco_Lista\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 43
+#line 44
  testRunner.And("Informo \"ListaProdutos.Preco_NF\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 44
+#line 45
  testRunner.And("Informo \"ListaProdutos.CustoFinancFornecCoeficiente\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 45
+#line 46
  testRunner.And("Informo \"ListaProdutos.CustoFinancFornecPrecoListaBase\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 48
+#line 49
  testRunner.And("Informo \"PermiteRAStatus\" = \"não\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 49
+#line 50
  testRunner.And("Informo \"ValorTotalDestePedidoComRA\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 50
+#line 51
  testRunner.And("Informo \"VlTotalDestePedido\" = \"123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 54
+#line 55
  testRunner.And("Informo \"DetalhesPrepedido.St_Entrega_Imediata\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 56
+#line 57
  testRunner.And("Informo \"DetalhesPrepedido.BemDeUso_Consumo\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 58
+#line 59
  testRunner.And("Informo \"DetalhesPrepedido.InstaladorInstala\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 61
- testRunner.And("Salvo o pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
 #line 62
- testRunner.Then("O pedido é criado", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 63
- testRunner.And("Campo \"av_forma_pagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"av_forma_pagto\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

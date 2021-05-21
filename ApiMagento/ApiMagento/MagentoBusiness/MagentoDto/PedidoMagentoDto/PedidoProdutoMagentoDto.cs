@@ -23,14 +23,14 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         public short Qtde { get; set; }
 
         /// <summary>
-        /// Preço de venda do item sem o rateio do frete
+        /// Preco_Venda: preço de venda do item sem o rateio do frete
         /// <hr />
         /// </summary>
         [Required]
         public decimal Preco_Venda { get; set; }
 
         /// <summary>
-        /// Preco_NF preço que será impresso na nota fiscal, inclui o rateio do frete
+        /// Preco_NF: preço que será impresso na nota fiscal, inclui o rateio do frete
         /// <hr />
         /// </summary>
         [Required]
@@ -44,18 +44,24 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         public static Pedido.Dados.Criacao.PedidoCriacaoProdutoDados PedidoCriacaoProdutoDados_De_PedidoProdutoMagentoDto(
             PedidoProdutoMagentoDto produtoDto, Produto.Dados.ProdutoDados produtoDados, float coeficiente)
         {
+            /*Obs: o valor de produtoDados.Preco_lista não esta calculado com o coeficiente e para fazer o cálculo 
+             * de desconto corretamente deve estar calculado com o coeficiente 
+             * por isso, criei essa váriavel precoListaBase
+             */
+            decimal? precoListaBase = Math.Round((produtoDados.Preco_lista ?? 0) * (decimal)coeficiente, 2);
+
             var ret = new Pedido.Dados.Criacao.PedidoCriacaoProdutoDados(
                 fabricante: produtoDto.Fabricante,
                 produto: produtoDto.Produto,
                 qtde: produtoDto.Qtde,
                 custoFinancFornecPrecoListaBase_Conferencia: produtoDados.Preco_lista ?? 0,
-                preco_Lista: Math.Round((decimal)(produtoDados.Preco_lista ?? 0 * (decimal)coeficiente), 2),
-                desc_Dado: 0, //produtoDto.Desc_Dado,
+                preco_Lista: Math.Round((produtoDados.Preco_lista ?? 0) * (decimal)coeficiente, 2),//tinha um erro aqui - não estava calculando corretamente
+                desc_Dado: (float)(100 * ((precoListaBase ?? 0) - produtoDto.Preco_Venda) / (precoListaBase ?? 0)),
                 preco_Venda: produtoDto.Preco_Venda,
                 preco_NF: produtoDto.Preco_NF,
                 custoFinancFornecCoeficiente_Conferencia: coeficiente,
                 //no magento não validamos se o estoque mudou
-                qtde_estoque_total_disponivel: null
+                qtde_spe_usuario_aceitou: null
             );
 
             return ret;

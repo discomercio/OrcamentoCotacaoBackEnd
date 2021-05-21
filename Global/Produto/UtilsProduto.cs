@@ -63,7 +63,7 @@ namespace Produto
                     if (r.prod_x_reg.Produto == item.Produto &&
                         r.prod_x_reg.Fabricante == item.Fabricante)
                     {
-                        item.St_Regra = true;
+                        item.St_Regra_ok = true;
                         item.TwmsRegraCd = new t_WMS_REGRA_CD
                         {
                             Id = r.regra1.Id,

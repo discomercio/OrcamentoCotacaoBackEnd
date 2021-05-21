@@ -14,8 +14,6 @@ namespace InfraBanco.Modelos
         [Column("id")]
         public int Id { get; set; }
 
-        public TperfilUsuario TperfilUsuario { get; set; }
-
         [Required]
         [MaxLength(5)]
         [Column("modulo")]
@@ -27,14 +25,14 @@ namespace InfraBanco.Modelos
         public string Tipo_operacao { get; set; }
 
         [Column("ordenacao")]
-        public string Ordenacao { get; set; }
+        public Int32 Ordenacao { get; set; }
 
         [MaxLength(80)]
         [Column("descricao")]
         public string Descricao { get; set; }
 
-        [Column("timestamp")]
-        public byte? Timestamp { get; }
+        //[Column("timestamp")]
+        //public byte? Timestamp { get; }
 
         [Required]
         [Column("st_inativo")]

@@ -59,13 +59,17 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
             pedidoDto.DadosCliente = new global::Loja.Bll.Dto.ClienteDto.DadosClienteCadastroDto();
         }
 
+        private Pedido.Dados.Criacao.PedidoCriacaoRetornoDados? UltimoPedidoCriacaoRetornoDados = null;
         protected override List<string> AbstractListaErros()
         {
             var ret1 = pedidoBll.CadastrarPedido(pedidoDto, lojaUsuario, usuario, vendedorExterno,
                 100000, 100000, 100000, 100000,
-                0.1M, 0.1M);
-            var ret = ret1.Result;
-            return ret.ListaErros;
+                0.1M, 0.1M, 12);
+            UltimoPedidoCriacaoRetornoDados = ret1.Result;
+            List<string> erros = new List<string>();
+            erros.AddRange(UltimoPedidoCriacaoRetornoDados.ListaErros);
+            erros.AddRange(UltimoPedidoCriacaoRetornoDados.ListaErrosValidacao);
+            return erros;
         }
         protected override void AbstractDeixarFormaDePagamentoConsistente()
         {
@@ -130,6 +134,8 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
                 return;
             if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, pedidoDto.DadosCliente))
                 return;
+            if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, pedidoDto.DetalhesNF))
+                return;
             pedidoDto.EnderecoEntrega ??= new global::Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro();
             if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, pedidoDto.EnderecoEntrega))
                 return;
@@ -180,5 +186,43 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
             }
         }
 
+        protected override string? AbstractPedidoPaiGerado()
+        {
+            var ultimo = UltimoPedidoCriacaoRetornoDados;
+            if (ultimo == null)
+                return null;
+
+            return ultimo.Id;
+        }
+
+        protected override List<string> AbstractPedidosFilhotesGerados()
+        {
+            var ultimo = UltimoPedidoCriacaoRetornoDados;
+            if (ultimo == null)
+                return new List<string>();
+
+            return ultimo.ListaIdPedidosFilhotes;
+        }
+
+        protected override List<string> AbstractPedidosGerados()
+        {
+            var ultimo = UltimoPedidoCriacaoRetornoDados;
+            if (ultimo == null)
+                return new List<string>();
+
+            List<string> lstPedidos = new List<string>();
+            if (!string.IsNullOrEmpty(ultimo.Id))
+                lstPedidos.Add(ultimo.Id);
+
+            if (ultimo.ListaIdPedidosFilhotes.Count > 0)
+            {
+                foreach (var filhotes in ultimo.ListaIdPedidosFilhotes)
+                {
+                    lstPedidos.Add(filhotes);
+                }
+            }
+
+            return lstPedidos;
+        }
     }
 }

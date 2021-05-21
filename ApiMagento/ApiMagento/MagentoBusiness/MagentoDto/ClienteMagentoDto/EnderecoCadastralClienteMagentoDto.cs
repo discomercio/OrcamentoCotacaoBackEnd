@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
+#nullable enable
+
 namespace MagentoBusiness.MagentoDto.ClienteMagentoDto
 {
     public class EnderecoCadastralClienteMagentoDto
@@ -139,14 +141,14 @@ Ao cadastrar o cliente:
             ret.Endereco_nome = endCadastralMagento.Endereco_nome;
             ret.Endereco_ddd_res = endCadastralMagento.Endereco_ddd_res ?? "";
             ret.Endereco_tel_res = endCadastralMagento.Endereco_tel_res ?? "";
-            ret.Endereco_ddd_com = endCadastralMagento.Endereco_ddd_com;
-            ret.Endereco_tel_com = endCadastralMagento.Endereco_tel_com;
-            ret.Endereco_ramal_com = endCadastralMagento.Endereco_ramal_com;
-            ret.Endereco_ddd_cel = endCadastralMagento.Endereco_ddd_cel;
-            ret.Endereco_tel_cel = endCadastralMagento.Endereco_tel_cel;
-            ret.Endereco_ddd_com_2 = endCadastralMagento.Endereco_ddd_com_2;
-            ret.Endereco_tel_com_2 = endCadastralMagento.Endereco_tel_com_2;
-            ret.Endereco_ramal_com_2 = endCadastralMagento.Endereco_ramal_com_2;
+            ret.Endereco_ddd_com = endCadastralMagento.Endereco_ddd_com ?? "";
+            ret.Endereco_tel_com = endCadastralMagento.Endereco_tel_com ?? "";
+            ret.Endereco_ramal_com = endCadastralMagento.Endereco_ramal_com ?? "";
+            ret.Endereco_ddd_cel = endCadastralMagento.Endereco_ddd_cel ?? "";
+            ret.Endereco_tel_cel = endCadastralMagento.Endereco_tel_cel ?? "";
+            ret.Endereco_ddd_com_2 = endCadastralMagento.Endereco_ddd_com_2 ?? "";
+            ret.Endereco_tel_com_2 = endCadastralMagento.Endereco_tel_com_2 ?? "";
+            ret.Endereco_ramal_com_2 = endCadastralMagento.Endereco_ramal_com_2 ?? "";
             ret.Endereco_tipo_pessoa = endCadastralMagento.Endereco_tipo_pessoa;
             ret.Endereco_cnpj_cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(endCadastralMagento.Endereco_cnpj_cpf.Trim());
             ret.Endereco_produtor_rural_status = endCadastralMagento.Endereco_tipo_pessoa == Constantes.ID_PF ?
@@ -218,44 +220,36 @@ Ao cadastrar o cliente:
             EnderecoEntregaClienteMagentoDto origem, EnderecoCadastralClienteMagentoDto? ret)
         {
             ret ??= new EnderecoCadastralClienteMagentoDto();
-            ret.Endereco_logradouro = TransferirCampoSeTiverValorSemNull(ret.Endereco_logradouro, origem.EndEtg_endereco);
-            ret.Endereco_numero = TransferirCampoSeTiverValorSemNull(ret.Endereco_numero, origem.EndEtg_endereco_numero);
-            ret.Endereco_complemento = TransferirCampoSeTiverValorComNull(ret.Endereco_complemento, origem.EndEtg_endereco_complemento);
-            ret.Endereco_bairro = TransferirCampoSeTiverValorSemNull(ret.Endereco_bairro, origem.EndEtg_bairro);
-            ret.Endereco_cidade = TransferirCampoSeTiverValorSemNull(ret.Endereco_cidade, origem.EndEtg_cidade);
-            ret.Endereco_uf = TransferirCampoSeTiverValorSemNull(ret.Endereco_uf, origem.EndEtg_uf);
-            ret.Endereco_cep = TransferirCampoSeTiverValorSemNull(ret.Endereco_cep, origem.EndEtg_cep);
-            ret.Endereco_email = TransferirCampoSeTiverValorComNull(ret.Endereco_email, origem.EndEtg_email);
-            ret.Endereco_email_xml = TransferirCampoSeTiverValorComNull(ret.Endereco_email_xml, origem.EndEtg_email_xml);
-            ret.Endereco_nome = TransferirCampoSeTiverValorSemNull(ret.Endereco_nome, origem.EndEtg_nome);
-            ret.Endereco_ddd_res = TransferirCampoSeTiverValorComNull(ret.Endereco_ddd_res, origem.EndEtg_ddd_res);
-            ret.Endereco_tel_res = TransferirCampoSeTiverValorComNull(ret.Endereco_tel_res, origem.EndEtg_tel_res);
-            ret.Endereco_ddd_com = TransferirCampoSeTiverValorComNull(ret.Endereco_ddd_com, origem.EndEtg_ddd_com);
-            ret.Endereco_tel_com = TransferirCampoSeTiverValorComNull(ret.Endereco_tel_com, origem.EndEtg_tel_com);
-            ret.Endereco_ramal_com = TransferirCampoSeTiverValorComNull(ret.Endereco_ramal_com, origem.EndEtg_ramal_com);
-            ret.Endereco_ddd_cel = TransferirCampoSeTiverValorComNull(ret.Endereco_ddd_cel, origem.EndEtg_ddd_cel);
-            ret.Endereco_tel_cel = TransferirCampoSeTiverValorComNull(ret.Endereco_tel_cel, origem.EndEtg_tel_cel);
-            ret.Endereco_ddd_com_2 = TransferirCampoSeTiverValorComNull(ret.Endereco_ddd_com_2, origem.EndEtg_ddd_com_2);
-            ret.Endereco_tel_com_2 = TransferirCampoSeTiverValorComNull(ret.Endereco_tel_com_2, origem.EndEtg_tel_com_2);
-            ret.Endereco_ramal_com_2 = TransferirCampoSeTiverValorComNull(ret.Endereco_ramal_com_2, origem.EndEtg_ramal_com_2);
-            ret.Endereco_tipo_pessoa = TransferirCampoSeTiverValorSemNull(ret.Endereco_tipo_pessoa, origem.EndEtg_tipo_pessoa);
-            ret.Endereco_cnpj_cpf = TransferirCampoSeTiverValorSemNull(ret.Endereco_cnpj_cpf, origem.EndEtg_cnpj_cpf);
+            ret.Endereco_logradouro = origem.EndEtg_endereco;
+            ret.Endereco_numero = origem.EndEtg_endereco_numero;
+            ret.Endereco_complemento = origem.EndEtg_endereco_complemento;
+            ret.Endereco_bairro = origem.EndEtg_bairro;
+            ret.Endereco_cidade = origem.EndEtg_cidade;
+            ret.Endereco_uf = origem.EndEtg_uf;
+            ret.Endereco_cep = origem.EndEtg_cep;
+            ret.Endereco_email = origem.EndEtg_email;
+            ret.Endereco_email_xml = origem.EndEtg_email_xml;
+            ret.Endereco_nome = origem.EndEtg_nome;
+            ret.Endereco_ddd_res = origem.EndEtg_ddd_res;
+            ret.Endereco_tel_res = origem.EndEtg_tel_res;
+            ret.Endereco_ddd_com = origem.EndEtg_ddd_com;
+            ret.Endereco_tel_com = origem.EndEtg_tel_com;
+            ret.Endereco_ramal_com = origem.EndEtg_ramal_com;
+            ret.Endereco_ddd_cel = origem.EndEtg_ddd_cel;
+            ret.Endereco_tel_cel = origem.EndEtg_tel_cel;
+            ret.Endereco_ddd_com_2 = origem.EndEtg_ddd_com_2;
+            ret.Endereco_tel_com_2 = origem.EndEtg_tel_com_2;
+            ret.Endereco_ramal_com_2 = origem.EndEtg_ramal_com_2;
+            ret.Endereco_tipo_pessoa = origem.EndEtg_tipo_pessoa;
+            ret.Endereco_cnpj_cpf = origem.EndEtg_cnpj_cpf;
             //este não temos: ret.Endereco_contato 
-            ret.PontoReferencia = TransferirCampoSeTiverValorComNull(ret.PontoReferencia, origem.PontoReferencia);
+            //vamos truncar origem.EndEtg_endereco_complemento
+            if (origem.EndEtg_endereco_complemento?.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO_COMPLEMENTO)
+                ret.Endereco_complemento = origem.EndEtg_endereco_complemento.Substring(0, Constantes.MAX_TAMANHO_CAMPO_ENDERECO_COMPLEMENTO);
+            
+            ret.PontoReferencia = origem.PontoReferencia;
             return ret;
         }
 
-        private static string? TransferirCampoSeTiverValorComNull(string? valorDefault, string? candidato)
-        {
-            if (!String.IsNullOrEmpty(candidato))
-                return candidato;
-            return valorDefault;
-        }
-        private static string TransferirCampoSeTiverValorSemNull(string valorDefault, string candidato)
-        {
-            if (!String.IsNullOrEmpty(candidato))
-                return candidato;
-            return valorDefault;
-        }
     }
 }

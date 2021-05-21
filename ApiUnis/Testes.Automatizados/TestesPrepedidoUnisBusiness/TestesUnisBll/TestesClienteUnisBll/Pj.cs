@@ -217,7 +217,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             {
                 c.DadosCliente.DddComercial2 = "11";
                 c.DadosCliente.TelComercial2 = "";
-            }, "PREENCHA O TELEFONE COMERCIAL.", TipoPessoa.PJ);
+            }, "PREENCHA O TELEFONE COMERCIAL2.", TipoPessoa.PJ);
 
             testesClienteUnisBll.TestarCadastro(c =>
             {
