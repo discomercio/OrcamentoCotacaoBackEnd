@@ -17,10 +17,7 @@ import { contains } from "jquery";
 declare var window: any;
 declare function swal(header, msg): any;
 
-declare var cepDto: CepDto;
-cepDto = new CepDto();
-declare var cepEntrega: CepEntrega;
-cepEntrega = new CepEntrega();
+
 declare var validacoesCliente: ValidacoesCliente;
 validacoesCliente = new ValidacoesCliente();
 declare var dadosClienteCadastroDto: DadosClienteCadastroDto;
@@ -31,26 +28,17 @@ declare var lstRefBancaria: Array<RefBancariaDtoCliente>;
 lstRefBancaria = new Array();
 declare var lstRefComercial: Array<RefComercialDtoCliente>;
 lstRefComercial = new Array();
-declare var lstIBGE: Array<string>;
-lstIBGE = new Array();
 
-let cpfCnpj = $('#cpf_cnpj').val().toString();
-$('#cpf_cnpj').val(CpfCnpjUtils.cnpj_cpf_formata(cpfCnpj));
-$("#cpf_cnpj").prop("readonly", true);
+
+
 $(function () {
 
     ($('#cepEntrega') as any).mask("00000-000");
     ($('#cep') as any).mask("00000-000");
     ($('#ie') as any).mask("000.000.000.000");
+    
 
-
-    //verificar produtor rural no inicio da tela
-    if ($("#tipo").val() == Constantes.ID_PF) {
-        if (Number($("#produtor").val()) == Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM) {
-            $("#div_ie").css('visibility', 'visible');
-            $("#div_contribuinte").css('visibility', 'visible');
-        }
-    }
+    
 
     MontarTelefonesTela();
     MaskTelRefComercial();
@@ -61,67 +49,26 @@ $(function () {
     //obs: fazer um onchange para controlar o bloqueio e desbloqueio
 });
 /*=========== Não sei o CEP ===========*/
-$("#btnModificar").click(function () {
-    let tr_linha: JQuery<HTMLElement> = $(".tr_linha").children().find(":checked").closest(".tr_linha");
-    inscreve(tr_linha);
-});
-$('#btnBuscar').on('click', function () {
-    $(".modal-content").addClass("carregando");
-    $.ajax({
-        url: "../Cep/BuscarCepPorEndereco/",
-        type: "GET",
-        data: { nendereco: $('#nendereco').val(), localidade: $('#localidade').val(), lstufs: $('#lstufs').val() },
-        dataType: "json",
-        success: function (t) {
-
-            //afazer: verificar se a lista de ibge vem junto
-            let end: CepDto = t[0];
-            montaTabela(t);
-        },
-        error: function () {
-            $(".modal-content").removeClass("carregando");
-            swal("Erro", "Falha ao buscar endereços!");
-        }
-    });
-})
-$("#lstufs").ready(function () {
-    $.ajax({
-        url: "../Cep/BuscarUfs/",
-        type: "GET",
-        dataType: "json",
-        success: function (data) {
-            var select = $('#lstufs');
-            $.each(data, function (i, d) {
-                select.append("<option value='" + d + "'>" + d + "</option>");
-            });
-        }
-    });
-});
-
-let tipo_busca_cep: Number = 0;
-$(".btnCepCadastro").click(function () {
-    let button: HTMLButtonElement = this as HTMLButtonElement;
-    if (button.value == "1") {
-        tipo_busca_cep = 1;
-        return true;
-    }
-
-    if (button.value == "2") {
-        tipo_busca_cep = 2;
-        return true;
-    }
-
-    return false;
-});
 
 
-$("#modal1").on("hidden.bs.modal", function () {
-    let tbody: JQuery<HTMLTableElement> = $(this).find("#tableBody") as JQuery<HTMLTableElement>;
-    //caso haja dados da busca anterior, vamos limpar
-    if (tbody.children().length > 1) {
-        limparModal();
-    }
-});
+//$("#lstufs").ready(function () {
+//    $.ajax({
+//        url: "../Cep/BuscarUfs/",
+//        type: "GET",
+//        dataType: "json",
+//        success: function (data) {
+//            var select = $('#lstufs');
+//            $.each(data, function (i, d) {
+//                select.append("<option value='" + d + "'>" + d + "</option>");
+//            });
+//        }
+//    });
+//});
+
+
+
+
+
 
 
 /*================FIM CONROLE DE CAMPOS =================*/
@@ -250,61 +197,8 @@ window.MostrarDivs = () => {
     }
 }
 
-/* BUSCA O CEP AO SAIR DO CAMPO DE CEP DO CADASTRO DO CLIENTE */
-window.DigitouCepCadastro = () => {
-    let cep: string = $('#cep').val() as string;
-    $.ajax({
-        url: "../Cep/BuscarCep/",
-        type: "GET",
-        data: { cep: $('#cep').val() },
-        dataType: "json",
-        success: function (data) {
-            if (!data || data.length !== 1) {
-                debugger;
-                limparCamposEndereco();
-                return false;
-            }
 
-            //vamos limpar os campos
-            limparCamposEndereco();
-            //temos endereço
-            let end: CepDto = data[0];
 
-            $("#cep").val(end.Cep);
-            ($("#cep") as any).mask("99999-999");
-
-            if (!!end.Bairro) {
-                $("#bairro").val(end.Bairro);
-                $("#lblBairro").addClass('active');
-            }
-            if (!!end.Cidade) {
-                if (!!end.ListaCidadeIBGE && end.ListaCidadeIBGE.length > 0) {
-                    $("#cidade").prop("readonly", false);
-                    lstIBGE = end.ListaCidadeIBGE;
-                }
-                else {
-                    $("#cidade").prop("readonly", true);
-                    $("#cidade").val(end.Cidade);
-                    $("#lblCidade").addClass('active');
-                }
-            }
-            if (!!end.Endereco) {
-                $("#endereco").val(end.Endereco);
-                $("#lbEntrega").addClass('active');
-            }
-            if (!!end.Uf) {
-                $("#uf").val(end.Uf);
-                $("#lblUf").addClass('active');
-            }
-
-            $("#numero").val('');
-            $("#complemento").val('');
-        },
-        error: function (data) {
-            swal("Erro", "Falha ao buscar o cep!");
-        }
-    })
-}
 
 /* VALIDAÇÃO DE FORMULÁRIO */
 window.ValidarFormulario = () => {
@@ -331,7 +225,7 @@ window.ValidarFormulario = () => {
 
             //ESTOU AQUI!!
             //PRECISO VALIDAR O ENDEREÇO DE ENTREGA CASO NÃO ESTEJA CADASTRANDO
-            msg = validacoesCliente.ValidarDadosClienteCadastro(dadosClienteCadastroDto, lstIBGE, clienteCadastro);
+            //msg = validacoesCliente.ValidarDadosClienteCadastro(dadosClienteCadastroDto, lstIBGE, clienteCadastro);
 
             let cadastrando: boolean = $("#cadastrando").val() == "False" ? false : true as boolean;
             let outro_endereco: boolean = $('#outro').val() == "False" ? false : true as boolean;
@@ -339,10 +233,10 @@ window.ValidarFormulario = () => {
 
                 if (outro_endereco) {
                     //vamos converter para endereço entrega dto
-                    let endEntrega: EnderecoEntregaClienteCadastroDto = cepEntrega.converterEntregaParaEnderecoEntregaClienteCadastroDto();
+                    //let endEntrega: EnderecoEntregaClienteCadastroDto = cepEntrega.converterEntregaParaEnderecoEntregaClienteCadastroDto();
 
                     //vamos validar o endereço de entrega
-                    msg += validacoesCliente.validarEnderecoEntregaDtoClienteCadastro(endEntrega, dadosClienteCadastroDto, lstIBGE);
+                    //msg += validacoesCliente.validarEnderecoEntregaDtoClienteCadastro(endEntrega, dadosClienteCadastroDto, lstIBGE);
                 }
             }
 
@@ -375,15 +269,7 @@ window.ChecarLinha = (el: JQuery<HTMLTableElement>) => {
     el.children().find(".check").prop("checked", true);
 }
 
-window.AjustaData = (el: JQuery<HTMLInputElement>) => {
-    filtra_data();
-    if (tem_info((el.val() as string)) && !IsDate(el)) {
-        swal("Erro", "Data inválida!");
 
-        $("#nascimento").val("");
-        return false;
-    }
-}
 
 /* ============ FIM DE CHAMADAS DIRETAS DA TELA ===========*/
 
@@ -483,7 +369,7 @@ function converterParaDadosClienteCadastroDto(): DadosClienteCadastroDto {
     dadosClienteCadastroDto.Indicador_Orcamentista = $("#usuario").val() as string;
     dadosClienteCadastroDto.Vendedor = "";
     dadosClienteCadastroDto.Id = $("#idCliente").val() as string;
-    dadosClienteCadastroDto.Cnpj_Cpf = cpfCnpj;
+    dadosClienteCadastroDto.Cnpj_Cpf = $("#cpfCnpj").val() as string;
     dadosClienteCadastroDto.Rg = $("#rg").val() as string;
     dadosClienteCadastroDto.Ie = $("#ie").val() as string;
     dadosClienteCadastroDto.Contribuinte_Icms_Status = parseInt($("#contribuinte")?.val() as string);
@@ -821,217 +707,20 @@ function desconverterTelefones() {
 
 }
 
-function montaTabela(data: any) {
-    var cols = "";
-    var lst = data["ListaCep"];
-    if (!!lst) {
-        if (lst.length > 0) {
-            if ($('#msg').css("display", "block")) {
-                $('#msg').css("display", "none");
-            }
-            $('.tabela_endereco').css("display", "block");
 
-            for (var i = 0; i < lst.length; i++) {
-                cols += "<tr id='linha' class='tr_linha' onclick='ChecarLinha($(this))'>";
-                cols += "<td style='width: 3vw!important;'>";
-                cols += "<label><input class='check' type='radio' value='" + i + "'></input><span></span></label>";
-                cols += "</td>";
-                cols += "<td style='width: 7vw!important;'>" + lst[i].Cep + "</td>";
-                cols += "<td style='width: 3vw!important;'>" + lst[i].Uf + "</td>";
-                cols += "<td>" + lst[i].Cidade + "</td>";
-                cols += "<td>" + lst[i].Bairro + "</td>";
-                cols += "<td>" + lst[i].Endereco + "</td>";
-                cols += "<td>" + lst[i].LogradouroComplemento + "</td></tr>";
-                $("#tableBody").empty().append(cols);
 
-                $(".modal-content").removeClass("carregando");
-            }
-        }
-        else {
-            if ($('.tabela_endereco').css("display", "block")) $('.tabela_endereco').css("display", "none");
-            var msg = "<span> Endereço não encontrado!</span>";
-            $("#msg").css("display", "block");
-            $("#msg").empty().append(msg);
-        }
-    }
-    else {
-        $(".modal-content").removeClass("carregando");
-    }
-}
 
-//Atribui os dados para a classe de CepDto
-function montarCepDto(linha: HTMLCollection): CepDto {
-    cepDto.Cep = linha[1].textContent;
-    cepDto.Uf = linha[2].textContent;
-    cepDto.Cidade = linha[3].textContent;
-    cepDto.Bairro = linha[4].textContent;
-    cepDto.Endereco = linha[5].textContent;
-    return cepDto;
-}
 
-//Monta campos, limpa dados, atribui na tela
-function inscreve(linha: JQuery<HTMLElement>) {
-    if (tipo_busca_cep != 0) {
-        //vamos montar os dados em CepDto passar o[0]
-        cepDto = montarCepDto(linha[0].children);
-
-        if (tipo_busca_cep == 1) {
-
-            //vamos limpar os campos de endereço do cadastro
-            limparCamposEndereco();
-            //vamos inscrever os dados nos campos
-            atribuirDadosParaEnderecoCadastro(cepDto);
-            //vamos zerar o tipo_busca_cep
-        }
-        if (tipo_busca_cep == 2) {
-            //vamos limpar os campos de endereço de entrega
-            cepEntrega.limparCamposEndEntrega();
-            //vamos inscrever os dados nos campos
-            cepEntrega.atribuirDadosParaEntrega(cepDto);
-            //vamos zerar o tipo_busca_cep
-            tipo_busca_cep = 0;
-        }
-
-        //vamos limpar o body da modal
-        limparModal();
-    }
-}
 
 //ARRUMAR O ALINHEMENTO DOS TD'S DA MODAL QUANDO VEM A LISTA DE CEPS
 //incluir os campos de da memorizacao de endereço no cep
 
-function limparModal() {
-    $("#tableBody").children().remove();
-    $(".tabela_endereco").hide();
-    $("#msg").hide();
 
-    let a: HTMLSelectElement = $("#lstufs")[0] as HTMLSelectElement;
-    a.selectedIndex = 0;
-    $("#localidade").val("");
-    $("#nendereco").val("");
-}
 
-function atribuirDadosParaEnderecoCadastro(cepDto: CepDto) {
 
-    $("#cep").val(cepDto.Cep);
-    ($("#cep") as any).mask("99999-999")
-    $("#endereco").val(cepDto.Endereco);
-    $("#numero").val("");
-    $("#complemento").val("");
-    $("#bairro").val(cepDto.Bairro);
-    $("#cidade").val(cepDto.Cidade);
-    $("#uf").val(cepDto.Uf);
 
-    //vamos limpar o CepDto
-    limparCepDto();
-}
 
-function limparCamposEndereco() {
 
-    $("#endereco").val("");
-    $("#endereco").removeClass('is-invalid');
-    $("#numero").val("");
-    $("#complemento").val("");
-    $("#bairro").val("");
-    $("#bairro").removeClass('is-invalid');
-    $("#cidade").val("");
-    $("#cidade").removeClass('is-invalid');
-    $("#uf").val("");
-    $("#uf").removeClass('is-invalid');
-}
 
-function limparCepDto() {
-    cepDto.Cep = "";
-    cepDto.Uf = "";
-    cepDto.Cidade = "";
-    cepDto.Bairro = "";
-    cepDto.Endereco = "";
-}
 
-function filtra_data(): void {
-    let letra: string;
-    letra = String.fromCharCode(window.event.keyCode);
-    if (!isDigit(letra) && (window.event.keyCode != 47) && (window.event.keyCode != 8) && (window.event.keyCode != 13)) {
-        window.event.keyCode = 0;
-    }
-}
-function isDigit(d: string): boolean {
-    return ((d >= '0') && (d <= '9'))
-}
-function tem_info(texto: string): boolean {
-    let s: string;
-    s = "" + texto;
-    s = s.trim();
-    if (s.length > 0) return true;
-    return false;
-}
-function IsDate(el: JQuery<HTMLInputElement>): boolean {
-    let val: string, s: string;
-
-    //d.value = trim(d.value);
-    //val = d.value;
-    val = (el.val() as string).trim();
-    if (val == "") return true;
-
-    /* SEPARADOR */
-    let sep1: number = val.indexOf("/");
-    let sep2: number = val.indexOf("/", sep1 + 1);
-    if ((val.length == 6) && (sep1 == -1) && (sep2 == -1)) {
-        val = val.substr(0, 2) + "/" + val.substr(2, 2) + "/" + val.substr(4, 2);
-        sep1 = val.indexOf("/");
-        sep2 = val.indexOf("/", sep1 + 1);
-    }
-    if ((val.length == 8) && (sep1 == -1) && (sep2 == -1)) {
-        val = val.substr(0, 2) + "/" + val.substr(2, 2) + "/" + val.substr(4, 4);
-        sep1 = val.indexOf("/");
-        sep2 = val.indexOf("/", sep1 + 1);
-    }
-
-    let len: number = val.length;
-
-    s = val.substr(0, sep1);
-    if (s.length == 0) return false;
-    let dd: number = parseInt(s, 10);
-
-    s = val.substr(sep1 + 1, sep2 - sep1 - 1);
-    if (s.length == 0) return false;
-    let mm: number = parseInt(s, 10);
-
-    s = val.substr(sep2 + 1, len - sep2 - 1);
-    if (s.length == 0) return false;
-    let yy: number = parseInt(s, 10);
-
-    /* ANO */
-    if (yy <= 90) yy += 2000;
-    if ((yy > 90) && (yy < 100)) yy += 1900;
-    if ((yy < 1900) || (yy > 2099)) {
-        return false;
-    }
-
-    let leap: boolean = ((yy == (yy / 4 * 4)) && !(yy == (yy / 100 * 100)));
-
-    /* MES */
-    if (!((mm >= 1) && (mm <= 12))) {
-        return false;
-    }
-
-    /* DIA */
-    let dom: number;
-    if ((mm == 2) && (leap)) dom = 29;
-    if ((mm == 2) && !(leap)) dom = 28;
-    if ((mm == 1) || (mm == 3) || (mm == 5) || (mm == 7) || (mm == 8) || (mm == 10) || (mm == 12)) dom = 31;
-    if ((mm == 4) || (mm == 6) || (mm == 9) || (mm == 11)) dom = 30;
-    if (dd > dom) {
-        return false;
-    }
-
-    let dia: string;
-    let mes: string;
-    if (dd < 10) dia = '0' + dd; else dia = dd.toString();
-    if (mm < 10) mes = '0' + mm;
-
-    el.val(dia + '/' + mes + '/' + yy);
-
-    return true;
-}
 /* ========== FIM DAS FUNÇÕES =========== */

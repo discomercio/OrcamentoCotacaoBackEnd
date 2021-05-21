@@ -6,7 +6,7 @@ using Loja.Bll.Dto.ClienteDto;
 using Loja.Bll.Dto.CepDto;
 using Loja.UI.Models.Cep;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Loja.UI.Models.Cliente.PF;
+using Loja.Bll.Dto.PedidoDto.DetalhesPedido;
 
 namespace Loja.UI.Models.Cliente
 {
@@ -26,6 +26,8 @@ namespace Loja.UI.Models.Cliente
         public SelectList EndJustificativa { get; set; }
         public SelectList LstComboBanco { get; set; }
         public CepViewModel Cep { get; set; }
+
+        public PedidoDto PedidoDto { get; set; }
 
 
         public ClienteCadastroViewModel(bool permiteEditar, bool cadastrando, ClienteCadastroDto clienteCadastroDto,

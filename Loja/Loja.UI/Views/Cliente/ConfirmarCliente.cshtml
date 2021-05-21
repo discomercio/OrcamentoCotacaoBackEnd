@@ -1,0 +1,370 @@
+﻿@model Loja.UI.Models.Cliente.ClienteCadastroViewModel
+@{
+    ViewData["Title"] = "DadosCliente";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+@section ScriptsDiretos{
+    <script src="~/lib/jquery-mask/jquery.mask.js"></script>
+}
+
+<div class="page-header card my-3">
+    <div class="row align-items-end">
+        <div class="col-lg-8 meu-header">
+            <div class="page-header-title" id="title-icone">
+                <i class="feather icon-user bg-c-blue"></i>
+                <div class="d-inline">
+                    <h5 class="pt-2">Novo Pedido</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="pcoded-inner-content py-0">
+    <div class="main-body">
+        <div class="page-wrapper py-0">
+            <div class="page-body">
+                <div class="row">
+                    <div class="col-md-12 col-xl-12">
+                        <div class="card mb-0" style="min-height:calc(100vh - 250px)">
+                            <!--#region Wizard-->
+                            <div class="page-header card mb-0">
+                                <div class="row col-lg-12 col-xl-12 px-0 mb-2 ml-0 wizard">
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 mb-2" id="wizard-cadastro">
+                                        <div class="card py-4 px-2 mb-0 wizard-box"
+                                             style="background-color:#4099ff; text-align:left; height:100%;
+                                                    color:#fff; box-shadow:none">
+                                            <span class="number">1. Cadastro Cliente</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 mb-2" id="wizard-indicador">
+                                        <div class="card py-4 px-2 mb-0"
+                                             style="background-color:#eee; text-align:left; color:#aaa; height:100%;
+                                                    box-shadow:none">
+                                            <span class="number">2. CD e Indicador</span>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 mb-2" id="wizard-produto">
+                                        <div class="card py-4 px-2 mb-0"
+                                             style="background-color:#eee; text-align:left; color:#aaa; height:100%;
+                                                    box-shadow:none">
+                                            <span class="number">3. Produtos e Pagamento</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-3 col-lg-3 col-md-3 col-sm-12 pl-0 mb-2" id="wizard-obs">
+                                        <div class="card py-4 px-2 mb-0"
+                                             style="background-color:#eee; text-align:left; color:#aaa; height:100%;
+                                                    box-shadow:none">
+                                            <span class="number">4. Informações Adicionais</span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--#endregion-->
+                            <!--#region Fomrulário-->
+                            <div class="page-header card mt-0" style="border:1px solid #ccc; padding:20px">
+                                <form asp-controller="Cliente" asp-action="CadastrarCliente" method="post"
+                                      onsubmit="return ValidarFormulario();" id="formulario">
+                                    <!--#region Input's hidden-->
+                                    <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12"></div>
+                                    <input type="hidden" value="@Model.DadosCliente.Id" name="Id" id="idCliente" />
+                                    <input type="hidden" value="@Model.DadosCliente.Tipo" name="Tipo" id="tipo" />
+                                    <input type="hidden" value="@Model.PermiteEdicao.ToString()" name="permiteEditar" id="permiteEditar" />
+                                    <input type="hidden" value="@Model.Cadastrando.ToString()" name="cadastrando" id="cadastrando" />
+                                    <input type="hidden" name="clienteCadastro1" id="clienteCadastro" />
+                                    <!--#endregion-->
+                                    <!--#region Cliente PF-->
+                                    @if (Model.TipoCliente == InfraBanco.Constantes.Constantes.ID_PF)
+                                    {
+                                        @await Html.PartialAsync("~/Views/Cliente/PF/DadosClientePF.cshtml", Model)
+                                    }
+                                    <!--#endregion-->
+                                    <!--#region Cliente PJ-->
+                                    @if (Model.TipoCliente == InfraBanco.Constantes.Constantes.ID_PJ)
+                                    {
+                                        @await Html.PartialAsync("~/Views/Cliente/PJ/DadosClientePJ.cshtml")
+                                    }
+                                    <!--#endregion-->
+                                    <!--#region Endereço-->
+                                    @await Html.PartialAsync("~/Views/Cliente/Endereco.cshtml", Model)
+                                    <!--#endregion-->
+                                    <!--#region Telefones PF-->
+                                    @if (Model.TipoCliente == InfraBanco.Constantes.Constantes.ID_PF)
+                                        @await Html.PartialAsync("~/Views/Cliente/PF/TelefonesPF.cshtml", Model)
+                                    <!--#endregion-->
+                                    <!--#region Telefones PJ-->
+                                    @if (Model.TipoCliente == InfraBanco.Constantes.Constantes.ID_PJ)
+                                        @await Html.PartialAsync("~/Views/cliente/PJ/TelefonesPJ.cshtml")
+                                    <!--#endregion-->
+                                    <!--#region Emails-->
+                                    @await Html.PartialAsync("~/Views/Cliente/Emails.cshtml", Model)
+                                    <!--#endregion-->
+                                    <!--#region Produtor Rural | Contribuinte | IE-->
+                                    @if (Model.DadosCliente?.Tipo == InfraBanco.Constantes.Constantes.ID_PF)
+                                        @await Html.PartialAsync("~/Views/Cliente/PF/ProdutorContribuinteIe.cshtml")
+                                    <!--#endregion-->
+                                    <!--#region Contribuinte | IE-->
+                                    @if (Model.TipoCliente == InfraBanco.Constantes.Constantes.ID_PJ)
+                                        @await Html.PartialAsync("~/Views/Cliente/PJ/ContribuinteIE.cshtml")
+                                    <!--#endregion-->
+                                    <!--#region Referências Bancária e Comercial-->
+                                    @if (Model.TipoCliente == InfraBanco.Constantes.Constantes.ID_PJ)
+                                    {
+                                        @await Html.PartialAsync("~/Views/Cliente/PJ/ReferenciaBancaria.cshtml")
+                                        @await Html.PartialAsync("~/Views/Cliente/PJ/ReferenciasComerciais.cshtml")
+                                    }
+                                    <!--#endregion-->
+                                    <!--#region Indicadores-->
+                                    @await Html.PartialAsync("~/Views/Cliente/Indicadores.cshtml")
+                                    <!--#endregion-->
+                                    <!--#region Endereço de Entrega-->
+                                    @if (!Model.Cadastrando)
+                                    {
+                                        @if(Model.TipoCliente == InfraBanco.Constantes.Constantes.ID_PF)
+                                        @await Html.PartialAsync("~/Views/Cliente/EnderecoEntrega.cshtml")
+
+                                    }
+                                    <!--#endregion-->
+                                </form>
+                            </div>
+                            <!--#endregion-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* Botões *@
+@section RodapePagina {
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <div class="page-body">
+                    <footer>
+                        <div class="row">
+                            <div class="col-xl-12" style="display:flex">
+                                <div class="col-xl-3 col-lg-3 col-md-2 col-sm-2"></div>
+                                <div class="col-xl-3 col-lg-3 col-md-2 col-sm-2 px-0">
+                                    <a class="btn btn-primary" id="voltar"
+                                       href="javascript:history.back()">
+                                        <i class="fa fa-arrow-left"></i>Voltar
+                                    </a>
+                                </div>
+                                <div class="col-lg-1 col-md-3 col-sm-3"></div>
+                                <div class="col-xl-3 col-lg-3 col-md-2 col-sm-2 px-0">
+
+                                    @if (!Model.Cadastrando)
+                                    {
+                                        <button class="btn btn-primary"
+                                                type="submit" onclick="$('#formulario').submit()">
+                                            <i class="fa fa-arrow-right"></i>Avançar
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-primary"
+                                                type="submit" onclick="$('#formulario').submit()">
+                                            <i class="fa fa-arrow-right"></i>Salvar
+                                        </button>
+                                    }
+
+                                </div>
+                                <div class="col-lg-1"></div>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+
+<style>
+    .collapsible-header {
+        color: black;
+    }
+
+    .caixa {
+        display: inline-block;
+        padding: 0.5em;
+        padding-left: 0em;
+    }
+
+        .caixa .rotulo {
+            display: inline;
+            font-weight: bold;
+            opacity: 0.9;
+            padding-right: 0.5em;
+        }
+
+        .caixa .dado {
+            display: inline;
+            padding-right: 1.0em;
+        }
+
+    .enderecoradio {
+        display: block;
+        padding-bottom: 0.5em;
+    }
+
+    #endereco-radio-group-label {
+        display: block;
+        padding-top: 1em;
+        padding-bottom: 0.5em;
+    }
+
+    .boxnovoednereco {
+        padding-top: 1em;
+    }
+</style>
+
+<style>
+
+    .dropdown-content {
+        max-height: 400px;
+        border-radius: 1em;
+    }
+
+    tbody {
+        display: block;
+        height: auto;
+        max-height: 300px;
+        overflow: auto;
+    }
+
+        thead, tbody tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+
+    thead {
+        width: calc( 100% - 1em )
+    }
+
+    table {
+        width: 100%;
+    }
+
+    #footer {
+        text-align: center;
+        padding: 1em;
+        flex-grow: 0;
+        flex-shrink: 0;
+    }
+
+    .fixo {
+        display: flex;
+        flex-direction: column;
+        height: 25%;
+        min-height: 20vh;
+    }
+
+    .destaquelinha :hover {
+        background-color: #d1d1d1 !important;
+    }
+
+
+
+    .dropdown-content select-dropdown {
+        position: fixed;
+    }
+
+    .tabela_endereco {
+        border: 1px solid #ccc;
+        border-collapse: collapse;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        table-layout: fixed;
+    }
+
+        .tabela_endereco caption {
+            font-size: 1.5em;
+            margin: 0.5em 0 0.75em;
+        }
+
+        .tabela_endereco tr {
+            background-color: #fbfbfb;
+            border: 1px solid #ddd;
+            padding: 0.35em;
+        }
+
+        .tabela_endereco th,
+        .tabela_endereco td {
+            padding: 0.625em;
+            padding-left: 0.4em;
+            padding-right: 0.4em;
+            /*//text-align: center;*/
+            font-size: 1vw !important;
+        }
+
+        .tabela_endereco tbody td {
+            white-space: initial;
+            line-height: initial;
+        }
+
+        .tabela_endereco th {
+            white-space: pre-line !important;
+        }
+
+    /*.tabela_endereco .mat-form-field {
+            padding: 0em;
+            padding-left: 0.4em;
+            padding-right: 0.4em;
+        }*/
+
+    .modal {
+        max-height: 100% !important;
+        overflow-y: inherit !important;
+        border-radius: 4px !important;
+    }
+</style>
+<script>
+    //para importar as classes é necessário declarar aqui e no .ts
+    //ex: declare var cepEntrega: CepEntrega;
+    //    cepEntrega = new CepEntrega();
+    
+    var cepEntrega
+    var validacoesCliente;//para validar
+    var dadosClienteCadastroDto;//para converter para validar
+    var clienteCadastro;
+    var lstRefBancaria;
+    var lstRefComercial;
+    
+
+    //estou deixando aqui pq não consegui usar o autocomplete no .ts
+    //$("#lstufs").on('change', function (e) {
+    //    if ($('#localidade').val() != "") {
+    //        $('#localidade').val("");
+    //    }
+    //    if ($('#nendereco').val() != "") {
+    //        $('#nendereco').val("");
+    //    }
+
+    //    $.ajax({
+    //        url: "../Cep/BuscarLocalidades/",
+    //        type: "GET",
+    //        data: { uf: $(this).val() },
+    //        dataType: "json",
+    //        success: function (t) {
+    //            $("#localidade").autocomplete({
+    //                source: t,
+    //            });
+    //        }
+    //    });
+    //});
+    requirejs(["Views/Cliente/DadosCliente"], function (util) {
+
+    });
+</script>

@@ -1,0 +1,33 @@
+﻿@model Loja.UI.Models.Cliente.ClienteCadastroViewModel
+<!-- #region PermiteEdição -->
+@if (Model.PermiteEdicao)
+{
+    <div class="row">
+        <div class="col-sm-12">
+            <label class="col-form-label">RAZÃO SOCIAL</label>
+            <input type="text" class="form-control" name="DadosCliente.Nome" id="razao"
+                   placeholder="RAZÃO SOCIAL"
+                   onblur="VerificaCampo($(this));"
+                   value="@Model.DadosCliente?.Nome">
+            <span class="messages"></span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <label class="col-form-label">CNPJ</label>
+            <input name="DadosCliente.Cnpj_Cpf" id="cpf_cnpj" type="text"
+                   class="form-control" value="@Model.DadosCliente.Cnpj_Cpf" />
+        </div>
+    </div>
+}
+<!--#endregion-->
+<!--#region Não Permite Edição-->
+
+<!--#endregion-->
+
+<script>
+    requirejs(["Views/Cliente/PJ/DadosClientePJ"], function (util) {
+
+    });
+</script>

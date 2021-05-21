@@ -33,6 +33,7 @@ export class CepEntrega {
             $("#lblBairroEntrega").addClass('active');
         }
         if (!!end.Cidade) {
+            debugger;
             if (!!end.ListaCidadeIBGE && end.ListaCidadeIBGE.length > 0) {
                 $("#cidadeEntrega").prop("readonly", false);
 

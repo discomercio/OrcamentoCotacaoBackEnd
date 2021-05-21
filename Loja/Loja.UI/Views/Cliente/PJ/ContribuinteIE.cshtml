@@ -1,0 +1,26 @@
+﻿@model Loja.UI.Models.Cliente.ClienteCadastroViewModel
+<!--#region Permite Edição-->
+@if (Model.PermiteEdicao)
+{
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <label class="col-form-label" for="contribuinte">CONTRIBUINTE ICMS</label>
+            <select asp-for="DadosCliente.Contribuinte_Icms_Status" asp-items="Model.LstContribuinte"
+                    class="custom-select"
+                    id="contribuinte"
+                    onblur="VerificaCampo($(this))">
+            </select>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+            <label class="col-form-label">IE</label>
+            <input name="DadosCliente.Ie" id="ie" type="text" class="form-control" value="@Model.DadosCliente?.Ie" />
+        </div>
+    </div>
+}
+<!--#endregion-->
+<!--#region Não Permite Edição-->
+@if (!Model.PermiteEdicao)
+{
+
+}
+<!--#endregion-->

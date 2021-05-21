@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using Loja.Bll.Bll.AcessoBll;
 using Loja.Bll.Util;
 using Microsoft.Extensions.Logging;
+using Loja.Bll.Dto.PedidoDto.DetalhesPedido;
 
 namespace Loja.UI.Controllers
 {
@@ -86,11 +87,11 @@ namespace Loja.UI.Controllers
             ClienteCadastroViewModel cliente = new ClienteCadastroViewModel(permiteEditar, novoCliente, clienteCadastroDto,
                 lstInd, lstJustificativas, lstBancos);
            
-            return View("DadosCliente", cliente);
+            return View("ConfirmarCliente", cliente);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CadastrarCliente(bool permiteEditar,
+        public async Task<IActionResult> CadastrarCliente(bool permiteEditar, PedidoDto pedidoDto,
             Loja.Bll.Dto.ClienteDto.DadosClienteCadastroDto dados,
             List<Loja.Bll.Dto.ClienteDto.RefComercialDtoCliente> lstRefComercial,
             List<Loja.Bll.Dto.ClienteDto.RefBancariaDtoCliente> lstRefBancaria,
@@ -132,7 +133,7 @@ namespace Loja.UI.Controllers
                 }
             }
 
-            Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto pedidoDto = new Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto();
+            PedidoDto pedidoDto2 = new Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto();
             pedidoDto.DadosCliente = new DadosClienteCadastroDto();
             pedidoDto.DadosCliente = dados;
 
