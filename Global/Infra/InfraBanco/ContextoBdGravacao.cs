@@ -17,7 +17,24 @@ namespace InfraBanco
         internal ContextoBdGravacao(ContextoBdBasico contexto)
         {
             this.contexto = contexto;
-            transacao = RelationalDatabaseFacadeExtensions.BeginTransaction(contexto.Database, System.Data.IsolationLevel.Serializable);
+            /*
+             * 
+                usar transação como READ COMMITED,  e nao como SERIALIZABLE.
+                Motivação: queremos evitar "falsos" deadlocks e também diminuir o número de bloqueios desnecessários.
+                Exemplo: ao fazer um pedido ele consulta muitos outros pedidos para verificar se possuem o mesmo endereço de entrega.
+                Não queremos bloquear todos esses outros pedidos durante a criação deste pedido.
+                E também não queremos que dê um deadlock se alguém tentar editar um desses pedidos durante a criação do outro pedido
+                (seja na criação do pedido novo, seja na edição do pedido anterior) porque isso não é relevante para o negócio. Quer dizer,
+                uma edição dessas não interessa ter um bloqueio. 
+                Onde o bloqueio é IMPORTANTE:
+                - movimentação de estoque
+                - geração de NSU
+
+                Nessas tabelas, vamos ter um flag que sempre atualizamos para bloquear outras leituras. 
+                Sempre que formos atualizar algum desses registros, primeiros atualizamos o flag para forçar o bloqueio no registro.
+            */
+
+            transacao = RelationalDatabaseFacadeExtensions.BeginTransaction(contexto.Database, System.Data.IsolationLevel.ReadCommitted);
         }
 
 

@@ -592,35 +592,14 @@ namespace Cliente
             return lstRefComercial;
         }
 
-//todo: ao invés de proteger com um lock de c#, temos que proteger com um lock no banco que seja compatível com o verdinho
-        private static object _lockCadastrarCliente = new object();
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<IEnumerable<string>> CadastrarCliente(Cliente.Dados.ClienteCadastroDados clienteCadastroDados, string indicador,
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
-            string usuario_cadastro)
-        {
-            /*
-             * precisamos deste lock porque temos erros do tipo:
-            System.Data.SqlClient.SqlException (0x80131904): Transaction (Process ID 60) was deadlocked on lock resources with another 
-            process and has been chosen as the deadlock victim. Rerun the transaction.
-
-            isso ocorre porque a ordem de leitura das tabelas pode gerar um deadlock. Então melhor que cada uma espere a sua vez aqui.
-            */
-            lock (_lockCadastrarCliente)
-            {
-                var ret = CadastrarClienteProtegido(clienteCadastroDados, indicador, sistemaResponsavelCadastro, usuario_cadastro).Result;
-                return ret;
-            }
-        }
-        private async Task<IEnumerable<string>> CadastrarClienteProtegido(Cliente.Dados.ClienteCadastroDados clienteCadastroDados, string indicador,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             string usuario_cadastro)
         {
             string id_cliente = "";
 
             var db = contextoProvider.GetContextoLeitura();
-            
+
             List<string> lstErros = new List<string>();
 
             //passar lista de bancos para validar
@@ -632,11 +611,12 @@ namespace Cliente
             if (lstErros.Count != 0)
                 return lstErros;
 
+            //todo: fazer o lock da inserção de usuário
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
             {
-                    var verifica = await (from c in dbgravacao.Tclientes
-                                          where c.Cnpj_Cpf == clienteCadastroDados.DadosCliente.Cnpj_Cpf
-                                          select c.Id).FirstOrDefaultAsync();
+                var verifica = await (from c in dbgravacao.Tclientes
+                                      where c.Cnpj_Cpf == clienteCadastroDados.DadosCliente.Cnpj_Cpf
+                                      select c.Id).FirstOrDefaultAsync();
 
                 if (verifica != null)
                 {
