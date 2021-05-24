@@ -1,0 +1,173 @@
+﻿@model Loja.UI.Models.Cliente.ClienteCadastroViewModel
+
+<div class="row" style="align-items:flex-end">
+    <div class="col-xl-3 col-md-3 col-sm-6">
+        @* ao sair do campo chamar o metodo cep/buscarCep/ *@
+        <label class="col-form-label">CEP</label>
+        <input name="DadosCliente.Cep"
+               type="text"
+               id="cep"
+               class="form-control"
+               onblur="DigitouCepCadastro()"
+               value="@Model.DadosCliente?.Cep" />
+    </div>
+    <button class="btn btn-sm btn-primary waves-effect waves-light col-xl-2 col-md-3 col-sm-6"
+            data-toggle="modal" data-target="#modal1" value="1" id="btn1"
+            type="button" onclick="NaoSeiCep($(this));">
+        <i class="fa fa-search"></i>Não sei o CEP
+    </button>
+    <div class="col-xl-5 col-md-6 col-sm-12">
+        <label class="col-form-label">ENDEREÇO </label>
+        <input name="DadosCliente.Endereco"
+               id="endereco"
+               type="text"
+               class="form-control"
+               onblur="VerificaCampo($(this));"
+               value="@Model.DadosCliente?.Endereco" />
+    </div>
+    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3">
+        <label class="col-form-label">NÚMERO </label>
+        <input name="DadosCliente.Numero"
+               id="numero"
+               type="text"
+               class="form-control"
+               onblur="VerificaCampo($(this));"
+               value="@Model.DadosCliente?.Numero" />
+    </div>
+    <div class="col-xl-6 col-lg-5 col-md-5 col-sm-9">
+        <label class="col-form-label">COMPLEMENTO</label>
+        <input name="DadosCliente.Complemento" id="complemento" type="text"
+               class="form-control"
+               value="@Model.DadosCliente?.Complemento" />
+    </div>
+    <div class="col-xl-6 col-lg-5 col-md-5 col-sm-12">
+        <label class="col-form-label">BAIRRO</label>
+        <input name="DadosCliente.Bairro"
+               id="bairro"
+               type="text"
+               class="form-control"
+               onblur="VerificaCampo($(this));"
+               onchange="VerificaCampo($(this));"
+               value="@Model.DadosCliente?.Bairro" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+        <label class="col-form-label">CIDADE</label>
+        <input name="DadosCliente.Cidade"
+               id="cidade"
+               type="text"
+               class="form-control"
+               onblur="VerificaCampo($(this));"
+               value="@Model.DadosCliente?.Cidade" />
+    </div>
+    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12">
+        <label class="col-form-label">UF</label>
+        <input name="DadosCliente.Uf"
+               id="uf"
+               type="text"
+               class="form-control"
+               onblur="VerificaCampo($(this));"
+               value="@Model.DadosCliente?.Uf" />
+    </div>
+</div>
+
+<!--#region Modal de CEP -->
+<div class="modal fade" id="modal1" tabindex="-1" role="dialog" style="height:100%;">
+    <div class="modal-dialog" role="document" style="max-width:70% !important">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row col-xl-12 col-lg-12 col-md-12 col-sm-12" style="align-items:flex-end">
+
+                    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-2">
+                        <label class="col-form-label" id="lblUf" for="lstufs">UF</label>
+                        <select class="custom-select" id="lstufs" name="lstufs" onchange="BuscarLocalidades($(this).val())">
+                            <option value="">Selecione</option>
+                        </select>
+
+                    </div>
+                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
+                        <label class="col-form-label" for="localidade">Localidade</label>
+                        <input class="form-control" name="localidade" id="localidade" type="text" />
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-5 col-sm-5">
+                        <label class="col-form-label" for="nendereco">Endereço</label>
+                        <input class="form-control" name="nendereco" id="nendereco" type="text" />
+                    </div>
+
+                    <button class="btn btn-sm btn-primary waves-effect waves-light col-xl-1 col-md-1 col-sm-1"
+                            type="button" id="btnBuscar" onclick="BuscarCepPorEndereco();">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div style="max-height:80% !important">
+                <div class="" id="msg" style="display:none;"></div>
+                <table class="tabela_endereco p-3"
+                       style="max-height:50%; display:none">
+                    <thead>
+                        <tr>
+                            <th style="width:3vw !important;">
+
+                            </th>
+                            <th align="left" valign="bottom" style="width:7vw !important">
+                                CEP
+                            </th>
+                            <th align="left" valign="bottom" style="width:3vw !important">
+                                UF
+                            </th>
+                            <th align="left" valign="bottom">
+                                Cidade
+                            </th>
+                            <th align="left" valign="bottom">
+                                Bairro
+                            </th>
+                            <th align="left" valign="bottom">
+                                Lougradouro
+                            </th>
+                            <th align="left" valign="bottom">
+                                Complemento
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="destaquelinha" id="tableBody">
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer justify-content-center py-1">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="InscreverDadosEndereco($(this))">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--#endregion-->
+<script>
+    var cepEntrega
+    var cepDto;
+    var lstIBGE;
+
+    //$("#lstufs").on('change', function (e) {
+    //    if ($('#localidade').val() != "") {
+    //        $('#localidade').val("");
+    //    }
+    //    if ($('#nendereco').val() != "") {
+    //        $('#nendereco').val("");
+    //    }
+
+    //    $.ajax({
+    //        url: "../Cep/BuscarLocalidades/",
+    //        type: "GET",
+    //        data: { uf: $(this).val() },
+    //        dataType: "json",
+    //        success: function (t) {
+    //            $("#localidade").autocomplete({
+    //                source: t,
+    //            });
+    //        }
+    //    });
+    //});
+    
+    requirejs(["Views/Cliente/Endereco"], function (util) {
+        
+    });
+</script>

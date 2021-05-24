@@ -249,8 +249,8 @@ namespace Loja.Bll.Bll.AcessoBll
             public static readonly string Loja_nome_atual = "Loja_nome_atual";
             public static readonly string Vendedor_loja = "Vendedor_loja";
             public static readonly string Vendedor_externo = "Vendedor_externo";
-            public static readonly string Cliente_Selecionado = "Cliente_Selecionado";
-            public static readonly string PedidoDto = "PedidoDto";
+            //public static readonly string Cliente_Selecionado = "Cliente_Selecionado";
+            //public static readonly string PedidoDto = "PedidoDto";
         }
 
         public string Usuario_atual
@@ -368,30 +368,30 @@ namespace Loja.Bll.Bll.AcessoBll
             private set => httpContextSession.SetString(StringsSession.Loja_nome_atual, value);
         }
 
-        public ClienteCadastroDto Cliente_Selecionado
-        {
-            get
-            {
-                var sessao = httpContextSession.GetString(StringsSession.Cliente_Selecionado);
-                if (sessao == null)
-                    return new ClienteCadastroDto();
-                return JsonConvert.DeserializeObject<ClienteCadastroDto>(sessao);
-            }
-            set => httpContextSession.SetString(StringsSession.Cliente_Selecionado, JsonConvert.SerializeObject(value));
+        //public ClienteCadastroDto Cliente_Selecionado
+        //{
+        //    get
+        //    {
+        //        var sessao = httpContextSession.GetString(StringsSession.Cliente_Selecionado);
+        //        if (sessao == null)
+        //            return new ClienteCadastroDto();
+        //        return JsonConvert.DeserializeObject<ClienteCadastroDto>(sessao);
+        //    }
+        //    set => httpContextSession.SetString(StringsSession.Cliente_Selecionado, JsonConvert.SerializeObject(value));
 
-        }
+        //}
 
-        public PedidoDto PedidoDto
-        {
-            get
-            {
-                var sessao = httpContextSession.GetString(StringsSession.PedidoDto);
-                if (sessao == null)
-                    return new PedidoDto();
-                return JsonConvert.DeserializeObject<PedidoDto>(sessao);
-            }
-            set => httpContextSession.SetString(StringsSession.PedidoDto, JsonConvert.SerializeObject(value));
-        }
+        //public PedidoDto PedidoDto
+        //{
+        //    get
+        //    {
+        //        var sessao = httpContextSession.GetString(StringsSession.PedidoDto);
+        //        if (sessao == null)
+        //            return new PedidoDto();
+        //        return JsonConvert.DeserializeObject<PedidoDto>(sessao);
+        //    }
+        //    set => httpContextSession.SetString(StringsSession.PedidoDto, JsonConvert.SerializeObject(value));
+        //}
     }
 
 }

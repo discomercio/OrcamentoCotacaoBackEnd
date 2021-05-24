@@ -23,7 +23,7 @@ namespace Loja.Bll.Dto.ClienteDto
                 foreach (var p in refBancariaClienteDados)
                     ret.Add(RefBancariaDtoCliente_De_RefBancariaClienteDados(p));
             return ret;
-        }       
+        }
 
         public static RefBancariaDtoCliente RefBancariaDtoCliente_De_RefBancariaClienteDados(Cliente.Dados.Referencias.RefBancariaClienteDados refBancariaClienteDados)
         {
@@ -60,10 +60,10 @@ namespace Loja.Bll.Dto.ClienteDto
                 Banco = refBancariaClienteDados.Banco,
                 BancoDescricao = refBancariaClienteDados.BancoDescricao,
                 Agencia = refBancariaClienteDados.Agencia,
-                Conta = refBancariaClienteDados.ContatoBanco,
-                Ddd = refBancariaClienteDados.DddBanco,
-                Telefone = refBancariaClienteDados.TelefoneBanco,
-                Contato = refBancariaClienteDados.ContatoBanco,
+                Conta = refBancariaClienteDados.ContaBanco,
+                Ddd = refBancariaClienteDados.DddBanco ?? "",
+                Telefone = refBancariaClienteDados.TelefoneBanco != null ? refBancariaClienteDados.TelefoneBanco.Replace("-", "") : "",
+                Contato = refBancariaClienteDados.ContatoBanco ?? "",
                 Ordem = refBancariaClienteDados.OrdemBanco
             };
             return ret;

@@ -9,9 +9,16 @@ using Cep;
 using Cliente.Dados;
 using InfraBanco;
 
+/*
+ * estas rotinas são para atender o prepedido
+ * futuramente, devemos separar em duas classes. Por enquanto, deixamos na mesma classe e em arquivos separados (ClienteBlll e ClienteEdicaoCompletaBll).
+ * Existem alguma duplicação de código, especialmente na geração do log; para remover essa duplicação precisamos de cobertura dos testes.
+ * */
+
+
 namespace Cliente
 {
-    public class ClienteBll
+    public partial class ClienteBll
     {
         public static class MensagensErro
         {
@@ -20,16 +27,14 @@ namespace Cliente
 
 
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
-        private readonly InfraBanco.ContextoCepProvider contextoCepProvider;
         private readonly CepBll cepBll;
         private readonly IBancoNFeMunicipio bancoNFeMunicipio;
 
         public ClienteBll(InfraBanco.ContextoBdProvider contextoProvider,
-                    InfraBanco.ContextoCepProvider contextoCepProvider, CepBll cepBll,
+                    CepBll cepBll,
                     IBancoNFeMunicipio bancoNFeMunicipio)
         {
             this.contextoProvider = contextoProvider;
-            this.contextoCepProvider = contextoCepProvider;
             this.cepBll = cepBll;
             this.bancoNFeMunicipio = bancoNFeMunicipio;
         }
@@ -546,7 +551,7 @@ namespace Cliente
                          join banco in db.Tbancos on c.Banco equals banco.Codigo
                          where c.Id_Cliente == cli.Id
                          orderby c.Ordem
-                         select new { c.Banco, c.Agencia, c.Conta, c.Contato, c.Ddd, c.Telefone, banco.Descricao };
+                         select new { c.Banco, c.Agencia, c.Conta, c.Contato, c.Ddd, c.Telefone, banco.Descricao, c.Ordem };
 
             foreach (var i in await rBanco.ToListAsync())
             {
@@ -558,7 +563,8 @@ namespace Cliente
                     Conta = i.Conta,
                     Contato = i.Contato,
                     Ddd = i.Ddd,
-                    Telefone = i.Telefone
+                    Telefone = i.Telefone,
+                    Ordem = (int)i.Ordem
                 };
                 lstRef.Add(refBanco);
             }
@@ -583,7 +589,8 @@ namespace Cliente
                     Nome_Empresa = i.Nome_Empresa,
                     Contato = i.Contato,
                     Ddd = i.Ddd,
-                    Telefone = i.Telefone
+                    Telefone = i.Telefone,
+                    Ordem = (int)i.Ordem
                 };
 
                 lstRefComercial.Add(rCom);

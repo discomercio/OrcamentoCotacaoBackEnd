@@ -3,6 +3,23 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <LangVersion>8.0</LangVersion>
+    <Configurations>Debug;Release;Release_Banco_Loja;Release_Banco_Pedido;Release_Banco_Prepedido</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG_BANCO_DEBUG</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Banco_Loja|AnyCPU'">
+    <DefineConstants>TRACE;RELEASE_BANCO_LOJA</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Banco_Pedido|AnyCPU'">
+    <DefineConstants>TRACE;RELEASE_BANCO_PEDIDO</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Banco_Prepedido|AnyCPU'">
+    <DefineConstants>TRACE;RELEASE_BANCO_PREPEDIDO</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

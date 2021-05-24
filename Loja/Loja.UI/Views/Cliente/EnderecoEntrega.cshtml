@@ -1,0 +1,74 @@
+﻿@model Loja.UI.Models.Cliente.ClienteCadastroViewModel
+
+<h6 class="pt-4">Endereço de Entrega</h6>
+<!--#region Radio endereço entrega -->
+<div class="row">
+    @{
+        string marcadoMesmo = "checked";
+        string marcadoOutro = "checked";
+        bool outro = false;
+        if (Model.EndEntrega == null)
+        {
+            marcadoMesmo = "checked";
+            marcadoOutro = "";
+            outro = false;
+        }
+        else
+        {
+            marcadoMesmo = "";
+            marcadoOutro = "checked";
+            outro = true;
+        }
+    }
+
+
+    <div class="col-sm-12 col-md-6 col-xl-4">
+        <div class="form-radio">
+            <div class="radio radio-inline">
+                <label>
+                    <input type="radio" id="mesmo" name="mesmo" @marcadoMesmo onclick="fechaDiv($(this));" value="@outro">
+                    <i class="helper"></i>O mesmo Endereço
+                </label>
+            </div>
+        </div>
+        <div class="form-radio">
+            <div class="radio radio-inline">
+                <label>
+                    <input type="radio" id="outro" name="EndEntrega.OutroEndereco" @marcadoOutro onclick="mostraDiv($(this));" value="@outro">
+                    <i class="helper"></i>Outro Endereço
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+<!--#endregion-->
+<!--#region Outro Endereço -->
+<div class="row col-xl-12 ml-0 px-0" id="outro_endereco" name="outro_endereco" style="display:none">
+    <!--#region Justicativa de endereço de entrega-->
+    <div class="col-xl-12 px-0">
+        <label class="col-form-label" for="justificativa" id="lblJustificativa">Justifique o endereço</label>
+        <select asp-for="EndEntrega.EndEtg_cod_justificativa" asp-items="Model.EndJustificativa"
+                class="custom-select"
+                id="justificativa">
+        </select>
+    </div>
+    <!--#endregion-->
+    <!--#region Endereço de entrega para cliente PJ-->
+    @if (Model.TipoCliente == InfraBanco.Constantes.Constantes.ID_PJ)
+        @await Html.PartialAsync("~/Views/Cliente/PJ/EnderecoEntregaPJ.cshtml")
+    <!--#endregion-->
+    <!--#region Cep-->
+    @await Html.PartialAsync("~/Views/Cep/Index.cshtml", Model.Cep)
+    <!--#endregion-->
+    <!--#region INPUTS HIDDEN PARA ENVIAR -->
+    <input type="hidden" name="EndEtg_rg" id="endEntregaRg" />
+    <input type="hidden" name="EndEtg_ddd_res" id="endEntregaDddRes" />
+    <input type="hidden" name="EndEtg_ddd_cel" id="endEntregaDddCel" />
+    <input type="hidden" name="EndEtg_ddd_com" id="endEntregaDddCom1" />
+    <input type="hidden" name="EndEtg_ddd_com_2" id="endEntregaDddCom2" />
+    <input type="hidden" name="EndEtg_email" id="endEntregaEmail" />
+    <input type="hidden" name="EndEtg_email_xml" id="endEntregaEmailXml" />
+    <input type="hidden" name="St_memorizacao_completa_enderecos" id="endEntregaStMemorizacao" />
+    <!--#endregion-->
+</div>
+<!--#endregion-->

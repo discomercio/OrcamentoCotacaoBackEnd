@@ -1,0 +1,54 @@
+﻿@model Loja.UI.Models.Cliente.ClienteCadastroViewModel
+<!--#region Permite Edição-->
+@if (Model.PermiteEdicao)
+{
+    <div class="row">
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
+            <label class="col-form-label">TELEFONE 1</label>
+            <input name="DadosCliente.TelComercial" id="telCom" type="tel"
+                   class="form-control"
+                   onkeyup="IncluirMascara($(this));"
+                   onblur="VerificarTelefonePJ();"
+                   value="@Model.DadosCliente?.TelComercial" />
+            <input name="DadosCliente.DddComercial" type="hidden" id="dddCom"
+                   value="@Model.DadosCliente?.DddComercial" />
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
+            <label class="col-form-label">RAMAL</label>
+            <input name="DadosCliente.Ramal" id="ramal" type="text"
+                   class="form-control"
+                   value="@Model.DadosCliente?.Ramal" />
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
+            <label class="col-form-label">TELEFONE 2</label>
+            <input name="DadosCliente.TelComercial2" id="telCom2" type="tel"
+                   class="form-control"
+                   onkeyup="IncluirMascara($(this));"
+                   onblur="VerificarTelefonePJ();"
+                   value="@Model.DadosCliente?.TelComercial2" />
+            <input name="DadosCliente.DddComercial2" type="hidden" id="dddCom2"
+                   value="@Model.DadosCliente?.DddComercial2" />
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
+            <label class="col-form-label">RAMAL</label>
+            <input name="DadosCliente.Ramal2" id="ramal2" type="text"
+                   class="form-control"
+                   value="@Model.DadosCliente?.Ramal2" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <label class="col-form-label">NOME DA PESSOA NA EMPRESA</label>
+            <input name="DadosCliente.Contato" id="contatoNaEmpresa" type="text"
+                   class="form-control"
+                   value="@Model.DadosCliente?.Contato" />
+        </div>
+    </div>
+}
+<!--#endregion-->
+<!--#region Não Permite Edição-->
+@if (!Model.PermiteEdicao)
+{
+    //implementar
+}
+<!--#endregion-->

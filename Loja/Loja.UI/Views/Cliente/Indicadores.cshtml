@@ -1,0 +1,21 @@
+﻿@model Loja.UI.Models.Cliente.ClienteCadastroViewModel
+<!--#region Permite Edição-->
+@if (Model.PermiteEdicao)
+{
+    <div class="row">
+        <div class="col-xl-12">
+            <label class="col-form-label" for="indicador">INDICADORES</label>
+            <select asp-for="DadosCliente.Indicador_Orcamentista" asp-items="Model.LstIndicadores"
+                    class="custom-select"
+                    id="indicador">
+            </select>
+        </div>
+    </div>
+}
+<!--#endregion-->
+<!--#region Não Permite Edição-->
+@if (Model.PermiteEdicao)
+{
+
+}
+<!--#endregion-->
