@@ -722,14 +722,14 @@ namespace Cliente
                         " está duplicada " + lsteRefComercialRepetido[0].Qtde + " vezes!");
                 }
 
-                int i = 1;
+                int i = 0;
                 lstRefComercial.ForEach(x =>
                 {
+                    x.Ordem = i++;
                     if (string.IsNullOrEmpty(x.Nome_Empresa))
                     {
                         lstErros.Add("Ref Comercial (" + x.Ordem + "): informe o nome da empresa.");
                     }
-                    x.Ordem = i++;
                 });
             }
         }

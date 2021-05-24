@@ -28,14 +28,9 @@ namespace PrepedidoBusiness.Bll
             IEnumerable<EnderecoEntregaJustificativaDto> enderecoEntregaJustificativaDtos = EnderecoEntregaJustificativaDto.EnderecoEntregaJustificativaDto_De_EnderecoEntregaJustificativaDadosLista(retorno);
             return enderecoEntregaJustificativaDtos;
         }
-        public async Task<List<string>> AtualizarClienteParcial(string apelido, DadosClienteCadastroDto dadosClienteCadastroDto, 
-            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel, bool edicaoCompleta)
+        public async Task<List<string>> AtualizarClienteParcial(string apelido, DadosClienteCadastroDto dadosClienteCadastroDto, InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel)
         {
-            ClienteCadastroDto clienteCadastroDto = new ClienteCadastroDto()
-            {
-                DadosCliente = dadosClienteCadastroDto
-            };
-            List<string> retorno = await clienteBll.AtualizarClienteParcial(apelido.Trim(), ClienteCadastroDto.ClienteCadastroDados_De_ClienteCadastroDto(clienteCadastroDto), sistemaResponsavel, edicaoCompleta);
+            List<string> retorno = await clienteBll.AtualizarClienteParcial(apelido.Trim(), DadosClienteCadastroDto.DadosClienteCadastroDados_De_DadosClienteCadastroDto(dadosClienteCadastroDto), sistemaResponsavel);
             return retorno;
         }
         public async Task<ClienteCadastroDto> BuscarCliente(string cpf_cnpj, string apelido)
