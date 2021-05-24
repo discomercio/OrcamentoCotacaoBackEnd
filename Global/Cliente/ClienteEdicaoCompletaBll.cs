@@ -15,11 +15,13 @@ using System.ComponentModel.DataAnnotations.Schema;
  * estas rotinas são para atender a loja e outros módulos que precisem de edição completa
  * */
 
+#if RELEASE_BANCO_LOJA || DEBUG_BANCO_DEBUG
+
 namespace Cliente
 {
     public partial class ClienteBll
     {
-        public async Task<List<string>> AtualizarClienteParcial(string apelido, Cliente.Dados.ClienteCadastroDados clienteCadastroDados,
+        public async Task<List<string>> AtualizarClienteParcialLoja(string apelido, Cliente.Dados.ClienteCadastroDados clienteCadastroDados,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel, bool edicaoCompleta)
         {
             /*
@@ -1077,3 +1079,5 @@ namespace Cliente
 
     }
 }
+#endif
+

@@ -293,7 +293,7 @@ namespace Loja.Bll.ClienteBll
 
         public async Task<IEnumerable<string>> AtualizarClienteParcial(string usuario, ClienteCadastroDto clienteDto)
         {
-            List<string> ret = await clienteBll.AtualizarClienteParcial(usuario, ClienteCadastroDto.ClienteCadastroDados_De_ClienteCadastroDto(clienteDto),
+            List<string> ret = await clienteBll.AtualizarClienteParcialLoja(usuario, ClienteCadastroDto.ClienteCadastroDados_De_ClienteCadastroDto(clienteDto),
                 InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS, true);
 
             return ret;
