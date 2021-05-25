@@ -25,13 +25,21 @@ export class ConfirmarEnderecoComponent implements OnInit {
 
   buscarClienteServiceJustificativaEndEntregaComboTemporario: EnderecoEntregaJustificativaDto[];
   ngOnInit() {
-   
-    this.inicializarCamposEndereco(this.enderecoEntregaDtoClienteCadastro);
-
-    this.enderecoEntregaDtoClienteCadastro.OutroEndereco = false;
+    //se OutroEndereco for undefined, precisamos inicializar
+    if (!this.enderecoEntregaDtoClienteCadastro.OutroEndereco) {
+      this.enderecoEntregaDtoClienteCadastro.OutroEndereco = false;
+      this.inicializarCamposEndereco(this.enderecoEntregaDtoClienteCadastro);
+    }
 
     this.buscarClienteServiceJustificativaEndEntregaComboTemporario = this.buscarClienteService.JustificativaEndEntregaComboTemporario();
+  }
 
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      //fazendo por timeout, como em cliente-corpo.component.ts
+      if (this.componenteCep)
+        this.atualizarDadosEnderecoTela(this.enderecoEntregaDtoClienteCadastro);
+    }, 0);
 
   }
 
@@ -129,7 +137,7 @@ export class ConfirmarEnderecoComponent implements OnInit {
 
   inicializarCamposEndereco(enderecoEntrega: EnderecoEntregaDtoClienteCadastro) {
     if (!enderecoEntrega) return;
-
+    //sempre volamos porque, se mudar entre PF e PJ, precisa limpar os telefones
     enderecoEntrega.EndEtg_cnpj_cpf = "";
     enderecoEntrega.EndEtg_nome = "";
     enderecoEntrega.EndEtg_cep = "";
@@ -153,6 +161,9 @@ export class ConfirmarEnderecoComponent implements OnInit {
     enderecoEntrega.EndEtg_contribuinte_icms_status = 0;
     enderecoEntrega.EndEtg_ie = "";
     enderecoEntrega.EndEtg_tipo_pessoa = "";
+    enderecoEntrega.EndEtg_email = "";
+    enderecoEntrega.EndEtg_email_xml = "";
+    enderecoEntrega.EndEtg_cod_justificativa = "";
   }
   pessoaEntregaEhPJ: boolean;
   pessoaEntregaEhPF: boolean;
@@ -177,6 +188,7 @@ export class ConfirmarEnderecoComponent implements OnInit {
     this.enderecoEntregaDtoClienteCadastro.EndEtg_tipo_pessoa = this.constantes.ID_PJ;
   }
 
+  converteu_tel_enderecoEntrega = false;
   public converterTelefones(enderecoEntrega: EnderecoEntregaDtoClienteCadastro): EnderecoEntregaDtoClienteCadastro {
 
     let s: TelefoneSeparado = new TelefoneSeparado();
@@ -205,6 +217,7 @@ export class ConfirmarEnderecoComponent implements OnInit {
       enderecoEntrega.EndEtg_ddd_com_2 = s.Ddd;
     }
 
+    this.converteu_tel_enderecoEntrega = true;
     return enderecoEntrega;
   }
 
@@ -219,7 +232,12 @@ export class ConfirmarEnderecoComponent implements OnInit {
       enderecoEntrega.EndEtg_tel_com_2 = enderecoEntrega.EndEtg_ddd_com_2 + enderecoEntrega.EndEtg_tel_com_2;
     }
 
+    this.enderecoEntregaDtoClienteCadastro.EndEtg_ddd_res = "";
+    this.enderecoEntregaDtoClienteCadastro.EndEtg_ddd_cel = "";
+    this.enderecoEntregaDtoClienteCadastro.EndEtg_ddd_com = "";
+    this.enderecoEntregaDtoClienteCadastro.EndEtg_ddd_com_2 = "";
 
+    this.converteu_tel_enderecoEntrega = false;
     return enderecoEntrega;
   }
 }

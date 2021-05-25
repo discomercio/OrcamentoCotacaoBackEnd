@@ -156,7 +156,7 @@
                 <td align="left" width="50%" class="MD">
                     <p class="Rf">{{ehPf() ? "CPF" : "CNPJ"}} &nbsp;</p>
 
-                    <a [routerLink]="['/novo-prepedido/confirmar-cliente', stringUtils.retorna_so_digitos(this.pedido.DadosCliente.Cnpj_Cpf)]"
+                    <a (click)="editar();" style="cursor: pointer"
                         title='clique para criar novo pedido'>
                         <p class="C">{{pedido?.DadosCliente?.Cnpj_Cpf}} &nbsp;</p>
                     </a>
@@ -183,7 +183,7 @@
                 <td class="MC" align="left" colspan="3">
                     <p class="Rf">{{ehPf()?"NOME DO CLIENTE":"RAZÃO SOCIAL DO CLIENTE"}} &nbsp;</p>
 
-                    <a [routerLink]="['/novo-prepedido/confirmar-cliente', stringUtils.retorna_so_digitos(this.pedido.DadosCliente.Cnpj_Cpf)]"
+                    <a (click)="editar();" style="cursor: pointer"
                         title='clique para criar novo pedido'>
                         <p class="C">{{pedido?.DadosCliente?.Nome}} &nbsp;</p>
                     </a>

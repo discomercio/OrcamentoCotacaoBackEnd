@@ -430,6 +430,8 @@ export class ItensComponent extends TelaDesktopBaseComponent implements OnInit {
   }
 
   voltar() {
+    this.novoPrepedidoDadosService.clicadoBotaoVoltarDaTelaItens = true;
+
     // if(!this.dadosPagto.podeContinuar())
     // return false;
     this.dadosPagto.podeContinuar(false);

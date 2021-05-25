@@ -223,7 +223,7 @@ http://discomercio.com.br/homologacao/orcamento/OrcamentoNovoConsiste.asp para l
 
 						<span>
 							<mat-form-field class="desconto">
-								<input matInput type="text" [value]="moedaUtils.formatarPorcentagemUmaCasa(i.Desc_Dado)"
+								<input matInput type="text" [value]="moedaUtils.formatarMoedaSemPrefixo(i.Desc_Dado)"
 									(keyup)="formatarDesc($event,i)" (blur)="digitouDesc($event,i)"
 									placeholder="Desconto">
 							</mat-form-field>%
