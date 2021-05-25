@@ -86,9 +86,11 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60.Itens
         [Xunit.SkippableFactAttribute(DisplayName="Gerar_t_PEDIDO_ITEM_SERVICO")]
         [Xunit.TraitAttribute("FeatureTitle", "Gerar_t_PEDIDO_ITEM_SERVICO")]
         [Xunit.TraitAttribute("Description", "Gerar_t_PEDIDO_ITEM_SERVICO")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void Gerar_T_PEDIDO_ITEM_SERVICO()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Gerar_t_PEDIDO_ITEM_SERVICO", null, tagsOfScenario, argumentsOfScenario);
 #line 6

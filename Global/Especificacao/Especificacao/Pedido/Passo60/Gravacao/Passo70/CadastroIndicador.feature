@@ -35,6 +35,8 @@ Scenario: Log indicador - magento
 	Given Pedido base
 	Given Tabela t_CLIENTE registro com cpf_cnpj = "14039603052" alterar campo "indicador" = ""
 	When Informo "Frete" = "10.00"
+	And Recalcular totais do pedido
+	And Deixar forma de pagamento consistente
 	Then Sem nenhum erro
 	And Tabela "t_LOG" pedido gerado e operacao = "OP_LOG_PEDIDO_NOVO", verificar campo "complemento" = "cadastrado o indicador 'frete' no cliente id=000000645637;"
 
@@ -45,6 +47,8 @@ Scenario: CadastroIndicador - magento
 	Given Tabela t_CLIENTE registro com cpf_cnpj = "14039603052" alterar campo "indicador" = ""
 	Given Pedido base
 	When Informo "Frete" = "10.00"
+	And Recalcular totais do pedido
+	And Deixar forma de pagamento consistente
 	Then Sem nenhum erro
 	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "14039603052", verificar campo "indicador" = "FRETE"
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "indicador" = "FRETE"

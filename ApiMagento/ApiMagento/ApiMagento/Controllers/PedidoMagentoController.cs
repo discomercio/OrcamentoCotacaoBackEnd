@@ -19,12 +19,12 @@ namespace ApiMagento.Controllers
     public class PedidoMagentoController : Controller
     {
         private readonly IServicoValidarTokenApiMagento servicoValidarTokenApiMagento;
-        private readonly PedidoMagentoBll pedidoMagentoBll;
+        private readonly MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento.PedidoMagentoBll pedidoMagentoBll;
         private readonly ObterCodigoMarketplaceBll obterCodigoMarketplaceBll;
         private readonly ILogger<PedidoMagentoController> logger;
 
         public PedidoMagentoController(IServicoValidarTokenApiMagento servicoValidarTokenApiMagento,
-            PedidoMagentoBll pedidoMagentoBll,
+            MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento.PedidoMagentoBll pedidoMagentoBll,
             MagentoBusiness.MagentoBll.MagentoBll.ObterCodigoMarketplaceBll obterCodigoMarketplaceBll,
             ILogger<PedidoMagentoController> logger)
         {

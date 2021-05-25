@@ -22,9 +22,8 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
 
             //incializamos o produto com o pedido do magento
             var dados = Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedidoDados.PedidoBase();
-            //todo: acerto DTO magento
-            //fabricante = dados.ListaProdutos[0].Fabricante;
-            //produto = dados.ListaProdutos[0].Produto;
+            fabricante = dados.ListaProdutos[0].Sku.Substring(0, 3);
+            produto = dados.ListaProdutos[0].Sku;
 
             listaTipo_Pessoa = new List<string>();
             listaTipo_Pessoa.AddRange("PF PR PJC PJNC PJI".Split(' '));
@@ -401,6 +400,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
         }
         private void GerarPedido(int numeroFilhotes)
         {
+            cadastrarPedido.DeixarFormaDePagamentoConsistente();
             cadastrarPedido.RecalcularTotaisDoPedido();
             cadastrarPedido.ThenSemNenhumErro();
             cadastrarPedido.GeradoPedidos(numeroFilhotes + 1);

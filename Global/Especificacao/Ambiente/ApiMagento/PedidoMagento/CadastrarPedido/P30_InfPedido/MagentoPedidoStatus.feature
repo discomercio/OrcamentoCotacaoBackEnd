@@ -1,4 +1,5 @@
-﻿Feature: MagentoPedidoStatus
+﻿@ignore
+Feature: MagentoPedidoStatus
 	MagentoPedidoStatus deve ser aprovado ou aprovação pendente
 	Gravar campo MagentoPedidoStatus na t_PEDIDO
       - aprovação pendente -> analise_credito = esperando aprovação pelo magento (o novo status)

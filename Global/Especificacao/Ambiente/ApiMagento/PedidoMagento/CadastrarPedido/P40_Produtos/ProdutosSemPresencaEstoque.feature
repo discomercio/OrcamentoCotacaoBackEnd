@@ -23,6 +23,8 @@ Scenario: PresencaEstoque - produto simples
 	When Lista de itens "0" informo "Preco_Venda" = "338.85"
 	When Lista de itens "0" informo "Preco_NF" = "340.00"
 	Given Zerar todo o estoque
+	When Recalcular totais do pedido
+	When Deixar forma de pagamento consistente
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "fabricante" = "001"
 	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "produto" = "001000"
@@ -40,6 +42,8 @@ Scenario: PresencaEstoque - produto composto
 	When Lista de itens "0" informo "Subtotal" = "ajustar valores"
 	When Lista de itens "0" informo "RowTotal" = "ajustar valores"
 	Given Zerar todo o estoque
+	When Recalcular totais do pedido
+	When Deixar forma de pagamento consistente
 	Then Sem nenhum erro
 	#item 1
 	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "fabricante" = "001"

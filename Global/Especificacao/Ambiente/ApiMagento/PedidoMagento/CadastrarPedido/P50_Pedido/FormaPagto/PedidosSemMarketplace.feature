@@ -1,4 +1,5 @@
-﻿Feature: PedidosSemMarketplace
+﻿@ignore
+Feature: PedidosSemMarketplace
 pedidos feitos diretamente, sem nenhnum marketplace: podem ser por boleto ou cartão de crédito.
 
 

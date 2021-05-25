@@ -52,23 +52,23 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 
         protected override void AbstractRecalcularTotaisDoPedido()
         {
-            decimal totalCompare = 0;
-            decimal totalRaCompare = 0;
-
-            foreach (var produto in pedidoMagentoDto.ListaProdutos)
+            var pedidoMagento = pedidoMagentoDto;
+            foreach (var l in pedidoMagento.ListaProdutos)
             {
-                //sabemos que os podutos tem quantidade = 2, 
-                //então vamos dividir por 2 para multiplicar pela quantidade informada e alterar os valores dos produtos
-                decimal subtotal_um_produto = Math.Round(produto.Subtotal / 2, 2);
-                decimal rowTotal_um_produto = Math.Round(produto.RowTotal / 2, 2);
-                produto.Subtotal = Math.Round(subtotal_um_produto * produto.Quantidade, 2);
-                produto.RowTotal = Math.Round(rowTotal_um_produto * produto.Quantidade, 2);
-
+                l.DiscountAmount = l.Subtotal - l.RowTotal;
             }
-            totalCompare = Math.Round(pedidoMagentoDto.ListaProdutos.Sum(x => x.Subtotal), 2);
-            totalRaCompare = Math.Round(pedidoMagentoDto.ListaProdutos.Sum(x => x.RowTotal), 2);
-            pedidoMagentoDto.TotaisPedido.Subtotal = totalCompare;
-            pedidoMagentoDto.TotaisPedido.GrandTotal = totalRaCompare;
+            foreach (var l in pedidoMagento.ListaServicos)
+            {
+                l.DiscountAmount = l.Subtotal - l.RowTotal;
+            }
+
+            pedidoMagento.TotaisPedido.DescontoFrete = 0;
+            pedidoMagento.TotaisPedido.DiscountAmount = pedidoMagento.ListaProdutos.Select(x => Math.Round(x.DiscountAmount, 2)).Sum()
+                + pedidoMagento.ListaServicos.Select(x => Math.Round(x.DiscountAmount, 2)).Sum()
+                + pedidoMagento.TotaisPedido.DescontoFrete;
+            pedidoMagento.TotaisPedido.Subtotal = pedidoMagento.ListaProdutos.Select(x => Math.Round(x.Subtotal, 2)).Sum()
+                + pedidoMagento.ListaServicos.Select(x => Math.Round(x.Subtotal, 2)).Sum();
+            pedidoMagento.TotaisPedido.GrandTotal = pedidoMagento.TotaisPedido.Subtotal + (pedidoMagento.TotaisPedido.FreteBruto ?? 0) - pedidoMagento.TotaisPedido.DiscountAmount;
         }
         protected override void AbstractListaDeItensComXitens(int numeroItens)
         {
@@ -157,32 +157,34 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
         {
             if (ignorarFeature) return;
             Testes.Utils.LogTestes.LogOperacoes2.ListaDeItensInformo(numeroItem, campo, valor, this);
-            switch (campo)
+            switch (campo.ToLower())
             {
-                case "Preco_venda":
-                case "Preco_Venda":
                 case "preco_venda":
                     campo = "Subtotal";
                     if (decimal.TryParse(valor, out decimal val))
                         valor = (val * pedidoMagentoDto.ListaProdutos[numeroItem].Quantidade).ToString();
                     break;
-                case "Preco_nf":
-                case "Preco_NF":
                 case "preco_nf":
-                case "preco_NF":
                     campo = "RowTotal";
                     if (decimal.TryParse(valor, out decimal value))
                         valor = (value * pedidoMagentoDto.ListaProdutos[numeroItem].Quantidade).ToString();
                     break;
-                case "Produto":
+                case "produto":
                     campo = "Sku";
                     break;
-                case "Qtde":
                 case "qtde":
                     campo = "Quantidade";
+                    //reajustamos os precos totais
+                    if (decimal.TryParse(valor, out decimal qde))
+                    {
+                        var itemAjustando = pedidoMagentoDto.ListaProdutos[numeroItem];
+                        var qdeAnterior = Convert.ToDecimal(itemAjustando.Quantidade);
+                        itemAjustando.Subtotal *= qde / qdeAnterior;
+                        itemAjustando.RowTotal *= qde / qdeAnterior;
+                        itemAjustando.DiscountAmount = itemAjustando.Subtotal - itemAjustando.RowTotal;
+                    }
                     break;
                 case "fabricante":
-                case "Fabricante":
                     return;
 
             }

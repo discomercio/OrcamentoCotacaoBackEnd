@@ -15,6 +15,8 @@ Background:
 	When Lista de itens "0" informo "Qtde" = "2"
 	When Lista de itens "0" informo "Preco_Venda" = "509.24"
 	When Lista de itens "0" informo "Preco_NF" = "520.00"
+	When Recalcular totais do pedido
+	When Deixar forma de pagamento consistente
 	Given Reiniciar banco ao terminar cenário
 
 Scenario: COD_FORMA_PAGTO_PARCELA_UNICA - verifica campos na tabela t_PEDIDO

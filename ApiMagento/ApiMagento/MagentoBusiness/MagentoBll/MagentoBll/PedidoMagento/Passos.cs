@@ -5,10 +5,25 @@ using System.Linq;
 using System.Text;
 using static InfraBanco.Constantes.Constantes;
 
-namespace MagentoBusiness.MagentoBll.MagentoBll
+namespace MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento
 {
-    static class PedidoMagentoPassos
+    static class Passos
     {
+        public static void P30_InfPedido_MagentoPedidoStatus(PedidoMagentoDto pedidoMagento, List<string> listaErros)
+        {
+            //MagentoPedidoStatus deve ser aprovado ou aprovação pendente
+            if (pedidoMagento.MagentoPedidoStatus != null)
+            {
+                if (pedidoMagento.MagentoPedidoStatus.Status == (int)MagentoPedidoStatusEnum.MAGENTO_PEDIDO_STATUS_APROVADO)
+                    return;
+                if (pedidoMagento.MagentoPedidoStatus.Status == (int)MagentoPedidoStatusEnum.MAGENTO_PEDIDO_STATUS_APROVACAO_PENDENTE)
+                    return;
+            }
+
+            listaErros.Add($"O campo MagentoPedidoStatus somente pode ter os valores {(int)MagentoPedidoStatusEnum.MAGENTO_PEDIDO_STATUS_APROVADO} " +
+                $"e {(int)MagentoPedidoStatusEnum.MAGENTO_PEDIDO_STATUS_APROVACAO_PENDENTE}, mas está com o valor {pedidoMagento?.MagentoPedidoStatus?.Status}");
+        }
+
         public static void P35_Totais(PedidoMagentoDto pedidoMagento, List<string> listaErros, decimal limiteArredondamentoTotais)
         {
             /*
@@ -77,26 +92,36 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
             }
         }
 
+        internal static void P39_Servicos(List<PedidoServicoMagentoDto> listaServicos, List<string> listaErros, decimal limiteArredondamentoPorItem)
+        {
+            foreach (var linha in listaServicos)
+            {
+                //P39_Servicos: para cada linha, consistir Quantidade > 0, RowTotal = Subtotal - DiscountAmount dentro do arredondamento
+                if (linha.Quantidade <= 0)
+                    listaErros.Add($"O serviço {linha.Sku} está com quantidade inválida: {linha.Quantidade}");
+                if (!IgualComArredondamento(linha.RowTotal, linha.Subtotal - linha.DiscountAmount, limiteArredondamentoPorItem))
+                    listaErros.Add($"O serviço {linha.Sku} está com valor inválido, RowTotal != Subtotal - DiscountAmount ({linha.RowTotal} != {linha.Subtotal} - {linha.DiscountAmount})");
+            }
+        }
+
+        //rotina muito parecida com a P39_Servicos
+        internal static void P40_P05_LinhasProdutos(List<PedidoProdutoMagentoDto> listaProdutos, List<string> listaErros, decimal limiteArredondamentoPorItem)
+        {
+            foreach (var linha in listaProdutos)
+            {
+                //P39_Servicos: para cada linha, consistir Quantidade > 0, RowTotal = Subtotal - DiscountAmount dentro do arredondamento
+                if (linha.Quantidade <= 0)
+                    listaErros.Add($"O produto {linha.Sku} está com quantidade inválida: {linha.Quantidade}");
+                if (!IgualComArredondamento(linha.RowTotal, linha.Subtotal - linha.DiscountAmount, limiteArredondamentoPorItem))
+                    listaErros.Add($"O produto {linha.Sku} está com valor inválido, RowTotal != Subtotal - DiscountAmount ({linha.RowTotal} != {linha.Subtotal} - {linha.DiscountAmount})");
+            }
+        }
+
         public static bool IgualComArredondamento(decimal valor1, decimal valor2, decimal limiteArredondamento)
         {
             if (Math.Abs(valor1 - valor2) > limiteArredondamento)
                 return false;
             return true;
-        }
-
-        public static void P30_InfPedido_MagentoPedidoStatus(PedidoMagentoDto pedidoMagento, List<string> listaErros)
-        {
-            //MagentoPedidoStatus deve ser aprovado ou aprovação pendente
-            if (pedidoMagento.MagentoPedidoStatus != null)
-            {
-                if (pedidoMagento.MagentoPedidoStatus.Status == (int)MagentoPedidoStatusEnum.MAGENTO_PEDIDO_STATUS_APROVADO)
-                    return;
-                if (pedidoMagento.MagentoPedidoStatus.Status == (int)MagentoPedidoStatusEnum.MAGENTO_PEDIDO_STATUS_APROVACAO_PENDENTE)
-                    return;
-            }
-
-            listaErros.Add($"O campo MagentoPedidoStatus somente pode ter os valores {(int)MagentoPedidoStatusEnum.MAGENTO_PEDIDO_STATUS_APROVADO} " +
-                $"e {(int)MagentoPedidoStatusEnum.MAGENTO_PEDIDO_STATUS_APROVACAO_PENDENTE}, mas está com o valor {pedidoMagento?.MagentoPedidoStatus?.Status}");
         }
 
 

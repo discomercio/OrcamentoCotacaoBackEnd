@@ -134,20 +134,22 @@ Scenario: Pedido_bs_x_ac - somente digitos
 	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "1234567AA"
 	Then Erro "O número Magento deve conter apenas dígitos!"
 
+@ignore
 Scenario: Pedido_bs_x_ac - inicia com dígito inválido loja 201
+	And verificar diigito inicial conforme a t_loja
+	#hamilton vai mandar script com esses campos- campos ocmecam com MAGENTO_API_REST, apicar somente se for magento 2
 	Given Pedido base
 	And Informo "t_loja" de "201", campo "digito_magento" = "4"
 	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "223456778"
 	Then Erro "regex .*O número do pedido Magento inicia com dígito inválido para a loja"
 	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "423456778"
 	Then Sem erro "regex .*O número do pedido Magento inicia com dígito inválido para a loja"
-	And verificar diigito inicial conforme a t_loja
-	#hamilton vai mandar script com esses campos- campos ocmecam com MAGENTO_API_REST, apicar somente se for magento 2
 
+@ignore
 Scenario: Pedido_bs_x_ac - inicia com dígito inválido loja 202
+	And verificar diigito inicial conforme a t_loja
 	Given Pedido base
 	And Informo "appsettings.Loja" = "202"
 	And Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "123456778"
 	Then Erro "regex .*O número do pedido Magento inicia com dígito inválido para a loja"
-	And verificar diigito inicial conforme a t_loja
 

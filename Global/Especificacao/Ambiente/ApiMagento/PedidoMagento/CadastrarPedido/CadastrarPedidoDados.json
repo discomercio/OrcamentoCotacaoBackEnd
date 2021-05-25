@@ -99,13 +99,15 @@
     "C_pc_valor": 0
   },
   "TotaisPedido": {
-    "Subtotal": 3126.90,
+    "Subtotal": 3132.90,
     "DiscountAmount": 0.0,
     "BSellerInterest": 0,
     "FreteBruto": 0,
     "DescontoFrete": 0,
-    "GrandTotal": 3126.90
+    "GrandTotal": 3132.90
   },
-  "Obs_1": "teste magento"
-  
+  "Obs_1": "teste magento",
+  "MagentoPedidoStatus": {
+    "Status": 2
+  }
 }

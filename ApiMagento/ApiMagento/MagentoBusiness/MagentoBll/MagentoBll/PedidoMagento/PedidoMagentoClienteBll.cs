@@ -16,7 +16,7 @@ using InfraBanco.Modelos;
 
 #nullable enable
 
-namespace MagentoBusiness.MagentoBll.MagentoBll
+namespace MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento
 {
     public class PedidoMagentoClienteBll
     {
@@ -31,7 +31,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll
         }
 
         internal async Task<Tcliente?> CadastrarClienteSeNaoExistir(PedidoMagentoDto pedidoMagento, List<string> listaErros,
-            PedidoMagentoBll.Indicador_vendedor_loja indicador_Vendedor_Loja, string usuario_cadastro)
+            PedidoMagento.PedidoMagentoBll.Indicador_vendedor_loja indicador_Vendedor_Loja, string usuario_cadastro)
         {
             var idCliente = await clienteBll.BuscarTcliente(pedidoMagento.Cnpj_Cpf).FirstOrDefaultAsync();
             if (idCliente != null)

@@ -72,6 +72,8 @@ Scenario: QtdeMaxItens - excede qtde de itens com os produtos já separados
 	When Lista de itens "10" informo "Subtotal" = "583.04"
 	When Lista de itens "10" informo "RowTotal" = "583.04"
 	#
+	When Recalcular totais do pedido
+	When Deixar forma de pagamento consistente
 	Then Erro "São permitidos no máximo 12 itens por pedido."
 
 @ignore
@@ -120,4 +122,6 @@ Scenario: QtdeMaxItens - excede qtde de itens com os produtos compostos
 	When Lista de itens "7" informo "Subtotal" = "ajustar valores"
 	When Lista de itens "7" informo "RowTotal" = "ajustar valores"
 	#
+	When Recalcular totais do pedido
+	When Deixar forma de pagamento consistente
 	Then Erro "São permitidos no máximo 12 itens por pedido."

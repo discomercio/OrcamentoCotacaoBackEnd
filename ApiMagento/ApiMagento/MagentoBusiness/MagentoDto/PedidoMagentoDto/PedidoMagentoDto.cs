@@ -77,8 +77,10 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         [MaxLength(500)]
         public string? Obs_1 { get; set; }
 
+        [Required]
         public MagentoPedidoStatusDto MagentoPedidoStatus { get; set; }
 
+        public decimal? afazer_remover_Frete { get; set; }
 #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         public static Pedido.Dados.Criacao.PedidoCriacaoDados? PedidoDadosCriacaoDePedidoMagentoDto(Cliente.Dados.DadosClienteCadastroDados dadosClienteMagento,
@@ -114,10 +116,10 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                 perc_RT: 0,
 
                 //Armazena o valor total do pedido
-                vl_total: lstProdutosMagento.Select(x => x.TotalItem()).Sum(),
+                vl_total: pedidoMagento.TotaisPedido.Subtotal,
 
                 //Armazena o valor total de pedido com RA
-                vl_total_NF: lstProdutosMagento.Select(x => x.TotalItemRA() ?? 0).Sum(),
+                vl_total_NF: pedidoMagento.TotaisPedido.GrandTotal,
 
                 magento_shipping_amount: pedidoMagento.TotaisPedido.FreteBruto ?? 0M
                 );

@@ -1,6 +1,9 @@
 ﻿@Especificacao.Pedido.Passo40
 Feature: Produtos
 
+Background: Mapeamento de mensagens
+	#no magento primeiro verifica os totais
+	Given No ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido" mapear erro "Não há itens na lista de produtos!" para "regex TotaisPedido.Subtotal inconsistente.*"
 
 Scenario: Sem quantidade zero
 	#loja/PedidoNovoConsiste.asp
@@ -10,6 +13,8 @@ Scenario: Sem quantidade zero
 	Given Pedido base
 	When Lista de itens com "1" itens
 	When Lista de itens "0" informo "qtde" = "0"
+	#no magento primeiro verifica os totais; se for zero não conseguimos recalcular os totaos. Por isso temos a mensagem mensagem mapeada para mensagens diferentes.
+	Given No ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido" mapear erro "regex .* com Qtde menor ou igual a zero!" para "regex TotaisPedido.Subtotal inconsistente.*"
 	Then Erro "regex .* com Qtde menor ou igual a zero!"
 
 Scenario: Sem quantidade zero 2
@@ -17,6 +22,7 @@ Scenario: Sem quantidade zero 2
 	When Lista de itens "0" informo "qtde" = "-1"
 	And Recalcular totais do pedido
 	And Deixar forma de pagamento consistente
+	Given No ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido" mapear erro "regex .* com Qtde menor ou igual a zero!" para "regex .* com Qtde menor ou igual a zero!"
 	Then Erro "regex .* com Qtde menor ou igual a zero!"
 
 #
@@ -75,8 +81,8 @@ Scenario: produtos: sempre virão divididos, nunca vai vir um produto composto.
 #						alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & ": quantidade " & cstr(.qtde) & " excede o máximo permitido."
 # Validação feita em outro arquivo: "Especificacao\Pedido\Passo40\PedidoNovoProdCompostoMask_t_PRODUTO_LOJA.feature"
 Scenario: Máximo de itens por pedido
-	#alerta=alerta & "O número de itens que está sendo cadastrado (" & CStr(n) & ") excede o máximo permitido por pedido (" & CStr(MAX_ITENS) & ")!!"
-	
+#alerta=alerta & "O número de itens que está sendo cadastrado (" & CStr(n) & ") excede o máximo permitido por pedido (" & CStr(MAX_ITENS) & ")!!"
+
 	#Implementado em Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\Passo40\Produtos.feature
 	#para o magento precisamos mudar a loja do appsettings
 	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
@@ -172,7 +178,7 @@ Scenario: Produto repetidos
 	When Lista de itens "0" informo "Qtde" = "1"
 	When Lista de itens "1" informo "Fabricante" = "001"
 	When Lista de itens "1" informo "Produto" = "001000"
-	When Lista de itens "1" informo "Qtde" = "1"	
+	When Lista de itens "1" informo "Qtde" = "1"
 	And Recalcular totais do pedido
 	And Deixar forma de pagamento consistente
 	Then Erro "regex .*repete o mesmo produto da linha.*"

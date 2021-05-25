@@ -469,12 +469,14 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="Pedido_bs_x_ac - inicia com dígito inválido loja 201")]
         [Xunit.TraitAttribute("FeatureTitle", "CamposMagentoExigidos")]
         [Xunit.TraitAttribute("Description", "Pedido_bs_x_ac - inicia com dígito inválido loja 201")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void Pedido_Bs_X_Ac_IniciaComDigitoInvalidoLoja201()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pedido_bs_x_ac - inicia com dígito inválido loja 201", null, tagsOfScenario, argumentsOfScenario);
-#line 137
+#line 138
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -497,27 +499,27 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 138
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
 #line 139
- testRunner.And("Informo \"t_loja\" de \"201\", campo \"digito_magento\" = \"4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 140
- testRunner.And("Informo \"InfCriacaoPedido.Pedido_bs_x_ac\" = \"223456778\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("verificar diigito inicial conforme a t_loja", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 141
- testRunner.Then("Erro \"regex .*O número do pedido Magento inicia com dígito inválido para a loja\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 142
- testRunner.And("Informo \"InfCriacaoPedido.Pedido_bs_x_ac\" = \"423456778\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Informo \"t_loja\" de \"201\", campo \"digito_magento\" = \"4\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 143
- testRunner.Then("Sem erro \"regex .*O número do pedido Magento inicia com dígito inválido para a lo" +
-                        "ja\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("Informo \"InfCriacaoPedido.Pedido_bs_x_ac\" = \"223456778\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 144
- testRunner.And("verificar diigito inicial conforme a t_loja", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Then("Erro \"regex .*O número do pedido Magento inicia com dígito inválido para a loja\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 145
+ testRunner.And("Informo \"InfCriacaoPedido.Pedido_bs_x_ac\" = \"423456778\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 146
+ testRunner.Then("Sem erro \"regex .*O número do pedido Magento inicia com dígito inválido para a lo" +
+                        "ja\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -526,12 +528,14 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="Pedido_bs_x_ac - inicia com dígito inválido loja 202")]
         [Xunit.TraitAttribute("FeatureTitle", "CamposMagentoExigidos")]
         [Xunit.TraitAttribute("Description", "Pedido_bs_x_ac - inicia com dígito inválido loja 202")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void Pedido_Bs_X_Ac_IniciaComDigitoInvalidoLoja202()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Pedido_bs_x_ac - inicia com dígito inválido loja 202", null, tagsOfScenario, argumentsOfScenario);
-#line 147
+#line 149
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -554,20 +558,20 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 148
- testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 149
- testRunner.And("Informo \"appsettings.Loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
 #line 150
- testRunner.And("Informo \"InfCriacaoPedido.Pedido_bs_x_ac\" = \"123456778\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("verificar diigito inicial conforme a t_loja", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 151
- testRunner.Then("Erro \"regex .*O número do pedido Magento inicia com dígito inválido para a loja\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 152
- testRunner.And("verificar diigito inicial conforme a t_loja", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Informo \"appsettings.Loja\" = \"202\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 153
+ testRunner.And("Informo \"InfCriacaoPedido.Pedido_bs_x_ac\" = \"123456778\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 154
+ testRunner.Then("Erro \"regex .*O número do pedido Magento inicia com dígito inválido para a loja\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

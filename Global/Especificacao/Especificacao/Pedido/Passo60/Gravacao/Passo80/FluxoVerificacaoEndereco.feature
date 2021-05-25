@@ -14,7 +14,6 @@ Background: Configuracao
 Scenario: Verificação de endereco - endereco do parceiro para magento
 	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
-	When Informo "Frete" = "10"
 	When Informo "EnderecoEntrega.EndEtg_endereco" = "Rua do Trabalhador"
 	When Informo "EnderecoEntrega.EndEtg_endereco_numero" = "406"
 	When Informo "EnderecoEntrega.EndEtg_cep" = "06550000"
