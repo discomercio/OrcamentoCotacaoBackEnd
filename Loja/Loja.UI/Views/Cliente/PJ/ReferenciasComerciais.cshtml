@@ -1,0 +1,81 @@
+﻿@model Loja.UI.Models.Cliente.ClienteCadastroViewModel
+<!--#region Permite Edição-->
+@if (Model.PermiteEdicao)
+{
+    <div class="accordion" id="accordionComercial">
+        <div class="card">
+            <!--#region Cabeçalho do accordion -->
+            <div class="card-header" id="headingOne" style="padding:0px !important">
+                <h2 class="mb-0">
+                    <a class="btn btn-link btn-block text-left" data-toggle="collapse" data-target="#collapseOneComercial" aria-expanded="true" aria-controls="collapseOne">
+                        Referências Comerciais (@Model.RefComercial?.Count)
+                    </a>
+                </h2>
+            </div>
+            <!--#endregion-->
+            <!--#region Item do accordion-->
+            <div id="collapseOneComercial" class="panel-collapse collapse in" aria-labelledby="headingOne" data-parent="#accordionComercial">
+                @{
+                    int index = 0;
+                    <div class="card-body form-control-right" id="collapsible-body-comercial" style="padding-top:0px !important">
+                        <hr style="margin-top:0px !important; margin-bottom:0px !important" />
+                        <a class="btn btn-link btn-block text-right"
+                           id="addRefComercial"
+                           onclick="AddRefComercial();"
+                           style="color:black !important; ">
+                            Adicionar Referência
+                            <i class="fa fa-plus"></i>
+                        </a>
+
+                        <!--#region LOOP PARA MOSTRAR REFERÊNCIAS EXISTENTES-->
+                        @if (Model.RefComercial?.Count > 0)
+                        {
+                            <hr style="margin-top:0px !important; margin-bottom:0px !important" />
+                            @foreach (var r in Model.RefComercial)
+                            {
+                                <hr />
+                                <div class="row">
+                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                                        <label for="Nome_Empresa" class="col-form-label">NOME DA EMPRESA</label>
+                                        <input name="RefComercialDtoCliente.[@index].Nome_Empresa" id="@index-Nome_Empresa"
+                                               type="text"
+                                               value="@r.Nome_Empresa"
+                                               class="form-control" />
+                                    </div>
+                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6">
+                                        <label for="Contato" class="col-form-label">CONTATO</label>
+                                        <input name="RefComercialDtoCliente.[@index].Contato" id="@index-Contato"
+                                               type="text"
+                                               value="@r.Contato"
+                                               class="form-control" />
+                                    </div>
+                                    <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6">
+                                        <label for="Telefone" class="col-form-label">TELEFONE</label>
+                                        <input name="RefComercialDtoCliente.[@index].Telefone" id="@index-Telefone"
+                                               type="text" onkeyup="IncluirMascara($(this))"
+                                               value="@r.Ddd@r.Telefone"
+                                               class="form-control" />
+                                        <input name="RefComercialDtoCliente.[@index].Ddd" type="hidden" id="@index-Ddd"
+                                               value="@r.Ddd" />
+                                    </div>
+                                </div>
+                                <input type="hidden" id="@index-Ordem" name="RefComercialDtoCliente.[@index].Ordem" value="@r.Ordem" />
+                                index++;
+                            }
+                        }
+                        <input type="hidden" id="index" value="@index" />
+                        <!--#endregion-->
+                    </div>
+                }
+            </div>
+            <!--#endregion-->
+        </div>
+    </div>
+}
+<!--#endregion-->
+<!--#region Não Permite Edição-->
+@if (!Model.PermiteEdicao)
+{
+    //implementar
+}
+<!--#endregion-->

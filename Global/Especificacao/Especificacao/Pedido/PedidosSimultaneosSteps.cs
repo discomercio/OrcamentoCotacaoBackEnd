@@ -19,16 +19,13 @@ namespace Especificacao.Especificacao.Pedido
             this.contextoBdProvider = servicos.GetRequiredService<InfraBanco.ContextoBdProvider>();
         }
 
-        [Given(@"Testar pedidos simultâneos")]
-        public void GivenTestarPedidosSimultaneos()
+        [Given(@"Testar pedidos simultâneos com multiplicadorPorPedido = ""(.*)"" \(magento e loja\), pedidosPorThread = ""(.*)"" e numeroThreads = ""(.*)""")]
+        public void GivenTestarPedidosSimultaneos(int multiplicadorPorPedido, int pedidosPorThread, int numeroThreads)
         {
-            PrepararBancoDados();
-
             //conta o número de pedidos
             var pedidos = (from p in contextoBdProvider.GetContextoLeitura().Tpedidos select p).Count();
-            var multiplicadorPorPedido = 2; //magento e loja
-            var pedidosPorThread = 5;
-            var numeroThreads = 10;
+
+            PrepararBancoDados();
 
             var threads = new List<Thread>();
             CriarThreads(pedidosPorThread, numeroThreads, threads);
@@ -38,7 +35,7 @@ namespace Especificacao.Especificacao.Pedido
 
             //verifica o total de pedidos criados
             var novosPedidos = (from p in contextoBdProvider.GetContextoLeitura().Tpedidos select p).Count();
-            Assert.Equal(pedidos + numeroThreads * pedidosPorThread * multiplicadorPorPedido, novosPedidos);
+            Assert.Equal(pedidos + multiplicadorPorPedido + numeroThreads * pedidosPorThread * multiplicadorPorPedido, novosPedidos);
         }
 
         private static void PrepararBancoDados()
@@ -58,15 +55,13 @@ namespace Especificacao.Especificacao.Pedido
                 pedidoSteps.GivenIgnorarCenarioNoAmbiente("Especificacao.Prepedido.PrepedidoSteps");
                 try
                 {
-                    //dorme um tempo aleatório apra deslocar as threads
-                    Thread.Sleep(new Random().Next(1, 500));
                     Testes.Utils.LogTestes.LogTestes.LogMensagemOperacao($"CriarThreads iniciar pedido thread {Thread.CurrentThread.ManagedThreadId} na thread principal", typeof(PedidosSimultaneosSteps));
                     pedidoSteps.GivenPedidoBase();
                     pedidoSteps.ThenSemNenhumErro();
                 }
                 catch (Exception e)
                 {
-                    Testes.Utils.LogTestes.LogTestes.ErroNosTestes($"EXCECAO: ERRO: na criacao do pedido: {e.Message} {e.StackTrace} {e.ToString()}");
+                    RegistrarExcecao(e);
                     throw;
                 }
             }
@@ -85,14 +80,14 @@ namespace Especificacao.Especificacao.Pedido
                         try
                         {
                             //dorme um tempo aleatório apra deslocar as threads
-                            Thread.Sleep(new Random().Next(1, 500));
+                            Thread.Sleep(new Random().Next(1, 50));
                             Testes.Utils.LogTestes.LogTestes.LogMensagemOperacao($"CriarThreads iniciar pedido thread {Thread.CurrentThread.ManagedThreadId} número {i2}", typeof(PedidosSimultaneosSteps));
                             pedidoSteps.GivenPedidoBase();
                             pedidoSteps.ThenSemNenhumErro();
                         }
                         catch (Exception e)
                         {
-                            Testes.Utils.LogTestes.LogTestes.ErroNosTestes($"EXCECAO: ERRO: na criacao do pedido: {e.Message} {e.StackTrace} {e.ToString()}");
+                            RegistrarExcecao(e);
                             throw;
                         }
                     }
@@ -100,11 +95,24 @@ namespace Especificacao.Especificacao.Pedido
             }
         }
 
+        private static void RegistrarExcecao(Exception e)
+        {
+            var msg = $"EXCECAO: ERRO: na criacao do pedido: {e.Message} {e.StackTrace} {e.ToString()}";
+            Testes.Utils.LogTestes.LogTestes.ErroNosTestes(msg);
+            Assert.Equal("", msg);
+        }
+
         private static void IniciarTHreads(List<Thread> threads)
         {
             //inicia todas
             foreach (var t in threads)
+            {
                 t.Start();
+                //se estivermos usando o banco em memória, ele não faz bloqueio nem suporta transações, e vai dar erro
+                //então, na prática, desabilitamos o teste de simultaneidade se for o banco de memória
+                if (!Testes.Utils.InjecaoDependencia.ProvedorServicos.UsarSqlServerNosTestesAutomatizados)
+                    t.Join();
+            }
         }
 
 

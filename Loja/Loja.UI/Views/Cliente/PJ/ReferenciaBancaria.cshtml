@@ -1,0 +1,136 @@
+﻿@model Loja.UI.Models.Cliente.ClienteCadastroViewModel
+<!--#region Permite Edição-->
+@if (Model.PermiteEdicao)
+{
+    <div class="accordion pt-4" id="accordionBancaria">
+        <div class="card">
+            <!--#region Cabeçalho do accordion-->
+            <div class="card-header" id="headingOne" style="padding:0px !important">
+                <h2 class="mb-0">
+                    <a class="btn btn-link btn-block text-left" data-toggle="collapse" data-target="#collapseOneBancaria" aria-expanded="true" aria-controls="collapseOne">
+                        Referências Bancárias (@Model.RefBancaria?.Count)
+                    </a>
+                </h2>
+            </div>
+            <!--#endregion-->
+            <!--#region Item do accordion -->
+            <div id="collapseOneBancaria" class="panel-collapse collapse in" aria-labelledby="headingOne" data-parent="#accordionBancaria">
+                @{
+                    var indice = 0;
+
+                    <div class="card-body form-control-right" id="card-body-bancaria" style="padding-top:0px !important">
+                        <hr style="margin-top:0px !important; margin-bottom:0px !important" />
+                        <a class="btn btn-link btn-block text-right"
+                           id="addRefBancaria"
+                           onclick="AddRefBancaria();"
+                           style="color:black !important;">
+                            Adicionar Referência
+                            <i class="fa fa-plus"></i>
+                        </a>
+                        <hr style="margin-top:0px !important; margin-bottom:0px !important" />
+                        <!--#region PARA ADICIONAR REFERÊNCIA BANCÁRIA-->
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 row" id="modelo_refBancaria" style="display:none">
+                            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                <label class="col-form-label" for="@indice-banco">BANCO</label>
+                                <select asp-for="RefBancariaDtoCliente.[@indice].BancoDescricao" asp-items="Model.LstComboBanco"
+                                        class="custom-select"
+                                        id="@indice-banco"></select>
+                            </div>
+                            <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6">
+                                <label class="col-form-label">AGÊNCIA</label>
+                                <input name="RefBancariaDtoCliente.[@indice].Agencia" id="@indice-agencia"
+                                       type="text"
+                                       class="form-control" />
+                            </div>
+                            <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6">
+                                <label class="col-form-label" for="@indice-conta">CONTA</label>
+                                <input name="RefBancariaDtoCliente.[@indice].ContaBanco" id="@indice-conta"
+                                       type="text"
+                                       class="form-control" />
+                            </div>
+                            <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6">
+                                <label class="col-form-label" for="@indice-telBanco">TELEFONE</label>
+                                <input name="RefBancariaDtoCliente.[@indice].TelefoneBanco" id="@indice-telBanco"
+                                       type="text" onblur="IncluirMascara($(this))"
+                                       class="form-control" />
+                                <input name="RefBancariaDtoCliente.[@indice].DddBanco" type="hidden" id="@indice-dddBanco" />
+                            </div>
+                            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                                <label class="col-form-label">CONTATO</label>
+                                <input name="RefBancariaDtoCliente.[@indice].ContatoBanco" id="@indice-contatoBanco"
+                                       type="text"
+                                       class="form-control" />
+                            </div>
+                        </div>
+                        <!--#endregion-->
+                        <!--#region LOOP PARA MOSTRAR REFERÊNCIAS EXISTENTES-->
+                        @if (Model.RefBancaria?.Count > 0)
+                        {
+                            @foreach (var r in Model.RefBancaria)
+                            {
+                                string visible = "display: none;";
+                                if (!String.IsNullOrWhiteSpace(r.ContaBanco))
+                                {
+                                    visible = "display: inline-flex";
+                                }
+
+
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 row" id="RefBancariabody-@indice" style="@visible">
+                                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+                                        <label class="col-form-label" for="@indice-banco">BANCO</label>
+                                        <select asp-for="RefBancariaDtoCliente.[@indice].BancoDescricao" asp-items="Model.LstComboBanco"
+                                                class="custom-select"
+                                                id="@indice-banco"></select>
+                                    </div>
+                                    <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6">
+                                        <label class="col-form-label">AGÊNCIA</label>
+                                        <input name="RefBancariaDtoCliente.[@indice].Agencia" id="@indice-agencia"
+                                               type="text"
+                                               value="@r.Agencia"
+                                               class="form-control" />
+                                    </div>
+                                    <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6">
+                                        <label class="col-form-label" for="@indice-conta">CONTA</label>
+                                        <input name="RefBancariaDtoCliente.[@indice].ContaBanco" id="@indice-conta"
+                                               type="text"
+                                               value="@r.ContaBanco"
+                                               class="form-control" />
+                                    </div>
+                                    <div class="col-xl-2 col-lg-3 col-md-3 col-sm-6">
+                                        <label class="col-form-label" for="@indice-telBanco">TELEFONE</label>
+                                        <input name="RefBancariaDtoCliente.[@indice].TelefoneBanco" id="@indice-telBanco"
+                                               type="text" onblur="IncluirMascara($(this))" onfocus="RemoveMascara($(this))"
+                                               value="@r.TelefoneBanco"
+                                               class="form-control" />
+                                        <input name="RefBancariaDtoCliente.[@indice].DddBanco" type="hidden" id="@indice-dddBanco"
+                                               value="@r.DddBanco" />
+                                    </div>
+                                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                                        <label class="col-form-label">CONTATO</label>
+                                        <input name="RefBancariaDtoCliente.[@indice].ContatoBanco" id="@indice-contatoBanco"
+                                               type="text"
+                                               value="@r.ContatoBanco"
+                                               class="form-control" />
+                                    </div>
+                                    <input type="hidden" id="@indice-ordemBanco" name="RefBancariaDtoCliente.[@indice].OrdemBanco" value="@r.OrdemBanco" />
+                                </div>
+                                indice++;
+                            }
+
+                        }
+                        <input type="hidden" id="indice" value="@indice" />
+                        <!--#endregion-->
+                    </div>
+                }
+            </div>
+            <!--#endregion-->
+        </div>
+    </div>
+}
+<!--#endregion-->
+<!--#region Não Permite Edição-->
+@if (!Model.PermiteEdicao)
+{
+    //implementar
+}
+<!--#endregion-->

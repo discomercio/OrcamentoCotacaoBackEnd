@@ -1,0 +1,30 @@
+﻿@model Loja.UI.Models.Cliente.ClienteCadastroViewModel
+<!--#region Permite Edição-->
+@if (Model.PermiteEdicao)
+{
+    <div class="row">
+        <div class="col-sm-12">
+            <label class="col-form-label">E-MAIL</label>
+            <input name="DadosCliente.Email" id="email" type="email"
+                   class="form-control"
+                   onblur="VerificaCampo($(this));"
+                   value="@Model.DadosCliente?.Email" />
+        </div>
+    </div>
+    //Email xml
+    <div class="row">
+        <div class="col-sm-12">
+            <label class="col-form-label">E-MAIL (XML)</label>
+            <input name="DadosCliente.EmailXml" id="emailXml" type="email"
+                   class="form-control"
+                   value="@Model.DadosCliente?.EmailXml" />
+        </div>
+    </div>
+}
+<!--#endregion-->
+<!--#region Não Permite Edição-->
+@if (!Model.PermiteEdicao)
+{
+    //implementar
+}
+<!--#endregion-->

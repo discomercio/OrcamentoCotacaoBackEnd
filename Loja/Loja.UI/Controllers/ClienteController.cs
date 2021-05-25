@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using Loja.Bll.Bll.AcessoBll;
 using Loja.Bll.Util;
 using Microsoft.Extensions.Logging;
+using Loja.Bll.Dto.PedidoDto.DetalhesPedido;
 
 namespace Loja.UI.Controllers
 {
@@ -57,47 +58,19 @@ namespace Loja.UI.Controllers
             //return RedirectToAction("BuscarCliente", new { cpf_cnpj = cpf_cnpj, novoCliente = novoCliente }); //editar cliente
         }
 
+        
 
         public async Task<IActionResult> BuscarCliente(string cpf_cnpj, bool novoCliente)
-        {
-            /*Passo a passo da entrada 
-              pegar a session do usuario
-              pegar a session da loja
-              criar session de operações permitidas
-              verificar a operação permitida
-              buscar os dados do cliente
-              buscar indicadores 
-            */
-            
+        {           
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
-
-            ClienteCadastroViewModel cliente = new ClienteCadastroViewModel();
-
-            cliente.PermiteEdicao = Loja.Bll.Util.Util.OpercaoPermitida(Loja.Bll.Constantes.Constantes.OP_LJA_EDITA_CLIENTE_DADOS_CADASTRAIS
+            bool permiteEditar = Loja.Bll.Util.Util.OpercaoPermitida(Loja.Bll.Constantes.Constantes.OP_LJA_EDITA_CLIENTE_DADOS_CADASTRAIS
                 , usuarioLogado.S_lista_operacoes_permitidas) ? true : false;
-            //vamos verificar se o cliente é novo
-
-            //somente para teste remover após concluir
-            //cliente.PermiteEdicao = false;
-            //afazer: alterar essa session para utilizar no usuarioLogado
-            //vou passar o cadastro do cliente para a session
-            //HttpContext.Session.SetString("cpf_cnpj", cpf_cnpj);
 
             ClienteCadastroDto clienteCadastroDto = new ClienteCadastroDto();
-
             if (!novoCliente)
-            {
                 clienteCadastroDto = await clienteBll.BuscarCliente(UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj), usuarioLogado.Usuario_atual);
-
-                usuarioLogado.Cliente_Selecionado = clienteCadastroDto;
-
-                cliente.RefBancaria = clienteCadastroDto.RefBancaria;
-                cliente.RefComercial = clienteCadastroDto.RefComercial;
-                cliente.Cadastrando = false;
-            }
-            else
-            {
-                cliente.PermiteEdicao = true;
+            if (novoCliente)
+            { 
                 clienteCadastroDto.DadosCliente = new DadosClienteCadastroDto();
                 clienteCadastroDto.DadosCliente.Cnpj_Cpf = cpf_cnpj;
 
@@ -105,180 +78,78 @@ namespace Loja.UI.Controllers
                     clienteCadastroDto.DadosCliente.Tipo = "PF";
                 if (UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj).Length == 14)
                     clienteCadastroDto.DadosCliente.Tipo = "PJ";
-
-                cliente.Cadastrando = true;
             }
-
-            cliente.DadosCliente = clienteCadastroDto.DadosCliente;
-
-
-
-            //Lista para carregar no select de Indicadores
-            var lstInd = (await clienteBll.BuscarListaIndicadores(cliente.DadosCliente?.Indicador_Orcamentista,
+            var lstInd = (await clienteBll.BuscarListaIndicadores(clienteCadastroDto.DadosCliente?.Indicador_Orcamentista,
                 usuarioLogado.Usuario_atual, usuarioLogado.Loja_atual_id)).ToList();
-
-            List<SelectListItem> lst = new List<SelectListItem>();
-            lst.Add(new SelectListItem { Value = "0", Text = "Selecione" });
-            for (int i = 0; i < lstInd.Count; i++)
-            {
-                lst.Add(new SelectListItem { Value = lstInd[i], Text = lstInd[i] });
-            }
-            cliente.LstIndicadores = new SelectList(lst, "Value", "Text");
-
-            var lstSexo = new[]
-            {
-                new SelectListItem{Value = "", Text = "Selecione"},
-                new SelectListItem{Value = "M", Text = "Masculino"},
-                new SelectListItem{Value = "F", Text = "Feminino"}
-            };
-            cliente.LstSexo = new SelectList(lstSexo, "Value", "Text");
-
-            //lista para carregar no select de Produtor Rural            
-            var lstProdR = new[]
-            {
-                new SelectListItem{Value = "", Text = "Selecione"},
-                new SelectListItem{Value = Bll.Constantes.Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO, Text = "Não"},
-                new SelectListItem{Value = Bll.Constantes.Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM, Text = "Sim"}
-            };
-            cliente.LstProdutoRural = new SelectList(lstProdR, "Value", "Text");
-
-            //lista para carregar o Contribuinte ICMS
-            var lstContrICMS = new[]
-            {
-                new SelectListItem{Value = Bll.Constantes.Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL, Text="Selecione"},
-                new SelectListItem{Value = Bll.Constantes.Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO, Text = "Isento"},
-                new SelectListItem{Value = Bll.Constantes.Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO, Text = "Não"},
-                new SelectListItem{Value = Bll.Constantes.Constantes.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM, Text = "Sim"}
-            };
-            cliente.LstContribuinte = new SelectList(lstContrICMS, "Value", "Text");
-
             var lstJustificativas = (await clienteBll.ListarComboJustificaEndereco(usuarioLogado.Usuario_atual)).ToList();
-            List<SelectListItem> lstSelect = new List<SelectListItem>();
-            lstSelect.Add(new SelectListItem { Value = "", Text = "Selecione" });
-            foreach (var i in lstJustificativas)
-            {
-                lstSelect.Add(new SelectListItem { Value = i.EndEtg_cod_justificativa, Text = i.EndEtg_descricao_justificativa });
-            }
-
-            cliente.EndJustificativa = new SelectList(lstSelect, "Value", "Text");
-
             var lstBancos = (await clienteBll.ListarBancosCombo()).ToList();
-            List<SelectListItem> lstbancos = new List<SelectListItem>();
-            lstbancos.Add(new SelectListItem { Value = "", Text = "Selecione" });
-            for (int i = 0; i < lstBancos.Count; i++)
-            {
-                lstbancos.Add(new SelectListItem
-                {
-                    Value = lstBancos[i].Codigo,
-                    Text = lstBancos[i].Descricao
-                });
-            }
-            cliente.LstComboBanco = new SelectList(lstbancos, "Value", "Text");
-
-            //vamos buscar a lista de IBGE para confrontar na validação de tela
-
-            //vamos carregar os select's de cep
-            cliente.Cep = new Models.Cep.CepViewModel();
-            cliente.Cep.ClienteTipo = cliente.DadosCliente.Tipo;
-            //lista para carregar no select de Produtor Rural              
-            cliente.Cep.LstProdutoRural = new SelectList(lstProdR, "Value", "Text");
-            //lista para carregar o Contribuinte ICMS           
-            cliente.Cep.LstContribuinte = new SelectList(lstContrICMS, "Value", "Text");
-
-            return View("DadosCliente", cliente);
+            //receber tudo que ele precisa para ser criado corretamente.
+            ClienteCadastroViewModel cliente = new ClienteCadastroViewModel(permiteEditar, novoCliente, clienteCadastroDto,
+                lstInd, lstJustificativas, lstBancos);
+           
+            return View("ConfirmarCliente", cliente);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CadastrarCliente(bool permiteEditar,
+        public async Task<IActionResult> CadastrarCliente(bool permiteEditar, PedidoDto pedidoDto,
             Loja.Bll.Dto.ClienteDto.DadosClienteCadastroDto dados,
-            List<Loja.Bll.Dto.ClienteDto.RefComercialDtoCliente> lstRefCom,
+            List<Loja.Bll.Dto.ClienteDto.RefComercialDtoCliente> lstRefComercial,
             List<Loja.Bll.Dto.ClienteDto.RefBancariaDtoCliente> lstRefBancaria,
-            Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro EndEntrega2,
+            Loja.Bll.Dto.ClienteDto.EnderecoEntregaDtoClienteCadastro EndEntrega,
             bool cadastrando)
         {
             /*afazer: NECESSÁRIO FAZER O TRATAMENTO PARA ERROS 
              * CRIAR A TELA DE ERRO
              * Edu sugeriu usar o erro já existente no MVC
              */
-
-            /*Passo
-             * Aqui poderá receber todos os campos, pois pode ser que os campos sejam editaveis
-             * verificar se permite edição para não ter que verificar se os dados do cliente foram alterados
-             * ou fazer um update independente do que veio
-             * fazer a validação dos campos para poder criar um novo pedido
-             * montar ModelView para listagem de produtos, forma de pagamento
-             * 
-             */
             var usuarioLogado = new UsuarioLogado(loggerUsuarioLogado, User, HttpContext.Session, clienteBll, usuarioAcessoBll, configuracao);
+
+            ClienteCadastroDto clienteCadastroDto = new ClienteCadastroDto();
+            clienteCadastroDto.DadosCliente = dados;
+            clienteCadastroDto.RefBancaria = lstRefBancaria;
+            clienteCadastroDto.RefComercial = lstRefComercial;
 
             if (cadastrando)
             {
-                Bll.Dto.ClienteDto.ClienteCadastroDto novo_clienteCadastro = new Bll.Dto.ClienteDto.ClienteCadastroDto();
-
-                novo_clienteCadastro.DadosCliente = dados;
-                novo_clienteCadastro.RefBancaria = lstRefBancaria;
-                novo_clienteCadastro.RefComercial = lstRefCom;
                 //vamos cadastrar o cliente
-                List<string> lstRetorno = (await clienteBll.Novo_CadastrarCliente(novo_clienteCadastro, usuarioLogado.Usuario_atual)).ToList();
-                                
+                List<string> lstRetorno = (await clienteBll.CadastrarCliente(clienteCadastroDto, usuarioLogado.Usuario_atual)).ToList();
+
                 if (lstRetorno.Count > 1)
                 {
-                    //deu erro vamos redirecionar para o Home/Erro
+                    //afazer: tratar erro para retornar para usuário
+                    //deu erro vamos redirecionar 
                     //return RedirectToAction("Error", "Home", new { lstErros = lstRetorno });
                 }
-                else if (lstRetorno.Count == 1)
-                {
-                    //vamos verificar se é o id do cliente cadastrado
-                    if (lstRetorno[0].Length != 12)
-                    {
-                        //é o id
-                        string idClienteNovo = lstRetorno[0];
-                        //depois de cadastrar, vamos redirecionar o usuário para a tela de cadastro do cliente cadastrado
-                        //para caso queira realizar um novo pedido
-                        return RedirectToAction("BuscarCliente", new { cpf_cnpj = idClienteNovo, novoCliente = false });
-                    }
-                }
 
-
+                return RedirectToAction("BuscarCliente", new { cpf_cnpj = clienteCadastroDto.DadosCliente.Cnpj_Cpf, novoCliente = false });
             }
 
-            //afazer: alterar essa session para utilizar no usuarioLogado
-            //string id_cliente = HttpContext.Session.GetString("cliente_selecionado");
-            dados.Id = usuarioLogado.Cliente_Selecionado.DadosCliente.Id;
-
-            Bll.Dto.ClienteDto.ClienteCadastroDto clienteCadastro = new Bll.Dto.ClienteDto.ClienteCadastroDto();
-
-            clienteCadastro.DadosCliente = dados;
-            clienteCadastro.RefBancaria = lstRefBancaria;
-            clienteCadastro.RefComercial = lstRefCom;
-
-            //validar os dados do cliente 
-            //alterar para fazer o cadastro pelo Global/Cliente
-            var retorno = await clienteBll.CadastrarCliente(clienteCadastro, usuarioLogado.Usuario_atual,
-                usuarioLogado.Loja_atual_id);
-
-            //Não iremos mais armazenar em session. Iremos enviar o dto de pedido e retornar o 
-            //dto do pedido em cada página.
-            //Armazenando objeto na Session
-            Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto dtoPedido = new Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto();
-            dtoPedido.DadosCliente = new DadosClienteCadastroDto();
-            dtoPedido.DadosCliente = dados;
-
-            if (EndEntrega2 != null)
+            if (!cadastrando)
             {
-                if (EndEntrega2.EndEtg_cep != null)
+                List<string> lstErros = (await clienteBll.AtualizarClienteParcial(usuarioLogado.Usuario_atual, clienteCadastroDto)).ToList();
+                if (lstErros.Count > 0)
+                {
+                    //return RedirectToAction("Error", "Home", new { lstErros = lstRetorno });
+                }
+            }
+
+            PedidoDto pedidoDto2 = new Bll.Dto.PedidoDto.DetalhesPedido.PedidoDto();
+            pedidoDto.DadosCliente = new DadosClienteCadastroDto();
+            pedidoDto.DadosCliente = dados;
+
+            if (EndEntrega != null)
+            {
+                if (EndEntrega.EndEtg_cep != null)
                 {
                     //vamos validar o endereço de entrega no Global/Prepedido
-                    dtoPedido.EnderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
+                    pedidoDto.EnderecoEntrega = new EnderecoEntregaDtoClienteCadastro();
                     //vamos normalizar o cep enviado antes de armazenar na session
-                    EndEntrega2.EndEtg_cep = EndEntrega2.EndEtg_cep.Replace("-", "");
+                    EndEntrega.EndEtg_cep = EndEntrega.EndEtg_cep.Replace("-", "");
                 }
-                dtoPedido.EnderecoEntrega = EndEntrega2;
+                pedidoDto.EnderecoEntrega = EndEntrega;
             }
 
-            usuarioLogado.PedidoDto = dtoPedido;
-
-            return RedirectToAction("Indicador_SelecaoCD", "Pedido");
+            return RedirectToAction("Indicador_SelecaoCD", "Pedido", new { pedidoDto = pedidoDto });
         }
     }
 }

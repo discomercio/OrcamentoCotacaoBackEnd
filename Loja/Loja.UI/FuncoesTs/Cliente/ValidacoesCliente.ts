@@ -67,8 +67,8 @@ export class ValidacoesCliente {
 
     private validarGeral(dadosClienteCadastroDto: DadosClienteCadastroDto, ehObrigatorio: boolean): string {
         let ret: string = "";
-
-        if (!dadosClienteCadastroDto.Nome || dadosClienteCadastroDto.Nome.trim() == "") {
+        
+        if (!dadosClienteCadastroDto.Nome) {
             ret += 'Preencha o Nome/Razão Social!<br>';
         }
         if (!!dadosClienteCadastroDto.Cnpj_Cpf || (dadosClienteCadastroDto.Cnpj_Cpf.trim() !== "")) {
@@ -177,11 +177,11 @@ export class ValidacoesCliente {
         if (dadosClienteCadastroDto.Cep.toString().trim() === "") {
             ret += 'Informe o CEP!<br>';
         }
-
+        
         if (!new FormatarEndereco().cep_ok(dadosClienteCadastroDto.Cep.toString())) {
             ret += 'CEP inválido!<br>';
         }
-
+        
         //vamos verificar se tem lista de cidades do IBGE, se tiver é pq a cidade do cep não existe no IBGE
         if (!!lstCidadesIBGE && lstCidadesIBGE.length > 0) {
             //a cidade do cep não consta no cadastro do IBGE e deve ter sido alterada, então vamos comparar
@@ -441,7 +441,7 @@ export class ValidacoesCliente {
 
 
         if (ret.length > 0) {
-            debugger;
+           
             let msgSplit: string[] = new Array<string>();
             msgSplit = ret.split("<br>");
             ret = "";

@@ -69,6 +69,16 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
 
             if (UltimoAcesso.LstErros.Any())
             {
+                /*
+                 * sem este sleep, dá:
+                 * Message: 
+                      System.InvalidOperationException : The connection does not support MultipleActiveResultSets.
+                como é somente na rotina de teste, tudo bem.
+                E em produção: bom, em produção não vai acontecer porque estamos forçando erros para testar a rotina.
+                Se acontecer, existe um erro em quem chama, e vai dar uma exceção e a transção não vai ter o commit.
+                O pior caso é termos uma exceção no log, que na verdade indica um erro no código.
+                  */
+                System.Threading.Thread.Sleep(100);
                 db.transacao.Rollback();
             }
             else

@@ -1,0 +1,58 @@
+﻿@model Loja.UI.Models.Cliente.ClienteCadastroViewModel
+<!--#region Permite Edição-->
+@if (Model.PermiteEdicao)
+{
+
+    <div class="row" style="align-items:flex-end">
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
+            <label class="col-form-label">FONE RESIDENCIAL</label>
+            <input name="DadosCliente.TelefoneResidencial" id="telRes" type="tel"
+                   class="form-control"
+                   onkeyup="IncluirMascara($(this));"
+                   onblur="VerificarTelefonePF();"
+                   value="@Model.DadosCliente?.TelefoneResidencial" />
+            <input name="DadosCliente.DddResidencial" type="hidden" id="dddRes"
+                   value="@Model.DadosCliente?.DddResidencial" />
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
+            <label class="col-form-label">CELULAR</label>
+            <input name="DadosCliente.Celular" id="celular" type="tel"
+                   class="form-control"
+                   onkeyup="IncluirMascara($(this));"
+                   onblur="VerificarTelefonePF();"
+                   value="@Model.DadosCliente?.Celular" />
+            <input name="DadosCliente.DddCelular" type="hidden" id="dddCel"
+                   value="@Model.DadosCliente?.DddCelular" />
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
+            <label class="col-form-label">FONE COMERCIAL</label>
+            <input name="DadosCliente.TelComercial" id="telCom" type="tel"
+                   class="form-control"
+                   onkeyup="IncluirMascara();"
+                   onblur="VerificarTelefonePF();"
+                   value="@Model.DadosCliente?.TelComercial" />
+            <input name="DadosCliente.DddComercial" type="hidden" id="dddCom"
+                   value="@Model.DadosCliente?.DddComercial" />
+        </div>
+        <div class="col-xl-3 col-lg-3 col-md-3 col-sm-6">
+            <label class="col-form-label">RAMAL</label>
+            <input name="DadosCliente.Ramal" id="ramal" type="tel"
+                   class="form-control"
+                   value="@Model.DadosCliente?.Ramal" />
+        </div>
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+
+            <label class="col-form-label">OBSERVAÇÕES</label>
+            <input name="DadosCliente.Observacao_Filiacao" id="observacoes" type="text"
+                   class="form-control"
+                   value="@Model.DadosCliente?.Observacao_Filiacao" />
+        </div>
+    </div>
+}
+<!--#endregion-->
+<!--#region Não Permite Edição-->
+@if (!Model.PermiteEdicao)
+{
+    //implementar
+}
+<!--#endregion-->

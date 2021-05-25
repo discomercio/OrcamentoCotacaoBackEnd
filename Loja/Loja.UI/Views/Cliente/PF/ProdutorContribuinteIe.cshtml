@@ -1,0 +1,37 @@
+﻿@model Loja.UI.Models.Cliente.ClienteCadastroViewModel
+<!--#region Permite Edição-->
+@if (Model.PermiteEdicao)
+{
+    <div class="row" style="align-items:flex-end;">
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+            <label class="col-form-label" for="produtor">PRODUTOR RURAL</label>
+            <select asp-for="DadosCliente.ProdutorRural" asp-items="Model.LstProdutoRural" name="ProdutorRural"
+                    id="produtor"
+                    class="custom-select"
+                    onchange="MostrarDivs()"
+                    onblur="VerificaCampo($(this))">
+            </select>
+        </div>
+        <div id="div_contribuinte" class="col-xl-4 col-lg-4 col-md-4 col-sm-12" style="visibility:hidden">
+            <label class="col-form-label" for="contribuinte">CONTRIBUINTE ICMS</label>
+            <select asp-for="DadosCliente.Contribuinte_Icms_Status" asp-items="Model.LstContribuinte" 
+                    class="custom-select"
+                    id="contribuinte"
+                    onblur="VerificaCampo($(this))">
+            </select>
+        </div>
+        <div id="div_ie" class="col-xl-4 col-lg-4 col-md-4 col-sm-12" style="visibility:hidden">
+            <label class="col-form-label">IE</label>
+            <input name="DadosCliente.Ie" id="ie" type="text"
+                   class="form-control"
+                   value="@Model.DadosCliente?.Ie" />
+        </div>
+    </div>
+}
+<!--#endregion-->
+<!--#region Permite Edição-->
+@if (!Model.PermiteEdicao)
+{
+
+}
+<!--#endregion-->

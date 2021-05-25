@@ -40,6 +40,7 @@ namespace Loja.UI.Controllers
         [HttpGet]
         public IActionResult AcessoNegado(string ReturnUrl)
         {
+            //Tem algo errado aqui, o acesso foi negado e esta aprecendo a tela de login dentro da home para refazer o login
             LoginViewModel loginViewModel = new LoginViewModel
             {
                 ReturnUrl = ReturnUrl,
