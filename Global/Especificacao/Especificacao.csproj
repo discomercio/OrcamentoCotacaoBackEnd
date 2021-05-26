@@ -69,6 +69,7 @@
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\ApiUnis\PrepedidoUnis\BuscarStatusPrepedido\ListarStatusPrepedidoListaDependencias.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\Loja\Loja_Bll\Bll\PedidoBll\PedidoBll\CadastrarPedido\CadastrarPedidoListaDependencias.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Ambiente\PrepedidoApi\PrepedidoBusiness\Bll\PrepedidoApiBll\CadastrarPrepedido\CadastrarPrepedidoListaDependencias.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Cliente\PedidosSimultaneos.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Comuns\Api\Autenticacao\Autenticacao - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\CaminhoFelizApi.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\CaminhoFelizAsp.feature.cs" />
@@ -158,6 +159,9 @@
     </Compile>
     <Compile Update="Ambiente\PrepedidoApi\PrepedidoBusiness\Bll\PrepedidoApiBll\CadastrarPrepedido\CadastrarPrepedidoPrepedidoApiListaDependencias.feature.cs">
       <DependentUpon>CadastrarPrepedidoPrepedidoApiListaDependencias.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Especificacao\Cliente\ClienteCadastrosSimultaneos.feature.cs">
+      <DependentUpon>ClienteCadastrosSimultaneos.feature</DependentUpon>
     </Compile>
     <Compile Update="Especificacao\Comuns\Api\Autenticacao\AutenticacaoListaDependencias.feature.cs">
       <DependentUpon>AutenticacaoListaDependencias.feature</DependentUpon>
@@ -287,6 +291,10 @@
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Ambiente\PrepedidoApi\PrepedidoBusiness\Bll\PrepedidoApiBll\CadastrarPrepedido\CadastrarPrepedidoPrepedidoApiListaDependencias.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Cliente\ClienteCadastrosSimultaneos.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
