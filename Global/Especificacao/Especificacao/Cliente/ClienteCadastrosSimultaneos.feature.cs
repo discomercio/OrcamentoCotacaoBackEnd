@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Especificacao.Pedido
+namespace Especificacao.Especificacao.Cliente
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,27 +19,23 @@ namespace Especificacao.Especificacao.Pedido
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.PedidosSimultaneos")]
-    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.ESTOQUE_Produto_Saida_V2_Rotin" +
-        "aSteps")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Cliente.ClienteCadastrosSimultaneos")]
     [Xunit.TraitAttribute("Category", "GerenciamentoBanco")]
-    public partial class PedidosSimultaneosFeature : object, Xunit.IClassFixture<PedidosSimultaneosFeature.FixtureData>, System.IDisposable
+    public partial class ClienteCadastrosSimultaneosFeature : object, Xunit.IClassFixture<ClienteCadastrosSimultaneosFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "Especificacao.Pedido.PedidosSimultaneos",
-                "Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.ESTOQUE_Produto_Saida_V2_Rotin" +
-                    "aSteps",
+                "Especificacao.Cliente.ClienteCadastrosSimultaneos",
                 "GerenciamentoBanco"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "PedidosSimultaneos.feature"
+#line 1 "ClienteCadastrosSimultaneos.feature"
 #line hidden
         
-        public PedidosSimultaneosFeature(PedidosSimultaneosFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public ClienteCadastrosSimultaneosFeature(ClienteCadastrosSimultaneosFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -48,10 +44,8 @@ namespace Especificacao.Especificacao.Pedido
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PedidosSimultaneos", null, ProgrammingLanguage.CSharp, new string[] {
-                        "Especificacao.Pedido.PedidosSimultaneos",
-                        "Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.ESTOQUE_Produto_Saida_V2_Rotin" +
-                            "aSteps",
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ClienteCadastrosSimultaneos", null, ProgrammingLanguage.CSharp, new string[] {
+                        "Especificacao.Cliente.ClienteCadastrosSimultaneos",
                         "GerenciamentoBanco"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -92,17 +86,15 @@ namespace Especificacao.Especificacao.Pedido
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="PedidosSimultaneos")]
-        [Xunit.TraitAttribute("FeatureTitle", "PedidosSimultaneos")]
-        [Xunit.TraitAttribute("Description", "PedidosSimultaneos")]
-        [Xunit.TraitAttribute("Category", "ignore")]
-        public virtual void PedidosSimultaneos()
+        [Xunit.SkippableFactAttribute(DisplayName="ClienteCadastrosSimultaneos")]
+        [Xunit.TraitAttribute("FeatureTitle", "ClienteCadastrosSimultaneos")]
+        [Xunit.TraitAttribute("Description", "ClienteCadastrosSimultaneos")]
+        public virtual void ClienteCadastrosSimultaneos()
         {
-            string[] tagsOfScenario = new string[] {
-                    "ignore"};
+            string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PedidosSimultaneos", null, tagsOfScenario, argumentsOfScenario);
-#line 11
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ClienteCadastrosSimultaneos", null, tagsOfScenario, argumentsOfScenario);
+#line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -122,36 +114,11 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 12
+#line 9
  testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 13
- testRunner.Given("Usar produto \"um\" como fabricante = \"003\", produto = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 14
- testRunner.And("Usar produto \"dois\" como fabricante = \"003\", produto = \"003221\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 15
- testRunner.Given("Definir saldo de estoque = \"300\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 16
- testRunner.Given("Definir saldo de estoque = \"300\" para produto \"dois\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 18
- testRunner.Given("Testar pedidos simultâneos com multiplicadorPorPedido = \"2\" (magento e loja), ped" +
-                        "idosPorThread = \"5\" e numeroThreads = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 22
- testRunner.Then("Movimento de estoque = \"204\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 23
- testRunner.Then("Saldo de estoque = \"96\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 25
- testRunner.Then("Movimento de estoque = \"204\" para produto \"dois\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 26
- testRunner.Then("Saldo de estoque = \"96\" para produto \"dois\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 10
+ testRunner.Given("Testar cadastros simultâneos com pedidosPorThread = \"5\" e numeroThreads = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -164,12 +131,12 @@ this.ScenarioInitialize(scenarioInfo);
             
             public FixtureData()
             {
-                PedidosSimultaneosFeature.FeatureSetup();
+                ClienteCadastrosSimultaneosFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                PedidosSimultaneosFeature.FeatureTearDown();
+                ClienteCadastrosSimultaneosFeature.FeatureTearDown();
             }
         }
     }

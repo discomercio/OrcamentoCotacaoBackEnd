@@ -92,10 +92,7 @@ namespace Especificacao.Especificacao.Pedido
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TesteExterno-UsoConcomitanteSistemas", @"Colocar a API do magento no servidor
-Fazer um batch para gerar, digamos, 20 pedidos pelo magento
-	Para gerar pedidos, usar o programa em \arclube\Global\Testes\TestesApiMagento\TestesApiMagentoCadastrarPedido
-Enquanto essa carga estiver rodando, criar um pedido pelo verdinho", tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TesteExterno-UsoConcomitanteSistemas", null, tagsOfScenario, argumentsOfScenario);
 #line 8
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -116,7 +113,7 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 25
+#line 30
  testRunner.Given("Fazer este teste", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             }

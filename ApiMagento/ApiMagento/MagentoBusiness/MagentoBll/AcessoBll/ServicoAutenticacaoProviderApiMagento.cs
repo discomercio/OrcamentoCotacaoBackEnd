@@ -193,6 +193,7 @@ namespace MagentoBusiness.MagentoBll.AcessoBll
             logoutResultadoUnisDto.ListaErros.RemoveAll(r => true);
 
             //atualizar dados
+            //não fazemos bloqueio; se tivermos alterações simultâneas, simplesmente a última grava os seus dados
             using var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing();
             var tusuario = await (from u in dbgravacao.Tusuarios
                                   where u.Usuario.ToUpper() == usuario.ToUpper()

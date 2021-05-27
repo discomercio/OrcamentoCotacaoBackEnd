@@ -401,6 +401,7 @@ namespace Cliente
 
                     if (!string.IsNullOrEmpty(log))
                     {
+                        //não fazemos bloqueio; se tivermos alterações simultâneas, simplesmente a última grava os seus dados
                         using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
                         {
                             cli.Dt_Ult_Atualizacao = DateTime.Now;
@@ -618,9 +619,11 @@ namespace Cliente
             if (lstErros.Count != 0)
                 return lstErros;
 
-            //todo: fazer o lock da inserção de usuário
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
             {
+                //bloqueio por NSU
+                await dbgravacao.BloquearNsu(Constantes.NSU_CADASTRO_CLIENTES);
+
                 var verifica = await (from c in dbgravacao.Tclientes
                                       where c.Cnpj_Cpf == clienteCadastroDados.DadosCliente.Cnpj_Cpf
                                       select c.Id).FirstOrDefaultAsync();

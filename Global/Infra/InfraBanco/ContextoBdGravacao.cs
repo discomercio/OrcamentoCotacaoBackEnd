@@ -37,6 +37,29 @@ namespace InfraBanco
             transacao = RelationalDatabaseFacadeExtensions.BeginTransaction(contexto.Database, System.Data.IsolationLevel.ReadCommitted);
         }
 
+        public async Task BloquearNsu(string id_nsu)
+        {
+            if (string.IsNullOrEmpty(id_nsu))
+                throw new ArgumentException("Não foi especificado o NSU a ser gerado!");
+
+            var queryControle = from c in this.Tcontroles
+                                where c.Id_Nsu == id_nsu
+                                select c;
+
+            var controle = await queryControle.FirstOrDefaultAsync();
+            if (controle == null)
+                throw new ArgumentException($"Não existe registro na tabela de controle para poder gerar este NSU! id_nsu:{id_nsu}");
+
+            if (controle.Dt_Ult_Atualizacao == null)
+                controle.Dt_Ult_Atualizacao = DateTime.Now;
+            if (controle.Dt_Ult_Atualizacao.Ticks == 0)
+                controle.Dt_Ult_Atualizacao = DateTime.Now;
+            //voltamos um pouco o relógio
+            controle.Dt_Ult_Atualizacao = controle.Dt_Ult_Atualizacao.AddMinutes(-1);
+            //não pode usar Update(controle) porque isso faz com que o Entity altere todos os campos
+            //somente queremos alterar o campo Dt_Ult_Atualizacao
+            await this.SaveChangesAsync();
+        }
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
