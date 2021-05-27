@@ -52,9 +52,12 @@ namespace InfraBanco
 
             if (controle.Dt_Ult_Atualizacao == null)
                 controle.Dt_Ult_Atualizacao = DateTime.Now;
+            if (controle.Dt_Ult_Atualizacao.Ticks == 0)
+                controle.Dt_Ult_Atualizacao = DateTime.Now;
             //voltamos um pouco o relógio
             controle.Dt_Ult_Atualizacao = controle.Dt_Ult_Atualizacao.AddMinutes(-1);
-            this.Update(controle);
+            //não pode usar Update(controle) porque isso faz com que o Entity altere todos os campos
+            //somente queremos alterar o campo Dt_Ult_Atualizacao
             await this.SaveChangesAsync();
         }
 
