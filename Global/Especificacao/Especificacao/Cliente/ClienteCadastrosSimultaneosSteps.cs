@@ -40,6 +40,7 @@ namespace Especificacao.Especificacao.Cliente
 
             Assert.Equal(1, totalCadastrado);
             Assert.Equal(pedidosPorThread * numeroThreads - 1, totalComErro);
+            Assert.Equal(0, ocorreuExecao);
         }
 
         private static void PrepararBancoDados()
@@ -59,6 +60,7 @@ namespace Especificacao.Especificacao.Cliente
 
         private int totalCadastrado = 0;
         private int totalComErro = 0;
+        private int ocorreuExecao = 0;
         private object _lockObjectCriarThreads = new object();
         private void CriarThreads(int pedidosPorThread, int numeroThreads, List<Thread> threads)
         {
@@ -92,7 +94,9 @@ namespace Especificacao.Especificacao.Cliente
                         catch (Exception e)
                         {
                             RegistrarExcecao(e);
-                            throw;
+                            lock (_lockObjectCriarThreads)
+                                this.ocorreuExecao++;
+                            //não damos o throw;
                         }
                     }
                 }));
@@ -103,7 +107,6 @@ namespace Especificacao.Especificacao.Cliente
         {
             var msg = $"EXCECAO: ERRO: na criacao do cliente: {e.Message} {e.StackTrace} {e.ToString()}";
             Testes.Utils.LogTestes.LogTestes.ErroNosTestes(msg);
-            Assert.Equal("", msg);
         }
 
         private static void IniciarTHreads(List<Thread> threads)
