@@ -17,6 +17,8 @@ namespace Pedido.Criacao.Passo60.Gravacao
             var Execucao = Criacao.Execucao;
             var Gravacao = Criacao.Gravacao;
             using var contextoBdGravacao = Criacao.ContextoProvider.GetContextoGravacaoParaUsing();
+            //bloqueio por NSU
+            await contextoBdGravacao.BloquearNsu(InfraBanco.Constantes.Constantes.NSU_PEDIDO);
 
             //veja Especificacao\Pedido\Passo60\Gravacao\FluxoGravacaoPedido.feature
 

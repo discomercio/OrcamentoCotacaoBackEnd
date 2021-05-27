@@ -187,6 +187,7 @@ namespace Prepedido
 
         public async Task<bool> RemoverPrePedido(string numeroPrePedido, string apelido)
         {
+            //não fazemos bloqueio; se tivermos alterações simultâneas, simplesmente a última grava os seus dados
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
             {
                 var prepedido = from c in dbgravacao.Torcamentos
@@ -837,6 +838,9 @@ namespace Prepedido
             {
                 using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
                 {
+                    //bloqueio por NSU
+                    await dbgravacao.BloquearNsu(InfraBanco.Constantes.Constantes.NSU_ORCAMENTO);
+
                     //verifica se o prepedio já foi gravado
                     if (verificarPrepedidoRepetido)
                     {
@@ -925,6 +929,7 @@ namespace Prepedido
             await dbgravacao.SaveChangesAsync();
         }
 
+        //todo: apagar esta rotina
         public async Task DeletarOrcamentoExisteComTransacao(PrePedidoDados prePedido, string apelido)
         {
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())

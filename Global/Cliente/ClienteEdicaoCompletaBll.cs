@@ -47,6 +47,7 @@ namespace Cliente
             {
                 if (lstErros.Count == 0)
                 {
+                    //não fazemos bloqueio; se tivermos alterações simultâneas, simplesmente a última grava os seus dados
                     using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
                     {
                         Tcliente cli = await (from c in dbgravacao.Tclientes
