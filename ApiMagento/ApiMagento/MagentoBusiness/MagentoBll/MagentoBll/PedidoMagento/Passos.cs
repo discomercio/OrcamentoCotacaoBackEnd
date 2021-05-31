@@ -83,7 +83,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento
             */
             {
                 decimal grandTotalCalculado = pedidoMagento.TotaisPedido.Subtotal
-                    + (pedidoMagento.TotaisPedido.FreteBruto ?? 0M)
+                    + pedidoMagento.TotaisPedido.FreteBruto
                     - pedidoMagento.TotaisPedido.DiscountAmount;
                 if (!IgualComArredondamento(pedidoMagento.TotaisPedido.GrandTotal, grandTotalCalculado, limiteArredondamentoTotais))
                 {
@@ -98,7 +98,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento
             {
                 //P39_Servicos: para cada linha, consistir Quantidade > 0, RowTotal = Subtotal - DiscountAmount dentro do arredondamento
                 if (linha.Quantidade <= 0)
-                    listaErros.Add($"O serviço {linha.Sku} está com quantidade inválida: {linha.Quantidade}");
+                    listaErros.Add($"O serviço {linha.Sku} está com Qtde menor ou igual a zero: {linha.Quantidade}");
                 if (!IgualComArredondamento(linha.RowTotal, linha.Subtotal - linha.DiscountAmount, limiteArredondamentoPorItem))
                     listaErros.Add($"O serviço {linha.Sku} está com valor inválido, RowTotal != Subtotal - DiscountAmount ({linha.RowTotal} != {linha.Subtotal} - {linha.DiscountAmount})");
             }
@@ -111,7 +111,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento
             {
                 //P39_Servicos: para cada linha, consistir Quantidade > 0, RowTotal = Subtotal - DiscountAmount dentro do arredondamento
                 if (linha.Quantidade <= 0)
-                    listaErros.Add($"O produto {linha.Sku} está com quantidade inválida: {linha.Quantidade}");
+                    listaErros.Add($"O produto {linha.Sku} está com Qtde menor ou igual a zero: {linha.Quantidade}");
                 if (!IgualComArredondamento(linha.RowTotal, linha.Subtotal - linha.DiscountAmount, limiteArredondamentoPorItem))
                     listaErros.Add($"O produto {linha.Sku} está com valor inválido, RowTotal != Subtotal - DiscountAmount ({linha.RowTotal} != {linha.Subtotal} - {linha.DiscountAmount})");
             }

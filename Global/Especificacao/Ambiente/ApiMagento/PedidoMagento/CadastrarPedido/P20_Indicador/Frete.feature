@@ -1,4 +1,5 @@
 ﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
+@GerenciamentoBanco
 Feature: Frete
 	Caso o campo Frete seja diferente de zero ou vazio, significa que teremos indicador para ser cadastrado no pedido.
 	Se houver frete, deve-se automaticamente informar que o pedido possui RA e selecionar o indicador 'FRETE'
@@ -43,6 +44,15 @@ Scenario: Frete - sem indicador
 	And Tabela "t_PEDIDO" registro criado, verificar campo "indicador" = ""
 	And Tabela "t_PEDIDO" registro criado, verificar campo "permite_RA_status" = "0"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "Opcao_Possui_RA" = "-"
+
+Scenario: Erro se o orçamentista não puder usar o frete
+	Given Reiniciar banco ao terminar cenário
+	Given Tabela "t_ORCAMENTISTA_E_INDICADOR" registro apelido = "frete", alterar campo "permite_RA_status" = "0"
+	When Informo "InfCriacaoPedido.Pedido_bs_x_ac" = "123456789"
+	When Informo "Frete" = "10"
+	And Recalcular totais do pedido
+	And Deixar forma de pagamento consistente
+	Then Erro "Indicador não tem permissão para usar RA"
 
 Scenario: Frete - verifica se salvou em t_PEDIDO.magento_shipping_amount
 	#O valor do frete no momento não estamos tratando no sistema, mas acho que podemos salvar a informação no campo t_PEDIDO.vl_frete

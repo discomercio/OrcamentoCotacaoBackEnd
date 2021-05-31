@@ -80,7 +80,6 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         [Required]
         public MagentoPedidoStatusDto MagentoPedidoStatus { get; set; }
 
-        public decimal? afazer_remover_Frete { get; set; }
 #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         public static Pedido.Dados.Criacao.PedidoCriacaoDados? PedidoDadosCriacaoDePedidoMagentoDto(Cliente.Dados.DadosClienteCadastroDados dadosClienteMagento,
@@ -116,12 +115,12 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                 perc_RT: 0,
 
                 //Armazena o valor total do pedido
-                vl_total: pedidoMagento.TotaisPedido.Subtotal,
+                vl_total: pedidoMagento.TotaisPedido.GrandTotal - pedidoMagento.TotaisPedido.FreteBruto + pedidoMagento.TotaisPedido.DescontoFrete,
 
                 //Armazena o valor total de pedido com RA
                 vl_total_NF: pedidoMagento.TotaisPedido.GrandTotal,
 
-                magento_shipping_amount: pedidoMagento.TotaisPedido.FreteBruto ?? 0M
+                magento_shipping_amount: pedidoMagento.TotaisPedido.FreteBruto
                 );
 
             Pedido.Dados.Criacao.PedidoCriacaoDados pedidoCriacao = new Pedido.Dados.Criacao.PedidoCriacaoDados(
@@ -136,11 +135,11 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
                     //Flag para saber se tem indicador selecionado 
                     //campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
-                    comIndicador: ((pedidoMagento.TotaisPedido.FreteBruto ?? 0) != 0) ? true : false,
+                    comIndicador: (pedidoMagento.TotaisPedido.FreteBruto != 0) ? true : false,
 
                     //Armazena o nome do indicador selecionado
                     //campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
-                    indicador: ((pedidoMagento.TotaisPedido.FreteBruto ?? 0) != 0) ? configuracaoApiMagento.DadosIndicador.Indicador : "",
+                    indicador: (pedidoMagento.TotaisPedido.FreteBruto != 0) ? configuracaoApiMagento.DadosIndicador.Indicador : "",
                     orcamentista: "",
 
                     //Armazena o id do centro de distribuição selecionado manualmente

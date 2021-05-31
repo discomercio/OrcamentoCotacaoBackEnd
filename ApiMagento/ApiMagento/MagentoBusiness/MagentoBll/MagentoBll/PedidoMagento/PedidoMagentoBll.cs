@@ -44,34 +44,21 @@ namespace MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento
             this.configuracaoApiMagento = configuracaoApiMagento;
             this.pedidoCriacao = pedidoCriacao;
             this.pedidoMagentoClienteBll = pedidoMagentoClienteBll;
-            this.p40produtos = new P40Produtos(prepedidoBll: prepedidoBll, validacoesPrepedidoBll: validacoesPrepedidoBll, produtoGeralBll: produtoGeralBll);
+            this.p40produtos = new P40Produtos(prepedidoBll: prepedidoBll, validacoesPrepedidoBll: validacoesPrepedidoBll,
+                produtoGeralBll: produtoGeralBll, contextoProvider: contextoProvider);
         }
 
-        private static readonly object _lockObjectCadastrarPedidoMagento = new object();
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<PedidoMagentoResultadoDto> CadastrarPedidoMagento(PedidoMagentoDto pedidoMagento, string usuario)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-        {
-            /*
-            como o magento cadastra o cliente se não existir, nesse processo dá sim problema com multiplas threads:
-            ele verifica que o cliente não está cadastrado, começa a cadastrar o cliente,
-            nisso outra thread verifica que não está cadastrado, começa a cadastrar e dá erro porque a primeira thread 
-            terminou de cadastrar.
-
-            Para evitar esse problema, que seria muito raro de qq forma, colocamos esse lock.
-            */
-            lock (_lockObjectCadastrarPedidoMagento)
-            {
-                return CadastrarPedidoMagentoProtegido(pedidoMagento, usuario).Result;
-            }
-        }
-        private async Task<PedidoMagentoResultadoDto> CadastrarPedidoMagentoProtegido(PedidoMagentoDto pedidoMagento, string usuario)
         {
             PedidoMagentoResultadoDto resultado = new PedidoMagentoResultadoDto();
 
+            #region setup de variáveis
             //normalizacao de campos
             pedidoMagento.Cnpj_Cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(pedidoMagento.Cnpj_Cpf);
+            var indicador_vendedor_loja = await Calcular_indicador_vendedor_loja(pedidoMagento, usuario, resultado.ListaErros);
+            #endregion
 
+            #region nfe_Texto_Constar
             //truncar EndEtg_endereco_complemento
             string? nfe_Texto_Constar = null;
             if (pedidoMagento.EnderecoEntrega?.EndEtg_endereco_complemento?.Length > Constantes.MAX_TAMANHO_CAMPO_ENDERECO_COMPLEMENTO)
@@ -86,8 +73,8 @@ namespace MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento
                 nfe_Texto_Constar = nfe_Texto_Constar + "Ponto de referência: " + pedidoMagento.EnderecoEntrega?.PontoReferencia;
             }
 
+            #endregion
 
-            var indicador_vendedor_loja = await Calcular_indicador_vendedor_loja(pedidoMagento, usuario, resultado.ListaErros);
 
             Tcliente? cliente = await P10_Cliente(pedidoMagento, usuario, resultado, indicador_vendedor_loja);
             if (cliente == null)
@@ -103,20 +90,32 @@ namespace MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento
             if (resultado.ListaErros.Count > 0)
                 return resultado;
 
-            /* ====================================
-             * Inclui a verificação de loja aqui pois caso a loja não exista a rotina "CriarPedidoCriacaoDados" abaixo irá             
-             * gerar erro ao complementar os produtos "ConverterProdutosMagento"
-            */
+            #region setup para calcular produtos
+            //fazemos a verificação de loja aqui pois caso a loja não exista a busca pelos produtos não encontrará nada
             var db = contextoProvider.GetContextoLeitura();
             var lojaExiste = await db.Tlojas.Where(c => c.Loja == indicador_vendedor_loja.loja).AnyAsync();
             if (!lojaExiste)
                 resultado.ListaErros.Add($"Loja não existe, loja = {indicador_vendedor_loja.loja}!");
 
+            //converte a forma de pagamento
+            Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacao =
+                FormaPagtoCriacaoMagentoDto.FormaPagtoCriacaoDados_De_FormaPagtoCriacaoMagentoDto(pedidoMagento.FormaPagtoCriacao,
+                configuracaoApiMagento, pedidoMagento.InfCriacaoPedido);
+            #endregion
+
+            //gera a lista de produtos
+            List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> listaProdutos = await p40produtos.ExecutarAsync(
+                pedidoMagento, resultado.ListaErros, formaPagtoCriacao,
+                configuracaoApiMagento.DadosIndicador.Loja,
+                configuracaoApiMagento.LimiteArredondamentoPorItem,
+                configuracaoApiMagento.LimiteArredondamentoTotais,
+                configuracaoApiMagento.LimitePedidos.LimiteItens);
+
 
             //estamos criando o pedido com os dados do cliente que vem e não com os dados do cliente que esta na base
-            Pedido.Dados.Criacao.PedidoCriacaoDados? pedidoDados = await CriarPedidoCriacaoDados(pedidoMagento,
+            Pedido.Dados.Criacao.PedidoCriacaoDados? pedidoDados = CriarPedidoCriacaoDados(pedidoMagento,
                 indicador_vendedor_loja, resultado.ListaErros, id_cliente: cliente.Id, dadosClienteMidia: cliente.Midia,
-                dadosClienteIndicador: cliente.Indicador, nfe_Texto_Constar);
+                dadosClienteIndicador: cliente.Indicador, nfe_Texto_Constar, listaProdutos, formaPagtoCriacao);
             if (resultado.ListaErros.Count != 0)
                 return resultado;
             if (pedidoDados == null)
@@ -175,7 +174,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento
         {
             //campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
             string? indicador = null;
-            if (pedidoMagento.TotaisPedido.FreteBruto.HasValue && pedidoMagento.TotaisPedido.FreteBruto != 0)
+            if (pedidoMagento.TotaisPedido.FreteBruto != 0)
             {
                 indicador = configuracaoApiMagento.DadosIndicador.Indicador;
                 if (!await prepedidoBll.TorcamentistaExiste(indicador))
@@ -186,10 +185,11 @@ namespace MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento
             return new Indicador_vendedor_loja(indicador, vendedor, loja);
         }
 
-        private async Task<Pedido.Dados.Criacao.PedidoCriacaoDados?> CriarPedidoCriacaoDados(PedidoMagentoDto pedidoMagento,
+        private Pedido.Dados.Criacao.PedidoCriacaoDados? CriarPedidoCriacaoDados(PedidoMagentoDto pedidoMagento,
             Indicador_vendedor_loja indicador_Vendedor_Loja, List<string> lstErros,
             string id_cliente, string? dadosClienteMidia, string? dadosClienteIndicador,
-            string? nfe_Texto_Constar)
+            string? nfe_Texto_Constar, List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> listaProdutos,
+            Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacao)
         {
             var sistemaResponsavelCadastro = Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO;
 
@@ -207,25 +207,15 @@ namespace MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento
                 EnderecoEntregaClienteMagentoDto.EnderecoEntregaDeEnderecoEntregaClienteMagentoDto(pedidoMagento.EnderecoEntrega, pedidoMagento.OutroEndereco,
                 configuracaoApiMagento.EndEtg_cod_justificativa);
 
-            Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacao =
-                FormaPagtoCriacaoMagentoDto.FormaPagtoCriacaoDados_De_FormaPagtoCriacaoMagentoDto(pedidoMagento.FormaPagtoCriacao,
-                configuracaoApiMagento, pedidoMagento.InfCriacaoPedido);
-
-            List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> listaProdutos = await p40produtos.ExecutarAsync(
-                pedidoMagento, lstErros, formaPagtoCriacao,
-                configuracaoApiMagento.DadosIndicador.Loja,
-                configuracaoApiMagento.LimiteArredondamentoPorItem,
-                configuracaoApiMagento.LimitePedidos.LimiteItens);
-
             var pedidoDadosCriacao =
                 PedidoMagentoDto.PedidoDadosCriacaoDePedidoMagentoDto(dadosCliente, enderecoCadastral, enderecoEntrega,
-                listaProdutos, formaPagtoCriacao, pedidoMagento,
-                sistemaResponsavelCadastro,
-                lstErros,
-                configuracaoApiMagento,
-                dadosClienteMidia: dadosClienteMidia,
-                dadosClienteIndicador: dadosClienteIndicador,
-                nfe_Texto_Constar);
+                    listaProdutos, formaPagtoCriacao, pedidoMagento,
+                    sistemaResponsavelCadastro,
+                    lstErros,
+                    configuracaoApiMagento,
+                    dadosClienteMidia: dadosClienteMidia,
+                    dadosClienteIndicador: dadosClienteIndicador,
+                    nfe_Texto_Constar);
 
             return pedidoDadosCriacao;
         }

@@ -23,7 +23,7 @@ Scenario: Sem quantidade zero 2
 	And Recalcular totais do pedido
 	And Deixar forma de pagamento consistente
 	Given No ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido" mapear erro "regex .* com Qtde menor ou igual a zero!" para "regex .* com Qtde menor ou igual a zero!"
-	Then Erro "regex .* com Qtde menor ou igual a zero!"
+	Then Erro "regex .* com Qtde menor ou igual a zero.*"
 
 #
 #Scenario: Sem produtos compostos - t_EC_PRODUTO_COMPOSTO_ITEM

@@ -68,7 +68,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
                 + pedidoMagento.TotaisPedido.DescontoFrete;
             pedidoMagento.TotaisPedido.Subtotal = pedidoMagento.ListaProdutos.Select(x => Math.Round(x.Subtotal, 2)).Sum()
                 + pedidoMagento.ListaServicos.Select(x => Math.Round(x.Subtotal, 2)).Sum();
-            pedidoMagento.TotaisPedido.GrandTotal = pedidoMagento.TotaisPedido.Subtotal + (pedidoMagento.TotaisPedido.FreteBruto ?? 0) - pedidoMagento.TotaisPedido.DiscountAmount;
+            pedidoMagento.TotaisPedido.GrandTotal = pedidoMagento.TotaisPedido.Subtotal + (pedidoMagento.TotaisPedido.FreteBruto) - pedidoMagento.TotaisPedido.DiscountAmount;
         }
         protected override void AbstractListaDeItensComXitens(int numeroItens)
         {

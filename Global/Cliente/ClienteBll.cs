@@ -600,7 +600,7 @@ namespace Cliente
             return lstRefComercial;
         }
 
-        public async Task<IEnumerable<string>> CadastrarCliente(Cliente.Dados.ClienteCadastroDados clienteCadastroDados, string indicador,
+        public async Task<(List<string> listaErros, bool registroJaExiste) > CadastrarCliente(Cliente.Dados.ClienteCadastroDados clienteCadastroDados, string indicador,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             string usuario_cadastro)
         {
@@ -609,6 +609,7 @@ namespace Cliente
             var db = contextoProvider.GetContextoLeitura();
 
             List<string> lstErros = new List<string>();
+            bool registroJaExiste = false;
 
             //passar lista de bancos para validar
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await ListarBancosCombo()).ToList();
@@ -617,7 +618,7 @@ namespace Cliente
                 clienteCadastroDados.RefComercial,
                 lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false, sistemaResponsavelCadastro, true);
             if (lstErros.Count != 0)
-                return lstErros;
+                return (lstErros, registroJaExiste);
 
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
             {
@@ -631,7 +632,8 @@ namespace Cliente
                 if (verifica != null)
                 {
                     lstErros.Add(MensagensErro.REGISTRO_COM_ID_JA_EXISTE(verifica));
-                    return lstErros;
+                    registroJaExiste = true;
+                    return (lstErros, registroJaExiste);
                 }
                 string log = "";
 
@@ -665,8 +667,7 @@ namespace Cliente
                 }
             }
 
-
-            return lstErros;
+            return (lstErros, registroJaExiste);
         }
 
         private async Task<string> CadastrarDadosClienteDados(InfraBanco.ContextoBdGravacao dbgravacao,

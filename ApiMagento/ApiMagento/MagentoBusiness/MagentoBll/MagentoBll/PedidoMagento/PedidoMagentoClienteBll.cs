@@ -47,13 +47,23 @@ namespace MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento
                 RefComercial = new List<Cliente.Dados.Referencias.RefComercialClienteDados>()
             };
 
-            List<string> lstRet = (await clienteBll.CadastrarCliente(clienteCadastro,
+            var lstRet = await clienteBll.CadastrarCliente(clienteCadastro,
                 indicador_Vendedor_Loja.indicador,
                 Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO,
-                usuario_cadastro)).ToList();
+                usuario_cadastro);
 
-            //tem erro?
-            listaErros.AddRange(lstRet);
+            /*
+            como o magento cadastra o cliente se não existir, nesse processo dá sim problema com multiplas threads:
+            ele verifica que o cliente não está cadastrado, começa a cadastrar o cliente,
+            nisso outra thread verifica que não está cadastrado, começa a cadastrar e dá erro porque a primeira thread 
+            terminou de cadastrar.
+
+            Para evitar esse problema, que seria muito raro de qq forma, temos que verificar se o erro foi de cadastro já existente.
+            */
+
+            //tem erro? se for de registroJaExiste, ignoramos
+            if (!lstRet.registroJaExiste || lstRet.listaErros.Count() > 1)
+                listaErros.AddRange(lstRet.listaErros);
             idCliente = await clienteBll.BuscarTcliente(pedidoMagento.Cnpj_Cpf).FirstOrDefaultAsync();
             return idCliente;
         }

@@ -21,10 +21,6 @@ todo: executar os cripts de banco
         private readonly Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
         private readonly Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.EstoqueSaida.SplitEstoqueRotinas SplitEstoqueRotinas = new Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.EstoqueSaida.SplitEstoqueRotinas();
 
-        public PedidoMagentoSteps(ScenarioContext scenarioContext)
-        {
-            
-        }
         [Given(@"Esta é a especificação, está sendo testado em outros \.feature")]
         public void GivenEstaEAEspecificacaoEstaSendoTestadoEmOutros_Feature()
         {

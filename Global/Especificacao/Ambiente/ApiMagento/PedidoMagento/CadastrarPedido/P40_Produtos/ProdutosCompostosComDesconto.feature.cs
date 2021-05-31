@@ -34,7 +34,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P40_Pr
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "ProdutosCompostos.feature"
+#line 1 "ProdutosCompostosComDesconto.feature"
 #line hidden
         
         public ProdutosCompostosFeature(ProdutosCompostosFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)

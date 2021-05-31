@@ -335,8 +335,7 @@ this.FeatureBackground();
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("DadosPessoais - Produtor Rural", "\tPara cliente PF assumimos que Endereco_produtor_rural_status = 1 (COD_ST_CLIENTE" +
-                    "_PRODUTOR_RURAL_NAO)", tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("DadosPessoais - Produtor Rural", null, tagsOfScenario, argumentsOfScenario);
 #line 46
 this.ScenarioInitialize(scenarioInfo);
 #line hidden

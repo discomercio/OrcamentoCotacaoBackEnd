@@ -39,7 +39,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         /// <hr />
         /// </summary>
         [Required]
-        public decimal? FreteBruto { get; set; }
+        public decimal FreteBruto { get; set; }
 
         /// <summary>
         /// DescontoFrete: valor de desconto no frete

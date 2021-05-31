@@ -27,7 +27,7 @@ Scenario: calcula_total_RA_liquido_BD - magento
 	#	end if
 	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
-	When Informo "Frete" = "10"
+	When Informo "Frete" = "377.34"
 	When Lista de itens "0" informo "Preco_NF" = "704.05"
 	When Lista de itens "1" informo "Preco_NF" = "1051.07"
 	And Recalcular totais do pedido
