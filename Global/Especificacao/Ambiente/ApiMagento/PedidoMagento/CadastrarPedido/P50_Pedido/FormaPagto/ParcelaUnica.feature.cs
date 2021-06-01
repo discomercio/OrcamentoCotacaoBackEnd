@@ -182,7 +182,7 @@ this.FeatureBackground();
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pu_vencto_apos\" = \"30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 28
- testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pu_valor\" = \"1040.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pu_valor\" = \"1050.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 29
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pc_qtde_parcelas\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

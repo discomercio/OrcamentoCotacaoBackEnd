@@ -105,7 +105,8 @@ namespace MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento
         }
 
         //rotina muito parecida com a P39_Servicos
-        internal static void P40_P05_LinhasProdutos(List<PedidoProdutoMagentoDto> listaProdutos, List<string> listaErros, decimal limiteArredondamentoPorItem)
+        internal static void P40_P05_LinhasProdutos(List<PedidoProdutoMagentoDto> listaProdutos, List<PedidoServicoMagentoDto> listaServicos,
+            List<string> listaErros, decimal limiteArredondamentoPorItem)
         {
             foreach (var linha in listaProdutos)
             {
@@ -115,7 +116,40 @@ namespace MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento
                 if (!IgualComArredondamento(linha.RowTotal, linha.Subtotal - linha.DiscountAmount, limiteArredondamentoPorItem))
                     listaErros.Add($"O produto {linha.Sku} está com valor inválido, RowTotal != Subtotal - DiscountAmount ({linha.RowTotal} != {linha.Subtotal} - {linha.DiscountAmount})");
             }
+
+            //verificar se existem produtos ou serviços repetidos
+            VerificarProdutosRepetidos((from p in listaProdutos select p.Sku).ToList(), listaErros, "Produto", "produto");
+            VerificarProdutosRepetidos((from p in listaServicos select p.Sku).ToList(), listaErros, "Serviço", "serviço");
         }
+
+        internal static void VerificarProdutosRepetidos(List<string> lstProdutos, List<string> lstErros, string mensagem1, string mensagem2)
+        {
+            //# loja/PedidoNovoConsiste.asp
+            //# alerta=alerta & "Produto " & .produto & " do fabricante " & .fabricante & ": linha " & renumera_com_base1(Lbound(v_item),i) & " repete o mesmo produto da linha " & renumera_com_base1(Lbound(v_item),j) & "."
+            var agrupados = (from p in lstProdutos group p by p into g select g).ToList();
+            var repetidos = (from p in agrupados where p.Count() > 1 select p.Key).ToList();
+            //para saber a linha precisamos de um loop
+            for (int ilinha = 0; ilinha < lstProdutos.Count(); ilinha++)
+            {
+                var esteproduto = lstProdutos[ilinha];
+                if (!(from repetido in repetidos where repetido == esteproduto select repetido).Any())
+                    continue;
+
+                //está repetido sim
+                for (int ilinha2 = ilinha + 1; ilinha2 < lstProdutos.Count(); ilinha2++)
+                {
+                    var esterepetido = lstProdutos[ilinha2];
+                    if (esteproduto == esterepetido)
+                    {
+                        var msg = mensagem1 + " com SKU " + esteproduto
+                            + ": linha " + (ilinha + 1).ToString() + " repete o mesmo " + mensagem2 + " da linha " + (ilinha2 + 1).ToString() + ".";
+                        lstErros.Add(msg);
+                    }
+                }
+            }
+        }
+
+
 
         public static bool IgualComArredondamento(decimal valor1, decimal valor2, decimal limiteArredondamento)
         {

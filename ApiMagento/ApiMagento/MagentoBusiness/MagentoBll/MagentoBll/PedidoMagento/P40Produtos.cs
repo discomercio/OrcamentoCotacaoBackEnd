@@ -35,7 +35,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento
             decimal limiteArredondamentoTotais, int limite_de_itens)
         {
             //P05: para cada linha, consistir Quantidade > 0, RowTotal = Subtotal - DiscountAmount dentro do arredondamento
-            Passos.P40_P05_LinhasProdutos(pedidoMagento.ListaProdutos, listaErros, limiteArredondamentoPorItem);
+            Passos.P40_P05_LinhasProdutos(pedidoMagento.ListaProdutos, pedidoMagento.ListaServicos, listaErros, limiteArredondamentoPorItem);
 
             //P10: Transformar produtos compostos em simples
             List<ProdutoConvertido> produtosConvertidos = await P10TransformarProdutosCompostosEmSimples(pedidoMagento.ListaProdutos, listaErros);

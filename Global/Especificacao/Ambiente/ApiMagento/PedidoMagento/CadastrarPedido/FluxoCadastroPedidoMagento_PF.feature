@@ -32,7 +32,7 @@ P35_Totais: validações de PedidoTotaisMagentoDto
 P39_Servicos: para cada linha, consistir Quantidade > 0, RowTotal = Subtotal - DiscountAmount dentro do arredondamento
 
 P40_Produtos: transfromar produtos compostos e lançar os descontos
-	P05: para cada linha, consistir Quantidade > 0, RowTotal = Subtotal - DiscountAmount dentro do arredondamento
+	P05: para cada linha, consistir Quantidade > 0, RowTotal = Subtotal - DiscountAmount dentro do arredondamento e verificar se existem produtos ou serviços repetidos
 	P10: Transformar produtos compostos em simples
 		Buscamos na t_EC_PRODUTO_COMPOSTO e expandimos os produtos conforme t_EC_PRODUTO_COMPOSTO_ITEM. Se não for composto, mantemos.
 			t_EC_PRODUTO_COMPOSTO.produto_composto == Sku

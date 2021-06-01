@@ -223,6 +223,10 @@ Scenario: Consistência para valor zerado
 	#				end with
 	#			next
 	#		end if
+
+	#no magento, aceitamos qualquer valor que vier os itens do produto ou serviço, somente verificamos a quantidade
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
+
 	Given Pedido base
 	When Lista de itens "0" informo "preco_venda" = "-1"
 	And Recalcular totais do pedido
@@ -230,6 +234,9 @@ Scenario: Consistência para valor zerado
 	Then Erro "regex .* com preco_venda menor ou igual a zero!"
 
 Scenario: Consistência para valor zerado 2
+	#no magento, aceitamos qualquer valor que vier os itens do produto ou serviço, somente verificamos a quantidade
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
+
 	Given Pedido base
 	When Lista de itens "0" informo "preco_venda" = "0"
 	And Recalcular totais do pedido
@@ -240,10 +247,14 @@ Scenario: Consistência para valor zerado 2
 #porque sempre testamos, mais abaixo
 
 Scenario: Consistência para valor negativos
-	#loja/PedidoNovoConsiste.asp
-	#<input name="c_vl_NF" id="c_vl_NF" class="PLLd" style="width:62px;"
-	#	onkeypress="if (digitou_enter(true)) fPED.c_vl_unitario[<%=Cstr(i-1)%>].focus(); filtra_moeda_positivo();" onblur="this.value=formata_moeda(this.value); trata_edicao_RA(<%=Cstr(i-1)%>); recalcula_RA(); recalcula_RA_Liquido(); recalcula_parcelas();"
-	#Quer dizer, os preços devem ser positivos
+#loja/PedidoNovoConsiste.asp
+#<input name="c_vl_NF" id="c_vl_NF" class="PLLd" style="width:62px;"
+#	onkeypress="if (digitou_enter(true)) fPED.c_vl_unitario[<%=Cstr(i-1)%>].focus(); filtra_moeda_positivo();" onblur="this.value=formata_moeda(this.value); trata_edicao_RA(<%=Cstr(i-1)%>); recalcula_RA(); recalcula_RA_Liquido(); recalcula_parcelas();"
+#Quer dizer, os preços devem ser positivos
+
+	#no magento, aceitamos qualquer valor que vier os itens do produto ou serviço, somente verificamos a quantidade
+	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
+
 	Given Pedido base
 	When Lista de itens "0" informo "preco_NF" = "0"
 	And Recalcular totais do pedido

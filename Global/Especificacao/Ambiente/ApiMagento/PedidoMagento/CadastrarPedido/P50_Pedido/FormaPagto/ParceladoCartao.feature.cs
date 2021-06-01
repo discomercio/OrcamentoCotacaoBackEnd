@@ -442,12 +442,14 @@ this.FeatureBackground();
         [Xunit.SkippableFactAttribute(DisplayName="COD_FORMA_PAGTO_PARCELADO_CARTAO - manter o mesmo valor")]
         [Xunit.TraitAttribute("FeatureTitle", "ParceladoCartao")]
         [Xunit.TraitAttribute("Description", "COD_FORMA_PAGTO_PARCELADO_CARTAO - manter o mesmo valor")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void COD_FORMA_PAGTO_PARCELADO_CARTAO_ManterOMesmoValor()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("COD_FORMA_PAGTO_PARCELADO_CARTAO - manter o mesmo valor", null, tagsOfScenario, argumentsOfScenario);
-#line 70
+#line 71
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -470,94 +472,94 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 71
+#line 72
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 72
+#line 73
  testRunner.When("Informo \"FormaPagtoCriacao.Tipo_Parcelamento\" = \"COD_FORMA_PAGTO_PARCELADO_CARTAO" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 73
+#line 74
  testRunner.When("Informo \"FormaPagtoCriacao.C_pc_qtde\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 74
+#line 75
  testRunner.When("Informo \"FormaPagtoCriacao.C_pc_valor\" = \"3450.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 75
+#line 76
  testRunner.When("Informo \"Frete\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 76
+#line 77
  testRunner.When("Lista de itens \"0\" informo \"Produto\" = \"001000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 77
+#line 78
  testRunner.When("Lista de itens \"0\" informo \"Qtde\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 78
+#line 79
  testRunner.When("Lista de itens \"0\" informo \"Preco_Venda\" = \"509.24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 79
+#line 80
  testRunner.When("Lista de itens \"0\" informo \"Preco_NF\" = \"520.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 80
+#line 81
  testRunner.When("Lista de itens \"1\" informo \"Produto\" = \"001001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 81
+#line 82
  testRunner.When("Lista de itens \"1\" informo \"Qtde\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 82
+#line 83
  testRunner.When("Lista de itens \"1\" informo \"Preco_Venda\" = \"1188.23\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 83
+#line 84
  testRunner.When("Lista de itens \"1\" informo \"Preco_NF\" = \"1200.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 85
+#line 86
  testRunner.When("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 86
+#line 87
  testRunner.When("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 87
+#line 88
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 88
+#line 89
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"tipo_parcelamento\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 89
+#line 90
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pc_qtde_parcelas\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 90
+#line 91
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"pc_valor_parcela\" = \"3450.00\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 91
+#line 92
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vl_total_NF\" = \"3450.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 92
+#line 93
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vl_total_familia\" = \"3450.00\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 93
+#line 94
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"vl_total_RA\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 94
+#line 95
  testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado, verificar item \"1\" campo \"qtde\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 95
+#line 96
  testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado, verificar item \"1\" campo \"preco_venda\" = " +
                         "\"509.24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 96
+#line 97
  testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado, verificar item \"1\" campo \"preco_NF\" = \"52" +
                         "0.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 97
+#line 98
  testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado, verificar item \"2\" campo \"qtde\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 98
+#line 99
  testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado, verificar item \"2\" campo \"preco_venda\" = " +
                         "\"1188.23\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 99
+#line 100
  testRunner.And("Tabela \"t_PEDIDO_ITEM\" registro criado, verificar item \"2\" campo \"preco_NF\" = \"12" +
                         "00.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

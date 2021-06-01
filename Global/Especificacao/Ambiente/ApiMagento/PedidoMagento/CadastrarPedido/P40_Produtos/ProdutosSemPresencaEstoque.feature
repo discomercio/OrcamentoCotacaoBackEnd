@@ -29,8 +29,6 @@ Scenario: PresencaEstoque - produto simples
 	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "fabricante" = "001"
 	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "produto" = "001000"
 	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "qtde" = "1"
-	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "preco_venda" = "350.00"
-	And Tabela "t_PEDIDO_ITEM" registro criado, verificar item "1" campo "preco_NF" = "350.00"
 
 @ignore
 Scenario: PresencaEstoque - produto composto

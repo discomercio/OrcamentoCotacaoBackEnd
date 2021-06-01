@@ -68,51 +68,51 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
                     "_Servicos: para cada linha, consistir Quantidade > 0, RowTotal = Subtotal - Disc" +
                     "ountAmount dentro do arredondamento\r\n\r\nP40_Produtos: transfromar produtos compos" +
                     "tos e lançar os descontos\r\n\tP05: para cada linha, consistir Quantidade > 0, RowT" +
-                    "otal = Subtotal - DiscountAmount dentro do arredondamento\r\n\tP10: Transformar pro" +
-                    "dutos compostos em simples\r\n\t\tBuscamos na t_EC_PRODUTO_COMPOSTO e expandimos os " +
-                    "produtos conforme t_EC_PRODUTO_COMPOSTO_ITEM. Se não for composto, mantemos.\r\n\t\t" +
-                    "\tt_EC_PRODUTO_COMPOSTO.produto_composto == Sku\r\n\t\t\t\tse achar registro, busca em " +
-                    "t_EC_PRODUTO_COMPOSTO_ITEM com t_EC_PRODUTO_COMPOSTO_ITEM.produto_composto == Sk" +
-                    "u && t_EC_PRODUTO_COMPOSTO_ITEM.fabricante_composto == t_EC_PRODUTO_COMPOSTO.fab" +
-                    "ricante_composto\r\n\t\t\t\tse não achar busca em t_PRODUTO com t_PRODUTO.produto == S" +
-                    "ku \r\n\t\tAgrupamos produtos iguais, mantendo a ordem original.\r\n\tP20: Carregar val" +
-                    "ores dos produtos do banco\r\n\t\tCarregar valores base (t_PRODUTO, t_PRODUTO_LOJA) " +
-                    "e coeficientes (t_PERCENTUAL_CUSTO_FINANCEIRO_FORNECEDOR ou fixo) conforme forma" +
-                    " de pagamento\r\n\t\tVerificamos se todos estão cadastrados em t_PRODUTO_LOJA\r\n\tP30_" +
-                    "CalcularDesconto: Inserir os descontos de forma a chegar nos valores do magento " +
-                    "com o frete diluído\r\n\t\tVer planilha, resumo das fórmulas:\r\n\t\t\tdesconto_preco_nf:" +
-                    " (valor total do pedido no verdinho - valor total no magento) / valor total do p" +
-                    "edido no verdinho\r\n\t\t\tdesc_dado = (total do verdinho - total do magento sem o fr" +
-                    "ete) / total do verdinho\r\n\t\t\tpreco_lista = valor base\r\n\t\t\tpreco_nf = valor base " +
-                    "* (1 - desconto_preco_nf)\r\n\t\t\tpreco_venda = valor base * (1 - desc_dado)\r\n\t\t\tTod" +
-                    "os os valores são arredondados para 2 casas decimais (não o desconto)\r\n\t\tGaranti" +
-                    "r o menor arredondamento possível\r\n\t\t\tDesejado: GrandTotal = soma (qde * preco_n" +
-                    "f) + total de serviços\r\n\t\t\tajuste_arredondamento: GrandTotal - (soma (qde * prec" +
-                    "o_nf) + total de serviços) com todos com 2 casas decimais\r\n\t\t\tEscolher a linha c" +
-                    "om a menor resto de ( abs(ajuste_arredondamento) / qde) e, nesssas, com a menor " +
-                    "qde \r\n\t\t\talterar preco_nf = preco_nf - ajuste_arredondamento / qde (arredondado " +
-                    "para 2 casas decimais)\r\n\t\t\tIsso já faz o melhor ajuste possível para RA também\r\n" +
-                    "\t\t\t* testar com ajustes positivos e negativos\r\n\t\tConsistências (todas com arredo" +
-                    "ndamento): \r\n\t\t\tRA = soma (qde * preco_nf) - soma (qde * preco_venda)\r\n\t\t\tRA = F" +
-                    "reteBruto - DescontoFrete\r\n\t\t\tGrandTotal = soma (qde * preco_nf) + total de serv" +
-                    "iços\r\n\tP80: Garatir que tem menos ou igual a 12 itens (conforme configuração)\r\nP" +
-                    "50_Pedido: verificaçoes adicionais e converter estruturas de dados\r\n\tTratar Pont" +
-                    "oReferencia, endereco_complemento e NFe_texto_constar: Colocar a informação do p" +
-                    "onto de referência no campo \'Constar na NF\'.\r\n\t\tTeste em Ambiente\\ApiMagento\\Ped" +
-                    "idoMagento\\CadastrarPedido\\P50_Pedido\\Endereco\\PontoReferencia.feature\r\n\tGaranti" +
-                    "aIndicador = Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO\r\n\t\tTeste em Ambiente\\" +
-                    "ApiMagento\\PedidoMagento\\CadastrarPedido\\P50_Pedido\\Detalhes\\Detalhes.feature\r\n\t" +
-                    "Só aceitamos os pagamentos Á vista, Parcela Única, Parcelado no Cartão\r\n\t\tTeste " +
-                    "em Ambiente\\ApiMagento\\PedidoMagento\\CadastrarPedido\\P50_Pedido\\FormaPagto\\*.fea" +
-                    "ture\r\n\r\n\tConverter pedido para PedidoCriacaoDados\r\n\tConverter Endereco Cadastral" +
-                    " para DadosClienteCadastroDados\r\n\tConverter EnderecoCadastralClienteMagentoDto p" +
-                    "ara EnderecoCadastralClientePrepedidoDados\r\n\tConverter EnderecoEntregaClienteMag" +
-                    "entoDto para EnderecoEntregaClienteCadastroDados\r\n\tConverter FormaPagtoCriacaoMa" +
-                    "gentoDto para FormaPagtoCriacaoDados\r\n\r\nP60_Cadastrar: fazer o cadastro do pedid" +
-                    "o na rotina global, conforme fluxo Especificacao\\Pedido\\FluxoCriacaoPedido.featu" +
-                    "re\r\n\t- caso aconteça um pedido igual com número diferente no magento, mandar avi" +
-                    "so por e-mail \r\n\t\t(enviar uma notificação para a equipe da karina)\r\n\r\n\r\n========" +
-                    "====================", ProgrammingLanguage.CSharp, new string[] {
+                    "otal = Subtotal - DiscountAmount dentro do arredondamento e verificar se existem" +
+                    " produtos ou serviços repetidos\r\n\tP10: Transformar produtos compostos em simples" +
+                    "\r\n\t\tBuscamos na t_EC_PRODUTO_COMPOSTO e expandimos os produtos conforme t_EC_PRO" +
+                    "DUTO_COMPOSTO_ITEM. Se não for composto, mantemos.\r\n\t\t\tt_EC_PRODUTO_COMPOSTO.pro" +
+                    "duto_composto == Sku\r\n\t\t\t\tse achar registro, busca em t_EC_PRODUTO_COMPOSTO_ITEM" +
+                    " com t_EC_PRODUTO_COMPOSTO_ITEM.produto_composto == Sku && t_EC_PRODUTO_COMPOSTO" +
+                    "_ITEM.fabricante_composto == t_EC_PRODUTO_COMPOSTO.fabricante_composto\r\n\t\t\t\tse n" +
+                    "ão achar busca em t_PRODUTO com t_PRODUTO.produto == Sku \r\n\t\tAgrupamos produtos " +
+                    "iguais, mantendo a ordem original.\r\n\tP20: Carregar valores dos produtos do banco" +
+                    "\r\n\t\tCarregar valores base (t_PRODUTO, t_PRODUTO_LOJA) e coeficientes (t_PERCENTU" +
+                    "AL_CUSTO_FINANCEIRO_FORNECEDOR ou fixo) conforme forma de pagamento\r\n\t\tVerificam" +
+                    "os se todos estão cadastrados em t_PRODUTO_LOJA\r\n\tP30_CalcularDesconto: Inserir " +
+                    "os descontos de forma a chegar nos valores do magento com o frete diluído\r\n\t\tVer" +
+                    " planilha, resumo das fórmulas:\r\n\t\t\tdesconto_preco_nf: (valor total do pedido no" +
+                    " verdinho - valor total no magento) / valor total do pedido no verdinho\r\n\t\t\tdesc" +
+                    "_dado = (total do verdinho - total do magento sem o frete) / total do verdinho\r\n" +
+                    "\t\t\tpreco_lista = valor base\r\n\t\t\tpreco_nf = valor base * (1 - desconto_preco_nf)\r" +
+                    "\n\t\t\tpreco_venda = valor base * (1 - desc_dado)\r\n\t\t\tTodos os valores são arredond" +
+                    "ados para 2 casas decimais (não o desconto)\r\n\t\tGarantir o menor arredondamento p" +
+                    "ossível\r\n\t\t\tDesejado: GrandTotal = soma (qde * preco_nf) + total de serviços\r\n\t\t" +
+                    "\tajuste_arredondamento: GrandTotal - (soma (qde * preco_nf) + total de serviços)" +
+                    " com todos com 2 casas decimais\r\n\t\t\tEscolher a linha com a menor resto de ( abs(" +
+                    "ajuste_arredondamento) / qde) e, nesssas, com a menor qde \r\n\t\t\talterar preco_nf " +
+                    "= preco_nf - ajuste_arredondamento / qde (arredondado para 2 casas decimais)\r\n\t\t" +
+                    "\tIsso já faz o melhor ajuste possível para RA também\r\n\t\t\t* testar com ajustes po" +
+                    "sitivos e negativos\r\n\t\tConsistências (todas com arredondamento): \r\n\t\t\tRA = soma " +
+                    "(qde * preco_nf) - soma (qde * preco_venda)\r\n\t\t\tRA = FreteBruto - DescontoFrete\r" +
+                    "\n\t\t\tGrandTotal = soma (qde * preco_nf) + total de serviços\r\n\tP80: Garatir que te" +
+                    "m menos ou igual a 12 itens (conforme configuração)\r\nP50_Pedido: verificaçoes ad" +
+                    "icionais e converter estruturas de dados\r\n\tTratar PontoReferencia, endereco_comp" +
+                    "lemento e NFe_texto_constar: Colocar a informação do ponto de referência no camp" +
+                    "o \'Constar na NF\'.\r\n\t\tTeste em Ambiente\\ApiMagento\\PedidoMagento\\CadastrarPedido" +
+                    "\\P50_Pedido\\Endereco\\PontoReferencia.feature\r\n\tGarantiaIndicador = Constantes.CO" +
+                    "D_GARANTIA_INDICADOR_STATUS__NAO\r\n\t\tTeste em Ambiente\\ApiMagento\\PedidoMagento\\C" +
+                    "adastrarPedido\\P50_Pedido\\Detalhes\\Detalhes.feature\r\n\tSó aceitamos os pagamentos" +
+                    " Á vista, Parcela Única, Parcelado no Cartão\r\n\t\tTeste em Ambiente\\ApiMagento\\Ped" +
+                    "idoMagento\\CadastrarPedido\\P50_Pedido\\FormaPagto\\*.feature\r\n\r\n\tConverter pedido " +
+                    "para PedidoCriacaoDados\r\n\tConverter Endereco Cadastral para DadosClienteCadastro" +
+                    "Dados\r\n\tConverter EnderecoCadastralClienteMagentoDto para EnderecoCadastralClien" +
+                    "tePrepedidoDados\r\n\tConverter EnderecoEntregaClienteMagentoDto para EnderecoEntre" +
+                    "gaClienteCadastroDados\r\n\tConverter FormaPagtoCriacaoMagentoDto para FormaPagtoCr" +
+                    "iacaoDados\r\n\r\nP60_Cadastrar: fazer o cadastro do pedido na rotina global, confor" +
+                    "me fluxo Especificacao\\Pedido\\FluxoCriacaoPedido.feature\r\n\t- caso aconteça um pe" +
+                    "dido igual com número diferente no magento, mandar aviso por e-mail \r\n\t\t(enviar " +
+                    "uma notificação para a equipe da karina)\r\n\r\n\r\n============================", ProgrammingLanguage.CSharp, new string[] {
                         "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido"});
             testRunner.OnFeatureStart(featureInfo);
         }

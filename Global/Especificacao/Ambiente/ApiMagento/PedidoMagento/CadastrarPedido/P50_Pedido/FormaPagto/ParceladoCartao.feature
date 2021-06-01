@@ -67,6 +67,7 @@ Scenario: COD_FORMA_PAGTO_PARCELADO_CARTAO - C_pc_qtde alta
 
 #pergunta: se COD_FORMA_PAGTO_PARCELADO_CARTAO temos que usar os coeficientes do fabricante?
 #respsota: sim, mas precisa manter o valor do preço e o total da nota igual. Vamos colocar essa diferença no Vl Lista
+@ignore
 Scenario: COD_FORMA_PAGTO_PARCELADO_CARTAO - manter o mesmo valor
 	Given Pedido base
 	When Informo "FormaPagtoCriacao.Tipo_Parcelamento" = "COD_FORMA_PAGTO_PARCELADO_CARTAO"
