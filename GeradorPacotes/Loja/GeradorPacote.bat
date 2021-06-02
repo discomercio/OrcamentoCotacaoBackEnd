@@ -24,8 +24,9 @@ goto final
 :continuar
 
 echo %date% %time% >> "PacoteLoja\lojamvc\DataCompilacao.txt"
-git branch >> "PacoteLoja\lojamvc\VersaoGit.txt"
-git show >> "PacoteLoja\lojamvc\VersaoGit.txt"
+git branch > "PacoteLoja\lojamvc\VersaoGit.txt"
+git log -n 1 --pretty="%%H %%D" >> "PacoteLoja\lojamvc\VersaoGit.txt"
+git status  >> "PacoteLoja\lojamvc\VersaoGit.txt"
 del PacoteLoja\lojamvc\appsettings.json
 del PacoteLoja\lojamvc\appsettings.Development.json
 del PacoteLoja\lojamvc\nlog.config
