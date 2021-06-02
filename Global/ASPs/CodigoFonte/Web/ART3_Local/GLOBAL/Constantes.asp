@@ -38,7 +38,7 @@
 	Const URL_FILE__JQUERY_UI_CSS = "../Global/jquery-ui/jquery-ui.min.css?v=001"
 	Const URL_FILE__JQUERY_MY_GLOBAL = "../Global/jquery-my-global.js?v=002"
 	Const URL_FILE__JQUERY_MY_PLUGIN = "../Global/jquery-my-plugin.js?v=002"
-	Const URL_FILE__JQUERY_UI_MY_PLUGIN = "../Global/jquery-ui-my-plugin.js?v=002"
+	Const URL_FILE__JQUERY_UI_MY_PLUGIN = "../Global/jquery-ui-my-plugin.js?v=003"
 	Const URL_FILE__JQUERY_MASKMONEY = "../Global/jquery.maskMoney.min.js?v=001"
 	Const URL_FILE__GLOBAL_JS = "../Global/global.js?v=066"
 	Const URL_FILE__SSL_JS = "../Global/SSL.js?v=004"
@@ -735,7 +735,7 @@
 
 
 '	PERÍODO MÁXIMO EM QUE O DANFE FICA ACESSÍVEL NO PEDIDO
-	Const MAX_PERIODO_LINK_DANFE_DISPONIVEL_NO_PEDIDO_EM_DIAS = 60
+	Const MAX_PERIODO_LINK_DANFE_DISPONIVEL_NO_PEDIDO_EM_DIAS = 90
 
   ' TAMANHO MÁXIMO DO CAMPO NO BD
 	Const MAX_OBS_2 = 10
@@ -1781,6 +1781,7 @@
 		dim comissao_indicacao
 		dim PercMaxSenhaDesconto
 		dim PercMaxDescSemZerarRT
+		dim unidade_negocio
 		end class
 	
 	class cl_CLIENTE
@@ -1792,6 +1793,7 @@
 		dim produtor_rural_status
 		dim rg
 		dim nome
+		dim nome_iniciais_em_maiusculas
 		dim sexo
 		dim endereco
 		dim endereco_numero
@@ -1908,6 +1910,7 @@
 		dim obs_1
 		dim obs_2
 		dim obs_3
+		dim obs_4
 		dim qtde_parcelas
 		dim forma_pagto
 		dim vl_total_familia
@@ -2042,6 +2045,7 @@
 		dim endereco_email
 		dim endereco_email_xml
 		dim endereco_nome
+		dim endereco_nome_iniciais_em_maiusculas
 		dim endereco_ddd_res
 		dim endereco_tel_res
 		dim endereco_ddd_com
@@ -2062,6 +2066,7 @@
 		dim EndEtg_email
 		dim EndEtg_email_xml
 		dim EndEtg_nome
+		dim EndEtg_nome_iniciais_em_maiusculas
 		dim EndEtg_ddd_res
 		dim EndEtg_tel_res
 		dim EndEtg_ddd_com
@@ -2081,6 +2086,12 @@
 		dim PrevisaoEntregaData
 		dim PrevisaoEntregaUsuarioUltAtualiz
 		dim PrevisaoEntregaDtHrUltAtualiz
+		dim PagtoAntecipadoStatus
+		dim PagtoAntecipadoDataHora
+		dim PagtoAntecipadoUsuario
+		dim PagtoAntecipadoQuitadoStatus
+		dim PagtoAntecipadoQuitadoDataHora
+		dim PagtoAntecipadoQuitadoUsuario
 		end class
 
 	class cl_ITEM_PEDIDO
@@ -2537,6 +2548,7 @@
 		dim endereco_email
 		dim endereco_email_xml
 		dim endereco_nome
+		dim endereco_nome_iniciais_em_maiusculas
 		dim endereco_ddd_res
 		dim endereco_tel_res
 		dim endereco_ddd_com
@@ -2557,6 +2569,7 @@
 		dim EndEtg_email
 		dim EndEtg_email_xml
 		dim EndEtg_nome
+		dim EndEtg_nome_iniciais_em_maiusculas
 		dim EndEtg_ddd_res
 		dim EndEtg_tel_res
 		dim EndEtg_ddd_com
@@ -3116,6 +3129,7 @@
 		dim DtHrSessionTokenModuloCentral
 		dim SessionTokenModuloLoja
 		dim DtHrSessionTokenModuloLoja
+		dim fin_smtp_enable_ssl
 		dim nivel_acesso_bloco_notas_pedido
 		dim nivel_acesso_chamado
 		end class
