@@ -321,26 +321,32 @@ end function
         
      <% end if %>
         
-		$("#c_dt_cancelado_inicio").hUtilUI('datepicker_filtro_inicial');
-		$("#c_dt_cancelado_termino").hUtilUI('datepicker_filtro_final');
+		$("#c_dt_cancelado_inicio").hUtilUI('datepicker_peq_filtro_inicial');
+		$("#c_dt_cancelado_termino").hUtilUI('datepicker_peq_filtro_final');
+
+		$("#c_dt_coleta_a_separar_inicio").hUtilUI('datepicker_peq_filtro_inicial');
+		$("#c_dt_coleta_a_separar_termino").hUtilUI('datepicker_peq_filtro_final');
+
+		$("#c_dt_coleta_st_a_entregar_inicio").hUtilUI('datepicker_peq_filtro_inicial');
+		$("#c_dt_coleta_st_a_entregar_termino").hUtilUI('datepicker_peq_filtro_final');
 
 	<% if operacao_permitida(OP_CEN_FILTRO_MCRIT_PEDIDOS_ENTREGUES_ENTRE, s_lista_operacoes_permitidas) then %>
-		$("#c_dt_entregue_inicio").hUtilUI('datepicker_filtro_inicial');
-		$("#c_dt_entregue_termino").hUtilUI('datepicker_filtro_final');
+		$("#c_dt_entregue_inicio").hUtilUI('datepicker_peq_filtro_inicial');
+		$("#c_dt_entregue_termino").hUtilUI('datepicker_peq_filtro_final');
 	<% end if %>
 
 	<% if operacao_permitida(OP_CEN_FILTRO_MCRIT_PEDIDOS_COLOCADOS_ENTRE, s_lista_operacoes_permitidas) then %>
-		$("#c_dt_cadastro_inicio").hUtilUI('datepicker_filtro_inicial');
-		$("#c_dt_cadastro_termino").hUtilUI('datepicker_filtro_final');
+		$("#c_dt_cadastro_inicio").hUtilUI('datepicker_peq_filtro_inicial');
+		$("#c_dt_cadastro_termino").hUtilUI('datepicker_peq_filtro_final');
 	<% end if %>
 
 	<% if operacao_permitida(OP_CEN_FILTRO_MCRIT_PEDIDOS_ENTREGA_MARC_ENTRE, s_lista_operacoes_permitidas) then %>
-		$("#c_dt_entrega_inicio").hUtilUI('datepicker_filtro_inicial');
-		$("#c_dt_entrega_termino").hUtilUI('datepicker_filtro_final');
+		$("#c_dt_entrega_inicio").hUtilUI('datepicker_peq_filtro_inicial');
+		$("#c_dt_entrega_termino").hUtilUI('datepicker_peq_filtro_final');
 	<% end if%>
 
-        $("#c_dt_previsao_entrega_inicio").hUtilUI('datepicker_filtro_inicial');
-        $("#c_dt_previsao_entrega_termino").hUtilUI('datepicker_filtro_final');
+		$("#c_dt_previsao_entrega_inicio").hUtilUI('datepicker_peq_filtro_inicial');
+		$("#c_dt_previsao_entrega_termino").hUtilUI('datepicker_peq_filtro_final');
 	
 		//Every resize of window
 	    $(window).resize(function() {
@@ -356,8 +362,38 @@ end function
 	        function sizeDivAjaxRunning() {
 		        var newTop = $(window).scrollTop() + "px";
 		        $("#divMsgAguardeObtendoDados").css("top", newTop);
-	        }
-    $(document).tooltip();
+		}
+
+		$("#ckb_somente_pedidos_produto_alocado").change(function () {
+			if ($("#ckb_somente_pedidos_produto_alocado").is(":checked")) {
+				$("#ckb_produto").prop("checked", true);
+			}
+		});
+
+		$(".CkbPagAntQuitSt").change(function () {
+			if ($(this).is(":checked")) {
+				$("#ckb_pagto_antecipado_status_nao").prop("checked", false);
+				$("#ckb_pagto_antecipado_status_sim").prop("checked", true);
+			}
+		});
+
+		$("#ckb_pagto_antecipado_status_nao").change(function () {
+			if ($(this).is(":checked")) {
+				$("#ckb_pagto_antecipado_status_sim").prop("checked", false);
+				$(".CkbPagAntQuitSt").prop("checked", false);
+			}
+		});
+
+		$("#ckb_pagto_antecipado_status_sim").change(function () {
+			if ($(this).is(":checked")) {
+				$("#ckb_pagto_antecipado_status_nao").prop("checked", false);
+			}
+			else {
+				$(".CkbPagAntQuitSt").prop("checked", false);
+			}
+		});
+
+		$(document).tooltip();
 	});
 
 	function limpaCampoSelectProduto() {
@@ -369,6 +405,18 @@ end function
 function fFILTROConfirma( f ) {
 var i, b;
 var strDtRefYYYYMMDD, strDtRefDDMMYYYY;
+
+	if (f.ckb_st_entrega_separar_com_marc.checked) {
+		if ((trim(f.c_dt_coleta_a_separar_inicio.value) != "") && (trim(f.c_dt_coleta_a_separar_termino.value) != "")) {
+			if (!consiste_periodo(f.c_dt_coleta_a_separar_inicio, f.c_dt_coleta_a_separar_termino)) return;
+		}
+	}
+
+	if (f.ckb_st_entrega_a_entregar_com_marc.checked) {
+		if ((trim(f.c_dt_coleta_st_a_entregar_inicio.value) != "") && (trim(f.c_dt_coleta_st_a_entregar_termino.value) != "")) {
+			if (!consiste_periodo(f.c_dt_coleta_st_a_entregar_inicio, f.c_dt_coleta_st_a_entregar_termino)) return;
+		}
+	}
 
 	if (f.c_opcao_filtro_pedidos_entregues_entre.value=="S") {
 		if (f.ckb_st_entrega_entregue.checked) {
@@ -782,7 +830,9 @@ function exibe_botao_confirmar() {
 	<tr bgcolor="#FFFFFF"><td align="left">
 		<input type="checkbox" tabindex="-1" id="ckb_st_entrega_separar_com_marc" name="ckb_st_entrega_separar_com_marc"
 			value="<%=ST_ENTREGA_SEPARAR%>"><span class="C" style="cursor:default" 
-			onclick="fFILTRO.ckb_st_entrega_separar_com_marc.click();">A Separar (com data de coleta)</span>
+			onclick="fFILTRO.ckb_st_entrega_separar_com_marc.click();">A Separar (com data de coleta)</span
+			><input class="Cc" maxlength="10" style="width:70px;" name="c_dt_coleta_a_separar_inicio" id="c_dt_coleta_a_separar_inicio" onblur="if (!isDate(this)) {alert('Data inválida!'); this.focus();}" onkeypress="if (digitou_enter(true)) fFILTRO.c_dt_coleta_a_separar_termino.focus(); else fFILTRO.ckb_st_entrega_separar_com_marc.checked=true; filtra_data();" onclick="fFILTRO.ckb_st_entrega_separar_com_marc.checked=true;" onchange="fFILTRO.ckb_st_entrega_separar_com_marc.checked=true;"
+			/>&nbsp;<span class="C">a</span>&nbsp;<input class="Cc" maxlength="10" style="width:70px;" name="c_dt_coleta_a_separar_termino" id="c_dt_coleta_a_separar_termino" onblur="if (!isDate(this)) {alert('Data inválida!'); this.focus();}" onkeypress="if (digitou_enter(true)) bCONFIRMA.focus(); else fFILTRO.ckb_st_entrega_separar_com_marc.checked=true; filtra_data();" onclick="fFILTRO.ckb_st_entrega_separar_com_marc.checked=true;" onchange="fFILTRO.ckb_st_entrega_separar_com_marc.checked=true;" />
 		</td></tr>
 	<tr bgcolor="#FFFFFF"><td align="left">
 		<input type="checkbox" tabindex="-1" id="ckb_st_entrega_a_entregar_sem_marc" name="ckb_st_entrega_a_entregar_sem_marc"
@@ -792,7 +842,9 @@ function exibe_botao_confirmar() {
 	<tr bgcolor="#FFFFFF"><td align="left">
 		<input type="checkbox" tabindex="-1" id="ckb_st_entrega_a_entregar_com_marc" name="ckb_st_entrega_a_entregar_com_marc"
 			value="<%=ST_ENTREGA_A_ENTREGAR%>"><span class="C" style="cursor:default" 
-			onclick="fFILTRO.ckb_st_entrega_a_entregar_com_marc.click();">A Entregar (com data de coleta)</span>
+			onclick="fFILTRO.ckb_st_entrega_a_entregar_com_marc.click();">A Entregar (com data de coleta)</span
+			><input class="Cc" maxlength="10" style="width:70px;" name="c_dt_coleta_st_a_entregar_inicio" id="c_dt_coleta_st_a_entregar_inicio" onblur="if (!isDate(this)) {alert('Data inválida!'); this.focus();}" onkeypress="if (digitou_enter(true)) fFILTRO.c_dt_coleta_st_a_entregar_termino.focus(); else fFILTRO.ckb_st_entrega_a_entregar_com_marc.checked=true; filtra_data();" onclick="fFILTRO.ckb_st_entrega_a_entregar_com_marc.checked=true;" onchange="fFILTRO.ckb_st_entrega_a_entregar_com_marc.checked=true;"
+			/>&nbsp;<span class="C">a</span>&nbsp;<input class="Cc" maxlength="10" style="width:70px;" name="c_dt_coleta_st_a_entregar_termino" id="c_dt_coleta_st_a_entregar_termino" onblur="if (!isDate(this)) {alert('Data inválida!'); this.focus();}" onkeypress="if (digitou_enter(true)) bCONFIRMA.focus(); else fFILTRO.ckb_st_entrega_a_entregar_com_marc.checked=true; filtra_data();" onclick="fFILTRO.ckb_st_entrega_a_entregar_com_marc.checked=true;" onchange="fFILTRO.ckb_st_entrega_a_entregar_com_marc.checked=true;" />
 		</td></tr>
 	<% if operacao_permitida(OP_CEN_FILTRO_MCRIT_PEDIDOS_ENTREGUES_ENTRE, s_lista_operacoes_permitidas) then %>
 	<tr bgcolor="#FFFFFF"><td align="left">
@@ -869,51 +921,112 @@ function exibe_botao_confirmar() {
 	</table>
 </td></tr>
 
+<!--  PAGAMENTO ANTECIPADO  -->
+<tr bgcolor="#FFFFFF">
+<td class="MDBE" align="left" nowrap>
+	<table cellspacing="0" cellpadding="0" style="margin-bottom:10px;" width="100%">
+	<tr>
+		<td width="50%" valign="top">
+			<span class="PLTe">PAGAMENTO ANTECIPADO</span>
+			<br />
+			<table cellspacing="0" cellpadding="0">
+			<tr bgcolor="#FFFFFF"><td align="left">
+				<input type="checkbox" tabindex="-1" id="ckb_pagto_antecipado_status_nao" name="ckb_pagto_antecipado_status_nao"
+					value="0"><span class="C" style="cursor:default" 
+					onclick="fFILTRO.ckb_pagto_antecipado_status_nao.click();">Não</span>
+				</td></tr>
+			<tr bgcolor="#FFFFFF"><td align="left">
+				<input type="checkbox" tabindex="-1" id="ckb_pagto_antecipado_status_sim" name="ckb_pagto_antecipado_status_sim"
+					value="1"><span class="C" style="cursor:default" 
+					onclick="fFILTRO.ckb_pagto_antecipado_status_sim.click();">Sim</span>
+				</td></tr>
+			</table>
+		</td>
+		<td width="50%" valign="top">
+			<span class="PLTe">STATUS PAGAMENTO ANTECIPADO</span>
+			<br />
+			<table cellspacing="0" cellpadding="0">
+			<tr bgcolor="#FFFFFF"><td align="left">
+				<input type="checkbox" class="CkbPagAntQuitSt" tabindex="-1" id="ckb_pagto_antecipado_quitado_status_pendente" name="ckb_pagto_antecipado_quitado_status_pendente"
+					value="<%=COD_PAGTO_ANTECIPADO_QUITADO_STATUS_PENDENTE%>"><span class="C" style="cursor:default;color:<%=pagto_antecipado_quitado_cor(COD_PAGTO_ANTECIPADO_STATUS_ANTECIPADO, COD_PAGTO_ANTECIPADO_QUITADO_STATUS_PENDENTE)%>;" 
+					onclick="fFILTRO.ckb_pagto_antecipado_quitado_status_pendente.click();"><%=pagto_antecipado_quitado_descricao(COD_PAGTO_ANTECIPADO_STATUS_ANTECIPADO, COD_PAGTO_ANTECIPADO_QUITADO_STATUS_PENDENTE)%></span>
+				</td></tr>
+			<tr bgcolor="#FFFFFF"><td align="left">
+				<input type="checkbox" class="CkbPagAntQuitSt" tabindex="-1" id="ckb_pagto_antecipado_quitado_status_quitado" name="ckb_pagto_antecipado_quitado_status_quitado"
+					value="<%=COD_PAGTO_ANTECIPADO_QUITADO_STATUS_QUITADO%>"><span class="C" style="cursor:default;color:<%=pagto_antecipado_quitado_cor(COD_PAGTO_ANTECIPADO_STATUS_ANTECIPADO, COD_PAGTO_ANTECIPADO_QUITADO_STATUS_QUITADO)%>;" 
+					onclick="fFILTRO.ckb_pagto_antecipado_quitado_status_quitado.click();"><%=pagto_antecipado_quitado_descricao(COD_PAGTO_ANTECIPADO_STATUS_ANTECIPADO, COD_PAGTO_ANTECIPADO_QUITADO_STATUS_QUITADO)%></span>
+				</td></tr>
+			</table>
+		</td>
+	</tr>
+	</table>
+</td></tr>
+
 <!--  ANÁLISE DE CRÉDITO  -->
 <tr bgcolor="#FFFFFF">
 <td class="MDBE" nowrap align="left"><span class="PLTe">ANÁLISE DE CRÉDITO</span>
 	<br>
-	<table cellspacing="0" cellpadding="0" style="margin-bottom:10px;">
-	<tr bgcolor="#FFFFFF"><td align="left">
-		<input type="checkbox" tabindex="-1" id="ckb_analise_credito_st_inicial" name="ckb_analise_credito_st_inicial"
-			value="<%=COD_AN_CREDITO_ST_INICIAL%>"><span class="C" style="cursor:default" 
-			onclick="fFILTRO.ckb_analise_credito_st_inicial.click();">Status Inicial</span>
-		</td></tr>
-	<tr bgcolor="#FFFFFF"><td align="left">
-		<input type="checkbox" tabindex="-1" id="ckb_analise_credito_pendente_vendas" name="ckb_analise_credito_pendente_vendas"
-			value="<%=COD_AN_CREDITO_PENDENTE_VENDAS%>"><span class="C" style="cursor:default" 
-			onclick="fFILTRO.ckb_analise_credito_pendente_vendas.click();">Pendente Vendas</span>
-		</td></tr>
-	<tr bgcolor="#FFFFFF"><td align="left">
-		<input type="checkbox" tabindex="-1" id="ckb_analise_credito_pendente_endereco" name="ckb_analise_credito_pendente_endereco"
-			value="<%=COD_AN_CREDITO_PENDENTE_ENDERECO%>"><span class="C" style="cursor:default" 
-			onclick="fFILTRO.ckb_analise_credito_pendente_endereco.click();">Pendente Endereço</span>
-		</td></tr>
-	<tr bgcolor="#FFFFFF"><td align="left">
-		<input type="checkbox" tabindex="-1" id="ckb_analise_credito_pendente" name="ckb_analise_credito_pendente"
-			value="<%=COD_AN_CREDITO_PENDENTE%>"><span class="C" style="cursor:default" 
-			onclick="fFILTRO.ckb_analise_credito_pendente.click();">Pendente</span>
-		</td></tr>
-	<tr bgcolor="#FFFFFF"><td align="left">
-		<input type="checkbox" tabindex="-1" id="ckb_analise_credito_pendente_cartao" name="ckb_analise_credito_pendente_cartao"
-			value="<%=COD_AN_CREDITO_PENDENTE_CARTAO%>"><span class="C" style="cursor:default" 
-			onclick="fFILTRO.ckb_analise_credito_pendente_cartao.click();">Pendente Cartão de Crédito</span>
-		</td></tr>
-	<tr bgcolor="#FFFFFF"><td align="left">
-		<input type="checkbox" tabindex="-1" id="ckb_analise_credito_ok_aguardando_deposito" name="ckb_analise_credito_ok_aguardando_deposito"
-			value="<%=COD_AN_CREDITO_OK_AGUARDANDO_DEPOSITO%>"><span class="C" style="cursor:default" 
-			onclick="fFILTRO.ckb_analise_credito_ok_aguardando_deposito.click();">Crédito OK (aguardando depósito)</span>
-		</td></tr>
-	<tr bgcolor="#FFFFFF"><td align="left">
-		<input type="checkbox" tabindex="-1" id="ckb_analise_credito_ok_deposito_aguardando_desbloqueio" name="ckb_analise_credito_ok_deposito_aguardando_desbloqueio"
-			value="<%=COD_AN_CREDITO_OK_DEPOSITO_AGUARDANDO_DESBLOQUEIO%>"><span class="C" style="cursor:default" 
-			onclick="fFILTRO.ckb_analise_credito_ok_deposito_aguardando_desbloqueio.click();">Crédito OK (depósito aguardando desbloqueio)</span>
-		</td></tr>
-	<tr bgcolor="#FFFFFF"><td align="left">
-		<input type="checkbox" tabindex="-1" id="ckb_analise_credito_ok" name="ckb_analise_credito_ok"
-			value="<%=COD_AN_CREDITO_OK%>"><span class="C" style="cursor:default" 
-			onclick="fFILTRO.ckb_analise_credito_ok.click();">Crédito OK</span>
-		</td></tr>
+	<table cellspacing="0" cellpadding="0" style="margin-bottom:10px;" width="100%">
+	<tr>
+		<td width="50%" valign="top">
+			<table cellspacing="0" cellpadding="0">
+				<tr bgcolor="#FFFFFF"><td align="left">
+					<input type="checkbox" tabindex="-1" id="ckb_analise_credito_st_inicial" name="ckb_analise_credito_st_inicial"
+						value="<%=COD_AN_CREDITO_ST_INICIAL%>"><span class="C" style="cursor:default;color:<%=x_analise_credito_cor(COD_AN_CREDITO_ST_INICIAL)%>;" 
+						onclick="fFILTRO.ckb_analise_credito_st_inicial.click();">Status Inicial</span>
+					</td></tr>
+				<tr bgcolor="#FFFFFF"><td align="left">
+					<input type="checkbox" tabindex="-1" id="ckb_analise_credito_pendente_vendas" name="ckb_analise_credito_pendente_vendas"
+						value="<%=COD_AN_CREDITO_PENDENTE_VENDAS%>"><span class="C" style="cursor:default;color:<%=x_analise_credito_cor(COD_AN_CREDITO_PENDENTE_VENDAS)%>;" 
+						onclick="fFILTRO.ckb_analise_credito_pendente_vendas.click();">Pendente Vendas</span>
+					</td></tr>
+				<tr bgcolor="#FFFFFF"><td align="left">
+					<input type="checkbox" tabindex="-1" id="ckb_analise_credito_pendente_endereco" name="ckb_analise_credito_pendente_endereco"
+						value="<%=COD_AN_CREDITO_PENDENTE_ENDERECO%>"><span class="C" style="cursor:default;color:<%=x_analise_credito_cor(COD_AN_CREDITO_PENDENTE_ENDERECO)%>;" 
+						onclick="fFILTRO.ckb_analise_credito_pendente_endereco.click();">Pendente Endereço</span>
+					</td></tr>
+				<tr bgcolor="#FFFFFF"><td align="left">
+					<input type="checkbox" tabindex="-1" id="ckb_analise_credito_pendente" name="ckb_analise_credito_pendente"
+						value="<%=COD_AN_CREDITO_PENDENTE%>"><span class="C" style="cursor:default;color:<%=x_analise_credito_cor(COD_AN_CREDITO_PENDENTE)%>;" 
+						onclick="fFILTRO.ckb_analise_credito_pendente.click();">Pendente</span>
+					</td></tr>
+				<tr bgcolor="#FFFFFF"><td align="left">
+					<input type="checkbox" tabindex="-1" id="ckb_analise_credito_pendente_cartao" name="ckb_analise_credito_pendente_cartao"
+						value="<%=COD_AN_CREDITO_PENDENTE_CARTAO%>"><span class="C" style="cursor:default;color:<%=x_analise_credito_cor(COD_AN_CREDITO_PENDENTE_CARTAO)%>;" 
+						onclick="fFILTRO.ckb_analise_credito_pendente_cartao.click();">Pendente Cartão de Crédito</span>
+					</td></tr>
+			</table>
+		</td>
+		<td width="50%" valign="top">
+			<table cellspacing="0" cellpadding="0">
+				<tr bgcolor="#FFFFFF"><td align="left">
+					<input type="checkbox" tabindex="-1" id="ckb_analise_credito_pendente_pagto_antecipado_boleto" name="ckb_analise_credito_pendente_pagto_antecipado_boleto"
+						value="<%=COD_AN_CREDITO_PENDENTE_PAGTO_ANTECIPADO_BOLETO%>" /><span class="C" style="cursor:default;color:<%=x_analise_credito_cor(COD_AN_CREDITO_PENDENTE_PAGTO_ANTECIPADO_BOLETO)%>;"
+						onclick="fFILTRO.ckb_analise_credito_pendente_pagto_antecipado_boleto.click();"><%=x_analise_credito(COD_AN_CREDITO_PENDENTE_PAGTO_ANTECIPADO_BOLETO)%></span>
+					</td></tr>
+				<tr bgcolor="#FFFFFF"><td align="left">
+					<input type="checkbox" tabindex="-1" id="ckb_analise_credito_ok_aguardando_deposito" name="ckb_analise_credito_ok_aguardando_deposito"
+						value="<%=COD_AN_CREDITO_OK_AGUARDANDO_DEPOSITO%>"><span class="C" style="cursor:default;color:<%=x_analise_credito_cor(COD_AN_CREDITO_OK_AGUARDANDO_DEPOSITO)%>;" 
+						onclick="fFILTRO.ckb_analise_credito_ok_aguardando_deposito.click();">Crédito OK (aguardando depósito)</span>
+					</td></tr>
+				<tr bgcolor="#FFFFFF"><td align="left">
+					<input type="checkbox" tabindex="-1" id="ckb_analise_credito_ok_deposito_aguardando_desbloqueio" name="ckb_analise_credito_ok_deposito_aguardando_desbloqueio"
+						value="<%=COD_AN_CREDITO_OK_DEPOSITO_AGUARDANDO_DESBLOQUEIO%>"><span class="C" style="cursor:default;color:<%=x_analise_credito_cor(COD_AN_CREDITO_OK_DEPOSITO_AGUARDANDO_DESBLOQUEIO)%>;" 
+						onclick="fFILTRO.ckb_analise_credito_ok_deposito_aguardando_desbloqueio.click();">Crédito OK (depósito aguardando desbloqueio)</span>
+					</td></tr>
+				<tr bgcolor="#FFFFFF"><td align="left">
+					<input type="checkbox" tabindex="-1" id="ckb_analise_credito_ok_aguardando_pagto_boleto_av" name="ckb_analise_credito_ok_aguardando_pagto_boleto_av"
+						value="<%=COD_AN_CREDITO_OK_AGUARDANDO_PAGTO_BOLETO_AV%>" /><span class="C" style="cursor:default;color:<%=x_analise_credito_cor(COD_AN_CREDITO_OK_AGUARDANDO_PAGTO_BOLETO_AV)%>;"
+						onclick="fFILTRO.ckb_analise_credito_ok_aguardando_pagto_boleto_av.click();"><%=x_analise_credito(COD_AN_CREDITO_OK_AGUARDANDO_PAGTO_BOLETO_AV)%></span>
+					</td></tr>
+				<tr bgcolor="#FFFFFF"><td align="left">
+					<input type="checkbox" tabindex="-1" id="ckb_analise_credito_ok" name="ckb_analise_credito_ok"
+						value="<%=COD_AN_CREDITO_OK%>"><span class="C" style="cursor:default;color:<%=x_analise_credito_cor(COD_AN_CREDITO_OK)%>;" 
+						onclick="fFILTRO.ckb_analise_credito_ok.click();">Crédito OK</span>
+					</td></tr>
+			</table>
+		</td>
+	</tr>
 	</table>
 </td></tr>
 
@@ -943,23 +1056,33 @@ function exibe_botao_confirmar() {
 <tr bgcolor="#FFFFFF">
 <td class="MDBE" align="left" nowrap><span class="PLTe">GERAL</span>
 	<br>
-	<table cellspacing="0" cellpadding="0" style="margin-bottom:10px;">
-	<tr bgcolor="#FFFFFF"><td align="left">
-		<input type="checkbox" tabindex="-1" id="ckb_obs2_preenchido" name="ckb_obs2_preenchido"
-			value="ON"><span class="C" style="cursor:default" 
-			onclick="fFILTRO.ckb_obs2_preenchido.click();">OBS II preenchido</span>
-		</td></tr>
-	<tr bgcolor="#FFFFFF"><td align="left">
-		<input type="checkbox" tabindex="-1" id="ckb_obs2_nao_preenchido" name="ckb_obs2_nao_preenchido"
-			value="ON"><span class="C" style="cursor:default" 
-			onclick="fFILTRO.ckb_obs2_nao_preenchido.click();">OBS II não preenchido</span>
-		</td></tr>
-	<tr bgcolor="#FFFFFF"><td align="left">
-		<%	s_memoria = get_default_valor_texto_bd(usuario, "CENTRAL/RelPedidosMCrit|ckb_nao_exibir_rastreio") %>
-		<input type="checkbox" tabindex="-1" id="ckb_nao_exibir_rastreio" name="ckb_nao_exibir_rastreio"
-			value="ON" <%if s_memoria <> "" then Response.Write " checked"%> /><span class="C" style="cursor:default" 
-			onclick="fFILTRO.ckb_nao_exibir_rastreio.click();">Não exibir link de rastreamento</span>
-		</td></tr>
+	<table cellspacing="0" cellpadding="0" style="margin-bottom:10px;" width="100%">
+	<tr>
+		<td width="50%" valign="top">
+			<table cellspacing="0" cellpadding="0">
+				<tr bgcolor="#FFFFFF"><td align="left">
+					<input type="checkbox" tabindex="-1" id="ckb_obs2_preenchido" name="ckb_obs2_preenchido"
+						value="ON"><span class="C" style="cursor:default" 
+						onclick="fFILTRO.ckb_obs2_preenchido.click();">Nº NF preenchido</span>
+					</td></tr>
+				<tr bgcolor="#FFFFFF"><td align="left">
+					<input type="checkbox" tabindex="-1" id="ckb_obs2_nao_preenchido" name="ckb_obs2_nao_preenchido"
+						value="ON"><span class="C" style="cursor:default" 
+						onclick="fFILTRO.ckb_obs2_nao_preenchido.click();">Nº NF não preenchido</span>
+					</td></tr>
+			</table>
+		</td>
+		<td width="50%" valign="top">
+			<table cellspacing="0" cellpadding="0">
+				<tr bgcolor="#FFFFFF"><td align="left">
+					<%	s_memoria = get_default_valor_texto_bd(usuario, "CENTRAL/RelPedidosMCrit|ckb_nao_exibir_links") %>
+					<input type="checkbox" tabindex="-1" id="ckb_nao_exibir_links" name="ckb_nao_exibir_links"
+						value="ON" <%if s_memoria <> "" then Response.Write " checked"%> /><span class="C" style="cursor:default" 
+						onclick="fFILTRO.ckb_nao_exibir_links.click();">Não exibir links</span>
+					</td></tr>
+			</table>
+		</td>
+	</tr>
 	</table>
 </td></tr>
 
@@ -1021,6 +1144,7 @@ function exibe_botao_confirmar() {
 			onclick="fFILTRO.ckb_produto.click();">Somente pedidos que incluam:</span
 			><br><span class="C" style="margin-left:30px;">Fabricante</span><input maxlength="4" class="Cc" style="width:50px;" name="c_fabricante" id="c_fabricante" onblur="this.value=normaliza_codigo(this.value,TAM_MIN_FABRICANTE);" onkeypress="if (digitou_enter(true)) fFILTRO.c_produto.focus(); else fFILTRO.ckb_produto.checked=true; filtra_fabricante();" onclick="fFILTRO.ckb_produto.checked=true;">
 			<span class="C">&nbsp;&nbsp;&nbsp;Produto</span><input maxlength="13" class="Cc" style="width:100px;" name="c_produto" id="c_produto" onblur="this.value=ucase(normaliza_codigo(this.value,TAM_MIN_PRODUTO));" onkeypress="if (digitou_enter(true)) bCONFIRMA.focus(); else fFILTRO.ckb_produto.checked=true; filtra_produto();" onclick="fFILTRO.ckb_produto.checked=true;">
+			<span class="C">&nbsp;&nbsp;&nbsp;</span><input type="checkbox" tabindex="-1" id="ckb_somente_pedidos_produto_alocado" name="ckb_somente_pedidos_produto_alocado" value="ON" /><span class="C" style="cursor:default;" onclick="fFILTRO.ckb_somente_pedidos_produto_alocado.click();">Somente pedidos que possuam o produto alocado</span>
 		</td></tr>
 	</table>
 </td></tr>

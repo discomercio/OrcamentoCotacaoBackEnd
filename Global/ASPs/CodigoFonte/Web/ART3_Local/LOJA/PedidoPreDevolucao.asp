@@ -91,6 +91,7 @@
         end if
 
     dim serverVariablesUrl, serverVariablesServerName
+	'Esta página foi ajustada para usar a função getProtocoloEmUsoHttpOrHttps() na montagem da URL
     serverVariablesServerName = Request.ServerVariables("SERVER_NAME") & ":" & Request.ServerVariables("SERVER_PORT")
     serverVariablesUrl = Request.ServerVariables("URL")
     serverVariablesUrl = Ucase(serverVariablesUrl)
@@ -98,7 +99,10 @@
     serverVariablesUrl = serverVariablesServerName & serverVariablesUrl
 
     if alerta = "" then
-        s = "SELECT * FROM t_PEDIDO_DEVOLUCAO " & _
+        s = "SELECT" & _
+				" t_PEDIDO_DEVOLUCAO.*," & _
+				" t_PEDIDO.loja" & _
+			" FROM t_PEDIDO_DEVOLUCAO " & _
                 "INNER JOIN t_PEDIDO on t_PEDIDO_DEVOLUCAO.pedido = t_PEDIDO.pedido WHERE (id='" & id_devolucao & "')"
         set rs = cn.Execute(s)
 	    if Err <> 0 then Response.Redirect("aviso.asp?id=" & ERR_FALHA_OPERACAO_BD)
@@ -553,7 +557,7 @@ serverVariableUrl = serverVariableUrl.substring(0, serverVariableUrl.indexOf("LO
 
 	    $.ajax({
 	        type: form.attr('method'),
-	        url: 'http://<%=Request.ServerVariables("SERVER_NAME")%>:<%=Request.ServerVariables("SERVER_PORT")%>' + serverVariableUrl + 'WebAPI/api/UploadFile/PostFile',
+			url: '<%=getProtocoloEmUsoHttpOrHttps%>://<%=Request.ServerVariables("SERVER_NAME")%>:<%=Request.ServerVariables("SERVER_PORT")%>' + serverVariableUrl + 'WebAPI/api/UploadFile/PostFile',
 	        enctype: 'multipart/form-data',
 	        processData: false,
 	        contentType: false,
@@ -1100,7 +1104,7 @@ select[disabled]::-ms-expand{
     else
         x = r("stored_file_name")
         file_extension = Mid(x, Instr(x, ".")+1, Len(x))
-        full_url_file_href = "http://"
+        full_url_file_href = getProtocoloEmUsoHttpOrHttps & "://"
         full_url_file_href = full_url_file_href & serverVariablesUrl
         full_url_file_href = full_url_file_href & "FileServer/"
         full_url_file_href = full_url_file_href & r("stored_relative_path")
@@ -1395,7 +1399,7 @@ end if %>
 		<img src="../botao/confirmar.gif" width="176" height="55" id="btnCONFIRMAR" border="0"></a></div>
 	</td>
 <% end if %>
-<% if ((usuario = rs("usuario_cadastro") Or usuario = r_pedido.vendedor) And st_codigo = COD_ST_PEDIDO_DEVOLUCAO__CADASTRADA) then %>
+<% if ((usuario = rs("usuario_cadastro")) Or (usuario = r_pedido.vendedor)) And (st_codigo = COD_ST_PEDIDO_DEVOLUCAO__CADASTRADA) then %>
 <% if blnExibeBotaoConfirma then %>
 </tr>
 <tr>

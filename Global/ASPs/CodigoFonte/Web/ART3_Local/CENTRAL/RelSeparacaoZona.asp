@@ -149,7 +149,12 @@
 				" (t_PEDIDO.st_entrega='" & ST_ENTREGA_SEPARAR & "')" & _
 				" AND (t_PEDIDO.a_entregar_data_marcada IS NOT NULL)" & _
 				" AND (t_PEDIDO.st_etg_imediata = " & COD_ETG_IMEDIATA_SIM & ")" & _
-				" AND (t_PEDIDO__BASE.analise_credito = " & COD_AN_CREDITO_OK & ")"
+				" AND (t_PEDIDO__BASE.analise_credito = " & COD_AN_CREDITO_OK & ")" & _
+				" AND (" & _
+						"(t_PEDIDO__BASE.PagtoAntecipadoStatus = " & COD_PAGTO_ANTECIPADO_STATUS_NORMAL & ")" & _
+						" OR " & _
+						"((t_PEDIDO__BASE.PagtoAntecipadoStatus = " & COD_PAGTO_ANTECIPADO_STATUS_ANTECIPADO & ") AND (t_PEDIDO.PagtoAntecipadoQuitadoStatus = " & COD_PAGTO_ANTECIPADO_QUITADO_STATUS_QUITADO & "))" & _
+					")"
 		
 		s = "SELECT " & _
 				"*" & _
@@ -313,7 +318,7 @@ dim rNfeEmitente
 				" t_CLIENTE.cep AS cliente_cep," & _
 				" t_PEDIDO.endereco_memorizado_status," & _
 				" t_PEDIDO.st_memorizacao_completa_enderecos," & _
-				" dbo.SqlClrUtilIniciaisEmMaiusculas(t_PEDIDO.endereco_nome) AS pedido_endereco_nome," & _
+				" t_PEDIDO.endereco_nome_iniciais_em_maiusculas AS pedido_endereco_nome," & _
 				" t_PEDIDO.endereco_logradouro AS pedido_endereco_logradouro," & _
 				" t_PEDIDO.endereco_numero AS pedido_endereco_numero," & _
 				" t_PEDIDO.endereco_complemento AS pedido_endereco_complemento," & _
@@ -355,7 +360,12 @@ dim rNfeEmitente
 				" (t_PEDIDO.st_entrega='" & ST_ENTREGA_SEPARAR & "')" & _
 				" AND (t_PEDIDO.a_entregar_data_marcada IS NOT NULL)" & _
 				" AND (t_PEDIDO.st_etg_imediata = " & COD_ETG_IMEDIATA_SIM & ")" & _
-				" AND (t_PEDIDO__BASE.analise_credito = " & COD_AN_CREDITO_OK & ")"
+				" AND (t_PEDIDO__BASE.analise_credito = " & COD_AN_CREDITO_OK & ")" & _
+				" AND (" & _
+						"(t_PEDIDO__BASE.PagtoAntecipadoStatus = " & COD_PAGTO_ANTECIPADO_STATUS_NORMAL & ")" & _
+						" OR " & _
+						"((t_PEDIDO__BASE.PagtoAntecipadoStatus = " & COD_PAGTO_ANTECIPADO_STATUS_ANTECIPADO & ") AND (t_PEDIDO.PagtoAntecipadoQuitadoStatus = " & COD_PAGTO_ANTECIPADO_QUITADO_STATUS_QUITADO & "))" & _
+					")"
 	
 	if IsDate(c_dt_inicio) then
 		s_sql = s_sql & " AND (t_PEDIDO.a_entregar_data_marcada >= " & bd_formata_data(StrToDate(c_dt_inicio)) & ")"
