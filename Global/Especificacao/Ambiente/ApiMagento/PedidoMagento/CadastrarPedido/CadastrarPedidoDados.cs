@@ -23,17 +23,17 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
         }
 
         //temos que gear um novo Pedido_bs_x_ac em cada pedido
-        private static volatile int Pedido_bs_x_ac = 123456789;
-        private static readonly object _lockObject_Pedido_bs_x_ac = new object();
+        private static volatile int Pedido_magento = 123456789;
+        private static readonly object _lockObject_Pedido_magento = new object();
 
         public static MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoDto PedidoBaseComEnderecoDeEntrega()
         {
             var ret = Testes.Utils.LerJson.LerArquivoEmbutido<MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoDto>(
                 "Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedidoDados.json");
-            lock (_lockObject_Pedido_bs_x_ac)
+            lock (_lockObject_Pedido_magento)
             {
-                ret.InfCriacaoPedido.Pedido_bs_x_ac = Pedido_bs_x_ac.ToString("d");
-                Pedido_bs_x_ac++;
+                ret.InfCriacaoPedido.Pedido_magento = Pedido_magento.ToString("d");
+                Pedido_magento++;
             }
             return ret;
         }

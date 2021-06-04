@@ -37,8 +37,14 @@ Scenario: DadosPessoais - CPF
 	When Informo "cnpj_cpf" = ""
 	Then Erro "CPF NÃO FORNECIDO."
 
+Scenario: DadosPessoais - remover pontuações do CPF
+	When Informo "EndEtg_cnpj_cpf" = "297.561.948-04"
+	When Informo "cnpj_cpf" = "297.561.948-04"
+	Then Sem nenhum erro
+	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "29756194804", verificar campo "cnpj_cpf" = "29756194804"
+
 Scenario: DadosPessoais - Produtor Rural
-	Para cliente PF assumimos que Endereco_produtor_rural_status = 1 (COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)
+	#Para cliente PF assumimos que Endereco_produtor_rural_status = 1 (COD_ST_CLIENTE_PRODUTOR_RURAL_NAO)
 	Then Sem nenhum erro
 	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "29756194804", verificar campo "produtor_rural_status" = "1"
 

@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P40_Produtos
+namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P35_Totais
 {
     using TechTalk.SpecFlow;
     using System;
@@ -20,20 +20,24 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P40_Pr
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "ignore")]
-    public partial class ProdutosCompostosFeature : object, Xunit.IClassFixture<ProdutosCompostosFeature.FixtureData>, System.IDisposable
+    [Xunit.TraitAttribute("Category", "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido")]
+    [Xunit.TraitAttribute("Category", "GerenciamentoBanco")]
+    public partial class BSellerInterestFeature : object, Xunit.IClassFixture<BSellerInterestFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "ignore"};
+                "ignore",
+                "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido",
+                "GerenciamentoBanco"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "ProdutosCompostos.feature"
+#line 1 "BSellerInterest.feature"
 #line hidden
         
-        public ProdutosCompostosFeature(ProdutosCompostosFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public BSellerInterestFeature(BSellerInterestFeature.FixtureData fixtureData, Especificacao_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,10 +46,11 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P40_Pr
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "ProdutosCompostos", @"	Verifica se a Api Magento está aceitando o pedido com produtos compostos.
-	Obs: Esse processo é novo! Passaremos a permitir que o Magento envie os produtos compostos para que a ApiMagento
-		 faça a separação dos produtos compostos antes de inserir o pedido", ProgrammingLanguage.CSharp, new string[] {
-                        "ignore"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "BSellerInterest", "\tBSellerInterest: nos casos em que seja diferente de zero, o pedido deve ser proc" +
+                    "essado manualmente.", ProgrammingLanguage.CSharp, new string[] {
+                        "ignore",
+                        "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido",
+                        "GerenciamentoBanco"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -85,14 +90,14 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P40_Pr
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="ProdutosCompostos - execede Qtde maxima de itens")]
-        [Xunit.TraitAttribute("FeatureTitle", "ProdutosCompostos")]
-        [Xunit.TraitAttribute("Description", "ProdutosCompostos - execede Qtde maxima de itens")]
-        public virtual void ProdutosCompostos_ExecedeQtdeMaximaDeItens()
+        [Xunit.SkippableFactAttribute(DisplayName="BSellerInterest - sucesso")]
+        [Xunit.TraitAttribute("FeatureTitle", "BSellerInterest")]
+        [Xunit.TraitAttribute("Description", "BSellerInterest - sucesso")]
+        public virtual void BSellerInterest_Sucesso()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ProdutosCompostos - execede Qtde maxima de itens", null, tagsOfScenario, argumentsOfScenario);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("BSellerInterest - sucesso", null, tagsOfScenario, argumentsOfScenario);
 #line 7
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -114,56 +119,27 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 8
- testRunner.Then("afazer: montar pedido somente com produtos compostos", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            }
-            this.ScenarioCleanup();
-        }
-        
-        [Xunit.SkippableFactAttribute(DisplayName="ProdutosCompostos - Sucesso")]
-        [Xunit.TraitAttribute("FeatureTitle", "ProdutosCompostos")]
-        [Xunit.TraitAttribute("Description", "ProdutosCompostos - Sucesso")]
-        public virtual void ProdutosCompostos_Sucesso()
-        {
-            string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ProdutosCompostos - Sucesso", null, tagsOfScenario, argumentsOfScenario);
+#line 9
+ testRunner.And("Informo \"PedidoTotaisMagentoDto.BSellerInterest\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
 #line 10
-this.ScenarioInitialize(scenarioInfo);
-#line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
-            {
-                testRunner.SkipScenario();
-            }
-            else
-            {
-                this.ScenarioStart();
-#line 11
- testRunner.Then("afazer: criar um pedido com produtos compostos", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="ProdutosCompostos - produtos repetidos")]
-        [Xunit.TraitAttribute("FeatureTitle", "ProdutosCompostos")]
-        [Xunit.TraitAttribute("Description", "ProdutosCompostos - produtos repetidos")]
-        public virtual void ProdutosCompostos_ProdutosRepetidos()
+        [Xunit.SkippableFactAttribute(DisplayName="BSellerInterest - erro")]
+        [Xunit.TraitAttribute("FeatureTitle", "BSellerInterest")]
+        [Xunit.TraitAttribute("Description", "BSellerInterest - erro")]
+        public virtual void BSellerInterest_Erro()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ProdutosCompostos - produtos repetidos", null, tagsOfScenario, argumentsOfScenario);
-#line 13
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("BSellerInterest - erro", null, tagsOfScenario, argumentsOfScenario);
+#line 12
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -183,9 +159,15 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 16
-testRunner.Then("afazer: criar pedido com produto composto e inserir produtos simples que existe n" +
-                        "o composto", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 13
+ testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 14
+ testRunner.And("Informo \"PedidoTotaisMagentoDto.BSellerInterest\" = \"10.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 15
+ testRunner.Then("afazer: verificar o que será feito nesse caso para poder validar da forma correta" +
+                        "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -198,12 +180,12 @@ testRunner.Then("afazer: criar pedido com produto composto e inserir produtos si
             
             public FixtureData()
             {
-                ProdutosCompostosFeature.FeatureSetup();
+                BSellerInterestFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                ProdutosCompostosFeature.FeatureTearDown();
+                BSellerInterestFeature.FeatureTearDown();
             }
         }
     }

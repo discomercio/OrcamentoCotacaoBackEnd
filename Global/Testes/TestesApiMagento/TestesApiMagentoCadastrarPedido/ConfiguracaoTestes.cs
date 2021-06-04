@@ -21,6 +21,6 @@ namespace TestesApiMagentoCadastrarPedido
             return ret;
         }
         public string UrlApiMagentoCadastrarPedido = "http://its-appdev:9003/api/pedidoMagento/cadastrarPedido";
-        public int NumeroExecucoes = 10;
+        public int NumeroExecucoes = 100;
     }
 }

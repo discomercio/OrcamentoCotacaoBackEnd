@@ -22,7 +22,7 @@ Fluxo no módulo loja:
 20 - Passo20: Confirmar (ou editar) dados cadastrais e informar endereço de entrega
 	se editar dados cadastrais, salva na t_cliente
 25 - Passo 25: somente na API. Validar dados cadastrais. Não existe na tela porque sempre se usa o atual do cliente.
-30 - Passo30: Escolher indicador e RA e Modo de Seleção do CD 
+30 - Passo30: Escolher indicador e RA e Modo de Seleção do CD, Perc_rt, campos magento, etc.
 40 - Passo40: Escolher produtos, quantidades e alterar valores e forma de pagamento
 50 - Passo50: Informar observações (entrega imediata, instalador instala, etc) 
 60 - Passo60: Salvar o pedido

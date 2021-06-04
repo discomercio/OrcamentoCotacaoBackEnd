@@ -14,8 +14,8 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         /// </summary>
         [Required]
         [MaxLength(9)]
-        public string Pedido_bs_x_ac { get; set; }
-
+        public string Pedido_magento { get; set; }
+public string afazer_Pedido_bs_x_ac { get; set; }
 
         /// <summary>
         /// Código obtido através da chamada obterCodigoMarketplace, campo Codigo (uma string de 3 dígitos)
@@ -31,6 +31,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         /// <hr />
         /// </summary>
         [MaxLength(20)]
-        public string? Pedido_bs_x_marketplace { get; set; }
+        public string? Pedido_marketplace { get; set; }
+public string? afazer_Pedido_bs_x_marketplace { get; set; }
     }
 }

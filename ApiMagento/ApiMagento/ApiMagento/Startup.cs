@@ -177,9 +177,9 @@ namespace ApiMagento
         public static void ConfigurarServicosComuns(IServiceCollection services)
         {
             services.AddTransient<AcessoMagentoBll, AcessoMagentoBll>();
-            services.AddTransient<MagentoBusiness.MagentoBll.MagentoBll.PedidoMagentoBll, MagentoBusiness.MagentoBll.MagentoBll.PedidoMagentoBll>();
+            services.AddTransient<MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento.PedidoMagentoBll, MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento.PedidoMagentoBll>();
             services.AddTransient<MagentoBusiness.MagentoBll.MagentoBll.ObterCodigoMarketplaceBll, MagentoBusiness.MagentoBll.MagentoBll.ObterCodigoMarketplaceBll>();
-            services.AddTransient<MagentoBusiness.MagentoBll.MagentoBll.PedidoMagentoClienteBll, MagentoBusiness.MagentoBll.MagentoBll.PedidoMagentoClienteBll>();
+            services.AddTransient<MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento.PedidoMagentoClienteBll, MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento.PedidoMagentoClienteBll>();
 
             services.AddTransient<Cep.CepBll, Cep.CepBll>();
             services.AddTransient<Prepedido.PrepedidoBll, Prepedido.PrepedidoBll>();

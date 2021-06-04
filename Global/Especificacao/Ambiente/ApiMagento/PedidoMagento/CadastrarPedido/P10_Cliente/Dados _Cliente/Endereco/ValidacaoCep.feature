@@ -1,6 +1,6 @@
 ﻿@Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 @GerenciamentoBanco
-Feature: Validacao
+Feature: ValidacaoCep
 	Pedidos do magento validamos Cidade contra o IGBE e UF contra o CEP informado. Não validamos nenhum outro campo do endereço.
 	Se o CEP não existir, aceitamos o que veio e só validar a cidade e a UF no IBGE.
 	confirmando: se o magento mandar um CEP que não temos, aceitamos e só validamos a cidade e UF.
@@ -53,6 +53,7 @@ Scenario: Validacao - CEP que não existe na base - sucesso
 	#a cidade consta no IBGE
 	#não deve validar UF, Endereço, Bairro
 	Given Pedido base
+	When Informo "Endereco_cnpj_cpf" = "14039603052"
 	When Informo "EndEtg_cidade" = "São Paulo"
 	When Informo "EndEtg_uf" = "MG"
 	When Informo "EndEtg_cep" = "01010900"
@@ -61,6 +62,7 @@ Scenario: Validacao - CEP que não existe na base - sucesso
 	When Informo "EndEtg_endereco_complemento" = "teste"
 	When Informo "EndEtg_bairro" = "teste"
 	Then Sem nenhum erro
+	And Tabela "t_CLIENTE" registro com campo "cnpj_cpf" = "14039603052", verificar campo "cep" = "01010900"
 	#pedido sem cadastrar o cliente
 	Given Pedido base
 	When Informo "EndEtg_cidade" = "São Paulo"

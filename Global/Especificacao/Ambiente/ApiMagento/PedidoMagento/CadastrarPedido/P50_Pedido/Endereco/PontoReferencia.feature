@@ -29,7 +29,6 @@ Scenario: PontoReferencia - igual de EndEtg_endereco_complemento
 Scenario: PontoReferencia - EndEtg_endereco_complemento com mais de 60 caracteres
 	#Se o campo complemento exceder o tamanho do BD e precisar ser truncado,
 	#copiá-lo no campo 'Constar na NF', junto com o ponto de referência.
-	#obs => truncar 57 caracteres e colocar (...)
 	Given Pedido base
 	When Informo "EnderecoEntrega.PontoReferencia" = "teste de ponto de referencia"
 	#                                                      10        20        30        40        50        60
@@ -41,7 +40,6 @@ Scenario: PontoReferencia - EndEtg_endereco_complemento com mais de 60 caractere
 Scenario: PontoReferencia - EndEtg_endereco_complemento com mais de 60 caracteres sem Ponto de referencia
 	#Se o campo complemento exceder o tamanho do BD e precisar ser truncado,
 	#copiá-lo no campo 'Constar na NF', junto com o ponto de referência.
-	#obs => truncar 57 caracteres e colocar (...)
 	Given Pedido base
 	When Informo "EnderecoEntrega.PontoReferencia" = ""
 	When Informo "EndEtg_endereco_complemento" = "complemento endereço entrega 12 complemento endereço entrega 12"

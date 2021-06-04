@@ -10,7 +10,11 @@ Background: Setup
 	Given Usar produto "um" como fabricante = "003", produto = "003220"
 	Given Usar produto "dois" como fabricante = "003", produto = "003221"
 	When Lista de itens "0" informo "Qtde" = "100"
+	And Lista de itens "0" informo "Subtotal" = "62658.00"
+	And Lista de itens "0" informo "RowTotal" = "62658.00"
 	When Lista de itens "1" informo "Qtde" = "100"
+	And Lista de itens "1" informo "Subtotal" = "93687.00"
+	And Lista de itens "1" informo "RowTotal" = "93687.00"
 	And Recalcular totais do pedido
 	And Deixar forma de pagamento consistente
 	Given Zerar todo o estoque
@@ -324,5 +328,5 @@ Scenario: Preenche_os_campos_do_pedido_filhote - Marketplace e magento
 	#mas deveriamos verificar que gravou algo!
 	#And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "pedido_bs_x_ac" = "123457006"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "pedido_bs_x_at" = ""
-	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "pedido_bs_x_marketplace" = ""
+	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "pedido_bs_x_marketplace" = "null"
 	And Tabela "t_PEDIDO" registros filhotes criados, verificar campo "marketplace_codigo_origem" = "001"

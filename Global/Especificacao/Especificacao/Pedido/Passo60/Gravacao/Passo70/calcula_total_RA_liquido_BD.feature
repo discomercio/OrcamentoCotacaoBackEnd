@@ -27,9 +27,11 @@ Scenario: calcula_total_RA_liquido_BD - magento
 	#	end if
 	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
-	When Informo "Frete" = "10"
+	When Informo "Frete" = "377.34"
 	When Lista de itens "0" informo "Preco_NF" = "704.05"
 	When Lista de itens "1" informo "Preco_NF" = "1051.07"
+	And Recalcular totais do pedido
+	And Deixar forma de pagamento consistente
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_total_RA_liquido" = "377.34"
 
@@ -40,5 +42,7 @@ Scenario: somente Loja - calcula_total_RA_liquido_BD
 	When Informo "PermiteRaStatus" = "1"
 	When Lista de itens "0" informo "Preco_NF" = "704.05"
 	When Lista de itens "1" informo "Preco_NF" = "1051.07"
+	And Recalcular totais do pedido
+	And Deixar forma de pagamento consistente
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "vl_total_RA_liquido" = "377.34"

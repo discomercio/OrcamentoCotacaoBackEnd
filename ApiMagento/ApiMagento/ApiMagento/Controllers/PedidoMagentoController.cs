@@ -19,12 +19,12 @@ namespace ApiMagento.Controllers
     public class PedidoMagentoController : Controller
     {
         private readonly IServicoValidarTokenApiMagento servicoValidarTokenApiMagento;
-        private readonly PedidoMagentoBll pedidoMagentoBll;
+        private readonly MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento.PedidoMagentoBll pedidoMagentoBll;
         private readonly ObterCodigoMarketplaceBll obterCodigoMarketplaceBll;
         private readonly ILogger<PedidoMagentoController> logger;
 
         public PedidoMagentoController(IServicoValidarTokenApiMagento servicoValidarTokenApiMagento,
-            PedidoMagentoBll pedidoMagentoBll,
+            MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento.PedidoMagentoBll pedidoMagentoBll,
             MagentoBusiness.MagentoBll.MagentoBll.ObterCodigoMarketplaceBll obterCodigoMarketplaceBll,
             ILogger<PedidoMagentoController> logger)
         {
@@ -42,9 +42,9 @@ namespace ApiMagento.Controllers
         [AllowAnonymous]
         [HttpPost("cadastrarPedido")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<ActionResult<PedidoResultadoMagentoDto>> CadastrarPedido(PedidoMagentoDto pedido)
+        public async Task<ActionResult<PedidoMagentoResultadoDto>> CadastrarPedido(PedidoMagentoDto pedido)
         {
-            logger.LogInformation($"CadastrarPedido início - pedido: {System.Text.Json.JsonSerializer.Serialize(pedido)}");
+            logger.LogInformation($"CadastrarPedido início - entrada: {System.Text.Json.JsonSerializer.Serialize(pedido)}");
 
             //em 210115 estava demorando 8,1 segundos
             //em 210120 estava demorando de 10,0 a 11,5 segundos de casa com vpn 
@@ -61,8 +61,9 @@ namespace ApiMagento.Controllers
             string apelido = usuario;
 
             var ret = await pedidoMagentoBll.CadastrarPedidoMagento(pedido, apelido);
-            logger.LogInformation($"CadastrarPedido fim - pedido: {System.Text.Json.JsonSerializer.Serialize(pedido)}");
-            logger.LogInformation($"CadastrarPedido fim - ret: {System.Text.Json.JsonSerializer.Serialize(ret)}");
+            //todo: colocar o mesmo log no prepedido e na api unis
+            logger.LogInformation($"CadastrarPedido fim - entrada: {System.Text.Json.JsonSerializer.Serialize(pedido)}");
+            logger.LogInformation($"CadastrarPedido fim - saída: {System.Text.Json.JsonSerializer.Serialize(ret)}");
             return Ok(ret);
         }
 
@@ -86,8 +87,32 @@ namespace ApiMagento.Controllers
 
             var ret = await obterCodigoMarketplaceBll.ObterCodigoMarketplace();
             logger.LogInformation($"ObterCodigoMarketplace fim - tokenAcesso: {tokenAcesso}");
-            logger.LogInformation($"ObterCodigoMarketplace fim - ret: {System.Text.Json.JsonSerializer.Serialize(ret)}");
+            //este é meio grande.... logger.LogInformation($"ObterCodigoMarketplace fim - retorno: {System.Text.Json.JsonSerializer.Serialize(ret)}");
             return Ok(ret);
+        }
+
+        /// <summary>
+        /// Chamada para alterar o status do pedido cadastrado.
+        /// </summary>
+        /// <returns>AlterarMagentoPedidoStatusResultadoDto</returns>
+        [AllowAnonymous]
+        [HttpPost("alterarMagentoPedidoStatus")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public async Task<ActionResult<AlterarMagentoPedidoStatusResultadoDto>> AlterarMagentoPedidoStatus(AlterarMagentoPedidoStatusDto alterarPedidoStatus)
+        {
+            logger.LogInformation($"AlterarMagentoPedidoStatus início - entrada: {System.Text.Json.JsonSerializer.Serialize(alterarPedidoStatus)}");
+
+            if (!servicoValidarTokenApiMagento.ValidarToken(alterarPedidoStatus.TokenAcesso, out string? usuario))
+                return Unauthorized();
+            if (string.IsNullOrEmpty(usuario))
+                return Unauthorized();
+
+            AlterarMagentoPedidoStatusResultadoDto ret = new AlterarMagentoPedidoStatusResultadoDto();
+
+            logger.LogInformation($"AlterarMagentoPedidoStatus fim - entrada: {System.Text.Json.JsonSerializer.Serialize(alterarPedidoStatus)}");
+            logger.LogInformation($"AlterarMagentoPedidoStatus fim - saída: {System.Text.Json.JsonSerializer.Serialize(ret)}");
+
+            return Ok(await Task.FromResult(ret));
         }
     }
 }

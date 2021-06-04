@@ -93,6 +93,7 @@
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\Passo40\Descontinuado - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\Passo40\ValidacaoEstoque3.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\Passo60\Itens\ESTOQUE_produto_saida_v2 - Copy.feature.cs" />
+    <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\Passo60\Itens\Gerar_t_PEDIDO_ITEM - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\000-Roteiro_o_que_testar - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\SplitComUnicoCd - Copy.feature.cs" />
     <SpecFlowObsoleteCodeBehindFiles Remove="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\SplitEstoqueResultante3casos - Copy.feature.cs" />
@@ -222,6 +223,9 @@
     </Compile>
     <Compile Update="Especificacao\Pedido\Passo60\Gravacao\Passo40\Descontinuado.feature.cs">
       <DependentUpon>Descontinuado.feature</DependentUpon>
+    </Compile>
+    <Compile Update="Especificacao\Pedido\Passo60\Gravacao\Passo60\Itens\Gerar_t_PEDIDO_ITEM_SERVICO.feature.cs">
+      <DependentUpon>Gerar_t_PEDIDO_ITEM_SERVICO.feature</DependentUpon>
     </Compile>
     <Compile Update="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\P200-Um_produto_dois_cds.feature.cs">
       <DependentUpon>P200-Um_produto_dois_cds.feature</DependentUpon>
@@ -402,6 +406,10 @@
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
     </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo60\Gravacao\Passo60\Itens\Gerar_t_PEDIDO_ITEM_SERVICO.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
     <SpecFlowFeatureFiles Update="Especificacao\Pedido\Passo60\Gravacao\SplitEstoque\P200-Um_produto_dois_cds.feature">
       <Visible>$(UsingMicrosoftNETSdk)</Visible>
       <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
@@ -478,6 +486,10 @@
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tusuario.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\TorcamentistaEindicador.json" />
     <EmbeddedResource Include="Testes\Utils\BancoTestes\Dados\Tcliente.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Ambiente\ApiMagento\PedidoMagento\CadastrarPedido\P40_Produtos\P30_CalcularDesconto\" />
   </ItemGroup>
 
 </Project>

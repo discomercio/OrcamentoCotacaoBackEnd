@@ -63,28 +63,51 @@
   },
   "ListaProdutos": [
     {
-      "Fabricante": "003",
-      "Produto": "003220",
-      "Qtde": 2,
-      "Preco_Venda": 626.58,
-      "Preco_NF": 626.58
+      "Sku": "003220",
+      "Quantidade": 2,
+      "Subtotal": 1253.16,
+      "RowTotal": 1253.16
     },
     {
-      "Fabricante": "003",
-      "Produto": "003221",
-      "Qtde": 2,
-      "Preco_Venda": 939.87,
-      "Preco_NF": 939.87
+      "Sku": "003221",
+      "Quantidade": 2,
+      "Subtotal": 1879.74,
+      "RowTotal": 1879.74
     }
+    //{
+    //  "Fabricante": "003",
+    //  "Produto": "003220",
+    //  "Qtde": 2,
+    //  "Preco_Venda": 626.58,
+    //  "Preco_NF": 626.58
+    //},
+    //{
+    //  "Fabricante": "003",
+    //  "Produto": "003221",
+    //  "Qtde": 2,
+    //  "Preco_Venda": 939.87,
+    //  "Preco_NF": 939.87
+    //}
   ],
   "ListaServicos": [
   ],
   "FormaPagtoCriacao": {
     "Tipo_Parcelamento": 1,
+    "Op_av_forma_pagto": "6",
     "C_pu_valor": 0,
     "C_pc_qtde": 0,
     "C_pc_valor": 0
   },
+  "TotaisPedido": {
+    "Subtotal": 3132.90,
+    "DiscountAmount": 0.0,
+    "BSellerInterest": 0,
+    "FreteBruto": 0,
+    "DescontoFrete": 0,
+    "GrandTotal": 3132.90
+  },
   "Obs_1": "teste magento",
-  "Frete": 0
+  "MagentoPedidoStatus": {
+    "Status": 2
+  }
 }

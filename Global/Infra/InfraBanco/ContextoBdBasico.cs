@@ -33,6 +33,9 @@ namespace InfraBanco
             modelBuilder.Entity<TecProdutoComposto>()
                 .HasKey(x => new { x.Fabricante_Composto, x.Produto_Composto });
 
+            modelBuilder.Entity<TecProdutoCompostoItem>()
+                .HasKey(x => new { x.Fabricante_composto, x.Produto_composto, x.Fabricante_item, x.Produto_item });
+
             modelBuilder.Entity<TprodutoXAlerta>()
                 .HasKey(x => new { x.Fabricante, x.Produto, x.Id_Alerta });
             modelBuilder.Entity<TprodutoXwmsRegraCd>()

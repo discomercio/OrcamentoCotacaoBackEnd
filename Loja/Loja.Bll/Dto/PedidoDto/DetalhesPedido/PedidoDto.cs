@@ -115,8 +115,8 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                     magento_shipping_amount: 0M
                     ),
                 configuracao: new Pedido.Dados.Criacao.PedidoCriacaoConfiguracaoDados(
-                    limiteArredondamento: limiteArredondamento,
-                    maxErroArredondamento: maxErroArredondamento,
+                    limiteArredondamentoPorItem: limiteArredondamento,
+                    limiteArredondamentoTotais: maxErroArredondamento,
                     sistemaResponsavelCadastro: sistemaResponsavelCadastro,
                     limitePedidosExatamenteIguais_Numero: limitePedidosExatamenteIguais_Numero,
                     limitePedidosExatamenteIguais_TempoSegundos: limitePedidosExatamenteIguais_TempoSegundos,

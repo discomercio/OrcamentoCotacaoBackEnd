@@ -21,11 +21,10 @@ Background: Configuracao
 Scenario: LogMagento - OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO
 	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
-	When Informo "Frete" = "10.00"
 	Then Sem nenhum erro
 	And Tabela "t_LOG" pedido gerado e operacao = "OP_LOG_PEDIDO_NOVO", verificar campo "complemento" = "operação de origem: cadastramento semi-automático de pedido do e-commerce (nº magento pedido_bs_x_ac="
 
-	Scenario: LogMagento - NUMERO_LOJA_ECOMMERCE_AR_CLUBE
+Scenario: LogMagento - NUMERO_LOJA_ECOMMERCE_AR_CLUBE
 	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
 	When Informo "appsettings.Loja" = "201"

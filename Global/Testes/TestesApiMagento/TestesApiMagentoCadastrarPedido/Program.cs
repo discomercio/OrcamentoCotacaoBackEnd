@@ -24,7 +24,7 @@ namespace TestesApiMagentoCadastrarPedido
             {
                 var dto = CriarPedidoBase();
 
-                PedidoResultadoMagentoDto res = EnviarRequisicao(configuracaoTestes, dto);
+                PedidoMagentoResultadoDto res = EnviarRequisicao(configuracaoTestes, dto);
                 if (res.ListaErros.Count == 0)
                 {
                     Console.WriteLine($"Execucao {execucao}: pedido criado {res.IdPedidoCadastrado}");
@@ -36,7 +36,7 @@ namespace TestesApiMagentoCadastrarPedido
             }
         }
 
-        private static PedidoResultadoMagentoDto EnviarRequisicao(ConfiguracaoTestes configuracaoTestes, PedidoMagentoDto dto)
+        private static PedidoMagentoResultadoDto EnviarRequisicao(ConfiguracaoTestes configuracaoTestes, PedidoMagentoDto dto)
         {
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -45,7 +45,7 @@ namespace TestesApiMagentoCadastrarPedido
             contentString.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             var response = client.PostAsync(configuracaoTestes.UrlApiMagentoCadastrarPedido, contentString).Result;
             var responseString = response.Content.ReadAsStringAsync().Result;
-            var res = JsonConvert.DeserializeObject<MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto>(responseString);
+            var res = JsonConvert.DeserializeObject<MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoResultadoDto>(responseString);
             return res;
         }
 
@@ -63,8 +63,8 @@ namespace TestesApiMagentoCadastrarPedido
             var numeroMagento = (new Random().Next(100000001, 199999999)).ToString();
             //pra dar erro
             //numeroMagento = (new Random().Next(00000001, 99999999)).ToString();
-            dto.InfCriacaoPedido.Pedido_bs_x_ac = numeroMagento;
-            dto.InfCriacaoPedido.Pedido_bs_x_marketplace = numeroMagento;
+            dto.InfCriacaoPedido.Pedido_magento = numeroMagento;
+            dto.InfCriacaoPedido.Pedido_marketplace = numeroMagento;
             return dto;
         }
 

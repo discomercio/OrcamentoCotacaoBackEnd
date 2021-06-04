@@ -82,7 +82,7 @@ namespace Especificacao.Especificacao.Cliente
                             //dorme um tempo aleatório apra deslocar as threads
                             Thread.Sleep(new Random().Next(1, 50));
                             Testes.Utils.LogTestes.LogTestes.LogMensagemOperacao($"Especificacao.Cliente.ClienteCadastrosSimultaneos iniciar pedido thread {Thread.CurrentThread.ManagedThreadId} número {i2}", this.GetType());
-                            var erros = clienteBll.CadastrarCliente(clienteCadastroDados, "indicador", InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO, "usuario").Result;
+                            var erros = clienteBll.CadastrarCliente(clienteCadastroDados, "indicador", InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO, "usuario").Result.listaErros;
                             lock (_lockObjectCriarThreads)
                             {
                                 if (!erros.Any())

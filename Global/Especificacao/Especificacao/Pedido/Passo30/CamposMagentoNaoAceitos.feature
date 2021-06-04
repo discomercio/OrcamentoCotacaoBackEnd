@@ -10,6 +10,11 @@ na condição Pedido/Criacao/Passo30/CamposMagentoNaoAceitos.cs se estiver vindo
 essa validação
 	Given Ignorar cenário no ambiente "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.CadastrarPedido"
 
+Scenario: Configurações da loja 201
+	When Fazer esta validação
+#Ao invés de loja != 201, verificar t_loja.unidade_negocio != "AC"
+#Altear nos testes e no código
+
 Scenario: InfCriacaoPedido.Pedido_bs_x_ac
 	Given Pedido base
 	When Informo "appsettings.Loja" = "212"

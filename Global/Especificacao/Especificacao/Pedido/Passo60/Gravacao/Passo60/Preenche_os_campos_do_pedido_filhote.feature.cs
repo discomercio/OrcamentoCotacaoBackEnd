@@ -105,28 +105,40 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60
  testRunner.When("Lista de itens \"0\" informo \"Qtde\" = \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 13
- testRunner.When("Lista de itens \"1\" informo \"Qtde\" = \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("Lista de itens \"0\" informo \"Subtotal\" = \"62658.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 14
- testRunner.And("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("Lista de itens \"0\" informo \"RowTotal\" = \"62658.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 15
- testRunner.And("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("Lista de itens \"1\" informo \"Qtde\" = \"100\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 16
- testRunner.Given("Zerar todo o estoque", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And("Lista de itens \"1\" informo \"Subtotal\" = \"93687.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 17
- testRunner.Given("Definir saldo de estoque = \"40\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And("Lista de itens \"1\" informo \"RowTotal\" = \"93687.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 18
- testRunner.Given("Definir saldo estoque = \"40\" para produto = \"um\" e id_nfe_emitente = \"4003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And("Recalcular totais do pedido", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 19
+ testRunner.And("Deixar forma de pagamento consistente", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 20
+ testRunner.Given("Zerar todo o estoque", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 21
+ testRunner.Given("Definir saldo de estoque = \"40\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 22
+ testRunner.Given("Definir saldo estoque = \"40\" para produto = \"um\" e id_nfe_emitente = \"4003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 23
  testRunner.Given("Tabela \"t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD\" alterar registro id_wms_regra_cd_x_uf_" +
                     "x_pessoa = \"666\" e id_nfe_emitente = \"4003\", campo \"st_inativo\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 20
+#line 24
  testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
@@ -144,7 +156,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido_filhote - endereco", null, tagsOfScenario, argumentsOfScenario);
-#line 22
+#line 26
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -167,120 +179,120 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 24
+#line 28
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 25
+#line 29
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"st_memorizacao_com" +
                         "pleta_enderecos\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 26
+#line 30
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_memorizad" +
                         "o_status\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 27
+#line 31
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_logradour" +
                         "o\" = \"Rua Professor Fábio Fanucchi\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 28
+#line 32
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_bairro\" =" +
                         " \"Jardim São Paulo(Zona Norte)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 29
+#line 33
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_cidade\" =" +
                         " \"São Paulo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 30
+#line 34
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_uf\" = \"SP" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 31
+#line 35
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_cep\" = \"0" +
                         "2045080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 32
+#line 36
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_numero\" =" +
                         " \"97\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 33
+#line 37
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_complemen" +
                         "to\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 34
+#line 38
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_email\" = " +
                         "\"testeCad@Gabriel.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 35
+#line 39
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_email_xml" +
                         "\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 36
+#line 40
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_nome\" = \"" +
                         "Vivian\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 37
+#line 41
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_ddd_res\" " +
                         "= \"11\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 38
+#line 42
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_tel_res\" " +
                         "= \"11111111\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 39
+#line 43
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_ddd_com\" " +
                         "= \"11\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 40
+#line 44
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_tel_com\" " +
                         "= \"12345678\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 41
- testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_ramal_com" +
-                        "\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 42
- testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_ddd_cel\" " +
-                        "= \"11\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 43
- testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_tel_cel\" " +
-                        "= \"981603313\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 44
- testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_ddd_com_2" +
-                        "\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
 #line 45
- testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_tel_com_2" +
+ testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_ramal_com" +
                         "\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 46
+ testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_ddd_cel\" " +
+                        "= \"11\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 47
+ testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_tel_cel\" " +
+                        "= \"981603313\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 48
+ testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_ddd_com_2" +
+                        "\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 49
+ testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_tel_com_2" +
+                        "\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 50
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_ramal_com" +
                         "_2\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 47
+#line 51
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_tipo_pess" +
                         "oa\" = \"PF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 48
+#line 52
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_cnpj_cpf\"" +
                         " = \"14039603052\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 49
+#line 53
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_contribui" +
                         "nte_icms_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 50
+#line 54
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_produtor_" +
                         "rural_status\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 51
+#line 55
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_ie\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 52
+#line 56
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_rg\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 53
+#line 57
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"endereco_contato\" " +
                         "= \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -296,7 +308,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido_filhote - pagamento", null, tagsOfScenario, argumentsOfScenario);
-#line 55
+#line 59
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -319,120 +331,120 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 60
+#line 64
  testRunner.Given("Ignorar cenário no ambiente \"Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.Prepedid" +
                         "oApiBll.CadastrarPrepedido.CadastrarPrepedidoPrepedidoApi\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 61
+#line 65
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 62
+#line 66
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"st_pagto\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 63
+#line 67
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"qtde_parcelas\" = \"" +
                         "0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 64
+#line 68
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"forma_pagto\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 65
+#line 69
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"tipo_parcelamento\"" +
                         " = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 66
+#line 70
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"av_forma_pagto\" = " +
                         "\"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 67
+#line 71
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"pc_qtde_parcelas\" " +
                         "= \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 68
+#line 72
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"pc_valor_parcela\" " +
                         "= \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 69
+#line 73
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"pce_forma_pagto_en" +
                         "trada\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 70
+#line 74
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"pce_forma_pagto_pr" +
                         "estacao\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 71
+#line 75
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"pce_entrada_valor\"" +
                         " = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 72
+#line 76
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"pce_prestacao_qtde" +
                         "\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 73
+#line 77
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"pce_prestacao_valo" +
                         "r\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 74
+#line 78
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"pce_prestacao_peri" +
                         "odo\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 75
+#line 79
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"pse_forma_pagto_pr" +
                         "im_prest\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 76
+#line 80
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"pse_forma_pagto_de" +
                         "mais_prest\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 77
+#line 81
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"pse_prim_prest_val" +
                         "or\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 78
+#line 82
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"pse_prim_prest_apo" +
                         "s\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 79
+#line 83
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"pse_demais_prest_q" +
                         "tde\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 80
+#line 84
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"pse_demais_prest_v" +
                         "alor\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 81
+#line 85
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"pse_demais_prest_p" +
                         "eriodo\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 82
+#line 86
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"pu_forma_pagto\" = " +
                         "\"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 83
+#line 87
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"pu_valor\" = \"0.000" +
                         "0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 84
+#line 88
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"pu_vencto_apos\" = " +
                         "\"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 85
+#line 89
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"usuario_st_pagto\" " +
                         "= \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 86
+#line 90
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"pc_maquineta_qtde_" +
                         "parcelas\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 87
+#line 91
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"pc_maquineta_valor" +
                         "_parcela\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 88
+#line 92
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"custoFinancFornecT" +
                         "ipoParcelamento\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 89
+#line 93
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"custoFinancFornecQ" +
                         "tdeParcelas\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -448,7 +460,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido_filhote - endereco entrega", null, tagsOfScenario, argumentsOfScenario);
-#line 91
+#line 95
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -471,129 +483,129 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 92
+#line 96
  testRunner.Given("Ignorar cenário no ambiente \"Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.Ca" +
                         "dastrarPedido\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 93
+#line 97
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 94
+#line 98
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"st_end_entrega\" = " +
                         "\"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 95
+#line 99
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_cod_justifi" +
                         "cativa\" = \"003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 96
+#line 100
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_endereco\" =" +
                         " \"Rua Professor Fábio Fanucchi\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 97
+#line 101
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_bairro\" = \"" +
                         "Jardim São Paulo(Zona Norte)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 98
+#line 102
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_cidade\" = \"" +
                         "São Paulo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 99
+#line 103
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_uf\" = \"SP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 100
+#line 104
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_cep\" = \"020" +
                         "45080\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 101
+#line 105
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_endereco_nu" +
                         "mero\" = \"97\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 102
+#line 106
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_endereco_co" +
                         "mplemento\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 103
+#line 107
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_obs\" = \"nul" +
                         "l\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 104
+#line 108
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_email\" = \"g" +
                         "abriel.prada.teodoro@gmail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 105
+#line 109
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_email_xml\" " +
                         "= \"teste@xml.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 106
+#line 110
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_nome\" = \"Ga" +
                         "briel Prada Teodoro\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 107
+#line 111
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_ddd_res\" = " +
                         "\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 108
+#line 112
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_tel_res\" = " +
                         "\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 109
+#line 113
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_ddd_com\" = " +
                         "\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 110
+#line 114
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_tel_com\" = " +
                         "\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 111
+#line 115
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_ramal_com\" " +
                         "= \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 112
+#line 116
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_ddd_cel\" = " +
                         "\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 113
+#line 117
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_tel_cel\" = " +
                         "\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 114
+#line 118
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_ddd_com_2\" " +
                         "= \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 115
+#line 119
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_tel_com_2\" " +
                         "= \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 116
+#line 120
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_ramal_com_2" +
                         "\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 117
+#line 121
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_tipo_pessoa" +
                         "\" = \"PF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 118
+#line 122
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_cnpj_cpf\" =" +
                         " \"35270445824\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 119
+#line 123
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_contribuint" +
                         "e_icms_status\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 120
+#line 124
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_produtor_ru" +
                         "ral_status\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 121
+#line 125
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_ie\" = \"361." +
                         "289.183.714\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 122
+#line 126
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_rg\" = \"3044" +
                         "80484\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 123
+#line 127
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"EndEtg_nome_inicia" +
                         "is_em_maiusculas\" = \"Gabriel Prada Teodoro\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -609,7 +621,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido_filhote - campos soltos", null, tagsOfScenario, argumentsOfScenario);
-#line 125
+#line 129
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -632,54 +644,54 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 132
+#line 136
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 133
+#line 137
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"loja\" = \"201\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 134
+#line 138
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"vendedor\" = \"USRMA" +
                         "G\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 135
+#line 139
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"midia\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 136
+#line 140
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"servicos\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 137
+#line 141
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"orcamento\" = \"null" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 138
+#line 142
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"orcamentista\" = \"n" +
                         "ull\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 139
+#line 143
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"id_nfe_emitente\" =" +
                         " \"4003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 140
+#line 144
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"NFe_texto_constar\"" +
                         " = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 141
+#line 145
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"NFe_xPed\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 142
+#line 146
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"usuario_cadastro\" " +
                         "= \"USRMAG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 143
+#line 147
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"plataforma_origem_" +
                         "pedido\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 144
+#line 148
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"sistema_responsave" +
                         "l_cadastro\" = \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 145
+#line 149
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"sistema_responsave" +
                         "l_atualizacao\" = \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -695,7 +707,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido_filhote - campos soltos com valores", null, tagsOfScenario, argumentsOfScenario);
-#line 147
+#line 151
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -718,30 +730,30 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 150
+#line 154
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 151
+#line 155
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"vl_total_familia\" " +
                         "= \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 152
+#line 156
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"vl_total_NF\" = \"0." +
                         "0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 153
+#line 157
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"vl_total_RA\" = \"0." +
                         "0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 154
+#line 158
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"vl_total_RA_liquid" +
                         "o\" = \"0.0000\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 155
+#line 159
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"vl_frete\" = \"0.000" +
                         "0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 156
+#line 160
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"comissao_loja_indi" +
                         "cou\" = \"0.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -757,7 +769,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido_filhote - transportadora", null, tagsOfScenario, argumentsOfScenario);
-#line 158
+#line 162
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -780,30 +792,30 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 164
+#line 168
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 165
+#line 169
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"transportadora_id\"" +
                         " = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 166
+#line 170
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"transportadora_usu" +
                         "ario\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 167
+#line 171
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"transportadora_sel" +
                         "ecao_auto_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 168
+#line 172
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"transportadora_sel" +
                         "ecao_auto_cep\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 169
+#line 173
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"transportadora_sel" +
                         "ecao_auto_tipo_endereco\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 170
+#line 174
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"transportadora_sel" +
                         "ecao_auto_transportadora\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -819,7 +831,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido_filhote - refente a entrega", null, tagsOfScenario, argumentsOfScenario);
-#line 172
+#line 176
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -842,21 +854,21 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 177
+#line 181
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 178
+#line 182
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"st_recebido\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 179
+#line 183
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"st_entrega\" = \"SEP" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 180
+#line 184
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"a_entregar_data_ma" +
                         "rcada\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 181
+#line 185
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"PedidoRecebidoStat" +
                         "us\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -872,7 +884,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido_filhote - analise de crédito", null, tagsOfScenario, argumentsOfScenario);
-#line 183
+#line 187
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -895,18 +907,18 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 188
+#line 192
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 189
+#line 193
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"analise_credito\" =" +
                         " \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 190
+#line 194
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"analise_credito_us" +
                         "uario\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 191
+#line 195
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"analise_credito_pe" +
                         "ndente_vendas_motivo\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -922,7 +934,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido_filhote - split", null, tagsOfScenario, argumentsOfScenario);
-#line 193
+#line 197
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -945,18 +957,18 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 194
+#line 198
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 195
+#line 199
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"split_status\" = \"1" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 196
+#line 200
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"split_usuario\" = \"" +
                         "SISTEMA\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 197
+#line 201
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"st_auto_split\" = \"" +
                         "1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -972,7 +984,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido_filhote - refente a cancelamento", null, tagsOfScenario, argumentsOfScenario);
-#line 199
+#line 203
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -995,7 +1007,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 206
+#line 210
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -1013,7 +1025,7 @@ this.FeatureBackground();
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido_filhote - instalador, bem de uso, entrega imediata e" +
                     " garantia", null, tagsOfScenario, argumentsOfScenario);
-#line 208
+#line 212
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1036,38 +1048,38 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 209
+#line 213
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 210
+#line 214
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"st_etg_imediata\" =" +
                         " \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 211
+#line 215
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"etg_imediata_usuar" +
                         "io\" = \"USRMAG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 212
+#line 216
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"PrevisaoEntregaUsu" +
                         "arioUltAtualiz\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 213
+#line 217
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"StBemUsoConsumo\" =" +
                         " \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 214
+#line 218
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"InstaladorInstalaS" +
                         "tatus\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 215
+#line 219
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"InstaladorInstalaU" +
                         "suarioUltAtualiz\" = \"USRMAG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 216
+#line 220
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"GarantiaIndicadorS" +
                         "tatus\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 217
+#line 221
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"GarantiaIndicadorU" +
                         "suarioUltAtualiz\" = \"USRMAG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1083,7 +1095,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido_filhote - campos de OBS", null, tagsOfScenario, argumentsOfScenario);
-#line 219
+#line 223
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1106,16 +1118,16 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 222
+#line 226
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 223
+#line 227
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"obs_1\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 224
+#line 228
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"obs_2\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 225
+#line 229
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"obs_3\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -1130,7 +1142,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido_filhote - referente a indicação", null, tagsOfScenario, argumentsOfScenario);
-#line 227
+#line 231
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1153,21 +1165,21 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 234
+#line 238
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 235
+#line 239
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"loja_indicou\" = \"\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 236
+#line 240
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"venda_externa\" = \"" +
                         "1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 237
+#line 241
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"indicador\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 238
+#line 242
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"perc_RT\" = \"0.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -1182,7 +1194,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido_filhote - campos de data e hora", null, tagsOfScenario, argumentsOfScenario);
-#line 240
+#line 244
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1205,46 +1217,46 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 241
+#line 245
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 242
+#line 246
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"entregue_data\" = \"" +
                         "null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 243
+#line 247
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"cancelado_data\" = " +
                         "\"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 244
+#line 248
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"split_data\" = \"esp" +
                         "ecial: data atual, sem hora\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 245
+#line 249
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"split_hora\" = \"esp" +
                         "ecial: hora atual, formato HoraParaBanco\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 249
+#line 253
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"transportadora_dat" +
                         "a\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 250
+#line 254
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"analise_credito_da" +
                         "ta\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 252
+#line 256
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"etg_imediata_data\"" +
                         " = \"especial: data atual, com hora\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 254
+#line 258
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"PedidoRecebidoData" +
                         "\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 256
+#line 260
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"InstaladorInstalaD" +
                         "tHrUltAtualiz\" = \"especial: data atual, com hora\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 258
+#line 262
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"GarantiaIndicadorD" +
                         "tHrUltAtualiz\" = \"especial: data atual, com hora\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1260,7 +1272,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido_filhote - campos de data e hora 2", null, tagsOfScenario, argumentsOfScenario);
-#line 268
+#line 272
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1283,26 +1295,26 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 269
+#line 273
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 277
+#line 281
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"transportadora_sel" +
                         "ecao_auto_data_hora\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 284
+#line 288
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"dt_st_pagto\" = \"nu" +
                         "ll\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 285
+#line 289
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"dt_hr_st_pagto\" = " +
                         "\"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 286
+#line 290
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"PrevisaoEntregaDat" +
                         "a\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 287
+#line 291
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"PrevisaoEntregaDtH" +
                         "rUltAtualiz\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -1318,7 +1330,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido_filhote - frete, romaneio e danfe", null, tagsOfScenario, argumentsOfScenario);
-#line 289
+#line 293
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1341,7 +1353,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 300
+#line 304
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -1356,7 +1368,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido_filhote - referente a RA", null, tagsOfScenario, argumentsOfScenario);
-#line 302
+#line 306
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1379,31 +1391,31 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 305
+#line 309
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 306
+#line 310
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"perc_desagio_RA\" = \"0.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 307
+#line 311
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"perc_limite_RA_sem_desagi" +
                         "o\" = \"0.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 308
+#line 312
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"st_tem_desagio_RA\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 309
+#line 313
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"qtde_parcelas_desagio_RA\"" +
                         " = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 310
+#line 314
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"perc_desagio_RA_liquida\" " +
                         "= \"0.0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 311
+#line 315
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"permite_RA_status\" = \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 312
+#line 316
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"opcao_possui_RA\" = \"-\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -1418,7 +1430,7 @@ this.FeatureBackground();
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Preenche_os_campos_do_pedido_filhote - Marketplace e magento", null, tagsOfScenario, argumentsOfScenario);
-#line 314
+#line 318
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -1441,18 +1453,18 @@ this.ScenarioInitialize(scenarioInfo);
 #line 5
 this.FeatureBackground();
 #line hidden
-#line 322
+#line 326
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 326
+#line 330
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"pedido_bs_x_at\" = " +
                         "\"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 327
+#line 331
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"pedido_bs_x_market" +
-                        "place\" = \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "place\" = \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 328
+#line 332
  testRunner.And("Tabela \"t_PEDIDO\" registros filhotes criados, verificar campo \"marketplace_codigo" +
                         "_origem\" = \"001\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

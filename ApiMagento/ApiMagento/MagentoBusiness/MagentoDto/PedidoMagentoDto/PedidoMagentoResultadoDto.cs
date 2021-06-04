@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 {
-    public class PedidoResultadoMagentoDto
+    public class PedidoMagentoResultadoDto
     {
         public string? IdPedidoCadastrado { get; set; }
         public List<string> IdsPedidosFilhotes { get; set; } = new List<string>();

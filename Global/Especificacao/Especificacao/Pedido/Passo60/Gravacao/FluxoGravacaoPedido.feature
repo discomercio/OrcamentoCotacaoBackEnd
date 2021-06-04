@@ -91,6 +91,8 @@ Passo60: criar pedidos - '	CADASTRA O PEDIDO E PROCESSA A MOVIMENTAÇÃO NO ESTO
 			
 		Determina o status st_entrega deste pedido (Passo60/st_entrega.feature)
 
+		Salva os serviços (Passo60/Itens/Gerar_t_PEDIDO_ITEM_SERVICO.feature)
+
 Passo70: ajustes adicionais no pedido pai
 	No pai e nos filhotes, atualiza campos de RA (Passo70/calcula_total_RA_liquido_BD.feture)
 
