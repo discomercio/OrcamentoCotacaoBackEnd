@@ -262,6 +262,25 @@ Session.Timeout=480
 	Const OP_PESQ_PEDIDO_MARKETPLACE_AR_CLUBE = "MARKETPLACE"
 
 
+'	HTTPS_OBRIGATORIO_HABILITADO
+'		False = permite o usuário usar o protocolo de sua preferência (HTTP ou HTTPS)
+'		True = o usuário é obrigado a usar o protocolo HTTPS, portanto, caso o acesso tenha sido via HTTP, será realizado um redirecionamento automático para HTTPS
+'
+'	HTTPS_OBRIGATORIO_URL_REDIRECT
+'		Este parâmetro é usado quando HTTPS_OBRIGATORIO_HABILITADO = True
+'		Quando se define uma URL específica para redirecionamento, se houver a necessidade de usar uma porta personalizada, o número da porta deve ser especificada diretamente no parâmetro HTTPS_OBRIGATORIO_URL_REDIRECT
+'		O valor deste parâmetro corresponde à URL base, se houver conteúdo adicional do endereço informado pelo usuário e obtido através de ServerVariables("URL"), esse conteúdo será adicionado automaticamente
+'			pela rotina de tratamento do redirecionamento.
+'		Possíveis valores:
+'			String vazia = o redirecionamento será feito para a mesma URL acessada pelo usuário, apenas alterando de HTTP para HTTPS
+'			URL especificada = o redirecionamento será feito para a URL especificada no parâmetro
+	Const HTTPS_OBRIGATORIO_HABILITADO = False
+	Const HTTPS_OBRIGATORIO_URL_REDIRECT = ""
+
+
+'	TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO
+'		Se habilitado (True), nas rotinas em que o acesso concorrente causa problemas sérios, é executado um Update em um campo dummy nos registros pertinentes para obter o lock exclusivo
+	Const TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO = True
 
 
 

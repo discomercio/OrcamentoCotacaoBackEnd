@@ -26,6 +26,7 @@ using System.Web;
 [endereco_nome_iniciais_em_maiusculas]  AS (case when [endereco_nome] IS NULL then NULL else CONVERT([varchar](60),[dbo].[SqlClrUtilIniciaisEmMaiusculas]([endereco_nome]),0) end) PERSISTED,
 [EndEtg_nome_iniciais_em_maiusculas]  AS (case when [EndEtg_nome] IS NULL then NULL else CONVERT([varchar](60),[dbo].[SqlClrUtilIniciaisEmMaiusculas]([EndEtg_nome]),0) end) PERSISTED,
 [data_hora]
+[num_obs_4] AS (CASE Isnumeric(obs_4) WHEN 1 THEN Convert(int, obs_4) ELSE 0 END) PERSISTED
 
 */
 
@@ -691,6 +692,35 @@ namespace InfraBanco.Modelos
         [Column("st_forma_pagto_possui_parcela_cartao_maquineta")]
         public byte? St_forma_pagto_possui_parcela_cartao_maquineta { get; private set; }
 
+        //inseridos pelo 0192-atualiza-PagtoAntecipado.sql
+        [Column("PagtoAntecipadoStatus")]
+        public Int16 PagtoAntecipadoStatus { get; set; }
+
+        [Column("PagtoAntecipadoDataHora")]
+        public DateTime? PagtoAntecipadoDataHora { get; set; }
+
+        [Column("PagtoAntecipadoUsuario")]
+        [MaxLength(10)]
+        public string PagtoAntecipadoUsuario { get; set; }
+
+        [Column("PagtoAntecipadoQuitadoStatus")]
+        public Int16 PagtoAntecipadoQuitadoStatus { get; set; }
+
+        [Column("PagtoAntecipadoQuitadoDataHora")]
+        public DateTime? PagtoAntecipadoQuitadoDataHora { get; set; }
+
+        [Column("PagtoAntecipadoQuitadoUsuario")]
+        [MaxLength(10)]
+        public string PagtoAntecipadoQuitadoUsuario { get; set; }
+
+        [Column("obs_4")]
+        [MaxLength(10)]
+        public string Obs_4 { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [Column("num_obs_4")]
+        public Int32 Num_obs_4 { get; private set; }
 #endif
     }
 }
+

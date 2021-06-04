@@ -83,7 +83,7 @@ namespace PrepedidoAPIUnis
 
             services.AddSingleton<ConfiguracaoApiUnis>(c =>
             {
-                IConfiguration configuration = c.GetService<IConfiguration>();
+                IConfiguration configuration = c.GetRequiredService<IConfiguration>();
                 var appSettingsSectionSingleton = configuration.GetSection("AppSettings");
                 var configuracaoApiUnis = appSettingsSectionSingleton.Get<ConfiguracaoApiUnis>();
                 return configuracaoApiUnis;
@@ -115,6 +115,11 @@ namespace PrepedidoAPIUnis
 
             //ContextoProvider
             services.AddTransient<InfraBanco.ContextoBdProvider, InfraBanco.ContextoBdProvider>();
+            services.AddSingleton<InfraBanco.ContextoBdGravacaoOpcoes>(c =>
+            {
+                ConfiguracaoApiUnis configuracaoApiUnis= c.GetRequiredService<ConfiguracaoApiUnis>();
+                return new InfraBanco.ContextoBdGravacaoOpcoes(configuracaoApiUnis.TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO);
+            });
             services.AddTransient<InfraBanco.ContextoCepProvider, InfraBanco.ContextoCepProvider>();
 
             //banco de dados

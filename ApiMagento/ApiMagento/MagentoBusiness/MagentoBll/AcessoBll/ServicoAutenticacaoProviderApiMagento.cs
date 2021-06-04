@@ -194,7 +194,7 @@ namespace MagentoBusiness.MagentoBll.AcessoBll
 
             //atualizar dados
             //não fazemos bloqueio; se tivermos alterações simultâneas, simplesmente a última grava os seus dados
-            using var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing();
+            using var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
             var tusuario = await (from u in dbgravacao.Tusuarios
                                   where u.Usuario.ToUpper() == usuario.ToUpper()
                                   select u).FirstOrDefaultAsync();
@@ -209,7 +209,6 @@ namespace MagentoBusiness.MagentoBll.AcessoBll
             tusuario.SessionCtrlLoja = null;
             tusuario.SessionCtrlModulo = null;
             tusuario.SessionCtrlDtHrLogon = null;
-            dbgravacao.Update(tusuario);
             dbgravacao.SaveChanges();
 
             var tsessaoHistorico = await (from h in dbgravacao.TsessaoHistoricos
@@ -221,7 +220,6 @@ namespace MagentoBusiness.MagentoBll.AcessoBll
             if (tsessaoHistorico != null)
             {
                 tsessaoHistorico.DtHrTermino = DateTime.Now;
-                dbgravacao.Update(tsessaoHistorico);
                 dbgravacao.SaveChanges();
             }
 

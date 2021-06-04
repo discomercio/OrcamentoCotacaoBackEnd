@@ -13,12 +13,15 @@ namespace InfraBanco
     public class ContextoBdGravacao : IDisposable
     {
         private readonly ContextoBdBasico contexto;
+        public ContextoBdGravacaoOpcoes ContextoBdGravacaoOpcoes { get; private set; }
         public readonly IDbContextTransaction transacao;
-        internal ContextoBdGravacao(ContextoBdBasico contexto)
+        internal ContextoBdGravacao(ContextoBdBasico contexto, ContextoBdGravacaoOpcoes contextoBdGravacaoOpcoes, BloqueioTControle bloqueioTControle)
         {
             this.contexto = contexto;
+            this.ContextoBdGravacaoOpcoes = contextoBdGravacaoOpcoes;
+
             /*
-             * 
+                * 
                 usar transação como READ COMMITED,  e nao como SERIALIZABLE.
                 Motivação: queremos evitar "falsos" deadlocks e também diminuir o número de bloqueios desnecessários.
                 Exemplo: ao fazer um pedido ele consulta muitos outros pedidos para verificar se possuem o mesmo endereço de entrega.
@@ -35,30 +38,55 @@ namespace InfraBanco
             */
 
             transacao = RelationalDatabaseFacadeExtensions.BeginTransaction(contexto.Database, System.Data.IsolationLevel.ReadCommitted);
+            BloquearTControle(bloqueioTControle);
         }
 
-        public async Task BloquearNsu(string id_nsu)
+        //os bloqueios possíveis na t_CONTROLE
+        public enum BloqueioTControle
         {
+            NENHUM = 0, XLOCK_SYNC_PEDIDO = 1, XLOCK_SYNC_ORCAMENTO = 2, XLOCK_SYNC_CLIENTE = 3, XLOCK_SYNC_ORCAMENTISTA_E_INDICADOR = 4
+        }
+
+        private void BloquearTControle(BloqueioTControle bloqueioTControle)
+        {
+            if (!ContextoBdGravacaoOpcoes.TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO)
+                return;
+            string id_nsu = "";
+            switch (bloqueioTControle)
+            {
+                case BloqueioTControle.NENHUM:
+                    return;
+                case BloqueioTControle.XLOCK_SYNC_PEDIDO:
+                    id_nsu = Constantes.Constantes.ID_XLOCK_SYNC_PEDIDO;
+                    break;
+                case BloqueioTControle.XLOCK_SYNC_ORCAMENTO:
+                    id_nsu = Constantes.Constantes.ID_XLOCK_SYNC_ORCAMENTO;
+                    break;
+                case BloqueioTControle.XLOCK_SYNC_CLIENTE:
+                    id_nsu = Constantes.Constantes.ID_XLOCK_SYNC_CLIENTE;
+                    break;
+                case BloqueioTControle.XLOCK_SYNC_ORCAMENTISTA_E_INDICADOR:
+                    id_nsu = Constantes.Constantes.ID_XLOCK_SYNC_ORCAMENTISTA_E_INDICADOR;
+                    break;
+                default:
+                    return;
+            }
             if (string.IsNullOrEmpty(id_nsu))
-                throw new ArgumentException("Não foi especificado o NSU a ser gerado!");
+                throw new ArgumentException("Não foi especificado o NSU para bloqueio!");
 
             var queryControle = from c in this.Tcontroles
                                 where c.Id_Nsu == id_nsu
                                 select c;
 
-            var controle = await queryControle.FirstOrDefaultAsync();
+            var controle = queryControle.FirstOrDefault();
             if (controle == null)
-                throw new ArgumentException($"Não existe registro na tabela de controle para poder gerar este NSU! id_nsu:{id_nsu}");
+                throw new ArgumentException($"Não existe registro na tabela de controle para poder bloquear este NSU! Não existe t_controle.id_nsu = {id_nsu}");
 
-            if (controle.Dt_Ult_Atualizacao == null)
-                controle.Dt_Ult_Atualizacao = DateTime.Now;
-            if (controle.Dt_Ult_Atualizacao.Ticks == 0)
-                controle.Dt_Ult_Atualizacao = DateTime.Now;
-            //voltamos um pouco o relógio
-            controle.Dt_Ult_Atualizacao = controle.Dt_Ult_Atualizacao.AddMinutes(-1);
+            //alteramos o flag
+            controle.Dummy = !controle.Dummy;
             //não pode usar Update(controle) porque isso faz com que o Entity altere todos os campos
-            //somente queremos alterar o campo Dt_Ult_Atualizacao
-            await this.SaveChangesAsync();
+            //somente queremos alterar o campo Dummy
+            this.SaveChanges();
         }
 
         #region IDisposable Support

@@ -81,6 +81,9 @@ namespace InfraBanco.Modelos
         [MaxLength(12)]
         public string Kit_id_estoque { get; set; }
 #endif
+
+        [Column("dummy")]
+        public Boolean Dummy { get; set; }
     }
 }
 

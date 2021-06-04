@@ -32,5 +32,8 @@ namespace InfraBanco.Modelos
 
         [Column("ano_letra_step")]
         public short Ano_Letra_Step { get; set; }
+
+        [Column("dummy")]
+        public Boolean Dummy { get; set; }
     }
 }

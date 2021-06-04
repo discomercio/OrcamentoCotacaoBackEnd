@@ -61,7 +61,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
         }
         private void CdGarantirCadastrado(int cd)
         {
-            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
             if ((from c in db.TnfEmitentes where c.Id == cd select c).Any())
                 return;
 
@@ -125,7 +125,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
             int cdnaoInformado = -1;
             CalcularCds(primeiroCd, segundoCd, esperarCd, cdnaoInformado, out int primeiroCdNumero, out int segundoCdNumero, out int esperarCdNumero);
 
-            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
 
             int id_wms_regra_cd;
             if (id_wms_regra_cd_usado.HasValue)
@@ -200,7 +200,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
         public void WhenDesabilitarTodasAsRegrasPorParaPROD(string tabela)
         {
             tabela = tabela.ToLower().Trim();
-            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
 
             var lista_id_wms_regra_cd = (from p in db.TprodutoXwmsRegraCds
                                          where p.Produto == produto && p.Fabricante == fabricante

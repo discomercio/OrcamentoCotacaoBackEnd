@@ -74,12 +74,9 @@ namespace ApiMagento
             //Bll's locais
             services.AddTransient<Cep.IBancoNFeMunicipio, Cep.BancoNFeMunicipio>();
 
-            //Bll's Loja
-            //afazer: incluir as bll's que serão utilizadas da Loja
-
             services.AddSingleton<ConfiguracaoApiMagento>(c =>
             {
-                IConfiguration configuration = c.GetService<IConfiguration>();
+                IConfiguration configuration = c.GetRequiredService<IConfiguration>();
                 var appSettingsSectionSingleton = configuration.GetSection("AppSettings");
                 var configuracaoApiMagento = appSettingsSectionSingleton.Get<ConfiguracaoApiMagento>();
                 return configuracaoApiMagento;
@@ -87,6 +84,11 @@ namespace ApiMagento
 
             //ContextoProvider
             services.AddTransient<InfraBanco.ContextoBdProvider, InfraBanco.ContextoBdProvider>();
+            services.AddSingleton<InfraBanco.ContextoBdGravacaoOpcoes>(c =>
+            {
+                ConfiguracaoApiMagento configuracaoApiMagento = c.GetRequiredService<ConfiguracaoApiMagento>();
+                return new InfraBanco.ContextoBdGravacaoOpcoes(configuracaoApiMagento.TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO);
+            });
             services.AddTransient<InfraBanco.ContextoCepProvider, InfraBanco.ContextoCepProvider>();
 
             //banco de dados

@@ -63,7 +63,7 @@ namespace Loja.Bll.Bll.AcessoBll
                                     " AND SessionCtrlTicket = '" & Trim(Session("SessionCtrlTicket")) & "'"
                         cn.Execute(strSQL)
                         */
-            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 var rsUsuario = await (from u in dbgravacao.Tusuarios
                                        where usuarioLogado.Usuario_atual == u.Usuario.Trim().ToUpper()
@@ -255,7 +255,7 @@ namespace Loja.Bll.Bll.AcessoBll
             * 
              * 
              * */
-            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 var rsUsuario = await (from u in dbgravacao.Tusuarios
                                        where usuario == u.Usuario.Trim().ToUpper()
@@ -349,7 +349,7 @@ namespace Loja.Bll.Bll.AcessoBll
         //é o mesmo comportamento do verdinho
         public async Task Loja_troca_rapida_gravar_tusuario(string usuario, string loja)
         {
-            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 var rsUsuario = await (from u in dbgravacao.Tusuarios
                                        where usuario == u.Usuario.Trim().ToUpper()
@@ -395,7 +395,7 @@ namespace Loja.Bll.Bll.AcessoBll
             bool retorno = false;
 
 
-            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 var rsUsuario = await (from u in dbgravacao.Tusuarios
                                        where usuarioLogado.Usuario_nome_atual.Trim().ToUpper() == u.Usuario.Trim().ToUpper()

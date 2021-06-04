@@ -16,9 +16,7 @@ namespace Pedido.Criacao.Passo60.Gravacao
         {
             var Execucao = Criacao.Execucao;
             var Gravacao = Criacao.Gravacao;
-            using var contextoBdGravacao = Criacao.ContextoProvider.GetContextoGravacaoParaUsing();
-            //bloqueio por NSU
-            await contextoBdGravacao.BloquearNsu(InfraBanco.Constantes.Constantes.NSU_PEDIDO);
+            using var contextoBdGravacao = Criacao.ContextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_PEDIDO);
 
             //veja Especificacao\Pedido\Passo60\Gravacao\FluxoGravacaoPedido.feature
 
@@ -39,7 +37,7 @@ namespace Pedido.Criacao.Passo60.Gravacao
 
             //Passo20: LER AS REGRAS DE CONSUMO DO ESTOQUE
             Gravacao.ListaRegrasControleEstoque = await new Grava20.Grava20(contextoBdGravacao, Pedido, Retorno, Criacao, Execucao, Gravacao).ExecutarAsync();
-            
+
             //estou alterando o local dessa validação, pois nos testes caso tenha erro ao obter o ctrl de 
             //estoque, estamos tendo erro de null na lista "regraCrtlEstoque"
             //se tiver erro, nao continua

@@ -59,6 +59,10 @@
 		if Not le_pedido(pedido_selecionado, r_pedido, msg_erro) then alerta = msg_erro
 		end if
 	
+	dim r_loja
+	set r_loja = New cl_LOJA
+	call x_loja_bd(r_pedido.loja, r_loja)
+
 	dim rEmailDestinatario
 	dim id_email, corpo_mensagem, msg_erro_grava_email, emailSndSvcRemetenteMensagemSistema
 	dim r_vendedor, blnEnviarEmailVendedorStatusAnaliseCredito
@@ -76,6 +80,9 @@
 	versao_forma_pagamento = Trim(Request.Form("versao_forma_pagamento"))
 	vlTotalFormaPagto = 0
 	
+	dim blnEditouIndicador
+	blnEditouIndicador = False
+
     dim blnIndicadorEdicaoLiberada
     s = Trim(Request.Form("blnIndicadorEdicaoLiberada"))
     blnIndicadorEdicaoLiberada = CBool(s)
@@ -92,10 +99,18 @@
 	s = Trim(Request.Form("blnObs3EdicaoLiberada"))
 	blnObs3EdicaoLiberada = CBool(s)
 
+	dim blnObs4EdicaoLiberada
+	s = Trim(Request.Form("blnObs4EdicaoLiberada"))
+	blnObs4EdicaoLiberada = CBool(s)
+
 	dim blnFormaPagtoEdicaoLiberada
 	s = Trim(Request.Form("blnFormaPagtoEdicaoLiberada"))
 	blnFormaPagtoEdicaoLiberada = CBool(s)
 	
+	dim blnPagtoAntecipadoEdicaoLiberada
+	s = Trim(Request.Form("blnPagtoAntecipadoEdicaoLiberada"))
+	blnPagtoAntecipadoEdicaoLiberada = CBool(s)
+
 	dim blnEntregaImediataEdicaoLiberada
 	s = Trim(Request.Form("blnEntregaImediataEdicaoLiberada"))
 	blnEntregaImediataEdicaoLiberada = CBool(s)
@@ -135,27 +150,35 @@
 	dim blnMarketplaceCodigoOrigemAlterado
 	blnMarketplaceCodigoOrigemAlterado = False
 
-	dim s_qtde_parcelas, s_forma_pagto, s_obs1, s_obs2, s_obs2_original, s_obs3, s_obs3_original, s_ped_bonshop, s_indicador, s_pedido_ac, s_pedido_mktplace, s_pedido_origem
+	dim s_qtde_parcelas, s_forma_pagto, s_obs1, s_obs2, s_obs2_original, s_obs3, s_obs3_original, s_obs4, s_obs4_original, s_ped_bonshop, s_indicador, s_pedido_ac, s_pedido_mktplace, s_pedido_origem
     dim s_nf_texto, s_num_pedido_compra
 	dim blnAEntregarStatusEdicaoLiberada, c_a_entregar_data_marcada, c_a_entregar_data_marcada_original
 	dim s_analise_credito, s_analise_credito_a, s_ac_pendente_vendas_motivo
+	dim s_pagto_antecipado_status, s_pagto_antecipado_status_anterior, blnPagtoAntecipadoStatusAlteradoAutomaticamente
+	dim s_pagto_antecipado_quitado_status, s_pagto_antecipado_quitado_status_anterior, blnPagtoAntecipadoQuitadoStatusResetadoAutomaticamente
 	dim s_etg_imediata, s_bem_uso_consumo, s_etg_imediata_original, c_data_previsao_entrega
 	dim blnUpdate, blnFlag, blnEditou
 	dim blnEditouTransp, blnProcessaSelecaoAutoTransp
     dim transportadora_cnpj, blnEditouFrete
 	transportadora_cnpj = ""
     blnEditouFrete = False
+	blnPagtoAntecipadoStatusAlteradoAutomaticamente = False
+	blnPagtoAntecipadoQuitadoStatusResetadoAutomaticamente = False
 
 	s_obs1=Trim(request("c_obs1"))
 	s_obs2=Trim(request("c_obs2"))
 	s_obs2_original=Trim(request("c_obs2_original"))
 	s_obs3=Trim(request("c_obs3"))
 	s_obs3_original=Trim(request("c_obs3_original"))
+	s_obs4=Trim(request("c_obs4"))
+	s_obs4_original=Trim(request("c_obs4_original"))
 	s_ped_bonshop=Trim(request("pedBonshop"))
 	c_a_entregar_data_marcada=Trim(request("c_a_entregar_data_marcada"))
 	c_a_entregar_data_marcada_original=Trim(request("c_a_entregar_data_marcada_original"))
 	s = Trim(Request.Form("blnAEntregarStatusEdicaoLiberada"))
 	blnAEntregarStatusEdicaoLiberada = CBool(s)
+	s_pagto_antecipado_status = Trim(Request.Form("rb_pagto_antecipado_status"))
+	s_pagto_antecipado_quitado_status = Trim(Request.Form("rb_pagto_antecipado_quitado_status"))
 	s_analise_credito=Trim(request("rb_analise_credito"))
 	s_etg_imediata=Trim(request("rb_etg_imediata"))
 	c_data_previsao_entrega = Trim(Request("c_data_previsao_entrega"))
@@ -170,6 +193,14 @@
     s_ac_pendente_vendas_motivo = Trim(Request("c_pendente_vendas_motivo"))
 
 ' BUG:	if s_pedido_mktplace = "" then s_pedido_origem = ""
+
+	if blnPagtoAntecipadoEdicaoLiberada then
+		if CStr(s_pagto_antecipado_status) = CStr(COD_PAGTO_ANTECIPADO_STATUS_NORMAL) then
+			'Se for condição de pagamento normal (não-antecipado), força para que o campo PagtoAntecipadoQuitadoStatus seja colocado no status default
+			s_pagto_antecipado_quitado_status = CStr(COD_PAGTO_ANTECIPADO_QUITADO_STATUS_PENDENTE)
+			blnPagtoAntecipadoQuitadoStatusResetadoAutomaticamente = True
+			end if
+		end if
 
 '	PARA PEDIDOS DO ARCLUBE, É PERMITIDO FICAR SEM O Nº MAGENTO SOMENTE NOS SEGUINTES CASOS:
 '		1) PEDIDO ORIGINADO PELO TELEVENDAS
@@ -187,7 +218,7 @@
 	c_loja = Trim(Request.Form("c_loja"))
 
 	if r_pedido.loja = NUMERO_LOJA_ECOMMERCE_AR_CLUBE then
-		if s_pedido_ac <> "" then
+		if (s_pedido_ac <> "") And (r_loja.magento_api_versao <> VERSAO_API_MAGENTO_V2_REST_JSON) then
 			do while Len(s_pedido_ac) < 9
 				if Len(s_pedido_ac) = 8 then
 					s_pedido_ac = "1" & s_pedido_ac
@@ -235,6 +266,11 @@
 
 	dim eh_cpf
 	eh_cpf=(len(r_cliente.cnpj_cpf)=11)
+
+	dim sBlocoNotasEndCob, sBlocoNotasEndEtg, sBlocoNotasMsg, sEnderecoOriginal, sEnderecoNovo
+	sBlocoNotasEndCob = ""
+	sBlocoNotasEndEtg = ""
+	sBlocoNotasMsg = ""
 
 	dim blnUsarMemorizacaoCompletaEnderecos
 	blnUsarMemorizacaoCompletaEnderecos = isActivatedFlagPedidoUsarMemorizacaoCompletaEnderecos
@@ -1292,6 +1328,16 @@
 	'	~~~~~~~~~~~~~
 		cn.BeginTrans
 	'	~~~~~~~~~~~~~
+		if TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO then
+		'	BLOQUEIA REGISTRO PARA EVITAR ACESSO CONCORRENTE (REALIZA O FLIP EM UM CAMPO BIT APENAS P/ ADQUIRIR O LOCK EXCLUSIVO)
+		'	OBS: TODOS OS MÓDULOS DO SISTEMA QUE REALIZEM ESTA OPERAÇÃO DE CADASTRAMENTO DEVEM SINCRONIZAR O ACESSO OBTENDO O LOCK EXCLUSIVO DO REGISTRO DE CONTROLE DESIGNADO
+			s = "UPDATE t_CONTROLE SET" & _
+					" dummy = ~dummy" & _
+				" WHERE" & _
+					" id_nsu = '" & ID_XLOCK_SYNC_PEDIDO & "'"
+			cn.Execute(s)
+			end if
+
 		if Not cria_recordset_pessimista(rs, msg_erro) then
 		'	~~~~~~~~~~~~~~~~
 			cn.RollbackTrans
@@ -1309,6 +1355,7 @@
 				alerta = "Pedido base " & pedido_base & " não foi encontrado."
 			else
 				log_via_vetor_carrega_do_recordset rs, vLogFP1, campos_a_omitir_FP
+				
 				s_analise_credito_a = Trim("" & rs("analise_credito"))
 				if blnAnaliseCreditoEdicaoLiberada then
 					if s_analise_credito <> "" then 
@@ -1334,8 +1381,30 @@
                                     end if
                                 end if
 						end if
+					end if 'if blnAnaliseCreditoEdicaoLiberada
+
+				s_pagto_antecipado_status_anterior = Trim("" & rs("PagtoAntecipadoStatus"))
+				if blnPagtoAntecipadoEdicaoLiberada then
+					'Se o status de análise de crédito tiver sido alterado para 'Pendente - Pagto Antecipado Boleto', altera o pedido
+					'automaticamente para 'Pagamento Antecipado'
+					if s_analise_credito <> "" then
+						if (CLng(s_analise_credito_a) <> CLng(s_analise_credito)) _
+							And (CLng(s_analise_credito) = CLng(COD_AN_CREDITO_PENDENTE_PAGTO_ANTECIPADO_BOLETO)) _
+							And (CLng(s_pagto_antecipado_status) <> CLng(COD_PAGTO_ANTECIPADO_STATUS_ANTECIPADO)) then
+							s_pagto_antecipado_status = COD_PAGTO_ANTECIPADO_STATUS_ANTECIPADO
+							blnPagtoAntecipadoStatusAlteradoAutomaticamente = True
+							end if
+						end if
+
+					if s_pagto_antecipado_status <> "" then
+						if CLng(rs("PagtoAntecipadoStatus")) <> CLng(s_pagto_antecipado_status) then
+							rs("PagtoAntecipadoStatus")=CLng(s_pagto_antecipado_status)
+							rs("PagtoAntecipadoDataHora")=Now
+							rs("PagtoAntecipadoUsuario")=usuario
+							end if
+						end if
 					end if
-					
+
 			'	Forma de Pagamento (nova versão)
 				if (versao_forma_pagamento = "2") And blnFormaPagtoEdicaoLiberada then
 					s_descricao_forma_pagto_anterior = monta_descricao_forma_pagto_com_quebra_linha(rs, quebraLinhaFormaPagto)
@@ -1425,6 +1494,22 @@
 															msg_erro_grava_email
 							end if
 						end if
+
+					'Registra edição no bloco de notas
+					if s_descricao_forma_pagto <> s_descricao_forma_pagto_anterior then
+						sBlocoNotasMsg = "Edição da forma de pagamento realizada por '" & usuario & "' (status da análise de crédito: " & descricao_analise_credito(s_analise_credito_a) & ")" & vbCrLf & _
+										"Anterior: " & s_descricao_forma_pagto_anterior & vbCrLf & _
+										"Nova: " & s_descricao_forma_pagto
+						if Not grava_bloco_notas_pedido(pedido_selecionado, ID_USUARIO_SISTEMA, "", COD_NIVEL_ACESSO_BLOCO_NOTAS_PEDIDO__RESTRITO, sBlocoNotasMsg, COD_TIPO_MSG_BLOCO_NOTAS_PEDIDO__AUTOMATICA_EDICAO_FORMA_PAGTO, msg_erro) then
+							alerta = "Falha ao gravar bloco de notas com mensagem automática no pedido (" & pedido_selecionado & ")"
+							end if
+						'Assegura de gravar também no pedido-base pois trata-se de informação controlada através do pedido-base
+						if IsPedidoFilhote(pedido_selecionado) then
+							if Not grava_bloco_notas_pedido(retorna_num_pedido_base(pedido_selecionado), ID_USUARIO_SISTEMA, "", COD_NIVEL_ACESSO_BLOCO_NOTAS_PEDIDO__RESTRITO, sBlocoNotasMsg, COD_TIPO_MSG_BLOCO_NOTAS_PEDIDO__AUTOMATICA_EDICAO_FORMA_PAGTO, msg_erro) then
+								alerta = "Falha ao gravar bloco de notas com mensagem automática no pedido (" & retorna_num_pedido_base(pedido_selecionado) & ")"
+								end if
+							end if
+						end if
 					end if
 					
 				if bln_RT_e_RA_EdicaoLiberada then rs("perc_RT") = converte_numero(s_perc_RT)
@@ -1432,8 +1517,9 @@
 				if blnIndicadorEdicaoLiberada then
 					s_indicador_anterior = Trim("" & rs("indicador"))
 					rs("indicador") = s_indicador
+					if Ucase(Trim(s_indicador_anterior)) <> Ucase(Trim(s_indicador)) then blnEditouIndicador = True
 
-					if (Ucase(Trim(s_indicador_anterior)) <> Ucase(Trim(s_indicador))) And (Trim("" & rs("analise_credito")) = COD_AN_CREDITO_OK) then
+					if blnEditouIndicador And (Trim("" & rs("analise_credito")) = COD_AN_CREDITO_OK) then
 						'Envia mensagem de alerta sobre alteração do indicador em pedido com status "crédito ok"
 						set rEmailDestinatario = get_registro_t_parametro(ID_PARAMETRO_EmailDestinatarioAlertaAlteracaoIndicadorEmPedidoCreditoOk)
 						if Trim("" & rEmailDestinatario.campo_texto) <> "" then
@@ -1455,6 +1541,22 @@
 															Now, _
 															id_email, _
 															msg_erro_grava_email
+							end if
+						end if
+
+					'Registra edição no bloco de notas
+					if blnEditouIndicador then
+						sBlocoNotasMsg = "Edição do indicador realizada por '" & usuario & "' (status da análise de crédito: " & descricao_analise_credito(s_analise_credito_a) & ")" & vbCrLf & _
+										"Anterior: " & s_indicador_anterior & vbCrLf & _
+										"Novo: " & s_indicador
+						if Not grava_bloco_notas_pedido(pedido_selecionado, ID_USUARIO_SISTEMA, "", COD_NIVEL_ACESSO_BLOCO_NOTAS_PEDIDO__RESTRITO, sBlocoNotasMsg, COD_TIPO_MSG_BLOCO_NOTAS_PEDIDO__AUTOMATICA_EDICAO_INDICADOR, msg_erro) then
+							alerta = "Falha ao gravar bloco de notas com mensagem automática no pedido (" & pedido_selecionado & ")"
+							end if
+						'Assegura de gravar também no pedido-base pois trata-se de informação controlada através do pedido-base
+						if IsPedidoFilhote(pedido_selecionado) then
+							if Not grava_bloco_notas_pedido(retorna_num_pedido_base(pedido_selecionado), ID_USUARIO_SISTEMA, "", COD_NIVEL_ACESSO_BLOCO_NOTAS_PEDIDO__RESTRITO, sBlocoNotasMsg, COD_TIPO_MSG_BLOCO_NOTAS_PEDIDO__AUTOMATICA_EDICAO_INDICADOR, msg_erro) then
+								alerta = "Falha ao gravar bloco de notas com mensagem automática no pedido (" & retorna_num_pedido_base(pedido_selecionado) & ")"
+								end if
 							end if
 						end if
 					end if
@@ -1541,6 +1643,28 @@
 								    rs("analise_credito_usuario")=usuario
                                     end if
                                 end if
+							end if
+						end if 'if blnAnaliseCreditoEdicaoLiberada
+
+					s_pagto_antecipado_status_anterior = Trim("" & rs("PagtoAntecipadoStatus"))
+					if blnPagtoAntecipadoEdicaoLiberada then
+						'Se o status de análise de crédito tiver sido alterado para 'Pendente - Pagto Antecipado Boleto', altera o pedido
+						'automaticamente para 'Pagamento Antecipado'
+						if s_analise_credito <> "" then
+							if (CLng(s_analise_credito_a) <> CLng(s_analise_credito)) _
+								And (CLng(s_analise_credito) = CLng(COD_AN_CREDITO_PENDENTE_PAGTO_ANTECIPADO_BOLETO)) _
+								And (CLng(s_pagto_antecipado_status) <> CLng(COD_PAGTO_ANTECIPADO_STATUS_ANTECIPADO)) then
+								s_pagto_antecipado_status = COD_PAGTO_ANTECIPADO_STATUS_ANTECIPADO
+								blnPagtoAntecipadoStatusAlteradoAutomaticamente = True
+								end if
+							end if
+
+						if s_pagto_antecipado_status <> "" then
+							if CLng(rs("PagtoAntecipadoStatus")) <> CLng(s_pagto_antecipado_status) then
+								rs("PagtoAntecipadoStatus")=CLng(s_pagto_antecipado_status)
+								rs("PagtoAntecipadoDataHora")=Now
+								rs("PagtoAntecipadoUsuario")=usuario
+								end if
 							end if
 						end if
 
@@ -1633,40 +1757,73 @@
 																msg_erro_grava_email
 								end if
 							end if
-						end if
-					end if
-				
-				if bln_RT_e_RA_EdicaoLiberada then rs("perc_RT") = converte_numero(s_perc_RT)
+						
+						'Registra edição no bloco de notas
+						if s_descricao_forma_pagto <> s_descricao_forma_pagto_anterior then
+							sBlocoNotasMsg = "Edição da forma de pagamento realizada por '" & usuario & "' (status da análise de crédito: " & descricao_analise_credito(s_analise_credito_a) & ")" & vbCrLf & _
+											"Anterior: " & s_descricao_forma_pagto_anterior & vbCrLf & _
+											"Nova: " & s_descricao_forma_pagto
+							if Not grava_bloco_notas_pedido(pedido_selecionado, ID_USUARIO_SISTEMA, "", COD_NIVEL_ACESSO_BLOCO_NOTAS_PEDIDO__RESTRITO, sBlocoNotasMsg, COD_TIPO_MSG_BLOCO_NOTAS_PEDIDO__AUTOMATICA_EDICAO_FORMA_PAGTO, msg_erro) then
+								alerta = "Falha ao gravar bloco de notas com mensagem automática no pedido (" & pedido_selecionado & ")"
+								end if
+							'Assegura de gravar também no pedido-base pois trata-se de informação controlada através do pedido-base
+							if IsPedidoFilhote(pedido_selecionado) then
+								if Not grava_bloco_notas_pedido(retorna_num_pedido_base(pedido_selecionado), ID_USUARIO_SISTEMA, "", COD_NIVEL_ACESSO_BLOCO_NOTAS_PEDIDO__RESTRITO, sBlocoNotasMsg, COD_TIPO_MSG_BLOCO_NOTAS_PEDIDO__AUTOMATICA_EDICAO_FORMA_PAGTO, msg_erro) then
+									alerta = "Falha ao gravar bloco de notas com mensagem automática no pedido (" & retorna_num_pedido_base(pedido_selecionado) & ")"
+									end if
+								end if
+							end if
+						end if 'if (versao_forma_pagamento = "2") And blnFormaPagtoEdicaoLiberada
+					
+					if blnIndicadorEdicaoLiberada then
+						s_indicador_anterior = Trim("" & rs("indicador"))
+						rs("indicador") = s_indicador
+						if Ucase(Trim(s_indicador_anterior)) <> Ucase(Trim(s_indicador)) then blnEditouIndicador = True
 
-                if blnIndicadorEdicaoLiberada then
-					s_indicador_anterior = Trim("" & rs("indicador"))
-					rs("indicador") = s_indicador
+						if blnEditouIndicador And (Trim("" & rs("analise_credito")) = COD_AN_CREDITO_OK) then
+							'Envia mensagem de alerta sobre alteração do indicador em pedido com status "crédito ok"
+							set rEmailDestinatario = get_registro_t_parametro(ID_PARAMETRO_EmailDestinatarioAlertaAlteracaoIndicadorEmPedidoCreditoOk)
+							if Trim("" & rEmailDestinatario.campo_texto) <> "" then
+								corpo_mensagem = "O usuário '" & usuario & "' alterou em " & formata_data_hora_sem_seg(Now) & " na Central o indicador do pedido " & pedido_selecionado & vbCrLf & _
+													vbCrLf & _
+													"Indicador anterior:" & vbCrLf & _
+													Ucase(Trim(s_indicador_anterior)) & vbCrLf & _
+													vbCrLf & _
+													"Indicador atual:" & vbCrLf & _
+													Ucase(Trim(s_indicador))
 
-					if (Ucase(Trim(s_indicador_anterior)) <> Ucase(Trim(s_indicador))) And (Trim("" & rs("analise_credito")) = COD_AN_CREDITO_OK) then
-						'Envia mensagem de alerta sobre alteração do indicador em pedido com status "crédito ok"
-						set rEmailDestinatario = get_registro_t_parametro(ID_PARAMETRO_EmailDestinatarioAlertaAlteracaoIndicadorEmPedidoCreditoOk)
-						if Trim("" & rEmailDestinatario.campo_texto) <> "" then
-							corpo_mensagem = "O usuário '" & usuario & "' alterou em " & formata_data_hora_sem_seg(Now) & " na Central o indicador do pedido " & pedido_selecionado & vbCrLf & _
-												vbCrLf & _
-												"Indicador anterior:" & vbCrLf & _
-												Ucase(Trim(s_indicador_anterior)) & vbCrLf & _
-												vbCrLf & _
-												"Indicador atual:" & vbCrLf & _
-												Ucase(Trim(s_indicador))
-
-							EmailSndSvcGravaMensagemParaEnvio getParametroFromCampoTexto(ID_PARAMETRO_EMAILSNDSVC_REMETENTE__SENTINELA_SISTEMA), _
-															"", _
-															rEmailDestinatario.campo_texto, _
-															"", _
-															"", _
-															"Alteração do indicador em pedido com status 'Crédito OK'", _
-															corpo_mensagem, _
-															Now, _
-															id_email, _
-															msg_erro_grava_email
+								EmailSndSvcGravaMensagemParaEnvio getParametroFromCampoTexto(ID_PARAMETRO_EMAILSNDSVC_REMETENTE__SENTINELA_SISTEMA), _
+																"", _
+																rEmailDestinatario.campo_texto, _
+																"", _
+																"", _
+																"Alteração do indicador em pedido com status 'Crédito OK'", _
+																corpo_mensagem, _
+																Now, _
+																id_email, _
+																msg_erro_grava_email
+								end if
+							end if
+					
+						'Registra edição no bloco de notas
+						if blnEditouIndicador then
+							sBlocoNotasMsg = "Edição do indicador realizada por '" & usuario & "' (status da análise de crédito: " & descricao_analise_credito(s_analise_credito_a) & ")" & vbCrLf & _
+											"Anterior: " & s_indicador_anterior & vbCrLf & _
+											"Novo: " & s_indicador
+							if Not grava_bloco_notas_pedido(pedido_selecionado, ID_USUARIO_SISTEMA, "", COD_NIVEL_ACESSO_BLOCO_NOTAS_PEDIDO__RESTRITO, sBlocoNotasMsg, COD_TIPO_MSG_BLOCO_NOTAS_PEDIDO__AUTOMATICA_EDICAO_INDICADOR, msg_erro) then
+								alerta = "Falha ao gravar bloco de notas com mensagem automática no pedido (" & pedido_selecionado & ")"
+								end if
+							'Assegura de gravar também no pedido-base pois trata-se de informação controlada através do pedido-base
+							if IsPedidoFilhote(pedido_selecionado) then
+								if Not grava_bloco_notas_pedido(retorna_num_pedido_base(pedido_selecionado), ID_USUARIO_SISTEMA, "", COD_NIVEL_ACESSO_BLOCO_NOTAS_PEDIDO__RESTRITO, sBlocoNotasMsg, COD_TIPO_MSG_BLOCO_NOTAS_PEDIDO__AUTOMATICA_EDICAO_INDICADOR, msg_erro) then
+									alerta = "Falha ao gravar bloco de notas com mensagem automática no pedido (" & retorna_num_pedido_base(pedido_selecionado) & ")"
+									end if
+								end if
 							end if
 						end if
-					end if
+					end if 'if Not IsPedidoFilhote(pedido_selecionado)
+				
+				if bln_RT_e_RA_EdicaoLiberada then rs("perc_RT") = converte_numero(s_perc_RT)
 
 				if blnObs1EdicaoLiberada then
                      rs("obs_1") = s_obs1
@@ -1690,6 +1847,14 @@
 						end if
 					end if
 				
+				if blnObs4EdicaoLiberada then
+					'Usuário fez alteração do campo na página de edição?
+					'Obs: controle feito com o objetivo de evitar que alterações realizadas por outros processos enquanto o usuário estava na página de edição sejam sobrescritas
+					if s_obs4 <> s_obs4_original then
+						rs("obs_4") = s_obs4
+						end if
+					end if
+
 				if blnFormaPagtoEdicaoLiberada then rs("forma_pagto") = s_forma_pagto
 				
 				if (versao_forma_pagamento = "1") And blnFormaPagtoEdicaoLiberada then
@@ -1771,6 +1936,14 @@
 				blnEndereco_cep_alterado = False
 	
 				if r_pedido.st_memorizacao_completa_enderecos = 1 or r_pedido.st_memorizacao_completa_enderecos = 9 then
+					sEnderecoOriginal = formata_endereco(Trim("" & rs("endereco_logradouro")), Trim("" & rs("endereco_numero")), Trim("" & rs("endereco_complemento")), Trim("" & rs("endereco_bairro")), Trim("" & rs("endereco_cidade")), Trim("" & rs("endereco_uf")), Trim("" & rs("endereco_cep")))
+					sEnderecoNovo = formata_endereco(endereco__endereco, endereco__numero, endereco__complemento, endereco__bairro, endereco__cidade, endereco__uf, endereco__cep)
+					if UCase(sEnderecoOriginal) <> UCase(sEnderecoNovo) then
+						sBlocoNotasEndCob = "Endereço de cobrança: " & vbCrLf & _
+											String(4, " ") & "Anterior: " & sEnderecoOriginal & vbCrLf & _
+											String(4, " ") & "Novo: " & sEnderecoNovo
+						end if
+
 					if rs("endereco_cep") <> endereco__cep then blnEndereco_cep_alterado = True    
 					rs("st_memorizacao_completa_enderecos") = 1
 					rs("endereco_bairro") = endereco__bairro
@@ -1805,10 +1978,24 @@
 
 				'Editável?
 				if blnEndEntregaEdicaoLiberada then
+					if rs("st_end_entrega") = 0 then
+						sEnderecoOriginal = "(N.I.)"
+					else
+						sEnderecoOriginal = formata_endereco(Trim("" & rs("EndEtg_endereco")), Trim("" & rs("EndEtg_endereco_numero")), Trim("" & rs("EndEtg_endereco_complemento")), Trim("" & rs("EndEtg_bairro")), Trim("" & rs("EndEtg_cidade")), Trim("" & rs("EndEtg_uf")), Trim("" & rs("EndEtg_cep")))
+						end if
+
 					if EndEtg_endereco <> "" then 
 						rs("st_end_entrega") = 1
+						sEnderecoNovo = formata_endereco(EndEtg_endereco, EndEtg_endereco_numero, EndEtg_endereco_complemento, EndEtg_bairro, EndEtg_cidade, EndEtg_uf, EndEtg_cep)
 					else
 						rs("st_end_entrega") = 0
+						sEnderecoNovo = "(N.I.)"
+						end if
+					
+					if UCase(sEnderecoOriginal) <> UCase(sEnderecoNovo) then
+						sBlocoNotasEndEtg = "Endereço de entrega: " & vbCrLf & _
+											String(4, " ") & "Anterior: " & sEnderecoOriginal & vbCrLf & _
+											String(4, " ") & "Novo: " & sEnderecoNovo
 						end if
 					
 					rs("EndEtg_endereco") = EndEtg_endereco
@@ -1943,6 +2130,17 @@
 						end if
 					end if
 					
+				if blnPagtoAntecipadoEdicaoLiberada then
+					s_pagto_antecipado_quitado_status_anterior = Trim("" & rs("PagtoAntecipadoQuitadoStatus"))
+					if s_pagto_antecipado_quitado_status <> "" then
+						if CLng(rs("PagtoAntecipadoQuitadoStatus")) <> CLng(s_pagto_antecipado_quitado_status) then
+							rs("PagtoAntecipadoQuitadoStatus")=CLng(s_pagto_antecipado_quitado_status)
+							rs("PagtoAntecipadoQuitadoDataHora")=Now
+							rs("PagtoAntecipadoQuitadoUsuario")=usuario
+							end if
+						end if
+					end if
+
 				if blnEntregaImediataEdicaoLiberada then
 					s_etg_imediata_original = Trim("" & rs("st_etg_imediata"))
 					if s_etg_imediata <> "" then 
@@ -2021,9 +2219,39 @@
 							s_log = s_log & "analise_credito: " & formata_texto_log(s_analise_credito_a) & " => " & formata_texto_log(s_analise_credito)
 							end if
 						end if
+
+					if blnPagtoAntecipadoEdicaoLiberada then
+						if (s_pagto_antecipado_status<>"") And (s_pagto_antecipado_status<>s_pagto_antecipado_status_anterior) And (Instr(s_log,"PagtoAntecipadoStatus")=0) then
+							if s_log <> "" then s_log = s_log & "; "
+							s_log = s_log & "PagtoAntecipadoStatus: " & formata_texto_log(s_pagto_antecipado_status_anterior) & " => " & formata_texto_log(s_pagto_antecipado_status)
+							if blnPagtoAntecipadoStatusAlteradoAutomaticamente then s_log = s_log & " (alteração automática devido à alteração do status da análise de crédito)"
+						elseif (Instr(s_log,"PagtoAntecipadoStatus") > 0) And blnPagtoAntecipadoStatusAlteradoAutomaticamente then
+							if s_log <> "" then s_log = s_log & "; "
+							s_log = s_log & "PagtoAntecipadoStatus alterado automaticamente devido à alteração do status da análise de crédito"
+							end if
+						if (s_pagto_antecipado_quitado_status<>"") And (s_pagto_antecipado_quitado_status<>s_pagto_antecipado_quitado_status_anterior) And (Instr(s_log,"PagtoAntecipadoQuitadoStatus")=0) then
+							if s_log <> "" then s_log = s_log & "; "
+							s_log = s_log & "PagtoAntecipadoQuitadoStatus: " & formata_texto_log(s_pagto_antecipado_quitado_status_anterior) & " => " & formata_texto_log(s_pagto_antecipado_quitado_status)
+							end if
+						end if
+
 					if s_log_manual <> "" then
 						if s_log <> "" then s_log = s_log & "; "
 						s_log = s_log & s_log_manual
+						end if
+					end if
+
+				if alerta = "" then
+					if (sBlocoNotasEndCob <> "") Or (sBlocoNotasEndEtg <> "") then
+						sBlocoNotasMsg = sBlocoNotasEndCob
+						if (sBlocoNotasMsg <> "") And (sBlocoNotasEndEtg <> "") then sBlocoNotasMsg = sBlocoNotasMsg & vbCrLf & vbCrLf
+						sBlocoNotasMsg = sBlocoNotasMsg & sBlocoNotasEndEtg
+						sBlocoNotasMsg = "Edição de endereço realizada por '" & usuario & "' (status da análise de crédito: " & descricao_analise_credito(s_analise_credito_a) & ")" & vbCrLf & _
+										vbCrLf & _
+										sBlocoNotasMsg
+						if Not grava_bloco_notas_pedido(pedido_selecionado, ID_USUARIO_SISTEMA, "", COD_NIVEL_ACESSO_BLOCO_NOTAS_PEDIDO__RESTRITO, sBlocoNotasMsg, COD_TIPO_MSG_BLOCO_NOTAS_PEDIDO__AUTOMATICA_EDICAO_ENDERECO, msg_erro) then
+							alerta = "Falha ao gravar bloco de notas com mensagem automática no pedido (" & pedido_selecionado & ")"
+							end if
 						end if
 					end if
 				end if
@@ -2398,6 +2626,49 @@
 				cn.Execute(s)
 				If Err <> 0 then
 					alerta = "FALHA AO SINCRONIZAR O CAMPO 'marketplace_codigo_origem' (" & Cstr(Err) & ": " & Err.Description & ")."
+					end if
+				end if
+			end if
+
+		'Ajusta o indicador de todos os pedidos da família
+		if alerta = "" then
+			if blnEditouIndicador then
+				s = "UPDATE t_PED__FILHOTE" & _
+					" SET" & _
+						" t_PED__FILHOTE.indicador = t_PED__BASE.indicador" & _
+					" FROM t_PEDIDO AS t_PED__FILHOTE" & _
+						" INNER JOIN t_PEDIDO AS t_PED__BASE ON (t_PED__FILHOTE.pedido_base = t_PED__BASE.pedido)" & _
+					" WHERE" & _
+						" (t_PED__FILHOTE.pedido_base = '" & retorna_num_pedido_base(pedido_selecionado) & "')" & _
+						" AND (t_PED__FILHOTE.pedido <> t_PED__FILHOTE.pedido_base)"
+				cn.Execute(s)
+				If Err <> 0 then
+					alerta = "FALHA AO SINCRONIZAR O CAMPO 'indicador' (" & Cstr(Err) & ": " & Err.Description & ")."
+					end if
+				end if
+			end if
+
+		'Sincroniza o campo 'PagtoAntecipadoQuitadoStatus' dos pedidos-filhote, se existirem, para o status COD_PAGTO_ANTECIPADO_QUITADO_STATUS_PENDENTE
+		'caso o campo 'PagtoAntecipadoStatus' tenha sido alterado para COD_PAGTO_ANTECIPADO_STATUS_NORMAL
+		'Lembrando que o campo 'PagtoAntecipadoStatus' do pedido-pai é válido para toda a família de pedidos e
+		'o campo 'PagtoAntecipadoQuitadoStatus' é individual para cada pedido da família.
+		if alerta = "" then
+			if blnPagtoAntecipadoQuitadoStatusResetadoAutomaticamente then
+				s = "UPDATE t_PED__DEMAIS" & _
+					" SET" & _
+						" t_PED__DEMAIS.PagtoAntecipadoQuitadoStatus = t_PED__SELECIONADO.PagtoAntecipadoQuitadoStatus" & _
+						", t_PED__DEMAIS.PagtoAntecipadoQuitadoDataHora = t_PED__SELECIONADO.PagtoAntecipadoQuitadoDataHora" & _
+						", t_PED__DEMAIS.PagtoAntecipadoQuitadoUsuario = t_PED__SELECIONADO.PagtoAntecipadoQuitadoUsuario" & _
+					" FROM t_PEDIDO AS t_PED__DEMAIS" & _
+						" INNER JOIN t_PEDIDO AS t_PED__SELECIONADO ON (t_PED__DEMAIS.pedido_base = t_PED__SELECIONADO.pedido_base)" & _
+					" WHERE" & _
+						" (t_PED__SELECIONADO.pedido = '" & pedido_selecionado & "')" & _
+						" AND (t_PED__DEMAIS.pedido <> t_PED__SELECIONADO.pedido)" & _
+						" AND (t_PED__DEMAIS.PagtoAntecipadoQuitadoStatus <> t_PED__SELECIONADO.PagtoAntecipadoQuitadoStatus)" & _
+						" AND (t_PED__DEMAIS.st_entrega NOT IN ('" & ST_ENTREGA_ENTREGUE & "','" & ST_ENTREGA_CANCELADO & "'))"
+				cn.Execute(s)
+				If Err <> 0 then
+					alerta = "FALHA AO SINCRONIZAR O CAMPO 'PagtoAntecipadoQuitadoStatus' (" & Cstr(Err) & ": " & Err.Description & ")."
 					end if
 				end if
 			end if

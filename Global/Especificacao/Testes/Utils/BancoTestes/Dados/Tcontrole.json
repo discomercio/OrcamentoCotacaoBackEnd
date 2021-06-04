@@ -250,5 +250,45 @@
     "timestamp": "0x000000000036da98",
     "ano_letra_seq": null,
     "ano_letra_step": 0
+  },
+  {
+    "id_nsu": "XLOCK_SYNC_CLIENTE",
+    "nsu": "",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2021-05-24T03:00:00.000Z",
+    "timestamp": "0x00000000000298d8",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0,
+    "dummy": 0
+  },
+  {
+    "id_nsu": "XLOCK_SYNC_ORCAMENTISTA_E_INDICADOR",
+    "nsu": "",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2021-05-24T03:00:00.000Z",
+    "timestamp": "0x00000000000298d9",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0,
+    "dummy": 0
+  },
+  {
+    "id_nsu": "XLOCK_SYNC_ORCAMENTO",
+    "nsu": "",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2021-05-24T03:00:00.000Z",
+    "timestamp": "0x00000000000298d7",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0,
+    "dummy": 0
+  },
+  {
+    "id_nsu": "XLOCK_SYNC_PEDIDO",
+    "nsu": "",
+    "seq_anual": 0,
+    "dt_ult_atualizacao": "2021-05-24T03:00:00.000Z",
+    "timestamp": "0x00000000000298d6",
+    "ano_letra_seq": null,
+    "ano_letra_step": 0,
+    "dummy": 0
   }
 ]

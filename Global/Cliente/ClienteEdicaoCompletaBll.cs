@@ -47,8 +47,7 @@ namespace Cliente
             {
                 if (lstErros.Count == 0)
                 {
-                    //não fazemos bloqueio; se tivermos alterações simultâneas, simplesmente a última grava os seus dados
-                    using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+                    using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_CLIENTE))
                     {
                         Tcliente cli = await (from c in dbgravacao.Tclientes
                                               where c.Id == clienteCadastroDados.DadosCliente.Id
@@ -82,7 +81,7 @@ namespace Cliente
         }
 
         public async Task<string> Verificar_AlterouClienteCadastroDados(Tcliente cli, Cliente.Dados.ClienteCadastroDados clienteCadastroDados, string apelido,
-                    Constantes.CodSistemaResponsavel sistemaResponsavel, bool edicaoCompleta, ContextoBdGravacao dbGravacao, 
+                    Constantes.CodSistemaResponsavel sistemaResponsavel, bool edicaoCompleta, ContextoBdGravacao dbGravacao,
                     List<string> lstErros, List<ListaBancoDados> lstBanco)
         {
             string log_retorno = "";
@@ -878,8 +877,8 @@ namespace Cliente
             return log;
         }
 
-        private async Task<string> MontarLogAleracao_Ref_Comercial(Tcliente cli, Cliente.Dados.ClienteCadastroDados clienteCadastroDados, 
-            ContextoBdGravacao dbGravacao, List<string> lstErros, string apelido, Constantes.CodSistemaResponsavel sistemaResponsavel, 
+        private async Task<string> MontarLogAleracao_Ref_Comercial(Tcliente cli, Cliente.Dados.ClienteCadastroDados clienteCadastroDados,
+            ContextoBdGravacao dbGravacao, List<string> lstErros, string apelido, Constantes.CodSistemaResponsavel sistemaResponsavel,
             List<ListaBancoDados> lstBanco)
         {
             string log = "";
@@ -923,7 +922,7 @@ namespace Cliente
 
 
 
-   
+
 
 
         private async Task<string> RemoverRefBancaria(InfraBanco.ContextoBdGravacao dbGravacao, List<string> lstErros,

@@ -109,7 +109,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarStatusPrepedido
             MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto pedidoResultadoMagentoDto
                             = (MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoResultadoMagentoDto)((Microsoft.AspNetCore.Mvc.OkObjectResult)cadastrarPedido.UltimoAcessoFeito.Result).Value;
 
-            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
             Assert.NotNull(cadastrarPrepedido.UltimoPrePedidoResultadoUnisDto);
             if (cadastrarPrepedido.UltimoPrePedidoResultadoUnisDto == null)
                 return;

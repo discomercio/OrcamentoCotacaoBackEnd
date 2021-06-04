@@ -23,6 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testes.Labs", "PrepedidoApi
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Etc", "Etc", "{DE89B737-FCFF-4E00-88C6-785451E5D18F}"
 	ProjectSection(SolutionItems) = preProject
+		AlteracoesAppsettings.txt = AlteracoesAppsettings.txt
 		PrepedidoApi\AtualizarSonar.bat = PrepedidoApi\AtualizarSonar.bat
 		documentacao\configuracao_log.txt = documentacao\configuracao_log.txt
 		Global\Infra\InfraBanco\configuracoes_solucao.txt = Global\Infra\InfraBanco\configuracoes_solucao.txt

@@ -255,16 +255,19 @@
 		if Not blnNFEmitida then blnObs1EdicaoLiberada = True
 		end if
 
-	dim blnObs2EdicaoLiberada, blnObs3EdicaoLiberada
+	dim blnObs2EdicaoLiberada, blnObs3EdicaoLiberada, blnObs4EdicaoLiberada
 	blnObs2EdicaoLiberada = False
 	blnObs3EdicaoLiberada = False
+	blnObs4EdicaoLiberada = False
 	if operacao_permitida(OP_CEN_EDITA_PEDIDO_OBS2, s_lista_operacoes_permitidas) then
 		blnObs2EdicaoLiberada = True
 		blnObs3EdicaoLiberada = True
+		blnObs4EdicaoLiberada = True
 	elseif operacao_permitida(OP_CEN_EDITA_PEDIDO, s_lista_operacoes_permitidas) then
 		if Not blnPedidoEntregue then
 			blnObs2EdicaoLiberada = True
 			blnObs3EdicaoLiberada = True
+			blnObs4EdicaoLiberada = True
 			end if
 		end if
 
@@ -272,13 +275,86 @@
 	blnFormaPagtoEdicaoLiberada = False
 	if operacao_permitida(OP_CEN_EDITA_PEDIDO_FORMA_PAGTO, s_lista_operacoes_permitidas) then
 		blnFormaPagtoEdicaoLiberada = True
-		end if
+		'Se o boleto AV já foi emitido, o vendedor não pode mais editar a forma de pagamento
+		if blnFormaPagtoEdicaoLiberada _
+			AND _
+			(Cstr(r_pedido.loja) <> Cstr(NUMERO_LOJA_ECOMMERCE_AR_CLUBE)) _
+			AND _
+			( (st_pagto = ST_PAGTO_PAGO) Or (st_pagto = ST_PAGTO_PARCIAL) ) _
+			AND _
+			( _
+				( (CStr(r_pedido.tipo_parcelamento) = CStr(COD_FORMA_PAGTO_A_VISTA)) And (CStr(r_pedido.av_forma_pagto) = CStr(ID_FORMA_PAGTO_BOLETO_AV)) ) _
+				OR _
+				( (CStr(r_pedido.tipo_parcelamento) = CStr(COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA)) And (CStr(r_pedido.pce_forma_pagto_entrada) = CStr(ID_FORMA_PAGTO_BOLETO_AV)) ) _
+			) then
+			if Not ( _
+				operacao_permitida(OP_CEN_EDITA_ANALISE_CREDITO, s_lista_operacoes_permitidas) _
+				OR _
+				operacao_permitida(OP_CEN_PAGTO_PARCIAL, s_lista_operacoes_permitidas) _
+				OR _
+				operacao_permitida(OP_CEN_PAGTO_QUITACAO, s_lista_operacoes_permitidas) _
+				) then
+				blnFormaPagtoEdicaoLiberada = False
+				end if
+			end if
+
+		'Se o status da análise de crédito está em uma situação que demanda uma confirmação manual do depto de análise de crédito, bloqueia
+		'a edição da forma de pagamento para não haver o risco de uma alteração ser feita sem o conhecimento do depto de análise de crédito.
+		'Qualquer alteração necessária na forma de pagamento deve ser solicitada ao depto de análise de crédito.
+		if blnFormaPagtoEdicaoLiberada _
+			AND _
+			(Cstr(r_pedido.loja) <> Cstr(NUMERO_LOJA_ECOMMERCE_AR_CLUBE)) _
+			AND _
+			( _
+				(Trim("" & r_pedido.analise_credito) = Cstr(COD_AN_CREDITO_OK_DEPOSITO_AGUARDANDO_DESBLOQUEIO)) _
+				OR (Trim("" & r_pedido.analise_credito) = Cstr(COD_AN_CREDITO_OK_AGUARDANDO_DEPOSITO)) _
+				OR (Trim("" & r_pedido.analise_credito) = Cstr(COD_AN_CREDITO_OK_AGUARDANDO_PAGTO_BOLETO_AV)) _
+				OR (Trim("" & r_pedido.analise_credito) = Cstr(COD_AN_CREDITO_PENDENTE_PAGTO_ANTECIPADO_BOLETO)) _
+			) then
+			if Not ( _
+				operacao_permitida(OP_CEN_EDITA_ANALISE_CREDITO, s_lista_operacoes_permitidas) _
+				OR _
+				operacao_permitida(OP_CEN_PAGTO_PARCIAL, s_lista_operacoes_permitidas) _
+				OR _
+				operacao_permitida(OP_CEN_PAGTO_QUITACAO, s_lista_operacoes_permitidas) _
+				) then
+				blnFormaPagtoEdicaoLiberada = False
+				end if
+			end if
+
+		'Se houver parcela em boleto e o status de pagamento for diferente de 'NÃO PAGO', bloquear a edição da forma de pagamento, pois somente o depto de análise de crédito poderá fazer a edição
+		if blnFormaPagtoEdicaoLiberada _
+			AND _
+			(Cstr(r_pedido.loja) <> Cstr(NUMERO_LOJA_ECOMMERCE_AR_CLUBE)) _
+			AND _
+			( (st_pagto = ST_PAGTO_PAGO) Or (st_pagto = ST_PAGTO_PARCIAL) ) _
+			AND _
+			( _
+				parcelamentoPossuiMeioPagamento(r_pedido, ID_FORMA_PAGTO_BOLETO) _
+				OR _
+				parcelamentoPossuiMeioPagamento(r_pedido, ID_FORMA_PAGTO_BOLETO_AV) _
+			) then
+			if Not ( _
+				operacao_permitida(OP_CEN_EDITA_ANALISE_CREDITO, s_lista_operacoes_permitidas) _
+				OR _
+				operacao_permitida(OP_CEN_PAGTO_PARCIAL, s_lista_operacoes_permitidas) _
+				OR _
+				operacao_permitida(OP_CEN_PAGTO_QUITACAO, s_lista_operacoes_permitidas) _
+				) then
+				blnFormaPagtoEdicaoLiberada = False
+				end if
+			end if
+		end if 'if operacao_permitida(OP_CEN_EDITA_PEDIDO_FORMA_PAGTO, s_lista_operacoes_permitidas)
 
 	dim blnEntregaImediataEdicaoLiberada, blnEntregaImediataNaoSemDataPrevisao
 	blnEntregaImediataEdicaoLiberada = False
 	if operacao_permitida(OP_CEN_EDITA_PEDIDO, s_lista_operacoes_permitidas) then
 		if (Not IsPedidoEncerrado(r_pedido.st_entrega)) Or (Trim(r_pedido.obs_2) = "") then blnEntregaImediataEdicaoLiberada = True
 		end if
+
+	dim blnPagtoAntecipadoEdicaoLiberada
+	blnPagtoAntecipadoEdicaoLiberada = False
+	if operacao_permitida(OP_CEN_EDITA_ANALISE_CREDITO, s_lista_operacoes_permitidas) then blnPagtoAntecipadoEdicaoLiberada = True
 
 	blnEntregaImediataNaoSemDataPrevisao = False
 	if (Cstr(r_pedido.st_etg_imediata)=Cstr(COD_ETG_IMEDIATA_NAO)) And (Trim("" & r_pedido.PrevisaoEntregaData) = "") then blnEntregaImediataNaoSemDataPrevisao = True
@@ -614,6 +690,8 @@ end function
 	    <%else%>
 			$('#trPendVendasMotivo').hide();
         <% end if%>
+
+		exibeOcultaPagtoAntecipadoQuitadoStatus();
 
 		$("#c_data_previsao_entrega").hUtilUI('datepicker_padrao');
 
@@ -1566,12 +1644,21 @@ function LimparCamposEndEtg( f ) {
 }
 
 function exibeOcultaPendenteVendasMotivo() {
-    if ($('#rb_analise_credito').is(':checked')) {
+	if ($('#rb_analise_credito_pendente_vendas').is(':checked')) {
         $('#trPendVendasMotivo').show();
     }
     else {
         $('#trPendVendasMotivo').hide();
     }
+}
+
+function exibeOcultaPagtoAntecipadoQuitadoStatus() {
+	if ($("#rb_pagto_antecipado_status_antecipado").is(":checked")) {
+		$(".TdPagtoAntecipadoQuitadoStatus").show();
+	}
+	else {
+		$(".TdPagtoAntecipadoQuitadoStatus").hide();
+	}
 }
 
 function fPEDConfirma( f ) {
@@ -2575,7 +2662,9 @@ function setarValorRadio(array, valor)
 <input type="hidden" name="blnObs1EdicaoLiberada" id="blnObs1EdicaoLiberada" value='<%=Cstr(blnObs1EdicaoLiberada)%>'>
 <input type="hidden" name="blnObs2EdicaoLiberada" id="blnObs2EdicaoLiberada" value='<%=Cstr(blnObs2EdicaoLiberada)%>'>
 <input type="hidden" name="blnObs3EdicaoLiberada" id="blnObs3EdicaoLiberada" value='<%=Cstr(blnObs3EdicaoLiberada)%>'>
+<input type="hidden" name="blnObs4EdicaoLiberada" id="blnObs4EdicaoLiberada" value="<%=Cstr(blnObs4EdicaoLiberada)%>" />
 <input type="hidden" name="blnFormaPagtoEdicaoLiberada" id="blnFormaPagtoEdicaoLiberada" value='<%=Cstr(blnFormaPagtoEdicaoLiberada)%>'>
+<input type="hidden" name="blnPagtoAntecipadoEdicaoLiberada" id="blnPagtoAntecipadoEdicaoLiberada" value="<%=CStr(blnPagtoAntecipadoEdicaoLiberada)%>" />
 <input type="hidden" name="blnEndEntregaEdicaoLiberada" id="blnEndEntregaEdicaoLiberada" value='<%=Cstr(blnEndEntregaEdicaoLiberada)%>'>
 <input type="hidden" name="blnTransportadoraEdicaoLiberada" id="blnTransportadoraEdicaoLiberada" value='<%=Cstr(blnTransportadoraEdicaoLiberada)%>'>
 <input type="hidden" name="blnValorFreteEdicaoLiberada" id="blnValorFreteEdicaoLiberada" value='<%=Cstr(blnValorFreteEdicaoLiberada)%>'>
@@ -2599,6 +2688,7 @@ function setarValorRadio(array, valor)
 <input type="hidden" name="c_a_entregar_data_marcada_original" id="c_a_entregar_data_marcada_original" value="<%=formata_data(r_pedido.a_entregar_data_marcada)%>" />
 <input type="hidden" name="c_obs2_original" id="c_obs2_original" value="<%=r_pedido.obs_2%>" />
 <input type="hidden" name="c_obs3_original" id="c_obs3_original" value="<%=r_pedido.obs_3%>" />
+<input type="hidden" name="c_obs4_original" id="c_obs4_original" value="<%=r_pedido.obs_4%>" />
 
 <!-- AJAX EM ANDAMENTO -->
 <div id="divAjaxRunning" style="display:none;"><img src="../Imagem/ajax_loader_gray_256.gif" class="AjaxImgLoader"/></div>
@@ -3628,7 +3718,7 @@ function setarValorRadio(array, valor)
 		<!--  EDIÇÃO ESTÁ BLOQUEADA EM PEDIDO ENTREGUE   -->
 		<table class="Q" style="width:649px;" cellspacing="0">
 			<tr>
-				<td class="MB" colspan="7" align="left"><p class="Rf">Observações </p>
+				<td class="MB" align="left"><p class="Rf">Observações </p>
 					<textarea name="c_obs1" id="c_obs1" class="PLLe" rows="<%=Cstr(MAX_LINHAS_OBS1)%>" 
 						style="width:99%;margin-left:2pt;" onkeypress="limita_tamanho(this,MAX_TAM_OBS1);" onblur="this.value=trim(this.value);"
 						<% if Not blnObs1EdicaoLiberada then Response.Write " readonly tabindex=-1 " %>
@@ -3636,7 +3726,7 @@ function setarValorRadio(array, valor)
 				</td>
 			</tr>
             <tr>
-		        <td class="MB" colspan="7" align="left"><p class="Rf">Constar na NF</p>
+		        <td class="MB" align="left"><p class="Rf">Constar na NF</p>
 			        <textarea name="c_nf_texto" id="c_nf_texto" class="PLLe" rows="<%=Cstr(MAX_LINHAS_NF_TEXTO_CONSTAR)%>" 
 				        style="width:99%;margin-left:2pt;" onkeypress="limita_tamanho(this,MAX_TAM_NF_TEXTO);" onblur="this.value=trim(this.value);"
 				        <% if Not blnObs1EdicaoLiberada then Response.Write " readonly tabindex=-1 " %>
@@ -3644,84 +3734,89 @@ function setarValorRadio(array, valor)
 		        </td>
 	        </tr>
             <tr>
-                <td class="MB MD" align="left" colspan="2" nowrap><p class="Rf">xPed</p>
-			        <input name="c_num_pedido_compra" id="c_num_pedido_compra" class="PLLe" maxlength="15" style="width:100px;margin-left:2pt;" onkeypress="filtra_nome_identificador();" onblur="this.value=trim(this.value);"
-				    <% if Not blnObs1EdicaoLiberada then Response.Write " readonly tabindex=-1 " %>
-                        value='<%=r_pedido.NFe_xPed%>'>
-		        </td>
-				<td class="MB" align="left" colspan="5">
-					<p class="Rf">Previsão de Entrega</p>
-					<input name="c_data_previsao_entrega" id="c_data_previsao_entrega" class="PLLe" maxlength="10" style="width:90px;margin-left:2pt"
-					<% if Not blnEntregaImediataEdicaoLiberada then Response.Write " readonly tabindex=-1 " %>
-						value="<%=formata_data(r_pedido.PrevisaoEntregaData)%>" />
+				<td width="100%">
+					<table width="100%" cellspacing="0" cellpadding="0">
+						<tr>
+							<td class="MB MD" align="left" nowrap width="40%"><p class="Rf">xPed</p>
+								<input name="c_num_pedido_compra" id="c_num_pedido_compra" class="PLLe" maxlength="15" style="width:100px;margin-left:2pt;" onkeypress="filtra_nome_identificador();" onblur="this.value=trim(this.value);"
+								<% if Not blnObs1EdicaoLiberada then Response.Write " readonly tabindex=-1 " %>
+									value='<%=r_pedido.NFe_xPed%>'>
+							</td>
+							<td class="MB" align="left">
+								<p class="Rf">Previsão de Entrega</p>
+								<input name="c_data_previsao_entrega" id="c_data_previsao_entrega" class="PLLe" maxlength="10" style="width:90px;margin-left:2pt"
+								<% if Not blnEntregaImediataEdicaoLiberada then Response.Write " readonly tabindex=-1 " %>
+									value="<%=formata_data(r_pedido.PrevisaoEntregaData)%>" />
+							</td>
+						</tr>
+					</table>
 				</td>
             </tr>
 			<tr>
-				<td class="MD" nowrap align="left"><p class="Rf">Nº Nota Fiscal</p>
-					<input name="c_obs2" id="c_obs2" class="PLLe" maxlength="10" style="width:75px;margin-left:2pt;" onkeypress="if (digitou_enter(true)) fPED.c_obs3.focus(); filtra_nome_identificador();" onblur="this.value=trim(this.value);"
-					<% if Not blnObs2EdicaoLiberada then Response.Write " readonly tabindex=-1 " %>
-						value='<%=r_pedido.obs_2%>'>
-				</td>
-				<td class="MD" nowrap align="left"><p class="Rf">NF Simples Remessa</p>
-					<input name="c_obs3" id="c_obs3" class="PLLe" maxlength="10" style="width:75px;margin-left:2pt;" onkeypress="if (digitou_enter(true)) fPED.c_qtde_parcelas.focus(); filtra_nome_identificador();" onblur="this.value=trim(this.value);"
-					<% if Not blnObs3EdicaoLiberada then Response.Write " readonly tabindex=-1 " %>
-						value='<%=r_pedido.obs_3%>'>
-				</td>
-                <td class="MD" align="left" nowrap><p class="Rf">Número Magento</p>
-			        <input name="c_pedido_ac" id="c_pedido_ac" class="PLLe" style="width:90px;margin-left:2pt;" maxlength="9" onkeypress="if (digitou_enter(true)) fPED.c_qtde_parcelas.focus(); filtra_nome_identificador();return SomenteNumero(event)" onblur="this.value=trim(this.value);"
-				        value='<%=r_pedido.pedido_ac%>'
-						<%if Not blnNumPedidoECommerceEdicaoLiberada then Response.Write " readonly tabindex=-1" %>
-						/>
-		        </td>
-				<td class="MD" nowrap align="left" valign="top"><p class="Rf">Entrega Imediata</p>
-					<% if Not blnEntregaImediataEdicaoLiberada then strDisabled=" disabled" else strDisabled=""%>
-					<input type="radio" id="rb_etg_imediata" name="rb_etg_imediata" 
-						<%=strDisabled%>
-						value="<%=COD_ETG_IMEDIATA_NAO%>" <%if Cstr(r_pedido.st_etg_imediata)=Cstr(COD_ETG_IMEDIATA_NAO) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_etg_imediata[0].click();">Não</span>
-					<input type="radio" id="rb_etg_imediata" name="rb_etg_imediata" 
-						<%=strDisabled%>
-						value="<%=COD_ETG_IMEDIATA_SIM%>" <%if Cstr(r_pedido.st_etg_imediata)=Cstr(COD_ETG_IMEDIATA_SIM) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_etg_imediata[1].click();">Sim</span>
-				</td>
-				<td class="MD" nowrap align="left" valign="top"><p class="Rf">Bem Uso/Consumo</p>
-					<% if Not blnBemUsoConsumoEdicaoLiberada then strDisabled=" disabled" else strDisabled=""%>
-					<input type="radio" id="rb_bem_uso_consumo" name="rb_bem_uso_consumo" 
-						<%=strDisabled%>
-						value="<%=COD_ST_BEM_USO_CONSUMO_NAO%>" <%if Cstr(r_pedido.StBemUsoConsumo)=Cstr(COD_ST_BEM_USO_CONSUMO_NAO) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_bem_uso_consumo[0].click();">Não</span>
-					<input type="radio" id="rb_bem_uso_consumo" name="rb_bem_uso_consumo" 
-						<%=strDisabled%>
-						value="<%=COD_ST_BEM_USO_CONSUMO_SIM%>" <%if Cstr(r_pedido.StBemUsoConsumo)=Cstr(COD_ST_BEM_USO_CONSUMO_SIM) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_bem_uso_consumo[1].click();">Sim</span>
-				</td>
-				<td class="MD" nowrap align="left"><p class="Rf">Instalador Instala</p>
-					<% if Not blnInstaladorInstalaEdicaoLiberada then strDisabled=" disabled" else strDisabled=""%>
-					<input type="radio" id="rb_instalador_instala" name="rb_instalador_instala" 
-						<%=strDisabled%>
-						value="<%=COD_INSTALADOR_INSTALA_NAO%>" <%if Cstr(r_pedido.InstaladorInstalaStatus)=Cstr(COD_INSTALADOR_INSTALA_NAO) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_instalador_instala[0].click();">Não</span>
-					<input type="radio" id="rb_instalador_instala" name="rb_instalador_instala" 
-						<%=strDisabled%>
-						value="<%=COD_INSTALADOR_INSTALA_SIM%>" <%if Cstr(r_pedido.InstaladorInstalaStatus)=Cstr(COD_INSTALADOR_INSTALA_SIM) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_instalador_instala[1].click();">Sim</span>
-				</td>
-				<td nowrap align="left" valign="top"><p class="Rf">Garantia Indicador</p>
-					<% if Not blnGarantiaIndicadorEdicaoLiberada then strDisabled=" disabled" else strDisabled=""%>
-					<input type="radio" id="rb_garantia_indicador" name="rb_garantia_indicador" 
-						<%=strDisabled%>
-						value="<%=COD_GARANTIA_INDICADOR_STATUS__NAO%>" <%if Cstr(r_pedido.GarantiaIndicadorStatus)=Cstr(COD_GARANTIA_INDICADOR_STATUS__NAO) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_garantia_indicador[0].click();">Não</span>
-					<input type="radio" id="rb_garantia_indicador" name="rb_garantia_indicador" 
-						<%=strDisabled%>
-						value="<%=COD_GARANTIA_INDICADOR_STATUS__SIM%>" <%if Cstr(r_pedido.GarantiaIndicadorStatus)=Cstr(COD_GARANTIA_INDICADOR_STATUS__SIM) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_garantia_indicador[1].click();">Sim</span>
+				<td width="100%">
+					<table width="100%" cellspacing="0" cellpadding="0">
+						<tr>
+							<td class="MD" align="left" nowrap width="20%"><p class="Rf">Número Magento</p>
+								<input name="c_pedido_ac" id="c_pedido_ac" class="PLLe" style="width:90px;margin-left:2pt;" maxlength="9" onkeypress="if (digitou_enter(true)) fPED.c_qtde_parcelas.focus(); filtra_nome_identificador();return SomenteNumero(event)" onblur="this.value=trim(this.value);"
+									value='<%=r_pedido.pedido_ac%>'
+									<%if Not blnNumPedidoECommerceEdicaoLiberada then Response.Write " readonly tabindex=-1" %>
+									/>
+							</td>
+							<td class="MD" nowrap align="left" valign="top" width="20%"><p class="Rf">Entrega Imediata</p>
+								<% if Not blnEntregaImediataEdicaoLiberada then strDisabled=" disabled" else strDisabled=""%>
+								<input type="radio" id="rb_etg_imediata" name="rb_etg_imediata" 
+									<%=strDisabled%>
+									value="<%=COD_ETG_IMEDIATA_NAO%>" <%if Cstr(r_pedido.st_etg_imediata)=Cstr(COD_ETG_IMEDIATA_NAO) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_etg_imediata[0].click();">Não</span>
+								<input type="radio" id="rb_etg_imediata" name="rb_etg_imediata" 
+									<%=strDisabled%>
+									value="<%=COD_ETG_IMEDIATA_SIM%>" <%if Cstr(r_pedido.st_etg_imediata)=Cstr(COD_ETG_IMEDIATA_SIM) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_etg_imediata[1].click();">Sim</span>
+							</td>
+							<td class="MD" nowrap align="left" valign="top" width="20%"><p class="Rf">Bem Uso/Consumo</p>
+								<% if Not blnBemUsoConsumoEdicaoLiberada then strDisabled=" disabled" else strDisabled=""%>
+								<input type="radio" id="rb_bem_uso_consumo" name="rb_bem_uso_consumo" 
+									<%=strDisabled%>
+									value="<%=COD_ST_BEM_USO_CONSUMO_NAO%>" <%if Cstr(r_pedido.StBemUsoConsumo)=Cstr(COD_ST_BEM_USO_CONSUMO_NAO) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_bem_uso_consumo[0].click();">Não</span>
+								<input type="radio" id="rb_bem_uso_consumo" name="rb_bem_uso_consumo" 
+									<%=strDisabled%>
+									value="<%=COD_ST_BEM_USO_CONSUMO_SIM%>" <%if Cstr(r_pedido.StBemUsoConsumo)=Cstr(COD_ST_BEM_USO_CONSUMO_SIM) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_bem_uso_consumo[1].click();">Sim</span>
+							</td>
+							<td class="MD" nowrap align="left" width="20%"><p class="Rf">Instalador Instala</p>
+								<% if Not blnInstaladorInstalaEdicaoLiberada then strDisabled=" disabled" else strDisabled=""%>
+								<input type="radio" id="rb_instalador_instala" name="rb_instalador_instala" 
+									<%=strDisabled%>
+									value="<%=COD_INSTALADOR_INSTALA_NAO%>" <%if Cstr(r_pedido.InstaladorInstalaStatus)=Cstr(COD_INSTALADOR_INSTALA_NAO) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_instalador_instala[0].click();">Não</span>
+								<input type="radio" id="rb_instalador_instala" name="rb_instalador_instala" 
+									<%=strDisabled%>
+									value="<%=COD_INSTALADOR_INSTALA_SIM%>" <%if Cstr(r_pedido.InstaladorInstalaStatus)=Cstr(COD_INSTALADOR_INSTALA_SIM) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_instalador_instala[1].click();">Sim</span>
+							</td>
+							<td nowrap align="left" valign="top" width="20%"><p class="Rf">Garantia Indicador</p>
+								<% if Not blnGarantiaIndicadorEdicaoLiberada then strDisabled=" disabled" else strDisabled=""%>
+								<input type="radio" id="rb_garantia_indicador" name="rb_garantia_indicador" 
+									<%=strDisabled%>
+									value="<%=COD_GARANTIA_INDICADOR_STATUS__NAO%>" <%if Cstr(r_pedido.GarantiaIndicadorStatus)=Cstr(COD_GARANTIA_INDICADOR_STATUS__NAO) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_garantia_indicador[0].click();">Não</span>
+								<input type="radio" id="rb_garantia_indicador" name="rb_garantia_indicador" 
+									<%=strDisabled%>
+									value="<%=COD_GARANTIA_INDICADOR_STATUS__SIM%>" <%if Cstr(r_pedido.GarantiaIndicadorStatus)=Cstr(COD_GARANTIA_INDICADOR_STATUS__SIM) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_garantia_indicador[1].click();">Sim</span>
+							</td>
+						</tr>
+					</table>
 				</td>
 			</tr>
+
 			<% if ID_PARAM_SITE = COD_SITE_ASSISTENCIA_TECNICA then %>
 			<tr>
-			    <td class="MC" colspan="2"><p class="Rf">Referente Pedido Bonshop: </p>
-			    </td>
-			    <td class="MC" colspan="5" align="left">
-			        <select id="Select1" name="pedBonshop" style="width: 120px">
-			            <option value="">&nbsp;</option>
+				<td width="100%">
+					<table width="100%" cellspacing="0" cellpadding="0">
+						<tr>
+							<td class="MC" nowrap width="25%"><p class="Rf">Referente Pedido Bonshop: </p>
+							</td>
+							<td class="MC" align="left">
+								<select id="Select1" name="pedBonshop" style="width: 120px;margin:6px 4px 6px 4px;">
+									<option value="">&nbsp;</option>
 			            <%
 			            
     If Not bdd_BS_conecta(cn2) then Response.Redirect("aviso.asp?id=" & ERR_CONEXAO)
     
-     
      sqlString = "SELECT pedido FROM t_PEDIDO" & _
               " INNER JOIN t_CLIENTE ON (t_CLIENTE.id = t_PEDIDO.id_cliente)" & _
               " WHERE t_CLIENTE.cnpj_cpf = '" & r_cliente.cnpj_cpf & "'" & _
@@ -3744,25 +3839,57 @@ function setarValorRadio(array, valor)
      set r=nothing
      cn2.Close
      set cn2 = nothing%>
-			        </select>
-			    </td>
+								</select>
+							</td>
+						</tr>
+					</table>
+				</td>
 			</tr>
 			<% end if %>
 
             <% if Cstr(r_pedido.loja) = Cstr(NUMERO_LOJA_ECOMMERCE_AR_CLUBE) then %>
             <tr>
-                <td class="MC MD" align="left" nowrap valign="top"><p class="Rf">Nº Pedido Marketplace</p>
-			        <input name="c_numero_mktplace" id="c_numero_mktplace" class="PLLe" maxlength="20" style="width:135px;margin-left:2pt;margin-top:5px;" onkeypress="filtra_nome_identificador();return SomenteNumero(event)" onblur="this.value=trim(this.value);"
-				    <%if Not blnNumPedidoECommerceEdicaoLiberada then Response.Write " readonly tabindex=-1" %> value="<%=r_pedido.pedido_bs_x_marketplace%>">
-		        </td>
-                <td class="MC" colspan="6" align="left" nowrap valign="top"><p class="Rf">Origem do Pedido</p>
-			        <select name="c_origem_pedido" id="c_origem_pedido" style="margin: 3px; 3px; 3px"<%if Not blnNumPedidoECommerceEdicaoLiberada then Response.Write " disabled tabindex=-1" %>>
-                        <%=codigo_descricao_monta_itens_select_all(GRUPO_T_CODIGO_DESCRICAO__PEDIDOECOMMERCE_ORIGEM, r_pedido.marketplace_codigo_origem) %>
-			        </select>
-		        </td>
+				<td width="100%">
+					<table width="100%" cellspacing="0" cellpadding="0">
+						<tr>
+							<td class="MC MD" align="left" nowrap valign="top" width="40%"><p class="Rf">Nº Pedido Marketplace</p>
+								<input name="c_numero_mktplace" id="c_numero_mktplace" class="PLLe" maxlength="20" style="width:135px;margin-left:2pt;margin-top:5px;" onkeypress="filtra_nome_identificador();return SomenteNumero(event)" onblur="this.value=trim(this.value);"
+								<%if Not blnNumPedidoECommerceEdicaoLiberada then Response.Write " readonly tabindex=-1" %> value="<%=r_pedido.pedido_bs_x_marketplace%>">
+							</td>
+							<td class="MC" align="left" nowrap valign="top"><p class="Rf">Origem do Pedido</p>
+								<select name="c_origem_pedido" id="c_origem_pedido" style="margin: 3px; 3px; 3px"<%if Not blnNumPedidoECommerceEdicaoLiberada then Response.Write " disabled tabindex=-1" %>>
+									<%=codigo_descricao_monta_itens_select_all(GRUPO_T_CODIGO_DESCRICAO__PEDIDOECOMMERCE_ORIGEM, r_pedido.marketplace_codigo_origem) %>
+								</select>
+							</td>
+						</tr>
+					</table>
+				</td>
             </tr>
             <% end if %>
 
+			<tr>
+				<td width="100%">
+					<table width="100%" cellspacing="0" cellpadding="0">
+						<tr>
+							<td class="MC MD" nowrap align="left" width="33.3%"><p class="Rf">Nº Nota Fiscal</p>
+								<input name="c_obs2" id="c_obs2" class="PLLe" maxlength="10" style="width:75px;margin-left:2pt;" onkeypress="if (digitou_enter(true)) fPED.c_obs3.focus(); filtra_nome_identificador();" onblur="this.value=trim(this.value);"
+								<% if Not blnObs2EdicaoLiberada then Response.Write " readonly tabindex=-1 " %>
+									value='<%=r_pedido.obs_2%>'>
+							</td>
+							<td class="MC MD" nowrap align="left" width="33.3%"><p class="Rf">NF Simples Remessa</p>
+								<input name="c_obs3" id="c_obs3" class="PLLe" maxlength="10" style="width:75px;margin-left:2pt;" onkeypress="if (digitou_enter(true)) fPED.c_obs4.focus(); filtra_nome_identificador();" onblur="this.value=trim(this.value);"
+								<% if Not blnObs3EdicaoLiberada then Response.Write " readonly tabindex=-1 " %>
+									value='<%=r_pedido.obs_3%>'>
+							</td>
+							<td class="MC" nowrap align="left" width="33.3%"><p class="Rf">NF Entrega Futura</p>
+								<input name="c_obs4" id="c_obs4" class="PLLe" maxlength="10" style="width:75px;margin-left:2pt;" onkeypress="if (digitou_enter(true)) fPED.c_obs4.focus(); filtra_nome_identificador();" onblur="this.value=trim(this.value);"
+									<% if Not blnObs4EdicaoLiberada then Response.Write " readonly tabindex=-1 " %>
+									value='<%=r_pedido.obs_4%>'>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
 		</table>
 		<br>
 		<table class="Q" style="width:649px;" cellspacing="0">
@@ -3861,7 +3988,7 @@ function setarValorRadio(array, valor)
 		<!--  EDIÇÃO LIBERADA   -->
 		<table class="Q" style="width:649px;" cellspacing="0">
 			<tr>
-				<td class="MB" colspan="7" align="left"><p class="Rf">Observações</p>
+				<td class="MB" align="left"><p class="Rf">Observações</p>
 					<textarea name="c_obs1" id="c_obs1" class="PLLe" rows="<%=Cstr(MAX_LINHAS_OBS1)%>" 
 						style="width:99%;margin-left:2pt;" onkeypress="limita_tamanho(this,MAX_TAM_OBS1);" onblur="this.value=trim(this.value);"
 						<% if Not blnObs1EdicaoLiberada then Response.Write " readonly tabindex=-1 " %>
@@ -3869,7 +3996,7 @@ function setarValorRadio(array, valor)
 				</td>
 			</tr>
             <tr>
-		        <td class="MB" colspan="7" align="left"><p class="Rf">Constar na NF</p>
+		        <td class="MB" align="left"><p class="Rf">Constar na NF</p>
 			        <textarea name="c_nf_texto" id="c_nf_texto" class="PLLe" rows="<%=Cstr(MAX_LINHAS_NF_TEXTO_CONSTAR)%>" 
 				        style="width:99%;margin-left:2pt;" onkeypress="limita_tamanho(this,MAX_TAM_NF_TEXTO);" onblur="this.value=trim(this.value);"
 				        <% if Not blnObs1EdicaoLiberada then Response.Write " readonly tabindex=-1 " %>
@@ -3877,84 +4004,89 @@ function setarValorRadio(array, valor)
 		        </td>
 	        </tr>
             <tr>
-                <td class="MB MD" align="left" colspan="2" nowrap><p class="Rf">xPed</p>
-			        <input name="c_num_pedido_compra" id="c_num_pedido_compra" class="PLLe" maxlength="15" style="width:100px;margin-left:2pt;" onkeypress="filtra_nome_identificador();" onblur="this.value=trim(this.value);"
-				    <% if Not blnObs1EdicaoLiberada then Response.Write " readonly tabindex=-1 " %>
-                        value='<%=r_pedido.NFe_xPed%>'>
-		        </td>
-				<td class="MB" align="left" colspan="5">
-					<p class="Rf">Previsão de Entrega</p>
-					<input name="c_data_previsao_entrega" id="c_data_previsao_entrega" class="PLLe" maxlength="10" style="width:90px;margin-left:2pt"
-					<% if Not blnEntregaImediataEdicaoLiberada then Response.Write " readonly tabindex=-1 " %>
-						value="<%=formata_data(r_pedido.PrevisaoEntregaData)%>" />
+				<td width="100%">
+					<table width="100%" cellspacing="0" cellpadding="0">
+						<tr>
+							<td class="MB MD" align="left" nowrap width="40%"><p class="Rf">xPed</p>
+								<input name="c_num_pedido_compra" id="c_num_pedido_compra" class="PLLe" maxlength="15" style="width:100px;margin-left:2pt;" onkeypress="filtra_nome_identificador();" onblur="this.value=trim(this.value);"
+								<% if Not blnObs1EdicaoLiberada then Response.Write " readonly tabindex=-1 " %>
+									value='<%=r_pedido.NFe_xPed%>'>
+							</td>
+							<td class="MB" align="left">
+								<p class="Rf">Previsão de Entrega</p>
+								<input name="c_data_previsao_entrega" id="c_data_previsao_entrega" class="PLLe" maxlength="10" style="width:90px;margin-left:2pt"
+								<% if Not blnEntregaImediataEdicaoLiberada then Response.Write " readonly tabindex=-1 " %>
+									value="<%=formata_data(r_pedido.PrevisaoEntregaData)%>" />
+							</td>
+						</tr>
+					</table>
 				</td>
             </tr>
 			<tr>
-				<td class="MD" nowrap align="left"><p class="Rf">Nº Nota Fiscal</p>
-					<input name="c_obs2" id="c_obs2" class="PLLe" maxlength="10" style="width:75px;margin-left:2pt;" onkeypress="if (digitou_enter(true)) fPED.c_obs3.focus(); filtra_nome_identificador();" onblur="this.value=trim(this.value);"
-						<% if Not blnObs2EdicaoLiberada then Response.Write " readonly tabindex=-1 " %>
-						value='<%=r_pedido.obs_2%>'>
-				</td>
-				<td class="MD" nowrap align="left"><p class="Rf">NF Simples Remessa</p>
-					<input name="c_obs3" id="c_obs3" class="PLLe" maxlength="10" style="width:75px;margin-left:2pt;" onkeypress="if (digitou_enter(true)) fPED.c_pedido_ac.focus(); filtra_nome_identificador();" onblur="this.value=trim(this.value);"
-						<% if Not blnObs3EdicaoLiberada then Response.Write " readonly tabindex=-1 " %>
-						value='<%=r_pedido.obs_3%>'>
-				</td>
-                <td class="MD" align="left" nowrap><p class="Rf">Número Magento</p>
-			        <input name="c_pedido_ac" id="c_pedido_ac" maxlength="9" class="PLLe" style="width:90px;margin-left:2pt;" onkeypress="if (digitou_enter(true)) fPED.c_qtde_parcelas.focus(); filtra_nome_identificador();return SomenteNumero(event)" onblur="this.value=trim(this.value);"
-				        value='<%=r_pedido.pedido_ac%>'
-						<%if Not blnNumPedidoECommerceEdicaoLiberada then Response.Write " readonly tabindex=-1" %>
-						/>
-		        </td>
-				<td class="MD" nowrap align="left" valign="top"><p class="Rf">Entrega Imediata</p>
-					<% if Not blnEntregaImediataEdicaoLiberada then strDisabled=" disabled" else strDisabled=""%>
-					<input type="radio" id="rb_etg_imediata" name="rb_etg_imediata" 
-						<%=strDisabled%>
-						value="<%=COD_ETG_IMEDIATA_NAO%>" <%if Cstr(r_pedido.st_etg_imediata)=Cstr(COD_ETG_IMEDIATA_NAO) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_etg_imediata[0].click();">Não</span>
-					<input type="radio" id="rb_etg_imediata" name="rb_etg_imediata" 
-						<%=strDisabled%>
-						value="<%=COD_ETG_IMEDIATA_SIM%>" <%if Cstr(r_pedido.st_etg_imediata)=Cstr(COD_ETG_IMEDIATA_SIM) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_etg_imediata[1].click();">Sim</span>
-				</td>
-				<td class="MD" nowrap align="left" valign="top"><p class="Rf">Bem Uso/Consumo</p>
-					<% if Not blnBemUsoConsumoEdicaoLiberada then strDisabled=" disabled" else strDisabled=""%>
-					<input type="radio" id="rb_bem_uso_consumo" name="rb_bem_uso_consumo" 
-						<%=strDisabled%>
-						value="<%=COD_ST_BEM_USO_CONSUMO_NAO%>" <%if Cstr(r_pedido.StBemUsoConsumo)=Cstr(COD_ST_BEM_USO_CONSUMO_NAO) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_bem_uso_consumo[0].click();">Não</span>
-					<input type="radio" id="rb_bem_uso_consumo" name="rb_bem_uso_consumo" 
-						<%=strDisabled%>
-						value="<%=COD_ST_BEM_USO_CONSUMO_SIM%>" <%if Cstr(r_pedido.StBemUsoConsumo)=Cstr(COD_ST_BEM_USO_CONSUMO_SIM) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_bem_uso_consumo[1].click();">Sim</span>
-				</td>
-				<td class="MD" nowrap align="left"><p class="Rf">Instalador Instala</p>
-					<% if Not blnInstaladorInstalaEdicaoLiberada then strDisabled=" disabled" else strDisabled=""%>
-					<input type="radio" id="rb_instalador_instala" name="rb_instalador_instala" 
-						<%=strDisabled%>
-						value="<%=COD_INSTALADOR_INSTALA_NAO%>" <%if Cstr(r_pedido.InstaladorInstalaStatus)=Cstr(COD_INSTALADOR_INSTALA_NAO) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_instalador_instala[0].click();">Não</span>
-					<input type="radio" id="rb_instalador_instala" name="rb_instalador_instala" 
-						<%=strDisabled%>
-						value="<%=COD_INSTALADOR_INSTALA_SIM%>" <%if Cstr(r_pedido.InstaladorInstalaStatus)=Cstr(COD_INSTALADOR_INSTALA_SIM) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_instalador_instala[1].click();">Sim</span>
-				</td>
-				<td nowrap align="left" valign="top"><p class="Rf">Garantia Indicador</p>
-					<% if Not blnGarantiaIndicadorEdicaoLiberada then strDisabled=" disabled" else strDisabled=""%>
-					<input type="radio" id="rb_garantia_indicador" name="rb_garantia_indicador" 
-						<%=strDisabled%>
-						value="<%=COD_GARANTIA_INDICADOR_STATUS__NAO%>" <%if Cstr(r_pedido.GarantiaIndicadorStatus)=Cstr(COD_GARANTIA_INDICADOR_STATUS__NAO) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_garantia_indicador[0].click();">Não</span>
-					<input type="radio" id="rb_garantia_indicador" name="rb_garantia_indicador" 
-						<%=strDisabled%>
-						value="<%=COD_GARANTIA_INDICADOR_STATUS__SIM%>" <%if Cstr(r_pedido.GarantiaIndicadorStatus)=Cstr(COD_GARANTIA_INDICADOR_STATUS__SIM) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_garantia_indicador[1].click();">Sim</span>
+				<td width="100%">
+					<table width="100%" cellspacing="0" cellpadding="0">
+						<tr>
+							<td class="MD" align="left" nowrap width="20%"><p class="Rf">Número Magento</p>
+								<input name="c_pedido_ac" id="c_pedido_ac" maxlength="9" class="PLLe" style="width:90px;margin-left:2pt;" onkeypress="if (digitou_enter(true)) fPED.c_qtde_parcelas.focus(); filtra_nome_identificador();return SomenteNumero(event)" onblur="this.value=trim(this.value);"
+									value='<%=r_pedido.pedido_ac%>'
+									<%if Not blnNumPedidoECommerceEdicaoLiberada then Response.Write " readonly tabindex=-1" %>
+									/>
+							</td>
+							<td class="MD" nowrap align="left" valign="top" width="20%"><p class="Rf">Entrega Imediata</p>
+								<% if Not blnEntregaImediataEdicaoLiberada then strDisabled=" disabled" else strDisabled=""%>
+								<input type="radio" id="rb_etg_imediata" name="rb_etg_imediata" 
+									<%=strDisabled%>
+									value="<%=COD_ETG_IMEDIATA_NAO%>" <%if Cstr(r_pedido.st_etg_imediata)=Cstr(COD_ETG_IMEDIATA_NAO) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_etg_imediata[0].click();">Não</span>
+								<input type="radio" id="rb_etg_imediata" name="rb_etg_imediata" 
+									<%=strDisabled%>
+									value="<%=COD_ETG_IMEDIATA_SIM%>" <%if Cstr(r_pedido.st_etg_imediata)=Cstr(COD_ETG_IMEDIATA_SIM) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_etg_imediata[1].click();">Sim</span>
+							</td>
+							<td class="MD" nowrap align="left" valign="top" width="20%"><p class="Rf">Bem Uso/Consumo</p>
+								<% if Not blnBemUsoConsumoEdicaoLiberada then strDisabled=" disabled" else strDisabled=""%>
+								<input type="radio" id="rb_bem_uso_consumo" name="rb_bem_uso_consumo" 
+									<%=strDisabled%>
+									value="<%=COD_ST_BEM_USO_CONSUMO_NAO%>" <%if Cstr(r_pedido.StBemUsoConsumo)=Cstr(COD_ST_BEM_USO_CONSUMO_NAO) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_bem_uso_consumo[0].click();">Não</span>
+								<input type="radio" id="rb_bem_uso_consumo" name="rb_bem_uso_consumo" 
+									<%=strDisabled%>
+									value="<%=COD_ST_BEM_USO_CONSUMO_SIM%>" <%if Cstr(r_pedido.StBemUsoConsumo)=Cstr(COD_ST_BEM_USO_CONSUMO_SIM) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_bem_uso_consumo[1].click();">Sim</span>
+							</td>
+							<td class="MD" nowrap align="left" width="20%"><p class="Rf">Instalador Instala</p>
+								<% if Not blnInstaladorInstalaEdicaoLiberada then strDisabled=" disabled" else strDisabled=""%>
+								<input type="radio" id="rb_instalador_instala" name="rb_instalador_instala" 
+									<%=strDisabled%>
+									value="<%=COD_INSTALADOR_INSTALA_NAO%>" <%if Cstr(r_pedido.InstaladorInstalaStatus)=Cstr(COD_INSTALADOR_INSTALA_NAO) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_instalador_instala[0].click();">Não</span>
+								<input type="radio" id="rb_instalador_instala" name="rb_instalador_instala" 
+									<%=strDisabled%>
+									value="<%=COD_INSTALADOR_INSTALA_SIM%>" <%if Cstr(r_pedido.InstaladorInstalaStatus)=Cstr(COD_INSTALADOR_INSTALA_SIM) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_instalador_instala[1].click();">Sim</span>
+							</td>
+							<td nowrap align="left" valign="top" width="20%"><p class="Rf">Garantia Indicador</p>
+								<% if Not blnGarantiaIndicadorEdicaoLiberada then strDisabled=" disabled" else strDisabled=""%>
+								<input type="radio" id="rb_garantia_indicador" name="rb_garantia_indicador" 
+									<%=strDisabled%>
+									value="<%=COD_GARANTIA_INDICADOR_STATUS__NAO%>" <%if Cstr(r_pedido.GarantiaIndicadorStatus)=Cstr(COD_GARANTIA_INDICADOR_STATUS__NAO) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_garantia_indicador[0].click();">Não</span>
+								<input type="radio" id="rb_garantia_indicador" name="rb_garantia_indicador" 
+									<%=strDisabled%>
+									value="<%=COD_GARANTIA_INDICADOR_STATUS__SIM%>" <%if Cstr(r_pedido.GarantiaIndicadorStatus)=Cstr(COD_GARANTIA_INDICADOR_STATUS__SIM) then Response.Write " checked"%>><span class="C" style="cursor:default" onclick="fPED.rb_garantia_indicador[1].click();">Sim</span>
+							</td>
+						</tr>
+					</table>
 				</td>
 			</tr>
+
 			<% if ID_PARAM_SITE = COD_SITE_ASSISTENCIA_TECNICA then %>
 			<tr>
-			    <td class="MC" colspan="2"><p class="Rf">Referente Pedido Bonshop: </p>
-			    </td>
-			    <td class="MC" colspan="5" align="left">
-			        <select id="Select2" name="pedBonshop" style="width: 120px">
-			            <option value="">&nbsp;</option>
+				<td width="100%">
+					<table width="100%" cellspacing="0" cellpadding="0">
+						<tr>
+							<td class="MC" nowrap width="25%"><p class="Rf">Referente Pedido Bonshop: </p>
+							</td>
+							<td class="MC" align="left">
+								<select id="Select2" name="pedBonshop" style="width: 120px;margin:6px 4px 6px 4px;">
+									<option value="">&nbsp;</option>
 			            <%
 			            
     If Not bdd_BS_conecta(cn2) then Response.Redirect("aviso.asp?id=" & ERR_CONEXAO)
     
-     
      sqlString = "SELECT pedido FROM t_PEDIDO" & _
               " INNER JOIN t_CLIENTE ON (t_CLIENTE.id = t_PEDIDO.id_cliente)" & _
               " WHERE t_CLIENTE.cnpj_cpf = '" & r_cliente.cnpj_cpf & "'" & _
@@ -3977,25 +4109,57 @@ function setarValorRadio(array, valor)
      set r=nothing
      cn2.Close
      set cn2 = nothing%>
-			        </select>
-			    </td>
+								</select>
+							</td>
+						</tr>
+					</table>
+				</td>
 			</tr>
 			<% end if %>
 
             <% if Cstr(r_pedido.loja) = Cstr(NUMERO_LOJA_ECOMMERCE_AR_CLUBE) then %>
             <tr>
-                <td class="MC MD" align="left" nowrap valign="top"><p class="Rf">Nº Pedido Marketplace</p>
-			        <input name="c_numero_mktplace" id="c_numero_mktplace" class="PLLe" maxlength="20" style="width:135px;margin-left:2pt;margin-top:5px;" onkeypress="filtra_nome_identificador();return SomenteNumero(event)" onblur="this.value=trim(this.value);"
-					<%if Not blnNumPedidoECommerceEdicaoLiberada then Response.Write " readonly tabindex=-1" %> value="<%=r_pedido.pedido_bs_x_marketplace%>">
-		        </td>
-                <td class="MC" colspan="6" align="left" nowrap valign="top"><p class="Rf">Origem do Pedido</p>
-			        <select name="c_origem_pedido" id="c_origem_pedido" style="margin: 3px; 3px; 3px"<%if Not blnNumPedidoECommerceEdicaoLiberada then Response.Write " disabled tabindex=-1" %>>
-                        <%=codigo_descricao_monta_itens_select_all(GRUPO_T_CODIGO_DESCRICAO__PEDIDOECOMMERCE_ORIGEM, r_pedido.marketplace_codigo_origem) %>
-			        </select>
-		        </td>
+				<td width="100%">
+					<table width="100%" cellspacing="0" cellpadding="0">
+						<tr>
+							<td class="MC MD" align="left" nowrap valign="top" width="40%"><p class="Rf">Nº Pedido Marketplace</p>
+								<input name="c_numero_mktplace" id="c_numero_mktplace" class="PLLe" maxlength="20" style="width:135px;margin-left:2pt;margin-top:5px;" onkeypress="filtra_nome_identificador();return SomenteNumero(event)" onblur="this.value=trim(this.value);"
+								<%if Not blnNumPedidoECommerceEdicaoLiberada then Response.Write " readonly tabindex=-1" %> value="<%=r_pedido.pedido_bs_x_marketplace%>">
+							</td>
+							<td class="MC" align="left" nowrap valign="top"><p class="Rf">Origem do Pedido</p>
+								<select name="c_origem_pedido" id="c_origem_pedido" style="margin: 3px; 3px; 3px"<%if Not blnNumPedidoECommerceEdicaoLiberada then Response.Write " disabled tabindex=-1" %>>
+									<%=codigo_descricao_monta_itens_select_all(GRUPO_T_CODIGO_DESCRICAO__PEDIDOECOMMERCE_ORIGEM, r_pedido.marketplace_codigo_origem) %>
+								</select>
+							</td>
+						</tr>
+					</table>
+				</td>
             </tr>
             <% end if %>
 
+			<tr>
+				<td width="100%">
+					<table width="100%" cellspacing="0" cellpadding="0">
+						<tr>
+							<td class="MC MD" nowrap align="left" width="33.3%"><p class="Rf">Nº Nota Fiscal</p>
+								<input name="c_obs2" id="c_obs2" class="PLLe" maxlength="10" style="width:75px;margin-left:2pt;" onkeypress="if (digitou_enter(true)) fPED.c_obs3.focus(); filtra_nome_identificador();" onblur="this.value=trim(this.value);"
+									<% if Not blnObs2EdicaoLiberada then Response.Write " readonly tabindex=-1 " %>
+									value='<%=r_pedido.obs_2%>'>
+							</td>
+							<td class="MC MD" nowrap align="left" width="33.3%"><p class="Rf">NF Simples Remessa</p>
+								<input name="c_obs3" id="c_obs3" class="PLLe" maxlength="10" style="width:75px;margin-left:2pt;" onkeypress="if (digitou_enter(true)) fPED.c_obs4.focus(); filtra_nome_identificador();" onblur="this.value=trim(this.value);"
+									<% if Not blnObs3EdicaoLiberada then Response.Write " readonly tabindex=-1 " %>
+									value='<%=r_pedido.obs_3%>'>
+							</td>
+							<td class="MC" nowrap align="left" width="33.3%"><p class="Rf">NF Entrega Futura</p>
+								<input name="c_obs4" id="c_obs4" class="PLLe" maxlength="10" style="width:75px;margin-left:2pt;" onkeypress="if (digitou_enter(true)) fPED.c_obs4.focus(); filtra_nome_identificador();" onblur="this.value=trim(this.value);"
+									<% if Not blnObs4EdicaoLiberada then Response.Write " readonly tabindex=-1 " %>
+									value='<%=r_pedido.obs_4%>'>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
 		</table>
 		<br>
 		<table class="Q" style="width:649px;" cellspacing="0">
@@ -4434,6 +4598,32 @@ function setarValorRadio(array, valor)
 		if vl_saldo_a_pagar >= 0 then Response.Write "black" else Response.Write "red" 
 		%>;"><%=s_vl_saldo_a_pagar%></p></td>
 </tr>
+<% if blnPagtoAntecipadoEdicaoLiberada then %>
+<tr>
+	<td colspan="3" class="MC MD" align="left" valign="bottom"><span class="Rf">Condição Pagto</span></td>
+	<td colspan="3" class="MC" align="left" valign="bottom"><span class="Rf">Status Pagto Antecipado</span></td>
+</tr>
+<tr>
+	<td colspan="3" class="MD" align="left">
+		<%intIdx=0%>
+		<input type="radio" name="rb_pagto_antecipado_status" id="rb_pagto_antecipado_status_normal" value="<%=COD_PAGTO_ANTECIPADO_STATUS_NORMAL%>"
+			<% if CStr(r_pedido.PagtoAntecipadoStatus) = COD_PAGTO_ANTECIPADO_STATUS_NORMAL then Response.Write " checked" %> onchange="exibeOcultaPagtoAntecipadoQuitadoStatus();" /><span class="C" style="cursor:default;" onclick="fPED.rb_pagto_antecipado_status[<%=Cstr(intIdx)%>].click();"><%=pagto_antecipado_descricao(COD_PAGTO_ANTECIPADO_STATUS_NORMAL)%></span>
+		<br />
+		<%intIdx=intIdx+1%>
+		<input type="radio" name="rb_pagto_antecipado_status" id="rb_pagto_antecipado_status_antecipado" value="<%=COD_PAGTO_ANTECIPADO_STATUS_ANTECIPADO%>"
+			<% if CStr(r_pedido.PagtoAntecipadoStatus) = COD_PAGTO_ANTECIPADO_STATUS_ANTECIPADO then Response.Write " checked" %> onchange="exibeOcultaPagtoAntecipadoQuitadoStatus();" /><span class="C" style="cursor:default;" onclick="fPED.rb_pagto_antecipado_status[<%=Cstr(intIdx)%>].click();"><%=pagto_antecipado_descricao(COD_PAGTO_ANTECIPADO_STATUS_ANTECIPADO)%></span>
+	</td>
+	<td colspan="3" class="TdPagtoAntecipadoQuitadoStatus" align="left">
+		<%intIdx=0%>
+		<input type="radio" name="rb_pagto_antecipado_quitado_status" value="<%=COD_PAGTO_ANTECIPADO_QUITADO_STATUS_PENDENTE%>"
+			<% if CStr(r_pedido.PagtoAntecipadoQuitadoStatus) = COD_PAGTO_ANTECIPADO_QUITADO_STATUS_PENDENTE then Response.Write " checked" %> /><span class="C" style="cursor:default;color:<%=pagto_antecipado_quitado_cor(COD_PAGTO_ANTECIPADO_STATUS_ANTECIPADO, COD_PAGTO_ANTECIPADO_QUITADO_STATUS_PENDENTE)%>;" onclick="fPED.rb_pagto_antecipado_quitado_status[<%=Cstr(intIdx)%>].click();"><%=pagto_antecipado_quitado_descricao(COD_PAGTO_ANTECIPADO_STATUS_ANTECIPADO, COD_PAGTO_ANTECIPADO_QUITADO_STATUS_PENDENTE)%></span>
+		<br />
+		<%intIdx=intIdx+1%>
+		<input type="radio" name="rb_pagto_antecipado_quitado_status" value="<%=COD_PAGTO_ANTECIPADO_QUITADO_STATUS_QUITADO%>"
+			<% if CStr(r_pedido.PagtoAntecipadoQuitadoStatus) = COD_PAGTO_ANTECIPADO_QUITADO_STATUS_QUITADO then Response.Write " checked" %> /><span class="C" style="cursor:default;color:<%=pagto_antecipado_quitado_cor(COD_PAGTO_ANTECIPADO_STATUS_ANTECIPADO, COD_PAGTO_ANTECIPADO_QUITADO_STATUS_QUITADO)%>;" onclick="fPED.rb_pagto_antecipado_quitado_status[<%=Cstr(intIdx)%>].click();"><%=pagto_antecipado_quitado_descricao(COD_PAGTO_ANTECIPADO_STATUS_ANTECIPADO, COD_PAGTO_ANTECIPADO_QUITADO_STATUS_QUITADO)%></span>
+	</td>
+</tr>
+<% end if %>
 </table>
 
 
@@ -4450,6 +4640,10 @@ function setarValorRadio(array, valor)
 		( Cstr(r_pedido.analise_credito)=Cstr(COD_AN_CREDITO_PENDENTE_ENDERECO) ) _
 		  Or _
 		( Cstr(r_pedido.analise_credito)=Cstr(COD_AN_CREDITO_OK_AGUARDANDO_DEPOSITO) ) _
+		  Or _
+		( Cstr(r_pedido.analise_credito)=Cstr(COD_AN_CREDITO_OK_AGUARDANDO_PAGTO_BOLETO_AV) ) _
+		  Or _
+		( Cstr(r_pedido.analise_credito)=Cstr(COD_AN_CREDITO_PENDENTE_PAGTO_ANTECIPADO_BOLETO) ) _
 		  Or _
 		( Cstr(r_pedido.analise_credito)=Cstr(COD_AN_CREDITO_OK_DEPOSITO_AGUARDANDO_DESBLOQUEIO) ) _
 		  Or _
@@ -4469,22 +4663,22 @@ function setarValorRadio(array, valor)
 		<tr>
 			<td>
 				<%intIdx=0%>
-				<input type="radio" id="rb_analise_credito" name="rb_analise_credito" 
+				<input type="radio" name="rb_analise_credito" id="rb_analise_credito_pendente_vendas"
 					value="<%=COD_AN_CREDITO_PENDENTE_VENDAS%>" <%if Cstr(r_pedido.analise_credito)=Cstr(COD_AN_CREDITO_PENDENTE_VENDAS) then Response.Write " checked"%> onchange="exibeOcultaPendenteVendasMotivo()"><span class="C" style="cursor:default;color:red;" onclick="fPED.rb_analise_credito[<%=Cstr(intIdx)%>].click();"><%=x_analise_credito(COD_AN_CREDITO_PENDENTE_VENDAS)%></span>
 			</td>
 			<td>
 				<%intIdx=intIdx+1%>
-				<input type="radio" id="rb_analise_credito" name="rb_analise_credito" 
+				<input type="radio" name="rb_analise_credito" id="rb_analise_credito_pendente_endereco"
 					value="<%=COD_AN_CREDITO_PENDENTE_ENDERECO%>" <%if Cstr(r_pedido.analise_credito)=Cstr(COD_AN_CREDITO_PENDENTE_ENDERECO) then Response.Write " checked"%> onchange="exibeOcultaPendenteVendasMotivo()"><span class="C" style="cursor:default;color:red;" onclick="fPED.rb_analise_credito[<%=Cstr(intIdx)%>].click();"><%=x_analise_credito(COD_AN_CREDITO_PENDENTE_ENDERECO)%></span>
 			</td>
 			<td>
 				<%intIdx=intIdx+1%>
-				<input type="radio" id="rb_analise_credito" name="rb_analise_credito" 
+				<input type="radio" name="rb_analise_credito" id="rb_analise_credito_pendente"
 					value="<%=COD_AN_CREDITO_PENDENTE%>" <%if Cstr(r_pedido.analise_credito)=Cstr(COD_AN_CREDITO_PENDENTE) then Response.Write " checked"%> onchange="exibeOcultaPendenteVendasMotivo()"><span class="C" style="cursor:default;color:red;" onclick="fPED.rb_analise_credito[<%=Cstr(intIdx)%>].click();"><%=x_analise_credito(COD_AN_CREDITO_PENDENTE)%></span>
 			</td>
 			<td>
 				<%intIdx=intIdx+1%>
-				<input type="radio" id="rb_analise_credito" name="rb_analise_credito" 
+				<input type="radio" name="rb_analise_credito" id="rb_analise_credito_ok"
 					value="<%=COD_AN_CREDITO_OK%>" <%if Cstr(r_pedido.analise_credito)=Cstr(COD_AN_CREDITO_OK) then Response.Write " checked"%> onchange="exibeOcultaPendenteVendasMotivo()"><span class="C" style="cursor:default;color:green;" onclick="fPED.rb_analise_credito[<%=Cstr(intIdx)%>].click();"><%=x_analise_credito(COD_AN_CREDITO_OK)%></span>
 			</td>
 		</tr>
@@ -4499,13 +4693,25 @@ function setarValorRadio(array, valor)
 		<tr>
 			<td>
 					<%intIdx=intIdx+1%>
-					<input type="radio" id="rb_analise_credito" name="rb_analise_credito" 
+					<input type="radio" name="rb_analise_credito" id="rb_analise_credito_ok_aguardando_deposito"
 						value="<%=COD_AN_CREDITO_OK_AGUARDANDO_DEPOSITO%>" <%if Cstr(r_pedido.analise_credito)=Cstr(COD_AN_CREDITO_OK_AGUARDANDO_DEPOSITO) then Response.Write " checked"%> onchange="exibeOcultaPendenteVendasMotivo()"><span class="C" style="cursor:default;color:darkorange;" onclick="fPED.rb_analise_credito[<%=Cstr(intIdx)%>].click();"><%=x_analise_credito(COD_AN_CREDITO_OK_AGUARDANDO_DEPOSITO)%></span>
 			</td>
 			<td colspan="3">
 					<%intIdx=intIdx+1%>
-					<input type="radio" id="rb_analise_credito" name="rb_analise_credito" 
+					<input type="radio" name="rb_analise_credito" id="rb_analise_credito_ok_deposito_aguardando_desbloqueio"
 						value="<%=COD_AN_CREDITO_OK_DEPOSITO_AGUARDANDO_DESBLOQUEIO%>" <%if Cstr(r_pedido.analise_credito)=Cstr(COD_AN_CREDITO_OK_DEPOSITO_AGUARDANDO_DESBLOQUEIO) then Response.Write " checked"%> onchange="exibeOcultaPendenteVendasMotivo()"><span class="C" style="cursor:default;color:darkorange;" onclick="fPED.rb_analise_credito[<%=Cstr(intIdx)%>].click();"><%=x_analise_credito(COD_AN_CREDITO_OK_DEPOSITO_AGUARDANDO_DESBLOQUEIO)%></span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+					<%intIdx=intIdx+1%>
+					<input type="radio" name="rb_analise_credito" id="rb_analise_credito_ok_aguardando_pagto_boleto_av"
+						value="<%=COD_AN_CREDITO_OK_AGUARDANDO_PAGTO_BOLETO_AV%>" <%if Cstr(r_pedido.analise_credito)=Cstr(COD_AN_CREDITO_OK_AGUARDANDO_PAGTO_BOLETO_AV) then Response.Write " checked"%> onchange="exibeOcultaPendenteVendasMotivo()" /><span class="C" style="cursor:default;color:<%=x_analise_credito_cor(COD_AN_CREDITO_OK_AGUARDANDO_PAGTO_BOLETO_AV)%>;" onclick="fPED.rb_analise_credito[<%=Cstr(intIdx)%>].click();"><%=x_analise_credito(COD_AN_CREDITO_OK_AGUARDANDO_PAGTO_BOLETO_AV)%></span>
+			</td>
+			<td colspan="3">
+					<%intIdx=intIdx+1%>
+					<input type="radio" name="rb_analise_credito" id="rb_analise_credito_pendente_pagto_antecipado_boleto"
+						value="<%=COD_AN_CREDITO_PENDENTE_PAGTO_ANTECIPADO_BOLETO%>" <%if Cstr(r_pedido.analise_credito)=Cstr(COD_AN_CREDITO_PENDENTE_PAGTO_ANTECIPADO_BOLETO) then Response.Write " checked"%> onchange="exibeOcultaPendenteVendasMotivo()" /><span class="C" style="cursor:default;color:<%=x_analise_credito_cor(COD_AN_CREDITO_PENDENTE_PAGTO_ANTECIPADO_BOLETO)%>;" onclick="fPED.rb_analise_credito[<%=Cstr(intIdx)%>].click();"><%=x_analise_credito(COD_AN_CREDITO_PENDENTE_PAGTO_ANTECIPADO_BOLETO)%></span>
 			</td>
 		</tr>
 		</table>

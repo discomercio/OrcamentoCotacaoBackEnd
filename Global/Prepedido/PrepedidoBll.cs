@@ -187,8 +187,7 @@ namespace Prepedido
 
         public async Task<bool> RemoverPrePedido(string numeroPrePedido, string apelido)
         {
-            //não fazemos bloqueio; se tivermos alterações simultâneas, simplesmente a última grava os seus dados
-            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTO))
             {
                 var prepedido = from c in dbgravacao.Torcamentos
                                 where c.Orcamentista == apelido &&
@@ -836,11 +835,8 @@ namespace Prepedido
 
             if (lstErros.Count <= 0)
             {
-                using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+                using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTO))
                 {
-                    //bloqueio por NSU
-                    await dbgravacao.BloquearNsu(InfraBanco.Constantes.Constantes.NSU_ORCAMENTO);
-
                     //verifica se o prepedio já foi gravado
                     if (verificarPrepedidoRepetido)
                     {
@@ -932,7 +928,7 @@ namespace Prepedido
         //todo: apagar esta rotina
         public async Task DeletarOrcamentoExisteComTransacao(PrePedidoDados prePedido, string apelido)
         {
-            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTO))
             {
                 await DeletarOrcamentoExiste(dbgravacao, prePedido, apelido);
                 dbgravacao.transacao.Commit();

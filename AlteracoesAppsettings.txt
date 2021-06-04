@@ -1,0 +1,8 @@
+Alterações nos appsettings:
+
+
+ApiUnis/appsettings.json
+    "TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO": true
+
+PrepedidoApi/appsettings.json
+    "TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO": true

@@ -30,6 +30,10 @@ namespace Testes.Automatizados
             });
 
             services.AddTransient<InfraBanco.ContextoBdProvider, InfraBanco.ContextoBdProvider>();
+            services.AddSingleton<InfraBanco.ContextoBdGravacaoOpcoes>(c =>
+            {
+                return new InfraBanco.ContextoBdGravacaoOpcoes(true);
+            });
             services.AddTransient<InfraBanco.ContextoCepProvider, InfraBanco.ContextoCepProvider>();
             services.AddTransient<InicializarBanco.InicializarBancoCep, InicializarBanco.InicializarBancoCep>();
             services.AddTransient<InicializarBanco.InicializarBancoGeral, InicializarBanco.InicializarBancoGeral>();

@@ -108,6 +108,11 @@ namespace Loja.UI
 
             //ContextoProvider
             services.AddTransient<InfraBanco.ContextoBdProvider, InfraBanco.ContextoBdProvider>();
+            services.AddSingleton<InfraBanco.ContextoBdGravacaoOpcoes>(c =>
+            {
+                //todo: ler da configuracao
+                return new InfraBanco.ContextoBdGravacaoOpcoes(true);
+            });
             services.AddTransient<InfraBanco.ContextoCepProvider, InfraBanco.ContextoCepProvider>();
             services.AddTransient<InfraBanco.ContextoNFeProvider, InfraBanco.ContextoNFeProvider>();
             //services.AddTransient<Data.LojaContextoBdProvider, Data.LojaContextoBdProvider>();

@@ -62,5 +62,7 @@ namespace MagentoBusiness.UtilsMagento
         }
 
         public PagtoMagento FormaPagto { get; set; } = new PagtoMagento();
+
+        public bool TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO { get; set; } = true;
     }
 }

@@ -45,7 +45,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo30
         [Given(@"Chamar Estoque_verifica_disponibilidade_integral_v2")]
         public void GivenChamarEstoque_Verifica_Disponibilidade_Integral_V2()
         {
-            var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            var db = contextoBdProvider.GetContextoGravacaoParaUsing(global::InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM);
 
             if (!CtrlEstoque.Any())
                 Assert.Equal("Erro", "regras de estoque está vazia");

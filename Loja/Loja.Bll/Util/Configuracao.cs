@@ -112,5 +112,7 @@ namespace Loja.Bll.Util
         }
 
         public LimitePedidos LimitePedidosLoja { get; set; } = new LimitePedidos();
+
+        public bool TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO { get; set; } = true;
     }
 }

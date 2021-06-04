@@ -7,23 +7,26 @@ namespace InfraBanco
 {
     public class ContextoBdProvider
     {
-        public ContextoBdProvider(DbContextOptions<ContextoBdBasico> opt)
+        private readonly DbContextOptions<ContextoBdBasico> Opt;
+        private readonly ContextoBdGravacaoOpcoes ContextoBdGravacaoOpcoes;
+
+        public ContextoBdProvider(DbContextOptions<ContextoBdBasico> opt, ContextoBdGravacaoOpcoes contextoBdGravacaoOpcoes)
         {
-            Opt = opt;
+            this.Opt = opt;
+            this.ContextoBdGravacaoOpcoes = contextoBdGravacaoOpcoes;
         }
 
-        public DbContextOptions<ContextoBdBasico> Opt { get; }
 
         public ContextoBd GetContextoLeitura()
         {
             //para leitura, cada leitura com uma conexao nova
             return new ContextoBd(new ContextoBdBasico(Opt));
         }
-        public ContextoBdGravacao GetContextoGravacaoParaUsing()
+        public ContextoBdGravacao GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle bloqueioTControle)
         {
             //para gravacao, todos compartilham a mesma coenxao (todos nesta instancia)
             //mas todos precisam estar dentro da transação!
-            return new ContextoBdGravacao(new ContextoBdBasico(Opt));
+            return new ContextoBdGravacao(new ContextoBdBasico(Opt), ContextoBdGravacaoOpcoes, bloqueioTControle);
         }
     }
 }
