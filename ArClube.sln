@@ -82,7 +82,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestesApiMagentoCadastrarPe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestesPrepedidoApi", "TestesPrepedidoApi", "{901A4EE8-FC5F-4493-BB38-03CB19BA80EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestesPrepedidoApiCadastrarPrepedido", "Global\Testes\TestePrepedidoApi\TestesPrepedidoApiCadastrarPrepedido\TestesPrepedidoApiCadastrarPrepedido.csproj", "{37B3DB8C-F832-48C0-8811-5DF8C1E51FCD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestesPrepedidoApiCadastrarPrepedido", "Global\Testes\TestePrepedidoApi\TestesPrepedidoApiCadastrarPrepedido\TestesPrepedidoApiCadastrarPrepedido.csproj", "{37B3DB8C-F832-48C0-8811-5DF8C1E51FCD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -330,13 +330,9 @@ Global
 		{37B3DB8C-F832-48C0-8811-5DF8C1E51FCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{37B3DB8C-F832-48C0-8811-5DF8C1E51FCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37B3DB8C-F832-48C0-8811-5DF8C1E51FCD}.Release_ApiMagento|Any CPU.ActiveCfg = Release|Any CPU
-		{37B3DB8C-F832-48C0-8811-5DF8C1E51FCD}.Release_ApiMagento|Any CPU.Build.0 = Release|Any CPU
 		{37B3DB8C-F832-48C0-8811-5DF8C1E51FCD}.Release_ApiUnis|Any CPU.ActiveCfg = Release|Any CPU
-		{37B3DB8C-F832-48C0-8811-5DF8C1E51FCD}.Release_ApiUnis|Any CPU.Build.0 = Release|Any CPU
 		{37B3DB8C-F832-48C0-8811-5DF8C1E51FCD}.Release_Loja|Any CPU.ActiveCfg = Release|Any CPU
-		{37B3DB8C-F832-48C0-8811-5DF8C1E51FCD}.Release_Loja|Any CPU.Build.0 = Release|Any CPU
 		{37B3DB8C-F832-48C0-8811-5DF8C1E51FCD}.Release_PrepedidoApi|Any CPU.ActiveCfg = Release|Any CPU
-		{37B3DB8C-F832-48C0-8811-5DF8C1E51FCD}.Release_PrepedidoApi|Any CPU.Build.0 = Release|Any CPU
 		{37B3DB8C-F832-48C0-8811-5DF8C1E51FCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37B3DB8C-F832-48C0-8811-5DF8C1E51FCD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection

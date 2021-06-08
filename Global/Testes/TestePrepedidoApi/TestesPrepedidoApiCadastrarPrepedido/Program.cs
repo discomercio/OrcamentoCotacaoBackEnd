@@ -3,6 +3,7 @@ using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -21,6 +22,7 @@ namespace TestesPrepedidoApiCadastrarPrepedido
 
         private static void CriarPrePedidos(ConfiguracaoTestes configuracaoTestes)
         {
+            CarregarHeader(configuracaoTestes);
             //fazer login
             FazerLogin(configuracaoTestes);
 
@@ -44,11 +46,19 @@ namespace TestesPrepedidoApiCadastrarPrepedido
         private static readonly HttpClient client = new HttpClient();
         private static void FazerLogin(ConfiguracaoTestes configuracaoTestes)
         {
+            StringContent contentString = PrepararLogin(configuracaoTestes);
+
+            var response = client.PostAsync(configuracaoTestes.UrlPrepedidoApiFazerLogin, contentString).Result;
+            var responseString = response.Content.ReadAsStringAsync().Result;
+
+            var res = JsonConvert.DeserializeObject<string>(responseString);
+            token = res;
+        }
+
+        private static StringContent PrepararLogin(ConfiguracaoTestes configuracaoTestes)
+        {
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            string url = "http://localhost:60877/api/acesso/fazerLogin";
-            //string url = "http://its-appdev:9000/api/acesso/fazerLogin";//para teste no appdev
 
             var jsonContent = JsonConvert.SerializeObject(new
             {
@@ -58,14 +68,25 @@ namespace TestesPrepedidoApiCadastrarPrepedido
 
             var contentString = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             contentString.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            //para appdev
-            //contentString.Headers.Add("X-API-Version", "2021-06-04T22:37:04.455Z");
-            contentString.Headers.Add("X-API-Version", "DEBUG");
+            contentString.Headers.Add("X-API-Version", xApiVersion);
+            return contentString;
+        }
 
-            var response = client.PostAsync(url, contentString).Result;
+        private static string xApiVersion = "DEBUG";
+        
+        private static void CarregarHeader(ConfiguracaoTestes configuracaoTestes)
+        {
+            StringContent contentString = PrepararLogin(configuracaoTestes);
+
+            var response = client.PostAsync(configuracaoTestes.UrlPrepedidoApiFazerLogin, contentString).Result;
             var responseString = response.Content.ReadAsStringAsync().Result;
-            var res = JsonConvert.DeserializeObject<string>(responseString);
-            token = res;
+            //verificar se responseString tem o x-api-version: 
+            if(responseString.IndexOf("X-API-Version: ") > -1)
+            {
+                string textoCompleto = responseString.Substring(responseString.IndexOf("X-API-Version: "));
+                string[] textoQuebrado = textoCompleto.Split("X-API-Version: ");
+                xApiVersion = textoQuebrado.Where(c => !string.IsNullOrEmpty(c)).Select(c => c).FirstOrDefault();
+            }
         }
 
         private static PrePedidoDto LerJson()
@@ -94,7 +115,8 @@ namespace TestesPrepedidoApiCadastrarPrepedido
             var jsonContent = JsonConvert.SerializeObject(dto);
             var contentString = new StringContent(jsonContent, Encoding.UTF8, "application/json");
             contentString.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            contentString.Headers.Add("X-API-Version", "DEBUG");
+            //para testar no appdev precisa alterar de DEBUG para a data 
+            contentString.Headers.Add("X-API-Version", xApiVersion);
             var response = client.PostAsync(configuracaoTestes.UrlPrePedidoApiCadastrarPrePedido, contentString).Result;
             var responseString = response.Content.ReadAsStringAsync().Result;
             var res = JsonConvert.DeserializeObject<List<string>>(responseString);
