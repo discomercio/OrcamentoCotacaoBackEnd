@@ -68,8 +68,8 @@ namespace PrepedidoApi
             services.AddTransient<InfraBanco.ContextoBdProvider, InfraBanco.ContextoBdProvider>();
             services.AddSingleton<InfraBanco.ContextoBdGravacaoOpcoes>(c =>
             {
-                Configuracao configuracao = c.GetRequiredService<Configuracao>();
-                return new InfraBanco.ContextoBdGravacaoOpcoes(configuracao.TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO);
+                var appSettings = appSettingsSection.Get<Utils.Configuracao>();
+                return new InfraBanco.ContextoBdGravacaoOpcoes(appSettings.TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO);
             });
             services.AddTransient<InfraBanco.ContextoCepProvider, InfraBanco.ContextoCepProvider>();
 
