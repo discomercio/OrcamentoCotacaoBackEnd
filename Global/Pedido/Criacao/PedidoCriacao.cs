@@ -56,32 +56,7 @@ namespace Pedido.Criacao
         #endregion
 
 
-        private static readonly object _lockObject = new object();
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<PedidoCriacaoRetornoDados> CadastrarPedido(PedidoCriacaoDados pedido)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
-        {
-            /*
-            precisamos deste lock porque temos erros de timeout com acessos simultâneos. Não entendi porque isso ocorre. 
-            Se removemos as transações não dá mais erro, mas precisamos das transações.
-            Alémd o timeout, tb recebemos este erro:
-                An exception has been raised that is likely due to a transient failure. Consider enabling transient error resiliency by adding 'EnableRetryOnFailure()' to the 'UseSqlServer' call.
-            Mas usar a sugestão da mensagem de erro só empurra o problema porque precisa mudar a forma como a transação é iniciada.
-            Também poderíamos deixar a exceção sendo lançada, mas isso só iria causar problemas.
-            Este lock não tem possibilidade de gerar deadlock e não tem efeito sobre o desempenho
-            porque a criação do pedido é feita em uma transação que bloqueia outras criações simultâneas.
-            */
-            lock (_lockObject)
-            {
-                return CadastrarPedidoEfetivo(pedido).Result;
-            }
-        }
-        //uma classe: Global/Pedido/PedidoBll/PedidoCriacao com a rotina CadastrarPrepedido, 
-        //que retorna um PedidoCriacaoRetorno com o id do pedido, dos filhotes, 
-        //as mensagens de erro e as mensagens de erro da validação dos 
-        //dados cadastrais (quer dizer, duas listas de erro.) 
-        //É que na loja o tratamento dos erros dos dados cadastrais vai ser diferente).
-        private async Task<PedidoCriacaoRetornoDados> CadastrarPedidoEfetivo(PedidoCriacaoDados pedido)
         {
             PedidoCriacaoRetornoDados retorno = new PedidoCriacaoRetornoDados();
 

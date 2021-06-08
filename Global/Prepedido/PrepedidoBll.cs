@@ -187,7 +187,7 @@ namespace Prepedido
 
         public async Task<bool> RemoverPrePedido(string numeroPrePedido, string apelido)
         {
-            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTO))
             {
                 var prepedido = from c in dbgravacao.Torcamentos
                                 where c.Orcamentista == apelido &&
@@ -835,7 +835,7 @@ namespace Prepedido
 
             if (lstErros.Count <= 0)
             {
-                using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+                using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTO))
                 {
                     //verifica se o prepedio já foi gravado
                     if (verificarPrepedidoRepetido)
@@ -925,9 +925,10 @@ namespace Prepedido
             await dbgravacao.SaveChangesAsync();
         }
 
+        //todo: apagar esta rotina
         public async Task DeletarOrcamentoExisteComTransacao(PrePedidoDados prePedido, string apelido)
         {
-            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTO))
             {
                 await DeletarOrcamentoExiste(dbgravacao, prePedido, apelido);
                 dbgravacao.transacao.Commit();

@@ -9,13 +9,11 @@ namespace InfraBanco.Modelos
     [Table("t_EC_PRODUTO_COMPOSTO")]
     public class TecProdutoComposto
     {
-        [Key]
         [Column("fabricante_composto")]
         [MaxLength(4)]
         [Required]
         public string Fabricante_Composto { get; set; }
 
-        [Key]
         [Column("produto_composto")]
         [MaxLength(8)]
         [Required]

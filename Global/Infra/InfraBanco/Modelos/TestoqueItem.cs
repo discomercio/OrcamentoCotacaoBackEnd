@@ -44,5 +44,8 @@ namespace InfraBanco.Modelos
         [Required]
         public DateTime Data_ult_movimento { get; set; }
 #endif
+
+        [Column("dummy")]
+        public Boolean Dummy { get; set; }
     }
 }

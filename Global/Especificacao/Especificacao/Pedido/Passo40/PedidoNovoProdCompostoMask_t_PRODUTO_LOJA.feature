@@ -292,6 +292,8 @@ Scenario: Verificar se o produto não existe na t_PRODUTO_LOJA
 	When Lista de itens "0" informo "Qtde" = "2"
 	When Lista de itens "0" informo "Preco_Venda" = "509.24"
 	When Lista de itens "0" informo "Preco_NF" = "520.00"
+	And Recalcular totais do pedido
+	And Deixar forma de pagamento consistente
 	Given Reiniciar banco ao terminar cenário
 	Given Limpar tabela "t_PRODUTO_LOJA"
 	Then Erro "regex .*Produto não cadastrado para a loja. Produto:*"

@@ -6,29 +6,74 @@ using System.Text;
 
 namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 {
+    /// <summary>
+    /// FormaPagtoCriacao: a forma de pagamento dos produtos. Os serviços não são incluídos aqui.
+    /// <hr />
+    /// </summary>
     public class FormaPagtoCriacaoMagentoDto
     {
         /// <summary>
-        /// Pedido que vier do Markeplace deve ser Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELA_UNICA = "5"  
-        /// e Op_pu_forma_pagto = "2" "Depósito" e C_pu_vencto_apos = 30 dias (Definido no appsettings)
-        /// <br />
-        /// Pedido que vier do Magento deve ser Tipo_Parcelamento = COD_FORMA_PAGTO_A_VISTA = "1" 
-        /// e Op_av_forma_pagto = "6" "Boleto" ou Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELADO_CARTAO = "2" 
-        /// (Definido no appsettings)
-        /// <br />
         /// <br />
         /// Tipo_Parcelamento:
         ///     COD_FORMA_PAGTO_A_VISTA = "1",
         ///     COD_FORMA_PAGTO_PARCELADO_CARTAO = "2",
         ///     COD_FORMA_PAGTO_PARCELA_UNICA = "5",
         /// <hr />
+        /// Se Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELA_UNICA = "5" ou COD_FORMA_PAGTO_A_VISTA = "1", 
+        /// <br />
+        /// C_pu_valor = somatoria de RowTotal da lista de produtos + Valor liquido do frete
+        /// <br />
+        /// <br />
+        /// Se Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELADO_CARTAO = "2" 
+        /// <br />
+        /// C_pc_qtde * C_pc_valor = somatoria de RowTotal da lista de produtos + Valor liquido do frete
+        /// <br />
+        /// <hr />
+        /// Pedido que vier do Markeplace deve ter Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELA_UNICA = "5"  
+        /// <br />
+        /// Pedido que vier do Magento deve ter Tipo_Parcelamento = COD_FORMA_PAGTO_A_VISTA = "1" ou Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELADO_CARTAO = "2" 
+        /// <br />
+        /// <hr />
+        /// Valores lidos do appsettings.json:
+        /// <br />
+        /// Se Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELA_UNICA = "5"
+        /// <br />
+        /// - Op_pu_forma_pagto, default = "2" "Depósito" 
+        /// <br />
+        /// - C_pu_vencto_apos, default = 30 dias
+        /// <br />
+        /// <br />
         /// </summary>
         [Required]
         public short Tipo_Parcelamento { get; set; }//Tipo da forma de pagto
 
+        /// <summary>
+        /// Opção da forma de pagamento para tipo A Vista 
+        /// <br/>
+        /// Obrigatório se Tipo_Parcelamento = COD_FORMA_PAGTO_A_VISTA = "1", o valor "6" significa "Boleto - conforme campo id da tabela t_FORMA_PAGTO".
+        /// <br/>
+        /// Se Tipo_Parcelamento != COD_FORMA_PAGTO_A_VISTA , deve zer vazio.
+        /// <hr />
+        /// </summary>
+        [MaxLength(1)]
+        public string? Op_av_forma_pagto { get; set; }
+
+        /// <summary>
+        /// C_pu_valor: valor para pagamento de Parcela Única
+        /// <hr />
+        /// </summary>
         public decimal? C_pu_valor { get; set; }
 
+        /// <summary>
+        /// C_pc_qtde: quantidade de parcelas para pagamento Parcelado no Cartão
+        /// <hr />
+        /// </summary>
         public int? C_pc_qtde { get; set; }
+
+        /// <summary>
+        /// C_pc_valor: valor das parcelas para pagamento Parcelado no Cartão
+        /// <hr />
+        /// </summary>
         public decimal? C_pc_valor { get; set; }
 
         //C_forma_pagto = "" (deixar em branco)
@@ -47,17 +92,17 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             //Verificar com Edu se essa condição está correta
             if (formaPagtoCriacaoMagento.Tipo_Parcelamento.ToString() ==
                 InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_A_VISTA &&
-                !string.IsNullOrEmpty(infCriacaoPedidostring.Pedido_bs_x_ac) &&
+                !string.IsNullOrEmpty(infCriacaoPedidostring.Pedido_magento) &&
                 infCriacaoPedidostring.Marketplace_codigo_origem == InfraBanco.Constantes.Constantes.COD_MARKETPLACE_ARCLUBE)
             {
                 ret.CustoFinancFornecQtdeParcelas = 0;
-                ret.Op_av_forma_pagto = configuracaoApiMagento.FormaPagto.Magento.Op_av_forma_pagto;//boleto
+                ret.Op_av_forma_pagto = formaPagtoCriacaoMagento.Op_av_forma_pagto;//boleto
                 ret.CustoFinancFornecTipoParcelamento =
                     InfraBanco.Constantes.Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA;
             }
             if (formaPagtoCriacaoMagento.Tipo_Parcelamento.ToString() ==
                 InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_PARCELA_UNICA &&
-                !string.IsNullOrEmpty(infCriacaoPedidostring.Pedido_bs_x_marketplace) &&
+                !string.IsNullOrEmpty(infCriacaoPedidostring.Pedido_marketplace) &&
                 infCriacaoPedidostring.Marketplace_codigo_origem != InfraBanco.Constantes.Constantes.COD_MARKETPLACE_ARCLUBE)
             {
                 ret.CustoFinancFornecQtdeParcelas = 1;
@@ -69,7 +114,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
             }
             if (formaPagtoCriacaoMagento.Tipo_Parcelamento.ToString() ==
                 InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO &&
-                !string.IsNullOrEmpty(infCriacaoPedidostring.Pedido_bs_x_ac) &&
+                !string.IsNullOrEmpty(infCriacaoPedidostring.Pedido_magento) &&
                 infCriacaoPedidostring.Marketplace_codigo_origem == InfraBanco.Constantes.Constantes.COD_MARKETPLACE_ARCLUBE)
             {
                 ret.CustoFinancFornecQtdeParcelas = formaPagtoCriacaoMagento.C_pc_qtde ?? 1;

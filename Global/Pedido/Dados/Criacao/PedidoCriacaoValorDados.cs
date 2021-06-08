@@ -5,6 +5,7 @@ using System.Text;
 #nullable enable
 namespace Pedido.Dados.Criacao
 {
+    //todo: renomear para PedidoCriacaoTotaisDados
     public class PedidoCriacaoValorDados
     {
         public PedidoCriacaoValorDados(float perc_RT, decimal vl_total, decimal vl_total_NF, decimal magento_shipping_amount)

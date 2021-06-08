@@ -64,7 +64,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         private void InicalizarInterno()
         {
             var apagarDadosExistentes = true;
-            using (var db = contextoBdProvider.GetContextoGravacaoParaUsing())
+            using (var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 //estas, só apagamos
                 InicializarTabela<TpedidoItem>(db.TpedidoItems, null, db, apagarDadosExistentes);
@@ -105,14 +105,14 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 db.SaveChanges();
                 db.transacao.Commit();
             }
-            using (var db = contextoBdProvider.GetContextoGravacaoParaUsing())
+            using (var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 InicializarTabela<Tusuario>(db.Tusuarios, "Tusuario", db, apagarDadosExistentes);
                 InicializarTabela<TwmsRegraCd>(db.TwmsRegraCds, "TwmsRegraCd", db, apagarDadosExistentes);
                 db.SaveChanges();
                 db.transacao.Commit();
             }
-            using (var db = contextoBdProvider.GetContextoGravacaoParaUsing())
+            using (var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 InicializarTabela<TwmsRegraCdXUf>(db.TwmsRegraCdXUfs, "TwmsRegraCdXUf", db, apagarDadosExistentes);
                 InicializarTabela<TwmsRegraCdXUfPessoa>(db.TwmsRegraCdXUfPessoas, "TwmsRegraCdXUfPessoa", db, apagarDadosExistentes);
@@ -175,7 +175,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
 
         private void Inicalizar_TorcamentistaEindicador()
         {
-            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
             db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
             {
                 Apelido = Dados.Orcamentista.Apelido_com_ra.ToUpper(),

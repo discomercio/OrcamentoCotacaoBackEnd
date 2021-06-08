@@ -43,5 +43,7 @@ namespace PrepedidoUnisBusiness.Utils
         public PrepedidoListarStatusPrepedidoParametrizacao ParamBuscaListagemStatusPrepedido { get; set; } = new PrepedidoListarStatusPrepedidoParametrizacao();
 
         public int LimiteItens { get; set; } = 12;
+
+        public bool TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO { get; set; } = true;
     }
 }

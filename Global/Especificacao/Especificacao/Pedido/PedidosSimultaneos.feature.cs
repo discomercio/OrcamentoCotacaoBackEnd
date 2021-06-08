@@ -20,13 +20,19 @@ namespace Especificacao.Especificacao.Pedido
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.3.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Xunit.TraitAttribute("Category", "Especificacao.Pedido.PedidosSimultaneos")]
+    [Xunit.TraitAttribute("Category", "Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.ESTOQUE_Produto_Saida_V2_Rotin" +
+        "aSteps")]
+    [Xunit.TraitAttribute("Category", "GerenciamentoBanco")]
     public partial class PedidosSimultaneosFeature : object, Xunit.IClassFixture<PedidosSimultaneosFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private string[] _featureTags = new string[] {
-                "Especificacao.Pedido.PedidosSimultaneos"};
+                "Especificacao.Pedido.PedidosSimultaneos",
+                "Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.ESTOQUE_Produto_Saida_V2_Rotin" +
+                    "aSteps",
+                "GerenciamentoBanco"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -43,7 +49,10 @@ namespace Especificacao.Especificacao.Pedido
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "PedidosSimultaneos", null, ProgrammingLanguage.CSharp, new string[] {
-                        "Especificacao.Pedido.PedidosSimultaneos"});
+                        "Especificacao.Pedido.PedidosSimultaneos",
+                        "Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.ESTOQUE_Produto_Saida_V2_Rotin" +
+                            "aSteps",
+                        "GerenciamentoBanco"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -86,12 +95,14 @@ namespace Especificacao.Especificacao.Pedido
         [Xunit.SkippableFactAttribute(DisplayName="PedidosSimultaneos")]
         [Xunit.TraitAttribute("FeatureTitle", "PedidosSimultaneos")]
         [Xunit.TraitAttribute("Description", "PedidosSimultaneos")]
+        [Xunit.TraitAttribute("Category", "ignore")]
         public virtual void PedidosSimultaneos()
         {
-            string[] tagsOfScenario = ((string[])(null));
+            string[] tagsOfScenario = new string[] {
+                    "ignore"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("PedidosSimultaneos", null, tagsOfScenario, argumentsOfScenario);
-#line 5
+#line 11
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -111,8 +122,36 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 6
- testRunner.Given("Testar pedidos simultâneos", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 12
+ testRunner.Given("Reiniciar banco ao terminar cenário", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 13
+ testRunner.Given("Usar produto \"um\" como fabricante = \"003\", produto = \"003220\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 14
+ testRunner.And("Usar produto \"dois\" como fabricante = \"003\", produto = \"003221\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 15
+ testRunner.Given("Definir saldo de estoque = \"300\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 16
+ testRunner.Given("Definir saldo de estoque = \"300\" para produto \"dois\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 18
+ testRunner.Given("Testar pedidos simultâneos com multiplicadorPorPedido = \"2\" (magento e loja), ped" +
+                        "idosPorThread = \"5\" e numeroThreads = \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 22
+ testRunner.Then("Movimento de estoque = \"204\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 23
+ testRunner.Then("Saldo de estoque = \"96\" para produto \"um\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 25
+ testRunner.Then("Movimento de estoque = \"204\" para produto \"dois\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 26
+ testRunner.Then("Saldo de estoque = \"96\" para produto \"dois\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

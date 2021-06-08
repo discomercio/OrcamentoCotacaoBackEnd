@@ -6,6 +6,7 @@ Feature: Detalhes
 		PrevisaoEntregaData = null
 		BemDeUso_Consumo = COD_ST_BEM_USO_CONSUMO_SIM (1)
 		InstaladorInstala = COD_INSTALADOR_INSTALA_NAO (1)
+		GarantiaIndicador = Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO (0)
 
 Scenario: DetalhesPedidoMagentoDto
 	Given Pedido base
@@ -14,3 +15,4 @@ Scenario: DetalhesPedidoMagentoDto
 	And Tabela "t_PEDIDO" registro criado, verificar campo "PrevisaoEntregaData" = "null"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "StBemUsoConsumo" = "1"
 	And Tabela "t_PEDIDO" registro criado, verificar campo "InstaladorInstalaStatus" = "1"
+	And Tabela "t_PEDIDO" registro criado, verificar campo "GarantiaIndicadorStatus" = "0"

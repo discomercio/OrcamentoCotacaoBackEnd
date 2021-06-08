@@ -18,6 +18,13 @@ namespace Especificacao.Testes.Utils
                 mensagens.Add(msgOriginal, msgSubstituta);
 
             //se tentarem colocar mensagens diferentes damos erro
+            //exceto: "regex .* com Qtde menor ou igual a zero!" - detalhes no .feature que usa essa mensagem
+            if (msgSubstituta == "regex .* com Qtde menor ou igual a zero!")
+            {
+                mensagens[msgOriginal] = msgSubstituta;
+                return;
+            }
+
             Assert.Equal(mensagens[msgOriginal], msgSubstituta);
         }
         public static string MapearMensagem(string? typeFullName, string msgOriginal)

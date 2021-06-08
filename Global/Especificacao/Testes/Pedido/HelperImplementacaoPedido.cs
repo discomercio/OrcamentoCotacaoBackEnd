@@ -332,7 +332,7 @@ namespace Especificacao.Testes.Pedido
         {
             if (ignorarFeature) return;
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_ESTOQUE_MOVIMENTO", "produto", "verificar campos filhotes", campo, valor, this);
-            var pedidosFilhotesGerados= AbstractPedidosFilhotesGerados();
+            var pedidosFilhotesGerados = AbstractPedidosFilhotesGerados();
             if (!pedidosFilhotesGerados.Any())
             {
                 Assert.Equal("sem pedido gerado", "");
@@ -385,7 +385,6 @@ namespace Especificacao.Testes.Pedido
         {
             if (ignorarFeature) return;
             Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
-            List<InfraBanco.Modelos.TpedidoItem> itensPedido = new List<InfraBanco.Modelos.TpedidoItem>();
             if (indicePedido == 0)
             {
                 //pai
@@ -396,7 +395,7 @@ namespace Especificacao.Testes.Pedido
                     throw new ArgumentNullException();
                 }
 
-                itensPedido = gerenciamentoBanco.BuscarItensPedido(pedidoPaiGerado);
+                var itensPedido = gerenciamentoBanco.BuscarItensPedido(pedidoPaiGerado);
                 foreach (var item in itensPedido)
                 {
                     gerenciamentoBanco.TabelaT_ESTOQUE_MOVIMENTORegistroDoPedidoVerificarCampo(item, "SPE", "qtde", qtde, pedidoPaiGerado);
@@ -409,7 +408,7 @@ namespace Especificacao.Testes.Pedido
                 Assert.True(filhotes.Any());
                 foreach (var filho in filhotes)
                 {
-                    itensPedido = gerenciamentoBanco.BuscarItensPedido(filho);
+                    var itensPedido = gerenciamentoBanco.BuscarItensPedido(filho);
                     foreach (var item in itensPedido)
                     {
                         gerenciamentoBanco.TabelaT_ESTOQUE_MOVIMENTORegistroDoPedidoVerificarCampo(item, "SPE", "qtde", qtde, filho);
@@ -527,7 +526,6 @@ namespace Especificacao.Testes.Pedido
         public void GeradoPedidos(int qtde_pedidos)
         {
             if (ignorarFeature) return;
-            Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
 
             var ultimo_retorno = AbstractPedidosGerados();
 

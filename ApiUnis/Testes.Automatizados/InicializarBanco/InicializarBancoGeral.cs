@@ -31,7 +31,7 @@ namespace Testes.Automatizados.InicializarBanco
 
         public void TclientesApagar()
         {
-            using (var db = contextoBdProvider.GetContextoGravacaoParaUsing())
+            using (var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 foreach (var c in db.Tclientes)
                     db.Tclientes.Remove(c);
@@ -42,7 +42,7 @@ namespace Testes.Automatizados.InicializarBanco
 
         private void Inicalizar()
         {
-            using (var db = contextoBdProvider.GetContextoGravacaoParaUsing())
+            using (var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
                 {
@@ -87,6 +87,12 @@ namespace Testes.Automatizados.InicializarBanco
                 db.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_ORCAMENTO, Nsu = "000000000006" });
                 //deixamos com 26% porque com 6,2% dá erro nos casos que a gente estava usando
                 db.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.ID_PARAM_PercVlPedidoLimiteRA, Nsu = "26,20" });
+
+
+                db.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.ID_XLOCK_SYNC_CLIENTE });
+                db.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.ID_XLOCK_SYNC_ORCAMENTISTA_E_INDICADOR });
+                db.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.ID_XLOCK_SYNC_ORCAMENTO });
+                db.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.ID_XLOCK_SYNC_PEDIDO });
 
                 db.Tbancos.Add(new InfraBanco.Modelos.Tbanco() { Codigo = Testes.Automatizados.InicializarBanco.InicializarClienteDados.ClienteNaoCadastradoPJ().RefBancaria[0].Banco });
 

@@ -58,7 +58,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.Estoq
 
         public void ZerarTodoOEstoque()
         {
-            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
             Insercao.Id_estoque = int.Parse((from c in db.Testoques
                                              select c.Id_estoque).FirstOrDefault());
             GerenciamentoBancoSteps.LimparTabelaDbSet(db.TestoqueMovimentos);
@@ -72,7 +72,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.Estoq
         {
             var produto = Produtos.Produtos[nomeProduto];
 
-            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
             //var idEstoque = (from c in db.Testoques
             //                 where c.Id_nfe_emitente == Id_nfe_emitente
             //                 select c.Id_estoque).FirstOrDefault();
@@ -106,7 +106,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.Estoq
         {
             var produto = Produtos.Produtos[nomeProduto];
 
-            using var db = contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
 
             db.Testoques.Add(new InfraBanco.Modelos.Testoque()
             {

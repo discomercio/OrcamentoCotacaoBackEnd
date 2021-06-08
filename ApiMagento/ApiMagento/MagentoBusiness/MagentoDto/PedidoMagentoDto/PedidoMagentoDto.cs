@@ -22,6 +22,10 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         [Required]
         public string Cnpj_Cpf { get; set; }
 
+        /// <summary>
+        /// Armazena os números dos pedidos e código de origem
+        /// <hr />
+        /// </summary>
         [Required]
         public InfCriacaoPedidoMagentoDto InfCriacaoPedido { get; set; }
 
@@ -38,14 +42,14 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         public EnderecoEntregaClienteMagentoDto? EnderecoEntrega { get; set; }
 
         /// <summary>
-        /// ListaProdutos: lista de itens que são produtos.
+        /// ListaProdutos: lista de itens que são produtos. São enviados pelo sistema e a nota fiscal deles é emitida pelo sistema.
         /// <hr />
         /// </summary>
         [Required]
         public List<PedidoProdutoMagentoDto> ListaProdutos { get; set; }
 
         /// <summary>
-        /// ListaServicos: lista de itens que são serviços. O valor dos serviços não é incluído no total do pedido.
+        /// ListaServicos: lista de itens que são serviços. Os serviços não são faturados e nem enviados pelo sistema.
         /// <hr />
         /// </summary>
         [Required]
@@ -62,6 +66,10 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         [Required]
         public FormaPagtoCriacaoMagentoDto FormaPagtoCriacao { get; set; }
 
+        [Required]
+        public PedidoTotaisMagentoDto TotaisPedido { get; set; }
+
+
         //CDManual = false
         //PercRT = calculado automaticamente
         //OpcaoPossuiRA = sim
@@ -69,12 +77,9 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         [MaxLength(500)]
         public string? Obs_1 { get; set; }
 
-        /// <summary>
-        /// Valor liquido do frete
-        /// <br />É gravado em t_PEDIDO.magento_shipping_amount
-        /// <hr />
-        /// </summary>
-        public decimal? Frete { get; set; }
+        [Required]
+        public MagentoPedidoStatusDto MagentoPedidoStatus { get; set; }
+
 #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         public static Pedido.Dados.Criacao.PedidoCriacaoDados? PedidoDadosCriacaoDePedidoMagentoDto(Cliente.Dados.DadosClienteCadastroDados dadosClienteMagento,
@@ -110,12 +115,12 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                 perc_RT: 0,
 
                 //Armazena o valor total do pedido
-                vl_total: lstProdutosMagento.Select(x => x.TotalItem()).Sum(),
+                vl_total: pedidoMagento.TotaisPedido.GrandTotal - pedidoMagento.TotaisPedido.FreteBruto + pedidoMagento.TotaisPedido.DescontoFrete,
 
                 //Armazena o valor total de pedido com RA
-                vl_total_NF: lstProdutosMagento.Select(x => x.TotalItemRA() ?? 0).Sum(),
+                vl_total_NF: pedidoMagento.TotaisPedido.GrandTotal,
 
-                magento_shipping_amount: pedidoMagento.Frete ?? 0M
+                magento_shipping_amount: pedidoMagento.TotaisPedido.FreteBruto
                 );
 
             Pedido.Dados.Criacao.PedidoCriacaoDados pedidoCriacao = new Pedido.Dados.Criacao.PedidoCriacaoDados(
@@ -130,11 +135,11 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
                     //Flag para saber se tem indicador selecionado 
                     //campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
-                    comIndicador: ((pedidoMagento.Frete ?? 0) != 0) ? true : false,
+                    comIndicador: (pedidoMagento.TotaisPedido.FreteBruto != 0) ? true : false,
 
                     //Armazena o nome do indicador selecionado
                     //campo "frete"->se for <> 0, vamos usar o indicador.se for 0, sem indicador
-                    indicador: ((pedidoMagento.Frete ?? 0) != 0) ? configuracaoApiMagento.DadosIndicador.Indicador : "",
+                    indicador: (pedidoMagento.TotaisPedido.FreteBruto != 0) ? configuracaoApiMagento.DadosIndicador.Indicador : "",
                     orcamentista: "",
 
                     //Armazena o id do centro de distribuição selecionado manualmente
@@ -170,8 +175,8 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                 valor: pedidoCriacaoValor,
 
                 configuracao: new Pedido.Dados.Criacao.PedidoCriacaoConfiguracaoDados(
-                    limiteArredondamento: configuracaoApiMagento.LimiteArredondamentoPrecoVendaOrcamentoItem,
-                    maxErroArredondamento: 0.1M,
+                    limiteArredondamentoPorItem: configuracaoApiMagento.LimiteArredondamentoPorItem,
+                    limiteArredondamentoTotais: configuracaoApiMagento.LimiteArredondamentoTotais,
                     sistemaResponsavelCadastro: sistemaResponsavelCadastro,
                     limitePedidosExatamenteIguais_Numero: configuracaoApiMagento.LimitePedidos.LimitePedidosExatamenteIguais_Numero,
                     limitePedidosExatamenteIguais_TempoSegundos: configuracaoApiMagento.LimitePedidos.LimitePedidosExatamenteIguais_TempoSegundos,
@@ -180,9 +185,9 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                     limite_de_itens: configuracaoApiMagento.LimitePedidos.LimiteItens
                     ),
                 marketplace: new Pedido.Dados.Criacao.PedidoCriacaoMarketplaceDados(
-                        pedido_bs_x_ac: pedidoMagento.InfCriacaoPedido.Pedido_bs_x_ac,
+                        pedido_bs_x_ac: pedidoMagento.InfCriacaoPedido.Pedido_magento,
                         marketplace_codigo_origem: pedidoMagento.InfCriacaoPedido.Marketplace_codigo_origem,
-                        pedido_bs_x_marketplace: pedidoMagento.InfCriacaoPedido.Pedido_bs_x_marketplace)
+                        pedido_bs_x_marketplace: pedidoMagento.InfCriacaoPedido.Pedido_marketplace)
                 );
 
             return pedidoCriacao;

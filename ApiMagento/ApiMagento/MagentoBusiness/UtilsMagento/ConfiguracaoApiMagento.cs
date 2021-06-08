@@ -20,7 +20,8 @@ namespace MagentoBusiness.UtilsMagento
 
         public VersaoApiMagento VersaoApi { get; set; } = new VersaoApiMagento();
 
-        public decimal LimiteArredondamentoPrecoVendaOrcamentoItem { get; set; } = 0.1M;
+        public decimal LimiteArredondamentoPorItem { get; set; } = 0.1M;
+        public decimal LimiteArredondamentoTotais { get; set; } = 0.1M;
 
         public class LimitePedidoMagento
         {
@@ -43,10 +44,7 @@ namespace MagentoBusiness.UtilsMagento
 
         public IndicadorMagento DadosIndicador { get; set; } = new IndicadorMagento();
 
-        public class Magento
-        {
-            public string Op_av_forma_pagto { get; set; } = "6";
-        }
+
 
         public class Markeplace
         {
@@ -56,11 +54,12 @@ namespace MagentoBusiness.UtilsMagento
 
         public class PagtoMagento
         {
-            public Magento Magento { get; set; } = new Magento();
             public Markeplace Markeplace { get; set; } = new Markeplace();
 
         }
 
         public PagtoMagento FormaPagto { get; set; } = new PagtoMagento();
+
+        public bool TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO { get; set; } = true;
     }
 }

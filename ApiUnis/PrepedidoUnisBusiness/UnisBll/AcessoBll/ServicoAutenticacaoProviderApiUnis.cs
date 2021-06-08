@@ -109,7 +109,7 @@ namespace PrepedidoUnisBusiness.UnisBll.AcessoBll
             //var strSessionCtrlTicket = $"{usuarioMaisuculas} - {DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.fff")}";
             //strSessionCtrlTicket = PrepedidoBusiness.Utils.Util.codificaDado(strSessionCtrlTicket, true);
 
-            
+
             //atualizar dados
             //using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
             //{
@@ -190,7 +190,7 @@ namespace PrepedidoUnisBusiness.UnisBll.AcessoBll
             logoutResultadoUnisDto.ListaErros.RemoveAll(r => true);
 
             //atualizar dados
-            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 var tusuario = await (from u in dbgravacao.Tusuarios
                                       where u.Usuario.ToUpper() == usuario.ToUpper()

@@ -8,6 +8,12 @@ using Xunit;
 
 namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
 {
+    /*
+todo: fluxo do cancelamento
+todo: ver os pendentes K:\desenvolvimento\Ar Clube\reunioes\210322 calculo valores api magento\pendentes
+todo: executar os cripts de banco
+*/
+
     [Binding, Scope(Tag = "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido")]
     public sealed class PedidoMagentoSteps
     {
@@ -15,10 +21,6 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido
         private readonly Testes.Utils.BancoTestes.GerenciamentoBancoSteps gerenciamentoBanco = new Testes.Utils.BancoTestes.GerenciamentoBancoSteps();
         private readonly Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.EstoqueSaida.SplitEstoqueRotinas SplitEstoqueRotinas = new Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.EstoqueSaida.SplitEstoqueRotinas();
 
-        public PedidoMagentoSteps(ScenarioContext scenarioContext)
-        {
-            
-        }
         [Given(@"Esta é a especificação, está sendo testado em outros \.feature")]
         public void GivenEstaEAEspecificacaoEstaSendoTestadoEmOutros_Feature()
         {

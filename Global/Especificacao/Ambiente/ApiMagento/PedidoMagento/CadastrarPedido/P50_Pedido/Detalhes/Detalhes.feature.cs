@@ -42,10 +42,13 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P50_Pe
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Detalhes", "\tNao existe o DetalhesPedidoMagentoDto. \r\n\tOs valores a usar são:\r\n\t\tSt_Entrega_I" +
-                    "mediata = COD_ETG_IMEDIATA_SIM (2)\r\n\t\tPrevisaoEntregaData = null\r\n\t\tBemDeUso_Con" +
-                    "sumo = COD_ST_BEM_USO_CONSUMO_SIM (1)\r\n\t\tInstaladorInstala = COD_INSTALADOR_INST" +
-                    "ALA_NAO (1)", ProgrammingLanguage.CSharp, new string[] {
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Detalhes", @"	Nao existe o DetalhesPedidoMagentoDto. 
+	Os valores a usar são:
+		St_Entrega_Imediata = COD_ETG_IMEDIATA_SIM (2)
+		PrevisaoEntregaData = null
+		BemDeUso_Consumo = COD_ST_BEM_USO_CONSUMO_SIM (1)
+		InstaladorInstala = COD_INSTALADOR_INSTALA_NAO (1)
+		GarantiaIndicador = Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO (0)", ProgrammingLanguage.CSharp, new string[] {
                         "Ambiente.ApiMagento.PedidoMagento.CadastrarPedido"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -94,7 +97,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.CadastrarPedido.P50_Pe
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("DetalhesPedidoMagentoDto", null, tagsOfScenario, argumentsOfScenario);
-#line 10
+#line 11
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -114,24 +117,28 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 11
+#line 12
  testRunner.Given("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 12
+#line 13
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 13
+#line 14
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"st_etg_imediata\" = \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 14
+#line 15
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"PrevisaoEntregaData\" = \"null\"" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 15
+#line 16
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"StBemUsoConsumo\" = \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 16
+#line 17
  testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"InstaladorInstalaStatus\" = \"1" +
+                        "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 18
+ testRunner.And("Tabela \"t_PEDIDO\" registro criado, verificar campo \"GarantiaIndicadorStatus\" = \"0" +
                         "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }

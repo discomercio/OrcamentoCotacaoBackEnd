@@ -358,7 +358,7 @@ namespace Especificacao.Especificacao.Pedido
             };
 
             UltimoAcesso.LstErros = new List<string>();
-            using var db = SplitEstoqueRotinas.contextoBdProvider.GetContextoGravacaoParaUsing();
+            using var db = SplitEstoqueRotinas.contextoBdProvider.GetContextoGravacaoParaUsing(global::InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM);
             UltimoAcesso.Retorno = Produto.Estoque.Estoque.Estoque_produto_saida_v2(SplitEstoqueRotinas.Id_usuario,
                 id_pedido: id_pedido,
                 id_nfe_emitente: SplitEstoqueRotinas.Id_nfe_emitente,

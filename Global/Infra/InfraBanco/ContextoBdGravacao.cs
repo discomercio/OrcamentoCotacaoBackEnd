@@ -13,13 +13,81 @@ namespace InfraBanco
     public class ContextoBdGravacao : IDisposable
     {
         private readonly ContextoBdBasico contexto;
+        public ContextoBdGravacaoOpcoes ContextoBdGravacaoOpcoes { get; private set; }
         public readonly IDbContextTransaction transacao;
-        internal ContextoBdGravacao(ContextoBdBasico contexto)
+        internal ContextoBdGravacao(ContextoBdBasico contexto, ContextoBdGravacaoOpcoes contextoBdGravacaoOpcoes, BloqueioTControle bloqueioTControle)
         {
             this.contexto = contexto;
-            transacao = RelationalDatabaseFacadeExtensions.BeginTransaction(contexto.Database, System.Data.IsolationLevel.Serializable);
+            this.ContextoBdGravacaoOpcoes = contextoBdGravacaoOpcoes;
+
+            /*
+                * 
+                usar transação como READ COMMITED,  e nao como SERIALIZABLE.
+                Motivação: queremos evitar "falsos" deadlocks e também diminuir o número de bloqueios desnecessários.
+                Exemplo: ao fazer um pedido ele consulta muitos outros pedidos para verificar se possuem o mesmo endereço de entrega.
+                Não queremos bloquear todos esses outros pedidos durante a criação deste pedido.
+                E também não queremos que dê um deadlock se alguém tentar editar um desses pedidos durante a criação do outro pedido
+                (seja na criação do pedido novo, seja na edição do pedido anterior) porque isso não é relevante para o negócio. Quer dizer,
+                uma edição dessas não interessa ter um bloqueio. 
+                Onde o bloqueio é IMPORTANTE:
+                - movimentação de estoque
+                - geração de NSU
+
+                Nessas tabelas, vamos ter um flag que sempre atualizamos para bloquear outras leituras. 
+                Sempre que formos atualizar algum desses registros, primeiros atualizamos o flag para forçar o bloqueio no registro.
+            */
+
+            transacao = RelationalDatabaseFacadeExtensions.BeginTransaction(contexto.Database, System.Data.IsolationLevel.ReadCommitted);
+            BloquearTControle(bloqueioTControle);
         }
 
+        //os bloqueios possíveis na t_CONTROLE
+        public enum BloqueioTControle
+        {
+            NENHUM = 0, XLOCK_SYNC_PEDIDO = 1, XLOCK_SYNC_ORCAMENTO = 2, XLOCK_SYNC_CLIENTE = 3, XLOCK_SYNC_ORCAMENTISTA_E_INDICADOR = 4
+        }
+
+        private void BloquearTControle(BloqueioTControle bloqueioTControle)
+        {
+            if (!ContextoBdGravacaoOpcoes.TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO)
+                return;
+            string id_nsu = "";
+            switch (bloqueioTControle)
+            {
+                case BloqueioTControle.NENHUM:
+                    return;
+                case BloqueioTControle.XLOCK_SYNC_PEDIDO:
+                    id_nsu = Constantes.Constantes.ID_XLOCK_SYNC_PEDIDO;
+                    break;
+                case BloqueioTControle.XLOCK_SYNC_ORCAMENTO:
+                    id_nsu = Constantes.Constantes.ID_XLOCK_SYNC_ORCAMENTO;
+                    break;
+                case BloqueioTControle.XLOCK_SYNC_CLIENTE:
+                    id_nsu = Constantes.Constantes.ID_XLOCK_SYNC_CLIENTE;
+                    break;
+                case BloqueioTControle.XLOCK_SYNC_ORCAMENTISTA_E_INDICADOR:
+                    id_nsu = Constantes.Constantes.ID_XLOCK_SYNC_ORCAMENTISTA_E_INDICADOR;
+                    break;
+                default:
+                    return;
+            }
+            if (string.IsNullOrEmpty(id_nsu))
+                throw new ArgumentException("Não foi especificado o NSU para bloqueio!");
+
+            var queryControle = from c in this.Tcontroles
+                                where c.Id_Nsu == id_nsu
+                                select c;
+
+            var controle = queryControle.FirstOrDefault();
+            if (controle == null)
+                throw new ArgumentException($"Não existe registro na tabela de controle para poder bloquear este NSU! Não existe t_controle.id_nsu = {id_nsu}");
+
+            //alteramos o flag
+            controle.Dummy = !controle.Dummy;
+            //não pode usar Update(controle) porque isso faz com que o Entity altere todos os campos
+            //somente queremos alterar o campo Dummy
+            this.SaveChanges();
+        }
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls

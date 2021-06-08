@@ -23,4 +23,4 @@ Scenario: Loja - "202" (vamos ler do appsettings)
 Scenario: Loja - diferente de "201"
 	Given Pedido base
 	And Informo "appsettings.Loja" = "001"
-	Then Erro "Loja não existe!"
+	Then Erro "regex Loja não existe.*"

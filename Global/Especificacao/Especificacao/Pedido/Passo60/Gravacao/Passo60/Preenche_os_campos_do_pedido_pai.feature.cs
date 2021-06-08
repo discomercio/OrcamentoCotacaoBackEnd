@@ -1629,7 +1629,7 @@ this.FeatureBackground();
 #line hidden
 #line 391
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"pedido_bs_x_marketplace\" " +
-                        "= \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "= \"null\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 392
  testRunner.And("Tabela \"t_PEDIDO\" registro pai criado, verificar campo \"marketplace_codigo_origem" +

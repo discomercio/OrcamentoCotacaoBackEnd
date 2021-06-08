@@ -23,6 +23,9 @@ namespace InfraBanco.Modelos
         [Required]
         [Column("dt_hr_ult_atualizacao")]
         public DateTime Dt_hr_ult_atualizacao { get; set; }
+
+        [Column("dummy")]
+        public Boolean Dummy { get; set; }
     }
 }
 #endif

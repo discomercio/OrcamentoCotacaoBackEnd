@@ -601,6 +601,7 @@ dim r
 			.comissao_indicacao = r("comissao_indicacao")
 			.PercMaxSenhaDesconto = r("PercMaxSenhaDesconto")
 			.PercMaxDescSemZerarRT = r("PercMaxDescSemZerarRT")
+			.unidade_negocio = Trim("" & r("unidade_negocio"))
 			end with
 		end if
 
@@ -728,6 +729,7 @@ dim r
 			.contribuinte_icms_status = Trim("" & r("contribuinte_icms_status"))
 			.rg = Trim("" & r("rg"))
 			.nome = Trim("" & r("nome"))
+			.nome_iniciais_em_maiusculas = Trim("" & r("nome_iniciais_em_maiusculas"))
 			.sexo = Trim("" & r("sexo"))
 			.endereco = Trim("" & r("endereco"))
 			.endereco_numero = Trim("" & r("endereco_numero"))

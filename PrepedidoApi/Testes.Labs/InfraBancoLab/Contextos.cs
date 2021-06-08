@@ -20,11 +20,11 @@ namespace Testes.Labs.InfraBancoLab
 
         public InfraBanco.ContextoBdGravacao ContextoGravacao()
         {
-            return new ContextoBdProvider(optionsBuilder.Options).GetContextoGravacaoParaUsing();
+            return new ContextoBdProvider(optionsBuilder.Options, new InfraBanco.ContextoBdGravacaoOpcoes(true)).GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
         }
 
         private readonly InfraBanco.ContextoBd contexto;
-        private Microsoft.EntityFrameworkCore.DbContextOptionsBuilder<InfraBanco.ContextoBdBasico> optionsBuilder;
+        private readonly Microsoft.EntityFrameworkCore.DbContextOptionsBuilder<InfraBanco.ContextoBdBasico> optionsBuilder;
         public Contextos()
         {
             IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
@@ -36,7 +36,7 @@ namespace Testes.Labs.InfraBancoLab
         }
         private ContextoBd CriarContexto()
         {
-            var ret = new ContextoBdProvider(optionsBuilder.Options).GetContextoLeitura();
+            var ret = new ContextoBdProvider(optionsBuilder.Options, new InfraBanco.ContextoBdGravacaoOpcoes(true)).GetContextoLeitura();
             return ret;
         }
 

@@ -10,46 +10,54 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 #pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         /// <summary>
-        /// Campo sku
+        /// SKU: código do serviço
         /// <hr />
         /// </summary>
         [Required]
         [MaxLength(8)]
-        public string Sku_produto { get; set; } //Produto
+        public string Sku { get; set; } //Produto
 
         /// <summary>
-        /// Campo name
+        /// Descricao: descrição (nome) do serviço
         /// <hr />
         /// </summary>
         [Required]
         [MaxLength(120)]
         public string Descricao { get; set; }
 
-        /// <summary>
-        /// Campo qty_ordered
-        /// <hr />
-        /// </summary>
         [Required]
-        public short Qtde { get; set; }
+        public short Quantidade { get; set; }
 
         /// <summary>
-        /// Preco_bruto: preço de venda do item. 
-        /// Verificar no magento qual o campo correto, possivelmente: original_price.
-        /// <br />É gravado em t_PEDIDO_ITEM_SERVICO.preco_lista
+        /// Subtotal: valor total da linha (todos os serviços da linha) sem desconto aplicado
         /// <hr />
         /// </summary>
         [Required]
-        public decimal Preco_bruto { get; set; }
+        public decimal Subtotal { get; set; }
+
+        [Required]
+        public float TaxAmount { get; set; }
 
         /// <summary>
-        /// Preco_liquido: preço efetivamente cobrado, que seria impresso na nota fiscal. 
-        /// Verificar no magento como calcular este valor,
-        /// possivelmente: row_total / campo qty_ordered.
-        /// <br />É gravado em t_PEDIDO_ITEM_SERVICO.preco_venda e t_PEDIDO_ITEM_SERVICO.preco_nf 
+        /// DiscountAmount: valor de desconto
         /// <hr />
         /// </summary>
         [Required]
-        public decimal Preco_liquido { get; set; }
+        public decimal DiscountAmount { get; set; }
+
+        /// <summary>
+        /// RowTotal: valor total da linha (todos os serviços da linha) com desconto aplicado
+        /// <hr />
+        /// </summary>
+        [Required]
+        public decimal RowTotal { get; set; }
+
+        /* DETALHES DE COMO FAZER OS CÁLCULOS
+         * ==================================
+         * t_PEDIDO_ITEM_SERVICO.preco_venda e t_PEDIDO_ITEM_SERVICO.preco_nf = RowTotal / Quantidade
+         * t_PEDIDO_ITEM_SERVICO.preco_lista = Subtotal / Quantidade
+         * t_PEDIDO_ITEM_SERVICO.desc_dado = 100 * (preco_lista - preco_venda) / preco_lista
+         */
 
 #pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
     }

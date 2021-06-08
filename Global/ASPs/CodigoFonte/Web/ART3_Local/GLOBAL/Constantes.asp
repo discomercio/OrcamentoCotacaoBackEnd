@@ -38,7 +38,7 @@
 	Const URL_FILE__JQUERY_UI_CSS = "../Global/jquery-ui/jquery-ui.min.css?v=001"
 	Const URL_FILE__JQUERY_MY_GLOBAL = "../Global/jquery-my-global.js?v=002"
 	Const URL_FILE__JQUERY_MY_PLUGIN = "../Global/jquery-my-plugin.js?v=002"
-	Const URL_FILE__JQUERY_UI_MY_PLUGIN = "../Global/jquery-ui-my-plugin.js?v=002"
+	Const URL_FILE__JQUERY_UI_MY_PLUGIN = "../Global/jquery-ui-my-plugin.js?v=003"
 	Const URL_FILE__JQUERY_MASKMONEY = "../Global/jquery.maskMoney.min.js?v=001"
 	Const URL_FILE__GLOBAL_JS = "../Global/global.js?v=066"
 	Const URL_FILE__SSL_JS = "../Global/SSL.js?v=004"
@@ -735,7 +735,7 @@
 
 
 '	PERÍODO MÁXIMO EM QUE O DANFE FICA ACESSÍVEL NO PEDIDO
-	Const MAX_PERIODO_LINK_DANFE_DISPONIVEL_NO_PEDIDO_EM_DIAS = 60
+	Const MAX_PERIODO_LINK_DANFE_DISPONIVEL_NO_PEDIDO_EM_DIAS = 90
 
   ' TAMANHO MÁXIMO DO CAMPO NO BD
 	Const MAX_OBS_2 = 10
@@ -854,6 +854,11 @@
 	Const ID_PARAM_VlLimiteMensalIndicadorParaCadastroFeitoNaLoja = "VlLimiteMensalIndicadorParaCadastroFeitoNaLoja"  ' NESTE CASO, O REGISTRO É USADO P/ ARMAZENAR UM PARÂMETRO E NÃO P/ GERAR UM NSU!!
 	Const ID_PARAM_PercDesagioRAIndicadorParaCadastroFeitoNaLoja = "PercDesagioRAIndicadorParaCadastroFeitoNaLoja"    ' NESTE CASO, O REGISTRO É USADO P/ ARMAZENAR UM PARÂMETRO E NÃO P/ GERAR UM NSU!!
 	Const ID_PARAM_PercVlPedidoLimiteRA					= "PercVlPedidoLimiteRA"			' NESTE CASO, O REGISTRO É USADO P/ ARMAZENAR UM PARÂMETRO E NÃO P/ GERAR UM NSU!!
+	Const ID_XLOCK_SYNC_PEDIDO = "XLOCK_SYNC_PEDIDO"   ' NESTE CASO, O REGISTRO É USADO PARA SINCRONIZAR (SERIALIZAR) A OPERAÇÃO E EVITAR ACESSO CONCORRENTE
+	Const ID_XLOCK_SYNC_ORCAMENTO = "XLOCK_SYNC_ORCAMENTO"   ' NESTE CASO, O REGISTRO É USADO PARA SINCRONIZAR (SERIALIZAR) A OPERAÇÃO E EVITAR ACESSO CONCORRENTE
+	Const ID_XLOCK_SYNC_CLIENTE = "XLOCK_SYNC_CLIENTE"   ' NESTE CASO, O REGISTRO É USADO PARA SINCRONIZAR (SERIALIZAR) A OPERAÇÃO E EVITAR ACESSO CONCORRENTE
+	Const ID_XLOCK_SYNC_ORCAMENTISTA_E_INDICADOR = "XLOCK_SYNC_ORCAMENTISTA_E_INDICADOR"   ' NESTE CASO, O REGISTRO É USADO PARA SINCRONIZAR (SERIALIZAR) A OPERAÇÃO E EVITAR ACESSO CONCORRENTE
+
 	
 '	CONSTANTES QUE IDENTIFICAM PARÂMETROS ARMAZENADOS NA TABELA "t_PARAMETRO"
 	Const ID_PARAMETRO_PercMaxComissaoEDesconto_Nivel2_MeiosPagto = "PercMaxComissaoEDesconto_Nivel2_MeiosPagto"
@@ -1781,6 +1786,23 @@
 		dim comissao_indicacao
 		dim PercMaxSenhaDesconto
 		dim PercMaxDescSemZerarRT
+		dim unidade_negocio
+		dim id_plano_contas_empresa
+		dim id_plano_contas_grupo
+		dim id_plano_contas_conta
+		dim natureza
+		dim perc_max_comissao
+		dim perc_max_comissao_e_desconto
+		dim perc_max_comissao_e_desconto_nivel2
+		dim perc_max_comissao_e_desconto_nivel2_pj
+		dim perc_max_comissao_e_desconto_pj
+		dim magento_api_urlWebService
+		dim magento_api_username
+		dim magento_api_password
+		dim magento_api_versao
+		dim magento_api_rest_endpoint
+		dim magento_api_rest_access_token
+		dim magento_api_rest_force_get_sales_order_by_entity_id
 		end class
 	
 	class cl_CLIENTE
@@ -1792,6 +1814,7 @@
 		dim produtor_rural_status
 		dim rg
 		dim nome
+		dim nome_iniciais_em_maiusculas
 		dim sexo
 		dim endereco
 		dim endereco_numero
@@ -1908,6 +1931,7 @@
 		dim obs_1
 		dim obs_2
 		dim obs_3
+		dim obs_4
 		dim qtde_parcelas
 		dim forma_pagto
 		dim vl_total_familia
@@ -2042,6 +2066,7 @@
 		dim endereco_email
 		dim endereco_email_xml
 		dim endereco_nome
+		dim endereco_nome_iniciais_em_maiusculas
 		dim endereco_ddd_res
 		dim endereco_tel_res
 		dim endereco_ddd_com
@@ -2062,6 +2087,7 @@
 		dim EndEtg_email
 		dim EndEtg_email_xml
 		dim EndEtg_nome
+		dim EndEtg_nome_iniciais_em_maiusculas
 		dim EndEtg_ddd_res
 		dim EndEtg_tel_res
 		dim EndEtg_ddd_com
@@ -2081,9 +2107,50 @@
 		dim PrevisaoEntregaData
 		dim PrevisaoEntregaUsuarioUltAtualiz
 		dim PrevisaoEntregaDtHrUltAtualiz
+		dim PagtoAntecipadoStatus
+		dim PagtoAntecipadoDataHora
+		dim PagtoAntecipadoUsuario
+		dim PagtoAntecipadoQuitadoStatus
+		dim PagtoAntecipadoQuitadoDataHora
+		dim PagtoAntecipadoQuitadoUsuario
 		end class
 
 	class cl_ITEM_PEDIDO
+		dim pedido
+		dim fabricante
+		dim produto
+		dim qtde
+		dim desc_dado
+		dim preco_venda
+		dim preco_NF
+		dim preco_fabricante
+		dim preco_lista
+		dim margem
+		dim desc_max
+		dim comissao
+		dim descricao
+		dim descricao_html
+		dim ean
+		dim grupo
+        dim subgrupo
+		dim peso
+		dim qtde_volumes
+		dim abaixo_min_status
+		dim abaixo_min_autorizacao
+		dim abaixo_min_autorizador
+		dim sequencia
+		dim markup_fabricante
+		dim abaixo_min_superv_autorizador
+		dim vl_custo2
+		dim custoFinancFornecCoeficiente
+		dim custoFinancFornecPrecoListaBase
+		dim cubagem
+		dim ncm
+		dim cst
+		dim descontinuado
+		end class
+
+	class cl_ITEM_PEDIDO_SERVICO
 		dim pedido
 		dim fabricante
 		dim produto
@@ -2537,6 +2604,7 @@
 		dim endereco_email
 		dim endereco_email_xml
 		dim endereco_nome
+		dim endereco_nome_iniciais_em_maiusculas
 		dim endereco_ddd_res
 		dim endereco_tel_res
 		dim endereco_ddd_com
@@ -2557,6 +2625,7 @@
 		dim EndEtg_email
 		dim EndEtg_email_xml
 		dim EndEtg_nome
+		dim EndEtg_nome_iniciais_em_maiusculas
 		dim EndEtg_ddd_res
 		dim EndEtg_tel_res
 		dim EndEtg_ddd_com
@@ -3116,6 +3185,7 @@
 		dim DtHrSessionTokenModuloCentral
 		dim SessionTokenModuloLoja
 		dim DtHrSessionTokenModuloLoja
+		dim fin_smtp_enable_ssl
 		dim nivel_acesso_bloco_notas_pedido
 		dim nivel_acesso_chamado
 		end class

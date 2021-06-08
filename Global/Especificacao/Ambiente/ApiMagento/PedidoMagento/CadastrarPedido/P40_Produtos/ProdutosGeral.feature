@@ -15,6 +15,8 @@ Scenario: ProdutosGeral - aceitamos o valor que vier do magento.
 	When Lista de itens "0" informo "Preco_NF" = "800.00"
 	When Lista de itens "1" informo "Preco_Venda" = "950.00"
 	When Lista de itens "1" informo "Preco_NF" = "1100.00"
+	When Recalcular totais do pedido
+	When Deixar forma de pagamento consistente
 	Then Sem nenhum erro
 
 Scenario: ProdutosGeral - aceitamos o valor que vier do magento 2 (máx 22%.)
@@ -25,6 +27,8 @@ Scenario: ProdutosGeral - aceitamos o valor que vier do magento 2 (máx 22%.)
 	When Lista de itens "0" informo "Preco_NF" = "750"
 	When Lista de itens "1" informo "Preco_Venda" = "800"
 	When Lista de itens "1" informo "Preco_NF" = "900"
+	When Recalcular totais do pedido
+	When Deixar forma de pagamento consistente
 	Then Sem nenhum erro
 
 Scenario: ProdutosGeral - aceitamos o valor que vier do magento 2 (máx 22%.) - erro
@@ -35,4 +39,6 @@ Scenario: ProdutosGeral - aceitamos o valor que vier do magento 2 (máx 22%.) - 
 	When Lista de itens "0" informo "Preco_NF" = "1"
 	When Lista de itens "1" informo "Preco_Venda" = "1"
 	When Lista de itens "1" informo "Preco_NF" = "1"
+	When Recalcular totais do pedido
+	When Deixar forma de pagamento consistente
 	Then Erro "regex .*desconto de \d*.\d*. excede o máximo permitido de .*"

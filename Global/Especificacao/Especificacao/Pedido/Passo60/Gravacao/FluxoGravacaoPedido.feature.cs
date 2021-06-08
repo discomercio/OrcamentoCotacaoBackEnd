@@ -106,15 +106,16 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao
                     "M)\r\n\t\t\t\tou entra como venda sem presença no estoque (novo registro na tabela t_E" +
                     "STOQUE_MOVIMENTO, operacao = OP_ESTOQUE_VENDA, estoque = ID_ESTOQUE_SEM_PRESENCA" +
                     ")\r\n\t\t\tMonta o log do item - Passo60/Itens/Log.feature\r\n\t\t\t\r\n\t\tDetermina o status" +
-                    " st_entrega deste pedido (Passo60/st_entrega.feature)\r\n\r\nPasso70: ajustes adicio" +
-                    "nais no pedido pai\r\n\tNo pai e nos filhotes, atualiza campos de RA (Passo70/calcu" +
-                    "la_total_RA_liquido_BD.feture)\r\n\r\n\tCaso tenha usado algum desconto superior ao l" +
-                    "imite, liberado pela t_DESCONTO, marca como usado (Passo70/Senhas_de_autorizacao" +
-                    "_para_desconto_superior.feature)\r\n\r\n\tINDICADOR: SE ESTE PEDIDO É COM INDICADOR E" +
-                    " O CLIENTE AINDA NÃO TEM UM INDICADOR NO CADASTRO, ENTÃO CADASTRA ESTE. (Passo70" +
-                    "/CadastroIndicador.feature)\r\n\r\n\r\nPasso80: VERIFICA SE O ENDEREÇO JÁ FOI USADO AN" +
-                    "TERIORMENTE POR OUTRO CLIENTE (POSSÍVEL FRAUDE)\r\n\tPasso80/FluxoVerificacaoEndere" +
-                    "co.feature\r\n\r\n\r\nPasso90: log (Passo90/Log.feature)", ProgrammingLanguage.CSharp, new string[] {
+                    " st_entrega deste pedido (Passo60/st_entrega.feature)\r\n\r\n\t\tSalva os serviços (Pa" +
+                    "sso60/Itens/Gerar_t_PEDIDO_ITEM_SERVICO.feature)\r\n\r\nPasso70: ajustes adicionais " +
+                    "no pedido pai\r\n\tNo pai e nos filhotes, atualiza campos de RA (Passo70/calcula_to" +
+                    "tal_RA_liquido_BD.feture)\r\n\r\n\tCaso tenha usado algum desconto superior ao limite" +
+                    ", liberado pela t_DESCONTO, marca como usado (Passo70/Senhas_de_autorizacao_para" +
+                    "_desconto_superior.feature)\r\n\r\n\tINDICADOR: SE ESTE PEDIDO É COM INDICADOR E O CL" +
+                    "IENTE AINDA NÃO TEM UM INDICADOR NO CADASTRO, ENTÃO CADASTRA ESTE. (Passo70/Cada" +
+                    "stroIndicador.feature)\r\n\r\n\r\nPasso80: VERIFICA SE O ENDEREÇO JÁ FOI USADO ANTERIO" +
+                    "RMENTE POR OUTRO CLIENTE (POSSÍVEL FRAUDE)\r\n\tPasso80/FluxoVerificacaoEndereco.fe" +
+                    "ature\r\n\r\n\r\nPasso90: log (Passo90/Log.feature)", ProgrammingLanguage.CSharp, new string[] {
                         "Especificacao.Pedido.FluxoCriacaoPedido"});
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -163,7 +164,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Fluxo da gravação do pedido", null, tagsOfScenario, argumentsOfScenario);
-#line 111
+#line 113
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -183,10 +184,10 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 112
+#line 114
  testRunner.When("Pedido base", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 113
+#line 115
  testRunner.Then("Sem nenhum erro", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

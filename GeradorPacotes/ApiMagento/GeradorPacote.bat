@@ -17,8 +17,9 @@ rem %aux_msbuild% ../../ApiMagento/ApiMagento/ApiMagento/ApiMagento.csproj -t:Re
 %aux_msbuild% ../../ArClube.sln -t:Rebuild -p:DeployOnBuild=true -p:PublishProfile=CompilarApiMagento /p:Configuration=Release_ApiMagento
 
 echo %date% %time% >> "PacoteApiMagento/publish/DataCompilacao.txt"
-git branch >> "PacoteApiMagento/publish/VersaoGit.txt"
-git show >> "PacoteApiMagento/publish/VersaoGit.txt"
+git branch > "PacoteApiMagento/publish/VersaoGit.txt"
+git log -n 1 --pretty="%%H %%D" >> "PacoteApiMagento/publish/VersaoGit.txt"
+git status >> "PacoteApiMagento/publish/VersaoGit.txt"
 del PacoteApiMagento\publish\appsettings.json
 del PacoteApiMagento\publish\appsettings.Development.json
 del PacoteApiMagento\publish\nlog.config

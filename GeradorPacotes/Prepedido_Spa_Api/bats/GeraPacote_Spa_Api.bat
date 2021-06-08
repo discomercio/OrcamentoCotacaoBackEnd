@@ -65,8 +65,9 @@ copy ..\..\..\PrepedidoSpa\.CompilarPrepedidoGerarVersaoApi.tmp.txt ..\Pacote_Sp
 copy ..\..\..\PrepedidoSpa\.CompilarPrepedidoGerarVersaoApi.tmp.txt ..\Pacote_Spa_Api\wwwroot\DataCompilacao.txt
 del ..\..\..\PrepedidoSpa\.CompilarPrepedidoGerarVersaoApi.tmp.txt >nul 2> nul
 
-git branch >> "..\Pacote_Spa_Api\VersaoGit.txt"
-git show >> "..\Pacote_Spa_Api\VersaoGit.txt"
+git branch > "..\Pacote_Spa_Api\VersaoGit.txt"
+git log -n 1 --pretty="%%H %%D" >> "..\Pacote_Spa_Api\VersaoGit.txt"
+git status >> "..\Pacote_Spa_Api\VersaoGit.txt"
 
 rem apagar temporarios
 del CompilarPrepedidoApiResultado\*.* /s /q >nul 2> nul

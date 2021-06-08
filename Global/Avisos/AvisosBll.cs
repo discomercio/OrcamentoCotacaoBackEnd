@@ -114,7 +114,7 @@ namespace Avisos
 
                 if (lstNaoLido.Count > 0)
                 {
-                    using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+                    using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
                     {
                         //marcamos como lido
                         retorno = await GravarAvisoLido(lstNaoLido, usuario, dbgravacao);
@@ -196,11 +196,11 @@ namespace Avisos
                                                  select c.Id).ToList();
 
                     //vamos verificar o que não existe para remover da lista enviada
-                    if(lstNaoExiste != null)
+                    if (lstNaoExiste != null)
                     {
-                        if(lstNaoExiste.Count > 0)
+                        if (lstNaoExiste.Count > 0)
                         {
-                            foreach(var i in lstNaoExiste)
+                            foreach (var i in lstNaoExiste)
                             {
                                 string id = (from c in lst
                                              where c == i
@@ -224,7 +224,7 @@ namespace Avisos
                                                                       c.Usuario == usuario
                                                                select c).ToList();
 
-                    using (var dbGravacao = contextoProvider.GetContextoGravacaoParaUsing())
+                    using (var dbGravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
                     {
                         //gravar os avisos não exibidos
                         if (lstAvisoNaoExibido.Count > 0)

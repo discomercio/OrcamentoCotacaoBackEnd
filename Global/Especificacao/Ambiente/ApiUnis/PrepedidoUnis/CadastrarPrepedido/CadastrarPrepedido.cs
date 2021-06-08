@@ -119,15 +119,22 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             }
         }
         //3 versoes da mesma rotina...
-        public static void EstaticoDeixarFormaDePagamentoConsistente(MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoDto prePedidoUnisDto)
+        public static void EstaticoDeixarFormaDePagamentoConsistente(MagentoBusiness.MagentoDto.PedidoMagentoDto.PedidoMagentoDto pedidoMagento)
         {
-            //var total = prePedidoUnisDto.VlTotalDestePedido;
-            var total = prePedidoUnisDto.ListaProdutos.Select(x => Math.Round(x.Preco_Venda * x.Qtde, 2)).Sum();
-            var fp = prePedidoUnisDto.FormaPagtoCriacao;
+            pedidoMagento.TotaisPedido.DescontoFrete = 0;
+            pedidoMagento.TotaisPedido.DiscountAmount = pedidoMagento.ListaProdutos.Select(x => Math.Round(x.DiscountAmount, 2)).Sum()
+                + pedidoMagento.ListaServicos.Select(x => Math.Round(x.DiscountAmount, 2)).Sum()
+                + pedidoMagento.TotaisPedido.DescontoFrete;
+            pedidoMagento.TotaisPedido.Subtotal = pedidoMagento.ListaProdutos.Select(x => Math.Round(x.Subtotal, 2)).Sum()
+                + pedidoMagento.ListaServicos.Select(x => Math.Round(x.Subtotal, 2)).Sum();
+            pedidoMagento.TotaisPedido.GrandTotal = pedidoMagento.TotaisPedido.Subtotal + (pedidoMagento.TotaisPedido.FreteBruto) - pedidoMagento.TotaisPedido.DiscountAmount;
+            var total = pedidoMagento.TotaisPedido.GrandTotal;
+            var fp = pedidoMagento.FormaPagtoCriacao;
             switch (fp.Tipo_Parcelamento.ToString())
             {
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
-                    fp.C_pc_qtde = 2;
+                    if ((fp.C_pc_qtde ?? 0) <= 0)
+                        fp.C_pc_qtde = 2;
                     fp.C_pc_valor = total / fp.C_pc_qtde;
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELA_UNICA:

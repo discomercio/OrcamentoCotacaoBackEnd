@@ -17,8 +17,9 @@ rem %aux_msbuild% ../../ApiUnis/PrepedidoAPIUnis/PrepedidoAPIUnis.csproj -t:Rebu
 %aux_msbuild% ../../ArClube.sln -t:Rebuild -p:DeployOnBuild=true -p:PublishProfile=CompilarPrepedidoApiUnis /p:Configuration=Release_ApiUnis
 
 echo %date% %time% >> "PacoteApiUnis\publish\DataCompilacao.txt"
-git branch >> "PacoteApiUnis/publish/VersaoGit.txt"
-git show >> "PacoteApiUnis/publish/VersaoGit.txt"
+git branch > "PacoteApiUnis/publish/VersaoGit.txt"
+git log -n 1 --pretty="%%H %%D" >> "PacoteApiUnis/publish/VersaoGit.txt"
+git status >> "PacoteApiUnis/publish/VersaoGit.txt"
 del PacoteApiUnis\publish\appsettings.json
 del PacoteApiUnis\publish\appsettings.Development.json
 del PacoteApiUnis\publish\nlog.config

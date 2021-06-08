@@ -25,7 +25,7 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
 
         private void Apagar_t_CONTROLE()
         {
-            using var db = contextoProvider.GetContextoGravacaoParaUsing();
+            using var db = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
             foreach (var c in db.Tcontroles)
                 db.Tcontroles.Remove(c);
             db.SaveChanges();
@@ -36,7 +36,7 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
         [Fact]
         public void TesteSemNsu()
         {
-            using var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing();
+            using var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
             Assert.ThrowsAnyAsync<ArgumentException>(() => global::UtilsGlobais.Nsu.GerarNsu(dbgravacao, null)).Wait();
             Assert.ThrowsAnyAsync<ArgumentException>(() => global::UtilsGlobais.Nsu.GerarNsu(dbgravacao, "um nsu que não existe")).Wait();
         }
@@ -49,7 +49,7 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
 
             //sem numero dá erro
             Apagar_t_CONTROLE();
-            using var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing();
+            using var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
             dbgravacao.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = "nao-numero", Dt_Ult_Atualizacao = DateTime.Now.AddDays(-720) /* 2 anos para trás */ });
             dbgravacao.SaveChanges();
             dbgravacao.transacao.Commit();
@@ -63,7 +63,7 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
         {
             //sem numero dá erro
             Apagar_t_CONTROLE();
-            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 dbgravacao.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = "nao-numero", Dt_Ult_Atualizacao = DateTime.Now.AddDays(-720) /* 2 anos para trás */ });
                 dbgravacao.SaveChanges();
@@ -79,7 +79,7 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
         {
             //agora um que funciona...
             Apagar_t_CONTROLE();
-            using var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing();
+            using var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
             dbgravacao.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = "000000645506", Dt_Ult_Atualizacao = DateTime.Now.AddDays(-720) /* 2 anos para trás */ });
             dbgravacao.SaveChanges();
             dbgravacao.transacao.Commit();
@@ -99,7 +99,7 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
         public void Nsu_Com_seq_anual()
         {
             //gerando normal
-            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 Apagar_t_CONTROLE();
                 dbgravacao.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole()
@@ -116,7 +116,7 @@ namespace Especificacao.Especificacao.UtilsGlobais.Util
             }
 
             //agora mudamos a data
-            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing())
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 Apagar_t_CONTROLE();
                 dbgravacao.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole()

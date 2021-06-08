@@ -31,5 +31,7 @@ namespace InfraBanco.Modelos
 
         public ICollection<TestoqueItem> TestoqueItem { get; set; }
 
+        [Column("dummy")]
+        public Boolean Dummy { get; set; }
     }
 }

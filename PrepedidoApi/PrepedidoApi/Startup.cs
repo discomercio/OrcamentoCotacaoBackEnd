@@ -66,6 +66,11 @@ namespace PrepedidoApi
 
             //ContextoProvider
             services.AddTransient<InfraBanco.ContextoBdProvider, InfraBanco.ContextoBdProvider>();
+            services.AddSingleton<InfraBanco.ContextoBdGravacaoOpcoes>(c =>
+            {
+                Configuracao configuracao = c.GetRequiredService<Configuracao>();
+                return new InfraBanco.ContextoBdGravacaoOpcoes(configuracao.TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO);
+            });
             services.AddTransient<InfraBanco.ContextoCepProvider, InfraBanco.ContextoCepProvider>();
 
             //banco de dados
@@ -109,7 +114,8 @@ namespace PrepedidoApi
                 //temos que crir os objetos com todas as suas dependencias aqui mesmo 
                 //(nao podemos usar a resolução de serviços da injeção de dependencias do .net)
                 x.SecurityTokenValidators.Add(new ValidarCredenciais(new ValidarCredenciaisServico(
-                    new PrepedidoBusiness.Bll.AcessoBll(new InfraBanco.ContextoBdProvider(optionsBuilder.Options)))));
+                    new PrepedidoBusiness.Bll.AcessoBll(new InfraBanco.ContextoBdProvider(optionsBuilder.Options,
+                        new InfraBanco.ContextoBdGravacaoOpcoes(appSettings.TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO))))));
 
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
