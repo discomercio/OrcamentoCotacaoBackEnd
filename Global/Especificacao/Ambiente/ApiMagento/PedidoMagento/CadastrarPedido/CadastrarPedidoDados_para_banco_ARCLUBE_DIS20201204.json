@@ -2,9 +2,9 @@
   "TokenAcesso": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJzdXBvcnRlIDEiLCJ1bmlxdWVfbmFtZSI6IkdVSUxIRVJNRSBHT01FUyBQSUVEQURFIC0gUyIsInJvbGUiOiJBcGlNYWdlbnRvIiwibmJmIjoxNjAxMDYzMzE3LCJleHAiOjE3NTg3NDMzMTcsImlhdCI6MTYwMTA2MzMxN30.wU56GsuPwyISJc8BnG08waX1j20KTZ1yghhvYzyf21Q",
   "Cnpj_Cpf": "14039603052",
   "InfCriacaoPedido": {
-    "Pedido_bs_x_ac": "100456789",
-    "Marketplace_codigo_origem": "004",
-    "Pedido_bs_x_marketplace": "100456789"
+    "Pedido_magento": "100456789",
+    "Marketplace_codigo_origem": "001",
+    "Pedido_marketplace": "100456789"
   },
   "EnderecoCadastralCliente": {
     "Endereco_logradouro": "Rua Francisco Pecoraro",
@@ -63,21 +63,51 @@
   },
   "ListaProdutos": [
     {
-      "Fabricante": "001",
-      "Produto": "001000",
-      "Qtde": 1,
-      "Preco_Venda": 494.41,
-      "Preco_NF": 494.41
+      "Sku": "001000",
+      "Quantidade": 2,
+      "Subtotal": 1253.16,
+      "RowTotal": 1253.16
+    },
+    {
+      "Sku": "001001",
+      "Quantidade": 2,
+      "Subtotal": 1879.74,
+      "RowTotal": 1879.74
     }
+    //{
+    //  "Fabricante": "003",
+    //  "Produto": "003220",
+    //  "Qtde": 2,
+    //  "Preco_Venda": 626.58,
+    //  "Preco_NF": 626.58
+    //},
+    //{
+    //  "Fabricante": "003",
+    //  "Produto": "003221",
+    //  "Qtde": 2,
+    //  "Preco_Venda": 939.87,
+    //  "Preco_NF": 939.87
+    //}
   ],
   "ListaServicos": [
   ],
   "FormaPagtoCriacao": {
-    "Tipo_Parcelamento": 5,
-    "C_pu_valor": 494.41,
+    "Tipo_Parcelamento": 1,
+    "Op_av_forma_pagto": "6",
+    "C_pu_valor": 0,
     "C_pc_qtde": 0,
     "C_pc_valor": 0
   },
+  "TotaisPedido": {
+    "Subtotal": 3132.90,
+    "DiscountAmount": 0.0,
+    "BSellerInterest": 0,
+    "FreteBruto": 0,
+    "DescontoFrete": 0,
+    "GrandTotal": 3132.90
+  },
   "Obs_1": "teste magento",
-  "Frete": 0
+  "MagentoPedidoStatus": {
+    "Status": 2
+  }
 }

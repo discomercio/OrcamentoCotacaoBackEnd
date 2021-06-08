@@ -2,9 +2,9 @@
   "TokenAcesso": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJzdXBvcnRlIDEiLCJ1bmlxdWVfbmFtZSI6IkdVSUxIRVJNRSBHT01FUyBQSUVEQURFIC0gUyIsInJvbGUiOiJBcGlNYWdlbnRvIiwibmJmIjoxNjAxMDYzMzE3LCJleHAiOjE3NTg3NDMzMTcsImlhdCI6MTYwMTA2MzMxN30.wU56GsuPwyISJc8BnG08waX1j20KTZ1yghhvYzyf21Q",
   "Cnpj_Cpf": "14039603052",
   "InfCriacaoPedido": {
-    "Pedido_bs_x_ac": "123456789",
+    "Pedido_magento": "123456789",
     "Marketplace_codigo_origem": "001",
-    "Pedido_bs_x_marketplace": ""
+    "Pedido_marketplace": ""
   },
   "EnderecoCadastralCliente": {
     "Endereco_logradouro": "Rua Francisco Pecoraro",
