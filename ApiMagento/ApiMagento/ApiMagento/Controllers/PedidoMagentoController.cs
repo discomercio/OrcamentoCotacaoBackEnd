@@ -61,7 +61,6 @@ namespace ApiMagento.Controllers
             string apelido = usuario;
 
             var ret = await pedidoMagentoBll.CadastrarPedidoMagento(pedido, apelido);
-            //todo: colocar o mesmo log no prepedido e na api unis
             logger.LogInformation($"CadastrarPedido fim - entrada: {System.Text.Json.JsonSerializer.Serialize(pedido)}");
             logger.LogInformation($"CadastrarPedido fim - saída: {System.Text.Json.JsonSerializer.Serialize(ret)}");
             return Ok(ret);

@@ -16,11 +16,11 @@ namespace TestesApiMagentoCadastrarPedido
             var ret = new ConfiguracaoTestes();
 
             //para testar contra o localhost
-            ret.UrlApiMagentoCadastrarPedido = "https://localhost:44389/api/pedidoMagento/cadastrarPedido";
+            //ret.UrlApiMagentoCadastrarPedido = "https://localhost:44389/api/pedidoMagento/cadastrarPedido";
 
             return ret;
         }
         public string UrlApiMagentoCadastrarPedido = "http://its-appdev:9003/api/pedidoMagento/cadastrarPedido";
-        public int NumeroExecucoes = 100;
+        public int NumeroExecucoes = 10;
     }
 }
