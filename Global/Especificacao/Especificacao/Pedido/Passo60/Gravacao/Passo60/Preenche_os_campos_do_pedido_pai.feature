@@ -386,6 +386,7 @@ Scenario: Preenche_os_campos_do_pedido - Marketplace e magento
 	#And Tabela "t_PEDIDO" registro pai criado, verificar campo "magento_shipping_amount" = "0.0"
 	Given Ignorar cenário no ambiente "Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.CadastrarPedido.CadastrarPedido"
 	Given Pedido base
+	When Informo "InfCriacaoPedido.Pedido_marketplace" = "null"
 	Then Sem nenhum erro
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pedido_bs_x_at" = ""
 	And Tabela "t_PEDIDO" registro pai criado, verificar campo "pedido_bs_x_marketplace" = "null"

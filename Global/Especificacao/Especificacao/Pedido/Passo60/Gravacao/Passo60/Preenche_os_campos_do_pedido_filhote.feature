@@ -15,6 +15,7 @@ Background: Setup
 	When Lista de itens "1" informo "Qtde" = "100"
 	And Lista de itens "1" informo "Subtotal" = "93687.00"
 	And Lista de itens "1" informo "RowTotal" = "93687.00"
+	And Informo "InfCriacaoPedido.Pedido_marketplace" = "null"
 	And Recalcular totais do pedido
 	And Deixar forma de pagamento consistente
 	Given Zerar todo o estoque

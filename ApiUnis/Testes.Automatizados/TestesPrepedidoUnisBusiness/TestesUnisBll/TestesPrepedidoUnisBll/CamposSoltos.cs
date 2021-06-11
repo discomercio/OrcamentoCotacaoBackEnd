@@ -56,7 +56,7 @@ VlTotalDestePedido	number($double)
         [Fact]
         public void ExcedeValorDeRA()
         {
-            //afazer: gerar o valor que excede o limite de ra            
+            //gerar o valor que excede o limite de ra            
             TesteParcCartao(c => {
                 c.ValorTotalDestePedidoComRA = 4400M;
                 c.FormaPagtoCriacao.C_pc_valor = 1100M;
