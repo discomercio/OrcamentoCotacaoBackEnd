@@ -165,6 +165,20 @@ namespace Produto.Estoque
             }
 
             //'	OBTÉM OS "LOTES" DO PRODUTO DISPONÍVEIS NO ESTOQUE (POLÍTICA FIFO)
+            //if TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO then
+            //'	BLOQUEIA REGISTRO PARA EVITAR ACESSO CONCORRENTE (REALIZA O FLIP EM UM CAMPO BIT APENAS P/ ADQUIRIR O LOCK EXCLUSIVO)
+            //    s_sql = "UPDATE t_ESTOQUE_ITEM SET" & _
+            //		        " t_ESTOQUE_ITEM.dummy = ~t_ESTOQUE_ITEM.dummy" & _
+            //	        " FROM t_ESTOQUE" & _
+            //		        " INNER JOIN t_ESTOQUE_ITEM ON" & " (t_ESTOQUE.id_estoque=t_ESTOQUE_ITEM.id_estoque)" & _
+            //	        " WHERE" & _
+            //		        " (t_ESTOQUE.id_nfe_emitente = " & Trim("" & id_nfe_emitente) & ")" & _
+            //		        " AND (t_ESTOQUE_ITEM.fabricante='" & id_fabricante & "')" & _
+            //		        " AND (produto='" & id_produto & "')" & _
+            //		        " AND ((qtde - qtde_utilizada) > 0)"
+            //    cn.Execute(s_sql)
+            //    end if
+            //
             //s_sql = "SELECT" & _
             //			" t_ESTOQUE.id_estoque," & _
             //			" (qtde - qtde_utilizada) AS saldo" & _
@@ -190,6 +204,39 @@ namespace Produto.Estoque
                                    ei.Id_estoque,
                                    Saldo = (short?)(ei.Qtde - ei.Qtde_utilizada)
                                }).ToListAsync();
+
+            if (dbGravacao.ContextoBdGravacaoOpcoes.TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO)
+            {
+                foreach (var lote in lotes)
+                {
+                    var estoqueItem = (from ei in dbGravacao.TestoqueItems
+                                       where ei.Fabricante == id_fabricante &&
+                                             ei.Produto == id_produto &&
+                                             ei.Id_estoque == lote.Id_estoque
+                                       select ei).FirstOrDefault();
+                    if (estoqueItem != null)
+                        estoqueItem.Dummy = !estoqueItem.Dummy;
+                }
+                await dbGravacao.SaveChangesAsync();
+
+                List<string> lista_id_estoque = (from l in lotes select l.Id_estoque).ToList();
+
+                lotes = await (from ei in dbGravacao.TestoqueItems
+                               join e in dbGravacao.Testoques on ei.Id_estoque equals e.Id_estoque
+                               where e.Id_nfe_emitente == id_nfe_emitente &&
+                                     ei.Fabricante == id_fabricante &&
+                                     ei.Produto == id_produto &&
+                                     (ei.Qtde - ei.Qtde_utilizada) > 0 &&
+                                     //agora limitamos os registros aos que bloqueamos
+                                     lista_id_estoque.Contains(ei.Id_estoque)
+                               orderby e.Data_entrada, ei.Id_estoque
+                               select new
+                               {
+                                   ei.Id_estoque,
+                                   Saldo = (short?)(ei.Qtde - ei.Qtde_utilizada)
+                               }).ToListAsync();
+            }
+
 
 
             //'	ARMAZENA AS ENTRADAS NO ESTOQUE CANDIDATAS À SAÍDA DE PRODUTOS
@@ -239,6 +286,28 @@ namespace Produto.Estoque
                                                          c.Fabricante == id_fabricante &&
                                                          c.Produto == id_produto
                                                    select c).FirstAsync();
+                //if TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO then
+                //'	BLOQUEIA REGISTRO PARA EVITAR ACESSO CONCORRENTE (REALIZA O FLIP EM UM CAMPO BIT APENAS P/ ADQUIRIR O LOCK EXCLUSIVO)
+                //	s_sql = "UPDATE t_ESTOQUE_ITEM SET" & _
+                //				" dummy = ~dummy" & _
+                //			" WHERE" & _
+                //			" (id_estoque = '" & Trim(v_estoque(iv)) & "')" & _
+                //			" AND (fabricante = '" & id_fabricante & "')" & _
+                //			" AND (produto = '" & id_produto & "')"
+                //	cn.Execute(s_sql)
+                //	end if
+                if (dbGravacao.ContextoBdGravacaoOpcoes.TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO)
+                {
+                    testoqueItem.Dummy = !testoqueItem.Dummy;
+                    await dbGravacao.SaveChangesAsync();
+                    //recarrega
+                    testoqueItem = await (from c in dbGravacao.TestoqueItems
+                                          where c.Id_estoque == v_estoque_atual &&
+                                                c.Fabricante == id_fabricante &&
+                                                c.Produto == id_produto
+                                          select c).FirstAsync();
+                }
+
 
                 int qtde_movto = 0;
                 var qtde_aux = testoqueItem.Qtde ?? 0;
@@ -294,10 +363,17 @@ namespace Produto.Estoque
                 Testoque testoque = await (from c in dbGravacao.Testoques
                                            where c.Id_estoque == v_estoque_atual
                                            select c).FirstAsync();
+                if (dbGravacao.ContextoBdGravacaoOpcoes.TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO)
+                {
+                    testoque.Dummy = !testoque.Dummy;
+                    await dbGravacao.SaveChangesAsync();
+                    //recarrega
+                    testoque = await (from c in dbGravacao.Testoques
+                                      where c.Id_estoque == v_estoque_atual
+                                      select c).FirstAsync();
+                }
 
                 testoque.Data_ult_movimento = DateTime.Now.Date;
-
-                dbGravacao.Update(testoque);
                 await dbGravacao.SaveChangesAsync();
 
                 //JÁ CONSEGUIU ALOCAR TUDO?

@@ -25,6 +25,22 @@ namespace UtilsGlobais
             if (controle == null)
                 throw new ArgumentException($"Não existe registro na tabela de controle para poder gerar este NSU! id_nsu:{id_nsu}");
 
+            if (dbgravacao.ContextoBdGravacaoOpcoes.TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO)
+            {
+                //alteramos o flag
+                controle.Dummy = !controle.Dummy;
+                //não pode usar Update(controle) porque isso faz com que o Entity altere todos os campos
+                //somente queremos alterar o campo Dummy
+                dbgravacao.SaveChanges();
+
+                //carregamos novamente
+                var queryControleRecarga = from c in dbgravacao.Tcontroles
+                                           where c.Id_Nsu == id_nsu
+                                           select c;
+
+                controle = await queryControleRecarga.FirstOrDefaultAsync();
+            }
+
             int n_nsu = -1;
             if (!string.IsNullOrEmpty(controle.Nsu))
             {
@@ -93,8 +109,8 @@ namespace UtilsGlobais
         {
             //verifica se o id_nsu já existe
             var existeIdFin = await (from c in dbgravacao.TfinControles
-                            where c.Id == id_nsu
-                            select c.Id).AnyAsync();
+                                     where c.Id == id_nsu
+                                     select c.Id).AnyAsync();
 
 
             if (!existeIdFin)
@@ -116,6 +132,21 @@ namespace UtilsGlobais
 
             if (tfincontroleEditando == null)
                 throw new ApplicationException("Falha ao localizar o registro para geração de NSU (" + id_nsu + ")!");
+
+            if (dbgravacao.ContextoBdGravacaoOpcoes.TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO)
+            {
+                //alteramos o flag
+                tfincontroleEditando.Dummy = !tfincontroleEditando.Dummy;
+                //não pode usar Update(controle) porque isso faz com que o Entity altere todos os campos
+                //somente queremos alterar o campo Dummy
+                dbgravacao.SaveChanges();
+
+                //carregamos novamente
+                tfincontroleEditando = await (from c in dbgravacao.TfinControles
+                                                  where c.Id == id_nsu
+                                                  select c).FirstOrDefaultAsync();
+            }
+
 
             tfincontroleEditando.Nsu++;
             tfincontroleEditando.Dt_hr_ult_atualizacao = DateTime.Now;

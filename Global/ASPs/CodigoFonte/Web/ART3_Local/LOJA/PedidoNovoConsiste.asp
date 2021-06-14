@@ -49,7 +49,7 @@
 
 '	CONECTA AO BANCO DE DADOS
 '	=========================
-	dim cn, rs, tMAP_XML, tMAP_END_COB, tMAP_END_ETG, tOI, t_CLIENTE
+	dim cn, rs, tMAP_XML, tMAP_ITEM, tMAP_END_COB, tMAP_END_ETG, tOI, t_CLIENTE
 	If Not bdd_conecta(cn) then Response.Redirect("aviso.asp?id=" & ERR_CONEXAO)
 	If Not cria_recordset_otimista(t_CLIENTE, msg_erro) then Response.Redirect("aviso.asp?id=" & ERR_FALHA_OPERACAO_CRIAR_ADO)
 
@@ -101,10 +101,10 @@
 	dim EndEtg_ie, EndEtg_rg
 
 	dim s_fabricante, s_produto, s_descricao, s_descricao_html, s_qtde, s_readonly, s_vl_NF_readonly, s_vl_NF
-	dim s_preco_lista, s_vl_TotalItem, m_TotalItem, m_TotalDestePedido, m_TotalItemComRA
+	dim s_preco_lista, s_vl_TotalItem, m_TotalItem, m_TotalDestePedido, m_TotalItemComRA, m_TotalServicos
 	dim s_campo_focus
 	dim m_TotalDestePedidoComRA, s_TotalDestePedidoComRA
-	dim intIdx
+	dim intIdx, qtdeColProd, percDescServico, sPercDescServico, sColorPercDescServico, vl_servico_original_price, vl_servico_price, vl_total_produto_magento, vl_total_servico_magento, vl_frete_magento
 	dim s_qtde_dias
 	
 '	OBTÉM PARÂMETROS DE COMISSÃO E DESCONTO
@@ -197,6 +197,7 @@
 		id_magento_api_pedido_xml = Trim(Request("id_magento_api_pedido_xml"))
 		
 		If Not cria_recordset_otimista(tMAP_XML, msg_erro) then Response.Redirect("aviso.asp?id=" & ERR_FALHA_OPERACAO_CRIAR_ADO)
+		If Not cria_recordset_otimista(tMAP_ITEM, msg_erro) then Response.Redirect("aviso.asp?id=" & ERR_FALHA_OPERACAO_CRIAR_ADO)
 		If Not cria_recordset_otimista(tMAP_END_COB, msg_erro) then Response.Redirect("aviso.asp?id=" & ERR_FALHA_OPERACAO_CRIAR_ADO)
 		If Not cria_recordset_otimista(tMAP_END_ETG, msg_erro) then Response.Redirect("aviso.asp?id=" & ERR_FALHA_OPERACAO_CRIAR_ADO)
 
@@ -2783,12 +2784,12 @@ var perc_max_comissao_e_desconto_a_utilizar;
 }
 .TdCliLbl
 {
-	width:130px;
+	width:200px;
 	text-align:right;
 }
 .TdCliCel
 {
-	width:520px;
+	width:450px;
 	text-align:left;
 }
 .TdCliBtn
@@ -3746,6 +3747,9 @@ var perc_max_comissao_e_desconto_a_utilizar;
 		if tMAP_END_ETG.State <> 0 then tMAP_END_ETG.Close
 		set tMAP_END_ETG = nothing
 		
+		if tMAP_ITEM.State <> 0 then tMAP_ITEM.Close
+		set tMAP_ITEM = nothing
+
 		if tMAP_XML.State <> 0 then tMAP_XML.Close
 		set tMAP_XML = nothing
 		end if

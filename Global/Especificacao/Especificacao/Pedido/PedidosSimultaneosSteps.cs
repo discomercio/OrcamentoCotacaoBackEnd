@@ -40,11 +40,6 @@ namespace Especificacao.Especificacao.Pedido
 
         private static void PrepararBancoDados()
         {
-            var servicos = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos();
-            //precisa restaurar o banco
-            var bd = new Testes.Utils.BancoTestes.InicializarBancoGeral(servicos.GetRequiredService<InfraBanco.ContextoBdProvider>(), servicos.GetRequiredService<InfraBanco.ContextoCepProvider>());
-            bd.InicializarForcado();
-
             //criamos uma vez o pedido na mesma thread.
             //se não fizermos isso, temos erros de timeout no acesso ao banco por causa do multithread
             //porque o nosso gerenciador de serviços não é thread-safe

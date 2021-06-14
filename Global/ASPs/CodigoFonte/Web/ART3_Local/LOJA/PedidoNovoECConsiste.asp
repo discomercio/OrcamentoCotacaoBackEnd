@@ -32,6 +32,7 @@
 
 	class cl_MAP_ITEM
 		dim sku
+		dim product_type
 		dim qty_ordered
 		dim price
 		dim name

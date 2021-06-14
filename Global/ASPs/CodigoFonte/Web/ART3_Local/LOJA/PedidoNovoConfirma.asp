@@ -47,12 +47,18 @@
 
 '	CONECTA AO BANCO DE DADOS
 '	=========================
-	dim cn, rs, rs2, t_CLIENTE, tMAP_XML, tOI
+	dim cn, rs, rs2, t_CLIENTE, tMAP_XML, tMAP_ITEM, tITEM_SVC, tOI
 	If Not bdd_conecta(cn) then Response.Redirect("aviso.asp?id=" & ERR_CONEXAO)
 
 	dim blnUsarMemorizacaoCompletaEnderecos
 	blnUsarMemorizacaoCompletaEnderecos = isActivatedFlagPedidoUsarMemorizacaoCompletaEnderecos
 
+	dim sBlocoNotasEndCob, sBlocoNotasEndEtg, sBlocoNotasMsg
+	sBlocoNotasEndCob = ""
+	sBlocoNotasEndEtg = ""
+	sBlocoNotasMsg = ""
+
+	dim percDescServico, vl_servico_original_price, vl_servico_price
 	dim operacao_origem, c_numero_magento, operationControlTicket, sessionToken, id_magento_api_pedido_xml
 	operacao_origem = Trim(Request("operacao_origem"))
 	c_numero_magento = ""

@@ -732,6 +732,12 @@ namespace InfraBanco.Constantes
         public const string COD_AN_CREDITO_OK_AGUARDANDO_PAGTO_BOLETO_AV = "11";
         public const string COD_AN_CREDITO_PENDENTE_PAGTO_ANTECIPADO_BOLETO = "12";
 
+        //' CÓDIGOS PARA PAGAMENTO ANTECIPADO
+        public const string COD_PAGTO_ANTECIPADO_STATUS_NORMAL = "0";
+        public const string COD_PAGTO_ANTECIPADO_STATUS_ANTECIPADO = "1";
+
+        public const string COD_PAGTO_ANTECIPADO_QUITADO_STATUS_PENDENTE = "0";
+        public const string COD_PAGTO_ANTECIPADO_QUITADO_STATUS_QUITADO = "1";
 
         //' CÓDIGOS P/ STATUS DA ANÁLISE DE ENDEREÇO
         public const string COD_ANALISE_ENDERECO_TRATADO_STATUS_INICIAL = "0";
@@ -947,36 +953,31 @@ namespace InfraBanco.Constantes
         public const string TAXA_ADMINISTRATIVA__SIM = "1";
         public const int PEDIDO_DEVOLUCAO_QTDE_FOTO = 6;
 
+        //'	TIPO DE MENSAGEM DO BLOCO DE NOTAS DO PEDIDO
+        public const int COD_TIPO_MSG_BLOCO_NOTAS_PEDIDO__MANUAL = 0;
+        public const int COD_TIPO_MSG_BLOCO_NOTAS_PEDIDO__AUTOMATICA_EDICAO_ENDERECO = 1100;
+        public const int COD_TIPO_MSG_BLOCO_NOTAS_PEDIDO__AUTOMATICA_EDICAO_FORMA_PAGTO = 1200;
+        public const int COD_TIPO_MSG_BLOCO_NOTAS_PEDIDO__AUTOMATICA_EDICAO_INDICADOR = 1300;
+        public const int COD_TIPO_MSG_BLOCO_NOTAS_PEDIDO__AUTOMATICA_SPLIT_MANUAL = 1400;
+        public const int COD_TIPO_MSG_BLOCO_NOTAS_PEDIDO__AUTOMATICA_SPLIT_AUTOMATICO = 1500;
+
         //'	NÍVEL DE ACESSO DO BLOCO DE NOTAS DO PEDIDO
-
         public const int COD_NIVEL_ACESSO_BLOCO_NOTAS_PEDIDO__NAO_DEFINIDO = 0;
-
         public const int COD_NIVEL_ACESSO_BLOCO_NOTAS_PEDIDO__ILIMITADO = -1;
-
         public const int COD_NIVEL_ACESSO_BLOCO_NOTAS_PEDIDO__PUBLICO = 10;
-
         public const int COD_NIVEL_ACESSO_BLOCO_NOTAS_PEDIDO__RESTRITO = 20;
-
         public const int COD_NIVEL_ACESSO_BLOCO_NOTAS_PEDIDO__SIGILOSO = 30;
 
         //'	NÍVEL DE ACESSO DO CHAMADO DO PEDIDO
-
         public const int COD_NIVEL_ACESSO_CHAMADO_PEDIDO__NAO_DEFINIDO = 0;
-
         public const int COD_NIVEL_ACESSO_CHAMADO_PEDIDO__ILIMITADO = -1;
-
         public const int COD_NIVEL_ACESSO_CHAMADO_PEDIDO__PUBLICO = 10;
-
         public const int COD_NIVEL_ACESSO_CHAMADO_PEDIDO__PUBLICO_INTERNO = 20;
-
         public const int COD_NIVEL_ACESSO_CHAMADO_PEDIDO__RESTRITO = 30;
-
         public const int COD_NIVEL_ACESSO_CHAMADO_PEDIDO__SIGILOSO = 40;
 
         //'	FLUXO DAS MENSAGENS GRAVADAS NAS OCORRÊNCIAS EM PEDIDOS
-
         public const string COD_FLUXO_MENSAGEM_OCORRENCIAS_EM_PEDIDOS__LOJA_PARA_CENTRAL = "LJ->CE";
-
         public const string COD_FLUXO_MENSAGEM_OCORRENCIAS_EM_PEDIDOS__CENTRAL_PARA_LOJA = "CE->LJ";
 
         //'   FLUXO DAS MENSAGENS GRAVADAS NOS CHAMADOS EM PEDIDOS
@@ -2255,6 +2256,8 @@ namespace InfraBanco.Constantes
         public const int OP_CEN_PRE_DEVOLUCAO_LEITURA = 29500;
 
         public const int OP_CEN_PRE_DEVOLUCAO_ESCREVER_MSG = 29600;
+
+        public const int OP_CEN_EDITA_PEDIDO_CD = 29800;
 
 
         //' LOJA

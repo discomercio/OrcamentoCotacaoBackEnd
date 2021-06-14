@@ -7,11 +7,11 @@ Feature: PedidosSimultaneos
 
 
 #este teste somente vai funcionar no SQL Server real quando tivemos o sistema de bloqueio em funcionamento
-@ignore
 Scenario: PedidosSimultaneos
 	Given Reiniciar banco ao terminar cenário
 	Given Usar produto "um" como fabricante = "003", produto = "003220"
 	And Usar produto "dois" como fabricante = "003", produto = "003221"
+	Given Zerar todo o estoque
 	Given Definir saldo de estoque = "300" para produto "um"
 	Given Definir saldo de estoque = "300" para produto "dois"
 	#cria todos os pedidos
