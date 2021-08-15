@@ -17,9 +17,9 @@ build:
   image: mcr.microsoft.com/dotnet/core/sdk:3.1
   script: -apt install nodejs
     - ls
-    - apt install nodejs
+    - apt-get install nodejs
     - node –version
-    - apt install npm
+    - apt-get install npm
     - apt-get update
     - apt-get upgrade
     - "cd Loja/Loja.UI/"
