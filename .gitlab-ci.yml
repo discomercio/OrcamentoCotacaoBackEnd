@@ -1,10 +1,12 @@
 stages:
   #- build
   - test
+  - test-especificacao
 
 variables:
   teste: "ApiUnis/Testes.Automatizados"
-  loja: "Loja/Loja.UI/Loja.UI.csproj"
+  loja: "Loja/Loja.UI"
+  especificacao: "Global/Especificacao"
   #MSSQL_HOST: microsoft-mssql-server-linux
   #ACCEPT_EULA: "Y"
   #SA_PASSWORD: yourStrong(!)Password
@@ -35,6 +37,17 @@ test:
     - "ls"
     - "cd ApiUnis/Testes.Automatizados"
     - "dotnet test"
-  allow_failure: false
+  allow_failure: true
+  only:
+    - automacoes
+
+test-especificacao:
+  stage: test
+  image: mcr.microsoft.com/dotnet/core/sdk:3.1
+  script:
+    - "ls"
+    - "cd Global/Especificacao"
+    - "dotnet test"
+  allow_failure: true
   only:
     - automacoes
