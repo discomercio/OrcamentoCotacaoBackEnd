@@ -3,8 +3,8 @@ stages:
   - test
 
 variables:
-  teste: "Source/UnitTest.Integration.Repositories"
-  loja: "/Loja/Loja.UI/Loja.UI.csproj"
+  teste: "ApiUnis/Testes.Automatizados"
+  loja: "Loja/Loja.UI/Loja.UI.csproj"
   #MSSQL_HOST: microsoft-mssql-server-linux
   #ACCEPT_EULA: "Y"
   #SA_PASSWORD: yourStrong(!)Password
@@ -17,6 +17,7 @@ build:
   stage: build
   image: mcr.microsoft.com/dotnet/core/sdk:3.1
   script:
+      - ls
       - "cd $loja"
       - "dotnet restore"
       - "dotnet build"
@@ -27,6 +28,7 @@ test:
   stage: test
   image: mcr.microsoft.com/dotnet/core/sdk:3.1
   script: 
+      - ls
       - "cd $teste"
       - "dotnet test"
   allow_failure: false
