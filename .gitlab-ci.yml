@@ -10,27 +10,31 @@ variables:
   #SA_PASSWORD: yourStrong(!)Password
 
 before_script:
-    - ""
-  
+  - ""
 
 build:
   stage: build
   image: mcr.microsoft.com/dotnet/core/sdk:3.1
-  script:
-      - ls
-      - "cd Loja/Loja.UI/"
-      - "dotnet restore"
-      - "dotnet build"
+  script: -apt install nodejs
+    - ls
+    - apt install nodejs
+    - node –version
+    - apt install npm
+    - apt-get update
+    - apt-get upgrade
+    - "cd Loja/Loja.UI/"
+    - "dotnet restore"
+    - "dotnet build"
   only:
     - automacoes
 
 test:
   stage: test
   image: mcr.microsoft.com/dotnet/core/sdk:3.1
-  script: 
-      - ls
-      - "cd ApiUnis/Testes.Automatizados"
-      - "dotnet test"
+  script:
+    - ls
+    - "cd ApiUnis/Testes.Automatizados"
+    - "dotnet test"
   allow_failure: false
   only:
     - automacoes
