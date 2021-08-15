@@ -12,21 +12,21 @@ variables:
 before_script:
   - ""
 
-build:
-  stage: build
-  image: mcr.microsoft.com/dotnet/sdk:3.1
-  script: -apt install nodejs
-    - "ls"
-    - "apt-get install nodejs"
-    - "node –version"
-    - "apt-get install npm"
-    - "apt-get update"
-    - "apt-get upgrade"
-    - "cd Loja/Loja.UI/"
-    - "dotnet restore"
-    - "dotnet build"
-  only:
-    - automacoes
+#build:
+#  stage: build
+#  image: mcr.microsoft.com/dotnet/sdk:3.1
+#  script: -apt install nodejs
+#    - "ls"
+#    - "apt-get install nodejs"
+#    - "node –version"
+#    - "apt-get install npm"
+#    - "apt-get update"
+#    - "apt-get upgrade"
+#    - "cd Loja/Loja.UI/"
+#    - "dotnet restore"
+#    - "dotnet build"
+#  only:
+#    - automacoes
 
 test:
   stage: test
