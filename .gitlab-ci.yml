@@ -21,7 +21,7 @@ build:
       - "dotnet restore"
       - "dotnet build"
   only:
-    - master
+    - automacoes
 
 test:
   stage: test
@@ -31,4 +31,4 @@ test:
       - "dotnet test"
   allow_failure: false
   only:
-    - Automações
+    - automacoes
