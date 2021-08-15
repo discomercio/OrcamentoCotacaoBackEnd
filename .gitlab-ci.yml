@@ -16,12 +16,12 @@ build:
   stage: build
   image: mcr.microsoft.com/dotnet/core/sdk:3.1
   script: -apt install nodejs
-    - ls
-    - apt-get install nodejs
-    - node –version
-    - apt-get install npm
-    - apt-get update
-    - apt-get upgrade
+    - "ls"
+    - "apt-get install nodejs"
+    - "node –version"
+    - "apt-get install npm"
+    - "apt-get update"
+    - "apt-get upgrade"
     - "cd Loja/Loja.UI/"
     - "dotnet restore"
     - "dotnet build"
@@ -32,7 +32,7 @@ test:
   stage: test
   image: mcr.microsoft.com/dotnet/core/sdk:3.1
   script:
-    - ls
+    - "ls"
     - "cd ApiUnis/Testes.Automatizados"
     - "dotnet test"
   allow_failure: false
