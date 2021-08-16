@@ -19,7 +19,7 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
         }
 
         private ServiceProvider Servicos { get; set; }
-        public static readonly bool UsarSqlServerNosTestesAutomatizados = true;
+        public static readonly bool UsarSqlServerNosTestesAutomatizados = false;
         private ProvedorServicos()
         {
             var logTestes = LogTestes.LogTestes.GetInstance();
