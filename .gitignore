@@ -7,3 +7,5 @@
 /PrepedidoApi/Testes.Automatizados.Resultados
 /.sonarqube
 
+/OrcamentoCotacaoApi/OrcamentoCotacaoApi/obj/Debug/netcoreapp3.1
+/OrcamentoCotacaoApi/OrcamentoCotacaoApi/obj
