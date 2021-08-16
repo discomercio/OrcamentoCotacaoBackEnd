@@ -38,8 +38,8 @@ test:
     - "cd ApiUnis/Testes.Automatizados"
     - "dotnet test"
   allow_failure: true
-  only:
-    - automacoes
+  #only:
+  #  - automacoes
 
 test-especificacao:
   stage: test
@@ -49,5 +49,5 @@ test-especificacao:
     - "cd Global/Especificacao"
     - "dotnet test"
   allow_failure: true
-  only:
-    - automacoes
+  #only:
+  #  - automacoes
