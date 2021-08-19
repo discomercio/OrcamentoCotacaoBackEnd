@@ -1,21 +1,16 @@
 import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TelaDesktopBaseComponent } from '../../../../src/app/servicos/telaDesktop/telaDesktopBaseComponent';
-import { Location, PlatformLocation } from '@angular/common';
+import { Location } from '@angular/common';
 import { TelaDesktopService } from '../../../../src/app/servicos/telaDesktop/telaDesktop.service';
 import { PrepedidoBuscarService } from '../../../../src/app/servicos/prepedido/prepedido-buscar.service';
 import { PedidoBuscarService } from '../../../../src/app/servicos/pedido/pedido-buscar.service';
-import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material';
-import { AlertDialogComponent } from 'src/app/utils/alert-dialog/alert-dialog.component';
 import { PedidoDto } from 'src/app/dto/pedido/detalhesPedido/PedidoDto2';
-import { ObjectUtils } from 'src/app/utils/objectUtils';
 import { ImpressaoService } from 'src/app/utils/impressao.service';
 import { PrePedidoDto } from 'src/app/dto/Prepedido/DetalhesPrepedido/PrePedidoDto';
 import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
-import { debug } from 'util';
 import { AutenticacaoService } from 'src/app/servicos/autenticacao/autenticacao.service';
-import { HttpClient } from 'selenium-webdriver/http';
 
 @Component({
   selector: 'app-detalhes-prepedido',

@@ -16,7 +16,6 @@ import { Constantes } from 'src/app/dto/Constantes';
 import { ValidacoesClienteUtils } from 'src/app/utils/validacoesClienteUtils';
 import { EnderecoCadastralClientePrepedidoDto } from 'src/app/dto/Prepedido/EnderecoCadastralClientePrepedidoDto';
 import { ClienteCorpoComponent } from 'src/app/cliente/cliente-corpo/cliente-corpo.component';
-import { FormatarTelefone } from 'src/app/utils/formatarTelefone';
 
 @Component({
   selector: 'app-confirmar-cliente',
@@ -64,7 +63,6 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
     if (!this.dadosClienteCadastroDto) {
 
       //voltamos para a tela anterior: router.navigate(["/novo-prepedido"]);
-
       //ou melhor, fazemos a busca de novo!
       const clienteBusca = this.activatedRoute.snapshot.params.cpfCnpj;
 
@@ -79,7 +77,6 @@ export class ConfirmarClienteComponent extends TelaDesktopBaseComponent implemen
           }
           //cliente já existe
           //quando para nesse ponto, já fomos direcionado para a tela "home"
-
           //se tiver prepedido é pq veio de DetalhesPrepedido e precisamos passar para o serviço, 
           //pois a loja do dadoscliente esta com o nome e não o código da loja e teremos problemas para buscar os produtos
           if (this.novoPrepedidoDadosService.prePedidoDto != null)

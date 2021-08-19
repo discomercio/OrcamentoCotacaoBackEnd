@@ -10,11 +10,7 @@ import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { take } from 'rxjs/operators';
 import { Constantes } from 'src/app/dto/Constantes';
 import { PrepedidoBuscarService } from 'src/app/servicos/prepedido/prepedido-buscar.service';
-import { parse } from 'path';
 import { DataUtils } from 'src/app/utils/dataUtils';
-import { RepositionScrollStrategy } from '@angular/cdk/overlay';
-import { ItensComponent } from '../itens/itens.component';
-import { ConfirmarEnderecoComponent } from '../confirmar-endereco/confirmar-endereco.component';
 import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
 
 

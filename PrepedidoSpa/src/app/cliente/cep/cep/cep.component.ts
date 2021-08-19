@@ -6,11 +6,7 @@ import { TelaDesktopBaseComponent } from 'src/app/servicos/telaDesktop/telaDeskt
 import { MatDialog } from '@angular/material';
 import { CepDialogComponent } from '../cep-dialog/cep-dialog.component';
 import { CepDto } from 'src/app/dto/Cep/CepDto';
-import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
-import { ConfirmarEnderecoComponent } from 'src/app/prepedido/novo-prepedido/confirmar-endereco/confirmar-endereco.component';
-import { $ } from 'protractor';
 import { StringUtils } from 'src/app/utils/stringUtils';
-import { debugOutputAstAsTypeScript } from '@angular/compiler';
 
 
 @Component({

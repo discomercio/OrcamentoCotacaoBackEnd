@@ -1,15 +1,14 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild, Inject } from '@angular/core';
-import { DadosClienteCadastroDto } from 'src/app/dto/ClienteCadastro/DadosClienteCadastroDto';
 import { EnderecoEntregaDtoClienteCadastro } from 'src/app/dto/ClienteCadastro/EnderecoEntregaDTOClienteCadastro';
 import { ClienteCadastroUtils } from 'src/app/utils/ClienteCadastroUtils';
-import { BuscarClienteService, JustificativaEndEntregaComboDto } from 'src/app/servicos/cliente/buscar-cliente.service';
+import { BuscarClienteService } from 'src/app/servicos/cliente/buscar-cliente.service';
 import { EnderecoEntregaJustificativaDto } from 'src/app/dto/ClienteCadastro/EnderecoEntregaJustificativaDto';
 import { CepComponent } from 'src/app/cliente/cep/cep/cep.component';
-import { ClienteCorpoComponent } from 'src/app/cliente/cliente-corpo/cliente-corpo.component';
 import { Constantes } from 'src/app/dto/Constantes';
 import { FormatarTelefone, TelefoneSeparado } from 'src/app/utils/formatarTelefone';
 import { CpfCnpjUtils } from 'src/app/utils/cpfCnpjUtils';
 import { MatSelect } from '@angular/material';
+import { AlertaService } from 'src/app/utils/alert-dialog/alerta.service';
 
 @Component({
   selector: 'app-confirmar-endereco',
@@ -21,7 +20,8 @@ import { MatSelect } from '@angular/material';
 })
 export class ConfirmarEnderecoComponent implements OnInit {
 
-  constructor(private readonly buscarClienteService: BuscarClienteService) { }
+  constructor(private readonly buscarClienteService: BuscarClienteService,
+    private readonly alertaService: AlertaService) { }
 
   buscarClienteServiceJustificativaEndEntregaComboTemporario: EnderecoEntregaJustificativaDto[];
   ngOnInit() {
@@ -31,7 +31,16 @@ export class ConfirmarEnderecoComponent implements OnInit {
       this.inicializarCamposEndereco(this.enderecoEntregaDtoClienteCadastro);
     }
 
-    this.buscarClienteServiceJustificativaEndEntregaComboTemporario = this.buscarClienteService.JustificativaEndEntregaComboTemporario();
+    this.buscarClienteService.JustificativaEndEntregaComboTemporario().toPromise()
+      .then((r) => {
+        if (r == null) {
+          this.alertaService.mostrarErroInternet(r);
+          return;
+        }
+        this.buscarClienteServiceJustificativaEndEntregaComboTemporario = r;
+      }).catch((r)=>{
+        this.alertaService.mostrarErroInternet(r);
+      });
   }
 
   ngAfterViewInit(): void {

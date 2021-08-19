@@ -56,6 +56,7 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
         });
     }
 
+
     //isso foi incluido para que funcione corretamente no  browser "EDGE"
 
     //   let selectProdutorRural:any = document.querySelector("#selectProdutorRural .mat-form-field-flex");      
@@ -207,7 +208,7 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
   public prepararAvancarEnderecoCadastralClientePrepedidoDto(): void {
     //transferimos os dados do CEP para cá
     if (this.componenteCepDadosCadastrais != null) {
-      
+
       const src = this.componenteCepDadosCadastrais;
       this.enderecoCadastralClientePrepedidoDto.Endereco_logradouro = src.Endereco ? src.Endereco : "";
       this.enderecoCadastralClientePrepedidoDto.Endereco_numero = src.Numero ? src.Numero : "";
@@ -239,24 +240,26 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
     this.enderecoCadastralClientePrepedidoDto.Endereco_uf = this.dadosClienteCadastroDto.Uf;
     this.enderecoCadastralClientePrepedidoDto.Endereco_complemento = this.dadosClienteCadastroDto.Complemento;
     this.enderecoCadastralClientePrepedidoDto.Endereco_cnpj_cpf = this.dadosClienteCadastroDto.Cnpj_Cpf;
-    
+
     this.enderecoCadastralClientePrepedidoDto.Endereco_nome = this.dadosClienteCadastroDto.Nome;
     this.enderecoCadastralClientePrepedidoDto.Endereco_rg = this.dadosClienteCadastroDto.Rg;
     this.enderecoCadastralClientePrepedidoDto.Endereco_tipo_pessoa = this.dadosClienteCadastroDto.Tipo;
 
     this.enderecoCadastralClientePrepedidoDto.Endereco_ddd_cel = "";
-
-    this.enderecoCadastralClientePrepedidoDto.Endereco_tel_cel = this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF ?
-      this.dadosClienteCadastroDto.DddCelular + this.dadosClienteCadastroDto.Celular : "";
-
     this.enderecoCadastralClientePrepedidoDto.Endereco_ddd_res = "";
+    if (this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF) {
+      this.enderecoCadastralClientePrepedidoDto.Endereco_tel_cel = this.dadosClienteCadastroDto.DddCelular != null ?
+        this.dadosClienteCadastroDto.DddCelular + this.dadosClienteCadastroDto.Celular : "";
 
-    this.enderecoCadastralClientePrepedidoDto.Endereco_tel_res = this.dadosClienteCadastroDto.Tipo == this.constantes.ID_PF ?
-      this.dadosClienteCadastroDto.DddResidencial + this.dadosClienteCadastroDto.TelefoneResidencial : "";
+      this.enderecoCadastralClientePrepedidoDto.Endereco_tel_res = this.dadosClienteCadastroDto.DddResidencial != null ?
+        this.dadosClienteCadastroDto.DddResidencial + this.dadosClienteCadastroDto.TelefoneResidencial : "";
+    }
+
 
     this.enderecoCadastralClientePrepedidoDto.Endereco_ddd_com = "";
-
-    this.enderecoCadastralClientePrepedidoDto.Endereco_tel_com = this.dadosClienteCadastroDto.DddComercial + this.dadosClienteCadastroDto.TelComercial;
+debugger;
+    this.enderecoCadastralClientePrepedidoDto.Endereco_tel_com = this.dadosClienteCadastroDto.DddComercial != null && this.dadosClienteCadastroDto.TelComercial != null ?
+      this.dadosClienteCadastroDto.DddComercial + this.dadosClienteCadastroDto.TelComercial : "";
     this.enderecoCadastralClientePrepedidoDto.Endereco_ramal_com = this.dadosClienteCadastroDto.Ramal;
 
     this.enderecoCadastralClientePrepedidoDto.Endereco_ddd_com_2 = "";
@@ -297,7 +300,7 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
   public atualizarDadosEnderecoCadastralClienteTela(enderecoCadastralClientePrepedidoDto: EnderecoCadastralClientePrepedidoDto): void {
     this.atualizarDadosEnderecoCadastralClienteTela_Dados = enderecoCadastralClientePrepedidoDto;
 
-    
+
     if (this.jaFezAfterViewInit) {
       if (this.atualizarDadosEnderecoCadastralClienteTela_Dados != null) {
         this.atualizarDadosEnderecoCadastralClienteTela_Executar();
@@ -310,7 +313,6 @@ export class ClienteCorpoComponent implements OnInit, OnChanges {
   }
 
   public converterTelefones(endCadastralClientePrepedidoDto: EnderecoCadastralClientePrepedidoDto): EnderecoCadastralClientePrepedidoDto {
-
     let s: TelefoneSeparado = new TelefoneSeparado();
     if (!!endCadastralClientePrepedidoDto.Endereco_tel_res) {
       s = FormatarTelefone.SepararTelefone(endCadastralClientePrepedidoDto.Endereco_tel_res);
