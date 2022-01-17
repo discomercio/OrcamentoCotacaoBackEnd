@@ -96,7 +96,8 @@ namespace PrepedidoApi.Controllers
             var appSettings = appSettingsSection.Get<Utils.Configuracao>();
             string apelido = login.Apelido;
             string senha = login.Senha;
-            string token = servicoAutenticacao.ObterTokenAutenticacao(apelido, senha, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, Utils.Autenticacao.RoleAcesso, new ServicoAutenticacaoProvider(acessoBll), out bool unidade_negocio_desconhecida);
+            UsuarioLogin objUsuarioLogin = new UsuarioLogin();
+            string token = servicoAutenticacao.ObterTokenAutenticacao(apelido, senha, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, Utils.Autenticacao.RoleAcesso, new ServicoAutenticacaoProvider(acessoBll), out bool unidade_negocio_desconhecida, out objUsuarioLogin);
 
             if (unidade_negocio_desconhecida)
             {

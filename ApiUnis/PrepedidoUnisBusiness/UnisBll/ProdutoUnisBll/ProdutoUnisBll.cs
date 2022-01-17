@@ -2,6 +2,7 @@
 using Produto;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,6 +28,16 @@ namespace PrepedidoUnisBusiness.UnisBll.ProdutoUnisBll
 
             ProdutoComboUnisDto produtoComboUnisDto = ProdutoComboUnisDto.ProdutoComboUnisDtoDeProdutoComboDados(ret);
             return produtoComboUnisDto;
+        }
+
+        public async Task<List<ProdutoUnisDto>> ListarProdutos(string loja)
+        {
+            var ret = await produtoBll.BuscarTodosProdutos(loja);
+            if (ret == null)
+                return null;
+
+            //ProdutoComboUnisDto produtoComboUnisDto = ProdutoComboUnisDto.ProdutoComboUnisDtoDeProdutoComboDados(ret);
+            return ((List<Produto.Dados.ProdutoDados>)ret).Select(x => new ProdutoUnisDto() { Produto = x.Produto  }).ToList();
         }
     }
 }

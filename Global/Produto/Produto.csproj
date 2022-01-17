@@ -22,6 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\ClassesBase\ClassesBase.csproj" />
     <ProjectReference Include="..\Infra\InfraBanco\InfraBanco.csproj" />
     <ProjectReference Include="..\Utils\UtilsGlobais.csproj" />
   </ItemGroup>

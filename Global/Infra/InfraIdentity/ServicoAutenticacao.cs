@@ -9,7 +9,8 @@ namespace InfraIdentity
 {
     public interface IServicoAutenticacao
     {
-        string ObterTokenAutenticacao(string apelido, string senha, string segredoToken, int validadeTokenMinutos, string role, IServicoAutenticacaoProvider servicoAutenticacaoProvider, out bool unidade_negocio_desconhecida);
+        string ObterTokenAutenticacao(string apelido, string senha, string segredoToken, int validadeTokenMinutos, string role,
+            IServicoAutenticacaoProvider servicoAutenticacaoProvider, out bool unidade_negocio_desconhecida, out UsuarioLogin usuario);
         string RenovarTokenAutenticacao(string apelido, string nome, string loja, string segredoToken, int validadeTokenMinutos, string role, string unidade_negocio, out bool unidade_negocio_desconhecida);
     }
 
@@ -21,13 +22,17 @@ namespace InfraIdentity
     public class ServicoAutenticacao : IServicoAutenticacao
     {
         public string ObterTokenAutenticacao(string apelido, string senha, string segredoToken, int validadeTokenMinutos, string role,
-            IServicoAutenticacaoProvider servicoAutenticacaoProvider, out bool unidade_negocio_desconhecida)
+            IServicoAutenticacaoProvider servicoAutenticacaoProvider, out bool unidade_negocio_desconhecida, out UsuarioLogin usuario)
         {
-            var user = servicoAutenticacaoProvider.ObterUsuario(apelido, senha).Result;
+            UsuarioLogin user = null;
+
+            user = servicoAutenticacaoProvider.ObterUsuario(apelido, senha).Result;
+
+            usuario = user;
             // retorna null se não tiver usuário
             if (user == null)
             {
-                unidade_negocio_desconhecida = false;
+                unidade_negocio_desconhecida = false;                
                 return null;
             }
 
@@ -59,7 +64,7 @@ namespace InfraIdentity
                 unidade_negocio_desconhecida = true;
                 return null;
             }
-            if (unidade_negocio.ToUpper().Trim() != "BS" && unidade_negocio.ToUpper().Trim() != "VRF")
+            if (!unidade_negocio.ToUpper().Trim().Contains("BS") && !(unidade_negocio.ToUpper().Trim().Contains("VRF")))
             {
                 unidade_negocio_desconhecida = true;
                 return null;

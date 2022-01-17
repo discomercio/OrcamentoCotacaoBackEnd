@@ -35,7 +35,7 @@ namespace InfraBanco.Modelos
         public short? Excluido_Status { get; set; }
 
         [Column("timestamp")]
-        public byte? Timestamp { get; set; }
+        public byte[]? Timestamp { get; set; }
 
         public Tusuario Tusuario { get; set; }
         public Tloja Tloja { get; set; }

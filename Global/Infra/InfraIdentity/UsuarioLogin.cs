@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace InfraIdentity
@@ -15,5 +16,9 @@ namespace InfraIdentity
         //esse campo esta sendo incluido para verificar 
         //se o usuário esta bloqueado ou se iremos redirecionar para alterar a senha
         public int IdErro { get; set; }
+        public string Email { get; set; }
+        public string TipoUsuario { get; set; }
+        public string IdParceiro { get; set; }
+        public string IdVendedor { get; set; }
     }
 }

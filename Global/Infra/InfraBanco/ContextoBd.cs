@@ -7,7 +7,7 @@ using System.Text;
 
 namespace InfraBanco
 {
-    public class ContextoBd
+    public class ContextoBd : IDisposable
     {
         /*
          * scripts em K:\desenvolvimento\Ar Clube\banco de dados - atualizacoes
@@ -35,6 +35,11 @@ namespace InfraBanco
         public ContextoBdBasico GetContextoBdBasicoParaSql()
         {
             return contexto;
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
 #endif
 

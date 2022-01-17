@@ -44,5 +44,13 @@ namespace PrepedidoAPIUnis.Controllers
 
             return Ok(retorno);
         }
+
+        [HttpGet("listarProdutos")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public async Task<ActionResult<ProdutoComboUnisDto>> BuscarProduto(string tokenAcesso, string loja)
+        {
+            List<ProdutoUnisDto> retorno = await produtoUnisBll.ListarProdutos(loja);
+            return Ok(retorno);
+        }
     }
 }

@@ -1,0 +1,15 @@
+D:\00-Projetos\ITS\ArClube\Legado\Usuario\bin\Debug\netcoreapp3.1\Usuario.deps.json
+D:\00-Projetos\ITS\ArClube\Legado\Usuario\bin\Debug\netcoreapp3.1\Usuario.dll
+D:\00-Projetos\ITS\ArClube\Legado\Usuario\bin\Debug\netcoreapp3.1\Usuario.pdb
+D:\00-Projetos\ITS\ArClube\Legado\Usuario\bin\Debug\netcoreapp3.1\ClassesBase.dll
+D:\00-Projetos\ITS\ArClube\Legado\Usuario\bin\Debug\netcoreapp3.1\InfraBanco.dll
+D:\00-Projetos\ITS\ArClube\Legado\Usuario\bin\Debug\netcoreapp3.1\ClassesBase.pdb
+D:\00-Projetos\ITS\ArClube\Legado\Usuario\bin\Debug\netcoreapp3.1\InfraBanco.pdb
+D:\00-Projetos\ITS\ArClube\Legado\Usuario\obj\Debug\netcoreapp3.1\Usuario.csproj.AssemblyReference.cache
+D:\00-Projetos\ITS\ArClube\Legado\Usuario\obj\Debug\netcoreapp3.1\Usuario.GeneratedMSBuildEditorConfig.editorconfig
+D:\00-Projetos\ITS\ArClube\Legado\Usuario\obj\Debug\netcoreapp3.1\Usuario.AssemblyInfoInputs.cache
+D:\00-Projetos\ITS\ArClube\Legado\Usuario\obj\Debug\netcoreapp3.1\Usuario.AssemblyInfo.cs
+D:\00-Projetos\ITS\ArClube\Legado\Usuario\obj\Debug\netcoreapp3.1\Usuario.csproj.CoreCompileInputs.cache
+D:\00-Projetos\ITS\ArClube\Legado\Usuario\obj\Debug\netcoreapp3.1\Usuario.csproj.CopyComplete
+D:\00-Projetos\ITS\ArClube\Legado\Usuario\obj\Debug\netcoreapp3.1\Usuario.dll
+D:\00-Projetos\ITS\ArClube\Legado\Usuario\obj\Debug\netcoreapp3.1\Usuario.pdb

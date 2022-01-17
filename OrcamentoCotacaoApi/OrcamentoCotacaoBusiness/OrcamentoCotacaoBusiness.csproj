@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.0" />
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
+ <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
+ <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Global\Cep\Cep.csproj" />
+    <ProjectReference Include="..\..\Global\Cliente\Cliente.csproj" />
+    <ProjectReference Include="..\..\Global\Infra\InfraBanco\InfraBanco.csproj" />
+    <ProjectReference Include="..\..\Global\Infra\InfraIdentity\InfraIdentity.csproj" />
+    <ProjectReference Include="..\..\Global\Prepedido\Prepedido.csproj" />
+    <ProjectReference Include="..\..\Global\Produto\Produto.csproj" />
+    <ProjectReference Include="..\..\Global\Utils\UtilsGlobais.csproj" />
+  </ItemGroup>
+
+</Project>
