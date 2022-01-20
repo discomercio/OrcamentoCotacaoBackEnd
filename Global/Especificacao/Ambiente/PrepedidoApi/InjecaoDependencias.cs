@@ -1,7 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using FormaPagamento;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Especificacao.Ambiente.PrepedidoApi
 {
@@ -21,9 +19,9 @@ namespace Especificacao.Ambiente.PrepedidoApi
             services.AddTransient<global::PrepedidoBusiness.Bll.ProdutoPrepedidoBll, global::PrepedidoBusiness.Bll.ProdutoPrepedidoBll>();
             services.AddTransient<Cep.CepBll, Cep.CepBll>();
             services.AddTransient<global::PrepedidoBusiness.Bll.CepPrepedidoBll, global::PrepedidoBusiness.Bll.CepPrepedidoBll>();
-            services.AddTransient<Prepedido.FormaPagto.FormaPagtoBll, Prepedido.FormaPagto.FormaPagtoBll>();
+            services.AddTransient<FormaPagtoBll, FormaPagtoBll>();
             services.AddTransient<global::PrepedidoBusiness.Bll.FormaPagtoPrepedidoBll, global::PrepedidoBusiness.Bll.FormaPagtoPrepedidoBll>();
-            services.AddTransient<Prepedido.FormaPagto.ValidacoesFormaPagtoBll, Prepedido.FormaPagto.ValidacoesFormaPagtoBll>();
+            services.AddTransient<ValidacoesFormaPagtoBll, ValidacoesFormaPagtoBll>();
             services.AddTransient<Produto.CoeficienteBll, Produto.CoeficienteBll>();
             services.AddTransient<global::PrepedidoBusiness.Bll.CoeficientePrepedidoBll, global::PrepedidoBusiness.Bll.CoeficientePrepedidoBll>();
             services.AddTransient<Prepedido.ValidacoesPrepedidoBll, Prepedido.ValidacoesPrepedidoBll>();

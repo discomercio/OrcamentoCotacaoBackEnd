@@ -5,13 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="FormaPagto\" />
     <Folder Include="PedidoVisualizacao\Dados\" />
     <Folder Include="PedidoVisualizacao\Dados\DetalhesPedido\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Cliente\Cliente.csproj" />
+    <ProjectReference Include="..\FormaPagamento\FormaPagamento.csproj" />
     <ProjectReference Include="..\Infra\InfraBanco\InfraBanco.csproj" />
     <ProjectReference Include="..\Produto\Produto.csproj" />
   </ItemGroup>

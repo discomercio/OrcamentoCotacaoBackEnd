@@ -1,4 +1,5 @@
-﻿using InfraBanco.Constantes;
+﻿using FormaPagamento.Dados;
+using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using Prepedido.Dados.DetalhesPrepedido;
 using System;

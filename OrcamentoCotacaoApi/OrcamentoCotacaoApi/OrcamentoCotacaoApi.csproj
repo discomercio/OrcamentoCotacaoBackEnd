@@ -28,7 +28,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Global\FormaPagamento\FormaPagamento.csproj" />
+    <ProjectReference Include="..\..\Global\OrcamentistaEindicador\OrcamentistaEindicador.csproj" />
+    <ProjectReference Include="..\..\Global\Orcamento\Orcamento.csproj" />
     <ProjectReference Include="..\..\Global\Produto\Produto.csproj" />
+    <ProjectReference Include="..\..\Global\Usuario\Usuario.csproj" />
     <ProjectReference Include="..\OrcamentoCotacaoBusiness\OrcamentoCotacaoBusiness.csproj" />
   </ItemGroup>
 

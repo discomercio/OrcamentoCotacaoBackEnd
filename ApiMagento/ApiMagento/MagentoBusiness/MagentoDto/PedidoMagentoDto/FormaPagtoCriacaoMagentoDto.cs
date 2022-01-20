@@ -1,8 +1,6 @@
-﻿using MagentoBusiness.UtilsMagento;
-using System;
-using System.Collections.Generic;
+﻿using FormaPagamento.Dados;
+using MagentoBusiness.UtilsMagento;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 {
@@ -84,11 +82,11 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
         //CustoFinancFornecQtdeParcelas = 1 se Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELA_UNICA
         //CustoFinancFornecQtdeParcelas = C_pc_qtde se Tipo_Parcelamento = COD_FORMA_PAGTO_PARCELADO_CARTAO
 
-        public static Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados FormaPagtoCriacaoDados_De_FormaPagtoCriacaoMagentoDto(
+        public static FormaPagtoCriacaoDados FormaPagtoCriacaoDados_De_FormaPagtoCriacaoMagentoDto(
             FormaPagtoCriacaoMagentoDto formaPagtoCriacaoMagento, ConfiguracaoApiMagento configuracaoApiMagento,
             InfCriacaoPedidoMagentoDto infCriacaoPedidostring)
         {
-            Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados ret = new Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados();
+            FormaPagtoCriacaoDados ret = new FormaPagtoCriacaoDados();
             //Verificar com Edu se essa condição está correta
             if (formaPagtoCriacaoMagento.Tipo_Parcelamento.ToString() ==
                 InfraBanco.Constantes.Constantes.COD_FORMA_PAGTO_A_VISTA &&

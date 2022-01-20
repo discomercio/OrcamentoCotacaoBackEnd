@@ -141,5 +141,17 @@ namespace OrcamentoCotacaoApi.Controllers
             //};
             //return Ok(retorno);
         }
+
+
+        [HttpGet]
+        [Route("permissoes")]
+        public async Task<LoginResponseViewModel> BuscarPermissoes()
+        {
+            var login = User.Identity.Name;
+            _logger.LogInformation("Buscando permissoes usuario");
+            //var permissoes = await _usuarioService.BuscarPermissoes(login);
+
+            return new LoginResponseViewModel();
+        }
     }
 }

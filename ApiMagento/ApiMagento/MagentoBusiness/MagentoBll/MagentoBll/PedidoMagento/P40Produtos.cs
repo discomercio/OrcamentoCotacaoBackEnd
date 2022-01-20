@@ -1,13 +1,11 @@
-﻿using InfraBanco;
+﻿using FormaPagamento.Dados;
+using InfraBanco;
 using MagentoBusiness.MagentoDto.PedidoMagentoDto;
 using Microsoft.EntityFrameworkCore;
 using Prepedido;
-using Prepedido.Dados.DetalhesPrepedido;
 using Produto;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento
@@ -31,7 +29,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento
         }
 
         internal async Task<List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados>> ExecutarAsync(PedidoMagentoDto pedidoMagento, List<string> listaErros,
-            Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacao, string loja, decimal limiteArredondamentoPorItem,
+            FormaPagtoCriacaoDados formaPagtoCriacao, string loja, decimal limiteArredondamentoPorItem,
             decimal limiteArredondamentoTotais, int limite_de_itens)
         {
             //P05: para cada linha, consistir Quantidade > 0, RowTotal = Subtotal - DiscountAmount dentro do arredondamento

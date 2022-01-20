@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ClassesBase;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InfraBanco.Modelos
 {
     [Table("t_ORCAMENTISTA_E_INDICADOR")]
-    public class TorcamentistaEindicador
+    public class TorcamentistaEindicador : IModel
     {
         [Key]
         [Column("apelido")]

@@ -1,10 +1,9 @@
-﻿using InfraBanco.Constantes;
+﻿using FormaPagamento.Dados;
+using InfraBanco.Constantes;
 using MagentoBusiness.MagentoDto.ClienteMagentoDto;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
 
 namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 {
@@ -84,7 +83,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
 
         public static Pedido.Dados.Criacao.PedidoCriacaoDados? PedidoDadosCriacaoDePedidoMagentoDto(Cliente.Dados.DadosClienteCadastroDados dadosClienteMagento,
             Cliente.Dados.EnderecoCadastralClientePrepedidoDados enderecoCadastralClienteMagento, Cliente.Dados.EnderecoEntregaClienteCadastroDados enderecoEntregaMagento,
-            List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> lstProdutosMagento, Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacaoMagento,
+            List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> lstProdutosMagento, FormaPagtoCriacaoDados formaPagtoCriacaoMagento,
             PedidoMagentoDto pedidoMagento,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             List<string> lstErros, UtilsMagento.ConfiguracaoApiMagento configuracaoApiMagento,

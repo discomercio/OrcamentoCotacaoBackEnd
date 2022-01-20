@@ -19,6 +19,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MagentoBusiness.MagentoBll.AcessoBll;
 using MagentoBusiness.UtilsMagento;
+using FormaPagamento;
 
 namespace ApiMagento
 {
@@ -184,8 +185,8 @@ namespace ApiMagento
             services.AddTransient<Cep.CepBll, Cep.CepBll>();
             services.AddTransient<Prepedido.PrepedidoBll, Prepedido.PrepedidoBll>();
             services.AddTransient<Cliente.ClienteBll, Cliente.ClienteBll>();
-            services.AddTransient<Prepedido.FormaPagto.FormaPagtoBll, Prepedido.FormaPagto.FormaPagtoBll>();
-            services.AddTransient<Prepedido.FormaPagto.ValidacoesFormaPagtoBll, Prepedido.FormaPagto.ValidacoesFormaPagtoBll>();
+            services.AddTransient<FormaPagtoBll, FormaPagtoBll>();
+            services.AddTransient<ValidacoesFormaPagtoBll, ValidacoesFormaPagtoBll>();
             services.AddTransient<Produto.CoeficienteBll, Produto.CoeficienteBll>();
             services.AddTransient<Produto.ProdutoGeralBll, Produto.ProdutoGeralBll>();
             services.AddTransient<Prepedido.ValidacoesPrepedidoBll, Prepedido.ValidacoesPrepedidoBll>();

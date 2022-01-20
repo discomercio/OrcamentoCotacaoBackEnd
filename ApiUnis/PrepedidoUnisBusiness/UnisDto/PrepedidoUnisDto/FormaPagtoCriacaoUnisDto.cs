@@ -1,8 +1,6 @@
-﻿using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
-using System;
-using System.Collections.Generic;
+﻿using FormaPagamento.Dados;
+using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
 {
@@ -283,9 +281,9 @@ namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
             return ret;
         }
 
-        public static Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados FormaPagtoCriacaoDadosDeFormaPagtoCriacaoUnisDto(FormaPagtoCriacaoUnisDto fpCriacaoUnis)
+        public static FormaPagtoCriacaoDados FormaPagtoCriacaoDadosDeFormaPagtoCriacaoUnisDto(FormaPagtoCriacaoUnisDto fpCriacaoUnis)
         {
-            var ret = new Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados()
+            var ret = new FormaPagtoCriacaoDados()
             {
                 CustoFinancFornecQtdeParcelas = fpCriacaoUnis.CustoFinancFornecQtdeParcelas,
                 Rb_forma_pagto = fpCriacaoUnis.Tipo_Parcelamento.ToString(),

@@ -1,4 +1,5 @@
-﻿using InfraIdentity;
+﻿using FormaPagamento;
+using InfraIdentity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -56,11 +57,13 @@ namespace OrcamentoCotacaoApi
             //services.AddTransient<PrepedidoBusiness.Bll.PedidoPrepedidoApiBll, PrepedidoBusiness.Bll.PedidoPrepedidoApiBll>();
             services.AddTransient<OrcamentoCotacaoBusiness.Bll.AcessoBll, OrcamentoCotacaoBusiness.Bll.AcessoBll>();
             services.AddTransient<Produto.ProdutoGeralBll, Produto.ProdutoGeralBll>();
-            
+            services.AddTransient<OrcamentistaEindicador.OrcamentistaEindicadorBll, OrcamentistaEindicador.OrcamentistaEindicadorBll>();
+            services.AddTransient<Orcamento.OrcamentoBll, Orcamento.OrcamentoBll>();
+            services.AddTransient<Orcamento.OrcamentoOpcaoBll, Orcamento.OrcamentoOpcaoBll>();
             //services.AddTransient<PrepedidoBusiness.Bll.ProdutoPrepedidoBll, PrepedidoBusiness.Bll.ProdutoPrepedidoBll>();
             //services.AddTransient<Cep.CepBll, Cep.CepBll>();
             //services.AddTransient<PrepedidoBusiness.Bll.CepPrepedidoBll, PrepedidoBusiness.Bll.CepPrepedidoBll>();
-            //services.AddTransient<Prepedido.FormaPagto.FormaPagtoBll, Prepedido.FormaPagto.FormaPagtoBll>();
+            services.AddTransient<FormaPagtoBll, FormaPagtoBll>();
             //services.AddTransient<PrepedidoBusiness.Bll.FormaPagtoPrepedidoBll, PrepedidoBusiness.Bll.FormaPagtoPrepedidoBll>();
             //services.AddTransient<Prepedido.FormaPagto.ValidacoesFormaPagtoBll, Prepedido.FormaPagto.ValidacoesFormaPagtoBll>();
             //services.AddTransient<Produto.CoeficienteBll, Produto.CoeficienteBll>();
@@ -162,7 +165,7 @@ namespace OrcamentoCotacaoApi
             new InfraIdentity.SetupAutenticacao().ConfigurarToken(services);
         }
 
-      
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 #pragma warning disable CS0618 // Type or member is obsolete

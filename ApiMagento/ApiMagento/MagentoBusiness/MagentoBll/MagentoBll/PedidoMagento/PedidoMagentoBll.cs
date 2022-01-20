@@ -1,20 +1,14 @@
-﻿using MagentoBusiness.MagentoDto.PedidoMagentoDto;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Pedido.Dados;
-using MagentoBusiness.MagentoDto.ClienteMagentoDto;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
+﻿using FormaPagamento.Dados;
 using InfraBanco.Constantes;
-using Prepedido;
-using MagentoBusiness.UtilsMagento;
-using MagentoBusiness.MagentoDto;
-using MagentoBusiness.MagentoDto.MarketplaceDto;
-using Cliente;
-using static InfraBanco.Constantes.Constantes;
 using InfraBanco.Modelos;
+using MagentoBusiness.MagentoDto.ClienteMagentoDto;
+using MagentoBusiness.MagentoDto.PedidoMagentoDto;
+using MagentoBusiness.UtilsMagento;
+using Microsoft.EntityFrameworkCore;
+using Prepedido;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 #nullable enable
 
@@ -98,7 +92,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento
                 resultado.ListaErros.Add($"Loja não existe, loja = {indicador_vendedor_loja.loja}!");
 
             //converte a forma de pagamento
-            Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacao =
+            FormaPagtoCriacaoDados formaPagtoCriacao =
                 FormaPagtoCriacaoMagentoDto.FormaPagtoCriacaoDados_De_FormaPagtoCriacaoMagentoDto(pedidoMagento.FormaPagtoCriacao,
                 configuracaoApiMagento, pedidoMagento.InfCriacaoPedido);
             #endregion
@@ -189,7 +183,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento
             Indicador_vendedor_loja indicador_Vendedor_Loja, List<string> lstErros,
             string id_cliente, string? dadosClienteMidia, string? dadosClienteIndicador,
             string? nfe_Texto_Constar, List<Pedido.Dados.Criacao.PedidoCriacaoProdutoDados> listaProdutos,
-            Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados formaPagtoCriacao)
+            FormaPagtoCriacaoDados formaPagtoCriacao)
         {
             var sistemaResponsavelCadastro = Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO;
 

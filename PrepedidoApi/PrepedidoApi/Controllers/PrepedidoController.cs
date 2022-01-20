@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using FormaPagamento;
 using InfraBanco.Constantes;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using PrepedidoBusiness.Bll;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PrepedidoApi.Controllers
 {
@@ -20,14 +19,14 @@ namespace PrepedidoApi.Controllers
         private readonly Prepedido.PrepedidoBll prepedidoBll;
         private readonly PrepedidoApiBll prepedidoApiBll;
         private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
-        private readonly Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll;
+        private readonly FormaPagtoBll formaPagtoBll;
         private readonly FormaPagtoPrepedidoBll formaPagtoPrepedidoBll;
         private readonly CoeficientePrepedidoBll coeficientePrepedidoBll;
         private readonly IConfiguration configuration;
         public PrepedidoController(Prepedido.PrepedidoBll prepedidoBll,
             PrepedidoBusiness.Bll.PrepedidoApiBll prepedidoApiBll,
             InfraIdentity.IServicoDecodificarToken servicoDecodificarToken,
-            Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll,
+            FormaPagtoBll formaPagtoBll,
             PrepedidoBusiness.Bll.FormaPagtoPrepedidoBll formaPagtoPrepedidoBll,
             PrepedidoBusiness.Bll.CoeficientePrepedidoBll coeficientePrepedidoBll,
             IConfiguration configuration)

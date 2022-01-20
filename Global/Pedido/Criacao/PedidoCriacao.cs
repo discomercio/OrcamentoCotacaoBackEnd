@@ -1,18 +1,10 @@
-﻿using InfraBanco.Constantes;
-using InfraBanco.Modelos;
-using Pedido.Dados.Criacao;
-using Prepedido.Dados.FormaPagto;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using Produto.RegrasCrtlEstoque;
-using Cliente.Dados;
+﻿using Cep;
 using Cliente;
-using Cep;
+using FormaPagamento;
+using Pedido.Dados.Criacao;
 using Prepedido.PedidoVisualizacao;
+using System.Linq;
+using System.Threading.Tasks;
 
 #nullable enable
 
@@ -23,9 +15,9 @@ namespace Pedido.Criacao
     {
         #region construtor
         public readonly InfraBanco.ContextoBdProvider ContextoProvider;
-        public readonly Prepedido.FormaPagto.ValidacoesFormaPagtoBll ValidacoesFormaPagtoBll;
+        public readonly ValidacoesFormaPagtoBll ValidacoesFormaPagtoBll;
         public readonly Prepedido.PrepedidoBll PrepedidoBll;
-        public readonly Prepedido.FormaPagto.FormaPagtoBll FormaPagtoBll;
+        public readonly FormaPagtoBll FormaPagtoBll;
         public readonly Prepedido.ValidacoesPrepedidoBll ValidacoesPrepedidoBll;
         public readonly PedidoVisualizacaoBll pedidoVisualizacaoBll;
         public readonly ClienteBll ClienteBll;
@@ -35,8 +27,8 @@ namespace Pedido.Criacao
         internal readonly Execucao.Gravacao Gravacao;
 
         public PedidoCriacao(InfraBanco.ContextoBdProvider contextoProvider,
-            Prepedido.FormaPagto.ValidacoesFormaPagtoBll validacoesFormaPagtoBll, Prepedido.PrepedidoBll prepedidoBll,
-            Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll, Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll,
+            ValidacoesFormaPagtoBll validacoesFormaPagtoBll, Prepedido.PrepedidoBll prepedidoBll,
+            FormaPagtoBll formaPagtoBll, Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll,
             Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll pedidoVisualizacaoBll,
             ClienteBll clienteBll, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio)
         {

@@ -90,9 +90,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrcamentoCotacaoApi", "Orca
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrcamentoCotacaoBusiness", "OrcamentoCotacaoApi\OrcamentoCotacaoBusiness\OrcamentoCotacaoBusiness.csproj", "{A0829D6D-4DBD-4751-A7AD-946D1F023180}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClassesBase", "ClassesBase\ClassesBase.csproj", "{3FDBC86E-947F-4553-8D43-E05FBAEABADD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassesBase", "ClassesBase\ClassesBase.csproj", "{3FDBC86E-947F-4553-8D43-E05FBAEABADD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Usuario", "Usuario\Usuario.csproj", "{1ADAA22F-C994-4106-92BD-20BDB54FF0C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FormaPagamento", "Global\FormaPagamento\FormaPagamento.csproj", "{5A9BCFC4-AD1A-4DF0-91FB-4F860537FCA0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrcamentistaEindicador", "Global\OrcamentistaEindicador\OrcamentistaEindicador.csproj", "{BFCD4A95-2821-40B0-A3F3-75CF00429F9F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Usuario", "Global\Usuario\Usuario.csproj", "{F9F12A08-ED23-4F39-A781-EAA7EACD1E67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Orcamento", "Global\Orcamento\Orcamento.csproj", "{471BBB94-B319-4B32-B111-3E3E90645BDF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -381,18 +387,54 @@ Global
 		{3FDBC86E-947F-4553-8D43-E05FBAEABADD}.Release_PrepedidoApi|Any CPU.Build.0 = Release|Any CPU
 		{3FDBC86E-947F-4553-8D43-E05FBAEABADD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FDBC86E-947F-4553-8D43-E05FBAEABADD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1ADAA22F-C994-4106-92BD-20BDB54FF0C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1ADAA22F-C994-4106-92BD-20BDB54FF0C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1ADAA22F-C994-4106-92BD-20BDB54FF0C1}.Release_ApiMagento|Any CPU.ActiveCfg = Release|Any CPU
-		{1ADAA22F-C994-4106-92BD-20BDB54FF0C1}.Release_ApiMagento|Any CPU.Build.0 = Release|Any CPU
-		{1ADAA22F-C994-4106-92BD-20BDB54FF0C1}.Release_ApiUnis|Any CPU.ActiveCfg = Release|Any CPU
-		{1ADAA22F-C994-4106-92BD-20BDB54FF0C1}.Release_ApiUnis|Any CPU.Build.0 = Release|Any CPU
-		{1ADAA22F-C994-4106-92BD-20BDB54FF0C1}.Release_Loja|Any CPU.ActiveCfg = Release|Any CPU
-		{1ADAA22F-C994-4106-92BD-20BDB54FF0C1}.Release_Loja|Any CPU.Build.0 = Release|Any CPU
-		{1ADAA22F-C994-4106-92BD-20BDB54FF0C1}.Release_PrepedidoApi|Any CPU.ActiveCfg = Release|Any CPU
-		{1ADAA22F-C994-4106-92BD-20BDB54FF0C1}.Release_PrepedidoApi|Any CPU.Build.0 = Release|Any CPU
-		{1ADAA22F-C994-4106-92BD-20BDB54FF0C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1ADAA22F-C994-4106-92BD-20BDB54FF0C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A9BCFC4-AD1A-4DF0-91FB-4F860537FCA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A9BCFC4-AD1A-4DF0-91FB-4F860537FCA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A9BCFC4-AD1A-4DF0-91FB-4F860537FCA0}.Release_ApiMagento|Any CPU.ActiveCfg = Release|Any CPU
+		{5A9BCFC4-AD1A-4DF0-91FB-4F860537FCA0}.Release_ApiMagento|Any CPU.Build.0 = Release|Any CPU
+		{5A9BCFC4-AD1A-4DF0-91FB-4F860537FCA0}.Release_ApiUnis|Any CPU.ActiveCfg = Release|Any CPU
+		{5A9BCFC4-AD1A-4DF0-91FB-4F860537FCA0}.Release_ApiUnis|Any CPU.Build.0 = Release|Any CPU
+		{5A9BCFC4-AD1A-4DF0-91FB-4F860537FCA0}.Release_Loja|Any CPU.ActiveCfg = Release|Any CPU
+		{5A9BCFC4-AD1A-4DF0-91FB-4F860537FCA0}.Release_Loja|Any CPU.Build.0 = Release|Any CPU
+		{5A9BCFC4-AD1A-4DF0-91FB-4F860537FCA0}.Release_PrepedidoApi|Any CPU.ActiveCfg = Release|Any CPU
+		{5A9BCFC4-AD1A-4DF0-91FB-4F860537FCA0}.Release_PrepedidoApi|Any CPU.Build.0 = Release|Any CPU
+		{5A9BCFC4-AD1A-4DF0-91FB-4F860537FCA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A9BCFC4-AD1A-4DF0-91FB-4F860537FCA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFCD4A95-2821-40B0-A3F3-75CF00429F9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFCD4A95-2821-40B0-A3F3-75CF00429F9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFCD4A95-2821-40B0-A3F3-75CF00429F9F}.Release_ApiMagento|Any CPU.ActiveCfg = Release|Any CPU
+		{BFCD4A95-2821-40B0-A3F3-75CF00429F9F}.Release_ApiMagento|Any CPU.Build.0 = Release|Any CPU
+		{BFCD4A95-2821-40B0-A3F3-75CF00429F9F}.Release_ApiUnis|Any CPU.ActiveCfg = Release|Any CPU
+		{BFCD4A95-2821-40B0-A3F3-75CF00429F9F}.Release_ApiUnis|Any CPU.Build.0 = Release|Any CPU
+		{BFCD4A95-2821-40B0-A3F3-75CF00429F9F}.Release_Loja|Any CPU.ActiveCfg = Release|Any CPU
+		{BFCD4A95-2821-40B0-A3F3-75CF00429F9F}.Release_Loja|Any CPU.Build.0 = Release|Any CPU
+		{BFCD4A95-2821-40B0-A3F3-75CF00429F9F}.Release_PrepedidoApi|Any CPU.ActiveCfg = Release|Any CPU
+		{BFCD4A95-2821-40B0-A3F3-75CF00429F9F}.Release_PrepedidoApi|Any CPU.Build.0 = Release|Any CPU
+		{BFCD4A95-2821-40B0-A3F3-75CF00429F9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFCD4A95-2821-40B0-A3F3-75CF00429F9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9F12A08-ED23-4F39-A781-EAA7EACD1E67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9F12A08-ED23-4F39-A781-EAA7EACD1E67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9F12A08-ED23-4F39-A781-EAA7EACD1E67}.Release_ApiMagento|Any CPU.ActiveCfg = Release|Any CPU
+		{F9F12A08-ED23-4F39-A781-EAA7EACD1E67}.Release_ApiMagento|Any CPU.Build.0 = Release|Any CPU
+		{F9F12A08-ED23-4F39-A781-EAA7EACD1E67}.Release_ApiUnis|Any CPU.ActiveCfg = Release|Any CPU
+		{F9F12A08-ED23-4F39-A781-EAA7EACD1E67}.Release_ApiUnis|Any CPU.Build.0 = Release|Any CPU
+		{F9F12A08-ED23-4F39-A781-EAA7EACD1E67}.Release_Loja|Any CPU.ActiveCfg = Release|Any CPU
+		{F9F12A08-ED23-4F39-A781-EAA7EACD1E67}.Release_Loja|Any CPU.Build.0 = Release|Any CPU
+		{F9F12A08-ED23-4F39-A781-EAA7EACD1E67}.Release_PrepedidoApi|Any CPU.ActiveCfg = Release|Any CPU
+		{F9F12A08-ED23-4F39-A781-EAA7EACD1E67}.Release_PrepedidoApi|Any CPU.Build.0 = Release|Any CPU
+		{F9F12A08-ED23-4F39-A781-EAA7EACD1E67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9F12A08-ED23-4F39-A781-EAA7EACD1E67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{471BBB94-B319-4B32-B111-3E3E90645BDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{471BBB94-B319-4B32-B111-3E3E90645BDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{471BBB94-B319-4B32-B111-3E3E90645BDF}.Release_ApiMagento|Any CPU.ActiveCfg = Release|Any CPU
+		{471BBB94-B319-4B32-B111-3E3E90645BDF}.Release_ApiMagento|Any CPU.Build.0 = Release|Any CPU
+		{471BBB94-B319-4B32-B111-3E3E90645BDF}.Release_ApiUnis|Any CPU.ActiveCfg = Release|Any CPU
+		{471BBB94-B319-4B32-B111-3E3E90645BDF}.Release_ApiUnis|Any CPU.Build.0 = Release|Any CPU
+		{471BBB94-B319-4B32-B111-3E3E90645BDF}.Release_Loja|Any CPU.ActiveCfg = Release|Any CPU
+		{471BBB94-B319-4B32-B111-3E3E90645BDF}.Release_Loja|Any CPU.Build.0 = Release|Any CPU
+		{471BBB94-B319-4B32-B111-3E3E90645BDF}.Release_PrepedidoApi|Any CPU.ActiveCfg = Release|Any CPU
+		{471BBB94-B319-4B32-B111-3E3E90645BDF}.Release_PrepedidoApi|Any CPU.Build.0 = Release|Any CPU
+		{471BBB94-B319-4B32-B111-3E3E90645BDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{471BBB94-B319-4B32-B111-3E3E90645BDF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -431,7 +473,10 @@ Global
 		{2870E605-B21D-4144-8DCE-CA5A9575AB2E} = {72256D98-BF3E-40D7-9E33-2523305D3F03}
 		{A0829D6D-4DBD-4751-A7AD-946D1F023180} = {72256D98-BF3E-40D7-9E33-2523305D3F03}
 		{3FDBC86E-947F-4553-8D43-E05FBAEABADD} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
-		{1ADAA22F-C994-4106-92BD-20BDB54FF0C1} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
+		{5A9BCFC4-AD1A-4DF0-91FB-4F860537FCA0} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
+		{BFCD4A95-2821-40B0-A3F3-75CF00429F9F} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
+		{F9F12A08-ED23-4F39-A781-EAA7EACD1E67} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
+		{471BBB94-B319-4B32-B111-3E3E90645BDF} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {139E9C0D-48C6-4635-9645-BF9C5AA65398}

@@ -1,4 +1,5 @@
 ﻿
+using FormaPagamento;
 using InfraBanco.Constantes;
 using Prepedido;
 using PrepedidoBusiness.Dto.FormaPagto;
@@ -11,10 +12,10 @@ namespace PrepedidoUnisBusiness.UnisBll.FormaPagtoUnisBll
     {
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
         private readonly PrepedidoBll prepedidoBll;
-        private readonly Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll;
+        private readonly FormaPagtoBll formaPagtoBll;
 
         public FormaPagtoUnisBll(InfraBanco.ContextoBdProvider contextoProvider, PrepedidoBll prepedidoBll,
-            Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll)
+            FormaPagtoBll formaPagtoBll)
         {
             this.contextoProvider = contextoProvider;
             this.prepedidoBll = prepedidoBll;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClassesBase;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace InfraBanco.Modelos
 {
     [Table("t_ORCAMENTO")]
-    public class Torcamento
+    public class Torcamento : IModel
     {
         [Key]
         [Column("orcamento")]

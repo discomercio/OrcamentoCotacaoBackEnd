@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using InfraBanco.Modelos;
-using InfraBanco.Constantes;
+﻿using Cep;
+using Cliente.Dados;
+using FormaPagamento;
+using FormaPagamento.Dados;
 using InfraBanco;
-using Produto.RegrasCrtlEstoque;
-using Produto;
-using UtilsGlobais;
-using Cep;
-using Prepedido.Dados.FormaPagto;
-using Prepedido.FormaPagto;
+using InfraBanco.Constantes;
+using InfraBanco.Modelos;
+using Microsoft.EntityFrameworkCore;
 using Prepedido.Dados;
 using Prepedido.Dados.DetalhesPrepedido;
-using Cliente.Dados;
+using Produto;
+using Produto.RegrasCrtlEstoque;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using UtilsGlobais;
 
 namespace Prepedido
 {
@@ -27,13 +27,13 @@ namespace Prepedido
         private readonly ValidacoesFormaPagtoBll validacoesFormaPagtoBll;
         private readonly Prepedido.MontarLogPrepedidoBll montarLogPrepedidoBll;
         private readonly IBancoNFeMunicipio bancoNFeMunicipio;
-        private readonly Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll;
+        private readonly FormaPagtoBll formaPagtoBll;
         private readonly Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll pedidoVisualizacaoBll;
 
         public PrepedidoBll(ContextoBdProvider contextoProvider, Cliente.ClienteBll clienteBll,
             Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll, CepBll cepBll,
             ValidacoesFormaPagtoBll validacoesFormaPagtoBll, Prepedido.MontarLogPrepedidoBll montarLogPrepedidoBll,
-            IBancoNFeMunicipio bancoNFeMunicipio, Prepedido.FormaPagto.FormaPagtoBll formaPagtoBll,
+            IBancoNFeMunicipio bancoNFeMunicipio, FormaPagtoBll formaPagtoBll,
             PedidoVisualizacao.PedidoVisualizacaoBll pedidoVisualizacaoBll)
         {
             this.contextoProvider = contextoProvider;

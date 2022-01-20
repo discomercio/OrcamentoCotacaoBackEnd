@@ -1,8 +1,8 @@
 ﻿using Cliente.Dados;
+using FormaPagamento.Dados;
 using Prepedido.Dados.DetalhesPrepedido;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 #nullable enable
 
@@ -53,7 +53,7 @@ namespace Pedido.Dados.Criacao
         public PedidoCriacaoValorDados Valor { get; }
 
         //Armazena os dados da forma de pagto selecionado
-        public Prepedido.Dados.DetalhesPrepedido.FormaPagtoCriacaoDados FormaPagtoCriacao { get; }
+        public FormaPagtoCriacaoDados FormaPagtoCriacao { get; }
 
         //Armazena os dados de entrega imediata, obs, instalador instala, bem de uso comum
         public Prepedido.Dados.DetalhesPrepedido.DetalhesPrepedidoDados DetalhesPedido { get; }

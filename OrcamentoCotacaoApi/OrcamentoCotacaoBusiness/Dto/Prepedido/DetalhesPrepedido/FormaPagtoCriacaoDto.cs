@@ -1,7 +1,4 @@
-﻿using Prepedido.Dados.DetalhesPrepedido;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using FormaPagamento.Dados;
 
 namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
 {

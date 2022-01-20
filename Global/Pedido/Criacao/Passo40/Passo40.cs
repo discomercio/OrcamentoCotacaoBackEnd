@@ -1,12 +1,10 @@
-﻿using InfraBanco.Constantes;
+﻿using FormaPagamento.Dados;
+using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using Microsoft.EntityFrameworkCore;
 using Pedido.Dados.Criacao;
-using Prepedido.Dados.FormaPagto;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Pedido.Criacao.Passo40
