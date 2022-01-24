@@ -28,5 +28,10 @@ namespace Orcamento
         {
             throw new NotImplementedException();
         }
+
+        public TorcamentoCotacaoOpcao GetById(string id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -4,12 +4,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using OrcamentistaEindicador;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Interfaces;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
 using System;
 using System.Threading.Tasks;
+using Usuario;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -20,24 +22,28 @@ namespace OrcamentoCotacaoApi.Controllers
 
         private readonly IServicoAutenticacao servicoAutenticacao;
         private readonly IConfiguration configuration;
-        private readonly OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll;
+        private readonly OrcamentoCotacaoBusiness.Bll.AcessoBll _acessoBll;
         //private readonly IServicoDecodificarToken servicoDecodificarToken;
         //private readonly ILogger<AccountController> logger;
 
         private readonly ILogger<AccountController> _logger;
         //private readonly IUsuarioService _usuarioService;
         private readonly ITokenService _tokenService;
+        private readonly UsuarioBll _usuarioBll;
+        private readonly OrcamentistaEindicadorBll _orcamentistaEindicadorBll;
         private readonly IMapper _mapper;
 
         public AccountController(IServicoAutenticacao servicoAutenticacao, IConfiguration configuration, ILogger<AccountController> logger,
-            IMapper mapper, OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll, ITokenService tokenService)
-            //IServicoDecodificarToken servicoDecodificarToken, )
+            IMapper mapper, OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll, ITokenService tokenService, UsuarioBll usuarioBll, OrcamentistaEindicadorBll orcamentistaEindicadorBll)
+        //IServicoDecodificarToken servicoDecodificarToken, )
         {
             this.servicoAutenticacao = servicoAutenticacao;
             this.configuration = configuration;
-            this.acessoBll = acessoBll;
+            this._acessoBll = acessoBll;
             //this.servicoDecodificarToken = servicoDecodificarToken;
             this._tokenService = tokenService;
+            this._usuarioBll = usuarioBll;
+            this._orcamentistaEindicadorBll = orcamentistaEindicadorBll;
             this._logger = logger;
             this._mapper = mapper;
         }
@@ -52,7 +58,7 @@ namespace OrcamentoCotacaoApi.Controllers
             string apelido = login.Login;
             string senha = login.Senha;
             UsuarioLogin objUsuarioLogin = new UsuarioLogin();
-            string usuario = servicoAutenticacao.ObterTokenAutenticacao(apelido, senha, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, OrcamentoCotacaoApi.Utils.Autenticacao.RoleAcesso, new ServicoAutenticacaoProvider(acessoBll), out bool unidade_negocio_desconhecida, out objUsuarioLogin);
+            string usuario = servicoAutenticacao.ObterTokenAutenticacao(apelido, senha, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, OrcamentoCotacaoApi.Utils.Autenticacao.RoleAcesso, new ServicoAutenticacaoProvider(_acessoBll, _usuarioBll, _orcamentistaEindicadorBll), out bool unidade_negocio_desconhecida, out objUsuarioLogin);
 
             if (usuario == null)
             {
@@ -98,7 +104,7 @@ namespace OrcamentoCotacaoApi.Controllers
             //    logger.LogWarning($"FazerLogin unidade_negocio_desconhecida apelido:{login.Login}");
             //    return Forbid();
             //}
-                   
+
 
 
 

@@ -10,6 +10,8 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Serialization;
 using Microsoft.Extensions.Logging;
+using Usuario;
+using OrcamentistaEindicador;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -46,15 +48,19 @@ namespace OrcamentoCotacaoApi.Controllers
         private readonly IServicoAutenticacao servicoAutenticacao;
         private readonly IConfiguration configuration;
         private readonly OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll;
+        private readonly UsuarioBll usuarioBll;
+        private readonly OrcamentistaEindicadorBll orcamentistaEindicadorBll;
         private readonly IServicoDecodificarToken servicoDecodificarToken;
         private readonly ILogger<AcessoController_old> logger;
 
-        public AcessoController_old(IServicoAutenticacao servicoAutenticacao, IConfiguration configuration, OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll,
-            IServicoDecodificarToken servicoDecodificarToken, ILogger<AcessoController_old> logger)
+        public AcessoController_old(IServicoAutenticacao servicoAutenticacao, IConfiguration configuration, OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll, UsuarioBll usuarioBll,
+            OrcamentistaEindicadorBll orcamentistaEindicadorBll, IServicoDecodificarToken servicoDecodificarToken, ILogger<AcessoController_old> logger)
         {
             this.servicoAutenticacao = servicoAutenticacao;
             this.configuration = configuration;
             this.acessoBll = acessoBll;
+            this.usuarioBll = usuarioBll;
+            this.orcamentistaEindicadorBll = orcamentistaEindicadorBll;
             this.servicoDecodificarToken = servicoDecodificarToken;
             this.logger = logger;
         }
@@ -97,7 +103,7 @@ namespace OrcamentoCotacaoApi.Controllers
             string apelido = login.Apelido;
             string senha = login.Senha;
             UsuarioLogin objUsuarioLogin = new UsuarioLogin();
-            string token = servicoAutenticacao.ObterTokenAutenticacao(apelido, senha, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, Utils.Autenticacao.RoleAcesso, new ServicoAutenticacaoProvider(acessoBll), out bool unidade_negocio_desconhecida, out objUsuarioLogin);
+            string token = servicoAutenticacao.ObterTokenAutenticacao(apelido, senha, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, Utils.Autenticacao.RoleAcesso, new ServicoAutenticacaoProvider(acessoBll, usuarioBll, orcamentistaEindicadorBll), out bool unidade_negocio_desconhecida, out objUsuarioLogin);
 
             if (unidade_negocio_desconhecida)
             {

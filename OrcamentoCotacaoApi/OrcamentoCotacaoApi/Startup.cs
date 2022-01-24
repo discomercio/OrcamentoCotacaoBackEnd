@@ -16,6 +16,7 @@ using OrcamentoCotacaoBusiness.Services;
 using System;
 using System.Globalization;
 using System.Text;
+using Usuario;
 
 namespace OrcamentoCotacaoApi
 {
@@ -64,6 +65,7 @@ namespace OrcamentoCotacaoApi
             //services.AddTransient<Cep.CepBll, Cep.CepBll>();
             //services.AddTransient<PrepedidoBusiness.Bll.CepPrepedidoBll, PrepedidoBusiness.Bll.CepPrepedidoBll>();
             services.AddTransient<FormaPagtoBll, FormaPagtoBll>();
+            services.AddTransient<UsuarioBll, UsuarioBll>();
             //services.AddTransient<PrepedidoBusiness.Bll.FormaPagtoPrepedidoBll, PrepedidoBusiness.Bll.FormaPagtoPrepedidoBll>();
             //services.AddTransient<Prepedido.FormaPagto.ValidacoesFormaPagtoBll, Prepedido.FormaPagto.ValidacoesFormaPagtoBll>();
             //services.AddTransient<Produto.CoeficienteBll, Produto.CoeficienteBll>();
