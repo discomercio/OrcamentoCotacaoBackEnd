@@ -1,0 +1,53 @@
+stages:
+  #- build
+  - test
+  - test-especificacao
+
+variables:
+  teste: "ApiUnis/Testes.Automatizados"
+  loja: "Loja/Loja.UI"
+  especificacao: "Global/Especificacao"
+  #MSSQL_HOST: microsoft-mssql-server-linux
+  #ACCEPT_EULA: "Y"
+  #SA_PASSWORD: yourStrong(!)Password
+
+before_script:
+  - ""
+
+#build:
+#  stage: build
+#  image: mcr.microsoft.com/dotnet/sdk:3.1
+#  script: -apt install nodejs
+#    - "ls"
+#    - "apt-get install nodejs"
+#    - "node –version"
+#    - "apt-get install npm"
+#    - "apt-get update"
+#    - "apt-get upgrade"
+#    - "cd Loja/Loja.UI/"
+#    - "dotnet restore"
+#    - "dotnet build"
+#  only:
+#    - automacoes
+
+test:
+  stage: test
+  image: mcr.microsoft.com/dotnet/core/sdk:3.1
+  script:
+    - "ls"
+    - "cd ApiUnis/Testes.Automatizados"
+    - "dotnet test"
+  allow_failure: true
+  #only:
+  #  - automacoes
+
+test-especificacao:
+  stage: test
+  image: mcr.microsoft.com/dotnet/core/sdk:3.1
+  script:
+    - "ls"
+    - "cd Global/Especificacao"
+    - "dotnet test"
+  allow_failure: true
+  #only:
+  #  - automacoes
