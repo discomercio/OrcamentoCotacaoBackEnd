@@ -14,9 +14,24 @@ namespace Arquivo
         {
             this.contextoProvider = contextoProvider;
         }
+
+        
+
         public TorcamentoCotacaoArquivos Atualizar(TorcamentoCotacaoArquivos obj)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+                {
+                    db.TorcamentoCotacaoArquivos.Update(obj);
+                    db.SaveChanges();
+                    return obj;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         public bool Excluir(TorcamentoCotacaoArquivos obj)
@@ -26,12 +41,45 @@ namespace Arquivo
 
         public TorcamentoCotacaoArquivos Inserir(TorcamentoCotacaoArquivos obj)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+                {
+                    db.TorcamentoCotacaoArquivos.Add(obj);
+                    db.SaveChanges();
+                    db.transacao.Commit();
+                    return obj;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         public List<TorcamentoCotacaoArquivos> PorFiltro(TorcamentoCotacaoArquivosFiltro obj)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+                {
+                    var saida = (from orcamentoCotacaoArquivos in db.TorcamentoCotacaoArquivos
+                                 select orcamentoCotacaoArquivos);
+
+                    if (obj.id.HasValue)
+                    {
+                        saida = saida.Where(x => x.Id == obj.id);
+                    }
+
+                    return saida.ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+
         }
 
         public List<TorcamentoCotacaoArquivos> ObterEstrutura()
@@ -59,6 +107,11 @@ namespace Arquivo
             }
 
 
+        }
+
+        public TorcamentoCotacaoArquivos ObterArquivoPorID(Guid id)
+        {
+            return PorFiltro(new TorcamentoCotacaoArquivosFiltro() { id = id }).FirstOrDefault();
         }
     }
 }

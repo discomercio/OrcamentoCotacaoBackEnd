@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using InfraBanco.Modelos;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -24,19 +27,60 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpGet("Download/{id}")]
         public async Task<IActionResult> Download(string id)
         {
-            //string caminho = Path.Combine(configuration.GetValue(configuration<string>("PdfCaminho")), $"{id}.pdf");
-            //FileInfo fileinfo = new FileInfo(caminho);
-            //byte[] byteArray = System.IO.File.ReadAllBytes(caminho);
-            //var arquivo = await arquivoBll.ObterArquivoPorID(id);
-            byte[] byteArray = new byte[0];
-            Response.Headers.Add("content-disposition", $"filename=teste.pdf"); //{arquivo.name}
-            Response.Headers.Add("content-length", 0.ToString());//fileinfo.Length.ToString());
-            Response.Headers.Add("Expires", "0");
-            Response.Headers.Add("Pragma", "Cache");
-            Response.Headers.Add("Cache-Control", "private");
-            Response.ContentType = "application/pdf";
+            try
+            {
+                string caminho = Path.Combine(configuration.GetValue("PdfCaminho", ""), $"{id}.pdf");
+                FileInfo fileinfo = new FileInfo(caminho);
+                byte[] byteArray = System.IO.File.ReadAllBytes(caminho);
+                var arquivo = arquivoBll.ObterArquivoPorID(Guid.Parse(id));
+                Response.Headers.Add("content-disposition", $"filename={arquivo.Nome}.pdf");
+                Response.Headers.Add("content-length", fileinfo.Length.ToString());
+                Response.Headers.Add("Expires", "0");
+                Response.Headers.Add("Pragma", "Cache");
+                Response.Headers.Add("Cache-Control", "private");
+                Response.ContentType = "application/pdf";
 
-            return await Task.FromResult(new FileContentResult(byteArray, "application/octet-stream"));
+                return await Task.FromResult(new FileContentResult(byteArray, "application/octet-stream"));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        public class Child
+        {
+            public Data data { get; set; }
+            public List<Child> children { get; set; }
+        }
+
+        public class Data
+        {
+            public string key { get; set; }
+
+            public string name { get; set; }
+            public string size { get; set; }
+            public string type { get; set; }
+            public string descricao { get; set; }
+        }
+
+        string calculaTamanho(long tamanhoBytes)
+        {
+            string sOut = "";
+            decimal saida = 0;
+
+            if (tamanhoBytes / 1024 <= 1024)
+            {
+                saida = (decimal)tamanhoBytes / 1024;
+                sOut = $"{saida.ToString("F0")}kb";
+            }
+            else
+            {
+                saida = (decimal)tamanhoBytes / 1024 / 1024;
+                sOut = $"{saida.ToString("F")}mb";
+            }
+
+            return sOut;
         }
 
         [HttpGet("ObterEstrutura")]
@@ -44,16 +88,62 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             try
             {
-                var data = arquivoBll.ObterEstrutura();
-
-                return Ok(JsonSerializer.Serialize(new { data = data })); 
+                List<TorcamentoCotacaoArquivos> lista = arquivoBll.ObterEstrutura();
+                var root = lista.Where(x => x.Pai == null).FirstOrDefault();
+                var data = new List<Child>{
+                new Child
+                {
+                    data = new Data {
+                        key = root.Id.ToString(),
+                        name = root.Nome,
+                        type = "Folder",
+                        size = root.Tamanho,
+                        descricao = root.Descricao
+                    },
+                    children = lista.Where(x => x.Pai == root.Id)
+                                .Select(c => new Child
+                                {
+                                    data = new Data
+                                    {
+                                        key = c.Id.ToString(),
+                                        name = c.Nome,
+                                        type = c.Tipo,
+                                        size = c.Tamanho,
+                                        descricao = c.Descricao
+                                    },
+                                    children = lista.Where(x => x.Pai == c.Id)
+                                                .Select(c => new Child
+                                                {
+                                                    data = new Data
+                                                    {
+                                                        key = c.Id.ToString(),
+                                                        name = c.Nome,
+                                                        type = c.Tipo,
+                                                        size = c.Tamanho,
+                                                        descricao = c.Descricao
+                                                    },
+                                                    children = lista.Where(x => x.Pai == c.Id)
+                                                                .Select(c => new Child
+                                                                {
+                                                                    data = new Data
+                                                                    {
+                                                                        key = c.Id.ToString(),
+                                                                        name = c.Nome,
+                                                                        type = c.Tipo,
+                                                                        size = c.Tamanho,
+                                                                        descricao = c.Descricao
+                                                                    },
+                                                                }).ToList()
+                                                }).ToList()
+                                }).ToList()
+                }
+            };
+                return Ok(JsonSerializer.Serialize(new { data = data }));
             }
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }
-
-            //return Ok();
         }
 
         [HttpPost("Upload")]
@@ -80,6 +170,15 @@ namespace OrcamentoCotacaoApi.Controllers
                 var tamanho = new FileInfo(file).Length;
 
                 //await _arquivoService.SalvarArquivo(idArquivo, arquivo.FileName, idPai, descricao, tamanho);
+                arquivoBll.Inserir(new TorcamentoCotacaoArquivos()
+                {
+                    Id = idArquivo,
+                    Nome = arquivo.FileName,
+                    Pai = !string.IsNullOrEmpty(idPai) ? Guid.Parse(idPai) : (Guid?)null,
+                    Descricao = "",
+                    Tamanho = calculaTamanho(tamanho),
+                    Tipo = "File"
+                });
 
                 return Ok(new
                 {
@@ -98,7 +197,15 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             Guid id = Guid.NewGuid();
 
-            //await _arquivoService.CriarPasta(id, nome, idPai);
+            arquivoBll.Inserir(new TorcamentoCotacaoArquivos()
+            {
+                Id = Guid.NewGuid(),
+                Nome = nome,
+                Pai = !string.IsNullOrEmpty(idPai) ? Guid.Parse(idPai) : (Guid?)null,
+                Descricao = nome,
+                Tamanho = "",
+                Tipo = "Folder"
+            });
 
             return Ok(new
             {
