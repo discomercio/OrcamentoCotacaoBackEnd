@@ -7,5 +7,7 @@ namespace InfraBanco.Modelos.Filtros
 {
     public class TorcamentistaEindicadorFiltro : IFilter
     {
+        public string apelido { get; set; }
+        public string datastamp { get; set; }
     }
 }

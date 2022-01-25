@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using InfraIdentity;
+using Loja;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OrcamentistaEindicador;
+using OrcamentistaEIndicadorVendedor;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Interfaces;
 using OrcamentoCotacaoBusiness.Models.Request;
@@ -31,10 +33,13 @@ namespace OrcamentoCotacaoApi.Controllers
         private readonly ITokenService _tokenService;
         private readonly UsuarioBll _usuarioBll;
         private readonly OrcamentistaEindicadorBll _orcamentistaEindicadorBll;
+        private readonly OrcamentistaEIndicadorVendedorBll _orcamentistaEindicadorVendedorBll;
+        private readonly LojaBll _lojaBll;
         private readonly IMapper _mapper;
 
         public AccountController(IServicoAutenticacao servicoAutenticacao, IConfiguration configuration, ILogger<AccountController> logger,
-            IMapper mapper, OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll, ITokenService tokenService, UsuarioBll usuarioBll, OrcamentistaEindicadorBll orcamentistaEindicadorBll)
+            IMapper mapper, OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll, ITokenService tokenService, UsuarioBll usuarioBll, OrcamentistaEindicadorBll orcamentistaEindicadorBll,
+            OrcamentistaEIndicadorVendedorBll orcamentistaEindicadorVendedorBll, LojaBll lojaBll)
         //IServicoDecodificarToken servicoDecodificarToken, )
         {
             this.servicoAutenticacao = servicoAutenticacao;
@@ -44,6 +49,8 @@ namespace OrcamentoCotacaoApi.Controllers
             this._tokenService = tokenService;
             this._usuarioBll = usuarioBll;
             this._orcamentistaEindicadorBll = orcamentistaEindicadorBll;
+            this._orcamentistaEindicadorVendedorBll = orcamentistaEindicadorVendedorBll;
+            this._lojaBll = lojaBll;
             this._logger = logger;
             this._mapper = mapper;
         }
@@ -58,7 +65,10 @@ namespace OrcamentoCotacaoApi.Controllers
             string apelido = login.Login;
             string senha = login.Senha;
             UsuarioLogin objUsuarioLogin = new UsuarioLogin();
-            string usuario = servicoAutenticacao.ObterTokenAutenticacao(apelido, senha, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, OrcamentoCotacaoApi.Utils.Autenticacao.RoleAcesso, new ServicoAutenticacaoProvider(_acessoBll, _usuarioBll, _orcamentistaEindicadorBll), out bool unidade_negocio_desconhecida, out objUsuarioLogin);
+            string usuario = servicoAutenticacao.ObterTokenAutenticacao(apelido, senha, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos,
+                OrcamentoCotacaoApi.Utils.Autenticacao.RoleAcesso, new ServicoAutenticacaoProvider(_acessoBll, _usuarioBll, _orcamentistaEindicadorBll, _orcamentistaEindicadorVendedorBll,
+                _lojaBll),
+                out bool unidade_negocio_desconhecida, out objUsuarioLogin);
 
             if (usuario == null)
             {

@@ -1,5 +1,7 @@
 ﻿using InfraIdentity;
+using Loja;
 using OrcamentistaEindicador;
+using OrcamentistaEIndicadorVendedor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,12 +19,18 @@ namespace OrcamentoCotacaoApi.Utils
         private readonly OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll;
         private readonly UsuarioBll usuarioBll;
         private readonly OrcamentistaEindicadorBll orcamentistaEindicadorBll;
+        private readonly OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll;
+        private readonly LojaBll lojaBll;
 
-        public ServicoAutenticacaoProvider(OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll, UsuarioBll usuarioBll, OrcamentistaEindicadorBll orcamentistaEindicadorBll)
+        public ServicoAutenticacaoProvider(OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll, UsuarioBll usuarioBll, 
+            OrcamentistaEindicadorBll orcamentistaEindicadorBll, OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll,
+            LojaBll lojaBll)
         {
             this.acessoBll = acessoBll;
             this.usuarioBll = usuarioBll;
             this.orcamentistaEindicadorBll = orcamentistaEindicadorBll;
+            this.orcamentistaEIndicadorVendedorBll = orcamentistaEIndicadorVendedorBll;
+            this.lojaBll = lojaBll;
         }
 
         //retorna null se nao exisitr (ou se a senha estiver errada)
@@ -47,8 +55,37 @@ namespace OrcamentoCotacaoApi.Utils
 
 
             if (string.IsNullOrEmpty(dadosCliente))
-                return null;
-            //Buscar Parceiros e depois buscar vendedores-parceiros
+            {
+                //Buscar Parceiros e depois buscar vendedores-parceiros
+                var parceiro = orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = apelido, datastamp = senha }).FirstOrDefault();
+                if (parceiro != null)
+                {
+                    //var loja = await acessoBll.BuscarLojaUsuario(apelido);
+                    //var unidade_negocio = await acessoBll.Buscar_unidade_negocio(loja);
+                    var loja = lojaBll.PorFiltro(new InfraBanco.Modelos.Filtros.TlojaFiltro() { Loja = parceiro.Loja });
+                    UsuarioLogin usuario = new UsuarioLogin { Apelido = apelido, Nome = parceiro.Razao_Social_Nome, Email = "", Loja = parceiro.Loja, Unidade_negocio = loja.FirstOrDefault().Unidade_Negocio };
+                    return usuario;
+                }
+                else
+                {
+                    //Buscar vendedores-parceiros
+                    var vendedorParceiro = orcamentistaEIndicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { email = apelido, senha = senha }).FirstOrDefault();
+                    if (vendedorParceiro != null)
+                    {
+                        //var loja = await acessoBll.BuscarLojaUsuario(apelido);
+                        //var unidade_negocio = await acessoBll.Buscar_unidade_negocio(loja);
+                        var loja = lojaBll.PorFiltro(new InfraBanco.Modelos.Filtros.TlojaFiltro() { Loja = vendedorParceiro.Loja });
+                        UsuarioLogin usuario = new UsuarioLogin { Apelido = apelido, Nome = vendedorParceiro.Nome, Email = vendedorParceiro.Email, Loja = vendedorParceiro.Loja, Unidade_negocio = loja.FirstOrDefault().Unidade_Negocio };
+                        return usuario;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+
+                }
+
+            }
             else
             {
                 var usuarioInterno = usuarioBll.PorFiltro(new InfraBanco.Modelos.Filtros.TusuarioFiltro() { usuario = apelido });

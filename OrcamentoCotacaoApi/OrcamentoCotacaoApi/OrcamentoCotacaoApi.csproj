@@ -30,10 +30,13 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Global\Arquivo\Arquivo.csproj" />
     <ProjectReference Include="..\..\Global\FormaPagamento\FormaPagamento.csproj" />
+    <ProjectReference Include="..\..\Global\Loja\Loja.csproj" />
+    <ProjectReference Include="..\..\Global\OrcamentistaEIndicadorVendedor\OrcamentistaEIndicadorVendedor.csproj" />
     <ProjectReference Include="..\..\Global\OrcamentistaEindicador\OrcamentistaEindicador.csproj" />
     <ProjectReference Include="..\..\Global\Orcamento\Orcamento.csproj" />
     <ProjectReference Include="..\..\Global\Produto\Produto.csproj" />
     <ProjectReference Include="..\..\Global\Usuario\Usuario.csproj" />
+    <ProjectReference Include="..\..\Loja\Loja.Modelo\Loja.Modelo.csproj" />
     <ProjectReference Include="..\OrcamentoCotacaoBusiness\OrcamentoCotacaoBusiness.csproj" />
   </ItemGroup>
 
