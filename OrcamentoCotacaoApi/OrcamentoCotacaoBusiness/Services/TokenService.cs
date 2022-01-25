@@ -33,7 +33,9 @@ namespace OrcamentoCotacaoBusiness.Services
                     new Claim("Email", !string.IsNullOrEmpty(usuario.Email)? usuario.Email:""),
                     new Claim("TipoUsuario", !string.IsNullOrEmpty(usuario.TipoUsuario)?usuario.TipoUsuario:""),
                     new Claim("Parceiro", !string.IsNullOrEmpty(usuario.IdParceiro)?usuario.IdParceiro:""),
-                    new Claim("Vendedor", !string.IsNullOrEmpty(usuario.IdVendedor)?usuario.IdVendedor:"")
+                    new Claim("Vendedor", !string.IsNullOrEmpty(usuario.IdVendedor)?usuario.IdVendedor:""),
+                    new Claim("Lojas", !string.IsNullOrEmpty(usuario.Loja)?usuario.Loja:""),
+                    new Claim("UnidadeNegocio", !string.IsNullOrEmpty(usuario.Unidade_negocio)?usuario.Unidade_negocio:"")
                 }),
                 Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(_appSecret), SecurityAlgorithms.HmacSha256Signature)

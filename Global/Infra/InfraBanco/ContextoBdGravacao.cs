@@ -148,6 +148,7 @@ namespace InfraBanco
         public DbSet<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseConfrontacaos { get => contexto.TpedidoAnaliseConfrontacaos; }
         public DbSet<TpedidoItem> TpedidoItems { get => contexto.TpedidoItems; }
         public DbSet<TusuarioXLoja> TusuarioXLojas { get => contexto.TusuarioXLojas; }
+        public DbSet<TorcamentoCotacaoArquivos> TorcamentoCotacaoArquivos { get => contexto.TorcamentoCotacaoArquivos; }
 #endif
 
         //daqui para a frente só é necessário para os testes automatizados

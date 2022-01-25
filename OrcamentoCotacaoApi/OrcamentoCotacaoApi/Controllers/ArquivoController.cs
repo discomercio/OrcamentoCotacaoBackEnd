@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using OrcamentoCotacaoBusiness.Bll;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -15,10 +12,10 @@ namespace OrcamentoCotacaoApi.Controllers
     [Route("[controller]")]
     public class ArquivoController : ControllerBase
     {
-        private readonly ArquivoBLL arquivoBll;
+        private readonly Arquivo.ArquivoBll arquivoBll;
         private readonly IConfiguration configuration;
 
-        public ArquivoController(IConfiguration configuration, OrcamentoCotacaoBusiness.Bll.ArquivoBLL arquivoBll)
+        public ArquivoController(IConfiguration configuration, Arquivo.ArquivoBll arquivoBll)
         {
             this.arquivoBll = arquivoBll;
             this.configuration = configuration;
@@ -47,9 +44,9 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             try
             {
-                //var data = _arquivoService.ObterEstrutura();
+                var data = arquivoBll.ObterEstrutura();
 
-                return Ok(JsonSerializer.Serialize(new { })); //data= data 
+                return Ok(JsonSerializer.Serialize(new { data = data })); 
             }
             catch (Exception ex)
             {
