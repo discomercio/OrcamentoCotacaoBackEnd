@@ -60,7 +60,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (!somenteValidar)
             {
                 //validar a senha
-                var senha_digitada_decod = Util.codificaDado(senha_digitada_datastamp, false);//, Constantes.FATOR_CRIPTO);
+                var senha_digitada_decod = senha_digitada_datastamp;//, Constantes.FATOR_CRIPTO);
 
                 //para garantir que sempre a as senhas são maiusculas iremos decodificar o datastamp 
                 //e comparar os 2 convertido para maiusculas

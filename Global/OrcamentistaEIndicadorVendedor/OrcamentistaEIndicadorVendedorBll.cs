@@ -55,7 +55,8 @@ namespace OrcamentistaEIndicadorVendedor
                                       UsuarioUltimaAlteracao = usr.UsuarioUltimaAlteracao,
                                       DataCadastro = usr.DataCadastro,
                                       DataUltimaAlteracao = usr.DataUltimaAlteracao,
-                                      Loja = par.Loja
+                                      Loja = par.Loja,
+                                      VendedorResponsavel = par.Vendedor
                                   };
                     if (!string.IsNullOrEmpty(obj.email))
                     {
@@ -64,6 +65,10 @@ namespace OrcamentistaEIndicadorVendedor
                     if (!string.IsNullOrEmpty(obj.senha))
                     {
                         usuario = usuario.Where(x => x.Senha == obj.senha);
+                    }
+                    if (!string.IsNullOrEmpty(obj.loja))
+                    {
+                        usuario = usuario.Where(x => x.Loja == obj.loja);
                     }
                     return usuario.ToList();
                 }

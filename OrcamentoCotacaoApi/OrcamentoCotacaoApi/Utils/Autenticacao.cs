@@ -7,7 +7,7 @@ namespace OrcamentoCotacaoApi.Utils
 {
     public class Autenticacao
     {
-        public const string RoleAcesso = "RolePrepedido";
+        public const string RoleAcesso = "RoleOrcamentoCotacao";
 
     }
 }

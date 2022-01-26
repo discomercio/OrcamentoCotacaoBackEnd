@@ -1,10 +1,13 @@
 ﻿using ClassesBase;
+using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UtilsGlobais;
 
 namespace Usuario
 {
@@ -60,5 +63,8 @@ namespace Usuario
         {
             throw new NotImplementedException();
         }
+
+       
+
     }
 }

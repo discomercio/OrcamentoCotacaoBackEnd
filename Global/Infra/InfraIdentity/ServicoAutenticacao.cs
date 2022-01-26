@@ -32,7 +32,7 @@ namespace InfraIdentity
             // retorna null se não tiver usuário
             if (user == null)
             {
-                unidade_negocio_desconhecida = false;                
+                unidade_negocio_desconhecida = false;
                 return null;
             }
 
@@ -83,6 +83,12 @@ namespace InfraIdentity
                     new Claim(ClaimTypes.Surname, loja),
                     new Claim(ClaimTypes.Role, role),
                     new Claim("unidade_negocio", unidade_negocio),
+                    //new Claim("Email", !string.IsNullOrEmpty(usuario.Email)? usuario.Email:""),
+                    new Claim("TipoUsuario", "GESTOR"),//!string.IsNullOrEmpty(usuario.TipoUsuario)?usuario.TipoUsuario:""),
+                    new Claim("Parceiro", "AR OESTE"),//!string.IsNullOrEmpty(usuario.IdParceiro)?usuario.IdParceiro:""),
+                    new Claim("Vendedor", "MARIO"),//!string.IsNullOrEmpty(IdVendedor)?IdVendedor:""),
+                    new Claim("Lojas", !string.IsNullOrEmpty(loja)?loja:""),
+                    new Claim("UnidadeNegocio", !string.IsNullOrEmpty(unidade_negocio)?unidade_negocio:"")
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(validadeTokenMinutos),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

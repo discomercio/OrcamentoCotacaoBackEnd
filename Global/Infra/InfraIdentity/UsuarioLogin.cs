@@ -20,5 +20,6 @@ namespace InfraIdentity
         public string TipoUsuario { get; set; }
         public string IdParceiro { get; set; }
         public string IdVendedor { get; set; }
+        public string VendedorResponsavel { get; set; }
     }
 }

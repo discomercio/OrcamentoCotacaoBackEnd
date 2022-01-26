@@ -83,22 +83,22 @@ namespace OrcamentoCotacaoApi.Controllers
             }
 
             _logger.LogInformation("Gerando token");
-            var token = _tokenService.GenerateToken(objUsuarioLogin);
+            //var token = _tokenService.GenerateToken(objUsuarioLogin);
 
             DateTime dataCriacao = DateTime.Now;
             DateTime dataExpiracao = dataCriacao +
                 TimeSpan.FromSeconds(10000);
 
 
-            var usuarioResponse = _mapper.Map<UsuarioResponseViewModel>(objUsuarioLogin);
-
+            //var usuarioResponse = _mapper.Map<UsuarioResponseViewModel>(objUsuarioLogin);
+            //string token = "";
             var retorno = new LoginResponseViewModel
             {
                 Authenticated = true,
                 Created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
                 Expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
-                AccessToken = token,
-                Usuario = usuarioResponse,
+                AccessToken = usuario,
+                //Usuario = usuarioResponse,
                 Message = "OK"
             };
             return Ok(retorno);

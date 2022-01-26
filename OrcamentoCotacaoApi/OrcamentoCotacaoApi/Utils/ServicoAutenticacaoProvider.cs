@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Usuario;
+using UtilsGlobais;
 
 namespace OrcamentoCotacaoApi.Utils
 {
@@ -22,7 +23,7 @@ namespace OrcamentoCotacaoApi.Utils
         private readonly OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll;
         private readonly LojaBll lojaBll;
 
-        public ServicoAutenticacaoProvider(OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll, UsuarioBll usuarioBll, 
+        public ServicoAutenticacaoProvider(OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll, UsuarioBll usuarioBll,
             OrcamentistaEindicadorBll orcamentistaEindicadorBll, OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll,
             LojaBll lojaBll)
         {
@@ -40,6 +41,8 @@ namespace OrcamentoCotacaoApi.Utils
             apelido = apelido.ToUpper().Trim();
 
             int idErro;
+
+            senha = Util.codificaDado(senha, false);
 
             var dadosCliente = await acessoBll.ValidarUsuario(apelido, senha, false);
             //caso usuário com senha expirada ou bloqueado, retornamos um número 
@@ -63,7 +66,15 @@ namespace OrcamentoCotacaoApi.Utils
                     //var loja = await acessoBll.BuscarLojaUsuario(apelido);
                     //var unidade_negocio = await acessoBll.Buscar_unidade_negocio(loja);
                     var loja = lojaBll.PorFiltro(new InfraBanco.Modelos.Filtros.TlojaFiltro() { Loja = parceiro.Loja });
-                    UsuarioLogin usuario = new UsuarioLogin { Apelido = apelido, Nome = parceiro.Razao_Social_Nome, Email = "", Loja = parceiro.Loja, Unidade_negocio = loja.FirstOrDefault().Unidade_Negocio };
+                    UsuarioLogin usuario = new UsuarioLogin
+                    {
+                        Apelido = apelido,
+                        Nome = parceiro.Razao_Social_Nome,
+                        Email = "",
+                        Loja = parceiro.Loja,
+                        Unidade_negocio = loja.FirstOrDefault().Unidade_Negocio,
+                        VendedorResponsavel = parceiro.Vendedor
+                    };
                     return usuario;
                 }
                 else
@@ -72,11 +83,29 @@ namespace OrcamentoCotacaoApi.Utils
                     var vendedorParceiro = orcamentistaEIndicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { email = apelido, senha = senha }).FirstOrDefault();
                     if (vendedorParceiro != null)
                     {
-                        //var loja = await acessoBll.BuscarLojaUsuario(apelido);
-                        //var unidade_negocio = await acessoBll.Buscar_unidade_negocio(loja);
-                        var loja = lojaBll.PorFiltro(new InfraBanco.Modelos.Filtros.TlojaFiltro() { Loja = vendedorParceiro.Loja });
-                        UsuarioLogin usuario = new UsuarioLogin { Apelido = apelido, Nome = vendedorParceiro.Nome, Email = vendedorParceiro.Email, Loja = vendedorParceiro.Loja, Unidade_negocio = loja.FirstOrDefault().Unidade_Negocio };
-                        return usuario;
+                        var parceiroValidacao = await orcamentistaEindicadorBll.ValidarParceiro(vendedorParceiro.IdIndicador, null, true);
+
+                        if (parceiroValidacao != null)
+                        {
+                            //var loja = await acessoBll.BuscarLojaUsuario(apelido);
+                            //var unidade_negocio = await acessoBll.Buscar_unidade_negocio(loja);
+                            var loja = lojaBll.PorFiltro(new InfraBanco.Modelos.Filtros.TlojaFiltro() { Loja = vendedorParceiro.Loja });
+                            UsuarioLogin usuario = new UsuarioLogin
+                            {
+                                Apelido = apelido,
+                                Nome = vendedorParceiro.Nome,
+                                Email = vendedorParceiro.Email,
+                                Loja = vendedorParceiro.Loja,
+                                Unidade_negocio = loja.FirstOrDefault().Unidade_Negocio,
+                                VendedorResponsavel = vendedorParceiro.VendedorResponsavel,
+                                IdParceiro = parceiroValidacao.Apelido
+                            };
+                            return usuario;
+                        }
+                        else
+                        {
+                            return null;
+                        }
                     }
                     else
                     {
@@ -92,7 +121,15 @@ namespace OrcamentoCotacaoApi.Utils
 
                 var loja = await acessoBll.BuscarLojaUsuario(apelido);
                 var unidade_negocio = await acessoBll.Buscar_unidade_negocio(loja);
-                UsuarioLogin usuario = new UsuarioLogin { Apelido = apelido, Nome = usuarioInterno.FirstOrDefault().Nome, Email = usuarioInterno.FirstOrDefault().Email, Loja = string.Join(",", loja.Select(x => x.Loja)), Unidade_negocio = unidade_negocio };
+                UsuarioLogin usuario = new UsuarioLogin
+                {
+                    Apelido = apelido,
+                    Nome = usuarioInterno.FirstOrDefault().Nome,
+                    Email = usuarioInterno.FirstOrDefault().Email,
+                    Loja = string.Join(",", loja.Select(x => x.Loja)),
+                    Unidade_negocio = unidade_negocio,
+                    VendedorResponsavel = null
+                };
                 return usuario;
             }
         }

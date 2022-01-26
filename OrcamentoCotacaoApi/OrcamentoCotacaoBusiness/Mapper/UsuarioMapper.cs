@@ -9,11 +9,14 @@ using System.Text;
 
 namespace OrcamentoCotacaoBusiness.Mapper
 {
-    public class UsuarioMapper :Profile
+    public class UsuarioMapper : Profile
     {
         public UsuarioMapper()
         {
             CreateMap<Tusuario, UsuarioRequestViewModel>();
+            CreateMap<Tusuario, UsuarioResponseViewModel>();
+            CreateMap<TorcamentistaEIndicadorVendedor, UsuarioResponseViewModel>();
+            CreateMap<UsuarioResponseViewModel, Tusuario>();
             //CreateMap<UsuarioRequestViewModel, Usuario>();
             CreateMap<UsuarioLogin, UsuarioResponseViewModel>();
             CreateMap<UsuarioResponseViewModel, UsuarioLogin>();

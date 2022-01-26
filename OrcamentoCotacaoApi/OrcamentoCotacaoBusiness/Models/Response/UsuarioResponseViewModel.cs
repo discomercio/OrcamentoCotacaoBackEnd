@@ -4,7 +4,7 @@ using static OrcamentoCotacaoBusiness.Enums.Enums;
 
 namespace OrcamentoCotacaoBusiness.Models.Response
 {
-    public class UsuarioResponseViewModel: IViewModelResponse
+    public class UsuarioResponseViewModel : IViewModelResponse
     {
         [JsonProperty("id")]
         public long Id { get; set; }
@@ -32,5 +32,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 
         [JsonProperty("tipoUsuario")]
         public TipoUsuario TipoUsuario { get; set; }
+        [JsonProperty("vendedorResponsavel")]
+        public string VendedorResponsavel { get; set; }
     }
 }

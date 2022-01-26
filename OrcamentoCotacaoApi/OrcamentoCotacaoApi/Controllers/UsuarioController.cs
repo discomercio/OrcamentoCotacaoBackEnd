@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentistaEindicador;
+using OrcamentistaEIndicadorVendedor;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Usuario;
 
@@ -22,22 +24,39 @@ namespace OrcamentoCotacaoApi.Controllers
         private readonly UsuarioBll _usuarioBll;
         private readonly OrcamentistaEindicadorBll _orcamentistaEIndicadorBLL;
         private readonly IMapper _mapper;
+        private readonly OrcamentistaEIndicadorVendedorBll _orcamentistaEIndicadorVendedorBll;
 
         public UsuarioController(ILogger<UsuarioController> logger, UsuarioBll usuarioBll,
-            OrcamentistaEindicadorBll orcamentistaEIndicadorBLL, IMapper mapper)
+            OrcamentistaEindicadorBll orcamentistaEIndicadorBLL, IMapper mapper,
+            OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll)
         {
             _logger = logger;
             _usuarioBll = usuarioBll;
-            orcamentistaEIndicadorBLL = _orcamentistaEIndicadorBLL;
+            _orcamentistaEIndicadorBLL = orcamentistaEIndicadorBLL;
             _mapper = mapper;
+            _orcamentistaEIndicadorVendedorBll = orcamentistaEIndicadorVendedorBll;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<UsuarioResponseViewModel>> Get()
+        public async Task<ActionResult> Get() //IEnumerable<UsuarioResponseViewModel>
         {
-            _logger.LogInformation("Buscando lista de usuários");
-            var usuarios = _usuarioBll.PorFiltro(new InfraBanco.Modelos.Filtros.TusuarioFiltro() { Page = 1, RecordsPerPage = 1 });//GetAll(1, 1);
-            return _mapper.Map<List<UsuarioResponseViewModel>>(usuarios);
+            try
+            {
+                _logger.LogInformation("Buscando lista de usuários");
+                //var usuarios = _orcamentistaEIndicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro()
+                //{
+                //    loja = "202"//User.Claims.Where(x => x.Value == "LojaSelecionada").FirstOrDefault().Value
+                //});
+                var usuarios = _usuarioBll.PorFiltro(new InfraBanco.Modelos.Filtros.TusuarioFiltro() { Page = 1, RecordsPerPage = 1 });//GetAll(1, 1);
+                var retorno = _mapper.Map<List<UsuarioResponseViewModel>>(usuarios);
+               
+                //var retorno = _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(usuarios);
+                return Ok(JsonSerializer.Serialize(new { data = retorno }));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpGet]
