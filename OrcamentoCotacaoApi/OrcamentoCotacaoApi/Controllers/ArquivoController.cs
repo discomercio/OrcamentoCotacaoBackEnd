@@ -212,5 +212,49 @@ namespace OrcamentoCotacaoApi.Controllers
                 message = $"Pasta '{nome}' criada com sucesso."
             });
         }
+
+        [HttpPut("Editar")]
+        public IActionResult Editar(string id, [FromQuery] string nome, [FromQuery] string descricao)
+        {
+            var retorno = arquivoBll.Editar(new TorcamentoCotacaoArquivos
+            {
+                Id = Guid.Parse(id),
+                Nome = nome,
+                Descricao = descricao
+            });
+
+            if (retorno)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    message = $"Ocorreu um erro!"
+                });
+            }
+        }
+
+        [HttpPost("Excluir/{id}")]
+        public IActionResult Excluir(string id)
+        {
+            var retorno = arquivoBll.Excluir(new TorcamentoCotacaoArquivos
+            {
+                Id = Guid.Parse(id)
+            });
+
+            if (retorno)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    message = $"Erro ao excluir!"
+                });
+            }
+        }
     }
 }
