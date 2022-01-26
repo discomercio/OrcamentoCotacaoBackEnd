@@ -34,11 +34,6 @@ namespace Arquivo
             }
         }
 
-        public bool Excluir(TorcamentoCotacaoArquivos obj)
-        {
-            throw new NotImplementedException();
-        }
-
         public TorcamentoCotacaoArquivos Inserir(TorcamentoCotacaoArquivos obj)
         {
             try
@@ -54,6 +49,27 @@ namespace Arquivo
             catch (Exception e)
             {
                 throw e;
+            }
+        }
+
+        public bool Editar(TorcamentoCotacaoArquivos obj)
+        {
+            try
+            {
+                using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+                {
+                    var arquivo = db.TorcamentoCotacaoArquivos.First(x => x.Id == obj.Id);
+                    arquivo.Nome = obj.Nome;
+                    arquivo.Descricao = obj.Descricao;
+                    db.SaveChanges();
+                    db.transacao.Commit();
+                }
+
+                return true;
+            }
+            catch 
+            {
+                return false;
             }
         }
 
@@ -112,6 +128,26 @@ namespace Arquivo
         public TorcamentoCotacaoArquivos ObterArquivoPorID(Guid id)
         {
             return PorFiltro(new TorcamentoCotacaoArquivosFiltro() { id = id }).FirstOrDefault();
+        }
+
+        public bool Excluir(TorcamentoCotacaoArquivos obj)
+        {
+            try
+            {
+                using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+                {
+                    var objeto = db.TorcamentoCotacaoArquivos.First(x => x.Id == obj.Id);
+                    db.TorcamentoCotacaoArquivos.Remove(objeto);
+                    db.SaveChanges();
+                    db.transacao.Commit();
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
