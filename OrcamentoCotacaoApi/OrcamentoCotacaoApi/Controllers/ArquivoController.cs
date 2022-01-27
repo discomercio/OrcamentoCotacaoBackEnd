@@ -112,26 +112,26 @@ namespace OrcamentoCotacaoApi.Controllers
                                         descricao = c.Descricao
                                     },
                                     children = lista.Where(x => x.Pai == c.Id)
-                                                .Select(c => new Child
+                                                .Select(d => new Child
                                                 {
                                                     data = new Data
                                                     {
-                                                        key = c.Id.ToString(),
-                                                        name = c.Nome,
-                                                        type = c.Tipo,
-                                                        size = c.Tamanho,
-                                                        descricao = c.Descricao
+                                                        key = d.Id.ToString(),
+                                                        name = d.Nome,
+                                                        type = d.Tipo,
+                                                        size = d.Tamanho,
+                                                        descricao = d.Descricao
                                                     },
-                                                    children = lista.Where(x => x.Pai == c.Id)
-                                                                .Select(c => new Child
+                                                    children = lista.Where(x => x.Pai == d.Id)
+                                                                .Select(e => new Child
                                                                 {
                                                                     data = new Data
                                                                     {
-                                                                        key = c.Id.ToString(),
-                                                                        name = c.Nome,
-                                                                        type = c.Tipo,
-                                                                        size = c.Tamanho,
-                                                                        descricao = c.Descricao
+                                                                        key = e.Id.ToString(),
+                                                                        name = e.Nome,
+                                                                        type = e.Tipo,
+                                                                        size = e.Tamanho,
+                                                                        descricao = e.Descricao
                                                                     },
                                                                 }).ToList()
                                                 }).ToList()
