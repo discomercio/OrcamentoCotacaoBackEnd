@@ -9,9 +9,9 @@ namespace InfraIdentity
 {
     public interface IServicoAutenticacao
     {
-        string ObterTokenAutenticacao(string apelido, string senha, string segredoToken, int validadeTokenMinutos, string role,
-            IServicoAutenticacaoProvider servicoAutenticacaoProvider, out bool unidade_negocio_desconhecida, out UsuarioLogin usuario);
-        string RenovarTokenAutenticacao(string apelido, string nome, string loja, string segredoToken, int validadeTokenMinutos, string role, string unidade_negocio, out bool unidade_negocio_desconhecida);
+        UsuarioLogin ObterTokenAutenticacao(UsuarioLogin login, string segredoToken, int validadeTokenMinutos, string role,
+            IServicoAutenticacaoProvider servicoAutenticacaoProvider, out bool unidade_negocio_desconhecida);
+        UsuarioLogin RenovarTokenAutenticacao(UsuarioLogin login, string segredoToken, int validadeTokenMinutos, string role, out bool unidade_negocio_desconhecida);
     }
 
     public interface IServicoAutenticacaoProvider
@@ -21,14 +21,15 @@ namespace InfraIdentity
 
     public class ServicoAutenticacao : IServicoAutenticacao
     {
-        public string ObterTokenAutenticacao(string apelido, string senha, string segredoToken, int validadeTokenMinutos, string role,
-            IServicoAutenticacaoProvider servicoAutenticacaoProvider, out bool unidade_negocio_desconhecida, out UsuarioLogin usuario)
+        //public string ObterTokenAutenticacao(string apelido, string senha, string segredoToken, int validadeTokenMinutos, string role,
+        //    IServicoAutenticacaoProvider servicoAutenticacaoProvider, out bool unidade_negocio_desconhecida, out UsuarioLogin usuario)
+        public UsuarioLogin ObterTokenAutenticacao(UsuarioLogin login, string segredoToken, int validadeTokenMinutos, string role,
+            IServicoAutenticacaoProvider servicoAutenticacaoProvider, out bool unidade_negocio_desconhecida)
         {
             UsuarioLogin user = null;
 
-            user = servicoAutenticacaoProvider.ObterUsuario(apelido, senha).Result;
+            user = servicoAutenticacaoProvider.ObterUsuario(login.Apelido, login.Senha).Result;
 
-            usuario = user;
             // retorna null se não tiver usuário
             if (user == null)
             {
@@ -40,31 +41,31 @@ namespace InfraIdentity
             if (!string.IsNullOrEmpty(user.IdErro.ToString()) && user.IdErro != 0)
             {
                 unidade_negocio_desconhecida = false;
-                return user.IdErro.ToString();
+                return user;
             }
 
-            return GerarTokenAutenticacao(user.Apelido, user.Nome, user.Loja, segredoToken, validadeTokenMinutos, role, user.Unidade_negocio, out unidade_negocio_desconhecida);
+            return GerarTokenAutenticacao(user, segredoToken, validadeTokenMinutos, role, out unidade_negocio_desconhecida);
         }
 
-        public string RenovarTokenAutenticacao(string apelido, string nome, string loja, string segredoToken, int validadeTokenMinutos,
-            string role, string unidade_negocio, out bool unidade_negocio_desconhecida)
+        public UsuarioLogin RenovarTokenAutenticacao(UsuarioLogin usuario, string segredoToken, int validadeTokenMinutos,
+            string role, out bool unidade_negocio_desconhecida)
         {
             //vamos verificar se usuario ainda tem permissão
             //ainda nao estamos fazendo, deveráimos fazer?
 
-            return GerarTokenAutenticacao(apelido, nome, loja, segredoToken, validadeTokenMinutos, role, unidade_negocio, out unidade_negocio_desconhecida);
+            return GerarTokenAutenticacao(usuario, segredoToken, validadeTokenMinutos, role, out unidade_negocio_desconhecida);
         }
 
-        private static string GerarTokenAutenticacao(string apelido, string nome, string loja, string segredoToken, int validadeTokenMinutos,
-            string role, string unidade_negocio, out bool unidade_negocio_desconhecida)
+        private static UsuarioLogin GerarTokenAutenticacao(UsuarioLogin usuario, string segredoToken, int validadeTokenMinutos,
+            string role, out bool unidade_negocio_desconhecida)
         {
             //unidade_negocio: BS ou VRF, se diferente dar erro no login
-            if (String.IsNullOrEmpty(unidade_negocio))
+            if (String.IsNullOrEmpty(usuario.Unidade_negocio))
             {
                 unidade_negocio_desconhecida = true;
                 return null;
             }
-            if (!unidade_negocio.ToUpper().Trim().Contains("BS") && !(unidade_negocio.ToUpper().Trim().Contains("VRF")))
+            if (!usuario.Unidade_negocio.ToUpper().Trim().Contains("BS") && !(usuario.Unidade_negocio.ToUpper().Trim().Contains("VRF")))
             {
                 unidade_negocio_desconhecida = true;
                 return null;
@@ -78,17 +79,17 @@ namespace InfraIdentity
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.NameIdentifier, apelido),
-                    new Claim(ClaimTypes.Name, nome),
-                    new Claim(ClaimTypes.Surname, loja),
+                    new Claim(ClaimTypes.NameIdentifier, usuario.Apelido),
+                    new Claim(ClaimTypes.Name, usuario.Nome),
+                    new Claim(ClaimTypes.Surname, usuario.Loja),
                     new Claim(ClaimTypes.Role, role),
-                    new Claim("unidade_negocio", unidade_negocio),
+                    new Claim("unidade_negocio", !string.IsNullOrEmpty(usuario.Unidade_negocio)?usuario.Unidade_negocio:""),
                     //new Claim("Email", !string.IsNullOrEmpty(usuario.Email)? usuario.Email:""),
-                    new Claim("TipoUsuario", "GESTOR"),//!string.IsNullOrEmpty(usuario.TipoUsuario)?usuario.TipoUsuario:""),
-                    new Claim("Parceiro", "AR OESTE"),//!string.IsNullOrEmpty(usuario.IdParceiro)?usuario.IdParceiro:""),
-                    new Claim("Vendedor", "MARIO"),//!string.IsNullOrEmpty(IdVendedor)?IdVendedor:""),
-                    new Claim("Lojas", !string.IsNullOrEmpty(loja)?loja:""),
-                    new Claim("UnidadeNegocio", !string.IsNullOrEmpty(unidade_negocio)?unidade_negocio:"")
+                    new Claim("TipoUsuario", !string.IsNullOrEmpty(usuario.TipoUsuario)?usuario.TipoUsuario:""),
+                    new Claim("Parceiro", !string.IsNullOrEmpty(usuario.IdParceiro)?usuario.IdParceiro:""),
+                    new Claim("Vendedor", !string.IsNullOrEmpty(usuario.VendedorResponsavel)?usuario.VendedorResponsavel:""),
+                    new Claim("Lojas", !string.IsNullOrEmpty(usuario.Loja)?usuario.Loja:""),
+                    new Claim("Permissoes", usuario.Permissoes != null?string.Join(",",usuario.Permissoes):""),
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(validadeTokenMinutos),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -96,7 +97,8 @@ namespace InfraIdentity
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var ret = tokenHandler.WriteToken(token);
-            return ret;
+            usuario.Token = ret;
+            return usuario;
         }
     }
 }

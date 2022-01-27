@@ -10,6 +10,7 @@ namespace InfraIdentity
     {
         //esta é a chave 
         public string Apelido { get; set; }
+        public string Senha { get; set; }
         public string Nome { get; set; }
         public string Loja { get; set; }
         public string Unidade_negocio { get; set; }
@@ -21,5 +22,7 @@ namespace InfraIdentity
         public string IdParceiro { get; set; }
         public string IdVendedor { get; set; }
         public string VendedorResponsavel { get; set; }
+        public string Token { get; set; }
+        public List<string> Permissoes { get; set; }
     }
 }

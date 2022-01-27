@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Usuario;
 using UtilsGlobais;
+using static OrcamentoCotacaoBusiness.Enums.Enums;
 
 namespace OrcamentoCotacaoApi.Utils
 {
@@ -73,7 +74,12 @@ namespace OrcamentoCotacaoApi.Utils
                         Email = "",
                         Loja = parceiro.Loja,
                         Unidade_negocio = loja.FirstOrDefault().Unidade_Negocio,
-                        VendedorResponsavel = parceiro.Vendedor
+                        VendedorResponsavel = parceiro.Vendedor,
+                        Permissoes = new List<string>()
+                        {
+                            ((int)ePermissao.AcessoAoModulo).ToString(),
+                            ((int)ePermissao.ParceiroIndicadorUsuarioMaster).ToString()
+                        }
                     };
                     return usuario;
                 }
@@ -98,7 +104,11 @@ namespace OrcamentoCotacaoApi.Utils
                                 Loja = vendedorParceiro.Loja,
                                 Unidade_negocio = loja.FirstOrDefault().Unidade_Negocio,
                                 VendedorResponsavel = vendedorParceiro.VendedorResponsavel,
-                                IdParceiro = parceiroValidacao.Apelido
+                                IdParceiro = parceiroValidacao.Apelido,
+                                Permissoes = new List<string>()
+                        {
+                            ((int)ePermissao.AcessoAoModulo).ToString()
+                        }
                             };
                             return usuario;
                         }
@@ -128,7 +138,12 @@ namespace OrcamentoCotacaoApi.Utils
                     Email = usuarioInterno.FirstOrDefault().Email,
                     Loja = string.Join(",", loja.Select(x => x.Loja)),
                     Unidade_negocio = unidade_negocio,
-                    VendedorResponsavel = null
+                    VendedorResponsavel = null,
+                    Permissoes = new List<string>()
+                        {
+                            ((int)ePermissao.AcessoAoModulo).ToString(),
+                            ((int)ePermissao.AdministradorDoModulo).ToString()
+                        }
                 };
                 return usuario;
             }

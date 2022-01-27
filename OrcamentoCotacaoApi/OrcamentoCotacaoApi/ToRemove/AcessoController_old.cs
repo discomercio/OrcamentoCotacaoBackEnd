@@ -83,7 +83,16 @@ namespace OrcamentoCotacaoApi.Controllers
             string nome = User.Claims.FirstOrDefault(r => r.Type == ClaimTypes.Name).Value;
             string loja = User.Claims.FirstOrDefault(r => r.Type == ClaimTypes.Surname).Value;
             string unidade_negocio = User.Claims.FirstOrDefault(r => r.Type == "unidade_negocio").Value;
-            string token = servicoAutenticacao.RenovarTokenAutenticacao(apelido, nome, loja, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, Utils.Autenticacao.RoleAcesso, unidade_negocio, out bool unidade_negocio_desconhecida);
+            UsuarioLogin objUsuarioLogin = new UsuarioLogin()
+            {
+                Apelido = apelido,
+                Nome = nome,
+                Loja = loja,
+                Unidade_negocio = unidade_negocio
+            };
+
+            objUsuarioLogin = servicoAutenticacao.RenovarTokenAutenticacao(objUsuarioLogin, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, 
+                Utils.Autenticacao.RoleAcesso, out bool unidade_negocio_desconhecida);
 
             if (unidade_negocio_desconhecida)
             {
@@ -91,10 +100,10 @@ namespace OrcamentoCotacaoApi.Controllers
                 return Forbid();
             }
 
-            if (token == null)
+            if (objUsuarioLogin.Token == null)
                 return BadRequest(new { message = "Erro no sistema de autenticação. O usuário pode ter sido editado no banco de dados." });
 
-            return Ok(token);
+            return Ok(objUsuarioLogin.Token);
         }
 
 
@@ -109,10 +118,14 @@ namespace OrcamentoCotacaoApi.Controllers
             var appSettings = appSettingsSection.Get<Utils.Configuracao>();
             string apelido = login.Apelido;
             string senha = login.Senha;
-            UsuarioLogin objUsuarioLogin = new UsuarioLogin();
-            string token = servicoAutenticacao.ObterTokenAutenticacao(apelido, senha, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, Utils.Autenticacao.RoleAcesso, 
-                new ServicoAutenticacaoProvider(acessoBll, usuarioBll, orcamentistaEindicadorBll, orcamentistaEindicadorVendedorBll, lojaBll), 
-                out bool unidade_negocio_desconhecida, out objUsuarioLogin);
+            UsuarioLogin objUsuarioLogin = new UsuarioLogin()
+            {
+                Apelido = apelido,
+                Senha = senha
+            };
+            objUsuarioLogin = servicoAutenticacao.ObterTokenAutenticacao(objUsuarioLogin, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos, Utils.Autenticacao.RoleAcesso,
+                new ServicoAutenticacaoProvider(acessoBll, usuarioBll, orcamentistaEindicadorBll, orcamentistaEindicadorVendedorBll, lojaBll),
+                out bool unidade_negocio_desconhecida);
 
             if (unidade_negocio_desconhecida)
             {
@@ -123,13 +136,13 @@ namespace OrcamentoCotacaoApi.Controllers
             string ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
             string userAgent = Request.Headers["User-agent"];
 
-            if (!string.IsNullOrEmpty(token))
+            if (!string.IsNullOrEmpty(objUsuarioLogin.Token))
                 await acessoBll.GravarSessaoComTransacao(ip, apelido, userAgent);
 
-            if (token == null)
+            if (objUsuarioLogin.Token == null)
                 return BadRequest(new { message = "Usuário ou senha incorreta." });
 
-            return Ok(token);
+            return Ok(objUsuarioLogin.Token);
         }
 
         [HttpGet("fazerLogout")]

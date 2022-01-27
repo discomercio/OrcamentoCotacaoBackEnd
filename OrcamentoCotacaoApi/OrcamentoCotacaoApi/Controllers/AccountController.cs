@@ -64,13 +64,17 @@ namespace OrcamentoCotacaoApi.Controllers
             var appSettings = appSettingsSection.Get<OrcamentoCotacaoApi.Utils.Configuracao>();
             string apelido = login.Login;
             string senha = login.Senha;
-            UsuarioLogin objUsuarioLogin = new UsuarioLogin();
-            string usuario = servicoAutenticacao.ObterTokenAutenticacao(apelido, senha, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos,
+            UsuarioLogin objUsuarioLogin = new UsuarioLogin()
+            {
+                Apelido = apelido,
+                Senha = senha
+            };
+            objUsuarioLogin = servicoAutenticacao.ObterTokenAutenticacao(objUsuarioLogin, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos,
                 OrcamentoCotacaoApi.Utils.Autenticacao.RoleAcesso, new ServicoAutenticacaoProvider(_acessoBll, _usuarioBll, _orcamentistaEindicadorBll, _orcamentistaEindicadorVendedorBll,
                 _lojaBll),
-                out bool unidade_negocio_desconhecida, out objUsuarioLogin);
+                out bool unidade_negocio_desconhecida);
 
-            if (usuario == null)
+            if (string.IsNullOrEmpty(objUsuarioLogin.Token))
             {
                 return BadRequest(new LoginResponseViewModel
                 {
@@ -97,7 +101,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 Authenticated = true,
                 Created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
                 Expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
-                AccessToken = usuario,
+                AccessToken = objUsuarioLogin.Token,
                 //Usuario = usuarioResponse,
                 Message = "OK"
             };
