@@ -150,6 +150,11 @@ namespace InfraBanco
         public DbSet<TusuarioXLoja> TusuarioXLojas { get => contexto.TusuarioXLojas; }
         public DbSet<TorcamentistaEIndicadorVendedor> TorcamentistaEIndicadorVendedor { get => contexto.TorcamentistaEIndicadorVendedor; }
         public DbSet<TorcamentoCotacaoArquivos> TorcamentoCotacaoArquivos { get => contexto.TorcamentoCotacaoArquivos; }
+        public DbSet<TprodutoCatalogo> TprodutoCatalogo { get => contexto.TprodutoCatalogo; }
+        public DbSet<TprodutoCatalogoImagem> TprodutoCatalogoImagem { get => contexto.TprodutoCatalogoImagem; }
+        public DbSet<TprodutoCatalogoImagemTipo> TprodutoCatalogoImagemTipo { get => contexto.TprodutoCatalogoImagemTipo; }
+        public DbSet<TprodutoCatalogoItem> TprodutoCatalogoItem { get => contexto.TprodutoCatalogoItem; }
+        public DbSet<TprodutoCatalogoItens> TprodutoCatalogoItens { get => contexto.TprodutoCatalogoItens; }
 #endif
 
         //daqui para a frente só é necessário para os testes automatizados
