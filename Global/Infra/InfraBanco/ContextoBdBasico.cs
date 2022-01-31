@@ -16,6 +16,8 @@ namespace InfraBanco
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ContextoBdBasico).Assembly);
+
             modelBuilder.Entity<TclienteRefBancaria>()
                 .HasKey(o => new { o.Id_Cliente, o.Banco, o.Agencia, o.Conta });
             modelBuilder.Entity<TclienteRefComercial>()
@@ -190,6 +192,11 @@ namespace InfraBanco
         public DbSet<TusuarioXLoja> TusuarioXLojas { get; set; }
         public DbSet<TorcamentoItem> TorcamentoItem { get; set; }
         public DbSet<TorcamentoCotacaoArquivos> TorcamentoCotacaoArquivos { get; set; }
+        public DbSet<TprodutoCatalogo> TprodutoCatalogo { get; set; }
+        public DbSet<TprodutoCatalogoImagem> TprodutoCatalogoImagem { get; set; }
+        public DbSet<TprodutoCatalogoImagemTipo> TprodutoCatalogoImagemTipo { get; set; }
+        public DbSet<TprodutoCatalogoItem> TprodutoCatalogoItem { get; set; }
+        public DbSet<TprodutoCatalogoItens> TprodutoCatalogoItens { get; set; }
         public DbSet<TorcamentistaEIndicadorVendedor> TorcamentistaEIndicadorVendedor { get; set; }
 #endif
         //daqui para a frente só é necessário para os testes automatizados
