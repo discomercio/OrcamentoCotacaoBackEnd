@@ -51,6 +51,10 @@ namespace OrcamentistaEindicador
                     {
                         saida = saida.Where(x => x.Datastamp == obj.datastamp);
                     }
+                    if (!string.IsNullOrEmpty(obj.vendedorId))
+                    {
+                        saida = saida.Join(db.TorcamentistaEIndicadorVendedor, x => x.Apelido, y => y.IdIndicador, (x, y) => x).Where(x => x.Apelido == obj.vendedorId);
+                    }
 
                     return saida.ToList();
                 }
@@ -59,21 +63,6 @@ namespace OrcamentistaEindicador
             {
                 throw e;
             }
-        }
-
-        public Task<TorcamentistaEindicador> GetParceiros(string vendedorId, int v1, int v2)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<TorcamentistaEindicador> GetParceirosByVendedor(string vendedor)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<Tusuario> GetVendedoresDoParceiro(string parceiro)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<TorcamentistaEindicador> ValidarParceiro(string apelido, string senha_digitada_datastamp, bool somenteValidar)
@@ -85,16 +74,16 @@ namespace OrcamentistaEindicador
             var dados = from c in db.TorcamentistaEindicadors
                         where c.Apelido == apelido
                         select c;
-                        //new
-                        //{
-                        //    c.Razao_Social_Nome,
-                        //    c.Senha,
-                        //    c.Datastamp,
-                        //    c.Dt_Ult_Alteracao_Senha,
-                        //    c.Hab_Acesso_Sistema,
-                        //    c.Status,
-                        //    c.Loja
-                        //};
+            //new
+            //{
+            //    c.Razao_Social_Nome,
+            //    c.Senha,
+            //    c.Datastamp,
+            //    c.Dt_Ult_Alteracao_Senha,
+            //    c.Hab_Acesso_Sistema,
+            //    c.Status,
+            //    c.Loja
+            //};
 
             string retorno = null;
             var t = await dados.FirstOrDefaultAsync();

@@ -14,5 +14,7 @@ namespace InfraBanco.Modelos.Filtros
         public bool? bloqueado { get; set; }
         public int? Page { get; set; }
         public int? RecordsPerPage { get; set; }
+        public bool? vendedor_loja { get; set; }
+        public bool? vendedor_externo { get; set; }
     }
 }

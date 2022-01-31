@@ -51,6 +51,14 @@ namespace Usuario
                 {
                     usuario = usuario.Where(x => x.Bloqueado == (obj.bloqueado.Value ? 1 : 0));
                 }
+                if (obj.vendedor_loja.HasValue)
+                {
+                    usuario = usuario.Where(x => x.Vendedor_Loja == (obj.vendedor_loja.Value ? 1 : 0));
+                }
+                if (obj.vendedor_externo.HasValue)
+                {
+                    usuario = usuario.Where(x => x.Vendedor_Externo == (obj.vendedor_externo.Value ? 1 : 0));
+                }
                 return usuario.ToList();
             }
         }
@@ -59,12 +67,6 @@ namespace Usuario
         {
             return PorFiltro(new TusuarioFiltro() { id = id }).FirstOrDefault();
         }
-        public Tusuario GetVendedores(string vendedorId, int v1, int v2)
-        {
-            throw new NotImplementedException();
-        }
-
-       
 
     }
 }

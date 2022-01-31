@@ -10,5 +10,6 @@ namespace InfraBanco.Modelos.Filtros
         public string email { get; set; }
         public string senha { get; set; }
         public string loja { get; set; }
+        public string IdIndicador { get; set; }
     }
 }

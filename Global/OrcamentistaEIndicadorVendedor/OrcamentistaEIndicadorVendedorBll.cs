@@ -39,38 +39,42 @@ namespace OrcamentistaEIndicadorVendedor
                    WHERE orc.email = @login AND orc.senha = @senha*/
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
-                    var usuario = from usr in db.TorcamentistaEIndicadorVendedor
-                                  join par in db.TorcamentistaEindicadors on usr.IdIndicador equals par.Apelido
-                                  select new TorcamentistaEIndicadorVendedor()
-                                  {
-                                      Id = usr.Id,
-                                      Nome = usr.Nome,
-                                      Email = usr.Email,
-                                      Senha = usr.Senha,
-                                      IdIndicador = usr.IdIndicador,
-                                      Telefone = usr.Telefone,
-                                      Celular = usr.Celular,
-                                      Ativo = usr.Ativo,
-                                      UsuarioCadastro = usr.UsuarioCadastro,
-                                      UsuarioUltimaAlteracao = usr.UsuarioUltimaAlteracao,
-                                      DataCadastro = usr.DataCadastro,
-                                      DataUltimaAlteracao = usr.DataUltimaAlteracao,
-                                      Loja = par.Loja,
-                                      VendedorResponsavel = par.Vendedor
-                                  };
+                    var vendedorParceiro = from usr in db.TorcamentistaEIndicadorVendedor
+                                           join par in db.TorcamentistaEindicadors on usr.IdIndicador equals par.Apelido
+                                           select new TorcamentistaEIndicadorVendedor()
+                                           {
+                                               Id = usr.Id,
+                                               Nome = usr.Nome,
+                                               Email = usr.Email,
+                                               Senha = usr.Senha,
+                                               IdIndicador = usr.IdIndicador,
+                                               Telefone = usr.Telefone,
+                                               Celular = usr.Celular,
+                                               Ativo = usr.Ativo,
+                                               UsuarioCadastro = usr.UsuarioCadastro,
+                                               UsuarioUltimaAlteracao = usr.UsuarioUltimaAlteracao,
+                                               DataCadastro = usr.DataCadastro,
+                                               DataUltimaAlteracao = usr.DataUltimaAlteracao,
+                                               Loja = par.Loja,
+                                               VendedorResponsavel = par.Vendedor
+                                           };
                     if (!string.IsNullOrEmpty(obj.email))
                     {
-                        usuario = usuario.Where(x => x.Email.ToUpper() == obj.email.ToUpper());
+                        vendedorParceiro = vendedorParceiro.Where(x => x.Email.ToUpper() == obj.email.ToUpper());
                     }
                     if (!string.IsNullOrEmpty(obj.senha))
                     {
-                        usuario = usuario.Where(x => x.Senha == obj.senha);
+                        vendedorParceiro = vendedorParceiro.Where(x => x.Senha == obj.senha);
                     }
                     if (!string.IsNullOrEmpty(obj.loja))
                     {
-                        usuario = usuario.Where(x => x.Loja == obj.loja);
+                        vendedorParceiro = vendedorParceiro.Where(x => x.Loja == obj.loja);
                     }
-                    return usuario.ToList();
+                    if (!string.IsNullOrEmpty(obj.IdIndicador))
+                    {
+                        vendedorParceiro = vendedorParceiro.Where(x => x.IdIndicador == obj.IdIndicador);
+                    }
+                    return vendedorParceiro.ToList();
                 }
 
             }
@@ -79,6 +83,11 @@ namespace OrcamentistaEIndicadorVendedor
 
                 throw;
             }
+        }
+
+        public List<Tusuario> GetVendedoresDoParceiro(string parceiro)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -18,7 +18,7 @@ namespace OrcamentoCotacaoApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UsuarioController : ControllerBase
+    public class UsuarioController : BaseController
     {
         private readonly ILogger<UsuarioController> _logger;
         private readonly UsuarioBll _usuarioBll;
@@ -49,7 +49,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 //});
                 var usuarios = _usuarioBll.PorFiltro(new InfraBanco.Modelos.Filtros.TusuarioFiltro() { Page = 1, RecordsPerPage = 1 });//GetAll(1, 1);
                 var retorno = _mapper.Map<List<UsuarioResponseViewModel>>(usuarios);
-               
+
                 //var retorno = _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(usuarios);
                 return Ok(JsonSerializer.Serialize(new { data = retorno }));
             }
@@ -60,45 +60,22 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpGet]
-        [Route("parceiros")]
-        public async Task<IEnumerable<UsuarioResponseViewModel>> BuscarParceiros(string vendedorId)
-        {
-            _logger.LogInformation("Buscando lista de parceiros");
-            var usuarios = await _orcamentistaEIndicadorBLL.GetParceiros(vendedorId, 1, 1);
-
-            return _mapper.Map<List<UsuarioResponseViewModel>>(usuarios);
-        }
-
-        [HttpGet]
-        [Route("parceiros-por-vendedor")]
-        public async Task<IEnumerable<UsuarioResponseViewModel>> BuscarParceirosByVendedor(string vendedor)
-        {
-            _logger.LogInformation("Buscando lista de parceiros por vendedor");
-            var usuarios = await _orcamentistaEIndicadorBLL.GetParceirosByVendedor(vendedor);
-
-            return _mapper.Map<List<UsuarioResponseViewModel>>(usuarios);
-        }
-
-        [HttpGet]
         [Route("vendedores")]
         public async Task<IEnumerable<UsuarioResponseViewModel>> BuscarVendedores()
         {
             string vendedorId = User.Identity.Name;
             _logger.LogInformation("Buscando lista de vendedores");
-            var usuarios = _usuarioBll.GetVendedores(vendedorId, 1, 1);
+            var usuarios = _usuarioBll.PorFiltro(new InfraBanco.Modelos.Filtros.TusuarioFiltro()
+            {
+                bloqueado = false,
+                vendedor_loja = true,
+                vendedor_externo = true
+            }) ;
 
             return _mapper.Map<List<UsuarioResponseViewModel>>(usuarios);
         }
 
-        [HttpGet]
-        [Route("vendedores-parceiros")]
-        public async Task<IEnumerable<UsuarioResponseViewModel>> BuscarVendedoresDosParceiros(string parceiro)
-        {
-            _logger.LogInformation("Buscando lista de vendedores parceiros");
-            var usuarios = _orcamentistaEIndicadorBLL.GetVendedoresDoParceiro(parceiro);
-
-            return _mapper.Map<List<UsuarioResponseViewModel>>(usuarios);
-        }
+       
         //[HttpGet]
         //[Route("vendedores-parceiros")]
         //public async Task<IEnumerable<UsuarioResponseViewModel>> BuscarVendedoresDosParceiros(string vendedorId, string parceiroId)

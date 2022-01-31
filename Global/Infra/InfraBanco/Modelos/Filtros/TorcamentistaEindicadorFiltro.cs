@@ -9,5 +9,6 @@ namespace InfraBanco.Modelos.Filtros
     {
         public string apelido { get; set; }
         public string datastamp { get; set; }
+        public string vendedorId { get; set; }
     }
 }
