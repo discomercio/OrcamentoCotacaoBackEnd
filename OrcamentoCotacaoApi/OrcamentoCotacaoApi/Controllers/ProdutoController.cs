@@ -27,13 +27,13 @@ namespace PrepedidoApi.Controllers
 #endif
         [HttpGet("buscarProduto")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<IActionResult> BuscarProduto(string loja, string id_cliente)
+        public async Task<IActionResult> BuscarProduto(string loja, string uf, string tipo)
         {
             //para testar: http://localhost:60877/api/produto/buscarProduto
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
             //nao usamos o apelido
 
-            PrepedidoBusiness.Dto.Produto.ProdutoComboDto ret = await produtoBll.ListaProdutosComboApiArclube(loja, id_cliente);
+            PrepedidoBusiness.Dto.Produto.ProdutoComboDto ret = await produtoBll.ListaProdutosComboApiArclube(loja, uf, tipo);
             
             return Ok(ret);
         }
