@@ -102,7 +102,6 @@ namespace OrcamentoCotacaoApi.Controllers
                 Created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
                 Expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
                 AccessToken = objUsuarioLogin.Token,
-                //Usuario = usuarioResponse,
                 Message = "OK"
             };
             return Ok(retorno);
