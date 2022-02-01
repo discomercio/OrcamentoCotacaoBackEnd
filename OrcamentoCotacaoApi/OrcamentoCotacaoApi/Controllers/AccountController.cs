@@ -19,7 +19,7 @@ namespace OrcamentoCotacaoApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AccountController : ControllerBase
+    public class AccountController : BaseController
     {
 
         private readonly IServicoAutenticacao servicoAutenticacao;

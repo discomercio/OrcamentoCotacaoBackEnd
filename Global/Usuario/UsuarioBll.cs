@@ -59,6 +59,11 @@ namespace Usuario
                 {
                     usuario = usuario.Where(x => x.Vendedor_Externo == (obj.vendedor_externo.Value ? 1 : 0));
                 }
+
+                if (obj.Page.HasValue)
+                {
+                    usuario = usuario.Skip(obj.RecordsPerPage.Value * (obj.Page.Value - 1)).Take(obj.RecordsPerPage.Value);
+                }
                 return usuario.ToList();
             }
         }

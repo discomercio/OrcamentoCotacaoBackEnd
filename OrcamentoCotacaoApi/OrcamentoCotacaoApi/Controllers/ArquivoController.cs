@@ -15,7 +15,7 @@ namespace OrcamentoCotacaoApi.Controllers
     [Authorize]
     [ApiController]
     [Route("[controller]")]
-    public class ArquivoController : ControllerBase
+    public class ArquivoController : BaseController
     {
         private readonly Arquivo.ArquivoBll arquivoBll;
         private readonly IConfiguration configuration;
@@ -24,6 +24,7 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             this.arquivoBll = arquivoBll;
             this.configuration = configuration;
+            var a = User;
         }
 
         [HttpGet("Download/{id}")]

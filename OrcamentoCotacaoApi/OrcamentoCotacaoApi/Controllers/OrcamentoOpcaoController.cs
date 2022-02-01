@@ -16,7 +16,7 @@ namespace OrcamentoCotacaoApi.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class OrcamentoOpcaoController : ControllerBase
+    public class OrcamentoOpcaoController : BaseController
     {
         private readonly ILogger<OrcamentoController> _logger;
         private readonly IMapper _mapper;

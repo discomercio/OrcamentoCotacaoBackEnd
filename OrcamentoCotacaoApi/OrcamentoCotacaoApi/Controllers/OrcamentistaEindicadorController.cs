@@ -13,7 +13,7 @@ namespace OrcamentoCotacaoApi.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class OrcamentistaEindicadorController : ControllerBase
+    public class OrcamentistaEindicadorController : BaseController
     {
         private readonly OrcamentistaEindicadorBll _orcamentistaEindicadorBll;
         private readonly ILogger<UsuarioController> _logger;
@@ -28,14 +28,12 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpGet]
-        [Route("OrcamentistaEIndicador")]
+        [Route("BuscarParceiros")]
         public async Task<IEnumerable<OrcamentistaIndicadorResponseViewModel>> BuscarParceiros(string vendedorId)
         {
             _logger.LogInformation("Buscando lista de parceiros");
-            var loggedUser = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
             var usuarios = _orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { vendedorId = vendedorId });
 //GetParceiros(vendedorId, 1, 1);
-
             return _mapper.Map<List<OrcamentistaIndicadorResponseViewModel>>(usuarios);
         }
 
