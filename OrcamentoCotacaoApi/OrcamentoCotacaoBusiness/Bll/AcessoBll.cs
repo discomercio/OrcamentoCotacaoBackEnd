@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using InfraBanco.Constantes;
 using PrepedidoBusiness.Dto.Acesso;
 using UtilsGlobais;
+using OrcamentoCotacaoBusiness.Enums;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -30,15 +31,16 @@ namespace OrcamentoCotacaoBusiness.Bll
                         where c.Usuario == login
                         select new
                         {
-                            c.Nome,
-                            c.Senha,
-                            c.Email,
-                            c.Datastamp,
-                            c.Dt_Ult_Alteracao_Senha,
-                            c.Bloqueado,
+                            Nome = c.Nome,
+                            Senha = c.Senha,
+                            Email = c.Email,
+                            Datastamp = c.Datastamp,
+                            Dt_Ult_Alteracao_Senha = c.Dt_Ult_Alteracao_Senha,
+                            Bloqueado = c.Bloqueado.HasValue ? (c.Bloqueado.Value == 1 ? true : false) : false,
                             //c.Hab_Acesso_Sistema,
                             //c.statStatus,
-                            c.Loja
+                            Loja = c.Loja,
+                            TipoUsuario = (int)Enums.Enums.TipoUsuario.VENDEDOR
                         };
 
             string retorno = null;
@@ -46,11 +48,55 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             //se o apelido nao existe
             if (t == null)
-                return await Task.FromResult(retorno);
+            {
+                /*Busca de parceiros*/
+                dados = from c in db.TorcamentistaEindicadors
+                        where c.Apelido == login
+                        select new
+                        {
+                            Nome = c.Razao_Social_Nome,
+                            Senha = c.Senha,
+                            Email = "",
+                            Datastamp = c.Datastamp,
+                            Dt_Ult_Alteracao_Senha = c.Dt_Ult_Alteracao_Senha,
+                            Bloqueado = (c.Status == "I"),
+                            //c.Hab_Acesso_Sistema,
+                            //c.statStatus,
+                            Loja = c.Loja,
+                            TipoUsuario = (int)Enums.Enums.TipoUsuario.PARCEIRO
+                        };
+                t = await dados.FirstOrDefaultAsync();
+                /*Busca de parceiros*/
+                if (t == null)
+                {
+                    /*Busca de vendedores de parceiros*/
+                    dados = from c in db.TorcamentistaEindicadorVendedors
+                            where c.Email == login
+                            select new
+                            {
+                                Nome = c.Nome,
+                                Senha = c.Senha,
+                                Email = c.Email,
+                                Datastamp = c.Senha,
+                                Dt_Ult_Alteracao_Senha = c.DataUltimaAlteracao,
+                                Bloqueado = !c.Ativo,
+                                //c.Hab_Acesso_Sistema,
+                                //c.statStatus,
+                                Loja = c.Loja,
+                                TipoUsuario = (int)Enums.Enums.TipoUsuario.VENDEDOR_DO_PARCEIRO
+                            };
+                    t = await dados.FirstOrDefaultAsync();
+                    /*Busca de vendedores de parceiros*/
+                }
+                else
+                {
+                    return await Task.FromResult(retorno); // retorna null
+                }
+            }
             if (t.Datastamp == "")
                 return await Task.FromResult(Constantes.ERR_USUARIO_BLOQUEADO);
             //if (t.Hab_Acesso_Sistema != 1)
-            if (t.Bloqueado == 1)
+            if (t.Bloqueado)
                 return await Task.FromResult(Constantes.ERR_USUARIO_BLOQUEADO);
             //if (t.Status != "A")
             //    return await Task.FromResult(Constantes.ERR_USUARIO_BLOQUEADO);
