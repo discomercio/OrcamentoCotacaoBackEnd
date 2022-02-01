@@ -1,8 +1,10 @@
-﻿using InfraBanco.Modelos;
-using Microsoft.AspNetCore.Authorization;
+﻿using Arquivo.Dto;
+using InfraBanco.Modelos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using OrcamentoCotacaoApi.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,19 +14,17 @@ using System.Threading.Tasks;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class ArquivoController : BaseController
     {
         private readonly Arquivo.ArquivoBll arquivoBll;
-        private readonly IConfiguration configuration;
+        private readonly IOptions<Configuracoes> _appSettings;
 
-        public ArquivoController(IConfiguration configuration, Arquivo.ArquivoBll arquivoBll)
+        public ArquivoController(Arquivo.ArquivoBll arquivoBll, IOptions<Configuracoes> appSettings)
         {
             this.arquivoBll = arquivoBll;
-            this.configuration = configuration;
-            var a = User;
+            _appSettings = appSettings;
         }
 
         [HttpGet("Download/{id}")]
@@ -32,7 +32,7 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             try
             {
-                string caminho = Path.Combine(configuration.GetValue("PdfCaminho", ""), $"{id}.pdf");
+                string caminho = Path.Combine(_appSettings.Value.PdfCaminho, $"{id}.pdf");
                 FileInfo fileinfo = new FileInfo(caminho);
                 byte[] byteArray = System.IO.File.ReadAllBytes(caminho);
                 var arquivo = arquivoBll.ObterArquivoPorID(Guid.Parse(id));
@@ -49,22 +49,6 @@ namespace OrcamentoCotacaoApi.Controllers
             {
                 return StatusCode(500, ex.Message);
             }
-        }
-
-        public class Child
-        {
-            public Data data { get; set; }
-            public List<Child> children { get; set; }
-        }
-
-        public class Data
-        {
-            public string key { get; set; }
-
-            public string name { get; set; }
-            public string size { get; set; }
-            public string type { get; set; }
-            public string descricao { get; set; }
         }
 
         string calculaTamanho(long tamanhoBytes)
@@ -164,7 +148,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             try
             {
-                var file = Path.Combine(configuration.GetValue<string>("PdfCaminho"), $"{idArquivo}.pdf");
+                var file = Path.Combine(_appSettings.Value.PdfCaminho, $"{idArquivo}.pdf");
                 using (var fileStream = new FileStream(file, FileMode.Create))
                 {
                     await arquivo.CopyToAsync(fileStream);
@@ -185,6 +169,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
                 return Ok(new
                 {
+                    id = idArquivo,
                     message = "Arquivo salvo com sucesso.",
                     file
                 });
@@ -196,11 +181,11 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpPost("CriarPasta")]
-        public async Task<IActionResult> CriarPasta(string nome, string idPai)
+        public IActionResult CriarPasta(string nome, string idPai)
         {
             Guid id = Guid.NewGuid();
 
-            arquivoBll.Inserir(new TorcamentoCotacaoArquivos()
+            var saida = arquivoBll.Inserir(new TorcamentoCotacaoArquivos()
             {
                 Id = Guid.NewGuid(),
                 Nome = nome,
@@ -212,6 +197,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             return Ok(new
             {
+                id = saida.Id,
                 message = $"Pasta '{nome}' criada com sucesso."
             });
         }
@@ -249,7 +235,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             if (retorno)
             {
-                return Ok();
+                return Ok(retorno);
             }
             else
             {

@@ -11,6 +11,5 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         public string Expiration { get; set; }
         public string AccessToken { get; set; }
         public string Message { get; set; }
-        public UsuarioResponseViewModel Usuario { get; set; }
     }
 }

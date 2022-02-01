@@ -15,8 +15,6 @@ namespace Arquivo
             this.contextoProvider = contextoProvider;
         }
 
-        
-
         public TorcamentoCotacaoArquivos Atualizar(TorcamentoCotacaoArquivos obj)
         {
             try
@@ -67,7 +65,7 @@ namespace Arquivo
 
                 return true;
             }
-            catch 
+            catch
             {
                 return false;
             }
@@ -104,25 +102,15 @@ namespace Arquivo
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
-                    var saida = from orcamentoCotacaoArquivos in db.TorcamentoCotacaoArquivos
-                                select orcamentoCotacaoArquivos;
-                    //string query = "select id, nome, tamanho, tipo, pai, descricao from [dbo].[ORCAMENTO_COTACAO_ARQUIVOS]";
-                    //var queryParameters = new DynamicParameters();
-
-                    //saida = dbConn.Query<EstruturaVO>(
-                    //    query,
-                    //    queryParameters,
-                    //    commandType: CommandType.Text
-                    //    ).ToList();
-                    return saida.ToList();
+                    return (from orcamentoCotacaoArquivos in db.TorcamentoCotacaoArquivos
+                     select orcamentoCotacaoArquivos)
+                    .ToList();
                 }
             }
             catch (Exception e)
             {
                 throw e;
             }
-
-
         }
 
         public TorcamentoCotacaoArquivos ObterArquivoPorID(Guid id)
@@ -136,15 +124,19 @@ namespace Arquivo
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
-                    var objeto = db.TorcamentoCotacaoArquivos.First(x => x.Id == obj.Id);
-                    db.TorcamentoCotacaoArquivos.Remove(objeto);
-                    db.SaveChanges();
-                    db.transacao.Commit();
+                    var objeto = db.TorcamentoCotacaoArquivos.FirstOrDefault(x => x.Id == obj.Id);
+
+                    if (objeto != null)
+                    {
+                        db.TorcamentoCotacaoArquivos.Remove(objeto);
+                        db.SaveChanges();
+                        db.transacao.Commit();
+                    }
                 }
 
                 return true;
             }
-            catch
+            catch(Exception ex)
             {
                 return false;
             }
