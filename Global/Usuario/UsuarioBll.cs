@@ -33,6 +33,23 @@ namespace Usuario
             throw new NotImplementedException();
         }
 
+        //public List<Tusuario> FiltrarPorPerfil(TusuarioFiltro obj)
+        //{
+        //    var usuario = PorFiltro(obj);
+
+        //    if(usuario != null)
+        //    {
+        //        var db = contextoProvider.GetContextoLeitura();
+        //        //t_PERFIL_X_USUARIO, t_PERFIL e t_PERFIL_ITEM
+        //        //Mas o Id da operação é o mesmo na t_PERFIL_ITEM(campo id_operacao)
+        //        var usuarioFiltrado = from uxl in db.TusuarioXLojas
+        //                              join pu in db.TperfilUsuarios on uxl.Usuario equals pu.Usuario
+        //                              join p in db.Tperfils on pu.Id_perfil equals p.Id
+        //                              join pi in db.TperfilItens on p.Id equals pi.Id_perfil
+        //                              where uxl.Loja == obj.loja
+        //    }
+        //}
+
         public List<Tusuario> PorFiltro(TusuarioFiltro obj)
         {
             using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))

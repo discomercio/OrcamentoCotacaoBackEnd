@@ -29,12 +29,12 @@ namespace OrcamentoCotacaoApi.Controllers
 
         [HttpGet]
         [Route("BuscarParceiros")]
-        public async Task<IEnumerable<OrcamentistaIndicadorResponseViewModel>> BuscarParceiros(string vendedorId)
+        public async Task<IEnumerable<OrcamentistaIndicadorResponseViewModel>> BuscarParceiros(string vendedorId, string loja)
         {
             _logger.LogInformation("Buscando lista de parceiros");
-            var usuarios = _orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { vendedorId = vendedorId });
-//GetParceiros(vendedorId, 1, 1);
-            return _mapper.Map<List<OrcamentistaIndicadorResponseViewModel>>(usuarios);
+            var usuarios = _orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { vendedorId = vendedorId, loja = loja });
+
+            return _mapper.Map<List<OrcamentistaIndicadorResponseViewModel>>(usuarios); ;
         }
 
         //[HttpGet]

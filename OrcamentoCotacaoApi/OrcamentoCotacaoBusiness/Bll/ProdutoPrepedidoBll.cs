@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PrepedidoBusiness.Bll
+namespace OrcamentoCotacaoBusiness.Bll
 {
     public class ProdutoPrepedidoBll
     {
@@ -19,7 +19,7 @@ namespace PrepedidoBusiness.Bll
         {
             this.produtoGeralBll = produtoGeralBll;
         }
-        public async Task<PrepedidoBusiness.Dto.Produto.ProdutoComboDto> ListaProdutosComboApiArclube(string loja, string uf, string tipo)
+        public async Task<Dto.Produto.ProdutoComboDto> ListaProdutosComboApiArclube(string loja, string uf, string tipo)
         {
             Constantes.ContribuinteICMS contribuinteICMSStatus = Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;
             Constantes.ProdutorRural produtorRuralStatus = Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
@@ -28,7 +28,7 @@ namespace PrepedidoBusiness.Bll
             //tratar os produtos para remover os produtos da lista de produtos simples no caso de existir no composto
             aux = await GetProdutosCompostosESimples(loja, aux);
 
-            return PrepedidoBusiness.Dto.Produto.ProdutoComboDto.ProdutoComboDto_De_ProdutoComboDados(aux);
+            return Dto.Produto.ProdutoComboDto.ProdutoComboDto_De_ProdutoComboDados(aux);
         }
 
         private async Task<Produto.Dados.ProdutoComboDados> GetProdutosCompostosESimples(string loja, 

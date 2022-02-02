@@ -41,14 +41,9 @@ namespace OrcamentoCotacaoApi.Controllers
             try
             {
                 _logger.LogInformation("Buscando lista de usuários");
-                //var usuarios = _orcamentistaEIndicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro()
-                //{
-                //    loja = "202"//User.Claims.Where(x => x.Value == "LojaSelecionada").FirstOrDefault().Value
-                //});
                 var usuarios = _usuarioBll.PorFiltro(new InfraBanco.Modelos.Filtros.TusuarioFiltro() { Page = 1, RecordsPerPage = 1 });//GetAll(1, 1);
                 var retorno = _mapper.Map<List<UsuarioResponseViewModel>>(usuarios);
 
-                //var retorno = _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(usuarios);
                 return Ok(JsonSerializer.Serialize(new { data = retorno }));
             }
             catch (Exception ex)
@@ -59,15 +54,15 @@ namespace OrcamentoCotacaoApi.Controllers
 
         [HttpGet]
         [Route("vendedores")]
-        public async Task<IEnumerable<UsuarioResponseViewModel>> BuscarVendedores()
+        public async Task<IEnumerable<UsuarioResponseViewModel>> BuscarVendedores(string loja)
         {
             string vendedorId = User.Identity.Name;
             _logger.LogInformation("Buscando lista de vendedores");
             var usuarios = _usuarioBll.PorFiltro(new InfraBanco.Modelos.Filtros.TusuarioFiltro()
             {
+                loja = loja,
                 bloqueado = false,
-                vendedor_loja = true,
-                vendedor_externo = true
+                vendedor_loja = true
             }) ;
 
             return _mapper.Map<List<UsuarioResponseViewModel>>(usuarios);

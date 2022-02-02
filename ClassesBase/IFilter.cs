@@ -8,41 +8,42 @@ namespace ClassesBase
 {
     public class IFilter
     {
-        public int? Page
-        {
-            get
-            {
-                if (Page.HasValue)
-                {
-                    return Page.Value;
-                }
-                else
-                {
-                    return 1;
-                }
-            }
-            set
-            {
-                Page = value;
-            }
-        }
-        public int? RecordsPerPage
-        {
-            get
-            {
-                if (RecordsPerPage.HasValue)
-                {
-                    return RecordsPerPage;
-                }
-                else
-                {
-                    return 10;
-                }
-            }
-            set
-            {
-                RecordsPerPage = value;
-            }
-        }
+        public int? Page { get; set; }
+        //{
+        // get
+        // {
+        // if (Page.HasValue)
+        // {
+        // return Page.Value;
+        // }
+        // else
+        // {
+        // return 1;
+        // }
+        // }
+        // set
+        // {
+        // Page = value;
+        // }
+        //}
+        public int? RecordsPerPage { get; set; }
+        //{
+        // get
+        // {
+        // if (RecordsPerPage.HasValue)
+        // {
+        // return RecordsPerPage;
+        // }
+        // else
+        // {
+        // return 10;
+        // }
+        // }
+        // set
+        // {
+        // RecordsPerPage = value;
+        // }
+        //}
     }
 }
+

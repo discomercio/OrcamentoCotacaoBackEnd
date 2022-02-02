@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Models.Response;
-using Produto;
 
 namespace OrcamentoCotacaoApi.BaseController
 {
@@ -20,10 +19,11 @@ namespace OrcamentoCotacaoApi.BaseController
     {
         private readonly ILogger<ProdutoController> _logger;
         private readonly IMapper _mapper;
-        private readonly ProdutoGeralBll _produtoBll;
+        private readonly OrcamentoCotacaoBusiness.Bll.ProdutoPrepedidoBll _produtoBll;
         private readonly InfraIdentity.IServicoDecodificarToken _servicoDecodificarToken;
-        
-        public ProdutoController(ILogger<ProdutoController> logger, IMapper mapper, ProdutoGeralBll orcamentoBll,
+
+        public ProdutoController(ILogger<ProdutoController> logger, IMapper mapper,
+            OrcamentoCotacaoBusiness.Bll.ProdutoPrepedidoBll orcamentoBll,
             InfraIdentity.IServicoDecodificarToken servicoDecodificarToken)
         {
             this._logger = logger;
@@ -40,11 +40,11 @@ namespace OrcamentoCotacaoApi.BaseController
         public async Task<IActionResult> BuscarProduto(string loja, string uf, string tipo)
         {
             //para testar: http://localhost:60877/api/produto/buscarProduto
-            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+            string apelido = _servicoDecodificarToken.ObterApelidoOrcamentista(User);
             //nao usamos o apelido
 
-            PrepedidoBusiness.Dto.Produto.ProdutoComboDto ret = await produtoBll.ListaProdutosComboApiArclube(loja, uf, tipo);
-            
+            OrcamentoCotacaoBusiness.Dto.Produto.ProdutoComboDto ret = await _produtoBll.ListaProdutosComboApiArclube(loja, uf, tipo);
+
             return Ok(ret);
         }
     }
