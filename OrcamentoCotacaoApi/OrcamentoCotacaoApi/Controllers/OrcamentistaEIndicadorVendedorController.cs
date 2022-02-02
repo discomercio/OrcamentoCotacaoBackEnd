@@ -13,7 +13,7 @@ namespace OrcamentoCotacaoApi.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class OrcamentistaEIndicadorVendedorController : ControllerBase
+    public class OrcamentistaEIndicadorVendedorController : BaseController
     {
         private readonly OrcamentistaEIndicadorVendedorBll _orcamentistaEindicadorVendedorBll;
         private readonly ILogger<UsuarioController> _logger;

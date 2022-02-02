@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Prepedido.PedidoVisualizacao;
 using PrepedidoBusiness.Bll;
 using OrcamentoCotacaoApi.Utils;
+using OrcamentoCotacaoApi.Controllers;
 
 namespace PrepedidoApi.Controllers
 {
@@ -14,7 +15,7 @@ namespace PrepedidoApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = Autenticacao.RoleAcesso)]
-    public class PedidoController : ControllerBase
+    public class PedidoController : BaseController
     {
         private readonly PedidoVisualizacaoBll pedidoBll;
         private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;

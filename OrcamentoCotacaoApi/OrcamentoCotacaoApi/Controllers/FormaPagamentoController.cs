@@ -11,7 +11,7 @@ namespace OrcamentoCotacaoApi.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class FormaPagamentoController : ControllerBase
+    public class FormaPagamentoController : BaseController
     {
         private readonly ILogger<FormaPagamentoController> _logger;
         private readonly FormaPagtoBll _formaPagtoBll;

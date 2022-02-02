@@ -2,24 +2,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoApi.Utils;
+using OrcamentoCotacaoBusiness.Models.Response;
+using Produto;
 
-namespace PrepedidoApi.Controllers
+namespace OrcamentoCotacaoApi.BaseController
 {
     [ApiExplorerSettings(IgnoreApi = true)]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
-    [Authorize(Roles = Autenticacao.RoleAcesso)]
+    //[Authorize(Roles = Autenticacao.RoleAcesso)]
     public class ProdutoController : Controller
     {
-        private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
-        private readonly PrepedidoBusiness.Bll.ProdutoPrepedidoBll produtoBll;
-        public ProdutoController(PrepedidoBusiness.Bll.ProdutoPrepedidoBll produtoBll, InfraIdentity.IServicoDecodificarToken servicoDecodificarToken)
+        private readonly ILogger<ProdutoController> _logger;
+        private readonly IMapper _mapper;
+        private readonly ProdutoGeralBll _produtoBll;
+        private readonly InfraIdentity.IServicoDecodificarToken _servicoDecodificarToken;
+        
+        public ProdutoController(ILogger<ProdutoController> logger, IMapper mapper, ProdutoGeralBll orcamentoBll,
+            InfraIdentity.IServicoDecodificarToken servicoDecodificarToken)
         {
-            this.produtoBll = produtoBll;
-            this.servicoDecodificarToken = servicoDecodificarToken;
+            this._logger = logger;
+            this._mapper = mapper;
+            this._produtoBll = orcamentoBll;
+            this._servicoDecodificarToken = servicoDecodificarToken;
         }
 
 #if DEBUG

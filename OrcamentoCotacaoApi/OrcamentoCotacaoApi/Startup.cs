@@ -13,6 +13,7 @@ using Newtonsoft.Json.Serialization;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Interfaces;
 using OrcamentoCotacaoBusiness.Services;
+using ProdutoCatalogo;
 using System.Globalization;
 using System.Text;
 using Usuario;
@@ -45,6 +46,7 @@ namespace OrcamentoCotacaoApi
 
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<Configuracoes>(Configuration.GetSection("Configuracoes"));
             services.Configure<Configuracao>(appSettingsSection);
             services.AddScoped<ITokenService, TokenService>();
             //bll
@@ -68,6 +70,7 @@ namespace OrcamentoCotacaoApi
             //services.AddTransient<PrepedidoBusiness.Bll.CepPrepedidoBll, PrepedidoBusiness.Bll.CepPrepedidoBll>();
             services.AddTransient<FormaPagtoBll, FormaPagtoBll>();
             services.AddTransient<UsuarioBll, UsuarioBll>();
+            services.AddTransient<ProdutoCatalogoBll, ProdutoCatalogoBll>();
             //services.AddTransient<PrepedidoBusiness.Bll.FormaPagtoPrepedidoBll, PrepedidoBusiness.Bll.FormaPagtoPrepedidoBll>();
             //services.AddTransient<Prepedido.FormaPagto.ValidacoesFormaPagtoBll, Prepedido.FormaPagto.ValidacoesFormaPagtoBll>();
             //services.AddTransient<Produto.CoeficienteBll, Produto.CoeficienteBll>();
