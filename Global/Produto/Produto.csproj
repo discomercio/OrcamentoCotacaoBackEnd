@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Configurations>Debug;Release_Banco_Pedido;Release_Banco_Prepedido</Configurations>
+    <Configurations>Debug;Release_Banco_Pedido;Release_Banco_Prepedido;Release_OrcamentoCotacao;Debug_OrcamentoCotacao</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Banco_Prepedido|AnyCPU'">

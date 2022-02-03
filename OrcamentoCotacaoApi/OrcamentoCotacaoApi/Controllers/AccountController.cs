@@ -74,7 +74,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 _lojaBll),
                 out bool unidade_negocio_desconhecida);
 
-            if (string.IsNullOrEmpty(objUsuarioLogin.Token))
+            if (objUsuarioLogin == null)
             {
                 return BadRequest(new LoginResponseViewModel
                 {
