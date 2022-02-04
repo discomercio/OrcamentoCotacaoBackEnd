@@ -62,7 +62,7 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             var appSettingsSection = configuration.GetSection("AppSettings");
             var appSettings = appSettingsSection.Get<OrcamentoCotacaoApi.Utils.Configuracao>();
-            string apelido = login.Login;
+            string apelido = login.Login.ToUpper();
             string senha = login.Senha;
             UsuarioLogin objUsuarioLogin = new UsuarioLogin()
             {
