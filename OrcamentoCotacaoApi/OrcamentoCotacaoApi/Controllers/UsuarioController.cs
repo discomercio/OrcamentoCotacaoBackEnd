@@ -58,17 +58,13 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             string vendedorId = User.Identity.Name;
             _logger.LogInformation("Buscando lista de vendedores");
-            var usuarios = _usuarioBll.PorFiltro(new InfraBanco.Modelos.Filtros.TusuarioFiltro()
-            {
-                loja = loja,
-                bloqueado = false,
-                vendedor_loja = true
-            }) ;
+
+            var usuarios = await _usuarioBll.FiltrarPorPerfil(loja);
 
             return _mapper.Map<List<UsuarioResponseViewModel>>(usuarios);
         }
 
-       
+
         //[HttpGet]
         //[Route("vendedores-parceiros")]
         //public async Task<IEnumerable<UsuarioResponseViewModel>> BuscarVendedoresDosParceiros(string vendedorId, string parceiroId)

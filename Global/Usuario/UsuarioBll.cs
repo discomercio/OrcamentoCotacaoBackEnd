@@ -33,22 +33,22 @@ namespace Usuario
             throw new NotImplementedException();
         }
 
-        //public List<Tusuario> FiltrarPorPerfil(TusuarioFiltro obj)
-        //{
-        //    var usuario = PorFiltro(obj);
+        public async Task<List<Tusuario>> FiltrarPorPerfil(string loja)
+        {
+            var db = contextoProvider.GetContextoLeitura();
 
-        //    if(usuario != null)
-        //    {
-        //        var db = contextoProvider.GetContextoLeitura();
-        //        //t_PERFIL_X_USUARIO, t_PERFIL e t_PERFIL_ITEM
-        //        //Mas o Id da operação é o mesmo na t_PERFIL_ITEM(campo id_operacao)
-        //        var usuarioFiltrado = from uxl in db.TusuarioXLojas
-        //                              join pu in db.TperfilUsuarios on uxl.Usuario equals pu.Usuario
-        //                              join p in db.Tperfils on pu.Id_perfil equals p.Id
-        //                              join pi in db.TperfilItens on p.Id equals pi.Id_perfil
-        //                              where uxl.Loja == obj.loja
-        //    }
-        //}
+            var usuarioFiltrado = await(from u in db.Tusuarios
+                                  join uxl in db.TusuarioXLojas on u.Usuario equals uxl.Usuario
+                                  join pu in db.TperfilUsuarios on uxl.Usuario equals pu.Usuario
+                                  join p in db.Tperfils on pu.Id_perfil equals p.Id
+                                  join pi in db.TperfilItens on p.Id equals pi.Id_perfil
+                                  where uxl.Loja == loja &&
+                                        pi.Id_operacao == Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO &&
+                                        u.Bloqueado == 0
+                                  select u).Distinct().ToListAsync();
+
+            return usuarioFiltrado;
+        }
 
         public List<Tusuario> PorFiltro(TusuarioFiltro obj)
         {

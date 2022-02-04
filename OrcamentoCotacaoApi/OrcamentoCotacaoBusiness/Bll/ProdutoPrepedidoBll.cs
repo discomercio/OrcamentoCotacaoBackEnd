@@ -1,5 +1,7 @@
-﻿using InfraBanco.Constantes;
+﻿using AutoMapper;
+using InfraBanco.Constantes;
 using InfraBanco.Modelos;
+using OrcamentoCotacaoBusiness.Models.Response;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using Produto;
 using Produto.RegrasCrtlEstoque;
@@ -14,66 +16,71 @@ namespace OrcamentoCotacaoBusiness.Bll
     public class ProdutoPrepedidoBll
     {
         private readonly ProdutoGeralBll produtoGeralBll;
+        private readonly IMapper _mapper;
 
-        public ProdutoPrepedidoBll(Produto.ProdutoGeralBll produtoGeralBll)
+        public ProdutoPrepedidoBll(Produto.ProdutoGeralBll produtoGeralBll, IMapper mapper)
         {
             this.produtoGeralBll = produtoGeralBll;
+            _mapper = mapper;
         }
-        public async Task<Dto.Produto.ProdutoComboDto> ListaProdutosComboApiArclube(string loja, string uf, string tipo)
+        public async Task<ProdutoResponseViewModel> ListaProdutosComboApiArclube(string loja, string uf, string tipo)
         {
             Constantes.ContribuinteICMS contribuinteICMSStatus = Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;
             Constantes.ProdutorRural produtorRuralStatus = Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
-            
-            var aux = await produtoGeralBll.ListaProdutosComboDados(loja, uf, tipo, contribuinteICMSStatus, produtorRuralStatus);
-            //tratar os produtos para remover os produtos da lista de produtos simples no caso de existir no composto
-            aux = await GetProdutosCompostosESimples(loja, aux);
 
-            return Dto.Produto.ProdutoComboDto.ProdutoComboDto_De_ProdutoComboDados(aux);
+            var aux = await produtoGeralBll.ListaProdutosComboDados(loja, uf, tipo, contribuinteICMSStatus, produtorRuralStatus);
+            return await GetProdutosCompostosESimples(aux);
         }
 
-        private async Task<Produto.Dados.ProdutoComboDados> GetProdutosCompostosESimples(string loja, 
-            Produto.Dados.ProdutoComboDados produtoComboDados)
+        private async Task<ProdutoResponseViewModel> GetProdutosCompostosESimples(Produto.Dados.ProdutoComboDados produtoComboDados)
         {
-            if (produtoComboDados != null)
+            if (produtoComboDados == null) return null;
+
+            ProdutoResponseViewModel produtoResponseViewModel = new ProdutoResponseViewModel();
+            produtoResponseViewModel.ProdutosCompostos = new List<ProdutoCompostoResponseViewModel>();
+            produtoResponseViewModel.ProdutosSimples = new List<ProdutoSimplesResponseViewModel>();
+
+            List<Produto.Dados.ProdutoDados> produtoDadossRemove = new List<Produto.Dados.ProdutoDados>();
+            List<ProdutoCompostoResponseViewModel> produtoCompostosRemove = new List<ProdutoCompostoResponseViewModel>();
+
+            foreach (Produto.Dados.ProdutoCompostoDados composto in produtoComboDados.ProdutoCompostoDados)
             {
-                var produtosGroup = produtoComboDados.ProdutoCompostoDados.GroupBy(x => x.PaiProduto).Select(x => x);
+                var produtoCompostoResponse = ProdutoCompostoResponseViewModel.ConverterProdutoCompostoDados(composto);
 
-                foreach (var agrupados in produtosGroup)
+                foreach (var filhos in composto.Filhos)
                 {
-                    //var filhos = agrupados.Select(x => x).ToList();
+                    var filho = produtoComboDados.ProdutoDados
+                        .Where(x => x.Produto == filhos.Produto && x.Fabricante == filhos.Fabricante)
+                        .Select(x => x)
+                        .FirstOrDefault();
 
-                    //produtoCompostoResponse = _mapper.Map<ProdutoCompostoResponseViewModel>(filhos[0]);
-                    //produtoCompostoResponse.PaiPrecoTotal = 0;
-                    //produtoCompostoResponse.Filhos = new List<ProdutoSimplesResponseViewModel>();
-                    //var pai = produtosSimples.FirstOrDefault(x => x.Produto == agrupados.Key);
-                    //if (pai != null)
-                    //    produtosSimplesCopy.Remove(pai);
+                    if (filho == null)
+                    {
+                        //o produto pai não deve estar na lista de compostos
+                        produtoCompostosRemove.Add(produtoCompostoResponse);
+                        break;
+                    }
 
-                    //foreach (var filho in filhos)
-                    //{
-                    //    var f = produtosSimples.Where(x => x.Produto == filho.ProdutoFilho).Select(x => x).FirstOrDefault();
-                    //    if (f == null)
-                    //    {
-                    //        produtoCompostoResponse = null;
-                    //        break;
-                    //    }
-
-                    //    var filhoResponse = _mapper.Map<ProdutoSimplesResponseViewModel>(f);
-                    //    var precoListaXCoeficiente = filhoResponse.PrecoLista * (decimal)filhoResponse.CoeficienteDeCalculo;
-                    //    produtoCompostoResponse.PaiPrecoTotal += Math.Round(precoListaXCoeficiente, 2);
-                    //    produtoCompostoResponse.PaiPrecoTotalAVista += filhoResponse.PrecoLista;//analisar o produto simples
-                    //    produtoCompostoResponse.Filhos.Add(filhoResponse);
-                    //    produtosSimplesCopy.Remove(f);
-                    //}
-
-                    //if (produtoCompostoResponse != null)
-                    //    produtosCompostosResponse.Add(produtoCompostoResponse);
+                    produtoCompostoResponse.Filhos.Add(ProdutoSimplesResponseViewModel.ConverterProdutoDados(filho, filhos.Qtde));
+                    produtoDadossRemove.Add(filho);
                 }
+                produtoResponseViewModel.ProdutosCompostos.Add(produtoCompostoResponse);
+
+                var paiRemove = produtoComboDados.ProdutoDados
+                    .Where(x => x.Produto == composto.PaiProduto)
+                    .Select(x => x).FirstOrDefault();
+                if (paiRemove != null) produtoDadossRemove.Add(paiRemove);
             }
-            //ProdutoResponseViewModel produtoResponseViewModel = new ProdutoResponseViewModel();
-            //produtoResponseViewModel.ProdutosCompostos = produtosCompostosResponse;
-            //produtoResponseViewModel.ProdutosSimples = _mapper.Map<List<ProdutoSimplesResponseViewModel>>(produtosSimplesCopy);
-            return produtoComboDados;
+
+            produtoComboDados.ProdutoDados.RemoveAll(x => produtoDadossRemove.Any(c => x.Produto == c.Produto));
+            produtoResponseViewModel.ProdutosCompostos.RemoveAll(x => produtoCompostosRemove.Any(c => x.PaiProduto == c.PaiProduto));
+
+            foreach (var produto in produtoComboDados.ProdutoDados)
+            {
+                produtoResponseViewModel.ProdutosSimples.Add(ProdutoSimplesResponseViewModel.ConverterProdutoDados(produto, null));
+            }
+
+            return await Task.FromResult(produtoResponseViewModel);
         }
     }
 }

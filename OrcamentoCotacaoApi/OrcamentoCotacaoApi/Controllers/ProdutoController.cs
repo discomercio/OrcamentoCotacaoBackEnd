@@ -43,7 +43,7 @@ namespace OrcamentoCotacaoApi.BaseController
             string apelido = _servicoDecodificarToken.ObterApelidoOrcamentista(User);
             //nao usamos o apelido
 
-            OrcamentoCotacaoBusiness.Dto.Produto.ProdutoComboDto ret = await _produtoBll.ListaProdutosComboApiArclube(loja, uf, tipo);
+            var ret = await _produtoBll.ListaProdutosComboApiArclube(loja, uf, tipo);
 
             return Ok(ret);
         }

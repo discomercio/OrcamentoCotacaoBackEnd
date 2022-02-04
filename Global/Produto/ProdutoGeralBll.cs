@@ -121,6 +121,7 @@ namespace Produto
                                                                   fabricante_pai = c.Fabricante,
                                                                   fabricante_pai_nome = fab.Nome,
                                                                   produto_pai = c.Produto,
+                                                                  pai_descricao = c.Descricao_Html,
                                                                   valor = (decimal)pl.Preco_Lista,
                                                                   qtde = (int)pci.Qtde,
                                                                   produtosFilhos = new ProdutoFilhoDados
@@ -142,7 +143,8 @@ namespace Produto
                                              PaiFabricante = g.OrderBy(r => r.fabricante_pai).Select(r => r.fabricante_pai).FirstOrDefault(),
                                              PaiFabricanteNome = g.OrderBy(r => r.fabricante_pai_nome).Select(r => r.fabricante_pai_nome).FirstOrDefault(),
                                              PaiProduto = g.OrderBy(r => r.produto_pai).Select(r => r.produto_pai).FirstOrDefault(),
-                                             Preco_total_Itens = g.Sum(r => r.qtde * r.valor),
+                                             PaiDescricao = g.OrderBy(r => r.pai_descricao).Select(r => r.pai_descricao).FirstOrDefault(),
+                                             PaiPrecoTotal = g.Sum(r => r.qtde * r.valor),
                                              Filhos = g.Select(r => r.produtosFilhos).ToList()
                                          };
 
