@@ -19,8 +19,16 @@ namespace InfraBanco
 
         public ContextoBd GetContextoLeitura()
         {
+            try
+            {
+                return new ContextoBd(new ContextoBdBasico(Opt));
+
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
             //para leitura, cada leitura com uma conexao nova
-            return new ContextoBd(new ContextoBdBasico(Opt));
         }
         public ContextoBdGravacao GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle bloqueioTControle)
         {

@@ -1,36 +1,142 @@
-﻿using ClassesBase;
-using InfraBanco.Modelos;
+﻿using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
+using Microsoft.EntityFrameworkCore;
+using Orcamento.Dto;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Orcamento
 {
-    public class OrcamentoBll : BaseData<Torcamento, TorcamentoFiltro>
+    public class OrcamentoBll //: BaseData<Torcamento, TorcamentoFiltro>
     {
-        public Torcamento Atualizar(Torcamento obj)
+        private readonly InfraBanco.ContextoBdProvider contextoProvider;
+
+        public OrcamentoBll(InfraBanco.ContextoBdProvider contextoProvider)
         {
-            throw new NotImplementedException();
+            this.contextoProvider = contextoProvider;
         }
 
-        public bool Excluir(Torcamento obj)
+        public List<OrcamentoCotacaoListaDto> PorFiltro(TorcamentoFiltro obj)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+                {
+                    if (obj.Origem == "ORCAMENTOS")
+                    {
+                        return (from c in db.TorcamentoCotacao
+                                where c.DataCadastro > DateTime.Now.AddDays(-60)
+                                        && obj.Loja.Contains(c.IdLoja)
+                                orderby c.DataCadastro descending
+                                select new OrcamentoCotacaoListaDto
+                                {
+                                    NumOrcamento = c.Id.ToString("0000"),
+                                    NumPedido = null,
+                                    Cliente_Obra = $"{c.NomeCliente} - {c.NomeObra}",
+                                    Vendedor = c.Vendedor,
+                                    Parceiro = c.Parceiro,
+                                    ParceiroVendedor = c.VendedorParceiro,
+                                    Valor = "0",
+                                    Status = c.TorcamentoCotacaoStatus.Descricao,
+                                    VistoEm = "",
+                                    Pendente = c.IdStatus == 7 ? "sim" : "nao",
+                                }).ToList();
+                    }
+                    else if (obj.Origem == "PENDENTES") //ORCAMENTOS
+                    {
+                        return (from c in db.TorcamentoCotacao
+                                where c.DataCadastro > DateTime.Now.AddDays(-60)
+                                        && obj.Loja.Contains(c.IdLoja)
+                                        && c.IdStatus == 7 //PENDENTE
+                                orderby c.DataCadastro descending
+                                select new OrcamentoCotacaoListaDto
+                                {
+                                    NumOrcamento = c.Id.ToString("0000"),
+                                    NumPedido = null,
+                                    Cliente_Obra = $"{c.NomeCliente} - {c.NomeObra}",
+                                    Vendedor = c.Vendedor,
+                                    Parceiro = c.Parceiro,
+                                    ParceiroVendedor = c.VendedorParceiro,
+                                    Valor = "0",
+                                    Status = c.TorcamentoCotacaoStatus.Descricao,
+                                    VistoEm = "",
+                                    Pendente = c.IdStatus == 7 ? "sim" : "nao",
+                                }).ToList();
+                    }
+                    else //if (obj.Origem == "PEDIDOS")
+                    {
+                        return (from c in db.Tpedidos
+                                where c.Data > DateTime.Now.AddDays(-60) //&& c.Loja == obj.Loja
+                                orderby c.Data descending
+                                select new OrcamentoCotacaoListaDto
+                                {
+                                    NumOrcamento = c.Orcamento,
+                                    NumPedido = c.Pedido,
+                                    Cliente_Obra = $"{c.Tcliente.Nome}",
+                                    Vendedor = c.Vendedor,
+                                    Parceiro = "",
+                                    ParceiroVendedor = "",
+                                    Valor = c.Vl_Total_Familia.ToString(),
+                                    Status = c.St_Pagto,
+                                    VistoEm = "",
+                                    Pendente = "",
+                                }).ToList();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
-        public Torcamento Inserir(Torcamento obj)
+        public async Task<List<TorcamentoCotacaoStatus>> ObterListaStatus(TorcamentoFiltro obj)
         {
-            throw new NotImplementedException();
+            using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                if (obj.Origem == "ORCAMENTOS")
+                {
+                    return await db.TorcamentoCotacaoStatus
+                            .OrderBy(x => x.Descricao)
+                            .ToListAsync();
+                }
+                else //if (obj.Origem == "PENDENTES") //ORCAMENTOS
+                {
+                    return await db.TorcamentoCotacaoStatus
+                            .Where(x => x.Descricao == "Pendente")
+                            .ToListAsync();
+                }
+                //else //if (obj.Origem == "PEDIDOS")
+                //{
+                //    return (from c in db.Tpedidos
+                //            select new TorcamentoCotacaoStatus
+                //            {
+                //                Id = c.st
+                //            }).ToList();
+                //}
+            }
         }
 
-        public List<Torcamento> PorFiltro(TorcamentoFiltro obj)
-        {
-            throw new NotImplementedException();
-        }
+        //public Torcamento Atualizar(Torcamento obj)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public Torcamento GetById(string id)
-        {
-            throw new NotImplementedException();
-        }
+        //public bool Excluir(Torcamento obj)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public Torcamento Inserir(Torcamento obj)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //public Torcamento GetById(string id)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
