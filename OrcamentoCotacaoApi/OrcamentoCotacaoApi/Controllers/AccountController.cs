@@ -164,6 +164,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
         [HttpGet]
         [Route("permissoes")]
+        [Authorize]
         public async Task<LoginResponseViewModel> BuscarPermissoes()
         {
             var login = User.Identity.Name;

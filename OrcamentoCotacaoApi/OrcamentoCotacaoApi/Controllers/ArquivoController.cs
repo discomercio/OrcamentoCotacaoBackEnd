@@ -1,5 +1,6 @@
 ﻿using Arquivo.Dto;
 using InfraBanco.Modelos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,7 @@ namespace OrcamentoCotacaoApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class ArquivoController : BaseController
     {
         private readonly Arquivo.ArquivoBll arquivoBll;

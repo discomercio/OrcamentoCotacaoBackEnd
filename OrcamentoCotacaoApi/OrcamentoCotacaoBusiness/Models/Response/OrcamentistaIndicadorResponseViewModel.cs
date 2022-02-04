@@ -6,6 +6,6 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 {
     public class OrcamentistaIndicadorResponseViewModel : IViewModelResponse
     {
-        public string Nome { get; set; }
+        public string Razao_Social_Nome { get; set; }
     }
 }

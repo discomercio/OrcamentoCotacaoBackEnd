@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using InfraBanco.Modelos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -16,6 +17,7 @@ namespace OrcamentoCotacaoApi.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize]
     public class OrcamentoOpcaoController : BaseController
     {
         private readonly ILogger<OrcamentoController> _logger;
