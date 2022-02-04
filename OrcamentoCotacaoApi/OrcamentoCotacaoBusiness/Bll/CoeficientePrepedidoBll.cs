@@ -1,5 +1,5 @@
 ﻿using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
-using PrepedidoBusiness.Dto.Produto;
+using OrcamentoCotacaoBusiness.Dto.Produto;
 using Produto;
 using System;
 using System.Collections.Generic;

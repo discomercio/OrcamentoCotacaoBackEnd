@@ -211,7 +211,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/prepedido/buscarCoeficiente
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            IEnumerable<PrepedidoBusiness.Dto.Produto.CoeficienteDto> ret = await coeficientePrepedidoBll.BuscarListaCoeficientes(lstProdutos);
+            IEnumerable<OrcamentoCotacaoBusiness.Dto.Produto.CoeficienteDto> ret = await coeficientePrepedidoBll.BuscarListaCoeficientes(lstProdutos);
 
             return Ok(ret);
         }
@@ -225,7 +225,7 @@ namespace PrepedidoApi.Controllers
             //para testar: http://localhost:60877/api/prepedido/buscarCoeficiente
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            IEnumerable<IEnumerable<PrepedidoBusiness.Dto.Produto.CoeficienteDto>> ret = await coeficientePrepedidoBll.BuscarListaCoeficientesFornecedores(lstFornecedores);
+            IEnumerable<IEnumerable<OrcamentoCotacaoBusiness.Dto.Produto.CoeficienteDto>> ret = await coeficientePrepedidoBll.BuscarListaCoeficientesFornecedores(lstFornecedores);
 
             return Ok(ret);
         }

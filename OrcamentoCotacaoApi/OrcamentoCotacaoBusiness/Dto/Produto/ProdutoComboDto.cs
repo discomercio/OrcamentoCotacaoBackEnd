@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PrepedidoBusiness.Dto.Produto
+namespace OrcamentoCotacaoBusiness.Dto.Produto
 {
     public class ProdutoComboDto
     {
@@ -15,8 +15,8 @@ namespace PrepedidoBusiness.Dto.Produto
             if (aux == null) return null;
             return new ProdutoComboDto()
             {
-                ProdutoDto = PrepedidoBusiness.Dto.Produto.ProdutoDto.ProdutoDtoLista_De_ProdutoDados(aux.ProdutoDados),
-                ProdutoCompostoDto = PrepedidoBusiness.Dto.Produto.ProdutoCompostoDto.ProdutoCompostoDtoLista_De_ProdutoCompostoDados(aux.ProdutoCompostoDados)
+                ProdutoDto = Produto.ProdutoDto.ProdutoDtoLista_De_ProdutoDados(aux.ProdutoDados),
+                ProdutoCompostoDto = Produto.ProdutoCompostoDto.ProdutoCompostoDtoLista_De_ProdutoCompostoDados(aux.ProdutoCompostoDados)
             };
         }
     }

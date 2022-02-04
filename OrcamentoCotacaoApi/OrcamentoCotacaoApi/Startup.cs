@@ -83,6 +83,7 @@ namespace OrcamentoCotacaoApi
             services.AddTransient<Orcamento.OrcamentoOpcaoBll, Orcamento.OrcamentoOpcaoBll>();
             services.AddTransient<Arquivo.ArquivoBll, Arquivo.ArquivoBll>();
             services.AddTransient<Loja.LojaBll, Loja.LojaBll>();
+            services.AddTransient<OrcamentoCotacaoBusiness.Bll.ProdutoPrepedidoBll, OrcamentoCotacaoBusiness.Bll.ProdutoPrepedidoBll>();
             //services.AddTransient<PrepedidoBusiness.Bll.ProdutoPrepedidoBll, PrepedidoBusiness.Bll.ProdutoPrepedidoBll>();
             //services.AddTransient<Cep.CepBll, Cep.CepBll>();
             //services.AddTransient<PrepedidoBusiness.Bll.CepPrepedidoBll, PrepedidoBusiness.Bll.CepPrepedidoBll>();

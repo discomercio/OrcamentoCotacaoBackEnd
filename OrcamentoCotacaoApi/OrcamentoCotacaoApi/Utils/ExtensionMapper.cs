@@ -14,7 +14,8 @@ namespace OrcamentoCotacaoApi.Utils
             services.AddAutoMapper(x =>
             {
                 x.AddProfile(new UsuarioMapper());
-                x.AddProfile(new OrcamentistaEIndicadorMapper());
+                x.AddProfile(new OrcamentistaIndicadorMapper());
+                x.AddProfile(new OrcamentistaEIndicadorVendedorMapper());
                 //x.AddProfile(new OrcamentoMapper());
                 //x.AddProfile(new OrcamentoOpcaoMapper());
                 //x.AddProfile(new ProdutoMapper());

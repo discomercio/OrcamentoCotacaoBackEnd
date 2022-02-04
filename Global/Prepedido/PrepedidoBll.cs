@@ -805,8 +805,9 @@ namespace Prepedido
             Tparametro parametroRegra = await Util.BuscarRegistroParametro(Constantes.ID_PARAMETRO_Flag_Orcamento_ConsisteDisponibilidadeEstoqueGlobal,
                 contextoProvider);
             //esse metodo tb tras a sigla da pessoa
-            string tipoPessoa = UtilsProduto.MultiCdRegraDeterminaPessoa(prePedido.DadosCliente.Tipo, prePedido.DadosCliente.Contribuinte_Icms_Status,
-                prePedido.DadosCliente.ProdutorRural);
+            string tipoPessoa = UtilsProduto.MultiCdRegraDeterminaPessoa(prePedido.DadosCliente.Tipo,
+                (Constantes.ContribuinteICMS)prePedido.DadosCliente.Contribuinte_Icms_Status,
+                (Constantes.ProdutorRural)prePedido.DadosCliente.ProdutorRural);
             string descricao = Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo);
 
             //List<RegrasBll> regraCrtlEstoque = new List<RegrasBll>();
@@ -1629,7 +1630,8 @@ namespace Prepedido
 
             //buscar a sigla tipo pessoa
             var tipo_pessoa = UtilsProduto.MultiCdRegraDeterminaPessoa(prePedido.DadosCliente.Tipo,
-                prePedido.DadosCliente.Contribuinte_Icms_Status, prePedido.DadosCliente.ProdutorRural);
+                (Constantes.ContribuinteICMS)prePedido.DadosCliente.Contribuinte_Icms_Status,
+                (Constantes.ProdutorRural)prePedido.DadosCliente.ProdutorRural);
             if (string.IsNullOrEmpty(tipo_pessoa))
             {
                 lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf +

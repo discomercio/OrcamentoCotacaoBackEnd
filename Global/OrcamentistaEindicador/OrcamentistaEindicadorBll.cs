@@ -41,6 +41,7 @@ namespace OrcamentistaEindicador
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
                     var saida = (from parceiro in db.TorcamentistaEindicadors
+                                 where parceiro.Loja == obj.loja
                                  select parceiro);
 
                     if (!string.IsNullOrEmpty(obj.apelido))
@@ -53,7 +54,8 @@ namespace OrcamentistaEindicador
                     }
                     if (!string.IsNullOrEmpty(obj.vendedorId))
                     {
-                        saida = saida.Join(db.TorcamentistaEIndicadorVendedor, x => x.Apelido, y => y.IdIndicador, (x, y) => x).Where(x => x.Apelido == obj.vendedorId);
+                        saida = saida.Where(x => x.Vendedor == obj.vendedorId);
+                        //saida = saida.Join(db.TorcamentistaEIndicadorVendedor, x => x.Apelido, y => y.IdIndicador, (x, y) => x).Where(x => x.Apelido == obj.vendedorId);
                     }
 
                     return saida.ToList();
