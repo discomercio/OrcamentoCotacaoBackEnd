@@ -39,14 +39,14 @@ namespace OrcamentoCotacaoApi.Controllers
             return _mapper.Map<List<OrcamentistaIndicadorResponseViewModel>>(usuarios);
         }
 
-        //[HttpGet]
-        //[Route("OrcamentistaEIndicador")]
-        //public async Task<IEnumerable<UsuarioResponseViewModel>> BuscarParceirosByVendedor(string vendedor)
-        //{
-        //    _logger.LogInformation("Buscando lista de parceiros por vendedor");
-        //    var usuarios = await _orcamentistaEindicadorBll.GetParceirosByVendedor(vendedor);
+        [HttpGet]
+        [Route("parceiros-por-vendedor")]
+        public async Task<IEnumerable<OrcamentistaIndicadorResponseViewModel>> BuscarParceirosByVendedor(string vendedor)
+        {
+            _logger.LogInformation("Buscando lista de parceiros por vendedor");
+            var usuarios = _orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { vendedorId = vendedor }).ToList();
 
-        //    return _mapper.Map<List<UsuarioResponseViewModel>>(usuarios);
-        //}
+            return _mapper.Map<List<OrcamentistaIndicadorResponseViewModel>>(usuarios);
+        }
     }
 }
