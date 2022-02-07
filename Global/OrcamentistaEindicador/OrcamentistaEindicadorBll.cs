@@ -41,8 +41,12 @@ namespace OrcamentistaEindicador
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
                     var saida = (from parceiro in db.TorcamentistaEindicadors
-                                 where parceiro.Loja == obj.loja
                                  select parceiro);
+
+                    if (!string.IsNullOrEmpty(obj.loja))
+                    {
+                        saida = saida.Where(x => x.Loja == obj.loja);
+                    }
 
                     if (!string.IsNullOrEmpty(obj.apelido))
                     {

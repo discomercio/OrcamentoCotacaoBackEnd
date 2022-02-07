@@ -18,11 +18,14 @@ namespace InfraIdentity
         //se o usuário esta bloqueado ou se iremos redirecionar para alterar a senha
         public int IdErro { get; set; }
         public string Email { get; set; }
-        public string TipoUsuario { get; set; }
+        public int? TipoUsuario { get; set; }
         public string IdParceiro { get; set; }
         public string IdVendedor { get; set; }
         public string VendedorResponsavel { get; set; }
         public string Token { get; set; }
         public List<string> Permissoes { get; set; }
+        public DateTime? Dt_Ult_Alteracao_Senha { get; set; }
+        public bool Bloqueado { get; set; }
+        public string Datastamp { get; set; }
     }
 }

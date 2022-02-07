@@ -31,7 +31,7 @@ namespace OrcamentoCotacaoBusiness.Services
                 {
                     new Claim(ClaimTypes.Name, usuario.Nome),
                     new Claim("Email", !string.IsNullOrEmpty(usuario.Email)? usuario.Email:""),
-                    new Claim("TipoUsuario", !string.IsNullOrEmpty(usuario.TipoUsuario)?usuario.TipoUsuario:""),
+                    new Claim("TipoUsuario", usuario.TipoUsuario.HasValue?usuario.TipoUsuario.Value.ToString():""),
                     new Claim("Parceiro", !string.IsNullOrEmpty(usuario.IdParceiro)?usuario.IdParceiro:""),
                     new Claim("Vendedor", !string.IsNullOrEmpty(usuario.IdVendedor)?usuario.IdVendedor:""),
                     new Claim("Lojas", !string.IsNullOrEmpty(usuario.Loja)?usuario.Loja:""),
