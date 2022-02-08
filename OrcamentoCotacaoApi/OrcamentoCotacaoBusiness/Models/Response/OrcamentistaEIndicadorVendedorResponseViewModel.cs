@@ -12,7 +12,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         [JsonProperty("email")]
         public string Email { get; set; }
         [JsonProperty("indicador")]
-        public string Indicador { get; set; }
+        public string IdIndicador { get; set; }
         [JsonProperty("ativo")]
         public bool Ativo { get; set; }
         [JsonProperty("id")]
