@@ -16,8 +16,8 @@ namespace OrcamentoCotacaoApi.Controllers
                 var obj = (((ClaimsIdentity)User.Identity).Claims.Where(x => x.Type == "UsuarioLogin")).FirstOrDefault();
                 if (obj != null)
                 {
-                    var teste = JsonSerializer.Deserialize< UsuarioLogin>(obj.Value.ToString());
-                    return teste;
+                    var usuarioLogin = JsonSerializer.Deserialize<UsuarioLogin>(obj.Value.ToString());
+                    return usuarioLogin;
                 }
                 return new UsuarioLogin();
             }
