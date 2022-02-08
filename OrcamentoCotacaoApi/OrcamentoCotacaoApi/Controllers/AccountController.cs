@@ -62,7 +62,7 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             var appSettingsSection = configuration.GetSection("AppSettings");
             var appSettings = appSettingsSection.Get<OrcamentoCotacaoApi.Utils.Configuracao>();
-            string apelido = login.Login;
+            string apelido = login.Login.ToUpper();
             string senha = login.Senha;
             UsuarioLogin objUsuarioLogin = new UsuarioLogin()
             {
@@ -74,7 +74,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 _lojaBll),
                 out bool unidade_negocio_desconhecida);
 
-            if (string.IsNullOrEmpty(objUsuarioLogin.Token))
+            if (objUsuarioLogin == null)
             {
                 return BadRequest(new LoginResponseViewModel
                 {
@@ -164,6 +164,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
         [HttpGet]
         [Route("permissoes")]
+        [Authorize]
         public async Task<LoginResponseViewModel> BuscarPermissoes()
         {
             var login = User.Identity.Name;

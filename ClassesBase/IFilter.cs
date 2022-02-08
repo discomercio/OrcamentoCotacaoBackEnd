@@ -10,39 +10,39 @@ namespace ClassesBase
     {
         public int? Page { get; set; }
         //{
-        // get
-        // {
-        // if (Page.HasValue)
-        // {
-        // return Page.Value;
-        // }
-        // else
-        // {
-        // return 1;
-        // }
-        // }
-        // set
-        // {
-        // Page = value;
-        // }
+        //    get
+        //    {
+        //        if (Page.HasValue)
+        //        {
+        //            return Page.Value;
+        //        }
+        //        else
+        //        {
+        //            return 1;
+        //        }
+        //    }
+        //    set
+        //    {
+        //        Page = value;
+        //    }
         //}
         public int? RecordsPerPage { get; set; }
         //{
-        // get
-        // {
-        // if (RecordsPerPage.HasValue)
-        // {
-        // return RecordsPerPage;
-        // }
-        // else
-        // {
-        // return 10;
-        // }
-        // }
-        // set
-        // {
-        // RecordsPerPage = value;
-        // }
+        //    get
+        //    {
+        //        if (RecordsPerPage.HasValue)
+        //        {
+        //            return RecordsPerPage;
+        //        }
+        //        else
+        //        {
+        //            return 10;
+        //        }
+        //    }
+        //    set
+        //    {
+        //        RecordsPerPage = value;
+        //    }
         //}
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using InfraBanco.Modelos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentistaEindicador;
@@ -16,6 +17,7 @@ namespace OrcamentoCotacaoApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class UsuarioController : BaseController
     {
         private readonly ILogger<UsuarioController> _logger;

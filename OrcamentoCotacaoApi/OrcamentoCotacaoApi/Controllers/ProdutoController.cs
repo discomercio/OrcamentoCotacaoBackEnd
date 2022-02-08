@@ -14,6 +14,7 @@ namespace OrcamentoCotacaoApi.BaseController
     [ApiExplorerSettings(IgnoreApi = true)]
     [Route("[controller]")]
     [ApiController]
+    [Authorize]
     //[Authorize(Roles = Autenticacao.RoleAcesso)]
     public class ProdutoController : Controller
     {
