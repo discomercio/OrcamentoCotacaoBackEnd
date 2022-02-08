@@ -18,29 +18,15 @@ namespace Produto
             this.contextoProvider = contextoProvider;
         }
 
-        public async Task<ProdutoComboDados> ListaProdutosComboDados(string loja, string id_cliente, string cpf_cnpj)
+        public async Task<ProdutoComboDados> ListaProdutosComboDados(string loja, string uf, string tipo, 
+            Constantes.ContribuinteICMS contribuinte, Constantes.ProdutorRural produtorRural)
         {
             ProdutoComboDados retorno = new ProdutoComboDados();
 
             var db = contextoProvider.GetContextoLeitura();
-            //Buscar dados do cliente
-            var clienteTask = (from c in db.Tclientes
-                               where (c.Id == id_cliente || id_cliente == null) && (c.Cnpj_Cpf == cpf_cnpj || cpf_cnpj == null)
-                               select new
-                               {
-                                   tipo_cliente = c.Tipo,
-                                   contribuite_icms_status = c.Contribuinte_Icms_Status,
-                                   produtor_rural_status = c.Produtor_Rural_Status,
-                                   uf = c.Uf
-                               }).FirstOrDefaultAsync();
-
-            var cliente = await clienteTask;
-            if (cliente == null)
-                return null;
 
             //obtém  a sigla para regra
-            string cliente_regra = UtilsProduto.MultiCdRegraDeterminaPessoa(cliente.tipo_cliente, cliente.contribuite_icms_status,
-                cliente.produtor_rural_status);
+            string cliente_regra = UtilsProduto.MultiCdRegraDeterminaPessoa(tipo, contribuinte, produtorRural);
 
             var lstProdutosCompostos = BuscarProdutosCompostos(loja);
             List<Produto.Dados.ProdutoDados> lstTodosProdutos = (await BuscarTodosProdutos(loja)).ToList();
@@ -49,7 +35,7 @@ namespace Produto
             MontaListaRegras(lstTodosProdutos, lst_cliente_regra);
 
             List<string> lstErros = new List<string>();
-            await UtilsProduto.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, lst_cliente_regra, cliente.uf, cliente_regra, contextoProvider);
+            await UtilsProduto.ObterCtrlEstoqueProdutoRegra_Teste(lstErros, lst_cliente_regra, uf, cliente_regra, contextoProvider);
 
             UtilsProduto.ObterDisponibilidadeEstoque(lst_cliente_regra, lstTodosProdutos, lstErros, contextoProvider);
 
@@ -135,6 +121,7 @@ namespace Produto
                                                                   fabricante_pai = c.Fabricante,
                                                                   fabricante_pai_nome = fab.Nome,
                                                                   produto_pai = c.Produto,
+                                                                  pai_descricao = c.Descricao_Html,
                                                                   valor = (decimal)pl.Preco_Lista,
                                                                   qtde = (int)pci.Qtde,
                                                                   produtosFilhos = new ProdutoFilhoDados
@@ -156,7 +143,8 @@ namespace Produto
                                              PaiFabricante = g.OrderBy(r => r.fabricante_pai).Select(r => r.fabricante_pai).FirstOrDefault(),
                                              PaiFabricanteNome = g.OrderBy(r => r.fabricante_pai_nome).Select(r => r.fabricante_pai_nome).FirstOrDefault(),
                                              PaiProduto = g.OrderBy(r => r.produto_pai).Select(r => r.produto_pai).FirstOrDefault(),
-                                             Preco_total_Itens = g.Sum(r => r.qtde * r.valor),
+                                             PaiDescricao = g.OrderBy(r => r.pai_descricao).Select(r => r.pai_descricao).FirstOrDefault(),
+                                             PaiPrecoTotal = g.Sum(r => r.qtde * r.valor),
                                              Filhos = g.Select(r => r.produtosFilhos).ToList()
                                          };
 

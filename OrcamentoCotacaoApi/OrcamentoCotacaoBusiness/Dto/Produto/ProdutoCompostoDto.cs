@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PrepedidoBusiness.Dto.Produto
+namespace OrcamentoCotacaoBusiness.Dto.Produto
 {
     public class ProdutoCompostoDto
     {
@@ -32,7 +32,7 @@ namespace PrepedidoBusiness.Dto.Produto
                 PaiFabricante = p.PaiFabricante,
                 PaiFabricanteNome = p.PaiFabricanteNome,
                 PaiProduto = p.PaiProduto,
-                Preco_total_Itens = p.Preco_total_Itens,
+                Preco_total_Itens = p.PaiPrecoTotal,
                 Filhos = ProdutoFilhoDto.ProdutoFilhoDtoLista_De_ProdutoFilhoDados(p.Filhos)
             };
         }

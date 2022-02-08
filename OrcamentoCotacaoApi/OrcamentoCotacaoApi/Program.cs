@@ -76,8 +76,7 @@ namespace OrcamentoCotacaoApi
                     logging.AddDebug();
 #endif
                 })
-                .UseNLog()
-            // .UseUrls("http://localhost:4000") ??
-            ;
+                .UseNLog();
+        //.UseUrls("http://arclubeorcamentocotacaoapi.itssolucoes.com.br/");
     }
 }

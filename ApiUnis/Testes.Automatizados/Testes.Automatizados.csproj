@@ -5,7 +5,7 @@
 
     <IsPackable>false</IsPackable>
 
-    <Configurations>Debug</Configurations>
+    <Configurations>Debug;Release_OrcamentoCotacao;Debug_OrcamentoCotacao</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

@@ -43,6 +43,11 @@ namespace OrcamentistaEindicador
                     var saida = (from parceiro in db.TorcamentistaEindicadors
                                  select parceiro);
 
+                    if (!string.IsNullOrEmpty(obj.loja))
+                    {
+                        saida = saida.Where(x => x.Loja == obj.loja);
+                    }
+
                     if (!string.IsNullOrEmpty(obj.apelido))
                     {
                         saida = saida.Where(x => x.Apelido == obj.apelido);
@@ -53,7 +58,8 @@ namespace OrcamentistaEindicador
                     }
                     if (!string.IsNullOrEmpty(obj.vendedorId))
                     {
-                        saida = saida.Join(db.TorcamentistaEIndicadorVendedor, x => x.Apelido, y => y.IdIndicador, (x, y) => x).Where(x => x.Apelido == obj.vendedorId);
+                        saida = saida.Where(x => x.Vendedor == obj.vendedorId);
+                        //saida = saida.Join(db.TorcamentistaEIndicadorVendedor, x => x.Apelido, y => y.IdIndicador, (x, y) => x).Where(x => x.Apelido == obj.vendedorId);
                     }
 
                     return saida.ToList();

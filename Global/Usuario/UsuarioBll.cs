@@ -33,6 +33,23 @@ namespace Usuario
             throw new NotImplementedException();
         }
 
+        public async Task<List<Tusuario>> FiltrarPorPerfil(string loja)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            var usuarioFiltrado = await(from u in db.Tusuarios
+                                  join uxl in db.TusuarioXLojas on u.Usuario equals uxl.Usuario
+                                  join pu in db.TperfilUsuarios on uxl.Usuario equals pu.Usuario
+                                  join p in db.Tperfils on pu.Id_perfil equals p.Id
+                                  join pi in db.TperfilItens on p.Id equals pi.Id_perfil
+                                  where uxl.Loja == loja &&
+                                        pi.Id_operacao == Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO &&
+                                        u.Bloqueado == 0
+                                  select u).Distinct().ToListAsync();
+
+            return usuarioFiltrado;
+        }
+
         public List<Tusuario> PorFiltro(TusuarioFiltro obj)
         {
             using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
@@ -58,6 +75,11 @@ namespace Usuario
                 if (obj.vendedor_externo.HasValue)
                 {
                     usuario = usuario.Where(x => x.Vendedor_Externo == (obj.vendedor_externo.Value ? 1 : 0));
+                }
+
+                if (obj.Page.HasValue)
+                {
+                    usuario = usuario.Skip(obj.RecordsPerPage.Value * (obj.Page.Value - 1)).Take(obj.RecordsPerPage.Value);
                 }
                 return usuario.ToList();
             }

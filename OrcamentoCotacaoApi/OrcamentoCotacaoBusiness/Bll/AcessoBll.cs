@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using InfraBanco.Constantes;
 using PrepedidoBusiness.Dto.Acesso;
 using UtilsGlobais;
+using OrcamentoCotacaoBusiness.Enums;
+using InfraIdentity;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -20,38 +22,112 @@ namespace OrcamentoCotacaoBusiness.Bll
             this.contextoProvider = contextoProvider;
         }
 
-        public async Task<string> ValidarUsuario(string login, string senha_digitada_datastamp, bool somenteValidar)
+        public UsuarioLogin ValidarUsuario(string login, string senha_digitada_datastamp, bool somenteValidar, out string msgErro)
         {
             login = login.ToUpper().Trim();
+            msgErro = "";
+            int? tipo = 0;
 
             var db = contextoProvider.GetContextoLeitura();
             //Validar o dados no bd
             var dados = from c in db.Tusuarios
                         where c.Usuario == login
-                        select new
+                        select new UsuarioLogin
                         {
-                            c.Nome,
-                            c.Senha,
-                            c.Email,
-                            c.Datastamp,
-                            c.Dt_Ult_Alteracao_Senha,
-                            c.Bloqueado,
+                            Nome = c.Nome,
+                            Senha = c.Senha,
+                            Email = c.Email,
+                            Datastamp = c.Datastamp,
+                            Dt_Ult_Alteracao_Senha = c.Dt_Ult_Alteracao_Senha,
+                            Bloqueado = c.Bloqueado.HasValue ? (c.Bloqueado.Value == 1 ? true : false) : false,
                             //c.Hab_Acesso_Sistema,
                             //c.statStatus,
-                            c.Loja
+                            Loja = c.Loja,
+                            TipoUsuario = (int)Enums.Enums.TipoUsuario.VENDEDOR
                         };
 
             string retorno = null;
-            var t = await dados.FirstOrDefaultAsync();
+            var t = dados.FirstOrDefault();
 
             //se o apelido nao existe
             if (t == null)
-                return await Task.FromResult(retorno);
+            {
+                /*Busca de parceiros*/
+                dados = from c in db.TorcamentistaEindicadors
+                        where c.Apelido == login
+                        select new UsuarioLogin
+                        {
+                            Nome = c.Razao_Social_Nome,
+                            Senha = c.Senha,
+                            Email = "",
+                            Datastamp = c.Datastamp,
+                            Dt_Ult_Alteracao_Senha = c.Dt_Ult_Alteracao_Senha,
+                            Bloqueado = (c.Status == "I"),
+                            //c.Hab_Acesso_Sistema,
+                            //c.statStatus,
+                            Loja = c.Loja,
+                            TipoUsuario = (int)Enums.Enums.TipoUsuario.PARCEIRO
+                        };
+                t = dados.FirstOrDefault();
+                /*Busca de parceiros*/
+                if (t == null)
+                {
+                    /*Busca de vendedores de parceiros*/
+                    dados = from c in db.TorcamentistaEindicadorVendedors
+                            where c.Email == login
+                            select new UsuarioLogin
+                            {
+                                Nome = c.Nome,
+                                Senha = c.Senha,
+                                Email = c.Email,
+                                Datastamp = c.Senha,
+                                Dt_Ult_Alteracao_Senha = c.DataUltimaAlteracao,
+                                Bloqueado = !c.Ativo,
+                                //c.Hab_Acesso_Sistema,
+                                //c.statStatus,
+                                Loja = c.Loja,
+                                TipoUsuario = (int)Enums.Enums.TipoUsuario.VENDEDOR_DO_PARCEIRO
+                            };
+                    t = dados.FirstOrDefault();
+                    if (t != null)
+                    {
+                        tipo = (int)Enums.Enums.TipoUsuario.VENDEDOR_DO_PARCEIRO;
+                    }
+                    /*Busca de vendedores de parceiros*/
+                }
+                else
+                {
+                    tipo = (int)Enums.Enums.TipoUsuario.PARCEIRO;
+                }
+                //else
+                //{
+                //    retorno = t;
+                //    return await Task.FromResult(retorno); // retorna null
+                //}
+            }
+            else
+            {
+                tipo = (int)Enums.Enums.TipoUsuario.GESTOR;
+            }
+            if (t == null)
+            {
+                tipo = null;
+                msgErro = Constantes.ERR_USUARIO_NAO_CADASTRADO;
+                return null;// await Task.FromResult(Constantes.ERR_USUARIO_NAO_CADASTRADO);
+            }
             if (t.Datastamp == "")
-                return await Task.FromResult(Constantes.ERR_USUARIO_BLOQUEADO);
+            {
+                msgErro = Constantes.ERR_USUARIO_BLOQUEADO;
+                return null;
+            }
+            //return await Task.FromResult(Constantes.ERR_USUARIO_BLOQUEADO);
             //if (t.Hab_Acesso_Sistema != 1)
-            if (t.Bloqueado == 1)
-                return await Task.FromResult(Constantes.ERR_USUARIO_BLOQUEADO);
+            if (t.Bloqueado)
+            {
+                msgErro = Constantes.ERR_USUARIO_BLOQUEADO;
+                return null;
+                //return await Task.FromResult(Constantes.ERR_USUARIO_BLOQUEADO);
+            }
             //if (t.Status != "A")
             //    return await Task.FromResult(Constantes.ERR_USUARIO_BLOQUEADO);
             //if (t.Loja == "")
@@ -68,16 +144,36 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 //if (senha_digitada_decod.ToUpper().Trim() != senha_banco_datastamp_decod.ToUpper().Trim())
                 if (senha_digitada_decod != t.Datastamp)
-                    return await Task.FromResult(retorno);//retorna null
+                {
+                    msgErro = Constantes.ERR_SENHA_INVALIDA;
+                    return null;//await Task.FromResult(retorno);//retorna null
+                }
 
                 //Fazer Update no bd
                 using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
-                    Tusuario usuario = await dbgravacao.Tusuarios
-                    .Where(c => c.Usuario == login && c.Datastamp == senha_digitada_decod).FirstOrDefaultAsync();
-                    usuario.Dt_Ult_Acesso = DateTime.Now;
-
-                    await dbgravacao.SaveChangesAsync();
+                    switch (tipo)
+                    {
+                        case (int)Enums.Enums.TipoUsuario.GESTOR:
+                            Tusuario usuario = dbgravacao.Tusuarios
+                            .Where(c => c.Usuario == login && c.Datastamp == senha_digitada_decod).FirstOrDefault();
+                            usuario.Dt_Ult_Acesso = DateTime.Now;
+                            break;
+                        case (int)Enums.Enums.TipoUsuario.PARCEIRO:
+                            TorcamentistaEindicador parceiro = dbgravacao.TorcamentistaEindicadors
+                            .Where(c => c.Apelido == login && c.Datastamp == senha_digitada_decod).FirstOrDefault();
+                            parceiro.Dt_Ult_Acesso = DateTime.Now;
+                            break;
+                        //TODO: Incluir campo de data ultimo login na tabela de vendedor do parceiro
+                        //case (int)Enums.Enums.TipoUsuario.VENDEDOR_DO_PARCEIRO:
+                        //    TorcamentistaEIndicadorVendedor vendedorParceiro = await dbgravacao.TorcamentistaEIndicadorVendedor
+                        //    .Where(c => c.Email == login && c.Senha == senha_digitada_decod).FirstOrDefaultAsync();
+                        //    vendedorParceiro.DataUltimoLogin = DateTime.Now;
+                        //    break;
+                        default:
+                            break;
+                    }
+                    dbgravacao.SaveChanges();
                     dbgravacao.transacao.Commit();
                 }
 
@@ -85,11 +181,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
                     //Senha expirada, precisa mandar alguma valor de senha expirada
                     //coloquei o valor "4" para saber quando a senha esta expirada
-                    return await Task.FromResult("4");
+                    msgErro = Constantes.ERR_SENHA_EXPIRADA;
+                    return null;// await Task.FromResult("4");
                 }
             }
 
-            return await Task.FromResult(t.Nome);
+            return t;
         }
 
         public async Task<List<TusuarioXLoja>> BuscarLojaUsuario(string apelido)
@@ -216,7 +313,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     return retorno = "A nova senha não pode ser igual ao identificador do usuário!";
                 }
                 //valida as credenciais
-                string validou = await ValidarUsuario(alterarSenhaDto.Apelido, Util.codificaDado(senha, false), false);
+                string validou;
+                var usuario = ValidarUsuario(alterarSenhaDto.Apelido, Util.codificaDado(senha, false), false, out validou);
 
                 if (validou == Constantes.ERR_IDENTIFICACAO_LOJA)
                 {

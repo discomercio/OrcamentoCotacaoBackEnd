@@ -10,7 +10,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         public long Id { get; set; }
 
         [JsonProperty("nome")]
-        public string Nome { get; set; }
+        public string Usuario { get; set; }
 
         [JsonProperty("parceiro")]
         public string IdParceiro { get; set; }

@@ -29,7 +29,7 @@ namespace PrepedidoUnisBusiness.UnisDto.ProdutoUnisDto
                 PaiFabricante = p.PaiFabricante,
                 PaiFabricanteNome = p.PaiFabricanteNome,
                 PaiProduto = p.PaiProduto,
-                Preco_total_Itens = p.Preco_total_Itens,
+                Preco_total_Itens = p.PaiPrecoTotal,
                 Filhos = ProdutoFilhoUnisDto.ProdutoFilhoUnisDtoListaDeProdutoFilhoDados(p.Filhos)
             };
         }

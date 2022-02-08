@@ -2,7 +2,7 @@
 
 namespace OrcamentoCotacaoBusiness.Models.Response
 {
-    public class ProdutoSimplesResponseViewModel: IViewModelResponse
+    public class ProdutoSimplesResponseViewModel : IViewModelResponse
     {
         [JsonProperty("fabricante")]
         public string Fabricante { get; set; }
@@ -19,9 +19,6 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         [JsonProperty("precoLista")]
         public decimal PrecoLista { get; set; }
 
-        [JsonProperty("coeficienteDeCalculo")]
-        public float CoeficienteDeCalculo { get; set; }
-
         [JsonProperty("estoque")]
         public int Estoque { get; set; }
 
@@ -34,6 +31,23 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         [JsonProperty("descMax")]
         public float? DescMax { get; set; }
 
-        public int Qtde { get; set; }
+        public int? Qtde { get; set; }
+
+        internal static ProdutoSimplesResponseViewModel ConverterProdutoDados(Produto.Dados.ProdutoDados produto, int? qtdeFilho)
+        {
+            return new ProdutoSimplesResponseViewModel()
+            {
+                Fabricante = produto.Fabricante,
+                FabricanteNome = produto.Fabricante_Nome,
+                Produto = produto.Produto,
+                DescricaoHtml = produto.Descricao_html,
+                PrecoLista = (decimal)produto.Preco_lista,
+                Qtde = qtdeFilho.HasValue ? qtdeFilho : null,
+                QtdeMaxVenda = produto.Qtde_Max_Venda,
+                DescMax = produto.Qtde_Max_Venda,
+                Estoque = produto.Estoque,
+                Alertas = produto.Alertas
+            };
+        }
     }
 }

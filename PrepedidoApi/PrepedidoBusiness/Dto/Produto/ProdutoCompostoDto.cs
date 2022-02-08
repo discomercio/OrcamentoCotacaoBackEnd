@@ -32,7 +32,7 @@ namespace PrepedidoBusiness.Dto.Produto
                 PaiFabricante = p.PaiFabricante,
                 PaiFabricanteNome = p.PaiFabricanteNome,
                 PaiProduto = p.PaiProduto,
-                Preco_total_Itens = p.Preco_total_Itens,
+                Preco_total_Itens = p.PaiPrecoTotal,
                 Filhos = ProdutoFilhoDto.ProdutoFilhoDtoLista_De_ProdutoFilhoDados(p.Filhos)
             };
         }

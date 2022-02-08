@@ -3,6 +3,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace InfraIdentity
@@ -85,11 +86,12 @@ namespace InfraIdentity
                     new Claim(ClaimTypes.Role, role),
                     new Claim("unidade_negocio", !string.IsNullOrEmpty(usuario.Unidade_negocio)?usuario.Unidade_negocio:""),
                     //new Claim("Email", !string.IsNullOrEmpty(usuario.Email)? usuario.Email:""),
-                    new Claim("TipoUsuario", !string.IsNullOrEmpty(usuario.TipoUsuario)?usuario.TipoUsuario:""),
+                    new Claim("TipoUsuario", usuario.TipoUsuario.HasValue?usuario.TipoUsuario.Value.ToString():""),
                     new Claim("Parceiro", !string.IsNullOrEmpty(usuario.IdParceiro)?usuario.IdParceiro:""),
                     new Claim("Vendedor", !string.IsNullOrEmpty(usuario.VendedorResponsavel)?usuario.VendedorResponsavel:""),
                     new Claim("Lojas", !string.IsNullOrEmpty(usuario.Loja)?usuario.Loja:""),
                     new Claim("Permissoes", usuario.Permissoes != null?string.Join(",",usuario.Permissoes):""),
+                    new Claim("UsuarioLogin", JsonSerializer.Serialize(usuario))
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(validadeTokenMinutos),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
