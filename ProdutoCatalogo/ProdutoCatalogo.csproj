@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ClassesBase\ClassesBase.csproj" />
     <ProjectReference Include="..\Global\Infra\InfraBanco\InfraBanco.csproj" />
   </ItemGroup>
 

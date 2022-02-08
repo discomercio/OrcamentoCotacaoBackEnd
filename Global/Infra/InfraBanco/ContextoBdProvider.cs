@@ -1,11 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace InfraBanco
 {
-    public class ContextoBdProvider : IDisposable
+    public class ContextoBdProvider
     {
         private readonly DbContextOptions<ContextoBdBasico> Opt;
         private readonly ContextoBdGravacaoOpcoes ContextoBdGravacaoOpcoes;

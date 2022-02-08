@@ -32,13 +32,13 @@ namespace OrcamentoCotacaoApi.Controllers
         //private readonly IUsuarioService _usuarioService;
         private readonly ITokenService _tokenService;
         private readonly UsuarioBll _usuarioBll;
-        private readonly OrcamentistaEindicadorBll _orcamentistaEindicadorBll;
+        private readonly OrcamentistaEIndicadorBll _orcamentistaEindicadorBll;
         private readonly OrcamentistaEIndicadorVendedorBll _orcamentistaEindicadorVendedorBll;
         private readonly LojaBll _lojaBll;
         private readonly IMapper _mapper;
 
         public AccountController(IServicoAutenticacao servicoAutenticacao, IConfiguration configuration, ILogger<AccountController> logger,
-            IMapper mapper, OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll, ITokenService tokenService, UsuarioBll usuarioBll, OrcamentistaEindicadorBll orcamentistaEindicadorBll,
+            IMapper mapper, OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll, ITokenService tokenService, UsuarioBll usuarioBll, OrcamentistaEIndicadorBll orcamentistaEindicadorBll,
             OrcamentistaEIndicadorVendedorBll orcamentistaEindicadorVendedorBll, LojaBll lojaBll)
         //IServicoDecodificarToken servicoDecodificarToken, )
         {

@@ -22,12 +22,12 @@ namespace OrcamentoCotacaoApi.Utils
 
         private readonly OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll;
         private readonly UsuarioBll usuarioBll;
-        private readonly OrcamentistaEindicadorBll orcamentistaEindicadorBll;
+        private readonly OrcamentistaEIndicadorBll orcamentistaEindicadorBll;
         private readonly OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll;
         private readonly LojaBll lojaBll;
 
         public ServicoAutenticacaoProvider(OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll, UsuarioBll usuarioBll,
-            OrcamentistaEindicadorBll orcamentistaEindicadorBll, OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll,
+            OrcamentistaEIndicadorBll orcamentistaEindicadorBll, OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll,
             LojaBll lojaBll)
         {
             this.acessoBll = acessoBll;
@@ -134,6 +134,7 @@ namespace OrcamentoCotacaoApi.Utils
                 UsuarioLogin usuario = new UsuarioLogin();
                 switch (dadosCliente.TipoUsuario)
                 {
+                    case (int)Enums.TipoUsuario.VENDEDOR:
                     case (int)Enums.TipoUsuario.GESTOR:
                         var loja = await acessoBll.BuscarLojaUsuario(apelido);
                         var unidade_negocio = await acessoBll.Buscar_unidade_negocio(loja);
