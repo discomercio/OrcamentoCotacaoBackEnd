@@ -249,6 +249,12 @@ namespace InfraBanco
         public DbSet<TprodutoCatalogoItem> TprodutoCatalogoItem { get; set; }
         public DbSet<TprodutoCatalogoItens> TprodutoCatalogoItens { get; set; }
         public DbSet<TorcamentistaEIndicadorVendedor> TorcamentistaEIndicadorVendedor { get; set; }
+        public DbSet<TorcamentoCotacao> TorcamentoCotacao { get; set; }
+        public DbSet<TorcamentoCotacaoStatus> TorcamentoCotacaoStatus { get; set; }
+        public DbSet<TorcamentoCotacaoOpcao> TorcamentoCotacaoOpcao { get; set; }
+        public DbSet<TorcamentoCotacaoOpcaoFormaPagamento> TorcamentoCotacaoOpcaoFormaPagamento { get; set; }
+        public DbSet<TorcamentoCotacaoOpcaoItem> TorcamentoCotacaoOpcaoItem { get; set; }
+        public DbSet<TorcamentoCotacaoOpcaoItemSku> TorcamentoCotacaoOpcaoItemSku { get; set; }
 #endif
         //daqui para a frente só é necessário para os testes automatizados
 #if DEBUG_BANCO_DEBUG

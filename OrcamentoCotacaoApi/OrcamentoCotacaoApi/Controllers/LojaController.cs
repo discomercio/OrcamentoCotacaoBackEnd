@@ -1,41 +1,32 @@
-﻿using AutoMapper;
+﻿using InfraBanco.Modelos.Filtros;
 using Loja;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using OrcamentoCotacaoBusiness.Models.Response;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    [Authorize]
-    public class LojaController : BaseController
+    public class LojaController : ControllerBase
     {
-        private readonly ILogger<UsuarioController> _logger;
-        private readonly IMapper _mapper;
+        private readonly ILogger<LojaController> _logger;
         private readonly LojaBll _lojaBll;
 
-        public LojaController(ILogger<UsuarioController> logger, IMapper mapper, LojaBll loja)
+        public LojaController(ILogger<LojaController> logger, LojaBll lojaBll)
         {
-            this._logger = logger;
-            this._mapper = mapper;
-            this._lojaBll = loja;
+            _logger = logger;
+            _lojaBll = lojaBll;
         }
 
         [HttpGet]
-        [Route("buscarlojas")]
-        public IEnumerable<LojaResponseViewModel> BuscarLojas()
+        public IActionResult Get(int page, int pageItens)
         {
-            _logger.LogInformation("Buscando lista de lojas");
-            var lojas = _lojaBll.PorFiltro(new InfraBanco.Modelos.Filtros.TlojaFiltro() { Page = 1, RecordsPerPage = int.MaxValue });
+            var saida = _lojaBll.PorFiltro(new TlojaFiltro { });
 
-            return _mapper.Map<List<LojaResponseViewModel>>(lojas);
+            if (saida != null)
+                return Ok(saida);
+            else
+                return NoContent();
         }
     }
 }

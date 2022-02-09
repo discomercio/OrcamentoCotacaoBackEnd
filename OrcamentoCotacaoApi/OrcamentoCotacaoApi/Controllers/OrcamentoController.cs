@@ -1,15 +1,11 @@
 ﻿using AutoMapper;
-using InfraBanco.Modelos;
+using InfraBanco.Modelos.Filtros;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Orcamento;
-using OrcamentoCotacaoBusiness.Models.Request;
-using OrcamentoCotacaoBusiness.Models.Response;
-using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace OrcamentoCotacaoApi.Controllers
@@ -31,40 +27,59 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<OrcamentoResponseViewModel>> Get(int page, int pageItens)
+        public IActionResult PorFiltro(int page, int pageItens, string origem)
         {
             _logger.LogInformation("Buscando lista de orçamentos");
-            List<Torcamento> orcamento = _orcamentoBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentoFiltro { Page = page, RecordsPerPage = pageItens });// (page, pageItens);
-            return _mapper.Map<List<OrcamentoResponseViewModel>>(orcamento);
+            var lojas = User.Claims.FirstOrDefault(r => r.Type == ClaimTypes.Surname).Value.Split(',');
+
+            var saida = _orcamentoBll.PorFiltro(new TorcamentoFiltro { Page = page, RecordsPerPage = pageItens, Origem = origem, Loja = lojas });
+
+            if (saida != null)
+                return Ok(saida);
+            else
+                return NoContent();
         }
 
-        [HttpGet]
-        [Route("id")]
-        public async Task<OrcamentoResponseViewModel> Get(string id)
+        [HttpGet("status")]
+        public async Task<IActionResult> ObterListaStatus(string origem)
         {
-            _logger.LogInformation("Buscando orcamento");
-            Torcamento orcamento = _orcamentoBll.GetById(id);
-            return _mapper.Map<OrcamentoResponseViewModel>(orcamento);
+            _logger.LogInformation("Buscando status");
+            var lojas = User.Claims.FirstOrDefault(r => r.Type == ClaimTypes.Surname).Value.Split(',');
+
+            var saida = await _orcamentoBll.ObterListaStatus(new TorcamentoFiltro { Origem = origem, Loja = lojas });
+
+            if (saida != null)
+                return Ok(saida);
+            else
+                return NoContent();
         }
 
-        [HttpPost]
-        public async Task<OrcamentoResponseViewModel> Post(OrcamentoRequestViewModel model)
-        {
-            var user = User.Identity.Name;
+        //[HttpGet("id")]
+        //public async Task<OrcamentoResponseViewModel> GetById(string id)
+        //{
+        //    _logger.LogInformation("Buscando orcamento");
+        //    Torcamento orcamento = _orcamentoBll.GetById(id);
+        //    return _mapper.Map<OrcamentoResponseViewModel>(orcamento);
+        //}
 
-            _logger.LogInformation("Inserindo Orcamento");
-            var orcamento = _orcamentoBll.Inserir(_mapper.Map<Torcamento>(model));//(model, user);
-            return _mapper.Map<OrcamentoResponseViewModel>(orcamento);
-        }
+        //[HttpPost]
+        //public async Task<OrcamentoResponseViewModel> Post(OrcamentoRequestViewModel model)
+        //{
+        //    var user = User.Identity.Name;
 
-        [HttpPut]
-        public async Task<OrcamentoResponseViewModel> Put(OrcamentoRequestViewModel model)
-        {
-            var user = User.Identity.Name;
+        //    _logger.LogInformation("Inserindo Orcamento");
+        //    var orcamento = _orcamentoBll.Inserir(_mapper.Map<Torcamento>(model));//(model, user);
+        //    return _mapper.Map<OrcamentoResponseViewModel>(orcamento);
+        //}
 
-            _logger.LogInformation("Alterando orcamento");
-            var orcamento = _orcamentoBll.Atualizar(_mapper.Map<Torcamento>(model));//model, user);
-            return _mapper.Map<OrcamentoResponseViewModel>(orcamento);
-        }
+        //[HttpPut]
+        //public async Task<OrcamentoResponseViewModel> Put(OrcamentoRequestViewModel model)
+        //{
+        //    var user = User.Identity.Name;
+
+        //    _logger.LogInformation("Alterando orcamento");
+        //    var orcamento = _orcamentoBll.Atualizar(_mapper.Map<Torcamento>(model));//model, user);
+        //    return _mapper.Map<OrcamentoResponseViewModel>(orcamento);
+        //}
     }
 }
