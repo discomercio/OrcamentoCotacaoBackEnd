@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
-    public class ProdutoPrepedidoBll
+    public class ProdutoOrcamentoCotacaoBll
     {
         private readonly ProdutoGeralBll produtoGeralBll;
         private readonly IMapper _mapper;
 
-        public ProdutoPrepedidoBll(Produto.ProdutoGeralBll produtoGeralBll, IMapper mapper)
+        public ProdutoOrcamentoCotacaoBll(Produto.ProdutoGeralBll produtoGeralBll, IMapper mapper)
         {
             this.produtoGeralBll = produtoGeralBll;
             _mapper = mapper;

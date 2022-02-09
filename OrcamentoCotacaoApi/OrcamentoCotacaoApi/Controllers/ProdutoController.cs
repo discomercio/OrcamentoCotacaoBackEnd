@@ -20,11 +20,11 @@ namespace OrcamentoCotacaoApi.BaseController
     {
         private readonly ILogger<ProdutoController> _logger;
         private readonly IMapper _mapper;
-        private readonly OrcamentoCotacaoBusiness.Bll.ProdutoPrepedidoBll _produtoBll;
+        private readonly OrcamentoCotacaoBusiness.Bll.ProdutoOrcamentoCotacaoBll _produtoBll;
         private readonly InfraIdentity.IServicoDecodificarToken _servicoDecodificarToken;
 
         public ProdutoController(ILogger<ProdutoController> logger, IMapper mapper,
-            OrcamentoCotacaoBusiness.Bll.ProdutoPrepedidoBll orcamentoBll,
+            OrcamentoCotacaoBusiness.Bll.ProdutoOrcamentoCotacaoBll orcamentoBll,
             InfraIdentity.IServicoDecodificarToken servicoDecodificarToken)
         {
             this._logger = logger;
