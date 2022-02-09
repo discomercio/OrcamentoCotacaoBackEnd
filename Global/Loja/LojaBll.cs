@@ -1,4 +1,5 @@
 ﻿using ClassesBase;
+using InfraBanco;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using System;
@@ -7,9 +8,11 @@ using System.Linq;
 
 namespace Loja
 {
-    public class LojaBll //: BaseData<Tloja, TlojaFiltro>
+    public class LojaBll : BaseData<Tloja, TlojaFiltro>
     {
-        public LojaBll(ContextoBdProvider contextoBdProvider) : base(new LojaData(contextoBdProvider))
+        private readonly ContextoBdProvider contextoProvider;
+
+        public LojaBll(ContextoBdProvider contextoProvider) //: base(new LojaData(contextoBdProvider))
         {
             this.contextoProvider = contextoProvider;
         }

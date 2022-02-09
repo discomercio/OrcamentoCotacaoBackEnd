@@ -1,4 +1,4 @@
-﻿using ClassesBase;
+﻿using Interfaces;
 using System;
 
 namespace InfraBanco.Modelos
