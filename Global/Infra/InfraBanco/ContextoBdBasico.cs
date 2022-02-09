@@ -132,6 +132,7 @@ namespace InfraBanco
         public DbSet<TclienteRefBancaria> TclienteRefBancarias { get; set; }
         public DbSet<Tpedido> Tpedidos { get; set; }
         public DbSet<TorcamentistaEindicador> TorcamentistaEindicadors { get; set; }
+        public DbSet<TorcamentistaEIndicadorVendedor> TorcamentistaEindicadorVendedors { get; set; }
         public DbSet<TsessaoHistorico> TsessaoHistoricos { get; set; }
         public DbSet<Tproduto> Tprodutos { get; set; }
         public DbSet<TprodutoLoja> TprodutoLojas { get; set; }

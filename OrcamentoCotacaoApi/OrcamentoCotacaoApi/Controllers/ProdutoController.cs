@@ -2,24 +2,35 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoApi.Utils;
+using OrcamentoCotacaoBusiness.Models.Response;
 
-namespace PrepedidoApi.Controllers
+namespace OrcamentoCotacaoApi.BaseController
 {
     [ApiExplorerSettings(IgnoreApi = true)]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
-    [Authorize(Roles = Autenticacao.RoleAcesso)]
+    [Authorize]
+    //[Authorize(Roles = Autenticacao.RoleAcesso)]
     public class ProdutoController : Controller
     {
-        private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
-        private readonly PrepedidoBusiness.Bll.ProdutoPrepedidoBll produtoBll;
-        public ProdutoController(PrepedidoBusiness.Bll.ProdutoPrepedidoBll produtoBll, InfraIdentity.IServicoDecodificarToken servicoDecodificarToken)
+        private readonly ILogger<ProdutoController> _logger;
+        private readonly IMapper _mapper;
+        private readonly OrcamentoCotacaoBusiness.Bll.ProdutoOrcamentoCotacaoBll _produtoBll;
+        private readonly InfraIdentity.IServicoDecodificarToken _servicoDecodificarToken;
+
+        public ProdutoController(ILogger<ProdutoController> logger, IMapper mapper,
+            OrcamentoCotacaoBusiness.Bll.ProdutoOrcamentoCotacaoBll orcamentoBll,
+            InfraIdentity.IServicoDecodificarToken servicoDecodificarToken)
         {
-            this.produtoBll = produtoBll;
-            this.servicoDecodificarToken = servicoDecodificarToken;
+            this._logger = logger;
+            this._mapper = mapper;
+            this._produtoBll = orcamentoBll;
+            this._servicoDecodificarToken = servicoDecodificarToken;
         }
 
 #if DEBUG
@@ -27,14 +38,14 @@ namespace PrepedidoApi.Controllers
 #endif
         [HttpGet("buscarProduto")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<IActionResult> BuscarProduto(string loja, string id_cliente)
+        public async Task<IActionResult> BuscarProduto(string loja, string uf, string tipo)
         {
             //para testar: http://localhost:60877/api/produto/buscarProduto
-            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+            string apelido = _servicoDecodificarToken.ObterApelidoOrcamentista(User);
             //nao usamos o apelido
 
-            PrepedidoBusiness.Dto.Produto.ProdutoComboDto ret = await produtoBll.ListaProdutosComboApiArclube(loja, id_cliente);
-            
+            var ret = await _produtoBll.ListaProdutosComboApiArclube(loja, uf, tipo);
+
             return Ok(ret);
         }
     }

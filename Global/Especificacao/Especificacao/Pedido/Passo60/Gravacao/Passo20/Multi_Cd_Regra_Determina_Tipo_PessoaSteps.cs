@@ -1,4 +1,5 @@
-﻿using Produto;
+﻿using InfraBanco.Constantes;
+using Produto;
 using System;
 using TechTalk.SpecFlow;
 using Xunit;
@@ -33,8 +34,9 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20
                 _ => 0
             };
 
-            var sigla = UtilsProduto.MultiCdRegraDeterminaPessoa(tipo_cliente, contribuinteStatus, produtorStatus);
-            
+            var sigla = UtilsProduto.MultiCdRegraDeterminaPessoa(tipo_cliente, (Constantes.ContribuinteICMS)contribuinteStatus,
+                (Constantes.ProdutorRural)produtorStatus);
+
             switch (resultado)
             {
                 case "COD_WMS_MULTI_CD_REGRA__TIPO_PESSOA__PESSOA_FISICA":

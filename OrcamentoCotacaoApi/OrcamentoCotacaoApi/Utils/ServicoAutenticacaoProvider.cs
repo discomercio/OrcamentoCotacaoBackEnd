@@ -1,7 +1,9 @@
-﻿using InfraIdentity;
+﻿using InfraBanco.Modelos;
+using InfraIdentity;
 using Loja;
 using OrcamentistaEindicador;
 using OrcamentistaEIndicadorVendedor;
+using OrcamentoCotacaoBusiness.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,12 +22,12 @@ namespace OrcamentoCotacaoApi.Utils
 
         private readonly OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll;
         private readonly UsuarioBll usuarioBll;
-        private readonly OrcamentistaEindicadorBll orcamentistaEindicadorBll;
+        private readonly OrcamentistaEIndicadorBll orcamentistaEindicadorBll;
         private readonly OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll;
         private readonly LojaBll lojaBll;
 
         public ServicoAutenticacaoProvider(OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll, UsuarioBll usuarioBll,
-            OrcamentistaEindicadorBll orcamentistaEindicadorBll, OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll,
+            OrcamentistaEIndicadorBll orcamentistaEindicadorBll, OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll,
             LojaBll lojaBll)
         {
             this.acessoBll = acessoBll;
@@ -45,11 +47,12 @@ namespace OrcamentoCotacaoApi.Utils
 
             senha = Util.codificaDado(senha, false);
 
-            var dadosCliente = await acessoBll.ValidarUsuario(apelido, senha, false);
+            string msgErro;
+            var dadosCliente = acessoBll.ValidarUsuario(apelido, senha, false, out msgErro);
             //caso usuário com senha expirada ou bloqueado, retornamos um número 
-            if (!string.IsNullOrEmpty(dadosCliente))
+            if (!string.IsNullOrEmpty(msgErro))
             {
-                if (int.TryParse(dadosCliente, out idErro))
+                if (int.TryParse(msgErro, out idErro))
                 {
                     //temos um problema e precisamos mandar algum valor para avisar que é senha expirada ou usuario bloqueado para mostrar na tela
                     UsuarioLogin usuario = new UsuarioLogin { IdErro = idErro };
@@ -58,7 +61,7 @@ namespace OrcamentoCotacaoApi.Utils
             }
 
 
-            if (string.IsNullOrEmpty(dadosCliente))
+            if (dadosCliente == null)
             {
                 //Buscar Parceiros e depois buscar vendedores-parceiros
                 var parceiro = orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = apelido, datastamp = senha }).FirstOrDefault();
@@ -75,6 +78,7 @@ namespace OrcamentoCotacaoApi.Utils
                         Loja = parceiro.Loja,
                         Unidade_negocio = loja.FirstOrDefault().Unidade_Negocio,
                         VendedorResponsavel = parceiro.Vendedor,
+                        IdParceiro = parceiro.Apelido,
                         Permissoes = new List<string>()
                         {
                             ((int)ePermissao.AcessoAoModulo).ToString(),
@@ -127,24 +131,76 @@ namespace OrcamentoCotacaoApi.Utils
             }
             else
             {
-                var usuarioInterno = usuarioBll.PorFiltro(new InfraBanco.Modelos.Filtros.TusuarioFiltro() { usuario = apelido });
-
-                var loja = await acessoBll.BuscarLojaUsuario(apelido);
-                var unidade_negocio = await acessoBll.Buscar_unidade_negocio(loja);
-                UsuarioLogin usuario = new UsuarioLogin
+                UsuarioLogin usuario = new UsuarioLogin();
+                switch (dadosCliente.TipoUsuario)
                 {
-                    Apelido = apelido,
-                    Nome = usuarioInterno.FirstOrDefault().Nome,
-                    Email = usuarioInterno.FirstOrDefault().Email,
-                    Loja = string.Join(",", loja.Select(x => x.Loja)),
-                    Unidade_negocio = unidade_negocio,
-                    VendedorResponsavel = null,
-                    Permissoes = new List<string>()
+                    case (int)Enums.TipoUsuario.VENDEDOR:
+                    case (int)Enums.TipoUsuario.GESTOR:
+                        var loja = await acessoBll.BuscarLojaUsuario(apelido);
+                        var unidade_negocio = await acessoBll.Buscar_unidade_negocio(loja);
+                        var usuarioInterno = usuarioBll.PorFiltro(new InfraBanco.Modelos.Filtros.TusuarioFiltro() { usuario = apelido });
+                        usuario = new UsuarioLogin
+                        {
+                            Apelido = apelido,
+                            Nome = usuarioInterno.FirstOrDefault().Nome,
+                            Email = usuarioInterno.FirstOrDefault().Email,
+                            Loja = string.Join(",", loja.Select(x => x.Loja)),
+                            Unidade_negocio = unidade_negocio,
+                            VendedorResponsavel = null,
+                            Permissoes = new List<string>()
                         {
                             ((int)ePermissao.AcessoAoModulo).ToString(),
                             ((int)ePermissao.AdministradorDoModulo).ToString()
                         }
-                };
+                        };
+                        return usuario;
+                    //break;
+                    case (int)Enums.TipoUsuario.PARCEIRO:
+                        var orcamentista = orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = apelido });
+                        var lojaOrcamentista = new List<TusuarioXLoja>();
+                        lojaOrcamentista.Add(new TusuarioXLoja() { Loja = orcamentista.FirstOrDefault().Loja });
+                        usuario = new UsuarioLogin
+                        {
+                            Apelido = apelido,
+                            Nome = orcamentista.FirstOrDefault().Razao_Social_Nome,
+                            //Email = orcamentista.FirstOrDefault().Email,
+                            Loja = string.Join(",", lojaOrcamentista.Select(x => x.Loja)),
+                            Unidade_negocio = acessoBll.Buscar_unidade_negocio(lojaOrcamentista).Result,
+                            VendedorResponsavel = orcamentista.FirstOrDefault().Vendedor,
+                            IdParceiro = orcamentista.FirstOrDefault().Apelido,
+                            Permissoes = new List<string>()
+                        {
+                            ((int)ePermissao.AcessoAoModulo).ToString(),
+                            ((int)ePermissao.AdministradorDoModulo).ToString()
+                        }
+                        };
+                        break;
+                    case (int)Enums.TipoUsuario.VENDEDOR_DO_PARCEIRO:
+                        var orcamentistaVendedor = orcamentistaEIndicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { email = apelido });
+                        var lojaOrcamentistaVendedor = new List<TusuarioXLoja>();
+                        lojaOrcamentistaVendedor.Add(new TusuarioXLoja() { Loja = orcamentistaVendedor.FirstOrDefault().Loja });
+                        usuario = new UsuarioLogin
+                        {
+                            Apelido = apelido,
+                            Nome = orcamentistaVendedor.FirstOrDefault().Nome,
+                            Email = orcamentistaVendedor.FirstOrDefault().Email,
+                            Loja = string.Join(",", lojaOrcamentistaVendedor.Select(x => x.Loja)),
+                            Unidade_negocio = acessoBll.Buscar_unidade_negocio(lojaOrcamentistaVendedor).Result,
+                            VendedorResponsavel = orcamentistaVendedor.FirstOrDefault().VendedorResponsavel,
+                            IdParceiro = orcamentistaVendedor.FirstOrDefault().IdIndicador,
+                            Permissoes = new List<string>()
+                        {
+                            ((int)ePermissao.AcessoAoModulo).ToString(),
+                            ((int)ePermissao.AdministradorDoModulo).ToString()
+                        }
+                        };
+                        break;
+                    default:
+                        break;
+                }
+
+
+
                 return usuario;
             }
         }

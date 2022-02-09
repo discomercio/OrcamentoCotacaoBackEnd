@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -13,7 +14,8 @@ namespace OrcamentoCotacaoApi.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class OrcamentistaEIndicadorVendedorController : ControllerBase
+    [Authorize]
+    public class OrcamentistaEIndicadorVendedorController : BaseController
     {
         private readonly OrcamentistaEIndicadorVendedorBll _orcamentistaEindicadorVendedorBll;
         private readonly ILogger<UsuarioController> _logger;

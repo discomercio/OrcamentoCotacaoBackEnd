@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,14 +17,6 @@ namespace ClassesBase
 
         //public MySqlConnection conn { get; set; }
         //public DynamicParameters p { get; set; }
-
-        public static string getConnectionString()
-        {
-            //return _db.Database.GetConnectionString("SoniAcosDatabase");
-            throw new NotImplementedException();
-        }
-
-
         //static BaseData()
         //{
         //    IConfigurationBuilder builder = new ConfigurationBuilder()

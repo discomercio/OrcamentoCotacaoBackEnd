@@ -1,4 +1,5 @@
 ﻿using FormaPagamento;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -11,7 +12,8 @@ namespace OrcamentoCotacaoApi.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class FormaPagamentoController : ControllerBase
+    [Authorize]
+    public class FormaPagamentoController : BaseController
     {
         private readonly ILogger<FormaPagamentoController> _logger;
         private readonly FormaPagtoBll _formaPagtoBll;

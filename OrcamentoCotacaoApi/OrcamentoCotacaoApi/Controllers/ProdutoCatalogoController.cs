@@ -1,4 +1,5 @@
 ﻿using InfraBanco.Modelos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +15,7 @@ namespace OrcamentoCotacaoApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize]
     public class ProdutoCatalogoController : ControllerBase
     {
         private readonly ProdutoCatalogoBll bll;
@@ -31,7 +33,14 @@ namespace OrcamentoCotacaoApi.Controllers
             var user = User.Identity.Name;
             var tipoUsuario = User.Claims.FirstOrDefault(x => x.Type == "TipoUsuario").Value;
 
-            var saida = await bll.Listar(page, pageItens, idCliente, tipoUsuario, user);
+            var saida = bll.PorFiltro(new InfraBanco.Modelos.Filtros.TprodutoCatalogoFiltro()
+            {
+                Page = page,
+                RecordsPerPage = pageItens,
+                IdCliente = idCliente,
+                TipoUsuario = tipoUsuario,
+                Usuario = user
+            });
 
             if (saida.Count > 0)
                 return Ok(saida);
@@ -42,7 +51,7 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> ObterPorId(string id)
         {
-            var saida = await bll.ObterPorId(id);
+            var saida = bll.PorFiltro(new InfraBanco.Modelos.Filtros.TprodutoCatalogoFiltro() { Id = id });// ObterPorId(id);
 
             if (saida != null)
                 return Ok(saida);
@@ -53,7 +62,7 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpGet("{id}/detalhes")]
         public async Task<IActionResult> Detalhes(string id)
         {
-            var saida = await bll.Detalhes(id);
+            var saida = bll.Detalhes(id);
 
             if (saida != null)
                 return Ok(saida);
@@ -62,20 +71,20 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Excluir(string id)
+        public IActionResult Excluir(string id)
         {
-            var saida = await bll.Excluir(id);
+            bll.Excluir(new TprodutoCatalogo() { Id = id });
 
-            if (saida)
-                return Ok(saida);
-            else
-                return NotFound();
+            //if (saida)
+            return Ok(true);
+            //else
+            //    return NotFound();
         }
 
         [HttpDelete("imagem")]
         public async Task<IActionResult> ExcluirImagem(string idProduto, string idImagem)
         {
-            var saida = await bll.ExcluirImagem(idProduto, idImagem);
+            var saida = bll.ExcluirImagem(idProduto, idImagem);
 
             if (saida)
                 return Ok(saida);
@@ -86,7 +95,7 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpGet("{id}/itens")]
         public async Task<IActionResult> ObterListaItens(string id)
         {
-            var saida = await bll.ObterListaItens(id);
+            var saida = bll.ObterListaItens(id);
 
             if (saida != null)
                 return Ok(saida);
@@ -97,12 +106,12 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPut]
         public async Task<IActionResult> Atualizar(TprodutoCatalogo produto)
         {
-            var saida = await bll.Atualizar(produto, User.Identity.Name);
+           bll.Atualizar(produto);
 
-            if (saida)
-                return Ok(saida);
-            else
-                return NotFound();
+            //if (saida)
+                return Ok(true);
+            //else
+            //    return NotFound();
         }
 
         [HttpPost("imagem")]
@@ -120,7 +129,7 @@ namespace OrcamentoCotacaoApi.Controllers
                         await arquivo.CopyToAsync(fileStream);
                     }
 
-                    await bll.SalvarArquivo($"{idArquivo}.{extensao}", idProdutoCalatogo, "1", "0");
+                    bll.SalvarArquivo($"{idArquivo}.{extensao}", idProdutoCalatogo, "1", "0");
 
                     return Ok(new
                     {
@@ -148,7 +157,7 @@ namespace OrcamentoCotacaoApi.Controllers
             try
             {
                 var usuario = User.Identity.Name;
-                var saida = await bll.Criar(produtoCatalogo, usuario);
+                var saida = bll.Criar(produtoCatalogo, usuario);
 
                 if (saida)
                 {
