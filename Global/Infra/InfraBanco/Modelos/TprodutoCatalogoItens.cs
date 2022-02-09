@@ -1,5 +1,4 @@
-﻿using ClassesBase;
-using System.ComponentModel.DataAnnotations;
+﻿using Interfaces;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InfraBanco.Modelos

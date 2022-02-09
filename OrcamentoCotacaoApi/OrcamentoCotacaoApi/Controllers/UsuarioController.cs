@@ -22,12 +22,12 @@ namespace OrcamentoCotacaoApi.Controllers
     {
         private readonly ILogger<UsuarioController> _logger;
         private readonly UsuarioBll _usuarioBll;
-        private readonly OrcamentistaEindicadorBll _orcamentistaEIndicadorBLL;
+        private readonly OrcamentistaEIndicadorBll _orcamentistaEIndicadorBLL;
         private readonly IMapper _mapper;
         private readonly OrcamentistaEIndicadorVendedorBll _orcamentistaEIndicadorVendedorBll;
 
         public UsuarioController(ILogger<UsuarioController> logger, UsuarioBll usuarioBll,
-            OrcamentistaEindicadorBll orcamentistaEIndicadorBLL, IMapper mapper,
+            OrcamentistaEIndicadorBll orcamentistaEIndicadorBLL, IMapper mapper,
             OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll)
         {
             _logger = logger;

@@ -19,6 +19,7 @@ using System.Text;
 using Usuario;
 using System.Linq;
 using System;
+using OrcamentistaEindicador;
 
 namespace OrcamentoCotacaoApi
 {
@@ -77,13 +78,15 @@ namespace OrcamentoCotacaoApi
             //services.AddTransient<PrepedidoBusiness.Bll.PedidoPrepedidoApiBll, PrepedidoBusiness.Bll.PedidoPrepedidoApiBll>();
             services.AddTransient<OrcamentoCotacaoBusiness.Bll.AcessoBll, OrcamentoCotacaoBusiness.Bll.AcessoBll>();
             services.AddTransient<Produto.ProdutoGeralBll, Produto.ProdutoGeralBll>();
-            services.AddTransient<OrcamentistaEindicador.OrcamentistaEindicadorBll, OrcamentistaEindicador.OrcamentistaEindicadorBll>();
+            services.AddTransient<OrcamentistaEindicador.OrcamentistaEIndicadorBll, OrcamentistaEIndicadorBll>();
+            services.AddTransient<OrcamentistaEindicador.OrcamentistaEIndicadorData, OrcamentistaEIndicadorData>();            
             services.AddTransient<OrcamentistaEIndicadorVendedor.OrcamentistaEIndicadorVendedorBll, OrcamentistaEIndicadorVendedor.OrcamentistaEIndicadorVendedorBll>();
             services.AddTransient<Orcamento.OrcamentoBll, Orcamento.OrcamentoBll>();
             services.AddTransient<Orcamento.OrcamentoOpcaoBll, Orcamento.OrcamentoOpcaoBll>();
             services.AddTransient<Arquivo.ArquivoBll, Arquivo.ArquivoBll>();
             services.AddTransient<Loja.LojaBll, Loja.LojaBll>();
             services.AddTransient<OrcamentoCotacaoBusiness.Bll.ProdutoOrcamentoCotacaoBll, OrcamentoCotacaoBusiness.Bll.ProdutoOrcamentoCotacaoBll>();
+            services.AddTransient<Loja.LojaData, Loja.LojaData>();
             //services.AddTransient<PrepedidoBusiness.Bll.ProdutoPrepedidoBll, PrepedidoBusiness.Bll.ProdutoPrepedidoBll>();
             //services.AddTransient<Cep.CepBll, Cep.CepBll>();
             //services.AddTransient<PrepedidoBusiness.Bll.CepPrepedidoBll, PrepedidoBusiness.Bll.CepPrepedidoBll>();

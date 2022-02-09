@@ -51,14 +51,14 @@ namespace OrcamentoCotacaoApi.Controllers
         private readonly IConfiguration configuration;
         private readonly OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll;
         private readonly UsuarioBll usuarioBll;
-        private readonly OrcamentistaEindicadorBll orcamentistaEindicadorBll;
+        private readonly OrcamentistaEIndicadorBll orcamentistaEindicadorBll;
         private readonly IServicoDecodificarToken servicoDecodificarToken;
         private readonly ILogger<AcessoController_old> logger;
         private readonly OrcamentistaEIndicadorVendedorBll orcamentistaEindicadorVendedorBll;
         private readonly LojaBll lojaBll;
 
         public AcessoController_old(IServicoAutenticacao servicoAutenticacao, IConfiguration configuration, OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll, UsuarioBll usuarioBll,
-            OrcamentistaEindicadorBll orcamentistaEindicadorBll, IServicoDecodificarToken servicoDecodificarToken, ILogger<AcessoController_old> logger,
+            OrcamentistaEIndicadorBll orcamentistaEindicadorBll, IServicoDecodificarToken servicoDecodificarToken, ILogger<AcessoController_old> logger,
             OrcamentistaEIndicadorVendedorBll orcamentistaEindicadorVendedorBll, LojaBll lojaBll)
         {
             this.servicoAutenticacao = servicoAutenticacao;

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClassesBase
+namespace Interfaces
 {
-    public interface IModel
+    public interface IConfiguracao
     {
     }
 }

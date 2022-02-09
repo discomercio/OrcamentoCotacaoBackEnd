@@ -17,11 +17,11 @@ namespace OrcamentoCotacaoApi.Controllers
     [Authorize]
     public class OrcamentistaEindicadorController : BaseController
     {
-        private readonly OrcamentistaEindicadorBll _orcamentistaEindicadorBll;
+        private readonly OrcamentistaEIndicadorBll _orcamentistaEindicadorBll;
         private readonly ILogger<UsuarioController> _logger;
         private readonly IMapper _mapper;
 
-        public OrcamentistaEindicadorController(OrcamentistaEindicadorBll orcamentistaEindicadorBll, ILogger<UsuarioController> logger,
+        public OrcamentistaEindicadorController(OrcamentistaEIndicadorBll orcamentistaEindicadorBll, ILogger<UsuarioController> logger,
             IMapper mapper)
         {
             this._orcamentistaEindicadorBll = orcamentistaEindicadorBll;
