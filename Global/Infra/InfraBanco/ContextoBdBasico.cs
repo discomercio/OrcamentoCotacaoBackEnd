@@ -124,6 +124,49 @@ namespace InfraBanco
 
             modelBuilder.Entity<TavisoLido>()
                 .HasKey(x => new { x.Id, x.Usuario });
+
+
+            modelBuilder.Entity<TcfgPagtoFormaStatus>()
+                .HasOne(x => x.TcfgModulo)
+                .WithMany(x => x.TcfgPagtoFormaStatus)
+                .HasForeignKey(x => x.IdCfgModulo);
+            modelBuilder.Entity<TcfgPagtoFormaStatus>()
+                 .HasOne(x => x.TcfgPagtoForma)
+                 .WithMany(x => x.TcfgPagtoFormaStatus)
+                 .HasForeignKey(x => x.IdCfgPagtoForma);
+            modelBuilder.Entity<TcfgPagtoFormaStatus>()
+                .HasOne(x => x.TcfgTipoPessoa)
+                .WithMany(x => x.TcfgPagtoFormaStatus)
+                .HasForeignKey(x => x.IdCfgTipoPessoaCliente);
+            modelBuilder.Entity<TcfgPagtoFormaStatus>()
+                .HasOne(x => x.TcfgTipoUsuarios)
+                .WithMany(x => x.TcfgPagtoFormaStatus)
+                .HasForeignKey(x => x.IdCfgTipoUsuario);
+
+            modelBuilder.Entity<TcfgPagtoMeioStatus>()
+                .HasOne(x => x.TcfgModulo)
+                .WithMany(x => x.TcfgPagtoMeioStatus)
+                .HasForeignKey(x => x.IdCfgModulo);
+            modelBuilder.Entity<TcfgPagtoMeioStatus>()
+                .HasOne(x => x.TcfgPagtoForma)
+                .WithMany(x => x.TcfgPagtoMeioStatus)
+                .HasForeignKey(x => x.IdCfgPagtoForma);
+            modelBuilder.Entity<TcfgPagtoMeioStatus>()
+                .HasOne(x => x.TcfgPagtoMeio)
+                .WithMany(x => x.TcfgPagtoMeioStatus)
+                .HasForeignKey(x => x.IdCfgPagtoMeio);
+            modelBuilder.Entity<TcfgPagtoMeioStatus>()
+                .HasOne(x => x.TcfgTipoParcela)
+                .WithMany(x => x.TcfgPagtoMeioStatus)
+                .HasForeignKey(x => x.IdCfgTipoParcela);
+            modelBuilder.Entity<TcfgPagtoMeioStatus>()
+                .HasOne(x => x.TcfgTipoPessoa)
+                .WithMany(x => x.TcfgPagtoMeioStatus)
+                .HasForeignKey(x => x.TcfgTipoPessoa);
+            modelBuilder.Entity<TcfgPagtoMeioStatus>()
+                .HasOne(x => x.TcfgTipoUsuarios)
+                .WithMany(x => x.TcfgPagtoMeioStatus)
+                .HasForeignKey(x => x.IdCfgTipoUsuario);
 #endif
         }
 
@@ -176,6 +219,13 @@ namespace InfraBanco
         public DbSet<TperfilUsuario> TperfilUsuarios { get; set; }
         public DbSet<Testoque> Testoques { get; set; }
         public DbSet<TestoqueMovimento> TestoqueMovimentos { get; set; }
+        public DbSet<TcfgModulo> TcfgModulos { get; set; }
+        public DbSet<TcfgPagtoForma> TcfgPagtoFormas { get; set; }
+        public DbSet<TcfgPagtoMeio> TcfgPagtoMeios { get; set; }
+        public DbSet<TcfgPagtoMeioStatus> TcfgPagtoMeioStatus { get; set; }
+        public DbSet<TcfgTipoParcela> TcfgTipoParcelas { get; set; }
+        public DbSet<TcfgTipoPessoa> TcfgTipoPessoas { get; set; }
+        public DbSet<TcfgTipoUsuario> TcfgTipoUsuarios { get; set; }
 
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public DbSet<Taviso> Tavisos { get; set; }
