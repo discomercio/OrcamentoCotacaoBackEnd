@@ -41,7 +41,7 @@ namespace Orcamento
                                     Valor = "0",
                                     Status = c.TorcamentoCotacaoStatus.Descricao,
                                     VistoEm = "",
-                                    Pendente = c.IdStatus == 7 ? "sim" : "nao",
+                                    Pendente = c.IdStatus == 7 ? "Sim" : "Não",
                                 }).ToList();
                     }
                     else if (obj.Origem == "PENDENTES") //ORCAMENTOS
@@ -62,7 +62,7 @@ namespace Orcamento
                                     Valor = "0",
                                     Status = c.TorcamentoCotacaoStatus.Descricao,
                                     VistoEm = "",
-                                    Pendente = c.IdStatus == 7 ? "sim" : "nao",
+                                    Pendente = c.IdStatus == 7 ? "Sim" : "Não",
                                 }).ToList();
                     }
                     else //if (obj.Origem == "PEDIDOS")
