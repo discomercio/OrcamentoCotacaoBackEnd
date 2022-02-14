@@ -7,6 +7,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response.FormaPagamento.MeiosPagamento
     public class MeioPagamentoResponseViewModel
     {
         public short Id { get; set; }
+        public short? IdTipoParcela { get; set; }
         public string Descricao { get; set; }
         public int? Ordenacao { get; set; }
         public int? QtdeMaxParcelas { get; set; }
@@ -21,7 +22,8 @@ namespace OrcamentoCotacaoBusiness.Models.Response.FormaPagamento.MeiosPagamento
                 Descricao = origem.TcfgPagtoMeio.Descricao,
                 Ordenacao = origem.TcfgPagtoMeio.Ordenacao,
                 QtdeMaxParcelas = origem.QtdeMaxParcelas,
-                QtdeMaxDias = origem.QtdeMaxDias
+                QtdeMaxDias = origem.QtdeMaxDias,
+                IdTipoParcela = origem.IdCfgTipoParcela
             };
         }
         public static List<MeioPagamentoResponseViewModel> ListaMeioPagamentoResponseViewModel_De_TcfgPagtoMeioStatus(List<InfraBanco.Modelos.TcfgPagtoMeioStatus> listaBancoDados)

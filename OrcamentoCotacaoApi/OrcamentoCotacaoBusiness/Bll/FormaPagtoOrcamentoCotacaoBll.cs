@@ -42,13 +42,16 @@ namespace OrcamentoCotacaoBusiness.Bll
                 FormaPagamentoResponseViewModel item = new FormaPagamentoResponseViewModel();
                 item.IdTipoPagamento = fp.TcfgPagtoForma.Id;
 
-                if (fp.TcfgPagtoForma.Id.ToString() != Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO &&
-                    fp.TcfgPagtoForma.Id.ToString() != Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA)
-                {
-                    var filtro = CriarFiltro(fp, tipoCliente, tipoUsuario);
-                    meiosPagamento = _meiosPagamentosBll.BuscarMeiosPagamento(filtro);
-                    item.MeioPagamentoResponseViewModel = MeioPagamentoResponseViewModel.ListaMeioPagamentoResponseViewModel_De_TcfgPagtoMeioStatus(meiosPagamento);
-                }
+                var filtro = CriarFiltro(fp, tipoCliente, tipoUsuario);
+                meiosPagamento = _meiosPagamentosBll.BuscarMeiosPagamento(filtro);
+                item.MeioPagamentoResponseViewModel = MeioPagamentoResponseViewModel.ListaMeioPagamentoResponseViewModel_De_TcfgPagtoMeioStatus(meiosPagamento);
+                //if (fp.TcfgPagtoForma.Id.ToString() != Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO &&
+                //    fp.TcfgPagtoForma.Id.ToString() != Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA)
+                //{
+                //    var filtro = CriarFiltro(fp, tipoCliente, tipoUsuario);
+                //    meiosPagamento = _meiosPagamentosBll.BuscarMeiosPagamento(filtro);
+                //    item.MeioPagamentoResponseViewModel = MeioPagamentoResponseViewModel.ListaMeioPagamentoResponseViewModel_De_TcfgPagtoMeioStatus(meiosPagamento);
+                //}
 
                 response.Add(item);
             }
@@ -72,10 +75,14 @@ namespace OrcamentoCotacaoBusiness.Bll
             switch (tipoPagto.TcfgPagtoForma.Id.ToString())
             {
                 case Constantes.COD_FORMA_PAGTO_A_VISTA:
-                    filtro.IdCfgPagtoForma = (short)Constantes.TipoParcela.A_VISTA;
+                    filtro.IdCfgPagtoForma = Int16.Parse(Constantes.COD_FORMA_PAGTO_A_VISTA);
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO:
+                    filtro.IdCfgPagtoForma = Int16.Parse(Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO);
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
                     filtro.IncluirTcfgTipoParcela = true;
+                    filtro.IdCfgPagtoForma = Int16.Parse(Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA);
                     filtro.IdTipoParcela = (short)Constantes.TipoParcela.PARCELA_DE_ENTRADA;
                     //filtro.IdTipoParcela = (short)Constantes.TipoParcela.DEMAIS_PARCELAS_PRESTACAO;
                     break;
@@ -86,6 +93,9 @@ namespace OrcamentoCotacaoBusiness.Bll
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
                     filtro.IdTipoParcela = (short)Constantes.TipoParcela.PARCELA_UNICA;
+                    break;
+                case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA:
+                    filtro.IdCfgPagtoForma = Int16.Parse(Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA);
                     break;
             }
 
