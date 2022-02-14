@@ -162,7 +162,7 @@ namespace InfraBanco
             modelBuilder.Entity<TcfgPagtoMeioStatus>()
                 .HasOne(x => x.TcfgTipoPessoa)
                 .WithMany(x => x.TcfgPagtoMeioStatus)
-                .HasForeignKey(x => x.TcfgTipoPessoa);
+                .HasForeignKey(x => x.IdCfgTipoPessoaCliente);
             modelBuilder.Entity<TcfgPagtoMeioStatus>()
                 .HasOne(x => x.TcfgTipoUsuarios)
                 .WithMany(x => x.TcfgPagtoMeioStatus)
@@ -221,6 +221,7 @@ namespace InfraBanco
         public DbSet<TestoqueMovimento> TestoqueMovimentos { get; set; }
         public DbSet<TcfgModulo> TcfgModulos { get; set; }
         public DbSet<TcfgPagtoForma> TcfgPagtoFormas { get; set; }
+        public DbSet<TcfgPagtoFormaStatus> TcfgPagtoFormaStatus { get; set; }
         public DbSet<TcfgPagtoMeio> TcfgPagtoMeios { get; set; }
         public DbSet<TcfgPagtoMeioStatus> TcfgPagtoMeioStatus { get; set; }
         public DbSet<TcfgTipoParcela> TcfgTipoParcelas { get; set; }

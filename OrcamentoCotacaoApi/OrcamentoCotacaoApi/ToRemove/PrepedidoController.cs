@@ -11,6 +11,7 @@ using PrepedidoBusiness.Bll;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using OrcamentoCotacaoApi.Utils;
 using FormaPagamento;
+using OrcamentoCotacaoBusiness.Bll;
 
 namespace PrepedidoApi.Controllers
 {
@@ -24,14 +25,12 @@ namespace PrepedidoApi.Controllers
         private readonly PrepedidoApiBll prepedidoApiBll;
         private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
         private readonly FormaPagtoBll formaPagtoBll;
-        private readonly FormaPagtoPrepedidoBll formaPagtoPrepedidoBll;
         private readonly CoeficientePrepedidoBll coeficientePrepedidoBll;
         private readonly IConfiguration configuration;
         public PrepedidoController(Prepedido.PrepedidoBll prepedidoBll,
             PrepedidoBusiness.Bll.PrepedidoApiBll prepedidoApiBll,
             InfraIdentity.IServicoDecodificarToken servicoDecodificarToken,
             FormaPagtoBll formaPagtoBll,
-            PrepedidoBusiness.Bll.FormaPagtoPrepedidoBll formaPagtoPrepedidoBll,
             PrepedidoBusiness.Bll.CoeficientePrepedidoBll coeficientePrepedidoBll,
             IConfiguration configuration)
         {
@@ -39,7 +38,6 @@ namespace PrepedidoApi.Controllers
             this.prepedidoApiBll = prepedidoApiBll;
             this.servicoDecodificarToken = servicoDecodificarToken;
             this.formaPagtoBll = formaPagtoBll;
-            this.formaPagtoPrepedidoBll = formaPagtoPrepedidoBll;
             this.coeficientePrepedidoBll = coeficientePrepedidoBll;
             this.configuration = configuration;
         }
@@ -186,20 +184,6 @@ namespace PrepedidoApi.Controllers
             return Ok();
         }
 
-#if DEBUG
-        [AllowAnonymous]
-#endif
-        [HttpGet("buscarFormasPagto")]
-        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<IActionResult> BuscarFormasPagto(string tipo_pessoa)
-        {
-            //para testar: http://localhost:60877/api/prepedido/buscarFormasPagto
-            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-
-            PrepedidoBusiness.Dto.FormaPagto.FormaPagtoDto ret = await formaPagtoPrepedidoBll.ObterFormaPagto(apelido.Trim(), tipo_pessoa);
-
-            return Ok(ret);
-        }
 
 #if DEBUG
         [AllowAnonymous]

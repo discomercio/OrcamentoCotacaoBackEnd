@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,7 +8,7 @@ using System.Text;
 namespace InfraBanco.Modelos
 {
     [Table("t_CFG_PAGTO_FORMA_STATUS")]
-    public class TcfgPagtoFormaStatus
+    public class TcfgPagtoFormaStatus: IModel
     {
         [Key]
         [Column("Id")]
@@ -29,7 +30,7 @@ namespace InfraBanco.Modelos
         public byte? PedidoComIndicador { get; set; }
 
         [Column("Habilitado")]
-        public short Habilitado { get; set; }
+        public byte Habilitado { get; set; }
 
         [Column("DataHoraCadastro")]
         public DateTime DataHoraCadastro { get; set; }

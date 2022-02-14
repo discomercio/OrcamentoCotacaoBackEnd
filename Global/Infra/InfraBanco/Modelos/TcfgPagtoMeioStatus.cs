@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,11 +8,11 @@ using System.Text;
 namespace InfraBanco.Modelos
 {
     [Table("t_CFG_PAGTO_MEIO_STATUS")]
-    public class TcfgPagtoMeioStatus
+    public class TcfgPagtoMeioStatus : IModel
     {
         [Key]
         [Column("Id")]
-        public short Id { get; set; }
+        public int Id { get; set; }
 
         [Column("IdCfgPagtoMeio")]
         public short IdCfgPagtoMeio { get; set; }
@@ -61,7 +62,7 @@ namespace InfraBanco.Modelos
 
         public TcfgModulo TcfgModulo { get; set; }
         public TcfgPagtoForma TcfgPagtoForma { get; set; }
-        public TcfgPagtoMeio TcfgPagtoMeio{ get; set; }
+        public TcfgPagtoMeio TcfgPagtoMeio { get; set; }
         public TcfgTipoParcela TcfgTipoParcela { get; set; }
         public TcfgTipoPessoa TcfgTipoPessoa { get; set; }
         public TcfgTipoUsuario TcfgTipoUsuarios { get; set; }

@@ -25,6 +25,24 @@ namespace InfraBanco.Constantes
             COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO = 5   //API magento
         };
 
+        public enum Modulos
+        {
+            COD_MODULO_CENTRAL = 1,
+            COD_MODULO_LOJA = 2,
+            COD_MODULO_PREPEDIDO = 3,
+            COD_MODULO_ORCAMENTOCOTACAO = 4,
+        }
+
+        public enum TipoParcela
+        {
+            A_VISTA = 1,
+            PARCELA_UNICA = 2,
+            PARCELA_DE_ENTRADA = 3,
+            PRIMEIRA_PRESTACAO = 4,
+            DEMAIS_PARCELAS_PRESTACAO = 5,
+            PARCELAMENTO_CARTAO = 6
+        }
+
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public const string T_PEDIDO_ANALISE_ENDERECO = "T_PEDIDO_ANALISE_ENDERECO";
         public const string T_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO = "T_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO";

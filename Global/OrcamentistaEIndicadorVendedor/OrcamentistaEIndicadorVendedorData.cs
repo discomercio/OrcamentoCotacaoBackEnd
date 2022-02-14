@@ -85,7 +85,7 @@ namespace OrcamentistaEIndicadorVendedor
             catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
         }
     }

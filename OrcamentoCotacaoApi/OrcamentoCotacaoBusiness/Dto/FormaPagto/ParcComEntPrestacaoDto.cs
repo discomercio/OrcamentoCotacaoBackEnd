@@ -8,25 +8,29 @@ namespace PrepedidoBusiness.Dto.FormaPagto
         public short Id { get; set; }
         public string Descricao { get; set; }
         public int? Ordenacao { get; set; }
+        public int QtdeMaxParcelas { get; set; }
+        public int QtdeMaxDias { get; set; }
 
 
-        public static ParcComEntPrestacaoDto ParcComEntPrestacaoDto_De_ParcComEntPrestacaoDados(ParcComEntPrestacaoDados origem)
+        public static ParcComEntPrestacaoDto ParcComEntPrestacaoDto_De_TcfgPagtoMeioStatus(InfraBanco.Modelos.TcfgPagtoMeioStatus origem)
         {
             if (origem == null) return null;
             return new ParcComEntPrestacaoDto()
             {
-                Id = origem.Id,
-                Descricao = origem.Descricao,
-                Ordenacao = origem.Ordenacao
+                Id = origem.TcfgPagtoMeio.Id,
+                Descricao = origem.TcfgPagtoMeio.Descricao,
+                Ordenacao = origem.TcfgPagtoMeio.Ordenacao,
+                QtdeMaxParcelas = (short)origem.QtdeMaxParcelas,
+                QtdeMaxDias = (short)origem.QtdeMaxDias
             };
         }
-        public static List<ParcComEntPrestacaoDto> ListaParcComEntPrestacaoDto_De_ParcComEntPrestacaoDados(IEnumerable<ParcComEntPrestacaoDados> listaBancoDados)
+        public static List<ParcComEntPrestacaoDto> ListaParcComEntPrestacaoDto_De_TcfgPagtoMeioStatus(List<InfraBanco.Modelos.TcfgPagtoMeioStatus> listaBancoDados)
         {
             if (listaBancoDados == null) return null;
             var ret = new List<ParcComEntPrestacaoDto>();
             if (listaBancoDados != null)
                 foreach (var p in listaBancoDados)
-                    ret.Add(ParcComEntPrestacaoDto_De_ParcComEntPrestacaoDados(p));
+                    ret.Add(ParcComEntPrestacaoDto_De_TcfgPagtoMeioStatus(p));
             return ret;
         }
     }

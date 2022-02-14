@@ -7,6 +7,8 @@ using System.Linq;
 using InfraBanco.Constantes;
 using InfraBanco;
 using FormaPagamento.Dados;
+using InfraBanco.Modelos;
+using MeioPagamentos;
 
 namespace FormaPagamento
 {
@@ -14,9 +16,11 @@ namespace FormaPagamento
     {
         private readonly ContextoBdProvider contextoProvider;
 
-        public FormaPagtoBll(InfraBanco.ContextoBdProvider contextoProvider)
+        public readonly FormaPagamentoData _formaPagamentoData;
+        public FormaPagtoBll(InfraBanco.ContextoBdProvider contextoProvider, FormaPagamentoData formaPagamentoData)
         {
             this.contextoProvider = contextoProvider;
+            this._formaPagamentoData = formaPagamentoData;
         }
 
         public async Task<FormaPagtoDados> ObterFormaPagto(string apelido, string tipo_pessoa,
@@ -29,8 +33,8 @@ namespace FormaPagamento
 
             //implementar as buscas
             formaPagto.ListaAvista = (await ObterFormaPagtoAVista(apelido, tipo_pessoa)).ToList();
-			//parcela unica: se PJ ou no magento aceita sempre
-            if (tipo_pessoa == Constantes.ID_PJ 
+            //parcela unica: se PJ ou no magento aceita sempre
+            if (tipo_pessoa == Constantes.ID_PJ
                 || sistemaResponsavel == Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO)
             {
                 formaPagto.ListaParcUnica = (await ObterFormaPagtoParcUnica(apelido, tipo_pessoa)).ToList();
@@ -262,6 +266,20 @@ namespace FormaPagamento
             int qtde = Convert.ToInt32(await qtdeTask.FirstOrDefaultAsync());
 
             return qtde;
+        }
+
+        public List<TcfgPagtoFormaStatus> BuscarFormasPagtos(bool incluirTcfgPagtoForma, Constantes.Modulos modulo,
+            string tipoCliente, bool comIndicador, bool habilitado, short tipoUsuario)
+        {
+            return _formaPagamentoData.PorFiltro(new InfraBanco.Modelos.Filtros.TcfgPagtoFormaStatusFiltro()
+            {
+                IdCfgModulo = (short)modulo,
+                IdCfgTipoPessoaCliente = (short)(tipoCliente == Constantes.ID_PF ? 1 : 2),
+                IdCfgTipoUsuario = tipoUsuario,
+                PedidoComIndicador = (byte)(comIndicador ? 1 : 0),
+                Habilitado = (byte)(habilitado ? 1 : 0),
+                IncluirTcfgPagtoForma = incluirTcfgPagtoForma
+            });
         }
     }
 }

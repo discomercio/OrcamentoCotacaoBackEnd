@@ -161,6 +161,14 @@ namespace InfraBanco
         public DbSet<TorcamentoCotacaoOpcaoFormaPagamento> TorcamentoCotacaoOpcaoFormaPagamento { get => contexto.TorcamentoCotacaoOpcaoFormaPagamento; }
         public DbSet<TorcamentoCotacaoOpcaoItem> TorcamentoCotacaoOpcaoItem { get => contexto.TorcamentoCotacaoOpcaoItem; }
         public DbSet<TorcamentoCotacaoOpcaoItemSku> TorcamentoCotacaoOpcaoItemSku { get => contexto.TorcamentoCotacaoOpcaoItemSku; }
+        public DbSet<TcfgModulo> TcfgModulos { get => contexto.TcfgModulos; }
+        public DbSet<TcfgPagtoForma> TcfgPagtoFormas { get => contexto.TcfgPagtoFormas; }
+        public DbSet<TcfgPagtoFormaStatus> TcfgPagtoFormaStatus { get => contexto.TcfgPagtoFormaStatus; }
+        public DbSet<TcfgPagtoMeio> TcfgPagtoMeios { get => contexto.TcfgPagtoMeios; }
+        public DbSet<TcfgPagtoMeioStatus> TcfgPagtoMeioStatus { get => contexto.TcfgPagtoMeioStatus; }
+        public DbSet<TcfgTipoParcela> TcfgTipoParcelas { get => contexto.TcfgTipoParcelas; }
+        public DbSet<TcfgTipoPessoa> TcfgTipoPessoas { get => contexto.TcfgTipoPessoas; }
+        public DbSet<TcfgTipoUsuario> TcfgTipoUsuarios { get => contexto.TcfgTipoUsuarios; }
 #endif
 
         //daqui para a frente só é necessário para os testes automatizados

@@ -20,6 +20,8 @@ using Usuario;
 using System.Linq;
 using System;
 using OrcamentistaEindicador;
+using MeioPagamentos;
+using OrcamentoCotacaoBusiness.Bll;
 
 namespace OrcamentoCotacaoApi
 {
@@ -91,6 +93,10 @@ namespace OrcamentoCotacaoApi
             //services.AddTransient<Cep.CepBll, Cep.CepBll>();
             //services.AddTransient<PrepedidoBusiness.Bll.CepPrepedidoBll, PrepedidoBusiness.Bll.CepPrepedidoBll>();
             services.AddTransient<FormaPagtoBll, FormaPagtoBll>();
+            services.AddTransient<FormaPagtoOrcamentoCotacaoBll, FormaPagtoOrcamentoCotacaoBll>();
+            services.AddTransient<FormaPagamentoData, FormaPagamentoData>();
+            services.AddTransient<MeiosPagamentosBll, MeiosPagamentosBll>();
+            services.AddTransient<MeiosPagamentosData, MeiosPagamentosData>();
             services.AddTransient<UsuarioBll, UsuarioBll>();
             services.AddTransient<ProdutoCatalogoBll, ProdutoCatalogoBll>();
             //services.AddTransient<PrepedidoBusiness.Bll.FormaPagtoPrepedidoBll, PrepedidoBusiness.Bll.FormaPagtoPrepedidoBll>();

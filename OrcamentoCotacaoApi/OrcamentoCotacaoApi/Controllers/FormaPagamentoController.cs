@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using OrcamentoCotacaoBusiness.Bll;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,21 +17,27 @@ namespace OrcamentoCotacaoApi.Controllers
     public class FormaPagamentoController : BaseController
     {
         private readonly ILogger<FormaPagamentoController> _logger;
-        private readonly FormaPagtoBll _formaPagtoBll;
+        private readonly FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll;
 
-        public FormaPagamentoController(ILogger<FormaPagamentoController> logger, FormaPagtoBll formaPagtoBll)
+        public FormaPagamentoController(ILogger<FormaPagamentoController> logger, FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll)
         {
             this._logger = logger;
-            this._formaPagtoBll = formaPagtoBll;
+            this.formaPagtoOrcamentoCotacaoBll = formaPagtoOrcamentoCotacaoBll;
         }
 
+#if DEBUG
+        [AllowAnonymous]
+#endif
         [HttpGet]
-        [Route("qtde-parcelas-cartao-visa")]
-        public async Task<int> GetQtdeMaxParcelasCartaoVisa()
+        [Route("buscarFormasPagamentos12")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public async Task<IActionResult> BuscarFormasPagamentos(string tipoCliente)
         {
-            _logger.LogInformation("Buscando quantidade máxima de parcelas cartão visa.");
-            var qtdeParcelas = await _formaPagtoBll.GetMaximaQtdeParcelasCartaoVisa();
-            return qtdeParcelas;
+            var retorno = formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos("PF", "");
+
+            if (retorno == null) return NotFound();
+
+            return Ok(retorno);
         }
     }
 }

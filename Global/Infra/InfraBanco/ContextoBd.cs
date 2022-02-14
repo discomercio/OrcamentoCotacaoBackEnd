@@ -93,6 +93,7 @@ namespace InfraBanco
         public IQueryable<TestoqueMovimento> TestoqueMovimentos { get => contexto.TestoqueMovimentos.AsNoTracking(); }
         public IQueryable<TcfgModulo> TcfgModulos { get => contexto.TcfgModulos.AsNoTracking(); }
         public IQueryable<TcfgPagtoForma> TcfgPagtoFormas { get => contexto.TcfgPagtoFormas.AsNoTracking(); }
+        public IQueryable<TcfgPagtoFormaStatus> TcfgPagtoFormaStatus { get => contexto.TcfgPagtoFormaStatus.AsNoTracking(); }
         public IQueryable<TcfgPagtoMeio> TcfgPagtoMeios { get => contexto.TcfgPagtoMeios.AsNoTracking(); }
         public IQueryable<TcfgPagtoMeioStatus> TcfgPagtoMeioStatus { get => contexto.TcfgPagtoMeioStatus.AsNoTracking(); }
         public IQueryable<TcfgTipoParcela> TcfgTipoParcelas { get => contexto.TcfgTipoParcelas.AsNoTracking(); }
