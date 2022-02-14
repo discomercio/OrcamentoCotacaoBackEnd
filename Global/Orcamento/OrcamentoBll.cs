@@ -28,41 +28,42 @@ namespace Orcamento
                     {
                         return (from c in db.TorcamentoCotacao
                                 where c.DataCadastro > DateTime.Now.AddDays(-60)
-                                        && obj.Loja.Contains(c.IdLoja)
+                                        && obj.Loja == c.Loja
                                 orderby c.DataCadastro descending
                                 select new OrcamentoCotacaoListaDto
                                 {
                                     NumOrcamento = c.Id.ToString("0000"),
                                     NumPedido = null,
                                     Cliente_Obra = $"{c.NomeCliente} - {c.NomeObra}",
-                                    Vendedor = c.Vendedor,
-                                    Parceiro = c.Parceiro,
-                                    ParceiroVendedor = c.VendedorParceiro,
+                                    Vendedor = "Vendedor",
+                                    Parceiro = "Parceiro",
+                                    VendedorParceiro = "VendedorParceiro",
                                     Valor = "0",
                                     Status = c.TorcamentoCotacaoStatus.Descricao,
                                     VistoEm = "",
-                                    Pendente = c.IdStatus == 7 ? "Sim" : "Não",
+                                    Mensagem = c.Status == 7 ? "Sim" : "Não",
+                                    DtCadastro = c.DataCadastro
                                 }).ToList();
                     }
                     else if (obj.Origem == "PENDENTES") //ORCAMENTOS
                     {
                         return (from c in db.TorcamentoCotacao
                                 where c.DataCadastro > DateTime.Now.AddDays(-60)
-                                        && obj.Loja.Contains(c.IdLoja)
-                                        && c.IdStatus == 7 //PENDENTE
+                                        && obj.Loja == c.Loja
+                                        && c.Status == 7 //PENDENTE
                                 orderby c.DataCadastro descending
                                 select new OrcamentoCotacaoListaDto
                                 {
                                     NumOrcamento = c.Id.ToString("0000"),
                                     NumPedido = null,
                                     Cliente_Obra = $"{c.NomeCliente} - {c.NomeObra}",
-                                    Vendedor = c.Vendedor,
-                                    Parceiro = c.Parceiro,
-                                    ParceiroVendedor = c.VendedorParceiro,
+                                    Vendedor = "Vendedor",
+                                    Parceiro = "Parceiro",
+                                    VendedorParceiro = "VendedorParceiro",
                                     Valor = "0",
                                     Status = c.TorcamentoCotacaoStatus.Descricao,
                                     VistoEm = "",
-                                    Pendente = c.IdStatus == 7 ? "Sim" : "Não",
+                                    Mensagem = c.Status == 7 ? "Sim" : "Não",
                                 }).ToList();
                     }
                     else //if (obj.Origem == "PEDIDOS")
@@ -77,15 +78,15 @@ namespace Orcamento
                                     Cliente_Obra = $"{c.Tcliente.Nome}",
                                     Vendedor = c.Vendedor,
                                     Parceiro = "",
-                                    ParceiroVendedor = "",
+                                    VendedorParceiro = "",
                                     Valor = c.Vl_Total_Familia.ToString(),
                                     Status = c.St_Pagto,
                                     VistoEm = "",
-                                    Pendente = "",
+                                    Mensagem = "Sim",
                                 }).ToList();
                     }
                 }
-            }
+            } 
             catch (Exception e)
             {
                 throw e;

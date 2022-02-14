@@ -27,12 +27,11 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult PorFiltro(int page, int pageItens, string origem)
+        public IActionResult PorFiltro(int page, int pageItens, string origem, string lojaLogada)
         {
             _logger.LogInformation("Buscando lista de orçamentos");
-            var lojas = User.Claims.FirstOrDefault(r => r.Type == ClaimTypes.Surname).Value.Split(',');
 
-            var saida = _orcamentoBll.PorFiltro(new TorcamentoFiltro { Page = page, RecordsPerPage = pageItens, Origem = origem, Loja = lojas });
+            var saida = _orcamentoBll.PorFiltro(new TorcamentoFiltro { Page = page, RecordsPerPage = pageItens, Origem = origem, Loja = lojaLogada });
 
             if (saida != null)
                 return Ok(saida);
@@ -41,12 +40,11 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpGet("status")]
-        public async Task<IActionResult> ObterListaStatus(string origem)
+        public async Task<IActionResult> ObterListaStatus(string origem, string lojaLogada)
         {
             _logger.LogInformation("Buscando status");
-            var lojas = User.Claims.FirstOrDefault(r => r.Type == ClaimTypes.Surname).Value.Split(',');
 
-            var saida = await _orcamentoBll.ObterListaStatus(new TorcamentoFiltro { Origem = origem, Loja = lojas });
+            var saida = await _orcamentoBll.ObterListaStatus(new TorcamentoFiltro { Origem = origem, Loja = lojaLogada });
 
             if (saida != null)
                 return Ok(saida);

@@ -109,7 +109,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loja", "Global\Loja\Loja.cs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProdutoCatalogo", "ProdutoCatalogo\ProdutoCatalogo.csproj", "{B232ED2C-75B4-4B97-9F95-333F38A7B7DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "Global\Interfaces\Interfaces.csproj", "{F1B758B9-347A-4118-93A7-64D9D34C7CC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interfaces", "Global\Interfaces\Interfaces.csproj", "{F1B758B9-347A-4118-93A7-64D9D34C7CC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vendedor", "Vendedor\Vendedor.csproj", "{68B83F2A-1563-4FEB-B6A2-444B8D917A28}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -621,6 +623,22 @@ Global
 		{F1B758B9-347A-4118-93A7-64D9D34C7CC9}.Release_PrepedidoApi|Any CPU.Build.0 = Release|Any CPU
 		{F1B758B9-347A-4118-93A7-64D9D34C7CC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1B758B9-347A-4118-93A7-64D9D34C7CC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68B83F2A-1563-4FEB-B6A2-444B8D917A28}.Debug_OrcamentoCotacao|Any CPU.ActiveCfg = Debug|Any CPU
+		{68B83F2A-1563-4FEB-B6A2-444B8D917A28}.Debug_OrcamentoCotacao|Any CPU.Build.0 = Debug|Any CPU
+		{68B83F2A-1563-4FEB-B6A2-444B8D917A28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68B83F2A-1563-4FEB-B6A2-444B8D917A28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68B83F2A-1563-4FEB-B6A2-444B8D917A28}.Release_ApiMagento|Any CPU.ActiveCfg = Release|Any CPU
+		{68B83F2A-1563-4FEB-B6A2-444B8D917A28}.Release_ApiMagento|Any CPU.Build.0 = Release|Any CPU
+		{68B83F2A-1563-4FEB-B6A2-444B8D917A28}.Release_ApiUnis|Any CPU.ActiveCfg = Release|Any CPU
+		{68B83F2A-1563-4FEB-B6A2-444B8D917A28}.Release_ApiUnis|Any CPU.Build.0 = Release|Any CPU
+		{68B83F2A-1563-4FEB-B6A2-444B8D917A28}.Release_Loja|Any CPU.ActiveCfg = Release|Any CPU
+		{68B83F2A-1563-4FEB-B6A2-444B8D917A28}.Release_Loja|Any CPU.Build.0 = Release|Any CPU
+		{68B83F2A-1563-4FEB-B6A2-444B8D917A28}.Release_OrcamentoCotacao|Any CPU.ActiveCfg = Release|Any CPU
+		{68B83F2A-1563-4FEB-B6A2-444B8D917A28}.Release_OrcamentoCotacao|Any CPU.Build.0 = Release|Any CPU
+		{68B83F2A-1563-4FEB-B6A2-444B8D917A28}.Release_PrepedidoApi|Any CPU.ActiveCfg = Release|Any CPU
+		{68B83F2A-1563-4FEB-B6A2-444B8D917A28}.Release_PrepedidoApi|Any CPU.Build.0 = Release|Any CPU
+		{68B83F2A-1563-4FEB-B6A2-444B8D917A28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68B83F2A-1563-4FEB-B6A2-444B8D917A28}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -668,6 +686,7 @@ Global
 		{2418694E-65C4-4A90-B193-FE06F1E1AC61} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 		{B232ED2C-75B4-4B97-9F95-333F38A7B7DA} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 		{F1B758B9-347A-4118-93A7-64D9D34C7CC9} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
+		{68B83F2A-1563-4FEB-B6A2-444B8D917A28} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {139E9C0D-48C6-4635-9645-BF9C5AA65398}
