@@ -17,8 +17,8 @@ namespace InfraBanco.Modelos
         public string UF { get; set; }
         public string Tipo { get; set; }
         public DateTime Validade { get; set; }
-        public string IdLoja { get; set; }
-        public int IdStatus { get; set; }
+        public string Loja { get; set; }
+        public int Status { get; set; }
         public string Observacao { get; set; }
         public string UsuarioCadastro { get; set; }
         public DateTime DataCadastro { get; set; }

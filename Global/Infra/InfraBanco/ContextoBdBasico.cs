@@ -256,6 +256,7 @@ namespace InfraBanco
         public DbSet<TorcamentoCotacaoOpcaoFormaPagamento> TorcamentoCotacaoOpcaoFormaPagamento { get; set; }
         public DbSet<TorcamentoCotacaoOpcaoItem> TorcamentoCotacaoOpcaoItem { get; set; }
         public DbSet<TorcamentoCotacaoOpcaoItemSku> TorcamentoCotacaoOpcaoItemSku { get; set; }
+        //public DbSet<Tvendedor> Tvendedor { get; set; }
 #endif
         //daqui para a frente só é necessário para os testes automatizados
 #if DEBUG_BANCO_DEBUG

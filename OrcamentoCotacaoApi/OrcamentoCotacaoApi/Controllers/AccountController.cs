@@ -60,6 +60,10 @@ namespace OrcamentoCotacaoApi.Controllers
         [Route("Login")]
         public async Task<ActionResult<object>> Login(LoginRequestViewModel login)
         {
+            try
+            {
+
+
             var appSettingsSection = configuration.GetSection("AppSettings");
             var appSettings = appSettingsSection.Get<OrcamentoCotacaoApi.Utils.Configuracao>();
             string apelido = login.Login.ToUpper();
@@ -105,7 +109,11 @@ namespace OrcamentoCotacaoApi.Controllers
                 Message = "OK"
             };
             return Ok(retorno);
-
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
 
             //string ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
             //string userAgent = Request.Headers["User-agent"];

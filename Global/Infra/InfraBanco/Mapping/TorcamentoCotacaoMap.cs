@@ -51,12 +51,12 @@ namespace InfraBanco.Mapping
                 .HasColumnName("Validade")
                 .HasColumnType("smalldatetime");
 
-            builder.Property(x => x.IdLoja)
-                .HasColumnName("IdLoja")
+            builder.Property(x => x.Loja)
+                .HasColumnName("Loja")
                 .HasColumnType("varchar(3)");
 
-            builder.Property(x => x.IdStatus)
-                .HasColumnName("IdStatus")
+            builder.Property(x => x.Status)
+                .HasColumnName("Status")
                 .HasColumnType("int");
 
             builder.Property(x => x.Observacao)
@@ -86,7 +86,7 @@ namespace InfraBanco.Mapping
             builder
                 .HasOne(x => x.TorcamentoCotacaoStatus)
                 .WithMany(o => o.TorcamentoCotacaos)
-                .HasForeignKey(f => f.IdStatus);
+                .HasForeignKey(f => f.Status);
         }
     }
 }
