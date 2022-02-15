@@ -7,12 +7,15 @@
 /PrepedidoApi/Testes.Automatizados.Resultados
 /.sonarqube
 
-/OrcamentoCotacaoApi/OrcamentoCotacaoApi/obj/Debug/netcoreapp3.1
+/OrcamentoCotacaoApi/OrcamentoCotacaoApi/bin
 /OrcamentoCotacaoApi/OrcamentoCotacaoApi/obj
 /ClassesBase/bin
 /ClassesBase/obj
-/ProdutoCatalogo/bin/Debug/netcoreapp3.1
+/ProdutoCatalogo/bin
 /ProdutoCatalogo/obj
+/Vendedor/bin
 /Vendedor/obj
 /Global/MeioPagamentos/bin
 /Global/MeioPagamentos/obj
+/MeioPagamentos/bin
+/MeioPagamentos/obj
