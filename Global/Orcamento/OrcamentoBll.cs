@@ -36,13 +36,14 @@ namespace Orcamento
                                     NumPedido = null,
                                     Cliente_Obra = $"{c.NomeCliente} - {c.NomeObra}",
                                     Vendedor = "Vendedor",
-                                    Parceiro = "Parceiro",
+                                    Parceiro =  "Parceiro",
                                     VendedorParceiro = "VendedorParceiro",
                                     Valor = "0",
-                                    Status = c.TorcamentoCotacaoStatus.Descricao,
+                                    Status = c.Status.ToString(),
                                     VistoEm = "",
                                     Mensagem = c.Status == 7 ? "Sim" : "Não",
-                                    DtCadastro = c.DataCadastro
+                                    DtCadastro = c.DataCadastro,
+                                    DtExpiracao = c.DataCadastro.AddDays(10)
                                 }).ToList();
                     }
                     else if (obj.Origem == "PENDENTES") //ORCAMENTOS
@@ -61,9 +62,11 @@ namespace Orcamento
                                     Parceiro = "Parceiro",
                                     VendedorParceiro = "VendedorParceiro",
                                     Valor = "0",
-                                    Status = c.TorcamentoCotacaoStatus.Descricao,
+                                    Status = c.Status.ToString(),
                                     VistoEm = "",
                                     Mensagem = c.Status == 7 ? "Sim" : "Não",
+                                    DtCadastro = c.DataCadastro,
+                                    DtExpiracao = c.DataCadastro.AddDays(10)
                                 }).ToList();
                     }
                     else //if (obj.Origem == "PEDIDOS")

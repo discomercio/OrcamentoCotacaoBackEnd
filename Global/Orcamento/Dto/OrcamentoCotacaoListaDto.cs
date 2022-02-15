@@ -15,5 +15,6 @@ namespace Orcamento.Dto
         public string VistoEm { get; set; }
         public string Mensagem { get; set; }
         public DateTime DtCadastro { get; set; }
+        public DateTime DtExpiracao { get; set; }
     }
 }
