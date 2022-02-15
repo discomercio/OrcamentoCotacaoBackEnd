@@ -11,8 +11,11 @@
 /OrcamentoCotacaoApi/OrcamentoCotacaoApi/obj
 /ClassesBase/bin
 /ClassesBase/obj
-/ProdutoCatalogo/bin/Debug/netcoreapp3.1
+/ProdutoCatalogo/bin
 /ProdutoCatalogo/obj
+/Vendedor/bin
 /Vendedor/obj
 /Global/MeioPagamentos/bin
 /Global/MeioPagamentos/obj
+/MeioPagamentos/bin
+/MeioPagamentos/obj
