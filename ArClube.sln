@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29709.97
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loja.UI", "Loja\Loja.UI\Loja.UI.csproj", "{64E83931-F740-4DA5-BA7A-C7A5DBF0942C}"
 EndProject
@@ -111,7 +111,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProdutoCatalogo", "ProdutoC
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Interfaces", "Global\Interfaces\Interfaces.csproj", "{F1B758B9-347A-4118-93A7-64D9D34C7CC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeioPagamentos", "MeioPagamentos\MeioPagamentos.csproj", "{E80B40ED-BB2B-41DC-BBCC-6BEF9ACC9BA0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeioPagamentos", "MeioPagamentos\MeioPagamentos.csproj", "{E80B40ED-BB2B-41DC-BBCC-6BEF9ACC9BA0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -623,6 +623,22 @@ Global
 		{F1B758B9-347A-4118-93A7-64D9D34C7CC9}.Release_PrepedidoApi|Any CPU.Build.0 = Release|Any CPU
 		{F1B758B9-347A-4118-93A7-64D9D34C7CC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1B758B9-347A-4118-93A7-64D9D34C7CC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E80B40ED-BB2B-41DC-BBCC-6BEF9ACC9BA0}.Debug_OrcamentoCotacao|Any CPU.ActiveCfg = Debug|Any CPU
+		{E80B40ED-BB2B-41DC-BBCC-6BEF9ACC9BA0}.Debug_OrcamentoCotacao|Any CPU.Build.0 = Debug|Any CPU
+		{E80B40ED-BB2B-41DC-BBCC-6BEF9ACC9BA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E80B40ED-BB2B-41DC-BBCC-6BEF9ACC9BA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E80B40ED-BB2B-41DC-BBCC-6BEF9ACC9BA0}.Release_ApiMagento|Any CPU.ActiveCfg = Release|Any CPU
+		{E80B40ED-BB2B-41DC-BBCC-6BEF9ACC9BA0}.Release_ApiMagento|Any CPU.Build.0 = Release|Any CPU
+		{E80B40ED-BB2B-41DC-BBCC-6BEF9ACC9BA0}.Release_ApiUnis|Any CPU.ActiveCfg = Release|Any CPU
+		{E80B40ED-BB2B-41DC-BBCC-6BEF9ACC9BA0}.Release_ApiUnis|Any CPU.Build.0 = Release|Any CPU
+		{E80B40ED-BB2B-41DC-BBCC-6BEF9ACC9BA0}.Release_Loja|Any CPU.ActiveCfg = Release|Any CPU
+		{E80B40ED-BB2B-41DC-BBCC-6BEF9ACC9BA0}.Release_Loja|Any CPU.Build.0 = Release|Any CPU
+		{E80B40ED-BB2B-41DC-BBCC-6BEF9ACC9BA0}.Release_OrcamentoCotacao|Any CPU.ActiveCfg = Release|Any CPU
+		{E80B40ED-BB2B-41DC-BBCC-6BEF9ACC9BA0}.Release_OrcamentoCotacao|Any CPU.Build.0 = Release|Any CPU
+		{E80B40ED-BB2B-41DC-BBCC-6BEF9ACC9BA0}.Release_PrepedidoApi|Any CPU.ActiveCfg = Release|Any CPU
+		{E80B40ED-BB2B-41DC-BBCC-6BEF9ACC9BA0}.Release_PrepedidoApi|Any CPU.Build.0 = Release|Any CPU
+		{E80B40ED-BB2B-41DC-BBCC-6BEF9ACC9BA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E80B40ED-BB2B-41DC-BBCC-6BEF9ACC9BA0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -670,6 +686,7 @@ Global
 		{2418694E-65C4-4A90-B193-FE06F1E1AC61} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 		{B232ED2C-75B4-4B97-9F95-333F38A7B7DA} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 		{F1B758B9-347A-4118-93A7-64D9D34C7CC9} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
+		{E80B40ED-BB2B-41DC-BBCC-6BEF9ACC9BA0} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {139E9C0D-48C6-4635-9645-BF9C5AA65398}
