@@ -14,6 +14,7 @@
     <ProjectReference Include="..\Cliente\Cliente.csproj" />
     <ProjectReference Include="..\FormaPagamento\FormaPagamento.csproj" />
     <ProjectReference Include="..\Infra\InfraBanco\InfraBanco.csproj" />
+    <ProjectReference Include="..\MeioPagamentos\MeioPagamentos.csproj" />
     <ProjectReference Include="..\Produto\Produto.csproj" />
   </ItemGroup>
 
