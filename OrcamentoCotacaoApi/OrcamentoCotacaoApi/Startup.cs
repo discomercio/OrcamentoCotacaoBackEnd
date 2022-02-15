@@ -68,7 +68,8 @@ namespace OrcamentoCotacaoApi
             // configure strongly typed settings objects
             var appSettingsSection = Configuration.GetSection("AppSettings");
             services.Configure<Configuracao>(appSettingsSection);
-            services.Configure<Configuracao>(appSettingsSection);
+            services.Configure<Configuracoes>(Configuration.GetSection("Configuracoes"));
+
             services.AddScoped<ITokenService, TokenService>();
             //bll
 
