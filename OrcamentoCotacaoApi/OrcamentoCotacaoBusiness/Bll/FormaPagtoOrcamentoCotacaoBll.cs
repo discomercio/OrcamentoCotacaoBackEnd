@@ -43,8 +43,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                 item.IdTipoPagamento = fp.TcfgPagtoForma.Id;
 
                 var filtro = CriarFiltro(fp, tipoCliente, tipoUsuario);
-                meiosPagamento = _meiosPagamentosBll.BuscarMeiosPagamento(filtro);
-                item.MeioPagamentoResponseViewModel = MeioPagamentoResponseViewModel.ListaMeioPagamentoResponseViewModel_De_TcfgPagtoMeioStatus(meiosPagamento);
+                meiosPagamento = _meiosPagamentosBll.PorFiltro(filtro);
+                item.MeiosPagamentos = MeioPagamentoResponseViewModel.ListaMeioPagamentoResponseViewModel_De_TcfgPagtoMeioStatus(meiosPagamento);
                 //if (fp.TcfgPagtoForma.Id.ToString() != Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO &&
                 //    fp.TcfgPagtoForma.Id.ToString() != Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA)
                 //{

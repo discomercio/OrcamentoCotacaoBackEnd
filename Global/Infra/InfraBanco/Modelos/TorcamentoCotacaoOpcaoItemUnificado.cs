@@ -14,7 +14,6 @@ namespace InfraBanco.Modelos
         [Column("Id")]
         public int Id { get; set; }
 
-        [Key]
         [Column("IdOrcamentoCotacaoOpcao")]
         public int IdOrcamentoCotacaoOpcao { get; set; }
 
@@ -39,6 +38,8 @@ namespace InfraBanco.Modelos
         [Column("Sequencia")]
         [Required]
         public int Sequencia { get; set; }
+
+        public ICollection<TorcamentoCotacaoOpcaoItemAtomico> TorcamentoCotacaoOpcaoItemAtomico { get; set; }
 
     }
 }

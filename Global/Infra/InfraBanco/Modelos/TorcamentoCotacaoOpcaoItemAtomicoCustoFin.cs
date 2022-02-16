@@ -14,9 +14,9 @@ namespace InfraBanco.Modelos
         [Column("Id")]
         public int Id { get; set; }
 
-        [Key]
         [Column("IdItemAtomico")]
         public int IdItemAtomico { get; set; }
+        public TorcamentoCotacaoOpcaoItemAtomico TorcamentoCotacaoOpcaoItemAtomico { get; set; }
 
         [Column("IdOpcaoPagto")]
         [Required]

@@ -20,8 +20,8 @@ namespace InfraBanco.Modelos
         [Column("IdCfgModulo")]
         public short IdCfgModulo { get; set; }
 
-        [Column("IdCfgTipoUsuario")]
-        public short IdCfgTipoUsuario { get; set; }
+        [Column("IdCfgTipoUsuarioPerfil")]
+        public short IdCfgTipoUsuarioPerfil { get; set; }
 
         [Column("IdCfgTipoPessoaCliente")]
         public short IdCfgTipoPessoaCliente { get; set; }

@@ -14,10 +14,5 @@ namespace MeioPagamentos
         {
             _data = new MeiosPagamentosData(contextoBdProvider);
         }
-
-        public List<TcfgPagtoMeioStatus> BuscarMeiosPagamento(TcfgPagtoMeioStatusFiltro obj)
-        {
-            return _data.PorFiltro(obj);
-        }
     }
 }

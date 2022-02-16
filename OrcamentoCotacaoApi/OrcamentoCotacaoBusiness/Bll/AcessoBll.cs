@@ -173,8 +173,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                         default:
                             break;
                     }
-                    dbgravacao.SaveChanges();
-                    dbgravacao.transacao.Commit();
+                    //dbgravacao.SaveChanges();
+                    //dbgravacao.transacao.Commit();
                 }
 
                 if (t.Dt_Ult_Alteracao_Senha == null)

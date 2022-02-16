@@ -29,7 +29,7 @@ namespace OrcamentoCotacaoApi.Controllers
         [AllowAnonymous]
 #endif
         [HttpGet]
-        [Route("buscarFormasPagamentos12")]
+        [Route("buscarFormasPagamentos")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> BuscarFormasPagamentos(string tipoCliente)
         {

@@ -36,7 +36,6 @@ namespace InfraBanco
                 Nessas tabelas, vamos ter um flag que sempre atualizamos para bloquear outras leituras. 
                 Sempre que formos atualizar algum desses registros, primeiros atualizamos o flag para forçar o bloqueio no registro.
             */
-
             transacao = RelationalDatabaseFacadeExtensions.BeginTransaction(contexto.Database, System.Data.IsolationLevel.ReadCommitted);
             BloquearTControle(bloqueioTControle);
         }
@@ -165,6 +164,7 @@ namespace InfraBanco
         public DbSet<TorcamentoCotacaoOpcaoItem> TorcamentoCotacaoOpcaoItem { get => contexto.TorcamentoCotacaoOpcaoItem; }
         public DbSet<TorcamentoCotacaoItemUnificado> TorcamentoCotacaoItemUnificados { get => contexto.TorcamentoCotacaoItemUnificados; }
         public DbSet<TorcamentoCotacaoItemAtomicoCustoFin> TorcamentoCotacaoItemAtomicoCustoFins { get => contexto.TorcamentoCotacaoItemAtomicoCustoFins; }
+        public DbSet<TorcamentoCotacaoOpcaoItemAtomico> TorcamentoCotacaoOpcaoItemAtomico { get => contexto.TorcamentoCotacaoOpcaoItemAtomicos; }
         public DbSet<TorcamentoCotacaoOpcaoItemSku> TorcamentoCotacaoOpcaoItemSku { get => contexto.TorcamentoCotacaoOpcaoItemSku; }
         public DbSet<TcfgModulo> TcfgModulos { get => contexto.TcfgModulos; }
         public DbSet<TcfgPagtoForma> TcfgPagtoFormas { get => contexto.TcfgPagtoFormas; }

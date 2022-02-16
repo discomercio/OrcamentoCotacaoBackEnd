@@ -141,7 +141,7 @@ namespace InfraBanco
             modelBuilder.Entity<TcfgPagtoFormaStatus>()
                 .HasOne(x => x.TcfgTipoUsuarios)
                 .WithMany(x => x.TcfgPagtoFormaStatus)
-                .HasForeignKey(x => x.IdCfgTipoUsuario);
+                .HasForeignKey(x => x.IdCfgTipoUsuarioPerfil);
 
             modelBuilder.Entity<TcfgPagtoMeioStatus>()
                 .HasOne(x => x.TcfgModulo)
@@ -166,7 +166,20 @@ namespace InfraBanco
             modelBuilder.Entity<TcfgPagtoMeioStatus>()
                 .HasOne(x => x.TcfgTipoUsuarios)
                 .WithMany(x => x.TcfgPagtoMeioStatus)
-                .HasForeignKey(x => x.IdCfgTipoUsuario);
+                .HasForeignKey(x => x.IdCfgTipoUsuarioPerfil);
+
+            modelBuilder.Entity<TorcamentoCotacaoItemAtomicoCustoFin>()
+                .HasOne(x => x.TorcamentoCotacaoOpcaoItemAtomico)
+                .WithOne(x => x.TorcamentoCotacaoItemAtomicoCustoFin)
+                .HasForeignKey<TorcamentoCotacaoItemAtomicoCustoFin>(x => x.IdItemAtomico);
+
+            modelBuilder.Entity<TorcamentoCotacaoOpcaoItemAtomico>()
+                .HasOne(x => x.TorcamentoCotacaoItemUnificado)
+                .WithMany(x => x.TorcamentoCotacaoOpcaoItemAtomico)
+                .HasForeignKey(x => x.IdItemUnificado);
+
+            modelBuilder.Entity<TpercentualCustoFinanceiroFornecedorHistorico>()
+                .HasKey(x => new { x.Fabricante, x.Tipo_Parcelamento, x.Qtde_Parcelas });
 #endif
         }
 
@@ -262,6 +275,7 @@ namespace InfraBanco
         public DbSet<TorcamentoCotacaoOpcaoPagto> TorcamentoCotacaoOpcaoPagtos { get; set; }
         public DbSet<TorcamentoCotacaoItemUnificado> TorcamentoCotacaoItemUnificados { get; set; }
         public DbSet<TorcamentoCotacaoItemAtomicoCustoFin> TorcamentoCotacaoItemAtomicoCustoFins { get; set; }
+        public DbSet<TorcamentoCotacaoOpcaoItemAtomico> TorcamentoCotacaoOpcaoItemAtomicos { get; set; }
         public DbSet<TorcamentoCotacaoOpcaoFormaPagamento> TorcamentoCotacaoOpcaoFormaPagamento { get; set; }
         public DbSet<TorcamentoCotacaoOpcaoItem> TorcamentoCotacaoOpcaoItem { get; set; }
         public DbSet<TorcamentoCotacaoOpcaoItemSku> TorcamentoCotacaoOpcaoItemSku { get; set; }
