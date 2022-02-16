@@ -123,6 +123,8 @@ namespace InfraBanco
         //acesso às tabelas
         public DbSet<Tcliente> Tclientes { get => contexto.Tclientes; }
         public DbSet<Torcamento> Torcamentos { get => contexto.Torcamentos; }
+        public DbSet<TorcamentoCotacaoLink> TorcamentoCotacaoLinks { get => contexto.TorcamentoCotacaoLinks; }
+        public DbSet<TorcamentoCotacaoMensagem> TorcamentoCotacaoMensagens { get => contexto.TorcamentoCotacaoMensagens; }
         public DbSet<TorcamentoItem> TorcamentoItems { get => contexto.TorcamentoItems; }
         public DbSet<TsessaoHistorico> TsessaoHistoricos { get => contexto.TsessaoHistoricos; }
         public DbSet<Tcontrole> Tcontroles { get => contexto.Tcontroles; }
@@ -161,6 +163,8 @@ namespace InfraBanco
         public DbSet<TorcamentoCotacaoOpcaoPagto> TorcamentoCotacaoOpcaoPagtos { get => contexto.TorcamentoCotacaoOpcaoPagtos; }
         public DbSet<TorcamentoCotacaoOpcaoFormaPagamento> TorcamentoCotacaoOpcaoFormaPagamento { get => contexto.TorcamentoCotacaoOpcaoFormaPagamento; }
         public DbSet<TorcamentoCotacaoOpcaoItem> TorcamentoCotacaoOpcaoItem { get => contexto.TorcamentoCotacaoOpcaoItem; }
+        public DbSet<TorcamentoCotacaoItemUnificado> TorcamentoCotacaoItemUnificados { get => contexto.TorcamentoCotacaoItemUnificados; }
+        public DbSet<TorcamentoCotacaoItemAtomicoCustoFin> TorcamentoCotacaoItemAtomicoCustoFins { get => contexto.TorcamentoCotacaoItemAtomicoCustoFins; }
         public DbSet<TorcamentoCotacaoOpcaoItemSku> TorcamentoCotacaoOpcaoItemSku { get => contexto.TorcamentoCotacaoOpcaoItemSku; }
         public DbSet<TcfgModulo> TcfgModulos { get => contexto.TcfgModulos; }
         public DbSet<TcfgPagtoForma> TcfgPagtoFormas { get => contexto.TcfgPagtoFormas; }

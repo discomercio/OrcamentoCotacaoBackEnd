@@ -172,6 +172,8 @@ namespace InfraBanco
 
         public DbSet<Tcliente> Tclientes { get; set; }
         public DbSet<Torcamento> Torcamentos { get; set; }
+        public DbSet<TorcamentoCotacaoLink> TorcamentoCotacaoLinks { get; set; }
+        public DbSet<TorcamentoCotacaoMensagem> TorcamentoCotacaoMensagens { get; set; }
         public DbSet<TclienteRefBancaria> TclienteRefBancarias { get; set; }
         public DbSet<Tpedido> Tpedidos { get; set; }
         public DbSet<TorcamentistaEindicador> TorcamentistaEindicadors { get; set; }
@@ -258,6 +260,8 @@ namespace InfraBanco
         public DbSet<TorcamentoCotacaoStatus> TorcamentoCotacaoStatus { get; set; }
         public DbSet<TorcamentoCotacaoOpcao> TorcamentoCotacaoOpcao { get; set; }
         public DbSet<TorcamentoCotacaoOpcaoPagto> TorcamentoCotacaoOpcaoPagtos { get; set; }
+        public DbSet<TorcamentoCotacaoItemUnificado> TorcamentoCotacaoItemUnificados { get; set; }
+        public DbSet<TorcamentoCotacaoItemAtomicoCustoFin> TorcamentoCotacaoItemAtomicoCustoFins { get; set; }
         public DbSet<TorcamentoCotacaoOpcaoFormaPagamento> TorcamentoCotacaoOpcaoFormaPagamento { get; set; }
         public DbSet<TorcamentoCotacaoOpcaoItem> TorcamentoCotacaoOpcaoItem { get; set; }
         public DbSet<TorcamentoCotacaoOpcaoItemSku> TorcamentoCotacaoOpcaoItemSku { get; set; }
