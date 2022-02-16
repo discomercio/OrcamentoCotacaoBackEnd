@@ -158,6 +158,7 @@ namespace InfraBanco
         public DbSet<TorcamentoCotacao> TorcamentoCotacao { get => contexto.TorcamentoCotacao; }
         public DbSet<TorcamentoCotacaoStatus> TorcamentoCotacaoStatus { get => contexto.TorcamentoCotacaoStatus; }
         public DbSet<TorcamentoCotacaoOpcao> TorcamentoCotacaoOpcao { get => contexto.TorcamentoCotacaoOpcao; }
+        public DbSet<TorcamentoCotacaoOpcaoPagto> TorcamentoCotacaoOpcaoPagtos { get => contexto.TorcamentoCotacaoOpcaoPagtos; }
         public DbSet<TorcamentoCotacaoOpcaoFormaPagamento> TorcamentoCotacaoOpcaoFormaPagamento { get => contexto.TorcamentoCotacaoOpcaoFormaPagamento; }
         public DbSet<TorcamentoCotacaoOpcaoItem> TorcamentoCotacaoOpcaoItem { get => contexto.TorcamentoCotacaoOpcaoItem; }
         public DbSet<TorcamentoCotacaoOpcaoItemSku> TorcamentoCotacaoOpcaoItemSku { get => contexto.TorcamentoCotacaoOpcaoItemSku; }
@@ -169,6 +170,8 @@ namespace InfraBanco
         public DbSet<TcfgTipoParcela> TcfgTipoParcelas { get => contexto.TcfgTipoParcelas; }
         public DbSet<TcfgTipoPessoa> TcfgTipoPessoas { get => contexto.TcfgTipoPessoas; }
         public DbSet<TcfgTipoUsuario> TcfgTipoUsuarios { get => contexto.TcfgTipoUsuarios; }
+        public DbSet<TcfgTipoUsuarioPerfil> TcfgTipoUsuarioPerfis { get => contexto.TcfgTipoUsuarioPerfis; }
+        public DbSet<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContextos { get => contexto.TcfgTipoUsuarioContextos; }
 #endif
 
         //daqui para a frente só é necessário para os testes automatizados
@@ -178,6 +181,7 @@ namespace InfraBanco
         public DbSet<Tfabricante> Tfabricantes { get => contexto.Tfabricantes; }
         public DbSet<Tproduto> Tprodutos { get => contexto.Tprodutos; }
         public DbSet<TpercentualCustoFinanceiroFornecedor> TpercentualCustoFinanceiroFornecedors { get => contexto.TpercentualCustoFinanceiroFornecedors; }
+        public DbSet<TpercentualCustoFinanceiroFornecedorHistorico> TpercentualCustoFinanceiroFornecedorHistoricos { get => contexto.TpercentualCustoFinanceiroFornecedorHistoricos; }
         public DbSet<Tparametro> Tparametros { get => contexto.Tparametros; }
         public DbSet<TprodutoXwmsRegraCd> TprodutoXwmsRegraCds { get => contexto.TprodutoXwmsRegraCds; }
         public DbSet<TwmsRegraCd> TwmsRegraCds { get => contexto.TwmsRegraCds; }

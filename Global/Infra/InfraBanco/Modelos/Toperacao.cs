@@ -38,6 +38,9 @@ namespace InfraBanco.Modelos
         [Column("st_inativo")]
         public byte St_inativo { get; set; }
 
+        [Required]
+        [Column("st_oculto")]
+        public byte St_oculto{ get; set; }
 
     }
 }
