@@ -80,7 +80,7 @@ namespace ProdutoCatalogo
             return saida;
         }
 
-        public bool ExcluirImagem(string idProduto, string idImagem)
+        public bool ExcluirImagem(int idProduto, int idImagem)
         {
             var saida = false;
 
@@ -89,7 +89,7 @@ namespace ProdutoCatalogo
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
 
-                    var obj = db.TprodutoCatalogoImagem.FirstOrDefault(x => x.Id == int.Parse(idImagem) && x.IdProdutoCatalogo == idProduto);
+                    var obj = db.TprodutoCatalogoImagem.FirstOrDefault(x => x.Id == idImagem && x.IdProdutoCatalogo == idProduto);
 
                     if (obj != null)
                     {
@@ -118,8 +118,7 @@ namespace ProdutoCatalogo
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
-                    var query = db.TprodutoCatalogo;
-                    return query.ToList();
+                    return db.TprodutoCatalogo.ToList();
                 }
             }
             catch (Exception e)
@@ -128,7 +127,7 @@ namespace ProdutoCatalogo
             }
         }
 
-        public TprodutoCatalogo Detalhes(string id)
+        public TprodutoCatalogo Detalhes(int id)
         {
             try
             {
@@ -153,7 +152,7 @@ namespace ProdutoCatalogo
             }
         }
 
-        public List<TprodutoCatalogoItens> ObterListaItens(string id)
+        public List<TprodutoCatalogoItens> ObterListaItens(int id)
         {
             try
             {
@@ -165,7 +164,7 @@ namespace ProdutoCatalogo
                             select new TprodutoCatalogoItens
                             {
                                 Id = itens.Id,
-                                Codigo = item.IdProdutoCatalogo,
+                                Codigo = item.IdProdutoCatalogo.ToString(),
                                 Ordem = itens.Ordem,
                                 Chave = itens.Valor,
                                 Valor = item.Valor
@@ -178,7 +177,7 @@ namespace ProdutoCatalogo
             }
         }
 
-        public List<TprodutoCatalogoImagem> ObterListaImagens(string id)
+        public List<TprodutoCatalogoImagem> ObterListaImagens(int id)
         {
             try
             {
@@ -236,7 +235,7 @@ namespace ProdutoCatalogo
             return saida;
         }
 
-        public bool SalvarArquivo(string nomeArquivo, string idProdutoCatalogo, string idTipo, string ordem)
+        public bool SalvarArquivo(string nomeArquivo, int idProdutoCatalogo, int idTipo, string ordem)
         {
             var saida = false;
 
@@ -248,7 +247,7 @@ namespace ProdutoCatalogo
                         new TprodutoCatalogoImagem
                         {
                             IdProdutoCatalogo = idProdutoCatalogo,
-                            IdTipoImagem = int.Parse(idTipo),
+                            IdTipoImagem = idTipo,
                             Caminho = nomeArquivo,
                             Ordem = int.Parse(ordem),
                         });

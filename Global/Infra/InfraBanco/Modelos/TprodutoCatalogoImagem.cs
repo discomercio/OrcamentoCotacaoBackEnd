@@ -13,9 +13,8 @@ namespace InfraBanco.Modelos
         public int Id { get; set; }
 
         [Column("id_produto_catalogo")]
-        [MaxLength(8)]
         [Required]
-        public string IdProdutoCatalogo { get; set; }
+        public int IdProdutoCatalogo { get; set; }
         
         [Column("id_tipo_imagem")]
         public int IdTipoImagem { get; set; }

@@ -13,7 +13,7 @@ namespace InfraBanco.Mapping
 
             builder.Property(x => x.IdProdutoCatalogo)
                 .HasColumnName("id_produto_catalogo")
-                .HasColumnType("varchar(100)");
+                .HasColumnType("int");
 
             builder.Property(x => x.IdProdutoCatalogoItens)
                 .HasColumnName("id_produto_catalogo_itens")
