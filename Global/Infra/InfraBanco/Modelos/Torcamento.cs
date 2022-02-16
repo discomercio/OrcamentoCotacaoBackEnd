@@ -487,6 +487,11 @@ namespace InfraBanco.Modelos
         [Column("PrevisaoEntregaDtHrUltAtualiz")]
         public DateTime? PrevisaoEntregaDtHrUltAtualiz { get; set; }
 
+        [Column("IdOrcamentoCotacao")]
+        public int IdOrcamentoCotacao { get; set; }
+
+        [Column("IdIndicadorVendedor")]
+        public int IdIndicadorVendedor { get; set; }
 
     }
 }
