@@ -14,7 +14,7 @@ namespace InfraBanco.Modelos
         public Guid Id { get; set; }
 
         [Column("Nome")]
-        [MaxLength(50)]
+        [MaxLength(100)]
         [Required]
         public string Nome { get; set; }
         
@@ -31,19 +31,7 @@ namespace InfraBanco.Modelos
         public Guid? Pai { get; set; }
 
         [Column("descricao")]
-        [MaxLength(100)]
+        [MaxLength(500)]
         public string Descricao { get; set; }
-
-        //[id]
-        //[uniqueidentifier]
-        //NOT NULL,
-
-        //[nome] [varchar] (50) NOT NULL,
-
-        //[tamanho] [varchar] (10) NULL,
-        //[tipo] [varchar] (10) NOT NULL,
-
-        //[pai] [uniqueidentifier] NULL,
-        //[descricao] [varchar] (100) NULL
     }
 }

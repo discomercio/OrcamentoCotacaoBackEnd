@@ -60,7 +60,7 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpGet("{id}/detalhes")]
-        public async Task<IActionResult> Detalhes(string id)
+        public async Task<IActionResult> Detalhes(int id)
         {
             var saida = bll.Detalhes(id);
 
@@ -71,7 +71,7 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Excluir(string id)
+        public IActionResult Excluir(int id)
         {
             bll.Excluir(new TprodutoCatalogo() { Id = id });
 
@@ -82,7 +82,7 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpDelete("imagem")]
-        public async Task<IActionResult> ExcluirImagem(string idProduto, string idImagem)
+        public async Task<IActionResult> ExcluirImagem(int idProduto, int idImagem)
         {
             var saida = bll.ExcluirImagem(idProduto, idImagem);
 
@@ -93,7 +93,7 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpGet("{id}/itens")]
-        public async Task<IActionResult> ObterListaItens(string id)
+        public async Task<IActionResult> ObterListaItens(int id)
         {
             var saida = bll.ObterListaItens(id);
 
@@ -115,7 +115,7 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpPost("imagem")]
-        public async Task<IActionResult> Upload(IFormFile arquivo, [FromForm] string idProdutoCalatogo)
+        public async Task<IActionResult> Upload(IFormFile arquivo, [FromForm] int idProdutoCalatogo)
         {
             try
             {
@@ -129,7 +129,7 @@ namespace OrcamentoCotacaoApi.Controllers
                         await arquivo.CopyToAsync(fileStream);
                     }
 
-                    bll.SalvarArquivo($"{idArquivo}.{extensao}", idProdutoCalatogo, "1", "0");
+                    bll.SalvarArquivo($"{idArquivo}.{extensao}", idProdutoCalatogo, 1, "0");
 
                     return Ok(new
                     {
