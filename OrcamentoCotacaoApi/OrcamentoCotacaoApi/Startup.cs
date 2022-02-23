@@ -22,6 +22,7 @@ using System;
 using OrcamentistaEindicador;
 using MeioPagamentos;
 using OrcamentoCotacaoBusiness.Bll;
+using Produto;
 
 namespace OrcamentoCotacaoApi
 {
@@ -102,7 +103,7 @@ namespace OrcamentoCotacaoApi
             services.AddTransient<ProdutoCatalogoBll, ProdutoCatalogoBll>();
             //services.AddTransient<PrepedidoBusiness.Bll.FormaPagtoPrepedidoBll, PrepedidoBusiness.Bll.FormaPagtoPrepedidoBll>();
             //services.AddTransient<Prepedido.FormaPagto.ValidacoesFormaPagtoBll, Prepedido.FormaPagto.ValidacoesFormaPagtoBll>();
-            //services.AddTransient<Produto.CoeficienteBll, Produto.CoeficienteBll>();
+            services.AddTransient<CoeficienteBll, CoeficienteBll>();
             //services.AddTransient<PrepedidoBusiness.Bll.CoeficientePrepedidoBll, PrepedidoBusiness.Bll.CoeficientePrepedidoBll>();
             //services.AddTransient<Prepedido.ValidacoesPrepedidoBll, Prepedido.ValidacoesPrepedidoBll>();
             //services.AddTransient<Prepedido.MontarLogPrepedidoBll, Prepedido.MontarLogPrepedidoBll>();

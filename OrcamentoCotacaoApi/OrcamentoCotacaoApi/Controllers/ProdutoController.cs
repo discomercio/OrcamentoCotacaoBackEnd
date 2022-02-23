@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using OrcamentoCotacaoApi.Utils;
-using OrcamentoCotacaoBusiness.Models.Response;
+using OrcamentoCotacaoBusiness.Bll;
+using OrcamentoCotacaoBusiness.Models.Request;
+using Produto;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace OrcamentoCotacaoApi.BaseController
 {
@@ -15,38 +13,44 @@ namespace OrcamentoCotacaoApi.BaseController
     [Route("[controller]")]
     [ApiController]
     [Authorize]
-    //[Authorize(Roles = Autenticacao.RoleAcesso)]
     public class ProdutoController : Controller
     {
         private readonly ILogger<ProdutoController> _logger;
-        private readonly IMapper _mapper;
-        private readonly OrcamentoCotacaoBusiness.Bll.ProdutoOrcamentoCotacaoBll _produtoBll;
-        private readonly InfraIdentity.IServicoDecodificarToken _servicoDecodificarToken;
+        private readonly ProdutoOrcamentoCotacaoBll _produtoBll;
+        private readonly CoeficienteBll _coeficienteBll;
 
-        public ProdutoController(ILogger<ProdutoController> logger, IMapper mapper,
-            OrcamentoCotacaoBusiness.Bll.ProdutoOrcamentoCotacaoBll orcamentoBll,
-            InfraIdentity.IServicoDecodificarToken servicoDecodificarToken)
+        public ProdutoController(
+            ILogger<ProdutoController> logger,
+            ProdutoOrcamentoCotacaoBll orcamentoBll,
+            CoeficienteBll coeficienteBll)
         {
-            this._logger = logger;
-            this._mapper = mapper;
-            this._produtoBll = orcamentoBll;
-            this._servicoDecodificarToken = servicoDecodificarToken;
+            _logger = logger;
+            _produtoBll = orcamentoBll;
+            _coeficienteBll = coeficienteBll;
         }
 
-#if DEBUG
-        [AllowAnonymous]
-#endif
-        [HttpGet("buscarProduto")]
+        [HttpGet("buscarProdutos")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<IActionResult> BuscarProduto(string loja, string uf, string tipo)
+        public async Task<IActionResult> BuscarProduto(ProdutosRequestViewModel produtos)
         {
-            //para testar: http://localhost:60877/api/produto/buscarProduto
-            string apelido = _servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            //nao usamos o apelido
+            var ret = await _produtoBll.ListaProdutosComboApiArclube(produtos);
 
-            var ret = await _produtoBll.ListaProdutosComboApiArclube(loja, uf, tipo);
+            if (ret == null)
+                return NoContent();
+            else
+                return Ok(ret);
+        }
 
-            return Ok(ret);
+        [HttpGet("buscarCoeficientes")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public async Task<IActionResult> buscarCoeficientes(List<string> fabricantes)
+        {
+            var ret = await _coeficienteBll.BuscarListaCoeficientesFabricantesDistinct(fabricantes);
+
+            if (ret == null)
+                return NoContent();
+            else
+                return Ok(ret);
         }
     }
 }

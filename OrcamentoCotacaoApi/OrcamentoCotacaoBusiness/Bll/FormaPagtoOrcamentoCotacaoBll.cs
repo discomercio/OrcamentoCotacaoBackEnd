@@ -3,9 +3,9 @@ using InfraBanco.Constantes;
 using MeioPagamentos;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento.MeiosPagamento;
-using PrepedidoBusiness.Dto.FormaPagto;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -20,17 +20,32 @@ namespace OrcamentoCotacaoBusiness.Bll
             this._meiosPagamentosBll = _meiosPagamentosBll;
         }
 
-        public List<FormaPagamentoResponseViewModel> BuscarFormasPagamentos(string tipoCliente, string usuario)
+        public List<FormaPagamentoResponseViewModel> BuscarFormasPagamentos(string tipoCliente, int? tipoUsuario, string apelido)
         {
-            short tipoUsuario = 3;
-            var tiposPagtos = _formaPagtoBll.BuscarFormasPagtos(true, Constantes.Modulos.COD_MODULO_ORCAMENTOCOTACAO, tipoCliente, false, true, tipoUsuario);
+            List<FormaPagamentoResponseViewModel> response = new List<FormaPagamentoResponseViewModel>();
+            var saida = _formaPagtoBll.BuscarFormasPagtos(true, Constantes.Modulos.COD_MODULO_ORCAMENTOCOTACAO, tipoCliente, false, true, tipoUsuario, apelido);
 
-            if (tiposPagtos == null) return null;
+            foreach (var s in saida)
+            {
+                response.Add(
+                    new FormaPagamentoResponseViewModel
+                    {
+                        IdTipoPagamento = s.IdTipoPagamento,
+                        MeiosPagamentos = s.MeiosPagamentos.Select(x=>
+                        new MeioPagamentoResponseViewModel
+                        {
+                            Id = x.Id,
+                            IdTipoParcela = x.IdTipoParcela,
+                            Descricao = x.Descricao,
+                            Ordenacao = x.Ordenacao
+                        }).ToList()
+                    });
+            }
 
-            return BuscarMeiosPagamento(tiposPagtos, tipoCliente, tipoUsuario);
+            return response;
         }
 
-        private List<FormaPagamentoResponseViewModel> BuscarMeiosPagamento(List<InfraBanco.Modelos.TcfgPagtoFormaStatus> tiposPagtos, string tipoCliente, short tipoUsuario)
+        private List<FormaPagamentoResponseViewModel> BuscarMeiosPagamento(List<InfraBanco.Modelos.TcfgPagtoFormaStatus> tiposPagtos, string tipoCliente, int? tipoUsuario)
         {
             if (tiposPagtos == null) return null;
 
@@ -42,16 +57,9 @@ namespace OrcamentoCotacaoBusiness.Bll
                 FormaPagamentoResponseViewModel item = new FormaPagamentoResponseViewModel();
                 item.IdTipoPagamento = fp.TcfgPagtoForma.Id;
 
-                var filtro = CriarFiltro(fp, tipoCliente, tipoUsuario);
+                var filtro = CriarFiltro(fp, tipoCliente, (short)tipoUsuario);
                 meiosPagamento = _meiosPagamentosBll.PorFiltro(filtro);
                 item.MeiosPagamentos = MeioPagamentoResponseViewModel.ListaMeioPagamentoResponseViewModel_De_TcfgPagtoMeioStatus(meiosPagamento);
-                //if (fp.TcfgPagtoForma.Id.ToString() != Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO &&
-                //    fp.TcfgPagtoForma.Id.ToString() != Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA)
-                //{
-                //    var filtro = CriarFiltro(fp, tipoCliente, tipoUsuario);
-                //    meiosPagamento = _meiosPagamentosBll.BuscarMeiosPagamento(filtro);
-                //    item.MeioPagamentoResponseViewModel = MeioPagamentoResponseViewModel.ListaMeioPagamentoResponseViewModel_De_TcfgPagtoMeioStatus(meiosPagamento);
-                //}
 
                 response.Add(item);
             }

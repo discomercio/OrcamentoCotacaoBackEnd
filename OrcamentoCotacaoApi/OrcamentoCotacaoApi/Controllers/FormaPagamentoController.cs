@@ -1,13 +1,8 @@
-﻿using FormaPagamento;
+﻿using InfraIdentity;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Bll;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -17,27 +12,30 @@ namespace OrcamentoCotacaoApi.Controllers
     public class FormaPagamentoController : BaseController
     {
         private readonly ILogger<FormaPagamentoController> _logger;
-        private readonly FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll;
+        private readonly FormaPagtoOrcamentoCotacaoBll _formaPagtoOrcamentoCotacaoBll;
+        private readonly IServicoDecodificarToken _servicoDecodificarToken;
 
-        public FormaPagamentoController(ILogger<FormaPagamentoController> logger, FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll)
+        public FormaPagamentoController(
+            ILogger<FormaPagamentoController> logger, 
+            FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll,
+            IServicoDecodificarToken servicoDecodificarToken)
         {
-            this._logger = logger;
-            this.formaPagtoOrcamentoCotacaoBll = formaPagtoOrcamentoCotacaoBll;
-        }
+            _logger = logger;
+            _formaPagtoOrcamentoCotacaoBll = formaPagtoOrcamentoCotacaoBll;
+            _servicoDecodificarToken = servicoDecodificarToken;
+    }
 
-#if DEBUG
-        [AllowAnonymous]
-#endif
-        [HttpGet]
-        [Route("buscarFormasPagamentos")]
+        [HttpGet("buscarFormasPagamentos")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<IActionResult> BuscarFormasPagamentos(string tipoCliente)
+        public IActionResult BuscarFormasPagamentos(string tipoCliente)
         {
-            var retorno = formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos("PF", "");
+            var retorno = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(tipoCliente, LoggedUser.TipoUsuario, LoggedUser.Apelido);
 
-            if (retorno == null) return NotFound();
-
-            return Ok(retorno);
+            if (retorno == null)
+                return NoContent();
+            else
+                return Ok(retorno);
         }
+
     }
 }

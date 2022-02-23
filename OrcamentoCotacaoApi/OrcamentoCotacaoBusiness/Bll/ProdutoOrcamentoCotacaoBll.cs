@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using InfraBanco.Constantes;
 using InfraBanco.Modelos;
+using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using Produto;
@@ -23,12 +24,13 @@ namespace OrcamentoCotacaoBusiness.Bll
             this.produtoGeralBll = produtoGeralBll;
             _mapper = mapper;
         }
-        public async Task<ProdutoResponseViewModel> ListaProdutosComboApiArclube(string loja, string uf, string tipo)
+     
+        public async Task<ProdutoResponseViewModel> ListaProdutosComboApiArclube(ProdutosRequestViewModel produtos)
         {
             Constantes.ContribuinteICMS contribuinteICMSStatus = Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;
             Constantes.ProdutorRural produtorRuralStatus = Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
 
-            var aux = await produtoGeralBll.ListaProdutosComboDados(loja, uf, tipo, contribuinteICMSStatus, produtorRuralStatus);
+            var aux = await produtoGeralBll.ListaProdutosComboDados(produtos.Loja, produtos.UF, produtos.TipoCliente, contribuinteICMSStatus, produtorRuralStatus);
             return await GetProdutosCompostosESimples(aux);
         }
 

@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
-using System;
+using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento.MeiosPagamento;
 using System.Collections.Generic;
-using System.Text;
 
 namespace OrcamentoCotacaoBusiness.Models.Response.FormaPagamento
 {
@@ -11,8 +10,6 @@ namespace OrcamentoCotacaoBusiness.Models.Response.FormaPagamento
         public int IdTipoPagamento { get; set; }
 
         [JsonProperty("Meios")]
-        public List<MeiosPagamento.MeioPagamentoResponseViewModel> MeiosPagamentos { get; set; }
+        public List<MeioPagamentoResponseViewModel> MeiosPagamentos { get; set; }
     }
-
-
 }

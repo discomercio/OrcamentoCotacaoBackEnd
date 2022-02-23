@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace InfraBanco.Constantes
 {
@@ -15,6 +13,12 @@ namespace InfraBanco.Constantes
         public static string TEL_BONSHOP_2 = "1139344420";
         public static string TEL_BONSHOP_3 = "1139344411";
 
+        public enum eTipoUsuario
+        {
+            USUARIO_INTERNO = 1,
+            PARCEIRO = 2,
+            VENDEDOR_PARCEIRO = 3,
+        };
 
         public enum CodSistemaResponsavel
         {

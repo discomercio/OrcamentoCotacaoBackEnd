@@ -6,6 +6,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Produto.RegrasCrtlEstoque;
 using Produto.Dados;
+using System;
 
 namespace Produto
 {
