@@ -29,7 +29,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 return NoContent();
         }
 
-        [HttpGet("BuscarPercMaxPorLoja")]
+        [HttpGet("buscarPercMaxPorLoja")]
         public IActionResult BuscarPercMaxPorLoja(string loja)
         {
             var saida = _lojaBll.BuscarPercMaxPorLoja(loja);
