@@ -2,9 +2,9 @@
 using InfraBanco;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
+using Loja.Dados;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 
 namespace Loja
@@ -13,7 +13,7 @@ namespace Loja
     {
         private readonly ContextoBdProvider contextoProvider;
 
-        public LojaData(InfraBanco.ContextoBdProvider contextoProvider) 
+        public LojaData(ContextoBdProvider contextoProvider)
         {
             this.contextoProvider = contextoProvider;
         }
@@ -53,13 +53,27 @@ namespace Loja
 
                     return lojas.ToList();
                 }
-
             }
-            catch (Exception ex)
+            catch
             {
-
                 throw;
             }
+        }
+
+        public PercMaxDescEComissaoDados BuscarPercMaxPorLoja(string loja)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            return (from c in db.Tlojas
+                          where c.Loja == loja
+                          select new PercMaxDescEComissaoDados
+                          {
+                              PercMaxComissao = c.Perc_Max_Comissao,
+                              PercMaxComissaoEDesconto = c.Perc_Max_Comissao_E_Desconto,
+                              PercMaxComissaoEDescontoPJ = c.Perc_Max_Comissao_E_Desconto_Pj,
+                              PercMaxComissaoEDescontoNivel2 = c.Perc_Max_Comissao_E_Desconto_Nivel2,
+                              PercMaxComissaoEDescontoNivel2PJ = c.Perc_Max_Comissao_E_Desconto_Nivel2_Pj
+                          }).FirstOrDefault();
         }
     }
 }
