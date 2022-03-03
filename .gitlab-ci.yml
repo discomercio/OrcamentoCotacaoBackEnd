@@ -2,11 +2,13 @@ stages:
   #- build
   - test
   - test-especificacao
+  - build-api
 
 variables:
   teste: "ApiUnis/Testes.Automatizados"
   loja: "Loja/Loja.UI"
   especificacao: "Global/Especificacao"
+  apiOrcamento: "OrcamentoCotacaoAPI/OrcamentoCotacaoApi"
   #MSSQL_HOST: microsoft-mssql-server-linux
   #ACCEPT_EULA: "Y"
   #SA_PASSWORD: yourStrong(!)Password
@@ -20,7 +22,7 @@ before_script:
 #  script: -apt install nodejs
 #    - "ls"
 #    - "apt-get install nodejs"
-#    - "node –version"
+#    - "node ï¿½version"
 #    - "apt-get install npm"
 #    - "apt-get update"
 #    - "apt-get upgrade"
@@ -51,3 +53,12 @@ test-especificacao:
   allow_failure: true
   #only:
   #  - automacoes
+
+build-api:
+  stage: build
+  image: mcr.microsoft.com/dotnet/core/sdk:3.1
+  script:
+    - "ls"
+    - "cd ${apiOrcamento}"
+    - "dotnet build"
+  allow_failure: true
