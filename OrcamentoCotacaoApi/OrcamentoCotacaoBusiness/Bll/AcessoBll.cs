@@ -43,7 +43,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                             //c.Hab_Acesso_Sistema,
                             //c.statStatus,
                             Loja = c.Loja,
-                            TipoUsuario = (int)Enums.Enums.TipoUsuario.VENDEDOR
+                            TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR
                         };
 
             string retorno = null;
@@ -66,7 +66,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                             //c.Hab_Acesso_Sistema,
                             //c.statStatus,
                             Loja = c.Loja,
-                            TipoUsuario = (int)Enums.Enums.TipoUsuario.PARCEIRO
+                            TipoUsuario = (int)Constantes.TipoUsuario.PARCEIRO
                         };
                 t = dados.FirstOrDefault();
                 /*Busca de parceiros*/
@@ -86,18 +86,18 @@ namespace OrcamentoCotacaoBusiness.Bll
                                 //c.Hab_Acesso_Sistema,
                                 //c.statStatus,
                                 Loja = c.Loja,
-                                TipoUsuario = (int)Enums.Enums.TipoUsuario.VENDEDOR_DO_PARCEIRO
+                                TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO
                             };
                     t = dados.FirstOrDefault();
                     if (t != null)
                     {
-                        tipo = (int)Enums.Enums.TipoUsuario.VENDEDOR_DO_PARCEIRO;
+                        tipo = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO;
                     }
                     /*Busca de vendedores de parceiros*/
                 }
                 else
                 {
-                    tipo = (int)Enums.Enums.TipoUsuario.PARCEIRO;
+                    tipo = (int)Constantes.TipoUsuario.PARCEIRO;
                 }
                 //else
                 //{
@@ -107,7 +107,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
             else
             {
-                tipo = (int)Enums.Enums.TipoUsuario.GESTOR;
+                tipo = (int)Constantes.TipoUsuario.GESTOR;
             }
             if (t == null)
             {
@@ -154,12 +154,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
                     switch (tipo)
                     {
-                        case (int)Enums.Enums.TipoUsuario.GESTOR:
+                        case (int)Constantes.TipoUsuario.GESTOR:
                             Tusuario usuario = dbgravacao.Tusuarios
                             .Where(c => c.Usuario == login && c.Datastamp == senha_digitada_decod).FirstOrDefault();
                             usuario.Dt_Ult_Acesso = DateTime.Now;
                             break;
-                        case (int)Enums.Enums.TipoUsuario.PARCEIRO:
+                        case (int)Constantes.TipoUsuario.PARCEIRO:
                             TorcamentistaEindicador parceiro = dbgravacao.TorcamentistaEindicadors
                             .Where(c => c.Apelido == login && c.Datastamp == senha_digitada_decod).FirstOrDefault();
                             parceiro.Dt_Ult_Acesso = DateTime.Now;

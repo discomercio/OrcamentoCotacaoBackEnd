@@ -20,43 +20,18 @@ namespace OrcamentoCotacaoBusiness.Bll
             this._meiosPagamentosBll = _meiosPagamentosBll;
         }
 
-        public List<FormaPagamentoResponseViewModel> BuscarFormasPagamentos(string tipoCliente, short tipoUsuario, string apelido, bool comIndicacao)
+        public List<FormaPagamentoResponseViewModel> BuscarFormasPagamentos(string tipoCliente, Constantes.TipoUsuario tipoUsuario, string apelido, byte comIndicacao)
         {
-            var tiposPagtos = _formaPagtoBll.BuscarFormasPagtos_Gabriel(true, Constantes.Modulos.COD_MODULO_ORCAMENTOCOTACAO, tipoCliente, false, true, tipoUsuario);
+            var tiposPagtos = _formaPagtoBll.BuscarFormasPagtos(true, Constantes.Modulos.COD_MODULO_ORCAMENTOCOTACAO, 
+                tipoCliente, false, true, Constantes.TipoUsuarioPerfil.getUsuarioPerfil(tipoUsuario));
 
             if (tiposPagtos == null) return null;
 
-            return BuscarMeiosPagamento(tiposPagtos, tipoCliente, tipoUsuario, apelido);
-
-
-
-
-
-            List<FormaPagamentoResponseViewModel> response = new List<FormaPagamentoResponseViewModel>();
-            var saida = _formaPagtoBll.BuscarFormasPagtos(true, Constantes.Modulos.COD_MODULO_ORCAMENTOCOTACAO, tipoCliente, false, true, tipoUsuario, apelido);
-
-            //foreach (var s in saida)
-            //{
-            //    response.Add(
-            //        new FormaPagamentoResponseViewModel
-            //        {
-            //            IdTipoPagamento = s.IdTipoPagamento,
-            //            MeiosPagamentos = s.MeiosPagamentos.Select(x=>
-            //            new MeioPagamentoResponseViewModel
-            //            {
-            //                Id = x.Id,
-            //                IdTipoParcela = x.IdTipoParcela,
-            //                Descricao = x.Descricao,
-            //                Ordenacao = x.Ordenacao
-            //            }).ToList()
-            //        });
-            //}
-
-            return response;
+            return BuscarMeiosPagamento(tiposPagtos, tipoCliente, Constantes.TipoUsuarioPerfil.getUsuarioPerfil(tipoUsuario), apelido, comIndicacao);
         }
 
-        private List<FormaPagamentoResponseViewModel> BuscarMeiosPagamento(List<InfraBanco.Modelos.TcfgPagtoFormaStatus> tiposPagtos, 
-            string tipoCliente, int? tipoUsuario, string apelido)
+        private List<FormaPagamentoResponseViewModel> BuscarMeiosPagamento(List<InfraBanco.Modelos.TcfgPagtoFormaStatus> tiposPagtos,
+            string tipoCliente, Constantes.eTipoUsuarioPerfil tipoUsuario, string apelido, byte comIndicacao)
         {
             if (tiposPagtos == null) return null;
 
@@ -68,7 +43,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 FormaPagamentoResponseViewModel item = new FormaPagamentoResponseViewModel();
                 item.IdTipoPagamento = fp.TcfgPagtoForma.Id;
 
-                var filtro = CriarFiltro(fp, tipoCliente, (short)tipoUsuario, apelido);
+                var filtro = CriarFiltro(fp, tipoCliente, (short)tipoUsuario, apelido, comIndicacao);
                 meiosPagamento = _meiosPagamentosBll.PorFiltro(filtro);
                 item.MeiosPagamentos = MeioPagamentoResponseViewModel.ListaMeioPagamentoResponseViewModel_De_TcfgPagtoMeioStatus(meiosPagamento);
 
@@ -79,17 +54,17 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         private InfraBanco.Modelos.Filtros.TcfgPagtoMeioStatusFiltro CriarFiltro(InfraBanco.Modelos.TcfgPagtoFormaStatus tipoPagto,
-            string tipoCliente, short tipoUsuario, string apelido)
+            string tipoCliente, short tipoUsuario, string apelido, byte comIndicacao)
         {
             var filtro = new InfraBanco.Modelos.Filtros.TcfgPagtoMeioStatusFiltro()
             {
                 IdCfgModulo = (short)Constantes.Modulos.COD_MODULO_ORCAMENTOCOTACAO,
                 IdCfgTipoPessoaCliente = (short)(tipoCliente == Constantes.ID_PF ? 1 : 2),
                 IdCfgTipoUsuario = tipoUsuario,
-                PedidoComIndicador = 0,
+                PedidoComIndicador = (byte)comIndicacao,
                 Habilitado = 1,
                 IncluirTcfgPagtoMeio = true,
-                IncluirTorcamentistaEIndicadorRestricaoFormaPagtos = true,
+                IncluirTorcamentistaEIndicadorRestricaoFormaPagtos = comIndicacao == 1 ? true : false,
                 Apelido = apelido
             };
 
@@ -105,12 +80,10 @@ namespace OrcamentoCotacaoBusiness.Bll
                     filtro.IncluirTcfgTipoParcela = true;
                     filtro.IdCfgPagtoForma = Int16.Parse(Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA);
                     filtro.IdTipoParcela = (short)Constantes.TipoParcela.PARCELA_DE_ENTRADA;
-                    //filtro.IdTipoParcela = (short)Constantes.TipoParcela.DEMAIS_PARCELAS_PRESTACAO;
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA:
                     filtro.IncluirTcfgTipoParcela = true;
                     filtro.IdTipoParcela = (short)Constantes.TipoParcela.PRIMEIRA_PRESTACAO;
-                    //filtro.IdTipoParcela = (short)Constantes.TipoParcela.DEMAIS_PARCELAS_PRESTACAO;
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
                     filtro.IdTipoParcela = (short)Constantes.TipoParcela.PARCELA_UNICA;

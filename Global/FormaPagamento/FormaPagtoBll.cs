@@ -9,7 +9,6 @@ using InfraBanco;
 using FormaPagamento.Dados;
 using InfraBanco.Modelos;
 using MeioPagamentos;
-using static InfraBanco.Constantes.Constantes;
 
 namespace FormaPagamento
 {
@@ -269,43 +268,14 @@ namespace FormaPagamento
             return qtde;
         }
 
-        public List<FormaPagamentoDados> BuscarFormasPagtos(bool incluirTcfgPagtoForma, Constantes.Modulos modulo,
-            string tipoCliente, bool comIndicador, bool habilitado, int? tipoUsuario, string apelido)
-        {
-            var db = contextoProvider.GetContextoLeitura();
-
-            return (from c in db.TformaPagtos
-                    where c.Hab_entrada == 1 &&
-                          !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagtos
-                            where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
-                                  d.Id_orcamentista_e_indicador ==
-                                  Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
-                                  d.Tipo_cliente == tipoCliente &&
-                                  d.St_restricao_ativa != 0
-                            select d.Id_forma_pagto).Contains(c.Id)
-                    orderby c.Ordenacao
-                    select new FormaPagamentoDados
-                    {
-                        IdTipoPagamento = c.Id,
-                        MeiosPagamentos = db.TorcamentistaEIndicadorRestricaoFormaPagtos.Where(x => x.Id_orcamentista_e_indicador == apelido.ToUpper())
-                        .Select(mp => new MeioPagamentoDados
-                        {
-                            Id = (short)mp.Id,
-                            IdTipoParcela = mp.Id_forma_pagto,
-                            Ordenacao = c.Ordenacao,
-                            Descricao = c.Descricao
-                        }).ToList()
-                    }).ToList();
-        }
-
-        public List<TcfgPagtoFormaStatus> BuscarFormasPagtos_Gabriel(bool incluirTcfgPagtoForma, Constantes.Modulos modulo,
-            string tipoCliente, bool comIndicador, bool habilitado, short tipoUsuario)
+        public List<TcfgPagtoFormaStatus> BuscarFormasPagtos(bool incluirTcfgPagtoForma, Constantes.Modulos modulo,
+            string tipoCliente, bool comIndicador, bool habilitado, Constantes.eTipoUsuarioPerfil tipoUsuario)
         {
             return _formaPagamentoData.PorFiltro(new InfraBanco.Modelos.Filtros.TcfgPagtoFormaStatusFiltro()
             {
                 IdCfgModulo = (short)modulo,
                 IdCfgTipoPessoaCliente = (short)(tipoCliente == Constantes.ID_PF ? 1 : 2),
-                IdCfgTipoUsuario = tipoUsuario,
+                IdCfgTipoUsuarioPerfil = (short)tipoUsuario,
                 PedidoComIndicador = (byte)(comIndicador ? 1 : 0),
                 Habilitado = (byte)(habilitado ? 1 : 0),
                 IncluirTcfgPagtoForma = incluirTcfgPagtoForma

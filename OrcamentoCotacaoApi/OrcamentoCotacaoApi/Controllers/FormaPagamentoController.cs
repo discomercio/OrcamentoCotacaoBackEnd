@@ -1,4 +1,5 @@
-﻿using InfraIdentity;
+﻿using InfraBanco.Constantes;
+using InfraIdentity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,20 +18,20 @@ namespace OrcamentoCotacaoApi.Controllers
         private readonly IServicoDecodificarToken _servicoDecodificarToken;
 
         public FormaPagamentoController(
-            ILogger<FormaPagamentoController> logger, 
+            ILogger<FormaPagamentoController> logger,
             FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll,
             IServicoDecodificarToken servicoDecodificarToken)
         {
             _logger = logger;
             _formaPagtoOrcamentoCotacaoBll = formaPagtoOrcamentoCotacaoBll;
             _servicoDecodificarToken = servicoDecodificarToken;
-    }
+        }
 
         [HttpGet("buscarFormasPagamentos")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult BuscarFormasPagamentos(FormaPagtoRequestViewModel formaPagtoRequest)
         {
-            var retorno = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(formaPagtoRequest.TipoCliente, (short)LoggedUser.TipoUsuario, LoggedUser.Apelido, formaPagtoRequest.ComIndicacao);
+            var retorno = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(formaPagtoRequest.TipoCliente, (Constantes.TipoUsuario)LoggedUser.TipoUsuario, LoggedUser.Apelido, (byte)(formaPagtoRequest.ComIndicacao ? 1 : 0));
 
             if (retorno == null)
                 return NoContent();

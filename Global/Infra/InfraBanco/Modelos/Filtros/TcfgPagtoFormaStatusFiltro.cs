@@ -9,7 +9,7 @@ namespace InfraBanco.Modelos.Filtros
     {
         public short IdCfgModulo { get; set; }
         public short IdCfgTipoPessoaCliente { get; set; }
-        public short IdCfgTipoUsuario { get; set; }
+        public short IdCfgTipoUsuarioPerfil { get; set; }
         public short IdCfgPagtoForma { get; set; }
         public byte? PedidoComIndicador { get; set; }
         public byte? Habilitado { get; set; }

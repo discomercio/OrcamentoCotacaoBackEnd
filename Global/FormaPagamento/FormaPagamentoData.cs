@@ -56,9 +56,9 @@ namespace FormaPagamento
                     {
                         saida = saida.Where(x => x.IdCfgTipoPessoaCliente == obj.IdCfgTipoPessoaCliente);
                     }
-                    if (obj.IdCfgTipoUsuario != 0)
+                    if (obj.IdCfgTipoUsuarioPerfil != 0)
                     {
-                        saida = saida.Where(x => x.IdCfgTipoUsuarioPerfil == obj.IdCfgTipoUsuario);
+                        saida = saida.Where(x => x.IdCfgTipoUsuarioPerfil == obj.IdCfgTipoUsuarioPerfil);
                     }
                     if (obj.PedidoComIndicador.HasValue)
                     {

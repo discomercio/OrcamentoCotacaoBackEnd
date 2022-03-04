@@ -13,12 +13,43 @@ namespace InfraBanco.Constantes
         public static string TEL_BONSHOP_2 = "1139344420";
         public static string TEL_BONSHOP_3 = "1139344411";
 
-        public enum eTipoUsuario
+        public enum eTipoUsuarioPerfil
         {
-            USUARIO_INTERNO = 1,
-            PARCEIRO = 2,
-            VENDEDOR_PARCEIRO = 3,
+            USUÁRIO_DA_CENTRAL = 1,
+            USUARIO_LOJA = 2,
+            INDICADOR_PARCEIRO = 3,
         };
+        public enum TipoUsuario
+        {
+            GESTOR = 0,
+            VENDEDOR = 1,
+            PARCEIRO = 2,
+            VENDEDOR_DO_PARCEIRO = 3,
+        }
+        public static class TipoUsuarioPerfil
+        {
+            public static eTipoUsuarioPerfil getUsuarioPerfil(TipoUsuario tipoUsuario)
+            {
+                var retorno = eTipoUsuarioPerfil.USUÁRIO_DA_CENTRAL;
+
+                switch (tipoUsuario)
+                {
+                    case TipoUsuario.GESTOR:
+                        retorno = eTipoUsuarioPerfil.USUÁRIO_DA_CENTRAL;
+                        break;
+                    case TipoUsuario.VENDEDOR:
+                        retorno = eTipoUsuarioPerfil.USUARIO_LOJA;
+                        break;
+                    case TipoUsuario.PARCEIRO:
+                    case TipoUsuario.VENDEDOR_DO_PARCEIRO:
+                        retorno = eTipoUsuarioPerfil.INDICADOR_PARCEIRO;
+                        break;
+                    default:
+                        break;
+                }
+                return retorno;
+            }
+        }
 
         public enum CodSistemaResponsavel
         {
@@ -1069,6 +1100,8 @@ namespace InfraBanco.Constantes
         public const string ID_PF = "PF";
 
         public const string ID_PJ = "PJ";
+
+
         public class TipoPessoa
         {
             private readonly string tipo = ID_PJ;
