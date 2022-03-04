@@ -1,4 +1,5 @@
-﻿using InfraBanco.Modelos;
+﻿using InfraBanco.Constantes;
+using InfraBanco.Modelos;
 using InfraIdentity;
 using Loja;
 using OrcamentistaEindicador;
@@ -83,7 +84,9 @@ namespace OrcamentoCotacaoApi.Utils
                         {
                             ((int)ePermissao.AcessoAoModulo).ToString(),
                             ((int)ePermissao.ParceiroIndicadorUsuarioMaster).ToString()
-                        }
+                        },
+                        TipoUsuario = (int)Constantes.TipoUsuario.PARCEIRO
+                        
                     };
                     return usuario;
                 }
@@ -110,9 +113,10 @@ namespace OrcamentoCotacaoApi.Utils
                                 VendedorResponsavel = vendedorParceiro.VendedorResponsavel,
                                 IdParceiro = parceiroValidacao.Apelido,
                                 Permissoes = new List<string>()
-                        {
-                            ((int)ePermissao.AcessoAoModulo).ToString()
-                        }
+                                {
+                                    ((int)ePermissao.AcessoAoModulo).ToString()
+                                },
+                                TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO
                             };
                             return usuario;
                         }
@@ -134,8 +138,8 @@ namespace OrcamentoCotacaoApi.Utils
                 UsuarioLogin usuario = new UsuarioLogin();
                 switch (dadosCliente.TipoUsuario)
                 {
-                    case (int)Enums.TipoUsuario.VENDEDOR:
-                    case (int)Enums.TipoUsuario.GESTOR:
+                    case (int)Constantes.TipoUsuario.VENDEDOR:
+                    case (int)Constantes.TipoUsuario.GESTOR:
                         var loja = await acessoBll.BuscarLojaUsuario(apelido);
                         var unidade_negocio = await acessoBll.Buscar_unidade_negocio(loja);
                         var usuarioInterno = usuarioBll.PorFiltro(new InfraBanco.Modelos.Filtros.TusuarioFiltro() { usuario = apelido });
@@ -148,14 +152,15 @@ namespace OrcamentoCotacaoApi.Utils
                             Unidade_negocio = unidade_negocio,
                             VendedorResponsavel = null,
                             Permissoes = new List<string>()
-                        {
-                            ((int)ePermissao.AcessoAoModulo).ToString(),
-                            ((int)ePermissao.AdministradorDoModulo).ToString()
-                        }
+                            {
+                                ((int)ePermissao.AcessoAoModulo).ToString(),
+                                ((int)ePermissao.AdministradorDoModulo).ToString()
+                            },
+                            TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR
                         };
                         return usuario;
                     //break;
-                    case (int)Enums.TipoUsuario.PARCEIRO:
+                    case (int)Constantes.TipoUsuario.PARCEIRO:
                         var orcamentista = orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = apelido });
                         var lojaOrcamentista = new List<TusuarioXLoja>();
                         lojaOrcamentista.Add(new TusuarioXLoja() { Loja = orcamentista.FirstOrDefault().Loja });
@@ -169,13 +174,14 @@ namespace OrcamentoCotacaoApi.Utils
                             VendedorResponsavel = orcamentista.FirstOrDefault().Vendedor,
                             IdParceiro = orcamentista.FirstOrDefault().Apelido,
                             Permissoes = new List<string>()
-                        {
-                            ((int)ePermissao.AcessoAoModulo).ToString(),
-                            ((int)ePermissao.AdministradorDoModulo).ToString()
-                        }
+                            {
+                                ((int)ePermissao.AcessoAoModulo).ToString(),
+                                ((int)ePermissao.AdministradorDoModulo).ToString()
+                            },
+                            TipoUsuario = (int)Constantes.TipoUsuario.PARCEIRO
                         };
                         break;
-                    case (int)Enums.TipoUsuario.VENDEDOR_DO_PARCEIRO:
+                    case (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO:
                         var orcamentistaVendedor = orcamentistaEIndicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { email = apelido });
                         var lojaOrcamentistaVendedor = new List<TusuarioXLoja>();
                         lojaOrcamentistaVendedor.Add(new TusuarioXLoja() { Loja = orcamentistaVendedor.FirstOrDefault().Loja });
@@ -189,10 +195,11 @@ namespace OrcamentoCotacaoApi.Utils
                             VendedorResponsavel = orcamentistaVendedor.FirstOrDefault().VendedorResponsavel,
                             IdParceiro = orcamentistaVendedor.FirstOrDefault().IdIndicador,
                             Permissoes = new List<string>()
-                        {
-                            ((int)ePermissao.AcessoAoModulo).ToString(),
-                            ((int)ePermissao.AdministradorDoModulo).ToString()
-                        }
+                            {
+                                ((int)ePermissao.AcessoAoModulo).ToString(),
+                                ((int)ePermissao.AdministradorDoModulo).ToString()
+                            },
+                            TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO
                         };
                         break;
                     default:

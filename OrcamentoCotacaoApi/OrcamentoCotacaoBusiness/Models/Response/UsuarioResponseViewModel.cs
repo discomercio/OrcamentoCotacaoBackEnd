@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using InfraBanco.Constantes;
+using Newtonsoft.Json;
 using System;
 using static OrcamentoCotacaoBusiness.Enums.Enums;
 
@@ -31,7 +32,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         public bool Ativo { get; set; }
 
         [JsonProperty("tipoUsuario")]
-        public TipoUsuario TipoUsuario { get; set; }
+        public Constantes.TipoUsuario TipoUsuario { get; set; }
         [JsonProperty("vendedorResponsavel")]
         public string VendedorResponsavel { get; set; }
     }
