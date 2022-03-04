@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Bll;
+using OrcamentoCotacaoBusiness.Models.Request;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -27,9 +28,9 @@ namespace OrcamentoCotacaoApi.Controllers
 
         [HttpGet("buscarFormasPagamentos")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult BuscarFormasPagamentos(string tipoCliente, bool comIndicacao)
+        public IActionResult BuscarFormasPagamentos(FormaPagtoRequestViewModel formaPagtoRequest)
         {
-            var retorno = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(tipoCliente, (short)LoggedUser.TipoUsuario, LoggedUser.Apelido);
+            var retorno = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(formaPagtoRequest.TipoCliente, (short)LoggedUser.TipoUsuario, LoggedUser.Apelido, formaPagtoRequest.ComIndicacao);
 
             if (retorno == null)
                 return NoContent();

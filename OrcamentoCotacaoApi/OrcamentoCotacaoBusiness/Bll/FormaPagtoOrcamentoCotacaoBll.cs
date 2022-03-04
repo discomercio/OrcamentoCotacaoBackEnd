@@ -20,7 +20,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             this._meiosPagamentosBll = _meiosPagamentosBll;
         }
 
-        public List<FormaPagamentoResponseViewModel> BuscarFormasPagamentos(string tipoCliente, short tipoUsuario, string apelido)
+        public List<FormaPagamentoResponseViewModel> BuscarFormasPagamentos(string tipoCliente, short tipoUsuario, string apelido, bool comIndicacao)
         {
             var tiposPagtos = _formaPagtoBll.BuscarFormasPagtos_Gabriel(true, Constantes.Modulos.COD_MODULO_ORCAMENTOCOTACAO, tipoCliente, false, true, tipoUsuario);
 
@@ -35,22 +35,22 @@ namespace OrcamentoCotacaoBusiness.Bll
             List<FormaPagamentoResponseViewModel> response = new List<FormaPagamentoResponseViewModel>();
             var saida = _formaPagtoBll.BuscarFormasPagtos(true, Constantes.Modulos.COD_MODULO_ORCAMENTOCOTACAO, tipoCliente, false, true, tipoUsuario, apelido);
 
-            foreach (var s in saida)
-            {
-                response.Add(
-                    new FormaPagamentoResponseViewModel
-                    {
-                        IdTipoPagamento = s.IdTipoPagamento,
-                        MeiosPagamentos = s.MeiosPagamentos.Select(x=>
-                        new MeioPagamentoResponseViewModel
-                        {
-                            Id = x.Id,
-                            IdTipoParcela = x.IdTipoParcela,
-                            Descricao = x.Descricao,
-                            Ordenacao = x.Ordenacao
-                        }).ToList()
-                    });
-            }
+            //foreach (var s in saida)
+            //{
+            //    response.Add(
+            //        new FormaPagamentoResponseViewModel
+            //        {
+            //            IdTipoPagamento = s.IdTipoPagamento,
+            //            MeiosPagamentos = s.MeiosPagamentos.Select(x=>
+            //            new MeioPagamentoResponseViewModel
+            //            {
+            //                Id = x.Id,
+            //                IdTipoParcela = x.IdTipoParcela,
+            //                Descricao = x.Descricao,
+            //                Ordenacao = x.Ordenacao
+            //            }).ToList()
+            //        });
+            //}
 
             return response;
         }

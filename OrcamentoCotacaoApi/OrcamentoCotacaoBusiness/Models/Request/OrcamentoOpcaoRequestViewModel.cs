@@ -21,6 +21,6 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         public string Observacoes { get; set; }
 
         [JsonProperty("formaPagto")]
-        public List<FormaPagtoRequestViewModel> FormaPagto { get; set; }
+        public List<FormaPagtoRequestViewModelAjustar> FormaPagto { get; set; }
     }
 }
