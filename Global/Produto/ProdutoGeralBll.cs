@@ -20,17 +20,33 @@ namespace Produto
         }
 
         public async Task<ProdutoComboDados> ListaProdutosComboDados(string loja, string uf, string tipo, 
-            Constantes.ContribuinteICMS contribuinte, Constantes.ProdutorRural produtorRural)
+            Constantes.ContribuinteICMS contribuinte, Constantes.ProdutorRural produtorRural, string tipoParcela = "" , short qtdeParcelas = 0,  DateTime? dataRefCoeficiente = null)
         {
             ProdutoComboDados retorno = new ProdutoComboDados();
 
-            var db = contextoProvider.GetContextoLeitura();
+            //var db = contextoProvider.GetContextoLeitura();
 
             //obtém  a sigla para regra
             string cliente_regra = UtilsProduto.MultiCdRegraDeterminaPessoa(tipo, contribuinte, produtorRural);
 
             var lstProdutosCompostos = BuscarProdutosCompostos(loja);
-            List<Produto.Dados.ProdutoDados> lstTodosProdutos = (await BuscarTodosProdutos(loja)).ToList();
+            //List<Produto.Dados.ProdutoDados> lstTodosProdutos = qtdeParcelas == 0 ? await BuscarTodosProdutos(loja)) : (await BuscarTodosProdutos(loja, tipoParcela, qtdeParcelas, dataRefCoeficiente.GetValueOrDefault(new DateTime())));
+            List<Produto.Dados.ProdutoDados> lstTodosProdutos = await BuscarTodosProdutos(loja);
+
+            if(qtdeParcelas > 0)
+            {
+                var lstFabricate = lstTodosProdutos.Select(x => x.Fabricante).Distinct().ToList();
+                var coeficienteBll = new CoeficienteBll(contextoProvider);
+
+                var dicCoeficiente = await coeficienteBll.BuscarListaCoeficientesFabricantesHistoricoDistinct(lstFabricate, tipoParcela, qtdeParcelas, dataRefCoeficiente.GetValueOrDefault(new DateTime()));
+                foreach (var produto in lstTodosProdutos)
+                {
+                    if (dicCoeficiente.ContainsKey(produto.Fabricante))
+                    {
+                        produto.CoeficienteRelativo = dicCoeficiente[produto.Fabricante];
+                    }
+                }
+            }
 
             List<RegrasBll> lst_cliente_regra = new List<RegrasBll>();
             MontaListaRegras(lstTodosProdutos, lst_cliente_regra);
@@ -155,7 +171,7 @@ namespace Produto
         }
 
 
-        public async Task<IEnumerable<Produto.Dados.ProdutoDados>> BuscarTodosProdutos(string loja)
+        public async Task<List<Produto.Dados.ProdutoDados>> BuscarTodosProdutos(string loja)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -166,35 +182,6 @@ namespace Produto
                                           pl.Loja == loja &&
                                           c.Excluido_status == 0 &&
                                           pl.Excluido_status == 0
-                                    select new Produto.Dados.ProdutoDados
-                                    {
-                                        Fabricante = c.Fabricante,
-                                        Fabricante_Nome = fab.Nome,
-                                        Produto = pl.Produto,
-                                        Descricao_html = c.Descricao_Html,
-                                        Descricao = c.Descricao,
-                                        Preco_lista = pl.Preco_Lista,
-                                        Qtde_Max_Venda = pl.Qtde_Max_Venda,
-                                        Desc_Max = pl.Desc_Max
-                                    };
-
-            List<Produto.Dados.ProdutoDados> lstTodosProdutos = await todosProdutosTask.ToListAsync();
-
-            return lstTodosProdutos;
-        }
-
-        public async Task<IEnumerable<Produto.Dados.ProdutoDados>> BuscarProdutosEspecificos(string loja, List<string> lstProdutos)
-        {
-            var db = contextoProvider.GetContextoLeitura();
-
-            var todosProdutosTask = from c in db.Tprodutos
-                                    join pl in db.TprodutoLojas on c.Produto equals pl.Produto
-                                    join fab in db.Tfabricantes on c.Fabricante equals fab.Fabricante
-                                    where pl.Vendavel == "S" &&
-                                          pl.Loja == loja &&
-                                          c.Excluido_status == 0 &&
-                                          pl.Excluido_status == 0 &&
-                                          lstProdutos.Contains(c.Produto)
                                     select new Produto.Dados.ProdutoDados
                                     {
                                         Fabricante = c.Fabricante,

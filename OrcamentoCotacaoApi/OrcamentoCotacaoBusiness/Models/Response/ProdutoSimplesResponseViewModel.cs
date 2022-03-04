@@ -19,6 +19,9 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         [JsonProperty("precoLista")]
         public decimal PrecoLista { get; set; }
 
+        [JsonProperty("precoListaBase")]
+        public decimal PrecoListaBase { get; set; }
+
         [JsonProperty("estoque")]
         public int Estoque { get; set; }
 
@@ -41,7 +44,8 @@ namespace OrcamentoCotacaoBusiness.Models.Response
                 FabricanteNome = produto.Fabricante_Nome,
                 Produto = produto.Produto,
                 DescricaoHtml = produto.Descricao_html,
-                PrecoLista = (decimal)produto.Preco_lista,
+                PrecoLista = produto.GetPrecoListaComCoeficiente(),
+                PrecoListaBase = (decimal)produto.Preco_lista,
                 Qtde = qtdeFilho.HasValue ? qtdeFilho : null,
                 QtdeMaxVenda = produto.Qtde_Max_Venda,
                 DescMax = produto.Qtde_Max_Venda,

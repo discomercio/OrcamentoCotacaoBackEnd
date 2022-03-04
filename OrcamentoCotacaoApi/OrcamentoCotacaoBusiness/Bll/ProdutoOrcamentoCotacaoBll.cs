@@ -30,7 +30,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             Constantes.ContribuinteICMS contribuinteICMSStatus = Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;
             Constantes.ProdutorRural produtorRuralStatus = Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
 
-            var aux = await produtoGeralBll.ListaProdutosComboDados(produtos.Loja, produtos.UF, produtos.TipoCliente, contribuinteICMSStatus, produtorRuralStatus);
+            var aux = await produtoGeralBll.ListaProdutosComboDados(produtos.Loja, produtos.UF, produtos.TipoCliente, 
+                contribuinteICMSStatus, produtorRuralStatus, produtos.TipoParcela, produtos.QtdeParcelas, produtos.DataRefCoeficiente);
             return await GetProdutosCompostosESimples(aux);
         }
 
