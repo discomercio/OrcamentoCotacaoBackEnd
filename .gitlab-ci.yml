@@ -9,6 +9,7 @@ variables:
   loja: "Loja/Loja.UI"
   especificacao: "Global/Especificacao"
   apiOrcamento: "OrcamentoCotacaoApi/OrcamentoCotacaoApi"
+  configuration: "Release"
   #MSSQL_HOST: microsoft-mssql-server-linux
   #ACCEPT_EULA: "Y"
   #SA_PASSWORD: yourStrong(!)Password
@@ -61,5 +62,5 @@ build-api:
     - "ls"
     - "cd ${apiOrcamento}"
     - "dotnet restore"
-    - "dotnet build"    
+    - "dotnet build --no-restore --configuration ${configuration}"    
   allow_failure: true
