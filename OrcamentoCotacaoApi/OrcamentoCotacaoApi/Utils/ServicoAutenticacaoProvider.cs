@@ -83,7 +83,9 @@ namespace OrcamentoCotacaoApi.Utils
                         {
                             ((int)ePermissao.AcessoAoModulo).ToString(),
                             ((int)ePermissao.ParceiroIndicadorUsuarioMaster).ToString()
-                        }
+                        },
+                        TipoUsuario = (int)Enums.TipoUsuario.PARCEIRO
+                        
                     };
                     return usuario;
                 }
@@ -110,9 +112,10 @@ namespace OrcamentoCotacaoApi.Utils
                                 VendedorResponsavel = vendedorParceiro.VendedorResponsavel,
                                 IdParceiro = parceiroValidacao.Apelido,
                                 Permissoes = new List<string>()
-                        {
-                            ((int)ePermissao.AcessoAoModulo).ToString()
-                        }
+                                {
+                                    ((int)ePermissao.AcessoAoModulo).ToString()
+                                },
+                                TipoUsuario = (int)Enums.TipoUsuario.VENDEDOR_DO_PARCEIRO
                             };
                             return usuario;
                         }
@@ -148,10 +151,11 @@ namespace OrcamentoCotacaoApi.Utils
                             Unidade_negocio = unidade_negocio,
                             VendedorResponsavel = null,
                             Permissoes = new List<string>()
-                        {
-                            ((int)ePermissao.AcessoAoModulo).ToString(),
-                            ((int)ePermissao.AdministradorDoModulo).ToString()
-                        }
+                            {
+                                ((int)ePermissao.AcessoAoModulo).ToString(),
+                                ((int)ePermissao.AdministradorDoModulo).ToString()
+                            },
+                            TipoUsuario = (int)Enums.TipoUsuario.VENDEDOR
                         };
                         return usuario;
                     //break;
@@ -169,10 +173,11 @@ namespace OrcamentoCotacaoApi.Utils
                             VendedorResponsavel = orcamentista.FirstOrDefault().Vendedor,
                             IdParceiro = orcamentista.FirstOrDefault().Apelido,
                             Permissoes = new List<string>()
-                        {
-                            ((int)ePermissao.AcessoAoModulo).ToString(),
-                            ((int)ePermissao.AdministradorDoModulo).ToString()
-                        }
+                            {
+                                ((int)ePermissao.AcessoAoModulo).ToString(),
+                                ((int)ePermissao.AdministradorDoModulo).ToString()
+                            },
+                            TipoUsuario = (int)Enums.TipoUsuario.PARCEIRO
                         };
                         break;
                     case (int)Enums.TipoUsuario.VENDEDOR_DO_PARCEIRO:
@@ -189,10 +194,11 @@ namespace OrcamentoCotacaoApi.Utils
                             VendedorResponsavel = orcamentistaVendedor.FirstOrDefault().VendedorResponsavel,
                             IdParceiro = orcamentistaVendedor.FirstOrDefault().IdIndicador,
                             Permissoes = new List<string>()
-                        {
-                            ((int)ePermissao.AcessoAoModulo).ToString(),
-                            ((int)ePermissao.AdministradorDoModulo).ToString()
-                        }
+                            {
+                                ((int)ePermissao.AcessoAoModulo).ToString(),
+                                ((int)ePermissao.AdministradorDoModulo).ToString()
+                            },
+                            TipoUsuario = (int)Enums.TipoUsuario.VENDEDOR_DO_PARCEIRO
                         };
                         break;
                     default:

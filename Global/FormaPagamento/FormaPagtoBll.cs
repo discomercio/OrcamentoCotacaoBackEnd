@@ -297,5 +297,20 @@ namespace FormaPagamento
                         }).ToList()
                     }).ToList();
         }
+
+        public List<TcfgPagtoFormaStatus> BuscarFormasPagtos_Gabriel(bool incluirTcfgPagtoForma, Constantes.Modulos modulo,
+            string tipoCliente, bool comIndicador, bool habilitado, short tipoUsuario)
+        {
+            return _formaPagamentoData.PorFiltro(new InfraBanco.Modelos.Filtros.TcfgPagtoFormaStatusFiltro()
+            {
+                IdCfgModulo = (short)modulo,
+                IdCfgTipoPessoaCliente = (short)(tipoCliente == Constantes.ID_PF ? 1 : 2),
+                IdCfgTipoUsuario = tipoUsuario,
+                PedidoComIndicador = (byte)(comIndicador ? 1 : 0),
+                Habilitado = (byte)(habilitado ? 1 : 0),
+                IncluirTcfgPagtoForma = incluirTcfgPagtoForma
+            });
+        }
+
     }
 }

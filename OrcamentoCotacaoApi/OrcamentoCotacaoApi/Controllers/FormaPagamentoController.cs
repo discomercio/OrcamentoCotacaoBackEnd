@@ -27,9 +27,9 @@ namespace OrcamentoCotacaoApi.Controllers
 
         [HttpGet("buscarFormasPagamentos")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult BuscarFormasPagamentos(string tipoCliente)
+        public IActionResult BuscarFormasPagamentos(string tipoCliente, bool comIndicacao)
         {
-            var retorno = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(tipoCliente, LoggedUser.TipoUsuario, LoggedUser.Apelido);
+            var retorno = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(tipoCliente, (short)LoggedUser.TipoUsuario, LoggedUser.Apelido);
 
             if (retorno == null)
                 return NoContent();

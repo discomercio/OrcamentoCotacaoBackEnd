@@ -16,5 +16,7 @@ namespace InfraBanco.Modelos.Filtros
         public short? IdTipoParcela { get; set; }
         public bool IncluirTcfgTipoParcela { get; set; }
         public bool IncluirTcfgPagtoMeio { get; set; }
+        public bool IncluirTorcamentistaEIndicadorRestricaoFormaPagtos { get; set; }
+        public string Apelido { get; set; }
     }
 }

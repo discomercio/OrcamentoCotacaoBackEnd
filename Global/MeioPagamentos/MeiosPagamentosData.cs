@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using InfraBanco.Constantes;
 
 namespace MeioPagamentos
 {
@@ -67,9 +68,20 @@ namespace MeioPagamentos
                     {
                         saida = saida.Where(x => x.Habilitado == obj.Habilitado);
                     }
-                    if(obj.IdCfgPagtoForma != 0)
+                    if (obj.IdCfgPagtoForma != 0)
                     {
                         saida = saida.Where(x => x.IdCfgPagtoForma == obj.IdCfgPagtoForma);
+                    }
+                    if (obj.IncluirTorcamentistaEIndicadorRestricaoFormaPagtos)
+                    {
+                        var ret = from c in saida
+                                  where !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagtos
+                                          where (d.Id_orcamentista_e_indicador == obj.Apelido.ToUpper() ||
+                                                d.Id_orcamentista_e_indicador == Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
+                                                d.Tipo_cliente == (obj.IdCfgTipoPessoaCliente == 1 ? Constantes.ID_PF : Constantes.ID_PJ) &&
+                                                d.St_restricao_ativa != 0
+                                          select d.Id_forma_pagto).Contains((short)c.IdCfgPagtoMeio)
+                                  select c;
                     }
 
                     return saida.ToList();
