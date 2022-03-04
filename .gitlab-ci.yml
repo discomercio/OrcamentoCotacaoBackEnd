@@ -8,7 +8,7 @@ variables:
   teste: "ApiUnis/Testes.Automatizados"
   loja: "Loja/Loja.UI"
   especificacao: "Global/Especificacao"
-  apiOrcamento: "OrcamentoCotacaoAPI/OrcamentoCotacaoApi"
+  apiOrcamento: "OrcamentoCotacaoApi/OrcamentoCotacaoApi"
   #MSSQL_HOST: microsoft-mssql-server-linux
   #ACCEPT_EULA: "Y"
   #SA_PASSWORD: yourStrong(!)Password
@@ -60,5 +60,6 @@ build-api:
   script:
     - "ls"
     - "cd ${apiOrcamento}"
-    - "dotnet build"
+    - "dotnet restore"
+    - "dotnet build"    
   allow_failure: true
