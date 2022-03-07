@@ -74,7 +74,7 @@ namespace MeioPagamentos
                     }
                     if (obj.IncluirTorcamentistaEIndicadorRestricaoFormaPagtos)
                     {
-                        var ret = from c in saida
+                        saida = from c in saida
                                   where !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagtos
                                           where (d.Id_orcamentista_e_indicador == obj.Apelido.ToUpper() ||
                                                 d.Id_orcamentista_e_indicador == Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
