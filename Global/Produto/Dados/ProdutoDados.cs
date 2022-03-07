@@ -34,18 +34,6 @@ namespace Produto.Dados
 
         public float? Desc_Max { get; set; }
 
-
-        public CoeficienteDados CoeficienteRelativo { get; set; }
-
-        public decimal GetPrecoListaComCoeficiente()
-        {
-            if (CoeficienteRelativo == null)
-            {
-                return (decimal)Preco_lista;
-            }
-
-            return Convert.ToDecimal(CoeficienteRelativo.Coeficiente) * Preco_lista.GetValueOrDefault();
-        }
     }
 }
         

@@ -20,7 +20,7 @@ namespace Produto
         }
 
         public async Task<ProdutoComboDados> ListaProdutosComboDados(string loja, string uf, string tipo, 
-            Constantes.ContribuinteICMS contribuinte, Constantes.ProdutorRural produtorRural, string tipoParcela = "" , short qtdeParcelas = 0,  DateTime? dataRefCoeficiente = null)
+            Constantes.ContribuinteICMS contribuinte, Constantes.ProdutorRural produtorRural)
         {
             ProdutoComboDados retorno = new ProdutoComboDados();
 
@@ -33,20 +33,6 @@ namespace Produto
             //List<Produto.Dados.ProdutoDados> lstTodosProdutos = qtdeParcelas == 0 ? await BuscarTodosProdutos(loja)) : (await BuscarTodosProdutos(loja, tipoParcela, qtdeParcelas, dataRefCoeficiente.GetValueOrDefault(new DateTime())));
             List<Produto.Dados.ProdutoDados> lstTodosProdutos = await BuscarTodosProdutos(loja);
 
-            if(qtdeParcelas > 0)
-            {
-                var lstFabricate = lstTodosProdutos.Select(x => x.Fabricante).Distinct().ToList();
-                var coeficienteBll = new CoeficienteBll(contextoProvider);
-
-                var dicCoeficiente = await coeficienteBll.BuscarListaCoeficientesFabricantesHistoricoDistinct(lstFabricate, tipoParcela, qtdeParcelas, dataRefCoeficiente.GetValueOrDefault(new DateTime()));
-                foreach (var produto in lstTodosProdutos)
-                {
-                    if (dicCoeficiente.ContainsKey(produto.Fabricante))
-                    {
-                        produto.CoeficienteRelativo = dicCoeficiente[produto.Fabricante];
-                    }
-                }
-            }
 
             List<RegrasBll> lst_cliente_regra = new List<RegrasBll>();
             MontaListaRegras(lstTodosProdutos, lst_cliente_regra);

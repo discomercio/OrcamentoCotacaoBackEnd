@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace OrcamentoCotacaoBusiness.Models.Response
 {
@@ -36,15 +37,21 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 
         public int? Qtde { get; set; }
 
-        internal static ProdutoSimplesResponseViewModel ConverterProdutoDados(Produto.Dados.ProdutoDados produto, int? qtdeFilho)
+        internal static ProdutoSimplesResponseViewModel ConverterProdutoDados(Produto.Dados.ProdutoDados produto, int? qtdeFilho, Produto.Dados.CoeficienteDados coeficienteDados)
         {
+            var precoLista = produto.Preco_lista;
+            if (coeficienteDados != null)
+            {
+                precoLista = Convert.ToDecimal(coeficienteDados.Coeficiente) * precoLista.GetValueOrDefault();
+            }
+
             return new ProdutoSimplesResponseViewModel()
             {
                 Fabricante = produto.Fabricante,
                 FabricanteNome = produto.Fabricante_Nome,
                 Produto = produto.Produto,
                 DescricaoHtml = produto.Descricao_html,
-                PrecoLista = produto.GetPrecoListaComCoeficiente(),
+                PrecoLista = (decimal)precoLista,
                 PrecoListaBase = (decimal)produto.Preco_lista,
                 Qtde = qtdeFilho.HasValue ? qtdeFilho : null,
                 QtdeMaxVenda = produto.Qtde_Max_Venda,
@@ -53,5 +60,6 @@ namespace OrcamentoCotacaoBusiness.Models.Response
                 Alertas = produto.Alertas
             };
         }
+
     }
 }
