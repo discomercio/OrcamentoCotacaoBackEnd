@@ -176,7 +176,7 @@ namespace OrcamentoCotacaoApi.Utils
                             Permissoes = new List<string>()
                             {
                                 ((int)ePermissao.AcessoAoModulo).ToString(),
-                                ((int)ePermissao.AdministradorDoModulo).ToString()
+                                ((int)ePermissao.ParceiroIndicadorUsuarioMaster).ToString()
                             },
                             TipoUsuario = (int)Constantes.TipoUsuario.PARCEIRO
                         };
@@ -196,8 +196,7 @@ namespace OrcamentoCotacaoApi.Utils
                             IdParceiro = orcamentistaVendedor.FirstOrDefault().IdIndicador,
                             Permissoes = new List<string>()
                             {
-                                ((int)ePermissao.AcessoAoModulo).ToString(),
-                                ((int)ePermissao.AdministradorDoModulo).ToString()
+                                ((int)ePermissao.AcessoAoModulo).ToString()
                             },
                             TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO
                         };

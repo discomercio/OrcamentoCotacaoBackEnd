@@ -9,7 +9,10 @@ namespace OrcamentoCotacaoBusiness.Models.Response.FormaPagamento
         [JsonProperty("idTipoPagamento")]
         public int IdTipoPagamento { get; set; }
 
-        [JsonProperty("Meios")]
+        [JsonProperty("tipoPagamentoDescricao")]
+        public string TipoPagamentoDescricao { get; set; }
+
+        [JsonProperty("meios")]
         public List<MeioPagamentoResponseViewModel> MeiosPagamentos { get; set; }
     }
 }

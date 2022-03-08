@@ -42,6 +42,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 FormaPagamentoResponseViewModel item = new FormaPagamentoResponseViewModel();
                 item.IdTipoPagamento = fp.TcfgPagtoForma.Id;
+                item.TipoPagamentoDescricao = fp.TcfgPagtoForma.Descricao;
 
                 var filtro = CriarFiltro(fp, tipoCliente, (short)tipoUsuario, apelido, comIndicacao);
                 meiosPagamento = _meiosPagamentosBll.PorFiltro(filtro);

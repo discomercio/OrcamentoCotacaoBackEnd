@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,11 +7,22 @@ namespace OrcamentoCotacaoBusiness.Models.Response.FormaPagamento.MeiosPagamento
 {
     public class MeioPagamentoResponseViewModel
     {
+        [JsonProperty("id")]
         public short Id { get; set; }
+
+        [JsonProperty("idTipoParcela")]
         public short? IdTipoParcela { get; set; }
+
+        [JsonProperty("descricao")]
         public string Descricao { get; set; }
+
+        [JsonProperty("ordenacao")]
         public int? Ordenacao { get; set; }
+
+        [JsonProperty("qtdeMaxParcelas")]
         public int? QtdeMaxParcelas { get; set; }
+
+        [JsonProperty("qtdeMaxDias")]
         public int? QtdeMaxDias { get; set; }
 
         public static MeioPagamentoResponseViewModel MeioPagamentoResponseViewModel_De_TcfgPagtoMeioStatus(InfraBanco.Modelos.TcfgPagtoMeioStatus origem)

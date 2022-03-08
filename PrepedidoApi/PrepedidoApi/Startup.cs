@@ -56,6 +56,7 @@ namespace PrepedidoApi
             services.AddTransient<Cep.CepBll, Cep.CepBll>();
             services.AddTransient<PrepedidoBusiness.Bll.CepPrepedidoBll, PrepedidoBusiness.Bll.CepPrepedidoBll>();
             services.AddTransient<FormaPagtoBll, FormaPagtoBll>();
+            services.AddTransient<FormaPagamentoData, FormaPagamentoData>();
             services.AddTransient<PrepedidoBusiness.Bll.FormaPagtoPrepedidoBll, PrepedidoBusiness.Bll.FormaPagtoPrepedidoBll>();
             services.AddTransient<ValidacoesFormaPagtoBll, ValidacoesFormaPagtoBll>();
             services.AddTransient<Produto.CoeficienteBll, Produto.CoeficienteBll>();

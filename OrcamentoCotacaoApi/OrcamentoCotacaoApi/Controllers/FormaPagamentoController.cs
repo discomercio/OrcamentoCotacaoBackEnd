@@ -27,11 +27,11 @@ namespace OrcamentoCotacaoApi.Controllers
             _servicoDecodificarToken = servicoDecodificarToken;
         }
 
-        [HttpGet("buscarFormasPagamentos")]
+        [HttpPost("buscarFormasPagamentos")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult BuscarFormasPagamentos(FormaPagtoRequestViewModel formaPagtoRequest)
         {
-            var retorno = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(formaPagtoRequest.TipoCliente, (Constantes.TipoUsuario)LoggedUser.TipoUsuario, LoggedUser.Apelido, (byte)(formaPagtoRequest.ComIndicacao ? 1 : 0));
+            var retorno = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(formaPagtoRequest.TipoCliente, (Constantes.TipoUsuario)LoggedUser.TipoUsuario, LoggedUser.Apelido, byte.Parse(formaPagtoRequest.ComIndicacao));
 
             if (retorno == null)
                 return NoContent();

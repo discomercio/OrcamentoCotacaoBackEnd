@@ -7,6 +7,6 @@ namespace OrcamentoCotacaoBusiness.Models.Request
     public class FormaPagtoRequestViewModel
     {
         public string TipoCliente { get; set; }
-        public bool ComIndicacao { get; set; }
+        public string ComIndicacao { get; set; }
     }
 }
