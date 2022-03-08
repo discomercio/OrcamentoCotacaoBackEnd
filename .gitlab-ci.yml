@@ -1,18 +1,15 @@
 stages:
-  #- build
-  - test
-  - test-especificacao
+  #- test
+  #- test-especificacao
   - build-api
 
 variables:
-  teste: "ApiUnis/Testes.Automatizados"
-  loja: "Loja/Loja.UI"
-  especificacao: "Global/Especificacao"
+  #teste: "ApiUnis/Testes.Automatizados"
+  #loja: "Loja/Loja.UI"
+  #especificacao: "Global/Especificacao"
   apiOrcamento: "OrcamentoCotacaoApi/OrcamentoCotacaoApi"
   configuration: "Release"
-  #MSSQL_HOST: microsoft-mssql-server-linux
-  #ACCEPT_EULA: "Y"
-  #SA_PASSWORD: yourStrong(!)Password
+  caminhoImplantacao: "\\\\10.255.0.30\\ArClube.OrcamentoCotacaoAPI\\publish"
 
 before_script:
   - ""
@@ -33,27 +30,27 @@ before_script:
 #  only:
 #    - automacoes
 
-test:
-  stage: test
-  image: mcr.microsoft.com/dotnet/core/sdk:3.1
-  script:
-    - "ls"
-    - "cd ApiUnis/Testes.Automatizados"
-    - "dotnet test"
-  allow_failure: true
-  #only:
-  #  - automacoes
+#test:
+#  stage: test
+#  image: mcr.microsoft.com/dotnet/core/sdk:3.1
+#  script:
+#    - "ls"
+#    - "cd ApiUnis/Testes.Automatizados"
+#    - "dotnet test"
+#  allow_failure: true
+#  #only:
+#  #  - automacoes
 
-test-especificacao:
-  stage: test
-  image: mcr.microsoft.com/dotnet/core/sdk:3.1
-  script:
-    - "ls"
-    - "cd Global/Especificacao"
-    - "dotnet test"
-  allow_failure: true
-  #only:
-  #  - automacoes
+#test-especificacao:
+#  stage: test
+#  image: mcr.microsoft.com/dotnet/core/sdk:3.1
+#  script:
+#    - "ls"
+#    - "cd Global/Especificacao"
+#    - "dotnet test"
+#  allow_failure: true
+#  #only:
+#  #  - automacoes
 
 build-api:
   stage: build-api
@@ -62,5 +59,6 @@ build-api:
     - "ls"
     - "cd ${apiOrcamento}"
     - "dotnet restore"
-    - "dotnet build --no-restore --configuration ${configuration}"    
+    - "dotnet build --no-restore --configuration ${configuration}"   
+    -  dotnet publish --no-restore --no-build --output $caminhoImplantacao
   allow_failure: true
