@@ -8,7 +8,7 @@ variables:
   #loja: "Loja/Loja.UI"
   #especificacao: "Global/Especificacao"
   apiOrcamento: "OrcamentoCotacaoApi/OrcamentoCotacaoApi"
-  configuration: "Release"
+  configuration: "Debug"
   caminhoImplantacao: "\\\\10.255.0.30\\ArClube.OrcamentoCotacaoAPI\\publish"
 
 before_script:
