@@ -33,7 +33,7 @@ namespace OrcamentoCotacaoApi.BaseController
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> BuscarProduto(ProdutosRequestViewModel produtos)
         {
-            var ret = await _produtoBll.ListaProdutosComboApiArclube(produtos);
+            var ret = await _produtoBll.ListaProdutosCombo(produtos);
 
             if (ret == null)
                 return NoContent();

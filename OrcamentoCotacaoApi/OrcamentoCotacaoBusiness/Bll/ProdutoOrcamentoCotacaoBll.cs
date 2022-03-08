@@ -27,7 +27,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             _mapper = mapper;
         }
      
-        public async Task<IEnumerable<ProdutoSimplesResponseViewModel>> ListaProdutosComboApiArclube(ProdutosRequestViewModel produtos)
+        public async Task<ProdutoResponseViewModel> ListaProdutosCombo(ProdutosRequestViewModel produtos)
         {
             Constantes.ContribuinteICMS contribuinteICMSStatus = Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;
             Constantes.ProdutorRural produtorRuralStatus = Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
@@ -37,33 +37,60 @@ namespace OrcamentoCotacaoBusiness.Bll
             return await CalcularCoeficiente(aux, produtos.TipoParcela, produtos.QtdeParcelas, produtos.DataRefCoeficiente);
         }
 
-        private async Task<IEnumerable<ProdutoSimplesResponseViewModel>> CalcularCoeficiente(Produto.Dados.ProdutoComboDados produtoComboDados, 
+        private async Task<ProdutoResponseViewModel> CalcularCoeficiente(Produto.Dados.ProdutoComboDados produtoComboDados, 
             string tipoParcela, short qtdeParcelas, DateTime? dataRefCoeficiente)
         {
             if (produtoComboDados == null) return null;
 
-            var produtosSimples = new List<ProdutoSimplesResponseViewModel>();
-
-    
+            ProdutoResponseViewModel produtoResponseViewModel = new ProdutoResponseViewModel();
+            produtoResponseViewModel.ProdutosCompostos = new List<ProdutoCompostoResponseViewModel>();
+            produtoResponseViewModel.ProdutosSimples = new List<ProdutoSimplesResponseViewModel>();
 
 
             var lstFabricate = produtoComboDados.ProdutoDados.Select(x => x.Fabricante).Distinct().ToList();
             var dicCoeficiente = await coeficienteBll.BuscarListaCoeficientesFabricantesHistoricoDistinct(lstFabricate, tipoParcela, qtdeParcelas, dataRefCoeficiente.GetValueOrDefault(new DateTime()));
-            
-            foreach (var produto in produtoComboDados.ProdutoDados)
-            {
-                if(dicCoeficiente.ContainsKey(produto.Fabricante))
-                {
-                    produtosSimples.Add(ProdutoSimplesResponseViewModel.ConverterProdutoDados(produto, null, dicCoeficiente[produto.Fabricante]));
-                }
-                else
-                {
-                    produtosSimples.Add(ProdutoSimplesResponseViewModel.ConverterProdutoDados(produto, null, null));
 
+            foreach (Produto.Dados.ProdutoCompostoDados composto in produtoComboDados.ProdutoCompostoDados)
+            {
+                var produtoCompostoResponse = ProdutoCompostoResponseViewModel.ConverterProdutoCompostoDados(composto);
+
+                foreach (var filhos in composto.Filhos)
+                {
+
+
+                    var filho = produtoComboDados.ProdutoDados
+                    .Where(x => x.Produto == filhos.Produto && x.Fabricante == filhos.Fabricante)
+                    .Select(x => x)
+                    .FirstOrDefault();
+
+                    if (filho == null)
+                    {
+                        break;
+                    }
+
+                    produtoCompostoResponse.Filhos.Add(ProdutoSimplesResponseViewModel.ConverterProdutoDados(filho, filhos.Qtde, GetCoeficienteOuNull(dicCoeficiente, composto.PaiFabricante)));
                 }
+                produtoResponseViewModel.ProdutosCompostos.Add(produtoCompostoResponse);
+
             }
 
-            return await Task.FromResult(produtosSimples);
+            foreach (var produto in produtoComboDados.ProdutoDados)
+            {
+                produtoResponseViewModel.ProdutosSimples.Add(ProdutoSimplesResponseViewModel.ConverterProdutoDados(produto, null, GetCoeficienteOuNull(dicCoeficiente, produto.Fabricante)));
+                
+            }
+
+            return produtoResponseViewModel;
+        }
+
+        private Produto.Dados.CoeficienteDados GetCoeficienteOuNull(IDictionary<string, Produto.Dados.CoeficienteDados> dicCoeficiente, string fabricante)
+        {
+            if (dicCoeficiente.ContainsKey(fabricante))
+            {
+                return dicCoeficiente[fabricante];
+            }
+
+            return null;
         }
     }
 }
