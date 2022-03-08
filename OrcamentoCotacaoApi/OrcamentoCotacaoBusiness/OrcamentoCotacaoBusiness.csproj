@@ -17,6 +17,7 @@
     <ProjectReference Include="..\..\Global\Cliente\Cliente.csproj" />
     <ProjectReference Include="..\..\Global\Infra\InfraBanco\InfraBanco.csproj" />
     <ProjectReference Include="..\..\Global\Infra\InfraIdentity\InfraIdentity.csproj" />
+    <ProjectReference Include="..\..\Global\Loja\Loja.csproj" />
     <ProjectReference Include="..\..\Global\MeioPagamentos\MeioPagamentos.csproj" />
     <ProjectReference Include="..\..\Global\Prepedido\Prepedido.csproj" />
     <ProjectReference Include="..\..\Global\Produto\Produto.csproj" />

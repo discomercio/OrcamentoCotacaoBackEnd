@@ -9,7 +9,6 @@ using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Interfaces;
 using OrcamentoCotacaoBusiness.Services;
-using PrepedidoBusiness.Bll;
 using Produto;
 using ProdutoCatalogo;
 using Usuario;
@@ -35,16 +34,16 @@ namespace OrcamentoCotacaoApi.Config
 
             services.AddScoped<ITokenService, TokenService>();
             services.AddTransient<Cliente.ClienteBll, Cliente.ClienteBll>();
-            services.AddTransient<OrcamentoCotacaoBusiness.Bll.AcessoBll, OrcamentoCotacaoBusiness.Bll.AcessoBll>();
-            services.AddTransient<Produto.ProdutoGeralBll, Produto.ProdutoGeralBll>();
-            services.AddTransient<OrcamentistaEindicador.OrcamentistaEIndicadorBll, OrcamentistaEIndicadorBll>();
-            services.AddTransient<OrcamentistaEindicador.OrcamentistaEIndicadorData, OrcamentistaEIndicadorData>();
+            services.AddTransient<AcessoBll, AcessoBll>();
+            services.AddTransient<ProdutoGeralBll, ProdutoGeralBll>();
+            services.AddTransient<OrcamentistaEIndicadorBll, OrcamentistaEIndicadorBll>();
+            services.AddTransient<OrcamentistaEIndicadorData, OrcamentistaEIndicadorData>();
             services.AddTransient<OrcamentistaEIndicadorVendedor.OrcamentistaEIndicadorVendedorBll, OrcamentistaEIndicadorVendedor.OrcamentistaEIndicadorVendedorBll>();
             services.AddTransient<Orcamento.OrcamentoBll, Orcamento.OrcamentoBll>();
             services.AddTransient<Orcamento.OrcamentoOpcaoBll, Orcamento.OrcamentoOpcaoBll>();
             services.AddTransient<Arquivo.ArquivoBll, Arquivo.ArquivoBll>();
             services.AddTransient<Loja.LojaBll, Loja.LojaBll>();
-            services.AddTransient<OrcamentoCotacaoBusiness.Bll.ProdutoOrcamentoCotacaoBll, OrcamentoCotacaoBusiness.Bll.ProdutoOrcamentoCotacaoBll>();
+            services.AddTransient<ProdutoOrcamentoCotacaoBll, ProdutoOrcamentoCotacaoBll>();
             services.AddTransient<Loja.LojaData, Loja.LojaData>();
             services.AddTransient<FormaPagtoBll, FormaPagtoBll>();
             services.AddTransient<FormaPagtoOrcamentoCotacaoBll, FormaPagtoOrcamentoCotacaoBll>();
@@ -54,7 +53,7 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<UsuarioBll, UsuarioBll>();
             services.AddTransient<ProdutoCatalogoBll, ProdutoCatalogoBll>();
             services.AddTransient<CoeficienteBll, CoeficienteBll>();
-            //services.AddTransient<PedidoOrcamentoBll, PedidoOrcamentoBll>();
+            services.AddTransient<LojaOrcamentoCotacaoBll, LojaOrcamentoCotacaoBll>();
 
             return services;
         }
