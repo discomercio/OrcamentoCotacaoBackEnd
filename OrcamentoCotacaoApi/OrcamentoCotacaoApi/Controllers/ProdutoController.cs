@@ -38,7 +38,7 @@ namespace OrcamentoCotacaoApi.BaseController
             if (ret == null)
                 return NoContent();
             else
-                return Ok(ret);
+                return Ok(ret.ProdutosCompostos); 
         }
 
         [HttpGet("buscarCoeficientes")]

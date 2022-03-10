@@ -19,6 +19,8 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 
         [JsonProperty("paiPrecoTotal")]
         public decimal? PaiPrecoTotal { get; set; }
+        [JsonProperty("paiPrecoTotalBase")]
+        public decimal? PaiPrecoTotalBase { get; set; }
 
         [JsonProperty("filhos")]
         public List<ProdutoSimplesResponseViewModel> Filhos { get; set; }
@@ -32,6 +34,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response
                 PaiProduto = produto.PaiProduto,
                 PaiDescricao = produto.PaiDescricao,
                 PaiPrecoTotal = produto.PaiPrecoTotal,
+                PaiPrecoTotalBase = produto.PaiPrecoTotalBase,
                 Filhos = new List<ProdutoSimplesResponseViewModel>()
             };
         }

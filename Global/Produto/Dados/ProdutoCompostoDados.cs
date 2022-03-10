@@ -11,6 +11,7 @@ namespace Produto.Dados
         public string PaiProduto { get; set; }
         public string PaiDescricao { get; set; }
         public decimal PaiPrecoTotal { get; set; }
+        public decimal PaiPrecoTotalBase { get; set; }
         public List<ProdutoFilhoDados> Filhos { get; set; }
     }
 }

@@ -8,32 +8,11 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         [JsonProperty("fabricante")]
         public string Fabricante { get; set; }
 
-        [JsonProperty("fabricanteNome")]
+        [JsonProperty("fabricante_Nome")]
         public string FabricanteNome { get; set; }
 
         [JsonProperty("produto")]
         public string Produto { get; set; }
-
-        [JsonProperty("descricaoHtml")]
-        public string DescricaoHtml { get; set; }
-
-        [JsonProperty("precoLista")]
-        public decimal PrecoLista { get; set; }
-
-        [JsonProperty("precoListaBase")]
-        public decimal PrecoListaBase { get; set; }
-
-        [JsonProperty("estoque")]
-        public int Estoque { get; set; }
-
-        [JsonProperty("alertas")]
-        public string Alertas { get; set; }
-
-        [JsonProperty("qtdeMaxVenda")]
-        public short? QtdeMaxVenda { get; set; }
-
-        [JsonProperty("descMax")]
-        public float? DescMax { get; set; }
 
         public int? Qtde { get; set; }
 
@@ -50,14 +29,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response
                 Fabricante = produto.Fabricante,
                 FabricanteNome = produto.Fabricante_Nome,
                 Produto = produto.Produto,
-                DescricaoHtml = produto.Descricao_html,
-                PrecoLista = (decimal)precoLista,
-                PrecoListaBase = (decimal)produto.Preco_lista,
-                Qtde = qtdeFilho.HasValue ? qtdeFilho : null,
-                QtdeMaxVenda = produto.Qtde_Max_Venda,
-                DescMax = produto.Qtde_Max_Venda,
-                Estoque = produto.Estoque,
-                Alertas = produto.Alertas
+                Qtde = qtdeFilho.HasValue ? qtdeFilho : null
             };
         }
 
