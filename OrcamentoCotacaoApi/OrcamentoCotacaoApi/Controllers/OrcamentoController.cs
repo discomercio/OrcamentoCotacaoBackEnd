@@ -3,9 +3,7 @@ using InfraBanco.Modelos.Filtros;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Orcamento;
-using System.Linq;
-using System.Security.Claims;
+using OrcamentoCotacaoBusiness.Bll;
 using System.Threading.Tasks;
 
 namespace OrcamentoCotacaoApi.Controllers
@@ -17,9 +15,9 @@ namespace OrcamentoCotacaoApi.Controllers
     {
         private readonly ILogger<OrcamentoController> _logger;
         private readonly IMapper _mapper;
-        private readonly OrcamentoBll _orcamentoBll;
+        private readonly OrcamentoCotacaoBll _orcamentoBll;
 
-        public OrcamentoController(ILogger<OrcamentoController> logger, IMapper mapper, OrcamentoBll orcamentoBll)
+        public OrcamentoController(ILogger<OrcamentoController> logger, IMapper mapper, OrcamentoCotacaoBll orcamentoBll)
         {
             _logger = logger;
             _mapper = mapper;
@@ -45,6 +43,19 @@ namespace OrcamentoCotacaoApi.Controllers
             _logger.LogInformation("Buscando status");
 
             var saida = await _orcamentoBll.ObterListaStatus(new TorcamentoFiltro { Origem = origem, Loja = lojaLogada });
+
+            if (saida != null)
+                return Ok(saida);
+            else
+                return NoContent();
+        }
+
+        [HttpGet("validade")]
+        public IActionResult BuscarConfigValidade()
+        {
+            _logger.LogInformation("Buscando ConfigValidade");
+
+            var saida = _orcamentoBll.BuscarConfigValidade();
 
             if (saida != null)
                 return Ok(saida);

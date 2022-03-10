@@ -54,6 +54,7 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<ProdutoCatalogoBll, ProdutoCatalogoBll>();
             services.AddTransient<CoeficienteBll, CoeficienteBll>();
             services.AddTransient<LojaOrcamentoCotacaoBll, LojaOrcamentoCotacaoBll>();
+            services.AddTransient<OrcamentoCotacaoBll, OrcamentoCotacaoBll>();
 
             return services;
         }
