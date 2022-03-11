@@ -23,7 +23,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         public decimal? PaiPrecoTotalBase { get; set; }
 
         [JsonProperty("filhos")]
-        public List<ProdutoSimplesResponseViewModel> Filhos { get; set; }
+        public List<ProdutoCompostoFilhosResponseViewModel> Filhos { get; set; }
 
         internal static ProdutoCompostoResponseViewModel ConverterProdutoCompostoDados(Produto.Dados.ProdutoCompostoDados produto)
         {
@@ -35,7 +35,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response
                 PaiDescricao = produto.PaiDescricao,
                 PaiPrecoTotal = produto.PaiPrecoTotal,
                 PaiPrecoTotalBase = produto.PaiPrecoTotalBase,
-                Filhos = new List<ProdutoSimplesResponseViewModel>()
+                Filhos = new List<ProdutoCompostoFilhosResponseViewModel>()
             };
         }
     }

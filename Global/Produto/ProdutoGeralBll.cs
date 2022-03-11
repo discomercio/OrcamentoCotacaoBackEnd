@@ -113,16 +113,12 @@ namespace Produto
                                                               join pci in db.TecProdutoCompostoItems on pc.Fabricante_Composto equals pci.Fabricante_composto
                                                               join pl in db.TprodutoLojas on pci.Produto_item equals pl.Produto
                                                               join fab in db.Tfabricantes on c.Fabricante equals fab.Fabricante
-                                                              join coe in db.TpercentualCustoFinanceiroFornecedors on pci.Fabricante_composto equals coe.Fabricante
                                                               where pl.Loja == loja &&
                                                                     pl.Vendavel == "S" &&
                                                                     c.Fabricante == pc.Fabricante_Composto &&
                                                                     pc.Produto_Composto == pci.Produto_composto &&
                                                                     c.Excluido_status == 0 &&
-                                                                    pl.Excluido_status == 0 &&
-                                                                    coe.Qtde_Parcelas == pci.Qtde
-                                                                                                  // antes de fazer o join com TpercentualCustoFinanceiroFornecedors retornava 2464
-                                                                                                  // Precisei fazer para pegar o Coeficiente
+                                                                    pl.Excluido_status == 0
                                                               select new
                                                               {
                                                                   fabricante_pai = c.Fabricante,
@@ -131,7 +127,6 @@ namespace Produto
                                                                   pai_descricao = c.Descricao_Html,
                                                                   valor = (decimal)pl.Preco_Lista,
                                                                   qtde = (int)pci.Qtde,
-                                                                  coeficiente = coe.Coeficiente,
                                                                   produtosFilhos = new ProdutoFilhoDados
                                                                   {
                                                                       Fabricante = c.Fabricante,
@@ -152,8 +147,7 @@ namespace Produto
                                              PaiFabricanteNome = g.OrderBy(r => r.fabricante_pai_nome).Select(r => r.fabricante_pai_nome).FirstOrDefault(),
                                              PaiProduto = g.OrderBy(r => r.produto_pai).Select(r => r.produto_pai).FirstOrDefault(),
                                              PaiDescricao = g.OrderBy(r => r.pai_descricao).Select(r => r.pai_descricao).FirstOrDefault(),
-                                             PaiPrecoTotal = g.Sum(r => (r.qtde * r.valor) * ((decimal)r.coeficiente)),
-                                             PaiPrecoTotalBase = g.Sum(r => r.qtde * r.valor),
+                                             PaiPrecoTotal = g.Sum(r => r.qtde * r.valor),
                                              Filhos = g.Select(r => r.produtosFilhos).ToList()
                                          };
 

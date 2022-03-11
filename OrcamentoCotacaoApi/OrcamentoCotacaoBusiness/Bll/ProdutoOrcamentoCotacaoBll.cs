@@ -68,8 +68,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                         break;
                     }
 
-                    produtoCompostoResponse.Filhos.Add(ProdutoSimplesResponseViewModel.ConverterProdutoDados(filho, filhos.Qtde, GetCoeficienteOuNull(dicCoeficiente, composto.PaiFabricante)));
+                    produtoCompostoResponse.Filhos.Add(ProdutoCompostoFilhosResponseViewModel.ConverterProdutoFilhoDados(filho, filhos.Qtde, GetCoeficienteOuNull(dicCoeficiente, composto.PaiFabricante)));
                 }
+                var coeficiente = GetCoeficienteOuNull(dicCoeficiente, composto.PaiFabricante).Coeficiente;
+                produtoCompostoResponse.PaiPrecoTotalBase = composto.PaiPrecoTotal;
+                produtoCompostoResponse.PaiPrecoTotal = produtoCompostoResponse.PaiPrecoTotal * Convert.ToDecimal(coeficiente);
+
                 produtoResponseViewModel.ProdutosCompostos.Add(produtoCompostoResponse);
 
             }
