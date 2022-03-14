@@ -23,6 +23,7 @@
     <ProjectReference Include="..\..\Global\OrcamentistaEindicador\OrcamentistaEindicador.csproj" />
     <ProjectReference Include="..\..\Global\Orcamento\Orcamento.csproj" />
     <ProjectReference Include="..\..\Global\Prepedido\Prepedido.csproj" />
+    <ProjectReference Include="..\..\Global\ProdutoCatalogo\ProdutoCatalogo.csproj" />
     <ProjectReference Include="..\..\Global\Produto\Produto.csproj" />
     <ProjectReference Include="..\..\Global\Utils\UtilsGlobais.csproj" />
   </ItemGroup>

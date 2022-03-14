@@ -50,6 +50,7 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<MeiosPagamentosBll, MeiosPagamentosBll>();
             services.AddTransient<MeiosPagamentosData, MeiosPagamentosData>();
             services.AddTransient<UsuarioBll, UsuarioBll>();
+            services.AddTransient<ProdutoCatalogoOrcamentoCotacaoBll, ProdutoCatalogoOrcamentoCotacaoBll>();
             services.AddTransient<ProdutoCatalogoBll, ProdutoCatalogoBll>();
             services.AddTransient<CoeficienteBll, CoeficienteBll>();
             services.AddTransient<LojaOrcamentoCotacaoBll, LojaOrcamentoCotacaoBll>();
