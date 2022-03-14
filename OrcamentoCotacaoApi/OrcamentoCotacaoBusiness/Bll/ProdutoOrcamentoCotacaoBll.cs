@@ -17,24 +17,28 @@ namespace OrcamentoCotacaoBusiness.Bll
     public class ProdutoOrcamentoCotacaoBll
     {
         private readonly ProdutoGeralBll produtoGeralBll;
+        private readonly CoeficienteBll coeficienteBll;
         private readonly IMapper _mapper;
 
-        public ProdutoOrcamentoCotacaoBll(Produto.ProdutoGeralBll produtoGeralBll, IMapper mapper)
+        public ProdutoOrcamentoCotacaoBll(Produto.ProdutoGeralBll produtoGeralBll, CoeficienteBll coeficienteBll, IMapper mapper)
         {
             this.produtoGeralBll = produtoGeralBll;
+            this.coeficienteBll = coeficienteBll;
             _mapper = mapper;
         }
      
-        public async Task<ProdutoResponseViewModel> ListaProdutosComboApiArclube(ProdutosRequestViewModel produtos)
+        public async Task<ProdutoResponseViewModel> ListaProdutosCombo(ProdutosRequestViewModel produtos)
         {
             Constantes.ContribuinteICMS contribuinteICMSStatus = Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;
             Constantes.ProdutorRural produtorRuralStatus = Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
 
-            var aux = await produtoGeralBll.ListaProdutosComboDados(produtos.Loja, produtos.UF, produtos.TipoCliente, contribuinteICMSStatus, produtorRuralStatus);
-            return await GetProdutosCompostosESimples(aux);
+            var aux = await produtoGeralBll.ListaProdutosComboDados(produtos.Loja, produtos.UF, produtos.TipoCliente, 
+                contribuinteICMSStatus, produtorRuralStatus);
+            return await CalcularCoeficiente(aux, produtos.TipoParcela, produtos.QtdeParcelas, produtos.DataRefCoeficiente);
         }
 
-        private async Task<ProdutoResponseViewModel> GetProdutosCompostosESimples(Produto.Dados.ProdutoComboDados produtoComboDados)
+        private async Task<ProdutoResponseViewModel> CalcularCoeficiente(Produto.Dados.ProdutoComboDados produtoComboDados, 
+            string tipoParcela, short qtdeParcelas, DateTime? dataRefCoeficiente)
         {
             if (produtoComboDados == null) return null;
 
@@ -42,8 +46,9 @@ namespace OrcamentoCotacaoBusiness.Bll
             produtoResponseViewModel.ProdutosCompostos = new List<ProdutoCompostoResponseViewModel>();
             produtoResponseViewModel.ProdutosSimples = new List<ProdutoSimplesResponseViewModel>();
 
-            List<Produto.Dados.ProdutoDados> produtoDadossRemove = new List<Produto.Dados.ProdutoDados>();
-            List<ProdutoCompostoResponseViewModel> produtoCompostosRemove = new List<ProdutoCompostoResponseViewModel>();
+
+            var lstFabricate = produtoComboDados.ProdutoDados.Select(x => x.Fabricante).Distinct().ToList();
+            var dicCoeficiente = await coeficienteBll.BuscarListaCoeficientesFabricantesHistoricoDistinct(lstFabricate, tipoParcela, qtdeParcelas, dataRefCoeficiente.GetValueOrDefault(new DateTime()));
 
             foreach (Produto.Dados.ProdutoCompostoDados composto in produtoComboDados.ProdutoCompostoDados)
             {
@@ -51,38 +56,45 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 foreach (var filhos in composto.Filhos)
                 {
+
+
                     var filho = produtoComboDados.ProdutoDados
-                        .Where(x => x.Produto == filhos.Produto && x.Fabricante == filhos.Fabricante)
-                        .Select(x => x)
-                        .FirstOrDefault();
+                    .Where(x => x.Produto == filhos.Produto && x.Fabricante == filhos.Fabricante)
+                    .Select(x => x)
+                    .FirstOrDefault();
 
                     if (filho == null)
                     {
-                        //o produto pai não deve estar na lista de compostos
-                        produtoCompostosRemove.Add(produtoCompostoResponse);
                         break;
                     }
 
-                    produtoCompostoResponse.Filhos.Add(ProdutoSimplesResponseViewModel.ConverterProdutoDados(filho, filhos.Qtde));
-                    produtoDadossRemove.Add(filho);
+                    produtoCompostoResponse.Filhos.Add(ProdutoCompostoFilhosResponseViewModel.ConverterProdutoFilhoDados(filho, filhos.Qtde, GetCoeficienteOuNull(dicCoeficiente, composto.PaiFabricante)));
                 }
+                var coeficiente = GetCoeficienteOuNull(dicCoeficiente, composto.PaiFabricante).Coeficiente;
+                produtoCompostoResponse.PaiPrecoTotalBase = composto.PaiPrecoTotal;
+                produtoCompostoResponse.PaiPrecoTotal = produtoCompostoResponse.PaiPrecoTotal * Convert.ToDecimal(coeficiente);
+
                 produtoResponseViewModel.ProdutosCompostos.Add(produtoCompostoResponse);
 
-                var paiRemove = produtoComboDados.ProdutoDados
-                    .Where(x => x.Produto == composto.PaiProduto)
-                    .Select(x => x).FirstOrDefault();
-                if (paiRemove != null) produtoDadossRemove.Add(paiRemove);
             }
-
-            produtoComboDados.ProdutoDados.RemoveAll(x => produtoDadossRemove.Any(c => x.Produto == c.Produto));
-            produtoResponseViewModel.ProdutosCompostos.RemoveAll(x => produtoCompostosRemove.Any(c => x.PaiProduto == c.PaiProduto));
 
             foreach (var produto in produtoComboDados.ProdutoDados)
             {
-                produtoResponseViewModel.ProdutosSimples.Add(ProdutoSimplesResponseViewModel.ConverterProdutoDados(produto, null));
+                produtoResponseViewModel.ProdutosSimples.Add(ProdutoSimplesResponseViewModel.ConverterProdutoDados(produto, null, GetCoeficienteOuNull(dicCoeficiente, produto.Fabricante)));
+                
             }
 
-            return await Task.FromResult(produtoResponseViewModel);
+            return produtoResponseViewModel;
+        }
+
+        private Produto.Dados.CoeficienteDados GetCoeficienteOuNull(IDictionary<string, Produto.Dados.CoeficienteDados> dicCoeficiente, string fabricante)
+        {
+            if (dicCoeficiente.ContainsKey(fabricante))
+            {
+                return dicCoeficiente[fabricante];
+            }
+
+            return null;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace OrcamentoCotacaoBusiness.Models.Response
 {
@@ -7,7 +8,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         [JsonProperty("fabricante")]
         public string Fabricante { get; set; }
 
-        [JsonProperty("fabricanteNome")]
+        [JsonProperty("fabricante_Nome")]
         public string FabricanteNome { get; set; }
 
         [JsonProperty("produto")]
@@ -18,6 +19,9 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 
         [JsonProperty("precoLista")]
         public decimal PrecoLista { get; set; }
+
+        [JsonProperty("precoListaBase")]
+        public decimal PrecoListaBase { get; set; }
 
         [JsonProperty("estoque")]
         public int Estoque { get; set; }
@@ -33,21 +37,29 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 
         public int? Qtde { get; set; }
 
-        internal static ProdutoSimplesResponseViewModel ConverterProdutoDados(Produto.Dados.ProdutoDados produto, int? qtdeFilho)
+        internal static ProdutoSimplesResponseViewModel ConverterProdutoDados(Produto.Dados.ProdutoDados produto, int? qtdeFilho, Produto.Dados.CoeficienteDados coeficienteDados)
         {
+            var precoLista = produto.Preco_lista;
+            if (coeficienteDados != null)
+            {
+                precoLista = Convert.ToDecimal(coeficienteDados.Coeficiente) * precoLista.GetValueOrDefault();
+            }
+
             return new ProdutoSimplesResponseViewModel()
             {
                 Fabricante = produto.Fabricante,
                 FabricanteNome = produto.Fabricante_Nome,
                 Produto = produto.Produto,
-                DescricaoHtml = produto.Descricao_html,
-                PrecoLista = (decimal)produto.Preco_lista,
                 Qtde = qtdeFilho.HasValue ? qtdeFilho : null,
+                DescricaoHtml = produto.Descricao_html,
+                PrecoLista = (decimal)precoLista,
+                PrecoListaBase = (decimal)produto.Preco_lista,
                 QtdeMaxVenda = produto.Qtde_Max_Venda,
                 DescMax = produto.Qtde_Max_Venda,
                 Estoque = produto.Estoque,
                 Alertas = produto.Alertas
             };
         }
+
     }
 }

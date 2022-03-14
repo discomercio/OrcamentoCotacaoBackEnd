@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace OrcamentoCotacaoApi.BaseController
 {
-    [ApiExplorerSettings(IgnoreApi = true)]
+    //[ApiExplorerSettings(IgnoreApi = true)]
     [Route("[controller]")]
     [ApiController]
     [Authorize]
@@ -29,16 +29,16 @@ namespace OrcamentoCotacaoApi.BaseController
             _coeficienteBll = coeficienteBll;
         }
 
-        [HttpGet("buscarProdutos")]
+        [HttpPost("buscarProdutos")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> BuscarProduto(ProdutosRequestViewModel produtos)
         {
-            var ret = await _produtoBll.ListaProdutosComboApiArclube(produtos);
+            var ret = await _produtoBll.ListaProdutosCombo(produtos);
 
             if (ret == null)
                 return NoContent();
             else
-                return Ok(ret);
+                return Ok(ret); 
         }
 
         [HttpGet("buscarCoeficientes")]
