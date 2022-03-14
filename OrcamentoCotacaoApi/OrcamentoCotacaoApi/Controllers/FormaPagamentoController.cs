@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
+using System.Threading.Tasks;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -39,5 +40,15 @@ namespace OrcamentoCotacaoApi.Controllers
                 return Ok(retorno);
         }
 
+        [HttpGet("buscarQtdeMaxPacelas")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public async Task<IActionResult> BuscarQtdeMaxPacelas()
+        {
+            var retorno = await _formaPagtoOrcamentoCotacaoBll.GetMaximaQtdeParcelasCartaoVisa((Constantes.TipoUsuario)LoggedUser.TipoUsuario);
+
+            if (retorno == null)
+                return NoContent();
+            else return Ok(retorno);
+        }
     }
 }

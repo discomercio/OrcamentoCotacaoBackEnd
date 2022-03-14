@@ -4,7 +4,6 @@ using MeioPagamentos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OrcamentistaEindicador;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Interfaces;
@@ -36,8 +35,8 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<Cliente.ClienteBll, Cliente.ClienteBll>();
             services.AddTransient<AcessoBll, AcessoBll>();
             services.AddTransient<ProdutoGeralBll, ProdutoGeralBll>();
-            services.AddTransient<OrcamentistaEIndicadorBll, OrcamentistaEIndicadorBll>();
-            services.AddTransient<OrcamentistaEIndicadorData, OrcamentistaEIndicadorData>();
+            services.AddTransient<OrcamentistaEindicador.OrcamentistaEIndicadorBll, OrcamentistaEindicador.OrcamentistaEIndicadorBll>();
+            services.AddTransient<OrcamentistaEindicador.OrcamentistaEIndicadorData, OrcamentistaEindicador.OrcamentistaEIndicadorData>();
             services.AddTransient<OrcamentistaEIndicadorVendedor.OrcamentistaEIndicadorVendedorBll, OrcamentistaEIndicadorVendedor.OrcamentistaEIndicadorVendedorBll>();
             services.AddTransient<Orcamento.OrcamentoBll, Orcamento.OrcamentoBll>();
             services.AddTransient<Orcamento.OrcamentoOpcaoBll, Orcamento.OrcamentoOpcaoBll>();
@@ -54,6 +53,7 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<ProdutoCatalogoBll, ProdutoCatalogoBll>();
             services.AddTransient<CoeficienteBll, CoeficienteBll>();
             services.AddTransient<LojaOrcamentoCotacaoBll, LojaOrcamentoCotacaoBll>();
+            services.AddTransient<OrcamentistaEIndicadorVendedorBll, OrcamentistaEIndicadorVendedorBll>();
 
             return services;
         }

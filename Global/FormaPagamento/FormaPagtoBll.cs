@@ -55,7 +55,7 @@ namespace FormaPagamento
                 string SelectQtdeMaxParcelaCartaoVisa = "SELECT qtde_parcelas FROM t_PRAZO_PAGTO_VISANET WHERE tipo = @COD_VISANET_PRAZO_PAGTO_LOJA";
              */
             var formaPagto = from c in db.TprazoPagtoVisanets
-                             where c.Tipo == "PRAZO_LOJA"
+                             where c.Tipo == Constantes.COD_VISANET_PRAZO_PAGTO_LOJA
                              select c.Qtde_parcelas;
             var qtdeParcelas = await formaPagto.FirstOrDefaultAsync();
             return qtdeParcelas;
@@ -258,14 +258,7 @@ namespace FormaPagamento
         //seria baseada na qtde parcelas permitida pelo cartão Visa(PRAZO_LOJA)
         public async Task<int> BuscarQtdeParcCartaoVisa()
         {
-            var db = contextoProvider.GetContextoLeitura();
-
-            var qtdeTask = from c in db.TprazoPagtoVisanets
-                           where c.Tipo == Constantes.COD_VISANET_PRAZO_PAGTO_LOJA
-                           select c.Qtde_parcelas;
-            int qtde = Convert.ToInt32(await qtdeTask.FirstOrDefaultAsync());
-
-            return qtde;
+            return await _formaPagamentoData.GetMaximaQtdeParcelasCartaoVisa();
         }
 
         public List<TcfgPagtoFormaStatus> BuscarFormasPagtos(bool incluirTcfgPagtoForma, Constantes.Modulos modulo,

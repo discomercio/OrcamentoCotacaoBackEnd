@@ -44,7 +44,7 @@ namespace OrcamentistaEIndicadorVendedor
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
                     var vendedorParceiro = from usr in db.TorcamentistaEIndicadorVendedor
-                                           join par in db.TorcamentistaEindicadors on usr.IdIndicador equals par.Apelido
+                                           join par in db.TorcamentistaEindicadors on usr.Nome equals par.Apelido
                                            select new TorcamentistaEIndicadorVendedor()
                                            {
                                                Id = usr.Id,
@@ -58,10 +58,11 @@ namespace OrcamentistaEIndicadorVendedor
                                                UsuarioCadastro = usr.UsuarioCadastro,
                                                UsuarioUltimaAlteracao = usr.UsuarioUltimaAlteracao,
                                                DataCadastro = usr.DataCadastro,
-                                               DataUltimaAlteracao = usr.DataUltimaAlteracao,
-                                               Loja = par.Loja,
-                                               VendedorResponsavel = par.Vendedor
+                                               DataUltimaAlteracao = usr.DataUltimaAlteracao
                                            };
+                    
+                                               //Loja = par.Loja,
+                                               //VendedorResponsavel = par.Vendedor
                     if (!string.IsNullOrEmpty(obj.email))
                     {
                         vendedorParceiro = vendedorParceiro.Where(x => x.Email.ToUpper() == obj.email.ToUpper());
@@ -78,6 +79,7 @@ namespace OrcamentistaEIndicadorVendedor
                     {
                         vendedorParceiro = vendedorParceiro.Where(x => x.IdIndicador == obj.IdIndicador);
                     }
+
                     return vendedorParceiro.ToList();
                 }
 

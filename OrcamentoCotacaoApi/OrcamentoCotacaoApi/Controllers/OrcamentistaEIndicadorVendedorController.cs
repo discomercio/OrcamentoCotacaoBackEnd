@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using OrcamentistaEIndicadorVendedor;
+using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Response;
 using System;
 using System.Collections.Generic;
@@ -29,14 +29,17 @@ namespace OrcamentoCotacaoApi.Controllers
             this._mapper = mapper;
         }
 
+        public OrcamentistaEIndicadorVendedorBll OrcamentistaEindicadorVendedorBll => _orcamentistaEindicadorVendedorBll;
+
         [HttpGet]
         [Route("vendedores-parceiros")]
-        public async Task<IEnumerable<OrcamentistaEIndicadorVendedorResponseViewModel>> BuscarVendedoresDosParceiros(string parceiro)
+        public IEnumerable<OrcamentistaEIndicadorVendedorResponseViewModel> BuscarVendedoresDosParceiros(string parceiro)
         {
             _logger.LogInformation("Buscando lista de vendedores parceiros");
-            var usuarios = _orcamentistaEindicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { IdIndicador = parceiro });
 
-            return _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(usuarios);
+            var vendedoresParceiros = _orcamentistaEindicadorVendedorBll.BuscarVendedoresParceiro(parceiro);
+
+            return _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(vendedoresParceiros);
         }
     }
 }

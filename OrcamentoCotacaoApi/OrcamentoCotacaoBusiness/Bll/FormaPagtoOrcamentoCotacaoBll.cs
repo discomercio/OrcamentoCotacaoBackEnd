@@ -6,6 +6,7 @@ using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento.MeiosPagamento;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -46,6 +47,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 var filtro = CriarFiltro(fp, tipoCliente, (short)tipoUsuario, apelido, comIndicacao);
                 meiosPagamento = _meiosPagamentosBll.PorFiltro(filtro);
+                
                 item.MeiosPagamentos = MeioPagamentoResponseViewModel.ListaMeioPagamentoResponseViewModel_De_TcfgPagtoMeioStatus(meiosPagamento);
 
                 response.Add(item);
@@ -97,5 +99,14 @@ namespace OrcamentoCotacaoBusiness.Bll
             return filtro;
         }
 
+
+        public async Task<int?>GetMaximaQtdeParcelasCartaoVisa(Constantes.TipoUsuario tipoUsuario)
+        {
+            var tipoPerfil = Constantes.TipoUsuarioPerfil.getUsuarioPerfil(tipoUsuario);
+            if (tipoPerfil != Constantes.eTipoUsuarioPerfil.USUÁRIO_DA_CENTRAL && tipoPerfil != Constantes.eTipoUsuarioPerfil.USUARIO_LOJA)
+                return null;
+
+            return await _formaPagtoBll.BuscarQtdeParcCartaoVisa();
+        }
     }
 }

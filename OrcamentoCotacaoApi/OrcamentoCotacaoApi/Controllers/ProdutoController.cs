@@ -29,7 +29,7 @@ namespace OrcamentoCotacaoApi.BaseController
             _coeficienteBll = coeficienteBll;
         }
 
-        [HttpGet("buscarProdutos")]
+        [HttpPost("buscarProdutos")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> BuscarProduto(ProdutosRequestViewModel produtos)
         {

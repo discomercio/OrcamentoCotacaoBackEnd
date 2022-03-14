@@ -8,6 +8,7 @@ using System.Text;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using InfraBanco.Constantes;
 
 namespace FormaPagamento
 {
@@ -77,6 +78,26 @@ namespace FormaPagamento
 
                 throw e;
             }
+            
+        }
+
+        public async Task<int> GetMaximaQtdeParcelasCartaoVisa()
+        {
+            try
+            {
+                using (var db = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
+                {
+                    return await (from c in db.TprazoPagtoVisanets
+                            where c.Tipo == Constantes.COD_VISANET_PRAZO_PAGTO_LOJA
+                            select c.Qtde_parcelas).FirstOrDefaultAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            
             
         }
     }
