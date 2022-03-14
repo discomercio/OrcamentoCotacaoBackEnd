@@ -50,6 +50,45 @@ namespace Produto
             return lstRetorno;
         }
 
+        public async Task<IDictionary<string, CoeficienteDados>> BuscarListaCoeficientesFabricantesHistoricoDistinct(List<string> fabricantesDistinct, string tipoParcela, short qtdeParcelas, DateTime dataRefCoeficiente)
+        {
+            Dictionary<string, CoeficienteDados> lstRetorno = new Dictionary<string, CoeficienteDados>();
+            if (fabricantesDistinct.Any())
+            {
+                var db = contextoProvider.GetContextoLeitura();
+
+                //trazendo toda lista
+                var lstCoeficienteTask = from c in db.TpercentualCustoFinanceiroFornecedorHistoricos
+                                         where
+                                         c.Qtde_Parcelas == qtdeParcelas && 
+                                         c.Tipo_Parcelamento == tipoParcela
+                                         select new CoeficienteDados
+                                         {
+                                             Fabricante = c.Fabricante,
+                                             TipoParcela = c.Tipo_Parcelamento,
+                                             QtdeParcelas = c.Qtde_Parcelas,
+                                             Coeficiente = c.Coeficiente,
+                                             Data = c.Data
+                                         };
+                var lstCoeficienteGroup = await lstCoeficienteTask.GroupBy(x=>x.Fabricante).ToListAsync();
+
+                foreach (var coeficienteGroup in lstCoeficienteGroup)
+                {
+                    var cRetorno = coeficienteGroup.First();
+                    foreach (var c in coeficienteGroup)
+                    {
+                        if (c.Data <= dataRefCoeficiente && c.Data > cRetorno.Data )
+                        {
+                            cRetorno = c;
+                        }
+                    }
+                    lstRetorno.Add(cRetorno.Fabricante, cRetorno);
+                }
+            }
+
+            return lstRetorno;
+        }
+
         public async Task<IEnumerable<IEnumerable<CoeficienteDados>>> BuscarListaCoeficientesFornecedores(List<string> lstFornecedores)
         {
             List<List<CoeficienteDados>> lstRetorno = new List<List<CoeficienteDados>>();

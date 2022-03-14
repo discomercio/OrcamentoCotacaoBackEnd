@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InfraBanco.Modelos;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -7,6 +8,7 @@ namespace Produto.Dados
 {
     public class ProdutoDados
     {
+
         [MaxLength(4)]
         public string Fabricante { get; set; }
 
@@ -31,6 +33,7 @@ namespace Produto.Dados
         public short? Qtde_Max_Venda { get; set; }
 
         public float? Desc_Max { get; set; }
+
     }
 }
         

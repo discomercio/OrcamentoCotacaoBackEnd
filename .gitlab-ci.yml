@@ -1,64 +1,45 @@
 stages:
-  #- test
-  #- test-especificacao
-  - build-api
-
+  - build
+  - release
+  
 variables:
-  #teste: "ApiUnis/Testes.Automatizados"
-  #loja: "Loja/Loja.UI"
-  #especificacao: "Global/Especificacao"
   apiOrcamento: "OrcamentoCotacaoApi/OrcamentoCotacaoApi"
   configuration: "Debug"
   caminhoImplantacao: "\\\\10.255.0.30\\ArClube.OrcamentoCotacaoAPI\\publish"
+  caminhoPublicacao: "publish"
+  nomePacote: "API"
 
 before_script:
-  - ""
+  - "cd ${apiOrcamento}"
 
-#build:
-#  stage: build
-#  image: mcr.microsoft.com/dotnet/sdk:3.1
-#  script: -apt install nodejs
-#    - "ls"
-#    - "apt-get install nodejs"
-#    - "node �version"
-#    - "apt-get install npm"
-#    - "apt-get update"
-#    - "apt-get upgrade"
-#    - "cd Loja/Loja.UI/"
-#    - "dotnet restore"
-#    - "dotnet build"
-#  only:
-#    - automacoes
-
-#test:
-#  stage: test
-#  image: mcr.microsoft.com/dotnet/core/sdk:3.1
-#  script:
-#    - "ls"
-#    - "cd ApiUnis/Testes.Automatizados"
-#    - "dotnet test"
-#  allow_failure: true
-#  #only:
-#  #  - automacoes
-
-#test-especificacao:
-#  stage: test
-#  image: mcr.microsoft.com/dotnet/core/sdk:3.1
-#  script:
-#    - "ls"
-#    - "cd Global/Especificacao"
-#    - "dotnet test"
-#  allow_failure: true
-#  #only:
-#  #  - automacoes
-
-build-api:
-  stage: build-api
+build:
+  stage: build
   image: mcr.microsoft.com/dotnet/core/sdk:3.1
   script:
-    - "ls"
-    - "cd ${apiOrcamento}"
-    - "dotnet restore"
-    - "dotnet build --no-restore --configuration ${configuration}"   
-    -  dotnet publish --no-restore --no-build --output $caminhoImplantacao
+    - dotnet restore
+    - dotnet build --no-restore --configuration ${configuration}
+  #artifacts:
+  #  paths:
+  #  - "bin/"
+  #  expire_in: 1 week    
+  allow_failure: true
+
+release:
+  stage: release
+  #only:
+  #  - develop
+  #artifacts:
+  #  paths:
+  #      - /release
+  #  expire_in: 1 week
+  image: mcr.microsoft.com/dotnet/core/sdk:3.1
+  script:
+    #- ls ../publish
+    #- cp $caminhoPublicacao/* $caminhoImplantacao
+    #- "cd ${apiOrcamento}"    
+    #- ls
+    - dotnet publish --output ${caminhoPublicacao}
+    - apt-get update -qq && apt-get install -y -qq zip 
+    - zip -r ${nomePacote} ${caminhoPublicacao}
+    - ls *.zip
   allow_failure: true

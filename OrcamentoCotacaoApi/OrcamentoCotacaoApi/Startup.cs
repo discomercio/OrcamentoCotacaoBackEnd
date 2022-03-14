@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
+using Orcamento.Dto;
 using OrcamentoCotacaoApi.Config;
 using OrcamentoCotacaoApi.Utils;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace OrcamentoCotacaoApi
         {
             services.Configure<Configuracao>(Configuration.GetSection("AppSettings"));
             services.Configure<Configuracoes>(Configuration.GetSection("Configuracoes"));
+            services.Configure<ConfigOrcamentoCotacao>(Configuration.GetSection("OrcamentoCotacao"));
 
             services.Configure<IISServerOptions>(options =>
             {

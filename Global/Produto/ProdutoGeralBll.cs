@@ -24,13 +24,15 @@ namespace Produto
         {
             ProdutoComboDados retorno = new ProdutoComboDados();
 
-            var db = contextoProvider.GetContextoLeitura();
+            //var db = contextoProvider.GetContextoLeitura();
 
             //obtém  a sigla para regra
             string cliente_regra = UtilsProduto.MultiCdRegraDeterminaPessoa(tipo, contribuinte, produtorRural);
 
             var lstProdutosCompostos = BuscarProdutosCompostos(loja);
-            List<Produto.Dados.ProdutoDados> lstTodosProdutos = (await BuscarTodosProdutos(loja)).ToList();
+            //List<Produto.Dados.ProdutoDados> lstTodosProdutos = qtdeParcelas == 0 ? await BuscarTodosProdutos(loja)) : (await BuscarTodosProdutos(loja, tipoParcela, qtdeParcelas, dataRefCoeficiente.GetValueOrDefault(new DateTime())));
+            List<Produto.Dados.ProdutoDados> lstTodosProdutos = await BuscarTodosProdutos(loja);
+
 
             List<RegrasBll> lst_cliente_regra = new List<RegrasBll>();
             MontaListaRegras(lstTodosProdutos, lst_cliente_regra);
@@ -155,7 +157,7 @@ namespace Produto
         }
 
 
-        public async Task<IEnumerable<Produto.Dados.ProdutoDados>> BuscarTodosProdutos(string loja)
+        public async Task<List<Produto.Dados.ProdutoDados>> BuscarTodosProdutos(string loja)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -211,6 +213,7 @@ namespace Produto
 
             return lstTodosProdutos;
         }
+
 
         public async Task<string> BuscarDescricao_Html(string fabricante, string produto)
         {

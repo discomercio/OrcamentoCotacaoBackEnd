@@ -10,5 +10,6 @@ namespace Produto.Dados
         public string TipoParcela { get; set; }
         public short QtdeParcelas { get; set; }
         public float Coeficiente { get; set; }
+        public DateTime Data { get; set; }
     }
 }
