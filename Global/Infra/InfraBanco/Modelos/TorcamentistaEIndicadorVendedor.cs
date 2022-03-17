@@ -39,13 +39,17 @@ namespace InfraBanco.Modelos
         [Column("UsuarioUltimaAlteracao")]
         public string UsuarioUltimaAlteracao { get; set; }
         [Column("DataCadastro")]
-        public DateTime DataCadastro { get; set; }
+        public DateTime? DataCadastro { get; set; }
         [Column("DataUltimaAlteracao")]
         public DateTime? DataUltimaAlteracao { get; set; }
+        [Column("DataUltimaAlteracaoSenha")]
+        public DateTime? DataUltimaAlteracaoSenha { get; set; }
 
-
+        [NotMapped]
         public string Loja { get; set; }
+        [NotMapped]
         public string VendedorResponsavel { get; set; }
+
         /*
 Column_name	Type	Length	Nullable
 Id	int	4	no
