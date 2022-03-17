@@ -14,6 +14,10 @@ namespace InfraBanco.Modelos
         [Required]
         public string Apelido { get; set; }
 
+        [Required]
+        [Column("IdIndicador")]
+        public int IdIndicador { get; set; }
+
         [Column("cnpj_cpf")]
         [MaxLength(14)]
         public string Cnpj_cpf { get; set; }

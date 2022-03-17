@@ -17,5 +17,12 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         public bool Ativo { get; set; }
         [JsonProperty("id")]
         public int Id { get; set; }
+        [JsonProperty("telefone")]
+        public string Telefone { get; set; }
+        [JsonProperty("celular")]
+        public string Celular { get; set; }
+        [JsonProperty("vendedorResponsavel")]
+        public string VendedorResponsavel { get; set; }
+        
     }
 }

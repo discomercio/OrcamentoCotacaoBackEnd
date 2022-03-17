@@ -21,9 +21,9 @@ namespace InfraBanco.Modelos
         [MaxLength(100)]
         [Column("Senha")]
         public string Senha { get; set; }
-        [MaxLength(20)]
+        [Required]
         [Column("IdIndicador")]
-        public string IdIndicador { get; set; }
+        public int IdIndicador { get; set; }
         [MaxLength(15)]
         [Column("Telefone")]
         public string Telefone { get; set; }

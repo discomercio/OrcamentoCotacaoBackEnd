@@ -22,10 +22,10 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         [JsonProperty("senha")]
         public string Senha { get; set; }
 
-        [JsonProperty("telefone1")]
+        [JsonProperty("telefone")]
         public string Telefone { get; set; }
 
-        [JsonProperty("telefone2")]
+        [JsonProperty("celular")]
         public string Celular { get; set; }
     }
 }
