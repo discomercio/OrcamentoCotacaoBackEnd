@@ -5,7 +5,6 @@ using Prepedido;
 using Prepedido.Dados.DetalhesPrepedido;
 using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto;
-using PrepedidoBusiness.Dto.ClienteCadastro;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using PrepedidoUnisBusiness.UnisDto.ClienteUnisDto;
 using PrepedidoUnisBusiness.UnisDto.PrepedidoUnisDto;

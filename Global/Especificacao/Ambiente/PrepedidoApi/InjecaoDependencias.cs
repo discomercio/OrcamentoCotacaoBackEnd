@@ -13,7 +13,6 @@ namespace Especificacao.Ambiente.PrepedidoApi
             services.AddTransient<global::PrepedidoBusiness.Bll.ClientePrepedidoBll, global::PrepedidoBusiness.Bll.ClientePrepedidoBll>();
             services.AddTransient<Cliente.ClienteBll, Cliente.ClienteBll>();
             services.AddTransient<Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll, Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll>();
-            services.AddTransient<global::PrepedidoBusiness.Bll.PedidoPrepedidoApiBll, global::PrepedidoBusiness.Bll.PedidoPrepedidoApiBll>();
             services.AddTransient<global::PrepedidoBusiness.Bll.AcessoBll, global::PrepedidoBusiness.Bll.AcessoBll>();
             services.AddTransient<Produto.ProdutoGeralBll, Produto.ProdutoGeralBll>();
             services.AddTransient<global::PrepedidoBusiness.Bll.ProdutoPrepedidoBll, global::PrepedidoBusiness.Bll.ProdutoPrepedidoBll>();
@@ -28,9 +27,6 @@ namespace Especificacao.Ambiente.PrepedidoApi
             services.AddTransient<Prepedido.MontarLogPrepedidoBll, Prepedido.MontarLogPrepedidoBll>();
 
             services.AddTransient<Cep.IBancoNFeMunicipio, Testes.Utils.BancoTestes.TestesBancoNFeMunicipio>();
-
-
         }
-
     }
 }

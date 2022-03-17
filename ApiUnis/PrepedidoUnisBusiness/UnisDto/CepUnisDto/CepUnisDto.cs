@@ -1,9 +1,5 @@
 ﻿using Cep.Dados;
-using PrepedidoBusiness.Dto.Cep;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace PrepedidoUnisBusiness.UnisDto.CepUnisDto
 {

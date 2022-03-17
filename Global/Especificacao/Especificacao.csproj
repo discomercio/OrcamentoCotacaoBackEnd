@@ -450,7 +450,6 @@
     <ProjectReference Include="..\..\ApiUnis\PrepedidoAPIUnis\PrepedidoAPIUnis.csproj" />
     <ProjectReference Include="..\..\ApiUnis\PrepedidoUnisBusiness\PrepedidoUnisBusiness.csproj" />
     <ProjectReference Include="..\..\Loja\Loja.Bll\Loja.Bll.csproj" />
-    <ProjectReference Include="..\..\PrepedidoApi\PrepedidoBusiness\PrepedidoBusiness.csproj" />
     <ProjectReference Include="..\Infra\InfraBanco\InfraBanco.csproj" />
   </ItemGroup>
 

@@ -1,7 +1,5 @@
 ﻿using Produto.Dados;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace PrepedidoUnisBusiness.UnisDto.ProdutoUnisDto
 {

@@ -1,9 +1,5 @@
 ﻿using InfraIdentity;
 using OrcamentoCotacaoBusiness.Bll;
-using PrepedidoBusiness.Bll;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace OrcamentoCotacaoApi.Utils

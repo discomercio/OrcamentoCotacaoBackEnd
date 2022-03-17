@@ -1,7 +1,5 @@
-﻿using PrepedidoBusiness.Dto.FormaPagto;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
+using PrepedidoBusiness.Dto.FormaPagto;
 
 namespace PrepedidoUnisBusiness.UnisDto.FormaPagtoUnisDto
 {

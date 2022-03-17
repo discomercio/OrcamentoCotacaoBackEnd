@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PrepedidoBusiness.Dto.Cep;
 using PrepedidoUnisBusiness.UnisBll.AcessoBll;
 using PrepedidoUnisBusiness.UnisDto.CepUnisDto;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PrepedidoAPIUnis.Controllers
 {

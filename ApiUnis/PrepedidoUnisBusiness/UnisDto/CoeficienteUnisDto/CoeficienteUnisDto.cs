@@ -1,7 +1,5 @@
 ﻿using PrepedidoBusiness.Dto.Produto;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace PrepedidoUnisBusiness.UnisDto.CoeficienteUnisDto
 {

@@ -1,11 +1,7 @@
 ﻿using Cep;
-using PrepedidoBusiness.Bll;
-using PrepedidoBusiness.Dto.Cep;
 using PrepedidoUnisBusiness.UnisDto.CepUnisDto;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PrepedidoUnisBusiness.UnisBll.CepUnisBll
