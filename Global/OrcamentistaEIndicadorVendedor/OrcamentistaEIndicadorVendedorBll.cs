@@ -31,12 +31,22 @@ namespace OrcamentistaEIndicadorVendedor
 
             if(!oei.Any())
                 throw new KeyNotFoundException();
+
+
+
+            string senha_codificada = UtilsGlobais.Util.codificaDado(objOrcamentistaEIndicadorVendedor.Senha, false);
+
+            if (string.IsNullOrEmpty(senha_codificada))
+                throw new ArgumentException("Falha na codificação de senha.");
+
+            objOrcamentistaEIndicadorVendedor.Datastamp = senha_codificada;
+
             objOrcamentistaEIndicadorVendedor.IdIndicador = oei.First().Id;
-            objOrcamentistaEIndicadorVendedor.UsuarioCadastro = vendedor;
-            objOrcamentistaEIndicadorVendedor.UsuarioUltimaAlteracao = vendedor;
+            objOrcamentistaEIndicadorVendedor.UsuarioCadastro = parceiro;
+            objOrcamentistaEIndicadorVendedor.UsuarioUltimaAlteracao = parceiro;
             objOrcamentistaEIndicadorVendedor.DataCadastro = DateTime.Now;
             objOrcamentistaEIndicadorVendedor.DataUltimaAlteracao = DateTime.Now;
-            objOrcamentistaEIndicadorVendedor.DataUltimaAlteracaoSenha = DateTime.Now;
+            objOrcamentistaEIndicadorVendedor.DataUltimaAlteracaoSenha = null;
 
             return _data.Inserir(objOrcamentistaEIndicadorVendedor);
         }
@@ -50,14 +60,28 @@ namespace OrcamentistaEIndicadorVendedor
             if (oeiv.VendedorResponsavel != parceiro)
                 throw new Exception("Não é permitido alterar um usuário de outro vendendor responsável");
 
+            string senha_codificada = UtilsGlobais.Util.codificaDado(objOrcamentistaEIndicadorVendedor.Senha, false);
+
+            if (string.IsNullOrEmpty(senha_codificada))
+                throw new ArgumentException("Falha na codificação de senha.");
+
+            objOrcamentistaEIndicadorVendedor.Datastamp = senha_codificada;
+
+            oeiv.Senha = objOrcamentistaEIndicadorVendedor.Senha;
+            if (oeiv.Datastamp!= senha_codificada)
+            {
+
+                oeiv.DataUltimaAlteracaoSenha = DateTime.Now;
+            }
+            oeiv.Datastamp = senha_codificada;
+
             oeiv.Nome = objOrcamentistaEIndicadorVendedor.Nome;
             oeiv.Celular = objOrcamentistaEIndicadorVendedor.Celular;
             oeiv.Telefone = objOrcamentistaEIndicadorVendedor.Telefone;
             oeiv.Email = objOrcamentistaEIndicadorVendedor.Email;
             oeiv.Ativo = objOrcamentistaEIndicadorVendedor.Ativo;
-            oeiv.UsuarioUltimaAlteracao = vendedor;
+            oeiv.UsuarioUltimaAlteracao = parceiro;
             oeiv.DataUltimaAlteracao = DateTime.Now;
-            oeiv.DataUltimaAlteracaoSenha = DateTime.Now;
 
             return _data.Atualizar(oeiv);
         }

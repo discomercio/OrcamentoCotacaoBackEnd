@@ -37,7 +37,7 @@ namespace OrcamentoCotacaoApi.Controllers
         public async Task<IEnumerable<OrcamentistaEIndicadorVendedorResponseViewModel>> BuscarVendedoresDosParceiros(string parceiro)
         {
                 _logger.LogInformation("Buscando lista de vendedores parceiros");
-            var usuarios = _orcamentistaEindicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { nomeVendedor = parceiro });
+            var usuarios = _orcamentistaEindicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { nomeVendedor = User.GetParceiro() });
 
             return _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(usuarios);
         }
@@ -59,8 +59,12 @@ namespace OrcamentoCotacaoApi.Controllers
         {
 
             _logger.LogInformation("Inserindo vendedor parceiro");
+            if(User.GetTipoUsuario() != InfraBanco.Constantes.Constantes.TipoUsuario.PARCEIRO)
+            {
+                this.Unauthorized("Somente usuários do tipo parceiro");
+            }
             var objOrcamentistaEIndicadorVendedor = _mapper.Map<TorcamentistaEIndicadorVendedor>(model);
-            var result = _orcamentistaEindicadorVendedorBll.Inserir(objOrcamentistaEIndicadorVendedor, model.Parceiro, User.GetVendendor());
+            var result = _orcamentistaEindicadorVendedorBll.Inserir(objOrcamentistaEIndicadorVendedor, User.GetParceiro(), User.GetVendedor());
             return _mapper.Map<OrcamentistaEIndicadorVendedorResponseViewModel>(result); ;
         }
         [HttpPut]
@@ -68,8 +72,12 @@ namespace OrcamentoCotacaoApi.Controllers
         public async Task<OrcamentistaEIndicadorVendedorResponseViewModel> Put(UsuarioRequestViewModel model)
         {
             _logger.LogInformation("Altera vendedor parceiro");
+            if (User.GetTipoUsuario() != InfraBanco.Constantes.Constantes.TipoUsuario.PARCEIRO)
+            {
+                this.Unauthorized("Somente usuários do tipo parceiro");
+            }
             var objOrcamentistaEIndicadorVendedor = _mapper.Map<TorcamentistaEIndicadorVendedor>(model);
-            var result = _orcamentistaEindicadorVendedorBll.Atualizar(objOrcamentistaEIndicadorVendedor, model.Parceiro, User.GetVendendor());
+            var result = _orcamentistaEindicadorVendedorBll.Atualizar(objOrcamentistaEIndicadorVendedor, User.GetParceiro(), User.GetVendedor());
             return _mapper.Map<OrcamentistaEIndicadorVendedorResponseViewModel>(result); ;
         }
     }

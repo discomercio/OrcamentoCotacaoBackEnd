@@ -15,7 +15,7 @@ namespace InfraBanco.Modelos
         public string Apelido { get; set; }
 
         [Required]
-        [Column("IdIndicador")]
+        [Column("Id")]
         public int IdIndicador { get; set; }
 
         [Column("cnpj_cpf")]

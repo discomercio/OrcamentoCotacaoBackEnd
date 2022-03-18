@@ -13,7 +13,8 @@ namespace OrcamentoCotacaoBusiness.Mapper
         public OrcamentistaEIndicadorVendedorMapper()
         {
             CreateMap<TorcamentistaEIndicadorVendedor, OrcamentistaEIndicadorVendedorResponseViewModel>();
-            CreateMap<UsuarioRequestViewModel, TorcamentistaEIndicadorVendedor>();
+            CreateMap<UsuarioRequestViewModel, TorcamentistaEIndicadorVendedor>()
+                .ForMember(x => x.Datastamp, opt => opt.Ignore());
             CreateMap<TorcamentistaEIndicadorVendedor, UsuarioResponseViewModel>();
         }
     }
