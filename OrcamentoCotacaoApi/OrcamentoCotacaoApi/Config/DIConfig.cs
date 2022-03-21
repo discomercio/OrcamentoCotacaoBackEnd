@@ -52,9 +52,12 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<UsuarioBll, UsuarioBll>();
             services.AddTransient<ProdutoCatalogoOrcamentoCotacaoBll, ProdutoCatalogoOrcamentoCotacaoBll>();
             services.AddTransient<ProdutoCatalogoBll, ProdutoCatalogoBll>();
-            services.AddTransient<CoeficienteBll, CoeficienteBll>();
+            services.AddTransient<Produto.CoeficienteBll, Produto.CoeficienteBll>();
             services.AddTransient<LojaOrcamentoCotacaoBll, LojaOrcamentoCotacaoBll>();
             services.AddTransient<OrcamentistaEIndicadorVendedorBll, OrcamentistaEIndicadorVendedorBll>();
+            services.AddTransient<OrcamentoCotacaoBusiness.Bll.CoeficienteBll, OrcamentoCotacaoBusiness.Bll.CoeficienteBll>();
+            services.AddTransient<Coeficiente.CoeficienteBll, Coeficiente.CoeficienteBll>();
+            services.AddTransient<Coeficiente.CoeficienteData, Coeficiente.CoeficienteData>();
 
             return services;
         }

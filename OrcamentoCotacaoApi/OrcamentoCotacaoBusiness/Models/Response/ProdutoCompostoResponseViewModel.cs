@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace OrcamentoCotacaoBusiness.Models.Response
@@ -33,8 +34,8 @@ namespace OrcamentoCotacaoBusiness.Models.Response
                 PaiFabricanteNome = produto.PaiFabricanteNome,
                 PaiProduto = produto.PaiProduto,
                 PaiDescricao = produto.PaiDescricao,
-                PaiPrecoTotal = produto.PaiPrecoTotal,
-                PaiPrecoTotalBase = produto.PaiPrecoTotalBase,
+                PaiPrecoTotal = Decimal.Parse(produto?.PaiPrecoTotal.ToString("N")),
+                PaiPrecoTotalBase = Decimal.Parse(produto.PaiPrecoTotalBase.ToString("N")),
                 Filhos = new List<ProdutoCompostoFilhosResponseViewModel>()
             };
         }

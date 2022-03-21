@@ -74,7 +74,7 @@ namespace Produto
 
                 foreach (var coeficienteGroup in lstCoeficienteGroup)
                 {
-                    var cRetorno = coeficienteGroup.First();
+                    var cRetorno = coeficienteGroup.Where(x => x.Data.Date == dataRefCoeficiente.Date).FirstOrDefault();
                     foreach (var c in coeficienteGroup)
                     {
                         if (c.Data <= dataRefCoeficiente && c.Data > cRetorno.Data )

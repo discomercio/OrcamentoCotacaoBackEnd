@@ -14,14 +14,15 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         [JsonProperty("produto")]
         public string Produto { get; set; }
 
+        [JsonProperty("qtde")]
         public int? Qtde { get; set; }
 
-        internal static ProdutoCompostoFilhosResponseViewModel ConverterProdutoFilhoDados(Produto.Dados.ProdutoDados produto, int? qtdeFilho, Produto.Dados.CoeficienteDados coeficienteDados)
+        internal static ProdutoCompostoFilhosResponseViewModel ConverterProdutoFilhoDados(Produto.Dados.ProdutoDados produto, int? qtdeFilho, CoeficienteResponseViewModel coeficienteResponse)
         {
             var precoLista = produto.Preco_lista;
-            if (coeficienteDados != null)
+            if (coeficienteResponse != null)
             {
-                precoLista = Convert.ToDecimal(coeficienteDados.Coeficiente) * precoLista.GetValueOrDefault();
+                precoLista = Convert.ToDecimal(coeficienteResponse.Coeficiente) * precoLista.GetValueOrDefault();
             }
 
             return new ProdutoCompostoFilhosResponseViewModel()

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31729.503
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loja.UI", "Loja\Loja.UI\Loja.UI.csproj", "{64E83931-F740-4DA5-BA7A-C7A5DBF0942C}"
 EndProject
@@ -112,6 +112,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeioPagamentos", "Global\MeioPagamentos\MeioPagamentos.csproj", "{7F259CBD-5B6F-4E94-89B0-5EEF93EBBE57}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProdutoCatalogo", "Global\ProdutoCatalogo\ProdutoCatalogo.csproj", "{7690CF1F-D913-4006-AB7C-EC8668B82499}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Coeficiente", "Global\Coeficiente\Coeficiente.csproj", "{56EB60C6-E973-4019-8747-B768347D538F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -639,6 +641,22 @@ Global
 		{7690CF1F-D913-4006-AB7C-EC8668B82499}.Release_PrepedidoApi|Any CPU.Build.0 = Release_OrcamentoCotacao|Any CPU
 		{7690CF1F-D913-4006-AB7C-EC8668B82499}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7690CF1F-D913-4006-AB7C-EC8668B82499}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56EB60C6-E973-4019-8747-B768347D538F}.Debug_OrcamentoCotacao|Any CPU.ActiveCfg = Debug|Any CPU
+		{56EB60C6-E973-4019-8747-B768347D538F}.Debug_OrcamentoCotacao|Any CPU.Build.0 = Debug|Any CPU
+		{56EB60C6-E973-4019-8747-B768347D538F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56EB60C6-E973-4019-8747-B768347D538F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56EB60C6-E973-4019-8747-B768347D538F}.Release_ApiMagento|Any CPU.ActiveCfg = Release|Any CPU
+		{56EB60C6-E973-4019-8747-B768347D538F}.Release_ApiMagento|Any CPU.Build.0 = Release|Any CPU
+		{56EB60C6-E973-4019-8747-B768347D538F}.Release_ApiUnis|Any CPU.ActiveCfg = Release|Any CPU
+		{56EB60C6-E973-4019-8747-B768347D538F}.Release_ApiUnis|Any CPU.Build.0 = Release|Any CPU
+		{56EB60C6-E973-4019-8747-B768347D538F}.Release_Loja|Any CPU.ActiveCfg = Release|Any CPU
+		{56EB60C6-E973-4019-8747-B768347D538F}.Release_Loja|Any CPU.Build.0 = Release|Any CPU
+		{56EB60C6-E973-4019-8747-B768347D538F}.Release_OrcamentoCotacao|Any CPU.ActiveCfg = Release|Any CPU
+		{56EB60C6-E973-4019-8747-B768347D538F}.Release_OrcamentoCotacao|Any CPU.Build.0 = Release|Any CPU
+		{56EB60C6-E973-4019-8747-B768347D538F}.Release_PrepedidoApi|Any CPU.ActiveCfg = Release|Any CPU
+		{56EB60C6-E973-4019-8747-B768347D538F}.Release_PrepedidoApi|Any CPU.Build.0 = Release|Any CPU
+		{56EB60C6-E973-4019-8747-B768347D538F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56EB60C6-E973-4019-8747-B768347D538F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -687,6 +705,7 @@ Global
 		{F1B758B9-347A-4118-93A7-64D9D34C7CC9} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 		{7F259CBD-5B6F-4E94-89B0-5EEF93EBBE57} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 		{7690CF1F-D913-4006-AB7C-EC8668B82499} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
+		{56EB60C6-E973-4019-8747-B768347D538F} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {139E9C0D-48C6-4635-9645-BF9C5AA65398}
