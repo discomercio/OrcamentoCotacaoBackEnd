@@ -17,29 +17,29 @@ namespace InfraBanco.Modelos
         [Required]
         public int IdOrcamentoCotacao { get; set; }
         
-        [Column("IdOrcamentoCotacao")]
+        [Column("IdTipoUsuarioContextoRemetente")]
         [Required]
-        public int IdTipoUsuarioContextoRemetente { get; set; }
+        public short IdTipoUsuarioContextoRemetente { get; set; }
 
         [Column("IdUsuarioRemetente")]
         public int IdUsuarioRemetente { get; set; }
 
         [Column("IdTipoUsuarioContextoDestinatario")]
         [Required]
-        public int IdTipoUsuarioContextoDestinatario { get; set; }
+        public short IdTipoUsuarioContextoDestinatario { get; set; }
 
         [Column("IdUsuarioDestinatario")]
         public int IdUsuarioDestinatario { get; set; }
 
         [Column("Lida")]
         [Required]
-        public byte Lida { get; set; }
+        public bool Lida { get; set; }
 
         [Column("DataLida")]
-        public DateTime DataLida { get; set; }
+        public DateTime? DataLida { get; set; }
 
         [Column("DataHoraLida")]
-        public DateTime DataHoraLida { get; set; }
+        public DateTime? DataHoraLida { get; set; }
 
         [Column("Mensagem")]
         [Required]

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using InfraBanco.Modelos.Filtros;
+using InfraBanco.Modelos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -50,6 +51,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 return NoContent();
         }
 
+
         [HttpGet("validade")]
         public IActionResult BuscarConfigValidade()
         {
@@ -62,6 +64,80 @@ namespace OrcamentoCotacaoApi.Controllers
             else
                 return NoContent();
         }
+
+        [HttpGet("mensagem")]
+        public async Task<IActionResult> ObterListaMensagem(int IdOrcamentoCotacao)
+        {
+            _logger.LogInformation("Buscando Mensagens");
+
+            var saida = await _orcamentoBll.ObterListaMensagem(IdOrcamentoCotacao);
+
+            if (saida != null)
+                return Ok(saida);
+            else
+                return NoContent();
+        }
+
+        [HttpGet("mensagem/pendente")]
+        public async Task<IActionResult> ObterListaMensagemPendente(int IdOrcamentoCotacao, int IdUsuarioDestinatario)
+        {
+            _logger.LogInformation("Buscando Mensagens Pendentes");
+
+            var saida = await _orcamentoBll.ObterListaMensagemPendente(IdOrcamentoCotacao, IdUsuarioDestinatario);
+
+            if (saida != null)
+                return Ok(saida);
+            else
+                return NoContent();
+        }
+
+
+        [HttpPost("mensagem")]
+        public async Task<IActionResult> EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem)
+        {
+            _logger.LogInformation("Inserindo Mensagem");
+
+            var saida =  _orcamentoBll.EnviarMensagem(orcamentoCotacaoMensagem);
+
+            if (saida)
+            {
+                return Ok(new
+                {
+                    message = "Mensagem criada com sucesso."
+                });
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    message = "Não foi possível criar a mensagem."
+                });
+            }
+        }
+
+        [HttpPut("mensagem/lida")]
+        public async Task<IActionResult> MarcarMensagemComoLida(int IdOrcamentoCotacao, int idUsuarioDestinatario)
+        {
+            _logger.LogInformation("Marcando mensagens como lida");
+
+            var saida =  _orcamentoBll.MarcarMensagemComoLida(IdOrcamentoCotacao, idUsuarioDestinatario);
+
+            if (saida)
+            {
+                return Ok(new
+                {
+                    message = "Mensagens marcadas como lida"
+                });
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    message = "Não foi possível marcar como lida."
+                });
+            }
+        }
+
 
         //[HttpGet("id")]
         //public async Task<OrcamentoResponseViewModel> GetById(string id)
