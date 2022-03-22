@@ -129,6 +129,7 @@ namespace Orcamento
             {
                 return await db.TorcamentoCotacaoMensagens
                                            .Where(x => x.IdOrcamentoCotacao == IdOrcamentoCotacao)
+                                           .OrderByDescending(x => x.Id)
                                            .ToListAsync();
             }
         }
