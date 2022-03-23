@@ -55,17 +55,25 @@ namespace OrcamentoCotacaoApi.Controllers
 
         [HttpPost]
         [Route("vendedores-parceiros")]
-        public async Task<OrcamentistaEIndicadorVendedorResponseViewModel> Post(UsuarioRequestViewModel model)
+        public async Task<ActionResult<OrcamentistaEIndicadorVendedorResponseViewModel>> Post(UsuarioRequestViewModel model)
         {
 
             _logger.LogInformation("Inserindo vendedor parceiro");
             if(User.GetTipoUsuario() != InfraBanco.Constantes.Constantes.TipoUsuario.PARCEIRO)
             {
-                this.Unauthorized("Somente usuários do tipo parceiro");
+                return Unauthorized("Somente usuários do tipo parceiro");
             }
             var objOrcamentistaEIndicadorVendedor = _mapper.Map<TorcamentistaEIndicadorVendedor>(model);
-            var result = _orcamentistaEindicadorVendedorBll.Inserir(objOrcamentistaEIndicadorVendedor, User.GetParceiro(), User.GetVendedor());
-            return _mapper.Map<OrcamentistaEIndicadorVendedorResponseViewModel>(result); ;
+            try
+            {
+                var result = _orcamentistaEindicadorVendedorBll.Inserir(objOrcamentistaEIndicadorVendedor, User.GetParceiro(), User.GetVendedor());
+
+                return _mapper.Map<OrcamentistaEIndicadorVendedorResponseViewModel>(result);
+            }
+            catch (ArgumentException e)
+            {
+                return UnprocessableEntity(e);
+            }
         }
         [HttpPut]
         [Route("vendedores-parceiros")]

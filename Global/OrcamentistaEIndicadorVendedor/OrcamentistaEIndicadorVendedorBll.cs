@@ -32,6 +32,13 @@ namespace OrcamentistaEIndicadorVendedor
             if(!oei.Any())
                 throw new KeyNotFoundException();
 
+            var oeiv = _data.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro()
+            {
+                email = objOrcamentistaEIndicadorVendedor.Email
+            });
+
+            if (oeiv.Any())
+                throw new ArgumentException("Email já cadastrado");
 
 
             string senha_codificada = UtilsGlobais.Util.codificaDado(objOrcamentistaEIndicadorVendedor.Senha, false);
@@ -58,7 +65,15 @@ namespace OrcamentistaEIndicadorVendedor
             if(oeiv == null) throw new KeyNotFoundException();
 
             if (oeiv.VendedorResponsavel != parceiro)
-                throw new Exception("Não é permitido alterar um usuário de outro vendendor responsável");
+                throw new ArgumentException("Não é permitido alterar um usuário de outro vendendor responsável");
+
+            var oeivOutroEmail = _data.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro()
+            {
+                email = objOrcamentistaEIndicadorVendedor.Email
+            });
+
+            if (oeivOutroEmail.Any(x=>x.VendedorResponsavel != parceiro))
+                throw new ArgumentException("Email já cadastrado");
 
             string senha_codificada = UtilsGlobais.Util.codificaDado(objOrcamentistaEIndicadorVendedor.Senha, false);
 

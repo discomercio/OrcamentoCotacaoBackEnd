@@ -23,6 +23,9 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         public string Celular { get; set; }
         [JsonProperty("vendedorResponsavel")]
         public string VendedorResponsavel { get; set; }
-        
+
+        [JsonProperty("senha")]
+        public string Senha { get; set; }
+
     }
 }

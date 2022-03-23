@@ -62,7 +62,7 @@ namespace OrcamentistaEIndicadorVendedor
                                                Id = usr.Id,
                                                Nome = usr.Nome,
                                                Email = usr.Email,
-                                               Senha = usr.Senha,
+                                               Senha = usr.Datastamp,
                                                IdIndicador = usr.IdIndicador,
                                                Telefone = usr.Telefone,
                                                Celular = usr.Celular,
