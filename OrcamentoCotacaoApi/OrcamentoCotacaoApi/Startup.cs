@@ -117,7 +117,7 @@ namespace OrcamentoCotacaoApi
                  * */
                 // global cors policy
                 app.UseCors(x => x
-                    .AllowAnyOrigin()
+                    .WithOrigins("*")
                     .AllowAnyMethod()
                     .AllowAnyHeader());
 
