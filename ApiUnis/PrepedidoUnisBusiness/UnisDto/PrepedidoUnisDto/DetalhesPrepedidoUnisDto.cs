@@ -1,9 +1,7 @@
 ﻿using InfraBanco.Constantes;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto
 {

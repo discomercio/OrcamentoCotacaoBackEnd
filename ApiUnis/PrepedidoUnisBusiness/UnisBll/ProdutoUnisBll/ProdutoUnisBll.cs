@@ -1,11 +1,9 @@
 ﻿using InfraBanco.Constantes;
+using Microsoft.EntityFrameworkCore;
 using PrepedidoUnisBusiness.UnisDto.ProdutoUnisDto;
 using Produto;
-using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PrepedidoUnisBusiness.UnisBll.ProdutoUnisBll

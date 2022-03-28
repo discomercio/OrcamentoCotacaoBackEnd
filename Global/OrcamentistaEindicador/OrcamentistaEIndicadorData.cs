@@ -1,14 +1,13 @@
 ﻿using ClassesBase;
 using InfraBanco;
+using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
-using InfraBanco.Constantes;
-using Microsoft.EntityFrameworkCore;
 
 namespace OrcamentistaEindicador
 {
@@ -16,7 +15,7 @@ namespace OrcamentistaEindicador
     {
         private readonly ContextoBdProvider contextoProvider;
 
-        public OrcamentistaEIndicadorData(InfraBanco.ContextoBdProvider contextoProvider)
+        public OrcamentistaEIndicadorData(ContextoBdProvider contextoProvider)
         {
             this.contextoProvider = contextoProvider;
         }

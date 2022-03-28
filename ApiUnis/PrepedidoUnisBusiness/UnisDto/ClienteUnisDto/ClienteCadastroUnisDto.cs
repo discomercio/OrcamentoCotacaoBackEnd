@@ -1,9 +1,7 @@
-﻿using PrepedidoBusiness.Dto.ClienteCadastro.Referencias;
-using PrepedidoBusiness.Dto.ClienteCadastro;
-using System;
+﻿using PrepedidoBusiness.Dto.ClienteCadastro;
+using PrepedidoBusiness.Dto.ClienteCadastro.Referencias;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
 {

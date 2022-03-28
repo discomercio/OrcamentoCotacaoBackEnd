@@ -1,9 +1,5 @@
-﻿using PrepedidoBusiness.Dto.Produto;
-using Produto.Dados;
-using System;
-using System.Collections.Generic;
+﻿using Produto.Dados;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace PrepedidoUnisBusiness.UnisDto.ProdutoUnisDto
 {

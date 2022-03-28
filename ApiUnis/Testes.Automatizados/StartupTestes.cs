@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using PrepedidoUnisBusiness.UnisBll.CepUnisBll;
 using System.Reflection;
 using Xunit;
 using Xunit.Abstractions;

@@ -1,5 +1,4 @@
-﻿using Interfaces;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace InfraBanco
@@ -15,7 +14,6 @@ namespace InfraBanco
             this.ContextoBdGravacaoOpcoes = contextoBdGravacaoOpcoes;
         }
 
-
         public ContextoBd GetContextoLeitura()
         {
             try
@@ -23,11 +21,10 @@ namespace InfraBanco
                 return new ContextoBd(new ContextoBdBasico(Opt));
 
             }
-            catch (Exception e)
+            catch
             {
                 throw;
             }
-            //para leitura, cada leitura com uma conexao nova
         }
         public ContextoBdGravacao GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle bloqueioTControle)
         {

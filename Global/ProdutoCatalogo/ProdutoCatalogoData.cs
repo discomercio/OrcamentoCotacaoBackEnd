@@ -12,9 +12,9 @@ namespace ProdutoCatalogo
 {
     public class ProdutoCatalogoData : BaseData<TprodutoCatalogo, TprodutoCatalogoFiltro>
     {
-        private readonly InfraBanco.ContextoBdProvider contextoProvider;
+        private readonly ContextoBdProvider contextoProvider;
 
-        public ProdutoCatalogoData(InfraBanco.ContextoBdProvider contextoProvider)
+        public ProdutoCatalogoData(ContextoBdProvider contextoProvider)
         {
             this.contextoProvider = contextoProvider;
         }
@@ -304,7 +304,7 @@ namespace ProdutoCatalogo
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
 
-                    var obj = db.TprodutoCatalogo.Any(x => x.Id == produtoCatalogo.Id);
+                    bool? obj = db.TprodutoCatalogo.Any(x => x.Id == produtoCatalogo.Id);
 
                     if (obj != null)
                     {

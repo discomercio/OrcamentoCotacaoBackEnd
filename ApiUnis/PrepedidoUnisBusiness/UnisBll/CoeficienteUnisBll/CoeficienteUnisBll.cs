@@ -1,10 +1,7 @@
-﻿using PrepedidoBusiness.Bll;
-using PrepedidoBusiness.Dto.Produto;
+﻿using PrepedidoBusiness.Dto.Produto;
 using PrepedidoUnisBusiness.UnisDto.CoeficienteUnisDto;
 using Produto;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace PrepedidoUnisBusiness.UnisBll.CoeficienteUnisBll
