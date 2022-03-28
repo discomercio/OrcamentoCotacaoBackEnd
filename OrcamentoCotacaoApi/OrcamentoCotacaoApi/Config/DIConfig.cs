@@ -48,6 +48,16 @@ namespace OrcamentoCotacaoApi.Config
             //#GLOBAL
             services.AddTransient<IBancoNFeMunicipio, BancoNFeMunicipio>();
             services.AddTransient<ProdutoGeralBll, ProdutoGeralBll>();
+            services.AddTransient<OrcamentistaEindicador.OrcamentistaEIndicadorBll, OrcamentistaEindicador.OrcamentistaEIndicadorBll>();
+            services.AddTransient<OrcamentistaEindicador.OrcamentistaEIndicadorData, OrcamentistaEindicador.OrcamentistaEIndicadorData>();
+            services.AddTransient<OrcamentistaEIndicadorVendedor.OrcamentistaEIndicadorVendedorBll, OrcamentistaEIndicadorVendedor.OrcamentistaEIndicadorVendedorBll>();
+            services.AddTransient<Orcamento.OrcamentoBll, Orcamento.OrcamentoBll>();
+            services.AddTransient<OrcamentoCotacaoBll, OrcamentoCotacaoBll>();
+            services.AddTransient<Orcamento.OrcamentoOpcaoBll, Orcamento.OrcamentoOpcaoBll>();
+            services.AddTransient<Arquivo.ArquivoBll, Arquivo.ArquivoBll>();
+            services.AddTransient<Loja.LojaBll, Loja.LojaBll>();
+            services.AddTransient<ProdutoOrcamentoCotacaoBll, ProdutoOrcamentoCotacaoBll>();
+            services.AddTransient<Loja.LojaData, Loja.LojaData>();
             services.AddTransient<FormaPagtoBll, FormaPagtoBll>();
             services.AddTransient<FormaPagamentoData, FormaPagamentoData>();
             services.AddTransient<MeiosPagamentosBll, MeiosPagamentosBll>();

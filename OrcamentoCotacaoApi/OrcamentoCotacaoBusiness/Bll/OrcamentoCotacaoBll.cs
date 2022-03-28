@@ -41,5 +41,27 @@ namespace OrcamentoCotacaoBusiness.Bll
                 QtdeGlobalValidade = _appSettings.QtdeGlobalValidade,
             };
         }
+
+        public async Task<List<TorcamentoCotacaoMensagem>> ObterListaMensagem(int IdOrcamentoCotacao)
+        {
+            return await _orcamentoBll.ObterListaMensagem(IdOrcamentoCotacao);
+        }
+
+        public async Task<List<TorcamentoCotacaoMensagem>> ObterListaMensagemPendente(int IdOrcamentoCotacao, int IdUsuarioDestinatario)
+        {
+            return await _orcamentoBll.ObterListaMensagemPendente(IdOrcamentoCotacao, IdUsuarioDestinatario);
+        }
+
+        public bool EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem)
+        {
+            return  _orcamentoBll.EnviarMensagem(orcamentoCotacaoMensagem);
+        }
+
+
+        public bool MarcarMensagemComoLida(int IdOrcamentoCotacao, int idUsuarioDestinatario)
+        {
+            return _orcamentoBll.MarcarMensagemComoLida(IdOrcamentoCotacao,idUsuarioDestinatario);
+        }
+
     }
 }
