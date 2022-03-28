@@ -21,9 +21,13 @@ namespace InfraBanco.Modelos
         [MaxLength(100)]
         [Column("Senha")]
         public string Senha { get; set; }
-        [MaxLength(20)]
+
+        [Column("datastamp")]
+        [MaxLength(32)]
+        public string Datastamp { get; set; }
+        [Required]
         [Column("IdIndicador")]
-        public string IdIndicador { get; set; }
+        public int IdIndicador { get; set; }
         [MaxLength(15)]
         [Column("Telefone")]
         public string Telefone { get; set; }
@@ -39,13 +43,17 @@ namespace InfraBanco.Modelos
         [Column("UsuarioUltimaAlteracao")]
         public string UsuarioUltimaAlteracao { get; set; }
         [Column("DataCadastro")]
-        public DateTime DataCadastro { get; set; }
+        public DateTime? DataCadastro { get; set; }
         [Column("DataUltimaAlteracao")]
         public DateTime? DataUltimaAlteracao { get; set; }
+        [Column("DataUltimaAlteracaoSenha")]
+        public DateTime? DataUltimaAlteracaoSenha { get; set; }
 
-
+        [NotMapped]
         public string Loja { get; set; }
+        [NotMapped]
         public string VendedorResponsavel { get; set; }
+
         /*
 Column_name	Type	Length	Nullable
 Id	int	4	no

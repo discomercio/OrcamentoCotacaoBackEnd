@@ -21,6 +21,7 @@ namespace InfraBanco.Constantes
         };
         public enum TipoUsuario
         {
+            NAO_IDENTIFICADO = -1,
             GESTOR = 0,
             VENDEDOR = 1,
             PARCEIRO = 2,
