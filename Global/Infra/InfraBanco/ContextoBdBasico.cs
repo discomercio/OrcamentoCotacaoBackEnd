@@ -193,6 +193,8 @@ namespace InfraBanco
         public DbSet<TorcamentistaEIndicadorVendedor> TorcamentistaEindicadorVendedors { get; set; }
         public DbSet<TsessaoHistorico> TsessaoHistoricos { get; set; }
         public DbSet<Tproduto> Tprodutos { get; set; }
+        public DbSet<TProdutoCatalogoPropriedade> TProdutoCatalogoPropriedades { get; set; }
+
         public DbSet<TprodutoLoja> TprodutoLojas { get; set; }
         public DbSet<TpedidoItem> TpedidoItems { get; set; }
         public DbSet<TpedidoItemDevolvido> TpedidoItemDevolvidos { get; set; }
@@ -245,7 +247,7 @@ namespace InfraBanco
         public DbSet<TcfgTipoPessoa> TcfgTipoPessoas { get; set; }
         public DbSet<TcfgTipoUsuario> TcfgTipoUsuarios { get; set; }
         public DbSet<TcfgTipoUsuarioPerfil> TcfgTipoUsuarioPerfis { get; set; }
-        public DbSet<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContextos { get; set; }
+        public DbSet<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContextos { get; set; }         
 
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public DbSet<Taviso> Tavisos { get; set; }

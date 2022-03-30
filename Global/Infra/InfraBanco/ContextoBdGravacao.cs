@@ -176,6 +176,7 @@ namespace InfraBanco
         public DbSet<TcfgTipoUsuario> TcfgTipoUsuarios { get => contexto.TcfgTipoUsuarios; }
         public DbSet<TcfgTipoUsuarioPerfil> TcfgTipoUsuarioPerfis { get => contexto.TcfgTipoUsuarioPerfis; }
         public DbSet<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContextos { get => contexto.TcfgTipoUsuarioContextos; }
+        public DbSet<TProdutoCatalogoPropriedade> TProdutoCatalogoPropriedades { get => contexto.TProdutoCatalogoPropriedades; }
 #endif
 
         //daqui para a frente só é necessário para os testes automatizados
