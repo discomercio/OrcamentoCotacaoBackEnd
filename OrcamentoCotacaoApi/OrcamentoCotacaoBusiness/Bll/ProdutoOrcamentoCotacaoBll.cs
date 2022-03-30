@@ -96,5 +96,18 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             return null;
         }
+
+        public async Task<List<Produto.Dados.ProdutoCatalogoPropriedadeDados>> ObterListaPropriedadesProdutos()
+        {
+            var lstProdutoPropriedades = await produtoGeralBll.ObterListaPropriedadesProdutos();
+
+            return lstProdutoPropriedades;
+        }
+        public bool GravarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
+        {            
+            return  produtoGeralBll.GravarPropriedadesProdutos(produtoCatalogoPropriedade);
+            //return lstProdutoPropriedades;
+        }
+
     }
 }

@@ -7,6 +7,7 @@ using Produto;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+
 namespace OrcamentoCotacaoApi.BaseController
 {
     //[ApiExplorerSettings(IgnoreApi = true)]
@@ -51,6 +52,42 @@ namespace OrcamentoCotacaoApi.BaseController
                 return NoContent();
             else
                 return Ok(ret);
+        }
+
+        [HttpGet("propriedades")]
+        public async Task<IActionResult> ObterListaPropriedadesProdutos()
+        {
+            _logger.LogInformation("Buscando propriedades do produto");
+
+            var ret = await _produtoBll.ObterListaPropriedadesProdutos();
+
+            if (ret == null)
+                return NoContent();
+            else
+                return Ok(ret);
+        }
+
+        [HttpPost("propriedades")]
+        public async Task<IActionResult> GravarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
+        {
+            _logger.LogInformation("Inserindo Propriedade do Produto");
+
+            var saida = _produtoBll.GravarPropriedadesProdutos(produtoCatalogoPropriedade);
+
+            if (saida)
+            {
+                return Ok(new
+                {
+                    message = "Propriedade do produto criada com sucesso."
+                });
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    message = "Não foi possível criar a propriedade do produto."
+                });
+            }
         }
     }
 }
