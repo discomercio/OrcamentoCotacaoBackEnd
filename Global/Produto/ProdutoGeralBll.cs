@@ -339,5 +339,129 @@ namespace Produto
                 }
             }
         }
+
+
+        public async Task<List<Produto.Dados.ProdutoCatalogoPropriedadeDados>> ObterListaPropriedadesProdutos()
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            var produtoPropriedades = from p in db.TProdutoCatalogoPropriedades
+                                      where p.IdCfgDataType == 0
+                                      select new Produto.Dados.ProdutoCatalogoPropriedadeDados
+                                      {
+                                          id = p.id,
+                                          IdCfgTipoPropriedade = p.IdCfgTipoPropriedade,
+                                          IdCfgTipoPermissaoEdicaoCadastro = p.IdCfgTipoPermissaoEdicaoCadastro,
+                                          IdCfgDataType = p.IdCfgDataType,
+                                          descricao = p.descricao,
+                                          oculto = p.oculto,
+                                          ordem = p.ordem,
+                                          dt_cadastro = p.dt_cadastro,
+                                          usuario_cadastro = p.usuario_cadastro
+
+                                      };
+
+            List<Produto.Dados.ProdutoCatalogoPropriedadeDados> lprodutosPropriedades = await produtoPropriedades.ToListAsync();
+
+            return lprodutosPropriedades;
+        }
+
+        public async Task<List<Produto.Dados.ProdutoCatalogoPropriedadeDados>> ObterListaPropriedadesProdutos(int id)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            var produtoPropriedades = from p in db.TProdutoCatalogoPropriedades
+                                      where p.IdCfgDataType == 0 && p.id == id
+                                      select new Produto.Dados.ProdutoCatalogoPropriedadeDados
+                                      {
+                                          id = p.id,
+                                          IdCfgTipoPropriedade = p.IdCfgTipoPropriedade,
+                                          IdCfgTipoPermissaoEdicaoCadastro = p.IdCfgTipoPermissaoEdicaoCadastro,
+                                          IdCfgDataType = p.IdCfgDataType,
+                                          descricao = p.descricao,
+                                          oculto = p.oculto,
+                                          ordem = p.ordem,
+                                          dt_cadastro = p.dt_cadastro,
+                                          usuario_cadastro = p.usuario_cadastro
+
+                                      };
+
+            List<Produto.Dados.ProdutoCatalogoPropriedadeDados> lprodutosPropriedades = await produtoPropriedades.ToListAsync();
+
+            return lprodutosPropriedades;
+        }
+
+        public bool GravarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
+        {
+            var saida = false;
+            
+            try
+            {
+                using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+                {
+                    int maxId = db.TProdutoCatalogoPropriedades.Max(p => p.id) +1;
+                    int maxOrdem = db.TProdutoCatalogoPropriedades.Max(p => p.ordem) + 1;
+
+                    db.TProdutoCatalogoPropriedades.Add(
+                        new TProdutoCatalogoPropriedade
+                        {
+                            id = maxId,
+                            IdCfgTipoPropriedade = produtoCatalogoPropriedade.IdCfgTipoPropriedade,
+                            IdCfgTipoPermissaoEdicaoCadastro = produtoCatalogoPropriedade.IdCfgTipoPermissaoEdicaoCadastro,
+                            IdCfgDataType = produtoCatalogoPropriedade.IdCfgDataType,
+                            descricao = produtoCatalogoPropriedade.descricao,
+                            oculto = produtoCatalogoPropriedade.oculto,
+                            ordem = maxOrdem,
+                            dt_cadastro = DateTime.Now,
+                            usuario_cadastro = produtoCatalogoPropriedade.usuario_cadastro
+                        }); 
+
+                    db.SaveChanges();
+                    db.transacao.Commit();
+                    saida = true;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return saida;
+        }
+
+        public bool AtualizarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
+        {
+            var saida = false;
+            
+            try
+            {
+                using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+                {
+
+                    var produtoCatalogoPropriedades = db.TProdutoCatalogoPropriedades.Where(item => item.id == produtoCatalogoPropriedade.id);
+
+                    if (produtoCatalogoPropriedades != null)
+                    {
+                        foreach (var item in produtoCatalogoPropriedades)
+                        {
+                            item.descricao = produtoCatalogoPropriedade.descricao;
+                            item.oculto = produtoCatalogoPropriedade.oculto;
+                        }
+                    }
+
+                    db.SaveChanges();
+                    db.transacao.Commit();
+                    saida = true;
+
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return saida;
+        }
+
     }
 }

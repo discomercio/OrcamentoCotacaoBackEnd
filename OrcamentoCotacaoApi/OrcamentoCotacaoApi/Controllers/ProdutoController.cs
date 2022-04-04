@@ -7,6 +7,7 @@ using Produto;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+
 namespace OrcamentoCotacaoApi.BaseController
 {
     //[ApiExplorerSettings(IgnoreApi = true)]
@@ -51,6 +52,78 @@ namespace OrcamentoCotacaoApi.BaseController
                 return NoContent();
             else
                 return Ok(ret);
+        }
+
+        [HttpGet("propriedades")]
+        public async Task<IActionResult> ObterListaPropriedadesProdutos()
+        {
+            _logger.LogInformation("Buscando propriedades do produto");
+
+            var ret = await _produtoBll.ObterListaPropriedadesProdutos();
+
+            if (ret == null)
+                return NoContent();
+            else
+                return Ok(ret);
+        }
+
+        [HttpGet("propriedades/{id}")]
+        public async Task<IActionResult> ObterListaPropriedadesProdutos(int id)
+        {
+            _logger.LogInformation("Buscando propriedades do produto");
+
+            var ret = await _produtoBll.ObterListaPropriedadesProdutos(id);
+
+            if (ret == null)
+                return NoContent();
+            else
+                return Ok(ret);
+        }
+
+        [HttpPost("propriedades")]
+        public async Task<IActionResult> GravarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
+        {
+            _logger.LogInformation("Inserindo Propriedade do Produto");
+
+            var saida = _produtoBll.GravarPropriedadesProdutos(produtoCatalogoPropriedade);
+
+            if (saida)
+            {
+                return Ok(new
+                {
+                    message = "Propriedade do produto criada com sucesso."
+                });
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    message = "Não foi possível criar a propriedade do produto."
+                });
+            }
+        }
+
+        [HttpPut("propriedades")]
+        public async Task<IActionResult> AtualizarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
+        {
+            _logger.LogInformation("Inserindo Propriedade do Produto");
+
+            var saida = _produtoBll.AtualizarPropriedadesProdutos(produtoCatalogoPropriedade);
+
+            if (saida)
+            {
+                return Ok(new
+                {
+                    message = "Propriedade do produto atualizada com sucesso."
+                });
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    message = "Não foi possível atualizar a propriedade do produto."
+                });
+            }
         }
     }
 }
