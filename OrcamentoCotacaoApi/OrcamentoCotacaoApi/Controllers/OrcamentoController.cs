@@ -30,7 +30,9 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             _logger.LogInformation("Buscando lista de orçamentos");
 
-            var saida = _orcamentoBll.PorFiltro(new TorcamentoFiltro { Page = page, RecordsPerPage = pageItens, Origem = origem, Loja = lojaLogada });
+            var saida = _orcamentoBll.PorFiltro(
+                new TorcamentoFiltro { Page = page, RecordsPerPage = pageItens, Origem = origem, Loja = lojaLogada, TipoUsuario = LoggedUser.TipoUsuario }
+                );
 
             if (saida != null)
                 return Ok(saida);
@@ -97,7 +99,7 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             _logger.LogInformation("Inserindo Mensagem");
 
-            var saida =  _orcamentoBll.EnviarMensagem(orcamentoCotacaoMensagem);
+            var saida = _orcamentoBll.EnviarMensagem(orcamentoCotacaoMensagem);
 
             if (saida)
             {
@@ -120,7 +122,7 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             _logger.LogInformation("Marcando mensagens como lida");
 
-            var saida =  _orcamentoBll.MarcarMensagemComoLida(IdOrcamentoCotacao, idUsuarioDestinatario);
+            var saida = _orcamentoBll.MarcarMensagemComoLida(IdOrcamentoCotacao, idUsuarioDestinatario);
 
             if (saida)
             {

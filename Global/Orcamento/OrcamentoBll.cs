@@ -1,4 +1,5 @@
-﻿using InfraBanco.Modelos;
+﻿using InfraBanco.Constantes;
+using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using Microsoft.EntityFrameworkCore;
 using Orcamento.Dto;
@@ -26,73 +27,131 @@ namespace Orcamento
                 {
                     if (obj.Origem == "ORCAMENTOS")
                     {
-                        return (from c in db.TorcamentoCotacao
-                                where c.DataCadastro > DateTime.Now.AddDays(-60)
-                                        && obj.Loja == c.Loja
-                                orderby c.DataCadastro descending
-                                select new OrcamentoCotacaoListaDto
-                                {
-                                    NumOrcamento = c.Id.ToString("0000"),
-                                    NumPedido = null,
-                                    Cliente_Obra = $"{c.NomeCliente} - {c.NomeObra}",
-                                    Vendedor = "Vendedor",
-                                    Parceiro =  "Parceiro",
-                                    VendedorParceiro = "VendedorParceiro",
-                                    Valor = "0",
-                                    Status = c.Status.ToString(),
-                                    VistoEm = "",
-                                    Mensagem = c.Status == 7 ? "Sim" : "Não",
-                                    DtCadastro = c.DataCadastro,
-                                    DtExpiracao = c.DataCadastro.AddDays(10)
-                                }).ToList();
+                        return Filtrar_Orcamentos(obj);
                     }
-                    else if (obj.Origem == "PENDENTES") //ORCAMENTOS
+                    else if (obj.Origem == "PENDENTES") //PrePedido/Em Aprovação
                     {
-                        return (from c in db.TorcamentoCotacao
-                                where c.DataCadastro > DateTime.Now.AddDays(-60)
-                                        && obj.Loja == c.Loja
-                                        && c.Status == 7 //PENDENTE
-                                orderby c.DataCadastro descending
-                                select new OrcamentoCotacaoListaDto
-                                {
-                                    NumOrcamento = c.Id.ToString("0000"),
-                                    NumPedido = null,
-                                    Cliente_Obra = $"{c.NomeCliente} - {c.NomeObra}",
-                                    Vendedor = "Vendedor",
-                                    Parceiro = "Parceiro",
-                                    VendedorParceiro = "VendedorParceiro",
-                                    Valor = "0",
-                                    Status = c.Status.ToString(),
-                                    VistoEm = "",
-                                    Mensagem = c.Status == 7 ? "Sim" : "Não",
-                                    DtCadastro = c.DataCadastro,
-                                    DtExpiracao = c.DataCadastro.AddDays(10)
-                                }).ToList();
+                        return Filtrar_PrePedido_EmAprovacao(obj);
                     }
                     else //if (obj.Origem == "PEDIDOS")
                     {
-                        return (from c in db.Tpedidos
-                                where c.Data > DateTime.Now.AddDays(-60) //&& c.Loja == obj.Loja
-                                orderby c.Data descending
-                                select new OrcamentoCotacaoListaDto
-                                {
-                                    NumOrcamento = c.Orcamento,
-                                    NumPedido = c.Pedido,
-                                    Cliente_Obra = $"{c.Tcliente.Nome}",
-                                    Vendedor = c.Vendedor,
-                                    Parceiro = "",
-                                    VendedorParceiro = "",
-                                    Valor = c.Vl_Total_Familia.ToString(),
-                                    Status = c.St_Pagto,
-                                    VistoEm = "",
-                                    Mensagem = "Sim",
-                                }).ToList();
+                        return Filtrar_Pedidos(obj);
                     }
                 }
-            } 
+            }
             catch (Exception e)
             {
                 throw e;
+            }
+        }
+
+        private List<OrcamentoCotacaoListaDto> Filtrar_Orcamentos(TorcamentoFiltro obj)
+        {
+            using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                List<OrcamentoCotacaoListaDto> saida = (from c in db.TorcamentoCotacao
+                                                        where c.DataCadastro > DateTime.Now.AddDays(-60)
+                                                                && obj.Loja == c.Loja
+                                                        orderby c.DataCadastro descending
+                                                        select new OrcamentoCotacaoListaDto
+                                                        {
+                                                            NumOrcamento = c.Id.ToString("0000"),
+                                                            NumPedido = null,
+                                                            Cliente_Obra = $"{c.NomeCliente} - {c.NomeObra}",
+                                                            Vendedor = "Vendedor",
+                                                            Parceiro = "Parceiro",
+                                                            VendedorParceiro = "VendedorParceiro",
+                                                            Valor = "0",
+                                                            Status = c.Status.ToString(),
+                                                            VistoEm = "",
+                                                            Mensagem = c.Status == 7 ? "Sim" : "Não",
+                                                            DtCadastro = c.DataCadastro,
+                                                            DtExpiracao = c.DataCadastro.AddDays(10)
+                                                        }).ToList();
+
+                if (obj.TipoUsuario == (int)Constantes.TipoUsuario.PARCEIRO)
+                    saida = saida.Where(x => x.Orcamentista == obj.Apelido).ToList();
+                else if (obj.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
+                    saida = saida.Where(x => x.Orcamentista == obj.Apelido).ToList();
+                else if (obj.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
+                    saida = saida.Where(x => x.Orcamentista == obj.Apelido).ToList();
+
+                return saida;
+            }
+        }
+
+        private List<OrcamentoCotacaoListaDto> Filtrar_PrePedido_EmAprovacao(TorcamentoFiltro obj)
+        {
+            using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                List<OrcamentoCotacaoListaDto> saida = (from c in db.Torcamentos
+                                                        where c.Data > DateTime.Now.AddDays(-60)
+
+                                                                //& obj.TipoUsuario == (int)Constantes.TipoUsuario.PARCEIRO
+                                                                && c.St_Orcamento != "CAN" //CANCELADOS
+                                                        orderby c.Data descending
+                                                        select new OrcamentoCotacaoListaDto
+                                                        {
+                                                            NumOrcamento = c.IdOrcamentoCotacao.ToString(),
+                                                            NumPedido = null,
+                                                            Cliente_Obra = $"{c.Tcliente.Nome}",
+                                                            Vendedor = "Vendedor",
+                                                            Parceiro = "Parceiro",
+                                                            VendedorParceiro = "VendedorParceiro",
+                                                            Valor = "0",
+                                                            Orcamentista = c.Orcamentista,
+                                                            Status = c.St_Orcamento,
+                                                            VistoEm = "",
+                                                            Mensagem = c.St_Orcamento == 7 ? "Sim" : "Não",
+                                                            DtCadastro = c.Data,
+                                                            DtExpiracao = null
+                                                        }).ToList();
+
+                if (obj.TipoUsuario == (int)Constantes.TipoUsuario.PARCEIRO)
+                {
+                    saida = saida.Where(x =>
+                        x.Orcamentista == obj.Apelido
+                        && x.Loja == obj.Loja
+                    ).ToList();
+                }
+                else if (obj.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
+                    saida = saida.Where(x => x.Orcamentista == obj.Apelido).ToList();
+                else if (obj.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
+                    saida = saida.Where(x => x.Orcamentista == obj.Apelido).ToList();
+
+                return saida;
+            }
+        }
+
+        private List<OrcamentoCotacaoListaDto> Filtrar_Pedidos(TorcamentoFiltro obj)
+        {
+            using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                List<OrcamentoCotacaoListaDto> saida = (from c in db.Tpedidos
+                                                        where c.Data > DateTime.Now.AddDays(-60) //&& c.Loja == obj.Loja
+                                                        orderby c.Data descending
+                                                        select new OrcamentoCotacaoListaDto
+                                                        {
+                                                            NumOrcamento = c.Orcamento,
+                                                            NumPedido = c.Pedido,
+                                                            Cliente_Obra = $"{c.Tcliente.Nome}",
+                                                            Vendedor = c.Vendedor,
+                                                            Parceiro = "",
+                                                            VendedorParceiro = "",
+                                                            Valor = c.Vl_Total_Familia.ToString(),
+                                                            Status = c.St_Pagto,
+                                                            VistoEm = "",
+                                                            Mensagem = "Sim",
+                                                        }).ToList();
+
+                if (obj.TipoUsuario == (int)Constantes.TipoUsuario.PARCEIRO)
+                    saida = saida.Where(x => x.Orcamentista == obj.Apelido).ToList();
+                else if (obj.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
+                    saida = saida.Where(x => x.Orcamentista == obj.Apelido).ToList();
+                else if (obj.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
+                    saida = saida.Where(x => x.Orcamentista == obj.Apelido).ToList();
+
+                return saida;
             }
         }
 

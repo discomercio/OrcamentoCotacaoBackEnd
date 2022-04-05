@@ -8,5 +8,7 @@ namespace InfraBanco.Modelos.Filtros
         public int? RecordsPerPage { get; set; }
         public string Origem { get; set; }
         public string Loja { get; set; }
+        public int? TipoUsuario { get; set; }
+        public string Apelido { get; set; }
     }
 }

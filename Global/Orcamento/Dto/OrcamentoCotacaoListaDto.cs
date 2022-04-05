@@ -14,7 +14,9 @@ namespace Orcamento.Dto
         public string Status { get; set; }
         public string VistoEm { get; set; }
         public string Mensagem { get; set; }
-        public DateTime DtCadastro { get; set; }
-        public DateTime DtExpiracao { get; set; }
+        public DateTime? DtCadastro { get; set; }
+        public DateTime? DtExpiracao { get; set; }
+        public string Orcamentista { get; internal set; }
+        public string Loja { get; internal set; }
     }
 }
