@@ -20,7 +20,7 @@ namespace OrcamentistaEIndicadorVendedor
             _dataIndicador = new OrcamentistaEIndicadorData(contextoBdProvider);
         }
 
-        public TorcamentistaEIndicadorVendedor Inserir(TorcamentistaEIndicadorVendedor objOrcamentistaEIndicadorVendedor, string parceiro, string vendedor)
+        public TorcamentistaEIndicadorVendedor Inserir(TorcamentistaEIndicadorVendedor objOrcamentistaEIndicadorVendedor, string senha, string parceiro, string vendedor)
         {
             var oei = _dataIndicador.PorFiltro(new TorcamentistaEindicadorFiltro()
             {
@@ -39,7 +39,7 @@ namespace OrcamentistaEIndicadorVendedor
                 throw new ArgumentException("Email já cadastrado");
 
 
-            string senha_codificada = UtilsGlobais.Util.codificaDado(objOrcamentistaEIndicadorVendedor.Senha, false);
+            string senha_codificada = UtilsGlobais.Util.codificaDado(senha, false);
 
             if (string.IsNullOrEmpty(senha_codificada))
                 throw new ArgumentException("Falha na codificação de senha.");
@@ -57,7 +57,7 @@ namespace OrcamentistaEIndicadorVendedor
         }
 
 
-        public TorcamentistaEIndicadorVendedor Atualizar(TorcamentistaEIndicadorVendedor objOrcamentistaEIndicadorVendedor, string parceiro, string vendedor)
+        public TorcamentistaEIndicadorVendedor Atualizar(TorcamentistaEIndicadorVendedor objOrcamentistaEIndicadorVendedor, string senha, string parceiro, string vendedor)
         {
             var oeiv = _data.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro() { id = objOrcamentistaEIndicadorVendedor.Id }).FirstOrDefault();
             if(oeiv == null) throw new KeyNotFoundException();
@@ -73,14 +73,13 @@ namespace OrcamentistaEIndicadorVendedor
             if (oeivOutroEmail.Any(x=>x.VendedorResponsavel != parceiro))
                 throw new ArgumentException("Email já cadastrado");
 
-            string senha_codificada = UtilsGlobais.Util.codificaDado(objOrcamentistaEIndicadorVendedor.Senha, false);
+            string senha_codificada = UtilsGlobais.Util.codificaDado(senha, false);
 
             if (string.IsNullOrEmpty(senha_codificada))
                 throw new ArgumentException("Falha na codificação de senha.");
 
             objOrcamentistaEIndicadorVendedor.Datastamp = senha_codificada;
 
-            oeiv.Senha = objOrcamentistaEIndicadorVendedor.Senha;
             if (oeiv.Datastamp!= senha_codificada)
             {
 

@@ -48,9 +48,24 @@ namespace OrcamentoCotacaoApi.Controllers
         public async Task<OrcamentistaEIndicadorVendedorResponseViewModel> BuscarVendedoresDosParceirosPorId(int id)
         {
             _logger.LogInformation("Buscando um vendedor parceiro");
-            var usuarios = _orcamentistaEindicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { id = id });
+            var usuarios = _orcamentistaEindicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { id = id }).FirstOrDefault();
 
-            return _mapper.Map<OrcamentistaEIndicadorVendedorResponseViewModel>(usuarios.FirstOrDefault());
+            if(usuarios == null) return null;
+
+            OrcamentistaEIndicadorVendedorResponseViewModel ret = new OrcamentistaEIndicadorVendedorResponseViewModel()
+            {
+                Nome = usuarios.Nome,
+                Email = usuarios.Email,
+                IdIndicador = usuarios.IdIndicador,
+                Ativo = usuarios.Ativo,
+                Id = usuarios.Id,
+                Telefone = usuarios.Telefone,
+                Celular = usuarios.Celular,
+                VendedorResponsavel = usuarios.VendedorResponsavel,
+                Senha = usuarios.Datastamp
+            };
+
+            return ret;
         }
 
         [HttpPost]
@@ -66,7 +81,7 @@ namespace OrcamentoCotacaoApi.Controllers
             var objOrcamentistaEIndicadorVendedor = _mapper.Map<TorcamentistaEIndicadorVendedor>(model);
             try
             {
-                var result = _orcamentistaEindicadorVendedorBll.Inserir(objOrcamentistaEIndicadorVendedor, User.GetParceiro(), User.GetVendedor());
+                var result = _orcamentistaEindicadorVendedorBll.Inserir(objOrcamentistaEIndicadorVendedor, model.Senha, User.GetParceiro(), User.GetVendedor());
 
                 return _mapper.Map<OrcamentistaEIndicadorVendedorResponseViewModel>(result);
             }
@@ -85,7 +100,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 this.Unauthorized("Somente usuários do tipo parceiro");
             }
             var objOrcamentistaEIndicadorVendedor = _mapper.Map<TorcamentistaEIndicadorVendedor>(model);
-            var result = _orcamentistaEindicadorVendedorBll.Atualizar(objOrcamentistaEIndicadorVendedor, User.GetParceiro(), User.GetVendedor());
+            var result = _orcamentistaEindicadorVendedorBll.Atualizar(objOrcamentistaEIndicadorVendedor, model.Senha, User.GetParceiro(), User.GetVendedor());
             return _mapper.Map<OrcamentistaEIndicadorVendedorResponseViewModel>(result); ;
         }
     }

@@ -62,7 +62,7 @@ namespace OrcamentistaEIndicadorVendedor
                                                Id = usr.Id,
                                                Nome = usr.Nome,
                                                Email = usr.Email,
-                                               Senha = usr.Datastamp,
+                                               Datastamp = UtilsGlobais.SenhaBll.DecodificaSenha(usr.Datastamp),
                                                IdIndicador = usr.IdIndicador,
                                                Telefone = usr.Telefone,
                                                Celular = usr.Celular,
@@ -83,9 +83,9 @@ namespace OrcamentistaEIndicadorVendedor
                     {
                         vendedorParceiro = vendedorParceiro.Where(x => x.Email.ToUpper() == obj.email.ToUpper());
                     }
-                    if (!string.IsNullOrEmpty(obj.senha))
+                    if (!string.IsNullOrEmpty(obj.datastamp))
                     {
-                        vendedorParceiro = vendedorParceiro.Where(x => x.Senha == obj.senha);
+                        vendedorParceiro = vendedorParceiro.Where(x => x.Datastamp == obj.datastamp);
                     }
                     if (!string.IsNullOrEmpty(obj.loja))
                     {

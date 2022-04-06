@@ -93,7 +93,7 @@ namespace OrcamentoCotacaoApi.Utils
                 else
                 {
                     //Buscar vendedores-parceiros
-                    var vendedorParceiro = orcamentistaEIndicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { email = apelido, senha = senha }).FirstOrDefault();
+                    var vendedorParceiro = orcamentistaEIndicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { email = apelido, datastamp = senha }).FirstOrDefault();
                     if (vendedorParceiro != null)
                     {
                         var parceiroValidacao = await orcamentistaEindicadorBll.ValidarParceiro(vendedorParceiro.VendedorResponsavel, null, true);

@@ -38,7 +38,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             List<FormaPagamentoResponseViewModel> response = new List<FormaPagamentoResponseViewModel>();
             List<InfraBanco.Modelos.TcfgPagtoMeioStatus> meiosPagamento = new List<InfraBanco.Modelos.TcfgPagtoMeioStatus>();
-
+                
             foreach (var fp in tiposPagtos)
             {
                 FormaPagamentoResponseViewModel item = new FormaPagamentoResponseViewModel();
@@ -87,9 +87,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA:
                     filtro.IncluirTcfgTipoParcela = true;
                     filtro.IdTipoParcela = (short)Constantes.TipoParcela.PRIMEIRA_PRESTACAO;
+                    filtro.IdCfgPagtoForma = Int16.Parse(Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA);
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELA_UNICA:
+                    filtro.IncluirTcfgTipoParcela = true;
                     filtro.IdTipoParcela = (short)Constantes.TipoParcela.PARCELA_UNICA;
+                    filtro.IdCfgPagtoForma = Int16.Parse(Constantes.COD_FORMA_PAGTO_PARCELA_UNICA);
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA:
                     filtro.IdCfgPagtoForma = Int16.Parse(Constantes.COD_FORMA_PAGTO_PARCELADO_CARTAO_MAQUINETA);
