@@ -58,6 +58,7 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<OrcamentoCotacaoBusiness.Bll.CoeficienteBll, OrcamentoCotacaoBusiness.Bll.CoeficienteBll>();
             services.AddTransient<Coeficiente.CoeficienteBll, Coeficiente.CoeficienteBll>();
             services.AddTransient<Coeficiente.CoeficienteData, Coeficiente.CoeficienteData>();
+            services.AddTransient<OrcamentoCotacaoBll, OrcamentoCotacaoBll>();
 
             return services;
         }
