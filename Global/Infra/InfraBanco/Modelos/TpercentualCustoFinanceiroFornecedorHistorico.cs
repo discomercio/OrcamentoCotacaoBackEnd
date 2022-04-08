@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,7 +8,7 @@ using System.Text;
 namespace InfraBanco.Modelos
 {
     [Table("t_PERCENTUAL_CUSTO_FINANCEIRO_FORNECEDOR_HISTORICO")]
-    public class TpercentualCustoFinanceiroFornecedorHistorico
+    public class TpercentualCustoFinanceiroFornecedorHistorico : IModel
     {
         [Column("data")]
         [Required]

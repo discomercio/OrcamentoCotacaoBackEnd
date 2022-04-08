@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31729.503
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32126.317
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loja.UI", "Loja\Loja.UI\Loja.UI.csproj", "{64E83931-F740-4DA5-BA7A-C7A5DBF0942C}"
 EndProject
@@ -106,6 +106,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vendedor", "Global\Vendedor\Vendedor.csproj", "{8802A62D-85C0-4B97-B406-025F7D1A2BF7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassesBase", "Global\ClassesBase\ClassesBase.csproj", "{8A636662-5CF9-4DAD-A7E2-9F07A8E674F5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coeficiente", "Global\Coeficiente\Coeficiente.csproj", "{C77DFEB2-02C7-4165-AA31-0D0C1B1FCD9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -616,6 +618,22 @@ Global
 		{8A636662-5CF9-4DAD-A7E2-9F07A8E674F5}.Release_PrepedidoApi|Any CPU.Build.0 = Release_OrcamentoCotacao|Any CPU
 		{8A636662-5CF9-4DAD-A7E2-9F07A8E674F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A636662-5CF9-4DAD-A7E2-9F07A8E674F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C77DFEB2-02C7-4165-AA31-0D0C1B1FCD9A}.Debug_OrcamentoCotacao|Any CPU.ActiveCfg = Debug|Any CPU
+		{C77DFEB2-02C7-4165-AA31-0D0C1B1FCD9A}.Debug_OrcamentoCotacao|Any CPU.Build.0 = Debug|Any CPU
+		{C77DFEB2-02C7-4165-AA31-0D0C1B1FCD9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C77DFEB2-02C7-4165-AA31-0D0C1B1FCD9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C77DFEB2-02C7-4165-AA31-0D0C1B1FCD9A}.Release_ApiMagento|Any CPU.ActiveCfg = Release|Any CPU
+		{C77DFEB2-02C7-4165-AA31-0D0C1B1FCD9A}.Release_ApiMagento|Any CPU.Build.0 = Release|Any CPU
+		{C77DFEB2-02C7-4165-AA31-0D0C1B1FCD9A}.Release_ApiUnis|Any CPU.ActiveCfg = Release|Any CPU
+		{C77DFEB2-02C7-4165-AA31-0D0C1B1FCD9A}.Release_ApiUnis|Any CPU.Build.0 = Release|Any CPU
+		{C77DFEB2-02C7-4165-AA31-0D0C1B1FCD9A}.Release_Loja|Any CPU.ActiveCfg = Release|Any CPU
+		{C77DFEB2-02C7-4165-AA31-0D0C1B1FCD9A}.Release_Loja|Any CPU.Build.0 = Release|Any CPU
+		{C77DFEB2-02C7-4165-AA31-0D0C1B1FCD9A}.Release_OrcamentoCotacao|Any CPU.ActiveCfg = Release|Any CPU
+		{C77DFEB2-02C7-4165-AA31-0D0C1B1FCD9A}.Release_OrcamentoCotacao|Any CPU.Build.0 = Release|Any CPU
+		{C77DFEB2-02C7-4165-AA31-0D0C1B1FCD9A}.Release_PrepedidoApi|Any CPU.ActiveCfg = Release|Any CPU
+		{C77DFEB2-02C7-4165-AA31-0D0C1B1FCD9A}.Release_PrepedidoApi|Any CPU.Build.0 = Release|Any CPU
+		{C77DFEB2-02C7-4165-AA31-0D0C1B1FCD9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C77DFEB2-02C7-4165-AA31-0D0C1B1FCD9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -662,6 +680,7 @@ Global
 		{7690CF1F-D913-4006-AB7C-EC8668B82499} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 		{8802A62D-85C0-4B97-B406-025F7D1A2BF7} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 		{8A636662-5CF9-4DAD-A7E2-9F07A8E674F5} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
+		{C77DFEB2-02C7-4165-AA31-0D0C1B1FCD9A} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {139E9C0D-48C6-4635-9645-BF9C5AA65398}

@@ -93,10 +93,10 @@ namespace OrcamentoCotacaoApi.Utils
                 else
                 {
                     //Buscar vendedores-parceiros
-                    var vendedorParceiro = orcamentistaEIndicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { email = apelido, senha = senha }).FirstOrDefault();
+                    var vendedorParceiro = orcamentistaEIndicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { email = apelido, datastamp = senha }).FirstOrDefault();
                     if (vendedorParceiro != null)
                     {
-                        var parceiroValidacao = await orcamentistaEindicadorBll.ValidarParceiro(vendedorParceiro.IdIndicador, null, true);
+                        var parceiroValidacao = await orcamentistaEindicadorBll.ValidarParceiro(vendedorParceiro.VendedorResponsavel, null, true);
 
                         if (parceiroValidacao != null)
                         {
@@ -193,7 +193,7 @@ namespace OrcamentoCotacaoApi.Utils
                             Loja = string.Join(",", lojaOrcamentistaVendedor.Select(x => x.Loja)),
                             Unidade_negocio = acessoBll.Buscar_unidade_negocio(lojaOrcamentistaVendedor).Result,
                             VendedorResponsavel = orcamentistaVendedor.FirstOrDefault().VendedorResponsavel,
-                            IdParceiro = orcamentistaVendedor.FirstOrDefault().IdIndicador,
+                            IdParceiro = orcamentistaVendedor.FirstOrDefault().VendedorResponsavel,
                             Permissoes = new List<string>()
                             {
                                 ((int)ePermissao.AcessoAoModulo).ToString()

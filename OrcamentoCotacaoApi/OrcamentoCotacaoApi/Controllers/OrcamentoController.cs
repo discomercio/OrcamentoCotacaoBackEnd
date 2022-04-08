@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Bll;
+using OrcamentoCotacaoBusiness.Models.Request;
 using System.Threading.Tasks;
 
 namespace OrcamentoCotacaoApi.Controllers
@@ -147,15 +148,15 @@ namespace OrcamentoCotacaoApi.Controllers
         //    return _mapper.Map<OrcamentoResponseViewModel>(orcamento);
         //}
 
-        //[HttpPost]
-        //public async Task<OrcamentoResponseViewModel> Post(OrcamentoRequestViewModel model)
-        //{
-        //    var user = User.Identity.Name;
+        [HttpPost]
+        public async Task<IActionResult> Post(OrcamentoRequestViewModel model)
+        {
+            var user = User.Identity.Name;
 
-        //    _logger.LogInformation("Inserindo Orcamento");
-        //    var orcamento = _orcamentoBll.Inserir(_mapper.Map<Torcamento>(model));//(model, user);
-        //    return _mapper.Map<OrcamentoResponseViewModel>(orcamento);
-        //}
+            _logger.LogInformation("Inserindo Orcamento");
+
+            return Ok(model);
+        }
 
         //[HttpPut]
         //public async Task<OrcamentoResponseViewModel> Put(OrcamentoRequestViewModel model)

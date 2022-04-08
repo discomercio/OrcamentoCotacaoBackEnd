@@ -31,13 +31,14 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 
         [JsonProperty("qtdeMaxVenda")]
         public short? QtdeMaxVenda { get; set; }
-
+            
         [JsonProperty("descMax")]
         public float? DescMax { get; set; }
 
         public int? Qtde { get; set; }
 
-        internal static ProdutoSimplesResponseViewModel ConverterProdutoDados(Produto.Dados.ProdutoDados produto, int? qtdeFilho, Produto.Dados.CoeficienteDados coeficienteDados)
+        internal static ProdutoSimplesResponseViewModel ConverterProdutoDados(Produto.Dados.ProdutoDados produto, int? qtdeFilho,
+            CoeficienteResponseViewModel coeficienteDados)
         {
             var precoLista = produto.Preco_lista;
             if (coeficienteDados != null)
@@ -52,8 +53,8 @@ namespace OrcamentoCotacaoBusiness.Models.Response
                 Produto = produto.Produto,
                 Qtde = qtdeFilho.HasValue ? qtdeFilho : null,
                 DescricaoHtml = produto.Descricao_html,
-                PrecoLista = (decimal)precoLista,
-                PrecoListaBase = (decimal)produto.Preco_lista,
+                PrecoLista = Decimal.Parse(precoLista?.ToString("N")),
+                PrecoListaBase = Decimal.Parse(produto.Preco_lista?.ToString("N")),
                 QtdeMaxVenda = produto.Qtde_Max_Venda,
                 DescMax = produto.Desc_Max,
                 Estoque = produto.Estoque,

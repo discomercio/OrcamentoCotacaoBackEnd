@@ -5,11 +5,14 @@ namespace OrcamentoCotacaoBusiness.Models.Request
 {
     public partial class ProdutosRequestViewModel
     {
+        [JsonProperty("dataRefCoeficiente")]
+        public DateTime DataRefCoeficiente { get; set; }
+
         [JsonProperty("loja")]
         public string Loja { get; set; }
 
-        [JsonProperty("uf")]
-        public string UF { get; set; }
+        [JsonProperty("qtdeParcelas")]
+        public short QtdeParcelas { get; set; }
 
         [JsonProperty("tipoCliente")]
         public string TipoCliente { get; set; }
@@ -17,10 +20,9 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         [JsonProperty("tipoParcela")]
         public string TipoParcela { get; set; }
 
-        [JsonProperty("qtdeParcelas")]
-        public short QtdeParcelas { get; set; }
+        [JsonProperty("uf")]
+        public string UF { get; set; }
 
-        [JsonProperty("dataRefCoeficiente")]
-        public DateTime DataRefCoeficiente { get; set; }
+
     }
 }

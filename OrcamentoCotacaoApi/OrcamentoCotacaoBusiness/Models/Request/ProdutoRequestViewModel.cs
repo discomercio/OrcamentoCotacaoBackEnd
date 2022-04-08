@@ -19,11 +19,11 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         [JsonProperty("precoLista")]
         public decimal PrecoLista { get; set; }
 
+        [JsonProperty("precoListaBase")]
+        public decimal PrecoListaBase { get; set; }
+
         [JsonProperty("coeficienteDeCalculo")]
         public float CustoFinancFornecCoeficiente { get; set; }
-
-        [JsonProperty("custoFinancFornecPrecoLista")]
-        public decimal CustoFinancFornecPrecoLista { get; set; }
 
         [JsonProperty("precoNF")]
         public decimal PrecoNf { get; set; }
@@ -40,13 +40,8 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         [JsonProperty("totalItem")]
         public decimal TotalItem { get; set; }
 
-        [JsonProperty("totalItemRA")]
-        public decimal TotalItemRa { get; set; }
-
-        [JsonProperty("alterouValorRa")]
-        public bool AlterouValorRa { get; set; }
-
         [JsonProperty("alterouPrecoVenda")]
         public bool AlterouPrecoVenda { get; set; }
+        
     }
 }

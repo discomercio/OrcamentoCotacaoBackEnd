@@ -64,51 +64,51 @@ namespace OrcamentoCotacaoApi.Controllers
             {
 
 
-            var appSettingsSection = configuration.GetSection("AppSettings");
-            var appSettings = appSettingsSection.Get<OrcamentoCotacaoApi.Utils.Configuracao>();
-            string apelido = login.Login.ToUpper();
-            string senha = login.Senha;
-            UsuarioLogin objUsuarioLogin = new UsuarioLogin()
-            {
-                Apelido = apelido,
-                Senha = senha
-            };
-            objUsuarioLogin = servicoAutenticacao.ObterTokenAutenticacao(objUsuarioLogin, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos,
-                OrcamentoCotacaoApi.Utils.Autenticacao.RoleAcesso, new ServicoAutenticacaoProvider(_acessoBll, _usuarioBll, _orcamentistaEindicadorBll, _orcamentistaEindicadorVendedorBll,
-                _lojaBll),
-                out bool unidade_negocio_desconhecida);
-
-            if (objUsuarioLogin == null)
-            {
-                return BadRequest(new LoginResponseViewModel
+                var appSettingsSection = configuration.GetSection("AppSettings");
+                var appSettings = appSettingsSection.Get<OrcamentoCotacaoApi.Utils.Configuracao>();
+                string apelido = login.Login.ToUpper();
+                string senha = login.Senha;
+                UsuarioLogin objUsuarioLogin = new UsuarioLogin()
                 {
-                    Authenticated = false,
-                    Created = "",
-                    Expiration = "",
-                    AccessToken = "",
-                    Message = "Usuário ou senha incorretos"
-                });
-            }
+                    Apelido = apelido,
+                    Senha = senha
+                };
+                objUsuarioLogin = servicoAutenticacao.ObterTokenAutenticacao(objUsuarioLogin, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos,
+                    OrcamentoCotacaoApi.Utils.Autenticacao.RoleAcesso, new ServicoAutenticacaoProvider(_acessoBll, _usuarioBll, _orcamentistaEindicadorBll, _orcamentistaEindicadorVendedorBll,
+                    _lojaBll),
+                    out bool unidade_negocio_desconhecida);
 
-            _logger.LogInformation("Gerando token");
-            //var token = _tokenService.GenerateToken(objUsuarioLogin);
+                if (objUsuarioLogin == null)
+                {
+                    return BadRequest(new LoginResponseViewModel
+                    {
+                        Authenticated = false,
+                        Created = "",
+                        Expiration = "",
+                        AccessToken = "",
+                        Message = "Usuário ou senha incorretos"
+                    });
+                }
 
-            DateTime dataCriacao = DateTime.Now;
-            DateTime dataExpiracao = dataCriacao +
-                TimeSpan.FromSeconds(10000);
+                _logger.LogInformation("Gerando token");
+                //var token = _tokenService.GenerateToken(objUsuarioLogin);
+
+                DateTime dataCriacao = DateTime.Now;
+                DateTime dataExpiracao = dataCriacao +
+                    TimeSpan.FromSeconds(10000);
 
 
-            //var usuarioResponse = _mapper.Map<UsuarioResponseViewModel>(objUsuarioLogin);
-            //string token = "";
-            var retorno = new LoginResponseViewModel
-            {
-                Authenticated = true,
-                Created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
-                Expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
-                AccessToken = objUsuarioLogin.Token,
-                Message = "OK"
-            };
-            return Ok(retorno);
+                //var usuarioResponse = _mapper.Map<UsuarioResponseViewModel>(objUsuarioLogin);
+                //string token = "";
+                var retorno = new LoginResponseViewModel
+                {
+                    Authenticated = true,
+                    Created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
+                    Expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
+                    AccessToken = objUsuarioLogin.Token,
+                    Message = "OK"
+                };
+                return Ok(retorno);
             }
             catch (Exception ex)
             {

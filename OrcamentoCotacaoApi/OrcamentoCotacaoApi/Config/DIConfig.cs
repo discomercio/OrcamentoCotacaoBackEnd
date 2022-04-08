@@ -1,22 +1,11 @@
-﻿using Arquivo;
-using Cep;
-using Cliente;
-using FormaPagamento;
-using InfraBanco;
-using Loja;
-using MeioPagamentos;
+﻿using InfraBanco;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OrcamentistaEindicador;
-using Orcamento;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Interfaces;
 using OrcamentoCotacaoBusiness.Services;
-using Produto;
-using ProdutoCatalogo;
-using Usuario;
 
 namespace OrcamentoCotacaoApi.Config
 {
@@ -46,37 +35,41 @@ namespace OrcamentoCotacaoApi.Config
             services.AddScoped<ITokenService, TokenService>();
 
             //#GLOBAL
-            services.AddTransient<IBancoNFeMunicipio, BancoNFeMunicipio>();
-            services.AddTransient<ProdutoGeralBll, ProdutoGeralBll>();
+            services.AddTransient<Arquivo.ArquivoBll, Arquivo.ArquivoBll>();
+
+            services.AddTransient<Cep.CepBll, Cep.CepBll>();
+            services.AddTransient<Cep.IBancoNFeMunicipio, Cep.BancoNFeMunicipio>();
+            services.AddTransient<Cliente.ClienteBll, Cliente.ClienteBll>();
+            services.AddTransient<Coeficiente.CoeficienteBll, Coeficiente.CoeficienteBll>();
+            services.AddTransient<Coeficiente.CoeficienteData, Coeficiente.CoeficienteData>();
+
+            services.AddTransient<FormaPagamento.FormaPagtoBll, FormaPagamento.FormaPagtoBll>();
+            services.AddTransient<FormaPagamento.ValidacoesFormaPagtoBll, FormaPagamento.ValidacoesFormaPagtoBll>();
+            services.AddTransient<FormaPagamento.FormaPagamentoData, FormaPagamento.FormaPagamentoData>();
+
+            services.AddTransient<Loja.LojaBll, Loja.LojaBll>();
+            services.AddTransient<Loja.LojaData, Loja.LojaData>();
+
+            services.AddTransient<MeioPagamentos.MeiosPagamentosBll, MeioPagamentos.MeiosPagamentosBll>();
+            services.AddTransient<MeioPagamentos.MeiosPagamentosData, MeioPagamentos.MeiosPagamentosData>();
+
+            services.AddTransient<Orcamento.OrcamentoBll, Orcamento.OrcamentoBll>();
+            services.AddTransient<Orcamento.OrcamentoOpcaoBll, Orcamento.OrcamentoOpcaoBll>();
             services.AddTransient<OrcamentistaEindicador.OrcamentistaEIndicadorBll, OrcamentistaEindicador.OrcamentistaEIndicadorBll>();
             services.AddTransient<OrcamentistaEindicador.OrcamentistaEIndicadorData, OrcamentistaEindicador.OrcamentistaEIndicadorData>();
             services.AddTransient<OrcamentistaEIndicadorVendedor.OrcamentistaEIndicadorVendedorBll, OrcamentistaEIndicadorVendedor.OrcamentistaEIndicadorVendedorBll>();
-            services.AddTransient<Orcamento.OrcamentoBll, Orcamento.OrcamentoBll>();
-            services.AddTransient<OrcamentoCotacaoBll, OrcamentoCotacaoBll>();
-            services.AddTransient<Orcamento.OrcamentoOpcaoBll, Orcamento.OrcamentoOpcaoBll>();
-            services.AddTransient<Arquivo.ArquivoBll, Arquivo.ArquivoBll>();
-            services.AddTransient<Loja.LojaBll, Loja.LojaBll>();
-            services.AddTransient<ProdutoOrcamentoCotacaoBll, ProdutoOrcamentoCotacaoBll>();
-            services.AddTransient<Loja.LojaData, Loja.LojaData>();
-            services.AddTransient<FormaPagtoBll, FormaPagtoBll>();
-            services.AddTransient<FormaPagamentoData, FormaPagamentoData>();
-            services.AddTransient<MeiosPagamentosBll, MeiosPagamentosBll>();
-            services.AddTransient<MeiosPagamentosData, MeiosPagamentosData>();
-            services.AddTransient<UsuarioBll, UsuarioBll>();
-            services.AddTransient<ProdutoCatalogoBll, ProdutoCatalogoBll>();
-            services.AddTransient<CoeficienteBll, CoeficienteBll>();
-            services.AddTransient<ValidacoesFormaPagtoBll, ValidacoesFormaPagtoBll>();
-            services.AddTransient<OrcamentistaEIndicadorBll, OrcamentistaEIndicadorBll>();
-            services.AddTransient<OrcamentistaEIndicadorData, OrcamentistaEIndicadorData>();
-            services.AddTransient<OrcamentoBll, OrcamentoBll>();
-            services.AddTransient<OrcamentoOpcaoBll, OrcamentoOpcaoBll>();
-            services.AddTransient<ArquivoBll, ArquivoBll>();
-            services.AddTransient<LojaBll, LojaBll>();
-            services.AddTransient<LojaData, LojaData>();
-            services.AddTransient<ClienteBll, ClienteBll>();
-            services.AddTransient<CepBll, CepBll>();
-            services.AddTransient<OrcamentistaEIndicadorVendedor.OrcamentistaEIndicadorVendedorBll, OrcamentistaEIndicadorVendedor.OrcamentistaEIndicadorVendedorBll>();
+
+            services.AddTransient<Produto.ProdutoGeralBll, Produto.ProdutoGeralBll>();
+            services.AddTransient<ProdutoCatalogo.ProdutoCatalogoBll, ProdutoCatalogo.ProdutoCatalogoBll>();
+            services.AddTransient<Produto.CoeficienteBll, Produto.CoeficienteBll>();
+            services.AddTransient<Prepedido.PrepedidoBll, Prepedido.PrepedidoBll>();
+            services.AddTransient<Prepedido.MontarLogPrepedidoBll, Prepedido.MontarLogPrepedidoBll>();
+            services.AddTransient<Prepedido.ValidacoesPrepedidoBll, Prepedido.ValidacoesPrepedidoBll>();
+            services.AddTransient<Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll, Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll>();
+
+            services.AddTransient<Usuario.UsuarioBll, Usuario.UsuarioBll>();
             
+
 
             //#PRE-PEDIDO
             services.AddTransient<PrepedidoBusiness.Bll.AcessoBll, PrepedidoBusiness.Bll.AcessoBll>();
@@ -87,19 +80,17 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<PrepedidoBusiness.Bll.PrepedidoApiBll, PrepedidoBusiness.Bll.PrepedidoApiBll>();
             services.AddTransient<PrepedidoBusiness.Bll.CoeficientePrepedidoBll, PrepedidoBusiness.Bll.CoeficientePrepedidoBll>();
             services.AddTransient<PrepedidoBusiness.Bll.ProdutoPrepedidoBll, PrepedidoBusiness.Bll.ProdutoPrepedidoBll>();
-            services.AddTransient<Prepedido.PrepedidoBll, Prepedido.PrepedidoBll>();
-            services.AddTransient<Prepedido.MontarLogPrepedidoBll, Prepedido.MontarLogPrepedidoBll>();
-            services.AddTransient<Prepedido.ValidacoesPrepedidoBll, Prepedido.ValidacoesPrepedidoBll>();
-            services.AddTransient<Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll, Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll>();
+            
 
             //#ORCAMENTO-COTACAO
-            services.AddTransient<ProdutoOrcamentoCotacaoBll, ProdutoOrcamentoCotacaoBll>();
-            services.AddTransient<FormaPagtoOrcamentoCotacaoBll, FormaPagtoOrcamentoCotacaoBll>();
-            services.AddTransient<ProdutoCatalogoOrcamentoCotacaoBll, ProdutoCatalogoOrcamentoCotacaoBll>();
-            services.AddTransient<LojaOrcamentoCotacaoBll, LojaOrcamentoCotacaoBll>();
-            services.AddTransient<OrcamentistaEIndicadorVendedorBll, OrcamentistaEIndicadorVendedorBll>();
             services.AddTransient<AcessoBll, AcessoBll>();
+            services.AddTransient<CoeficienteBll, CoeficienteBll>();
+            services.AddTransient<FormaPagtoOrcamentoCotacaoBll, FormaPagtoOrcamentoCotacaoBll>();
+            services.AddTransient<LojaOrcamentoCotacaoBll, LojaOrcamentoCotacaoBll>();
             services.AddTransient<OrcamentoCotacaoBll, OrcamentoCotacaoBll>();
+            services.AddTransient<OrcamentistaEIndicadorVendedorBll, OrcamentistaEIndicadorVendedorBll>();
+            services.AddTransient<ProdutoOrcamentoCotacaoBll, ProdutoOrcamentoCotacaoBll>();
+            services.AddTransient<ProdutoCatalogoOrcamentoCotacaoBll, ProdutoCatalogoOrcamentoCotacaoBll>();
 
             return services;
         }

@@ -78,9 +78,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                             select new UsuarioLogin
                             {
                                 Nome = c.Nome,
-                                Senha = c.Senha,
                                 Email = c.Email,
-                                Datastamp = c.Senha,
+                                Datastamp = c.Datastamp,
                                 Dt_Ult_Alteracao_Senha = c.DataUltimaAlteracao,
                                 Bloqueado = !c.Ativo,
                                 //c.Hab_Acesso_Sistema,

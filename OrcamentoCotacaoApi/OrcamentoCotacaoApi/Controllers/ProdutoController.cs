@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
-using Produto;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 
@@ -20,9 +18,7 @@ namespace OrcamentoCotacaoApi.BaseController
         private readonly ProdutoOrcamentoCotacaoBll _produtoBll;
         private readonly CoeficienteBll _coeficienteBll;
 
-        public ProdutoController(
-            ILogger<ProdutoController> logger,
-            ProdutoOrcamentoCotacaoBll produtoBll,
+        public ProdutoController(ILogger<ProdutoController> logger, ProdutoOrcamentoCotacaoBll produtoBll,
             CoeficienteBll coeficienteBll)
         {
             _logger = logger;
@@ -32,26 +28,26 @@ namespace OrcamentoCotacaoApi.BaseController
 
         [HttpPost("buscarProdutos")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<IActionResult> BuscarProduto(ProdutosRequestViewModel produtos)
+        public async Task<IActionResult> BuscarProduto(ProdutosRequestViewModel produtosRequest)
         {
-            var ret = await _produtoBll.ListaProdutosCombo(produtos);
+            var response = await _produtoBll.ListaProdutosCombo(produtosRequest);
 
-            if (ret == null)
+            if (response == null)
                 return NoContent();
             else
-                return Ok(ret); 
+                return Ok(response);
         }
 
-        [HttpGet("buscarCoeficientes")]
+        [HttpPost("buscarCoeficientes")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<IActionResult> buscarCoeficientes(List<string> fabricantes)
+        public async Task<IActionResult> buscarCoeficientes(CoeficienteRequestViewModel coeficienteRequest)
         {
-            var ret = await _coeficienteBll.BuscarListaCoeficientesFabricantesDistinct(fabricantes);
+            var response = await _coeficienteBll.BuscarListaCoeficientesFabricantesHistoricoDistinct(coeficienteRequest);
 
-            if (ret == null)
+            if (response == null)
                 return NoContent();
             else
-                return Ok(ret);
+                return Ok(response);
         }
 
         [HttpGet("propriedades")]

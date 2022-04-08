@@ -20,7 +20,13 @@ namespace OrcamentistaEIndicadorVendedor
 
         public TorcamentistaEIndicadorVendedor Atualizar(TorcamentistaEIndicadorVendedor obj)
         {
-            throw new NotImplementedException();
+            using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                db.TorcamentistaEIndicadorVendedor.Update(obj);
+                db.SaveChanges();
+                db.transacao.Commit();
+                return obj;
+            }
         }
 
         public bool Excluir(TorcamentistaEIndicadorVendedor obj)
@@ -30,7 +36,13 @@ namespace OrcamentistaEIndicadorVendedor
 
         public TorcamentistaEIndicadorVendedor Inserir(TorcamentistaEIndicadorVendedor obj)
         {
-            throw new NotImplementedException();
+            using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                db.TorcamentistaEIndicadorVendedor.Add(obj);
+                db.SaveChanges();
+                db.transacao.Commit();
+                return obj;
+            }
         }
 
         public List<TorcamentistaEIndicadorVendedor> PorFiltro(TorcamentistaEIndicadorVendedorFiltro obj)
@@ -44,13 +56,13 @@ namespace OrcamentistaEIndicadorVendedor
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
                     var vendedorParceiro = from usr in db.TorcamentistaEIndicadorVendedor
-                                           join par in db.TorcamentistaEindicadors on usr.Nome equals par.Apelido
+                                           join par in db.TorcamentistaEindicadors on usr.IdIndicador equals par.Id
                                            select new TorcamentistaEIndicadorVendedor()
                                            {
                                                Id = usr.Id,
                                                Nome = usr.Nome,
                                                Email = usr.Email,
-                                               Senha = usr.Senha,
+                                               Datastamp = UtilsGlobais.SenhaBll.DecodificaSenha(usr.Datastamp),
                                                IdIndicador = usr.IdIndicador,
                                                Telefone = usr.Telefone,
                                                Celular = usr.Celular,
@@ -58,28 +70,36 @@ namespace OrcamentistaEIndicadorVendedor
                                                UsuarioCadastro = usr.UsuarioCadastro,
                                                UsuarioUltimaAlteracao = usr.UsuarioUltimaAlteracao,
                                                DataCadastro = usr.DataCadastro,
-                                               DataUltimaAlteracao = usr.DataUltimaAlteracao
+                                               DataUltimaAlteracao = usr.DataUltimaAlteracao,
+                                               Loja = par.Loja,
+                                               VendedorResponsavel = par.Apelido
                                            };
-                    
-                                               //Loja = par.Loja,
-                                               //VendedorResponsavel = par.Vendedor
+
+                    if (obj.id > 0)
+                    {
+                        vendedorParceiro = vendedorParceiro.Where(x => x.Id == obj.id);
+                    }
                     if (!string.IsNullOrEmpty(obj.email))
                     {
                         vendedorParceiro = vendedorParceiro.Where(x => x.Email.ToUpper() == obj.email.ToUpper());
                     }
-                    if (!string.IsNullOrEmpty(obj.senha))
+                    if (!string.IsNullOrEmpty(obj.datastamp))
                     {
-                        vendedorParceiro = vendedorParceiro.Where(x => x.Senha == obj.senha);
+                        vendedorParceiro = vendedorParceiro.Where(x => x.Datastamp == obj.datastamp);
                     }
                     if (!string.IsNullOrEmpty(obj.loja))
                     {
                         vendedorParceiro = vendedorParceiro.Where(x => x.Loja == obj.loja);
                     }
-                    if (!string.IsNullOrEmpty(obj.IdIndicador))
+                    if (obj.IdIndicador > 0)
                     {
                         vendedorParceiro = vendedorParceiro.Where(x => x.IdIndicador == obj.IdIndicador);
                     }
 
+                    if (!string.IsNullOrEmpty(obj.nomeVendedor))
+                    {
+                        vendedorParceiro = vendedorParceiro.Where(x => x.VendedorResponsavel == obj.nomeVendedor);
+                    }
                     return vendedorParceiro.ToList();
                 }
 
