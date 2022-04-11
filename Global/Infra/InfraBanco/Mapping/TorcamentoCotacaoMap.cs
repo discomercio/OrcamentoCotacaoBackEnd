@@ -59,6 +59,14 @@ namespace InfraBanco.Mapping
                 .HasColumnName("Status")
                 .HasColumnType("int");
 
+            builder.Property(x => x.IdOrcamento)
+                .HasColumnName("IdOrcamento")
+                .HasColumnType("varchar(9)");
+
+            builder.Property(x => x.IdPedido)
+                .HasColumnName("IdPedido")
+                .HasColumnType("varchar(9)");
+
             builder.Property(x => x.Observacao)
                 .HasColumnName("Observacao")
                 .HasColumnType("varchar(500)");
