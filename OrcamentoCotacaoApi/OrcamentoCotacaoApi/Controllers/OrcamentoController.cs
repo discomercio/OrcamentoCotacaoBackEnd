@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Bll;
-using OrcamentoCotacaoBusiness.Models.Request;
 using System.Threading.Tasks;
 
 namespace OrcamentoCotacaoApi.Controllers
