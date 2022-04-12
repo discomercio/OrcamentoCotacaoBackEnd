@@ -1,15 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System;
-using InfraBanco.Modelos;
-using Microsoft.EntityFrameworkCore.Internal;
+﻿using Cliente.Dados;
 using InfraBanco.Constantes;
-using UtilsGlobais;
-using Cliente.Dados;
+using InfraBanco.Modelos;
+using InfraBanco.Modelos.Filtros;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
+using Orcamento.Dto;
 using Prepedido.PedidoVisualizacao.Dados;
 using Prepedido.PedidoVisualizacao.Dados.DetalhesPedido;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using UtilsGlobais;
 
 namespace Prepedido.PedidoVisualizacao
 {
@@ -73,6 +75,54 @@ namespace Prepedido.PedidoVisualizacao
             //ainda não achamos nada? então faz a busca sem filtrar por tipo
             ret = await ListarPedidosFiltroEstrito(apelido, TipoBuscaPedido.Todos, clienteBusca, numeroPedido, dataInicial, null);
             return ret;
+        }
+
+        public List<OrcamentoCotacaoListaDto> ListarPedidosPorFiltro(TorcamentoFiltro filtro)
+        {
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                List<OrcamentoCotacaoListaDto> saida = (from c in db.Tpedidos
+                                                        where c.Data > DateTime.Now.AddDays(-60)
+                                                                && c.St_Entrega != "CAN" //CANCELADOS
+                                                                && c.Loja == filtro.Loja
+                                                        orderby c.Data descending
+                                                        select new OrcamentoCotacaoListaDto
+                                                        {
+                                                            NumeroOrcamento = "", //c.IdOrcamentoCotacao.ToString(),
+                                                            NumPedido = c.Pedido,
+                                                            Cliente_Obra = $"{c.Tcliente.Nome}",
+                                                            Vendedor = c.Vendedor,
+                                                            Parceiro = c.Orcamentista,
+                                                            VendedorParceiro = c.Indicador,
+                                                            Valor = c.Vl_Total_NF.ToString(),
+                                                            Orcamentista = c.Orcamentista,
+                                                            Status = c.St_Entrega,
+                                                            VistoEm = "",
+                                                            IdIndicadorVendedor = null, //c.Id,
+                                                            Mensagem = "", //c.St_Orcamento == "7" ? "Sim" : "Não",
+                                                            DtCadastro = c.Data,
+                                                            DtExpiracao = null,
+                                                            DtInicio = filtro.DtInicio,
+                                                            DtFim = filtro.DtFim
+                                                        }).ToList();
+
+                if (!String.IsNullOrEmpty(filtro.Status))
+                    saida = saida.Where(x => x.Status == filtro.Status).ToList();
+
+                if (!String.IsNullOrEmpty(filtro.NumeroOrcamento))
+                    saida = saida.Where(x => x.NumeroOrcamento == filtro.NumeroOrcamento).ToList();
+
+                if (!String.IsNullOrEmpty(filtro.Vendedor))
+                    saida = saida.Where(x => x.Vendedor == filtro.Vendedor).ToList();
+
+                if (!String.IsNullOrEmpty(filtro.VendedorParceiro))
+                    saida = saida.Where(x => x.VendedorParceiro == filtro.VendedorParceiro).ToList();
+
+                if (filtro.DtInicio.HasValue && filtro.DtFim.HasValue)
+                    saida = saida.Where(x => x.DtInicio.Value >= DateTime.Now && filtro.DtFim.Value <= DateTime.Now).ToList();
+
+                return saida;
+            }
         }
 
         //a busca sem malabarismos para econtrar algum registro
@@ -820,8 +870,8 @@ namespace Prepedido.PedidoVisualizacao
 
             leftJoin.ForEach(async x =>
             {
-                //objeto para ser adicionado na lista de retorno
-                OcorrenciasPedidoDados ocorre = new OcorrenciasPedidoDados();
+                    //objeto para ser adicionado na lista de retorno
+                    OcorrenciasPedidoDados ocorre = new OcorrenciasPedidoDados();
                 ocorre.Usuario = x.juncao.Usuario_Cadastro;
                 ocorre.Dt_Hr_Cadastro = x.juncao.Dt_Hr_Cadastro;
                 if (x.juncao.Finalizado_Status != 0)

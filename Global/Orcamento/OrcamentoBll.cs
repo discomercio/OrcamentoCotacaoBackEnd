@@ -18,78 +18,108 @@ namespace Orcamento
             this.contextoProvider = contextoProvider;
         }
 
-        public List<OrcamentoCotacaoListaDto> PorFiltro(TorcamentoFiltro obj)
+        public List<OrcamentoCotacaoListaDto> OrcamentoCotacaoPorFiltro(TorcamentoFiltro filtro)
         {
             try
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
-                    if (obj.Origem == "ORCAMENTOS")
-                    {
-                        return (from c in db.TorcamentoCotacao
-                                where c.DataCadastro > DateTime.Now.AddDays(-60)
-                                        && obj.Loja == c.Loja
-                                orderby c.DataCadastro descending
-                                select new OrcamentoCotacaoListaDto
-                                {
-                                    NumOrcamento = c.Id.ToString("0000"),
-                                    NumPedido = null,
-                                    Cliente_Obra = $"{c.NomeCliente} - {c.NomeObra}",
-                                    Vendedor = "Vendedor",
-                                    Parceiro =  "Parceiro",
-                                    VendedorParceiro = "VendedorParceiro",
-                                    Valor = "0",
-                                    Status = c.Status.ToString(),
-                                    VistoEm = "",
-                                    Mensagem = c.Status == 7 ? "Sim" : "Não",
-                                    DtCadastro = c.DataCadastro,
-                                    DtExpiracao = c.DataCadastro.AddDays(10)
-                                }).ToList();
-                    }
-                    else if (obj.Origem == "PENDENTES") //ORCAMENTOS
-                    {
-                        return (from c in db.TorcamentoCotacao
-                                where c.DataCadastro > DateTime.Now.AddDays(-60)
-                                        && obj.Loja == c.Loja
-                                        && c.Status == 7 //PENDENTE
-                                orderby c.DataCadastro descending
-                                select new OrcamentoCotacaoListaDto
-                                {
-                                    NumOrcamento = c.Id.ToString("0000"),
-                                    NumPedido = null,
-                                    Cliente_Obra = $"{c.NomeCliente} - {c.NomeObra}",
-                                    Vendedor = "Vendedor",
-                                    Parceiro = "Parceiro",
-                                    VendedorParceiro = "VendedorParceiro",
-                                    Valor = "0",
-                                    Status = c.Status.ToString(),
-                                    VistoEm = "",
-                                    Mensagem = c.Status == 7 ? "Sim" : "Não",
-                                    DtCadastro = c.DataCadastro,
-                                    DtExpiracao = c.DataCadastro.AddDays(10)
-                                }).ToList();
-                    }
-                    else //if (obj.Origem == "PEDIDOS")
-                    {
-                        return (from c in db.Tpedidos
-                                where c.Data > DateTime.Now.AddDays(-60) //&& c.Loja == obj.Loja
-                                orderby c.Data descending
-                                select new OrcamentoCotacaoListaDto
-                                {
-                                    NumOrcamento = c.Orcamento,
-                                    NumPedido = c.Pedido,
-                                    Cliente_Obra = $"{c.Tcliente.Nome}",
-                                    Vendedor = c.Vendedor,
-                                    Parceiro = "",
-                                    VendedorParceiro = "",
-                                    Valor = c.Vl_Total_Familia.ToString(),
-                                    Status = c.St_Pagto,
-                                    VistoEm = "",
-                                    Mensagem = "Sim",
-                                }).ToList();
-                    }
+                    List<OrcamentoCotacaoListaDto> saida = (from c in db.TorcamentoCotacao
+                                                            where c.DataCadastro > DateTime.Now.AddDays(-60)
+                                                                    && c.Status != 7 //CANCELADOS
+                                                                    && c.Loja == filtro.Loja
+                                                            orderby c.DataCadastro descending
+                                                            select new OrcamentoCotacaoListaDto
+                                                            {
+                                                                NumeroOrcamento = c.IdOrcamento,
+                                                                NumPedido = c.IdPedido,
+                                                                Cliente_Obra = $"{c.NomeCliente} - {c.NomeObra}",
+                                                                Vendedor = c.IdVendedor,
+                                                                Parceiro = "Parceiro",
+                                                                VendedorParceiro = "VendedorParceiro",
+                                                                Valor = "0",
+                                                                Status = c.Status.ToString(),
+                                                                VistoEm = "",
+                                                                Mensagem = c.Status == 7 ? "Sim" : "Não",
+                                                                DtCadastro = c.DataCadastro,
+                                                                DtExpiracao = c.Validade,
+                                                                DtInicio = filtro.DtInicio,
+                                                                DtFim = filtro.DtFim
+                                                            }).ToList();
+
+                    if (!String.IsNullOrEmpty(filtro.Status))
+                        saida = saida.Where(x => x.Status == filtro.Status).ToList();
+
+                    if (!String.IsNullOrEmpty(filtro.NumeroOrcamento))
+                        saida = saida.Where(x => x.NumeroOrcamento == filtro.NumeroOrcamento).ToList();
+
+                    if (!String.IsNullOrEmpty(filtro.Vendedor))
+                        saida = saida.Where(x => x.Vendedor == filtro.Vendedor).ToList();
+
+                    if (!String.IsNullOrEmpty(filtro.VendedorParceiro))
+                        saida = saida.Where(x => x.VendedorParceiro == filtro.VendedorParceiro).ToList();
+
+                    if (filtro.DtInicio.HasValue && filtro.DtFim.HasValue)
+                        saida = saida.Where(x => x.DtInicio.Value >= DateTime.Now && filtro.DtFim.Value <= DateTime.Now).ToList();
+
+                    return saida;
                 }
-            } 
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public List<OrcamentoCotacaoListaDto> OrcamentoPorFiltro(TorcamentoFiltro filtro)
+        {
+            try
+            {
+                using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+                {
+                    List<OrcamentoCotacaoListaDto> saida = (from c in db.Torcamentos
+                                                            where c.Data > DateTime.Now.AddDays(-60)
+                                                                    && c.St_Orcamento != "CAN" //CANCELADOS
+                                                                    && c.Loja == filtro.Loja
+                                                            orderby c.Data descending
+                                                            select new OrcamentoCotacaoListaDto
+                                                            {
+                                                                NumeroOrcamento = c.Orcamento.ToString(),
+                                                                NumPedido = c.Pedido,
+                                                                Cliente_Obra = $"{c.Tcliente.Nome}",
+                                                                Vendedor = c.Vendedor,
+                                                                Parceiro = c.Orcamentista,
+                                                                VendedorParceiro = "VendedorParceiro",
+                                                                Valor = c.Vl_Total_NF.ToString(),
+                                                                Orcamentista = c.Orcamentista,
+                                                                Status = c.St_Orcamento,
+                                                                VistoEm = "",
+                                                                IdIndicadorVendedor = c.IdIndicadorVendedor,
+                                                                Mensagem = c.St_Orcamento == "7" ? "Sim" : "Não",
+                                                                DtCadastro = c.Data,
+                                                                DtExpiracao = null,
+                                                                DtInicio = filtro.DtInicio,
+                                                                DtFim = filtro.DtFim
+                                                            }).ToList();
+
+                    if (!String.IsNullOrEmpty(filtro.Status))
+                        saida = saida.Where(x => x.Status == filtro.Status).ToList();
+
+                    if (!String.IsNullOrEmpty(filtro.NumeroOrcamento))
+                        saida = saida.Where(x => x.NumeroOrcamento == filtro.NumeroOrcamento).ToList();
+
+                    if (!String.IsNullOrEmpty(filtro.Vendedor))
+                        saida = saida.Where(x => x.Vendedor == filtro.Vendedor).ToList();
+
+                    if (!String.IsNullOrEmpty(filtro.VendedorParceiro))
+                        saida = saida.Where(x => x.VendedorParceiro == filtro.VendedorParceiro).ToList();
+
+                    if (filtro.DtInicio.HasValue && filtro.DtFim.HasValue)
+                        saida = saida.Where(x => x.DtInicio.Value >= DateTime.Now && filtro.DtFim.Value <= DateTime.Now).ToList();
+
+                    return saida;
+                }
+            }
             catch (Exception e)
             {
                 throw e;

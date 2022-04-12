@@ -181,6 +181,9 @@ namespace InfraBanco.Modelos
         [Column("st_orc_virou_pedido")]
         public short? St_Orc_Virou_Pedido { get; set; }
 
+        [Column("pedido")]
+        public string Pedido { get; set; }
+
         [Column("st_end_entrega")]
         [Required]
         public short St_End_Entrega { get; set; }

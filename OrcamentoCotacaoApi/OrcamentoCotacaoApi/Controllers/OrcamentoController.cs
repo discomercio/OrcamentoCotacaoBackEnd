@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using InfraBanco.Modelos.Filtros;
-using InfraBanco.Modelos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Bll;
-using OrcamentoCotacaoBusiness.Models.Request;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Text.Json;
@@ -30,11 +28,15 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult PorFiltro(int page, int pageItens, string origem, string lojaLogada)
+        public IActionResult PorFiltro(TorcamentoFiltro filtro)
         {
             _logger.LogInformation("Buscando lista de orçamentos");
 
-            var saida = _orcamentoBll.PorFiltro(new TorcamentoFiltro { Page = page, RecordsPerPage = pageItens, Origem = origem, Loja = lojaLogada });
+            filtro.Loja = ObterLoja(filtro.Loja);
+            filtro.TipoUsuario = LoggedUser.TipoUsuario;
+            filtro.Apelido = LoggedUser.Nome;
+
+            var saida = _orcamentoBll.PorFiltro(filtro);
 
             if (saida != null)
                 return Ok(saida);
@@ -95,13 +97,12 @@ namespace OrcamentoCotacaoApi.Controllers
                 return NoContent();
         }
 
-
         [HttpPost("mensagem")]
         public async Task<IActionResult> EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem)
         {
             _logger.LogInformation("Inserindo Mensagem");
 
-            var saida =  _orcamentoBll.EnviarMensagem(orcamentoCotacaoMensagem);
+            var saida = _orcamentoBll.EnviarMensagem(orcamentoCotacaoMensagem);
 
             if (saida)
             {
@@ -124,7 +125,7 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             _logger.LogInformation("Marcando mensagens como lida");
 
-            var saida =  _orcamentoBll.MarcarMensagemComoLida(IdOrcamentoCotacao, idUsuarioDestinatario);
+            var saida = _orcamentoBll.MarcarMensagemComoLida(IdOrcamentoCotacao, idUsuarioDestinatario);
 
             if (saida)
             {
@@ -142,6 +143,16 @@ namespace OrcamentoCotacaoApi.Controllers
             }
         }
 
+        private string ObterLoja(string loja)
+        {
+            if (!string.IsNullOrEmpty(loja))
+            {
+                return loja;
+            }
+            else
+            {
+                return LoggedUser.Loja?.Length > 3 ? LoggedUser.Loja.Split(',')[0] : LoggedUser.Loja;
+            }
 
         //[HttpGet("id")]
         //public async Task<OrcamentoResponseViewModel> GetById(string id)
@@ -161,15 +172,5 @@ namespace OrcamentoCotacaoApi.Controllers
             _orcamentoBll.CadastrarOrcamento(model, user);
             return Ok(model);
         }
-
-        //[HttpPut]
-        //public async Task<OrcamentoResponseViewModel> Put(OrcamentoRequestViewModel model)
-        //{
-        //    var user = User.Identity.Name;
-
-        //    _logger.LogInformation("Alterando orcamento");
-        //    var orcamento = _orcamentoBll.Atualizar(_mapper.Map<Torcamento>(model));//model, user);
-        //    return _mapper.Map<OrcamentoResponseViewModel>(orcamento);
-        //}
     }
 }

@@ -6,7 +6,7 @@ using Orcamento;
 using Orcamento.Dto;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
-using System;
+using PrepedidoBusiness.Bll;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -17,16 +17,22 @@ namespace OrcamentoCotacaoBusiness.Bll
     public class OrcamentoCotacaoBll
     {
         private readonly OrcamentoBll _orcamentoBll;
+        private readonly PedidoPrepedidoApiBll _pedidoPrepedidoApiBll;
         private readonly ConfigOrcamentoCotacao _appSettings;
         private readonly OrcamentistaEIndicadorBll orcamentistaEIndicadorBll;
         private readonly OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll;
         private readonly Usuario.UsuarioBll usuarioBll;
 
+        public OrcamentoCotacaoBll(
+            OrcamentoBll orcamentoBll, 
+            PedidoPrepedidoApiBll pedidoPrepedidoApiBll, 
+            IOptions<ConfigOrcamentoCotacao> appSettings)
         public OrcamentoCotacaoBll(OrcamentoBll orcamentoBll, IOptions<ConfigOrcamentoCotacao> appSettings,
             OrcamentistaEIndicadorBll orcamentistaEIndicadorBll, Usuario.UsuarioBll usuarioBll,
             OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll)
         {
             _orcamentoBll = orcamentoBll;
+            _pedidoPrepedidoApiBll = pedidoPrepedidoApiBll;
             this.orcamentistaEIndicadorBll = orcamentistaEIndicadorBll;
             this.usuarioBll = usuarioBll;
             this.orcamentistaEIndicadorVendedorBll = orcamentistaEIndicadorVendedorBll;
@@ -35,7 +41,18 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public List<OrcamentoCotacaoListaDto> PorFiltro(TorcamentoFiltro tOrcamentoFiltro)
         {
-            return _orcamentoBll.PorFiltro(tOrcamentoFiltro);
+            if (tOrcamentoFiltro.Origem == "ORCAMENTOS")
+            {
+                return _orcamentoBll.OrcamentoCotacaoPorFiltro(tOrcamentoFiltro);
+            }
+            else if (tOrcamentoFiltro.Origem == "PENDENTES") //PrePedido/Em Aprovação [tOrcamentos]
+            {
+                return _orcamentoBll.OrcamentoPorFiltro(tOrcamentoFiltro);
+            }
+            else //if (tOrcamentoFiltro.Origem == "PEDIDOS")
+            {
+                return _pedidoPrepedidoApiBll.ListarPedidos(tOrcamentoFiltro);
+            }
         }
 
         public async Task<List<TcfgOrcamentoCotacaoStatus>> ObterListaStatus(TorcamentoFiltro tOrcamentoFiltro)
