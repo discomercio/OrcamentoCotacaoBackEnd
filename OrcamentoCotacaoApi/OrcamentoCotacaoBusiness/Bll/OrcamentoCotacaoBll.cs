@@ -120,7 +120,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (!string.IsNullOrEmpty(orcamento.Parceiro))
             {
                 var parceiro = orcamentistaEIndicadorBll
-                    .BuscarParceiros(new TorcamentistaEindicadorFiltro() { apelido = orcamento.Parceiro }).FirstOrDefault();
+                    .BuscarParceiros(new TorcamentistaEindicadorFiltro() { idParceiro = int.Parse(orcamento.Parceiro) }).FirstOrDefault();
 
                 if (parceiro == null) throw new ArgumentException("Parceiro não encontrado!");
 

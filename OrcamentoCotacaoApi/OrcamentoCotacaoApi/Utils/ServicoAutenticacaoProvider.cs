@@ -195,7 +195,7 @@ namespace OrcamentoCotacaoApi.Utils
                             Loja = string.Join(",", lojaOrcamentistaVendedor.Select(x => x.Loja)),
                             Unidade_negocio = acessoBll.Buscar_unidade_negocio(lojaOrcamentistaVendedor).Result,
                             VendedorResponsavel = orcamentistaVendedor.FirstOrDefault().VendedorResponsavel,
-                            IdParceiro = orcamentistaVendedor.FirstOrDefault().VendedorResponsavel,
+                            IdParceiro = orcamentistaVendedor.FirstOrDefault().IdIndicador.ToString(),
                             Permissoes = new List<string>()
                             {
                                 ((int)ePermissao.AcessoAoModulo).ToString()
