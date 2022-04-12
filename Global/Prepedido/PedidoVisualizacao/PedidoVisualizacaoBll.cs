@@ -112,6 +112,9 @@ namespace Prepedido.PedidoVisualizacao
                 if (!String.IsNullOrEmpty(filtro.NumeroOrcamento))
                     saida = saida.Where(x => x.NumeroOrcamento == filtro.NumeroOrcamento).ToList();
 
+                if (!String.IsNullOrEmpty(filtro.Parceiro))
+                    saida = saida.Where(x => x.Parceiro == filtro.Parceiro).ToList();
+
                 if (!String.IsNullOrEmpty(filtro.Vendedor))
                     saida = saida.Where(x => x.Vendedor == filtro.Vendedor).ToList();
 
@@ -119,7 +122,7 @@ namespace Prepedido.PedidoVisualizacao
                     saida = saida.Where(x => x.VendedorParceiro == filtro.VendedorParceiro).ToList();
 
                 if (filtro.DtInicio.HasValue && filtro.DtFim.HasValue)
-                    saida = saida.Where(x => x.DtInicio.Value >= DateTime.Now && filtro.DtFim.Value <= DateTime.Now).ToList();
+                    saida = saida.Where(x => filtro.DtInicio.Value >= x.DtInicio.Value && filtro.DtFim.Value <= x.DtFim.Value).ToList();
 
                 return saida;
             }

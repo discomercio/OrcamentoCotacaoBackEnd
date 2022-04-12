@@ -24,7 +24,7 @@ namespace OrcamentoCotacaoApi.Controllers
             _orcamentoBll = orcamentoBll;
         }
 
-        [HttpGet]
+        [HttpPost]
         public IActionResult PorFiltro(TorcamentoFiltro filtro)
         {
             _logger.LogInformation("Buscando lista de orçamentos");

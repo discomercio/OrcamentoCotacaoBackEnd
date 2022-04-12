@@ -42,7 +42,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
         }
 
-        public async Task<List<TorcamentoCotacaoStatus>> ObterListaStatus(TorcamentoFiltro tOrcamentoFiltro)
+        public async Task<List<TcfgSelectItem>> ObterListaStatus(TorcamentoFiltro tOrcamentoFiltro)
         {
             return await _orcamentoBll.ObterListaStatus(tOrcamentoFiltro);
         }

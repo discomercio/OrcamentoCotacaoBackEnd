@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace InfraBanco.Modelos
 {
-    public class TcfgOrcamentoCotacaoStatus
+    public class TcfgOrcamentoStatus
     {
         public static List<TcfgSelectItem> ObterLista()
         {

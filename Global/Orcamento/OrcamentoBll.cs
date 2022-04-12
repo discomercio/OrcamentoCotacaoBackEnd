@@ -1,4 +1,5 @@
-﻿using InfraBanco.Modelos;
+﻿using InfraBanco.Constantes;
+using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using Microsoft.EntityFrameworkCore;
 using Orcamento.Dto;
@@ -53,6 +54,9 @@ namespace Orcamento
                     if (!String.IsNullOrEmpty(filtro.NumeroOrcamento))
                         saida = saida.Where(x => x.NumeroOrcamento == filtro.NumeroOrcamento).ToList();
 
+                    if (!String.IsNullOrEmpty(filtro.Parceiro))
+                        saida = saida.Where(x => x.Parceiro == filtro.Parceiro).ToList();
+
                     if (!String.IsNullOrEmpty(filtro.Vendedor))
                         saida = saida.Where(x => x.Vendedor == filtro.Vendedor).ToList();
 
@@ -60,7 +64,7 @@ namespace Orcamento
                         saida = saida.Where(x => x.VendedorParceiro == filtro.VendedorParceiro).ToList();
 
                     if (filtro.DtInicio.HasValue && filtro.DtFim.HasValue)
-                        saida = saida.Where(x => x.DtInicio.Value >= DateTime.Now && filtro.DtFim.Value <= DateTime.Now).ToList();
+                        saida = saida.Where(x => filtro.DtInicio.Value >= x.DtInicio.Value && filtro.DtFim.Value <= x.DtFim.Value).ToList();
 
                     return saida;
                 }
@@ -108,6 +112,9 @@ namespace Orcamento
                     if (!String.IsNullOrEmpty(filtro.NumeroOrcamento))
                         saida = saida.Where(x => x.NumeroOrcamento == filtro.NumeroOrcamento).ToList();
 
+                    if (!String.IsNullOrEmpty(filtro.Parceiro))
+                        saida = saida.Where(x => x.Parceiro == filtro.Parceiro).ToList();
+
                     if (!String.IsNullOrEmpty(filtro.Vendedor))
                         saida = saida.Where(x => x.Vendedor == filtro.Vendedor).ToList();
 
@@ -115,7 +122,7 @@ namespace Orcamento
                         saida = saida.Where(x => x.VendedorParceiro == filtro.VendedorParceiro).ToList();
 
                     if (filtro.DtInicio.HasValue && filtro.DtFim.HasValue)
-                        saida = saida.Where(x => x.DtInicio.Value >= DateTime.Now && filtro.DtFim.Value <= DateTime.Now).ToList();
+                        saida = saida.Where(x => filtro.DtInicio.Value >= x.DtInicio.Value && filtro.DtFim.Value <= x.DtFim.Value).ToList();
 
                     return saida;
                 }
@@ -126,30 +133,40 @@ namespace Orcamento
             }
         }
 
-        public async Task<List<TorcamentoCotacaoStatus>> ObterListaStatus(TorcamentoFiltro obj)
+        public async Task<List<TcfgSelectItem>> ObterListaStatus(TorcamentoFiltro obj)
         {
             using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 if (obj.Origem == "ORCAMENTOS")
                 {
-                    return await db.TorcamentoCotacaoStatus
-                            .OrderBy(x => x.Descricao)
-                            .ToListAsync();
+                    var lista = await db.TorcamentoCotacao
+                        .OrderBy(x => x.Status.ToString())
+                        .Select(x => x.Status.ToString())
+                        .Distinct()
+                        .ToListAsync();
+
+                    return TcfgOrcamentoCotacaoStatus.ObterLista(lista);
                 }
-                else //if (obj.Origem == "PENDENTES") //ORCAMENTOS
+                else if (obj.Origem == "PENDENTES") //ORCAMENTOS
                 {
-                    return await db.TorcamentoCotacaoStatus
-                            .Where(x => x.Descricao == "Pendente")
-                            .ToListAsync();
+                    var lista = await db.Torcamentos
+                        .OrderBy(x => x.St_Orcamento)
+                        .Select(x => x.St_Orcamento)
+                        .Distinct()
+                        .ToListAsync();
+
+                    return TcfgOrcamentoStatus.ObterLista(lista);
                 }
-                //else //if (obj.Origem == "PEDIDOS")
-                //{
-                //    return (from c in db.Tpedidos
-                //            select new TorcamentoCotacaoStatus
-                //            {
-                //                Id = c.st
-                //            }).ToList();
-                //}
+                else //if (obj.Origem == "PEDIDOS")
+                {
+                    var lista = await db.Tpedidos
+                        .OrderBy(x => x.St_Entrega)
+                        .Select(x => x.St_Entrega)
+                        .Distinct()
+                        .ToListAsync();
+
+                    return TcfgPedidoStatus.ObterLista(lista);
+                }
             }
         }
 
