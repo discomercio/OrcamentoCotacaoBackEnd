@@ -23,24 +23,57 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly OrcamentistaEIndicadorBll orcamentistaEIndicadorBll;
         private readonly OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll;
         private readonly Usuario.UsuarioBll usuarioBll;
+        private readonly OrcamentoCotacao.OrcamentoCotacaoBll orcamentoCotacaoBll;
 
         public OrcamentoCotacaoBll(OrcamentoBll orcamentoBll, IOptions<ConfigOrcamentoCotacao> appSettings,
             OrcamentistaEIndicadorBll orcamentistaEIndicadorBll, Usuario.UsuarioBll usuarioBll,
-            OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll, PedidoPrepedidoApiBll pedidoPrepedidoApiBll)
+            OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll, PedidoPrepedidoApiBll pedidoPrepedidoApiBll,
+            OrcamentoCotacao.OrcamentoCotacaoBll orcamentoCotacaoBll)
         {
             _orcamentoBll = orcamentoBll;
             _pedidoPrepedidoApiBll = pedidoPrepedidoApiBll;
+            this.orcamentoCotacaoBll = orcamentoCotacaoBll;
             this.orcamentistaEIndicadorBll = orcamentistaEIndicadorBll;
             this.usuarioBll = usuarioBll;
             this.orcamentistaEIndicadorVendedorBll = orcamentistaEIndicadorVendedorBll;
             _appSettings = appSettings.Value;
+
         }
 
         public List<OrcamentoCotacaoListaDto> PorFiltro(TorcamentoFiltro tOrcamentoFiltro)
         {
             if (tOrcamentoFiltro.Origem == "ORCAMENTOS")
             {
-                return _orcamentoBll.OrcamentoCotacaoPorFiltro(tOrcamentoFiltro);
+                var orcamentoCotacaoListaDto = orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro()
+                {
+                    Tusuario = true,
+                    LimitarData = true,
+                    Loja = tOrcamentoFiltro.Loja
+                });
+
+                List<OrcamentoCotacaoListaDto> retorno = new List<OrcamentoCotacaoListaDto>();
+                if (orcamentoCotacaoListaDto != null)
+                {
+                    orcamentoCotacaoListaDto.ForEach(x => retorno.Add(new OrcamentoCotacaoListaDto()
+                    {
+                        NumeroOrcamento = x.IdOrcamento,
+                        NumPedido = x.IdPedido,
+                        Cliente_Obra = $"{x.NomeCliente} - {x.NomeObra}",
+                        Vendedor = x.Tusuario.Usuario,
+                        Parceiro = "Parceiro",
+                        VendedorParceiro = "VendedorParceiro",
+                        Valor = "0",
+                        Status = x.Status.ToString(),
+                        VistoEm = "",
+                        Mensagem = x.Status == 7 ? "Sim" : "Não",
+                        DtCadastro = x.DataCadastro,
+                        DtExpiracao = x.Validade,
+                        DtInicio = tOrcamentoFiltro.DtInicio,
+                        DtFim = tOrcamentoFiltro.DtFim
+                    }));
+                }
+                return retorno;
+                //return _orcamentoBll.OrcamentoCotacaoPorFiltro(tOrcamentoFiltro);
             }
             else if (tOrcamentoFiltro.Origem == "PENDENTES") //PrePedido/Em Aprovação [tOrcamentos]
             {

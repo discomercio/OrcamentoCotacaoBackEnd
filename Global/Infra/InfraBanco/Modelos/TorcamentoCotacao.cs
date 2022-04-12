@@ -91,5 +91,7 @@ namespace InfraBanco.Modelos
         public virtual List<TorcamentoCotacaoLink> TorcamentoCotacaoLinks { get; set; }
 
         public virtual TcfgOrcamentoCotacaoStatus TcfgOrcamentoCotacaoStatus { get; set; }
+
+        public virtual Tusuario Tusuario { get; set; }
     }
 }

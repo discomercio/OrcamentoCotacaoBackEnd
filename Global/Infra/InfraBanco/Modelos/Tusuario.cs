@@ -1,5 +1,6 @@
 ﻿using Interfaces;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -118,5 +119,7 @@ namespace InfraBanco.Modelos
 
         [Column("Id")]
         public int Id { get; set; }
+
+        public List<TorcamentoCotacao> TorcamentoCotacaos { get; set; }
     }
 }

@@ -92,7 +92,6 @@ namespace MeioPagamentos
 
                 throw ex;
             }
-            throw new NotImplementedException();
         }
     }
 }
