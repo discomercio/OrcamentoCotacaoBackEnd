@@ -96,30 +96,18 @@ namespace Orcamento
             }
         }
 
-        public async Task<List<TorcamentoCotacaoStatus>> ObterListaStatus(TorcamentoFiltro obj)
+        public async Task<List<TcfgOrcamentoCotacaoStatus>> ObterListaStatus(TorcamentoFiltro obj)
         {
             using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 if (obj.Origem == "ORCAMENTOS")
                 {
-                    return await db.TorcamentoCotacaoStatus
+                    return await db.TcfgOrcamentoCotacaoStatuses
                             .OrderBy(x => x.Descricao)
                             .ToListAsync();
                 }
-                else //if (obj.Origem == "PENDENTES") //ORCAMENTOS
-                {
-                    return await db.TorcamentoCotacaoStatus
-                            .Where(x => x.Descricao == "Pendente")
-                            .ToListAsync();
-                }
-                //else //if (obj.Origem == "PEDIDOS")
-                //{
-                //    return (from c in db.Tpedidos
-                //            select new TorcamentoCotacaoStatus
-                //            {
-                //                Id = c.st
-                //            }).ToList();
-                //}
+
+                return null;
             }
         }
 

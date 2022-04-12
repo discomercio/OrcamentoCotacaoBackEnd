@@ -47,6 +47,13 @@ namespace InfraBanco.Mapping
             builder.Property(x => x.DataUltimaAlteracao)
                 .HasColumnName("DataUltimaAlteracao")
                 .HasColumnType("smalldatetime");
+
+
+            //Relations
+            builder
+                .HasOne(x => x.TorcamentoCotacao)
+                .WithMany(o => o.TorcamentoCotacaoOpcaos)
+                .HasForeignKey(f => f.IdOrcamentoCotacao);
         }
     }
 }

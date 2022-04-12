@@ -40,7 +40,7 @@ namespace OrcamentoCotacaoApi.BaseController
 
         [HttpPost("buscarCoeficientes")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<IActionResult> buscarCoeficientes(CoeficienteRequestViewModel coeficienteRequest)
+        public async Task<IActionResult> BuscarCoeficientes(CoeficienteRequestViewModel coeficienteRequest)
         {
             var response = await _coeficienteBll.BuscarListaCoeficientesFabricantesHistoricoDistinct(coeficienteRequest);
 

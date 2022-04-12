@@ -7,6 +7,9 @@ using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Text.Json;
+using InfraIdentity;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -151,10 +154,11 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(OrcamentoRequestViewModel model)
         {
-            var user = User.Identity.Name;
-
             _logger.LogInformation("Inserindo Orcamento");
 
+            var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+
+            _orcamentoBll.CadastrarOrcamento(model, user);
             return Ok(model);
         }
 

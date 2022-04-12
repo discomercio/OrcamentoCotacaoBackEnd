@@ -11,12 +11,14 @@ namespace InfraBanco.Modelos
     {
         [Key]
         [Column("Id")]
-        public short Id { get; set; }
+        public int Id { get; set; }
 
         [Column("Descricao")]
         [MaxLength(30)]
         [Required]
         public string Descricao { get; set; }
+
+        public virtual TorcamentoCotacao TorcamentoCotacao { get; set; }
 
     }
 }

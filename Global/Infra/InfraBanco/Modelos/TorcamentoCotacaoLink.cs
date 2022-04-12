@@ -57,5 +57,6 @@ namespace InfraBanco.Modelos
         [Required]
         public DateTime DataHoraCadastro { get; set; }
 
+        public virtual TorcamentoCotacao TorcamentoCotacao { get; set; }
     }
 }

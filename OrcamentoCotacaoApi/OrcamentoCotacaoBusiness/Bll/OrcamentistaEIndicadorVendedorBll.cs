@@ -25,12 +25,12 @@ namespace OrcamentoCotacaoBusiness.Bll
         public List<OrcamentistaEIndicadorVendedorResponseViewModel> BuscarVendedoresParceiro(string apelidoParceiro)
         {
             var parceiro = _orcamentistaEIndicadorBll
-                .PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = apelidoParceiro }).FirstOrDefault();
+                .BuscarParceiros(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = apelidoParceiro }).FirstOrDefault();
           
             if (parceiro == null) 
                 return null;
 
-            var vendedoresParceiro = _orcamentistaEindicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { IdIndicador = parceiro.Id });
+            var vendedoresParceiro = _orcamentistaEindicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { IdIndicador = parceiro.IdIndicador });
             return _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(vendedoresParceiro);
         }
     }

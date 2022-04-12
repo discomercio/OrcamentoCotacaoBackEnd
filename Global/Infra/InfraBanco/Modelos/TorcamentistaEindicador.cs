@@ -115,8 +115,6 @@ namespace InfraBanco.Modelos
         [MaxLength(60)]
         public string Endereco_Complemento { get; set; }
 
-        [Column("Id")]
-        public int Id { get; set; }
 #endif
     }
 }

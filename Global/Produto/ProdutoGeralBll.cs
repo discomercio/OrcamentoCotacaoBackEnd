@@ -437,7 +437,6 @@ namespace Produto
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
-
                     var produtoCatalogoPropriedades = db.TProdutoCatalogoPropriedades.Where(item => item.id == produtoCatalogoPropriedade.id);
 
                     if (produtoCatalogoPropriedades != null)

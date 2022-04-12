@@ -91,6 +91,7 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<OrcamentistaEIndicadorVendedorBll, OrcamentistaEIndicadorVendedorBll>();
             services.AddTransient<ProdutoOrcamentoCotacaoBll, ProdutoOrcamentoCotacaoBll>();
             services.AddTransient<ProdutoCatalogoOrcamentoCotacaoBll, ProdutoCatalogoOrcamentoCotacaoBll>();
+            services.AddTransient<OrcamentistaEIndicadorBll, OrcamentistaEIndicadorBll>();
 
             return services;
         }

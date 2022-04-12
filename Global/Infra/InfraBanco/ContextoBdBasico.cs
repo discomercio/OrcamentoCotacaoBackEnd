@@ -180,6 +180,9 @@ namespace InfraBanco
 
             modelBuilder.Entity<TpercentualCustoFinanceiroFornecedorHistorico>()
                 .HasKey(x => new { x.Fabricante, x.Tipo_Parcelamento, x.Qtde_Parcelas });
+
+            modelBuilder.Entity<TcfgOrcamentoCotacaoStatus>()
+                .HasKey(x => new { x.Id });
 #endif
         }
 
@@ -247,7 +250,8 @@ namespace InfraBanco
         public DbSet<TcfgTipoPessoa> TcfgTipoPessoas { get; set; }
         public DbSet<TcfgTipoUsuario> TcfgTipoUsuarios { get; set; }
         public DbSet<TcfgTipoUsuarioPerfil> TcfgTipoUsuarioPerfis { get; set; }
-        public DbSet<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContextos { get; set; }         
+        public DbSet<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContextos { get; set; }
+        public DbSet<TcfgOrcamentoCotacaoStatus> TcfgOrcamentoCotacaoStatuses { get; set; }
 
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public DbSet<Taviso> Tavisos { get; set; }
@@ -272,7 +276,6 @@ namespace InfraBanco
         public DbSet<TprodutoCatalogoItens> TprodutoCatalogoItens { get; set; }
         public DbSet<TorcamentistaEIndicadorVendedor> TorcamentistaEIndicadorVendedor { get; set; }
         public DbSet<TorcamentoCotacao> TorcamentoCotacao { get; set; }
-        public DbSet<TorcamentoCotacaoStatus> TorcamentoCotacaoStatus { get; set; }
         public DbSet<TorcamentoCotacaoOpcao> TorcamentoCotacaoOpcao { get; set; }
         public DbSet<TorcamentoCotacaoOpcaoPagto> TorcamentoCotacaoOpcaoPagtos { get; set; }
         public DbSet<TorcamentoCotacaoItemUnificado> TorcamentoCotacaoItemUnificados { get; set; }

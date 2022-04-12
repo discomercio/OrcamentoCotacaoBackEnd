@@ -43,10 +43,10 @@ namespace OrcamentoCotacaoBusiness.Bll
                             //c.Hab_Acesso_Sistema,
                             //c.statStatus,
                             Loja = c.Loja,
-                            TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR
+                            TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR,
+                            Id = c.Id
                         };
 
-            string retorno = null;
             var t = dados.FirstOrDefault();
 
             //se o apelido nao existe
@@ -66,7 +66,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                             //c.Hab_Acesso_Sistema,
                             //c.statStatus,
                             Loja = c.Loja,
-                            TipoUsuario = (int)Constantes.TipoUsuario.PARCEIRO
+                            TipoUsuario = (int)Constantes.TipoUsuario.PARCEIRO,
+                            Id = c.IdIndicador
                         };
                 t = dados.FirstOrDefault();
                 /*Busca de parceiros*/
@@ -85,7 +86,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                                 //c.Hab_Acesso_Sistema,
                                 //c.statStatus,
                                 Loja = c.Loja,
-                                TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO
+                                TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO,
+                                Id = c.Id
                             };
                     t = dados.FirstOrDefault();
                     if (t != null)

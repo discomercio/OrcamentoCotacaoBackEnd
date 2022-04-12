@@ -110,8 +110,8 @@ namespace InfraBanco
         public IQueryable<TcfgTipoPessoa> TcfgTipoPessoas { get => contexto.TcfgTipoPessoas.AsNoTracking(); }
         public IQueryable<TcfgTipoUsuario> TcfgTipoUsuarios { get => contexto.TcfgTipoUsuarios.AsNoTracking(); }
         public IQueryable<TcfgTipoUsuarioPerfil> TcfgTipoUsuarioPerfis { get => contexto.TcfgTipoUsuarioPerfis.AsNoTracking(); }
-        public IQueryable<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContextos { get => contexto.TcfgTipoUsuarioContextos.AsNoTracking(); }        
-
+        public IQueryable<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContextos { get => contexto.TcfgTipoUsuarioContextos.AsNoTracking(); }
+        public IQueryable<TcfgOrcamentoCotacaoStatus> TcfgOrcamentoCotacaoStatuses { get => contexto.TcfgOrcamentoCotacaoStatuses.AsNoTracking(); }
 
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public IQueryable<Tdesconto> Tdescontos { get => contexto.Tdescontos.AsNoTracking(); }

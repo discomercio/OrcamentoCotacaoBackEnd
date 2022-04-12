@@ -14,5 +14,7 @@ namespace InfraBanco.Modelos
         public DateTime DataCadastro { get; set; }
         public string UsuarioUltimaAlteracao { get; set; }
         public DateTime? DataUltimaAlteracao { get; set; }
+
+        public virtual TorcamentoCotacao TorcamentoCotacao { get; set; }
     }
 }

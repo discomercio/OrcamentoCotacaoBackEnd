@@ -115,5 +115,8 @@ namespace InfraBanco.Modelos
 
         [Column("DtHrSessionTokenModuloLoja")]
         public DateTime? DtHrSessionTokenModuloLoja { get; set; }
+
+        [Column("Id")]
+        public int Id { get; set; }
     }
 }

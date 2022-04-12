@@ -53,7 +53,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 .PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = apelidoParceiro }).FirstOrDefault();
             if (parceiro == null) return null;
 
-            var usuarios = _orcamentistaEindicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { IdIndicador = parceiro.Id });
+            var usuarios = _orcamentistaEindicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { IdIndicador = parceiro.IdIndicador });
 
             return _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(usuarios);
         }

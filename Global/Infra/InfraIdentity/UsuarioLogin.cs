@@ -8,6 +8,7 @@ namespace InfraIdentity
 {
     public class UsuarioLogin
     {
+        public int Id { get; set; }
         //esta é a chave 
         public string Apelido { get; set; }
         public string Senha { get; set; }

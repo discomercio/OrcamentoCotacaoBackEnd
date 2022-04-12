@@ -56,7 +56,7 @@ namespace OrcamentistaEIndicadorVendedor
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
                     var vendedorParceiro = from usr in db.TorcamentistaEIndicadorVendedor
-                                           join par in db.TorcamentistaEindicadors on usr.IdIndicador equals par.Id
+                                           join par in db.TorcamentistaEindicadors on usr.IdIndicador equals par.IdIndicador
                                            select new TorcamentistaEIndicadorVendedor()
                                            {
                                                Id = usr.Id,

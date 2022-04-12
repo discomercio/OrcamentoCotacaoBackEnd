@@ -46,7 +46,7 @@ namespace OrcamentistaEIndicadorVendedor
 
             objOrcamentistaEIndicadorVendedor.Datastamp = senha_codificada;
 
-            objOrcamentistaEIndicadorVendedor.IdIndicador = oei.First().Id;
+            objOrcamentistaEIndicadorVendedor.IdIndicador = oei.First().IdIndicador;
             objOrcamentistaEIndicadorVendedor.UsuarioCadastro = parceiro;
             objOrcamentistaEIndicadorVendedor.UsuarioUltimaAlteracao = parceiro;
             objOrcamentistaEIndicadorVendedor.DataCadastro = DateTime.Now;

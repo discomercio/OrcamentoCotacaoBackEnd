@@ -156,7 +156,8 @@ namespace OrcamentoCotacaoApi.Utils
                                 ((int)ePermissao.AcessoAoModulo).ToString(),
                                 ((int)ePermissao.AdministradorDoModulo).ToString()
                             },
-                            TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR
+                            TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR,
+                            Id = usuarioInterno.FirstOrDefault().Id
                         };
                         return usuario;
                     //break;
@@ -178,7 +179,8 @@ namespace OrcamentoCotacaoApi.Utils
                                 ((int)ePermissao.AcessoAoModulo).ToString(),
                                 ((int)ePermissao.ParceiroIndicadorUsuarioMaster).ToString()
                             },
-                            TipoUsuario = (int)Constantes.TipoUsuario.PARCEIRO
+                            TipoUsuario = (int)Constantes.TipoUsuario.PARCEIRO,
+                            Id = orcamentista.FirstOrDefault().IdIndicador
                         };
                         break;
                     case (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO:
@@ -198,7 +200,8 @@ namespace OrcamentoCotacaoApi.Utils
                             {
                                 ((int)ePermissao.AcessoAoModulo).ToString()
                             },
-                            TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO
+                            TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO,
+                            Id = orcamentistaVendedor.FirstOrDefault().Id
                         };
                         break;
                     default:

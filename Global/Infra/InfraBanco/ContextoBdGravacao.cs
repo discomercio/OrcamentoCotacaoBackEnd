@@ -157,7 +157,6 @@ namespace InfraBanco
         public DbSet<TprodutoCatalogoItem> TprodutoCatalogoItem { get => contexto.TprodutoCatalogoItem; }
         public DbSet<TprodutoCatalogoItens> TprodutoCatalogoItens { get => contexto.TprodutoCatalogoItens; }
         public DbSet<TorcamentoCotacao> TorcamentoCotacao { get => contexto.TorcamentoCotacao; }
-        public DbSet<TorcamentoCotacaoStatus> TorcamentoCotacaoStatus { get => contexto.TorcamentoCotacaoStatus; }
         public DbSet<TorcamentoCotacaoOpcao> TorcamentoCotacaoOpcao { get => contexto.TorcamentoCotacaoOpcao; }
         public DbSet<TorcamentoCotacaoOpcaoPagto> TorcamentoCotacaoOpcaoPagtos { get => contexto.TorcamentoCotacaoOpcaoPagtos; }
         public DbSet<TorcamentoCotacaoOpcaoFormaPagamento> TorcamentoCotacaoOpcaoFormaPagamento { get => contexto.TorcamentoCotacaoOpcaoFormaPagamento; }
@@ -177,6 +176,7 @@ namespace InfraBanco
         public DbSet<TcfgTipoUsuarioPerfil> TcfgTipoUsuarioPerfis { get => contexto.TcfgTipoUsuarioPerfis; }
         public DbSet<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContextos { get => contexto.TcfgTipoUsuarioContextos; }
         public DbSet<TProdutoCatalogoPropriedade> TProdutoCatalogoPropriedades { get => contexto.TProdutoCatalogoPropriedades; }
+        public DbSet<TcfgOrcamentoCotacaoStatus> TcfgOrcamentoCotacaoStatuses { get => contexto.TcfgOrcamentoCotacaoStatuses; }
 #endif
 
         //daqui para a frente só é necessário para os testes automatizados
