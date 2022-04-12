@@ -7,6 +7,7 @@ using Orcamento.Dto;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
 using PrepedidoBusiness.Bll;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -23,13 +24,9 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll;
         private readonly Usuario.UsuarioBll usuarioBll;
 
-        public OrcamentoCotacaoBll(
-            OrcamentoBll orcamentoBll, 
-            PedidoPrepedidoApiBll pedidoPrepedidoApiBll, 
-            IOptions<ConfigOrcamentoCotacao> appSettings)
         public OrcamentoCotacaoBll(OrcamentoBll orcamentoBll, IOptions<ConfigOrcamentoCotacao> appSettings,
             OrcamentistaEIndicadorBll orcamentistaEIndicadorBll, Usuario.UsuarioBll usuarioBll,
-            OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll)
+            OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll, PedidoPrepedidoApiBll pedidoPrepedidoApiBll)
         {
             _orcamentoBll = orcamentoBll;
             _pedidoPrepedidoApiBll = pedidoPrepedidoApiBll;
@@ -116,7 +113,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 var vendedor = usuarioBll.PorFiltro(new TusuarioFiltro() { usuario = orcamento.Vendedor }).FirstOrDefault();
 
-                if (vendedor == null) throw new ArgumentException("Vendedor não enconrado!");
+                if (vendedor == null) throw new ArgumentException("Vendedor não encontrado!");
 
                 torcamentoCotacao.IdVendedor = vendedor.Id;//IdVendedor
             }
@@ -125,7 +122,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 var parceiro = orcamentistaEIndicadorBll
                     .BuscarParceiros(new TorcamentistaEindicadorFiltro() { apelido = orcamento.Parceiro }).FirstOrDefault();
 
-                if (parceiro == null) throw new ArgumentException("Parceiro não enconrado!");
+                if (parceiro == null) throw new ArgumentException("Parceiro não encontrado!");
 
                 torcamentoCotacao.IdIndicador = parceiro.IdIndicador;//IdIndicador
             }

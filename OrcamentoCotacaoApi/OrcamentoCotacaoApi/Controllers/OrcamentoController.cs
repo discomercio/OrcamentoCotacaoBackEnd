@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Text.Json;
 using InfraIdentity;
+using OrcamentoCotacaoBusiness.Models.Request;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -153,14 +154,7 @@ namespace OrcamentoCotacaoApi.Controllers
             {
                 return LoggedUser.Loja?.Length > 3 ? LoggedUser.Loja.Split(',')[0] : LoggedUser.Loja;
             }
-
-        //[HttpGet("id")]
-        //public async Task<OrcamentoResponseViewModel> GetById(string id)
-        //{
-        //    _logger.LogInformation("Buscando orcamento");
-        //    Torcamento orcamento = _orcamentoBll.GetById(id);
-        //    return _mapper.Map<OrcamentoResponseViewModel>(orcamento);
-        //}
+        }
 
         [HttpPost]
         public async Task<IActionResult> Post(OrcamentoRequestViewModel model)

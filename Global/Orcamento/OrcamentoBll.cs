@@ -25,6 +25,7 @@ namespace Orcamento
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
                     List<OrcamentoCotacaoListaDto> saida = (from c in db.TorcamentoCotacao
+                                                            join d in db.Tusuarios on c.IdVendedor equals d.Id
                                                             where c.DataCadastro > DateTime.Now.AddDays(-60)
                                                                     && c.Status != 7 //CANCELADOS
                                                                     && c.Loja == filtro.Loja
@@ -34,7 +35,7 @@ namespace Orcamento
                                                                 NumeroOrcamento = c.IdOrcamento,
                                                                 NumPedido = c.IdPedido,
                                                                 Cliente_Obra = $"{c.NomeCliente} - {c.NomeObra}",
-                                                                Vendedor = c.IdVendedor,
+                                                                Vendedor = d.Usuario,
                                                                 Parceiro = "Parceiro",
                                                                 VendedorParceiro = "VendedorParceiro",
                                                                 Valor = "0",
