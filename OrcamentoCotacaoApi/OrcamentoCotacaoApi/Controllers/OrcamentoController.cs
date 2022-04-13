@@ -36,6 +36,7 @@ namespace OrcamentoCotacaoApi.Controllers
             filtro.Loja = ObterLoja(filtro.Loja);
             filtro.TipoUsuario = LoggedUser.TipoUsuario;
             filtro.Apelido = LoggedUser.Nome;
+            filtro.IdUsuario = LoggedUser.Id;
 
             var saida = _orcamentoBll.PorFiltro(filtro);
 
