@@ -55,8 +55,8 @@ namespace InfraBanco.Mapping
                 .HasColumnName("UF")
                 .HasColumnType("varchar(2)");
 
-            builder.Property(x => x.Tipo)
-                .HasColumnName("Tipo")
+            builder.Property(x => x.TipoCliente)
+                .HasColumnName("TipoCliente")
                 .HasColumnType("varchar(2)");
 
             builder.Property(x => x.Validade)
@@ -156,6 +156,12 @@ namespace InfraBanco.Mapping
             builder.Property(x => x.DataHoraUltAtualizacao)
                 .HasColumnName("DataHoraUltAtualizacao")
                 .HasColumnType("datetime");
+
+            builder.Ignore(x => x.TorcamentoCotacaoMensagems);
+            builder.Ignore(x => x.TorcamentoCotacaoOpcaos);
+            builder.Ignore(x => x.TorcamentoCotacaoLinks);
+            builder.Ignore(x => x.TcfgOrcamentoCotacaoStatus);
+            builder.Ignore(x => x.Tusuarios);
 
             //Relations
             builder

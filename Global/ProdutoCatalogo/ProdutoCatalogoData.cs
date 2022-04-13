@@ -319,5 +319,10 @@ namespace ProdutoCatalogo
 
             return saida;
         }
+
+        public TprodutoCatalogo InserirComTransacao(TprodutoCatalogo model, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

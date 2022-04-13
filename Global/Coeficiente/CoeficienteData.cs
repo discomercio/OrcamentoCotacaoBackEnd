@@ -32,6 +32,11 @@ namespace Coeficiente
             throw new NotImplementedException();
         }
 
+        public TpercentualCustoFinanceiroFornecedorHistorico InserirComTransacao(TpercentualCustoFinanceiroFornecedorHistorico model, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<TpercentualCustoFinanceiroFornecedorHistorico> PorFiltro(TpercentualCustoFinanceiroFornecedorHistoricoFiltro obj)
         {
             try

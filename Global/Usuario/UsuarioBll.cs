@@ -90,5 +90,9 @@ namespace Usuario
             return PorFiltro(new TusuarioFiltro() { id = id }).FirstOrDefault();
         }
 
+        public Tusuario InserirComTransacao(Tusuario model, InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

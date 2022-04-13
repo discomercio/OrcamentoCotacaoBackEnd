@@ -2,6 +2,7 @@
 using InfraBanco.Modelos.Filtros;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace OrcamentoCotacaoBusiness.Bll
@@ -22,10 +23,19 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             if (parceiros == null)
             {
-                throw new ArgumentException("Parceiro não encontrado!");
+                throw new ArgumentException("Parceiros não encontrado!");
             }
 
             return parceiros;
+        }
+
+        public TorcamentistaEindicador BuscarParceiroPorApelido(TorcamentistaEindicadorFiltro filtro)
+        {
+            var parceiro = orcamentistaEIndicadorBll.PorFiltro(filtro).FirstOrDefault();
+
+            if (parceiro == null) throw new ArgumentException("Parceiro não encontrado!");
+
+            return parceiro;
         }
     }
 }

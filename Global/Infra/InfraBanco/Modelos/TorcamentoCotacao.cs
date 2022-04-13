@@ -34,11 +34,11 @@ namespace InfraBanco.Modelos
 
         public string UF { get; set; }
 
-        public string Tipo { get; set; }
+        public string TipoCliente { get; set; }
 
         public DateTime Validade { get; set; }
 
-        public DateTime ValidadeAnterior { get; set; }
+        public DateTime? ValidadeAnterior { get; set; }
 
         public int QtdeRenovacao { get; set; }
 
@@ -82,7 +82,7 @@ namespace InfraBanco.Modelos
 
         public int IdUsuarioUltAtualizacao { get; set; }
 
-        public DateTime DataHoraUltAtualizacao { get; set; }
+        public DateTime? DataHoraUltAtualizacao { get; set; }
 
         public virtual List<TorcamentoCotacaoMensagem> TorcamentoCotacaoMensagems { get; set; }
 
@@ -92,6 +92,6 @@ namespace InfraBanco.Modelos
 
         public virtual TcfgOrcamentoCotacaoStatus TcfgOrcamentoCotacaoStatus { get; set; }
 
-        public virtual Tusuario Tusuario { get; set; }
+        public virtual Tusuario Tusuarios { get; set; }
     }
 }

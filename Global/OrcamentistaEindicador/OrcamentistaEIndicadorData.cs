@@ -35,6 +35,11 @@ namespace OrcamentistaEindicador
             throw new NotImplementedException();
         }
 
+        public TorcamentistaEindicador InserirComTransacao(TorcamentistaEindicador model, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<TorcamentistaEindicador> PorFiltro(TorcamentistaEindicadorFiltro obj)
         {
             try

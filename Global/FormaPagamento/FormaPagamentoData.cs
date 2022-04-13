@@ -100,5 +100,10 @@ namespace FormaPagamento
             
             
         }
+
+        public TcfgPagtoFormaStatus InserirComTransacao(TcfgPagtoFormaStatus model, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

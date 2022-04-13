@@ -31,7 +31,28 @@ namespace OrcamentoCotacao
 
         public TorcamentoCotacao Inserir(TorcamentoCotacao obj)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using(var db = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
+                {
+                    db.TorcamentoCotacao.Add(obj);
+                    db.SaveChanges();
+                    db.transacao.Commit();
+                    return obj;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public TorcamentoCotacao InserirComTransacao(TorcamentoCotacao model, ContextoBdGravacao contextoBdGravacao)
+        {
+            contextoBdGravacao.TorcamentoCotacao.Add(model);
+            contextoBdGravacao.SaveChanges();
+            return model;
         }
 
         public List<TorcamentoCotacao> PorFiltro(TorcamentoCotacaoFiltro obj)
@@ -50,10 +71,6 @@ namespace OrcamentoCotacao
                     if (!string.IsNullOrEmpty(obj.Loja))
                     {
                         saida = saida.Where(x => x.Loja == obj.Loja);
-                    }
-                    if (!string.IsNullOrEmpty(obj.Status))
-                    {
-                        saida = saida.Include(x => x.TcfgOrcamentoCotacaoStatus.Equals(obj.Status));
                     }
                     if (obj.Tusuario)
                     {
@@ -93,11 +110,11 @@ namespace OrcamentoCotacao
                                     Status = c.Status,
                                     StEtgImediata = c.StEtgImediata,
                                     Telefone = c.Telefone,
-                                    Tipo = c.Tipo,
+                                    TipoCliente = c.TipoCliente,
                                     UF = c.UF,
                                     Validade = c.Validade,
                                     ValidadeAnterior = c.ValidadeAnterior,
-                                    Tusuario = u
+                                    Tusuarios = u
                                 };
                     }
 

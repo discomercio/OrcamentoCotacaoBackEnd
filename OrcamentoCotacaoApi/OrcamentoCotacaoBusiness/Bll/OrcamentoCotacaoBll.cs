@@ -1,4 +1,5 @@
-﻿using InfraBanco.Modelos;
+﻿using InfraBanco.Constantes;
+using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
 using Microsoft.Extensions.Options;
@@ -12,6 +13,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -24,15 +26,18 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll;
         private readonly Usuario.UsuarioBll usuarioBll;
         private readonly OrcamentoCotacao.OrcamentoCotacaoBll orcamentoCotacaoBll;
+        private readonly InfraBanco.ContextoBdProvider contextoBdProvider;
 
         public OrcamentoCotacaoBll(OrcamentoBll orcamentoBll, IOptions<ConfigOrcamentoCotacao> appSettings,
             OrcamentistaEIndicadorBll orcamentistaEIndicadorBll, Usuario.UsuarioBll usuarioBll,
             OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll, PedidoPrepedidoApiBll pedidoPrepedidoApiBll,
-            OrcamentoCotacao.OrcamentoCotacaoBll orcamentoCotacaoBll)
+            OrcamentoCotacao.OrcamentoCotacaoBll orcamentoCotacaoBll,
+            InfraBanco.ContextoBdProvider contextoBdProvider)
         {
             _orcamentoBll = orcamentoBll;
             _pedidoPrepedidoApiBll = pedidoPrepedidoApiBll;
             this.orcamentoCotacaoBll = orcamentoCotacaoBll;
+            this.contextoBdProvider = contextoBdProvider;
             this.orcamentistaEIndicadorBll = orcamentistaEIndicadorBll;
             this.usuarioBll = usuarioBll;
             this.orcamentistaEIndicadorVendedorBll = orcamentistaEIndicadorVendedorBll;
@@ -59,7 +64,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         NumeroOrcamento = x.IdOrcamento,
                         NumPedido = x.IdPedido,
                         Cliente_Obra = $"{x.NomeCliente} - {x.NomeObra}",
-                        Vendedor = x.Tusuario.Usuario,
+                        Vendedor = x.Tusuarios.Usuario,
                         Parceiro = "Parceiro",
                         VendedorParceiro = "VendedorParceiro",
                         Valor = "0",
@@ -126,6 +131,36 @@ namespace OrcamentoCotacaoBusiness.Bll
         public void CadastrarOrcamento(OrcamentoRequestViewModel orcamento, UsuarioLogin usuarioLogado)
         {
 
+            var tOrcamentoCotacao = MontarTorcamentoCotacao(orcamento, usuarioLogado);
+
+            
+
+            using (var dbGravacao = contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                try
+                {
+                    //vamos cadastrar o orçamento com os dados principais
+                    var retorno = orcamentoCotacaoBll.InserirComTransacao(tOrcamentoCotacao, dbGravacao);
+
+                    //vamos inserir em escala, precisa analisar quem depende de quem
+
+
+                    dbGravacao.transacao.Commit();
+                }
+                catch (Exception ex)
+                {
+                    dbGravacao.transacao.Rollback();
+                    throw new ArgumentException("Falha ao gravar orçamento!");
+                }
+                
+
+            }
+
+            //retornar o Id do orçamento para incluir nos nos outros modelos
+        }
+
+        private TorcamentoCotacao MontarTorcamentoCotacao(OrcamentoRequestViewModel orcamento, UsuarioLogin usuarioLogado)
+        {
             TorcamentoCotacao torcamentoCotacao = new TorcamentoCotacao()
             {
                 Loja = orcamento.Loja, //Loja
@@ -134,12 +169,17 @@ namespace OrcamentoCotacaoBusiness.Bll
                 Email = orcamento.ClienteOrcamentoCotacaoDto.Email, //Email
                 Telefone = orcamento.ClienteOrcamentoCotacaoDto.Telefone, //Telefone
                 UF = orcamento.ClienteOrcamentoCotacaoDto.Uf, //UF
-                Tipo = orcamento.ClienteOrcamentoCotacaoDto.Tipo, //TipoCliente
+                TipoCliente = orcamento.ClienteOrcamentoCotacaoDto.Tipo, //TipoCliente
                 Validade = orcamento.Validade, //Validade
                 Observacao = orcamento.ObservacoesGerais, //Observacao
                 AceiteWhatsApp = orcamento.ConcordaWhatsapp ? 1 : 0, //AceiteWhatsApp
                 IdTipoUsuarioContextoCadastro = (int)usuarioLogado.TipoUsuario, //IdTipoUsuarioContextoCadastro
-                IdUsuarioCadastro = usuarioLogado.Id
+                IdUsuarioCadastro = usuarioLogado.Id,
+                DataCadastro = DateTime.Now,
+                DataHoraCadastro = DateTime.Now,
+                DataUltStatus = DateTime.Now,
+                DataHoraUltStatus = DateTime.Now,
+                Status = 1
             };
 
             if (!string.IsNullOrEmpty(orcamento.Vendedor))
@@ -152,12 +192,11 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
             if (!string.IsNullOrEmpty(orcamento.Parceiro))
             {
-                var parceiro = orcamentistaEIndicadorBll
-                    .BuscarParceiros(new TorcamentistaEindicadorFiltro() { idParceiro = int.Parse(orcamento.Parceiro) }).FirstOrDefault();
+                var torcamentista = orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { apelido = orcamento.Parceiro });
 
-                if (parceiro == null) throw new ArgumentException("Parceiro não encontrado!");
+                if (torcamentista == null) throw new ArgumentException("Parceiro não encontrado!");
 
-                torcamentoCotacao.IdIndicador = parceiro.IdIndicador;//IdIndicador
+                torcamentoCotacao.IdIndicador = torcamentista.IdIndicador;//IdIndicador
             }
 
             if (!string.IsNullOrEmpty(orcamento.VendedorParceiro))
@@ -170,10 +209,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     .FirstOrDefault().Id;
             }
 
-            //até aqui tudo certo espero...
-            //vamos cadastrar o orçamento com os dados principais
-
-            //retornar o Id do orçamento para incluir nos nos outros modelos
+            return torcamentoCotacao;
         }
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentistaEIndicadorVendedor;
 using OrcamentoCotacaoApi.Utils;
+using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
 using System;
@@ -20,24 +21,28 @@ namespace OrcamentoCotacaoApi.Controllers
     [Authorize]
     public class OrcamentistaEIndicadorVendedorController : BaseController
     {
-        private readonly OrcamentistaEIndicadorVendedorBll _orcamentistaEindicadorVendedorBll;
+        private readonly OrcamentistaEIndicadorVendedor.OrcamentistaEIndicadorVendedorBll _orcamentistaEindicadorVendedorBll;
         private readonly ILogger<OrcamentistaEIndicadorVendedorController> _logger;
         private readonly IMapper _mapper;
+        private readonly OrcamentistaEIndicadorBll orcamentistaEIndicadorBll;
 
-        public OrcamentistaEIndicadorVendedorController(OrcamentistaEIndicadorVendedorBll orcamentistaEindicadorVendedorBll, ILogger<OrcamentistaEIndicadorVendedorController> logger,
-            IMapper mapper)
+        public OrcamentistaEIndicadorVendedorController(OrcamentistaEIndicadorVendedor.OrcamentistaEIndicadorVendedorBll orcamentistaEindicadorVendedorBll,
+            ILogger<OrcamentistaEIndicadorVendedorController> logger, IMapper mapper,
+            OrcamentistaEIndicadorBll orcamentistaEIndicadorBll)
         {
             this._orcamentistaEindicadorVendedorBll = orcamentistaEindicadorVendedorBll;
             this._logger = logger;
             this._mapper = mapper;
+            this.orcamentistaEIndicadorBll = orcamentistaEIndicadorBll;
         }
 
         [HttpGet]
         [Route("vendedores-parceiros")]
         public async Task<IEnumerable<OrcamentistaEIndicadorVendedorResponseViewModel>> BuscarVendedoresDosParceiros(string parceiro)
         {
-                _logger.LogInformation("Buscando lista de vendedores parceiros");
-            var usuarios = _orcamentistaEindicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { nomeVendedor = User.GetParceiro() });
+            _logger.LogInformation("Buscando lista de vendedores parceiros");
+            var torcamentista = orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = parceiro });
+            var usuarios = _orcamentistaEindicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { IdIndicador = torcamentista.IdIndicador });
 
             return _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(usuarios);
         }
@@ -50,7 +55,7 @@ namespace OrcamentoCotacaoApi.Controllers
             _logger.LogInformation("Buscando um vendedor parceiro");
             var usuarios = _orcamentistaEindicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { id = id }).FirstOrDefault();
 
-            if(usuarios == null) return null;
+            if (usuarios == null) return null;
 
             OrcamentistaEIndicadorVendedorResponseViewModel ret = new OrcamentistaEIndicadorVendedorResponseViewModel()
             {
@@ -74,7 +79,7 @@ namespace OrcamentoCotacaoApi.Controllers
         {
 
             _logger.LogInformation("Inserindo vendedor parceiro");
-            if(User.GetTipoUsuario() != InfraBanco.Constantes.Constantes.TipoUsuario.PARCEIRO)
+            if (User.GetTipoUsuario() != InfraBanco.Constantes.Constantes.TipoUsuario.PARCEIRO)
             {
                 return Unauthorized("Somente usuários do tipo parceiro");
             }

@@ -1,4 +1,5 @@
-﻿using Interfaces;
+﻿using InfraBanco;
+using Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace ClassesBase
         public abstract T Inserir(T obj);
         public abstract T Atualizar(T obj);
         public abstract bool Excluir(T obj);
+        public abstract T InserirComTransacao(T model, ContextoBdGravacao contextoBdGravacao);
 
         //public MySqlConnection conn { get; set; }
         //public DynamicParameters p { get; set; }

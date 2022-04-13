@@ -75,5 +75,10 @@ namespace Loja
                               PercMaxComissaoEDescontoNivel2PJ = c.Perc_Max_Comissao_E_Desconto_Nivel2_Pj
                           }).FirstOrDefault();
         }
+
+        public Tloja InserirComTransacao(Tloja model, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

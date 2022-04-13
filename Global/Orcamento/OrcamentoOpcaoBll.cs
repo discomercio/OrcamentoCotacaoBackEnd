@@ -1,4 +1,5 @@
 ﻿using ClassesBase;
+using InfraBanco;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using System;
@@ -30,6 +31,11 @@ namespace Orcamento
         }
 
         public TorcamentoCotacaoOpcao GetById(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TorcamentoCotacaoOpcao InserirComTransacao(TorcamentoCotacaoOpcao model, ContextoBdGravacao contextoBdGravacao)
         {
             throw new NotImplementedException();
         }

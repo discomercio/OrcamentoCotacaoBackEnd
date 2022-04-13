@@ -35,6 +35,11 @@ namespace MeioPagamentos
             throw new NotImplementedException();
         }
 
+        public TcfgPagtoMeioStatus InserirComTransacao(TcfgPagtoMeioStatus model, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<TcfgPagtoMeioStatus> PorFiltro(TcfgPagtoMeioStatusFiltro obj)
         {
             try
