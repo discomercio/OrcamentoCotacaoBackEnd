@@ -1,9 +1,5 @@
 ﻿using InfraBanco.Modelos;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace InfraBanco
 {
@@ -250,8 +246,8 @@ namespace InfraBanco
         public DbSet<TcfgTipoPessoa> TcfgTipoPessoas { get; set; }
         public DbSet<TcfgTipoUsuario> TcfgTipoUsuarios { get; set; }
         public DbSet<TcfgTipoUsuarioPerfil> TcfgTipoUsuarioPerfis { get; set; }
-        public DbSet<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContextos { get; set; }
-        public DbSet<TcfgOrcamentoCotacaoStatus> TcfgOrcamentoCotacaoStatuses { get; set; }
+        public DbSet<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContextos { get; set; }         
+        public DbSet<TcfgOrcamentoCotacaoStatus> TcfgOrcamentoCotacaoStatus { get; set; }
 
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public DbSet<Taviso> Tavisos { get; set; }
