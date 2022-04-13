@@ -120,6 +120,6 @@ namespace InfraBanco.Modelos
         [Column("Id")]
         public int Id { get; set; }
 
-        public List<TorcamentoCotacao> TorcamentoCotacaos { get; set; }
+        public virtual List<TorcamentoCotacao> TorcamentoCotacaos { get; set; }
     }
 }

@@ -57,7 +57,48 @@ namespace OrcamentoCotacao
                     }
                     if (obj.Tusuario)
                     {
-                        saida = saida.Include(x => x.Tusuario);
+                        saida = from c in saida
+                                join u in db.Tusuarios on c.IdVendedor equals u.Id
+                                select new TorcamentoCotacao()
+                                {
+                                    Id = c.Id,
+                                    AceiteWhatsApp = c.AceiteWhatsApp,
+                                    DataCadastro = c.DataCadastro,
+                                    DataHoraCadastro = c.DataHoraCadastro,
+                                    DataHoraUltAtualizacao = c.DataHoraUltAtualizacao,
+                                    DataHoraUltRenovacao = c.DataHoraUltRenovacao,
+                                    DataHoraUltStatus = c.DataHoraUltStatus,
+                                    DataUltStatus = c.DataUltStatus,
+                                    Email = c.Email,
+                                    GarantiaIndicadorStatus = c.GarantiaIndicadorStatus,
+                                    IdIndicador = c.IdIndicador,
+                                    IdIndicadorVendedor = c.IdIndicadorVendedor,
+                                    IdOrcamento = c.IdOrcamento,
+                                    IdPedido = c.IdPedido,
+                                    IdTipoUsuarioContextoCadastro = c.IdTipoUsuarioContextoCadastro,
+                                    IdTipoUsuarioContextoUltAtualizacao = c.IdTipoUsuarioContextoUltAtualizacao,
+                                    IdTipoUsuarioContextoUltStatus = c.IdTipoUsuarioContextoUltStatus,
+                                    IdUsuarioCadastro = c.IdUsuarioCadastro,
+                                    IdUsuarioUltAtualizacao = c.IdUsuarioUltAtualizacao,
+                                    IdUsuarioUltRenovacao = c.IdUsuarioUltRenovacao,
+                                    IdUsuarioUltStatus = c.IdUsuarioUltStatus,
+                                    IdVendedor = c.IdVendedor,
+                                    InstaladorInstalaStatus = c.InstaladorInstalaStatus,
+                                    Loja = c.Loja,
+                                    NomeCliente = c.NomeCliente,
+                                    NomeObra = c.NomeObra,
+                                    Observacao = c.Observacao,
+                                    PrevisaoEntregaData = c.PrevisaoEntregaData,
+                                    QtdeRenovacao = c.QtdeRenovacao,
+                                    Status = c.Status,
+                                    StEtgImediata = c.StEtgImediata,
+                                    Telefone = c.Telefone,
+                                    Tipo = c.Tipo,
+                                    UF = c.UF,
+                                    Validade = c.Validade,
+                                    ValidadeAnterior = c.ValidadeAnterior,
+                                    Tusuario = u
+                                };
                     }
 
                     return saida.ToList();
