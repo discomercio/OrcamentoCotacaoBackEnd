@@ -48,8 +48,8 @@ namespace Orcamento
                                                                 DtFim = filtro.DtFim
                                                             }).ToList();
 
-                    if (!String.IsNullOrEmpty(filtro.Status))
-                        saida = saida.Where(x => x.Status == filtro.Status).ToList();
+                    if (filtro.Status?.Length > 0)
+                        saida = saida.Where(x => filtro.Status.Contains(x.Status)).ToList();
 
                     if (!String.IsNullOrEmpty(filtro.NumeroOrcamento))
                         saida = saida.Where(x => x.NumeroOrcamento == filtro.NumeroOrcamento).ToList();
@@ -106,8 +106,8 @@ namespace Orcamento
                                                                 DtFim = filtro.DtFim
                                                             }).ToList();
 
-                    if (!String.IsNullOrEmpty(filtro.Status))
-                        saida = saida.Where(x => x.Status == filtro.Status).ToList();
+                    if (filtro.Status?.Length > 0)
+                        saida = saida.Where(x => filtro.Status.Contains(x.Status)).ToList();
 
                     if (!String.IsNullOrEmpty(filtro.NumeroOrcamento))
                         saida = saida.Where(x => x.NumeroOrcamento == filtro.NumeroOrcamento).ToList();
@@ -135,37 +135,26 @@ namespace Orcamento
 
         public async Task<List<TcfgSelectItem>> ObterListaStatus(TorcamentoFiltro obj)
         {
-            using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            using (var db = contextoProvider.GetContextoLeitura())
             {
                 if (obj.Origem == "ORCAMENTOS")
                 {
-                    var lista = await db.TorcamentoCotacao
-                        .OrderBy(x => x.Status.ToString())
-                        .Select(x => x.Status.ToString())
-                        .Distinct()
+                    return await db.TcfgOrcamentoCotacaoStatus
+                        .OrderBy(x => x.Id)
+                        .Select(x=> new TcfgSelectItem
+                        {
+                            Id = x.Id.ToString(),
+                            Value = x.Descricao
+                        })
                         .ToListAsync();
-
-                    return TcfgOrcamentoCotacaoStatus.ObterLista(lista);
                 }
                 else if (obj.Origem == "PENDENTES") //ORCAMENTOS
                 {
-                    var lista = await db.Torcamentos
-                        .OrderBy(x => x.St_Orcamento)
-                        .Select(x => x.St_Orcamento)
-                        .Distinct()
-                        .ToListAsync();
-
-                    return TcfgOrcamentoStatus.ObterLista(lista);
+                    return TcfgOrcamentoStatus.ObterLista();
                 }
                 else //if (obj.Origem == "PEDIDOS")
                 {
-                    var lista = await db.Tpedidos
-                        .OrderBy(x => x.St_Entrega)
-                        .Select(x => x.St_Entrega)
-                        .Distinct()
-                        .ToListAsync();
-
-                    return TcfgPedidoStatus.ObterLista(lista);
+                    return TcfgPedidoStatus.ObterLista();
                 }
             }
         }

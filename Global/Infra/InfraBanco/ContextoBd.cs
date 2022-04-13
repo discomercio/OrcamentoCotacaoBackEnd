@@ -111,6 +111,7 @@ namespace InfraBanco
         public IQueryable<TcfgTipoUsuario> TcfgTipoUsuarios { get => contexto.TcfgTipoUsuarios.AsNoTracking(); }
         public IQueryable<TcfgTipoUsuarioPerfil> TcfgTipoUsuarioPerfis { get => contexto.TcfgTipoUsuarioPerfis.AsNoTracking(); }
         public IQueryable<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContextos { get => contexto.TcfgTipoUsuarioContextos.AsNoTracking(); }        
+        public IQueryable<TcfgOrcamentoCotacaoStatus> TcfgOrcamentoCotacaoStatus { get => contexto.TcfgOrcamentoCotacaoStatus.AsNoTracking(); }        
 
 
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
