@@ -55,9 +55,9 @@ namespace InfraBanco.Mapping
                 .HasColumnName("UF")
                 .HasColumnType("varchar(2)");
 
-            builder.Property(x => x.Tipo)
-                .HasColumnName("Tipo")
-                .HasColumnType("varchar(2)");
+            //builder.Property(x => x.Tipo)
+            //    .HasColumnName("Tipo")
+            //    .HasColumnType("varchar(2)");
 
             builder.Property(x => x.Validade)
                 .HasColumnName("Validade")

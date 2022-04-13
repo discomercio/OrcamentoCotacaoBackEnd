@@ -34,7 +34,7 @@ namespace InfraBanco.Modelos
 
         public string UF { get; set; }
 
-        public string Tipo { get; set; }
+        public string TipoCliente { get; set; }
 
         public DateTime Validade { get; set; }
 

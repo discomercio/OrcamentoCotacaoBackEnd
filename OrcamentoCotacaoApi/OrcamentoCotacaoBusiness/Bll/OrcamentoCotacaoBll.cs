@@ -85,7 +85,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
         }
 
-        public async Task<List<TcfgOrcamentoCotacaoStatus>> ObterListaStatus(TorcamentoFiltro tOrcamentoFiltro)
+        public async Task<List<TcfgSelectItem>> ObterListaStatus(TorcamentoFiltro tOrcamentoFiltro)
         {
             return await _orcamentoBll.ObterListaStatus(tOrcamentoFiltro);
         }
@@ -134,7 +134,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 Email = orcamento.ClienteOrcamentoCotacaoDto.Email, //Email
                 Telefone = orcamento.ClienteOrcamentoCotacaoDto.Telefone, //Telefone
                 UF = orcamento.ClienteOrcamentoCotacaoDto.Uf, //UF
-                Tipo = orcamento.ClienteOrcamentoCotacaoDto.Tipo, //TipoCliente
+                TipoCliente = orcamento.ClienteOrcamentoCotacaoDto.Tipo, //TipoCliente
                 Validade = orcamento.Validade, //Validade
                 Observacao = orcamento.ObservacoesGerais, //Observacao
                 AceiteWhatsApp = orcamento.ConcordaWhatsapp ? 1 : 0, //AceiteWhatsApp

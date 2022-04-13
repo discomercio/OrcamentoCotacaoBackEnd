@@ -93,7 +93,7 @@ namespace OrcamentoCotacao
                                     Status = c.Status,
                                     StEtgImediata = c.StEtgImediata,
                                     Telefone = c.Telefone,
-                                    Tipo = c.Tipo,
+                                    TipoCliente = c.TipoCliente,
                                     UF = c.UF,
                                     Validade = c.Validade,
                                     ValidadeAnterior = c.ValidadeAnterior,
