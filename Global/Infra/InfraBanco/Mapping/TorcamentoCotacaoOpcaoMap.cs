@@ -49,12 +49,12 @@ namespace InfraBanco.Mapping
                 .HasColumnName("IdTipoUsuarioContextoUltAtualizacao")
                 .HasColumnType("smallint");
 
-            builder.Property(x => x.UsuarioUltimaAlteracao)
-                .HasColumnName("UsuarioUltimaAlteracao")
+            builder.Property(x => x.IdUsuarioUltAtualizacao)
+                .HasColumnName("IdUsuarioUltAtualizacao")
                 .HasColumnType("int");
 
-            builder.Property(x => x.DataUltimaAlteracao)
-                .HasColumnName("DataUltimaAlteracao")
+            builder.Property(x => x.DataHoraUltAtualizacao)
+                .HasColumnName("DataHoraUltAtualizacao")
                 .HasColumnType("datetime");
 
 

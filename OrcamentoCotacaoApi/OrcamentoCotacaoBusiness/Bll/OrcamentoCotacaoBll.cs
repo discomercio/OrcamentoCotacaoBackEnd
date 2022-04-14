@@ -27,17 +27,19 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly Usuario.UsuarioBll usuarioBll;
         private readonly OrcamentoCotacao.OrcamentoCotacaoBll orcamentoCotacaoBll;
         private readonly InfraBanco.ContextoBdProvider contextoBdProvider;
+        private readonly OrcamentoCotacaoOpcaoBll orcamentoCotacaoOpcaoBll;
 
         public OrcamentoCotacaoBll(OrcamentoBll orcamentoBll, IOptions<ConfigOrcamentoCotacao> appSettings,
             OrcamentistaEIndicadorBll orcamentistaEIndicadorBll, Usuario.UsuarioBll usuarioBll,
             OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll, PedidoPrepedidoApiBll pedidoPrepedidoApiBll,
             OrcamentoCotacao.OrcamentoCotacaoBll orcamentoCotacaoBll,
-            InfraBanco.ContextoBdProvider contextoBdProvider)
+            InfraBanco.ContextoBdProvider contextoBdProvider, OrcamentoCotacaoOpcaoBll orcamentoCotacaoOpcaoBll)
         {
             _orcamentoBll = orcamentoBll;
             _pedidoPrepedidoApiBll = pedidoPrepedidoApiBll;
             this.orcamentoCotacaoBll = orcamentoCotacaoBll;
             this.contextoBdProvider = contextoBdProvider;
+            this.orcamentoCotacaoOpcaoBll = orcamentoCotacaoOpcaoBll;
             this.orcamentistaEIndicadorBll = orcamentistaEIndicadorBll;
             this.usuarioBll = usuarioBll;
             this.orcamentistaEIndicadorVendedorBll = orcamentistaEIndicadorVendedorBll;
@@ -132,7 +134,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         {
 
             //TODO: VALIDAR OrcamentoRequestViewModel
-            if (orcamento.ListaOrcamentoCotacaoDto.Count >= 0) throw new ArgumentException("Necessário ter ao menos uma opção de orçamento!");
+            if (orcamento.ListaOrcamentoCotacaoDto.Count <= 0) throw new ArgumentException("Necessário ter ao menos uma opção de orçamento!");
 
 
             using (var dbGravacao = contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
@@ -146,44 +148,13 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     if(tOrcamentoCotacao.Id == 0) throw new ArgumentException("Ops! Não gerou Id!");
 
-                    List<TorcamentoCotacaoOpcao> torcamentoCotacaoOpcoes = new List<TorcamentoCotacaoOpcao>();
-
-                    //OrcamentoOpcaoRequestViewModel      
-                    //ListaProdutos
-                    //FormaPagto
-                    //PercRT
-                    foreach(var opcao in orcamento.ListaOrcamentoCotacaoDto)
-                    {
-                        int seq = 0;
-                        torcamentoCotacaoOpcoes.Add(new TorcamentoCotacaoOpcao()
-                        {
-                            IdOrcamentoCotacao = tOrcamentoCotacao.Id,
-                            PercRT = opcao.PercRT,
-                            Sequencia = seq,
-                            IdTipoUsuarioContextoCadastro = tOrcamentoCotacao.IdTipoUsuarioContextoCadastro,
-                            IdUsuarioCadastro = tOrcamentoCotacao.IdUsuarioCadastro,
-                            DataCadastro = DateTime.Now,
-                            DataHoraCadastro = DateTime.Now
-                        });
-
-
-
-                        seq++;
-                    }
-
-
-
-                    
-
                     //vamos inserir em escala, precisa analisar quem depende de quem
                     //lista de opções de orçamentos
                     //  1 - t_ORCAMENTO_COTACAO - gera Id
+                    var opcoes = orcamentoCotacaoOpcaoBll.SalvarOrcamentoOpcoesComTransacao(orcamento.ListaOrcamentoCotacaoDto, tOrcamentoCotacao.Id,
+                        tOrcamentoCotacao.IdTipoUsuarioContextoCadastro, tOrcamentoCotacao.IdUsuarioCadastro, dbGravacao);
 
-                    //  2 - t_ORCAMENTO_COTACAO_OPCAO_ITEM_UNIFICADO / t_ORCAMENTO_COTACAO_OPCAO_PAGTO - usa t_ORCAMENTO_COTACAO.Id
-                    //  3 - t_ORCAMENTO_COTACAO_OPCAO_ITEM_ATOMICO_CUSTO_FIN - usa t_ORCAMENTO_COTACAO_OPCAO_PAGTO.Id
-                    //  3 - t_ORCAMENTO_COTACAO_OPCAO_ITEM_ATOMICO - usa t_ORCAMENTO_COTACAO_OPCAO_ITEM_UNIFICADO.Id
-
-                    throw new ArgumentException("Ops! Não vamos ficar sujando a base");
+                    throw new ArgumentException("Ops! Não vamos salvar ainda...");
 
                     dbGravacao.transacao.Commit();
                 }
@@ -215,9 +186,9 @@ namespace OrcamentoCotacaoBusiness.Bll
                 AceiteWhatsApp = orcamento.ConcordaWhatsapp ? 1 : 0, //AceiteWhatsApp
                 IdTipoUsuarioContextoCadastro = (int)usuarioLogado.TipoUsuario, //IdTipoUsuarioContextoCadastro
                 IdUsuarioCadastro = usuarioLogado.Id,
-                DataCadastro = DateTime.Now,
+                DataCadastro = DateTime.Now.Date.Date,
                 DataHoraCadastro = DateTime.Now,
-                DataUltStatus = DateTime.Now,
+                DataUltStatus = DateTime.Now.Date,
                 DataHoraUltStatus = DateTime.Now,
                 Status = 1
             };

@@ -1,22 +1,29 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace OrcamentoCotacaoBusiness.Models.Response
 {
     public class OrcamentoOpcaoResponseViewModel : IViewModelResponse
     {
-        [JsonProperty("Data")]
-        public string Data { get; set; }
+        [JsonProperty("id")]
+        public int Id { get; set; }
 
-        [JsonProperty("Numero")]
-        public string Numero { get; set; }
+        [JsonProperty("idOrcamentoCotacao")]
+        public int IdOrcamentoCotacao { get; set; }
 
-        [JsonProperty("Nome")]
-        public string Nome { get; set; }
+        [JsonProperty("sequencia")]
+        public int Sequencia { get; set; }
 
-        [JsonProperty("Status")]
-        public string Status { get; set; }
+        [JsonProperty("listaProdutos")]
+        public List<ProdutoOrcamentoOpcaoResponse> ListaProdutos { get; set; }
 
-        [JsonProperty("Valor")]
-        public double Valor { get; set; }
+        [JsonProperty("vlTotal")]
+        public decimal VlTotal { get; set; }
+
+        //[JsonProperty("formaPagto")]
+        //public List<FormaPagtoCriacaoRequestViewModel> FormaPagto { get; set; }
+
+        [JsonProperty("percRT")]
+        public float PercRT { get; set; }
     }
 }
