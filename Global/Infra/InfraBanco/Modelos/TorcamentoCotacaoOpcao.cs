@@ -7,11 +7,13 @@ namespace InfraBanco.Modelos
     {
         public int Id { get; set; }
         public int IdOrcamentoCotacao { get; set; }
-        public decimal VlTotal { get; set; }
-        public decimal? ValorTotalComRA { get; set; }
-        public string Observacoes { get; set; }
-        public string UsuarioCadastro { get; set; }
+        public float PercRT { get; set; }
+        public int Sequencia { get; set; }
+        public int IdTipoUsuarioContextoCadastro { get; set; }
+        public int IdUsuarioCadastro { get; set; }
         public DateTime DataCadastro { get; set; }
+        public DateTime DataHoraCadastro { get; set; }
+        public int IdTipoUsuarioContextoUltAtualizacao { get; set; }
         public string UsuarioUltimaAlteracao { get; set; }
         public DateTime? DataUltimaAlteracao { get; set; }
 

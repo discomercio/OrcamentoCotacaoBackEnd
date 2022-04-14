@@ -40,7 +40,7 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         public ClienteOrcamentoCotacaoRequestViewModel ClienteOrcamentoCotacaoDto { get; set; }
 
         [JsonProperty("listaOrcamentoCotacaoDto")]
-        public List<OrcamentoOpcaoRequestViewModel> listaOrcamentoCotacaoDto { get; set; }
+        public List<OrcamentoOpcaoRequestViewModel> ListaOrcamentoCotacaoDto { get; set; }
 
         [JsonProperty("Id")]
         public long Id { get; set; }

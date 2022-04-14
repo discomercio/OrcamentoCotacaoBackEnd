@@ -109,7 +109,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassesBase", "Global\Class
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Coeficiente", "Global\Coeficiente\Coeficiente.csproj", "{C77DFEB2-02C7-4165-AA31-0D0C1B1FCD9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrcamentoCotacao", "Global\OrcamentoCotacao\OrcamentoCotacao.csproj", "{32104CE9-CD77-45E6-9C69-2C7B61028AEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrcamentoCotacao", "Global\OrcamentoCotacao\OrcamentoCotacao.csproj", "{32104CE9-CD77-45E6-9C69-2C7B61028AEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrcamentoCotacaoOpcao", "Global\OrcamentoCotacaoOpcao\OrcamentoCotacaoOpcao.csproj", "{99BE2625-458F-486D-AB63-6EA5FBCF4B26}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -652,6 +654,22 @@ Global
 		{32104CE9-CD77-45E6-9C69-2C7B61028AEA}.Release_PrepedidoApi|Any CPU.Build.0 = Release|Any CPU
 		{32104CE9-CD77-45E6-9C69-2C7B61028AEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32104CE9-CD77-45E6-9C69-2C7B61028AEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99BE2625-458F-486D-AB63-6EA5FBCF4B26}.Debug_OrcamentoCotacao|Any CPU.ActiveCfg = Debug|Any CPU
+		{99BE2625-458F-486D-AB63-6EA5FBCF4B26}.Debug_OrcamentoCotacao|Any CPU.Build.0 = Debug|Any CPU
+		{99BE2625-458F-486D-AB63-6EA5FBCF4B26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99BE2625-458F-486D-AB63-6EA5FBCF4B26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99BE2625-458F-486D-AB63-6EA5FBCF4B26}.Release_ApiMagento|Any CPU.ActiveCfg = Release|Any CPU
+		{99BE2625-458F-486D-AB63-6EA5FBCF4B26}.Release_ApiMagento|Any CPU.Build.0 = Release|Any CPU
+		{99BE2625-458F-486D-AB63-6EA5FBCF4B26}.Release_ApiUnis|Any CPU.ActiveCfg = Release|Any CPU
+		{99BE2625-458F-486D-AB63-6EA5FBCF4B26}.Release_ApiUnis|Any CPU.Build.0 = Release|Any CPU
+		{99BE2625-458F-486D-AB63-6EA5FBCF4B26}.Release_Loja|Any CPU.ActiveCfg = Release|Any CPU
+		{99BE2625-458F-486D-AB63-6EA5FBCF4B26}.Release_Loja|Any CPU.Build.0 = Release|Any CPU
+		{99BE2625-458F-486D-AB63-6EA5FBCF4B26}.Release_OrcamentoCotacao|Any CPU.ActiveCfg = Release|Any CPU
+		{99BE2625-458F-486D-AB63-6EA5FBCF4B26}.Release_OrcamentoCotacao|Any CPU.Build.0 = Release|Any CPU
+		{99BE2625-458F-486D-AB63-6EA5FBCF4B26}.Release_PrepedidoApi|Any CPU.ActiveCfg = Release|Any CPU
+		{99BE2625-458F-486D-AB63-6EA5FBCF4B26}.Release_PrepedidoApi|Any CPU.Build.0 = Release|Any CPU
+		{99BE2625-458F-486D-AB63-6EA5FBCF4B26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99BE2625-458F-486D-AB63-6EA5FBCF4B26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -700,6 +718,7 @@ Global
 		{8A636662-5CF9-4DAD-A7E2-9F07A8E674F5} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 		{C77DFEB2-02C7-4165-AA31-0D0C1B1FCD9A} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 		{32104CE9-CD77-45E6-9C69-2C7B61028AEA} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
+		{99BE2625-458F-486D-AB63-6EA5FBCF4B26} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {139E9C0D-48C6-4635-9645-BF9C5AA65398}

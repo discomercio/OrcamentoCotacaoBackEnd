@@ -35,6 +35,7 @@
     <ProjectReference Include="..\..\Global\MeioPagamentos\MeioPagamentos.csproj" />
     <ProjectReference Include="..\..\Global\OrcamentistaEIndicadorVendedor\OrcamentistaEIndicadorVendedor.csproj" />
     <ProjectReference Include="..\..\Global\OrcamentistaEindicador\OrcamentistaEindicador.csproj" />
+    <ProjectReference Include="..\..\Global\OrcamentoCotacaoOpcao\OrcamentoCotacaoOpcao.csproj" />
     <ProjectReference Include="..\..\Global\Orcamento\Orcamento.csproj" />
     <ProjectReference Include="..\..\Global\Produto\Produto.csproj" />
     <ProjectReference Include="..\..\Global\Usuario\Usuario.csproj" />
