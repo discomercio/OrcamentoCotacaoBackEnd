@@ -131,19 +131,59 @@ namespace OrcamentoCotacaoBusiness.Bll
         public void CadastrarOrcamento(OrcamentoRequestViewModel orcamento, UsuarioLogin usuarioLogado)
         {
 
-            var tOrcamentoCotacao = MontarTorcamentoCotacao(orcamento, usuarioLogado);
+            //TODO: VALIDAR OrcamentoRequestViewModel
+            if (orcamento.ListaOrcamentoCotacaoDto.Count >= 0) throw new ArgumentException("Necessário ter ao menos uma opção de orçamento!");
 
-            
 
             using (var dbGravacao = contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 try
                 {
+                    var tOrcamentoCotacao = MontarTorcamentoCotacao(orcamento, usuarioLogado);
+
                     //vamos cadastrar o orçamento com os dados principais
                     var retorno = orcamentoCotacaoBll.InserirComTransacao(tOrcamentoCotacao, dbGravacao);
 
-                    //vamos inserir em escala, precisa analisar quem depende de quem
+                    if(tOrcamentoCotacao.Id == 0) throw new ArgumentException("Ops! Não gerou Id!");
 
+                    List<TorcamentoCotacaoOpcao> torcamentoCotacaoOpcoes = new List<TorcamentoCotacaoOpcao>();
+
+                    //OrcamentoOpcaoRequestViewModel      
+                    //ListaProdutos
+                    //FormaPagto
+                    //PercRT
+                    foreach(var opcao in orcamento.ListaOrcamentoCotacaoDto)
+                    {
+                        int seq = 0;
+                        torcamentoCotacaoOpcoes.Add(new TorcamentoCotacaoOpcao()
+                        {
+                            IdOrcamentoCotacao = tOrcamentoCotacao.Id,
+                            PercRT = opcao.PercRT,
+                            Sequencia = seq,
+                            IdTipoUsuarioContextoCadastro = tOrcamentoCotacao.IdTipoUsuarioContextoCadastro,
+                            IdUsuarioCadastro = tOrcamentoCotacao.IdUsuarioCadastro,
+                            DataCadastro = DateTime.Now,
+                            DataHoraCadastro = DateTime.Now
+                        });
+
+
+
+                        seq++;
+                    }
+
+
+
+                    
+
+                    //vamos inserir em escala, precisa analisar quem depende de quem
+                    //lista de opções de orçamentos
+                    //  1 - t_ORCAMENTO_COTACAO - gera Id
+
+                    //  2 - t_ORCAMENTO_COTACAO_OPCAO_ITEM_UNIFICADO / t_ORCAMENTO_COTACAO_OPCAO_PAGTO - usa t_ORCAMENTO_COTACAO.Id
+                    //  3 - t_ORCAMENTO_COTACAO_OPCAO_ITEM_ATOMICO_CUSTO_FIN - usa t_ORCAMENTO_COTACAO_OPCAO_PAGTO.Id
+                    //  3 - t_ORCAMENTO_COTACAO_OPCAO_ITEM_ATOMICO - usa t_ORCAMENTO_COTACAO_OPCAO_ITEM_UNIFICADO.Id
+
+                    throw new ArgumentException("Ops! Não vamos ficar sujando a base");
 
                     dbGravacao.transacao.Commit();
                 }
@@ -152,7 +192,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     dbGravacao.transacao.Rollback();
                     throw new ArgumentException("Falha ao gravar orçamento!");
                 }
-                
+
 
             }
 
