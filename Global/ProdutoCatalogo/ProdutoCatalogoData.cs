@@ -137,7 +137,7 @@ namespace ProdutoCatalogo
 
                     if (saida != null)
                     {
-                        saida.campos = ObterListaItens(id);
+                        //saida.campos = ObterListaItens(id);
                         saida.imagens = ObterListaImagens(id);
 
                         return saida;
@@ -152,22 +152,22 @@ namespace ProdutoCatalogo
             }
         }
 
-        public List<TprodutoCatalogoItens> ObterListaItens(int id)
+        public List<TprodutoCatalogoItem> ObterListaItens(int id)
         {
             try
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
-                    return (from itens in db.TprodutoCatalogoItens
+                    return (
                             from item in db.TprodutoCatalogoItem
-                            .Where(x => x.IdProdutoCatalogoItens == itens.Id && x.IdProdutoCatalogo == id).DefaultIfEmpty()
-                            select new TprodutoCatalogoItens
+                            .Where(x => x.IdProdutoCatalogo == id).DefaultIfEmpty()
+                            select new TprodutoCatalogoItem
                             {
-                                Id = itens.Id,
-                                Codigo = item.IdProdutoCatalogo.ToString(),
-                                Ordem = itens.Ordem,
-                                Chave = itens.Valor,
-                                Valor = item.Valor
+                                IdProdutoCatalogo = item.IdProdutoCatalogo,
+                                IdProdutoCatalogoPropriedade = item.IdProdutoCatalogoPropriedade,
+                                IdProdutoCatalogoPropriedadeOpcao = item.IdProdutoCatalogoPropriedadeOpcao,
+                                Valor = item.Valor,
+                                Oculto = item.Oculto
                             }).ToList();
                 }
             }
@@ -218,7 +218,7 @@ namespace ProdutoCatalogo
                             new TprodutoCatalogoItem
                             {
                                 IdProdutoCatalogo = produto.Id,
-                                IdProdutoCatalogoItens = campo.Id,
+                                IdProdutoCatalogoItens = campo.IdProdutoCatalogoItens,
                                 Valor = campo.Valor
                             });
                     }
