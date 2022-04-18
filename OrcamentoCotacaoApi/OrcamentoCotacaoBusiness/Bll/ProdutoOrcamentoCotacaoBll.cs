@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using InfraBanco;
 using InfraBanco.Constantes;
+using InfraBanco.Modelos;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
 using Produto;
@@ -15,12 +17,15 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly ProdutoGeralBll produtoGeralBll;
         private readonly CoeficienteBll coeficienteBll;
         private readonly IMapper _mapper;
+        private readonly OrcamentoCotacaoOpcaoItemUnificado.OrcamentoCotacaoOpcaoItemUnificadoBll orcamentoCotacaoOpcaoItemUnificadoBll;
 
-        public ProdutoOrcamentoCotacaoBll(Produto.ProdutoGeralBll produtoGeralBll, CoeficienteBll coeficienteBll, IMapper mapper)
+        public ProdutoOrcamentoCotacaoBll(Produto.ProdutoGeralBll produtoGeralBll, CoeficienteBll coeficienteBll, IMapper mapper,
+            OrcamentoCotacaoOpcaoItemUnificado.OrcamentoCotacaoOpcaoItemUnificadoBll orcamentoCotacaoOpcaoItemUnificadoBll)
         {
             this.produtoGeralBll = produtoGeralBll;
             this.coeficienteBll = coeficienteBll;
             _mapper = mapper;
+            this.orcamentoCotacaoOpcaoItemUnificadoBll = orcamentoCotacaoOpcaoItemUnificadoBll;
         }
 
         public async Task<ProdutoResponseViewModel> ListaProdutosCombo(ProdutosRequestViewModel produtos)
@@ -112,14 +117,55 @@ namespace OrcamentoCotacaoBusiness.Bll
             return lstProdutoPropriedades;
         }
         public bool GravarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
-        {            
-            return  produtoGeralBll.GravarPropriedadesProdutos(produtoCatalogoPropriedade);
+        {
+            return produtoGeralBll.GravarPropriedadesProdutos(produtoCatalogoPropriedade);
         }
-
         public bool AtualizarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
         {
             return produtoGeralBll.AtualizarPropriedadesProdutos(produtoCatalogoPropriedade);
         }
 
+        public List<ProdutoResponseViewModel> CadastrarOrcamentoCotacaoOpcaoProdutosComTransacao(List<ProdutoRequestViewModel> produtosOpcao,
+            int idOrcamentoCotacaoOpcao, ContextoBdGravacao contextoBdGravacao)
+        {
+            var produtoResponse = new List<ProdutoResponseViewModel>();
+            int sequencia = 0;
+            foreach (var produto in produtosOpcao)
+            {
+                //buscar produto composto e simples por código para complementar os dados
+                var tProduto = produtoGeralBll.BuscarProdutoPorFabricanteECodigoComTransacao(produto.Fabricante,
+                    produto.Produto, contextoBdGravacao).Result;
+
+                if (tProduto == null) throw new ArgumentException("Ops! Não achamos o produto!");
+
+                sequencia++;
+                TorcamentoCotacaoItemUnificado torcamentoCotacaoItemUnificado = new TorcamentoCotacaoItemUnificado()
+                {
+                    IdOrcamentoCotacaoOpcao = idOrcamentoCotacaoOpcao,
+                    Fabricante = produto.Fabricante,
+                    Produto = produto.Produto,
+                    Qtde = produto.Qtde,
+                    Descricao = tProduto.Descricao,
+                    DescricaoHtml = tProduto.Descricao_Html,
+                    Sequencia = sequencia
+                };
+
+                //gravar item unificado para gerar o t_ORCAMENTO_COTACAO_OPCAO_ITEM_UNIFICADO.Id
+                //criar no global OrcamentoCotacaoOpcaoItemUnificado para salvar os dados na tabela
+                var produtoUnificado = orcamentoCotacaoOpcaoItemUnificadoBll.InserirComTransacao(torcamentoCotacaoItemUnificado, contextoBdGravacao);
+
+                if (produtoUnificado.Id == 0) throw new ArgumentException("Ops! Não gerou o Id de produto unificado!");
+
+                //pegar o id de item unificado e retorno dos produtos para armazenar o item atomico
+
+                //  3 - t_ORCAMENTO_COTACAO_OPCAO_ITEM_ATOMICO - usa t_ORCAMENTO_COTACAO_OPCAO_ITEM_UNIFICADO.Id
+
+            }
+
+
+
+
+            return new List<ProdutoResponseViewModel>();
+        }
     }
 }

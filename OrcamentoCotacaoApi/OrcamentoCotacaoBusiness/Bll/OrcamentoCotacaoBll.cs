@@ -130,7 +130,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
 
-        public void CadastrarOrcamento(OrcamentoRequestViewModel orcamento, UsuarioLogin usuarioLogado)
+        public void CadastrarOrcamentoCotacao(OrcamentoRequestViewModel orcamento, UsuarioLogin usuarioLogado)
         {
 
             //TODO: VALIDAR OrcamentoRequestViewModel
@@ -151,7 +151,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     //vamos inserir em escala, precisa analisar quem depende de quem
                     //lista de opções de orçamentos
                     //  1 - t_ORCAMENTO_COTACAO - gera Id
-                    var opcoes = orcamentoCotacaoOpcaoBll.SalvarOrcamentoOpcoesComTransacao(orcamento.ListaOrcamentoCotacaoDto, tOrcamentoCotacao.Id,
+                    var opcoes = orcamentoCotacaoOpcaoBll.CadastrarOrcamentoCotacaoOpcoesComTransacao(orcamento.ListaOrcamentoCotacaoDto, tOrcamentoCotacao.Id,
                         tOrcamentoCotacao.IdTipoUsuarioContextoCadastro, tOrcamentoCotacao.IdUsuarioCadastro, dbGravacao);
 
                     throw new ArgumentException("Ops! Não vamos salvar ainda...");

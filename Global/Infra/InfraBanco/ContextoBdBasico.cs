@@ -164,16 +164,6 @@ namespace InfraBanco
                 .WithMany(x => x.TcfgPagtoMeioStatus)
                 .HasForeignKey(x => x.IdCfgTipoUsuarioPerfil);
 
-            modelBuilder.Entity<TorcamentoCotacaoItemAtomicoCustoFin>()
-                .HasOne(x => x.TorcamentoCotacaoOpcaoItemAtomico)
-                .WithOne(x => x.TorcamentoCotacaoItemAtomicoCustoFin)
-                .HasForeignKey<TorcamentoCotacaoItemAtomicoCustoFin>(x => x.IdItemAtomico);
-
-            modelBuilder.Entity<TorcamentoCotacaoOpcaoItemAtomico>()
-                .HasOne(x => x.TorcamentoCotacaoItemUnificado)
-                .WithMany(x => x.TorcamentoCotacaoOpcaoItemAtomico)
-                .HasForeignKey(x => x.IdItemUnificado);
-
             modelBuilder.Entity<TpercentualCustoFinanceiroFornecedorHistorico>()
                 .HasKey(x => new { x.Fabricante, x.Tipo_Parcelamento, x.Qtde_Parcelas });
 

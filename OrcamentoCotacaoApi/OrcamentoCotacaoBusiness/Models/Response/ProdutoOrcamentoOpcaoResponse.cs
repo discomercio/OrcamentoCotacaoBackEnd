@@ -7,6 +7,9 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 {
     public class ProdutoOrcamentoOpcaoResponse
     {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
         [JsonProperty("fabricante")]
         public string Fabricante { get; set; }
 

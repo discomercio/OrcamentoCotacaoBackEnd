@@ -164,7 +164,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
 
-            _orcamentoBll.CadastrarOrcamento(model, user);
+            _orcamentoBll.CadastrarOrcamentoCotacao(model, user);
             return Ok(model);
         }
     }

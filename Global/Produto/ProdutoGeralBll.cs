@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Produto.RegrasCrtlEstoque;
 using Produto.Dados;
 using System;
+using InfraBanco;
 
 namespace Produto
 {
@@ -156,7 +157,6 @@ namespace Produto
             return produto;
         }
 
-
         public async Task<List<Produto.Dados.ProdutoDados>> BuscarTodosProdutos(string loja)
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -214,14 +214,11 @@ namespace Produto
             return lstTodosProdutos;
         }
 
-
-        public async Task<string> BuscarDescricao_Html(string fabricante, string produto)
+        public async Task<Tproduto> BuscarProdutoPorFabricanteECodigoComTransacao(string fabricante, string produto, ContextoBdGravacao contextoBdGravacao)
         {
-            var db = contextoProvider.GetContextoLeitura();
-
-            var produtoInfotask = from p in db.Tprodutos
+            var produtoInfotask = from p in contextoBdGravacao.Tprodutos
                                   where p.Fabricante == fabricante && p.Produto == produto
-                                  select p.Descricao_Html;
+                                  select p;
 
             return await produtoInfotask.FirstOrDefaultAsync();
         }
@@ -339,7 +336,6 @@ namespace Produto
                 }
             }
         }
-
 
         public async Task<List<Produto.Dados.ProdutoCatalogoPropriedadeDados>> ObterListaPropriedadesProdutos()
         {
