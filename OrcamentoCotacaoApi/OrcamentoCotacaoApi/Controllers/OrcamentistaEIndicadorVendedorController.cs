@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using InfraBanco.Modelos;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using OrcamentistaEIndicadorVendedor;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
@@ -26,7 +24,8 @@ namespace OrcamentoCotacaoApi.Controllers
         private readonly IMapper _mapper;
         private readonly OrcamentistaEIndicadorBll orcamentistaEIndicadorBll;
 
-        public OrcamentistaEIndicadorVendedorController(OrcamentistaEIndicadorVendedor.OrcamentistaEIndicadorVendedorBll orcamentistaEindicadorVendedorBll,
+        public OrcamentistaEIndicadorVendedorController(
+            OrcamentistaEIndicadorVendedor.OrcamentistaEIndicadorVendedorBll orcamentistaEindicadorVendedorBll,
             ILogger<OrcamentistaEIndicadorVendedorController> logger, IMapper mapper,
             OrcamentistaEIndicadorBll orcamentistaEIndicadorBll)
         {
@@ -46,7 +45,6 @@ namespace OrcamentoCotacaoApi.Controllers
 
             return _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(usuarios);
         }
-
 
         [HttpGet]
         [Route("vendedores-parceiros/{id}")]
@@ -77,7 +75,6 @@ namespace OrcamentoCotacaoApi.Controllers
         [Route("vendedores-parceiros")]
         public async Task<ActionResult<OrcamentistaEIndicadorVendedorResponseViewModel>> Post(UsuarioRequestViewModel model)
         {
-
             _logger.LogInformation("Inserindo vendedor parceiro");
             if (User.GetTipoUsuario() != InfraBanco.Constantes.Constantes.TipoUsuario.PARCEIRO)
             {
@@ -95,6 +92,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 return UnprocessableEntity(e);
             }
         }
+
         [HttpPut]
         [Route("vendedores-parceiros")]
         public async Task<OrcamentistaEIndicadorVendedorResponseViewModel> Put(UsuarioRequestViewModel model)

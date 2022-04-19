@@ -27,17 +27,16 @@ namespace OrcamentistaEIndicadorVendedor
                 apelido = parceiro
             });
 
-            if(!oei.Any())
+            if (!oei.Any())
                 throw new KeyNotFoundException();
 
-            var oeiv = _data.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro()
+            if (_data.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro()
             {
                 email = objOrcamentistaEIndicadorVendedor.Email
-            });
-
-            if (oeiv.Any())
+            }).Any())
+            {
                 throw new ArgumentException("Email já cadastrado");
-
+            }
 
             string senha_codificada = UtilsGlobais.Util.codificaDado(senha, false);
 
@@ -60,17 +59,17 @@ namespace OrcamentistaEIndicadorVendedor
         public TorcamentistaEIndicadorVendedor Atualizar(TorcamentistaEIndicadorVendedor objOrcamentistaEIndicadorVendedor, string senha, string parceiro, string vendedor)
         {
             var oeiv = _data.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro() { id = objOrcamentistaEIndicadorVendedor.Id }).FirstOrDefault();
-            if(oeiv == null) throw new KeyNotFoundException();
+            if (oeiv == null) throw new KeyNotFoundException();
 
-            if (oeiv.VendedorResponsavel != parceiro)
-                throw new ArgumentException("Não é permitido alterar um usuário de outro vendendor responsável");
+            if (oeiv.VendedorResponsavel != vendedor)
+                throw new ArgumentException("Não é permitido alterar um usuário de outro vendedor responsável");
 
-            var oeivOutroEmail = _data.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro()
+            var existeEmail = _data.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro()
             {
                 email = objOrcamentistaEIndicadorVendedor.Email
             });
 
-            if (oeivOutroEmail.Any(x=>x.VendedorResponsavel != parceiro))
+            if (existeEmail.Any() && existeEmail.FirstOrDefault().Id != objOrcamentistaEIndicadorVendedor.Id)
                 throw new ArgumentException("Email já cadastrado");
 
             string senha_codificada = UtilsGlobais.Util.codificaDado(senha, false);
@@ -80,9 +79,8 @@ namespace OrcamentistaEIndicadorVendedor
 
             objOrcamentistaEIndicadorVendedor.Datastamp = senha_codificada;
 
-            if (oeiv.Datastamp!= senha_codificada)
+            if (oeiv.Datastamp != senha_codificada)
             {
-
                 oeiv.DataUltimaAlteracaoSenha = DateTime.Now;
             }
             oeiv.Datastamp = senha_codificada;
