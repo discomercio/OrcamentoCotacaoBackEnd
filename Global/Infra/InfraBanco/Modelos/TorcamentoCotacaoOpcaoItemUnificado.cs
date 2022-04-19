@@ -9,6 +9,21 @@ namespace InfraBanco.Modelos
 {
     public class TorcamentoCotacaoItemUnificado : IModel
     {
+        public TorcamentoCotacaoItemUnificado()
+        {
+        }
+
+        public TorcamentoCotacaoItemUnificado(int idOrcamentoCotacaoOpcao, string fabricante, string produto, int qtde, string descricao, string descricaoHtml, int sequencia)
+        {
+            IdOrcamentoCotacaoOpcao = idOrcamentoCotacaoOpcao;
+            Fabricante = fabricante;
+            Produto = produto;
+            Qtde = qtde;
+            Descricao = descricao;
+            DescricaoHtml = descricaoHtml;
+            Sequencia = sequencia;
+        }
+
         public int Id { get; set; }
 
         public int IdOrcamentoCotacaoOpcao { get; set; }

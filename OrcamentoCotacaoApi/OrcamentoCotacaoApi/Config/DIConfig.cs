@@ -64,6 +64,8 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<OrcamentoCotacaoOpcao.OrcamentoCotacaoOpcaoData, OrcamentoCotacaoOpcao.OrcamentoCotacaoOpcaoData>();
             services.AddTransient<OrcamentoCotacaoOpcaoItemUnificado.OrcamentoCotacaoOpcaoItemUnificadoBll, OrcamentoCotacaoOpcaoItemUnificado.OrcamentoCotacaoOpcaoItemUnificadoBll>();
             services.AddTransient<OrcamentoCotacaoOpcaoItemUnificado.OrcamentoCotacaoOpcaoItemUnificadoData, OrcamentoCotacaoOpcaoItemUnificado.OrcamentoCotacaoOpcaoItemUnificadoData>();
+            services.AddTransient<OrcamentoCotacaoOpcaoItemAtomico.OrcamentoCotacaoOpcaoItemAtomicoBll, OrcamentoCotacaoOpcaoItemAtomico.OrcamentoCotacaoOpcaoItemAtomicoBll>();
+            services.AddTransient<OrcamentoCotacaoOpcaoItemAtomico.OrcamentoCotacaoOpcaoItemAtomicoData, OrcamentoCotacaoOpcaoItemAtomico.OrcamentoCotacaoOpcaoItemAtomicoData>();
 
             services.AddTransient<Produto.ProdutoGeralBll, Produto.ProdutoGeralBll>();
             services.AddTransient<ProdutoCatalogo.ProdutoCatalogoBll, ProdutoCatalogo.ProdutoCatalogoBll>();

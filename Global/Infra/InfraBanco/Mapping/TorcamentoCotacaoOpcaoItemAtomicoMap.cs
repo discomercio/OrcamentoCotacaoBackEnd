@@ -40,8 +40,8 @@ namespace InfraBanco.Mapping
                 .HasColumnType("smallint")
                 .IsRequired();
 
-            builder.Property(x => x.Descicao)
-                .HasColumnName("Descicao")
+            builder.Property(x => x.Descricao)
+                .HasColumnName("Descricao")
                 .HasColumnType("varchar")
                 .HasMaxLength(120);
 
@@ -61,7 +61,7 @@ namespace InfraBanco.Mapping
             builder
                 .HasOne(x => x.TorcamentoCotacaoItemAtomicoCustoFin)
                 .WithOne(o => o.TorcamentoCotacaoOpcaoItemAtomico)
-                .HasForeignKey<TorcamentoCotacaoOpcaoItemAtomico>(f => f.Id);
+                .HasForeignKey<TorcamentoCotacaoOpcaoItemAtomico>(f => f.IdItemUnificado);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,15 +7,28 @@ using System.Text;
 
 namespace InfraBanco.Modelos
 {
-    [Table("t_ORCAMENTO_COTACAO_OPCAO_ITEM_ATOMICO")]
-    public  class TorcamentoCotacaoOpcaoItemAtomico
+    public  class TorcamentoCotacaoOpcaoItemAtomico: IModel
     {
+        public TorcamentoCotacaoOpcaoItemAtomico()
+        {
+        }
+
+        public TorcamentoCotacaoOpcaoItemAtomico(int idItemUnificado, string fabricante, string produto, short qtde, string descricao, string descricaoHtml)
+        {
+            IdItemUnificado = idItemUnificado;
+            Fabricante = fabricante;
+            Produto = produto;
+            Qtde = qtde;
+            Descricao = descricao;
+            DescricaoHtml = descricaoHtml;
+        }
+
         public int Id { get; set; }
         public int IdItemUnificado { get; set; }
         public string Fabricante { get; set; }
         public string Produto { get; set; }
         public short Qtde { get; set; }
-        public string Descicao { get; set; }
+        public string Descricao { get; set; }
         public string DescricaoHtml { get; set; }
 
         public TorcamentoCotacaoItemUnificado TorcamentoCotacaoItemUnificado { get; set; }

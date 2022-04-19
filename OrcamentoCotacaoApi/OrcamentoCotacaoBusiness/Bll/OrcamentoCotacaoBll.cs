@@ -143,14 +143,10 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
                     var tOrcamentoCotacao = MontarTorcamentoCotacao(orcamento, usuarioLogado);
 
-                    //vamos cadastrar o orçamento com os dados principais
                     var retorno = orcamentoCotacaoBll.InserirComTransacao(tOrcamentoCotacao, dbGravacao);
 
                     if(tOrcamentoCotacao.Id == 0) throw new ArgumentException("Ops! Não gerou Id!");
 
-                    //vamos inserir em escala, precisa analisar quem depende de quem
-                    //lista de opções de orçamentos
-                    //  1 - t_ORCAMENTO_COTACAO - gera Id
                     var opcoes = orcamentoCotacaoOpcaoBll.CadastrarOrcamentoCotacaoOpcoesComTransacao(orcamento.ListaOrcamentoCotacaoDto, tOrcamentoCotacao.Id,
                         tOrcamentoCotacao.IdTipoUsuarioContextoCadastro, tOrcamentoCotacao.IdUsuarioCadastro, dbGravacao);
 

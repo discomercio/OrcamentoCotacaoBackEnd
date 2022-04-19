@@ -44,8 +44,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 if (torcamentoCotacaoOpcao.Id == 0) throw new ArgumentException("Ops! Não gerou Id na opção de orçamento!");
 
                 orcamentoOpcaoResponseViewModels.Add(mapper.Map<OrcamentoOpcaoResponseViewModel>(torcamentoCotacaoOpcao));
-                //Precisamos salvar o item 2
-                //  2 - t_ORCAMENTO_COTACAO_OPCAO_ITEM_UNIFICADO - principal
+                
                 var produtos = produtoOrcamentoCotacaoBll.CadastrarOrcamentoCotacaoOpcaoProdutosComTransacao(opcao.ListaProdutos,
                     opcaoResponse.Id, contextoBdGravacao);
 

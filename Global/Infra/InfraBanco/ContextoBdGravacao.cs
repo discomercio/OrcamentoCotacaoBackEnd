@@ -131,6 +131,8 @@ namespace InfraBanco
         public DbSet<TorcamentistaEindicador> TorcamentistaEindicadors { get => contexto.TorcamentistaEindicadors; }
         public DbSet<TsessaoAbandonada> TsessaoAbandonadas { get => contexto.TsessaoAbandonadas; }
         public DbSet<Tusuario> Tusuarios { get => contexto.Tusuarios; }
+        public DbSet<TecProdutoComposto> TecProdutoCompostos { get => contexto.TecProdutoCompostos; }
+        public DbSet<TecProdutoCompostoItem> TecProdutoCompostoItems { get => contexto.TecProdutoCompostoItems; }
 
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public DbSet<TclienteRefBancaria> TclienteRefBancarias { get => contexto.TclienteRefBancarias; }
