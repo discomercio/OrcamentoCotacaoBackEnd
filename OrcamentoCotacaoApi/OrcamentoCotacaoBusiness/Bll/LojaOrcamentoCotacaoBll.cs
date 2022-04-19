@@ -1,6 +1,9 @@
 ﻿using InfraBanco.Constantes;
+using InfraBanco.Modelos;
+using InfraBanco.Modelos.Filtros;
 using Loja;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
+using System.Collections.Generic;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -11,6 +14,11 @@ namespace OrcamentoCotacaoBusiness.Bll
         public LojaOrcamentoCotacaoBll(LojaBll lojaBll)
         {
             _lojaBll = lojaBll;
+        }
+
+        public List<Tloja> PorFiltro(TlojaFiltro obj)
+        {
+            return _lojaBll.PorFiltro(obj);
         }
 
         public PercMaxDescEComissaoResponseViewModel BuscarPercMaxPorLoja(string loja, int? tipoUsuario)

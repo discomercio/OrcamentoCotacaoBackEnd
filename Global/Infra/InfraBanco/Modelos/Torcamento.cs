@@ -494,7 +494,7 @@ namespace InfraBanco.Modelos
         public int IdOrcamentoCotacao { get; set; }
 
         [Column("IdIndicadorVendedor")]
-        public int IdIndicadorVendedor { get; set; }
+        public int? IdIndicadorVendedor { get; set; }
 
     }
 }

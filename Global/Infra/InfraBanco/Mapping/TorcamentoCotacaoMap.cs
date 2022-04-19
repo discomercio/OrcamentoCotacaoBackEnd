@@ -49,7 +49,7 @@ namespace InfraBanco.Mapping
 
             builder.Property(x => x.AceiteWhatsApp)
                 .HasColumnName("AceiteWhatsApp")
-                .HasColumnType("int");
+                .HasColumnType("bit");
 
             builder.Property(x => x.UF)
                 .HasColumnName("UF")
@@ -69,7 +69,7 @@ namespace InfraBanco.Mapping
 
             builder.Property(x => x.QtdeRenovacao)
                 .HasColumnName("QtdeRenovacao")
-                .HasColumnType("int");
+                .HasColumnType("tinyint");
 
             builder.Property(x => x.IdUsuarioUltRenovacao)
                 .HasColumnName("IdUsuarioUltRenovacao")
