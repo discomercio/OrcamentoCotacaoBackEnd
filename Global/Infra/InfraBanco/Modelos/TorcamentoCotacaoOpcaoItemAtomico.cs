@@ -33,6 +33,6 @@ namespace InfraBanco.Modelos
 
         public TorcamentoCotacaoItemUnificado TorcamentoCotacaoItemUnificado { get; set; }
 
-        public TorcamentoCotacaoItemAtomicoCustoFin TorcamentoCotacaoItemAtomicoCustoFin { get; set; }
+        public TorcamentoCotacaoOpcaoItemAtomicoCustoFin TorcamentoCotacaoItemAtomicoCustoFin { get; set; }
     }
 }

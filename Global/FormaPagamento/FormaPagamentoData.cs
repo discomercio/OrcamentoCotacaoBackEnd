@@ -105,5 +105,10 @@ namespace FormaPagamento
         {
             throw new NotImplementedException();
         }
+
+        public List<TcfgPagtoFormaStatus> PorFilroComTransacao(TcfgPagtoFormaStatusFiltro obj, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

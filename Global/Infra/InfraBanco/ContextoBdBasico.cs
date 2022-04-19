@@ -269,7 +269,7 @@ namespace InfraBanco
         public DbSet<TorcamentoCotacaoOpcao> TorcamentoCotacaoOpcao { get; set; }
         public DbSet<TorcamentoCotacaoOpcaoPagto> TorcamentoCotacaoOpcaoPagtos { get; set; }
         public DbSet<TorcamentoCotacaoItemUnificado> TorcamentoCotacaoItemUnificados { get; set; }
-        public DbSet<TorcamentoCotacaoItemAtomicoCustoFin> TorcamentoCotacaoItemAtomicoCustoFins { get; set; }
+        public DbSet<TorcamentoCotacaoOpcaoItemAtomicoCustoFin> TorcamentoCotacaoOpcaoItemAtomicoCustoFins { get; set; }
         public DbSet<TorcamentoCotacaoOpcaoItemAtomico> TorcamentoCotacaoOpcaoItemAtomicos { get; set; }
         public DbSet<TorcamentoCotacaoOpcaoItem> TorcamentoCotacaoOpcaoItem { get; set; }
         public DbSet<TorcamentoCotacaoOpcaoItemSku> TorcamentoCotacaoOpcaoItemSku { get; set; }

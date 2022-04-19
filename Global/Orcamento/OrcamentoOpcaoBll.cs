@@ -39,5 +39,10 @@ namespace Orcamento
         {
             throw new NotImplementedException();
         }
+
+        public List<TorcamentoCotacaoOpcao> PorFilroComTransacao(TorcamentoCotacaoOpcaoFiltro obj, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

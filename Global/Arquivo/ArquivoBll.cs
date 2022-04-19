@@ -146,5 +146,10 @@ namespace Arquivo
         {
             throw new NotImplementedException();
         }
+
+        public List<TorcamentoCotacaoArquivos> PorFilroComTransacao(TorcamentoCotacaoArquivosFiltro obj, InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

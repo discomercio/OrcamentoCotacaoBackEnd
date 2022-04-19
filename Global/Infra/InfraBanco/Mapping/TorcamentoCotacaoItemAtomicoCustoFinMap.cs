@@ -7,9 +7,9 @@ using System.Text;
 
 namespace InfraBanco.Mapping
 {
-    public class TorcamentoCotacaoItemAtomicoCustoFinMap: IEntityTypeConfiguration<TorcamentoCotacaoItemAtomicoCustoFin>
+    public class TorcamentoCotacaoItemAtomicoCustoFinMap: IEntityTypeConfiguration<TorcamentoCotacaoOpcaoItemAtomicoCustoFin>
     {
-        public void Configure(EntityTypeBuilder<TorcamentoCotacaoItemAtomicoCustoFin> builder)
+        public void Configure(EntityTypeBuilder<TorcamentoCotacaoOpcaoItemAtomicoCustoFin> builder)
         {
             builder.ToTable("t_ORCAMENTO_COTACAO_OPCAO_ITEM_ATOMICO_CUSTO_FIN");
             builder.HasKey(o => o.Id);
@@ -64,7 +64,7 @@ namespace InfraBanco.Mapping
             builder
                 .HasOne(x => x.TorcamentoCotacaoOpcaoItemAtomico)
                 .WithOne(o => o.TorcamentoCotacaoItemAtomicoCustoFin)
-                .HasForeignKey<TorcamentoCotacaoItemAtomicoCustoFin>(f => f.IdItemAtomico);
+                .HasForeignKey<TorcamentoCotacaoOpcaoItemAtomicoCustoFin>(f => f.IdItemAtomico);
 
         }
     }

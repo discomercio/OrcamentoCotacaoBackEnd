@@ -163,7 +163,7 @@ namespace InfraBanco
         public DbSet<TorcamentoCotacaoOpcaoPagto> TorcamentoCotacaoOpcaoPagtos { get => contexto.TorcamentoCotacaoOpcaoPagtos; }
         public DbSet<TorcamentoCotacaoOpcaoItem> TorcamentoCotacaoOpcaoItem { get => contexto.TorcamentoCotacaoOpcaoItem; }
         public DbSet<TorcamentoCotacaoItemUnificado> TorcamentoCotacaoItemUnificados { get => contexto.TorcamentoCotacaoItemUnificados; }
-        public DbSet<TorcamentoCotacaoItemAtomicoCustoFin> TorcamentoCotacaoItemAtomicoCustoFins { get => contexto.TorcamentoCotacaoItemAtomicoCustoFins; }
+        public DbSet<TorcamentoCotacaoOpcaoItemAtomicoCustoFin> TorcamentoCotacaoOpcaoItemAtomicoCustoFins { get => contexto.TorcamentoCotacaoOpcaoItemAtomicoCustoFins; }
         public DbSet<TorcamentoCotacaoOpcaoItemAtomico> TorcamentoCotacaoOpcaoItemAtomico { get => contexto.TorcamentoCotacaoOpcaoItemAtomicos; }
         public DbSet<TorcamentoCotacaoOpcaoItemSku> TorcamentoCotacaoOpcaoItemSku { get => contexto.TorcamentoCotacaoOpcaoItemSku; }
         public DbSet<TcfgModulo> TcfgModulos { get => contexto.TcfgModulos; }

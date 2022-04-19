@@ -39,6 +39,11 @@ namespace OrcamentoCotacaoOpcaoItemUnificado
             return model;
         }
 
+        public List<TorcamentoCotacaoItemUnificado> PorFilroComTransacao(TorcamentoCotacaoOpcaoItemUnificadoFiltro obj, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<TorcamentoCotacaoItemUnificado> PorFiltro(TorcamentoCotacaoOpcaoItemUnificadoFiltro obj)
         {
             throw new NotImplementedException();

@@ -47,18 +47,19 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 orcamentoOpcaoResponseViewModels.Add(mapper.Map<OrcamentoOpcaoResponseViewModel>(torcamentoCotacaoOpcao));
 
-                var TorcamentoCotacaoOpcaoPagtos = formaPagtoOrcamentoCotacaoBll.CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(opcao.FormaPagto, opcaoResponse.Id, contextoBdGravacao);
+                var tOrcamentoCotacaoOpcaoPagtos = formaPagtoOrcamentoCotacaoBll.CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(opcao.FormaPagto, opcaoResponse.Id, contextoBdGravacao);
 
-                var TorcamentoCotacaoItemUnificados = produtoOrcamentoCotacaoBll.CadastrarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(opcao, 
+                var tOrcamentoCotacaoItemUnificados = produtoOrcamentoCotacaoBll.CadastrarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(opcao, 
                     opcaoResponse.Id, contextoBdGravacao);
 
-                if (TorcamentoCotacaoOpcaoPagtos.Count == 0 || TorcamentoCotacaoItemUnificados.Count == 0) 
+                if (tOrcamentoCotacaoOpcaoPagtos.Count == 0 || tOrcamentoCotacaoItemUnificados.Count == 0) 
                     throw new ArgumentException("Ops! Não gerou Id ao salvar os pagamentos e produtos!");
 
                 //buscar os itens atomicos por id de itens unificados para salvar o custo dos produtos;
                 //  3 - t_ORCAMENTO_COTACAO_OPCAO_ITEM_ATOMICO_CUSTO_FIN -
                 //  usa t_ORCAMENTO_COTACAO_OPCAO_PAGTO.Id e t_ORCAMENTO_COTACAO_OPCAO_ITEM_ATOMICO
-
+                var tOrcamentoCotacaoOpcaoItemAtomicoCustoFin = produtoOrcamentoCotacaoBll.CadastrarProdutoAtomicoCustoFinComTransacao(tOrcamentoCotacaoOpcaoPagtos,
+                    tOrcamentoCotacaoItemUnificados, contextoBdGravacao);
 
             }
 

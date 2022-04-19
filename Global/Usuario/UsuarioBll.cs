@@ -94,5 +94,10 @@ namespace Usuario
         {
             throw new NotImplementedException();
         }
+
+        public List<Tusuario> PorFilroComTransacao(TusuarioFiltro obj, InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

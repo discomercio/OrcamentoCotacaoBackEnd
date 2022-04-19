@@ -5,8 +5,8 @@ using System.Text;
 
 namespace InfraBanco.Modelos.Filtros
 {
-    public class TorcamentoCotacaoOpcaoItemAtomicoFiltro : IFilter
+    public class TorcamentoCotacaoOpcaoItemAtomicoCustoFinFiltro : IFilter
     {
-        public int IdItemUnificado { get; set; }
+        
     }
 }

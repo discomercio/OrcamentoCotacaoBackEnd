@@ -42,5 +42,10 @@ namespace ClassesBase
         {
             return data.PorFiltro(filter);
         }
+
+        public virtual List<T> PorFiltroComTransacao(F filter, ContextoBdGravacao contextoBdGravacao)
+        {
+            return data.PorFilroComTransacao(filter, contextoBdGravacao);
+        }
     }
 }

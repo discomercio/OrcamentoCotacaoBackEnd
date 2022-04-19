@@ -80,5 +80,10 @@ namespace Loja
         {
             throw new NotImplementedException();
         }
+
+        public List<Tloja> PorFilroComTransacao(TlojaFiltro obj, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

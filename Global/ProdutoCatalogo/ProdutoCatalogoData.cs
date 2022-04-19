@@ -324,5 +324,10 @@ namespace ProdutoCatalogo
         {
             throw new NotImplementedException();
         }
+
+        public List<TprodutoCatalogo> PorFilroComTransacao(TprodutoCatalogoFiltro obj, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

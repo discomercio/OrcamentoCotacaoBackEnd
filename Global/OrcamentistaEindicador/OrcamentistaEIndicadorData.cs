@@ -40,6 +40,11 @@ namespace OrcamentistaEindicador
             throw new NotImplementedException();
         }
 
+        public List<TorcamentistaEindicador> PorFilroComTransacao(TorcamentistaEindicadorFiltro obj, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<TorcamentistaEindicador> PorFiltro(TorcamentistaEindicadorFiltro obj)
         {
             try

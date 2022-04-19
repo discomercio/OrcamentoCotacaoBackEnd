@@ -55,6 +55,16 @@ namespace OrcamentoCotacao
             return model;
         }
 
+        public List<TorcamentoCotacao> PorFilroComTransacao(TorcamentoCotacao model, TorcamentoCotacao obj, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<TorcamentoCotacao> PorFilroComTransacao(TorcamentoCotacaoFiltro obj, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<TorcamentoCotacao> PorFiltro(TorcamentoCotacaoFiltro obj)
         {
             try

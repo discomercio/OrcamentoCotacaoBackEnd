@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,8 +7,7 @@ using System.Text;
 
 namespace InfraBanco.Modelos
 {
-    [Table("t_ORCAMENTO_COTACAO_OPCAO_ITEM_ATOMICO_CUSTO_FIN")]
-    public class TorcamentoCotacaoItemAtomicoCustoFin
+    public class TorcamentoCotacaoOpcaoItemAtomicoCustoFin : IModel
     {
         public int Id { get; set; }
         public int IdItemAtomico { get; set; }

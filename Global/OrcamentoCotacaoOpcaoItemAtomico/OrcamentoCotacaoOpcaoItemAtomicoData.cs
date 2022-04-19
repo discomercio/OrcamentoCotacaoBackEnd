@@ -4,7 +4,7 @@ using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace OrcamentoCotacaoOpcaoItemAtomico
 {
@@ -39,9 +39,39 @@ namespace OrcamentoCotacaoOpcaoItemAtomico
             return model;
         }
 
+        public List<TorcamentoCotacaoOpcaoItemAtomico> PorFilroComTransacao(TorcamentoCotacaoOpcaoItemAtomico model, TorcamentoCotacaoOpcaoItemAtomico obj, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<TorcamentoCotacaoOpcaoItemAtomico> PorFilroComTransacao(TorcamentoCotacaoOpcaoItemAtomicoFiltro obj, ContextoBdGravacao contextoBdGravacao)
+        {
+            try
+            {
+                using (var db = contextoBdGravacao)
+                {
+                    var saida = from c in db.TorcamentoCotacaoOpcaoItemAtomico
+                                select c;
+
+                    if (obj.IdItemUnificado != 0)
+                    {
+                        saida = saida.Where(x => x.IdItemUnificado == obj.IdItemUnificado);
+                    }
+
+                    return saida.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
         public List<TorcamentoCotacaoOpcaoItemAtomico> PorFiltro(TorcamentoCotacaoOpcaoItemAtomicoFiltro obj)
         {
             throw new NotImplementedException();
+
         }
     }
 }
