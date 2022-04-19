@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using InfraBanco;
 using InfraBanco.Constantes;
+using InfraBanco.Modelos;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
 using Produto;
@@ -15,12 +17,18 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly ProdutoGeralBll produtoGeralBll;
         private readonly CoeficienteBll coeficienteBll;
         private readonly IMapper _mapper;
+        private readonly OrcamentoCotacaoOpcaoItemUnificado.OrcamentoCotacaoOpcaoItemUnificadoBll orcamentoCotacaoOpcaoItemUnificadoBll;
+        private readonly OrcamentoCotacaoOpcaoItemAtomico.OrcamentoCotacaoOpcaoItemAtomicoBll orcamentoCotacaoOpcaoItemAtomicoBll;
 
-        public ProdutoOrcamentoCotacaoBll(Produto.ProdutoGeralBll produtoGeralBll, CoeficienteBll coeficienteBll, IMapper mapper)
+        public ProdutoOrcamentoCotacaoBll(Produto.ProdutoGeralBll produtoGeralBll, CoeficienteBll coeficienteBll, IMapper mapper,
+            OrcamentoCotacaoOpcaoItemUnificado.OrcamentoCotacaoOpcaoItemUnificadoBll orcamentoCotacaoOpcaoItemUnificadoBll,
+            OrcamentoCotacaoOpcaoItemAtomico.OrcamentoCotacaoOpcaoItemAtomicoBll orcamentoCotacaoOpcaoItemAtomicoBll)
         {
             this.produtoGeralBll = produtoGeralBll;
             this.coeficienteBll = coeficienteBll;
             _mapper = mapper;
+            this.orcamentoCotacaoOpcaoItemUnificadoBll = orcamentoCotacaoOpcaoItemUnificadoBll;
+            this.orcamentoCotacaoOpcaoItemAtomicoBll = orcamentoCotacaoOpcaoItemAtomicoBll;
         }
 
         public async Task<ProdutoResponseViewModel> ListaProdutosCombo(ProdutosRequestViewModel produtos)
@@ -112,14 +120,87 @@ namespace OrcamentoCotacaoBusiness.Bll
             return lstProdutoPropriedades;
         }
         public bool GravarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
-        {            
-            return  produtoGeralBll.GravarPropriedadesProdutos(produtoCatalogoPropriedade);
+        {
+            return produtoGeralBll.GravarPropriedadesProdutos(produtoCatalogoPropriedade);
         }
-
         public bool AtualizarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
         {
             return produtoGeralBll.AtualizarPropriedadesProdutos(produtoCatalogoPropriedade);
         }
 
+        public List<ProdutoResponseViewModel> CadastrarOrcamentoCotacaoOpcaoProdutosComTransacao(List<ProdutoRequestViewModel> produtosOpcao,
+            int idOrcamentoCotacaoOpcao, ContextoBdGravacao contextoBdGravacao)
+        {
+            var produtoResponse = new List<ProdutoResponseViewModel>();
+            int sequencia = 0;
+            foreach (var produto in produtosOpcao)
+            {
+                //buscar produto composto e simples por código para complementar os dados
+                var tProduto = produtoGeralBll.BuscarProdutoPorFabricanteECodigoComTransacao(produto.Fabricante,
+                    produto.Produto, contextoBdGravacao).Result;
+
+                if (tProduto == null) throw new ArgumentException("Ops! Não achamos o produto!");
+
+                sequencia++;
+                TorcamentoCotacaoItemUnificado torcamentoCotacaoItemUnificado = new TorcamentoCotacaoItemUnificado(idOrcamentoCotacaoOpcao,
+                    tProduto.Fabricante, tProduto.Produto, produto.Qtde, tProduto.Descricao, tProduto.Descricao_Html, sequencia);
+
+
+                //gravar item unificado para gerar o t_ORCAMENTO_COTACAO_OPCAO_ITEM_UNIFICADO.Id
+                //criar no global OrcamentoCotacaoOpcaoItemUnificado para salvar os dados na tabela
+                var produtoUnificado = orcamentoCotacaoOpcaoItemUnificadoBll.InserirComTransacao(torcamentoCotacaoItemUnificado, contextoBdGravacao);
+
+                if (produtoUnificado.Id == 0) throw new ArgumentException("Ops! Não gerou o Id de produto unificado!");
+
+                //pegar o id de item unificado e retorno dos produtos para armazenar o item atomico
+                //salvar t_ORCAMENTO_COTACAO_OPCAO_ITEM_ATOMICO
+                //  3 - t_ORCAMENTO_COTACAO_OPCAO_ITEM_ATOMICO - usa t_ORCAMENTO_COTACAO_OPCAO_ITEM_UNIFICADO.Id
+                //var tt = produtoGeralBll.BuscarProdutoCompostoPorFabricanteECodigoComTransacao(produtoUnificado.Fabricante, 
+                //    produtoUnificado.Produto, contextoBdGravacao).Result;
+
+
+                var torcamentoCotacaoOpcaoItemAtomicos = CadastrarTorcamentoCotacaoOpcaoItemAtomicoComTransacao(produtoUnificado.Id,
+                    tProduto, produto.Qtde, contextoBdGravacao);
+
+                //var torcamentoCotacaoOpcaoPagto = salvar forma de pagamento
+
+
+                if (torcamentoCotacaoOpcaoItemAtomicos.Count <= 0) throw new ArgumentException("Ops! Não gerou o Id de produto atomicos!");
+            }
+
+
+
+
+            return new List<ProdutoResponseViewModel>();
+        }
+
+        private List<TorcamentoCotacaoOpcaoItemAtomico> CadastrarTorcamentoCotacaoOpcaoItemAtomicoComTransacao(int idItemUnificado, Tproduto tProduto,
+            int qtde, ContextoBdGravacao contextoBdGravacao)
+        {
+            List<TorcamentoCotacaoOpcaoItemAtomico> torcamentoCotacaoOpcaoItemAtomicos = new List<TorcamentoCotacaoOpcaoItemAtomico>();
+            if (tProduto.TecProdutoComposto != null)
+            {
+                foreach (var item in tProduto.TecProdutoComposto.TecProdutoCompostoItems)
+                {
+                    TorcamentoCotacaoOpcaoItemAtomico itemAtomico = new TorcamentoCotacaoOpcaoItemAtomico(idItemUnificado, tProduto.Fabricante, tProduto.Produto,
+                    (short)(qtde * tProduto.TecProdutoComposto.TecProdutoCompostoItems.First().Qtde),
+                    tProduto.Descricao, tProduto.Descricao_Html);
+
+                    torcamentoCotacaoOpcaoItemAtomicos.Add(orcamentoCotacaoOpcaoItemAtomicoBll.InserirComTransacao(itemAtomico, contextoBdGravacao));
+                }
+
+                return torcamentoCotacaoOpcaoItemAtomicos;
+            }
+
+            var torcamentoCotacaoOpcaoItemAtomico = new TorcamentoCotacaoOpcaoItemAtomico(idItemUnificado, tProduto.Fabricante, 
+                tProduto.Produto, (short)qtde, tProduto.Descricao, tProduto.Descricao_Html);
+
+             var rettorcamentoCotacaoOpcaoItemAtomico = orcamentoCotacaoOpcaoItemAtomicoBll.InserirComTransacao(torcamentoCotacaoOpcaoItemAtomico,
+                contextoBdGravacao);
+
+            torcamentoCotacaoOpcaoItemAtomicos.Add(torcamentoCotacaoOpcaoItemAtomico);
+
+            return torcamentoCotacaoOpcaoItemAtomicos;
+        }
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Produto.RegrasCrtlEstoque;
 using Produto.Dados;
 using System;
+using InfraBanco;
 
 namespace Produto
 {
@@ -19,7 +20,7 @@ namespace Produto
             this.contextoProvider = contextoProvider;
         }
 
-        public async Task<ProdutoComboDados> ListaProdutosComboDados(string loja, string uf, string tipo, 
+        public async Task<ProdutoComboDados> ListaProdutosComboDados(string loja, string uf, string tipo,
             Constantes.ContribuinteICMS contribuinte, Constantes.ProdutorRural produtorRural)
         {
             ProdutoComboDados retorno = new ProdutoComboDados();
@@ -156,7 +157,6 @@ namespace Produto
             return produto;
         }
 
-
         public async Task<List<Produto.Dados.ProdutoDados>> BuscarTodosProdutos(string loja)
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -214,22 +214,38 @@ namespace Produto
             return lstTodosProdutos;
         }
 
-
-        public async Task<string> BuscarDescricao_Html(string fabricante, string produto)
+        public async Task<Tproduto> BuscarProdutoPorFabricanteECodigoComTransacao(string fabricante, string produto,
+            ContextoBdGravacao contextoBdGravacao)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            var produtoInfotask = await contextoBdGravacao.Tprodutos
+                .Where(x => x.Fabricante == fabricante && x.Produto == produto)
+                .Include(t => t.TecProdutoComposto.TecProdutoCompostoItems)
+                .Include(x => x.TprodutoLoja)
+                .Select(x => x).FirstOrDefaultAsync();
 
-            var produtoInfotask = from p in db.Tprodutos
-                                  where p.Fabricante == fabricante && p.Produto == produto
-                                  select p.Descricao_Html;
+            if (produtoInfotask != null) return produtoInfotask;
 
-            return await produtoInfotask.FirstOrDefaultAsync();
+            var produtoSimples = contextoBdGravacao.Tprodutos
+                .Where(x => x.Fabricante == fabricante && x.Produto == produto)
+                .Include(x => x.TprodutoLoja).FirstOrDefault();
+
+            if (produtoSimples == null) return null;
+
+            return produtoSimples;
         }
 
-        /*Analisar a necessidade, 
-         * pois estamos realizando a busca apenas em produtos que 
-         * a subtração entre qtde e qtde_utilizada seja maior que 0
-         */
+        public async Task<TecProdutoComposto> BuscarProdutoCompostoPorFabricanteECodigoComTransacao(string fabricante,
+            string produto, ContextoBdGravacao contextoBdGravacao)
+        {
+            var produtoCompostoTask = from c in contextoBdGravacao.TecProdutoCompostos
+                                      where c.Fabricante_Composto == fabricante && c.Produto_Composto == produto
+                                      select c;
+
+            var t = await produtoCompostoTask.FirstOrDefaultAsync();
+
+            return t;
+        }
+
         private void IncluirEstoqueProduto(List<RegrasBll> lstRegras, List<Produto.Dados.ProdutoDados> lst_produtos, Tparametro parametro)
         {
             int qtde_estoque_total_disponivel = 0;
@@ -340,7 +356,6 @@ namespace Produto
             }
         }
 
-
         public async Task<List<Produto.Dados.ProdutoCatalogoPropriedadeDados>> ObterListaPropriedadesProdutos()
         {
             var db = contextoProvider.GetContextoLeitura();
@@ -394,12 +409,12 @@ namespace Produto
         public bool GravarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
         {
             var saida = false;
-            
+
             try
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
-                    int maxId = db.TProdutoCatalogoPropriedades.Max(p => p.id) +1;
+                    int maxId = db.TProdutoCatalogoPropriedades.Max(p => p.id) + 1;
                     int maxOrdem = db.TProdutoCatalogoPropriedades.Max(p => p.ordem) + 1;
 
                     db.TProdutoCatalogoPropriedades.Add(
@@ -414,7 +429,7 @@ namespace Produto
                             ordem = maxOrdem,
                             dt_cadastro = DateTime.Now,
                             usuario_cadastro = produtoCatalogoPropriedade.usuario_cadastro
-                        }); 
+                        });
 
                     db.SaveChanges();
                     db.transacao.Commit();
@@ -432,7 +447,7 @@ namespace Produto
         public bool AtualizarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
         {
             var saida = false;
-            
+
             try
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))

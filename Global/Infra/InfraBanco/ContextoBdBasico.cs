@@ -27,6 +27,10 @@ namespace InfraBanco
 
             modelBuilder.Entity<Tproduto>()
                 .HasKey(x => new { x.Fabricante, x.Produto });
+            modelBuilder.Entity<Tproduto>()
+                .HasOne(x => x.TecProdutoComposto)
+                .WithOne(x => x.Tproduto)
+                .HasForeignKey<Tproduto>(x => new { x.Fabricante, x.Produto });
 
             modelBuilder.Entity<TecProdutoComposto>()
                 .HasKey(x => new { x.Fabricante_Composto, x.Produto_Composto });
@@ -163,16 +167,6 @@ namespace InfraBanco
                 .HasOne(x => x.TcfgTipoUsuarios)
                 .WithMany(x => x.TcfgPagtoMeioStatus)
                 .HasForeignKey(x => x.IdCfgTipoUsuarioPerfil);
-
-            modelBuilder.Entity<TorcamentoCotacaoItemAtomicoCustoFin>()
-                .HasOne(x => x.TorcamentoCotacaoOpcaoItemAtomico)
-                .WithOne(x => x.TorcamentoCotacaoItemAtomicoCustoFin)
-                .HasForeignKey<TorcamentoCotacaoItemAtomicoCustoFin>(x => x.IdItemAtomico);
-
-            modelBuilder.Entity<TorcamentoCotacaoOpcaoItemAtomico>()
-                .HasOne(x => x.TorcamentoCotacaoItemUnificado)
-                .WithMany(x => x.TorcamentoCotacaoOpcaoItemAtomico)
-                .HasForeignKey(x => x.IdItemUnificado);
 
             modelBuilder.Entity<TpercentualCustoFinanceiroFornecedorHistorico>()
                 .HasKey(x => new { x.Fabricante, x.Tipo_Parcelamento, x.Qtde_Parcelas });

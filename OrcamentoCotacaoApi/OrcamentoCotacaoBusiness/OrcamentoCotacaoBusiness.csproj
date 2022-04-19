@@ -22,6 +22,8 @@
     <ProjectReference Include="..\..\Global\MeioPagamentos\MeioPagamentos.csproj" />
     <ProjectReference Include="..\..\Global\OrcamentistaEIndicadorVendedor\OrcamentistaEIndicadorVendedor.csproj" />
     <ProjectReference Include="..\..\Global\OrcamentistaEindicador\OrcamentistaEindicador.csproj" />
+    <ProjectReference Include="..\..\Global\OrcamentoCotacaoOpcaoItemAtomico\OrcamentoCotacaoOpcaoItemAtomico.csproj" />
+    <ProjectReference Include="..\..\Global\OrcamentoCotacaoOpcaoItemUnificado\OrcamentoCotacaoOpcaoItemUnificado.csproj" />
     <ProjectReference Include="..\..\Global\OrcamentoCotacaoOpcao\OrcamentoCotacaoOpcao.csproj" />
     <ProjectReference Include="..\..\Global\OrcamentoCotacao\OrcamentoCotacao.csproj" />
     <ProjectReference Include="..\..\Global\Orcamento\Orcamento.csproj" />

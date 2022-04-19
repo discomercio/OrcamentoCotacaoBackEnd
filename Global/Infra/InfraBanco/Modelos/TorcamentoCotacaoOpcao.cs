@@ -1,5 +1,7 @@
 ﻿using Interfaces;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace InfraBanco.Modelos
 {
@@ -18,5 +20,7 @@ namespace InfraBanco.Modelos
         public DateTime? DataHoraUltAtualizacao { get; set; }
 
         public virtual TorcamentoCotacao TorcamentoCotacao { get; set; }
+
+        public virtual ICollection<TorcamentoCotacaoItemUnificado> TorcamentoCotacaoItemUnificados { get; set; }
     }
 }
