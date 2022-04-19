@@ -67,8 +67,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                         NumPedido = x.IdPedido,
                         Cliente_Obra = $"{x.NomeCliente} - {x.NomeObra}",
                         Vendedor = x.Tusuarios.Usuario,
-                        Parceiro = "Parceiro",
-                        VendedorParceiro = "VendedorParceiro",
+                        Parceiro = "",
+                        VendedorParceiro = "",
                         Valor = "0",
                         Status = x.Status.ToString(),
                         VistoEm = "",
@@ -183,7 +183,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 TipoCliente = orcamento.ClienteOrcamentoCotacaoDto.Tipo, //TipoCliente
                 Validade = orcamento.Validade, //Validade
                 Observacao = orcamento.ObservacoesGerais, //Observacao
-                AceiteWhatsApp = orcamento.ConcordaWhatsapp ? 1 : 0, //AceiteWhatsApp
+                AceiteWhatsApp = orcamento.ConcordaWhatsapp, //AceiteWhatsApp
                 IdTipoUsuarioContextoCadastro = (int)usuarioLogado.TipoUsuario, //IdTipoUsuarioContextoCadastro
                 IdUsuarioCadastro = usuarioLogado.Id,
                 DataCadastro = DateTime.Now.Date.Date,

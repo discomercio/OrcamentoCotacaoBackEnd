@@ -22,15 +22,15 @@ namespace InfraBanco.Modelos
         
         public int IdVendedor { get; set; }
 
-        public int IdIndicador { get; set; }
+        public int? IdIndicador { get; set; }
 
-        public int IdIndicadorVendedor { get; set; }
+        public int? IdIndicadorVendedor { get; set; }
 
         public string Email { get; set; }
 
         public string Telefone { get; set; }
 
-        public int AceiteWhatsApp { get; set; }
+        public bool AceiteWhatsApp { get; set; }
 
         public string UF { get; set; }
 
@@ -40,7 +40,7 @@ namespace InfraBanco.Modelos
 
         public DateTime? ValidadeAnterior { get; set; }
 
-        public int QtdeRenovacao { get; set; }
+        public byte QtdeRenovacao { get; set; }
 
         public int IdUsuarioUltRenovacao { get; set; }
 
