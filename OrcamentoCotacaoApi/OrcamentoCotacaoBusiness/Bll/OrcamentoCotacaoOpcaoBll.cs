@@ -16,15 +16,17 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly OrcamentoCotacaoOpcao.OrcamentoCotacaoOpcaoBll orcamentoCotacaoOpcaoBll;
         private readonly IMapper mapper;
         private readonly ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll;
+        private readonly FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll;
 
         public OrcamentoCotacaoOpcaoBll(InfraBanco.ContextoBdProvider contextoBdProvider,
             OrcamentoCotacaoOpcao.OrcamentoCotacaoOpcaoBll orcamentoCotacaoOpcaoBll, IMapper mapper,
-            ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll)
+            ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll, FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll)
         {
             this.contextoBdProvider = contextoBdProvider;
             this.orcamentoCotacaoOpcaoBll = orcamentoCotacaoOpcaoBll;
             this.mapper = mapper;
             this.produtoOrcamentoCotacaoBll = produtoOrcamentoCotacaoBll;
+            this.formaPagtoOrcamentoCotacaoBll = formaPagtoOrcamentoCotacaoBll;
         }
 
         public List<OrcamentoOpcaoResponseViewModel> CadastrarOrcamentoCotacaoOpcoesComTransacao(List<OrcamentoOpcaoRequestViewModel> orcamentoOpcoes,
@@ -44,15 +46,18 @@ namespace OrcamentoCotacaoBusiness.Bll
                 if (torcamentoCotacaoOpcao.Id == 0) throw new ArgumentException("Ops! Não gerou Id na opção de orçamento!");
 
                 orcamentoOpcaoResponseViewModels.Add(mapper.Map<OrcamentoOpcaoResponseViewModel>(torcamentoCotacaoOpcao));
-                
-                var produtos = produtoOrcamentoCotacaoBll.CadastrarOrcamentoCotacaoOpcaoProdutosComTransacao(opcao.ListaProdutos,
+
+                var TorcamentoCotacaoOpcaoPagtos = formaPagtoOrcamentoCotacaoBll.CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(opcao.FormaPagto, opcaoResponse.Id, contextoBdGravacao);
+
+                var TorcamentoCotacaoItemUnificados = produtoOrcamentoCotacaoBll.CadastrarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(opcao, 
                     opcaoResponse.Id, contextoBdGravacao);
 
-                //  2 - t_ORCAMENTO_COTACAO_OPCAO_PAGTO - principal
+                if (TorcamentoCotacaoOpcaoPagtos.Count == 0 || TorcamentoCotacaoItemUnificados.Count == 0) 
+                    throw new ArgumentException("Ops! Não gerou Id ao salvar os pagamentos e produtos!");
 
-
-                //precisamos do item 2 para salvar o 3
-                //  3 - t_ORCAMENTO_COTACAO_OPCAO_ITEM_ATOMICO_CUSTO_FIN - usa t_ORCAMENTO_COTACAO_OPCAO_PAGTO.Id e t_ORCAMENTO_COTACAO_OPCAO_ITEM_ATOMICO
+                //buscar os itens atomicos por id de itens unificados para salvar o custo dos produtos;
+                //  3 - t_ORCAMENTO_COTACAO_OPCAO_ITEM_ATOMICO_CUSTO_FIN -
+                //  usa t_ORCAMENTO_COTACAO_OPCAO_PAGTO.Id e t_ORCAMENTO_COTACAO_OPCAO_ITEM_ATOMICO
 
 
             }

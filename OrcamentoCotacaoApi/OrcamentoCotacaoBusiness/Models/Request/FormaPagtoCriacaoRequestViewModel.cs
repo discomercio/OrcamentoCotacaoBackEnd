@@ -12,7 +12,7 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         public int AvFormaPagto { get; set; }
 
         [JsonProperty("op_pu_forma_pagto")]
-        public string PuFormaPagto { get; set; }
+        public int PuFormaPagto { get; set; }
 
         [JsonProperty("c_pu_valor")]
         public decimal PuValor { get; set; }
@@ -33,13 +33,13 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         public decimal PcMaquinetaValorParcela { get; set; }
 
         [JsonProperty("op_pce_entrada_forma_pagto")]
-        public string PceFormaPagtoEntrada { get; set; }
+        public int PceFormaPagtoEntrada { get; set; }
 
         [JsonProperty("o_pce_entrada_valor")]
         public decimal PceFormaPagtoEntradaValor { get; set; }
 
         [JsonProperty("op_pce_prestacao_forma_pagto")]
-        public string PceFormaPagtoPrestacao { get; set; }
+        public int PceFormaPagtoPrestacao { get; set; }
 
         [JsonProperty("c_pce_prestacao_qtde")]
         public int PcePrestacaoQtde { get; set; }
@@ -51,7 +51,7 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         public int PcePrestacaoPeriodo { get; set; }
 
         [JsonProperty("op_pse_prim_prest_forma_pagto")]
-        public string PseFormaPagtoPrimPrest { get; set; }
+        public int PseFormaPagtoPrimPrest { get; set; }
 
         [JsonProperty("c_pse_prim_prest_valor")]
         public decimal PsePrimPrestValor { get; set; }
@@ -60,7 +60,7 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         public int PsePrimPrestApos { get; set; }
 
         [JsonProperty("op_pse_demais_prest_forma_pagto")]
-        public string PseFormaPagtoDemaisPrest { get; set; }
+        public int PseFormaPagtoDemaisPrest { get; set; }
 
         [JsonProperty("c_pse_demais_prest_qtde")]
         public int PseDemaisPrestQtde { get; set; }
@@ -72,7 +72,7 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         public int PseDemaisPrestPeriodo { get; set; }
 
         [JsonProperty("tipo_parcelamento")]
-        public string TipoParcelamento { get; set; }
+        public int TipoParcelamento { get; set; }
 
         [JsonProperty("observacao")]
         public string Observacao { get; set; }

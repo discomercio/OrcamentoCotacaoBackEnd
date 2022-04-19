@@ -1,6 +1,9 @@
 ﻿using FormaPagamento;
+using InfraBanco;
 using InfraBanco.Constantes;
+using InfraBanco.Modelos;
 using MeioPagamentos;
+using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento.MeiosPagamento;
 using System;
@@ -14,11 +17,15 @@ namespace OrcamentoCotacaoBusiness.Bll
     {
         private readonly FormaPagtoBll _formaPagtoBll;
         private readonly MeiosPagamentosBll _meiosPagamentosBll;
+        private readonly OrcamentoCotacaoOpcaoPagto.OrcamentoCotacaoOpcaoPagtoBll orcamentoCotacaoOpcaoPagtoBll;
 
-        public FormaPagtoOrcamentoCotacaoBll(FormaPagtoBll formaPagtoBll, MeiosPagamentosBll _meiosPagamentosBll)
+
+        public FormaPagtoOrcamentoCotacaoBll(FormaPagtoBll formaPagtoBll, MeiosPagamentosBll _meiosPagamentosBll,
+            OrcamentoCotacaoOpcaoPagto.OrcamentoCotacaoOpcaoPagtoBll orcamentoCotacaoOpcaoPagtoBll)
         {
             this._formaPagtoBll = formaPagtoBll;
             this._meiosPagamentosBll = _meiosPagamentosBll;
+            this.orcamentoCotacaoOpcaoPagtoBll = orcamentoCotacaoOpcaoPagtoBll;
         }
 
         public List<FormaPagamentoResponseViewModel> BuscarFormasPagamentos(string tipoCliente, Constantes.TipoUsuario tipoUsuario, string apelido, byte comIndicacao)
@@ -110,6 +117,47 @@ namespace OrcamentoCotacaoBusiness.Bll
                 return null;
 
             return await _formaPagtoBll.BuscarQtdeParcCartaoVisa();
+        }
+
+        public List<TorcamentoCotacaoOpcaoPagto> CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(List<FormaPagtoCriacaoRequestViewModel> FormaPagtos,
+            int idOrcamentoCotacaoOpcao, ContextoBdGravacao contextoBdGravacao)
+        {
+            List<TorcamentoCotacaoOpcaoPagto> retorno = new List<TorcamentoCotacaoOpcaoPagto>();
+            foreach (var pagto in FormaPagtos)
+            {
+                TorcamentoCotacaoOpcaoPagto torcamentoCotacaoOpcaoPagto = new TorcamentoCotacaoOpcaoPagto()
+                {
+                    IdOrcamentoCotacaoOpcao = idOrcamentoCotacaoOpcao,
+                    Aprovado = false,
+                    Observacao = pagto.Observacao,
+                    Tipo_parcelamento = pagto.TipoParcelamento,
+                    Av_forma_pagto = pagto.AvFormaPagto,
+                    Pc_qtde_parcelas = pagto.PcQtdeParcelas,
+                    Pc_valor_parcela = pagto.PcValorParcela,
+                    Pc_maquineta_qtde_parcelas = pagto.PcMaquinetaQtdeParcelas,
+                    Pc_maquineta_valor_parcela = pagto.PcMaquinetaValorParcela,
+                    Pce_forma_pagto_entrada = pagto.PceFormaPagtoEntrada,
+                    Pce_forma_pagto_prestacao = pagto.PceFormaPagtoPrestacao,
+                    Pce_entrada_valor = pagto.PceFormaPagtoEntradaValor,
+                    Pce_prestacao_qtde = pagto.PcePrestacaoQtde,
+                    Pce_prestacao_valor = pagto.PcePrestacaoValor,
+                    Pce_prestacao_periodo = pagto.PcePrestacaoPeriodo,
+                    Pse_forma_pagto_prim_prest = pagto.PseFormaPagtoPrimPrest,
+                    Pse_forma_pagto_demais_prest = pagto.PseFormaPagtoDemaisPrest,
+                    Pse_prim_prest_valor = pagto.PsePrimPrestValor,
+                    Pse_prim_prest_apos = pagto.PsePrimPrestApos,
+                    Pse_demais_prest_qtde = pagto.PseDemaisPrestQtde,
+                    Pse_demais_prest_valor = pagto.PseDemaisPrestValor,
+                    Pse_demais_prest_periodo = pagto.PseDemaisPrestPeriodo,
+                    Pu_forma_pagto = pagto.PuFormaPagto,
+                    Pu_valor = pagto.PuValor,
+                    Pu_vencto_apos = pagto.PuVenctoApos
+                };
+
+                retorno.Add(orcamentoCotacaoOpcaoPagtoBll.InserirComTransacao(torcamentoCotacaoOpcaoPagto, contextoBdGravacao));
+            }
+            
+            return retorno;
         }
     }
 }
