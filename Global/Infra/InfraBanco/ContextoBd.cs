@@ -59,7 +59,10 @@ namespace InfraBanco
         public IQueryable<TorcamentistaEIndicadorVendedor> TorcamentistaEindicadorVendedors { get => contexto.TorcamentistaEindicadorVendedors.AsNoTracking(); }        
         public IQueryable<TsessaoHistorico> TsessaoHistoricos { get => contexto.TsessaoHistoricos.AsNoTracking(); }
         public IQueryable<Tproduto> Tprodutos { get => contexto.Tprodutos.AsNoTracking(); }
+        public IQueryable<TprodutoCatalogo> TprodutoCatalogos { get => contexto.TprodutoCatalogos.AsNoTracking(); }
         public IQueryable<TProdutoCatalogoPropriedade> TProdutoCatalogoPropriedades { get => contexto.TProdutoCatalogoPropriedades.AsNoTracking(); }
+        public IQueryable<TprodutoCatalogoItem> TprodutoCatalogoItems { get => contexto.TprodutoCatalogoItems.AsNoTracking(); }
+        public IQueryable<TProdutoCatalogoPropriedadeOpcao> TProdutoCatalogoPropriedadeOpcoes { get => contexto.TProdutoCatalogoPropriedadeOpcoes.AsNoTracking(); }
         public IQueryable<TprodutoLoja> TprodutoLojas { get => contexto.TprodutoLojas.AsNoTracking(); }
         public IQueryable<TpedidoItem> TpedidoItems { get => contexto.TpedidoItems.AsNoTracking(); }
         public IQueryable<TpedidoItemDevolvido> TpedidoItemDevolvidos { get => contexto.TpedidoItemDevolvidos.AsNoTracking(); }
