@@ -42,7 +42,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             return _bll.ExcluirImagem(idProduto, idImagem);
         }
 
-        public List<TprodutoCatalogoItens> ObterListaItens(int id)
+        public List<TprodutoCatalogoItem> ObterListaItens(int id)
         {
             return _bll.ObterListaItens(id);
         }
