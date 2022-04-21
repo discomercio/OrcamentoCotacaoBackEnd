@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace InfraBanco.Modelos
@@ -7,16 +8,24 @@ namespace InfraBanco.Modelos
     {
         public static List<TcfgSelectItem> ObterLista()
         {
-            List<TcfgSelectItem> status = new List<TcfgSelectItem>();
+            List<TcfgSelectItem> lista = new List<TcfgSelectItem>();
 
-            status.Add(new TcfgSelectItem { Id = "ESP", Value = "Em espera" });
-            status.Add(new TcfgSelectItem { Id = "SPL", Value = "Split Possível" });
-            status.Add(new TcfgSelectItem { Id = "SEP", Value = "Separar Mercadoria" });
-            status.Add(new TcfgSelectItem { Id = "AET", Value = "A entregar" });
-            status.Add(new TcfgSelectItem { Id = "ETG", Value = "Entregue" });
-            status.Add(new TcfgSelectItem { Id = "CAN", Value = "Cancelado" });
+            lista.Add(new TcfgSelectItem { Id = "ESP", Value = "Em espera" });
+            lista.Add(new TcfgSelectItem { Id = "SPL", Value = "Split Possível" });
+            lista.Add(new TcfgSelectItem { Id = "SEP", Value = "Separar Mercadoria" });
+            lista.Add(new TcfgSelectItem { Id = "AET", Value = "A entregar" });
+            lista.Add(new TcfgSelectItem { Id = "ETG", Value = "Entregue" });
+            lista.Add(new TcfgSelectItem { Id = "CAN", Value = "Cancelado" });
 
-            return status;
+            return lista;
+        }
+
+        public static string ObterStatus(string status)
+        {
+            if (!string.IsNullOrEmpty(status))
+                return ObterLista().FirstOrDefault(x => x.Id == status).Value;
+            else
+                return "";
         }
 
         public static List<TcfgSelectItem> ObterLista(List<string> listaStatus)

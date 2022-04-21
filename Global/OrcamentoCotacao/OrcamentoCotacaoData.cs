@@ -71,8 +71,8 @@ namespace OrcamentoCotacao
             {
                 using(var db = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
-                    var saida = from c in db.TorcamentoCotacao
-                                select c;
+                    var listaStatus = db.TcfgOrcamentoCotacaoStatus.ToList();
+                    var saida = from c in db.TorcamentoCotacao select c;
 
                     if (obj.LimitarData)
                     {
@@ -118,6 +118,7 @@ namespace OrcamentoCotacao
                                     PrevisaoEntregaData = c.PrevisaoEntregaData,
                                     QtdeRenovacao = c.QtdeRenovacao,
                                     Status = c.Status,
+                                    StatusNome = listaStatus.FirstOrDefault(x => x.Id == c.Status).Descricao,
                                     StEtgImediata = c.StEtgImediata,
                                     Telefone = c.Telefone,
                                     TipoCliente = c.TipoCliente,

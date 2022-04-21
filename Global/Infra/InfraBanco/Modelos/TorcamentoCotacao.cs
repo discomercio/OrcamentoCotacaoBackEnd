@@ -56,7 +56,10 @@ namespace InfraBanco.Modelos
 
         public DateTime? PrevisaoEntregaData { get; set; }
 
-        public int Status { get; set; }
+        public Int16 Status { get; set; }
+
+        [NotMapped]
+        public string StatusNome { get; set; }
 
         public int IdTipoUsuarioContextoUltStatus { get; set; }
 

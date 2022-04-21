@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InfraBanco.Modelos
@@ -8,7 +9,7 @@ namespace InfraBanco.Modelos
     {
         [Key]
         [Column("Id")]
-        public int Id { get; set; }
+        public Int16 Id { get; set; }
 
         [Column("Descricao")]
         [MaxLength(30)]
