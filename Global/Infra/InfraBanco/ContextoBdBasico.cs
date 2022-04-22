@@ -186,8 +186,10 @@ namespace InfraBanco
         public DbSet<TorcamentistaEIndicadorVendedor> TorcamentistaEindicadorVendedors { get; set; }
         public DbSet<TsessaoHistorico> TsessaoHistoricos { get; set; }
         public DbSet<Tproduto> Tprodutos { get; set; }
+        public DbSet<TprodutoCatalogo> TprodutoCatalogos { get; set; }        
         public DbSet<TProdutoCatalogoPropriedade> TProdutoCatalogoPropriedades { get; set; }
-
+        public DbSet<TProdutoCatalogoPropriedadeOpcao> TProdutoCatalogoPropriedadeOpcoes { get; set; }
+        public DbSet<TprodutoCatalogoItem> TprodutoCatalogoItems { get; set; }
         public DbSet<TprodutoLoja> TprodutoLojas { get; set; }
         public DbSet<TpedidoItem> TpedidoItems { get; set; }
         public DbSet<TpedidoItemDevolvido> TpedidoItemDevolvidos { get; set; }

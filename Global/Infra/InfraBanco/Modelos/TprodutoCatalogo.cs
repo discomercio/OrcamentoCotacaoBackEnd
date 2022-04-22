@@ -18,7 +18,7 @@ namespace InfraBanco.Modelos
         public DateTime? DtEdicao { get; set; }
         public bool Ativo { get; set; }
 
-        public List<TprodutoCatalogoItens> campos { get; set; }
+        public List<TprodutoCatalogoItem> campos { get; set; }
         public List<TprodutoCatalogoImagem> imagens { get; set; }
     }
 }

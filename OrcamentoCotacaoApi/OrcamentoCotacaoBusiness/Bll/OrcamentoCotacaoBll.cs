@@ -58,19 +58,19 @@ namespace OrcamentoCotacaoBusiness.Bll
                     Loja = tOrcamentoFiltro.Loja
                 });
 
-                List<OrcamentoCotacaoListaDto> retorno = new List<OrcamentoCotacaoListaDto>();
+                List<OrcamentoCotacaoListaDto> lista = new List<OrcamentoCotacaoListaDto>();
                 if (orcamentoCotacaoListaDto != null)
                 {
-                    orcamentoCotacaoListaDto.ForEach(x => retorno.Add(new OrcamentoCotacaoListaDto()
+                    orcamentoCotacaoListaDto.ForEach(x => lista.Add(new OrcamentoCotacaoListaDto()
                     {
-                        NumeroOrcamento = x.IdOrcamento,
+                        NumeroOrcamento = x.Id.ToString("000000O"),
                         NumPedido = x.IdPedido,
                         Cliente_Obra = $"{x.NomeCliente} - {x.NomeObra}",
                         Vendedor = x.Tusuarios.Usuario,
                         Parceiro = "",
                         VendedorParceiro = "",
                         Valor = "0",
-                        Status = x.Status.ToString(),
+                        Status = x.StatusNome,
                         VistoEm = "",
                         Mensagem = x.Status == 7 ? "Sim" : "Não",
                         DtCadastro = x.DataCadastro,
@@ -79,16 +79,26 @@ namespace OrcamentoCotacaoBusiness.Bll
                         DtFim = tOrcamentoFiltro.DtFim
                     }));
                 }
-                return retorno;
-                //return _orcamentoBll.OrcamentoCotacaoPorFiltro(tOrcamentoFiltro);
+
+                return lista;
             }
             else if (tOrcamentoFiltro.Origem == "PENDENTES") //PrePedido/Em Aprovação [tOrcamentos]
             {
-                return _orcamentoBll.OrcamentoPorFiltro(tOrcamentoFiltro);
+                var lista = _orcamentoBll.OrcamentoPorFiltro(tOrcamentoFiltro);
+
+                foreach (var item in lista)
+                    item.Status = TcfgOrcamentoStatus.ObterStatus(item.Status);
+
+                return lista;
             }
             else //if (tOrcamentoFiltro.Origem == "PEDIDOS")
             {
-                return _pedidoPrepedidoApiBll.ListarPedidos(tOrcamentoFiltro);
+                var lista = _pedidoPrepedidoApiBll.ListarPedidos(tOrcamentoFiltro);
+
+                foreach (var item in lista)
+                    item.Status = TcfgPedidoStatus.ObterStatus(item.Status);
+
+                return lista;
             }
         }
 

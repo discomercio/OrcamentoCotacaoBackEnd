@@ -381,6 +381,34 @@ namespace Produto
             return lprodutosPropriedades;
         }
 
+        public async Task<List<Produto.Dados.ProdutoCatalogoPropriedadeDados>> ObterListaPropriedadesProdutosById(int idProdutoCatalogo)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            var produtoPropriedades = from pc in db.TprodutoCatalogos
+                                      join pci in db.TprodutoCatalogoItems on pc.Id equals pci.IdProdutoCatalogo
+                                      join pcp in db.TProdutoCatalogoPropriedades on pci.IdProdutoCatalogoPropriedade equals pcp.id
+                                      join pco in db.TProdutoCatalogoPropriedadeOpcoes on pci.IdProdutoCatalogoPropriedade equals pco.idProdutoCatalogoPropriedade
+                                      where pc.Id == idProdutoCatalogo
+                                      select new Produto.Dados.ProdutoCatalogoPropriedadeDados
+                                      {
+                                          id = pcp.id,
+                                          IdCfgTipoPropriedade = pcp.IdCfgTipoPropriedade,
+                                          IdCfgTipoPermissaoEdicaoCadastro = pcp.IdCfgTipoPermissaoEdicaoCadastro,
+                                          IdCfgDataType = pcp.IdCfgDataType,
+                                          descricao = pcp.descricao,
+                                          oculto = pcp.oculto,
+                                          ordem = pcp.ordem,
+                                          dt_cadastro = pcp.dt_cadastro,
+                                          usuario_cadastro = pcp.usuario_cadastro
+
+                                      };
+
+            List<Produto.Dados.ProdutoCatalogoPropriedadeDados> lprodutosPropriedades = await produtoPropriedades.ToListAsync();
+
+            return lprodutosPropriedades;
+        }
+
         public async Task<List<Produto.Dados.ProdutoCatalogoPropriedadeDados>> ObterListaPropriedadesProdutos(int id)
         {
             var db = contextoProvider.GetContextoLeitura();

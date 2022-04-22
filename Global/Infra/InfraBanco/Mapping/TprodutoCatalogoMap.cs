@@ -12,7 +12,7 @@ namespace InfraBanco.Mapping
             builder.HasKey(o => o.Id);
 
             builder.Property(x => x.Codigo)
-                .HasColumnName("codigo")
+                .HasColumnName("produto")
                 .HasColumnType("varchar(8)")
                 .IsRequired();
 
@@ -22,7 +22,7 @@ namespace InfraBanco.Mapping
                 .IsRequired();
 
             builder.Property(x => x.Descricao)
-                .HasColumnName("descricao")
+                .HasColumnName("descricao_completa")
                 .HasColumnType("varchar(500)");
 
             builder.Property(x => x.UsuarioCadastro)

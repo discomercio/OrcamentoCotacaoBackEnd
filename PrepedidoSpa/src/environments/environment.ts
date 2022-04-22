@@ -4,7 +4,7 @@ export const environment = {
 
   esperaAvisos: 3000,
   esperaErros: 5000,
-  apiUrl: 'http://10.255.0.90:2000/api/',
+  apiUrl: 'http://localhost:60877/api/',
   versaoApi: 'DEBUG',
-  production: true
+  production: false
 };

@@ -21,6 +21,5 @@ namespace Orcamento.Dto
         public int? IdIndicadorVendedor { get; set; }
         public DateTime? DtInicio { get; set; }
         public DateTime? DtFim { get; set; }
-
     }
 }
