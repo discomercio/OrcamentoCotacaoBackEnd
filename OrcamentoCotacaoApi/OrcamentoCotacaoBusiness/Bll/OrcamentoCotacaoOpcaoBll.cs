@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using InfraBanco;
 using InfraBanco.Modelos;
+using InfraIdentity;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
 using System;
@@ -30,7 +31,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public List<OrcamentoOpcaoResponseViewModel> CadastrarOrcamentoCotacaoOpcoesComTransacao(List<OrcamentoOpcaoRequestViewModel> orcamentoOpcoes,
-            int idOrcamentoCotacao, int idTipoUsuarioContextoCadastro, int idUsuarioCadastro, ContextoBdGravacao contextoBdGravacao)
+            int idOrcamentoCotacao, UsuarioLogin usuarioLogado, ContextoBdGravacao contextoBdGravacao)
         {
             List<OrcamentoOpcaoResponseViewModel> orcamentoOpcaoResponseViewModels = new List<OrcamentoOpcaoResponseViewModel>();
 
@@ -39,7 +40,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 seq++;
                 TorcamentoCotacaoOpcao torcamentoCotacaoOpcao = MontarTorcamentoCotacaoOpcao(opcao, idOrcamentoCotacao,
-                    idTipoUsuarioContextoCadastro, idUsuarioCadastro, seq);
+                    usuarioLogado, seq);
 
                 var opcaoResponse = orcamentoCotacaoOpcaoBll.InserirComTransacao(torcamentoCotacaoOpcao, contextoBdGravacao);
 
@@ -50,16 +51,13 @@ namespace OrcamentoCotacaoBusiness.Bll
                 var tOrcamentoCotacaoOpcaoPagtos = formaPagtoOrcamentoCotacaoBll.CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(opcao.FormaPagto, opcaoResponse.Id, contextoBdGravacao);
 
                 var tOrcamentoCotacaoItemUnificados = produtoOrcamentoCotacaoBll.CadastrarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(opcao, 
-                    opcaoResponse.Id, contextoBdGravacao);
+                    opcaoResponse.Id, usuarioLogado, contextoBdGravacao);
 
                 if (tOrcamentoCotacaoOpcaoPagtos.Count == 0 || tOrcamentoCotacaoItemUnificados.Count == 0) 
                     throw new ArgumentException("Ops! Não gerou Id ao salvar os pagamentos e produtos!");
 
-                //buscar os itens atomicos por id de itens unificados para salvar o custo dos produtos;
-                //  3 - t_ORCAMENTO_COTACAO_OPCAO_ITEM_ATOMICO_CUSTO_FIN -
-                //  usa t_ORCAMENTO_COTACAO_OPCAO_PAGTO.Id e t_ORCAMENTO_COTACAO_OPCAO_ITEM_ATOMICO
                 var tOrcamentoCotacaoOpcaoItemAtomicoCustoFin = produtoOrcamentoCotacaoBll.CadastrarProdutoAtomicoCustoFinComTransacao(tOrcamentoCotacaoOpcaoPagtos,
-                    tOrcamentoCotacaoItemUnificados, contextoBdGravacao);
+                    tOrcamentoCotacaoItemUnificados, opcao.ListaProdutos, usuarioLogado.Loja, contextoBdGravacao);
 
             }
 
@@ -67,15 +65,15 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         private TorcamentoCotacaoOpcao MontarTorcamentoCotacaoOpcao(OrcamentoOpcaoRequestViewModel opcao, int idOrcamentoCotacao,
-            int idTipoUsuarioContextoCadastro, int idUsuarioCadastro, int sequencia)
+            UsuarioLogin usuarioLogado, int sequencia)
         {
             return new TorcamentoCotacaoOpcao()
             {
                 IdOrcamentoCotacao = idOrcamentoCotacao,
                 PercRT = opcao.PercRT,
                 Sequencia = sequencia,
-                IdTipoUsuarioContextoCadastro = idTipoUsuarioContextoCadastro,
-                IdUsuarioCadastro = idUsuarioCadastro,
+                IdTipoUsuarioContextoCadastro = (int)usuarioLogado.TipoUsuario,
+                IdUsuarioCadastro = usuarioLogado.Id,
                 DataCadastro = DateTime.Now.Date,
                 DataHoraCadastro = DateTime.Now
             };

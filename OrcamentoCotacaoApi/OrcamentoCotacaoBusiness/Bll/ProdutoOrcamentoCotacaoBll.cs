@@ -2,6 +2,8 @@
 using InfraBanco;
 using InfraBanco.Constantes;
 using InfraBanco.Modelos;
+using InfraBanco.Modelos.Filtros;
+using InfraIdentity;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
 using Produto;
@@ -132,7 +134,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public List<TorcamentoCotacaoItemUnificado> CadastrarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(OrcamentoOpcaoRequestViewModel opcao,
-            int idOrcamentoCotacaoOpcao, ContextoBdGravacao contextoBdGravacao)
+            int idOrcamentoCotacaoOpcao, UsuarioLogin usuarioLogado, ContextoBdGravacao contextoBdGravacao)
         {
             List<TorcamentoCotacaoItemUnificado> itensUnificados = new List<TorcamentoCotacaoItemUnificado>();
             int sequencia = 0;
@@ -140,7 +142,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             foreach (var produto in opcao.ListaProdutos)
             {
                 var tProduto = produtoGeralBll.BuscarProdutoPorFabricanteECodigoComTransacao(produto.Fabricante,
-                    produto.Produto, contextoBdGravacao).Result;
+                    produto.Produto, usuarioLogado.Loja, contextoBdGravacao).Result;
 
                 if (tProduto == null) throw new ArgumentException("Ops! Não achamos o produto!");
 
@@ -155,7 +157,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 itensUnificados.Add(produtoUnificado);
 
                 var itensAtomicos = CadastrarTorcamentoCotacaoOpcaoItemAtomicoComTransacao(produtoUnificado.Id,
-                    tProduto, produto.Qtde, contextoBdGravacao);
+                    tProduto, produto.Qtde, usuarioLogado, contextoBdGravacao);
 
                 if (itensAtomicos.Count <= 0) throw new ArgumentException("Ops! Não gerou o Id de produto atomicos!");
             }
@@ -163,17 +165,21 @@ namespace OrcamentoCotacaoBusiness.Bll
             return itensUnificados;
         }
 
-        private List<TorcamentoCotacaoOpcaoItemAtomico> CadastrarTorcamentoCotacaoOpcaoItemAtomicoComTransacao(int idItemUnificado, 
-            Tproduto tProduto, int qtde, ContextoBdGravacao contextoBdGravacao)
+        private List<TorcamentoCotacaoOpcaoItemAtomico> CadastrarTorcamentoCotacaoOpcaoItemAtomicoComTransacao(int idItemUnificado,
+            Tproduto tProduto, int qtde, UsuarioLogin usuarioLogado, ContextoBdGravacao contextoBdGravacao)
         {
             List<TorcamentoCotacaoOpcaoItemAtomico> torcamentoCotacaoOpcaoItemAtomicos = new List<TorcamentoCotacaoOpcaoItemAtomico>();
             if (tProduto.TecProdutoComposto != null)
             {
                 foreach (var item in tProduto.TecProdutoComposto.TecProdutoCompostoItems)
                 {
-                    TorcamentoCotacaoOpcaoItemAtomico itemAtomico = new TorcamentoCotacaoOpcaoItemAtomico(idItemUnificado, tProduto.Fabricante, tProduto.Produto,
-                    (short)(qtde * tProduto.TecProdutoComposto.TecProdutoCompostoItems.First().Qtde),
-                    tProduto.Descricao, tProduto.Descricao_Html);
+
+                    var tProdutoAtomico = produtoGeralBll.BuscarProdutoPorFabricanteECodigoComTransacao(item.Fabricante_item,
+                        item.Produto_item, usuarioLogado.Loja, contextoBdGravacao).Result;
+
+                    TorcamentoCotacaoOpcaoItemAtomico itemAtomico = new TorcamentoCotacaoOpcaoItemAtomico(idItemUnificado,
+                        tProdutoAtomico.Fabricante, tProdutoAtomico.Produto, (short)(qtde * tProduto.TecProdutoComposto.TecProdutoCompostoItems.First().Qtde),
+                        tProdutoAtomico.Descricao, tProdutoAtomico.Descricao_Html);
 
                     torcamentoCotacaoOpcaoItemAtomicos.Add(orcamentoCotacaoOpcaoItemAtomicoBll.InserirComTransacao(itemAtomico, contextoBdGravacao));
                 }
@@ -192,13 +198,37 @@ namespace OrcamentoCotacaoBusiness.Bll
             return torcamentoCotacaoOpcaoItemAtomicos;
         }
 
-        public List<TorcamentoCotacaoOpcaoItemAtomicoCustoFin> CadastrarProdutoAtomicoCustoFinComTransacao(List<TorcamentoCotacaoOpcaoPagto> tOrcamentoCotacaoOpcaoPagtos, 
-            List<TorcamentoCotacaoItemUnificado> tOrcamentoCotacaoItemUnificados, ContextoBdGravacao contextoBdGravacao)
+        public List<TorcamentoCotacaoOpcaoItemAtomicoCustoFin> CadastrarProdutoAtomicoCustoFinComTransacao(List<TorcamentoCotacaoOpcaoPagto> tOrcamentoCotacaoOpcaoPagtos,
+            List<TorcamentoCotacaoItemUnificado> tOrcamentoCotacaoItemUnificados, List<ProdutoRequestViewModel> produtosOpcao, string loja, ContextoBdGravacao contextoBdGravacao)
         {
-            foreach(var itemUnificado in tOrcamentoCotacaoItemUnificados)
+            int index = 0;
+            foreach (var pagto in tOrcamentoCotacaoOpcaoPagtos)
             {
-                //buscar os itens atomicos pelo id do item unificado
-                //var itensAtomicos = 
+                foreach (var unificado in tOrcamentoCotacaoItemUnificados)
+                {
+                    var produtosEspecificos = unificado.TorcamentoCotacaoOpcaoItemAtomicos.Select(x => x.Produto).ToList();
+                    var pDados = produtoGeralBll.BuscarProdutosEspecificos(loja, produtosEspecificos).Result;
+                    var itensAtomicos = unificado.TorcamentoCotacaoOpcaoItemAtomicos;
+                    var itemOpcao = produtosOpcao.Where(x => x.Produto == unificado.Produto).FirstOrDefault();
+                    foreach (var atomico in itensAtomicos)
+                    {
+                        var item = pDados.Where(x => x.Produto == atomico.Produto).FirstOrDefault();
+                        TorcamentoCotacaoOpcaoItemAtomicoCustoFin atomicoCustoFin = new TorcamentoCotacaoOpcaoItemAtomicoCustoFin()
+                        {
+                            IdItemAtomico = atomico.Id,
+                            IdOpcaoPagto = pagto.Id,
+                            DescDado = itemOpcao.DescDado,
+                            PrecoLista = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? (decimal)item.Preco_lista : (decimal)item.Preco_lista * (decimal)itemOpcao.CustoFinancFornecCoeficiente,
+                            PrecoVenda = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? (decimal)item.Preco_lista * (decimal)(1 - itemOpcao.DescDado / 100) : (decimal)item.Preco_lista * (decimal)itemOpcao.CustoFinancFornecCoeficiente * (decimal)(1 - itemOpcao.DescDado / 100),
+                            PrecoNF = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? (decimal)item.Preco_lista * (decimal)(1 - itemOpcao.DescDado / 100) : (decimal)item.Preco_lista * (decimal)itemOpcao.CustoFinancFornecCoeficiente * (decimal)(1 - itemOpcao.DescDado / 100),
+                            CustoFinancFornecCoeficiente = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? 0 : itemOpcao.CustoFinancFornecCoeficiente,
+                            CustoFinancFornecPrecoListaBase = (decimal)item.Preco_lista
+                        };
+
+                        var orc = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.InserirComTransacao(atomicoCustoFin, contextoBdGravacao);
+                    }
+                }
+
             }
 
             return new List<TorcamentoCotacaoOpcaoItemAtomicoCustoFin>();

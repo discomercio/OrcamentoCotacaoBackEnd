@@ -185,7 +185,7 @@ namespace Produto
             return lstTodosProdutos;
         }
 
-        public async Task<IEnumerable<Produto.Dados.ProdutoDados>> BuscarProdutosEspecificos(string loja, List<string> lstProdutos)
+        public async Task<IEnumerable<ProdutoDados>> BuscarProdutosEspecificos(string loja, List<string> lstProdutos)
         {
             var db = contextoProvider.GetContextoLeitura();
 
@@ -214,22 +214,22 @@ namespace Produto
             return lstTodosProdutos;
         }
 
-        public async Task<Tproduto> BuscarProdutoPorFabricanteECodigoComTransacao(string fabricante, string produto,
+        public async Task<Tproduto> BuscarProdutoPorFabricanteECodigoComTransacao(string fabricante, string produto, string loja,
             ContextoBdGravacao contextoBdGravacao)
         {
-            var produtoInfotask = await contextoBdGravacao.Tprodutos
+
+            var produtoComposto = await contextoBdGravacao.Tprodutos
                 .Where(x => x.Fabricante == fabricante && x.Produto == produto)
                 .Include(t => t.TecProdutoComposto.TecProdutoCompostoItems)
-                .Include(x => x.TprodutoLoja)
                 .Select(x => x).FirstOrDefaultAsync();
 
-            if (produtoInfotask != null) return produtoInfotask;
+            if (produtoComposto != null) return produtoComposto;
 
             var produtoSimples = contextoBdGravacao.Tprodutos
-                .Where(x => x.Fabricante == fabricante && x.Produto == produto)
-                .Include(x => x.TprodutoLoja).FirstOrDefault();
+                .Where(x => x.Fabricante == fabricante && x.Produto == produto).FirstOrDefault();
 
             if (produtoSimples == null) return null;
+
 
             return produtoSimples;
         }
