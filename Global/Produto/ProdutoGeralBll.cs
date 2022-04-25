@@ -381,32 +381,27 @@ namespace Produto
             return lprodutosPropriedades;
         }
 
-        public async Task<List<Produto.Dados.ProdutoCatalogoPropriedadeDados>> ObterListaPropriedadesProdutosById(int idProdutoCatalogo)
+        public async Task<List<Produto.Dados.ProdutoCatalogoItemDados>> ObterListaPropriedadesProdutosById(int idProdutoCatalogo)
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var produtoPropriedades = from pc in db.TprodutoCatalogos
+            var produtoItens = from pc in db.TprodutoCatalogos
                                       join pci in db.TprodutoCatalogoItems on pc.Id equals pci.IdProdutoCatalogo
                                       join pcp in db.TProdutoCatalogoPropriedades on pci.IdProdutoCatalogoPropriedade equals pcp.id
-                                      join pco in db.TProdutoCatalogoPropriedadeOpcoes on pci.IdProdutoCatalogoPropriedade equals pco.idProdutoCatalogoPropriedade
+                                      join pco in db.TProdutoCatalogoPropriedadeOpcoes on pci.IdProdutoCatalogoPropriedade equals pco.id_produto_catalogo_propriedade into gj
+                                      from x in gj.DefaultIfEmpty()
                                       where pc.Id == idProdutoCatalogo
-                                      select new Produto.Dados.ProdutoCatalogoPropriedadeDados
+                                      select new Produto.Dados.ProdutoCatalogoItemDados
                                       {
-                                          id = pcp.id,
-                                          IdCfgTipoPropriedade = pcp.IdCfgTipoPropriedade,
-                                          IdCfgTipoPermissaoEdicaoCadastro = pcp.IdCfgTipoPermissaoEdicaoCadastro,
-                                          IdCfgDataType = pcp.IdCfgDataType,
-                                          descricao = pcp.descricao,
-                                          oculto = pcp.oculto,
-                                          ordem = pcp.ordem,
-                                          dt_cadastro = pcp.dt_cadastro,
-                                          usuario_cadastro = pcp.usuario_cadastro
-
+                                          idProdutoCatalogoPropriedade = pcp.id,
+                                          nome = pc.Nome,
+                                          valor_item = pci.Valor,
+                                          valor_opcao = x.valor
                                       };
 
-            List<Produto.Dados.ProdutoCatalogoPropriedadeDados> lprodutosPropriedades = await produtoPropriedades.ToListAsync();
+            List<Produto.Dados.ProdutoCatalogoItemDados> lprodutosItens = await produtoItens.ToListAsync();
 
-            return lprodutosPropriedades;
+            return lprodutosItens;
         }
 
         public async Task<List<Produto.Dados.ProdutoCatalogoPropriedadeDados>> ObterListaPropriedadesProdutos(int id)

@@ -9,14 +9,18 @@ namespace InfraBanco.Mapping
         public void Configure(EntityTypeBuilder<TprodutoCatalogoItem> builder)
         {
             builder.ToTable("t_PRODUTO_CATALOGO_ITEM");
-            builder.HasKey(o => new { o.IdProdutoCatalogo, o.IdProdutoCatalogoItens });
+            builder.HasKey(o => o.IdProdutoCatalogo);
 
             builder.Property(x => x.IdProdutoCatalogo)
                 .HasColumnName("id_produto_catalogo")
                 .HasColumnType("int");
 
-            builder.Property(x => x.IdProdutoCatalogoItens)
-                .HasColumnName("id_produto_catalogo_itens")
+            builder.Property(x => x.IdProdutoCatalogoPropriedade)
+                .HasColumnName("id_produto_catalogo_propriedade")
+                .HasColumnType("int");
+
+            builder.Property(x => x.IdProdutoCatalogoPropriedadeOpcao)
+                .HasColumnName("id_produto_catalogo_propriedade_opcao")
                 .HasColumnType("int");
 
             builder.Property(x => x.Valor)

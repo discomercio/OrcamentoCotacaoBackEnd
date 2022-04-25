@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using UtilsGlobais;
 
 namespace Usuario
 {
@@ -37,15 +36,15 @@ namespace Usuario
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var usuarioFiltrado = await(from u in db.Tusuarios
-                                  join uxl in db.TusuarioXLojas on u.Usuario equals uxl.Usuario
-                                  join pu in db.TperfilUsuarios on uxl.Usuario equals pu.Usuario
-                                  join p in db.Tperfils on pu.Id_perfil equals p.Id
-                                  join pi in db.TperfilItens on p.Id equals pi.Id_perfil
-                                  where uxl.Loja == loja &&
-                                        pi.Id_operacao == Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO &&
-                                        u.Bloqueado == 0
-                                  select u).Distinct().ToListAsync();
+            var usuarioFiltrado = await (from u in db.Tusuarios
+                                         join uxl in db.TusuarioXLojas on u.Usuario equals uxl.Usuario
+                                         join pu in db.TperfilUsuarios on uxl.Usuario equals pu.Usuario
+                                         join p in db.Tperfils on pu.Id_perfil equals p.Id
+                                         join pi in db.TperfilItens on p.Id equals pi.Id_perfil
+                                         where uxl.Loja == loja &&
+                                               pi.Id_operacao == Constantes.OP_LJA_CADASTRA_NOVO_PEDIDO &&
+                                               u.Bloqueado == 0
+                                         select u).Distinct().ToListAsync();
 
             return usuarioFiltrado;
         }
@@ -98,6 +97,20 @@ namespace Usuario
         public List<Tusuario> PorFilroComTransacao(TusuarioFiltro obj, InfraBanco.ContextoBdGravacao contextoBdGravacao)
         {
             throw new NotImplementedException();
+        }
+
+        public List<string> buscarPermissoes(string apelido)
+        {
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                return (from o in db.Toperacaos
+                        join pi in db.TperfilItens on o.Id equals pi.Id_operacao
+                        join p in db.Tperfils on pi.Id_perfil equals p.Id
+                        join pu in db.TperfilUsuarios on p.Id equals pu.Id_perfil
+                        join u in db.Tusuarios on pu.Usuario equals u.Usuario
+                        where o.Modulo == "COTAC" && u.Usuario == apelido
+                        select o.Id.ToString()).ToList();
+            }
         }
     }
 }
