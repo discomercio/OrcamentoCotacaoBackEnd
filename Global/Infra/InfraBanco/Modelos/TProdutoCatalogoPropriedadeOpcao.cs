@@ -13,7 +13,7 @@ namespace InfraBanco.Modelos
         [Column("Id")]
         public int id { get; set; }
         [Required]
-        public int idProdutoCatalogoPropriedade { get; set; }
+        public int id_produto_catalogo_propriedade { get; set; }
         public string valor { get; set; }
         [Required]
         public bool oculto { get; set; }
