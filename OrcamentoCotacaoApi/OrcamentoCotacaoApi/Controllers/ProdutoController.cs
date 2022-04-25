@@ -76,6 +76,19 @@ namespace OrcamentoCotacaoApi.BaseController
                 return Ok(ret);
         }
 
+        [HttpGet("itens/{idProdutoCatalogo}")]
+        public async Task<IActionResult> ObterListaPropriedadesProdutosById(int idProdutoCatalogo)
+        {
+            _logger.LogInformation("Buscando propriedades do produto");
+
+            var ret = await _produtoBll.ObterListaPropriedadesProdutosById(idProdutoCatalogo);
+
+            if (ret == null)
+                return NoContent();
+            else
+                return Ok(ret);
+        }
+
         [HttpPost("propriedades")]
         public async Task<IActionResult> GravarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
         {
