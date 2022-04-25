@@ -194,7 +194,9 @@ namespace OrcamentoCotacaoBusiness.Bll
                 DataHoraCadastro = DateTime.Now,
                 DataUltStatus = DateTime.Now.Date,
                 DataHoraUltStatus = DateTime.Now,
-                Status = 1
+                Status = 1,
+                StEtgImediata = orcamento.EntregaImediata ? 1 : 0,
+                PrevisaoEntregaData = orcamento.DataEntregaImediata
             };
 
             if (!string.IsNullOrEmpty(orcamento.Vendedor))
@@ -207,21 +209,48 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
             if (!string.IsNullOrEmpty(orcamento.Parceiro))
             {
-                var torcamentista = orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { apelido = orcamento.Parceiro });
+                if(usuarioLogado.TipoUsuario != (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
+                {
+                    var torcamentista = orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { apelido = orcamento.Parceiro, acessoHabilitado = 1 });
 
-                if (torcamentista == null) throw new ArgumentException("Parceiro não encontrado!");
+                    if (torcamentista == null) throw new ArgumentException("Parceiro não encontrado!");
 
-                torcamentoCotacao.IdIndicador = torcamentista.IdIndicador;//IdIndicador
+                    torcamentoCotacao.IdIndicador = torcamentista.IdIndicador;//IdIndicador
+                }
+
+                if (usuarioLogado.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
+                {
+                    var torcamentista = orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = int.Parse(orcamento.Parceiro), acessoHabilitado = 1 });
+
+                    if (torcamentista == null) throw new ArgumentException("Parceiro não encontrado!");
+
+                    torcamentoCotacao.IdIndicador = torcamentista.IdIndicador;//IdIndicador
+                }
             }
 
             if (!string.IsNullOrEmpty(orcamento.VendedorParceiro))
             {
-                var vendedoresParceiro = orcamentistaEIndicadorVendedorBll.BuscarVendedoresParceiro(orcamento.Parceiro);
-                if (vendedoresParceiro == null) throw new ArgumentException("Nenhum vendedor do parceiro encontrado!");
+                if (usuarioLogado.TipoUsuario != (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
+                {
+                    var vendedoresParceiro = orcamentistaEIndicadorVendedorBll.BuscarVendedoresParceiro(orcamento.Parceiro);
+                    if (vendedoresParceiro == null) throw new ArgumentException("Nenhum vendedor do parceiro encontrado!");
 
-                torcamentoCotacao.IdIndicadorVendedor = vendedoresParceiro //IdIndicadorVendedor
-                    .Where(x => x.Nome == orcamento.VendedorParceiro)
-                    .FirstOrDefault().Id;
+                    torcamentoCotacao.IdIndicadorVendedor = vendedoresParceiro //IdIndicadorVendedor
+                        .Where(x => x.Nome == orcamento.VendedorParceiro)
+                        .FirstOrDefault().Id;
+                }
+
+                if (usuarioLogado.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
+                {
+                    var vendedoresParceiro = orcamentistaEIndicadorVendedorBll.BuscarVendedoresParceiroPorId(int.Parse(orcamento.Parceiro));
+                    if (vendedoresParceiro == null) throw new ArgumentException("Nenhum vendedor do parceiro encontrado!");
+
+                    torcamentoCotacao.IdIndicadorVendedor = vendedoresParceiro //IdIndicadorVendedor
+                        .Where(x => x.Email.ToUpper() == orcamento.VendedorParceiro)
+                        .FirstOrDefault().Id;
+                }
+
+
             }
 
             return torcamentoCotacao;

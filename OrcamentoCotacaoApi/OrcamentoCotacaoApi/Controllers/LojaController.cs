@@ -34,7 +34,7 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpGet("buscarPercMaxPorLoja")]
         public IActionResult BuscarPercMaxPorLoja(string loja)
         {
-            var saida = _lojaBll.BuscarPercMaxPorLoja(loja, LoggedUser.TipoUsuario);
+            var saida = _lojaBll.BuscarPercMaxPorLoja(loja);
 
             if (saida != null)
                 return Ok(saida);

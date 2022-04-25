@@ -9,6 +9,8 @@ namespace InfraBanco.Modelos.Filtros
         public string datastamp { get; set; }
         public string vendedorId { get; set; }
         public string loja { get; set; }
+        public int acessoHabilitado { get; set; }
+        public string status { get; set; }
     }
 }
     

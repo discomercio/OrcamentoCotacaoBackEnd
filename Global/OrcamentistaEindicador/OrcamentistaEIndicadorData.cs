@@ -70,12 +70,21 @@ namespace OrcamentistaEindicador
                     if (!string.IsNullOrEmpty(obj.vendedorId))
                     {
                         saida = saida.Where(x => x.Vendedor == obj.vendedorId);
-                        //saida = saida.Join(db.TorcamentistaEIndicadorVendedor, x => x.Apelido, y => y.IdIndicador, (x, y) => x).Where(x => x.Apelido == obj.vendedorId);
                     }
                     if (obj.idParceiro > 0)
                     {
                         saida = saida.Where(x => x.IdIndicador == obj.idParceiro);
                     }
+                    if(obj.acessoHabilitado == 0)
+                    {
+                        saida = saida.Where(x => x.Hab_Acesso_Sistema == 0);
+                    }
+                    if(obj.status == Constantes.ORCAMENTISTA_INDICADOR_STATUS_ATIVO)
+                    {
+                        saida = saida.Where(x => x.Status == Constantes.ORCAMENTISTA_INDICADOR_STATUS_ATIVO);
+                    }
+
+
 
                     return saida.ToList();
                 }
