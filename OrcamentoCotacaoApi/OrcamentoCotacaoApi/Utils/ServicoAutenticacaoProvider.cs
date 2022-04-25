@@ -4,8 +4,6 @@ using InfraIdentity;
 using Loja;
 using OrcamentistaEindicador;
 using OrcamentistaEIndicadorVendedor;
-using OrcamentoCotacaoBusiness.Enums;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,9 +13,6 @@ using static OrcamentoCotacaoBusiness.Enums.Enums;
 
 namespace OrcamentoCotacaoApi.Utils
 {
-    /*
-     * efetivamente faz o lofgin; quer dizer, efetivamente verifica a senha
-     * */
     public class ServicoAutenticacaoProvider : InfraIdentity.IServicoAutenticacaoProvider
     {
 
@@ -27,9 +22,13 @@ namespace OrcamentoCotacaoApi.Utils
         private readonly OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll;
         private readonly LojaBll lojaBll;
 
-        public ServicoAutenticacaoProvider(OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll, UsuarioBll usuarioBll,
-            OrcamentistaEIndicadorBll orcamentistaEindicadorBll, OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll,
-            LojaBll lojaBll)
+        public ServicoAutenticacaoProvider(
+            OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll,
+            UsuarioBll usuarioBll,
+            OrcamentistaEIndicadorBll orcamentistaEindicadorBll,
+            OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll,
+            LojaBll lojaBll
+            )
         {
             this.acessoBll = acessoBll;
             this.usuarioBll = usuarioBll;
@@ -61,7 +60,6 @@ namespace OrcamentoCotacaoApi.Utils
                 }
             }
 
-
             if (dadosCliente == null)
             {
                 //Buscar Parceiros e depois buscar vendedores-parceiros
@@ -86,7 +84,7 @@ namespace OrcamentoCotacaoApi.Utils
                             ((int)ePermissao.ParceiroIndicadorUsuarioMaster).ToString()
                         },
                         TipoUsuario = (int)Constantes.TipoUsuario.PARCEIRO
-                        
+
                     };
                     return usuario;
                 }
@@ -129,9 +127,7 @@ namespace OrcamentoCotacaoApi.Utils
                     {
                         return null;
                     }
-
                 }
-
             }
             else
             {
@@ -151,11 +147,7 @@ namespace OrcamentoCotacaoApi.Utils
                             Loja = string.Join(",", loja.Select(x => x.Loja)),
                             Unidade_negocio = unidade_negocio,
                             VendedorResponsavel = null,
-                            Permissoes = new List<string>()
-                            {
-                                ((int)ePermissao.AcessoAoModulo).ToString(),
-                                ((int)ePermissao.AdministradorDoModulo).ToString()
-                            },
+                            Permissoes = usuarioBll.buscarPermissoes(apelido),
                             TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR,
                             Id = usuarioInterno.FirstOrDefault().Id
                         };
@@ -207,8 +199,6 @@ namespace OrcamentoCotacaoApi.Utils
                     default:
                         break;
                 }
-
-
 
                 return usuario;
             }
