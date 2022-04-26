@@ -40,7 +40,7 @@ namespace OrcamentoCotacaoApi.Controllers
         public async Task<IEnumerable<OrcamentistaEIndicadorVendedorResponseViewModel>> BuscarVendedoresDosParceiros(string parceiro)
         {
             _logger.LogInformation("Buscando lista de vendedores parceiros");
-            var torcamentista = orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = parceiro });
+            var torcamentista = orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = parceiro, acessoHabilitado = 1 });
             var usuarios = _orcamentistaEindicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { IdIndicador = torcamentista.IdIndicador });
 
             return _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(usuarios);

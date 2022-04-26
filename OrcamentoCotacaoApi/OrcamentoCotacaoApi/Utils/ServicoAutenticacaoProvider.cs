@@ -154,7 +154,7 @@ namespace OrcamentoCotacaoApi.Utils
                         return usuario;
                     //break;
                     case (int)Constantes.TipoUsuario.PARCEIRO:
-                        var orcamentista = orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = apelido });
+                        var orcamentista = orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = apelido, acessoHabilitado = 1 });
                         var lojaOrcamentista = new List<TusuarioXLoja>();
                         lojaOrcamentista.Add(new TusuarioXLoja() { Loja = orcamentista.FirstOrDefault().Loja });
                         usuario = new UsuarioLogin

@@ -21,21 +21,18 @@ namespace OrcamentoCotacaoBusiness.Bll
             return _lojaBll.PorFiltro(obj);
         }
 
-        public PercMaxDescEComissaoResponseViewModel BuscarPercMaxPorLoja(string loja, int? tipoUsuario)
+        public PercMaxDescEComissaoResponseViewModel BuscarPercMaxPorLoja(string loja)
         {
-            if (Constantes.TipoUsuarioPerfil.getUsuarioPerfil((Constantes.TipoUsuario)tipoUsuario) == Constantes.eTipoUsuarioPerfil.INDICADOR_PARCEIRO)
-            {
-                var retorno = _lojaBll.BuscarPercMaxPorLoja(loja);
+            var retorno = _lojaBll.BuscarPercMaxPorLoja(loja);
 
-                return new PercMaxDescEComissaoResponseViewModel
-                {
-                    PercMaxComissao = retorno.PercMaxComissao,
-                    PercMaxComissaoEDesconto = retorno.PercMaxComissaoEDesconto,
-                    PercMaxComissaoEDescontoNivel2 = retorno.PercMaxComissaoEDescontoNivel2,
-                    PercMaxComissaoEDescontoNivel2PJ = retorno.PercMaxComissaoEDescontoNivel2PJ,
-                    PercMaxComissaoEDescontoPJ = retorno.PercMaxComissaoEDescontoPJ,
-                };
-            }
+            return new PercMaxDescEComissaoResponseViewModel
+            {
+                PercMaxComissao = retorno.PercMaxComissao,
+                PercMaxComissaoEDesconto = retorno.PercMaxComissaoEDesconto,
+                PercMaxComissaoEDescontoNivel2 = retorno.PercMaxComissaoEDescontoNivel2,
+                PercMaxComissaoEDescontoNivel2PJ = retorno.PercMaxComissaoEDescontoNivel2PJ,
+                PercMaxComissaoEDescontoPJ = retorno.PercMaxComissaoEDescontoPJ,
+            };
 
             return null;
         }

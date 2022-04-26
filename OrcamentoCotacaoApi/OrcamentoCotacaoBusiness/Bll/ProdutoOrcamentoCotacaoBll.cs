@@ -142,7 +142,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public List<TorcamentoCotacaoItemUnificado> CadastrarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(OrcamentoOpcaoRequestViewModel opcao,
-            int idOrcamentoCotacaoOpcao, UsuarioLogin usuarioLogado, ContextoBdGravacao contextoBdGravacao)
+            int idOrcamentoCotacaoOpcao, string loja, ContextoBdGravacao contextoBdGravacao)
         {
             List<TorcamentoCotacaoItemUnificado> itensUnificados = new List<TorcamentoCotacaoItemUnificado>();
             int sequencia = 0;
@@ -150,7 +150,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             foreach (var produto in opcao.ListaProdutos)
             {
                 var tProduto = produtoGeralBll.BuscarProdutoPorFabricanteECodigoComTransacao(produto.Fabricante,
-                    produto.Produto, usuarioLogado.Loja, contextoBdGravacao).Result;
+                    produto.Produto, loja, contextoBdGravacao).Result;
 
                 if (tProduto == null) throw new ArgumentException("Ops! Não achamos o produto!");
 
@@ -165,7 +165,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 itensUnificados.Add(produtoUnificado);
 
                 var itensAtomicos = CadastrarTorcamentoCotacaoOpcaoItemAtomicoComTransacao(produtoUnificado.Id,
-                    tProduto, produto.Qtde, usuarioLogado, contextoBdGravacao);
+                    tProduto, produto.Qtde, loja, contextoBdGravacao);
 
                 if (itensAtomicos.Count <= 0) throw new ArgumentException("Ops! Não gerou o Id de produto atomicos!");
             }
@@ -174,7 +174,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         private List<TorcamentoCotacaoOpcaoItemAtomico> CadastrarTorcamentoCotacaoOpcaoItemAtomicoComTransacao(int idItemUnificado,
-            Tproduto tProduto, int qtde, UsuarioLogin usuarioLogado, ContextoBdGravacao contextoBdGravacao)
+            Tproduto tProduto, int qtde, string loja, ContextoBdGravacao contextoBdGravacao)
         {
             List<TorcamentoCotacaoOpcaoItemAtomico> torcamentoCotacaoOpcaoItemAtomicos = new List<TorcamentoCotacaoOpcaoItemAtomico>();
             if (tProduto.TecProdutoComposto != null)
@@ -183,7 +183,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
 
                     var tProdutoAtomico = produtoGeralBll.BuscarProdutoPorFabricanteECodigoComTransacao(item.Fabricante_item,
-                        item.Produto_item, usuarioLogado.Loja, contextoBdGravacao).Result;
+                        item.Produto_item, loja, contextoBdGravacao).Result;
 
                     TorcamentoCotacaoOpcaoItemAtomico itemAtomico = new TorcamentoCotacaoOpcaoItemAtomico(idItemUnificado,
                         tProdutoAtomico.Fabricante, tProdutoAtomico.Produto, (short)(qtde * tProduto.TecProdutoComposto.TecProdutoCompostoItems.First().Qtde),

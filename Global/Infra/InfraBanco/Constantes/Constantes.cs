@@ -13,6 +13,8 @@ namespace InfraBanco.Constantes
         public static string TEL_BONSHOP_2 = "1139344420";
         public static string TEL_BONSHOP_3 = "1139344411";
 
+        public static string SEM_INDICADOR = "*_SEM_INDICADOR_*";
+
         public enum eTipoUsuarioPerfil
         {
             USUÁRIO_DA_CENTRAL = 1,
@@ -669,7 +671,8 @@ namespace InfraBanco.Constantes
             COD_INSTALADOR_INSTALA_SIM = 2
         }
 
-
+        public const string ORCAMENTISTA_INDICADOR_STATUS_ATIVO = "A";
+        public const string ORCAMENTISTA_INDICADOR_STATUS_INATIVO = "I";
 
         //'   STATUS DE RECEBIMENTO DO PEDIDO POR PARTE DO CLIENTE
 

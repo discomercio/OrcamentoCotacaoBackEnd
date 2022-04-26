@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using InfraBanco.Constantes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,7 +35,20 @@ namespace OrcamentoCotacaoApi.Controllers
         public async Task<IEnumerable<OrcamentistaIndicadorResponseViewModel>> BuscarParceiros(string vendedorId, string loja)
         {
             _logger.LogInformation("Buscando lista de parceiros");
-            var usuarios = _orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { vendedorId = vendedorId, loja = loja });
+            var usuarios = _orcamentistaEindicadorBll.PorFiltro(
+                new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro(){ vendedorId = vendedorId, loja = loja, acessoHabilitado = 1, status = Constantes.ORCAMENTISTA_INDICADOR_STATUS_ATIVO });
+            usuarios.Insert(0, _orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = Constantes.SEM_INDICADOR, acessoHabilitado = 0, status = Constantes.ORCAMENTISTA_INDICADOR_STATUS_INATIVO }).FirstOrDefault());
+
+            return _mapper.Map<List<OrcamentistaIndicadorResponseViewModel>>(usuarios); ;
+        }
+
+        [HttpGet]
+        [Route("BuscarParceirosPorLoja")]
+        public async Task<IEnumerable<OrcamentistaIndicadorResponseViewModel>> BuscarParceiros(string loja)
+        {
+            _logger.LogInformation("Buscando lista de parceiros por loja");
+            var usuarios = _orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { loja = loja, acessoHabilitado = 1, status = Constantes.ORCAMENTISTA_INDICADOR_STATUS_ATIVO });
+            usuarios.Insert(0, _orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = Constantes.SEM_INDICADOR, acessoHabilitado= 0, status = Constantes.ORCAMENTISTA_INDICADOR_STATUS_INATIVO }).FirstOrDefault());
 
             return _mapper.Map<List<OrcamentistaIndicadorResponseViewModel>>(usuarios); ;
         }

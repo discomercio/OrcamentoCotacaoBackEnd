@@ -31,7 +31,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public List<OrcamentoOpcaoResponseViewModel> CadastrarOrcamentoCotacaoOpcoesComTransacao(List<OrcamentoOpcaoRequestViewModel> orcamentoOpcoes,
-            int idOrcamentoCotacao, UsuarioLogin usuarioLogado, ContextoBdGravacao contextoBdGravacao)
+            int idOrcamentoCotacao, UsuarioLogin usuarioLogado, ContextoBdGravacao contextoBdGravacao, string loja)
         {
             List<OrcamentoOpcaoResponseViewModel> orcamentoOpcaoResponseViewModels = new List<OrcamentoOpcaoResponseViewModel>();
 
@@ -51,13 +51,13 @@ namespace OrcamentoCotacaoBusiness.Bll
                 var tOrcamentoCotacaoOpcaoPagtos = formaPagtoOrcamentoCotacaoBll.CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(opcao.FormaPagto, opcaoResponse.Id, contextoBdGravacao);
 
                 var tOrcamentoCotacaoItemUnificados = produtoOrcamentoCotacaoBll.CadastrarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(opcao, 
-                    opcaoResponse.Id, usuarioLogado, contextoBdGravacao);
+                    opcaoResponse.Id, loja, contextoBdGravacao);
 
                 if (tOrcamentoCotacaoOpcaoPagtos.Count == 0 || tOrcamentoCotacaoItemUnificados.Count == 0) 
                     throw new ArgumentException("Ops! Não gerou Id ao salvar os pagamentos e produtos!");
 
                 var tOrcamentoCotacaoOpcaoItemAtomicoCustoFin = produtoOrcamentoCotacaoBll.CadastrarProdutoAtomicoCustoFinComTransacao(tOrcamentoCotacaoOpcaoPagtos,
-                    tOrcamentoCotacaoItemUnificados, opcao.ListaProdutos, usuarioLogado.Loja, contextoBdGravacao);
+                    tOrcamentoCotacaoItemUnificados, opcao.ListaProdutos, loja, contextoBdGravacao);
 
             }
 
