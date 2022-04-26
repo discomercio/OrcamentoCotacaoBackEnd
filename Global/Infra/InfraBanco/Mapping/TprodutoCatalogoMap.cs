@@ -16,6 +16,11 @@ namespace InfraBanco.Mapping
                 .HasColumnType("varchar(8)")
                 .IsRequired();
 
+            builder.Property(x => x.Fabricante)
+                .HasColumnName("fabricante")
+                .HasColumnType("varchar(4)")
+                .IsRequired();
+
             builder.Property(x => x.Nome)
                 .HasColumnName("nome")
                 .HasColumnType("varchar(500)")
