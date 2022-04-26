@@ -158,7 +158,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     if(tOrcamentoCotacao.Id == 0) throw new ArgumentException("Ops! Não gerou Id!");
 
                     var opcoes = orcamentoCotacaoOpcaoBll.CadastrarOrcamentoCotacaoOpcoesComTransacao(orcamento.ListaOrcamentoCotacaoDto, tOrcamentoCotacao.Id,
-                        usuarioLogado, dbGravacao);
+                        usuarioLogado, dbGravacao, orcamento.Loja);
 
                     dbGravacao.transacao.Commit();
                 }
