@@ -93,24 +93,24 @@ namespace OrcamentoCotacaoApi.Controllers
                 if (objUsuarioLogin.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR &&
                     !objUsuarioLogin.Permissoes.Contains(((int)Constantes.ePermissoes.ACESSO_AO_MODULO_100100).ToString()))
                 {
-                    return await Task.FromResult(new LoginResponseViewModel
+                    return await Task.FromResult(BadRequest( new LoginResponseViewModel
                     {
                         Authenticated = false,
                         Created = "",
                         Expiration = "",
                         AccessToken = "",
                         Message = "Usuário não possui acesso ao Módulo."
-                    });
+                    }));
                 }
 
-                return await Task.FromResult(new LoginResponseViewModel
+                return await Task.FromResult(Ok(new LoginResponseViewModel
                 {
                     Authenticated = true,
                     Created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
                     Expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
                     AccessToken = objUsuarioLogin.Token,
                     Message = "OK"
-                });
+                }));
             }
             catch 
             {
