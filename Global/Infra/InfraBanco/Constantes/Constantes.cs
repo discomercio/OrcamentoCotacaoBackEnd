@@ -2823,5 +2823,13 @@ namespace InfraBanco.Constantes
             MAGENTO_PEDIDO_STATUS_REJEITADO
         };
 
+        public enum ePermissoes
+        {
+            ACESSO_AO_MODULO_100100 = 100100,
+            ADMIN_DO_MODULO_100200 = 100200,
+            PARCEIRO_INDICADOR_100300 = 100300,
+            SELECIONAR_QUALQUER_LOJA_100400 = 100400,
+            PRORRROGAR_VENCIMENTO_ORCAMENTO_100500 = 100500
+        };
     }
 }

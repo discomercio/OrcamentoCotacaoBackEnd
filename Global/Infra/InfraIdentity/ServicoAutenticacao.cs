@@ -4,26 +4,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace InfraIdentity
 {
-    public interface IServicoAutenticacao
-    {
-        UsuarioLogin ObterTokenAutenticacao(UsuarioLogin login, string segredoToken, int validadeTokenMinutos, string role,
-            IServicoAutenticacaoProvider servicoAutenticacaoProvider, out bool unidade_negocio_desconhecida);
-        UsuarioLogin RenovarTokenAutenticacao(UsuarioLogin login, string segredoToken, int validadeTokenMinutos, string role, out bool unidade_negocio_desconhecida);
-    }
-
-    public interface IServicoAutenticacaoProvider
-    {
-        Task<InfraIdentity.UsuarioLogin> ObterUsuario(string apelido, string senha);
-    }
-
     public class ServicoAutenticacao : IServicoAutenticacao
     {
-        //public string ObterTokenAutenticacao(string apelido, string senha, string segredoToken, int validadeTokenMinutos, string role,
-        //    IServicoAutenticacaoProvider servicoAutenticacaoProvider, out bool unidade_negocio_desconhecida, out UsuarioLogin usuario)
         public UsuarioLogin ObterTokenAutenticacao(UsuarioLogin login, string segredoToken, int validadeTokenMinutos, string role,
             IServicoAutenticacaoProvider servicoAutenticacaoProvider, out bool unidade_negocio_desconhecida)
         {

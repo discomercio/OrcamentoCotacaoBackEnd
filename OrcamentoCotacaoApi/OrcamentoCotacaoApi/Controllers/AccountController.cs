@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿using InfraBanco.Constantes;
 using InfraIdentity;
 using Loja;
 using Microsoft.AspNetCore.Authorization;
@@ -21,38 +21,29 @@ namespace OrcamentoCotacaoApi.Controllers
     [Route("[controller]")]
     public class AccountController : BaseController
     {
-
-        private readonly IServicoAutenticacao servicoAutenticacao;
-        private readonly IConfiguration configuration;
+        private readonly IServicoAutenticacao _servicoAutenticacao;
+        private readonly IConfiguration _configuration;
         private readonly OrcamentoCotacaoBusiness.Bll.AcessoBll _acessoBll;
-        //private readonly IServicoDecodificarToken servicoDecodificarToken;
-        //private readonly ILogger<AccountController> logger;
-
         private readonly ILogger<AccountController> _logger;
-        //private readonly IUsuarioService _usuarioService;
         private readonly ITokenService _tokenService;
         private readonly UsuarioBll _usuarioBll;
         private readonly OrcamentistaEIndicadorBll _orcamentistaEindicadorBll;
         private readonly OrcamentistaEIndicadorVendedorBll _orcamentistaEindicadorVendedorBll;
         private readonly LojaBll _lojaBll;
-        private readonly IMapper _mapper;
 
         public AccountController(IServicoAutenticacao servicoAutenticacao, IConfiguration configuration, ILogger<AccountController> logger,
-            IMapper mapper, OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll, ITokenService tokenService, UsuarioBll usuarioBll, OrcamentistaEIndicadorBll orcamentistaEindicadorBll,
+            OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll, ITokenService tokenService, UsuarioBll usuarioBll, OrcamentistaEIndicadorBll orcamentistaEindicadorBll,
             OrcamentistaEIndicadorVendedorBll orcamentistaEindicadorVendedorBll, LojaBll lojaBll)
-        //IServicoDecodificarToken servicoDecodificarToken, )
         {
-            this.servicoAutenticacao = servicoAutenticacao;
-            this.configuration = configuration;
-            this._acessoBll = acessoBll;
-            //this.servicoDecodificarToken = servicoDecodificarToken;
-            this._tokenService = tokenService;
-            this._usuarioBll = usuarioBll;
-            this._orcamentistaEindicadorBll = orcamentistaEindicadorBll;
-            this._orcamentistaEindicadorVendedorBll = orcamentistaEindicadorVendedorBll;
-            this._lojaBll = lojaBll;
-            this._logger = logger;
-            this._mapper = mapper;
+            _servicoAutenticacao = servicoAutenticacao;
+            _configuration = configuration;
+            _acessoBll = acessoBll;
+            _tokenService = tokenService;
+            _usuarioBll = usuarioBll;
+            _orcamentistaEindicadorBll = orcamentistaEindicadorBll;
+            _orcamentistaEindicadorVendedorBll = orcamentistaEindicadorVendedorBll;
+            _lojaBll = lojaBll;
+            _logger = logger;
         }
 
         [AllowAnonymous]
@@ -62,23 +53,27 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             try
             {
-
-
-                var appSettingsSection = configuration.GetSection("AppSettings");
+                var appSettingsSection = _configuration.GetSection("AppSettings");
                 var appSettings = appSettingsSection.Get<OrcamentoCotacaoApi.Utils.Configuracao>();
                 string apelido = login.Login.ToUpper();
                 string senha = login.Senha;
+
                 UsuarioLogin objUsuarioLogin = new UsuarioLogin()
                 {
                     Apelido = apelido,
                     Senha = senha
                 };
-                objUsuarioLogin = servicoAutenticacao.ObterTokenAutenticacao(objUsuarioLogin, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos,
-                    OrcamentoCotacaoApi.Utils.Autenticacao.RoleAcesso, new ServicoAutenticacaoProvider(_acessoBll, _usuarioBll, _orcamentistaEindicadorBll, _orcamentistaEindicadorVendedorBll,
-                    _lojaBll),
-                    out bool unidade_negocio_desconhecida);
 
-                if (objUsuarioLogin == null)
+                objUsuarioLogin = _servicoAutenticacao.ObterTokenAutenticacao(
+                    objUsuarioLogin, 
+                    appSettings.SegredoToken, 
+                    appSettings.ValidadeTokenMinutos,
+                    OrcamentoCotacaoApi.Utils.Autenticacao.RoleAcesso, 
+                    new ServicoAutenticacaoProvider(_acessoBll, _usuarioBll, _orcamentistaEindicadorBll, _orcamentistaEindicadorVendedorBll, _lojaBll),
+                    out bool unidade_negocio_desconhecida
+                    );
+
+                if (objUsuarioLogin == null || objUsuarioLogin.Token == null)
                 {
                     return BadRequest(new LoginResponseViewModel
                     {
@@ -86,100 +81,41 @@ namespace OrcamentoCotacaoApi.Controllers
                         Created = "",
                         Expiration = "",
                         AccessToken = "",
-                        Message = "Usuário ou senha incorretos"
+                        Message = "Usuário ou senha incorretos!"
                     });
                 }
 
                 _logger.LogInformation("Gerando token");
-                //var token = _tokenService.GenerateToken(objUsuarioLogin);
 
                 DateTime dataCriacao = DateTime.Now;
-                DateTime dataExpiracao = dataCriacao +
-                    TimeSpan.FromSeconds(10000);
+                DateTime dataExpiracao = dataCriacao + TimeSpan.FromSeconds(10000);
 
+                if (objUsuarioLogin.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR &&
+                    !objUsuarioLogin.Permissoes.Contains(((int)Constantes.ePermissoes.ACESSO_AO_MODULO_100100).ToString()))
+                {
+                    return await Task.FromResult(new LoginResponseViewModel
+                    {
+                        Authenticated = false,
+                        Created = "",
+                        Expiration = "",
+                        AccessToken = "",
+                        Message = "Usuário não possui acesso ao Módulo."
+                    });
+                }
 
-                //var usuarioResponse = _mapper.Map<UsuarioResponseViewModel>(objUsuarioLogin);
-                //string token = "";
-                var retorno = new LoginResponseViewModel
+                return await Task.FromResult(new LoginResponseViewModel
                 {
                     Authenticated = true,
                     Created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
                     Expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
                     AccessToken = objUsuarioLogin.Token,
                     Message = "OK"
-                };
-                return Ok(retorno);
+                });
             }
-            catch (Exception ex)
+            catch 
             {
                 throw;
             }
-
-            //string ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
-            //string userAgent = Request.Headers["User-agent"];
-            //if (!string.IsNullOrEmpty(token))
-            //    await acessoBll.GravarSessaoComTransacao(ip, apelido, userAgent);
-
-            //if (unidade_negocio_desconhecida)
-            //{
-            //    logger.LogWarning($"FazerLogin unidade_negocio_desconhecida apelido:{login.Login}");
-            //    return Forbid();
-            //}
-
-
-
-
-            //if (token == null)
-            //    return BadRequest(new { message = "Usuário ou senha incorreta." });
-
-
-            //_logger.LogInformation("Validando usuario");
-            //var usuario = await _usuarioService.Login(model.Login, model.Senha);
-
-            //if (usuario == null)
-            //{
-            //    return BadRequest(new LoginResponseViewModel
-            //    {
-            //        Authenticated = false,
-            //        Created = "",
-            //        Expiration = "",
-            //        AccessToken = "",
-            //        Message = "Usuário ou senha incorretos"
-            //    });
-            //}
-
-            //_logger.LogInformation("Gerando token");
-            //var token = _tokenService.GenerateToken(usuario);
-
-            //DateTime dataCriacao = DateTime.Now;
-            //DateTime dataExpiracao = dataCriacao +
-            //    TimeSpan.FromSeconds(10000);
-
-            //var usuarioResponse = _mapper.Map<UsuarioResponseViewModel>(usuario);
-
-            //var retorno = new LoginResponseViewModel
-            //{
-            //    Authenticated = true,
-            //    Created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
-            //    Expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
-            //    AccessToken = token,
-            //    Usuario = usuarioResponse,
-            //    Message = "OK"
-            //};
-            //return Ok(retorno);
-        }
-
-
-        [HttpGet]
-        [Route("permissoes")]
-        [Authorize]
-        public async Task<LoginResponseViewModel> BuscarPermissoes()
-        {
-            var login = User.Identity.Name;
-            _logger.LogInformation("Buscando permissoes usuario");
-            //var permissoes = await _usuarioService.BuscarPermissoes(login);
-
-            return new LoginResponseViewModel();
         }
     }
 }
