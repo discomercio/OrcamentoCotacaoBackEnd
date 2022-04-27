@@ -89,6 +89,45 @@ namespace OrcamentoCotacaoApi.BaseController
                 return Ok(ret);
         }
 
+        [HttpGet("opcoes/{IdProdutoCatalogoPropriedade}")]
+        public async Task<IActionResult> ObterListaPropriedadesOpcoesProdutosById(int IdProdutoCatalogoPropriedade)
+        {
+            _logger.LogInformation("Buscando opções de propriedade do produto");
+
+            var ret = await _produtoBll.ObterListaPropriedadesOpcoesProdutosById(IdProdutoCatalogoPropriedade);
+
+            if (ret == null)
+                return NoContent();
+            else
+                return Ok(ret);
+        }
+
+        [HttpGet("opcoes")]
+        public async Task<IActionResult> ObterListaPropriedadesOpcoes()
+        {
+            _logger.LogInformation("Buscando opções de propriedade do produto");
+
+            var ret = await _produtoBll.ObterListaPropriedadesOpcoes();
+
+            if (ret == null)
+                return NoContent();
+            else
+                return Ok(ret);
+        }
+
+        [HttpGet("fabricantes")]
+        public async Task<IActionResult> ObterListaFabricante()
+        {
+            _logger.LogInformation("Buscando lista de fabricantes");
+
+            var ret = await _produtoBll.ObterListaFabricante();
+
+            if (ret == null)
+                return NoContent();
+            else
+                return Ok(ret);
+        }        
+
         [HttpPost("propriedades")]
         public async Task<IActionResult> GravarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
         {

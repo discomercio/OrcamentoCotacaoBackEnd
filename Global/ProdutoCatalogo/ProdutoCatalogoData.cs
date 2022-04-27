@@ -112,13 +112,43 @@ namespace ProdutoCatalogo
             throw new NotImplementedException();
         }
 
+        /*
         public List<TprodutoCatalogo> PorFiltro(TprodutoCatalogoFiltro obj)
         {
             try
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
-                    return db.TprodutoCatalogo.ToList();
+                    return db.TprodutoCatalogo
+                        
+                        .ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }*/
+
+        public List<TprodutoCatalogo> PorFiltro(TprodutoCatalogoFiltro obj)
+        {
+            try
+            {
+                using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+                {
+                    return (
+                            from pc in db.TprodutoCatalogo
+                            join f in db.Tfabricantes on pc.Fabricante equals f.Fabricante
+
+                            select new TprodutoCatalogo
+                            {         
+                                Codigo = pc.Codigo,
+                                Id = pc.Id,
+                                Fabricante = f.Nome,
+                                Nome = pc.Nome,
+                                Descricao = pc.Descricao,
+                                Ativo = pc.Ativo
+                            }).ToList();
                 }
             }
             catch (Exception e)
@@ -275,11 +305,15 @@ namespace ProdutoCatalogo
                     db.TprodutoCatalogo.Add(
                         new TprodutoCatalogo
                         {
-                            Id = produtoCatalogo.Id,
+                            //Id = produtoCatalogo.Id,
                             Nome = produtoCatalogo.Nome,
+                            Fabricante = produtoCatalogo.Fabricante,
+                            Produto = produtoCatalogo.Produto,
                             Descricao = produtoCatalogo.Descricao,
                             UsuarioCadastro = usuario_cadastro,
-                            DtCadastro = DateTime.Now
+                            DtCadastro = DateTime.Now,
+                            Ativo = true
+                            
                         }); ;
 
                     db.SaveChanges();
