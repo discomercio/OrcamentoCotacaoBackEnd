@@ -9,11 +9,11 @@ namespace InfraBanco.Modelos
         {
             List<TcfgSelectItem> lista = new List<TcfgSelectItem>();
 
-            //status.Add(new TcfgSelectItem { Id = "ESP", Value = "Em espera" });
-            //status.Add(new TcfgSelectItem { Id = "SPL", Value = "Split Possível" });
-            //status.Add(new TcfgSelectItem { Id = "SEP", Value = "Separar Mercadoria" });
-            //status.Add(new TcfgSelectItem { Id = "AET", Value = "A entregar" });
-            //status.Add(new TcfgSelectItem { Id = "ETG", Value = "Entregue" });
+            lista.Add(new TcfgSelectItem { Id = "ESP", Value = "Em espera" });
+            lista.Add(new TcfgSelectItem { Id = "SPL", Value = "Split Possível" });
+            lista.Add(new TcfgSelectItem { Id = "SEP", Value = "Separar Mercadoria" });
+            lista.Add(new TcfgSelectItem { Id = "AET", Value = "A entregar" });
+            lista.Add(new TcfgSelectItem { Id = "ETG", Value = "Entregue" });
             lista.Add(new TcfgSelectItem { Id = "CAN", Value = "Cancelado" });
 
             return lista;
@@ -26,6 +26,7 @@ namespace InfraBanco.Modelos
             else
                 return "";
         }
+
         public static List<TcfgSelectItem> ObterLista(List<string> listaStatus)
         {
             List<TcfgSelectItem> status = new List<TcfgSelectItem>();

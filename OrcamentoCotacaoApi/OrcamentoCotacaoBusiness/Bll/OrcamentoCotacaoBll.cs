@@ -22,29 +22,34 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly OrcamentoBll _orcamentoBll;
         private readonly PedidoPrepedidoApiBll _pedidoPrepedidoApiBll;
         private readonly ConfigOrcamentoCotacao _appSettings;
-        private readonly OrcamentistaEIndicadorBll orcamentistaEIndicadorBll;
-        private readonly OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll;
-        private readonly Usuario.UsuarioBll usuarioBll;
-        private readonly OrcamentoCotacao.OrcamentoCotacaoBll orcamentoCotacaoBll;
-        private readonly InfraBanco.ContextoBdProvider contextoBdProvider;
-        private readonly OrcamentoCotacaoOpcaoBll orcamentoCotacaoOpcaoBll;
+        private readonly OrcamentistaEIndicadorBll _orcamentistaEIndicadorBll;
+        private readonly OrcamentistaEIndicadorVendedorBll _orcamentistaEIndicadorVendedorBll;
+        private readonly Usuario.UsuarioBll _usuarioBll;
+        private readonly OrcamentoCotacao.OrcamentoCotacaoBll _orcamentoCotacaoBll;
+        private readonly InfraBanco.ContextoBdProvider _contextoBdProvider;
+        private readonly OrcamentoCotacaoOpcaoBll _orcamentoCotacaoOpcaoBll;
 
-        public OrcamentoCotacaoBll(OrcamentoBll orcamentoBll, IOptions<ConfigOrcamentoCotacao> appSettings,
-            OrcamentistaEIndicadorBll orcamentistaEIndicadorBll, Usuario.UsuarioBll usuarioBll,
-            OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll, PedidoPrepedidoApiBll pedidoPrepedidoApiBll,
+        public OrcamentoCotacaoBll(
+            OrcamentoBll orcamentoBll, 
+            IOptions<ConfigOrcamentoCotacao> appSettings,
+            OrcamentistaEIndicadorBll orcamentistaEIndicadorBll, 
+            Usuario.UsuarioBll usuarioBll,
+            OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll, 
+            PedidoPrepedidoApiBll pedidoPrepedidoApiBll,
             OrcamentoCotacao.OrcamentoCotacaoBll orcamentoCotacaoBll,
-            InfraBanco.ContextoBdProvider contextoBdProvider, OrcamentoCotacaoOpcaoBll orcamentoCotacaoOpcaoBll)
+            InfraBanco.ContextoBdProvider contextoBdProvider, 
+            OrcamentoCotacaoOpcaoBll orcamentoCotacaoOpcaoBll
+            )
         {
             _orcamentoBll = orcamentoBll;
             _pedidoPrepedidoApiBll = pedidoPrepedidoApiBll;
-            this.orcamentoCotacaoBll = orcamentoCotacaoBll;
-            this.contextoBdProvider = contextoBdProvider;
-            this.orcamentoCotacaoOpcaoBll = orcamentoCotacaoOpcaoBll;
-            this.orcamentistaEIndicadorBll = orcamentistaEIndicadorBll;
-            this.usuarioBll = usuarioBll;
-            this.orcamentistaEIndicadorVendedorBll = orcamentistaEIndicadorVendedorBll;
+            _orcamentoCotacaoBll = orcamentoCotacaoBll;
+            _contextoBdProvider = contextoBdProvider;
+            _orcamentoCotacaoOpcaoBll = orcamentoCotacaoOpcaoBll;
+            _orcamentistaEIndicadorBll = orcamentistaEIndicadorBll;
+            _usuarioBll = usuarioBll;
+            _orcamentistaEIndicadorVendedorBll = orcamentistaEIndicadorVendedorBll;
             _appSettings = appSettings.Value;
-
         }
 
         public List<OrcamentoCotacaoListaDto> PorFiltro(TorcamentoFiltro tOrcamentoFiltro, UsuarioLogin usuarioLogin)
@@ -74,7 +79,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             if (tOrcamentoFiltro.Origem == "ORCAMENTOS")
             {
-                var orcamentoCotacaoListaDto = orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro()
+                var orcamentoCotacaoListaDto = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro()
                 {
                     Tusuario = true,
                     LimitarData = true,
@@ -86,7 +91,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
                     orcamentoCotacaoListaDto.ForEach(x => lista.Add(new OrcamentoCotacaoListaDto()
                     {
-                        NumeroOrcamento = x.Id.ToString("000000O"),
+                        NumeroOrcamento = x.Id.ToString(),
                         NumPedido = x.IdPedido,
                         Cliente_Obra = $"{x.NomeCliente} - {x.NomeObra}",
                         Vendedor = x.Tusuarios.Usuario,
@@ -168,17 +173,17 @@ namespace OrcamentoCotacaoBusiness.Bll
             //TODO: VALIDAR OrcamentoRequestViewModel
             if (orcamento.ListaOrcamentoCotacaoDto.Count <= 0) throw new ArgumentException("Necessário ter ao menos uma opção de orçamento!");
 
-            using (var dbGravacao = contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 try
                 {
                     var tOrcamentoCotacao = MontarTorcamentoCotacao(orcamento, usuarioLogado);
 
-                    var retorno = orcamentoCotacaoBll.InserirComTransacao(tOrcamentoCotacao, dbGravacao);
+                    var retorno = _orcamentoCotacaoBll.InserirComTransacao(tOrcamentoCotacao, dbGravacao);
 
                     if(tOrcamentoCotacao.Id == 0) throw new ArgumentException("Ops! Não gerou Id!");
 
-                    var opcoes = orcamentoCotacaoOpcaoBll.CadastrarOrcamentoCotacaoOpcoesComTransacao(orcamento.ListaOrcamentoCotacaoDto, tOrcamentoCotacao.Id,
+                    var opcoes = _orcamentoCotacaoOpcaoBll.CadastrarOrcamentoCotacaoOpcoesComTransacao(orcamento.ListaOrcamentoCotacaoDto, tOrcamentoCotacao.Id,
                         usuarioLogado, dbGravacao, orcamento.Loja);
 
                     dbGravacao.transacao.Commit();
@@ -220,7 +225,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             if (!string.IsNullOrEmpty(orcamento.Vendedor))
             {
-                var vendedor = usuarioBll.PorFiltro(new TusuarioFiltro() { usuario = orcamento.Vendedor }).FirstOrDefault();
+                var vendedor = _usuarioBll.PorFiltro(new TusuarioFiltro() { usuario = orcamento.Vendedor }).FirstOrDefault();
 
                 if (vendedor == null) throw new ArgumentException("Vendedor não encontrado!");
 
@@ -230,7 +235,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 if(usuarioLogado.TipoUsuario != (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
                 {
-                    var torcamentista = orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { apelido = orcamento.Parceiro, acessoHabilitado = 1 });
+                    var torcamentista = _orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { apelido = orcamento.Parceiro, acessoHabilitado = 1 });
 
                     if (torcamentista == null) throw new ArgumentException("Parceiro não encontrado!");
 
@@ -239,7 +244,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 if (usuarioLogado.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
                 {
-                    var torcamentista = orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = int.Parse(orcamento.Parceiro), acessoHabilitado = 1 });
+                    var torcamentista = _orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = int.Parse(orcamento.Parceiro), acessoHabilitado = 1 });
 
                     if (torcamentista == null) throw new ArgumentException("Parceiro não encontrado!");
 
@@ -251,7 +256,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 if (usuarioLogado.TipoUsuario != (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
                 {
-                    var vendedoresParceiro = orcamentistaEIndicadorVendedorBll.BuscarVendedoresParceiro(orcamento.Parceiro);
+                    var vendedoresParceiro = _orcamentistaEIndicadorVendedorBll.BuscarVendedoresParceiro(orcamento.Parceiro);
                     if (vendedoresParceiro == null) throw new ArgumentException("Nenhum vendedor do parceiro encontrado!");
 
                     torcamentoCotacao.IdIndicadorVendedor = vendedoresParceiro //IdIndicadorVendedor
@@ -261,7 +266,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 if (usuarioLogado.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
                 {
-                    var vendedoresParceiro = orcamentistaEIndicadorVendedorBll.BuscarVendedoresParceiroPorId(int.Parse(orcamento.Parceiro));
+                    var vendedoresParceiro = _orcamentistaEIndicadorVendedorBll.BuscarVendedoresParceiroPorId(int.Parse(orcamento.Parceiro));
                     if (vendedoresParceiro == null) throw new ArgumentException("Nenhum vendedor do parceiro encontrado!");
 
                     torcamentoCotacao.IdIndicadorVendedor = vendedoresParceiro //IdIndicadorVendedor
