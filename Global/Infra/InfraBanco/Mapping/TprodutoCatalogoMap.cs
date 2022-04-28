@@ -11,7 +11,15 @@ namespace InfraBanco.Mapping
             builder.ToTable("t_PRODUTO_CATALOGO");
             builder.HasKey(o => o.Id);
 
+            
+            /*
             builder.Property(x => x.Codigo)
+                .HasColumnName("produto")
+                .HasColumnType("varchar(8)")
+                .IsRequired();*/
+
+
+            builder.Property(x => x.Produto)
                 .HasColumnName("produto")
                 .HasColumnType("varchar(8)")
                 .IsRequired();

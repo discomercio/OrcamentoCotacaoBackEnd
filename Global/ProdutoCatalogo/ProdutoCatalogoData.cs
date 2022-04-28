@@ -142,7 +142,7 @@ namespace ProdutoCatalogo
 
                             select new TprodutoCatalogo
                             {         
-                                Codigo = pc.Codigo,
+                                Produto = pc.Produto,
                                 Id = pc.Id,
                                 Fabricante = f.Nome,
                                 Nome = pc.Nome,
@@ -306,9 +306,9 @@ namespace ProdutoCatalogo
                         new TprodutoCatalogo
                         {
                             //Id = produtoCatalogo.Id,
-                            Nome = produtoCatalogo.Nome,
-                            Fabricante = produtoCatalogo.Fabricante,
                             Produto = produtoCatalogo.Produto,
+                            Fabricante = produtoCatalogo.Fabricante,
+                            Nome = produtoCatalogo.Nome,                                                        
                             Descricao = produtoCatalogo.Descricao,
                             UsuarioCadastro = usuario_cadastro,
                             DtCadastro = DateTime.Now,
