@@ -100,11 +100,6 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
                     tipo = (int)Constantes.TipoUsuario.PARCEIRO;
                 }
-                //else
-                //{
-                //    retorno = t;
-                //    return await Task.FromResult(retorno); // retorna null
-                //}
             }
             else
             {
@@ -121,18 +116,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                 msgErro = Constantes.ERR_USUARIO_BLOQUEADO;
                 return null;
             }
-            //return await Task.FromResult(Constantes.ERR_USUARIO_BLOQUEADO);
-            //if (t.Hab_Acesso_Sistema != 1)
-            if (t.Bloqueado)
-            {
-                msgErro = Constantes.ERR_USUARIO_BLOQUEADO;
-                return null;
-                //return await Task.FromResult(Constantes.ERR_USUARIO_BLOQUEADO);
-            }
-            //if (t.Status != "A")
-            //    return await Task.FromResult(Constantes.ERR_USUARIO_BLOQUEADO);
-            //if (t.Loja == "")
-            //    return await Task.FromResult(Constantes.ERR_IDENTIFICACAO_LOJA);
+            //if (t.Bloqueado)
+            //{
+            //    msgErro = Constantes.ERR_USUARIO_BLOQUEADO;
+            //    return null;
+            //}
 
             if (!somenteValidar)
             {

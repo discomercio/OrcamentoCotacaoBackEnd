@@ -81,8 +81,9 @@ namespace Prepedido.PedidoVisualizacao
         {
             using (var db = contextoProvider.GetContextoLeitura())
             {
-
                 List<OrcamentoCotacaoListaDto> saida = (from c in db.Tpedidos
+                                                        join vp in db.TorcamentistaEindicadorVendedors on c.IdIndicadorVendedor equals vp.Id into gj
+                                                        from loj in gj.DefaultIfEmpty()
                                                         where c.Data > DateTime.Now.AddDays(-60)
                                                                 && c.St_Entrega != "CAN" //CANCELADOS
                                                                 && c.Loja == filtro.Loja
@@ -93,8 +94,8 @@ namespace Prepedido.PedidoVisualizacao
                                                             NumPedido = c.Pedido,
                                                             Cliente_Obra = $"{c.Tcliente.Nome}",
                                                             Vendedor = c.Vendedor,
-                                                            Parceiro = c.Orcamentista,
-                                                            VendedorParceiro = c.Indicador,
+                                                            Parceiro = !String.IsNullOrEmpty(c.Orcamentista) ? c.Orcamentista : "-",
+                                                            VendedorParceiro = loj.Nome,
                                                             Valor = c.Vl_Total_NF.ToString(),
                                                             Orcamentista = c.Orcamentista,
                                                             Status = c.St_Entrega,

@@ -720,6 +720,12 @@ namespace InfraBanco.Modelos
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         [Column("num_obs_4")]
         public Int32 Num_obs_4 { get; private set; }
+
+        [Column("IdOrcamentoCotacao")]
+        public int? IdOrcamentoCotacao { get; set; }
+
+        [Column("IdIndicadorVendedor")]
+        public int? IdIndicadorVendedor { get; set; }
 #endif
     }
 }

@@ -85,6 +85,18 @@ namespace OrcamentoCotacaoApi.Controllers
                     });
                 }
 
+                if (objUsuarioLogin.Bloqueado)
+                {
+                    return BadRequest(new LoginResponseViewModel
+                    {
+                        Authenticated = false,
+                        Created = "",
+                        Expiration = "",
+                        AccessToken = "",
+                        Message = "Usuário inativo."
+                    });
+                }
+
                 _logger.LogInformation("Gerando token");
 
                 DateTime dataCriacao = DateTime.Now;

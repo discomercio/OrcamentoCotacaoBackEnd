@@ -83,8 +83,8 @@ namespace OrcamentoCotacaoApi.Utils
                             ((int)ePermissao.AcessoAoModulo).ToString(),
                             ((int)ePermissao.ParceiroIndicadorUsuarioMaster).ToString()
                         },
-                        TipoUsuario = (int)Constantes.TipoUsuario.PARCEIRO
-
+                        TipoUsuario = (int)Constantes.TipoUsuario.PARCEIRO,
+                        Bloqueado = parceiro.Status != "A" ? true : false
                     };
                     return usuario;
                 }
@@ -114,7 +114,8 @@ namespace OrcamentoCotacaoApi.Utils
                                 {
                                     ((int)ePermissao.AcessoAoModulo).ToString()
                                 },
-                                TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO
+                                TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO,
+                                Bloqueado = !vendedorParceiro.Ativo
                             };
                             return usuario;
                         }
@@ -149,7 +150,8 @@ namespace OrcamentoCotacaoApi.Utils
                             VendedorResponsavel = null,
                             Permissoes = usuarioBll.buscarPermissoes(apelido),
                             TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR,
-                            Id = usuarioInterno.FirstOrDefault().Id
+                            Id = usuarioInterno.FirstOrDefault().Id,
+                            Bloqueado = usuarioInterno.FirstOrDefault().Bloqueado == 1 ? true : false
                         };
                         return usuario;
                     //break;
@@ -172,7 +174,8 @@ namespace OrcamentoCotacaoApi.Utils
                                 ((int)ePermissao.ParceiroIndicadorUsuarioMaster).ToString()
                             },
                             TipoUsuario = (int)Constantes.TipoUsuario.PARCEIRO,
-                            Id = orcamentista.FirstOrDefault().IdIndicador
+                            Id = orcamentista.FirstOrDefault().IdIndicador,
+                            Bloqueado = orcamentista.FirstOrDefault().Status != "A" ? true : false
                         };
                         break;
                     case (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO:
@@ -193,7 +196,8 @@ namespace OrcamentoCotacaoApi.Utils
                                 ((int)ePermissao.AcessoAoModulo).ToString()
                             },
                             TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO,
-                            Id = orcamentistaVendedor.FirstOrDefault().Id
+                            Id = orcamentistaVendedor.FirstOrDefault().Id,
+                            Bloqueado = !orcamentistaVendedor.FirstOrDefault().Ativo
                         };
                         break;
                     default:

@@ -18,6 +18,7 @@ namespace Orcamento.Dto
         public DateTime? DtExpiracao { get; set; }
         public string Orcamentista { get; set; }
         public string Loja { get; internal set; }
+        public int? IdOrcamentoCotacao { get; set; }
         public int? IdIndicadorVendedor { get; set; }
         public DateTime? DtInicio { get; set; }
         public DateTime? DtFim { get; set; }
