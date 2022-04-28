@@ -361,7 +361,6 @@ namespace Produto
             var db = contextoProvider.GetContextoLeitura();
 
             var produtoPropriedades = from p in db.TProdutoCatalogoPropriedades
-                                      where p.IdCfgDataType == 0
                                       select new Produto.Dados.ProdutoCatalogoPropriedadeDados
                                       {
                                           id = p.id,
@@ -381,27 +380,94 @@ namespace Produto
             return lprodutosPropriedades;
         }
 
+        public async Task<List<Produto.Dados.ProdutoCatalogoPropriedadeDados>> ObterListaPropriedadesPorRange()
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            var produtoPropriedades = from p in db.TProdutoCatalogoPropriedades
+                                      where p.IdCfgDataType == 0 && p.ordem <= 800
+                                      select new Produto.Dados.ProdutoCatalogoPropriedadeDados
+                                      {
+                                          id = p.id,
+                                          IdCfgTipoPropriedade = p.IdCfgTipoPropriedade,
+                                          IdCfgTipoPermissaoEdicaoCadastro = p.IdCfgTipoPermissaoEdicaoCadastro,
+                                          IdCfgDataType = p.IdCfgDataType,
+                                          descricao = p.descricao,
+                                          oculto = p.oculto,
+                                          ordem = p.ordem,
+                                          dt_cadastro = p.dt_cadastro,
+                                          usuario_cadastro = p.usuario_cadastro
+
+                                      };
+
+            List<Produto.Dados.ProdutoCatalogoPropriedadeDados> lprodutosPropriedades = await produtoPropriedades.ToListAsync();
+
+            return lprodutosPropriedades;
+        }
+
+
         public async Task<List<Produto.Dados.ProdutoCatalogoItemDados>> ObterListaPropriedadesProdutosById(int idProdutoCatalogo)
         {
             var db = contextoProvider.GetContextoLeitura();
 
             var produtoItens = from pc in db.TprodutoCatalogos
-                                      join pci in db.TprodutoCatalogoItems on pc.Id equals pci.IdProdutoCatalogo
-                                      join pcp in db.TProdutoCatalogoPropriedades on pci.IdProdutoCatalogoPropriedade equals pcp.id
-                                      join pco in db.TProdutoCatalogoPropriedadeOpcoes on pci.IdProdutoCatalogoPropriedade equals pco.id_produto_catalogo_propriedade into gj
-                                      from x in gj.DefaultIfEmpty()
-                                      where pc.Id == idProdutoCatalogo
+                               join pci in db.TprodutoCatalogoItems on pc.Id equals pci.IdProdutoCatalogo
+                               join pcp in db.TProdutoCatalogoPropriedades on pci.IdProdutoCatalogoPropriedade equals pcp.id
+                               join pco in db.TProdutoCatalogoPropriedadeOpcoes on pci.IdProdutoCatalogoPropriedade equals pco.id_produto_catalogo_propriedade into gj
+                               from x in gj.DefaultIfEmpty()
+                               where pc.Id == idProdutoCatalogo
                                       select new Produto.Dados.ProdutoCatalogoItemDados
                                       {
                                           idProdutoCatalogoPropriedade = pcp.id,
-                                          nome = pc.Nome,
+                                          nome = pcp.descricao,
                                           valor_item = pci.Valor,
                                           valor_opcao = x.valor
                                       };
 
+            List <Produto.Dados.ProdutoCatalogoItemDados> lprodutosItens = await produtoItens.ToListAsync();
+
+            return lprodutosItens;
+        }
+
+        public async Task<List<Produto.Dados.ProdutoCatalogoItemDados>> ObterListaPropriedadesOpcoesProdutosById(int IdProdutoCatalogoPropriedade)
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            var produtoItens = from pc in db.TprodutoCatalogos
+                               join pci in db.TprodutoCatalogoItems on pc.Id equals pci.IdProdutoCatalogo
+                               join pcp in db.TProdutoCatalogoPropriedades on pci.IdProdutoCatalogoPropriedade equals pcp.id
+                               join pco in db.TProdutoCatalogoPropriedadeOpcoes on pci.IdProdutoCatalogoPropriedade equals pco.id_produto_catalogo_propriedade into gj
+                               from x in gj.DefaultIfEmpty()
+                               where pcp.id == IdProdutoCatalogoPropriedade
+                               select new Produto.Dados.ProdutoCatalogoItemDados
+                               {
+                                   idProdutoCatalogoPropriedade = pcp.id,
+                                   nome = pcp.descricao,
+                                   valor_item = pci.Valor,
+                                   //valor_opcao = x.valor
+                               };
+
             List<Produto.Dados.ProdutoCatalogoItemDados> lprodutosItens = await produtoItens.ToListAsync();
 
             return lprodutosItens;
+        }
+        
+        // l1ng refatorar
+        public async Task<List<Produto.Dados.FabricanteDados>> ObterListaFabricante()
+        {
+            var db = contextoProvider.GetContextoLeitura();            
+            
+            var fabricantes = from f in db.Tfabricantes
+
+                               select new Produto.Dados.FabricanteDados
+                               {
+                                   Fabricante = f.Fabricante,
+                                   Nome = f.Nome
+                               };
+
+            List<Produto.Dados.FabricanteDados> lfabricantes = await fabricantes.ToListAsync();
+
+            return lfabricantes;
         }
 
         public async Task<List<Produto.Dados.ProdutoCatalogoPropriedadeDados>> ObterListaPropriedadesProdutos(int id)
@@ -425,6 +491,27 @@ namespace Produto
                                       };
 
             List<Produto.Dados.ProdutoCatalogoPropriedadeDados> lprodutosPropriedades = await produtoPropriedades.ToListAsync();
+
+            return lprodutosPropriedades;
+        }
+
+        public async Task<List<Produto.Dados.ProdutoCatalogoPropriedadeOpcoesDados>> ObterListaPropriedadesOpcoes()
+        {
+            var db = contextoProvider.GetContextoLeitura();
+
+            var produtoPropriedades = from p in db.TProdutoCatalogoPropriedadeOpcoes
+                                      select new Produto.Dados.ProdutoCatalogoPropriedadeOpcoesDados
+                                      {
+                                          id = p.id,
+                                          id_produto_catalogo_propriedade = p.id_produto_catalogo_propriedade,
+                                          valor = p.valor,
+                                          oculto = p.oculto,
+                                          ordem = p.ordem,
+                                          dt_cadastro = p.dt_cadastro,
+                                          usuario_cadastro = p.usuario_cadastro
+                                      };
+
+            List<Produto.Dados.ProdutoCatalogoPropriedadeOpcoesDados> lprodutosPropriedades = await produtoPropriedades.ToListAsync();
 
             return lprodutosPropriedades;
         }

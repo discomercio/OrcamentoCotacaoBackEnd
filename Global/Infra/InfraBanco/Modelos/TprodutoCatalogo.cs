@@ -11,7 +11,9 @@ namespace InfraBanco.Modelos
         public int Id { get; set; }
         public string Codigo { get; set; }
         public string Nome { get; set; }
+        public string Fabricante { get; set; }
         public string Descricao { get; set; }
+        public string Produto { get; set; }
         public string UsuarioCadastro { get; set; }
         public string UsuarioEdicao { get; set; }
         public DateTime DtCadastro { get; set; }
