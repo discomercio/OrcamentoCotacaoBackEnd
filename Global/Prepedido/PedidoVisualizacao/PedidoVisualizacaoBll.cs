@@ -81,6 +81,7 @@ namespace Prepedido.PedidoVisualizacao
         {
             using (var db = contextoProvider.GetContextoLeitura())
             {
+
                 List<OrcamentoCotacaoListaDto> saida = (from c in db.Tpedidos
                                                         where c.Data > DateTime.Now.AddDays(-60)
                                                                 && c.St_Entrega != "CAN" //CANCELADOS

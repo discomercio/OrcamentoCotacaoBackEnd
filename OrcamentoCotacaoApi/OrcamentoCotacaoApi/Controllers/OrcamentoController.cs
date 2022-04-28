@@ -33,12 +33,7 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             _logger.LogInformation("Buscando lista de orçamentos");
 
-            filtro.Loja = ObterLoja(filtro.Loja);
-            filtro.TipoUsuario = LoggedUser.TipoUsuario;
-            filtro.Apelido = LoggedUser.Nome;
-            filtro.IdUsuario = LoggedUser.Id;
-
-            var saida = _orcamentoBll.PorFiltro(filtro);
+            var saida = _orcamentoBll.PorFiltro(filtro, LoggedUser);
 
             if (saida != null)
                 return Ok(saida);
@@ -142,18 +137,6 @@ namespace OrcamentoCotacaoApi.Controllers
                 {
                     message = "Não foi possível marcar como lida."
                 });
-            }
-        }
-
-        private string ObterLoja(string loja)
-        {
-            if (!string.IsNullOrEmpty(loja))
-            {
-                return loja;
-            }
-            else
-            {
-                return LoggedUser.Loja?.Length > 3 ? LoggedUser.Loja.Split(',')[0] : LoggedUser.Loja;
             }
         }
 

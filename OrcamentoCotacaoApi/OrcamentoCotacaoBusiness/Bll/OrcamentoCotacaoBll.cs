@@ -47,8 +47,31 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         }
 
-        public List<OrcamentoCotacaoListaDto> PorFiltro(TorcamentoFiltro tOrcamentoFiltro)
+        public List<OrcamentoCotacaoListaDto> PorFiltro(TorcamentoFiltro tOrcamentoFiltro, UsuarioLogin usuarioLogin)
         {
+            tOrcamentoFiltro.TipoUsuario = usuarioLogin.TipoUsuario;
+            tOrcamentoFiltro.Apelido = usuarioLogin.Nome;
+            tOrcamentoFiltro.IdUsuario = usuarioLogin.Id;
+
+            if (tOrcamentoFiltro.TipoUsuario.HasValue)
+            {
+                //VÊ TUDO
+                //if (tOrcamentoFiltro.TipoUsuario.Value == (int)Constantes.TipoUsuario.VENDEDOR)
+
+                //VÊ TUDO somente dele e vendedores parceiros
+                if (tOrcamentoFiltro.TipoUsuario.Value == (int)Constantes.TipoUsuario.PARCEIRO)
+                {
+                    tOrcamentoFiltro.Vendedor = usuarioLogin.VendedorResponsavel;
+                    tOrcamentoFiltro.Parceiro = usuarioLogin.IdParceiro;
+                }
+
+                //VÊ somente suas vendas
+                if (tOrcamentoFiltro.TipoUsuario.Value == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
+                {
+                    tOrcamentoFiltro.VendedorParceiro = usuarioLogin.Nome;
+                }
+            }
+
             if (tOrcamentoFiltro.Origem == "ORCAMENTOS")
             {
                 var orcamentoCotacaoListaDto = orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro()
@@ -142,10 +165,8 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public void CadastrarOrcamentoCotacao(OrcamentoRequestViewModel orcamento, UsuarioLogin usuarioLogado)
         {
-
             //TODO: VALIDAR OrcamentoRequestViewModel
             if (orcamento.ListaOrcamentoCotacaoDto.Count <= 0) throw new ArgumentException("Necessário ter ao menos uma opção de orçamento!");
-
 
             using (var dbGravacao = contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
@@ -167,8 +188,6 @@ namespace OrcamentoCotacaoBusiness.Bll
                     dbGravacao.transacao.Rollback();
                     throw new ArgumentException("Falha ao gravar orçamento!");
                 }
-
-
             }
 
             //retornar o Id do orçamento para incluir nos nos outros modelos
