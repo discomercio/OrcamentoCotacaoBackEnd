@@ -30,11 +30,17 @@ namespace Prepedido
         private readonly FormaPagtoBll formaPagtoBll;
         private readonly Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll pedidoVisualizacaoBll;
 
-        public PrepedidoBll(ContextoBdProvider contextoProvider, Cliente.ClienteBll clienteBll,
-            Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll, CepBll cepBll,
-            ValidacoesFormaPagtoBll validacoesFormaPagtoBll, Prepedido.MontarLogPrepedidoBll montarLogPrepedidoBll,
-            IBancoNFeMunicipio bancoNFeMunicipio, FormaPagtoBll formaPagtoBll,
-            PedidoVisualizacao.PedidoVisualizacaoBll pedidoVisualizacaoBll)
+        public PrepedidoBll(
+            ContextoBdProvider contextoProvider,
+            Cliente.ClienteBll clienteBll,
+            Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll,
+            CepBll cepBll,
+            ValidacoesFormaPagtoBll validacoesFormaPagtoBll,
+            Prepedido.MontarLogPrepedidoBll montarLogPrepedidoBll,
+            IBancoNFeMunicipio bancoNFeMunicipio,
+            FormaPagtoBll formaPagtoBll,
+            PedidoVisualizacao.PedidoVisualizacaoBll pedidoVisualizacaoBll
+            )
         {
             this.contextoProvider = contextoProvider;
             this.clienteBll = clienteBll;
@@ -87,6 +93,7 @@ namespace Prepedido
         {
             Todos = 0, NaoViraramPedido = 1, SomenteViraramPedido = 2, Excluidos = 3
         }
+
         public async Task<IEnumerable<PrepedidosCadastradosPrepedidoDados>> ListarPrePedidos(string apelido, TipoBuscaPrepedido tipoBusca,
             string clienteBusca, string numeroPrePedido, DateTime? dataInicial, DateTime? dataFinal)
         {
@@ -189,19 +196,17 @@ namespace Prepedido
         {
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTO))
             {
-                var prepedido = from c in dbgravacao.Torcamentos
-                                where c.Orcamentista == apelido &&
-                                      c.Orcamento == numeroPrePedido &&
-                                      (c.St_Orcamento == "" || c.St_Orcamento == null) &&
-                                      c.St_Orc_Virou_Pedido == 0
-                                select c;
-                Torcamento prePedido = await prepedido.FirstOrDefaultAsync();
+                var prepedido = await dbgravacao.Torcamentos
+                    .Where(c => c.Orcamento == numeroPrePedido
+                        && (c.St_Orcamento == "" || c.St_Orcamento == null)
+                        && c.St_Orc_Virou_Pedido == 0)
+                    .FirstOrDefaultAsync();
 
-                if (prePedido != null)
+                if (prepedido != null)
                 {
-                    prePedido.St_Orcamento = "CAN";
-                    prePedido.Cancelado_Data = DateTime.Now;
-                    prePedido.Cancelado_Usuario = apelido;
+                    prepedido.St_Orcamento = "CAN";
+                    prepedido.Cancelado_Data = DateTime.Now;
+                    prepedido.Cancelado_Usuario = apelido;
                     await dbgravacao.SaveChangesAsync();
                     dbgravacao.transacao.Commit();
                     return await Task.FromResult(true);
@@ -646,7 +651,6 @@ namespace Prepedido
                             where c.Apelido == apelido
                             select c.Permite_RA_Status).FirstOrDefaultAsync();
 
-
             return await raStatus;
         }
 
@@ -706,7 +710,6 @@ namespace Prepedido
                     }
                 }
 
-
                 prePedido.DadosCliente.Id = cliente.DadosCliente.Id;
                 prePedido.DadosCliente.Sexo = cliente.DadosCliente.Sexo;
                 prePedido.DadosCliente.Nascimento = cliente.DadosCliente.Nascimento;
@@ -755,7 +758,6 @@ namespace Prepedido
                 lstErros.Add($"Loja não habilitada para e-commerce: {prePedido.DadosCliente.Loja}");
                 return lstErros;
             }
-
 
             //Validar endereço de entraga
             await validacoesPrepedidoBll.ValidarEnderecoEntrega(prePedido.EnderecoEntrega, lstErros,
@@ -885,10 +887,6 @@ namespace Prepedido
                     lstErros.Add(prePedido.NumeroPrePedido);
                 }
             }
-
-
-
-
 
             return lstErros;
         }
@@ -1050,7 +1048,6 @@ namespace Prepedido
                     prePedido.DadosCliente.Rg : "";
                 torcamento.Endereco_contato = !string.IsNullOrEmpty(prePedido.DadosCliente.Contato) ?
                     prePedido.DadosCliente.Contato : "";
-
             }
         }
 
@@ -1113,7 +1110,6 @@ namespace Prepedido
                 torcamento.Pce_Entrada_Valor = torcamento.Pce_Entrada_Valor.HasValue ? torcamento.Pce_Entrada_Valor : 0.0M;
                 torcamento.Pce_Prestacao_Valor = torcamento.Pce_Prestacao_Valor.HasValue ? torcamento.Pce_Prestacao_Valor : 0.0M;
                 torcamento.Pse_Prim_Prest_Valor = torcamento.Pse_Prim_Prest_Valor.HasValue ? torcamento.Pse_Prim_Prest_Valor : 0.0M;
-
             }
         }
 
@@ -1268,7 +1264,6 @@ namespace Prepedido
 
             return custoFinancFornecQtdeParcelas;
         }
-
 
         public static short? ObterQtdeParcelasDeFormaPagto(FormaPagtoCriacaoDados formaPagto)
         {
