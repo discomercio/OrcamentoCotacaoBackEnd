@@ -99,24 +99,27 @@ namespace Orcamento
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
                     List<OrcamentoCotacaoListaDto> saida = (from c in db.Torcamentos
+                                                            join vp in db.TorcamentistaEIndicadorVendedor on c.IdIndicadorVendedor equals vp.Id into gj
+                                                            from loj in gj.DefaultIfEmpty()
                                                             where c.Data > DateTime.Now.AddDays(-60)
                                                                     && c.St_Orcamento != "CAN" //CANCELADOS
                                                                     && c.Loja == filtro.Loja
                                                             orderby c.Data descending
                                                             select new OrcamentoCotacaoListaDto
                                                             {
-                                                                NumeroOrcamento = c.Orcamento,
-                                                                NumPedido = c.Pedido == null ? "" : c.Pedido,
+                                                                NumeroOrcamento = c.IdOrcamentoCotacao.ToString() == null || c.IdOrcamentoCotacao == 0 ? "" : c.IdOrcamentoCotacao.ToString(),
+                                                                NumPedido = c.Orcamento,
                                                                 Cliente_Obra = $"{c.Tcliente.Nome}",
                                                                 Vendedor = c.Vendedor == null ? "" : c.Vendedor,
                                                                 Parceiro = c.Orcamentista == null ? "" : c.Orcamentista,
-                                                                VendedorParceiro = "VendedorParceiro",
+                                                                VendedorParceiro = loj.Nome,
                                                                 Valor = c.Vl_Total_NF.HasValue ? c.Vl_Total_NF.Value.ToString() : "",
                                                                 Orcamentista = c.Orcamentista == null ? "" : c.Orcamentista,
-                                                                Status = c.St_Orcamento,
+                                                                Status = c.St_Orc_Virou_Pedido == 1 ? "Pedido em andamento" : "Pedido em processamento",
                                                                 VistoEm = "",
                                                                 IdIndicadorVendedor = c.IdIndicadorVendedor == null ? null : c.IdIndicadorVendedor,
-                                                                Mensagem = c.St_Orcamento == "7" ? "Sim" : "Não",
+                                                                St_Orc_Virou_Pedido = c.St_Orc_Virou_Pedido,
+                                                                Mensagem = "",
                                                                 DtCadastro = c.Data,
                                                                 DtExpiracao = null,
                                                                 DtInicio = filtro.DtInicio,
@@ -165,10 +168,10 @@ namespace Orcamento
                         })
                         .ToListAsync();
                 }
-                else if (obj.Origem == "PENDENTES") //ORCAMENTOS
-                {
-                    return TcfgOrcamentoStatus.ObterLista();
-                }
+                //else if (obj.Origem == "PENDENTES") //ORCAMENTOS
+                //{
+                //    return TcfgOrcamentoStatus.ObterLista();
+                //}
                 else //if (obj.Origem == "PEDIDOS")
                 {
                     return TcfgPedidoStatus.ObterLista();

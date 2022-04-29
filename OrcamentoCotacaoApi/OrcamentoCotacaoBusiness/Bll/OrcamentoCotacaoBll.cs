@@ -89,18 +89,22 @@ namespace OrcamentoCotacaoBusiness.Bll
                 List<OrcamentoCotacaoListaDto> lista = new List<OrcamentoCotacaoListaDto>();
                 if (orcamentoCotacaoListaDto != null)
                 {
+                    var vendedores = _usuarioBll.PorFiltro(new TusuarioFiltro { });
+                    var parceiros = _orcamentistaEIndicadorBll.BuscarParceiros(new TorcamentistaEindicadorFiltro { });
+                    var vendParceiros = _orcamentistaEIndicadorVendedorBll.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro { });
+
                     orcamentoCotacaoListaDto.ForEach(x => lista.Add(new OrcamentoCotacaoListaDto()
                     {
                         NumeroOrcamento = x.Id.ToString(),
                         NumPedido = x.IdPedido,
                         Cliente_Obra = $"{x.NomeCliente} - {x.NomeObra}",
-                        Vendedor = x.Tusuarios.Usuario,
-                        Parceiro = "",
-                        VendedorParceiro = "",
+                        Vendedor = vendedores.FirstOrDefault(v=>v.Id == x.IdVendedor)?.Nome,
+                        Parceiro = parceiros.FirstOrDefault(v => v.IdIndicador == x.IdIndicador)?.Apelido,
+                        VendedorParceiro = vendParceiros.FirstOrDefault(v => v.Id == x.IdIndicadorVendedor)?.Nome,
                         Valor = "0",
                         Status = x.StatusNome,
                         VistoEm = "",
-                        Mensagem = x.Status == 7 ? "Sim" : "Não",
+                        Mensagem = _orcamentoBll.ObterListaMensagemPendente(x.Id, x.Tusuarios.Id).Result.Any() ? "Sim" : "Não",
                         DtCadastro = x.DataCadastro,
                         DtExpiracao = x.Validade,
                         DtInicio = tOrcamentoFiltro.DtInicio,
@@ -114,8 +118,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 var lista = _orcamentoBll.OrcamentoPorFiltro(tOrcamentoFiltro);
 
-                foreach (var item in lista)
-                    item.Status = TcfgOrcamentoStatus.ObterStatus(item.Status);
+                //foreach (var item in lista)
+                //    item.Status = TcfgOrcamentoStatus.ObterStatus(item.Status);
 
                 return lista;
             }

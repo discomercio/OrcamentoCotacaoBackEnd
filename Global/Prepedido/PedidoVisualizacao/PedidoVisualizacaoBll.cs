@@ -90,18 +90,18 @@ namespace Prepedido.PedidoVisualizacao
                                                         orderby c.Data descending
                                                         select new OrcamentoCotacaoListaDto
                                                         {
-                                                            NumeroOrcamento = "", //c.IdOrcamentoCotacao.ToString(),
+                                                            NumeroOrcamento = c.IdOrcamentoCotacao.HasValue ? c.IdOrcamentoCotacao.Value.ToString() : "-",
                                                             NumPedido = c.Pedido,
                                                             Cliente_Obra = $"{c.Tcliente.Nome}",
                                                             Vendedor = c.Vendedor,
-                                                            Parceiro = !String.IsNullOrEmpty(c.Orcamentista) ? c.Orcamentista : "-",
+                                                            Parceiro = !String.IsNullOrEmpty(c.Indicador) ? c.Indicador : "-",
                                                             VendedorParceiro = loj.Nome,
-                                                            Valor = c.Vl_Total_NF.ToString(),
+                                                            Valor = c.Permite_RA_Status == 1 ? c.Vl_Total_NF.Value.ToString() : c.Vl_Total_Familia.ToString(),
                                                             Orcamentista = c.Orcamentista,
                                                             Status = c.St_Entrega,
                                                             VistoEm = "",
-                                                            IdIndicadorVendedor = null, //c.Id,
-                                                            Mensagem = "", //c.St_Orcamento == "7" ? "Sim" : "Não",
+                                                            IdIndicadorVendedor = c.IdIndicadorVendedor,
+                                                            Mensagem = "",
                                                             DtCadastro = c.Data,
                                                             DtExpiracao = null,
                                                             DtInicio = filtro.DtInicio,

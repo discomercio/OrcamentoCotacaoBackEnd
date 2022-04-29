@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using OrcamentistaEindicador;
+using InfraBanco.Modelos.Filtros;
 using OrcamentoCotacaoBusiness.Models.Response;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +11,9 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly OrcamentistaEIndicadorVendedor.OrcamentistaEIndicadorVendedorBll _orcamentistaEindicadorVendedorBll;
         private readonly OrcamentistaEIndicadorBll _orcamentistaEIndicadorBll;
         private readonly IMapper _mapper;
+
         public OrcamentistaEIndicadorVendedorBll(
-            OrcamentistaEIndicadorVendedor.OrcamentistaEIndicadorVendedorBll _orcamentistaEindicadorVendedorBll, 
+            OrcamentistaEIndicadorVendedor.OrcamentistaEIndicadorVendedorBll _orcamentistaEindicadorVendedorBll,
             IMapper _mapper,
              OrcamentistaEIndicadorBll _orcamentistaEIndicadorBll
             )
@@ -24,26 +25,31 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public List<OrcamentistaEIndicadorVendedorResponseViewModel> BuscarVendedoresParceiro(string apelidoParceiro)
         {
-            var parceiro = _orcamentistaEIndicadorBll
-                .BuscarParceiros(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = apelidoParceiro, acessoHabilitado = 1 }).FirstOrDefault();
-          
-            if (parceiro == null) 
+            var parceiro = _orcamentistaEIndicadorBll.BuscarParceiros(new TorcamentistaEindicadorFiltro() { apelido = apelidoParceiro, acessoHabilitado = 1 }).FirstOrDefault();
+
+            if (parceiro == null)
                 return null;
 
-            var vendedoresParceiro = _orcamentistaEindicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { IdIndicador = parceiro.IdIndicador });
+            var vendedoresParceiro = _orcamentistaEindicadorVendedorBll.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro() { IdIndicador = parceiro.IdIndicador });
             return _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(vendedoresParceiro);
         }
 
         public List<OrcamentistaEIndicadorVendedorResponseViewModel> BuscarVendedoresParceiroPorId(int idParceiro)
         {
-            var parceiro = _orcamentistaEIndicadorBll
-                .BuscarParceiros(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { idParceiro = idParceiro, acessoHabilitado = 1 }).FirstOrDefault();
+            var parceiro = _orcamentistaEIndicadorBll.BuscarParceiros(new TorcamentistaEindicadorFiltro() { idParceiro = idParceiro, acessoHabilitado = 1 }).FirstOrDefault();
 
             if (parceiro == null)
                 return null;
 
-            var vendedoresParceiro = _orcamentistaEindicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { IdIndicador = parceiro.IdIndicador });
+            var vendedoresParceiro = _orcamentistaEindicadorVendedorBll.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro() { IdIndicador = parceiro.IdIndicador });
             return _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(vendedoresParceiro);
         }
+
+        public List<OrcamentistaEIndicadorVendedorResponseViewModel> PorFiltro(TorcamentistaEIndicadorVendedorFiltro filtro)
+        {
+            var vendedoresParceiro = _orcamentistaEindicadorVendedorBll.PorFiltro(filtro);
+            return _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(vendedoresParceiro);
+        }
+
     }
 }
