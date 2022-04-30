@@ -61,5 +61,10 @@ namespace OrcamentoCotacaoBusiness.Bll
         {
             return _bll.Criar(produtoCatalogo, usuario_cadastro);
         }
+
+        public bool CriarItem(TprodutoCatalogoItem produtoCatalogoItem)
+        {
+            return _bll.CriarItem(produtoCatalogoItem);
+        }
     }
 }
