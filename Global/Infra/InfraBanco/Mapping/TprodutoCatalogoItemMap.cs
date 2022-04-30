@@ -26,6 +26,10 @@ namespace InfraBanco.Mapping
             builder.Property(x => x.Valor)
                 .HasColumnName("valor")
                 .HasColumnType("varchar(max)");
+
+            builder.Property(x => x.Oculto)
+                .HasColumnName("oculto")
+                .HasColumnType("bool");
         }
     }
 }
