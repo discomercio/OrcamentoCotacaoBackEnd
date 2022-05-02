@@ -68,6 +68,7 @@ namespace ProdutoCatalogo
                     {
                         query.Ativo = false;
                         db.SaveChanges();
+                        db.transacao.Commit();
                         saida = true;
                     }
                 }
@@ -88,13 +89,13 @@ namespace ProdutoCatalogo
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
-
                     var obj = db.TprodutoCatalogoImagem.FirstOrDefault(x => x.Id == idImagem && x.IdProdutoCatalogo == idProduto);
 
                     if (obj != null)
                     {
                         db.TprodutoCatalogoImagem.Remove(obj);
                         db.SaveChanges();
+                        db.transacao.Commit();
                         saida = true;
                     }
                 }
@@ -112,24 +113,6 @@ namespace ProdutoCatalogo
             throw new NotImplementedException();
         }
 
-        /*
-        public List<TprodutoCatalogo> PorFiltro(TprodutoCatalogoFiltro obj)
-        {
-            try
-            {
-                using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
-                {
-                    return db.TprodutoCatalogo
-                        
-                        .ToList();
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-        }*/
-
         public List<TprodutoCatalogo> PorFiltro(TprodutoCatalogoFiltro obj)
         {
             try
@@ -141,7 +124,7 @@ namespace ProdutoCatalogo
                             join f in db.Tfabricantes on pc.Fabricante equals f.Fabricante
 
                             select new TprodutoCatalogo
-                            {         
+                            {
                                 Produto = pc.Produto,
                                 Id = pc.Id,
                                 Fabricante = f.Nome,
@@ -238,8 +221,8 @@ namespace ProdutoCatalogo
                     if (itens != null)
                     {
                         db.TprodutoCatalogoItem.RemoveRange(itens);
-                        //db.TprodutoCatalogoItem.FromSql($"DELETE t_PRODUTO_CATALOGO_ITEM WHERE id_produto_catalogo = {produto.Id}");
                         db.SaveChanges();
+                        db.transacao.Commit();
                     }
 
                     foreach (var campo in produto.campos)
@@ -254,6 +237,7 @@ namespace ProdutoCatalogo
                     }
 
                     db.SaveChanges();
+                    db.transacao.Commit();
                     saida = true;
                 }
             }
@@ -283,6 +267,7 @@ namespace ProdutoCatalogo
                         });
 
                     db.SaveChanges();
+                    db.transacao.Commit();
                     saida = true;
                 }
             }
@@ -308,12 +293,12 @@ namespace ProdutoCatalogo
                             //Id = produtoCatalogo.Id,
                             Produto = produtoCatalogo.Produto,
                             Fabricante = produtoCatalogo.Fabricante,
-                            Nome = produtoCatalogo.Nome,                                                        
+                            Nome = produtoCatalogo.Nome,
                             Descricao = produtoCatalogo.Descricao,
                             UsuarioCadastro = usuario_cadastro,
                             DtCadastro = DateTime.Now,
                             Ativo = true
-                            
+
                         }); ;
 
                     db.SaveChanges();
@@ -337,7 +322,6 @@ namespace ProdutoCatalogo
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
-
                     bool? obj = db.TprodutoCatalogo.Any(x => x.Id == produtoCatalogo.Id);
 
                     if (obj != null)

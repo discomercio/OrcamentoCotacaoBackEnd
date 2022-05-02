@@ -96,7 +96,7 @@ namespace Prepedido.PedidoVisualizacao
                                                             Vendedor = c.Vendedor,
                                                             Parceiro = !String.IsNullOrEmpty(c.Indicador) ? c.Indicador : "-",
                                                             VendedorParceiro = loj.Nome,
-                                                            Valor = c.Permite_RA_Status == 1 ? c.Vl_Total_NF.Value.ToString() : c.Vl_Total_Familia.ToString(),
+                                                            Valor = db.TpedidoItems.Where(x=>x.Pedido == c.Pedido).Sum(x=>x.Preco_Venda * x.Qtde.Value).ToString(),
                                                             Orcamentista = c.Orcamentista,
                                                             Status = c.St_Entrega,
                                                             VistoEm = "",

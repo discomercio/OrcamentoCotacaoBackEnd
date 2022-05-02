@@ -96,12 +96,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                     orcamentoCotacaoListaDto.ForEach(x => lista.Add(new OrcamentoCotacaoListaDto()
                     {
                         NumeroOrcamento = x.Id.ToString(),
-                        NumPedido = x.IdPedido,
+                        NumPedido = String.IsNullOrEmpty(x.IdPedido) ? "-" : x.IdPedido,
                         Cliente_Obra = $"{x.NomeCliente} - {x.NomeObra}",
                         Vendedor = vendedores.FirstOrDefault(v=>v.Id == x.IdVendedor)?.Nome,
-                        Parceiro = parceiros.FirstOrDefault(v => v.IdIndicador == x.IdIndicador)?.Apelido,
+                        Parceiro = parceiros.FirstOrDefault(v => v.IdIndicador == x.IdIndicador) == null ? "-" : parceiros.FirstOrDefault(v => v.IdIndicador == x.IdIndicador).Apelido,
                         VendedorParceiro = vendParceiros.FirstOrDefault(v => v.Id == x.IdIndicadorVendedor)?.Nome,
-                        Valor = "0",
+                        Valor = "0", 
                         Status = x.StatusNome,
                         VistoEm = "",
                         Mensagem = _orcamentoBll.ObterListaMensagemPendente(x.Id, x.Tusuarios.Id).Result.Any() ? "Sim" : "Não",
@@ -116,12 +116,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
             else if (tOrcamentoFiltro.Origem == "PENDENTES") //PrePedido/Em Aprovação [tOrcamentos]
             {
-                var lista = _orcamentoBll.OrcamentoPorFiltro(tOrcamentoFiltro);
-
-                //foreach (var item in lista)
-                //    item.Status = TcfgOrcamentoStatus.ObterStatus(item.Status);
-
-                return lista;
+                return _orcamentoBll.OrcamentoPorFiltro(tOrcamentoFiltro);
             }
             else //if (tOrcamentoFiltro.Origem == "PEDIDOS")
             {

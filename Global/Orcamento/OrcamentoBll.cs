@@ -107,13 +107,13 @@ namespace Orcamento
                                                             orderby c.Data descending
                                                             select new OrcamentoCotacaoListaDto
                                                             {
-                                                                NumeroOrcamento = c.IdOrcamentoCotacao.ToString() == null || c.IdOrcamentoCotacao == 0 ? "" : c.IdOrcamentoCotacao.ToString(),
+                                                                NumeroOrcamento = !c.IdOrcamentoCotacao.HasValue || c.IdOrcamentoCotacao == 0 ? "-" : c.IdOrcamentoCotacao.Value.ToString(),
                                                                 NumPedido = c.Orcamento,
                                                                 Cliente_Obra = $"{c.Tcliente.Nome}",
-                                                                Vendedor = c.Vendedor == null ? "" : c.Vendedor,
-                                                                Parceiro = c.Orcamentista == null ? "" : c.Orcamentista,
+                                                                Vendedor = c.Vendedor == null ? "-" : c.Vendedor,
+                                                                Parceiro = c.Orcamentista == null ? "-" : c.Orcamentista,
                                                                 VendedorParceiro = loj.Nome,
-                                                                Valor = c.Vl_Total_NF.HasValue ? c.Vl_Total_NF.Value.ToString() : "",
+                                                                Valor = c.Permite_RA_Status == 1 ? c.Vl_Total_NF.Value.ToString() : c.Vl_Total.ToString(),
                                                                 Orcamentista = c.Orcamentista == null ? "" : c.Orcamentista,
                                                                 Status = c.St_Orc_Virou_Pedido == 1 ? "Pedido em andamento" : "Pedido em processamento",
                                                                 VistoEm = "",

@@ -491,7 +491,7 @@ namespace InfraBanco.Modelos
         public DateTime? PrevisaoEntregaDtHrUltAtualiz { get; set; }
 
         [Column("IdOrcamentoCotacao")]
-        public int IdOrcamentoCotacao { get; set; }
+        public int? IdOrcamentoCotacao { get; set; }
 
         [Column("IdIndicadorVendedor")]
         public int? IdIndicadorVendedor { get; set; }
