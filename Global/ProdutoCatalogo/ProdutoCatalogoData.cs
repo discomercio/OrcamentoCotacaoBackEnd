@@ -231,7 +231,7 @@ namespace ProdutoCatalogo
                             new TprodutoCatalogoItem
                             {
                                 IdProdutoCatalogo = produto.Id,
-                                IdProdutoCatalogoItens = campo.IdProdutoCatalogoItens,
+                                //IdProdutoCatalogoItens = campo.IdProdutoCatalogoItens,
                                 Valor = campo.Valor
                             });
                     }
@@ -299,6 +299,37 @@ namespace ProdutoCatalogo
                             DtCadastro = DateTime.Now,
                             Ativo = true
 
+                        }); ;
+
+                    db.SaveChanges();
+                    db.transacao.Commit();
+                    saida = true;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return saida;
+        }
+
+        public bool CriarItem(TprodutoCatalogoItem produtoCatalogoItem)
+        {
+            var saida = false;
+
+            try
+            {
+                using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+                {
+                    db.TprodutoCatalogoItem.Add(
+                        new TprodutoCatalogoItem
+                        {
+                            IdProdutoCatalogo = produtoCatalogoItem.IdProdutoCatalogo,
+                            IdProdutoCatalogoPropriedade = produtoCatalogoItem.IdProdutoCatalogoPropriedade,
+                            IdProdutoCatalogoPropriedadeOpcao = produtoCatalogoItem.IdProdutoCatalogoPropriedadeOpcao,
+                            Valor = produtoCatalogoItem.Valor,
+                            Oculto = produtoCatalogoItem.Oculto
                         }); ;
 
                     db.SaveChanges();

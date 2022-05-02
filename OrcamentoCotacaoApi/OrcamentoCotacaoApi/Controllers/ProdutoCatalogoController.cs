@@ -178,5 +178,35 @@ namespace OrcamentoCotacaoApi.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+
+        [HttpPost("item")]
+        public async Task<IActionResult> CriarItem(TprodutoCatalogoItem produtoCatalogoItem)
+        {
+            try
+            {
+
+                var saida = _bll.CriarItem(produtoCatalogoItem);
+
+                if (saida)
+                {
+                    return Ok(new
+                    {
+                        message = "Produto catálogo criado com sucesso."
+                    });
+                }
+                else
+                {
+                    return BadRequest(new
+                    {
+                        message = "Erro ao criar novo produto catálogo."
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
     }
 }

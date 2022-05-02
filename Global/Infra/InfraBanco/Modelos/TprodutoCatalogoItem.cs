@@ -9,7 +9,6 @@ namespace InfraBanco.Modelos
         public int IdProdutoCatalogo { get; set; }
         public int IdProdutoCatalogoPropriedade { get; set; }
         public int IdProdutoCatalogoPropriedadeOpcao { get; set; }
-        public int IdProdutoCatalogoItens { get; set; }
         public string Valor { get; set; }
         public bool Oculto { get; set; }
 

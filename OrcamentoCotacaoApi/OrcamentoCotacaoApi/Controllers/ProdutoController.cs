@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 
@@ -75,6 +76,8 @@ namespace OrcamentoCotacaoApi.BaseController
             else
                 return Ok(ret);
         }
+
+        
 
         [HttpGet("itens/{idProdutoCatalogo}")]
         public async Task<IActionResult> ObterListaPropriedadesProdutosById(int idProdutoCatalogo)
@@ -172,6 +175,22 @@ namespace OrcamentoCotacaoApi.BaseController
                     message = "Não foi possível atualizar a propriedade do produto."
                 });
             }
+        }
+
+        [HttpGet("listar-produtos-propriedades-ativos")]
+        public async Task<IActionResult> ObterListaProdutosPropriedadesProdutosAtivos()
+        {
+            var saida = await _produtoBll.ObterListaProdutosPropriedadesProdutosAtivos();
+
+            return Ok(saida);
+        }
+
+        [HttpGet("listar-propriedades-opcoes-produtos-ativos")]
+        public async Task<IActionResult> ObterPropriedadesEOpcoesProdutosAtivos()
+        {
+            var saida = await _produtoBll.ObterPropriedadesEOpcoesProdutosAtivos();
+
+            return Ok(saida);
         }
     }
 }
