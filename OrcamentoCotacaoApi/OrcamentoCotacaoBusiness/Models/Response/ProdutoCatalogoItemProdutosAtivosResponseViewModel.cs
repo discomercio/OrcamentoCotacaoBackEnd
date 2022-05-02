@@ -17,6 +17,8 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         public string FabricanteNome { get; set; }
         [JsonProperty("descricao")]
         public string Descricao { get; set; }
+        [JsonProperty("descricaoCompleta")]
+        public string DescricaoCompleta { get; set; }
         [JsonProperty("idPropriedade")]
         public int IdPropriedade { get; set; }
         [JsonProperty("nomePropriedade")]

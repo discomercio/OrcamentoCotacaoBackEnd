@@ -120,8 +120,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             List<ProdutoCatalogoItemProdutosAtivosResponseViewModel> retorno = new List<ProdutoCatalogoItemProdutosAtivosResponseViewModel>();
             if (produtosPropListas != null && produtosPropTexto != null)
             {
-                produtosPropTexto.AddRange(produtosPropListas);
-                retorno = _mapper.Map<List<ProdutoCatalogoItemProdutosAtivosResponseViewModel>>(produtosPropTexto);
+                produtosPropListas.AddRange(produtosPropTexto);
+                retorno = _mapper.Map<List<ProdutoCatalogoItemProdutosAtivosResponseViewModel>>(produtosPropListas);
             }
             return retorno;
         }
