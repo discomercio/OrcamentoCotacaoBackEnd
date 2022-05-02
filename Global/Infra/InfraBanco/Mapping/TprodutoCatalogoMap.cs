@@ -67,6 +67,6 @@ namespace InfraBanco.Mapping
 
             //public List<TorcamentoProdutoCatalogoItens> campos { get; set; }
             //public List<TorcamentoProdutoCatalogoImagem> imagens { get; set; }
-        }
+    }
     }
 }

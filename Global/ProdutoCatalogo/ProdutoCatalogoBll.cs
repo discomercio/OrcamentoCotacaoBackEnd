@@ -32,9 +32,14 @@ namespace ProdutoCatalogo
             return _data.ObterListaItens(id);
         }
 
-        public List<TprodutoCatalogoImagem> ObterListaImagens(int id)
+        public List<TprodutoCatalogoImagem> ObterListaImagensPorId(int id)
         {
-            return _data.ObterListaImagens(id);
+            return _data.ObterListaImagensPorId(id);
+        }
+
+        public List<TprodutoCatalogoImagem> ObterListaImagem(List<int>idProdutos)
+        {
+            return _data.ObterListaImagens(idProdutos);
         }
 
         public bool SalvarArquivo(string nomeArquivo, int idProdutoCatalogo, int idTipo, string ordem)

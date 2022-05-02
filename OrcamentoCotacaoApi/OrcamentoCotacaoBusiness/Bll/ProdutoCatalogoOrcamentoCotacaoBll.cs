@@ -3,6 +3,7 @@ using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using ProdutoCatalogo;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -19,7 +20,22 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public List<TprodutoCatalogo> PorFiltro(TprodutoCatalogoFiltro filtro)
         {
-            return _bll.PorFiltro(filtro);
+            var produtosCatalogos = _bll.PorFiltro(new TprodutoCatalogoFiltro() { IncluirImagem = true }) ;
+            var idProdutos = from c in produtosCatalogos 
+                             select c.Id;
+
+            var imagens = _bll.ObterListaImagem(idProdutos.ToList());
+
+            foreach(var prod in produtosCatalogos)
+            {
+                var img = imagens.Where(x => x.IdProdutoCatalogo == prod.Id).FirstOrDefault();
+                if(img != null)
+                {
+                    prod.imagens = new List<TprodutoCatalogoImagem>();
+                    prod.imagens.Add(img);
+                }
+            }
+            return produtosCatalogos;
         }
 
         public void Excluir(int id)
@@ -47,9 +63,9 @@ namespace OrcamentoCotacaoBusiness.Bll
             return _bll.ObterListaItens(id);
         }
 
-        public List<TprodutoCatalogoImagem> ObterListaImagens(int id)
+        public List<TprodutoCatalogoImagem> ObterListaImagensPorId(int id)
         {
-            return _bll.ObterListaImagens(id);
+            return _bll.ObterListaImagensPorId(id);
         }
 
         public bool SalvarArquivo(string nomeArquivo, int idProdutoCatalogo, int idTipo, string ordem)

@@ -12,5 +12,6 @@ namespace InfraBanco.Modelos.Filtros
         public string TipoUsuario { get; set; }
         public string Usuario { get; set; }
         public string Id { get; set; }
+        public bool IncluirImagem { get; set; }
     }
 }

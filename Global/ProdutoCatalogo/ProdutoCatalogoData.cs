@@ -119,19 +119,27 @@ namespace ProdutoCatalogo
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
-                    return (
-                            from pc in db.TprodutoCatalogo
-                            join f in db.Tfabricantes on pc.Fabricante equals f.Fabricante
+                    var produtos = from pc in db.TprodutoCatalogo
+                                   join f in db.Tfabricantes on pc.Fabricante equals f.Fabricante
+                                   select new TprodutoCatalogo
+                                   {
+                                       Produto = pc.Produto,
+                                       Id = pc.Id,
+                                       Fabricante = f.Nome,
+                                       Nome = pc.Nome,
+                                       Descricao = pc.Descricao,
+                                       Ativo = pc.Ativo
+                                   };
 
-                            select new TprodutoCatalogo
-                            {
-                                Produto = pc.Produto,
-                                Id = pc.Id,
-                                Fabricante = f.Nome,
-                                Nome = pc.Nome,
-                                Descricao = pc.Descricao,
-                                Ativo = pc.Ativo
-                            }).ToList();
+                    if (produtos != null)
+                    {
+                        if (obj.IncluirImagem)
+                        {
+                            produtos = produtos.Include(x => x.imagens);
+                        }
+                    }
+
+                    return produtos.ToList();
                 }
             }
             catch (Exception e)
@@ -151,7 +159,7 @@ namespace ProdutoCatalogo
                     if (saida != null)
                     {
                         //saida.campos = ObterListaItens(id);
-                        saida.imagens = ObterListaImagens(id);
+                        saida.imagens = ObterListaImagensPorId(id);
 
                         return saida;
                     }
@@ -190,7 +198,7 @@ namespace ProdutoCatalogo
             }
         }
 
-        public List<TprodutoCatalogoImagem> ObterListaImagens(int id)
+        public List<TprodutoCatalogoImagem> ObterListaImagensPorId(int id)
         {
             try
             {
@@ -199,6 +207,25 @@ namespace ProdutoCatalogo
                     return db.TprodutoCatalogoImagem
                         .AsNoTracking()
                         .Where(x => x.IdProdutoCatalogo == id)
+                        .OrderBy(x => x.Ordem)
+                        .ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public List<TprodutoCatalogoImagem> ObterListaImagens(List<int>idProdutos)
+        {
+            try
+            {
+                using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+                {
+                    
+                    return db.TprodutoCatalogoImagem
+                        .Where(x => idProdutos.Contains(x.IdProdutoCatalogo))
                         .OrderBy(x => x.Ordem)
                         .ToList();
                 }
