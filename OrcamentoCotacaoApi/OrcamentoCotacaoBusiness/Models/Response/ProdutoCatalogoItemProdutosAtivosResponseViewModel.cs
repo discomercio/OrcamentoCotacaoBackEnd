@@ -17,11 +17,15 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         public string FabricanteNome { get; set; }
         [JsonProperty("descricao")]
         public string Descricao { get; set; }
+        [JsonProperty("descricaoCompleta")]
+        public string DescricaoCompleta { get; set; }
         [JsonProperty("idPropriedade")]
         public int IdPropriedade { get; set; }
         [JsonProperty("nomePropriedade")]
         public string NomePropriedade { get; set; }
         [JsonProperty("valorPropriedade")]
         public string ValorPropriedade { get; set; }
+        [JsonProperty("ordem")]
+        public string Ordem { get; set; }
     }
 }

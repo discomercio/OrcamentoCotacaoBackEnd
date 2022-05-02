@@ -322,10 +322,12 @@ namespace ProdutoCatalogo
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
+                    int idProdutoCatalogo = db.TprodutoCatalogo.Max(p => p.Id);
+
                     db.TprodutoCatalogoItem.Add(
                         new TprodutoCatalogoItem
                         {
-                            IdProdutoCatalogo = produtoCatalogoItem.IdProdutoCatalogo,
+                            IdProdutoCatalogo = idProdutoCatalogo,
                             IdProdutoCatalogoPropriedade = produtoCatalogoItem.IdProdutoCatalogoPropriedade,
                             IdProdutoCatalogoPropriedadeOpcao = produtoCatalogoItem.IdProdutoCatalogoPropriedadeOpcao,
                             Valor = produtoCatalogoItem.Valor,

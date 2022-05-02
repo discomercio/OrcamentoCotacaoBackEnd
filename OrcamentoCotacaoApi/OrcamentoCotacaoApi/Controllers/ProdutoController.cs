@@ -192,5 +192,13 @@ namespace OrcamentoCotacaoApi.BaseController
 
             return Ok(saida);
         }
+
+        [HttpGet("teste/{idProduto}")]
+        public async Task<IActionResult> ObterPropriedadesEOpcoesProdutosAtivosPorProduto(int idProduto)
+        {
+            var retorno = await _produtoBll.BuscarProdutoCatalogoParaVisualizacao(idProduto);
+
+            return Ok(retorno);
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace Produto.Dados
         public string Fabricante { get; set; }
         public string FabricanteNome { get; set; }
         public string Descricao { get; set; }
+        public string DescricaoCompleta { get; set; }
         public int IdPropriedade { get; set; }
         public string NomePropriedade { get; set; }
         public string ValorPropriedade { get; set; }
