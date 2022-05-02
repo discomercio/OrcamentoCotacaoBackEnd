@@ -7,11 +7,13 @@ using System.Text;
 
 namespace OrcamentoCotacaoBusiness.Mapper
 {
-    public class ProdutoMapper:Profile
+    public class ProdutoMapper : Profile
     {
         public ProdutoMapper()
         {
             CreateMap<ProdutoCompostoDados, ProdutoCompostoResponseViewModel>();
+            CreateMap<ProdutoCatalogoItemProdutosAtivosDados, ProdutoCatalogoItemProdutosAtivosResponseViewModel>();
+            //CreateMap<ProdutoCatalogoItemProdutosAtivosResponseViewModel, ProdutoCatalogoItemProdutosAtivosDados>();
         }
     }
 }

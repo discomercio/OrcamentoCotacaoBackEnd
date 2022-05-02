@@ -118,6 +118,28 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             return lstProdutoPropriedades;
         }
+
+        public async Task<List<ProdutoCatalogoItemProdutosAtivosResponseViewModel>> ObterListaProdutosPropriedadesProdutosAtivos()
+        {
+            var catalagoItens = await produtoGeralBll.ObterListaProdutosPropriedadesProdutosAtivos();
+
+            if (catalagoItens == null)
+            {
+                throw new ArgumentException("Falha ao buscar produtos!");
+            }
+            var response = _mapper.Map<List<ProdutoCatalogoItemProdutosAtivosResponseViewModel>>(catalagoItens);
+            return response;
+        }
+
+        public async Task<List<Produto.Dados.CatalogoPropriedadesOpcaoDados>> ObterPropriedadesEOpcoesProdutosAtivos()
+        {
+            var catalogoPropriedadesOpcoes = await produtoGeralBll.ObterPropriedadesEOpcoesProdutosAtivos();
+
+            if (catalogoPropriedadesOpcoes == null) throw new ArgumentException("Falha ao buscar propriedades!");
+
+            return catalogoPropriedadesOpcoes;
+        }
+
         public async Task<List<Produto.Dados.ProdutoCatalogoPropriedadeDados>> ObterListaPropriedadesProdutos(int id)
         {
             var lstProdutoPropriedades = await produtoGeralBll.ObterListaPropriedadesProdutos(id);
@@ -138,8 +160,6 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             return lstProdutoPropriedades;
         }
-
-        
 
         public async Task<List<Produto.Dados.ProdutoCatalogoItemDados>> ObterListaPropriedadesProdutosById(int idProdutoCatalogo)
         {
