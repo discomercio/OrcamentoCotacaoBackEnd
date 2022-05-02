@@ -46,5 +46,10 @@ namespace ProdutoCatalogo
         {
             return _data.Criar(produtoCatalogo, usuario_cadastro);
         }
+
+        public bool CriarItem(TprodutoCatalogoItem produtoCatalogoItem)
+        {
+            return _data.CriarItem(produtoCatalogoItem);
+        }
     }
 }
