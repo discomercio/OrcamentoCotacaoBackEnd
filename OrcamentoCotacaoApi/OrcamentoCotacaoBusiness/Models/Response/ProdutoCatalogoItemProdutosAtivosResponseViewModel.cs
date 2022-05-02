@@ -23,5 +23,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         public string NomePropriedade { get; set; }
         [JsonProperty("valorPropriedade")]
         public string ValorPropriedade { get; set; }
+        [JsonProperty("ordem")]
+        public string Ordem { get; set; }
     }
 }

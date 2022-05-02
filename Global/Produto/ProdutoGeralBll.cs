@@ -429,88 +429,78 @@ namespace Produto
             return lprodutosItens;
         }
 
-        public async Task<List<Produto.Dados.ProdutoCatalogoItemProdutosAtivosDados>> ObterProdutoPropriedadesAtivosTexto(string produto)
+        public async Task<List<Produto.Dados.ProdutoCatalogoItemProdutosAtivosDados>> ObterProdutoPropriedadesAtivosTexto(int idProduto)
         {
-            //para buscar produto com as propriedades ativas de texto
-            var db = contextoProvider.GetContextoLeitura();
+            try
+            {
+                //para buscar produto com as propriedades ativas de texto
+                var db = contextoProvider.GetContextoLeitura();
 
-            var produtosAtivos = from tpci in db.TprodutoCatalogoItems
-                                 join tpc in db.TprodutoCatalogos on tpci.IdProdutoCatalogo equals tpc.Id
-                                 join tf in db.Tfabricantes on tpc.Fabricante equals tf.Fabricante
-                                 join tpcpo in db.TProdutoCatalogoPropriedadeOpcoes on tpci.IdProdutoCatalogoPropriedadeOpcao equals tpcpo.id
-                                 join tpcp in db.TProdutoCatalogoPropriedades on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
-                                 where tpc.Ativo == true &&
-                                       tpcp.oculto == false &&
-                                       tpc.Produto == produto &&
-                                       tpcp.IdCfgTipoPropriedade == 0
-                                 group new { tpc, tf, tpcp } by new
-                                 {
-                                     tpc.Id,
-                                     tpc.Produto,
-                                     tf.Fabricante,
-                                     tpc.Nome,
-                                     FabricanteNome = tf.Nome,
-                                     tpcp.id,
-                                     tpcp.descricao,
-                                     tpci.Valor,
-                                     tpcp.ordem
-                                 } into gr
-                                 select new ProdutoCatalogoItemProdutosAtivosDados
-                                 {
-                                     Id = gr.Key.Id,
-                                     Produto = gr.Key.Produto,
-                                     Fabricante = gr.Key.Fabricante,
-                                     FabricanteNome = gr.Key.FabricanteNome,
-                                     Descricao = gr.Key.Nome,
-                                     IdPropriedade = gr.Key.id,
-                                     NomePropriedade = gr.Key.descricao,
-                                     ValorPropriedade = gr.Key.Valor,
-                                     Ordem = gr.Key.ordem
-                                 };
+                var produtosAtivos = from tpc in db.TprodutoCatalogos
+                                     join tpci in db.TprodutoCatalogoItems on tpc.Id equals tpci.IdProdutoCatalogo
+                                     join tf in db.Tfabricantes on tpc.Fabricante equals tf.Fabricante
+                                     join tpcp in db.TProdutoCatalogoPropriedades on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
+                                     where tpc.Ativo == true &&
+                                           tpcp.IdCfgTipoPropriedade == 0 &&
+                                           tpcp.oculto == false &&
+                                           tpc.Id == idProduto
+                                     select new ProdutoCatalogoItemProdutosAtivosDados
+                                     {
+                                         Id = tpc.Id,
+                                         Produto = tpc.Produto,
+                                         Fabricante = tf.Fabricante,
+                                         FabricanteNome = tpc.Nome,
+                                         Descricao = tpc.Descricao,
+                                         IdPropriedade = tpcp.id,
+                                         NomePropriedade = tpcp.descricao,
+                                         ValorPropriedade = tpci.Valor,
+                                         Ordem = tpcp.ordem
+                                     };
 
+                return await produtosAtivos.ToListAsync();
+            }
+            catch (Exception ex)
+            {
 
-            return await produtosAtivos.ToListAsync();
+                throw ex;
+            }
         }
-        public async Task<List<Produto.Dados.ProdutoCatalogoItemProdutosAtivosDados>> ObterProdutoPropriedadesAtivosLista(string produto)
+        public async Task<List<Produto.Dados.ProdutoCatalogoItemProdutosAtivosDados>> ObterProdutoPropriedadesAtivosLista(int idProduto)
         {
-            //para buscar produto com as propriedades ativas de listas
-            var db = contextoProvider.GetContextoLeitura();
+            try
+            {
+                //para buscar produto com as propriedades ativas de listas
+                var db = contextoProvider.GetContextoLeitura();
 
-            var produtosAtivos = from tpci in db.TprodutoCatalogoItems
-                                 join tpc in db.TprodutoCatalogos on tpci.IdProdutoCatalogo equals tpc.Id
-                                 join tf in db.Tfabricantes on tpc.Fabricante equals tf.Fabricante
-                                 join tpcpo in db.TProdutoCatalogoPropriedadeOpcoes on tpci.IdProdutoCatalogoPropriedadeOpcao equals tpcpo.id
-                                 join tpcp in db.TProdutoCatalogoPropriedades on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
-                                 where tpc.Ativo == true &&
-                                       tpcp.oculto == false &&
-                                       tpc.Produto == produto
-                                 group new { tpc, tf, tpcp, tpcpo } by new
-                                 {
-                                     tpc.Id,
-                                     tpc.Produto,
-                                     tf.Fabricante,
-                                     tpc.Nome,
-                                     FabricanteNome = tf.Nome,
-                                     tpcp.id,
-                                     tpcp.descricao,
-                                     tpcpo.valor,
-                                     tpcp.ordem
-                                 } into gr
-                                 select new ProdutoCatalogoItemProdutosAtivosDados
-                                 {
-                                     Id = gr.Key.Id,
-                                     Produto = gr.Key.Produto,
-                                     Fabricante = gr.Key.Fabricante,
-                                     FabricanteNome = gr.Key.FabricanteNome,
-                                     Descricao = gr.Key.Nome,
-                                     IdPropriedade = gr.Key.id,
-                                     NomePropriedade = gr.Key.descricao,
-                                     ValorPropriedade = gr.Key.valor,
-                                     Ordem = gr.Key.ordem
-                                 };
+                var produtosAtivos = from tpci in db.TprodutoCatalogoItems
+                                     join tpc in db.TprodutoCatalogos on tpci.IdProdutoCatalogo equals tpc.Id
+                                     join tf in db.Tfabricantes on tpc.Fabricante equals tf.Fabricante
+                                     join tpcpo in db.TProdutoCatalogoPropriedadeOpcoes on tpci.IdProdutoCatalogoPropriedadeOpcao equals tpcpo.id
+                                     join tpcp in db.TProdutoCatalogoPropriedades on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
+                                     where tpc.Ativo == true &&
+                                           tpcp.oculto == false &&
+                                           tpc.Id == idProduto
+                                     select new ProdutoCatalogoItemProdutosAtivosDados
+                                     {
+                                         Id = tpc.Id,
+                                         Produto = tpc.Produto,
+                                         Fabricante = tf.Fabricante,
+                                         FabricanteNome = tpc.Nome,
+                                         Descricao = tpc.Descricao,
+                                         IdPropriedade = tpcp.id,
+                                         NomePropriedade = tpcp.descricao,
+                                         ValorPropriedade = tpcpo.valor,
+                                         Ordem = tpcp.ordem
+                                     };
 
 
-            return await produtosAtivos.ToListAsync();
+                return await produtosAtivos.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
         public async Task<List<Produto.Dados.ProdutoCatalogoItemProdutosAtivosDados>> ObterListaProdutosPropriedadesProdutosAtivos()
         {
@@ -521,9 +511,9 @@ namespace Produto
                                  join tf in db.Tfabricantes on tpc.Fabricante equals tf.Fabricante
                                  join tpcpo in db.TProdutoCatalogoPropriedadeOpcoes on tpci.IdProdutoCatalogoPropriedadeOpcao equals tpcpo.id
                                  join tpcp in db.TProdutoCatalogoPropriedades on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
-                                 where tpc.Ativo == true && 
+                                 where tpc.Ativo == true &&
                                        tpcp.oculto == false
-                                 group new {tpc, tf, tpcpo} by new
+                                 group new { tpc, tf, tpcpo } by new
                                  {
                                      tpc.Id,
                                      tpc.Produto,
@@ -566,7 +556,7 @@ namespace Produto
                               tpcp.ordem <= 700 &&
                               tpcp.IdCfgTipoPropriedade == 1 &&
                               tpcp.oculto == false
-                        group new {tpcp, tpcpo} by new
+                        group new { tpcp, tpcpo } by new
                         {
                             tpcpo.id_produto_catalogo_propriedade,
                             tpcp.descricao,
