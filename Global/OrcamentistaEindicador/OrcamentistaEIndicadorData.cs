@@ -75,9 +75,9 @@ namespace OrcamentistaEindicador
                     {
                         saida = saida.Where(x => x.IdIndicador == obj.idParceiro);
                     }
-                    if(obj.acessoHabilitado == 0)
+                    if(obj.acessoHabilitado == 1)
                     {
-                        saida = saida.Where(x => x.Hab_Acesso_Sistema == 0);
+                        saida = saida.Where(x => x.Hab_Acesso_Sistema == obj.acessoHabilitado);
                     }
                     if(obj.status == Constantes.ORCAMENTISTA_INDICADOR_STATUS_ATIVO)
                     {
