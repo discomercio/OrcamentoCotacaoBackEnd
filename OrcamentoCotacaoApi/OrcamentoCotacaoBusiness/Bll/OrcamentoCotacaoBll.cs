@@ -128,6 +128,14 @@ namespace OrcamentoCotacaoBusiness.Bll
                 return lista;
             }
         }
+        public OrcamentoRequestViewModel PorFiltro(int id)
+        {
+            var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro() { Id = id }).FirstOrDefault();
+            if(orcamento == null) throw new Exception("Falha ao buscar Orçamento!");
+
+            var opcao = _orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro() { IdOrcamentoCotacao = id });
+            return new OrcamentoRequestViewModel();
+        }
 
         public async Task<List<TcfgSelectItem>> ObterListaStatus(TorcamentoFiltro tOrcamentoFiltro)
         {
@@ -167,7 +175,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
 
-        public void CadastrarOrcamentoCotacao(OrcamentoRequestViewModel orcamento, UsuarioLogin usuarioLogado)
+        public int CadastrarOrcamentoCotacao(OrcamentoRequestViewModel orcamento, UsuarioLogin usuarioLogado)
         {
             //TODO: VALIDAR OrcamentoRequestViewModel
             if (orcamento.ListaOrcamentoCotacaoDto.Count <= 0) throw new ArgumentException("Necessário ter ao menos uma opção de orçamento!");
@@ -178,7 +186,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
                     var tOrcamentoCotacao = MontarTorcamentoCotacao(orcamento, usuarioLogado);
 
-                    var retorno = _orcamentoCotacaoBll.InserirComTransacao(tOrcamentoCotacao, dbGravacao);
+                    var ocamentoCotacao = _orcamentoCotacaoBll.InserirComTransacao(tOrcamentoCotacao, dbGravacao);
 
                     if(tOrcamentoCotacao.Id == 0) throw new ArgumentException("Ops! Não gerou Id!");
 
@@ -186,6 +194,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                         usuarioLogado, dbGravacao, orcamento.Loja);
 
                     dbGravacao.transacao.Commit();
+
+                    return ocamentoCotacao.Id;
                 }
                 catch (Exception ex)
                 {
@@ -193,8 +203,6 @@ namespace OrcamentoCotacaoBusiness.Bll
                     throw new ArgumentException("Falha ao gravar orçamento!");
                 }
             }
-
-            //retornar o Id do orçamento para incluir nos nos outros modelos
         }
 
         private TorcamentoCotacao MontarTorcamentoCotacao(OrcamentoRequestViewModel orcamento, UsuarioLogin usuarioLogado)

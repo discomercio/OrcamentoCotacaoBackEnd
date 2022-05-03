@@ -70,8 +70,28 @@ namespace OrcamentoCotacaoOpcaoItemAtomico
 
         public List<TorcamentoCotacaoOpcaoItemAtomico> PorFiltro(TorcamentoCotacaoOpcaoItemAtomicoFiltro obj)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var db = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
+                {
+                    var saida = from c in db.TorcamentoCotacaoOpcaoItemAtomico
+                                select c;
 
+                    if(saida == null) return null;
+
+                    if(obj.IdItemUnificado != 0)
+                    {
+                        saida = saida.Where(x => x.IdItemUnificado == obj.IdItemUnificado);
+                    }
+
+                    return saida.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
     }
 }

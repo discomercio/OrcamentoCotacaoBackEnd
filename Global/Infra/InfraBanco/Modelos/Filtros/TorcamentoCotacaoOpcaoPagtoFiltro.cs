@@ -7,5 +7,6 @@ namespace InfraBanco.Modelos.Filtros
 {
     public class TorcamentoCotacaoOpcaoPagtoFiltro : IFilter
     {
+        public int IdOpcao { get; set; }
     }
 }

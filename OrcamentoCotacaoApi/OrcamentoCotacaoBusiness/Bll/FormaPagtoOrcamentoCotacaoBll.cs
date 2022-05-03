@@ -2,6 +2,7 @@
 using InfraBanco;
 using InfraBanco.Constantes;
 using InfraBanco.Modelos;
+using InfraBanco.Modelos.Filtros;
 using MeioPagamentos;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
@@ -30,7 +31,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public List<FormaPagamentoResponseViewModel> BuscarFormasPagamentos(string tipoCliente, Constantes.TipoUsuario tipoUsuario, string apelido, byte comIndicacao)
         {
-            var tiposPagtos = _formaPagtoBll.BuscarFormasPagtos(true, Constantes.Modulos.COD_MODULO_ORCAMENTOCOTACAO, 
+            var tiposPagtos = _formaPagtoBll.BuscarFormasPagtos(true, Constantes.Modulos.COD_MODULO_ORCAMENTOCOTACAO,
                 tipoCliente, false, true, Constantes.TipoUsuarioPerfil.getUsuarioPerfil(tipoUsuario));
 
             if (tiposPagtos == null) return null;
@@ -45,7 +46,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             List<FormaPagamentoResponseViewModel> response = new List<FormaPagamentoResponseViewModel>();
             List<InfraBanco.Modelos.TcfgPagtoMeioStatus> meiosPagamento = new List<InfraBanco.Modelos.TcfgPagtoMeioStatus>();
-                
+
             foreach (var fp in tiposPagtos)
             {
                 FormaPagamentoResponseViewModel item = new FormaPagamentoResponseViewModel();
@@ -54,7 +55,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 var filtro = CriarFiltro(fp, tipoCliente, (short)tipoUsuario, apelido, comIndicacao);
                 meiosPagamento = _meiosPagamentosBll.PorFiltro(filtro);
-                
+
                 item.MeiosPagamentos = MeioPagamentoResponseViewModel.ListaMeioPagamentoResponseViewModel_De_TcfgPagtoMeioStatus(meiosPagamento);
 
                 response.Add(item);
@@ -110,7 +111,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
 
-        public async Task<int?>GetMaximaQtdeParcelasCartaoVisa(Constantes.TipoUsuario tipoUsuario)
+        public async Task<int?> GetMaximaQtdeParcelasCartaoVisa(Constantes.TipoUsuario tipoUsuario)
         {
             var tipoPerfil = Constantes.TipoUsuarioPerfil.getUsuarioPerfil(tipoUsuario);
             if (tipoPerfil != Constantes.eTipoUsuarioPerfil.USUÁRIO_DA_CENTRAL && tipoPerfil != Constantes.eTipoUsuarioPerfil.USUARIO_LOJA)
@@ -156,8 +157,17 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 retorno.Add(orcamentoCotacaoOpcaoPagtoBll.InserirComTransacao(torcamentoCotacaoOpcaoPagto, contextoBdGravacao));
             }
-            
+
             return retorno;
+        }
+
+        public List<TorcamentoCotacaoOpcaoPagto> BuscarOpcaoFormasPagtos(int idOpcao)
+        {
+            if(idOpcao == 0) return null;
+
+            var opcaoFormaPagtos = orcamentoCotacaoOpcaoPagtoBll.PorFiltro(new TorcamentoCotacaoOpcaoPagtoFiltro() { IdOpcao = idOpcao });
+
+            return opcaoFormaPagtos;
         }
     }
 }

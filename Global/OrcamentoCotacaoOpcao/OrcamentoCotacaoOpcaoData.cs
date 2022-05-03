@@ -5,6 +5,7 @@ using InfraBanco.Modelos.Filtros;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace OrcamentoCotacaoOpcao
 {
@@ -46,7 +47,26 @@ namespace OrcamentoCotacaoOpcao
 
         public List<TorcamentoCotacaoOpcao> PorFiltro(TorcamentoCotacaoOpcaoFiltro obj)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var db = contextoProvider.GetContextoLeitura())
+                {
+                    var saida = from c in db.torcamentoCotacaoOpcaos
+                                select c;
+
+                    if (obj.IdOrcamentoCotacao != 0)
+                    {
+                        saida = saida.Where(x => x.IdOrcamentoCotacao == obj.IdOrcamentoCotacao);
+                    }
+
+                    return saida.ToList();
+                }
+            }
+            catch (Exception ex) 
+            {
+
+                throw ex;
+            }
         }
     }
 }

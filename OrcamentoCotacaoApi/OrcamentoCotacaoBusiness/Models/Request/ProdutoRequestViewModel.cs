@@ -20,7 +20,7 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         public decimal PrecoLista { get; set; }
 
         [JsonProperty("precoListaBase")]
-        public decimal PrecoListaBase { get; set; }
+        public decimal CustoFinancFornecPrecoListaBase { get; set; }
 
         [JsonProperty("coeficienteDeCalculo")]
         public float CustoFinancFornecCoeficiente { get; set; }

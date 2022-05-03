@@ -6,25 +6,25 @@ namespace OrcamentoCotacaoBusiness.Models.Request
 {
     public class OrcamentoRequestViewModel : IViewModelRequest
     {
-        [JsonProperty("Vendedor")]
+        [JsonProperty("vendedor")]
         public string Vendedor { get; set; }
 
-        [JsonProperty("Parceiro")]
+        [JsonProperty("parceiro")]
         public string Parceiro { get; set; }
 
-        [JsonProperty("VendedorParceiro")]
+        [JsonProperty("vendedorParceiro")]
         public string VendedorParceiro { get; set; }
 
         [JsonProperty("loja")]
         public string Loja { get; set; }
 
-        [JsonProperty("Validade")]
+        [JsonProperty("validade")]
         public DateTime Validade { get; set; }
 
         [JsonProperty("qtdeRenovacao")]
         public int QtdeRenovacao { get; set; }
 
-        [JsonProperty("ConcordaWhatsapp")]
+        [JsonProperty("concordaWhatsapp")]
         public bool ConcordaWhatsapp { get; set; }
 
         [JsonProperty("observacoesGerais")]
@@ -42,7 +42,7 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         [JsonProperty("listaOrcamentoCotacaoDto")]
         public List<OrcamentoOpcaoRequestViewModel> ListaOrcamentoCotacaoDto { get; set; }
 
-        [JsonProperty("Id")]
+        [JsonProperty("id")]
         public long Id { get; set; }
     }
 }

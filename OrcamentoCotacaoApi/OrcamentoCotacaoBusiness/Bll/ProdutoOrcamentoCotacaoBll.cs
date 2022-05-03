@@ -298,5 +298,46 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             return new List<TorcamentoCotacaoOpcaoItemAtomicoCustoFin>();
         }
+
+        public async Task<List<ProdutoOrcamentoOpcaoResponseViewModel>> BuscarOpcaoProdutos(int idOpcao)
+        {
+            var opcaoProdutosUnificados = orcamentoCotacaoOpcaoItemUnificadoBll.PorFiltro(new TorcamentoCotacaoOpcaoItemUnificadoFiltro() { IdOpcao = idOpcao });
+
+            if (opcaoProdutosUnificados == null) return null;
+
+            List<ProdutoOrcamentoOpcaoResponseViewModel> produtosResponse = new List<ProdutoOrcamentoOpcaoResponseViewModel>();
+            foreach (var item in opcaoProdutosUnificados)
+            {
+                var itemAtomico = orcamentoCotacaoOpcaoItemAtomicoBll.PorFiltro(new TorcamentoCotacaoOpcaoItemAtomicoFiltro() { IdItemUnificado = item.Id });
+                var itemAtomicoCusto = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.PorFiltro(new TorcamentoCotacaoOpcaoItemAtomicoCustoFinFiltro() { LstIdItemAtomico = itemAtomico.Select(x => x.Id).ToList() });
+
+                if (itemAtomico == null || itemAtomicoCusto == null) break;
+
+                var produtoResponse = new ProdutoOrcamentoOpcaoResponseViewModel()
+                {
+                    //ITEM ATOMICO
+                    //Id = item.Id,
+                    IdItemUnificado = item.Id,
+                    Fabricante = item.Fabricante,
+                    FabricanteNome = (await produtoGeralBll.ObterListaFabricante()).Where(x => x.Fabricante == item.Fabricante).FirstOrDefault().Nome,
+                    Produto = item.Produto,
+                    Descricao = item.DescricaoHtml,
+                    Qtde = item.Qtde,
+                    //ITEM ATOMICO CUSTO
+                    IdOpcaoPagto = item.Id,
+                    DescDado = itemAtomicoCusto.FirstOrDefault().DescDado,
+                    PrecoLista = itemAtomicoCusto.Sum(x => x.PrecoLista),
+                    PrecoVenda = itemAtomicoCusto.Sum(x => x.PrecoVenda),
+                    PrecoNf = itemAtomicoCusto.Sum(x => x.PrecoNF),
+                    CustoFinancFornecPrecoListaBase = itemAtomicoCusto.Sum(x => x.CustoFinancFornecPrecoListaBase),
+                    CustoFinancFornecCoeficiente = itemAtomicoCusto.FirstOrDefault().CustoFinancFornecCoeficiente,
+                    TotalItem = itemAtomico.Sum(x => x.Qtde * itemAtomicoCusto.Where(y => y.IdItemAtomico == x.Id).FirstOrDefault().PrecoNF)
+                };
+
+                produtosResponse.Add(produtoResponse);
+            }
+
+            return produtosResponse;
+        }
     }
 }

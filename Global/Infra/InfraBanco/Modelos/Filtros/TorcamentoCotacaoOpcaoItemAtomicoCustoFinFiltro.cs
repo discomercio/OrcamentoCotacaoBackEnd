@@ -7,6 +7,6 @@ namespace InfraBanco.Modelos.Filtros
 {
     public class TorcamentoCotacaoOpcaoItemAtomicoCustoFinFiltro : IFilter
     {
-        
+        public List<int> LstIdItemAtomico { get; set; }
     }
 }

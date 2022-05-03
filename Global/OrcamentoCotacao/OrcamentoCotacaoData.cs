@@ -74,6 +74,12 @@ namespace OrcamentoCotacao
                     var listaStatus = db.TcfgOrcamentoCotacaoStatus.ToList();
                     var saida = from c in db.TorcamentoCotacao select c;
 
+                    if (saida == null) return null;
+
+                    if(obj.Id != 0)
+                    {
+                        saida = saida.Where(x => x.Id == obj.Id);
+                    }
                     if (obj.LimitarData)
                     {
                         saida = saida.Where(x => x.DataCadastro > DateTime.Now.AddDays(-60));

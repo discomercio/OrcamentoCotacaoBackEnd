@@ -49,6 +49,7 @@ namespace InfraBanco
         public IQueryable<TorcamentoCotacaoLink> TorcamentoCotacaoLinks { get => contexto.TorcamentoCotacaoLinks.AsNoTracking(); }
 
         public IQueryable<TorcamentoCotacaoMensagem> TorcamentoCotacaoMensagens { get => contexto.TorcamentoCotacaoMensagens.AsNoTracking(); }
+        public IQueryable<TorcamentoCotacaoOpcao> torcamentoCotacaoOpcaos { get => contexto.TorcamentoCotacaoOpcao.AsNoTracking(); }
         public IQueryable<TorcamentoCotacaoOpcaoPagto> TorcamentoCotacaoOpcaoPgtos { get => contexto.TorcamentoCotacaoOpcaoPagtos.AsNoTracking(); }
         public IQueryable<TorcamentoCotacaoItemUnificado> TorcamentoCotacaoItemUnificados { get => contexto.TorcamentoCotacaoItemUnificados.AsNoTracking(); }
         public IQueryable<TorcamentoCotacaoOpcaoItemAtomicoCustoFin> TorcamentoCotacaoOpcaoItemAtomicoCustoFins { get => contexto.TorcamentoCotacaoOpcaoItemAtomicoCustoFins.AsNoTracking(); }
@@ -56,7 +57,7 @@ namespace InfraBanco
         public IQueryable<TclienteRefBancaria> TclienteRefBancarias { get => contexto.TclienteRefBancarias.AsNoTracking(); }
         public IQueryable<Tpedido> Tpedidos { get => contexto.Tpedidos.AsNoTracking(); }
         public IQueryable<TorcamentistaEindicador> TorcamentistaEindicadors { get => contexto.TorcamentistaEindicadors.AsNoTracking(); }
-        public IQueryable<TorcamentistaEIndicadorVendedor> TorcamentistaEindicadorVendedors { get => contexto.TorcamentistaEindicadorVendedors.AsNoTracking(); }        
+        public IQueryable<TorcamentistaEIndicadorVendedor> TorcamentistaEindicadorVendedors { get => contexto.TorcamentistaEindicadorVendedors.AsNoTracking(); }
         public IQueryable<TsessaoHistorico> TsessaoHistoricos { get => contexto.TsessaoHistoricos.AsNoTracking(); }
         public IQueryable<Tproduto> Tprodutos { get => contexto.Tprodutos.AsNoTracking(); }
         public IQueryable<TprodutoCatalogo> TprodutoCatalogos { get => contexto.TprodutoCatalogos.AsNoTracking(); }
@@ -113,8 +114,8 @@ namespace InfraBanco
         public IQueryable<TcfgTipoPessoa> TcfgTipoPessoas { get => contexto.TcfgTipoPessoas.AsNoTracking(); }
         public IQueryable<TcfgTipoUsuario> TcfgTipoUsuarios { get => contexto.TcfgTipoUsuarios.AsNoTracking(); }
         public IQueryable<TcfgTipoUsuarioPerfil> TcfgTipoUsuarioPerfis { get => contexto.TcfgTipoUsuarioPerfis.AsNoTracking(); }
-        public IQueryable<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContextos { get => contexto.TcfgTipoUsuarioContextos.AsNoTracking(); }        
-        public IQueryable<TcfgOrcamentoCotacaoStatus> TcfgOrcamentoCotacaoStatus { get => contexto.TcfgOrcamentoCotacaoStatus.AsNoTracking(); }        
+        public IQueryable<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContextos { get => contexto.TcfgTipoUsuarioContextos.AsNoTracking(); }
+        public IQueryable<TcfgOrcamentoCotacaoStatus> TcfgOrcamentoCotacaoStatus { get => contexto.TcfgOrcamentoCotacaoStatus.AsNoTracking(); }
 
 
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG

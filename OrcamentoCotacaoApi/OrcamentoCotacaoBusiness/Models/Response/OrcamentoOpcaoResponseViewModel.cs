@@ -15,7 +15,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         public int Sequencia { get; set; }
 
         [JsonProperty("listaProdutos")]
-        public List<ProdutoOrcamentoOpcaoResponse> ListaProdutos { get; set; }
+        public List<ProdutoOrcamentoOpcaoResponseViewModel> ListaProdutos { get; set; }
 
         [JsonProperty("vlTotal")]
         public decimal VlTotal { get; set; }

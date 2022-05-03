@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using InfraBanco;
 using InfraBanco.Modelos;
+using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
@@ -77,6 +78,27 @@ namespace OrcamentoCotacaoBusiness.Bll
                 DataCadastro = DateTime.Now.Date,
                 DataHoraCadastro = DateTime.Now
             };
+        }
+
+        public List<OrcamentoOpcaoResponseViewModel>PorFiltro(TorcamentoCotacaoOpcaoFiltro filtro)
+        {
+            var orcamentoOpcoes = orcamentoCotacaoOpcaoBll.PorFiltro(filtro);
+
+            if (orcamentoOpcoes == null) throw new ArgumentException("Falha ao buscar as opções do orçamento!");
+
+            foreach(var opcao in orcamentoOpcoes)
+            {
+                var opcaoFormaPagtos = formaPagtoOrcamentoCotacaoBll.BuscarOpcaoFormasPagtos(opcao.Id);
+                
+                if (opcaoFormaPagtos == null) throw new ArgumentException("Pagamento da opção não encontrado!");
+
+                var itensOpcao = produtoOrcamentoCotacaoBll.BuscarOpcaoProdutos(opcao.Id);
+
+                if (itensOpcao == null) throw new ArgumentException("Produtos da opção não encontrados!");
+
+            }
+
+            return new List<OrcamentoOpcaoResponseViewModel>();
         }
     }
 }

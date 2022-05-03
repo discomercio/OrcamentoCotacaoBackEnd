@@ -7,6 +7,7 @@ namespace InfraBanco.Modelos.Filtros
 {
     public class TorcamentoCotacaoFiltro : IFilter
     {
+        public int Id { get; set; }
         public bool LimitarData { get; set; }
         public bool Tusuario { get; set; }
 

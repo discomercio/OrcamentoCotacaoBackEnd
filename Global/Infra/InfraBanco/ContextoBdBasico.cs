@@ -244,6 +244,14 @@ namespace InfraBanco
         public DbSet<TcfgTipoUsuarioPerfil> TcfgTipoUsuarioPerfis { get; set; }
         public DbSet<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContextos { get; set; }         
         public DbSet<TcfgOrcamentoCotacaoStatus> TcfgOrcamentoCotacaoStatus { get; set; }
+        public DbSet<TorcamentoCotacaoOpcao> TorcamentoCotacaoOpcao { get; set; }
+        public DbSet<TorcamentoCotacaoOpcaoPagto> TorcamentoCotacaoOpcaoPagtos { get; set; }
+        public DbSet<TorcamentoCotacaoItemUnificado> TorcamentoCotacaoItemUnificados { get; set; }
+        public DbSet<TorcamentoCotacaoOpcaoItemAtomicoCustoFin> TorcamentoCotacaoOpcaoItemAtomicoCustoFins { get; set; }
+        public DbSet<TorcamentoCotacaoOpcaoItemAtomico> TorcamentoCotacaoOpcaoItemAtomicos { get; set; }
+        public DbSet<TorcamentoCotacaoOpcaoItem> TorcamentoCotacaoOpcaoItem { get; set; }
+        public DbSet<TorcamentoCotacaoOpcaoItemSku> TorcamentoCotacaoOpcaoItemSku { get; set; }
+        
 
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public DbSet<Taviso> Tavisos { get; set; }
@@ -268,13 +276,8 @@ namespace InfraBanco
         public DbSet<TprodutoCatalogoItens> TprodutoCatalogoItens { get; set; }
         public DbSet<TorcamentistaEIndicadorVendedor> TorcamentistaEIndicadorVendedor { get; set; }
         public DbSet<TorcamentoCotacao> TorcamentoCotacao { get; set; }
-        public DbSet<TorcamentoCotacaoOpcao> TorcamentoCotacaoOpcao { get; set; }
-        public DbSet<TorcamentoCotacaoOpcaoPagto> TorcamentoCotacaoOpcaoPagtos { get; set; }
-        public DbSet<TorcamentoCotacaoItemUnificado> TorcamentoCotacaoItemUnificados { get; set; }
-        public DbSet<TorcamentoCotacaoOpcaoItemAtomicoCustoFin> TorcamentoCotacaoOpcaoItemAtomicoCustoFins { get; set; }
-        public DbSet<TorcamentoCotacaoOpcaoItemAtomico> TorcamentoCotacaoOpcaoItemAtomicos { get; set; }
-        public DbSet<TorcamentoCotacaoOpcaoItem> TorcamentoCotacaoOpcaoItem { get; set; }
-        public DbSet<TorcamentoCotacaoOpcaoItemSku> TorcamentoCotacaoOpcaoItemSku { get; set; }
+
+
         //public DbSet<Tvendedor> Tvendedor { get; set; }
 #endif
         //daqui para a frente só é necessário para os testes automatizados
