@@ -193,10 +193,11 @@ namespace OrcamentoCotacaoApi.BaseController
             return Ok(saida);
         }
 
-        [HttpGet("buscar-produtos-opcoes-ativos/{idProduto}")]
-        public async Task<IActionResult> ObterPropriedadesEOpcoesProdutosAtivosPorProduto(int idProduto)
+        [HttpGet("buscar-produtos-opcoes-ativos/{idProduto}&{propriedadeOculta}&{propriedadeOcultaItem}")]
+        public async Task<IActionResult> ObterPropriedadesEOpcoesProdutosAtivosPorProduto(int idProduto, bool propriedadeOculta, 
+            bool propriedadeOcultaItem)
         {
-            var retorno = await _produtoBll.BuscarProdutoCatalogoParaVisualizacao(idProduto);
+            var retorno = await _produtoBll.BuscarProdutoCatalogoParaVisualizacao(idProduto, propriedadeOculta, propriedadeOcultaItem);
 
             return Ok(retorno);
         }

@@ -429,7 +429,8 @@ namespace Produto
             return lprodutosItens;
         }
 
-        public async Task<List<Produto.Dados.ProdutoCatalogoItemProdutosAtivosDados>> ObterProdutoPropriedadesAtivosTexto(int idProduto)
+        public async Task<List<Produto.Dados.ProdutoCatalogoItemProdutosAtivosDados>> ObterProdutoPropriedadesAtivosTexto(int idProduto,
+            bool? propriedadeOculta, bool? propriedadeOcultaItem)
         {
             try
             {
@@ -442,7 +443,6 @@ namespace Produto
                                      join tpcp in db.TProdutoCatalogoPropriedades on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
                                      where tpc.Ativo == true &&
                                            tpcp.IdCfgTipoPropriedade == 0 &&
-                                           tpcp.oculto == false &&
                                            tpc.Id == idProduto
                                      select new ProdutoCatalogoItemProdutosAtivosDados
                                      {
@@ -454,9 +454,21 @@ namespace Produto
                                          DescricaoCompleta = tpc.Descricao,
                                          IdPropriedade = tpcp.id,
                                          NomePropriedade = tpcp.descricao,
+                                         IdValorPropriedadeOpcao = tpci.IdProdutoCatalogoPropriedadeOpcao,
                                          ValorPropriedade = tpci.Valor,
-                                         Ordem = tpcp.ordem
+                                         Ordem = tpcp.ordem,
+                                         PropriedadeOcultaItem = tpci.Oculto,
+                                         PropriedadeOculta = tpcp.oculto
                                      };
+
+                if(propriedadeOculta != null)
+                {
+                    produtosAtivos = produtosAtivos.Where(x => x.PropriedadeOculta == propriedadeOculta);
+                }
+                if(propriedadeOcultaItem != null)
+                {
+                    produtosAtivos = produtosAtivos.Where(x => x.PropriedadeOcultaItem == propriedadeOcultaItem);
+                }
 
                 return await produtosAtivos.ToListAsync();
             }
@@ -466,7 +478,8 @@ namespace Produto
                 throw ex;
             }
         }
-        public async Task<List<Produto.Dados.ProdutoCatalogoItemProdutosAtivosDados>> ObterProdutoPropriedadesAtivosLista(int idProduto)
+        public async Task<List<Produto.Dados.ProdutoCatalogoItemProdutosAtivosDados>> ObterProdutoPropriedadesAtivosLista(int idProduto,
+            bool? propriedadeOculta, bool? propriedadeOcultaItem)
         {
             try
             {
@@ -479,7 +492,6 @@ namespace Produto
                                      join tpcpo in db.TProdutoCatalogoPropriedadeOpcoes on tpci.IdProdutoCatalogoPropriedadeOpcao equals tpcpo.id
                                      join tpcp in db.TProdutoCatalogoPropriedades on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
                                      where tpc.Ativo == true &&
-                                           tpcp.oculto == false &&
                                            tpc.Id == idProduto
                                      select new ProdutoCatalogoItemProdutosAtivosDados
                                      {
@@ -491,10 +503,21 @@ namespace Produto
                                          DescricaoCompleta = tpc.Descricao,
                                          IdPropriedade = tpcp.id,
                                          NomePropriedade = tpcp.descricao,
+                                         IdValorPropriedadeOpcao = tpci.IdProdutoCatalogoPropriedadeOpcao,
                                          ValorPropriedade = tpcpo.valor,
-                                         Ordem = tpcp.ordem
+                                         Ordem = tpcp.ordem,
+                                         PropriedadeOcultaItem = tpci.Oculto,
+                                         PropriedadeOculta = tpcp.oculto
                                      };
 
+                if (propriedadeOculta != null)
+                {
+                    produtosAtivos = produtosAtivos.Where(x => x.PropriedadeOculta == propriedadeOculta);
+                }
+                if (propriedadeOcultaItem != null)
+                {
+                    produtosAtivos = produtosAtivos.Where(x => x.PropriedadeOcultaItem == propriedadeOcultaItem);
+                }
 
                 return await produtosAtivos.ToListAsync();
             }

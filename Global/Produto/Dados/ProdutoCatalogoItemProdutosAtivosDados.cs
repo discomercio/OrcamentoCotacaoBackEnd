@@ -14,7 +14,10 @@ namespace Produto.Dados
         public string DescricaoCompleta { get; set; }
         public int IdPropriedade { get; set; }
         public string NomePropriedade { get; set; }
+        public int? IdValorPropriedadeOpcao { get; set; }
         public string ValorPropriedade { get; set; }
         public int Ordem { get; set; }
+        public bool PropriedadeOculta { get; set; }
+        public bool PropriedadeOcultaItem { get; set; }
     }
 }
