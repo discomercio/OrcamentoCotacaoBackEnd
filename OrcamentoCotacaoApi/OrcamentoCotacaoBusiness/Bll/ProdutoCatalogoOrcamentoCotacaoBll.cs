@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using InfraBanco.Modelos;
+﻿using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using ProdutoCatalogo;
 using System.Collections.Generic;
@@ -9,12 +8,10 @@ namespace OrcamentoCotacaoBusiness.Bll
     public class ProdutoCatalogoOrcamentoCotacaoBll
     {
         private readonly ProdutoCatalogoBll _bll;
-        private readonly IMapper _mapper;
 
-        public ProdutoCatalogoOrcamentoCotacaoBll(ProdutoCatalogoBll bll, IMapper mapper)
+        public ProdutoCatalogoOrcamentoCotacaoBll(ProdutoCatalogoBll bll)
         {
             _bll = bll;
-            _mapper = mapper;
         }
 
         public List<TprodutoCatalogo> PorFiltro(TprodutoCatalogoFiltro filtro)
@@ -60,11 +57,6 @@ namespace OrcamentoCotacaoBusiness.Bll
         public bool Criar(TprodutoCatalogo produtoCatalogo, string usuario_cadastro)
         {
             return _bll.Criar(produtoCatalogo, usuario_cadastro);
-        }
-
-        public bool CriarItem(TprodutoCatalogoItem produtoCatalogoItem)
-        {
-            return _bll.CriarItem(produtoCatalogoItem);
         }
     }
 }

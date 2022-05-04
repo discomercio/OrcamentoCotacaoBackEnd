@@ -77,8 +77,6 @@ namespace OrcamentoCotacaoApi.BaseController
                 return Ok(ret);
         }
 
-        
-
         [HttpGet("itens/{idProdutoCatalogo}")]
         public async Task<IActionResult> ObterListaPropriedadesProdutosById(int idProdutoCatalogo)
         {
