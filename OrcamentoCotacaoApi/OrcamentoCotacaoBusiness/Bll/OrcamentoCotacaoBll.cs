@@ -10,16 +10,15 @@ using OrcamentoCotacaoBusiness.Models.Response;
 using PrepedidoBusiness.Bll;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Transactions;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
     public class OrcamentoCotacaoBll
     {
         private readonly OrcamentoBll _orcamentoBll;
+        private readonly MensagemOrcamentoCotacaoBll _mensagemBll;
         private readonly PedidoPrepedidoApiBll _pedidoPrepedidoApiBll;
         private readonly ConfigOrcamentoCotacao _appSettings;
         private readonly OrcamentistaEIndicadorBll _orcamentistaEIndicadorBll;
@@ -30,7 +29,8 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly OrcamentoCotacaoOpcaoBll _orcamentoCotacaoOpcaoBll;
 
         public OrcamentoCotacaoBll(
-            OrcamentoBll orcamentoBll, 
+            OrcamentoBll orcamentoBll,
+            MensagemOrcamentoCotacaoBll mensagemBll,
             IOptions<ConfigOrcamentoCotacao> appSettings,
             OrcamentistaEIndicadorBll orcamentistaEIndicadorBll, 
             Usuario.UsuarioBll usuarioBll,
@@ -42,6 +42,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             )
         {
             _orcamentoBll = orcamentoBll;
+            _mensagemBll = mensagemBll;
             _pedidoPrepedidoApiBll = pedidoPrepedidoApiBll;
             _orcamentoCotacaoBll = orcamentoCotacaoBll;
             _contextoBdProvider = contextoBdProvider;
@@ -104,7 +105,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         Valor = "0", 
                         Status = x.StatusNome,
                         VistoEm = "",
-                        Mensagem = _orcamentoBll.ObterListaMensagemPendente(x.Id, x.Tusuarios.Id).Result.Any() ? "Sim" : "Não",
+                        Mensagem = _mensagemBll.ObterListaMensagemPendente(x.Id, x.Tusuarios.Id).Result.Any() ? "Sim" : "Não",
                         DtCadastro = x.DataCadastro,
                         DtExpiracao = x.Validade,
                         DtInicio = tOrcamentoFiltro.DtInicio,
@@ -155,25 +156,24 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public async Task<List<TorcamentoCotacaoMensagem>> ObterListaMensagem(int IdOrcamentoCotacao)
         {
-            return await _orcamentoBll.ObterListaMensagem(IdOrcamentoCotacao);
+            return await _mensagemBll.ObterListaMensagem(IdOrcamentoCotacao);
         }
 
         public async Task<List<TorcamentoCotacaoMensagem>> ObterListaMensagemPendente(int IdOrcamentoCotacao, int IdUsuarioDestinatario)
         {
-            return await _orcamentoBll.ObterListaMensagemPendente(IdOrcamentoCotacao, IdUsuarioDestinatario);
+            return await _mensagemBll.ObterListaMensagemPendente(IdOrcamentoCotacao, IdUsuarioDestinatario);
         }
 
         public bool EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem)
         {
-            return _orcamentoBll.EnviarMensagem(orcamentoCotacaoMensagem);
+            return _mensagemBll.EnviarMensagem(orcamentoCotacaoMensagem);
         }
 
 
         public bool MarcarMensagemComoLida(int IdOrcamentoCotacao, int idUsuarioDestinatario)
         {
-            return _orcamentoBll.MarcarMensagemComoLida(IdOrcamentoCotacao, idUsuarioDestinatario);
+            return _mensagemBll.MarcarMensagemComoLida(IdOrcamentoCotacao, idUsuarioDestinatario);
         }
-
 
         public int CadastrarOrcamentoCotacao(OrcamentoRequestViewModel orcamento, UsuarioLogin usuarioLogado)
         {
@@ -280,7 +280,6 @@ namespace OrcamentoCotacaoBusiness.Bll
                         .Where(x => x.Email.ToUpper() == orcamento.VendedorParceiro)
                         .FirstOrDefault().Id;
                 }
-
 
             }
 

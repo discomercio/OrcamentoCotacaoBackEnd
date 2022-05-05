@@ -34,6 +34,7 @@
     <ProjectReference Include="..\..\Global\Produto\Produto.csproj" />
     <ProjectReference Include="..\..\Global\Usuario\Usuario.csproj" />
     <ProjectReference Include="..\..\Global\Utils\UtilsGlobais.csproj" />
+    <ProjectReference Include="..\..\Mensagem\Mensagem.csproj" />
   </ItemGroup>
 
 </Project>

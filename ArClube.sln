@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.32126.317
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loja.UI", "Loja\Loja.UI\Loja.UI.csproj", "{64E83931-F740-4DA5-BA7A-C7A5DBF0942C}"
 EndProject
@@ -117,9 +117,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrcamentoCotacaoOpcaoItemUn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrcamentoCotacaoOpcaoItemAtomico", "Global\OrcamentoCotacaoOpcaoItemAtomico\OrcamentoCotacaoOpcaoItemAtomico.csproj", "{95F235FA-8902-4498-AADB-F217D86DD46B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrcamentoCotacaoOpcaoPagto", "Global\OrcamentoCotacaoOpcaoPagto\OrcamentoCotacaoOpcaoPagto.csproj", "{B47E01C2-D50E-47D8-8499-29F4FF71C5CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrcamentoCotacaoOpcaoPagto", "Global\OrcamentoCotacaoOpcaoPagto\OrcamentoCotacaoOpcaoPagto.csproj", "{B47E01C2-D50E-47D8-8499-29F4FF71C5CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrcamentoCotacaoOpcaoItemAtomicoCustoFin", "Global\orcamentoCotacaoOpcaoItemAtomicoCustoFin\OrcamentoCotacaoOpcaoItemAtomicoCustoFin.csproj", "{590F062E-A16F-4026-A4D6-9B6B6B04BA90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrcamentoCotacaoOpcaoItemAtomicoCustoFin", "Global\orcamentoCotacaoOpcaoItemAtomicoCustoFin\OrcamentoCotacaoOpcaoItemAtomicoCustoFin.csproj", "{590F062E-A16F-4026-A4D6-9B6B6B04BA90}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mensagem", "Mensagem\Mensagem.csproj", "{EECFE171-CFFC-4E06-8761-24D8C4164A82}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -742,6 +744,22 @@ Global
 		{590F062E-A16F-4026-A4D6-9B6B6B04BA90}.Release_PrepedidoApi|Any CPU.Build.0 = Release|Any CPU
 		{590F062E-A16F-4026-A4D6-9B6B6B04BA90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{590F062E-A16F-4026-A4D6-9B6B6B04BA90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EECFE171-CFFC-4E06-8761-24D8C4164A82}.Debug_OrcamentoCotacao|Any CPU.ActiveCfg = Debug|Any CPU
+		{EECFE171-CFFC-4E06-8761-24D8C4164A82}.Debug_OrcamentoCotacao|Any CPU.Build.0 = Debug|Any CPU
+		{EECFE171-CFFC-4E06-8761-24D8C4164A82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EECFE171-CFFC-4E06-8761-24D8C4164A82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EECFE171-CFFC-4E06-8761-24D8C4164A82}.Release_ApiMagento|Any CPU.ActiveCfg = Release|Any CPU
+		{EECFE171-CFFC-4E06-8761-24D8C4164A82}.Release_ApiMagento|Any CPU.Build.0 = Release|Any CPU
+		{EECFE171-CFFC-4E06-8761-24D8C4164A82}.Release_ApiUnis|Any CPU.ActiveCfg = Release|Any CPU
+		{EECFE171-CFFC-4E06-8761-24D8C4164A82}.Release_ApiUnis|Any CPU.Build.0 = Release|Any CPU
+		{EECFE171-CFFC-4E06-8761-24D8C4164A82}.Release_Loja|Any CPU.ActiveCfg = Release|Any CPU
+		{EECFE171-CFFC-4E06-8761-24D8C4164A82}.Release_Loja|Any CPU.Build.0 = Release|Any CPU
+		{EECFE171-CFFC-4E06-8761-24D8C4164A82}.Release_OrcamentoCotacao|Any CPU.ActiveCfg = Release|Any CPU
+		{EECFE171-CFFC-4E06-8761-24D8C4164A82}.Release_OrcamentoCotacao|Any CPU.Build.0 = Release|Any CPU
+		{EECFE171-CFFC-4E06-8761-24D8C4164A82}.Release_PrepedidoApi|Any CPU.ActiveCfg = Release|Any CPU
+		{EECFE171-CFFC-4E06-8761-24D8C4164A82}.Release_PrepedidoApi|Any CPU.Build.0 = Release|Any CPU
+		{EECFE171-CFFC-4E06-8761-24D8C4164A82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EECFE171-CFFC-4E06-8761-24D8C4164A82}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -795,6 +813,7 @@ Global
 		{95F235FA-8902-4498-AADB-F217D86DD46B} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 		{B47E01C2-D50E-47D8-8499-29F4FF71C5CC} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 		{590F062E-A16F-4026-A4D6-9B6B6B04BA90} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
+		{EECFE171-CFFC-4E06-8761-24D8C4164A82} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {139E9C0D-48C6-4635-9645-BF9C5AA65398}
