@@ -146,26 +146,6 @@ namespace ProdutoCatalogo
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
-                    lista = (
-                            from pc in db.TprodutoCatalogo
-                            join f in db.Tfabricantes on pc.Fabricante equals f.Fabricante
-                            select new TprodutoCatalogo
-                            {
-                                Produto = pc.Produto,
-                                Id = pc.Id,
-                                Fabricante = f.Nome,
-                                Nome = pc.Nome,
-                                Descricao = pc.Descricao,
-                                Ativo = pc.Ativo
-                            }).ToList();
-                }
-
-                if (!String.IsNullOrEmpty(obj.Id)) 
-                    lista = lista.Where(x => x.Id == int.Parse(obj.Id)).ToList();
-
-                if (!String.IsNullOrEmpty(obj.Produto))
-                    lista = lista.Where(x => x.Produto.PadLeft(6, '0') == obj.Produto.PadLeft(6, '0')).ToList();
-            }
                     var produtos = from pc in db.TprodutoCatalogo
                                    join f in db.Tfabricantes on pc.Fabricante equals f.Fabricante
                                    select new TprodutoCatalogo
@@ -186,7 +166,13 @@ namespace ProdutoCatalogo
                         }
                     }
 
-                    return produtos.ToList();
+                    lista = produtos.ToList();
+
+                    if (!String.IsNullOrEmpty(obj.Id))
+                        lista = lista.Where(x => x.Id == int.Parse(obj.Id)).ToList();
+
+                    if (!String.IsNullOrEmpty(obj.Produto))
+                        lista = lista.Where(x => x.Produto.PadLeft(6, '0') == obj.Produto.PadLeft(6, '0')).ToList();
                 }
             }
             catch (Exception e)
@@ -222,8 +208,8 @@ namespace ProdutoCatalogo
 
                     if (saida != null)
                     {
-                        //saida.campos = ObterListaItens(id);
-                        saida.imagens = ObterListaImagens(id);
+                        saida.campos = ObterListaItens(id);
+                        saida.imagens = ObterListaImagensPorId(id);
 
                         return saida;
                     }
@@ -281,13 +267,13 @@ namespace ProdutoCatalogo
             }
         }
 
-        public List<TprodutoCatalogoImagem> ObterListaImagens(List<int>idProdutos)
+        public List<TprodutoCatalogoImagem> ObterListaImagens(List<int> idProdutos)
         {
             try
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
-                    
+
                     return db.TprodutoCatalogoImagem
                         .Where(x => idProdutos.Contains(x.IdProdutoCatalogo))
                         .OrderBy(x => x.Ordem)
