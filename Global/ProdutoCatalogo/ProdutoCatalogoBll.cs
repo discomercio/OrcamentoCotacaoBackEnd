@@ -8,12 +8,10 @@ namespace ProdutoCatalogo
 {
     public class ProdutoCatalogoBll : BaseBLL<TprodutoCatalogo, TprodutoCatalogoFiltro>
     {
-        private readonly ContextoBdProvider contextoProvider;
         private readonly ProdutoCatalogoData _data;
 
         public ProdutoCatalogoBll(ContextoBdProvider contextoBdProvider) : base(new ProdutoCatalogoData(contextoBdProvider))
         {
-            this.contextoProvider = contextoBdProvider;
             _data = (ProdutoCatalogoData)base.data;
         }
 
@@ -49,12 +47,33 @@ namespace ProdutoCatalogo
 
         public bool Criar(TprodutoCatalogo produtoCatalogo, string usuario_cadastro)
         {
-            return _data.Criar(produtoCatalogo, usuario_cadastro);
-        }
+            //TODO: NAO TEM COMO DESABILITAR TRACKING
+            var prodCatalogo = _data.Criar(produtoCatalogo, usuario_cadastro);
 
-        public bool CriarItem(TprodutoCatalogoItem produtoCatalogoItem)
-        {
-            return _data.CriarItem(produtoCatalogoItem);
+            if (prodCatalogo != null && prodCatalogo.Id > 0)
+            {
+                if (prodCatalogo.campos?.Count > 0)
+                {
+                    foreach (var c in prodCatalogo.campos)
+                    {
+                        _data.CriarItens(c);
+                    }
+                }
+
+                if (prodCatalogo.imagens?.Count > 0)
+                {
+                    foreach (var img in prodCatalogo.imagens)
+                    {
+                        _data.CriarImagens(img);
+                    }
+                }
+
+                _data.ExcluirImagemTmp();
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

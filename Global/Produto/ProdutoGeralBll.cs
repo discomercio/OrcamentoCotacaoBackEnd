@@ -624,22 +624,18 @@ namespace Produto
             return lprodutosItens;
         }
 
-        // l1ng refatorar
         public async Task<List<Produto.Dados.FabricanteDados>> ObterListaFabricante()
         {
-            var db = contextoProvider.GetContextoLeitura();
-
-            var fabricantes = from f in db.Tfabricantes
-
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                return await (from f in db.Tfabricantes
                               select new Produto.Dados.FabricanteDados
                               {
                                   Fabricante = f.Fabricante,
-                                  Nome = f.Nome
-                              };
-
-            List<Produto.Dados.FabricanteDados> lfabricantes = await fabricantes.ToListAsync();
-
-            return lfabricantes;
+                                  Nome = f.Nome,
+                                  Descricao = $"{f.Fabricante} - {f.Nome}"
+                              }).ToListAsync();
+            }
         }
 
         public async Task<List<Produto.Dados.ProdutoCatalogoPropriedadeDados>> ObterListaPropriedadesProdutos(int id)

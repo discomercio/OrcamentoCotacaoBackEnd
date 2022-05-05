@@ -50,12 +50,23 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> ObterPorId(string id)
         {
-            var saida = _bll.PorFiltro(new InfraBanco.Modelos.Filtros.TprodutoCatalogoFiltro() { Id = id });// ObterPorId(id);
+            var saida = _bll.PorFiltro(new InfraBanco.Modelos.Filtros.TprodutoCatalogoFiltro() { Id = id });
 
-            if (saida != null)
+            if (saida != null && saida.Count > 0)
                 return Ok(saida);
             else
-                return NotFound();
+                return NoContent();
+        }
+
+        [HttpGet("codigo/{codigo}")]
+        public async Task<IActionResult> ObterPorCodigo(string codigo)
+        {
+            var saida = _bll.PorFiltro(new InfraBanco.Modelos.Filtros.TprodutoCatalogoFiltro() { Produto = codigo });
+
+            if (saida != null && saida.Count > 0)
+                return Ok(saida);
+            else
+                return NoContent();
         }
 
         [HttpGet("{id}/detalhes")]
@@ -170,35 +181,6 @@ namespace OrcamentoCotacaoApi.Controllers
                     return BadRequest(new
                     {
                         message = "Erro ao criar novo produto."
-                    });
-                }
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-        }
-
-        [HttpPost("item")]
-        public async Task<IActionResult> CriarItem(TprodutoCatalogoItem produtoCatalogoItem)
-        {
-            try
-            {
-
-                var saida = _bll.CriarItem(produtoCatalogoItem);
-
-                if (saida)
-                {
-                    return Ok(new
-                    {
-                        message = "Produto catálogo criado com sucesso."
-                    });
-                }
-                else
-                {
-                    return BadRequest(new
-                    {
-                        message = "Erro ao criar novo produto catálogo."
                     });
                 }
             }
