@@ -17,6 +17,7 @@ namespace OrcamentoCotacaoApi.Config
             var appSettings = Configuration.GetSection("AppSettings").Get<Configuracao>();
             services.AddTransient<ContextoBdProvider, ContextoBdProvider>();
             services.AddTransient<ContextoCepProvider, ContextoCepProvider>();
+            services.AddDbContext<Contexto>(options => options.UseSqlServer(Configuration.GetConnectionString("conexao")));
             services.AddDbContext<ContextoCepBd>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaoCep"));
@@ -69,6 +70,7 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<OrcamentoCotacaoOpcaoItemAtomicoCustoFin.OrcamentoCotacaoOpcaoItemAtomicoCustoFinData, OrcamentoCotacaoOpcaoItemAtomicoCustoFin.OrcamentoCotacaoOpcaoItemAtomicoCustoFinData>();
             services.AddTransient<Produto.ProdutoGeralBll, Produto.ProdutoGeralBll>();
             services.AddTransient<ProdutoCatalogo.ProdutoCatalogoBll, ProdutoCatalogo.ProdutoCatalogoBll>();
+            services.AddTransient<ProdutoCatalogo.ProdutoCatalogoData, ProdutoCatalogo.ProdutoCatalogoData>();
             services.AddTransient<Produto.CoeficienteBll, Produto.CoeficienteBll>();
             services.AddTransient<Prepedido.PrepedidoBll, Prepedido.PrepedidoBll>();
             services.AddTransient<Prepedido.MontarLogPrepedidoBll, Prepedido.MontarLogPrepedidoBll>();

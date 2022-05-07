@@ -2,7 +2,6 @@
 using InfraBanco.Modelos.Filtros;
 using ProdutoCatalogo;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -17,32 +16,17 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public List<TprodutoCatalogo> PorFiltro(TprodutoCatalogoFiltro filtro)
         {
-            var produtosCatalogos = _bll.PorFiltro(new TprodutoCatalogoFiltro() { IncluirImagem = true }) ;
-            var idProdutos = from c in produtosCatalogos 
-                             select c.Id;
-
-            var imagens = _bll.ObterListaImagem(idProdutos.ToList());
-
-            foreach(var prod in produtosCatalogos)
-            {
-                var img = imagens.Where(x => x.IdProdutoCatalogo == prod.Id).FirstOrDefault();
-                if(img != null)
-                {
-                    prod.imagens = new List<TprodutoCatalogoImagem>();
-                    prod.imagens.Add(img);
-                }
-            }
-            return produtosCatalogos;
+            return _bll.PorFiltro(filtro) ;
         }
 
-        public void Excluir(int id)
+        public bool Excluir(int id)
         {
-            _bll.Excluir(new TprodutoCatalogo() { Id = id });
+            return _bll.Excluir(id);
         }
 
-        public void Atualizar(TprodutoCatalogo produtoCatalogo)
+        public bool Atualizar(TprodutoCatalogo produtoCatalogo)
         {
-            _bll.Atualizar(produtoCatalogo);
+            return _bll.Atualizar(produtoCatalogo);
         }
 
         public TprodutoCatalogo Detalhes(int id)

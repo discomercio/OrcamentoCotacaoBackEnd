@@ -1,9 +1,5 @@
 ﻿using Interfaces;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace InfraBanco.Modelos
 {
@@ -13,7 +9,11 @@ namespace InfraBanco.Modelos
 
         public string Produto_Composto { get; set; }
 
-        public Tproduto Tproduto { get; set; }
+        ////fkProduto
+        //public string Fabricante { get; set; }
+        //public string Produto{ get; set; }
+        //public Tproduto Tproduto { get; set; }
+
         public ICollection<TecProdutoCompostoItem> TecProdutoCompostoItems { get; set; }
     }
 }

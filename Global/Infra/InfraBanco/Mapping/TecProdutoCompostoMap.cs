@@ -28,10 +28,10 @@ namespace InfraBanco.Mapping
 
             builder.Ignore(x => x.TecProdutoCompostoItems);
 
-            builder
-                .HasMany(x => x.TecProdutoCompostoItems)
-                .WithOne(o => o.TecProdutoComposto)
-                .HasForeignKey(f => new { f.Fabricante_composto, f.Produto_composto });
+            //builder
+            //    .HasMany(x => x.TecProdutoCompostoItems)
+            //    .WithOne(o => o.TecProdutoComposto)
+            //    .HasForeignKey(f => new { f.Fabricante_composto, f.Produto_composto });
         }
     }
 }

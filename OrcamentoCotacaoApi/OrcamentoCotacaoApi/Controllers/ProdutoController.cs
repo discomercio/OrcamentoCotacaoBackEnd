@@ -3,13 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 
 namespace OrcamentoCotacaoApi.BaseController
 {
-    //[ApiExplorerSettings(IgnoreApi = true)]
     [Route("[controller]")]
     [ApiController]
     [Authorize]

@@ -7,7 +7,6 @@ using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
 using System;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace OrcamentoCotacaoApi.Controllers
@@ -15,7 +14,7 @@ namespace OrcamentoCotacaoApi.Controllers
     [ApiController]
     [Route("[controller]")]
     [Authorize]
-    public class ProdutoCatalogoController : ControllerBase
+    public class ProdutoCatalogoController : BaseController
     {
         private readonly ProdutoCatalogoOrcamentoCotacaoBll _bll;
         private readonly IOptions<Configuracoes> _appSettings;
@@ -29,16 +28,14 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Listar(int page, int pageItens, int idCliente)
         {
-            var user = User.Identity.Name;
-            var tipoUsuario = User.Claims.FirstOrDefault(x => x.Type == "TipoUsuario").Value;
-
             var saida = _bll.PorFiltro(new InfraBanco.Modelos.Filtros.TprodutoCatalogoFiltro()
             {
                 Page = page,
                 RecordsPerPage = pageItens,
                 IdCliente = idCliente,
-                TipoUsuario = tipoUsuario,
-                Usuario = user
+                TipoUsuario = LoggedUser.TipoUsuario?.ToString(),
+                Usuario = LoggedUser.Apelido,
+                IncluirImagem = true
             });
 
             if (saida.Count > 0)
@@ -46,6 +43,26 @@ namespace OrcamentoCotacaoApi.Controllers
             else
                 return NoContent();
         }
+
+        [HttpGet("ativos")]
+        public async Task<IActionResult> ListarAtivos(int page, int pageItens, int idCliente)
+        {
+            var saida = _bll.PorFiltro(new InfraBanco.Modelos.Filtros.TprodutoCatalogoFiltro()
+            {
+                Page = page,
+                RecordsPerPage = pageItens,
+                IdCliente = idCliente,
+                TipoUsuario = LoggedUser.TipoUsuario?.ToString(),
+                Usuario = LoggedUser.Apelido,
+                Ativo = true
+            });
+
+            if (saida.Count > 0)
+                return Ok(saida);
+            else
+                return NoContent();
+        }
+
 
         [HttpGet("{id}")]
         public async Task<IActionResult> ObterPorId(string id)
@@ -116,12 +133,14 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPut]
         public async Task<IActionResult> Atualizar(TprodutoCatalogo produto)
         {
-           _bll.Atualizar(produto);
+            produto.UsuarioEdicao = LoggedUser.Apelido;
 
-            //if (saida)
+           var saida = _bll.Atualizar(produto);
+
+            if (saida)
                 return Ok(true);
-            //else
-            //    return NotFound();
+            else
+                return BadRequest();
         }
 
         [HttpPost("imagem")]

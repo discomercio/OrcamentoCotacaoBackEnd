@@ -1,5 +1,4 @@
-﻿using ClassesBase;
-using InfraBanco;
+﻿using InfraBanco;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using Microsoft.EntityFrameworkCore;
@@ -10,38 +9,37 @@ using static InfraBanco.ContextoBdGravacao;
 
 namespace ProdutoCatalogo
 {
-    public class ProdutoCatalogoData : BaseData<TprodutoCatalogo, TprodutoCatalogoFiltro>
+    public class ProdutoCatalogoData
     {
-        private readonly ContextoBdProvider contextoProvider;
+        private readonly ContextoBdProvider _contextoProvider;
+        private readonly Contexto _contexto;
 
-        public ProdutoCatalogoData(ContextoBdProvider contextoProvider)
+        public ProdutoCatalogoData(ContextoBdProvider contextoProvider, Contexto contexto)
         {
-            this.contextoProvider = contextoProvider;
+            _contextoProvider = contextoProvider;
+            _contexto = contexto;
         }
 
         public TprodutoCatalogo Atualizar(TprodutoCatalogo obj)
         {
-            var saida = false;
-            TprodutoCatalogo produtoCatalogo = new TprodutoCatalogo();
             try
             {
-                using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+                using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
-                    if (AtualizarItens(obj))
-                    {
-                        produtoCatalogo = db.TprodutoCatalogo.FirstOrDefault(x => x.Id == obj.Id);
+                    var produtoCatalogo = db.TprodutoCatalogo.FirstOrDefault(x => x.Id == obj.Id);
 
-                        if (obj != null)
-                        {
-                            produtoCatalogo.Nome = obj.Nome == null ? "" : obj.Nome;
-                            produtoCatalogo.Descricao = obj.Descricao;
-                            produtoCatalogo.UsuarioEdicao = obj.UsuarioEdicao;
-                            produtoCatalogo.DtEdicao = DateTime.Now;
-                            produtoCatalogo.Ativo = obj.Ativo;
-                            db.SaveChanges();
-                            db.transacao.Commit();
-                            saida = true;
-                        }
+                    if (produtoCatalogo != null)
+                    {
+                        produtoCatalogo.Nome = obj.Nome == null ? "" : obj.Nome;
+                        produtoCatalogo.Descricao = obj.Descricao;
+                        produtoCatalogo.UsuarioEdicao = obj.UsuarioEdicao;
+                        produtoCatalogo.DtEdicao = DateTime.Now;
+                        produtoCatalogo.Ativo = obj.Ativo;
+
+                        db.SaveChanges();
+                        db.transacao.Commit();
+
+                        return produtoCatalogo;
                     }
                 }
             }
@@ -50,21 +48,60 @@ namespace ProdutoCatalogo
                 throw e;
             }
 
-            return saida ? produtoCatalogo : null;
+            return null;
         }
 
-        public bool Excluir(TprodutoCatalogo obj)
+        private bool AtualizarItens(TprodutoCatalogo produto)
         {
             var saida = false;
 
             try
             {
-                using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+                using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+                {
+                    var itens = db.TprodutoCatalogoItem.Where(x => x.IdProdutoCatalogo == produto.Id);
+                    if (itens != null)
+                    {
+                        db.TprodutoCatalogoItem.RemoveRange(itens);
+                    }
+                    db.SaveChanges();
+
+                    foreach (var campo in produto.campos)
+                    {
+                        db.TprodutoCatalogoItem.Add(
+                            new TprodutoCatalogoItem
+                            {
+                                IdProdutoCatalogo = produto.Id,
+                                //IdProdutoCatalogoItens = campo.IdProdutoCatalogoItens,
+                                Valor = campo.Valor
+                            });
+                    }
+
+                    db.SaveChanges();
+                    db.transacao.Commit();
+                    saida = true;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return saida;
+        }
+
+        public bool Excluir(int id)
+        {
+            var saida = false;
+
+            try
+            {
+                using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
 
-                    var query = db.TprodutoCatalogo.FirstOrDefault(x => x.Id == obj.Id);
+                    var query = db.TprodutoCatalogo.FirstOrDefault(x => x.Id == id);
 
-                    if (obj != null)
+                    if (query != null)
                     {
                         query.Ativo = false;
                         db.SaveChanges();
@@ -87,7 +124,7 @@ namespace ProdutoCatalogo
 
             try
             {
-                using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+                using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
                     var obj = db.TprodutoCatalogoImagem.FirstOrDefault(x => x.Id == idImagem && x.IdProdutoCatalogo == idProduto);
 
@@ -114,7 +151,7 @@ namespace ProdutoCatalogo
 
             try
             {
-                using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+                using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
                     var imgTmp = db.TprodutoCatalogoImagem.AsNoTracking().Where(x => x.IdProdutoCatalogo == 0);
 
@@ -144,7 +181,7 @@ namespace ProdutoCatalogo
 
             try
             {
-                using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+                using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
                     var produtos = from pc in db.TprodutoCatalogo
                                    join f in db.Tfabricantes on pc.Fabricante equals f.Fabricante
@@ -173,6 +210,9 @@ namespace ProdutoCatalogo
 
                     if (!String.IsNullOrEmpty(obj.Produto))
                         lista = lista.Where(x => x.Produto.PadLeft(6, '0') == obj.Produto.PadLeft(6, '0')).ToList();
+
+                    if (obj.Ativo)
+                        lista = lista.Where(x => x.Ativo == obj.Ativo).ToList();
                 }
             }
             catch (Exception e)
@@ -187,7 +227,7 @@ namespace ProdutoCatalogo
         {
             try
             {
-                using (var db = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
+                using (var db = _contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
                     var saida = (from pc in db.TprodutoCatalogo
                                  join f in db.Tfabricantes on pc.Fabricante equals f.Fabricante
@@ -227,7 +267,7 @@ namespace ProdutoCatalogo
         {
             try
             {
-                using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+                using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
                     return (
                             from item in db.TprodutoCatalogoItem
@@ -252,7 +292,7 @@ namespace ProdutoCatalogo
         {
             try
             {
-                using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+                using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
                     return db.TprodutoCatalogoImagem
                         .AsNoTracking()
@@ -271,7 +311,7 @@ namespace ProdutoCatalogo
         {
             try
             {
-                using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+                using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
 
                     return db.TprodutoCatalogoImagem
@@ -286,51 +326,13 @@ namespace ProdutoCatalogo
             }
         }
 
-        private bool AtualizarItens(TprodutoCatalogo produto)
-        {
-            var saida = false;
-
-            try
-            {
-                using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
-                {
-                    var itens = db.TprodutoCatalogoItem.Where(x => x.IdProdutoCatalogo == produto.Id);
-                    if (itens != null)
-                    {
-                        db.TprodutoCatalogoItem.RemoveRange(itens);
-                    }
-
-                    foreach (var campo in produto.campos)
-                    {
-                        db.TprodutoCatalogoItem.Add(
-                            new TprodutoCatalogoItem
-                            {
-                                IdProdutoCatalogo = produto.Id,
-                                //IdProdutoCatalogoItens = campo.IdProdutoCatalogoItens,
-                                Valor = campo.Valor
-                            });
-                    }
-
-                    db.SaveChanges();
-                    db.transacao.Commit();
-                    saida = true;
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
-            return saida;
-        }
-
         public bool SalvarArquivo(string nomeArquivo, int idProdutoCatalogo, int idTipo, string ordem)
         {
             var saida = false;
 
             try
             {
-                using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+                using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
                     db.TprodutoCatalogoImagem.Add(
                         new TprodutoCatalogoImagem
@@ -357,11 +359,10 @@ namespace ProdutoCatalogo
         public TprodutoCatalogo Criar(TprodutoCatalogo produtoCatalogo, string usuario_cadastro)
         {
             TprodutoCatalogo prodCatalogo = null;
-            List<TprodutoCatalogoItem> listaItens = new List<TprodutoCatalogoItem>();
 
             try
             {
-                using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+                using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
                     prodCatalogo = db.TprodutoCatalogo.Add(
                         new TprodutoCatalogo
@@ -425,7 +426,7 @@ namespace ProdutoCatalogo
 
             try
             {
-                using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+                using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
                     db.TprodutoCatalogoItem.Add(produtoCatalogoItem);
 
@@ -444,6 +445,27 @@ namespace ProdutoCatalogo
             return saida;
         }
 
+        internal bool ExcluirItens(TprodutoCatalogo obj)
+        {
+            var saida = false;
+
+            try
+            {
+                using (var db = _contexto)
+                {
+                    _contexto.Database.ExecuteSqlCommand($"delete t_PRODUTO_CATALOGO_ITEM where id_produto_catalogo = {obj.Id}");
+                    db.SaveChanges();
+
+                    saida = true;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return saida;
+        }
 
         public bool CriarImagens(TprodutoCatalogoImagem img)
         {
@@ -451,7 +473,7 @@ namespace ProdutoCatalogo
 
             try
             {
-                using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+                using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
                     db.TprodutoCatalogoImagem.Add(img);
 
@@ -468,40 +490,6 @@ namespace ProdutoCatalogo
             }
 
             return saida;
-        }
-
-        public bool ExisteProduto(TprodutoCatalogo produtoCatalogo)
-        {
-            var saida = false;
-
-            try
-            {
-                using (var db = contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
-                {
-                    bool? obj = db.TprodutoCatalogo.Any(x => x.Id == produtoCatalogo.Id);
-
-                    if (obj != null)
-                    {
-                        saida = true;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
-            return saida;
-        }
-
-        public TprodutoCatalogo InserirComTransacao(TprodutoCatalogo model, ContextoBdGravacao contextoBdGravacao)
-        {
-            throw new NotImplementedException();
-        }
-
-        public List<TprodutoCatalogo> PorFilroComTransacao(TprodutoCatalogoFiltro obj, ContextoBdGravacao contextoBdGravacao)
-        {
-            throw new NotImplementedException();
         }
     }
 }

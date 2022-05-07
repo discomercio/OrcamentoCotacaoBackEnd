@@ -11,6 +11,5 @@ namespace InfraBanco.Modelos
         public int ?IdProdutoCatalogoPropriedadeOpcao { get; set; }
         public string Valor { get; set; }
         public bool Oculto { get; set; }
-
     }
 }

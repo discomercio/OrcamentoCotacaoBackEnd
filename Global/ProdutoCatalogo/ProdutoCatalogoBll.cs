@@ -1,23 +1,26 @@
-﻿using ClassesBase;
-using InfraBanco;
-using InfraBanco.Modelos;
+﻿using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using System.Collections.Generic;
 
 namespace ProdutoCatalogo
 {
-    public class ProdutoCatalogoBll : BaseBLL<TprodutoCatalogo, TprodutoCatalogoFiltro>
+    public class ProdutoCatalogoBll
     {
         private readonly ProdutoCatalogoData _data;
 
-        public ProdutoCatalogoBll(ContextoBdProvider contextoBdProvider) : base(new ProdutoCatalogoData(contextoBdProvider))
+        public ProdutoCatalogoBll(ProdutoCatalogoData data)
         {
-            _data = (ProdutoCatalogoData)base.data;
+            _data = data;
         }
 
         public TprodutoCatalogo Detalhes(int id)
         {
             return _data.Detalhes(id);
+        }
+
+        public List<TprodutoCatalogo> PorFiltro(TprodutoCatalogoFiltro filtro)
+        {
+            return _data.PorFiltro(filtro);
         }
 
         public bool ExcluirImagem(int idProduto, int idImagem)
@@ -35,9 +38,13 @@ namespace ProdutoCatalogo
             return _data.ObterListaImagensPorId(id);
         }
 
-        public List<TprodutoCatalogoImagem> ObterListaImagem(List<int>idProdutos)
+        public List<TprodutoCatalogoImagem> ObterListaImagem(List<int> idProdutos)
         {
             return _data.ObterListaImagens(idProdutos);
+        }
+        public bool Excluir(int id)
+        {
+            return _data.Excluir(id);
         }
 
         public bool SalvarArquivo(string nomeArquivo, int idProdutoCatalogo, int idTipo, string ordem)
@@ -45,10 +52,10 @@ namespace ProdutoCatalogo
             return _data.SalvarArquivo(nomeArquivo, idProdutoCatalogo, idTipo, ordem);
         }
 
-        public bool Criar(TprodutoCatalogo produtoCatalogo, string usuario_cadastro)
+        public bool Criar(TprodutoCatalogo obj, string usuario_cadastro)
         {
             //TODO: NAO TEM COMO DESABILITAR TRACKING
-            var prodCatalogo = _data.Criar(produtoCatalogo, usuario_cadastro);
+            var prodCatalogo = _data.Criar(obj, usuario_cadastro);
 
             if (prodCatalogo != null && prodCatalogo.Id > 0)
             {
@@ -71,6 +78,42 @@ namespace ProdutoCatalogo
                 _data.ExcluirImagemTmp();
 
                 return true;
+            }
+
+            return false;
+        }
+
+        public bool Atualizar(TprodutoCatalogo obj)
+        {
+            //TODO: NAO TEM COMO DESABILITAR TRACKING
+            var prodCatalogo = _data.Atualizar(obj);
+
+            if (prodCatalogo != null)
+            {
+                _data.ExcluirItens(obj);
+
+                if (obj != null && obj.Id > 0)
+                {
+                    if (obj.campos?.Count > 0)
+                    {
+                        foreach (var c in obj.campos)
+                        {
+                            _data.CriarItens(c);
+                        }
+                    }
+
+                    if (obj.imagens?.Count > 0)
+                    {
+                        foreach (var img in obj.imagens)
+                        {
+                            _data.CriarImagens(img);
+                        }
+                    }
+
+                    _data.ExcluirImagemTmp();
+
+                    return true;
+                }
             }
 
             return false;

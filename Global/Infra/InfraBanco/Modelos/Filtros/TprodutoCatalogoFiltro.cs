@@ -10,5 +10,6 @@ namespace InfraBanco.Modelos.Filtros
         public string Id { get; set; }
         public string Produto { get; set; }
         public bool IncluirImagem { get; set; }
+        public bool Ativo { get; set; }
     }
 }
