@@ -114,7 +114,9 @@ namespace Produto
                                                               join pci in db.TecProdutoCompostoItems on pc.Fabricante_Composto equals pci.Fabricante_composto
                                                               join pl in db.TprodutoLojas on pci.Produto_item equals pl.Produto
                                                               join fab in db.Tfabricantes on c.Fabricante equals fab.Fabricante
-                                                              where pl.Loja == loja &&
+                                                              where c.Descricao_Html != "." &&
+                                                                    pl.Preco_Lista > 0 &&
+                                                                    pl.Loja == loja &&
                                                                     pl.Vendavel == "S" &&
                                                                     c.Fabricante == pc.Fabricante_Composto &&
                                                                     pc.Produto_Composto == pci.Produto_composto &&
@@ -167,7 +169,9 @@ namespace Produto
                                     where pl.Vendavel == "S" &&
                                           pl.Loja == loja &&
                                           c.Excluido_status == 0 &&
-                                          pl.Excluido_status == 0
+                                          pl.Excluido_status == 0 &&
+                                          c.Descricao_Html != "." &&
+                                          pl.Preco_Lista > 0
                                     select new Produto.Dados.ProdutoDados
                                     {
                                         Fabricante = c.Fabricante,
