@@ -12,7 +12,7 @@ namespace InfraBanco.Modelos
         ////fkProduto
         //public string Fabricante { get; set; }
         //public string Produto{ get; set; }
-        //public Tproduto Tproduto { get; set; }
+        public Tproduto Tproduto { get; set; }
 
         public ICollection<TecProdutoCompostoItem> TecProdutoCompostoItems { get; set; }
     }

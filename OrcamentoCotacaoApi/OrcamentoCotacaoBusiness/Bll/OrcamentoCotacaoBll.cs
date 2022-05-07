@@ -238,7 +238,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 torcamentoCotacao.IdVendedor = vendedor.Id;//IdVendedor
             }
-            if (!string.IsNullOrEmpty(orcamento.Parceiro))
+            if (!string.IsNullOrEmpty(orcamento.Parceiro) && orcamento.Parceiro != Constantes.SEM_INDICADOR)
             {
                 if(usuarioLogado.TipoUsuario != (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
                 {
