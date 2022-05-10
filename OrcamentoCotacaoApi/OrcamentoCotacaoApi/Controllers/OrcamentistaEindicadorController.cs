@@ -62,5 +62,15 @@ namespace OrcamentoCotacaoApi.Controllers
 
             return _mapper.Map<List<OrcamentistaIndicadorResponseViewModel>>(usuarios);
         }
+
+        [HttpGet]
+        [Route("parceiro-por-apelido/{apelido}")]
+        public async Task<OrcamentistaIndicadorResponseViewModel> BuscarParceiroPorApelido(string apelido)
+        {
+            _logger.LogInformation("Buscando lista de parceiros por vendedor");
+            var usuario = _orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = apelido }).FirstOrDefault();
+
+            return _mapper.Map<OrcamentistaIndicadorResponseViewModel>(usuario);
+        }
     }
 }

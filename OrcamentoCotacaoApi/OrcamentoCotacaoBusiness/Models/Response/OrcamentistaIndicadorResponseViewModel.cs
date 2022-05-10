@@ -9,5 +9,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response
     {
         [JsonProperty("nome")]
         public string Apelido { get; set; }
+        [JsonProperty("razaoSocial")]
+        public string Razao_Social_Nome { get; set; }
     }
 }

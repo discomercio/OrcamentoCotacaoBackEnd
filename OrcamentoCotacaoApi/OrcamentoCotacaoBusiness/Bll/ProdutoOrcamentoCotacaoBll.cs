@@ -328,12 +328,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                     //ITEM ATOMICO CUSTO
                     IdOpcaoPagto = item.Id,
                     DescDado = itemAtomicoCusto.FirstOrDefault().DescDado,
-                    PrecoLista = itemAtomicoCusto.Sum(x => x.PrecoLista),
-                    PrecoVenda = itemAtomicoCusto.Sum(x => x.PrecoVenda),
-                    PrecoNf = itemAtomicoCusto.Sum(x => x.PrecoNF),
-                    CustoFinancFornecPrecoListaBase = itemAtomicoCusto.Sum(x => x.CustoFinancFornecPrecoListaBase),
+                    PrecoLista = itemAtomicoCusto.Where(x => x.CustoFinancFornecCoeficiente > 0).Sum(x => x.PrecoLista),
+                    PrecoVenda = itemAtomicoCusto.Where(x => x.CustoFinancFornecCoeficiente > 0).Sum(x => x.PrecoVenda),
+                    PrecoNf = itemAtomicoCusto.Where(x => x.CustoFinancFornecCoeficiente > 0).Sum(x => x.PrecoNF),
+                    CustoFinancFornecPrecoListaBase = itemAtomicoCusto.Where(x => x.CustoFinancFornecCoeficiente > 0).Sum(x => x.CustoFinancFornecPrecoListaBase),
                     CustoFinancFornecCoeficiente = itemAtomicoCusto.FirstOrDefault().CustoFinancFornecCoeficiente,
-                    TotalItem = itemAtomico.Sum(x => x.Qtde * itemAtomicoCusto.Where(y => y.IdItemAtomico == x.Id).FirstOrDefault().PrecoNF)
+                    TotalItem = itemAtomico.Sum(x => x.Qtde * itemAtomicoCusto.Where(y => y.IdItemAtomico == x.Id && y.CustoFinancFornecCoeficiente > 0).FirstOrDefault().PrecoNF)
                 };
 
                 produtosResponse.Add(produtoResponse);

@@ -140,8 +140,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             var usuario = _usuarioBll.PorFiltro(new TusuarioFiltro() { id = orcamento.IdVendedor }).FirstOrDefault().Usuario;
             var parceiro = orcamento.IdIndicador !=null?_orcamentistaEIndicadorBll
                 .BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = (int)orcamento.IdIndicador, acessoHabilitado = 1 }).Apelido:null;
-            var vendedorParceiro = orcamento.IdIndicador != null?_orcamentistaEIndicadorVendedorBll
-                .BuscarVendedoresParceiroPorId((int)orcamento.IdIndicador).FirstOrDefault().Nome:null;
+            var vendedorParceiro = orcamento.IdIndicadorVendedor != null?_orcamentistaEIndicadorVendedorBll
+                .BuscarVendedoresParceiroPorId((int)orcamento.IdIndicadorVendedor).FirstOrDefault().Nome:null;
             OrcamentoResponseViewModel orcamentoResponse = new OrcamentoResponseViewModel()
             {
                 Id = orcamento.Id,
