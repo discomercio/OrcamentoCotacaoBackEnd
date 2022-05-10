@@ -185,6 +185,8 @@ namespace ProdutoCatalogo
                 {
                     var produtos = from pc in db.TprodutoCatalogo
                                    join f in db.Tfabricantes on pc.Fabricante equals f.Fabricante
+                                   join pci in db.TprodutoCatalogoImagem on pc.Id equals pci.IdProdutoCatalogo into pci_l
+                                   from images in pci_l.DefaultIfEmpty()
                                    select new TprodutoCatalogo
                                    {
                                        Produto = pc.Produto,
@@ -192,16 +194,10 @@ namespace ProdutoCatalogo
                                        Fabricante = f.Nome,
                                        Nome = pc.Nome,
                                        Descricao = pc.Descricao,
+                                       IdProdutoCatalogoImagem = images.Id,
                                        Ativo = pc.Ativo
                                    };
 
-                    if (produtos != null)
-                    {
-                        if (obj.IncluirImagem)
-                        {
-                            produtos = produtos.Include(x => x.imagens);
-                        }
-                    }
 
                     lista = produtos.ToList();
 
