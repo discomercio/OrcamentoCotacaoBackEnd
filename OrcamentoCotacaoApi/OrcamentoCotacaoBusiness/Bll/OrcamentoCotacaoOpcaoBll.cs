@@ -7,6 +7,7 @@ using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -86,19 +87,33 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             if (orcamentoOpcoes == null) throw new ArgumentException("Falha ao buscar as opções do orçamento!");
 
-            foreach(var opcao in orcamentoOpcoes)
+            List<OrcamentoOpcaoResponseViewModel> orcamentoOpcoesResponse = new List<OrcamentoOpcaoResponseViewModel>();
+
+            foreach (var opcao in orcamentoOpcoes)
             {
                 var opcaoFormaPagtos = formaPagtoOrcamentoCotacaoBll.BuscarOpcaoFormasPagtos(opcao.Id);
                 
                 if (opcaoFormaPagtos == null) throw new ArgumentException("Pagamento da opção não encontrado!");
 
-                var itensOpcao = produtoOrcamentoCotacaoBll.BuscarOpcaoProdutos(opcao.Id);
+                var itensOpcao = produtoOrcamentoCotacaoBll.BuscarOpcaoProdutos(opcao.Id).Result;
 
                 if (itensOpcao == null) throw new ArgumentException("Produtos da opção não encontrados!");
 
+                OrcamentoOpcaoResponseViewModel opcaoResponse = new OrcamentoOpcaoResponseViewModel()
+                {
+                    Id = opcao.Id,
+                    IdOrcamentoCotacao = filtro.IdOrcamentoCotacao,
+                    PercRT = opcao.PercRT,
+                    Sequencia = opcao.Sequencia,
+                    VlTotal = itensOpcao.Sum(x => x.TotalItem),
+                    ListaProdutos = itensOpcao,
+                    FormaPagto = mapper.Map<List<FormaPagtoCriacaoResponseViewModel>>(opcaoFormaPagtos)
+                };
+
+                orcamentoOpcoesResponse.Add(opcaoResponse);
             }
 
-            return new List<OrcamentoOpcaoResponseViewModel>();
+            return orcamentoOpcoesResponse;
         }
     }
 }

@@ -12,6 +12,7 @@ namespace OrcamentoCotacaoBusiness.Mapper
         public OrcamentoCotacaoOpcaoMapper()
         {
             CreateMap<TorcamentoCotacaoOpcao, OrcamentoOpcaoResponseViewModel>();
+            CreateMap<TorcamentoCotacaoOpcaoPagto, FormaPagtoCriacaoResponseViewModel>();
         }
     }
 }

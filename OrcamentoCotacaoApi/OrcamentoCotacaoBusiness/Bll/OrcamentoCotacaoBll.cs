@@ -32,12 +32,12 @@ namespace OrcamentoCotacaoBusiness.Bll
             OrcamentoBll orcamentoBll,
             MensagemOrcamentoCotacaoBll mensagemBll,
             IOptions<ConfigOrcamentoCotacao> appSettings,
-            OrcamentistaEIndicadorBll orcamentistaEIndicadorBll, 
+            OrcamentistaEIndicadorBll orcamentistaEIndicadorBll,
             Usuario.UsuarioBll usuarioBll,
-            OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll, 
+            OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll,
             PedidoPrepedidoApiBll pedidoPrepedidoApiBll,
             OrcamentoCotacao.OrcamentoCotacaoBll orcamentoCotacaoBll,
-            InfraBanco.ContextoBdProvider contextoBdProvider, 
+            InfraBanco.ContextoBdProvider contextoBdProvider,
             OrcamentoCotacaoOpcaoBll orcamentoCotacaoOpcaoBll
             )
         {
@@ -99,10 +99,10 @@ namespace OrcamentoCotacaoBusiness.Bll
                         NumeroOrcamento = x.Id.ToString(),
                         NumPedido = String.IsNullOrEmpty(x.IdPedido) ? "-" : x.IdPedido,
                         Cliente_Obra = $"{x.NomeCliente} - {x.NomeObra}",
-                        Vendedor = vendedores.FirstOrDefault(v=>v.Id == x.IdVendedor)?.Nome,
+                        Vendedor = vendedores.FirstOrDefault(v => v.Id == x.IdVendedor)?.Nome,
                         Parceiro = parceiros.FirstOrDefault(v => v.IdIndicador == x.IdIndicador) == null ? "-" : parceiros.FirstOrDefault(v => v.IdIndicador == x.IdIndicador).Apelido,
                         VendedorParceiro = vendParceiros.FirstOrDefault(v => v.Id == x.IdIndicadorVendedor)?.Nome,
-                        Valor = "0", 
+                        Valor = "0",
                         Status = x.StatusNome,
                         VistoEm = "",
                         Mensagem = _mensagemBll.ObterListaMensagemPendente(x.Id, x.Tusuarios.Id).Result.Any() ? "Sim" : "Não",
@@ -129,13 +129,45 @@ namespace OrcamentoCotacaoBusiness.Bll
                 return lista;
             }
         }
-        public OrcamentoRequestViewModel PorFiltro(int id)
+        public OrcamentoResponseViewModel PorFiltro(int id)
         {
             var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro() { Id = id }).FirstOrDefault();
-            if(orcamento == null) throw new Exception("Falha ao buscar Orçamento!");
+            if (orcamento == null) throw new Exception("Falha ao buscar Orçamento!");
 
             var opcao = _orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro() { IdOrcamentoCotacao = id });
-            return new OrcamentoRequestViewModel();
+            if (opcao.Count <= 0) throw new Exception("Falha ao buscar Opções do Orçamento!");
+
+            var usuario = _usuarioBll.PorFiltro(new TusuarioFiltro() { id = orcamento.IdVendedor }).FirstOrDefault().Usuario;
+            var parceiro = orcamento.IdIndicador !=null?_orcamentistaEIndicadorBll
+                .BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = (int)orcamento.IdIndicador, acessoHabilitado = 1 }).Apelido:null;
+            var vendedorParceiro = orcamento.IdIndicador != null?_orcamentistaEIndicadorVendedorBll
+                .BuscarVendedoresParceiroPorId((int)orcamento.IdIndicador).FirstOrDefault().Nome:null;
+            OrcamentoResponseViewModel orcamentoResponse = new OrcamentoResponseViewModel()
+            {
+                Id = orcamento.Id,
+                Vendedor = usuario,
+                Parceiro = parceiro,
+                VendedorParceiro = vendedorParceiro,
+                Loja = orcamento.Loja,
+                Validade = orcamento.Validade,
+                QtdeRenovacao = orcamento.QtdeRenovacao,
+                ConcordaWhatsapp = orcamento.AceiteWhatsApp,
+                ObservacoesGerais = orcamento.Observacao,
+                EntregaImediata = orcamento.StEtgImediata == 1 ? true : false,
+                DataEntregaImediata = orcamento.PrevisaoEntregaData,
+                ClienteOrcamentoCotacaoDto = new ClienteOrcamentoCotacaoRequestViewModel()
+                {
+                    NomeCliente = orcamento.NomeCliente,
+                    NomeObra = orcamento.NomeObra,
+                    Email = orcamento.Email,
+                    Telefone = orcamento.Telefone,
+                    Tipo = orcamento.TipoCliente,
+                    Uf = orcamento.UF
+                },
+                ListaOrcamentoCotacaoDto = opcao
+        };
+
+            return orcamentoResponse;
         }
 
         public async Task<List<TcfgSelectItem>> ObterListaStatus(TorcamentoFiltro tOrcamentoFiltro)
@@ -188,7 +220,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     var ocamentoCotacao = _orcamentoCotacaoBll.InserirComTransacao(tOrcamentoCotacao, dbGravacao);
 
-                    if(tOrcamentoCotacao.Id == 0) throw new ArgumentException("Ops! Não gerou Id!");
+                    if (tOrcamentoCotacao.Id == 0) throw new ArgumentException("Ops! Não gerou Id!");
 
                     var opcoes = _orcamentoCotacaoOpcaoBll.CadastrarOrcamentoCotacaoOpcoesComTransacao(orcamento.ListaOrcamentoCotacaoDto, tOrcamentoCotacao.Id,
                         usuarioLogado, dbGravacao, orcamento.Loja);
@@ -240,7 +272,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
             if (!string.IsNullOrEmpty(orcamento.Parceiro) && orcamento.Parceiro != Constantes.SEM_INDICADOR)
             {
-                if(usuarioLogado.TipoUsuario != (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
+                if (usuarioLogado.TipoUsuario != (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
                 {
                     var torcamentista = _orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { apelido = orcamento.Parceiro, acessoHabilitado = 1 });
 

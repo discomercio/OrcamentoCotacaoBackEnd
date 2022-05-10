@@ -5,7 +5,15 @@ namespace OrcamentoCotacaoBusiness.Models.Request
 {
     public class FormaPagtoCriacaoRequestViewModel : IViewModelRequest
     {
-        [JsonProperty("qtde_Parcelas")] 
+        [JsonProperty("id")]
+        public int Id { get; set; }
+        [JsonProperty("idOrcamentoCotacaoOpcao")]
+        public int IdOrcamentoCotacaoOpcao { get; set; }
+
+        [JsonProperty("aprovado")]
+        public bool Aprovado { get; set; }
+
+        [JsonProperty("qtde_Parcelas")]
         public int QtdeParcelas { get; set; }
 
         [JsonProperty("op_av_forma_pagto")]

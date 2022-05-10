@@ -20,8 +20,8 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         [JsonProperty("vlTotal")]
         public decimal VlTotal { get; set; }
 
-        //[JsonProperty("formaPagto")]
-        //public List<FormaPagtoCriacaoRequestViewModel> FormaPagto { get; set; }
+        [JsonProperty("formaPagto")]
+        public List<FormaPagtoCriacaoResponseViewModel> FormaPagto { get; set; }
 
         [JsonProperty("percRT")]
         public float PercRT { get; set; }

@@ -4,7 +4,7 @@ namespace InfraBanco.Modelos.Filtros
 {
     public class TusuarioFiltro : IFilter
     {
-        public string id;
+        public int id;
         public string usuario { get; set; }
         public string loja { get; set; }
         public string senha { get; set; }

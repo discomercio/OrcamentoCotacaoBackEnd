@@ -80,11 +80,15 @@ namespace Usuario
                 {
                     usuario = usuario.Skip(obj.RecordsPerPage.Value * (obj.Page.Value - 1)).Take(obj.RecordsPerPage.Value);
                 }
+                if(obj.id > 0)
+                {
+                    usuario = usuario.Where(x => x.Id == obj.id);
+                }
                 return usuario.ToList();
             }
         }
 
-        public Tusuario GetById(string id)
+        public Tusuario GetById(int id)
         {
             return PorFiltro(new TusuarioFiltro() { id = id }).FirstOrDefault();
         }

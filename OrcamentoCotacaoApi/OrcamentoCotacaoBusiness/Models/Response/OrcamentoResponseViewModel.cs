@@ -1,35 +1,49 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using OrcamentoCotacaoBusiness.Models.Request;
+using System;
+using System.Collections.Generic;
 
 namespace OrcamentoCotacaoBusiness.Models.Response
 {
     public class OrcamentoResponseViewModel : IViewModelResponse
     {
-
-        public long Id { get; set; }
-        
-        public DateTime Validade { get; set; }
-
-        public string Observacao { get; set; }
-
-        public string NomeCliente { get; set; }
-
-        public string NomeObra { get; set; }
-
+        [JsonProperty("vendedor")]
         public string Vendedor { get; set; }
 
-        public string Email { get; set; }
-
+        [JsonProperty("parceiro")]
         public string Parceiro { get; set; }
 
-        public string Telefone { get; set; }
-
-        public bool ConcordaWhatsapp { get; set; }
-
+        [JsonProperty("vendedorParceiro")]
         public string VendedorParceiro { get; set; }
 
-        public string Uf { get; set; }
+        [JsonProperty("loja")]
+        public string Loja { get; set; }
 
-        public string Tipo { get; set; }
+        [JsonProperty("validade")]
+        public DateTime Validade { get; set; }
 
+        [JsonProperty("qtdeRenovacao")]
+        public int QtdeRenovacao { get; set; }
+
+        [JsonProperty("concordaWhatsapp")]
+        public bool ConcordaWhatsapp { get; set; }
+
+        [JsonProperty("observacoesGerais")]
+        public string ObservacoesGerais { get; set; }
+
+        [JsonProperty("entregaImediata")]
+        public bool EntregaImediata { get; set; }
+
+        [JsonProperty("dataEntregaImediata")]
+        public DateTime? DataEntregaImediata { get; set; }
+
+        [JsonProperty("clienteOrcamentoCotacaoDto")]
+        public ClienteOrcamentoCotacaoRequestViewModel ClienteOrcamentoCotacaoDto { get; set; }
+
+        [JsonProperty("listaOrcamentoCotacaoDto")]
+        public List<OrcamentoOpcaoResponseViewModel> ListaOrcamentoCotacaoDto { get; set; }
+
+        [JsonProperty("id")]
+        public long Id { get; set; }
     }
 }

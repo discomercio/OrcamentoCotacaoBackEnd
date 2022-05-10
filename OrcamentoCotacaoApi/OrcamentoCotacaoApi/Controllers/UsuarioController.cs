@@ -79,7 +79,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<UsuarioResponseViewModel> Get(string id)
+        public async Task<UsuarioResponseViewModel> Get(int id)
         {
             _logger.LogInformation("Buscando lista de usuários");
             var usuario = _usuarioBll.GetById(id);
