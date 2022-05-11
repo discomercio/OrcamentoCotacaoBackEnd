@@ -55,6 +55,14 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public List<OrcamentoCotacaoListaDto> PorFiltro(TorcamentoFiltro tOrcamentoFiltro, UsuarioLogin usuarioLogin)
         {
+            TorcamentoCotacaoFiltro orcamentoCotacaoFiltro = new TorcamentoCotacaoFiltro
+            {
+                Tusuario = true,
+                LimitarData = true,
+                Loja = tOrcamentoFiltro.Loja,
+                TipoUsuario = usuarioLogin.TipoUsuario,
+                Apelido = usuarioLogin.Nome
+            };
             tOrcamentoFiltro.TipoUsuario = usuarioLogin.TipoUsuario;
             tOrcamentoFiltro.Apelido = usuarioLogin.Nome;
             tOrcamentoFiltro.IdUsuario = usuarioLogin.Id;
@@ -69,23 +77,21 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
                     tOrcamentoFiltro.Vendedor = usuarioLogin.VendedorResponsavel;
                     tOrcamentoFiltro.Parceiro = usuarioLogin.IdParceiro;
+                    orcamentoCotacaoFiltro.Vendedor = usuarioLogin.VendedorResponsavel;
+                    orcamentoCotacaoFiltro.Parceiro = usuarioLogin.IdParceiro;
                 }
 
                 //VÊ somente suas vendas
                 if (tOrcamentoFiltro.TipoUsuario.Value == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
                 {
                     tOrcamentoFiltro.VendedorParceiro = usuarioLogin.Nome;
+                    orcamentoCotacaoFiltro.VendedorParceiro = usuarioLogin.Nome;
                 }
             }
 
             if (tOrcamentoFiltro.Origem == "ORCAMENTOS")
             {
-                var orcamentoCotacaoListaDto = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro()
-                {
-                    Tusuario = true,
-                    LimitarData = true,
-                    Loja = tOrcamentoFiltro.Loja
-                });
+                var orcamentoCotacaoListaDto = _orcamentoCotacaoBll.PorFiltro(orcamentoCotacaoFiltro);
 
                 List<OrcamentoCotacaoListaDto> lista = new List<OrcamentoCotacaoListaDto>();
                 if (orcamentoCotacaoListaDto != null)
@@ -93,6 +99,20 @@ namespace OrcamentoCotacaoBusiness.Bll
                     var vendedores = _usuarioBll.PorFiltro(new TusuarioFiltro { });
                     var parceiros = _orcamentistaEIndicadorBll.BuscarParceiros(new TorcamentistaEindicadorFiltro { });
                     var vendParceiros = _orcamentistaEIndicadorVendedorBll.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro { });
+
+                    if (!String.IsNullOrEmpty(orcamentoCotacaoFiltro.Vendedor) && !String.IsNullOrEmpty(orcamentoCotacaoFiltro.Parceiro))
+                    {
+                        var idVendedor = vendedores.FirstOrDefault(v => v.Usuario == orcamentoCotacaoFiltro.Vendedor);
+                        var idParceiro = parceiros.FirstOrDefault(p => p.Apelido == orcamentoCotacaoFiltro.Parceiro);
+
+                        if(idVendedor != null && idParceiro != null)
+                        {
+                            orcamentoCotacaoListaDto = orcamentoCotacaoListaDto.Where(o =>
+                                 o.IdVendedor == idVendedor.Id
+                                 && (o.IdIndicador.HasValue && o.IdIndicador.Value == idParceiro.IdIndicador)
+                             ).ToList();
+                        }
+                    }
 
                     orcamentoCotacaoListaDto.ForEach(x => lista.Add(new OrcamentoCotacaoListaDto()
                     {
@@ -165,7 +185,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     Uf = orcamento.UF
                 },
                 ListaOrcamentoCotacaoDto = opcao
-        };
+            };
 
             return orcamentoResponse;
         }
