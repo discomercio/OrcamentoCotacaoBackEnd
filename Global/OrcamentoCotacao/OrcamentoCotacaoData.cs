@@ -88,6 +88,18 @@ namespace OrcamentoCotacao
                     {
                         saida = saida.Where(x => x.Loja == obj.Loja);
                     }
+                    //if (!string.IsNullOrEmpty(obj.Vendedor))
+                    //{
+                    //    saida = saida.Where(x => x.IdVendedor == int.Parse(obj.Vendedor));
+                    //}
+                    //if (!string.IsNullOrEmpty(obj.Parceiro))
+                    //{
+                    //    saida = saida.Where(x => x.IdIndicador == int.Parse(obj.Parceiro));
+                    //}
+                    if (!string.IsNullOrEmpty(obj.Loja))
+                    {
+                        saida = saida.Where(x => x.Loja == obj.Loja);
+                    }
                     if (obj.Tusuario)
                     {
                         saida = from c in saida
