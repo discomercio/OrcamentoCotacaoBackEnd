@@ -82,7 +82,7 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         [JsonProperty("tipo_parcelamento")]
         public int TipoParcelamento { get; set; }
 
-        [JsonProperty("observacao")]
+        [JsonProperty("observacoesGerais")]
         public string Observacao { get; set; }
     }
 }
