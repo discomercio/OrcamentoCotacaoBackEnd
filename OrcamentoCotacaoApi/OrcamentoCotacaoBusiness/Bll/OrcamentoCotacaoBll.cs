@@ -105,7 +105,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         var idVendedor = vendedores.FirstOrDefault(v => v.Usuario == orcamentoCotacaoFiltro.Vendedor);
                         var idParceiro = parceiros.FirstOrDefault(p => p.Apelido == orcamentoCotacaoFiltro.Parceiro);
 
-                        if(idVendedor != null && idParceiro != null)
+                        if (idVendedor != null && idParceiro != null)
                         {
                             orcamentoCotacaoListaDto = orcamentoCotacaoListaDto.Where(o =>
                                  o.IdVendedor == idVendedor.Id
@@ -158,10 +158,11 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (opcao.Count <= 0) throw new Exception("Falha ao buscar Opções do Orçamento!");
 
             var usuario = _usuarioBll.PorFiltro(new TusuarioFiltro() { id = orcamento.IdVendedor }).FirstOrDefault().Usuario;
-            var parceiro = orcamento.IdIndicador !=null?_orcamentistaEIndicadorBll
-                .BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = (int)orcamento.IdIndicador, acessoHabilitado = 1 }).Apelido:null;
-            var vendedorParceiro = orcamento.IdIndicadorVendedor != null?_orcamentistaEIndicadorVendedorBll
-                .BuscarVendedoresParceiroPorId((int)orcamento.IdIndicadorVendedor).FirstOrDefault().Nome:null;
+            var parceiro = orcamento.IdIndicador != null ? _orcamentistaEIndicadorBll
+                .BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = (int)orcamento.IdIndicador, acessoHabilitado = 1 }).Apelido : null;
+
+            var vendedorParceiro = orcamento.IdIndicadorVendedor != null ? _orcamentistaEIndicadorVendedorBll
+                .PorFiltro(new TorcamentistaEIndicadorVendedorFiltro() {id = (int)orcamento.IdIndicadorVendedor}).FirstOrDefault().Nome : null;
             OrcamentoResponseViewModel orcamentoResponse = new OrcamentoResponseViewModel()
             {
                 Id = orcamento.Id,
