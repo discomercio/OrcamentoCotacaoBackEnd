@@ -191,6 +191,27 @@ namespace OrcamentoCotacaoBusiness.Bll
             return orcamentoResponse;
         }
 
+        public async Task BuscarDadosParaMensageria(int id, bool usuarioIterno)
+        {
+            var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro() { Id = id }).FirstOrDefault();
+            if (orcamento == null) throw new Exception("Falha ao buscar Orçamento!");
+
+            if (!usuarioIterno)
+            {
+                //não tem Id? Precisa criar um cliente fake? 
+            }
+            //Criar uma classe de retorno com os seguintes campos:
+            /* idOrcamentoCotacao
+             * idUsuarioRemetente => caso seja cliente, não tem Id
+             * idUsuarioDestinatario => caso seja cliente, não tem Id
+             * idTipoUsuarioContextoRemetente
+             * idTipoUsuarioContextoDestinatario
+             */
+            //verificar se tem vendedor do parceiro, se tiver precisamos buscar o id dele
+            //se não tiver vendedor do parceiro, verificar o parceiro, se tiver precisamos buscar o id dele
+            //se não tiver parceiro, verificar o vendedor e buscar o id dele
+            //buscar o tipo de contexto de usuário que fez o orçamento
+        }
         public async Task<List<TcfgSelectItem>> ObterListaStatus(TorcamentoFiltro tOrcamentoFiltro)
         {
             return await _orcamentoBll.ObterListaStatus(tOrcamentoFiltro);
