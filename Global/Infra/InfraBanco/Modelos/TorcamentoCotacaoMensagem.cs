@@ -9,7 +9,7 @@ namespace InfraBanco.Modelos
     public class TorcamentoCotacaoMensagem : IModel
     {
         [Key]
-        [Column("id")]
+        [Column("Id")]
         [Required]
         public int Id { get; set; }
         
@@ -53,6 +53,17 @@ namespace InfraBanco.Modelos
         [Required]
         public DateTime DataHoraCadastro { get; set; }
 
+        [Column("IdOrcamentoCotacaoEmailQueue")]
+        public int? IdOrcamentoCotacaoEmailQueue { get; set; }
+        
+        [Column("PendenciaTratada")]
+        public int PendenciaTratada { get; set; }
+
+        [Column("DataPendenciaTratada")]
+        public DateTime? DataPendenciaTratada { get; set; }
+
+        [Column("DataHoraPendenciaTratada")]
+        public DateTime? DataHoraPendenciaTratada { get; set; }
         public TorcamentoCotacao TorcamentoCotacao { get; set; }
 
     }

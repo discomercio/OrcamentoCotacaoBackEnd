@@ -199,7 +199,9 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (!usuarioIterno)
             {
                 //não tem Id? Precisa criar um cliente fake? 
+                //return configuracao
             }
+
             //Criar uma classe de retorno com os seguintes campos:
             /* idOrcamentoCotacao
              * idUsuarioRemetente => caso seja cliente, não tem Id

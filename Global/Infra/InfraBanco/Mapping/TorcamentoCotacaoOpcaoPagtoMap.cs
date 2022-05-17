@@ -28,6 +28,22 @@ namespace InfraBanco.Mapping
                 .HasColumnType("bit")
                 .IsRequired();
 
+            builder.Property(x => x.IdTipoUsuarioContextoAprovado)
+                .HasColumnName("IdTipoUsuarioContextoAprovado")
+                .HasColumnType("smallint");
+
+            builder.Property(x => x.IdUsuarioAprovado)
+                .HasColumnName("IdUsuarioAprovado")
+                .HasColumnType("int");
+
+            builder.Property(x => x.DataAprovado)
+                .HasColumnName("DataAprovado")
+                .HasColumnType("datetime");
+
+            builder.Property(x => x.DataHoraAprovado)
+                .HasColumnName("DataHoraAprovado")
+                .HasColumnType("datetime");
+
             builder.Property(x => x.Observacao)
                 .HasColumnName("Observacao")
                 .HasColumnType("varchar")

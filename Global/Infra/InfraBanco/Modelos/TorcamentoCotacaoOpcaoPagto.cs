@@ -12,6 +12,10 @@ namespace InfraBanco.Modelos
         public int Id { get; set; }
         public int IdOrcamentoCotacaoOpcao { get; set; }
         public bool Aprovado { get; set; }
+        public int IdTipoUsuarioContextoAprovado { get; set; }
+        public int IdUsuarioAprovado { get; set; }
+        public DateTime DataAprovado { get; set; }
+        public DateTime DataHoraAprovado { get; set; }
         public string Observacao { get; set; }
         public int Tipo_parcelamento { get; set; }
         public int Av_forma_pagto { get; set; }
