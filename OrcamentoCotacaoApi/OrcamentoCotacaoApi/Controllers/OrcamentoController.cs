@@ -82,5 +82,12 @@ namespace OrcamentoCotacaoApi.Controllers
 
             return Ok(orcamentoCotacao);
         }
+
+        [HttpGet("buscarDadosParaMensageria")]
+        public async Task<IActionResult> BuscarDadosParaMensageria(int idOrcamento, bool usuarioInterno)
+        {
+            var dados = _orcamentoBll.BuscarDadosParaMensageria(idOrcamento, true);
+            return Ok();
+        }
     }
 }
