@@ -84,10 +84,11 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpGet("buscarDadosParaMensageria")]
-        public async Task<IActionResult> BuscarDadosParaMensageria(int idOrcamento, bool usuarioInterno)
+        public IActionResult BuscarDadosParaMensageria(int idOrcamento, bool usuarioInterno)
         {
-            var dados = _orcamentoBll.BuscarDadosParaMensageria(idOrcamento, true);
-            return Ok();
+            var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+            var dados = _orcamentoBll.BuscarDadosParaMensageria(user, idOrcamento, usuarioInterno);
+            return Ok(dados);
         }
     }
 }

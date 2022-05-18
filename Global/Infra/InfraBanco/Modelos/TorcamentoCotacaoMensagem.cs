@@ -32,8 +32,7 @@ namespace InfraBanco.Modelos
         public int IdUsuarioDestinatario { get; set; }
 
         [Column("Lida")]
-        [Required]
-        public bool Lida { get; set; }
+        public bool Lida { get; set; } = false;
 
         [Column("DataLida")]
         public DateTime? DataLida { get; set; }
@@ -57,7 +56,7 @@ namespace InfraBanco.Modelos
         public int? IdOrcamentoCotacaoEmailQueue { get; set; }
         
         [Column("PendenciaTratada")]
-        public int PendenciaTratada { get; set; }
+        public bool PendenciaTratada { get; set; }
 
         [Column("DataPendenciaTratada")]
         public DateTime? DataPendenciaTratada { get; set; }

@@ -12,10 +12,10 @@ namespace InfraBanco.Modelos
         public int Id { get; set; }
         public int IdOrcamentoCotacaoOpcao { get; set; }
         public bool Aprovado { get; set; }
-        public int IdTipoUsuarioContextoAprovado { get; set; }
+        public short? IdTipoUsuarioContextoAprovado { get; set; }
         public int IdUsuarioAprovado { get; set; }
-        public DateTime DataAprovado { get; set; }
-        public DateTime DataHoraAprovado { get; set; }
+        public DateTime? DataAprovado { get; set; }
+        public DateTime? DataHoraAprovado { get; set; }
         public string Observacao { get; set; }
         public int Tipo_parcelamento { get; set; }
         public int Av_forma_pagto { get; set; }
@@ -38,6 +38,8 @@ namespace InfraBanco.Modelos
         public int Pse_demais_prest_periodo { get; set; }
         public int Pu_forma_pagto { get; set; }
         public decimal Pu_valor { get; set; }
-        public int Pu_vencto_apos { get; set; }        
+        public int Pu_vencto_apos { get; set; }      
+        
+        public TcfgTipoUsuarioContexto TcfgTipoUsuarioContexto { get; set; }
     }
 }

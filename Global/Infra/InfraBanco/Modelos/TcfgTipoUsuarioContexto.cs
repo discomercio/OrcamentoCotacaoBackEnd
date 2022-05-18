@@ -20,11 +20,12 @@ namespace InfraBanco.Modelos
 
         [Column("TabelaAutenticacao")]
         [MaxLength(255)]
-        [Required]
         public string TabelaAutenticacao { get; set; }
 
         [Column("Ordenacao")]
         public short Ordenacao { get; set; }
+
+        public TorcamentoCotacaoOpcaoPagto TorcamentoCotacaoOpcaoPagto { get; set; }
 
     }
 }

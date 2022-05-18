@@ -157,6 +157,11 @@ namespace InfraBanco.Mapping
                 .HasColumnName("pu_vencto_apos")
                 .HasColumnType("smallint")
                 .IsRequired();
+
+            builder.HasOne(x => x.TcfgTipoUsuarioContexto)
+                .WithOne(x => x.TorcamentoCotacaoOpcaoPagto)
+                .HasForeignKey<TcfgTipoUsuarioContexto>(f => f.Id);
+                
         }
     }
 }

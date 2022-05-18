@@ -173,6 +173,11 @@ namespace InfraBanco
 
             modelBuilder.Entity<TcfgOrcamentoCotacaoStatus>()
                 .HasKey(x => new { x.Id });
+
+            modelBuilder.Entity<TcfgTipoUsuarioContexto>()
+                .HasOne(x => x.TorcamentoCotacaoOpcaoPagto)
+                .WithOne(o => o.TcfgTipoUsuarioContexto)
+                .HasForeignKey<TorcamentoCotacaoOpcaoPagto>(f => f.IdTipoUsuarioContextoAprovado);
 #endif
         }
 

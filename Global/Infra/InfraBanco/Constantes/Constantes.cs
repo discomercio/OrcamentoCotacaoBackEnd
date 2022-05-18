@@ -28,6 +28,7 @@ namespace InfraBanco.Constantes
             VENDEDOR = 1,
             PARCEIRO = 2,
             VENDEDOR_DO_PARCEIRO = 3,
+            CLIENTE = 4,
         }
         public static class TipoUsuarioPerfil
         {
