@@ -185,13 +185,14 @@ namespace InfraBanco
         public DbSet<Torcamento> Torcamentos { get; set; }
         public DbSet<TorcamentoCotacaoLink> TorcamentoCotacaoLinks { get; set; }
         public DbSet<TorcamentoCotacaoMensagem> TorcamentoCotacaoMensagens { get; set; }
+        public DbSet<TcfgUnidadeNegocioParametro> TcfgUnidadeNegocioParametro { get; set; }
         public DbSet<TclienteRefBancaria> TclienteRefBancarias { get; set; }
         public DbSet<Tpedido> Tpedidos { get; set; }
         public DbSet<TorcamentistaEindicador> TorcamentistaEindicadors { get; set; }
         public DbSet<TorcamentistaEIndicadorVendedor> TorcamentistaEindicadorVendedors { get; set; }
         public DbSet<TsessaoHistorico> TsessaoHistoricos { get; set; }
         public DbSet<Tproduto> Tprodutos { get; set; }
-        public DbSet<TprodutoCatalogo> TprodutoCatalogos { get; set; }        
+        public DbSet<TprodutoCatalogo> TprodutoCatalogos { get; set; }
         public DbSet<TProdutoCatalogoPropriedade> TProdutoCatalogoPropriedades { get; set; }
         public DbSet<TProdutoCatalogoPropriedadeOpcao> TProdutoCatalogoPropriedadeOpcoes { get; set; }
         public DbSet<TprodutoCatalogoItem> TprodutoCatalogoItems { get; set; }
@@ -247,13 +248,15 @@ namespace InfraBanco
         public DbSet<TcfgTipoPessoa> TcfgTipoPessoas { get; set; }
         public DbSet<TcfgTipoUsuario> TcfgTipoUsuarios { get; set; }
         public DbSet<TcfgTipoUsuarioPerfil> TcfgTipoUsuarioPerfis { get; set; }
-        public DbSet<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContextos { get; set; }         
+        public DbSet<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContextos { get; set; }
         public DbSet<TcfgOrcamentoCotacaoStatus> TcfgOrcamentoCotacaoStatus { get; set; }
         public DbSet<TorcamentoCotacaoOpcao> TorcamentoCotacaoOpcao { get; set; }
+        public DbSet<TorcamentoCotacaoEmailQueue> TorcamentoCotacaoEmailQueue { get; set; }
         public DbSet<TorcamentoCotacaoOpcaoPagto> TorcamentoCotacaoOpcaoPagtos { get; set; }
         public DbSet<TorcamentoCotacaoItemUnificado> TorcamentoCotacaoItemUnificados { get; set; }
         public DbSet<TorcamentoCotacaoOpcaoItemAtomicoCustoFin> TorcamentoCotacaoOpcaoItemAtomicoCustoFins { get; set; }
         public DbSet<TorcamentoCotacaoOpcaoItemAtomico> TorcamentoCotacaoOpcaoItemAtomicos { get; set; }
+        public DbSet<TcfgUnidadeNegocio> TcfgUnidadeNegocio { get; set; }
 
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public DbSet<Taviso> Tavisos { get; set; }

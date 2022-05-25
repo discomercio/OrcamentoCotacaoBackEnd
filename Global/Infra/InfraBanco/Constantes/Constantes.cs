@@ -2835,5 +2835,28 @@ namespace InfraBanco.Constantes
             SELECIONAR_QUALQUER_LOJA_100400 = 100400,
             PRORRROGAR_VENCIMENTO_ORCAMENTO_100500 = 100500
         };
+
+        public enum eCfgOrcamentoCotacaoEmailStatus
+        {
+            EnviarEmail = 0,
+            EnvioCancelado = 1,
+            EnvioComSucesso = 2,
+            FalhaNoEnvioTemporario = 3,
+            FalhaNoEnvioDefinitivo = 4
+        }
+
+        public enum eCfgParametro
+        {
+            ModuloOrcamentoCotacao_Login_BackgroundImage = 1,
+            ModuloOrcamentoCotacao_UrlAcesso = 2,
+            ModuloOrcamentoCotacao_LogoHeader = 3,
+            ModuloOrcamentoCotacao_CorPrincipal = 4,
+            ModuloOrcamentoCotacao_EmailTransacional_Remetente = 5,
+            ModuloOrcamentoCotacao_EmailTransacional_RemetenteDisplayName = 6,
+            ModuloOrcamentoCotacao_EmailTransacional_SmtpHost = 7,
+            ModuloOrcamentoCotacao_EmailTransacional_SmtpPort = 8,
+            ModuloOrcamentoCotacao_EmailTransacional_SmtpUsername = 9,
+            ModuloOrcamentoCotacao_EmailTransacional_SmtpPassword = 10
+        }
     }
 }

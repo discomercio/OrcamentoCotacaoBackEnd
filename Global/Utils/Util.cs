@@ -14,7 +14,7 @@ using InfraBanco.Modelos;
 
 namespace UtilsGlobais
 {
-    public class Util
+    public static class Util
     {
         public static string HoraParaBanco(DateTime hora)
         {
@@ -1182,6 +1182,19 @@ namespace UtilsGlobais
         public static string EnterParaMensagemErro()
         {
             return "\n\r";
+        }
+
+        public static int? ToInt(this string valor)
+        {
+            try
+            {
+                return int.Parse(valor);
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
         }
 
     }

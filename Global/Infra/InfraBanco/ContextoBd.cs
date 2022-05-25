@@ -47,9 +47,10 @@ namespace InfraBanco
         public IQueryable<Torcamento> Torcamentos { get => contexto.Torcamentos.AsNoTracking(); }
 
         public IQueryable<TorcamentoCotacaoLink> TorcamentoCotacaoLinks { get => contexto.TorcamentoCotacaoLinks.AsNoTracking(); }
-
+        public IQueryable<TcfgUnidadeNegocioParametro> TcfgUnidadeNegocioParametro { get => contexto.TcfgUnidadeNegocioParametro.AsNoTracking(); }
         public IQueryable<TorcamentoCotacaoMensagem> TorcamentoCotacaoMensagens { get => contexto.TorcamentoCotacaoMensagens.AsNoTracking(); }
         public IQueryable<TorcamentoCotacaoOpcao> torcamentoCotacaoOpcaos { get => contexto.TorcamentoCotacaoOpcao.AsNoTracking(); }
+        public IQueryable<TorcamentoCotacaoEmailQueue> torcamentoCotacaoEmailQueue { get => contexto.TorcamentoCotacaoEmailQueue.AsNoTracking(); }
         public IQueryable<TorcamentoCotacaoOpcaoPagto> TorcamentoCotacaoOpcaoPgtos { get => contexto.TorcamentoCotacaoOpcaoPagtos.AsNoTracking(); }
         public IQueryable<TorcamentoCotacaoItemUnificado> TorcamentoCotacaoItemUnificados { get => contexto.TorcamentoCotacaoItemUnificados.AsNoTracking(); }
         public IQueryable<TorcamentoCotacaoOpcaoItemAtomicoCustoFin> TorcamentoCotacaoOpcaoItemAtomicoCustoFins { get => contexto.TorcamentoCotacaoOpcaoItemAtomicoCustoFins.AsNoTracking(); }
@@ -126,6 +127,7 @@ namespace InfraBanco
         public IQueryable<TusuarioXLoja> TusuarioXLojas { get => contexto.TusuarioXLojas.AsNoTracking(); }
         public IQueryable<Taviso> Tavisos { get => contexto.Tavisos.AsNoTracking(); }
         public IQueryable<TavisoExibido> TavisoExibidos { get => contexto.TavisoExibidos.AsNoTracking(); }
+        public IQueryable<TcfgUnidadeNegocio> TcfgUnidadeNegocio { get => contexto.TcfgUnidadeNegocio.AsNoTracking(); }
         public IQueryable<TavisoLido> TavisoLidos { get => contexto.TavisoLidos.AsNoTracking(); }
         public IQueryable<Toperacao> Toperacaos { get => contexto.Toperacaos.AsNoTracking(); }
         public IQueryable<TperfilItem> TperfilItens { get => contexto.TperfilItens.AsNoTracking(); }
