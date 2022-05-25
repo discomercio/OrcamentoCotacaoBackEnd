@@ -5,6 +5,7 @@ using InfraBanco.Modelos.Filtros;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 
 namespace Cfg.CfgUnidadeNegocioParametro
 {
@@ -45,7 +46,29 @@ namespace Cfg.CfgUnidadeNegocioParametro
 
         public List<TcfgUnidadeNegocioParametro> PorFiltro(TcfgUnidadeNegocioParametroFiltro obj)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var db = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
+                {
+                    var parametros = from L in db.TcfgUnidadeNegocioParametro
+                                     select L;
+
+                    if (obj.IdCfgUnidadeNegocio.HasValue)
+                    {
+                        parametros = parametros.Where(x => x.IdCfgUnidadeNegocio == obj.IdCfgUnidadeNegocio);
+                    }
+                    if(obj.IdCfgParametro.HasValue)
+                    {
+                        parametros = parametros.Where(x => x.IdCfgParametro == obj.IdCfgParametro);
+                    }
+
+                    return parametros.ToList();
+                }
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }

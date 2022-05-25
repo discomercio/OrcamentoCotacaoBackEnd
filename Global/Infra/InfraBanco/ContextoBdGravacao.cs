@@ -178,6 +178,8 @@ namespace InfraBanco
         public DbSet<TProdutoCatalogoPropriedade> TProdutoCatalogoPropriedades { get => contexto.TProdutoCatalogoPropriedades; }
         public DbSet<TcfgOrcamentoCotacaoStatus> TcfgOrcamentoCotacaoStatus { get => contexto.TcfgOrcamentoCotacaoStatus; }
         public DbSet<TcfgUnidadeNegocio> TcfgUnidadeNegocio { get => contexto.TcfgUnidadeNegocio; }
+        public DbSet<TcfgUnidadeNegocioParametro> TcfgUnidadeNegocioParametro { get => contexto.TcfgUnidadeNegocioParametro; }
+        
 #endif
 
         //daqui para a frente só é necessário para os testes automatizados

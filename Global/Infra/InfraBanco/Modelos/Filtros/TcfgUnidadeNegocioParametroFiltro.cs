@@ -7,5 +7,7 @@ namespace InfraBanco.Modelos.Filtros
 {
     public class TcfgUnidadeNegocioParametroFiltro : IFilter
     {
+        public int? IdCfgUnidadeNegocio { get; set; }
+        public int? IdCfgParametro { get; set; }
     }
 }

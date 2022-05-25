@@ -47,6 +47,10 @@ namespace ArClube.Mensageria
                 // create message 
                 var email = new MimeMessage();
                 email.From.Add(MailboxAddress.Parse(_email.From));
+                if (!string.IsNullOrEmpty(_email.FromDisplayName))
+                {
+                    email.From[0].Name = _email.FromDisplayName;
+                }
                 email.To.Add(MailboxAddress.Parse(_email.To));
                 if (_email.Cc != null)
                 {
@@ -54,6 +58,15 @@ namespace ArClube.Mensageria
                     {
                         if (item.Length > 2)
                             email.Cc.Add(MailboxAddress.Parse(item));
+                    }
+                }
+
+                if (_email.Bcc != null)
+                {
+                    foreach (var item in _email.Bcc.Split(';'))
+                    {
+                        if (item.Length > 2)
+                            email.Bcc.Add(MailboxAddress.Parse(item));
                     }
                 }
                 email.Subject = _email.Subject;
