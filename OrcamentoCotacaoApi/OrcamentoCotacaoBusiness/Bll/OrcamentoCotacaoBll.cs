@@ -118,8 +118,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     {
                         NumeroOrcamento = x.Id.ToString(),
                         NumPedido = String.IsNullOrEmpty(x.IdPedido) ? "-" : x.IdPedido,
-                        Cliente_Obra = $"{x.NomeCliente} - {x.NomeObra}",
-                        Vendedor = vendedores.FirstOrDefault(v => v.Id == x.IdVendedor)?.Nome,
+                        Cliente_Obra = !string.IsNullOrEmpty(x.NomeObra) ?  $"{x.NomeCliente} - {x.NomeObra}" : x.NomeCliente,
+                        Vendedor = vendedores.FirstOrDefault(v => v.Id == x.IdVendedor)?.Usuario,
                         Parceiro = parceiros.FirstOrDefault(v => v.IdIndicador == x.IdIndicador) == null ? "-" : parceiros.FirstOrDefault(v => v.IdIndicador == x.IdIndicador).Apelido,
                         VendedorParceiro = vendParceiros.FirstOrDefault(v => v.Id == x.IdIndicadorVendedor)?.Nome,
                         Valor = "0",
