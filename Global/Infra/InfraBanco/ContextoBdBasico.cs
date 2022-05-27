@@ -250,6 +250,7 @@ namespace InfraBanco
         public DbSet<TcfgTipoUsuarioPerfil> TcfgTipoUsuarioPerfis { get; set; }
         public DbSet<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContextos { get; set; }
         public DbSet<TcfgOrcamentoCotacaoStatus> TcfgOrcamentoCotacaoStatus { get; set; }
+        public DbSet<TcfgOrcamentoCotacaoEmailTemplate> TcfgOrcamentoCotacaoEmailTemplates { get; set; }
         public DbSet<TorcamentoCotacaoOpcao> TorcamentoCotacaoOpcao { get; set; }
         public DbSet<TorcamentoCotacaoEmailQueue> TorcamentoCotacaoEmailQueue { get; set; }
         public DbSet<TorcamentoCotacaoOpcaoPagto> TorcamentoCotacaoOpcaoPagtos { get; set; }

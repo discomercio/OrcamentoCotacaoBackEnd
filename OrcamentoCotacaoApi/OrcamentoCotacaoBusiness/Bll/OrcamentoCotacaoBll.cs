@@ -4,6 +4,7 @@ using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
 using Microsoft.Extensions.Options;
 using Orcamento;
+using Loja;
 using Orcamento.Dto;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
@@ -27,6 +28,8 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly OrcamentoCotacao.OrcamentoCotacaoBll _orcamentoCotacaoBll;
         private readonly InfraBanco.ContextoBdProvider _contextoBdProvider;
         private readonly OrcamentoCotacaoOpcaoBll _orcamentoCotacaoOpcaoBll;
+        private readonly OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll _orcamentoCotacaoEmailQueueBll;
+        private readonly LojaBll _lojaBll;
 
         public OrcamentoCotacaoBll(
             OrcamentoBll orcamentoBll,
@@ -38,7 +41,9 @@ namespace OrcamentoCotacaoBusiness.Bll
             PedidoPrepedidoApiBll pedidoPrepedidoApiBll,
             OrcamentoCotacao.OrcamentoCotacaoBll orcamentoCotacaoBll,
             InfraBanco.ContextoBdProvider contextoBdProvider,
-            OrcamentoCotacaoOpcaoBll orcamentoCotacaoOpcaoBll
+            OrcamentoCotacaoOpcaoBll orcamentoCotacaoOpcaoBll,
+            OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll orcamentoCotacaoEmailQueueBll,
+            LojaBll lojaBll
             )
         {
             _orcamentoBll = orcamentoBll;
@@ -51,6 +56,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             _usuarioBll = usuarioBll;
             _orcamentistaEIndicadorVendedorBll = orcamentistaEIndicadorVendedorBll;
             _appSettings = appSettings.Value;
+            _orcamentoCotacaoEmailQueueBll = orcamentoCotacaoEmailQueueBll;
+            _lojaBll = lojaBll;
         }
 
         public List<OrcamentoCotacaoListaDto> PorFiltro(TorcamentoFiltro tOrcamentoFiltro, UsuarioLogin usuarioLogin)
@@ -258,6 +265,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     var opcoes = _orcamentoCotacaoOpcaoBll.CadastrarOrcamentoCotacaoOpcoesComTransacao(orcamento.ListaOrcamentoCotacaoDto, tOrcamentoCotacao.Id,
                         usuarioLogado, dbGravacao, orcamento.Loja);
 
+                    AdicionarOrcamentoCotacaoEmailQueue(orcamento);
+
                     dbGravacao.transacao.Commit();
 
                     return ocamentoCotacao.Id;
@@ -268,6 +277,45 @@ namespace OrcamentoCotacaoBusiness.Bll
                     throw new ArgumentException("Falha ao gravar orçamento!");
                 }
             }
+
+        }
+
+        private void AdicionarOrcamentoCotacaoEmailQueue(OrcamentoRequestViewModel orcamento)
+        {
+
+            TorcamentoCotacaoEmailQueue orcamentoCotacaoEmailQueueModel = new InfraBanco.Modelos.TorcamentoCotacaoEmailQueue();
+
+            var loja = _lojaBll.PorFiltro(new InfraBanco.Modelos.Filtros.TlojaFiltro() { Loja = orcamento.Loja });
+
+            var tcfgUnidadeNegocioParametros = _orcamentoCotacaoEmailQueueBll.GetCfgUnidadeNegocioParametros(loja[0].Nome);
+            var nomeEmpresa = "";
+
+            foreach (var item in tcfgUnidadeNegocioParametros)
+            {
+                switch (item.IdCfgParametro)
+                {
+                    case 5:
+                        orcamentoCotacaoEmailQueueModel.From = item.Valor;
+                        break;
+                    case 6:
+                        orcamentoCotacaoEmailQueueModel.FromDisplayName = item.Valor;
+                        nomeEmpresa = item.Valor;
+                        break;
+                }
+            }
+
+            orcamentoCotacaoEmailQueueModel.IdCfgUnidadeNegocio = tcfgUnidadeNegocioParametros[0].IdCfgUnidadeNegocio;
+            orcamentoCotacaoEmailQueueModel.To = orcamento.ClienteOrcamentoCotacaoDto.Email;
+            orcamentoCotacaoEmailQueueModel.Cc = "";
+            orcamentoCotacaoEmailQueueModel.Bcc = "";
+
+            string[] tagHtml = new string[] {
+                        orcamento.ClienteOrcamentoCotacaoDto.NomeCliente,
+                        nomeEmpresa
+                    };
+
+            _orcamentoCotacaoEmailQueueBll.AdicionarQueue(2, orcamentoCotacaoEmailQueueModel, tagHtml);
+
         }
 
         private TorcamentoCotacao MontarTorcamentoCotacao(OrcamentoRequestViewModel orcamento, UsuarioLogin usuarioLogado)

@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace OrcamentoCotacaoEmailQueue
 {
@@ -27,6 +29,129 @@ namespace OrcamentoCotacaoEmailQueue
                 db.transacao.Commit();
                 return obj;
             }
+        }
+
+        public List<TcfgOrcamentoCotacaoEmailTemplate> GetTemplateById(int Id)
+        {
+
+            List<TcfgOrcamentoCotacaoEmailTemplate> lista = null;
+
+            using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                var templates = from t in db.TcfgOrcamentoCotacaoEmailTemplates
+                                .Where(x => x.Id == Id)
+                                select new TcfgOrcamentoCotacaoEmailTemplate
+                                {
+                                    EmailTemplateBody = t.EmailTemplateBody,
+                                    EmailTemplateSubject = t.EmailTemplateSubject
+                                };
+
+                lista = templates.ToList();
+
+            }
+            
+            return lista;
+        }
+
+        public List<TcfgUnidadeNegocioParametro> GetCfgUnidadeNegocioParametros(string nomeLoja)
+        {
+
+            var idCfgUnidadeNegocio = GetCfgUnidadeNegocio(nomeLoja);
+
+            List<TcfgUnidadeNegocioParametro> lista = null;
+
+            using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                var negocioParametros = from u in db.TcfgUnidadeNegocio
+                                join p in db.TcfgUnidadeNegocioParametro on u.Id equals p.IdCfgUnidadeNegocio into pl
+                                from parametro in pl
+                                .Where(x => x.IdCfgUnidadeNegocio == idCfgUnidadeNegocio)
+                                select new TcfgUnidadeNegocioParametro
+                                {
+                                    Id = parametro.Id,
+                                    IdCfgUnidadeNegocio = parametro.IdCfgUnidadeNegocio,
+                                    IdCfgParametro = parametro.IdCfgParametro,
+                                    Valor = parametro.Valor
+                                };
+
+                lista = negocioParametros.ToList();
+
+            }
+
+            return lista;
+        }
+
+        private int GetCfgUnidadeNegocio(string nomeLoja)
+        {
+
+            List<TcfgUnidadeNegocio> lista = null;
+
+            using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                var cfgUnidadeNegocios = from u in db.TcfgUnidadeNegocio
+                                        .Where(x => x.NomeCurto == nomeLoja)
+                                        select new TcfgUnidadeNegocio
+                                        {
+                                            Id = u.Id
+                                        };
+
+                lista = cfgUnidadeNegocios.ToList();
+
+            }
+
+            var IdCfgUnidadeNegocio = lista[0].Id;
+
+            return IdCfgUnidadeNegocio;
+        }
+
+
+
+        public bool AdicionarQueue(
+                    string emailTemplateBody,
+                    TorcamentoCotacaoEmailQueue orcamentoCotacaoEmailQueue)
+        {
+            var saida = false;
+
+            try
+            {
+                using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+                {
+
+                    db.TorcamentoCotacaoEmailQueue.Add(
+                        new InfraBanco.Modelos.TorcamentoCotacaoEmailQueue
+                        {
+
+                            IdCfgUnidadeNegocio = orcamentoCotacaoEmailQueue.IdCfgUnidadeNegocio,
+                            From = orcamentoCotacaoEmailQueue.From,
+                            FromDisplayName = orcamentoCotacaoEmailQueue.FromDisplayName,
+                            To = orcamentoCotacaoEmailQueue.To,
+                            Cc = orcamentoCotacaoEmailQueue.Cc,
+                            Bcc = orcamentoCotacaoEmailQueue.Bcc,
+                            Subject = orcamentoCotacaoEmailQueue.Subject,
+                            Body = emailTemplateBody,
+                            Sent = orcamentoCotacaoEmailQueue.Sent,
+                            DateSent = orcamentoCotacaoEmailQueue.DateSent,
+                            DateScheduled = orcamentoCotacaoEmailQueue.DateScheduled,
+                            DateCreated = DateTime.Now,
+                            Status = orcamentoCotacaoEmailQueue.Status,
+                            AttemptsQty = orcamentoCotacaoEmailQueue.AttemptsQty,
+                            DateLastAttempt = orcamentoCotacaoEmailQueue.DateLastAttempt,
+                            ErrorMsgLastAttempt = orcamentoCotacaoEmailQueue.ErrorMsgLastAttempt,
+                            Attachment = orcamentoCotacaoEmailQueue.ErrorMsgLastAttempt
+                        }); ;
+
+                    db.SaveChanges();
+                    db.transacao.Commit();
+                    saida = true;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return saida;
+
         }
 
         public bool Excluir(TorcamentoCotacaoEmailQueue obj)

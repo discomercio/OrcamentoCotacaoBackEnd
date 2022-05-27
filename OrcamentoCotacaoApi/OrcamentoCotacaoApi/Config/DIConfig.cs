@@ -102,6 +102,7 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<OrcamentoCotacaoOpcaoBll, OrcamentoCotacaoOpcaoBll>();
             services.AddTransient<ProdutoOrcamentoCotacaoBll, ProdutoOrcamentoCotacaoBll>();
             services.AddTransient<ProdutoCatalogoOrcamentoCotacaoBll, ProdutoCatalogoOrcamentoCotacaoBll>();
+            services.AddTransient<OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll, OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll>();
 
             return services;
         }
