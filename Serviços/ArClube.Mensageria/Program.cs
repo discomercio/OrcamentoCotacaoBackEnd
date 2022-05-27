@@ -54,6 +54,8 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddTransient<Cfg.CfgUnidadeNegocio.CfgUnidadeNegocioBll, Cfg.CfgUnidadeNegocio.CfgUnidadeNegocioBll>();
         services.AddTransient<Cfg.CfgUnidadeNegocio.CfgUnidadeNegocioData, Cfg.CfgUnidadeNegocio.CfgUnidadeNegocioData>();
 
+        services.AddTransient<Cfg.CfgOrcamentoCotacaoEmailTemplate.CfgOrcamentoCotacaoEmailTemplateBll, Cfg.CfgOrcamentoCotacaoEmailTemplate.CfgOrcamentoCotacaoEmailTemplateBll>();
+        services.AddTransient<Cfg.CfgOrcamentoCotacaoEmailTemplate.CfgOrcamentoCotacaoEmailTemplateData, Cfg.CfgOrcamentoCotacaoEmailTemplate.CfgOrcamentoCotacaoEmailTemplateData>();
 
         services.AddSingleton<ConfigurationBuilder, ConfigurationBuilder>();
         services.AddLogging(builder =>
