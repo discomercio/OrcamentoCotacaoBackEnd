@@ -56,6 +56,11 @@ namespace Cfg.CfgUnidadeNegocio
                         unidadeNegocio = unidadeNegocio.Where(x => x.Sigla == obj.Sigla);
                     }
 
+                    if (!string.IsNullOrEmpty(obj.NomeCurto))
+                    {
+                        unidadeNegocio = unidadeNegocio.Where(x => x.NomeCurto == obj.NomeCurto);
+                    }
+
                     return unidadeNegocio.ToList();
                 }
             }

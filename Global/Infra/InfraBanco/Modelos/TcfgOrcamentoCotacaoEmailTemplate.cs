@@ -21,7 +21,7 @@ namespace InfraBanco.Modelos
         [Column("IdCfgParametro")]
         [MaxLength(4)]
         [Required]
-        public string IdCfgParametro { get; set; }
+        public int IdCfgParametro { get; set; }
 
         [Column("NomeTemplate")]
         [MaxLength(100)]
