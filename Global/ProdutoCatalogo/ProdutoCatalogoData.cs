@@ -177,7 +177,7 @@ namespace ProdutoCatalogo
 
         public List<TprodutoCatalogo> PorFiltro(TprodutoCatalogoFiltro obj)
         {
-            List<TprodutoCatalogo> lista = null;
+
 
             try
             {
@@ -199,24 +199,21 @@ namespace ProdutoCatalogo
                                    };
 
 
-                    lista = produtos.ToList();
-
                     if (!String.IsNullOrEmpty(obj.Id))
-                        lista = lista.Where(x => x.Id == int.Parse(obj.Id)).ToList();
+                        produtos = produtos.Where(x => x.Id == int.Parse(obj.Id));
 
                     if (!String.IsNullOrEmpty(obj.Produto))
-                        lista = lista.Where(x => x.Produto.PadLeft(6, '0') == obj.Produto.PadLeft(6, '0')).ToList();
+                        produtos = produtos.Where(x => x.Produto.PadLeft(6, '0') == obj.Produto.PadLeft(6, '0'));
 
                     if (obj.Ativo)
-                        lista = lista.Where(x => x.Ativo == obj.Ativo).ToList();
+                        produtos = produtos.Where(x => x.Ativo == obj.Ativo);
+                    return produtos.ToList();
                 }
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
-
-            return lista;
         }
 
         public TprodutoCatalogo Detalhes(int id)
