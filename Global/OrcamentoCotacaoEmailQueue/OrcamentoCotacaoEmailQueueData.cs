@@ -31,128 +31,69 @@ namespace OrcamentoCotacaoEmailQueue
             }
         }
 
-        public List<TcfgOrcamentoCotacaoEmailTemplate> GetTemplateById(int Id)
-        {
+        //public List<TcfgUnidadeNegocioParametro> GetCfgUnidadeNegocioParametros(string nomeLoja)
+        //{
 
-            List<TcfgOrcamentoCotacaoEmailTemplate> lista = null;
+        //    var idCfgUnidadeNegocio = GetCfgUnidadeNegocio(nomeLoja);
 
-            using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
-            {
-                var templates = from t in db.TcfgOrcamentoCotacaoEmailTemplates
-                                .Where(x => x.Id == Id)
-                                select new TcfgOrcamentoCotacaoEmailTemplate
-                                {
-                                    EmailTemplateBody = t.EmailTemplateBody,
-                                    EmailTemplateSubject = t.EmailTemplateSubject
-                                };
+        //    List<TcfgUnidadeNegocioParametro> lista = null;
 
-                lista = templates.ToList();
+        //    using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+        //    {
+        //        var negocioParametros = from u in db.TcfgUnidadeNegocio
+        //                                join p in db.TcfgUnidadeNegocioParametro on u.Id equals p.IdCfgUnidadeNegocio into pl
+        //                                from parametro in pl
+        //                                .Where(x => x.IdCfgUnidadeNegocio == idCfgUnidadeNegocio)
+        //                                select new TcfgUnidadeNegocioParametro
+        //                                {
+        //                                    Id = parametro.Id,
+        //                                    IdCfgUnidadeNegocio = parametro.IdCfgUnidadeNegocio,
+        //                                    IdCfgParametro = parametro.IdCfgParametro,
+        //                                    Valor = parametro.Valor
+        //                                };
 
-            }
-            
-            return lista;
-        }
+        //        lista = negocioParametros.ToList();
 
-        public List<TcfgUnidadeNegocioParametro> GetCfgUnidadeNegocioParametros(string nomeLoja)
-        {
+        //    }
 
-            var idCfgUnidadeNegocio = GetCfgUnidadeNegocio(nomeLoja);
+        //    return lista;
+        //}
 
-            List<TcfgUnidadeNegocioParametro> lista = null;
+        //private int GetCfgUnidadeNegocio(string nomeLoja)
+        //{
 
-            using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
-            {
-                var negocioParametros = from u in db.TcfgUnidadeNegocio
-                                join p in db.TcfgUnidadeNegocioParametro on u.Id equals p.IdCfgUnidadeNegocio into pl
-                                from parametro in pl
-                                .Where(x => x.IdCfgUnidadeNegocio == idCfgUnidadeNegocio)
-                                select new TcfgUnidadeNegocioParametro
-                                {
-                                    Id = parametro.Id,
-                                    IdCfgUnidadeNegocio = parametro.IdCfgUnidadeNegocio,
-                                    IdCfgParametro = parametro.IdCfgParametro,
-                                    Valor = parametro.Valor
-                                };
+        //    List<TcfgUnidadeNegocio> lista = null;
 
-                lista = negocioParametros.ToList();
+        //    using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+        //    {
+        //        var cfgUnidadeNegocios = from u in db.TcfgUnidadeNegocio
+        //                                .Where(x => x.NomeCurto == nomeLoja)
+        //                                 select new TcfgUnidadeNegocio
+        //                                 {
+        //                                     Id = u.Id
+        //                                 };
 
-            }
+        //        lista = cfgUnidadeNegocios.ToList();
 
-            return lista;
-        }
+        //    }
 
-        private int GetCfgUnidadeNegocio(string nomeLoja)
-        {
+        //    var IdCfgUnidadeNegocio = lista[0].Id;
 
-            List<TcfgUnidadeNegocio> lista = null;
-
-            using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
-            {
-                var cfgUnidadeNegocios = from u in db.TcfgUnidadeNegocio
-                                        .Where(x => x.NomeCurto == nomeLoja)
-                                        select new TcfgUnidadeNegocio
-                                        {
-                                            Id = u.Id
-                                        };
-
-                lista = cfgUnidadeNegocios.ToList();
-
-            }
-
-            var IdCfgUnidadeNegocio = lista[0].Id;
-
-            return IdCfgUnidadeNegocio;
-        }
+        //    return IdCfgUnidadeNegocio;
+        //}
 
 
 
-        public bool AdicionarQueue(
-                    string emailTemplateBody,
-                    TorcamentoCotacaoEmailQueue orcamentoCotacaoEmailQueue)
-        {
-            var saida = false;
+        //public bool AdicionarQueue(
+        //            string emailTemplateBody,
+        //            TorcamentoCotacaoEmailQueue orcamentoCotacaoEmailQueue)
+        //{
+        //    var saida = false;
 
-            try
-            {
-                using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
-                {
 
-                    db.TorcamentoCotacaoEmailQueue.Add(
-                        new InfraBanco.Modelos.TorcamentoCotacaoEmailQueue
-                        {
+        //    return saida;
 
-                            IdCfgUnidadeNegocio = orcamentoCotacaoEmailQueue.IdCfgUnidadeNegocio,
-                            From = orcamentoCotacaoEmailQueue.From,
-                            FromDisplayName = orcamentoCotacaoEmailQueue.FromDisplayName,
-                            To = orcamentoCotacaoEmailQueue.To,
-                            Cc = orcamentoCotacaoEmailQueue.Cc,
-                            Bcc = orcamentoCotacaoEmailQueue.Bcc,
-                            Subject = orcamentoCotacaoEmailQueue.Subject,
-                            Body = emailTemplateBody,
-                            Sent = orcamentoCotacaoEmailQueue.Sent,
-                            DateSent = orcamentoCotacaoEmailQueue.DateSent,
-                            DateScheduled = orcamentoCotacaoEmailQueue.DateScheduled,
-                            DateCreated = DateTime.Now,
-                            Status = orcamentoCotacaoEmailQueue.Status,
-                            AttemptsQty = orcamentoCotacaoEmailQueue.AttemptsQty,
-                            DateLastAttempt = orcamentoCotacaoEmailQueue.DateLastAttempt,
-                            ErrorMsgLastAttempt = orcamentoCotacaoEmailQueue.ErrorMsgLastAttempt,
-                            Attachment = orcamentoCotacaoEmailQueue.ErrorMsgLastAttempt
-                        }); ;
-
-                    db.SaveChanges();
-                    db.transacao.Commit();
-                    saida = true;
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
-            return saida;
-
-        }
+        //}
 
         public bool Excluir(TorcamentoCotacaoEmailQueue obj)
         {
@@ -161,7 +102,44 @@ namespace OrcamentoCotacaoEmailQueue
 
         public TorcamentoCotacaoEmailQueue Inserir(TorcamentoCotacaoEmailQueue obj)
         {
-            throw new NotImplementedException();
+            
+            try
+            {
+                using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+                {
+                    db.TorcamentoCotacaoEmailQueue.Add(obj);
+                    //db.TorcamentoCotacaoEmailQueue.Add(
+                    //    new InfraBanco.Modelos.TorcamentoCotacaoEmailQueue
+                    //    {
+
+                    //        IdCfgUnidadeNegocio = obj.IdCfgUnidadeNegocio,
+                    //        From = obj.From,
+                    //        FromDisplayName = obj.FromDisplayName,
+                    //        To = obj.To,
+                    //        Cc = obj.Cc,
+                    //        Bcc = obj.Bcc,
+                    //        Subject = obj.Subject,
+                    //        Body = obj.Body,
+                    //        Sent = obj.Sent,
+                    //        DateSent = obj.DateSent,
+                    //        DateScheduled = obj.DateScheduled,
+                    //        DateCreated = DateTime.Now,
+                    //        Status = obj.Status,
+                    //        AttemptsQty = obj.AttemptsQty,
+                    //        DateLastAttempt = obj.DateLastAttempt,
+                    //        ErrorMsgLastAttempt = obj.ErrorMsgLastAttempt,
+                    //        Attachment = obj.ErrorMsgLastAttempt
+                    //    }); ;
+
+                    db.SaveChanges();
+                    db.transacao.Commit();
+                    return obj;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         public TorcamentoCotacaoEmailQueue InserirComTransacao(TorcamentoCotacaoEmailQueue model, ContextoBdGravacao contextoBdGravacao)
@@ -185,10 +163,13 @@ namespace OrcamentoCotacaoEmailQueue
 
                     if (obj.Sent.HasValue)
                     {
-                        parametros = parametros.Where(x => x.Sent == obj.Sent);
+                        if (!obj.Sent.Value)
+                            parametros = parametros.Where(x => x.Sent == obj.Sent || x.Sent == null);
+                        else
+                            parametros = parametros.Where(x => x.Sent == obj.Sent);
                     }
 
-                    parametros = parametros.Where(x => x.DateScheduled < DateTime.Now);
+                    parametros = parametros.Where(x => x.DateScheduled < DateTime.Now || x.DateScheduled == null);
 
                     if (obj.Page.HasValue || obj.RecordsPerPage.HasValue)
                     {

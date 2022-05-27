@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,7 +8,7 @@ using System.Text;
 namespace InfraBanco.Modelos
 {
     [Table("t_CFG_ORCAMENTO_COTACAO_EMAIL_TEMPLATE")]
-    public class TcfgOrcamentoCotacaoEmailTemplate
+    public class TcfgOrcamentoCotacaoEmailTemplate : IModel
     {
         [Key]
         [Column("Id")]
