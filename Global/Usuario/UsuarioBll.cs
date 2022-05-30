@@ -116,5 +116,14 @@ namespace Usuario
                         select o.Id.ToString()).ToList();
             }
         }
+
+        public List<TcfgTipoUsuarioContexto> BuscarTipoUsuarioContexto()
+        {
+            using(var db = contextoProvider.GetContextoLeitura())
+            {
+                return (from c in db.TcfgTipoUsuarioContextos
+                        select c).ToList();
+            }
+        }
     }
 }

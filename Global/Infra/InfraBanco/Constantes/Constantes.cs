@@ -30,6 +30,14 @@ namespace InfraBanco.Constantes
             VENDEDOR_DO_PARCEIRO = 3,
             CLIENTE = 4,
         }
+        public enum TipoUsuarioContexto
+        {
+            UsuarioInterno = 1,
+            Parceiro = 2,
+            VendedorParceiro = 3,
+            Cliente = 4
+        }
+
         public static class TipoUsuarioPerfil
         {
             public static eTipoUsuarioPerfil getUsuarioPerfil(TipoUsuario tipoUsuario)

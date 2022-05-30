@@ -200,10 +200,27 @@ namespace OrcamentoCotacaoBusiness.Bll
                     Tipo = orcamento.TipoCliente,
                     Uf = orcamento.UF
                 },
-                ListaOrcamentoCotacaoDto = opcao
+                ListaOrcamentoCotacaoDto = opcao,
+                CadastradoPor = VerificarContextoCadastroOrcamento(orcamento.IdTipoUsuarioContextoCadastro, usuario, parceiro, vendedorParceiro)
             };
 
             return orcamentoResponse;
+        }
+
+        private string VerificarContextoCadastroOrcamento(int idTipoUsuarioContextoCadastro, string usuario, string parceiro,
+            string vendedorParceiro)
+        {
+            var lstTipoUsuariosContexto = _usuarioBll.BuscarTipoUsuarioContexto();
+            if (lstTipoUsuariosContexto == null) return null;
+
+            var filtrado = lstTipoUsuariosContexto.Where(x => x.Id == idTipoUsuarioContextoCadastro).FirstOrDefault();
+            if (filtrado == null) return null;
+
+            if (filtrado.Id == (short)Constantes.TipoUsuarioContexto.UsuarioInterno) { return usuario; }
+            if (filtrado.Id == (short)Constantes.TipoUsuarioContexto.Parceiro) { return parceiro; }
+            if (filtrado.Id == (short)Constantes.TipoUsuarioContexto.VendedorParceiro) { return vendedorParceiro; }
+
+            return null;
         }
 
         public RemetenteDestinatarioResponseViewModel BuscarDadosParaMensageria(UsuarioLogin usuario, int id, bool usuarioIterno)
