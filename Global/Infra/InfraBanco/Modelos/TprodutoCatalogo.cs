@@ -18,6 +18,7 @@ namespace InfraBanco.Modelos
         public DateTime DtCadastro { get; set; }
         public DateTime? DtEdicao { get; set; }
         public bool Ativo { get; set; }
+        [NotMapped]
         public int? IdProdutoCatalogoImagem { get; set; }
 
         public List<TprodutoCatalogoItem> campos { get; set; }
