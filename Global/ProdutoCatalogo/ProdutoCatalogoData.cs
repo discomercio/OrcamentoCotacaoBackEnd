@@ -51,45 +51,6 @@ namespace ProdutoCatalogo
             return null;
         }
 
-        private bool AtualizarItens(TprodutoCatalogo produto)
-        {
-            var saida = false;
-
-            try
-            {
-                using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
-                {
-                    var itens = db.TprodutoCatalogoItem.Where(x => x.IdProdutoCatalogo == produto.Id);
-                    if (itens != null)
-                    {
-                        db.TprodutoCatalogoItem.RemoveRange(itens);
-                    }
-                    db.SaveChanges();
-
-                    foreach (var campo in produto.campos)
-                    {
-                        db.TprodutoCatalogoItem.Add(
-                            new TprodutoCatalogoItem
-                            {
-                                IdProdutoCatalogo = produto.Id,
-                                //IdProdutoCatalogoItens = campo.IdProdutoCatalogoItens,
-                                Valor = campo.Valor
-                            });
-                    }
-
-                    db.SaveChanges();
-                    db.transacao.Commit();
-                    saida = true;
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
-            return saida;
-        }
-
         public bool Excluir(int id)
         {
             var saida = false;
@@ -421,11 +382,20 @@ namespace ProdutoCatalogo
             {
                 using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
-                    db.TprodutoCatalogoItem.Add(produtoCatalogoItem);
+                    var existe = (from c in db.TprodutoCatalogoItem
+                               where c.IdProdutoCatalogo == produtoCatalogoItem.IdProdutoCatalogo &&
+                                     c.IdProdutoCatalogoPropriedade == produtoCatalogoItem.IdProdutoCatalogoPropriedade
+                               select c).FirstOrDefault();  
 
-                    db.SaveChanges();
-                    db.transacao.Commit();
-                    db.Dispose();
+                    if (existe == null)
+                    {
+                        db.TprodutoCatalogoItem.Add(produtoCatalogoItem);
+
+                        db.SaveChanges();
+                        db.transacao.Commit();
+                        db.Dispose();
+                    }
+                    
 
                     saida = true;
                 }
@@ -444,12 +414,22 @@ namespace ProdutoCatalogo
 
             try
             {
-                using (var db = _contexto)
+                using(var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
-                    _contexto.Database.ExecuteSqlCommand($"delete t_PRODUTO_CATALOGO_ITEM where id_produto_catalogo = {obj.Id}");
-                    db.SaveChanges();
-
+                    foreach(var item in obj.campos)
+                    {
+                        var itemResponse = (from c in db.TprodutoCatalogoItem
+                                           where c.IdProdutoCatalogo == item.IdProdutoCatalogo
+                                           select c).FirstOrDefault();
+                        if(itemResponse != null)
+                        {
+                            db.Remove(itemResponse);
+                            db.SaveChanges();
+                        }
+                    }
+                    
                     saida = true;
+                    db.transacao.Commit();
                 }
             }
             catch (Exception e)
