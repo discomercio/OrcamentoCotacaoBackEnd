@@ -36,7 +36,7 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             _logger.LogInformation("Buscando lista de parceiros");
             var usuarios = _orcamentistaEindicadorBll.PorFiltro(
-                new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro(){ vendedorId = vendedorId, loja = loja, acessoHabilitado = 1, status = Constantes.ORCAMENTISTA_INDICADOR_STATUS_ATIVO });
+                new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { vendedorId = vendedorId, loja = loja, acessoHabilitado = 1, status = Constantes.ORCAMENTISTA_INDICADOR_STATUS_ATIVO });
             usuarios.Insert(0, _orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = Constantes.SEM_INDICADOR, acessoHabilitado = 0, status = Constantes.ORCAMENTISTA_INDICADOR_STATUS_INATIVO }).FirstOrDefault());
 
             return _mapper.Map<List<OrcamentistaIndicadorResponseViewModel>>(usuarios); ;
@@ -48,7 +48,9 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             _logger.LogInformation("Buscando lista de parceiros por loja");
             var usuarios = _orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { loja = loja, acessoHabilitado = 1, status = Constantes.ORCAMENTISTA_INDICADOR_STATUS_ATIVO });
-            usuarios.Insert(0, _orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = Constantes.SEM_INDICADOR, acessoHabilitado= 0, status = Constantes.ORCAMENTISTA_INDICADOR_STATUS_INATIVO }).FirstOrDefault());
+            if (usuarios != null)
+                usuarios = usuarios.OrderBy(o => o.Apelido).ToList();
+            usuarios.Insert(0, _orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = Constantes.SEM_INDICADOR, acessoHabilitado = 0, status = Constantes.ORCAMENTISTA_INDICADOR_STATUS_INATIVO }).FirstOrDefault());
 
             return _mapper.Map<List<OrcamentistaIndicadorResponseViewModel>>(usuarios); ;
         }
