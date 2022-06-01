@@ -102,7 +102,22 @@ namespace Cep
                                              LogradouroComplemento = c.Log_complemento
                                          }).ToListAsync();
 
-            List<CepDados> lista2 = await (from c in db.LogLocalidades
+            List<CepDados> lista2 = await (from c in db.LogGrandeUsuarios
+                                           join d in db.LogLogradouros on c.Log_nu_sequencial equals d.Log_nu_sequencial
+                                           join e in db.LogBairros on c.Bai_nu_sequencial equals e.Bai_nu_sequencial
+                                           join f in db.LogLocalidades on c.Loc_nu_sequencial equals f.Loc_nu_sequencial
+                                           where c.Cep_dig.EndsWith(cep)
+                                           select new CepDados
+                                           {
+                                               Cep = c.Cep_dig,
+                                               Uf = c.Ufe_sg,
+                                               Cidade = f.Loc_nosub,
+                                               Bairro = e.Bai_no,
+                                               Endereco = d.Log_no,
+                                               LogradouroComplemento = c.Ggru_no
+                                           }).ToListAsync();
+
+            List<CepDados> lista3 = await (from c in db.LogLocalidades
                                          where c.Cep_dig.EndsWith(cep)
                                          select new CepDados
                                          {
@@ -111,7 +126,7 @@ namespace Cep
                                              Cidade = c.Loc_nosub
                                          }).ToListAsync();
 
-            List<CepDados> lista3 = await (from c in db.TcepLogradouros
+            List<CepDados> lista4 = await (from c in db.TcepLogradouros
                                          where c.Cep8_log.EndsWith(cep)
                                          select new CepDados
                                          {
@@ -123,7 +138,7 @@ namespace Cep
                                              LogradouroComplemento = c.Comple_log
                                          }).ToListAsync();
 
-            var cepDto = lista1.Union(lista2).Union(lista3).OrderBy(x => x.Cep);
+            var cepDto = lista1.Union(lista2).Union(lista3).Union(lista4).OrderBy(x => x.Cep);
 
             return cepDto;
         }
@@ -148,7 +163,24 @@ namespace Cep
                                              LogradouroComplemento = c.Log_complemento
                                          }).OrderBy(x => x.Endereco).Take(300).ToListAsync();
 
-            List<CepDados> lista2 = await (from c in db.LogLocalidades
+            List<CepDados> lista2 = await (from c in db.LogGrandeUsuarios
+                                           join d in db.LogLogradouros on c.Log_nu_sequencial equals d.Log_nu_sequencial
+                                           join e in db.LogBairros on c.Bai_nu_sequencial equals e.Bai_nu_sequencial
+                                           join f in db.LogLocalidades on c.Loc_nu_sequencial equals f.Loc_nu_sequencial
+                                           where (c.Ufe_sg == uf) &&
+                                                 (f.Loc_nosub == cidade) &&
+                                                 (d.Log_no.Contains(endereco))
+                                           select new CepDados
+                                           {
+                                               Cep = c.Cep_dig,
+                                               Uf = c.Ufe_sg,
+                                               Cidade = f.Loc_nosub,
+                                               Bairro = e.Bai_no,
+                                               Endereco = d.Log_no,
+                                               LogradouroComplemento = c.Ggru_no
+                                           }).OrderBy(x => x.Cep).Take(300).ToListAsync();
+
+            List<CepDados> lista3 = await (from c in db.LogLocalidades
                                          where c.Ufe_sg == uf &&
                                                c.Loc_nosub == endereco &&
                                                c.Cep_dig.Length > 0
@@ -159,7 +191,7 @@ namespace Cep
                                              Cidade = c.Loc_nosub
                                          }).OrderBy(x => x.Cep).Take(300).ToListAsync();
 
-            List<CepDados> lista3 = await (from c in db.TcepLogradouros
+            List<CepDados> lista4 = await (from c in db.TcepLogradouros
                                          where c.Uf_log == uf &&
                                                c.Nome_local == endereco
                                          orderby c.Uf_log, c.Nome_local, c.Extenso_bai, c.Nome_log
@@ -173,7 +205,7 @@ namespace Cep
                                              LogradouroComplemento = c.Comple_log
                                          }).OrderBy(x => x.Endereco).Take(300).ToListAsync();
 
-            var cepDto = lista1.Union(lista2).Union(lista3).OrderBy(x => x.Cep);
+            var cepDto = lista1.Union(lista2).Union(lista3).Union(lista4).OrderBy(x => x.Cep);
 
             return cepDto;
         }
