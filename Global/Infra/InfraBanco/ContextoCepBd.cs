@@ -17,6 +17,7 @@ namespace InfraBanco
         public DbSet<LogBairro> LogBairros { get; set; }
         public DbSet<LogLocalidade> LogLocalidades { get; set; }
         public DbSet<TcepLogradouro> TcepLogradouros { get; set; }
+        public DbSet<LogGrandeUsuario> LogGrandeUsuarios { get; set; }
 
     }
 }
