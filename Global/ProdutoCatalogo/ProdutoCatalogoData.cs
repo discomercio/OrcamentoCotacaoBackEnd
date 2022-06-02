@@ -145,7 +145,7 @@ namespace ProdutoCatalogo
                 using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
                     var produtos = from pc in db.TprodutoCatalogo
-                                   join f in db.Tfabricantes on pc.Fabricante equals f.Fabricante
+                                   join f in db.Tfabricante on pc.Fabricante equals f.Fabricante
                                    join pci in db.TprodutoCatalogoImagem on pc.Id equals pci.IdProdutoCatalogo into pci_l
                                    from images in pci_l.DefaultIfEmpty()
                                    select new TprodutoCatalogo
@@ -171,7 +171,7 @@ namespace ProdutoCatalogo
                     return produtos.ToList();
                 }
             }
-            catch (Exception e)
+            catch
             {
                 throw;
             }
@@ -184,7 +184,7 @@ namespace ProdutoCatalogo
                 using (var db = _contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
                     var saida = (from pc in db.TprodutoCatalogo
-                                 join f in db.Tfabricantes on pc.Fabricante equals f.Fabricante
+                                 join f in db.Tfabricante on pc.Fabricante equals f.Fabricante
                                  select new TprodutoCatalogo
                                  {
                                      Id = pc.Id,

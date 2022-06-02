@@ -4,9 +4,7 @@ using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using System;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Text;
 
 namespace OrcamentoCotacao
 {
@@ -105,7 +103,7 @@ namespace OrcamentoCotacao
                     if (obj.Tusuario)
                     {
                         saida = from c in saida
-                                join u in db.Tusuarios on c.IdVendedor equals u.Id
+                                join u in db.Tusuario on c.IdVendedor equals u.Id
                                 select new TorcamentoCotacao()
                                 {
                                     Id = c.Id,

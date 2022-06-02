@@ -65,7 +65,7 @@ namespace Loja.Bll.Bll.AcessoBll
                         */
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
-                var rsUsuario = await (from u in dbgravacao.Tusuarios
+                var rsUsuario = await (from u in dbgravacao.Tusuario
                                        where usuarioLogado.Usuario_atual == u.Usuario.Trim().ToUpper()
                                        select u).FirstOrDefaultAsync();
                 if (rsUsuario == null)
@@ -80,7 +80,7 @@ namespace Loja.Bll.Bll.AcessoBll
                 rsUsuario.SessionTokenModuloLoja = null;
                 rsUsuario.DtHrSessionTokenModuloLoja = null;
 
-                var rsHistorico = await (from u in dbgravacao.TsessaoHistoricos
+                var rsHistorico = await (from u in dbgravacao.TsessaoHistorico
                                          where usuarioLogado.Usuario_atual == u.Usuario.Trim().ToUpper()
                                          //nao testamos a data de início porque agora as sessões podem duram MUITO tempo
                                          && u.SessionCtrlTicket == ticket
@@ -124,7 +124,7 @@ namespace Loja.Bll.Bll.AcessoBll
             ret.Tusuario = null;
 
             //verificar se a loja existe
-            var lojaExiste = (from c in contextoProvider.GetContextoLeitura().Tlojas
+            var lojaExiste = (from c in contextoProvider.GetContextoLeitura().Tloja
                               where c.Loja == loja
                               select c).Any();
             if (!lojaExiste)
@@ -176,7 +176,7 @@ namespace Loja.Bll.Bll.AcessoBll
             if (rs.Vendedor_Loja != 0 && !usuarioTemAcessoLoja)
             {
                 loja = loja ?? "";
-                var existeLoja = await (from usuarioXloja in contextoProvider.GetContextoLeitura().TusuarioXLojas
+                var existeLoja = await (from usuarioXloja in contextoProvider.GetContextoLeitura().TusuarioXLoja
                                         where usuarioXloja.Usuario == usuario
                                         && usuarioXloja.Loja == loja
                                         select 1).AnyAsync();
@@ -257,7 +257,7 @@ namespace Loja.Bll.Bll.AcessoBll
              * */
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
-                var rsUsuario = await (from u in dbgravacao.Tusuarios
+                var rsUsuario = await (from u in dbgravacao.Tusuario
                                        where usuario == u.Usuario.Trim().ToUpper()
                                        select u).FirstOrDefaultAsync();
                 if (rsUsuario == null)
@@ -273,7 +273,7 @@ namespace Loja.Bll.Bll.AcessoBll
                 rsUsuario.SessionTokenModuloLoja = ticket;
                 rsUsuario.DtHrSessionTokenModuloLoja = DateTime.Now;
 
-                dbgravacao.TsessaoHistoricos.Add(new TsessaoHistorico()
+                dbgravacao.TsessaoHistorico.Add(new TsessaoHistorico()
                 {
                     Usuario = usuario,
                     SessionCtrlTicket = ticket.ToString(),
@@ -302,7 +302,7 @@ namespace Loja.Bll.Bll.AcessoBll
 
         public async Task<Tusuario> UsuarioCarregar(string usuario)
         {
-            return await (from u in contextoProvider.GetContextoLeitura().Tusuarios
+            return await (from u in contextoProvider.GetContextoLeitura().Tusuario
                           where usuario == u.Usuario.Trim().ToUpper()
                           select u).FirstOrDefaultAsync();
         }
@@ -325,7 +325,7 @@ namespace Loja.Bll.Bll.AcessoBll
             if (string.IsNullOrWhiteSpace(strUsuario))
                 return ret;
 
-            var query = from usuarioXloja in contextoProvider.GetContextoLeitura().TusuarioXLojas
+            var query = from usuarioXloja in contextoProvider.GetContextoLeitura().TusuarioXLoja
                         where usuarioXloja.Usuario == strUsuario
                         select new LojaPermtidaUsuario(usuarioXloja.Tloja.Nome, usuarioXloja.Tloja.Loja);
             var lista = await query.ToListAsync();
@@ -334,7 +334,7 @@ namespace Loja.Bll.Bll.AcessoBll
             //'	ACESSAR UMA LOJA QUE NÃO ESTÁ CADASTRADA EM t_USUARIO_X_LOJA
             if (!string.IsNullOrWhiteSpace(id_default))
             {
-                var lojaDefaultQuery = from loja in contextoProvider.GetContextoLeitura().Tlojas
+                var lojaDefaultQuery = from loja in contextoProvider.GetContextoLeitura().Tloja
                                        where loja.Loja == id_default
                                        select new LojaPermtidaUsuario(loja.Nome, loja.Loja);
                 var lojaDefault = await lojaDefaultQuery.FirstOrDefaultAsync();
@@ -351,7 +351,7 @@ namespace Loja.Bll.Bll.AcessoBll
         {
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
-                var rsUsuario = await (from u in dbgravacao.Tusuarios
+                var rsUsuario = await (from u in dbgravacao.Tusuario
                                        where usuario == u.Usuario.Trim().ToUpper()
                                        select u).FirstOrDefaultAsync();
                 if (rsUsuario == null)
@@ -367,7 +367,7 @@ namespace Loja.Bll.Bll.AcessoBll
 
         public async Task<string?> Loja_nome(string loja)
         {
-            var query = from l in contextoProvider.GetContextoLeitura().Tlojas
+            var query = from l in contextoProvider.GetContextoLeitura().Tloja
                         where l.Loja == loja
                         select l.Nome;
             var lista = await query.FirstOrDefaultAsync();
@@ -397,7 +397,7 @@ namespace Loja.Bll.Bll.AcessoBll
 
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
-                var rsUsuario = await (from u in dbgravacao.Tusuarios
+                var rsUsuario = await (from u in dbgravacao.Tusuario
                                        where usuarioLogado.Usuario_nome_atual.Trim().ToUpper() == u.Usuario.Trim().ToUpper()
                                        select u).FirstOrDefaultAsync();
                 if (rsUsuario == null)

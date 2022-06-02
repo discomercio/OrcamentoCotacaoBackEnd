@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <LangVersion>8.0</LangVersion>
     <Configurations>Debug;Release_Banco_Pedido;Release_Banco_Prepedido;Release_OrcamentoCotacao;Debug_OrcamentoCotacao</Configurations>
+    <DebugType Condition=" '$(Configuration)' == 'Release_OrcamentoCotacao' ">None</DebugType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Banco_Pedido|AnyCPU'">

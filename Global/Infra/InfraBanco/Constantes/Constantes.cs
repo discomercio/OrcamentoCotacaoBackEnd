@@ -90,7 +90,6 @@ namespace InfraBanco.Constantes
             PARCELAMENTO_CARTAO = 6
         }
 
-#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public const string T_PEDIDO_ANALISE_ENDERECO = "T_PEDIDO_ANALISE_ENDERECO";
         public const string T_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO = "T_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO";
 
@@ -109,7 +108,6 @@ namespace InfraBanco.Constantes
         public const int FATOR_CRIPTO_SESSION_CTRL = 1329;
 
         public const string COD_MARKETPLACE_ARCLUBE = "001";
-#endif
 
         public const int MAX_TAM_OBS1 = 500;
 

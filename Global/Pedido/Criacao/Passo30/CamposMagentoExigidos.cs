@@ -136,7 +136,7 @@ namespace Pedido.Criacao.Passo30
             alerta=alerta & "Código de origem do pedido (marketplace) não cadastrado: " & s_origem_pedido
         else
         */
-            var codigoDescricaoOrigem = await (from l in Criacao.ContextoProvider.GetContextoLeitura().TcodigoDescricaos
+            var codigoDescricaoOrigem = await (from l in Criacao.ContextoProvider.GetContextoLeitura().TcodigoDescricao
                                                where l.Grupo == Constantes.GRUPO_T_CODIGO_DESCRICAO__PEDIDOECOMMERCE_ORIGEM
                                                   && l.Codigo == Pedido.Marketplace.Marketplace_codigo_origem
                                                select new { l.Descricao, l.Codigo_pai }).ToListAsync();
@@ -165,7 +165,7 @@ namespace Pedido.Criacao.Passo30
                     end if 'if Not rs2.Eof then
                 */
                 var codigo_pai = codigoDescricaoOrigem[0].Codigo_pai?.Trim() ?? "";
-                var codigoDescricaoOrigemGrupo = await (from l in Criacao.ContextoProvider.GetContextoLeitura().TcodigoDescricaos
+                var codigoDescricaoOrigemGrupo = await (from l in Criacao.ContextoProvider.GetContextoLeitura().TcodigoDescricao
                                                         where l.Grupo == Constantes.GRUPO_T_CODIGO_DESCRICAO__PEDIDOECOMMERCE_ORIGEM_GRUPO
                                                            && l.Codigo == codigo_pai
                                                         select new

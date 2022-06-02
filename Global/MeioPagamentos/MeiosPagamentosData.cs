@@ -85,7 +85,7 @@ namespace MeioPagamentos
                     if (obj.IncluirTorcamentistaEIndicadorRestricaoFormaPagtos)
                     {
                         saida = from c in saida
-                                  where !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagtos
+                                  where !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
                                           where (d.Id_orcamentista_e_indicador == obj.Apelido.ToUpper() ||
                                                 d.Id_orcamentista_e_indicador == Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
                                                 d.Tipo_cliente == (obj.IdCfgTipoPessoaCliente == 1 ? Constantes.ID_PF : Constantes.ID_PJ) &&

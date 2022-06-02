@@ -84,7 +84,7 @@ Fluxo no módulo loja:
 
             //15 - Passo15: verificar a loja
             var db = ContextoProvider.GetContextoLeitura();
-            var lojaExiste = db.Tlojas.Where(c => c.Loja.Contains(pedido.Ambiente.Loja))
+            var lojaExiste = db.Tloja.Where(c => c.Loja.Contains(pedido.Ambiente.Loja))
                 .Select(c => c.Loja).FirstOrDefault();
             if (string.IsNullOrEmpty(lojaExiste))
                 retorno.ListaErrosValidacao.Add("Loja não existe!");

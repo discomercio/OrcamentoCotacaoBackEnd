@@ -77,8 +77,6 @@ namespace InfraBanco.Modelos
 
         public TecProdutoComposto TecProdutoComposto { get; set; }
 
-#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public ICollection<TprodutoLoja> TprodutoLoja { get; set; }
-#endif
     }
 }

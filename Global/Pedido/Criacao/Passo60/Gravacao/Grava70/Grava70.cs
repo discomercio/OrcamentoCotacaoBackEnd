@@ -52,7 +52,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava70
             if (!string.IsNullOrEmpty(Pedido.Cliente.Indicador))
                 return;
 
-            var tcliente = await (from c in ContextoBdGravacao.Tclientes
+            var tcliente = await (from c in ContextoBdGravacao.Tcliente
                                   where c.Id == Execucao.Id_cliente
                                   select c).FirstAsync();
             if (tcliente.Indicador == Pedido.Ambiente.Indicador)
@@ -197,7 +197,7 @@ end function
 						" AND (cancelado_status=0)" & _
 						" AND (id='" & Trim(v_desconto(k)) & "')"
 						*/
-                var descontos = await (from d in ContextoBdGravacao.Tdescontos
+                var descontos = await (from d in ContextoBdGravacao.Tdesconto
                                        where d.Usado_status == 0
                                                         && d.Cancelado_status == 0
                                                         && d.Id == v_desconto_k

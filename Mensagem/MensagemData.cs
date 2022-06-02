@@ -21,7 +21,7 @@ namespace Mensagem
         {
             using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
-                return await db.TorcamentoCotacaoMensagens
+                return await db.TorcamentoCotacaoMensagem
                                            .Where(x => x.IdOrcamentoCotacao == IdOrcamentoCotacao)
                                            .OrderByDescending(x => x.Id)
                                            .ToListAsync();
@@ -32,7 +32,7 @@ namespace Mensagem
         {
             using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
-                return await db.TorcamentoCotacaoMensagens
+                return await db.TorcamentoCotacaoMensagem
                                            .Where(x => x.IdOrcamentoCotacao == IdOrcamentoCotacao &&
                                            x.Lida == false &&
                                            x.IdUsuarioDestinatario == IdUsuarioDestinatario)
@@ -48,7 +48,7 @@ namespace Mensagem
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
-                    db.TorcamentoCotacaoMensagens.Add(
+                    db.TorcamentoCotacaoMensagem.Add(
                         new TorcamentoCotacaoMensagem
                         {
                             IdOrcamentoCotacao = orcamentoCotacaoMensagem.IdOrcamentoCotacao,
@@ -81,7 +81,7 @@ namespace Mensagem
 
             using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
-                var orcamentoCotacaoMensagem = db.TorcamentoCotacaoMensagens.Where(item => item.IdOrcamentoCotacao == IdOrcamentoCotacao && item.IdUsuarioDestinatario == IdUsuarioDestinatario);
+                var orcamentoCotacaoMensagem = db.TorcamentoCotacaoMensagem.Where(item => item.IdOrcamentoCotacao == IdOrcamentoCotacao && item.IdUsuarioDestinatario == IdUsuarioDestinatario);
 
                 if (orcamentoCotacaoMensagem != null)
                 {

@@ -49,7 +49,7 @@ namespace Cliente
                 {
                     using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_CLIENTE))
                     {
-                        Tcliente cli = await (from c in dbgravacao.Tclientes
+                        Tcliente cli = await (from c in dbgravacao.Tcliente
                                               where c.Id == clienteCadastroDados.DadosCliente.Id
                                               select c).FirstOrDefaultAsync();
 
@@ -840,7 +840,7 @@ namespace Cliente
             if (clienteCadastroDados.RefBancaria.Count > 0)
             {
                 //List<Cliente.Dados.Referencias.RefBancariaClienteDados> lstrefBancaria = (await ObterReferenciaBancaria(cli)).ToList();
-                List<TclienteRefBancaria> lstrefBancaria = (from c in dbGravacao.TclienteRefBancarias
+                List<TclienteRefBancaria> lstrefBancaria = (from c in dbGravacao.TclienteRefBancaria
                                                             where c.Id_Cliente == clienteCadastroDados.DadosCliente.Id &&
                                                                   c.Banco == clienteCadastroDados.RefBancaria[0].Banco &&
                                                                   c.Agencia == clienteCadastroDados.RefBancaria[0].Agencia &&
@@ -888,7 +888,7 @@ namespace Cliente
             {
                 foreach (var refDados in clienteCadastroDados.RefComercial)
                 {
-                    TclienteRefComercial refComercialBase = await (from c in dbGravacao.TclienteRefComercials
+                    TclienteRefComercial refComercialBase = await (from c in dbGravacao.TclienteRefComercial
                                                                    where c.Id_Cliente == clienteCadastroDados.DadosCliente.Id &&
                                                                          c.Nome_Empresa == refDados.Nome_Empresa
                                                                    select c).FirstOrDefaultAsync();
@@ -934,7 +934,7 @@ namespace Cliente
             dbGravacao.Remove(clienteCadastroDados.RefBancaria[0]);
             await dbGravacao.SaveChangesAsync();
 
-            TclienteRefBancaria refBancariaBase = await (from c in dbGravacao.TclienteRefBancarias
+            TclienteRefBancaria refBancariaBase = await (from c in dbGravacao.TclienteRefBancaria
                                                          where c.Id_Cliente == clienteCadastroDados.DadosCliente.Id
                                                          select c).FirstOrDefaultAsync();
             if (refBancariaBase != null)
@@ -1018,7 +1018,7 @@ namespace Cliente
         {
             log += "Ref Comercial excluída: ";
 
-            TclienteRefComercial refComercialBase = await (from c in dbgravacao.TclienteRefComercials
+            TclienteRefComercial refComercialBase = await (from c in dbgravacao.TclienteRefComercial
                                                            where c.Id_Cliente == id_cliente &&
                                                                  c.Ordem == refComercialDados.Ordem
                                                            select c).FirstOrDefaultAsync();

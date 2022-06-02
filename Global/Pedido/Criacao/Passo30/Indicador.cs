@@ -46,7 +46,7 @@ namespace Pedido.Criacao.Passo30
                 IQueryable<InfraBanco.Modelos.TorcamentistaEindicador> listaIndicadores;
                 if (Pedido.Ambiente.Id_param_site == InfraBanco.Constantes.Constantes.Cod_site.COD_SITE_ASSISTENCIA_TECNICA)
                 {
-                    listaIndicadores = (from orc in Criacao.ContextoProvider.GetContextoLeitura().TorcamentistaEindicadors
+                    listaIndicadores = (from orc in Criacao.ContextoProvider.GetContextoLeitura().TorcamentistaEindicador
                                         where orc.Status == "A"
                                         select orc);
                 }
@@ -79,7 +79,7 @@ namespace Pedido.Criacao.Passo30
                         || Pedido.Ambiente.Loja == Constantes.NUMERO_LOJA_OLD03_BONIFICACAO
                         || Criacao.Execucao.UsuarioPermissao.Operacao_permitida(Constantes.OP_LJA_SELECIONAR_QUALQUER_INDICADOR_EM_PEDIDO_NOVO))
                     {
-                        listaIndicadores = (from orc in Criacao.ContextoProvider.GetContextoLeitura().TorcamentistaEindicadors
+                        listaIndicadores = (from orc in Criacao.ContextoProvider.GetContextoLeitura().TorcamentistaEindicador
                                             where orc.Status == "A"
                                             select orc);
                     }
@@ -98,7 +98,7 @@ namespace Pedido.Criacao.Passo30
                         #			end if
                         #		end if
                         */
-                        listaIndicadores = (from orc in Criacao.ContextoProvider.GetContextoLeitura().TorcamentistaEindicadors
+                        listaIndicadores = (from orc in Criacao.ContextoProvider.GetContextoLeitura().TorcamentistaEindicador
                                             where orc.Status == "A"
                                             && orc.Vendedor == Pedido.Ambiente.Usuario
                                             select orc);

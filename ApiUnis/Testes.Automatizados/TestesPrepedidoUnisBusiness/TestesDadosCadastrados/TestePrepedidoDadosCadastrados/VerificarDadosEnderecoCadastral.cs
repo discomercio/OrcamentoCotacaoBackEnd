@@ -61,7 +61,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
             {
                 var db = contextoProvider.GetContextoLeitura();
 
-                var ret = (from c in db.Torcamentos
+                var ret = (from c in db.Torcamento
                            where c.Orcamento == res.IdPrePedidoCadastrado
                            select c).FirstOrDefault();
 
@@ -112,7 +112,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
             {
                 var db = contextoProvider.GetContextoLeitura();
 
-                var ret = (from c in db.Torcamentos
+                var ret = (from c in db.Torcamento
                            where c.Orcamento == res.IdPrePedidoCadastrado
                            select c).FirstOrDefault();
 

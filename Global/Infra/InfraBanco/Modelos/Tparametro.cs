@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace InfraBanco.Modelos
 {
@@ -23,10 +20,8 @@ namespace InfraBanco.Modelos
         [Required]
         public float Campo_Real { get; set; }
 
-#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         [Column("campo_texto")]
         [MaxLength(1024)]
         public string Campo_texto { get; set; }
-#endif
     }
 }

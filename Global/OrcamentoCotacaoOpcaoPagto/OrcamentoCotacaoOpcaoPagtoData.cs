@@ -51,7 +51,7 @@ namespace OrcamentoCotacaoOpcaoPagto
                 using (var db = contextoProvider.GetContextoLeitura())
                 {
 
-                    var saida = from c in db.TorcamentoCotacaoOpcaoPgtos
+                    var saida = from c in db.TorcamentoCotacaoOpcaoPgto
                                 select c;
 
                     if(obj.IdOpcao != 0)

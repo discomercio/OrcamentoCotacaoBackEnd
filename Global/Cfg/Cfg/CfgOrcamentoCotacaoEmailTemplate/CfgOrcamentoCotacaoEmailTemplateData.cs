@@ -48,7 +48,7 @@ namespace Cfg.CfgOrcamentoCotacaoEmailTemplate
 
             using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
-                var templates = from t in db.TcfgOrcamentoCotacaoEmailTemplates
+                var templates = from t in db.TcfgOrcamentoCotacaoEmailTemplate
                                 select t;
 
                 if (obj.Id.HasValue)

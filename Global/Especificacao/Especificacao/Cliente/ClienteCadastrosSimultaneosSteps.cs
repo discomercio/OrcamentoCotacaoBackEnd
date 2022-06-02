@@ -25,7 +25,7 @@ namespace Especificacao.Especificacao.Cliente
         [Given(@"Testar cadastros simultâneos com pedidosPorThread = ""(.*)"" e numeroThreads = ""(.*)""")]
         public void GivenTestarCadastrosSimultaneosComPedidosPorThreadENumeroThreads(int pedidosPorThread, int numeroThreads)
         {
-            var clientes = (from p in contextoBdProvider.GetContextoLeitura().Tclientes select p).Count();
+            var clientes = (from p in contextoBdProvider.GetContextoLeitura().Tcliente select p).Count();
             PrepararBancoDados();
 
             var threads = new List<Thread>();
@@ -35,7 +35,7 @@ namespace Especificacao.Especificacao.Cliente
 
 
             //verifica o total de pedidos criados
-            var novosClientes = (from p in contextoBdProvider.GetContextoLeitura().Tclientes select p).Count();
+            var novosClientes = (from p in contextoBdProvider.GetContextoLeitura().Tcliente select p).Count();
             Assert.Equal(clientes + 1, novosClientes);
 
             Assert.Equal(1, totalCadastrado);

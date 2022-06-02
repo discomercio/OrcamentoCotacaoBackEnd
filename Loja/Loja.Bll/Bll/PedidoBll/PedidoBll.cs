@@ -52,7 +52,7 @@ namespace Loja.Bll.PedidoBll
 
             var db = contextoProvider.GetContextoLeitura();
 
-            var lista = from p in db.Tpedidos
+            var lista = from p in db.Tpedido
                         where p.Orcamentista == apelido &&
                               p.Data >= Util.Util.LimiteDataBuscas()
                         orderby p.Pedido
@@ -1816,7 +1816,7 @@ namespace Loja.Bll.PedidoBll
 
             var db = contextoProvider.GetContextoLeitura();
 
-            PercentualMaximoDto retorno = await (from c in db.Tlojas
+            PercentualMaximoDto retorno = await (from c in db.Tloja
                                                  where c.Loja == loja
                                                  select new PercentualMaximoDto
                                                  {
@@ -3338,7 +3338,7 @@ namespace Loja.Bll.PedidoBll
             //WHERE (loja='" & loja & "')
             //AND (st_entrega<>'" & ST_ENTREGA_CANCELADO & "')
             //AND (st_entrega<>'" & ST_ENTREGA_ENTREGUE & "')"
-            List<UltimosPedidosDto> lista = await (from c in db.Tpedidos.Include(x => x.Tcliente)
+            List<UltimosPedidosDto> lista = await (from c in db.Tpedido.Include(x => x.Tcliente)
                                                    where c.Loja == loja &&
                                                          c.St_Entrega != Constantes.Constantes.ST_ENTREGA_CANCELADO &&
                                                          c.St_Entrega != Constantes.Constantes.ST_ENTREGA_ENTREGUE

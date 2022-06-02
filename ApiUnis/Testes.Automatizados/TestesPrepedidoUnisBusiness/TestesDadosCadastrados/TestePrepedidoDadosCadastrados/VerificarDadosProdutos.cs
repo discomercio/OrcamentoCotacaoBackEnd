@@ -61,7 +61,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesDadosCadastrado
             {
                 var db = contextoProvider.GetContextoLeitura();
 
-                var ret = (from c in db.TorcamentoItems
+                var ret = (from c in db.TorcamentoItem
                            where c.Orcamento == res.IdPrePedidoCadastrado
                            select c).ToList();
 

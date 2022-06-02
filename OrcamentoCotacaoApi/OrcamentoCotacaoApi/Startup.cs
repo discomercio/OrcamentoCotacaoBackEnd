@@ -50,10 +50,7 @@ namespace OrcamentoCotacaoApi
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            IConfigurationBuilder configurationBuilderVersaoApi = new ConfigurationBuilder();
-            configurationBuilderVersaoApi.AddJsonFile("versaoapi.json");
-            var appSettingsSectionVersaoApi = configurationBuilderVersaoApi.Build().GetSection("VersaoApi");
-            var nossaApiVersion = appSettingsSectionVersaoApi.Get<ConfiguracaoVersaoApi>().VersaoApi;
+            var nossaApiVersion = Configuration.GetSection("Configuracoes").GetSection("VersaoApi").Value;
 
             // Route all unknown requests to app root
             app.Use(async (context, next) =>

@@ -152,7 +152,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava17
                                     " ORDER BY" & _
                                         " data DESC"
                                         */
-                    var descontos = await (from d in ContextoBdGravacao.Tdescontos
+                    var descontos = await (from d in ContextoBdGravacao.Tdesconto
                                            where d.Usado_status == 0
                                               && d.Cancelado_status == 0
                                               && d.Id_cliente == Pedido.Cliente.Id_cliente

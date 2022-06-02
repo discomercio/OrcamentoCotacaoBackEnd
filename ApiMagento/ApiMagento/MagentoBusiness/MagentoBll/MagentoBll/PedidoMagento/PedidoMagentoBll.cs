@@ -87,7 +87,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento
             #region setup para calcular produtos
             //fazemos a verificação de loja aqui pois caso a loja não exista a busca pelos produtos não encontrará nada
             var db = contextoProvider.GetContextoLeitura();
-            var lojaExiste = await db.Tlojas.Where(c => c.Loja == indicador_vendedor_loja.loja).AnyAsync();
+            var lojaExiste = await db.Tloja.Where(c => c.Loja == indicador_vendedor_loja.loja).AnyAsync();
             if (!lojaExiste)
                 resultado.ListaErros.Add($"Loja não existe, loja = {indicador_vendedor_loja.loja}!");
 

@@ -49,7 +49,7 @@ namespace Especificacao.Ambiente.ApiMagento.PedidoMagento.ObterCodigoMarketplace
 
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.Verificacao("db.TcodigoDescricaos", this);
             var db = contextoBdProvider.GetContextoLeitura();
-            var lstTcodigo = from c in db.TcodigoDescricaos
+            var lstTcodigo = from c in db.TcodigoDescricao
                              where c.Grupo == InfraBanco.Constantes.Constantes.GRUPO_T_CODIGO_DESCRICAO__PEDIDOECOMMERCE_ORIGEM &&
                                    c.St_Inativo == 0
                              select c;

@@ -296,7 +296,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     return ocamentoCotacao.Id;
                 }
-                catch (Exception ex)
+                catch
                 {
                     dbGravacao.transacao.Rollback();
                     throw new ArgumentException("Falha ao gravar orçamento!");

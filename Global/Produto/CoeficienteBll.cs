@@ -25,7 +25,7 @@ namespace Produto
                 var db = contextoProvider.GetContextoLeitura();
 
                 //trazendo toda lista
-                var lstCoeficienteTask = from c in db.TpercentualCustoFinanceiroFornecedors
+                var lstCoeficienteTask = from c in db.TpercentualCustoFinanceiroFornecedor
                                          select new CoeficienteDados
                                          {
                                              Fabricante = c.Fabricante,
@@ -58,7 +58,7 @@ namespace Produto
                 var db = contextoProvider.GetContextoLeitura();
 
                 //trazendo toda lista
-                var lstCoeficienteTask = from c in db.TpercentualCustoFinanceiroFornecedorHistoricos
+                var lstCoeficienteTask = from c in db.TpercentualCustoFinanceiroFornecedorHistorico
                                          where
                                          c.Qtde_Parcelas == qtdeParcelas && 
                                          c.Tipo_Parcelamento == tipoParcela
@@ -97,7 +97,7 @@ namespace Produto
 
             foreach (var f in lstFornecedores)
             {
-                List<CoeficienteDados> lstCoeficienteTask = await (from c in db.TpercentualCustoFinanceiroFornecedors
+                List<CoeficienteDados> lstCoeficienteTask = await (from c in db.TpercentualCustoFinanceiroFornecedor
                                                                  where c.Fabricante == f
                                                                  select new CoeficienteDados
                                                                  {

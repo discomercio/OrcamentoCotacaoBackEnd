@@ -69,7 +69,7 @@ namespace Pedido.Criacao.Execucao
             var listaFabricantes = Pedido.ListaProdutos.Select(c => c.Fabricante).Distinct().ToList();
             var tipoParcela = Pedido.FormaPagtoCriacao.CustoFinancFornecTipoParcelamento;
             var qtdeParcelas = Pedido.FormaPagtoCriacao.CustoFinancFornecQtdeParcelas;
-            TpercentualCustoFinanceiroFornecedors_Coeficiente = await (from c in db.TpercentualCustoFinanceiroFornecedors
+            TpercentualCustoFinanceiroFornecedors_Coeficiente = await (from c in db.TpercentualCustoFinanceiroFornecedor
                                                                        where listaFabricantes.Contains(c.Fabricante) &&
                                                                            c.Tipo_Parcelamento == tipoParcela &&
                                                                            c.Qtde_Parcelas == qtdeParcelas
@@ -96,7 +96,7 @@ namespace Pedido.Criacao.Execucao
             var db = Criacao.ContextoProvider.GetContextoLeitura();
             //basta que tenha o produto!
             var listaProdutos = Pedido.ListaProdutos.Select(c => c.Produto).Distinct().ToList();
-            TprodutoLoja_Include_Tprodtuo_Tfabricante_Validado = await (from c in db.TprodutoLojas.Include(x => x.Tproduto).Include(x => x.Tfabricante)
+            TprodutoLoja_Include_Tprodtuo_Tfabricante_Validado = await (from c in db.TprodutoLoja.Include(x => x.Tproduto).Include(x => x.Tfabricante)
                                                                         where listaProdutos.Contains(c.Tproduto.Produto) &&
                                                                         c.Loja == Pedido.Ambiente.Loja
                                                                         select c).ToListAsync();

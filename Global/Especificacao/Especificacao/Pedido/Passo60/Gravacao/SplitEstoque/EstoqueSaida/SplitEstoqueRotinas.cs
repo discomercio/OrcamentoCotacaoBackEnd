@@ -59,11 +59,11 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.Estoq
         public void ZerarTodoOEstoque()
         {
             using var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
-            Insercao.Id_estoque = int.Parse((from c in db.Testoques
+            Insercao.Id_estoque = int.Parse((from c in db.Testoque
                                              select c.Id_estoque).FirstOrDefault());
-            GerenciamentoBancoSteps.LimparTabelaDbSet(db.TestoqueMovimentos);
-            GerenciamentoBancoSteps.LimparTabelaDbSet(db.TestoqueItems);
-            GerenciamentoBancoSteps.LimparTabelaDbSet(db.Testoques);
+            GerenciamentoBancoSteps.LimparTabelaDbSet(db.TestoqueMovimento);
+            GerenciamentoBancoSteps.LimparTabelaDbSet(db.TestoqueItem);
+            GerenciamentoBancoSteps.LimparTabelaDbSet(db.Testoque);
             db.SaveChanges();
             db.transacao.Commit();
         }
@@ -79,14 +79,14 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.Estoq
 
             //GerenciamentoBancoSteps.LimparTabelaDbSet(db.Testoques);
 
-            db.Testoques.Add(new InfraBanco.Modelos.Testoque()
+            db.Testoque.Add(new InfraBanco.Modelos.Testoque()
             {
                 Id_estoque = Insercao.Id_estoque.ToString(),
                 Data_ult_movimento = DateTime.Now,
                 Data_entrada = DateTime.Now,
                 Id_nfe_emitente = Id_nfe_emitente
             });
-            db.TestoqueItems.Add(new InfraBanco.Modelos.TestoqueItem()
+            db.TestoqueItem.Add(new InfraBanco.Modelos.TestoqueItem()
             {
                 Fabricante = produto.Fabricante,
                 Produto = produto.Produto,
@@ -108,14 +108,14 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.Estoq
 
             using var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
 
-            db.Testoques.Add(new InfraBanco.Modelos.Testoque()
+            db.Testoque.Add(new InfraBanco.Modelos.Testoque()
             {
                 Id_estoque = Insercao.Id_estoque.ToString(),
                 Data_ult_movimento = DateTime.Now,
                 Data_entrada = DateTime.Now,
                 Id_nfe_emitente = id_nfe_emitente
             });
-            db.TestoqueItems.Add(new InfraBanco.Modelos.TestoqueItem()
+            db.TestoqueItem.Add(new InfraBanco.Modelos.TestoqueItem()
             {
                 Fabricante = produto.Fabricante,
                 Produto = produto.Produto,
@@ -136,7 +136,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.Estoq
         {
             var produto = Produtos.Produtos[nomeProduto];
             var db = contextoBdProvider.GetContextoLeitura();
-            var estoque = (from ei in db.TestoqueItems
+            var estoque = (from ei in db.TestoqueItem
                            where ei.Produto == produto.Produto && ei.Fabricante == produto.Fabricante
                             && ei.Preco_fabricante == valor
                            select ei.Qtde - ei.Qtde_utilizada).Sum();
@@ -147,7 +147,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.Estoq
         {
             var produto = Produtos.Produtos[nomeProduto];
             var db = contextoBdProvider.GetContextoLeitura();
-            var estoque = (from ei in db.TestoqueItems
+            var estoque = (from ei in db.TestoqueItem
                            where ei.Produto == produto.Produto && ei.Fabricante == produto.Fabricante
                            select ei.Qtde - ei.Qtde_utilizada).Sum();
             Assert.Equal(saldo, estoque);
@@ -157,8 +157,8 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.Estoq
         {
             var produto = Produtos.Produtos[nomeProduto];
             var db = contextoBdProvider.GetContextoLeitura();
-            var estoque = (from ei in db.TestoqueMovimentos
-                           join e in db.Testoques on ei.Id_Estoque equals e.Id_estoque
+            var estoque = (from ei in db.TestoqueMovimento
+                           join e in db.Testoque on ei.Id_Estoque equals e.Id_estoque
                            where ei.Produto == produto.Produto && ei.Fabricante == produto.Fabricante
                                && ei.Operacao == Constantes.OP_ESTOQUE_VENDA
                                && ei.Estoque == Constantes.ID_ESTOQUE_VENDIDO
@@ -172,7 +172,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque.Estoq
         {
             var produto = Produtos.Produtos[nomeProduto];
             var db = contextoBdProvider.GetContextoLeitura();
-            var estoque = (from ei in db.TestoqueMovimentos
+            var estoque = (from ei in db.TestoqueMovimento
                            where ei.Produto == produto.Produto && ei.Fabricante == produto.Fabricante
                                && ei.Operacao == Constantes.OP_ESTOQUE_VENDA
                                && ei.Estoque == Constantes.ID_ESTOQUE_SEM_PRESENCA

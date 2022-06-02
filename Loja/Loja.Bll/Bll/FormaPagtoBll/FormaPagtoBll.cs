@@ -49,9 +49,9 @@ namespace Loja.Bll.FormaPagtoBll
 
             if (loja != Constantes.Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE && comIndicador == 1)
             {
-                lstMeioPagto = await (from c in db.TformaPagtos
+                lstMeioPagto = await (from c in db.TformaPagto
                                       where c.Hab_a_vista == 1 &&
-                                            !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagtos
+                                            !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
                                               where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
                                                     d.Id_orcamentista_e_indicador ==
                                                          Constantes.Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
@@ -68,7 +68,7 @@ namespace Loja.Bll.FormaPagtoBll
             }
             else
             {
-                lstMeioPagto = await (from c in db.TformaPagtos
+                lstMeioPagto = await (from c in db.TformaPagto
                                       where c.Hab_a_vista == 1
                                       orderby c.Ordenacao ascending
                                       select new AvistaDto
@@ -86,9 +86,9 @@ namespace Loja.Bll.FormaPagtoBll
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var formaPagtoTask = from c in db.TformaPagtos
+            var formaPagtoTask = from c in db.TformaPagto
                                  where c.Hab_parcela_unica == 1 &&
-                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagtos
+                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
                                          where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
                                                d.Id_orcamentista_e_indicador ==
                                                     Constantes.Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
@@ -114,7 +114,7 @@ namespace Loja.Bll.FormaPagtoBll
 
             var db = contextoProvider.GetContextoLeitura();
 
-            var flagTask = from c in db.TorcamentistaEIndicadorRestricaoFormaPagtos
+            var flagTask = from c in db.TorcamentistaEIndicadorRestricaoFormaPagto
                            where c.Id_orcamentista_e_indicador == apelido &&
                                  c.Id_forma_pagto == short.Parse(Constantes.Constantes.ID_FORMA_PAGTO_CARTAO) &&
                                  c.Tipo_cliente == tipo_pessoa &&
@@ -135,7 +135,7 @@ namespace Loja.Bll.FormaPagtoBll
 
             var db = contextoProvider.GetContextoLeitura();
 
-            var flagTask = from c in db.TorcamentistaEIndicadorRestricaoFormaPagtos
+            var flagTask = from c in db.TorcamentistaEIndicadorRestricaoFormaPagto
                            where c.Id_orcamentista_e_indicador == apelido &&
                                  c.Id_forma_pagto == short.Parse(Constantes.Constantes.ID_FORMA_PAGTO_CARTAO_MAQUINETA) &&
                                  c.Tipo_cliente == tipo_pessoa &&
@@ -159,9 +159,9 @@ namespace Loja.Bll.FormaPagtoBll
 
             if (comIndicador == 1)
             {
-                lst_parc_com_entrada = await (from c in db.TformaPagtos
+                lst_parc_com_entrada = await (from c in db.TformaPagto
                                               where c.Hab_parcela_unica == 1 &&
-                                                    !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagtos
+                                                    !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
                                                       where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
                                                             d.Id_orcamentista_e_indicador ==
                                                                  Constantes.Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
@@ -178,7 +178,7 @@ namespace Loja.Bll.FormaPagtoBll
             }
             else
             {
-                lst_parc_com_entrada = await (from c in db.TformaPagtos
+                lst_parc_com_entrada = await (from c in db.TformaPagto
                                               where c.Hab_a_vista == 1
                                               orderby c.Ordenacao ascending
                                               select new ParcComEntradaDto
@@ -196,9 +196,9 @@ namespace Loja.Bll.FormaPagtoBll
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var formaPagtoTask = from c in db.TformaPagtos
+            var formaPagtoTask = from c in db.TformaPagto
                                  where c.Hab_prestacao == 1 &&
-                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagtos
+                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
                                          where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
                                                d.Id_orcamentista_e_indicador ==
                                                     Constantes.Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
@@ -224,9 +224,9 @@ namespace Loja.Bll.FormaPagtoBll
             //COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__SEM_ENTRADA
             var db = contextoProvider.GetContextoLeitura();
 
-            var formaPagtoTask = from c in db.TformaPagtos
+            var formaPagtoTask = from c in db.TformaPagto
                                  where c.Hab_prestacao == 1 &&
-                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagtos
+                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
                                          where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
                                                d.Id_orcamentista_e_indicador ==
                                                     Constantes.Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
@@ -250,9 +250,9 @@ namespace Loja.Bll.FormaPagtoBll
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var formaPagtoTask = from c in db.TformaPagtos
+            var formaPagtoTask = from c in db.TformaPagto
                                  where c.Hab_prestacao == 1 &&
-                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagtos
+                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
                                          where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
                                                d.Id_orcamentista_e_indicador ==
                                                     Constantes.Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
@@ -278,7 +278,7 @@ namespace Loja.Bll.FormaPagtoBll
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var qtdeTask = from c in db.TprazoPagtoVisanets
+            var qtdeTask = from c in db.TprazoPagtoVisanet
                            where c.Tipo == Constantes.Constantes.COD_VISANET_PRAZO_PAGTO_LOJA
                            select c.Qtde_parcelas;
             int qtde = Convert.ToInt32(await qtdeTask.FirstOrDefaultAsync());

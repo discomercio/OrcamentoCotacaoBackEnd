@@ -44,7 +44,7 @@ namespace Pedido.Criacao.Passo60.Validacao
 	*/
             {
                 Criacao.Execucao.Vl_aprov_auto_analise_credito = 0;
-                var valorBd = await (from l in Criacao.ContextoProvider.GetContextoLeitura().Tcontroles
+                var valorBd = await (from l in Criacao.ContextoProvider.GetContextoLeitura().Tcontrole
                                      where l.Id_Nsu == Constantes.ID_PARAM_CAD_VL_APROV_AUTO_ANALISE_CREDITO
                                      select l.Nsu).ToListAsync();
                 if (valorBd.Any())
@@ -72,7 +72,7 @@ namespace Pedido.Criacao.Passo60.Validacao
             Criacao.Execucao.Comissao_loja_indicou = 0;
             if (!string.IsNullOrWhiteSpace(Pedido.Ambiente.Loja_indicou))
             {
-                var valorBd = await (from l in Criacao.ContextoProvider.GetContextoLeitura().Tlojas
+                var valorBd = await (from l in Criacao.ContextoProvider.GetContextoLeitura().Tloja
                                      where l.Loja == Pedido.Ambiente.Loja_indicou
                                      select l.Comissao_indicacao).ToListAsync();
                 if (valorBd.Any())

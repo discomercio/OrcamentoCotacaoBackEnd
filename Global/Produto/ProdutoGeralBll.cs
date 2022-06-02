@@ -13,7 +13,7 @@ namespace Produto
 {
     public class ProdutoGeralBll
     {
-        private readonly InfraBanco.ContextoBdProvider contextoProvider;
+        private readonly ContextoBdProvider contextoProvider;
 
         public ProdutoGeralBll(InfraBanco.ContextoBdProvider contextoProvider)
         {
@@ -61,11 +61,11 @@ namespace Produto
             return retorno;
         }
 
-        private async Task ExisteMensagensAlertaProdutos(List<Produto.Dados.ProdutoDados> lst_produtos)
+        private async Task ExisteMensagensAlertaProdutos(List<ProdutoDados> lst_produtos)
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var alertasTask = from c in db.TprodutoXAlertas
+            var alertasTask = from c in db.TprodutoXAlerta
                               where c.TalertaProduto.Ativo == "S"
                               orderby c.Dt_Cadastro, c.Id_Alerta
                               select new
@@ -93,7 +93,7 @@ namespace Produto
             }
         }
 
-        private void MontaListaRegras(List<Produto.Dados.ProdutoDados> lst_produtos, List<RegrasBll> lst_cliente_regra)
+        private void MontaListaRegras(List<ProdutoDados> lst_produtos, List<RegrasBll> lst_cliente_regra)
         {
             foreach (var p in lst_produtos)
             {
@@ -109,11 +109,11 @@ namespace Produto
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var produtosCompostosSemGrupo = await (from d in (from c in db.Tprodutos
-                                                              join pc in db.TecProdutoCompostos on c.Produto equals pc.Produto_Composto
-                                                              join pci in db.TecProdutoCompostoItems on pc.Fabricante_Composto equals pci.Fabricante_composto
-                                                              join pl in db.TprodutoLojas on pci.Produto_item equals pl.Produto
-                                                              join fab in db.Tfabricantes on c.Fabricante equals fab.Fabricante
+            var produtosCompostosSemGrupo = await (from d in (from c in db.Tproduto
+                                                              join pc in db.TecProdutoComposto on c.Produto equals pc.Produto_Composto
+                                                              join pci in db.TecProdutoCompostoItem on pc.Fabricante_Composto equals pci.Fabricante_composto
+                                                              join pl in db.TprodutoLoja on pci.Produto_item equals pl.Produto
+                                                              join fab in db.Tfabricante on c.Fabricante equals fab.Fabricante
                                                               where c.Descricao_Html != "." &&
                                                                     pl.Preco_Lista > 0 &&
                                                                     pl.Loja == loja &&
@@ -163,9 +163,9 @@ namespace Produto
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var todosProdutosTask = from c in db.Tprodutos
-                                    join pl in db.TprodutoLojas on c.Produto equals pl.Produto
-                                    join fab in db.Tfabricantes on c.Fabricante equals fab.Fabricante
+            var todosProdutosTask = from c in db.Tproduto
+                                    join pl in db.TprodutoLoja on c.Produto equals pl.Produto
+                                    join fab in db.Tfabricante on c.Fabricante equals fab.Fabricante
                                     where pl.Vendavel == "S" &&
                                           pl.Loja == loja &&
                                           c.Excluido_status == 0 &&
@@ -193,9 +193,9 @@ namespace Produto
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var todosProdutosTask = from c in db.Tprodutos
-                                    join pl in db.TprodutoLojas on c.Produto equals pl.Produto
-                                    join fab in db.Tfabricantes on c.Fabricante equals fab.Fabricante
+            var todosProdutosTask = from c in db.Tproduto
+                                    join pl in db.TprodutoLoja on c.Produto equals pl.Produto
+                                    join fab in db.Tfabricante on c.Fabricante equals fab.Fabricante
                                     where pl.Vendavel == "S" &&
                                           pl.Loja == loja &&
                                           c.Excluido_status == 0 &&
@@ -222,14 +222,14 @@ namespace Produto
             ContextoBdGravacao contextoBdGravacao)
         {
 
-            var produtoComposto = await contextoBdGravacao.Tprodutos
+            var produtoComposto = await contextoBdGravacao.Tproduto
                 .Where(x => x.Fabricante == fabricante && x.Produto == produto)
                 .Include(t => t.TecProdutoComposto.TecProdutoCompostoItems)
                 .Select(x => x).FirstOrDefaultAsync();
 
             if (produtoComposto != null) return produtoComposto;
 
-            var produtoSimples = contextoBdGravacao.Tprodutos
+            var produtoSimples = contextoBdGravacao.Tproduto
                 .Where(x => x.Fabricante == fabricante && x.Produto == produto).FirstOrDefault();
 
             if (produtoSimples == null) return null;
@@ -241,7 +241,7 @@ namespace Produto
         public async Task<TecProdutoComposto> BuscarProdutoCompostoPorFabricanteECodigoComTransacao(string fabricante,
             string produto, ContextoBdGravacao contextoBdGravacao)
         {
-            var produtoCompostoTask = from c in contextoBdGravacao.TecProdutoCompostos
+            var produtoCompostoTask = from c in contextoBdGravacao.TecProdutoComposto
                                       where c.Fabricante_Composto == fabricante && c.Produto_Composto == produto
                                       select c;
 
@@ -364,7 +364,7 @@ namespace Produto
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var produtoPropriedades = from p in db.TProdutoCatalogoPropriedades
+            var produtoPropriedades = from p in db.TProdutoCatalogoPropriedade
                                       select new Produto.Dados.ProdutoCatalogoPropriedadeDados
                                       {
                                           id = p.id,
@@ -388,7 +388,7 @@ namespace Produto
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var produtoPropriedades = from p in db.TProdutoCatalogoPropriedades
+            var produtoPropriedades = from p in db.TProdutoCatalogoPropriedade
                                       where p.IdCfgDataType == 0 && p.ordem <= 800
                                       select new Produto.Dados.ProdutoCatalogoPropriedadeDados
                                       {
@@ -414,10 +414,10 @@ namespace Produto
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var produtoItens = from pc in db.TprodutoCatalogos
-                               join pci in db.TprodutoCatalogoItems on pc.Id equals pci.IdProdutoCatalogo
-                               join pcp in db.TProdutoCatalogoPropriedades on pci.IdProdutoCatalogoPropriedade equals pcp.id
-                               join pco in db.TProdutoCatalogoPropriedadeOpcoes on pci.IdProdutoCatalogoPropriedade equals pco.id_produto_catalogo_propriedade into gj
+            var produtoItens = from pc in db.TprodutoCatalogo
+                               join pci in db.TprodutoCatalogoItem on pc.Id equals pci.IdProdutoCatalogo
+                               join pcp in db.TProdutoCatalogoPropriedade on pci.IdProdutoCatalogoPropriedade equals pcp.id
+                               join pco in db.TProdutoCatalogoPropriedadeOpcao on pci.IdProdutoCatalogoPropriedade equals pco.id_produto_catalogo_propriedade into gj
                                from x in gj.DefaultIfEmpty()
                                where pc.Id == idProdutoCatalogo
                                select new Produto.Dados.ProdutoCatalogoItemDados
@@ -441,10 +441,10 @@ namespace Produto
                 //para buscar produto com as propriedades ativas de texto
                 var db = contextoProvider.GetContextoLeitura();
 
-                var produtosAtivos = from tpc in db.TprodutoCatalogos
-                                     join tpci in db.TprodutoCatalogoItems on tpc.Id equals tpci.IdProdutoCatalogo
-                                     join tf in db.Tfabricantes on tpc.Fabricante equals tf.Fabricante
-                                     join tpcp in db.TProdutoCatalogoPropriedades on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
+                var produtosAtivos = from tpc in db.TprodutoCatalogo
+                                     join tpci in db.TprodutoCatalogoItem on tpc.Id equals tpci.IdProdutoCatalogo
+                                     join tf in db.Tfabricante on tpc.Fabricante equals tf.Fabricante
+                                     join tpcp in db.TProdutoCatalogoPropriedade on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
                                      where tpc.Ativo == true &&
                                            tpcp.IdCfgTipoPropriedade == 0 &&
                                            tpc.Id == idProduto
@@ -490,11 +490,11 @@ namespace Produto
                 //para buscar produto com as propriedades ativas de listas
                 var db = contextoProvider.GetContextoLeitura();
 
-                var produtosAtivos = from tpci in db.TprodutoCatalogoItems
-                                     join tpc in db.TprodutoCatalogos on tpci.IdProdutoCatalogo equals tpc.Id
-                                     join tf in db.Tfabricantes on tpc.Fabricante equals tf.Fabricante
-                                     join tpcpo in db.TProdutoCatalogoPropriedadeOpcoes on tpci.IdProdutoCatalogoPropriedadeOpcao equals tpcpo.id
-                                     join tpcp in db.TProdutoCatalogoPropriedades on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
+                var produtosAtivos = from tpci in db.TprodutoCatalogoItem
+                                     join tpc in db.TprodutoCatalogo on tpci.IdProdutoCatalogo equals tpc.Id
+                                     join tf in db.Tfabricante on tpc.Fabricante equals tf.Fabricante
+                                     join tpcpo in db.TProdutoCatalogoPropriedadeOpcao on tpci.IdProdutoCatalogoPropriedadeOpcao equals tpcpo.id
+                                     join tpcp in db.TProdutoCatalogoPropriedade on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
                                      where tpc.Ativo == true &&
                                            tpc.Id == idProduto
                                      select new ProdutoCatalogoItemProdutosAtivosDados
@@ -535,11 +535,11 @@ namespace Produto
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var produtosAtivos = from tpci in db.TprodutoCatalogoItems
-                                 join tpc in db.TprodutoCatalogos on tpci.IdProdutoCatalogo equals tpc.Id
-                                 join tf in db.Tfabricantes on tpc.Fabricante equals tf.Fabricante
-                                 join tpcpo in db.TProdutoCatalogoPropriedadeOpcoes on tpci.IdProdutoCatalogoPropriedadeOpcao equals tpcpo.id
-                                 join tpcp in db.TProdutoCatalogoPropriedades on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
+            var produtosAtivos = from tpci in db.TprodutoCatalogoItem
+                                 join tpc in db.TprodutoCatalogo on tpci.IdProdutoCatalogo equals tpc.Id
+                                 join tf in db.Tfabricante on tpc.Fabricante equals tf.Fabricante
+                                 join tpcpo in db.TProdutoCatalogoPropriedadeOpcao on tpci.IdProdutoCatalogoPropriedadeOpcao equals tpcpo.id
+                                 join tpcp in db.TProdutoCatalogoPropriedade on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
                                  where tpc.Ativo == true &&
                                        tpcp.oculto == false
                                  group new { tpc, tf, tpcpo } by new
@@ -573,11 +573,11 @@ namespace Produto
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var saida = from tf in db.Tfabricantes
-                        join tpc in db.TprodutoCatalogos on tf.Fabricante equals tpc.Fabricante
-                        join tpci in db.TprodutoCatalogoItems on tpc.Id equals tpci.IdProdutoCatalogo
-                        join tpcp in db.TProdutoCatalogoPropriedades on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
-                        join tpcpo in db.TProdutoCatalogoPropriedadeOpcoes on tpcp.id equals tpcpo.id_produto_catalogo_propriedade
+            var saida = from tf in db.Tfabricante
+                        join tpc in db.TprodutoCatalogo on tf.Fabricante equals tpc.Fabricante
+                        join tpci in db.TprodutoCatalogoItem on tpc.Id equals tpci.IdProdutoCatalogo
+                        join tpcp in db.TProdutoCatalogoPropriedade on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
+                        join tpcpo in db.TProdutoCatalogoPropriedadeOpcao on tpcp.id equals tpcpo.id_produto_catalogo_propriedade
                         where tpc.Id == tpci.IdProdutoCatalogo &&
                               tpc.Ativo == true &&
                               tpci.Oculto == false &&
@@ -609,10 +609,10 @@ namespace Produto
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var produtoItens = from pc in db.TprodutoCatalogos
-                               join pci in db.TprodutoCatalogoItems on pc.Id equals pci.IdProdutoCatalogo
-                               join pcp in db.TProdutoCatalogoPropriedades on pci.IdProdutoCatalogoPropriedade equals pcp.id
-                               join pco in db.TProdutoCatalogoPropriedadeOpcoes on pci.IdProdutoCatalogoPropriedade equals pco.id_produto_catalogo_propriedade into gj
+            var produtoItens = from pc in db.TprodutoCatalogo
+                               join pci in db.TprodutoCatalogoItem on pc.Id equals pci.IdProdutoCatalogo
+                               join pcp in db.TProdutoCatalogoPropriedade on pci.IdProdutoCatalogoPropriedade equals pcp.id
+                               join pco in db.TProdutoCatalogoPropriedadeOpcao on pci.IdProdutoCatalogoPropriedade equals pco.id_produto_catalogo_propriedade into gj
                                from x in gj.DefaultIfEmpty()
                                where pcp.id == IdProdutoCatalogoPropriedade
                                select new Produto.Dados.ProdutoCatalogoItemDados
@@ -632,7 +632,7 @@ namespace Produto
         {
             using (var db = contextoProvider.GetContextoLeitura())
             {
-                return await (from f in db.Tfabricantes
+                return await (from f in db.Tfabricante
                               select new Produto.Dados.FabricanteDados
                               {
                                   Fabricante = f.Fabricante,
@@ -646,7 +646,7 @@ namespace Produto
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var produtoPropriedades = from p in db.TProdutoCatalogoPropriedades
+            var produtoPropriedades = from p in db.TProdutoCatalogoPropriedade
                                       where p.IdCfgDataType == 0 && p.id == id
                                       select new Produto.Dados.ProdutoCatalogoPropriedadeDados
                                       {
@@ -671,7 +671,7 @@ namespace Produto
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var produtoPropriedades = from p in db.TProdutoCatalogoPropriedadeOpcoes
+            var produtoPropriedades = from p in db.TProdutoCatalogoPropriedadeOpcao
                                       select new Produto.Dados.ProdutoCatalogoPropriedadeOpcoesDados
                                       {
                                           id = p.id,
@@ -696,10 +696,10 @@ namespace Produto
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
-                    int maxId = db.TProdutoCatalogoPropriedades.Max(p => p.id) + 1;
-                    int maxOrdem = db.TProdutoCatalogoPropriedades.Max(p => p.ordem) + 1;
+                    int maxId = db.TProdutoCatalogoPropriedade.Max(p => p.id) + 1;
+                    int maxOrdem = db.TProdutoCatalogoPropriedade.Max(p => p.ordem) + 1;
 
-                    db.TProdutoCatalogoPropriedades.Add(
+                    db.TProdutoCatalogoPropriedade.Add(
                         new TProdutoCatalogoPropriedade
                         {
                             id = maxId,
@@ -734,7 +734,7 @@ namespace Produto
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
-                    var produtoCatalogoPropriedades = db.TProdutoCatalogoPropriedades.Where(item => item.id == produtoCatalogoPropriedade.id);
+                    var produtoCatalogoPropriedades = db.TProdutoCatalogoPropriedade.Where(item => item.id == produtoCatalogoPropriedade.id);
 
                     if (produtoCatalogoPropriedades != null)
                     {

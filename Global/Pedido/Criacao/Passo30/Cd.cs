@@ -33,7 +33,7 @@ namespace Pedido.Criacao.Passo30
 			//#			" (st_ativo <> 0)" & _
 			//#			" AND (st_habilitado_ctrl_estoque <> 0)"
 
-			var cdPermitido = await (from cd in Criacao.ContextoProvider.GetContextoLeitura().TnfEmitentes
+			var cdPermitido = await (from cd in Criacao.ContextoProvider.GetContextoLeitura().TnfEmitente
 							   where cd.Id == Pedido.Ambiente.Id_nfe_emitente_selecao_manual
 							   && cd.St_Ativo != 0
 							   && cd.St_Habilitado_Ctrl_Estoque != 0

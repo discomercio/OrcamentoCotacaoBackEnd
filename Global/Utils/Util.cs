@@ -1,16 +1,16 @@
-﻿using System;
+﻿using InfraBanco;
+using InfraBanco.Constantes;
+using InfraBanco.Modelos;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using System.Linq;
-using System.Reflection;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
-using System.ComponentModel.DataAnnotations;
-using InfraBanco;
-using InfraBanco.Constantes;
-using Microsoft.EntityFrameworkCore;
-using InfraBanco.Modelos;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace UtilsGlobais
 {
@@ -192,7 +192,7 @@ namespace UtilsGlobais
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var desc = from c in db.TcodigoDescricaos
+            var desc = from c in db.TcodigoDescricao
                        where c.Grupo == grupo && c.Codigo == cod
                        select c.Descricao;
 
@@ -786,7 +786,7 @@ namespace UtilsGlobais
         public static IQueryable<TcodigoDescricao> ListarCodigoMarketPlace(ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();
-            IQueryable<TcodigoDescricao> lstTcodigo = (from c in db.TcodigoDescricaos
+            IQueryable<TcodigoDescricao> lstTcodigo = (from c in db.TcodigoDescricao
                                                        where c.Grupo == InfraBanco.Constantes.Constantes.GRUPO_T_CODIGO_DESCRICAO__PEDIDOECOMMERCE_ORIGEM &&
                                                              c.St_Inativo == 0
                                                        select c);
@@ -816,7 +816,7 @@ namespace UtilsGlobais
 
             var db = contextoProvider.GetContextoLeitura();
 
-            Tloja tLoja = await (from c in db.Tlojas
+            Tloja tLoja = await (from c in db.Tloja
                                  where c.Loja == loja &&
                                        c.Unidade_Negocio == Constantes.COD_UNIDADE_NEGOCIO_LOJA__VRF
                                  select c).FirstOrDefaultAsync();
@@ -833,7 +833,7 @@ namespace UtilsGlobais
 
             var db = contextoProvider.GetContextoLeitura();
 
-            Tloja tLoja = await (from c in db.Tlojas
+            Tloja tLoja = await (from c in db.Tloja
                                  where c.Loja == loja &&
                                        c.Unidade_Negocio == Constantes.COD_UNIDADE_NEGOCIO_LOJA__BS
                                  select c).FirstOrDefaultAsync();
@@ -885,7 +885,7 @@ namespace UtilsGlobais
 
             var db = contextoProvider.GetContextoLeitura();
 
-            var apelidoTask = from c in db.TnfEmitentes
+            var apelidoTask = from c in db.TnfEmitente
                               where c.Id == id_nfe_emitente
                               select c.Apelido;
 
@@ -894,7 +894,6 @@ namespace UtilsGlobais
             return apelidoEmpresa;
         }
 
-#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         //O método "ObterApelidoEmpresaNfeEmitentes" está sendo duplicado porque é utilizado
         //dentro da transação do cadastro de pedido que utiliza o contexto de gravação, 
         //não fazia sentido criar uma interface de contexto apenas para um método
@@ -908,7 +907,7 @@ namespace UtilsGlobais
                 return apelidoEmpresa;
             }
 
-            var apelidoTask = from c in dbGravacao.TnfEmitentes
+            var apelidoTask = from c in dbGravacao.TnfEmitente
                               where c.Id == id_nfe_emitente
                               select c.Apelido;
 
@@ -916,14 +915,13 @@ namespace UtilsGlobais
 
             return apelidoEmpresa;
         }
-#endif
 
         public static async Task<Tparametro> BuscarRegistroParametro(string id, ContextoBdProvider contextoProvider)
         {
             //rotina get_registro_t_parametro no ASP
             var db = contextoProvider.GetContextoLeitura();
 
-            var parametroTask = from c in db.Tparametros
+            var parametroTask = from c in db.Tparametro
                                 where c.Id == id
                                 select c;
 
@@ -988,14 +986,14 @@ namespace UtilsGlobais
             if (listaBranca.IndexOf(concatenaTel) != -1) return null;
 
             string[] cpf_cnpjConsulta = new string[] { ddd, "0" + ddd };
-            var lstClienteTask = await (from c in db.Tclientes
+            var lstClienteTask = await (from c in db.Tcliente
                                         where (cpf_cnpjConsulta.Contains(c.Ddd_Res) && c.Tel_Res == tel) ||
                                               (cpf_cnpjConsulta.Contains(c.Ddd_Com) && c.Tel_Com == tel) ||
                                               (cpf_cnpjConsulta.Contains(c.Ddd_Cel) && c.Tel_Cel == tel) ||
                                               (cpf_cnpjConsulta.Contains(c.Ddd_Com_2) && c.Tel_Com_2 == tel)
                                         select c).ToListAsync();
 
-            var lstOrcamentista = await (from c in db.TorcamentistaEindicadors
+            var lstOrcamentista = await (from c in db.TorcamentistaEindicador
                                          where (cpf_cnpjConsulta.Contains(c.Ddd) && c.Telefone == tel) ||
                                                (cpf_cnpjConsulta.Contains(c.Ddd_cel) && c.Tel_cel == tel)
                                          select c).ToListAsync();
@@ -1067,11 +1065,10 @@ namespace UtilsGlobais
             return cep;
         }
 
-#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public static async Task<float> ObterPercentualDesagioRAIndicador(string indicador, ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();
-            var percDesagioIndicadorRATask = (from c in db.TorcamentistaEindicadors
+            var percDesagioIndicadorRATask = (from c in db.TorcamentistaEindicador
                                               where c.Apelido == indicador
                                               select c.Perc_Desagio_RA).FirstOrDefaultAsync();
 
@@ -1083,7 +1080,7 @@ namespace UtilsGlobais
         public static async Task<decimal> ObterLimiteMensalComprasDoIndicador(string indicador, ContextoBdProvider contextoProvider)
         {
             var db = contextoProvider.GetContextoLeitura();
-            var vlLimiteMensalCompraTask = (from c in db.TorcamentistaEindicadors
+            var vlLimiteMensalCompraTask = (from c in db.TorcamentistaEindicador
                                             where c.Apelido == indicador
                                             select c.Vl_Limite_Mensal).FirstOrDefaultAsync();
 
@@ -1094,21 +1091,13 @@ namespace UtilsGlobais
 
         public static async Task<decimal> CalcularLimiteMensalConsumidoDoIndicador(string indicador, DateTime data, ContextoBdProvider contextoProvider)
         {
-            //buscar data por ano-mes-dia]
-            //SELECT ISNULL(SUM(qtde* preco_venda),0) AS vl_total
-            //FROM t_PEDIDO tP INNER JOIN t_PEDIDO_ITEM tPI ON(tP.pedido= tPI.pedido)
-            //WHERE(st_entrega <> 'CAN') AND
-            //     (indicador = 'POLITÉCNIC') AND
-            //     (data >= '2020-02-01') AND
-            //     (data < '2020-03-01')
-
             var db = contextoProvider.GetContextoLeitura();
 
             DateTime dataInferior = new DateTime(data.Year, data.Month, 1);
             DateTime dataSuperior = dataInferior.AddMonths(1);
 
 
-            var vlTotalConsumidoTask = from c in db.TpedidoItems.Include(x => x.Tpedido)
+            var vlTotalConsumidoTask = from c in db.TpedidoItem.Include(x => x.Tpedido)
                                        where c.Tpedido.St_Entrega != "CAN" &&
                                              c.Tpedido.Indicador == indicador &&
                                              c.Tpedido.Data.HasValue &&
@@ -1122,7 +1111,7 @@ namespace UtilsGlobais
 
             decimal vlTotalConsumido = await vlTotalConsumidoTask.SumAsync(x => (short)x.qtde * x.precoVenda);
 
-            var vlTotalDevolvidoTask = from c in db.TpedidoItemDevolvidos.Include(x => x.Tpedido)
+            var vlTotalDevolvidoTask = from c in db.TpedidoItemDevolvido.Include(x => x.Tpedido)
                                        where c.Tpedido.Indicador == indicador &&
                                              c.Tpedido.Data.HasValue &&
                                              c.Tpedido.Data.Value.Date >= dataInferior &&
@@ -1138,7 +1127,6 @@ namespace UtilsGlobais
 
             return vlTotalConsumidoRetorno;
         }
-#endif
 
         public static string TransformaHora_Minutos()
         {

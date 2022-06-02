@@ -25,7 +25,7 @@ namespace Orcamento
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
                     List<OrcamentoCotacaoListaDto> saida = (from c in db.TorcamentoCotacao
-                                                            join d in db.Tusuarios on c.IdVendedor equals d.Id
+                                                            join d in db.Tusuario on c.IdVendedor equals d.Id
                                                             where c.DataCadastro > DateTime.Now.AddDays(-60)
                                                                     && c.Status != 7 //CANCELADOS
                                                                     && c.Loja == filtro.Loja
@@ -70,7 +70,7 @@ namespace Orcamento
                     {
                         foreach (var item in saida)
                         {
-                            if(db.TorcamentoCotacaoMensagens.Any(x=> 
+                            if(db.TorcamentoCotacaoMensagem.Any(x=> 
                                 x.IdUsuarioDestinatario == filtro.IdUsuario &&
                                 x.Lida == false))
                             {
@@ -97,7 +97,7 @@ namespace Orcamento
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
-                    List<OrcamentoCotacaoListaDto> saida = (from c in db.Torcamentos
+                    List<OrcamentoCotacaoListaDto> saida = (from c in db.Torcamento
                                                             join vp in db.TorcamentistaEIndicadorVendedor on c.IdIndicadorVendedor equals vp.Id into gj
                                                             from loj in gj.DefaultIfEmpty()
                                                             where c.Data > DateTime.Now.AddDays(-60)

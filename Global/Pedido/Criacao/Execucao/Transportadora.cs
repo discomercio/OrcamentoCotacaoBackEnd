@@ -125,7 +125,7 @@ namespace Pedido.Criacao.Execucao
             */
 
             var db = contextoBdProvider.GetContextoLeitura();
-            var transportadoraCep = await (from c in db.TtransportadoraCeps
+            var transportadoraCep = await (from c in db.TtransportadoraCep
                                            where (c.Tipo_range == 1 && c.Cep_unico == cep) ||
                                                  (
                                                      c.Tipo_range == 2 &&

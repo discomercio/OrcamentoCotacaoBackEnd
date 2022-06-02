@@ -50,7 +50,7 @@ namespace OrcamentoCotacaoOpcaoItemUnificado
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
-                    var saida = from c in db.TorcamentoCotacaoItemUnificados
+                    var saida = from c in db.TorcamentoCotacaoItemUnificado
                                 select c;
 
                     if(obj.IdOpcao != 0)

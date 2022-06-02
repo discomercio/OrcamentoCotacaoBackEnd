@@ -30,7 +30,7 @@ namespace Prepedido.PedidoVisualizacao
 
             var db = contextoProvider.GetContextoLeitura();
 
-            var lista = from p in db.Tpedidos
+            var lista = from p in db.Tpedido
                         where p.Orcamentista == apelido &&
                               p.Data >= Util.LimiteDataBuscas()
                         orderby p.Pedido
@@ -81,8 +81,8 @@ namespace Prepedido.PedidoVisualizacao
         {
             using (var db = contextoProvider.GetContextoLeitura())
             {
-                List<OrcamentoCotacaoListaDto> saida = (from c in db.Tpedidos
-                                                        join vp in db.TorcamentistaEindicadorVendedors on c.IdIndicadorVendedor equals vp.Id into gj
+                List<OrcamentoCotacaoListaDto> saida = (from c in db.Tpedido
+                                                        join vp in db.TorcamentistaEindicadorVendedor on c.IdIndicadorVendedor equals vp.Id into gj
                                                         from loj in gj.DefaultIfEmpty()
                                                         where c.Data > DateTime.Now.AddDays(-60)
                                                                 && c.St_Entrega != "CAN" //CANCELADOS
@@ -96,7 +96,7 @@ namespace Prepedido.PedidoVisualizacao
                                                             Vendedor = c.Vendedor,
                                                             Parceiro = !String.IsNullOrEmpty(c.Indicador) ? c.Indicador : "-",
                                                             VendedorParceiro = loj.Nome,
-                                                            Valor = db.TpedidoItems.Where(x=>x.Pedido == c.Pedido).Sum(x=>x.Preco_Venda * x.Qtde.Value).ToString(),
+                                                            Valor = db.TpedidoItem.Where(x=>x.Pedido == c.Pedido).Sum(x=>x.Preco_Venda * x.Qtde.Value).ToString(),
                                                             Orcamentista = c.Orcamentista,
                                                             Status = c.St_Entrega,
                                                             VistoEm = "",
@@ -137,7 +137,7 @@ namespace Prepedido.PedidoVisualizacao
             var db = contextoProvider.GetContextoLeitura();
 
             //inclui um filtro para não trazer os filhos na listagem do pedido
-            var lista = db.Tpedidos.
+            var lista = db.Tpedido.
                 Where(r => r.Indicador == apelido);
 
             switch (tipoBusca)
@@ -169,7 +169,7 @@ namespace Prepedido.PedidoVisualizacao
             //para trazer o valor total do pedido e não o total da familia
             foreach (var i in await lista.ToListAsync())
             {
-                var itens = from c in db.TpedidoItems
+                var itens = from c in db.TpedidoItem
                             where c.Pedido == i.Pedido
                             select c;
 
@@ -215,7 +215,7 @@ namespace Prepedido.PedidoVisualizacao
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var lista = (from c in db.Tpedidos
+            var lista = (from c in db.Tpedido
                          where c.Orcamentista == apelido &&
                                c.Data >= Util.LimiteDataBuscas()
                          orderby c.Tcliente.Cnpj_Cpf
@@ -234,7 +234,7 @@ namespace Prepedido.PedidoVisualizacao
 
         private async Task<DadosClienteCadastroDados> ObterDadosCliente(Tpedido pedido)
         {
-            var dadosCliente = from c in contextoProvider.GetContextoLeitura().Tclientes
+            var dadosCliente = from c in contextoProvider.GetContextoLeitura().Tcliente
                                where c.Id == pedido.Id_Cliente
                                select c;
             var cli = await dadosCliente.FirstOrDefaultAsync();
@@ -280,7 +280,7 @@ namespace Prepedido.PedidoVisualizacao
 
         private async Task<DadosClienteCadastroDados> ObterDadosClientePedido(Tpedido pedido)
         {
-            var dadosCliente = from c in contextoProvider.GetContextoLeitura().Tclientes
+            var dadosCliente = from c in contextoProvider.GetContextoLeitura().Tcliente
                                where c.Id == pedido.Id_Cliente
                                select c;
             var cli = await dadosCliente.FirstOrDefaultAsync();
@@ -330,7 +330,7 @@ namespace Prepedido.PedidoVisualizacao
 
             string retorno = "";
 
-            Tloja lojaTask = await (from c in db.Tlojas
+            Tloja lojaTask = await (from c in db.Tloja
                                     where c.Loja == loja
                                     select c).SingleOrDefaultAsync();
 
@@ -388,7 +388,7 @@ namespace Prepedido.PedidoVisualizacao
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            List<TpedidoItem> produtosItens = await (from c in db.TpedidoItems
+            List<TpedidoItem> produtosItens = await (from c in db.TpedidoItem
                                                      where c.Pedido == numPedido
                                                      orderby c.Sequencia
                                                      select c).ToListAsync();
@@ -447,7 +447,7 @@ namespace Prepedido.PedidoVisualizacao
                 pedido_pai = numPedido;
             }
 
-            var pedido = from c in db.Tpedidos
+            var pedido = from c in db.Tpedido
                          where c.Pedido.Contains(pedido_pai)
                          select c;
 
@@ -476,7 +476,7 @@ namespace Prepedido.PedidoVisualizacao
             var vlTotalDestePedidoTask = lstProdutoTask.Result.Select(r => r.VlTotalItem).Sum();
 
             //buscar valor total de devoluções NF
-            var vlDevNf = from c in db.TpedidoItemDevolvidos
+            var vlDevNf = from c in db.TpedidoItemDevolvido
                           where c.Pedido.StartsWith(pedido_pai)
                           select c.Qtde * c.Preco_NF;
             var vl_TotalFamiliaDevolucaoPrecoNFTask = vlDevNf.Select(r => r.Value).SumAsync();
@@ -599,7 +599,7 @@ namespace Prepedido.PedidoVisualizacao
         private async Task<decimal> CalcularVltotalFamiliPrecoNF(string numPedido)
         {
             var db = contextoProvider.GetContextoLeitura();
-            var familiaTask = from c in db.TpedidoItems
+            var familiaTask = from c in db.TpedidoItem
                               where c.Tpedido.St_Entrega != Constantes.ST_ENTREGA_CANCELADO &&
                                     c.Tpedido.Pedido.Contains(numPedido)
                               select new
@@ -618,7 +618,7 @@ namespace Prepedido.PedidoVisualizacao
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var vlFamiliaP = from c in db.TpedidoPagamentos
+            var vlFamiliaP = from c in db.TpedidoPagamento
                              where c.Pedido.StartsWith(numPedido)
                              select c;
             var vl_TotalFamiliaPagoTask = vlFamiliaP.Select(r => r.Valor).SumAsync();
@@ -652,7 +652,7 @@ namespace Prepedido.PedidoVisualizacao
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var transportadora = from c in db.Ttransportadoras
+            var transportadora = from c in db.Ttransportadora
                                  where c.Id == idTransportadora
                                  select c.Nome;
             var retorno = await transportadora.Select(r => r.ToString()).FirstOrDefaultAsync();
@@ -673,7 +673,7 @@ namespace Prepedido.PedidoVisualizacao
              */
 
             var db = contextoProvider.GetContextoLeitura();
-            var countTask = from c in db.TpedidoItemDevolvidos
+            var countTask = from c in db.TpedidoItemDevolvido
                             where c.Pedido == p.Pedido
                             select c;
             int countItemDevolvido = await countTask.CountAsync();
@@ -860,9 +860,9 @@ namespace Prepedido.PedidoVisualizacao
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var leftJoin = (from a in db.TcodigoDescricaos.Where(x => x.Grupo ==
+            var leftJoin = (from a in db.TcodigoDescricao.Where(x => x.Grupo ==
                                 Constantes.GRUPO_T_CODIGO_DESCRICAO__OCORRENCIAS_EM_PEDIDOS__MOTIVO_ABERTURA)
-                            join b in db.TpedidoOcorrencias
+                            join b in db.TpedidoOcorrencia
                                  on a.Codigo equals b.Cod_Motivo_Abertura into juncao
                             from j in juncao.Where(x => x.Pedido == numPedido).ToList()
                             select new
@@ -883,7 +883,7 @@ namespace Prepedido.PedidoVisualizacao
                     ocorre.Situacao = "FINALIZADA";
                 else
                 {
-                    ocorre.Situacao = (from c in db.TpedidoOcorrenciaMensagems
+                    ocorre.Situacao = (from c in db.TpedidoOcorrenciaMensagem
                                        where c.Id_Ocorrencia == x.juncao.Id &&
                                              c.Fluxo_Mensagem == Constantes.COD_FLUXO_MENSAGEM_OCORRENCIAS_EM_PEDIDOS__CENTRAL_PARA_LOJA
                                        select c).Count() > 0 ? "EM ANDAMENTO" : "ABERTA";
@@ -914,7 +914,7 @@ namespace Prepedido.PedidoVisualizacao
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var msg = from c in db.TpedidoOcorrenciaMensagems
+            var msg = from c in db.TpedidoOcorrenciaMensagem
                       where c.Id_Ocorrencia == idOcorrencia
                       select new MensagemOcorrenciaPedidoDados
                       {
@@ -971,7 +971,7 @@ namespace Prepedido.PedidoVisualizacao
             {
                 var db = contextoProvider.GetContextoLeitura();
 
-                var ret = from c in db.Tpedidos
+                var ret = from c in db.Tpedido
                           where c.Pedido == numero_pedido && c.Indicador == apelido
                           select new { analise_credito_data = c.Analise_credito_Data, analise_credito_usuario = c.Analise_Credito_Usuario };
 
@@ -1000,13 +1000,13 @@ namespace Prepedido.PedidoVisualizacao
             var db = contextoProvider.GetContextoLeitura();
 
             //buscar o valor total pago
-            var vlFamiliaP = from c in db.TpedidoPagamentos
+            var vlFamiliaP = from c in db.TpedidoPagamento
                              where c.Pedido.StartsWith(numPedido)
                              select c;
             var vl_TotalFamiliaPagoTask = vlFamiliaP.Select(r => r.Valor).SumAsync();
 
             //buscar valor total NF
-            var vlNf = from c in db.TpedidoItems
+            var vlNf = from c in db.TpedidoItem
                        where c.Tpedido.St_Entrega != Constantes.ST_ENTREGA_CANCELADO && c.Tpedido.Pedido.StartsWith(numPedido)
                        select c.Qtde * c.Preco_NF;
             var vl_TotalFamiliaPrecoNFTask = vlNf.Select(r => r.Value).SumAsync();
@@ -1021,7 +1021,7 @@ namespace Prepedido.PedidoVisualizacao
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var vlTotalVendaPorItem = from c in db.TpedidoItems
+            var vlTotalVendaPorItem = from c in db.TpedidoItem
                                       where c.Tpedido.St_Entrega != Constantes.ST_ENTREGA_CANCELADO && c.Tpedido.Pedido.StartsWith(numPedido)
                                       select new { venda = c.Qtde * c.Preco_Venda, nf = c.Qtde * c.Preco_NF };
 
@@ -1037,7 +1037,7 @@ namespace Prepedido.PedidoVisualizacao
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var lista = from c in db.TpedidoItemDevolvidos
+            var lista = from c in db.TpedidoItemDevolvido
                         where c.Pedido.StartsWith(numPedido)
                         select new ProdutoDevolvidoPedidoDados
                         {
@@ -1057,7 +1057,7 @@ namespace Prepedido.PedidoVisualizacao
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var lista = from c in db.TpedidoPerdas
+            var lista = from c in db.TpedidoPerda
                         where c.Pedido == numPedido
                         select new PedidoPerdasPedidoDados
                         {
@@ -1074,7 +1074,7 @@ namespace Prepedido.PedidoVisualizacao
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var prod = from c in db.TestoqueMovimentos
+            var prod = from c in db.TestoqueMovimento
                        where c.Anulado_Status == 0 &&
                              c.Pedido == numPedido &&
                              c.Fabricante == fabricante &&
@@ -1092,7 +1092,7 @@ namespace Prepedido.PedidoVisualizacao
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var prod = from c in db.TestoqueMovimentos
+            var prod = from c in db.TestoqueMovimento
                        where c.Anulado_Status == 0 &&
                              c.Pedido == numPedido &&
                              c.Fabricante == fabricante &&
@@ -1188,7 +1188,7 @@ namespace Prepedido.PedidoVisualizacao
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var p = from c in db.Tpedidos
+            var p = from c in db.Tpedido
                     where c.Pedido == ped.Pedido && c.Indicador == ped.Indicador
                     select c;
 

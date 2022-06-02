@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using NLog.Extensions.Logging;
 using NLog.Web;
+using System;
 
 namespace OrcamentoCotacaoApi
 {
@@ -60,7 +53,10 @@ namespace OrcamentoCotacaoApi
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>().ConfigureLogging(logging =>
+            .UseUrls("http://0.0.0.0:3101")
+            .UseStartup<Startup>()
+
+                .ConfigureLogging(logging =>
                 {
                     /*
                     para remover o |10400|WARN|Microsoft.EntityFrameworkCore.Model.Validation|Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data, this mode should only be enabled during development.|
@@ -77,6 +73,5 @@ namespace OrcamentoCotacaoApi
 #endif
                 })
                 .UseNLog();
-        //.UseUrls("http://arclubeorcamentocotacaoapi.itssolucoes.com.br/");
     }
 }

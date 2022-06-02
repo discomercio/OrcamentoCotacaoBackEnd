@@ -36,8 +36,8 @@ namespace Pedido.Criacao.Passo30
 
             //vamos verificar se é um dos permitidos
             var bd = Criacao.ContextoProvider.GetContextoLeitura();
-            var sqlString = (from p in bd.Tpedidos
-                             join c in bd.Tclientes on p.Id_Cliente equals c.Id
+            var sqlString = (from p in bd.Tpedido
+                             join c in bd.Tcliente on p.Id_Cliente equals c.Id
                              where c.Cnpj_Cpf == Pedido.Cliente.Cnpj_Cpf && p.St_Entrega == Constantes.ST_ENTREGA_ENTREGUE
                              select p.Pedido);
             var listaPedidos = await sqlString.ToListAsync();

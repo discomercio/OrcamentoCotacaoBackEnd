@@ -380,7 +380,7 @@ namespace Cliente
                 return lstErros;
 
 
-            var dados = from c in db.Tclientes
+            var dados = from c in db.Tcliente
                         where c.Id == dadosClienteCadastroDados.Id
                         select c;
             var cli = await dados.FirstOrDefaultAsync();
@@ -427,13 +427,13 @@ namespace Cliente
 
             var db = contextoProvider.GetContextoLeitura();
 
-            var dadosCliente = db.Tclientes.Where(r => r.Cnpj_Cpf == cpf_cnpj)
+            var dadosCliente = db.Tcliente.Where(r => r.Cnpj_Cpf == cpf_cnpj)
                 .FirstOrDefault();
 
             if (dadosCliente == null)
                 return null;
 
-            var lojaOrcamentista = (from c in db.TorcamentistaEindicadors
+            var lojaOrcamentista = (from c in db.TorcamentistaEindicador
                                     where c.Apelido == apelido
                                     select c.Loja).FirstOrDefaultAsync();
 
@@ -455,7 +455,7 @@ namespace Cliente
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var bancos = from c in db.Tbancos
+            var bancos = from c in db.Tbanco
                          orderby c.Codigo
                          select new Cliente.Dados.ListaBancoDados
                          {
@@ -470,7 +470,7 @@ namespace Cliente
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            string loja = await (from c in db.TorcamentistaEindicadors
+            string loja = await (from c in db.TorcamentistaEindicador
                                  where c.Apelido == apelido
                                  select c.Loja).FirstOrDefaultAsync();
 
@@ -479,7 +479,7 @@ namespace Cliente
 
         public async Task<IEnumerable<EnderecoEntregaJustificativaDados>> ListarComboJustificaEnderecoPorLoja(ContextoBd db, string loja)
         {
-            var retorno = from c in db.TcodigoDescricaos
+            var retorno = from c in db.TcodigoDescricao
                           where c.Grupo == Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA &&
                           (c.Lojas_Habilitadas == null || c.Lojas_Habilitadas.Length == 0 || c.Lojas_Habilitadas.Contains("|" + loja + "|")) &&
                           (c.St_Inativo == 0 || c.Codigo == "")
@@ -548,8 +548,8 @@ namespace Cliente
             var db = contextoProvider.GetContextoLeitura();
 
             //selecionamos as referências bancárias já incluindo a descrição do banco
-            var rBanco = from c in db.TclienteRefBancarias
-                         join banco in db.Tbancos on c.Banco equals banco.Codigo
+            var rBanco = from c in db.TclienteRefBancaria
+                         join banco in db.Tbanco on c.Banco equals banco.Codigo
                          where c.Id_Cliente == cli.Id
                          orderby c.Ordem
                          select new { c.Banco, c.Agencia, c.Conta, c.Contato, c.Ddd, c.Telefone, banco.Descricao, c.Ordem };
@@ -578,7 +578,7 @@ namespace Cliente
             List<Cliente.Dados.Referencias.RefComercialClienteDados> lstRefComercial = new List<Cliente.Dados.Referencias.RefComercialClienteDados>();
             var db = contextoProvider.GetContextoLeitura();
 
-            var rComercial = from c in db.TclienteRefComercials
+            var rComercial = from c in db.TclienteRefComercial
                              where c.Id_Cliente == cli.Id
                              orderby c.Ordem
                              select c;
@@ -622,7 +622,7 @@ namespace Cliente
 
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_CLIENTE))
             {
-                var verifica = await (from c in dbgravacao.Tclientes
+                var verifica = await (from c in dbgravacao.Tcliente
                                       where c.Cnpj_Cpf == clienteCadastroDados.DadosCliente.Cnpj_Cpf
                                       select c.Id).FirstOrDefaultAsync();
 
@@ -814,7 +814,7 @@ namespace Cliente
         {
             var db = contextoProvider.GetContextoLeitura();
             cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
-            var retorno = await ((from c in db.Tclientes
+            var retorno = await ((from c in db.Tcliente
                                   where c.Cnpj_Cpf == cpf_cnpj
                                   select c.Id).AnyAsync());
             return retorno;
@@ -824,7 +824,7 @@ namespace Cliente
         {
             var db = contextoProvider.GetContextoLeitura();
             cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
-            IQueryable<Tcliente> retorno = (from c in db.Tclientes
+            IQueryable<Tcliente> retorno = (from c in db.Tcliente
                                             where c.Cnpj_Cpf == cpf_cnpj
                                             select c);
             return retorno;
@@ -836,7 +836,7 @@ namespace Cliente
 
             cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
 
-            retorno = await (from c in db.Tclientes
+            retorno = await (from c in db.Tcliente
                              where c.Cnpj_Cpf == cpf_cnpj
                              select c.Id).FirstOrDefaultAsync();
             return retorno;

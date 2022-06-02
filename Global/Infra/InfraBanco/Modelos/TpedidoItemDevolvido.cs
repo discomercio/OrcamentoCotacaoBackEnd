@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
 
 namespace InfraBanco.Modelos
@@ -56,12 +53,10 @@ namespace InfraBanco.Modelos
         [MaxLength(10)]
         public string Subgrupo { get; set; }
 
-#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public Tpedido Tpedido { get; set; }
 
         [Column("preco_venda", TypeName = "money")]
         [Required]
         public decimal Preco_Venda { get; set; }
-#endif
     }
 }

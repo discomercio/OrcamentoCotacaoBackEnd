@@ -41,29 +41,29 @@ namespace Especificacao.Testes.Utils.BancoTestes
             switch (tabela)
             {
                 case "t_PRODUTO_LOJA":
-                    LimparTabelaDbSet<TprodutoLoja>(db.TprodutoLojas);
+                    LimparTabelaDbSet<TprodutoLoja>(db.TprodutoLoja);
                     break;
                 case "t_PERCENTUAL_CUSTO_FINANCEIRO_FORNECEDOR":
                     LimparTabelaDbSet<TpercentualCustoFinanceiroFornecedor>(db.TpercentualCustoFinanceiroFornecedors);
                     break;
                 case "t_PRAZO_PAGTO_VISANET":
-                    LimparTabelaDbSet<TprazoPagtoVisanet>(db.TprazoPagtoVisanets);
+                    LimparTabelaDbSet<TprazoPagtoVisanet>(db.TprazoPagtoVisanet);
                     break;
                 case "t_CLIENTE":
-                    LimparTabelaDbSet<Tcliente>(db.Tclientes);
+                    LimparTabelaDbSet<Tcliente>(db.Tcliente);
                     break;
                 case "t_PEDIDO":
-                    LimparTabelaDbSet<Tpedido>(db.Tpedidos);
-                    LimparTabelaDbSet<TpedidoItem>(db.TpedidoItems);
+                    LimparTabelaDbSet<Tpedido>(db.Tpedido);
+                    LimparTabelaDbSet<TpedidoItem>(db.TpedidoItem);
                     break;
                 case "t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD":
-                    LimparTabelaDbSet<TwmsRegraCdXUfXPessoaXCd>(db.TwmsRegraCdXUfXPessoaXCds);
+                    LimparTabelaDbSet<TwmsRegraCdXUfXPessoaXCd>(db.TwmsRegraCdXUfXPessoaXCd);
                     break;
                 case "t_NFe_EMITENTE":
-                    LimparTabelaDbSet<TnfEmitente>(db.TnfEmitentes);
+                    LimparTabelaDbSet<TnfEmitente>(db.TnfEmitente);
                     break;
                 case "t_DESCONTO":
-                    LimparTabelaDbSet<Tdesconto>(db.Tdescontos);
+                    LimparTabelaDbSet<Tdesconto>(db.Tdesconto);
                     break;
                 default:
                     Testes.Utils.LogTestes.LogOperacoes2.Excecao($"Especificacao.Testes.Utils.BancoTestes.InicializarBancoGeral.LimparTabela nome de tabela desconhecido: {tabela}" + $"StackTrace: '{Environment.StackTrace}'", this);
@@ -113,7 +113,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_CLIENTE", "cnpj_cpf", valor_cnpj_cpf, campo, valor_desejado, this);
 
             var db = this.contextoBdProvider.GetContextoLeitura();
-            var registro = (from cliente in db.Tclientes where cliente.Cnpj_Cpf == valor_cnpj_cpf select cliente).ToList();
+            var registro = (from cliente in db.Tcliente where cliente.Cnpj_Cpf == valor_cnpj_cpf select cliente).ToList();
             //só deve ter um registro
             Assert.Single(registro);
             VerificarCampoEmRegistro.VerificarRegistro<Tcliente>(campo, valor_desejado, registro[0]);
@@ -127,7 +127,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO", "pedido", String.Join("; ", listaPedidos), campo, valor_desejado, this);
 
             var db = this.contextoBdProvider.GetContextoLeitura();
-            var registros = (from pedido in db.Tpedidos where listaPedidos.Contains(pedido.Pedido) select pedido).ToList();
+            var registros = (from pedido in db.Tpedido where listaPedidos.Contains(pedido.Pedido) select pedido).ToList();
             //deve ter um ou mais registros
             Assert.True(registros.Any());
 
@@ -143,7 +143,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("t_PEDIDO_ITEM", "pedido", pedido, campo, valor_desejado, this);
 
             var db = this.contextoBdProvider.GetContextoLeitura();
-            var registros = (from registro in db.TpedidoItems
+            var registros = (from registro in db.TpedidoItem
                              where registro.Pedido == pedido &&
                              registro.Sequencia == item
                              select registro).ToList();
@@ -161,7 +161,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("_ESTOQUE_MOVIMENTO", "pedido", pedido, campo, valor, this);
 
             var db = this.contextoBdProvider.GetContextoLeitura();
-            var registros = (from registro in db.TestoqueMovimentos
+            var registros = (from registro in db.TestoqueMovimento
                              where registro.Pedido == pedido &&
                                    registro.Produto == item.Produto &&
                                    registro.Fabricante == item.Fabricante &&
@@ -181,7 +181,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaRegistroComCampoVerificarCampo("_ESTOQUE_MOVIMENTO", "pedido", pedido, campo, valor.ToString(), this);
 
             var db = this.contextoBdProvider.GetContextoLeitura();
-            var registros = (from registro in db.TestoqueMovimentos
+            var registros = (from registro in db.TestoqueMovimento
                              where registro.Pedido == pedido &&
                                    registro.Produto == item.Produto &&
                                    registro.Fabricante == item.Fabricante &&
@@ -210,7 +210,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             //}
             //estoqueItem.Id_estoque == id_estoque &&
             var db = this.contextoBdProvider.GetContextoLeitura();
-            var registros = (from estoqueItem in db.TestoqueItems
+            var registros = (from estoqueItem in db.TestoqueItem
                              where estoqueItem.Fabricante == item.Fabricante &&
                                    estoqueItem.Produto == item.Produto
                              select estoqueItem);
@@ -226,8 +226,8 @@ namespace Especificacao.Testes.Utils.BancoTestes
         public void TabelaT_ESTOQUE_ITEMVerificarSaldo(int id_nfe_emitente, int saldo, TpedidoItem item)
         {
             var db = this.contextoBdProvider.GetContextoLeitura();
-            var lotes = (from ei in db.TestoqueItems
-                         join e in db.Testoques on ei.Id_estoque equals e.Id_estoque
+            var lotes = (from ei in db.TestoqueItem
+                         join e in db.Testoque on ei.Id_estoque equals e.Id_estoque
                          where e.Id_nfe_emitente == id_nfe_emitente &&
                                ei.Fabricante == item.Fabricante &&
                                ei.Produto == item.Produto
@@ -254,7 +254,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
                 }
 
                 var db = this.contextoBdProvider.GetContextoLeitura();
-                var registros = (from estoque in db.Testoques
+                var registros = (from estoque in db.Testoque
                                  where estoque.Id_estoque == id_estoque
                                  select estoque);
 
@@ -350,11 +350,11 @@ namespace Especificacao.Testes.Utils.BancoTestes
             string idCliente = "";
             if (operacao.ToUpper() == InfraBanco.Constantes.Constantes.OP_LOG_CLIENTE_INCLUSAO)
             {
-                idCliente = (from c in db.Tpedidos
+                idCliente = (from c in db.Tpedido
                              where c.Pedido == pedido
                              select c.Id_Cliente).FirstOrDefault();
             }
-            var registros = (from log in db.Tlogs
+            var registros = (from log in db.Tlog
                              where (log.Pedido == pedido || log.Id_Cliente == idCliente) &&
                                    log.Operacao == operacao
                              select log).ToList();
@@ -405,7 +405,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         {
             var db = this.contextoBdProvider.GetContextoLeitura();
 
-            var registros = (from prodRegraCd in db.TprodutoXwmsRegraCds
+            var registros = (from prodRegraCd in db.TprodutoXwmsRegraCd
                              where prodRegraCd.Fabricante == fabricante &&
                                    prodRegraCd.Produto == produto
                              select prodRegraCd).ToList();
@@ -455,7 +455,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
 
             foreach (var registro in registros)
             {
-                var registros2 = (from c in db.TpedidoAnaliseEnderecoConfrontacaos
+                var registros2 = (from c in db.TpedidoAnaliseEnderecoConfrontacao
                                   where c.Id_pedido_analise_endereco == registro.Id
                                   select c).ToList();
                 Assert.True(registros2.Any());
@@ -491,8 +491,8 @@ namespace Especificacao.Testes.Utils.BancoTestes
             }
 
             using var db = this.contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
-            var registro = (from operacao in db.Toperacaos where operacao.Id == valorInt select operacao).First();
-            db.Toperacaos.Remove(registro);
+            var registro = (from operacao in db.Toperacao where operacao.Id == valorInt select operacao).First();
+            db.Toperacao.Remove(registro);
             db.SaveChanges();
             db.transacao.Commit();
         }
@@ -516,8 +516,8 @@ namespace Especificacao.Testes.Utils.BancoTestes
             //}
 
             using var db = this.contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
-            var registro = (from usuario in db.Tusuarios where usuario.Usuario == valor select usuario).First();
-            db.Tusuarios.Remove(registro);
+            var registro = (from usuario in db.Tusuario where usuario.Usuario == valor select usuario).First();
+            db.Tusuario.Remove(registro);
             db.SaveChanges();
             db.transacao.Commit();
         }
@@ -527,7 +527,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         {
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("T_CODIGO_DESCRICAO", "apelido", valor, this);
             using var db = this.contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
-            var registro = (from r in db.TcodigoDescricaos
+            var registro = (from r in db.TcodigoDescricao
                             where r.Grupo == grupo &&
                                   r.Codigo == codigo
                             select r).FirstOrDefault();
@@ -549,7 +549,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_ORCAMENTISTA_E_INDICADOR", "apelido", valor, this);
 
             using var db = this.contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
-            var registro = (from orcamentista in db.TorcamentistaEindicadors
+            var registro = (from orcamentista in db.TorcamentistaEindicador
                             where orcamentista.Apelido.ToUpper() == apelido.ToUpper()
                             select orcamentista).FirstOrDefault();
 
@@ -569,7 +569,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_CLIENTE", "cpf_cnpj", valor, this);
 
             using var db = this.contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
-            var registro = (from cliente in db.Tclientes
+            var registro = (from cliente in db.Tcliente
                             where cliente.Cnpj_Cpf == valor_cnpj_cpf
                             select cliente).FirstOrDefault();
 
@@ -589,7 +589,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_LOJA", "loja", valor, this);
 
             using var db = this.contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
-            var registro = (from loja in db.Tlojas
+            var registro = (from loja in db.Tloja
                             where loja.Loja == valor_loja
                             select loja).FirstOrDefault();
 
@@ -696,7 +696,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
 
             Assert.Single(t_produtoXwmsRegraCds);
 
-            var registros = (from regraCd in db.TwmsRegraCds
+            var registros = (from regraCd in db.TwmsRegraCd
                              where regraCd.Id == t_produtoXwmsRegraCds[0].Id_wms_regra_cd
                              select regraCd).ToList();
 
@@ -712,7 +712,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaApagarRegistroComCampo("t_WMS_REGRA_CD_X_UF", "id_wms_regra_cd e UF", "id_wms_regra_cd:(" + id_wms_regra_cd + ") e UF:(" + uf + ")", this);
             using var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
 
-            var registros = (from regraCdUF in db.TwmsRegraCdXUfs
+            var registros = (from regraCdUF in db.TwmsRegraCdXUf
                              where regraCdUF.Id_wms_regra_cd == id_wms_regra_cd &&
                                    regraCdUF.Uf == uf
                              select regraCdUF).ToList();
@@ -733,7 +733,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
 
             using var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
 
-            var registro = (from regraCdUF in db.TwmsRegraCdXUfs
+            var registro = (from regraCdUF in db.TwmsRegraCdXUf
                             where regraCdUF.Id_wms_regra_cd == id_wms_regra_cd &&
                                   regraCdUF.Uf == uf
                             select regraCdUF).FirstOrDefault();
@@ -760,7 +760,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaApagarRegistroComCampo("t_WMS_REGRA_CD_X_UF_X_PESSOA", "id e tipo pessoa", "id_wms_regra_cd_x_uf:(" + id + ") e tipo pessoa:(" + tipo_pessoa + ")", this);
             using var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
 
-            var registros = (from regraCdUFPessoa in db.TwmsRegraCdXUfPessoas
+            var registros = (from regraCdUFPessoa in db.TwmsRegraCdXUfPessoa
                              where regraCdUFPessoa.Id_wms_regra_cd_x_uf == id &&
                                    regraCdUFPessoa.Tipo_pessoa == tipo_pessoa
                              select regraCdUFPessoa).ToList();
@@ -782,7 +782,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
 
             using var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
 
-            var registro = (from regraCdUFPessoa in db.TwmsRegraCdXUfPessoas
+            var registro = (from regraCdUFPessoa in db.TwmsRegraCdXUfPessoa
                             where regraCdUFPessoa.Id_wms_regra_cd_x_uf == Id_wms_regra_cd_x_uf &&
                                   regraCdUFPessoa.Tipo_pessoa == tipo_pessoa
                             select regraCdUFPessoa).FirstOrDefault();
@@ -809,7 +809,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_WMS_REGRA_CD_X_UF_X_PESSOA", campo, valor, this);
             using var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
 
-            var registro = (from regraCdUFPessoa in db.TwmsRegraCdXUfPessoas
+            var registro = (from regraCdUFPessoa in db.TwmsRegraCdXUfPessoa
                             where regraCdUFPessoa.Id_wms_regra_cd_x_uf == id_wms_regra_cd_x_uf &&
                                   regraCdUFPessoa.Tipo_pessoa == tipo_pessoa
                             select regraCdUFPessoa).FirstOrDefault();
@@ -831,8 +831,8 @@ namespace Especificacao.Testes.Utils.BancoTestes
             using var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
             //TwmsRegraCdXUfPessoas.id_wms_regra_cd_x_uf = 134
             //TwmsRegraCdXUfPessoas.Tipo_pessoa = PF e PR para prepedido
-            var registro = (from nfeEmitente in db.TnfEmitentes
-                            join regraCdUFPessoa in db.TwmsRegraCdXUfPessoas on nfeEmitente.Id equals regraCdUFPessoa.Spe_id_nfe_emitente
+            var registro = (from nfeEmitente in db.TnfEmitente
+                            join regraCdUFPessoa in db.TwmsRegraCdXUfPessoa on nfeEmitente.Id equals regraCdUFPessoa.Spe_id_nfe_emitente
                             where regraCdUFPessoa.Tipo_pessoa == tipo_pessoa &&
                                   regraCdUFPessoa.Id_wms_regra_cd_x_uf == id_wms_regra_cd_x_uf
                             select nfeEmitente).FirstOrDefault();
@@ -853,8 +853,8 @@ namespace Especificacao.Testes.Utils.BancoTestes
         public void GivenTabelaVerificarRegistroTipoDePessoaCampo(string tipo_pessoa, int id_wms_regra_cd_x_uf, string campo, int valor)
         {
             var db = contextoBdProvider.GetContextoLeitura();
-            var registro = (from nfeEmitente in db.TnfEmitentes
-                            join regraCdUFPessoa in db.TwmsRegraCdXUfPessoas on nfeEmitente.Id equals regraCdUFPessoa.Spe_id_nfe_emitente
+            var registro = (from nfeEmitente in db.TnfEmitente
+                            join regraCdUFPessoa in db.TwmsRegraCdXUfPessoa on nfeEmitente.Id equals regraCdUFPessoa.Spe_id_nfe_emitente
                             where regraCdUFPessoa.Tipo_pessoa == tipo_pessoa &&
                                   regraCdUFPessoa.Id_wms_regra_cd_x_uf == id_wms_regra_cd_x_uf
                             select nfeEmitente).FirstOrDefault();
@@ -878,7 +878,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD", campo, valor, this);
             using var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
 
-            var registro = (from regra in db.TwmsRegraCdXUfXPessoaXCds
+            var registro = (from regra in db.TwmsRegraCdXUfXPessoaXCd
                             where regra.Id_nfe_emitente == id_nfe_emitente &&
                                   regra.Id_wms_regra_cd_x_uf_x_pessoa == id_wms_regra_cd_x_uf_x_pessoa
                             select regra).ToList();
@@ -911,7 +911,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.TabelaAlterarRegistroComCampo("t_PRODUTO", "loja", valor, this);
 
             using var db = this.contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
-            var registro = (from tproduto in db.Tprodutos
+            var registro = (from tproduto in db.Tproduto
                             where tproduto.Fabricante == fabricante &&
                             tproduto.Produto == produto
                             select tproduto).FirstOrDefault();
@@ -929,7 +929,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         public string? BuscarIdEstoqueMovimento(TpedidoItem pedidoItem)
         {
             var db = contextoBdProvider.GetContextoLeitura();
-            var idEstoque = (from estoque in db.TestoqueMovimentos
+            var idEstoque = (from estoque in db.TestoqueMovimento
                              where estoque.Pedido == pedidoItem.Pedido &&
                                    estoque.Produto == pedidoItem.Produto &&
                                    estoque.Fabricante == pedidoItem.Fabricante
@@ -941,7 +941,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         public List<TpedidoItem> BuscarItensPedido(string pedido)
         {
             var db = contextoBdProvider.GetContextoLeitura();
-            var itensPedido = (from itens in db.TpedidoItems
+            var itensPedido = (from itens in db.TpedidoItem
                                where itens.Pedido == pedido
                                select itens).ToList();
 
@@ -1023,7 +1023,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             Assert.Equal("t_DESCONTO", tabela);
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.GravarRegistroEm(tabela, this);
             using var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
-            db.TprazoPagtoVisanets.Add(tprazoPagtoVisanet);
+            db.TprazoPagtoVisanet.Add(tprazoPagtoVisanet);
             db.SaveChanges();
             db.transacao.Commit();
         }
@@ -1069,7 +1069,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             Assert.Equal("t_PRAZO_PAGTO_VISANET", tabela);
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.GravarRegistroEm(tabela, this);
             using var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
-            db.TprazoPagtoVisanets.Add(tprazoPagtoVisanet);
+            db.TprazoPagtoVisanet.Add(tprazoPagtoVisanet);
             db.SaveChanges();
             db.transacao.Commit();
         }
@@ -1110,7 +1110,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
             Assert.Equal("t_PRODUTO_LOJA", tabela);
             Testes.Utils.LogTestes.LogOperacoes2.BancoDados.GravarRegistroEm(tabela, this);
             using var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
-            db.TprodutoLojas.Add(tprodutoLoja);
+            db.TprodutoLoja.Add(tprodutoLoja);
             db.SaveChanges();
             db.transacao.Commit();
         }
@@ -1162,7 +1162,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         public void VerificarQtdePedidosSalvos(int qtde)
         {
             var db = contextoBdProvider.GetContextoLeitura();
-            var registro = (from c in db.Tpedidos
+            var registro = (from c in db.Tpedido
                             select c.Pedido).Count();
 
             Assert.Equal(qtde, registro);
@@ -1179,7 +1179,7 @@ namespace Especificacao.Testes.Utils.BancoTestes
         public void TabelaT_PEDIDO_ANALISE_ENDERECO_CONFRONTACAOVerificarQtdeDeItensSalvos(int qtde)
         {
             var db = contextoBdProvider.GetContextoLeitura();
-            var registro = (from c in db.TpedidoAnaliseEnderecoConfrontacaos
+            var registro = (from c in db.TpedidoAnaliseEnderecoConfrontacao
                             select c.Id_pedido_analise_endereco).Count();
 
             Assert.Equal(qtde, registro);

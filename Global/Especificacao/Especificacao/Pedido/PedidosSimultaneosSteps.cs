@@ -23,7 +23,7 @@ namespace Especificacao.Especificacao.Pedido
         public void GivenTestarPedidosSimultaneos(int multiplicadorPorPedido, int pedidosPorThread, int numeroThreads)
         {
             //conta o número de pedidos
-            var pedidos = (from p in contextoBdProvider.GetContextoLeitura().Tpedidos select p).Count();
+            var pedidos = (from p in contextoBdProvider.GetContextoLeitura().Tpedido select p).Count();
 
             PrepararBancoDados();
 
@@ -34,7 +34,7 @@ namespace Especificacao.Especificacao.Pedido
 
 
             //verifica o total de pedidos criados
-            var novosPedidos = (from p in contextoBdProvider.GetContextoLeitura().Tpedidos select p).Count();
+            var novosPedidos = (from p in contextoBdProvider.GetContextoLeitura().Tpedido select p).Count();
             Assert.Equal(pedidos + multiplicadorPorPedido + numeroThreads * pedidosPorThread * multiplicadorPorPedido, novosPedidos);
         }
 

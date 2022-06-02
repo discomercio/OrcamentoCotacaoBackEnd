@@ -57,7 +57,7 @@ namespace Prepedido
         {
             //toda vez precisamos de uma nova conexao para os casos em que houver transacao
             var db = contextoProvider.GetContextoLeitura();
-            var lista = from r in db.Torcamentos
+            var lista = from r in db.Torcamento
                         where r.Orcamentista == orcamentista &&
                               r.St_Orcamento != "CAN"
                               && r.Data >= Util.LimiteDataBuscas()
@@ -71,7 +71,7 @@ namespace Prepedido
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var lista = (from c in db.Torcamentos
+            var lista = (from c in db.Torcamento
                          where c.Orcamentista == apelido &&
                                c.St_Orcamento != "CAN" &&
                                c.Data >= Util.LimiteDataBuscas()
@@ -133,7 +133,7 @@ namespace Prepedido
 
             var db = contextoProvider.GetContextoLeitura();
 
-            var lst = db.Torcamentos.
+            var lst = db.Torcamento.
                 Where(r => r.Orcamentista == apelido);
 
             //filtro conforme o tipo do prepedido
@@ -196,7 +196,7 @@ namespace Prepedido
         {
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTO))
             {
-                var prepedido = await dbgravacao.Torcamentos
+                var prepedido = await dbgravacao.Torcamento
                     .Where(c => c.Orcamento == numeroPrePedido
                         && (c.St_Orcamento == "" || c.St_Orcamento == null)
                         && c.St_Orc_Virou_Pedido == 0)
@@ -219,14 +219,14 @@ namespace Prepedido
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var prepedido = from c in db.Torcamentos
+            var prepedido = from c in db.Torcamento
                             where c.Orcamentista == apelido && c.Orcamento == numPrePedido
                             select c;
 
 
             Torcamento pp = prepedido.FirstOrDefault();
 
-            Tloja t = await (from c in db.Tlojas
+            Tloja t = await (from c in db.Tloja
                              where c.Loja == pp.Loja
                              select c).FirstOrDefaultAsync();
 
@@ -246,7 +246,7 @@ namespace Prepedido
 
             if (pp.St_Orc_Virou_Pedido == 1)
             {
-                var pedido = from c in db.Tpedidos
+                var pedido = from c in db.Tpedido
                              where c.Orcamento == numPrePedido
                              select c.Pedido;
 
@@ -305,7 +305,7 @@ namespace Prepedido
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            string percentual = await (from c in db.Tcontroles
+            string percentual = await (from c in db.Tcontrole
                                        where c.Id_Nsu == Constantes.ID_PARAM_PercVlPedidoLimiteRA
                                        select c.Nsu).FirstOrDefaultAsync();
 
@@ -318,7 +318,7 @@ namespace Prepedido
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var tipoTask = from c in db.TformaPagtos
+            var tipoTask = from c in db.TformaPagto
                            where c.Id == av_forma_pagto
                            select c.Descricao;
 
@@ -462,7 +462,7 @@ namespace Prepedido
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var produtos = from c in db.TorcamentoItems
+            var produtos = from c in db.TorcamentoItem
                            where c.Orcamento == orc.Orcamento
                            orderby c.Sequencia
                            select c;
@@ -501,7 +501,7 @@ namespace Prepedido
 
         private async Task<Cliente.Dados.DadosClienteCadastroDados> ObterDadosClientePrepedido(Torcamento orcamento, string loja)
         {
-            var dadosCliente = from c in contextoProvider.GetContextoLeitura().Tclientes
+            var dadosCliente = from c in contextoProvider.GetContextoLeitura().Tcliente
                                where c.Id == orcamento.Id_Cliente
                                select c;
             var cli = await dadosCliente.FirstOrDefaultAsync();
@@ -551,7 +551,7 @@ namespace Prepedido
         {
             //afazer: criar a condição para preencher os dados do cliente que estão salvos no t_ORCAMENTO ou no t_CLIENTE
 
-            var dadosCliente = from c in contextoProvider.GetContextoLeitura().Tclientes
+            var dadosCliente = from c in contextoProvider.GetContextoLeitura().Tcliente
                                where c.Id == idCliente
                                select c;
             var cli = await dadosCliente.FirstOrDefaultAsync();
@@ -647,7 +647,7 @@ namespace Prepedido
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var raStatus = (from c in db.TorcamentistaEindicadors
+            var raStatus = (from c in db.TorcamentistaEindicador
                             where c.Apelido == apelido
                             select c.Permite_RA_Status).FirstOrDefaultAsync();
 
@@ -913,7 +913,7 @@ namespace Prepedido
 
         public async Task DeletarOrcamentoExiste(ContextoBdGravacao dbgravacao, PrePedidoDados prePedido, string apelido)
         {
-            var orcamentoTask = from c in dbgravacao.Torcamentos.Include(r => r.TorcamentoItem)
+            var orcamentoTask = from c in dbgravacao.Torcamento.Include(r => r.TorcamentoItem)
                                 where c.Orcamento == prePedido.NumeroPrePedido &&
                                       c.Orcamentista == apelido
                                 select c;
@@ -939,7 +939,7 @@ namespace Prepedido
             float perc_limite_RA_sem_desagio = 0)
         {
             //vamos buscar a midia do cliente para cadastrar no orçamento
-            string midia = await (from c in dbgravacao.Tclientes
+            string midia = await (from c in dbgravacao.Tcliente
                                   where c.Cnpj_Cpf == prepedido.DadosCliente.Cnpj_Cpf
                                   select c.Midia).FirstOrDefaultAsync();
 
@@ -1323,7 +1323,7 @@ namespace Prepedido
             {
                 if (!string.IsNullOrEmpty(p.Produto) && !string.IsNullOrEmpty(p.Fabricante))
                 {
-                    var produtoTask = (from c in db.Tprodutos
+                    var produtoTask = (from c in db.Tproduto
                                        where c.Produto == p.Produto && c.Fabricante == p.Fabricante
                                        select c.Descontinuado).FirstOrDefaultAsync();
                     var produto = await produtoTask;
@@ -1538,7 +1538,7 @@ namespace Prepedido
                 foreach (var fabr in lstFabricantes)
                 {
                     TpercentualCustoFinanceiroFornecedor percCustoTask =
-                        await (from c in db.TpercentualCustoFinanceiroFornecedors
+                        await (from c in db.TpercentualCustoFinanceiroFornecedor
                                where c.Fabricante == fabr &&
                                      c.Tipo_Parcelamento == siglaPagto &&
                                      c.Qtde_Parcelas == qtdeParcelas
@@ -1606,20 +1606,20 @@ namespace Prepedido
 
             //monta um cache de dados para não repetir s acessos
             var produtosDistintos = prePedido.ListaProdutos.Select(r => r.Produto).Distinct();
-            var dbTprodutoXwmsRegraCds = await (from c in dbreal.TprodutoXwmsRegraCds
+            var dbTprodutoXwmsRegraCds = await (from c in dbreal.TprodutoXwmsRegraCd
                                                 where produtosDistintos.Contains(c.Produto)
                                                 select new { c.Produto, c.Fabricante, c.Id_wms_regra_cd }).ToListAsync();
             var regraId_wms_regra_cdDistinct = dbTprodutoXwmsRegraCds.Select(r => r.Id_wms_regra_cd).Distinct();
-            var dbTwmsRegraCds = await (from c in dbreal.TwmsRegraCds
+            var dbTwmsRegraCds = await (from c in dbreal.TwmsRegraCd
                                         where regraId_wms_regra_cdDistinct.Contains(c.Id)
                                         select new { c.Id, c.Apelido, c.Descricao, c.St_inativo }).ToListAsync();
-            var dbTwmsRegraCdXUfs = await (from c in dbreal.TwmsRegraCdXUfs
+            var dbTwmsRegraCdXUfs = await (from c in dbreal.TwmsRegraCdXUf
                                            where regraId_wms_regra_cdDistinct.Contains(c.Id_wms_regra_cd) &&
                                                  c.Uf == prePedido.DadosCliente.Uf
                                            select new { c.Id, c.Id_wms_regra_cd, c.Uf, c.St_inativo }).ToListAsync();
 
             //esta tabela é pequena
-            var dbTnfEmitentes = await (from c in dbreal.TnfEmitentes select new { c.Id, c.St_Ativo }).ToListAsync(); ;
+            var dbTnfEmitentes = await (from c in dbreal.TnfEmitente select new { c.Id, c.St_Ativo }).ToListAsync(); ;
 
             //para melhorar a velocidade, poderíamos terminar de montar o cache
 
@@ -1709,7 +1709,7 @@ namespace Prepedido
                                     St_inativo = wmsRegraCdXUf.St_inativo
                                 };
 
-                                var wmsRegraCdXUfXPessoaTask = from c in dbreal.TwmsRegraCdXUfPessoas
+                                var wmsRegraCdXUfXPessoaTask = from c in dbreal.TwmsRegraCdXUfPessoa
                                                                where c.Id_wms_regra_cd_x_uf == itemRegra.TwmsRegraCdXUf.Id &&
                                                                      c.Tipo_pessoa == tipo_pessoa
                                                                select c;
@@ -1760,7 +1760,7 @@ namespace Prepedido
                                                     "(Id=" + regra.Id_wms_regra_cd + ")");
                                             }
                                         }
-                                        var wmsRegraCdXUfXPessoaXcdTask = from c in dbreal.TwmsRegraCdXUfXPessoaXCds
+                                        var wmsRegraCdXUfXPessoaXcdTask = from c in dbreal.TwmsRegraCdXUfXPessoaXCd
                                                                           where c.Id_wms_regra_cd_x_uf_x_pessoa == wmsRegraCdXUfXPessoa.Id
                                                                           orderby c.Ordem_prioridade
                                                                           select c;
@@ -1850,7 +1850,7 @@ namespace Prepedido
 
             foreach (TorcamentoItem item in lstOrcamentoItem)
             {
-                var prodLista = from c in dbgravacao.TprodutoLojas.Include(x => x.Tproduto).Include(x => x.Tproduto.Tfabricante)
+                var prodLista = from c in dbgravacao.TprodutoLoja.Include(x => x.Tproduto).Include(x => x.Tproduto.Tfabricante)
                                 where c.Tproduto.Tfabricante.Fabricante == item.Fabricante &&
                                       c.Loja == loja &&
                                       c.Tproduto.Produto == item.Produto
@@ -1985,7 +1985,7 @@ namespace Prepedido
 
             var db = contextoProvider.GetContextoLeitura();
 
-            var orcamentistaTask = await (from c in db.TorcamentistaEindicadors
+            var orcamentistaTask = await (from c in db.TorcamentistaEindicador
                                           where c.Apelido == apelido
                                           select c.Apelido).FirstOrDefaultAsync();
             if (orcamentistaTask == apelido)
@@ -2010,7 +2010,7 @@ namespace Prepedido
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var tOrcamentistaTask = from c in db.TorcamentistaEindicadors
+            var tOrcamentistaTask = from c in db.TorcamentistaEindicador
                                     where c.Apelido == apelido
                                     select c;
             TorcamentistaEindicador tOrcamentista = await tOrcamentistaTask.FirstOrDefaultAsync();
@@ -2021,7 +2021,7 @@ namespace Prepedido
         public async Task<bool> TorcamentistaExiste(string apelido)
         {
             var db = contextoProvider.GetContextoLeitura();
-            return await ((from c in db.TorcamentistaEindicadors
+            return await ((from c in db.TorcamentistaEindicador
                            where c.Apelido == apelido
                            select c).AnyAsync());
         }
@@ -2049,7 +2049,7 @@ namespace Prepedido
             //vamos buscar o prepedido para verificar se ele virou pedido
             var db = contextoProvider.GetContextoLeitura();
 
-            var orcamentotask = await (from c in db.Torcamentos
+            var orcamentotask = await (from c in db.Torcamento
                                        where c.Orcamento == orcamento
                                        select c).FirstOrDefaultAsync();
 
@@ -2060,11 +2060,11 @@ namespace Prepedido
                 //virou
                 if ((bool)ret.St_orc_virou_pedido)
                 {
-                    Tpedido pedido_pai = (from c in db.Tpedidos
+                    Tpedido pedido_pai = (from c in db.Tpedido
                                           where c.Orcamento == orcamentotask.Orcamento
                                           select c).FirstOrDefault();
 
-                    List<Tpedido> lstPedido = await (from c in db.Tpedidos
+                    List<Tpedido> lstPedido = await (from c in db.Tpedido
                                                      where c.Pedido.Contains(pedido_pai.Pedido)
                                                      select c).ToListAsync();
 
@@ -2093,7 +2093,7 @@ namespace Prepedido
 
             List<InformacoesStatusPrepedidoRetornoDados> lstInfosStatusPrepedido = new List<InformacoesStatusPrepedidoRetornoDados>();
 
-            var lstTorcamentoQuery = from c in db.Torcamentos
+            var lstTorcamentoQuery = from c in db.Torcamento
                                      where c.Sistema_responsavel_cadastro == sistema_responsavel
                                      select c;
             if (lstPrepedido != null && lstPrepedido.Count > 0)
@@ -2118,7 +2118,7 @@ namespace Prepedido
                                              where d.St_Orc_Virou_Pedido == 1
                                              select d.Orcamento).ToList();
 
-            List<Tpedido> lstPedidosPai = await (from c in db.Tpedidos
+            List<Tpedido> lstPedidosPai = await (from c in db.Tpedido
                                                  where lstViraramPedido.Contains(c.Orcamento)
                                                  select c).ToListAsync();
 

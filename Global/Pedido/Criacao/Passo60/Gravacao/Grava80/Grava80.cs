@@ -131,7 +131,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava80
                             rs.Usuario_cadastro = Pedido_Ambiente_Usuario;
                             rs.Dt_cadastro = DateTime.Now.Date;
                             rs.Dt_hr_cadastro = DateTime.Now;
-                            ContextoBdGravacao.TpedidoAnaliseEnderecos.Add(rs);
+                            ContextoBdGravacao.TpedidoAnaliseEndereco.Add(rs);
                             controle.saveChangesPendente = true;
                         }
 
@@ -151,7 +151,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava80
                             rs.Endereco_cidade = UtilsGlobais.Texto.leftStr(indicador.Cidade, Constantes.MAX_TAMANHO_CAMPO_ENDERECO_CIDADE);
                             rs.Endereco_uf = indicador.Uf;
                             rs.Endereco_cep = indicador.Cep;
-                            ContextoBdGravacao.TpedidoAnaliseConfrontacaos.Add(rs);
+                            ContextoBdGravacao.TpedidoAnaliseConfrontacao.Add(rs);
                             controle.saveChangesPendente = true;
                         }
                     }
@@ -161,7 +161,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava80
             if (!blnAnEnderecoCadClienteOuoEndEntregaUsaEndParceiro)
             {
                 //COD_PEDIDO_AN_ENDERECO__CAD_CLIENTE_MEMORIZADO
-                var listaPedidos_cad_cliente_memorizado = from pedidoLido in ContextoBdGravacao.Tpedidos
+                var listaPedidos_cad_cliente_memorizado = from pedidoLido in ContextoBdGravacao.Tpedido
                                                           where pedidoLido.Id_Cliente != Tpedido_pai_Id_Cliente
                                                           && pedidoLido.Endereco_cep == UtilsGlobais.Util.Cep_SoDigito(Verificar_Endereco_cep)
                                                           select new Cl_ANALISE_ENDERECO_CONFRONTACAO()
@@ -180,7 +180,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava80
                                                           };
 
                 //COD_PEDIDO_AN_ENDERECO__END_ENTREGA
-                var listaPedidos_end_entrega = from pedidoLido in ContextoBdGravacao.Tpedidos
+                var listaPedidos_end_entrega = from pedidoLido in ContextoBdGravacao.Tpedido
                                                where pedidoLido.Id_Cliente != Tpedido_pai_Id_Cliente
                                                && pedidoLido.EndEtg_Cep == UtilsGlobais.Util.Cep_SoDigito(Verificar_Endereco_cep)
                                                && pedidoLido.St_End_Entrega == 1
@@ -252,7 +252,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava80
                                 rs.Usuario_cadastro = Pedido_Ambiente_Usuario;
                                 rs.Dt_cadastro = DateTime.Now.Date;
                                 rs.Dt_hr_cadastro = DateTime.Now;
-                                ContextoBdGravacao.TpedidoAnaliseEnderecos.Add(rs);
+                                ContextoBdGravacao.TpedidoAnaliseEndereco.Add(rs);
                                 controle.saveChangesPendente = true;
                             }
                         }
@@ -273,7 +273,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava80
                             rs.Endereco_cidade = UtilsGlobais.Texto.leftStr(vAnEndConfrontacao_i.Endereco_cidade, Constantes.MAX_TAMANHO_CAMPO_ENDERECO_CIDADE);
                             rs.Endereco_uf = vAnEndConfrontacao_i.Endereco_uf;
                             rs.Endereco_cep = vAnEndConfrontacao_i.Endereco_cep;
-                            ContextoBdGravacao.TpedidoAnaliseConfrontacaos.Add(rs);
+                            ContextoBdGravacao.TpedidoAnaliseConfrontacao.Add(rs);
                             controle.saveChangesPendente = true;
                         }
                     }

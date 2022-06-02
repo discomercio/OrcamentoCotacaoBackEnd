@@ -24,7 +24,7 @@ namespace PrepedidoBusiness.Bll
 
             var db = contextoProvider.GetContextoLeitura();
             //Validar o dados no bd
-            var dados = from c in db.TorcamentistaEindicadors
+            var dados = from c in db.TorcamentistaEindicador
                         where c.Apelido == apelido
                         select new
                         {
@@ -67,7 +67,7 @@ namespace PrepedidoBusiness.Bll
                 //Fazer Update no bd
                 using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
-                    TorcamentistaEindicador orcamentista = await dbgravacao.TorcamentistaEindicadors
+                    TorcamentistaEindicador orcamentista = await dbgravacao.TorcamentistaEindicador
                     .Where(c => c.Apelido == apelido).SingleAsync();
                     orcamentista.Dt_Ult_Acesso = DateTime.Now;
 
@@ -90,7 +90,7 @@ namespace PrepedidoBusiness.Bll
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var loja = (from c in db.TorcamentistaEindicadors
+            var loja = (from c in db.TorcamentistaEindicador
                         where c.Apelido == apelido
                         select c.Loja).Single();
 
@@ -100,7 +100,7 @@ namespace PrepedidoBusiness.Bll
         public async Task<string> Buscar_unidade_negocio(string loja)
         {
             var db = contextoProvider.GetContextoLeitura();
-            var unidade_negocio = await ((from c in db.Tlojas
+            var unidade_negocio = await ((from c in db.Tloja
                                           where c.Loja == loja.Trim()
                                           select c.Unidade_Negocio).FirstOrDefaultAsync());
             return unidade_negocio;
@@ -125,7 +125,7 @@ namespace PrepedidoBusiness.Bll
 
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
-                dbgravacao.TsessaoHistoricos.Add(sessaoHist);
+                dbgravacao.TsessaoHistorico.Add(sessaoHist);
                 await dbgravacao.SaveChangesAsync();
                 dbgravacao.transacao.Commit();
             }
@@ -160,14 +160,14 @@ namespace PrepedidoBusiness.Bll
 
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
-                var sessaoHistTask = (from c in dbgravacao.TsessaoHistoricos
+                var sessaoHistTask = (from c in dbgravacao.TsessaoHistorico
                                       where c.Usuario == apelido
                                       orderby c.DtHrInicio descending
                                       select c).FirstOrDefaultAsync();
                 TsessaoHistorico sessaoHist = await sessaoHistTask;
                 sessaoHist.DtHrTermino = DateTime.Now;
 
-                dbgravacao.TsessaoHistoricos.Update(sessaoHist);
+                dbgravacao.TsessaoHistorico.Update(sessaoHist);
                 await dbgravacao.SaveChangesAsync();
                 dbgravacao.transacao.Commit();
             }
@@ -228,7 +228,7 @@ namespace PrepedidoBusiness.Bll
                 //vamos alterar a senha na base de dados
                 using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTISTA_E_INDICADOR))
                 {
-                    TorcamentistaEindicador orcamentista = await (from c in dbgravacao.TorcamentistaEindicadors
+                    TorcamentistaEindicador orcamentista = await (from c in dbgravacao.TorcamentistaEindicador
                                                                   where c.Apelido == alterarSenhaDto.Apelido.ToUpper().Trim()
                                                                   select c).FirstOrDefaultAsync();
 

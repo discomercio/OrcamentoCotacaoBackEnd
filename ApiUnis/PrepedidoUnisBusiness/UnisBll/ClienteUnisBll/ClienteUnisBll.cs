@@ -77,7 +77,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
 
             cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
 
-            retorno = await (from c in db.Tclientes
+            retorno = await (from c in db.Tcliente
                              where c.Cnpj_Cpf == cpf_cnpj
                              select c.Id).FirstOrDefaultAsync();
 

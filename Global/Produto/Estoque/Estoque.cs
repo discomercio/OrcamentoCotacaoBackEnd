@@ -1,17 +1,14 @@
 ﻿using InfraBanco;
-using Produto.RegrasCrtlEstoque;
-using System.Linq;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using InfraBanco.Modelos;
+using Microsoft.EntityFrameworkCore;
+using Produto.RegrasCrtlEstoque;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Produto.Estoque
 {
-#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
-
     public static class Estoque
     {
         public static async Task Estoque_verifica_disponibilidade_integral_v2(
@@ -91,8 +88,8 @@ namespace Produto.Estoque
                     //desempenho: podemos fazer um cache dessas consultas
 
                     //'Calcula quantidade em estoque no CD especificado
-                    var saldoSql = from t_ESTOQUE_ITEM in contextoBdGravacao.TestoqueItems
-                                   join t_ESTOQUE in contextoBdGravacao.Testoques on t_ESTOQUE_ITEM.Id_estoque equals t_ESTOQUE.Id_estoque
+                    var saldoSql = from t_ESTOQUE_ITEM in contextoBdGravacao.TestoqueItem
+                                   join t_ESTOQUE in contextoBdGravacao.Testoque on t_ESTOQUE_ITEM.Id_estoque equals t_ESTOQUE.Id_estoque
                                    where t_ESTOQUE.Id_nfe_emitente == id_nfe_emitente
                                        && t_ESTOQUE_ITEM.Fabricante == item.Estoque_Fabricante
                                        && t_ESTOQUE_ITEM.Produto == item.Estoque_Produto
@@ -108,12 +105,12 @@ namespace Produto.Estoque
 
                     //"(SELECT id FROM t_NFe_EMITENTE WHERE (st_habilitado_ctrl_estoque = 1) AND (st_ativo = 1))" & _
                     var lista_nfe_emitente_estoque_habilitado = await
-                        (from nfe in contextoBdGravacao.TnfEmitentes
+                        (from nfe in contextoBdGravacao.TnfEmitente
                          where nfe.St_Habilitado_Ctrl_Estoque == 1 && nfe.St_Ativo == 1
                          select nfe.Id).ToListAsync();
 
-                    var saldoSql = from t_ESTOQUE_ITEM in contextoBdGravacao.TestoqueItems
-                                   join t_ESTOQUE in contextoBdGravacao.Testoques on t_ESTOQUE_ITEM.Id_estoque equals t_ESTOQUE.Id_estoque
+                    var saldoSql = from t_ESTOQUE_ITEM in contextoBdGravacao.TestoqueItem
+                                   join t_ESTOQUE in contextoBdGravacao.Testoque on t_ESTOQUE_ITEM.Id_estoque equals t_ESTOQUE.Id_estoque
                                    where t_ESTOQUE_ITEM.Fabricante == item.Estoque_Fabricante
                                        && t_ESTOQUE_ITEM.Produto == item.Estoque_Produto
                                        && (t_ESTOQUE_ITEM.Qtde - t_ESTOQUE_ITEM.Qtde_utilizada > 0)
@@ -192,8 +189,8 @@ namespace Produto.Estoque
             //		" ORDER BY" & _
             //			" data_entrada," & _
             //			" t_ESTOQUE.id_estoque"
-            var lotes = await (from ei in dbGravacao.TestoqueItems
-                               join e in dbGravacao.Testoques on ei.Id_estoque equals e.Id_estoque
+            var lotes = await (from ei in dbGravacao.TestoqueItem
+                               join e in dbGravacao.Testoque on ei.Id_estoque equals e.Id_estoque
                                where e.Id_nfe_emitente == id_nfe_emitente &&
                                      ei.Fabricante == id_fabricante &&
                                      ei.Produto == id_produto &&
@@ -209,7 +206,7 @@ namespace Produto.Estoque
             {
                 foreach (var lote in lotes)
                 {
-                    var estoqueItem = (from ei in dbGravacao.TestoqueItems
+                    var estoqueItem = (from ei in dbGravacao.TestoqueItem
                                        where ei.Fabricante == id_fabricante &&
                                              ei.Produto == id_produto &&
                                              ei.Id_estoque == lote.Id_estoque
@@ -221,8 +218,8 @@ namespace Produto.Estoque
 
                 List<string> lista_id_estoque = (from l in lotes select l.Id_estoque).ToList();
 
-                lotes = await (from ei in dbGravacao.TestoqueItems
-                               join e in dbGravacao.Testoques on ei.Id_estoque equals e.Id_estoque
+                lotes = await (from ei in dbGravacao.TestoqueItem
+                               join e in dbGravacao.Testoque on ei.Id_estoque equals e.Id_estoque
                                where e.Id_nfe_emitente == id_nfe_emitente &&
                                      ei.Fabricante == id_fabricante &&
                                      ei.Produto == id_produto &&
@@ -281,7 +278,7 @@ namespace Produto.Estoque
                 //          " AND (produto = '" & id_produto & "')"
 
                 //se não localizar o registro vai dar erro
-                TestoqueItem testoqueItem = await (from c in dbGravacao.TestoqueItems
+                TestoqueItem testoqueItem = await (from c in dbGravacao.TestoqueItem
                                                    where c.Id_estoque == v_estoque_atual &&
                                                          c.Fabricante == id_fabricante &&
                                                          c.Produto == id_produto
@@ -301,7 +298,7 @@ namespace Produto.Estoque
                     testoqueItem.Dummy = !testoqueItem.Dummy;
                     await dbGravacao.SaveChangesAsync();
                     //recarrega
-                    testoqueItem = await (from c in dbGravacao.TestoqueItems
+                    testoqueItem = await (from c in dbGravacao.TestoqueItem
                                           where c.Id_estoque == v_estoque_atual &&
                                                 c.Fabricante == id_fabricante &&
                                                 c.Produto == id_produto
@@ -360,7 +357,7 @@ namespace Produto.Estoque
                 //feito abaixo: await dbGravacao.SaveChangesAsync();
 
                 //T_ESTOQUE: ATUALIZA DATA DO ÚLTIMO MOVIMENTO
-                Testoque testoque = await (from c in dbGravacao.Testoques
+                Testoque testoque = await (from c in dbGravacao.Testoque
                                            where c.Id_estoque == v_estoque_atual
                                            select c).FirstAsync();
                 if (dbGravacao.ContextoBdGravacaoOpcoes.TRATAMENTO_ACESSO_CONCORRENTE_LOCK_EXCLUSIVO_MANUAL_HABILITADO)
@@ -368,7 +365,7 @@ namespace Produto.Estoque
                     testoque.Dummy = !testoque.Dummy;
                     await dbGravacao.SaveChangesAsync();
                     //recarrega
-                    testoque = await (from c in dbGravacao.Testoques
+                    testoque = await (from c in dbGravacao.Testoque
                                       where c.Id_estoque == v_estoque_atual
                                       select c).FirstAsync();
                 }
@@ -478,7 +475,6 @@ namespace Produto.Estoque
         }
 
     }
-#endif
 
 }
 
