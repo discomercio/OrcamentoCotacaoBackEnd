@@ -56,7 +56,7 @@ namespace InfraBanco.Modelos
         public int? IdOrcamentoCotacaoEmailQueue { get; set; }
         
         [Column("PendenciaTratada")]
-        public bool PendenciaTratada { get; set; }
+        public bool? PendenciaTratada { get; set; }
 
         [Column("DataPendenciaTratada")]
         public DateTime? DataPendenciaTratada { get; set; }

@@ -35,11 +35,11 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpGet("pendente")]
-        public async Task<IActionResult> ObterListaMensagemPendente(int IdOrcamentoCotacao, int IdUsuarioDestinatario)
+        public async Task<IActionResult> ObterListaMensagemPendente(int IdOrcamentoCotacao)
         {
             _logger.LogInformation("Buscando Mensagens Pendentes");
 
-            var saida = await _mensagemBll.ObterListaMensagemPendente(IdOrcamentoCotacao, IdUsuarioDestinatario);
+            var saida = await _mensagemBll.ObterListaMensagemPendente(IdOrcamentoCotacao);
 
             if (saida != null)
                 return Ok(saida);
@@ -70,12 +70,13 @@ namespace OrcamentoCotacaoApi.Controllers
             }
         }
 
-        [HttpPut("lida")]
-        public async Task<IActionResult> MarcarMensagemComoLida(int IdOrcamentoCotacao, int idUsuarioDestinatario)
+        [HttpPut]
+        [Route("lida")]
+        public async Task<IActionResult> MarcarMensagemComoLida(int IdOrcamentoCotacao)
         {
             _logger.LogInformation("Marcando mensagens como lida");
 
-            var saida = _mensagemBll.MarcarMensagemComoLida(IdOrcamentoCotacao, idUsuarioDestinatario);
+            var saida = _mensagemBll.MarcarMensagemComoLida(IdOrcamentoCotacao);
 
             if (saida)
             {
@@ -92,5 +93,30 @@ namespace OrcamentoCotacaoApi.Controllers
                 });
             }
         }
+        
+        [HttpPut]
+        [Route("pendencia")]
+        public async Task<IActionResult> MarcarMensagemPendenciaTratada(int IdOrcamentoCotacao)
+        {
+            _logger.LogInformation("Marcando mensagens como lida");
+
+            var saida = _mensagemBll.MarcarMensagemPendenciaTratada(IdOrcamentoCotacao);
+
+            if (saida)
+            {
+                return Ok(new
+                {
+                    message = "Mensagens marcadas como pendência tratada."
+                });
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    message = "Mensagens marcadas como pendência tratada."
+                });
+            }
+        }
+
     }
 }
