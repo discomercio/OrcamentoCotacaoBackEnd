@@ -83,7 +83,7 @@ namespace Mensagem
 
             using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
-                var orcamentoCotacaoMensagem = db.TorcamentoCotacaoMensagem.Where(item => item.IdOrcamentoCotacao == IdOrcamentoCotacao && item.IdUsuarioDestinatario == IdUsuarioDestinatario);
+                var orcamentoCotacaoMensagem = db.TorcamentoCotacaoMensagem.Where(item => item.IdOrcamentoCotacao == IdOrcamentoCotacao);
 
                 if (orcamentoCotacaoMensagem != null)
                 {
@@ -104,13 +104,14 @@ namespace Mensagem
             return saida;
         }
 
+
         public bool MarcarMensagemPendenciaTratada(int IdOrcamentoCotacao)
         {
             var saida = false;
 
             using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
-                var orcamentoCotacaoMensagem = db.TorcamentoCotacaoMensagens.Where(item => item.IdOrcamentoCotacao == IdOrcamentoCotacao);
+                var orcamentoCotacaoMensagem = db.TorcamentoCotacaoMensagem.Where(item => item.IdOrcamentoCotacao == IdOrcamentoCotacao);
 
                 if (orcamentoCotacaoMensagem != null)
                 {
