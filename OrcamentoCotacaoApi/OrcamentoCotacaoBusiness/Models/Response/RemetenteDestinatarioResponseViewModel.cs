@@ -21,5 +21,11 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 
         [JsonProperty("idTipoUsuarioContextoDestinatario")]
         public int IdTipoUsuarioContextoDestinatario { get; set; }
+
+        [JsonProperty("donoOrcamento")]
+        public virtual bool? DonoOrcamento { get; set; }
+
+        [JsonProperty("idDonoOrcamento")]
+        public virtual int? IdDonoOrcamento { get; set; }
     }
 }

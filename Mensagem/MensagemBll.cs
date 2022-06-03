@@ -19,9 +19,9 @@ namespace Mensagem
             return await _data.ObterListaMensagem(IdOrcamentoCotacao);
         }
 
-        public async Task<List<TorcamentoCotacaoMensagem>> ObterListaMensagemPendente(int IdOrcamentoCotacao, int IdUsuarioDestinatario)
+        public async Task<List<TorcamentoCotacaoMensagem>> ObterListaMensagemPendente(int IdOrcamentoCotacao)
         {
-            return await _data.ObterListaMensagemPendente(IdOrcamentoCotacao, IdUsuarioDestinatario);
+            return await _data.ObterListaMensagemPendente(IdOrcamentoCotacao);
         }
 
         public bool EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem)
@@ -29,9 +29,14 @@ namespace Mensagem
             return _data.EnviarMensagem(orcamentoCotacaoMensagem);
         }
 
-        public bool MarcarMensagemComoLida(int IdOrcamentoCotacao, int IdUsuarioDestinatario)
+        public bool MarcarMensagemComoLida(int IdOrcamentoCotacao)
         {
-            return _data.MarcarMensagemComoLida(IdOrcamentoCotacao, IdUsuarioDestinatario);
+            return _data.MarcarMensagemComoLida(IdOrcamentoCotacao);
+        }
+
+        public bool MarcarMensagemPendenciaTratada(int IdOrcamentoCotacao)
+        {
+            return _data.MarcarMensagemPendenciaTratada(IdOrcamentoCotacao);
         }
 
     }

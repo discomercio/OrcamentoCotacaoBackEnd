@@ -140,7 +140,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         Valor = "0",
                         Status = x.StatusNome,
                         VistoEm = "",
-                        Mensagem = _mensagemBll.ObterListaMensagemPendente(x.Id, x.Tusuarios.Id).Result.Any() ? "Sim" : "Não",
+                        Mensagem = _mensagemBll.ObterListaMensagemPendente(x.Id).Result.Any() ? "Sim" : "Não",
                         DtCadastro = x.DataCadastro,
                         DtExpiracao = x.Validade,
                         DtInicio = tOrcamentoFiltro.DtInicio,
@@ -256,9 +256,9 @@ namespace OrcamentoCotacaoBusiness.Bll
             return await _mensagemBll.ObterListaMensagem(IdOrcamentoCotacao);
         }
 
-        public async Task<List<TorcamentoCotacaoMensagem>> ObterListaMensagemPendente(int IdOrcamentoCotacao, int IdUsuarioDestinatario)
+        public async Task<List<TorcamentoCotacaoMensagem>> ObterListaMensagemPendente(int IdOrcamentoCotacao)
         {
-            return await _mensagemBll.ObterListaMensagemPendente(IdOrcamentoCotacao, IdUsuarioDestinatario);
+            return await _mensagemBll.ObterListaMensagemPendente(IdOrcamentoCotacao);
         }
 
         public bool EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem)
@@ -267,9 +267,9 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
 
-        public bool MarcarMensagemComoLida(int IdOrcamentoCotacao, int idUsuarioDestinatario)
+        public bool MarcarMensagemComoLida(int IdOrcamentoCotacao)
         {
-            return _mensagemBll.MarcarMensagemComoLida(IdOrcamentoCotacao, idUsuarioDestinatario);
+            return _mensagemBll.MarcarMensagemComoLida(IdOrcamentoCotacao);
         }
 
         public int CadastrarOrcamentoCotacao(OrcamentoRequestViewModel orcamento, UsuarioLogin usuarioLogado)
