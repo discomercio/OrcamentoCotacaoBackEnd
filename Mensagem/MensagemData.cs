@@ -132,5 +132,32 @@ namespace Mensagem
             return saida;
         }
 
+        public bool DesmarcarMensagemPendenciaTratada(int IdOrcamentoCotacao)
+        {
+            var saida = false;
+
+            using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                var orcamentoCotacaoMensagem = db.TorcamentoCotacaoMensagem.Where(item => item.IdOrcamentoCotacao == IdOrcamentoCotacao);
+
+                if (orcamentoCotacaoMensagem != null)
+                {
+                    foreach (var item in orcamentoCotacaoMensagem)
+                    {
+                        item.PendenciaTratada = false;
+                        item.DataHoraPendenciaTratada = null;
+                        item.DataPendenciaTratada = null;
+                    }
+                }
+
+                db.SaveChanges();
+                db.transacao.Commit();
+                saida = true;
+
+            }
+
+            return saida;
+        }
+
     }
 }

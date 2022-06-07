@@ -39,5 +39,10 @@ namespace Mensagem
             return _data.MarcarMensagemPendenciaTratada(IdOrcamentoCotacao);
         }
 
+        public bool DesmarcarMensagemPendenciaTratada(int IdOrcamentoCotacao)
+        {
+            return _data.DesmarcarMensagemPendenciaTratada(IdOrcamentoCotacao);
+        }
+
     }
 }

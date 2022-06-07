@@ -95,7 +95,7 @@ namespace OrcamentoCotacaoApi.Controllers
         }
         
         [HttpPut]
-        [Route("pendencia")]
+        [Route("marcarpendencia")]
         public async Task<IActionResult> MarcarMensagemPendenciaTratada(int IdOrcamentoCotacao)
         {
             _logger.LogInformation("Marcando mensagens como lida");
@@ -114,6 +114,30 @@ namespace OrcamentoCotacaoApi.Controllers
                 return BadRequest(new
                 {
                     message = "Mensagens marcadas como pendência tratada."
+                });
+            }
+        }
+
+        [HttpPut]
+        [Route("desmarcarpendencia")]
+        public async Task<IActionResult> DesmarcarMensagemPendenciaTratada(int IdOrcamentoCotacao)
+        {
+            _logger.LogInformation("Marcando mensagens como lida");
+
+            var saida = _mensagemBll.DesmarcarMensagemPendenciaTratada(IdOrcamentoCotacao);
+
+            if (saida)
+            {
+                return Ok(new
+                {
+                    message = "Mensagens desmarcadas como pendência tratada."
+                });
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    message = "Mensagens desmarcadas como pendência tratada."
                 });
             }
         }

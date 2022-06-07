@@ -45,6 +45,11 @@ namespace OrcamentoCotacaoBusiness.Bll
             return _bll.MarcarMensagemPendenciaTratada(IdOrcamentoCotacao);
         }
 
+        public bool DesmarcarMensagemPendenciaTratada(int IdOrcamentoCotacao)
+        {
+            return _bll.DesmarcarMensagemPendenciaTratada(IdOrcamentoCotacao);
+        }
+
         public RemetenteDestinatarioResponseViewModel CriarRemetenteCliente(TorcamentoCotacao orcamento)
         {
             RemetenteDestinatarioResponseViewModel response = new RemetenteDestinatarioResponseViewModel();
