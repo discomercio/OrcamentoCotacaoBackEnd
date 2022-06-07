@@ -127,6 +127,20 @@ namespace OrcamentoCotacaoBusiness.Bll
             return retorno;
         }
 
+        public async Task<List<ProdutoCatalogoItemProdutosAtivosResponseViewModel>> ListarProdutoCatalogoParaVisualizacao(bool propriedadeOculta, bool propriedadeOcultaItem)
+        {
+            var produtosPropTexto = await produtoGeralBll.ListarProdutoPropriedadesAtivosTexto(propriedadeOculta, propriedadeOcultaItem);
+            var produtosPropListas = await produtoGeralBll.ListarProdutoPropriedadesAtivosLista(propriedadeOculta, propriedadeOcultaItem);
+
+            List<ProdutoCatalogoItemProdutosAtivosResponseViewModel> retorno = new List<ProdutoCatalogoItemProdutosAtivosResponseViewModel>();
+            if (produtosPropListas != null && produtosPropTexto != null)
+            {
+                produtosPropListas.AddRange(produtosPropTexto);
+                retorno = _mapper.Map<List<ProdutoCatalogoItemProdutosAtivosResponseViewModel>>(produtosPropListas);
+            }
+            return retorno;
+        }
+
 
         public async Task<List<Produto.Dados.ProdutoCatalogoPropriedadeDados>> ObterListaPropriedadesProdutos()
         {
