@@ -5,7 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ClassesBase\ClassesBase.csproj" />
+    <ProjectReference Include="..\FormaPagamento\FormaPagamento.csproj" />
+    <ProjectReference Include="..\Prepedido\Prepedido.csproj" />
   </ItemGroup>
 
 </Project>

@@ -46,7 +46,8 @@ namespace InfraBanco
         public IQueryable<Tcliente> Tclientes { get => contexto.Tclientes.AsNoTracking(); }
         public IQueryable<Torcamento> Torcamentos { get => contexto.Torcamentos.AsNoTracking(); }
 
-        public IQueryable<TorcamentoCotacaoLink> TorcamentoCotacaoLinks { get => contexto.TorcamentoCotacaoLinks.AsNoTracking(); }
+        public IQueryable<TorcamentoCotacao> TorcamentoCotacao { get => contexto.TorcamentoCotacao.AsNoTracking(); }
+        public IQueryable<TorcamentoCotacaoLink> TorcamentoCotacaoLink { get => contexto.TorcamentoCotacaoLinks.AsNoTracking(); }
         public IQueryable<TcfgUnidadeNegocioParametro> TcfgUnidadeNegocioParametro { get => contexto.TcfgUnidadeNegocioParametro.AsNoTracking(); }
         public IQueryable<TorcamentoCotacaoMensagem> TorcamentoCotacaoMensagens { get => contexto.TorcamentoCotacaoMensagens.AsNoTracking(); }
         public IQueryable<TorcamentoCotacaoOpcao> torcamentoCotacaoOpcaos { get => contexto.TorcamentoCotacaoOpcao.AsNoTracking(); }
@@ -118,7 +119,6 @@ namespace InfraBanco
         public IQueryable<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContextos { get => contexto.TcfgTipoUsuarioContextos.AsNoTracking(); }
         public IQueryable<TcfgOrcamentoCotacaoStatus> TcfgOrcamentoCotacaoStatus { get => contexto.TcfgOrcamentoCotacaoStatus.AsNoTracking(); }
         public IQueryable<TcfgOrcamentoCotacaoEmailTemplate> TcfgOrcamentoCotacaoEmailTemplates { get => contexto.TcfgOrcamentoCotacaoEmailTemplates.AsNoTracking(); }
-
 
 #if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public IQueryable<Tdesconto> Tdescontos { get => contexto.Tdescontos.AsNoTracking(); }

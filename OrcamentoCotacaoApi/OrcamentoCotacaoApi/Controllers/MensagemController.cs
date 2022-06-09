@@ -9,7 +9,7 @@ namespace OrcamentoCotacaoApi.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    [Authorize]
+    [AllowAnonymous]
     public class MensagemController : BaseController
     {
         private readonly ILogger<MensagemController> _logger;

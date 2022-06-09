@@ -68,20 +68,20 @@ namespace OrcamentoCotacaoBusiness.Bll
             response.IdOrcamentoCotacao = orcamento.Id;
             response.IdTipoUsuarioContextoDestinatario = (int)Constantes.TipoUsuario.CLIENTE;
 
-            if (orcamento.IdIndicadorVendedor != null &&
-                orcamento.IdIndicadorVendedor == idUsuario)
+            if (orcamento.IdIndicadorVendedor != null && orcamento.IdIndicadorVendedor == idUsuario)
             {
                 response.IdUsuarioRemetente = (int)orcamento.IdIndicadorVendedor;
                 response.IdTipoUsuarioContextoRemetente = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO;
                 return response;
             }
-            if (orcamento.IdIndicador != null &&
-                orcamento.IdIndicador == idUsuario)
+
+            if (orcamento.IdIndicador != null && orcamento.IdIndicador == idUsuario)
             {
                 response.IdUsuarioRemetente = (int)orcamento.IdIndicador;
                 response.IdTipoUsuarioContextoRemetente = (int)Constantes.TipoUsuario.PARCEIRO;
                 return response;
             }
+
             if (orcamento.IdVendedor == idUsuario)
             {
                 response.IdUsuarioRemetente = (int)orcamento.IdVendedor;

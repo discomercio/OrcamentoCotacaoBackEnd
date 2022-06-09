@@ -1,4 +1,5 @@
 ﻿using InfraBanco;
+using InfraBanco.Modelos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -108,6 +109,7 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<OrcamentoCotacaoBll, OrcamentoCotacaoBll>();
             services.AddTransient<OrcamentistaEIndicadorVendedorBll, OrcamentistaEIndicadorVendedorBll>();
             services.AddTransient<OrcamentistaEIndicadorBll, OrcamentistaEIndicadorBll>();
+            services.AddTransient<TorcamentoCotacaoLink, TorcamentoCotacaoLink>();
             services.AddTransient<OrcamentoCotacaoOpcaoBll, OrcamentoCotacaoOpcaoBll>();
             services.AddTransient<ProdutoOrcamentoCotacaoBll, ProdutoOrcamentoCotacaoBll>();
             services.AddTransient<ProdutoCatalogoOrcamentoCotacaoBll, ProdutoCatalogoOrcamentoCotacaoBll>();

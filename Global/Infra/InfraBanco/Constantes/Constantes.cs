@@ -20,7 +20,8 @@ namespace InfraBanco.Constantes
             USUÁRIO_DA_CENTRAL = 1,
             USUARIO_LOJA = 2,
             INDICADOR_PARCEIRO = 3,
-        };
+            CLIENTE = 4,
+        }
         public enum TipoUsuario
         {
             NAO_IDENTIFICADO = -1,
@@ -44,6 +45,7 @@ namespace InfraBanco.Constantes
                     case TipoUsuario.VENDEDOR:
                         retorno = eTipoUsuarioPerfil.USUARIO_LOJA;
                         break;
+                    case TipoUsuario.CLIENTE:
                     case TipoUsuario.PARCEIRO:
                     case TipoUsuario.VENDEDOR_DO_PARCEIRO:
                         retorno = eTipoUsuarioPerfil.INDICADOR_PARCEIRO;
@@ -51,6 +53,7 @@ namespace InfraBanco.Constantes
                     default:
                         break;
                 }
+
                 return retorno;
             }
         }

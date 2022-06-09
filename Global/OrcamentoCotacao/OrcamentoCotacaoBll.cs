@@ -2,6 +2,7 @@
 using InfraBanco;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
+using OrcamentoCotacao.Dto;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,6 +16,11 @@ namespace OrcamentoCotacao
         public OrcamentoCotacaoBll(ContextoBdProvider contextoBdProvider):base(new OrcamentoCotacaoData(contextoBdProvider))
         {
             _data = new OrcamentoCotacaoData(contextoBdProvider);
+        }
+
+        public OrcamentoCotacaoDto PorGuid(string guid)
+        {
+            return _data.PorGuid(guid);
         }
     }
 }
