@@ -3,6 +3,7 @@ using InfraBanco.Modelos.Filtros;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+
 namespace Mensagem
 {
     public class MensagemBll 
@@ -24,24 +25,30 @@ namespace Mensagem
             return await _data.ObterListaMensagemPendente(IdOrcamentoCotacao);
         }
 
+        public int ObterQuantidadeMensagemPendente(int idUsuarioRemetente)
+        {
+            return _data.ObterQuantidadeMensagemPendente(idUsuarioRemetente);
+        }
+
+
         public bool EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem)
         {
             return _data.EnviarMensagem(orcamentoCotacaoMensagem);
         }
 
-        public bool MarcarMensagemComoLida(int IdOrcamentoCotacao)
+        public bool MarcarLida(int IdOrcamentoCotacao)
         {
-            return _data.MarcarMensagemComoLida(IdOrcamentoCotacao);
+            return _data.MarcarLida(IdOrcamentoCotacao);
         }
 
-        public bool MarcarMensagemPendenciaTratada(int IdOrcamentoCotacao)
+        public bool MarcarPendencia(int IdOrcamentoCotacao)
         {
-            return _data.MarcarMensagemPendenciaTratada(IdOrcamentoCotacao);
+            return _data.MarcarPendencia(IdOrcamentoCotacao);
         }
 
-        public bool DesmarcarMensagemPendenciaTratada(int IdOrcamentoCotacao)
+        public bool DesmarcarPendencia(int IdOrcamentoCotacao)
         {
-            return _data.DesmarcarMensagemPendenciaTratada(IdOrcamentoCotacao);
+            return _data.DesmarcarPendencia(IdOrcamentoCotacao);
         }
 
     }

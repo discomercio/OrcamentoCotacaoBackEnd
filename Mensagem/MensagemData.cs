@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace Mensagem
 {
     public class MensagemData
@@ -33,12 +34,29 @@ namespace Mensagem
             using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 return await db.TorcamentoCotacaoMensagem
-                                           .Where(x => x.IdOrcamentoCotacao == IdOrcamentoCotacao &&
-                                           x.PendenciaTratada == null ||
-                                           x.PendenciaTratada == false
-                                           )
-                                           .ToListAsync();
+                               .Where(x => x.IdOrcamentoCotacao == IdOrcamentoCotacao && 
+                                x.PendenciaTratada == false).ToListAsync();
+
             }
+        }
+
+        public int ObterQuantidadeMensagemPendente(int IdUsuarioRemetente)
+        {
+            var qtdMensagemPendente = 0;
+
+            try
+            {
+                var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM);
+
+                qtdMensagemPendente = db.TorcamentoCotacaoMensagem.Where(x => x.IdUsuarioRemetente == IdUsuarioRemetente && x.PendenciaTratada == false).GroupBy(x => x.IdOrcamentoCotacao).Count();
+                    
+
+            }catch(Exception e)
+            {
+                throw e;
+            }
+
+            return qtdMensagemPendente;          
         }
 
         public bool EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem)
@@ -77,7 +95,7 @@ namespace Mensagem
             return saida;
         }
 
-        public bool MarcarMensagemComoLida(int IdOrcamentoCotacao)
+        public bool MarcarLida(int IdOrcamentoCotacao)
         {
             var saida = false;
 
@@ -105,7 +123,7 @@ namespace Mensagem
         }
 
 
-        public bool MarcarMensagemPendenciaTratada(int IdOrcamentoCotacao)
+        public bool MarcarPendencia(int IdOrcamentoCotacao)
         {
             var saida = false;
 
@@ -132,7 +150,7 @@ namespace Mensagem
             return saida;
         }
 
-        public bool DesmarcarMensagemPendenciaTratada(int IdOrcamentoCotacao)
+        public bool DesmarcarPendencia(int IdOrcamentoCotacao)
         {
             var saida = false;
 
