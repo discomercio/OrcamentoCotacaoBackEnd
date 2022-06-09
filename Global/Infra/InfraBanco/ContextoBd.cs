@@ -43,9 +43,12 @@ namespace InfraBanco
             return contexto;
         }
 
-
+        /*SEMPRE NO SINGULAR*/
+        /*SEMPRE NO SINGULAR*/
+        /*SEMPRE NO SINGULAR*/
         public IQueryable<Tcliente> Tcliente { get => contexto.Tcliente.AsNoTracking(); }
         public IQueryable<Torcamento> Torcamento { get => contexto.Torcamento.AsNoTracking(); }
+        public IQueryable<TorcamentoCotacao> TorcamentoCotacao { get => contexto.TorcamentoCotacao.AsNoTracking(); }
         public IQueryable<TorcamentoCotacaoLink> TorcamentoCotacaoLink { get => contexto.TorcamentoCotacaoLink.AsNoTracking(); }
         public IQueryable<TcfgUnidadeNegocioParametro> TcfgUnidadeNegocioParametro { get => contexto.TcfgUnidadeNegocioParametro.AsNoTracking(); }
         public IQueryable<TorcamentoCotacaoMensagem> TorcamentoCotacaoMensagem { get => contexto.TorcamentoCotacaoMensagem.AsNoTracking(); }

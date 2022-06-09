@@ -15,6 +15,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cfg.CfgUnidadeNegocioParametro;
 using Cfg.CfgUnidadeNegocio;
+using OrcamentoCotacao.Dto;
+using FormaPagamento;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -32,8 +34,9 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly OrcamentoCotacaoOpcaoBll _orcamentoCotacaoOpcaoBll;
         private readonly OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll _orcamentoCotacaoEmailQueueBll;
         private readonly LojaBll _lojaBll;
-        private readonly CfgUnidadeNegocioBll cfgUnidadeNegocioBll;
-        private readonly CfgUnidadeNegocioParametroBll cfgUnidadeNegocioParametroBll;
+        private readonly CfgUnidadeNegocioBll _cfgUnidadeNegocioBll;
+        private readonly CfgUnidadeNegocioParametroBll _cfgUnidadeNegocioParametroBll;
+        private readonly FormaPagtoOrcamentoCotacaoBll _formaPagtoOrcamentoCotacaoBll;
 
         public OrcamentoCotacaoBll(
             OrcamentoBll orcamentoBll,
@@ -49,7 +52,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll orcamentoCotacaoEmailQueueBll,
             LojaBll lojaBll,
             CfgUnidadeNegocioBll cfgUnidadeNegocioBll,
-            CfgUnidadeNegocioParametroBll cfgUnidadeNegocioParametroBll
+            CfgUnidadeNegocioParametroBll cfgUnidadeNegocioParametroBll,
+            FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll
             )
         {
             _orcamentoBll = orcamentoBll;
@@ -64,8 +68,9 @@ namespace OrcamentoCotacaoBusiness.Bll
             _appSettings = appSettings.Value;
             _orcamentoCotacaoEmailQueueBll = orcamentoCotacaoEmailQueueBll;
             _lojaBll = lojaBll;
-            this.cfgUnidadeNegocioBll = cfgUnidadeNegocioBll;
-            this.cfgUnidadeNegocioParametroBll = cfgUnidadeNegocioParametroBll;
+            _cfgUnidadeNegocioBll = cfgUnidadeNegocioBll;
+            _cfgUnidadeNegocioParametroBll = cfgUnidadeNegocioParametroBll;
+            _formaPagtoOrcamentoCotacaoBll = formaPagtoOrcamentoCotacaoBll;
         }
 
         public List<OrcamentoCotacaoListaDto> PorFiltro(TorcamentoFiltro tOrcamentoFiltro, UsuarioLogin usuarioLogin)
@@ -223,6 +228,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
+
         public RemetenteDestinatarioResponseViewModel BuscarDadosParaMensageria(UsuarioLogin usuario, int id, bool usuarioIterno)
         {
             if (usuario.TipoUsuario == (int)Constantes.TipoUsuario.GESTOR) return null;
@@ -311,8 +317,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             TorcamentoCotacaoEmailQueue orcamentoCotacaoEmailQueueModel = new InfraBanco.Modelos.TorcamentoCotacaoEmailQueue();
 
             var loja = _lojaBll.PorFiltro(new InfraBanco.Modelos.Filtros.TlojaFiltro() { Loja = orcamento.Loja });
-            var tcfgUnidadeNegocio = cfgUnidadeNegocioBll.PorFiltro(new TcfgUnidadeNegocioFiltro() { Sigla = loja[0].Unidade_Negocio });
-            var tcfgUnidadeNegocioParametros = cfgUnidadeNegocioParametroBll.PorFiltro(new TcfgUnidadeNegocioParametroFiltro() { IdCfgUnidadeNegocio = tcfgUnidadeNegocio.FirstOrDefault().Id });
+            var tcfgUnidadeNegocio = _cfgUnidadeNegocioBll.PorFiltro(new TcfgUnidadeNegocioFiltro() { NomeCurto = loja[0].Nome });
+            var tcfgUnidadeNegocioParametros = _cfgUnidadeNegocioParametroBll.PorFiltro(new TcfgUnidadeNegocioParametroFiltro() { IdCfgUnidadeNegocio = tcfgUnidadeNegocio.FirstOrDefault().Id });
             var nomeEmpresa = "";
 
             foreach (var item in tcfgUnidadeNegocioParametros)

@@ -2,13 +2,14 @@
 using InfraBanco;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
+using OrcamentoCotacao.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace OrcamentoCotacao
 {
-    public class OrcamentoCotacaoData:BaseData<TorcamentoCotacao, TorcamentoCotacaoFiltro>
+    public class OrcamentoCotacaoData : BaseData<TorcamentoCotacao, TorcamentoCotacaoFiltro>
     {
         private readonly ContextoBdProvider contextoProvider;
 
@@ -22,6 +23,59 @@ namespace OrcamentoCotacao
             throw new NotImplementedException();
         }
 
+        public OrcamentoCotacaoDto PorGuid(string guid)
+        {
+            try
+            {
+                using (var db = contextoProvider.GetContextoLeitura())
+                {
+                    var orcamento = (from l in db.TorcamentoCotacaoLink
+                            join o in db.TorcamentoCotacao on l.IdOrcamentoCotacao equals o.Id
+                            join u in db.Tusuario on o.IdVendedor equals u.Id into gg
+                            from lj in gg.DefaultIfEmpty()
+                            where l.Guid == Guid.Parse(guid)
+                            orderby o.Id descending
+                            select new OrcamentoCotacaoDto
+                            {
+                                //Orcamento
+                                id = o.Id,
+                                nomeObra = o.NomeObra,
+                                validade = o.Validade,
+                                vendedor = lj.Usuario,
+                                idUsuarioCadastro = o.IdUsuarioCadastro,
+                                idIndicador = o.IdIndicador,
+                                tipoCliente = o.TipoCliente,
+                                //parceiro = {{razaoSocialParceiro}}
+                                //vendedorParceiro
+
+                                //Cliente
+                                nomeCliente = o.NomeCliente,
+                                email = o.Email,
+                                telefone = o.Telefone,
+                                uf = o.UF,
+                            })
+                            .FirstOrDefault();
+
+                    if (orcamento != null)
+                    {
+                        var u3 = db.TorcamentistaEindicadorVendedor.FirstOrDefault(x => x.Id == orcamento.idUsuarioCadastro)?.Nome;
+                        var u2 = db.TorcamentistaEindicador.FirstOrDefault(x => x.IdIndicador == orcamento.idUsuarioCadastro)?.Apelido;
+                        var u1 = db.Tusuario.FirstOrDefault(x => x.Id == orcamento.idUsuarioCadastro)?.Usuario;
+
+                        orcamento.usuarioCadastro = u3 == null ? u2 == null ? u1 == null ? null : u1 : u2 : u3;
+
+                        return orcamento;
+                    }
+
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public bool Excluir(TorcamentoCotacao obj)
         {
             throw new NotImplementedException();
@@ -31,7 +85,7 @@ namespace OrcamentoCotacao
         {
             try
             {
-                using(var db = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
+                using (var db = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
                     db.TorcamentoCotacao.Add(obj);
                     db.SaveChanges();
@@ -67,7 +121,7 @@ namespace OrcamentoCotacao
         {
             try
             {
-                using(var db = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
+                using (var db = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
                     var listaStatus = db.TcfgOrcamentoCotacaoStatus.ToList();
                     var saida = from c in db.TorcamentoCotacao select c;
@@ -76,7 +130,7 @@ namespace OrcamentoCotacao
 
                     saida = saida.OrderByDescending(a => a.DataCadastro);
 
-                    if(obj.Id != 0)
+                    if (obj.Id != 0)
                     {
                         saida = saida.Where(x => x.Id == obj.Id);
                     }

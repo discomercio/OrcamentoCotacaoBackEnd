@@ -95,13 +95,14 @@ namespace OrcamentoCotacaoBusiness.Bll
                 response.IdTipoUsuarioContextoRemetente = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO;
                 return response;
             }
-            if (orcamento.IdIndicador != null &&
-                orcamento.IdIndicador == idUsuario)
+
+            if (orcamento.IdIndicador != null && orcamento.IdIndicador == idUsuario)
             {
                 response.IdUsuarioRemetente = (int)orcamento.IdIndicador;
                 response.IdTipoUsuarioContextoRemetente = (int)Constantes.TipoUsuario.PARCEIRO;
                 return response;
             }
+
             if (orcamento.IdVendedor == idUsuario)
             {
                 response.IdUsuarioRemetente = (int)orcamento.IdVendedor;
