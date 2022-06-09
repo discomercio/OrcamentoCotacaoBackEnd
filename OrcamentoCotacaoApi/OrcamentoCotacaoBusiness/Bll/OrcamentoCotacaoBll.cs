@@ -269,7 +269,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public bool MarcarMensagemComoLida(int IdOrcamentoCotacao)
         {
-            return _mensagemBll.MarcarMensagemComoLida(IdOrcamentoCotacao);
+            return _mensagemBll.MarcarLida(IdOrcamentoCotacao);
         }
 
         public int CadastrarOrcamentoCotacao(OrcamentoRequestViewModel orcamento, UsuarioLogin usuarioLogado)
