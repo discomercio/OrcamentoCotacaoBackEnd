@@ -5,7 +5,7 @@ using Mensagem;
 using OrcamentoCotacaoBusiness.Models.Response;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Linq;
+
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -30,24 +30,29 @@ namespace OrcamentoCotacaoBusiness.Bll
             return await _bll.ObterListaMensagemPendente(IdOrcamentoCotacao);
         }
 
+        public int ObterQuantidadeMensagemPendente(int idUsuarioRemetente)
+        {
+            return _bll.ObterQuantidadeMensagemPendente(idUsuarioRemetente);
+        }
+
         public bool EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem)
         {
             return _bll.EnviarMensagem(orcamentoCotacaoMensagem);
         }
 
-        public bool MarcarMensagemComoLida(int IdOrcamentoCotacao)
+        public bool MarcarLida(int IdOrcamentoCotacao)
         {
-            return _bll.MarcarMensagemComoLida(IdOrcamentoCotacao);
+            return _bll.MarcarLida(IdOrcamentoCotacao);
         }
 
-        public bool MarcarMensagemPendenciaTratada(int IdOrcamentoCotacao)
+        public bool MarcarPendencia(int IdOrcamentoCotacao)
         {
-            return _bll.MarcarMensagemPendenciaTratada(IdOrcamentoCotacao);
+            return _bll.MarcarPendencia(IdOrcamentoCotacao);
         }
 
-        public bool DesmarcarMensagemPendenciaTratada(int IdOrcamentoCotacao)
+        public bool DesmarcarPendencia(int IdOrcamentoCotacao)
         {
-            return _bll.DesmarcarMensagemPendenciaTratada(IdOrcamentoCotacao);
+            return _bll.DesmarcarPendencia(IdOrcamentoCotacao);
         }
 
         public RemetenteDestinatarioResponseViewModel CriarRemetenteCliente(TorcamentoCotacao orcamento)
@@ -90,13 +95,14 @@ namespace OrcamentoCotacaoBusiness.Bll
                 response.IdTipoUsuarioContextoRemetente = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO;
                 return response;
             }
-            if (orcamento.IdIndicador != null &&
-                orcamento.IdIndicador == idUsuario)
+
+            if (orcamento.IdIndicador != null && orcamento.IdIndicador == idUsuario)
             {
                 response.IdUsuarioRemetente = (int)orcamento.IdIndicador;
                 response.IdTipoUsuarioContextoRemetente = (int)Constantes.TipoUsuario.PARCEIRO;
                 return response;
             }
+
             if (orcamento.IdVendedor == idUsuario)
             {
                 response.IdUsuarioRemetente = (int)orcamento.IdVendedor;
