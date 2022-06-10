@@ -74,7 +74,7 @@ namespace OrcamentoCotacao
 
                     if (saida == null) return null;
 
-                    saida = saida.OrderByDescending(a => a.DataCadastro);
+                    saida = saida.OrderByDescending(a => a.DataHoraCadastro);
 
                     if(obj.Id != 0)
                     {
