@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace OrcamentoCotacaoBusiness.Models.Response
 {
-    public class OrcamentoOpcaoResponseViewModel : IViewModelResponse
+    public class OrcamentoOpcaoResponseViewModel //: IViewModelResponse
     {
         [JsonProperty("id")]
         public int Id { get; set; }

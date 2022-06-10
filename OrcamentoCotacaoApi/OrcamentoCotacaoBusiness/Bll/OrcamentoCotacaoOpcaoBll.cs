@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using InfraBanco;
+using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
+using OrcamentoCotacao.Dto;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
+using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,15 +55,14 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 var tOrcamentoCotacaoOpcaoPagtos = formaPagtoOrcamentoCotacaoBll.CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(opcao.FormaPagto, opcaoResponse.Id, contextoBdGravacao);
 
-                var tOrcamentoCotacaoItemUnificados = produtoOrcamentoCotacaoBll.CadastrarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(opcao, 
+                var tOrcamentoCotacaoItemUnificados = produtoOrcamentoCotacaoBll.CadastrarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(opcao,
                     opcaoResponse.Id, loja, contextoBdGravacao);
 
-                if (tOrcamentoCotacaoOpcaoPagtos.Count == 0 || tOrcamentoCotacaoItemUnificados.Count == 0) 
+                if (tOrcamentoCotacaoOpcaoPagtos.Count == 0 || tOrcamentoCotacaoItemUnificados.Count == 0)
                     throw new ArgumentException("Ops! Não gerou Id ao salvar os pagamentos e produtos!");
 
                 var tOrcamentoCotacaoOpcaoItemAtomicoCustoFin = produtoOrcamentoCotacaoBll.CadastrarProdutoAtomicoCustoFinComTransacao(tOrcamentoCotacaoOpcaoPagtos,
                     tOrcamentoCotacaoItemUnificados, opcao.ListaProdutos, loja, contextoBdGravacao);
-
             }
 
             return orcamentoOpcaoResponseViewModels;
@@ -81,7 +83,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             };
         }
 
-        public List<OrcamentoOpcaoResponseViewModel>PorFiltro(TorcamentoCotacaoOpcaoFiltro filtro)
+        public List<OrcamentoOpcaoResponseViewModel> PorFiltro(TorcamentoCotacaoOpcaoFiltro filtro)
         {
             var orcamentoOpcoes = orcamentoCotacaoOpcaoBll.PorFiltro(filtro);
 
@@ -92,7 +94,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             foreach (var opcao in orcamentoOpcoes)
             {
                 var opcaoFormaPagtos = formaPagtoOrcamentoCotacaoBll.BuscarOpcaoFormasPagtos(opcao.Id);
-                
+
                 if (opcaoFormaPagtos == null) throw new ArgumentException("Pagamento da opção não encontrado!");
 
                 var itensOpcao = produtoOrcamentoCotacaoBll.BuscarOpcaoProdutos(opcao.Id).Result;

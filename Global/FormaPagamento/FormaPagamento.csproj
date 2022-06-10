@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Infra\InfraBanco\InfraBanco.csproj" />
     <ProjectReference Include="..\MeioPagamentos\MeioPagamentos.csproj" />
   </ItemGroup>

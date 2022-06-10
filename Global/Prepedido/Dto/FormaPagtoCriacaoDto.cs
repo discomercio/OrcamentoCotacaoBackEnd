@@ -1,4 +1,5 @@
 ﻿using FormaPagamento.Dados;
+using Prepedido;
 
 namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
 {
@@ -101,7 +102,7 @@ namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
                 CustoFinancFornecTipoParcelamento = origem.CustoFinancFornecTipoParcelamento,
             };
 
-            ret.CustoFinancFornecQtdeParcelas = global::Prepedido.PrepedidoBll.ObterCustoFinancFornecQtdeParcelasDeFormaPagto(ret);
+            ret.CustoFinancFornecQtdeParcelas = PrepedidoBll.ObterCustoFinancFornecQtdeParcelasDeFormaPagto(ret);
             return ret;
         }
     }

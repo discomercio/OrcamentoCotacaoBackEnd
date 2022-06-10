@@ -39,4 +39,8 @@
     <ProjectReference Include="..\..\Mensagem\Mensagem.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\Response\FormaPagamento\MeiosPagamento\" />
+  </ItemGroup>
+
 </Project>
