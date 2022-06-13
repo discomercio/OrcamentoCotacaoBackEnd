@@ -17,7 +17,7 @@ namespace UtilsGlobais
             if (string.IsNullOrEmpty(id_nsu))
                 throw new ArgumentException("Não foi especificado o NSU a ser gerado!");
 
-            var queryControle = from c in dbgravacao.Tcontroles
+            var queryControle = from c in dbgravacao.Tcontrole
                                 where c.Id_Nsu == id_nsu
                                 select c;
 
@@ -34,7 +34,7 @@ namespace UtilsGlobais
                 dbgravacao.SaveChanges();
 
                 //carregamos novamente
-                var queryControleRecarga = from c in dbgravacao.Tcontroles
+                var queryControleRecarga = from c in dbgravacao.Tcontrole
                                            where c.Id_Nsu == id_nsu
                                            select c;
 
@@ -104,11 +104,10 @@ namespace UtilsGlobais
         }
 
 
-#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public static async Task<int> Fin_gera_nsu(string id_nsu, ContextoBdGravacao dbgravacao)
         {
             //verifica se o id_nsu já existe
-            var existeIdFin = await (from c in dbgravacao.TfinControles
+            var existeIdFin = await (from c in dbgravacao.TfinControle
                                      where c.Id == id_nsu
                                      select c.Id).AnyAsync();
 
@@ -126,7 +125,7 @@ namespace UtilsGlobais
             }
 
             //'	OBTÉM O ÚLTIMO NSU USADO
-            var tfincontroleEditando = await (from c in dbgravacao.TfinControles
+            var tfincontroleEditando = await (from c in dbgravacao.TfinControle
                                               where c.Id == id_nsu
                                               select c).FirstOrDefaultAsync();
 
@@ -142,7 +141,7 @@ namespace UtilsGlobais
                 dbgravacao.SaveChanges();
 
                 //carregamos novamente
-                tfincontroleEditando = await (from c in dbgravacao.TfinControles
+                tfincontroleEditando = await (from c in dbgravacao.TfinControle
                                                   where c.Id == id_nsu
                                                   select c).FirstOrDefaultAsync();
             }
@@ -155,7 +154,6 @@ namespace UtilsGlobais
 
             return tfincontroleEditando.Nsu;
         }
-#endif
 
     }
 }

@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Configurations>Debug;Release;Release_OrcamentoCotacao;Debug_OrcamentoCotacao</Configurations>
+    <DebugType Condition=" '$(Configuration)' == 'Release_OrcamentoCotacao' ">None</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,6 +29,7 @@
     <ProjectReference Include="..\..\Global\OrcamentoCotacaoOpcaoPagto\OrcamentoCotacaoOpcaoPagto.csproj" />
     <ProjectReference Include="..\..\Global\OrcamentoCotacaoOpcao\OrcamentoCotacaoOpcao.csproj" />
     <ProjectReference Include="..\..\Global\OrcamentoCotacao\OrcamentoCotacao.csproj" />
+	<ProjectReference Include="..\..\Global\OrcamentoCotacaoEmailQueue\OrcamentoCotacaoEmailQueue.csproj" />
     <ProjectReference Include="..\..\Global\Orcamento\Orcamento.csproj" />
     <ProjectReference Include="..\..\Global\Prepedido\Prepedido.csproj" />
     <ProjectReference Include="..\..\Global\ProdutoCatalogo\ProdutoCatalogo.csproj" />
@@ -35,6 +37,10 @@
     <ProjectReference Include="..\..\Global\Usuario\Usuario.csproj" />
     <ProjectReference Include="..\..\Global\Utils\UtilsGlobais.csproj" />
     <ProjectReference Include="..\..\Mensagem\Mensagem.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Response\FormaPagamento\MeiosPagamento\" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace InfraBanco.Modelos
 {
@@ -15,7 +14,6 @@ namespace InfraBanco.Modelos
         [MaxLength(12)]
         public string Id_estoque { get; set; }
 
-#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         [Column("data_entrada")]
         [Required]
         public DateTime Data_entrada { get; set; }
@@ -23,7 +21,6 @@ namespace InfraBanco.Modelos
         [Column("data_ult_movimento")]
         [Required]
         public DateTime Data_ult_movimento { get; set; }
-#endif
 
         [Column("id_nfe_emitente")]
         [Required]

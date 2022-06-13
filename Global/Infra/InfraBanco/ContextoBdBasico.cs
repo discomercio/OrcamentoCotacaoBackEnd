@@ -9,7 +9,6 @@ namespace InfraBanco
         {
         }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ContextoBdBasico).Assembly);
@@ -90,7 +89,6 @@ namespace InfraBanco
                 .WithMany(x => x.TestoqueItem)
                 .HasForeignKey(x => x.Id_estoque);
 
-#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
             modelBuilder.Entity<TpedidoItemDevolvido>()
                 .HasOne(x => x.Tpedido)
                 .WithMany(x => x.TpedidoItemDevolvido)
@@ -178,116 +176,108 @@ namespace InfraBanco
                 .HasOne(x => x.TorcamentoCotacaoOpcaoPagto)
                 .WithOne(o => o.TcfgTipoUsuarioContexto)
                 .HasForeignKey<TorcamentoCotacaoOpcaoPagto>(f => f.IdTipoUsuarioContextoAprovado);
-#endif
         }
 
-        public DbSet<Tcliente> Tclientes { get; set; }
-        public DbSet<Torcamento> Torcamentos { get; set; }
-        public DbSet<TorcamentoCotacaoLink> TorcamentoCotacaoLinks { get; set; }
-        public DbSet<TorcamentoCotacaoMensagem> TorcamentoCotacaoMensagens { get; set; }
+        public DbSet<Tcliente> Tcliente { get; set; }
+        public DbSet<Torcamento> Torcamento { get; set; }
         public DbSet<TcfgUnidadeNegocioParametro> TcfgUnidadeNegocioParametro { get; set; }
-        public DbSet<TclienteRefBancaria> TclienteRefBancarias { get; set; }
-        public DbSet<Tpedido> Tpedidos { get; set; }
-        public DbSet<TorcamentistaEindicador> TorcamentistaEindicadors { get; set; }
-        public DbSet<TorcamentistaEIndicadorVendedor> TorcamentistaEindicadorVendedors { get; set; }
-        public DbSet<TsessaoHistorico> TsessaoHistoricos { get; set; }
-        public DbSet<Tproduto> Tprodutos { get; set; }
-        public DbSet<TprodutoCatalogo> TprodutoCatalogos { get; set; }
-        public DbSet<TProdutoCatalogoPropriedade> TProdutoCatalogoPropriedades { get; set; }
-        public DbSet<TProdutoCatalogoPropriedadeOpcao> TProdutoCatalogoPropriedadeOpcoes { get; set; }
-        public DbSet<TprodutoCatalogoItem> TprodutoCatalogoItems { get; set; }
-        public DbSet<TprodutoLoja> TprodutoLojas { get; set; }
-        public DbSet<TpedidoItem> TpedidoItems { get; set; }
-        public DbSet<TpedidoItemDevolvido> TpedidoItemDevolvidos { get; set; }
-        public DbSet<TpedidoPerda> TpedidoPerdas { get; set; }
-        public DbSet<TpedidoPagamento> TpedidoPagamentos { get; set; }
-        public DbSet<Ttransportadora> Ttransportadoras { get; set; }
-        public DbSet<TpedidoBlocosNotas> TpedidoBlocosNotas { get; set; }
-        public DbSet<TcodigoDescricao> TcodigoDescricaos { get; set; }
-        public DbSet<TpedidoOcorrenciaMensagem> TpedidoOcorrenciaMensagems { get; set; }
-        public DbSet<TpedidoOcorrencia> TpedidoOcorrencias { get; set; }
-        public DbSet<TpedidoItemDevolvidoBlocoNotas> TpedidoItemDevolvidoBlocoNotas { get; set; }
-        public DbSet<TorcamentoItem> TorcamentoItems { get; set; }
-        public DbSet<Tbanco> Tbancos { get; set; }
-        public DbSet<TclienteRefComercial> TclienteRefComercials { get; set; }
-        public DbSet<Tlog> Tlogs { get; set; }
-        public DbSet<Tloja> Tlojas { get; set; }
-        public DbSet<Tcontrole> Tcontroles { get; set; }
-        public DbSet<TnfEmitente> TnfEmitentes { get; set; }
-        public DbSet<TecProdutoComposto> TecProdutoCompostos { get; set; }
-        public DbSet<Tfabricante> Tfabricantes { get; set; }
-        public DbSet<Tparametro> Tparametros { get; set; }
-        public DbSet<TpercentualCustoFinanceiroFornecedor> TpercentualCustoFinanceiroFornecedors { get; set; }
+        public DbSet<TclienteRefBancaria> TclienteRefBancaria { get; set; }
+        public DbSet<Tpedido> Tpedido { get; set; }
+        public DbSet<TorcamentistaEindicador> TorcamentistaEindicador { get; set; }
+        public DbSet<TorcamentistaEIndicadorVendedor> TorcamentistaEindicadorVendedor { get; set; }
+        public DbSet<TsessaoHistorico> TsessaoHistorico { get; set; }
+        public DbSet<Tproduto> Tproduto { get; set; }
 
-        public DbSet<TpercentualCustoFinanceiroFornecedorHistorico> TpercentualCustoFinanceiroFornecedorHistoricos { get; set; }
-        public DbSet<TprodutoXwmsRegraCd> TprodutoXwmsRegraCds { get; set; }
-        public DbSet<TwmsRegraCd> TwmsRegraCds { get; set; }
-        public DbSet<TwmsRegraCdXUf> TwmsRegraCdXUfs { get; set; }
-        public DbSet<TwmsRegraCdXUfPessoa> TwmsRegraCdXUfPessoas { get; set; }
-        public DbSet<TwmsRegraCdXUfXPessoaXCd> TwmsRegraCdXUfXPessoaXCds { get; set; }
-        public DbSet<TecProdutoCompostoItem> TecProdutoCompostoItems { get; set; }
-        public DbSet<TestoqueItem> TestoqueItems { get; set; }
-        public DbSet<TprodutoXAlerta> TprodutoXAlertas { get; set; }
-        public DbSet<TalertaProduto> TalertaProdutos { get; set; }
-        public DbSet<TformaPagto> TformaPagtos { get; set; }
-        public DbSet<TorcamentistaEIndicadorRestricaoFormaPagto> TorcamentistaEIndicadorRestricaoFormaPagtos { get; set; }
-        public DbSet<TprazoPagtoVisanet> TprazoPagtoVisanets { get; set; }
-        public DbSet<TprodutoSubgrupo> TprodutoSubgrupos { get; set; }
-        public DbSet<Tusuario> Tusuarios { get; set; }
-        public DbSet<TsessaoAbandonada> TsessaoAbandonadas { get; set; }
-        public DbSet<Tperfil> Tperfils { get; set; }
-        public DbSet<TperfilUsuario> TperfilUsuarios { get; set; }
-        public DbSet<Testoque> Testoques { get; set; }
-        public DbSet<TestoqueMovimento> TestoqueMovimentos { get; set; }
-        public DbSet<TcfgModulo> TcfgModulos { get; set; }
-        public DbSet<TcfgPagtoForma> TcfgPagtoFormas { get; set; }
-        public DbSet<TcfgPagtoFormaStatus> TcfgPagtoFormaStatus { get; set; }
-        public DbSet<TcfgPagtoMeio> TcfgPagtoMeios { get; set; }
-        public DbSet<TcfgPagtoMeioStatus> TcfgPagtoMeioStatus { get; set; }
-        public DbSet<TcfgTipoParcela> TcfgTipoParcelas { get; set; }
-        public DbSet<TcfgTipoPessoa> TcfgTipoPessoas { get; set; }
-        public DbSet<TcfgTipoUsuario> TcfgTipoUsuarios { get; set; }
-        public DbSet<TcfgTipoUsuarioPerfil> TcfgTipoUsuarioPerfis { get; set; }
-        public DbSet<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContextos { get; set; }
-        public DbSet<TcfgOrcamentoCotacaoStatus> TcfgOrcamentoCotacaoStatus { get; set; }
-        public DbSet<TorcamentoCotacaoOpcao> TorcamentoCotacaoOpcao { get; set; }
-        public DbSet<TorcamentoCotacaoEmailQueue> TorcamentoCotacaoEmailQueue { get; set; }
-        public DbSet<TorcamentoCotacaoOpcaoPagto> TorcamentoCotacaoOpcaoPagtos { get; set; }
-        public DbSet<TorcamentoCotacaoItemUnificado> TorcamentoCotacaoItemUnificados { get; set; }
-        public DbSet<TorcamentoCotacaoOpcaoItemAtomicoCustoFin> TorcamentoCotacaoOpcaoItemAtomicoCustoFins { get; set; }
-        public DbSet<TorcamentoCotacaoOpcaoItemAtomico> TorcamentoCotacaoOpcaoItemAtomicos { get; set; }
-        public DbSet<TcfgUnidadeNegocio> TcfgUnidadeNegocio { get; set; }
-
-#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
-        public DbSet<Taviso> Tavisos { get; set; }
-        public DbSet<TavisoExibido> TavisoExibidos { get; set; }
-        public DbSet<TavisoLido> TavisoLidos { get; set; }
-        public DbSet<Tdesconto> Tdescontos { get; set; }
-        public DbSet<TestoqueLog> TestoqueLogs { get; set; }
-        public DbSet<TfinControle> TfinControles { get; set; }
-        public DbSet<Toperacao> Toperacaos { get; set; }
-        public DbSet<TpedidoAnaliseEndereco> TpedidoAnaliseEnderecos { get; set; }
-        public DbSet<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseConfrontacaos { get; set; }
-        public DbSet<TpedidoDevolucao> TpedidoDevolucaos { get; set; }
-        public DbSet<TperfilItem> TperfilItens { get; set; }
-        public DbSet<TtransportadoraCep> TtransportadoraCeps { get; set; }
-        public DbSet<TusuarioXLoja> TusuarioXLojas { get; set; }
-        public DbSet<TorcamentoItem> TorcamentoItem { get; set; }
-        public DbSet<TorcamentoCotacaoArquivos> TorcamentoCotacaoArquivos { get; set; }
         public DbSet<TprodutoCatalogo> TprodutoCatalogo { get; set; }
         public DbSet<TprodutoCatalogoImagem> TprodutoCatalogoImagem { get; set; }
         public DbSet<TprodutoCatalogoImagemTipo> TprodutoCatalogoImagemTipo { get; set; }
+        public DbSet<TProdutoCatalogoPropriedade> TProdutoCatalogoPropriedade { get; set; }
+        public DbSet<TProdutoCatalogoPropriedadeOpcao> TProdutoCatalogoPropriedadeOpcao { get; set; }
         public DbSet<TprodutoCatalogoItem> TprodutoCatalogoItem { get; set; }
         public DbSet<TprodutoCatalogoItens> TprodutoCatalogoItens { get; set; }
-        public DbSet<TorcamentistaEIndicadorVendedor> TorcamentistaEIndicadorVendedor { get; set; }
+
+        public DbSet<TprodutoLoja> TprodutoLoja { get; set; }
+        public DbSet<TpedidoItem> TpedidoItem { get; set; }
+        public DbSet<TpedidoItemDevolvido> TpedidoItemDevolvido { get; set; }
+        public DbSet<TpedidoPerda> TpedidoPerda { get; set; }
+        public DbSet<TpedidoPagamento> TpedidoPagamento { get; set; }
+        public DbSet<Ttransportadora> Ttransportadora { get; set; }
+        public DbSet<TpedidoBlocosNotas> TpedidoBlocosNotas { get; set; }
+        public DbSet<TcodigoDescricao> TcodigoDescricao { get; set; }
+        public DbSet<TpedidoOcorrenciaMensagem> TpedidoOcorrenciaMensagem { get; set; }
+        public DbSet<TpedidoOcorrencia> TpedidoOcorrencia { get; set; }
+        public DbSet<TpedidoItemDevolvidoBlocoNotas> TpedidoItemDevolvidoBlocoNotas { get; set; }
+        public DbSet<TorcamentoItem> TorcamentoItem { get; set; }
+        public DbSet<Tbanco> Tbanco { get; set; }
+        public DbSet<TclienteRefComercial> TclienteRefComercial { get; set; }
+        public DbSet<Tlog> Tlog { get; set; }
+        public DbSet<Tloja> Tloja { get; set; }
+        public DbSet<Tcontrole> Tcontrole { get; set; }
+        public DbSet<TnfEmitente> TnfEmitente { get; set; }
+        public DbSet<TecProdutoComposto> TecProdutoComposto { get; set; }
+        public DbSet<Tfabricante> Tfabricante { get; set; }
+        public DbSet<Tparametro> Tparametro { get; set; }
+        public DbSet<TpercentualCustoFinanceiroFornecedor> TpercentualCustoFinanceiroFornecedor { get; set; }
+
+        public DbSet<TpercentualCustoFinanceiroFornecedorHistorico> TpercentualCustoFinanceiroFornecedorHistorico { get; set; }
+        public DbSet<TprodutoXwmsRegraCd> TprodutoXwmsRegraCd { get; set; }
+        public DbSet<TwmsRegraCd> TwmsRegraCd { get; set; }
+        public DbSet<TwmsRegraCdXUf> TwmsRegraCdXUf { get; set; }
+        public DbSet<TwmsRegraCdXUfPessoa> TwmsRegraCdXUfPessoa { get; set; }
+        public DbSet<TwmsRegraCdXUfXPessoaXCd> TwmsRegraCdXUfXPessoaXCd { get; set; }
+        public DbSet<TecProdutoCompostoItem> TecProdutoCompostoItem { get; set; }
+        public DbSet<TestoqueItem> TestoqueItem { get; set; }
+        public DbSet<TprodutoXAlerta> TprodutoXAlerta { get; set; }
+        public DbSet<TalertaProduto> TalertaProduto { get; set; }
+        public DbSet<TformaPagto> TformaPagto { get; set; }
+        public DbSet<TorcamentistaEIndicadorRestricaoFormaPagto> TorcamentistaEIndicadorRestricaoFormaPagto { get; set; }
+        public DbSet<TprazoPagtoVisanet> TprazoPagtoVisanet { get; set; }
+        public DbSet<TprodutoSubgrupo> TprodutoSubgrupo { get; set; }
+        public DbSet<Tusuario> Tusuario { get; set; }
+        public DbSet<TsessaoAbandonada> TsessaoAbandonada { get; set; }
+        public DbSet<Tperfil> Tperfil { get; set; }
+        public DbSet<TperfilUsuario> TperfilUsuario { get; set; }
+        public DbSet<Testoque> Testoque { get; set; }
+        public DbSet<TestoqueMovimento> TestoqueMovimento { get; set; }
+        public DbSet<TcfgModulo> TcfgModulo { get; set; }
+        public DbSet<TcfgPagtoForma> TcfgPagtoForma { get; set; }
+        public DbSet<TcfgPagtoFormaStatus> TcfgPagtoFormaStatus { get; set; }
+        public DbSet<TcfgPagtoMeio> TcfgPagtoMeio { get; set; }
+        public DbSet<TcfgPagtoMeioStatus> TcfgPagtoMeioStatus { get; set; }
+        public DbSet<TcfgTipoParcela> TcfgTipoParcela { get; set; }
+        public DbSet<TcfgTipoPessoa> TcfgTipoPessoa { get; set; }
+        public DbSet<TcfgTipoUsuario> TcfgTipoUsuario { get; set; }
+        public DbSet<TcfgTipoUsuarioPerfil> TcfgTipoUsuarioPerfil { get; set; }
+        public DbSet<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContexto { get; set; }
+
         public DbSet<TorcamentoCotacao> TorcamentoCotacao { get; set; }
+        public DbSet<TorcamentoCotacaoLink> TorcamentoCotacaoLink { get; set; }
+        public DbSet<TorcamentoCotacaoMensagem> TorcamentoCotacaoMensagem { get; set; }
+        public DbSet<TcfgOrcamentoCotacaoStatus> TcfgOrcamentoCotacaoStatus { get; set; }
+        public DbSet<TcfgOrcamentoCotacaoEmailTemplate> TcfgOrcamentoCotacaoEmailTemplate { get; set; }
+        public DbSet<TorcamentoCotacaoOpcao> TorcamentoCotacaoOpcao { get; set; }
+        public DbSet<TorcamentoCotacaoEmailQueue> TorcamentoCotacaoEmailQueue { get; set; }
+        public DbSet<TorcamentoCotacaoOpcaoPagto> TorcamentoCotacaoOpcaoPagto { get; set; }
+        public DbSet<TorcamentoCotacaoItemUnificado> TorcamentoCotacaoItemUnificado { get; set; }
+        public DbSet<TorcamentoCotacaoOpcaoItemAtomicoCustoFin> TorcamentoCotacaoOpcaoItemAtomicoCustoFin { get; set; }
+        public DbSet<TorcamentoCotacaoOpcaoItemAtomico> TorcamentoCotacaoOpcaoItemAtomico { get; set; }
+        public DbSet<TcfgUnidadeNegocio> TcfgUnidadeNegocio { get; set; }
+        public DbSet<TusuarioXLoja> TusuarioXLoja { get; set; }
+        public DbSet<Toperacao> Toperacao { get; set; }
+        public DbSet<TperfilItem> TperfilItem { get; set; }
+        public DbSet<TtransportadoraCep> TtransportadoraCep { get; set; }
+        public DbSet<TpedidoAnaliseEndereco> TpedidoAnaliseEndereco { get; set; }
+        public DbSet<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseConfrontacao { get; set; }
+        public DbSet<TfinControle> TfinControle { get; set; }
+        public DbSet<Tdesconto> Tdesconto { get; set; }
+        public DbSet<TpedidoDevolucao> TpedidoDevolucao { get; set; }
+        public DbSet<TestoqueLog> TestoqueLog { get; set; }
+        public DbSet<TorcamentoCotacaoArquivos> TorcamentoCotacaoArquivos { get; set; }
+        public DbSet<Taviso> Taviso { get; set; }
+        public DbSet<TavisoExibido> TavisoExibidos { get; set; }
+        public DbSet<TavisoLido> TavisoLido { get; set; }
+        public DbSet<TperfilItem> TperfilIten { get; set; }
+        public DbSet<TorcamentistaEIndicadorVendedor> TorcamentistaEIndicadorVendedor { get; set; }
 
-
-        //public DbSet<Tvendedor> Tvendedor { get; set; }
-#endif
-        //daqui para a frente só é necessário para os testes automatizados
-#if DEBUG_BANCO_DEBUG
-
-#endif
     }
 }

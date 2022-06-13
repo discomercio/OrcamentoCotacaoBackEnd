@@ -32,14 +32,14 @@ namespace Loja.Bll.ProdutoBll
 
             if (!int.TryParse(fabricante, out n_fabricante))
             {
-                fabricante = (from c in db.Tfabricantes
+                fabricante = (from c in db.Tfabricante
                               where c.Nome == fabricante
                               select c.Fabricante).SingleOrDefault();
             }
 
 
-            var lstProdutosTask = from c in db.TprodutoLojas
-                                  join cc in db.Tprodutos
+            var lstProdutosTask = from c in db.TprodutoLoja
+                                  join cc in db.Tproduto
                                   on new { c.Fabricante, c.Produto } equals new { cc.Fabricante, cc.Produto }
                                   where (c.Vendavel == "S" || c.Vendavel == "X") &&
                                         c.Fabricante == fabricante &&
@@ -84,13 +84,13 @@ namespace Loja.Bll.ProdutoBll
 
             if (!int.TryParse(fabricante, out n_fabricante))
             {
-                nomeFabricante = (from c in db.Tfabricantes
+                nomeFabricante = (from c in db.Tfabricante
                                   where c.Nome == fabricante
                                   select c.Nome).SingleOrDefault();
             }
             else
             {
-                nomeFabricante = (from c in db.Tfabricantes
+                nomeFabricante = (from c in db.Tfabricante
                                   where c.Fabricante == fabricante
                                   select c.Nome).SingleOrDefault();
             }
@@ -106,7 +106,7 @@ namespace Loja.Bll.ProdutoBll
 
             var db = contextoProvider.GetContextoLeitura();
             //Buscar dados do cliente
-            var clienteTask = (from c in db.Tclientes
+            var clienteTask = (from c in db.Tcliente
                                where c.Id == id_cliente
                                select new
                                {
@@ -132,7 +132,7 @@ namespace Loja.Bll.ProdutoBll
         {
             var db = contextoProvider.GetContextoLeitura();
             //Buscar dados do cliente
-            var clienteTask = from c in db.Tclientes
+            var clienteTask = from c in db.Tcliente
                               where c.Cnpj_Cpf == cpf_cnpj
                               select c;
 
@@ -181,7 +181,7 @@ namespace Loja.Bll.ProdutoBll
         {
             var db = contextoProvider.GetContextoLeitura();
             //Buscar dados do cliente
-            var clienteTask = from c in db.Tclientes
+            var clienteTask = from c in db.Tcliente
                               where c.Cnpj_Cpf == cpf_cnpj
                               select c;
 
@@ -245,7 +245,7 @@ namespace Loja.Bll.ProdutoBll
 
             //vamos verificar passando todos os produtos simples da lista de produto que irá para ser selecionado
 
-            var regraProdutoTask = from c in db.TprodutoXwmsRegraCds
+            var regraProdutoTask = from c in db.TprodutoXwmsRegraCd
                                    where c.Fabricante == produto.Fabricante &&
                                          c.Produto == produto.NumProduto
                                    select c;
@@ -266,7 +266,7 @@ namespace Loja.Bll.ProdutoBll
                         produto.NumProduto + " não está associado a nenhuma regra");
                 else
                 {
-                    var wmsRegraTask = from c in db.TwmsRegraCds
+                    var wmsRegraTask = from c in db.TwmsRegraCd
                                        where c.Id == regra.Id_wms_regra_cd
                                        select c;
 
@@ -290,7 +290,7 @@ namespace Loja.Bll.ProdutoBll
                             St_inativo = wmsRegra.St_inativo
                         };
 
-                        var wmsRegraCdXUfTask = from c in db.TwmsRegraCdXUfs
+                        var wmsRegraCdXUfTask = from c in db.TwmsRegraCdXUf
                                                 where c.Id_wms_regra_cd == itemRegra.TwmsRegraCd.Id &&
                                                       c.Uf == tcliente.Uf
                                                 select c;
@@ -319,7 +319,7 @@ namespace Loja.Bll.ProdutoBll
                             var tipo_pessoa = Util.Util.MultiCdRegraDeterminaPessoa(tcliente.Tipo,
                                 tcliente.Contribuinte_Icms_Status, tcliente.Produtor_Rural_Status);
 
-                            var wmsRegraCdXUfXPessoaTask = from c in db.TwmsRegraCdXUfPessoas
+                            var wmsRegraCdXUfXPessoaTask = from c in db.TwmsRegraCdXUfPessoa
                                                            where c.Id_wms_regra_cd_x_uf == itemRegra.TwmsRegraCdXUf.Id &&
                                                                  c.Tipo_pessoa == tipo_pessoa
                                                            select c;
@@ -360,7 +360,7 @@ namespace Loja.Bll.ProdutoBll
                                 }
                                 else
                                 {
-                                    var nfEmitenteTask = from c in db.TnfEmitentes
+                                    var nfEmitenteTask = from c in db.TnfEmitente
                                                          where c.Id == wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente
                                                          select c;
                                     var nfEmitente = await nfEmitenteTask.FirstOrDefaultAsync();
@@ -379,7 +379,7 @@ namespace Loja.Bll.ProdutoBll
                                                 "(Id=" + regra.Id_wms_regra_cd + ")");
                                         }
                                     }
-                                    var wmsRegraCdXUfXPessoaXcdTask = from c in db.TwmsRegraCdXUfXPessoaXCds
+                                    var wmsRegraCdXUfXPessoaXcdTask = from c in db.TwmsRegraCdXUfXPessoaXCd
                                                                       where c.Id_wms_regra_cd_x_uf_x_pessoa == wmsRegraCdXUfXPessoa.Id
                                                                       orderby c.Ordem_prioridade
                                                                       select c;
@@ -410,7 +410,7 @@ namespace Loja.Bll.ProdutoBll
                                                 St_inativo = i.St_inativo
                                             };
 
-                                            var nfeCadastroPrincipalTask = from c in db.TnfEmitentes
+                                            var nfeCadastroPrincipalTask = from c in db.TnfEmitente
                                                                            where c.Id == item_cd_uf_pess_cd.Id_nfe_emitente
                                                                            select c;
 
@@ -750,7 +750,7 @@ namespace Loja.Bll.ProdutoBll
 
             if (!string.IsNullOrEmpty(produto.NumProduto))
             {
-                var produtoTask = (from c in db.Tprodutos
+                var produtoTask = (from c in db.Tproduto
                                    where c.Produto == produto.NumProduto
                                    select c.Descontinuado).FirstOrDefaultAsync();
                 var p = await produtoTask;
@@ -865,7 +865,7 @@ namespace Loja.Bll.ProdutoBll
             {
                 if (!string.IsNullOrEmpty(p.NumProduto))
                 {
-                    var produtoTask = (from c in db.Tprodutos
+                    var produtoTask = (from c in db.Tproduto
                                        where c.Produto == p.NumProduto
                                        select c.Descontinuado).FirstOrDefaultAsync();
                     var produto = await produtoTask;
@@ -1046,7 +1046,7 @@ namespace Loja.Bll.ProdutoBll
 
             foreach (var item in pedidoDto.ListaProdutos)
             {
-                var regraProdutoTask = from c in db.TprodutoXwmsRegraCds
+                var regraProdutoTask = from c in db.TprodutoXwmsRegraCd
                                        where c.Fabricante == item.Fabricante &&
                                              c.Produto == item.NumProduto
                                        select c;
@@ -1067,7 +1067,7 @@ namespace Loja.Bll.ProdutoBll
                             item.NumProduto + " não está associado a nenhuma regra");
                     else
                     {
-                        var wmsRegraTask = from c in db.TwmsRegraCds
+                        var wmsRegraTask = from c in db.TwmsRegraCd
                                            where c.Id == regra.Id_wms_regra_cd
                                            select c;
 
@@ -1090,7 +1090,7 @@ namespace Loja.Bll.ProdutoBll
                                 St_inativo = wmsRegra.St_inativo
                             };
 
-                            var wmsRegraCdXUfTask = from c in db.TwmsRegraCdXUfs
+                            var wmsRegraCdXUfTask = from c in db.TwmsRegraCdXUf
                                                     where c.Id_wms_regra_cd == itemRegra.TwmsRegraCd.Id &&
                                                           c.Uf == pedidoDto.DadosCliente.Uf
                                                     select c;
@@ -1117,7 +1117,7 @@ namespace Loja.Bll.ProdutoBll
                                 var tipo_pessoa = Util.Util.MultiCdRegraDeterminaPessoa(pedidoDto.DadosCliente.Tipo,
                                     pedidoDto.DadosCliente.Contribuinte_Icms_Status, pedidoDto.DadosCliente.ProdutorRural);
 
-                                var wmsRegraCdXUfXPessoaTask = from c in db.TwmsRegraCdXUfPessoas
+                                var wmsRegraCdXUfXPessoaTask = from c in db.TwmsRegraCdXUfPessoa
                                                                where c.Id_wms_regra_cd_x_uf == itemRegra.TwmsRegraCdXUf.Id &&
                                                                      c.Tipo_pessoa == tipo_pessoa
                                                                select c;
@@ -1151,7 +1151,7 @@ namespace Loja.Bll.ProdutoBll
                                     }
                                     else
                                     {
-                                        var nfEmitenteTask = from c in db.TnfEmitentes
+                                        var nfEmitenteTask = from c in db.TnfEmitente
                                                              where c.Id == wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente
                                                              select c;
                                         var nfEmitente = await nfEmitenteTask.FirstOrDefaultAsync();
@@ -1167,7 +1167,7 @@ namespace Loja.Bll.ProdutoBll
                                                     "(Id=" + regra.Id_wms_regra_cd + ")");
                                             }
                                         }
-                                        var wmsRegraCdXUfXPessoaXcdTask = from c in db.TwmsRegraCdXUfXPessoaXCds
+                                        var wmsRegraCdXUfXPessoaXcdTask = from c in db.TwmsRegraCdXUfXPessoaXCd
                                                                           where c.Id_wms_regra_cd_x_uf_x_pessoa == wmsRegraCdXUfXPessoa.Id
                                                                           orderby c.Ordem_prioridade
                                                                           select c;
@@ -1194,7 +1194,7 @@ namespace Loja.Bll.ProdutoBll
                                                     St_inativo = i.St_inativo
                                                 };
 
-                                                var nfeCadastroPrincipalTask = from c in db.TnfEmitentes
+                                                var nfeCadastroPrincipalTask = from c in db.TnfEmitente
                                                                                where c.Id == item_cd_uf_pess_cd.Id_nfe_emitente
                                                                                select c;
 
@@ -1395,11 +1395,11 @@ namespace Loja.Bll.ProdutoBll
             //                                Preco_total_Itens = g.Sum(r => r.qtde * r.valor),
             //                                Filhos = g.Select(r => r.produtosFilhos).ToList()
             //                            };
-            var produtosCompostosTask = from c in db.Tprodutos
-                                        join pc in db.TecProdutoCompostos on c.Produto equals pc.Produto_Composto
-                                        join pci in db.TecProdutoCompostoItems on pc.Fabricante_Composto equals pci.Fabricante_composto
-                                        join pl in db.TprodutoLojas on pci.Produto_item equals pl.Produto
-                                        join fab in db.Tfabricantes on c.Fabricante equals fab.Fabricante
+            var produtosCompostosTask = from c in db.Tproduto
+                                        join pc in db.TecProdutoComposto on c.Produto equals pc.Produto_Composto
+                                        join pci in db.TecProdutoCompostoItem on pc.Fabricante_Composto equals pci.Fabricante_composto
+                                        join pl in db.TprodutoLoja on pci.Produto_item equals pl.Produto
+                                        join fab in db.Tfabricante on c.Fabricante equals fab.Fabricante
                                         where pl.Loja == loja &&
                                               pl.Vendavel == "S" &&
                                               c.Fabricante == pc.Fabricante_Composto &&
@@ -1445,9 +1445,9 @@ namespace Loja.Bll.ProdutoBll
 
             var db = contextoProvider.GetContextoLeitura();
 
-            var todosProdutosTask = from c in db.Tprodutos
-                                    join pl in db.TprodutoLojas on c.Produto equals pl.Produto
-                                    join fab in db.Tfabricantes on c.Fabricante equals fab.Fabricante
+            var todosProdutosTask = from c in db.Tproduto
+                                    join pl in db.TprodutoLoja on c.Produto equals pl.Produto
+                                    join fab in db.Tfabricante on c.Fabricante equals fab.Fabricante
                                     where pl.Vendavel == "S" &&
                                           pl.Loja == loja
                                     select new ProdutoDto
@@ -1538,7 +1538,7 @@ namespace Loja.Bll.ProdutoBll
             var db = contextoProvider.GetContextoLeitura();
 
 
-            var alertasTask = from c in db.TprodutoXAlertas.Include(r => r.TalertaProduto).Include(r => r.Tproduto)
+            var alertasTask = from c in db.TprodutoXAlerta.Include(r => r.TalertaProduto).Include(r => r.Tproduto)
                               where c.TalertaProduto.Ativo == "S"
                               orderby c.Dt_Cadastro, c.Id_Alerta
                               select new
@@ -1582,7 +1582,7 @@ namespace Loja.Bll.ProdutoBll
 
             var db = contextoProvider.GetContextoLeitura();
 
-            var lstTask = from c in db.TnfEmitentes
+            var lstTask = from c in db.TnfEmitente
                           where c.St_Ativo != 0 &&
                                 c.St_Habilitado_Ctrl_Estoque != 0
                           orderby c.Id
@@ -1595,7 +1595,7 @@ namespace Loja.Bll.ProdutoBll
             //geralmente passamos o idDefault com null
             if (!string.IsNullOrEmpty(idDefault))
             {
-                lstTask = from c in db.TnfEmitentes
+                lstTask = from c in db.TnfEmitente
                           where c.St_Ativo != 0 &&
                                 c.St_Habilitado_Ctrl_Estoque != 0 ||
                                 c.Id == short.Parse(idDefault)

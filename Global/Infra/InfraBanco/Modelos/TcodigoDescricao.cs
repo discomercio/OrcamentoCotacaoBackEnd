@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace InfraBanco.Modelos
 {
@@ -28,7 +26,6 @@ namespace InfraBanco.Modelos
         [MaxLength(60)]
         public string Descricao { get; set; }
 
-#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         [Column("grupo_pai")]
         [MaxLength(60)]
         public string Grupo_pai { get; set; }
@@ -36,7 +33,6 @@ namespace InfraBanco.Modelos
         [Column("codigo_pai")]
         [MaxLength(20)]
         public string Codigo_pai { get; set; }
-#endif
 
         [Column("lojas_habilitadas")]
         [MaxLength]
@@ -62,10 +58,8 @@ namespace InfraBanco.Modelos
         [Required]
         public byte Parametro_5_campo_flag { get; set; }
 
-#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         [Column("parametro_campo_real")]
         public Single Parametro_campo_real { get; set; }
-#endif
 
         [Column("parametro_campo_texto")]
         [MaxLength(1024)]

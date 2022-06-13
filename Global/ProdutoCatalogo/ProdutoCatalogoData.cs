@@ -51,45 +51,6 @@ namespace ProdutoCatalogo
             return null;
         }
 
-        private bool AtualizarItens(TprodutoCatalogo produto)
-        {
-            var saida = false;
-
-            try
-            {
-                using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
-                {
-                    var itens = db.TprodutoCatalogoItem.Where(x => x.IdProdutoCatalogo == produto.Id);
-                    if (itens != null)
-                    {
-                        db.TprodutoCatalogoItem.RemoveRange(itens);
-                    }
-                    db.SaveChanges();
-
-                    foreach (var campo in produto.campos)
-                    {
-                        db.TprodutoCatalogoItem.Add(
-                            new TprodutoCatalogoItem
-                            {
-                                IdProdutoCatalogo = produto.Id,
-                                //IdProdutoCatalogoItens = campo.IdProdutoCatalogoItens,
-                                Valor = campo.Valor
-                            });
-                    }
-
-                    db.SaveChanges();
-                    db.transacao.Commit();
-                    saida = true;
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
-            return saida;
-        }
-
         public bool Excluir(int id)
         {
             var saida = false;
@@ -177,14 +138,14 @@ namespace ProdutoCatalogo
 
         public List<TprodutoCatalogo> PorFiltro(TprodutoCatalogoFiltro obj)
         {
-            List<TprodutoCatalogo> lista = null;
+
 
             try
             {
                 using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
                     var produtos = from pc in db.TprodutoCatalogo
-                                   join f in db.Tfabricantes on pc.Fabricante equals f.Fabricante
+                                   join f in db.Tfabricante on pc.Fabricante equals f.Fabricante
                                    join pci in db.TprodutoCatalogoImagem on pc.Id equals pci.IdProdutoCatalogo into pci_l
                                    from images in pci_l.DefaultIfEmpty()
                                    select new TprodutoCatalogo
@@ -199,24 +160,21 @@ namespace ProdutoCatalogo
                                    };
 
 
-                    lista = produtos.ToList();
-
                     if (!String.IsNullOrEmpty(obj.Id))
-                        lista = lista.Where(x => x.Id == int.Parse(obj.Id)).ToList();
+                        produtos = produtos.Where(x => x.Id == int.Parse(obj.Id));
 
                     if (!String.IsNullOrEmpty(obj.Produto))
-                        lista = lista.Where(x => x.Produto.PadLeft(6, '0') == obj.Produto.PadLeft(6, '0')).ToList();
+                        produtos = produtos.Where(x => x.Produto.PadLeft(6, '0') == obj.Produto.PadLeft(6, '0'));
 
                     if (obj.Ativo)
-                        lista = lista.Where(x => x.Ativo == obj.Ativo).ToList();
+                        produtos = produtos.Where(x => x.Ativo == obj.Ativo);
+                    return produtos.ToList();
                 }
             }
-            catch (Exception e)
+            catch
             {
-                throw e;
+                throw;
             }
-
-            return lista;
         }
 
         public TprodutoCatalogo Detalhes(int id)
@@ -226,7 +184,7 @@ namespace ProdutoCatalogo
                 using (var db = _contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
                     var saida = (from pc in db.TprodutoCatalogo
-                                 join f in db.Tfabricantes on pc.Fabricante equals f.Fabricante
+                                 join f in db.Tfabricante on pc.Fabricante equals f.Fabricante
                                  select new TprodutoCatalogo
                                  {
                                      Id = pc.Id,
@@ -424,11 +382,20 @@ namespace ProdutoCatalogo
             {
                 using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
-                    db.TprodutoCatalogoItem.Add(produtoCatalogoItem);
+                    var existe = (from c in db.TprodutoCatalogoItem
+                               where c.IdProdutoCatalogo == produtoCatalogoItem.IdProdutoCatalogo &&
+                                     c.IdProdutoCatalogoPropriedade == produtoCatalogoItem.IdProdutoCatalogoPropriedade
+                               select c).FirstOrDefault();  
 
-                    db.SaveChanges();
-                    db.transacao.Commit();
-                    db.Dispose();
+                    if (existe == null)
+                    {
+                        db.TprodutoCatalogoItem.Add(produtoCatalogoItem);
+
+                        db.SaveChanges();
+                        db.transacao.Commit();
+                        db.Dispose();
+                    }
+                    
 
                     saida = true;
                 }
@@ -447,12 +414,22 @@ namespace ProdutoCatalogo
 
             try
             {
-                using (var db = _contexto)
+                using(var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
-                    _contexto.Database.ExecuteSqlCommand($"delete t_PRODUTO_CATALOGO_ITEM where id_produto_catalogo = {obj.Id}");
-                    db.SaveChanges();
-
+                    foreach(var item in obj.campos)
+                    {
+                        var itemResponse = (from c in db.TprodutoCatalogoItem
+                                           where c.IdProdutoCatalogo == item.IdProdutoCatalogo
+                                           select c).FirstOrDefault();
+                        if(itemResponse != null)
+                        {
+                            db.Remove(itemResponse);
+                            db.SaveChanges();
+                        }
+                    }
+                    
                     saida = true;
+                    db.transacao.Commit();
                 }
             }
             catch (Exception e)

@@ -30,7 +30,7 @@ namespace Loja.Bll.CoeficienteBll
                 var db = contextoBdProvider.GetContextoLeitura();
 
                 //trazendo toda lista
-                var lstCoeficienteTask = from c in db.TpercentualCustoFinanceiroFornecedors
+                var lstCoeficienteTask = from c in db.TpercentualCustoFinanceiroFornecedor
                                          select new CoeficienteDto
                                          {
                                              Fabricante = c.Fabricante,
@@ -62,7 +62,7 @@ namespace Loja.Bll.CoeficienteBll
             var db = contextoBdProvider.GetContextoLeitura();
 
             //trazendo toda lista
-            var lstCoeficienteTask = from c in db.TpercentualCustoFinanceiroFornecedors
+            var lstCoeficienteTask = from c in db.TpercentualCustoFinanceiroFornecedor
                                      select new CoeficienteDto
                                      {
                                          Fabricante = c.Fabricante,

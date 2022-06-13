@@ -27,7 +27,7 @@ namespace PrepedidoUnisBusiness.UnisBll.ProdutoUnisBll
 
             var db = contextoProvider.GetContextoLeitura();
             //Buscar dados do cliente
-            var clienteTask = (from c in db.Tclientes
+            var clienteTask = (from c in db.Tcliente
                                where c.Cnpj_Cpf == cpf_cnpj 
                                select new
                                {

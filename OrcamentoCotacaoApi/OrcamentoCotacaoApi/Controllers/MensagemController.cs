@@ -1,15 +1,18 @@
-﻿using InfraBanco.Modelos.Filtros;
+﻿using InfraIdentity;
+using InfraBanco.Modelos.Filtros;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Bll;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Text.Json;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    [Authorize]
+    [AllowAnonymous]
     public class MensagemController : BaseController
     {
         private readonly ILogger<MensagemController> _logger;
@@ -24,7 +27,7 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpGet()]
         public async Task<IActionResult> ObterListaMensagem(int IdOrcamentoCotacao)
         {
-            _logger.LogInformation("Buscando Mensagens");
+            _logger.LogInformation("ObterListaMensagem");
 
             var saida = await _mensagemBll.ObterListaMensagem(IdOrcamentoCotacao);
 
@@ -35,11 +38,11 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpGet("pendente")]
-        public async Task<IActionResult> ObterListaMensagemPendente(int IdOrcamentoCotacao, int IdUsuarioDestinatario)
+        public async Task<IActionResult> ObterListaMensagemPendente(int IdOrcamentoCotacao)
         {
-            _logger.LogInformation("Buscando Mensagens Pendentes");
+            _logger.LogInformation("ObterListaMensagemPendente");
 
-            var saida = await _mensagemBll.ObterListaMensagemPendente(IdOrcamentoCotacao, IdUsuarioDestinatario);
+            var saida = await _mensagemBll.ObterListaMensagemPendente(IdOrcamentoCotacao);
 
             if (saida != null)
                 return Ok(saida);
@@ -50,7 +53,7 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost()]
         public async Task<IActionResult> EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem)
         {
-            _logger.LogInformation("Inserindo Mensagem");
+            _logger.LogInformation("EnviarMensagem");
 
             var saida = _mensagemBll.EnviarMensagem(orcamentoCotacaoMensagem);
 
@@ -70,12 +73,24 @@ namespace OrcamentoCotacaoApi.Controllers
             }
         }
 
-        [HttpPut("lida")]
-        public async Task<IActionResult> MarcarMensagemComoLida(int IdOrcamentoCotacao, int idUsuarioDestinatario)
+        [HttpGet("pendente/quantidade")]
+        public int ObterQuantidadeMensagemPendente()
         {
-            _logger.LogInformation("Marcando mensagens como lida");
+            _logger.LogInformation("ObterQuantidadeMensagemPendente");
+            var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
 
-            var saida = _mensagemBll.MarcarMensagemComoLida(IdOrcamentoCotacao, idUsuarioDestinatario);
+            var saida = _mensagemBll.ObterQuantidadeMensagemPendente(user.Id);
+
+            return saida;
+        }
+
+        [HttpPut]
+        [Route("marcar/lida")]
+        public async Task<IActionResult> MarcarLida(int IdOrcamentoCotacao)
+        {
+            _logger.LogInformation("MarcarLida");
+
+            var saida = _mensagemBll.MarcarLida(IdOrcamentoCotacao);
 
             if (saida)
             {
@@ -92,5 +107,54 @@ namespace OrcamentoCotacaoApi.Controllers
                 });
             }
         }
+        
+        [HttpPut]
+        [Route("marcar/pendencia")]
+        public async Task<IActionResult> MarcarPendencia(int IdOrcamentoCotacao)
+        {
+            _logger.LogInformation("MarcarPendencia");
+
+            var saida = _mensagemBll.MarcarPendencia(IdOrcamentoCotacao);
+
+            if (saida)
+            {
+                return Ok(new
+                {
+                    message = "Mensagens marcadas como pendência tratada."
+                });
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    message = "Mensagens marcadas como pendência tratada."
+                });
+            }
+        }
+
+        [HttpPut]
+        [Route("desmarcar/pendencia")]
+        public async Task<IActionResult> DesmarcarPendencia(int IdOrcamentoCotacao)
+        {
+            _logger.LogInformation("DesmarcarPendencia");
+
+            var saida = _mensagemBll.DesmarcarPendencia(IdOrcamentoCotacao);
+
+            if (saida)
+            {
+                return Ok(new
+                {
+                    message = "Mensagens desmarcadas como pendência tratada."
+                });
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    message = "Mensagens desmarcadas como pendência tratada."
+                });
+            }
+        }
+
     }
 }

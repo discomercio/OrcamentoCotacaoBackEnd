@@ -144,7 +144,7 @@ namespace Cep
             var db = contextoProvider.GetContextoLeitura();
 
             //buscando os dados para se conectar no servidor de banco de dados
-            TnfEmitente nova_conexao = await (from c in db.TnfEmitentes
+            TnfEmitente nova_conexao = await (from c in db.TnfEmitente
                                               where c.NFe_st_emitente_padrao == 1
                                               select new TnfEmitente
                                               {

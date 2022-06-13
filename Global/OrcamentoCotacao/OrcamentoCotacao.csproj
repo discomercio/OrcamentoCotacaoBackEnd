@@ -2,10 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Configurations>Debug;Release;Release_OrcamentoCotacao;Debug_OrcamentoCotacao</Configurations>
+    <DebugType Condition=" '$(Configuration)' == 'Release_OrcamentoCotacao' ">None</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ClassesBase\ClassesBase.csproj" />
+    <ProjectReference Include="..\FormaPagamento\FormaPagamento.csproj" />
+    <ProjectReference Include="..\Prepedido\Prepedido.csproj" />
   </ItemGroup>
 
 </Project>

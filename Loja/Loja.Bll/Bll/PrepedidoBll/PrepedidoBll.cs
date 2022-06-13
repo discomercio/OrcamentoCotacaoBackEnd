@@ -27,8 +27,8 @@ namespace Loja.Bll.PrepedidoBll
         public async Task<ResumoPrepedidoListaDto> ResumoPrepedidoLista(UsuarioLogado usuarioLogado, bool somenteLojaAtiva)
         {
             var db = contextoProvider.GetContextoLeitura();
-            var sql = from t_ORCAMENTO in db.Torcamentos
-                      join t_CLIENTE in db.Tclientes on t_ORCAMENTO.Id_Cliente equals t_CLIENTE.Id
+            var sql = from t_ORCAMENTO in db.Torcamento
+                      join t_CLIENTE in db.Tcliente on t_ORCAMENTO.Id_Cliente equals t_CLIENTE.Id
                       select new
                       {
                           t_ORCAMENTO.Data,

@@ -87,7 +87,7 @@ namespace FormaPagamento
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
-                    return await (from c in db.TprazoPagtoVisanets
+                    return await (from c in db.TprazoPagtoVisanet
                             where c.Tipo == Constantes.COD_VISANET_PRAZO_PAGTO_LOJA
                             select c.Qtde_parcelas).FirstOrDefaultAsync();
                 }

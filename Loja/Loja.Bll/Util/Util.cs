@@ -178,7 +178,7 @@ namespace Loja.Bll.Util
             if (Constantes.Constantes.ID_PARAM_SITE == Constantes.Constantes.COD_SITE_ASSISTENCIA_TECNICA)
             {
 #pragma warning disable CS0162 // Unreachable code detected
-                var orcaTask = from c in db.TorcamentistaEindicadors
+                var orcaTask = from c in db.TorcamentistaEindicador
 #pragma warning restore CS0162 // Unreachable code detected
                                where (c.Apelido == indicador || c.Status == "A")
                                orderby c.Apelido
@@ -190,7 +190,7 @@ namespace Loja.Bll.Util
             {
                 if (IsLojaVrf(loja) || loja == Constantes.Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE)
                 {
-                    var orcaTask = from c in db.TorcamentistaEindicadors
+                    var orcaTask = from c in db.TorcamentistaEindicador
                                    where (c.Apelido == indicador ||
                                           (c.Status == "A" && c.Loja == loja))
                                    orderby c.Apelido
@@ -201,7 +201,7 @@ namespace Loja.Bll.Util
                 else if (loja == Constantes.Constantes.NUMERO_LOJA_OLD03 ||
                     loja == Constantes.Constantes.NUMERO_LOJA_OLD03_BONIFICACAO)
                 {
-                    var orcaTask = from c in db.TorcamentistaEindicadors
+                    var orcaTask = from c in db.TorcamentistaEindicador
                                    where (c.Apelido == indicador || c.Status == "A")
                                    orderby c.Apelido
                                    select c.Apelido;
@@ -210,7 +210,7 @@ namespace Loja.Bll.Util
                 }
                 else
                 {
-                    var orcaTask = from c in db.TorcamentistaEindicadors
+                    var orcaTask = from c in db.TorcamentistaEindicador
                                    where (c.Apelido == indicador ||
                                           (c.Status == "A" && c.Vendedor == usuarioSistema))
                                    orderby c.Apelido
@@ -237,7 +237,7 @@ namespace Loja.Bll.Util
             if (Constantes.Constantes.ID_PARAM_SITE == Constantes.Constantes.COD_SITE_ASSISTENCIA_TECNICA)
             {
 #pragma warning disable CS0162 // Unreachable code detected
-                var orcaTask = from c in db.TorcamentistaEindicadors
+                var orcaTask = from c in db.TorcamentistaEindicador
 #pragma warning restore CS0162 // Unreachable code detected
                                where c.Status == "A"
                                orderby c.Apelido
@@ -249,7 +249,7 @@ namespace Loja.Bll.Util
             {
                 if (IsLojaVrf(loja) || loja == Constantes.Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE)
                 {
-                    var orcaTask = from c in db.TorcamentistaEindicadors
+                    var orcaTask = from c in db.TorcamentistaEindicador
                                    where c.Status == "A" && c.Loja == loja
                                    orderby c.Apelido
                                    select c.Apelido;
@@ -261,7 +261,7 @@ namespace Loja.Bll.Util
                     lstOperacoesPermitidas.IndexOf(
                         Constantes.Constantes.OP_LJA_SELECIONAR_QUALQUER_INDICADOR_EM_PEDIDO_NOVO.ToString()) != -1)
                 {
-                    var orcaTask = from c in db.TorcamentistaEindicadors
+                    var orcaTask = from c in db.TorcamentistaEindicador
                                    where c.Status == "A"
                                    orderby c.Apelido
                                    select c.Apelido;
@@ -270,7 +270,7 @@ namespace Loja.Bll.Util
                 }
                 else
                 {
-                    var orcaTask = from c in db.TorcamentistaEindicadors
+                    var orcaTask = from c in db.TorcamentistaEindicador
                                    where c.Status == "A" && c.Vendedor == usuarioSistema
                                    orderby c.Apelido
                                    select c.Apelido;
@@ -305,7 +305,7 @@ namespace Loja.Bll.Util
             if (Constantes.Constantes.ID_PARAM_SITE == Constantes.Constantes.COD_SITE_ASSISTENCIA_TECNICA)
             {
 #pragma warning disable CS0162 // Unreachable code detected
-                var orcaTask = from c in db.TorcamentistaEindicadors
+                var orcaTask = from c in db.TorcamentistaEindicador
 #pragma warning restore CS0162 // Unreachable code detected
                                where c.Status == "A"
                                orderby c.Apelido
@@ -317,7 +317,7 @@ namespace Loja.Bll.Util
             {
                 if (IsLojaVrf(loja) || loja == Constantes.Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE)
                 {
-                    var orcaTask = from c in db.TorcamentistaEindicadors
+                    var orcaTask = from c in db.TorcamentistaEindicador
                                    where c.Status == "A" && c.Loja == loja
                                    orderby c.Apelido
                                    select c;
@@ -329,7 +329,7 @@ namespace Loja.Bll.Util
                     lstOperacoesPermitidas.IndexOf(
                         Constantes.Constantes.OP_LJA_SELECIONAR_QUALQUER_INDICADOR_EM_PEDIDO_NOVO.ToString()) != -1)
                 {
-                    var orcaTask = from c in db.TorcamentistaEindicadors
+                    var orcaTask = from c in db.TorcamentistaEindicador
                                    where c.Status == "A"
                                    orderby c.Apelido
                                    select c;
@@ -338,7 +338,7 @@ namespace Loja.Bll.Util
                 }
                 else
                 {
-                    var orcaTask = from c in db.TorcamentistaEindicadors
+                    var orcaTask = from c in db.TorcamentistaEindicador
                                    where c.Status == "A" && c.Vendedor == usuarioSistema
                                    orderby c.Apelido
                                    select c;
@@ -599,17 +599,17 @@ namespace Loja.Bll.Util
         public static async Task ObterCtrlEstoqueProdutoRegra_Teste(List<string> lstErros,
             List<RegrasBll> lstRegrasCrtlEstoque, string uf, string cliente_regra, InfraBanco.ContextoBd db)
         {
-            var dbTwmsRegraCdXUfXPessoaXCds = (from c in db.TwmsRegraCdXUfXPessoaXCds
-                                               join nfe in db.TnfEmitentes on c.Id_nfe_emitente equals nfe.Id
+            var dbTwmsRegraCdXUfXPessoaXCds = (from c in db.TwmsRegraCdXUfXPessoaXCd
+                                               join nfe in db.TnfEmitente on c.Id_nfe_emitente equals nfe.Id
                                                select c).ToList();
 
 
 
             //essa query esta copiando o id do produto 
-            var testeRegras = from c in db.TprodutoXwmsRegraCds
-                              join r1 in db.TwmsRegraCds on c.Id_wms_regra_cd equals r1.Id
-                              join r2 in db.TwmsRegraCdXUfs on r1.Id equals r2.Id_wms_regra_cd
-                              join r3 in db.TwmsRegraCdXUfPessoas on r2.Id equals r3.Id_wms_regra_cd_x_uf
+            var testeRegras = from c in db.TprodutoXwmsRegraCd
+                              join r1 in db.TwmsRegraCd on c.Id_wms_regra_cd equals r1.Id
+                              join r2 in db.TwmsRegraCdXUf on r1.Id equals r2.Id_wms_regra_cd
+                              join r3 in db.TwmsRegraCdXUfPessoa on r2.Id equals r3.Id_wms_regra_cd_x_uf
                               where r2.Uf == uf &&
                                     r3.Tipo_pessoa == cliente_regra
                               orderby c.Produto
@@ -687,7 +687,7 @@ namespace Loja.Bll.Util
 
             var db = contexto.GetContextoLeitura();
 
-            var apelidoTask = from c in db.TnfEmitentes
+            var apelidoTask = from c in db.TnfEmitente
                               where c.Id == id_nfe_emitente
                               select c.Apelido;
 
@@ -784,7 +784,7 @@ namespace Loja.Bll.Util
         public static async Task<float> ObterPercentualDesagioRAIndicador(string indicador, InfraBanco.ContextoBdProvider contexto)
         {
             var db = contexto.GetContextoLeitura();
-            var percDesagioIndicadorRATask = (from c in db.TorcamentistaEindicadors
+            var percDesagioIndicadorRATask = (from c in db.TorcamentistaEindicador
                                               where c.Apelido == indicador
                                               select c.Perc_Desagio_RA).FirstOrDefaultAsync();
 
@@ -795,7 +795,7 @@ namespace Loja.Bll.Util
         public static async Task<decimal> ObterLimiteMensalComprasDoIndicador(string indicador, InfraBanco.ContextoBdProvider contexto)
         {
             var db = contexto.GetContextoLeitura();
-            var vlLimiteMensalCompraTask = (from c in db.TorcamentistaEindicadors
+            var vlLimiteMensalCompraTask = (from c in db.TorcamentistaEindicador
                                             where c.Apelido == indicador
                                             select c.Vl_Limite_Mensal).FirstOrDefaultAsync();
 
@@ -820,7 +820,7 @@ namespace Loja.Bll.Util
             DateTime dataSuperior = dataInferior.AddMonths(1);
 
 
-            var vlTotalConsumidoTask = from c in db.TpedidoItems.Include(x => x.Tpedido)
+            var vlTotalConsumidoTask = from c in db.TpedidoItem.Include(x => x.Tpedido)
                                        where c.Tpedido.St_Entrega != "CAN" &&
                                              c.Tpedido.Indicador == indicador &&
                                              c.Tpedido.Data.HasValue &&
@@ -834,7 +834,7 @@ namespace Loja.Bll.Util
 
             decimal vlTotalConsumido = await vlTotalConsumidoTask.SumAsync(x => (short)x.qtde * x.precoVenda);
 
-            var vlTotalDevolvidoTask = from c in db.TpedidoItemDevolvidos.Include(x => x.Tpedido)
+            var vlTotalDevolvidoTask = from c in db.TpedidoItemDevolvido.Include(x => x.Tpedido)
                                        where c.Tpedido.Indicador == indicador &&
                                              c.Tpedido.Data.HasValue &&
                                              c.Tpedido.Data.Value.Date >= dataInferior &&
@@ -909,7 +909,7 @@ namespace Loja.Bll.Util
 
             if (regra.Estoque_Qtde_Solicitado > 0 && !string.IsNullOrEmpty(regra.Estoque_Produto))
             {
-                var estoqueCDTask = (from c in db.TestoqueItems.Include(r => r.Testoque)
+                var estoqueCDTask = (from c in db.TestoqueItem.Include(r => r.Testoque)
                                      where c.Testoque.Id_nfe_emitente == regra.Id_nfe_emitente &&
                                            c.Fabricante == regra.Estoque_Fabricante &&
                                            c.Produto == regra.Estoque_Produto &&
@@ -927,12 +927,12 @@ namespace Loja.Bll.Util
                     regra.Estoque_Qtde = (short)(qtde - qtdeUtilizada);
 
 
-                    var estoqueGlobalTask = (from c in db.TestoqueItems.Include(r => r.Testoque)
+                    var estoqueGlobalTask = (from c in db.TestoqueItem.Include(r => r.Testoque)
                                              where c.Fabricante == regra.Estoque_Fabricante &&
                                                    c.Produto == regra.Estoque_Produto &&
                                                    (c.Qtde - c.Qtde_utilizada) > 0 &&
                                                    (c.Testoque.Id_nfe_emitente == regra.Id_nfe_emitente ||
-                                                    db.TnfEmitentes.Where(r => r.St_Habilitado_Ctrl_Estoque == 1 && r.St_Ativo == 1)
+                                                    db.TnfEmitente.Where(r => r.St_Habilitado_Ctrl_Estoque == 1 && r.St_Ativo == 1)
                                                     .Select(r => r.Id).Contains(c.Testoque.Id_nfe_emitente))
                                              select new
                                              {
@@ -1002,10 +1002,10 @@ namespace Loja.Bll.Util
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var lstEstoqueQtdeUtilZeroComSubQuery = from c in db.TestoqueItems.Include(r => r.Testoque)
+            var lstEstoqueQtdeUtilZeroComSubQuery = from c in db.TestoqueItem.Include(r => r.Testoque)
                                                     where ((c.Qtde - c.Qtde_utilizada) > 0) &&
                                                           ((c.Qtde_utilizada.HasValue) ||
-                                                          (from d in db.TnfEmitentes
+                                                          (from d in db.TnfEmitente
                                                            where d.St_Habilitado_Ctrl_Estoque == 1 && d.St_Ativo == 1
                                                            select d.Id)
                                                            .Contains(c.Testoque.Id_nfe_emitente))
@@ -1050,7 +1050,7 @@ namespace Loja.Bll.Util
         {
             var db = contexto;
 
-            var parametroTask = from c in db.Tparametros
+            var parametroTask = from c in db.Tparametro
                                 where c.Id == id
                                 select c;
 
@@ -1063,7 +1063,7 @@ namespace Loja.Bll.Util
         {
             var db = contexto.GetContextoLeitura();
 
-            var parametroTask = from c in db.Tparametros
+            var parametroTask = from c in db.Tparametro
                                 where c.Id == id
                                 select c;
 
@@ -1083,7 +1083,7 @@ namespace Loja.Bll.Util
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var desc = from c in db.TcodigoDescricaos
+            var desc = from c in db.TcodigoDescricao
                        where c.Grupo == grupo && c.Codigo == cod
                        select c.Descricao;
 
@@ -1131,7 +1131,7 @@ namespace Loja.Bll.Util
         {
             var db = contexto.GetContextoLeitura();
 
-            List<Tdesconto> lst_tdesconto = await (from c in db.Tdescontos
+            List<Tdesconto> lst_tdesconto = await (from c in db.Tdesconto
                                                    where c.Usado_status == 0 &&
                                                          c.Cancelado_status == 0 &&
                                                          c.Id_cliente == cliente_id &&
@@ -1146,7 +1146,7 @@ namespace Loja.Bll.Util
         {
             var db = contextoBdProvider.GetContextoLeitura();
 
-            string controle = await (from c in db.Tcontroles
+            string controle = await (from c in db.Tcontrole
                                      where c.Id_Nsu == id
                                      select c.Nsu).FirstOrDefaultAsync();
 
@@ -1164,7 +1164,7 @@ namespace Loja.Bll.Util
             int nsu = 0;
 
             //conta a qtde de id
-            var qtdeIdFin = from c in dbgravacao.TfinControles
+            var qtdeIdFin = from c in dbgravacao.TfinControle
                             where c.Id == id_nsu
                             select c.Id;
 
@@ -1192,7 +1192,7 @@ namespace Loja.Bll.Util
 
 
             //obtém o último nsu usado
-            var tfincontroleEditando = await (from c in dbgravacao.TfinControles
+            var tfincontroleEditando = await (from c in dbgravacao.TfinControle
                                               where c.Id == id_nsu
                                               select c).FirstOrDefaultAsync();
 
@@ -1225,7 +1225,7 @@ namespace Loja.Bll.Util
 
 
 
-            TtransportadoraCep transportadoraCep = await (from c in db.TtransportadoraCeps
+            TtransportadoraCep transportadoraCep = await (from c in db.TtransportadoraCep
                                                           where (c.Tipo_range == 1 && c.Cep_unico == cep) ||
                                                                 (
                                                                     c.Tipo_range == 2 &&
@@ -1274,7 +1274,7 @@ namespace Loja.Bll.Util
         {
             var db = contextoBd;
 
-            TorcamentistaEindicador torcamentista = await (from c in db.TorcamentistaEindicadors
+            TorcamentistaEindicador torcamentista = await (from c in db.TorcamentistaEindicador
                                                            where c.Apelido == indicador
                                                            select c).FirstOrDefaultAsync();
 

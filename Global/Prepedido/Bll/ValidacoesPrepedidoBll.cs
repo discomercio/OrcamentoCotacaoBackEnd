@@ -260,7 +260,7 @@ namespace Prepedido
                 //vamos verificar se o cód do produto é composto
                 if (await VerificarProdutoComposto(x, loja, lstErros))
                 {
-                    PrepedidoProdutoPrepedidoDados produto = await (from c in db.TprodutoLojas
+                    PrepedidoProdutoPrepedidoDados produto = await (from c in db.TprodutoLoja
                                                                     where c.Produto == x.Produto &&
                                                                           c.Fabricante == x.Fabricante &&
                                                                           c.Vendavel == "S" &&
@@ -294,7 +294,7 @@ namespace Prepedido
             var db = contextoProvider.GetContextoLeitura();
 
 
-            var prodCompostoTask = await (from c in db.TecProdutoCompostos
+            var prodCompostoTask = await (from c in db.TecProdutoComposto
                                           where c.Produto_Composto == produto.Produto &&
                                           c.Fabricante_Composto == produto.Fabricante
                                           select c).FirstOrDefaultAsync();

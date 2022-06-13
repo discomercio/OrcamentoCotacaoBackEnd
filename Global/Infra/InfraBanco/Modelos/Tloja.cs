@@ -21,7 +21,6 @@ namespace InfraBanco.Modelos
         [MaxLength(60)]
         public string Razao_Social { get; set; }
 
-#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         [Column("comissao_indicacao")]
         public float? Comissao_indicacao { get; set; }
 
@@ -39,7 +38,6 @@ namespace InfraBanco.Modelos
 
         [Column("perc_max_comissao_e_desconto_pj")]
         public float Perc_Max_Comissao_E_Desconto_Pj { get; set; }
-#endif
 
         [Column("unidade_negocio")]
         [MaxLength(5)]

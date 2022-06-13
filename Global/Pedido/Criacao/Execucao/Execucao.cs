@@ -109,7 +109,7 @@ namespace Pedido.Criacao.Execucao
 
 
 
-            Tloja tloja = await (from l in Criacao.ContextoProvider.GetContextoLeitura().Tlojas
+            Tloja tloja = await (from l in Criacao.ContextoProvider.GetContextoLeitura().Tloja
                                  where l.Loja == pedido.Ambiente.Loja
                                  select l).FirstOrDefaultAsync();
             IsLojaGarantia = false;
@@ -213,27 +213,6 @@ namespace Pedido.Criacao.Execucao
         private bool? _blnMagentoPedidoComIndicador = null;
         private async Task BlnMagentoPedidoComIndicador_Inicializar(PedidoCriacaoDados pedido)
         {
-            /*
-            'TRATAMENTO PARA CADASTRAMENTO DE PEDIDOS DO SITE MAGENTO DA BONSHOP
-            dim blnMagentoPedidoComIndicador, sListaLojaMagentoPedidoComIndicador, vLoja, rParametro
-            blnMagentoPedidoComIndicador = False
-            sListaLojaMagentoPedidoComIndicador = ""
-            if operacao_origem = OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO then
-                If Not cria_recordset_otimista(tMAP_XML, msg_erro) then Response.Redirect("aviso.asp?id=" & ERR_FALHA_OPERACAO_CRIAR_ADO)
-
-                set rParametro = get_registro_t_parametro(ID_PARAMETRO_MagentoPedidoComIndicadorListaLojaErp)
-                sListaLojaMagentoPedidoComIndicador = Trim("" & rParametro.campo_texto)
-                if sListaLojaMagentoPedidoComIndicador <> "" then
-                    vLoja = Split(sListaLojaMagentoPedidoComIndicador, ",")
-                    for i=LBound(vLoja) to UBound(vLoja)
-                        if Trim("" & vLoja(i)) = loja then
-                            blnMagentoPedidoComIndicador = True
-                            exit for
-                            end if
-                        next
-                    end if
-                end if
-            */
             _blnMagentoPedidoComIndicador = false;
             if (pedido.Ambiente.Operacao_origem != Constantes.Op_origem__pedido_novo.OP_ORIGEM__PEDIDO_NOVO_EC_SEMI_AUTO)
                 return;

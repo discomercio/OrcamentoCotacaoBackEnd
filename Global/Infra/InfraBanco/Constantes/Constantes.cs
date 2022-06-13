@@ -20,7 +20,8 @@ namespace InfraBanco.Constantes
             USUÁRIO_DA_CENTRAL = 1,
             USUARIO_LOJA = 2,
             INDICADOR_PARCEIRO = 3,
-        };
+            CLIENTE = 4,
+        }
         public enum TipoUsuario
         {
             NAO_IDENTIFICADO = -1,
@@ -30,6 +31,14 @@ namespace InfraBanco.Constantes
             VENDEDOR_DO_PARCEIRO = 3,
             CLIENTE = 4,
         }
+        public enum TipoUsuarioContexto
+        {
+            UsuarioInterno = 1,
+            Parceiro = 2,
+            VendedorParceiro = 3,
+            Cliente = 4
+        }
+
         public static class TipoUsuarioPerfil
         {
             public static eTipoUsuarioPerfil getUsuarioPerfil(TipoUsuario tipoUsuario)
@@ -44,6 +53,7 @@ namespace InfraBanco.Constantes
                     case TipoUsuario.VENDEDOR:
                         retorno = eTipoUsuarioPerfil.USUARIO_LOJA;
                         break;
+                    case TipoUsuario.CLIENTE:
                     case TipoUsuario.PARCEIRO:
                     case TipoUsuario.VENDEDOR_DO_PARCEIRO:
                         retorno = eTipoUsuarioPerfil.INDICADOR_PARCEIRO;
@@ -51,6 +61,7 @@ namespace InfraBanco.Constantes
                     default:
                         break;
                 }
+
                 return retorno;
             }
         }
@@ -82,7 +93,6 @@ namespace InfraBanco.Constantes
             PARCELAMENTO_CARTAO = 6
         }
 
-#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public const string T_PEDIDO_ANALISE_ENDERECO = "T_PEDIDO_ANALISE_ENDERECO";
         public const string T_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO = "T_PEDIDO_ANALISE_ENDERECO_CONFRONTACAO";
 
@@ -101,7 +111,6 @@ namespace InfraBanco.Constantes
         public const int FATOR_CRIPTO_SESSION_CTRL = 1329;
 
         public const string COD_MARKETPLACE_ARCLUBE = "001";
-#endif
 
         public const int MAX_TAM_OBS1 = 500;
 

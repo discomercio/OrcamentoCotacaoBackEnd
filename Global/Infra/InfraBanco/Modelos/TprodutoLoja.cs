@@ -50,8 +50,6 @@ namespace InfraBanco.Modelos
         [Column("excluido_status")]
         public short? Excluido_status { get; set; }
 
-#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         public Tfabricante Tfabricante { get; set; }
-#endif
     }
 }

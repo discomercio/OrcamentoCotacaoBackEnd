@@ -17,7 +17,7 @@ namespace Produto
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var parametroTask = from c in db.Tparametros
+            var parametroTask = from c in db.Tparametro
                                 where c.Id == id
                                 select c;
 
@@ -32,16 +32,16 @@ namespace Produto
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var dbTwmsRegraCdXUfXPessoaXCds = from c in db.TwmsRegraCdXUfXPessoaXCds
-                                              join nfe in db.TnfEmitentes on c.Id_nfe_emitente equals nfe.Id
+            var dbTwmsRegraCdXUfXPessoaXCds = from c in db.TwmsRegraCdXUfXPessoaXCd
+                                              join nfe in db.TnfEmitente on c.Id_nfe_emitente equals nfe.Id
                                               select c;
             List<TwmsRegraCdXUfXPessoaXCd> lstRegra = await dbTwmsRegraCdXUfXPessoaXCds.ToListAsync();
 
             //essa query esta copiando o id do produto 
-            var testeRegras = from c in db.TprodutoXwmsRegraCds
-                              join r1 in db.TwmsRegraCds on c.Id_wms_regra_cd equals r1.Id
-                              join r2 in db.TwmsRegraCdXUfs on r1.Id equals r2.Id_wms_regra_cd
-                              join r3 in db.TwmsRegraCdXUfPessoas on r2.Id equals r3.Id_wms_regra_cd_x_uf
+            var testeRegras = from c in db.TprodutoXwmsRegraCd
+                              join r1 in db.TwmsRegraCd on c.Id_wms_regra_cd equals r1.Id
+                              join r2 in db.TwmsRegraCdXUf on r1.Id equals r2.Id_wms_regra_cd
+                              join r3 in db.TwmsRegraCdXUfPessoa on r2.Id equals r3.Id_wms_regra_cd_x_uf
                               where r2.Uf == uf &&
                                     r3.Tipo_pessoa == cliente_regra
                               orderby c.Produto
@@ -235,10 +235,10 @@ namespace Produto
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var lstEstoqueQtdeUtilZeroComSubQuery = from c in db.TestoqueItems.Include(x => x.Testoque)
+            var lstEstoqueQtdeUtilZeroComSubQuery = from c in db.TestoqueItem.Include(x => x.Testoque)
                                                     where ((c.Qtde - c.Qtde_utilizada) > 0) &&
                                                           ((c.Qtde_utilizada.HasValue) ||
-                                                          (from d in db.TnfEmitentes
+                                                          (from d in db.TnfEmitente
                                                            where d.St_Habilitado_Ctrl_Estoque == 1 && d.St_Ativo == 1
                                                            select d.Id)
                                                            .Contains(c.Testoque.Id_nfe_emitente))
@@ -261,7 +261,7 @@ namespace Produto
 
             var db = contextoProvider.GetContextoLeitura();
 
-            var lstEstoqueQtdeUtilZero = from c in db.TestoqueItems.Include(x => x.Testoque)
+            var lstEstoqueQtdeUtilZero = from c in db.TestoqueItem.Include(x => x.Testoque)
                                          where (c.Qtde - c.Qtde_utilizada) > 0 &&
                                                c.Qtde_utilizada.HasValue
                                          select new ProdutosEstoqueDados

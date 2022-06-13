@@ -50,8 +50,8 @@ namespace Prepedido
                     */
 
             var hora = Util.HoraParaBanco(dataLimite);
-            var prepedidosExistentes = await (from prepedidoBanco in banco.Torcamentos
-                                              join item in banco.TorcamentoItems on prepedidoBanco.Orcamento equals item.Orcamento
+            var prepedidosExistentes = await (from prepedidoBanco in banco.Torcamento
+                                              join item in banco.TorcamentoItem on prepedidoBanco.Orcamento equals item.Orcamento
                                               where prepedidoBanco.Id_Cliente == prePedido.DadosCliente.Id
                                                  && (prepedidoBanco.Data.HasValue && prepedidoBanco.Data.Value.Date == dataLimite.Date)
                                                  && hora.CompareTo(prepedidoBanco.Hora) <= 0
@@ -102,7 +102,7 @@ namespace Prepedido
             List<string> ret = new List<string>();
 
             var hora = Util.HoraParaBanco(dataLimite);
-            var prepedidosExistentes = await (from prepedidoBanco in banco.Torcamentos
+            var prepedidosExistentes = await (from prepedidoBanco in banco.Torcamento
                                               where prepedidoBanco.Id_Cliente == idCliente
                                                  && (prepedidoBanco.Data.HasValue && prepedidoBanco.Data.Value.Date == dataLimite.Date)
                                                  && hora.CompareTo(prepedidoBanco.Hora) <= 0

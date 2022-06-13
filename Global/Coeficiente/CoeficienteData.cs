@@ -48,7 +48,7 @@ namespace Coeficiente
             {
                 using(var db = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
-                    var saida = from c in db.TpercentualCustoFinanceiroFornecedorHistoricos
+                    var saida = from c in db.TpercentualCustoFinanceiroFornecedorHistorico
                                              select c;
 
                     if(obj.LstFabricantes.Distinct().Count() > 0)

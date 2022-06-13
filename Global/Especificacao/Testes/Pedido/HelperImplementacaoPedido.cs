@@ -375,7 +375,7 @@ namespace Especificacao.Testes.Pedido
             var servicos = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos();
             var contextoBdProvider = servicos.GetRequiredService<InfraBanco.ContextoBdProvider>();
             var db = contextoBdProvider.GetContextoLeitura();
-            var registrosLidos = (from registro in db.TestoqueMovimentos
+            var registrosLidos = (from registro in db.TestoqueMovimento
                                   where registro.Pedido == pedidoPaiGerado
                                   select registro).ToList();
             Assert.Equal(registros, registrosLidos.Count());

@@ -32,7 +32,7 @@ namespace MagentoBusiness.MagentoBll.AcessoBll
             //trabalhamos sempre com maiúsuculas
             var usuarioMaisuculas = usuarioOriginal.ToUpper().Trim();
 
-            var usuario = await (from u in contextoProvider.GetContextoLeitura().Tusuarios
+            var usuario = await (from u in contextoProvider.GetContextoLeitura().Tusuario
                                  where u.Usuario.ToUpper() == usuarioMaisuculas
                                  select new
                                  {
@@ -87,8 +87,8 @@ namespace MagentoBusiness.MagentoBll.AcessoBll
 				" AND (t_OPERACAO.modulo='" & COD_OP_MODULO_CENTRAL & "')"
 							*/
             var db = contextoProvider.GetContextoLeitura();
-            var perfil = await (from p in db.Tperfils
-                                join pu in db.TperfilUsuarios on p.Id equals pu.Id_perfil
+            var perfil = await (from p in db.Tperfil
+                                join pu in db.TperfilUsuario on p.Id equals pu.Id_perfil
                                 where p.Apelido.ToUpper() == ApelidoPerfilLiberaAcessoApiMagento.ToUpper() &&
                                       pu.Usuario.ToUpper() == usuarioMaisuculas && p.St_inativo == 0
                                 select p.Id).FirstOrDefaultAsync();
@@ -195,7 +195,7 @@ namespace MagentoBusiness.MagentoBll.AcessoBll
             //atualizar dados
             //não fazemos bloqueio; se tivermos alterações simultâneas, simplesmente a última grava os seus dados
             using var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
-            var tusuario = await (from u in dbgravacao.Tusuarios
+            var tusuario = await (from u in dbgravacao.Tusuario
                                   where u.Usuario.ToUpper() == usuario.ToUpper()
                                   select u).FirstOrDefaultAsync();
             if (tusuario == null)
@@ -211,7 +211,7 @@ namespace MagentoBusiness.MagentoBll.AcessoBll
             tusuario.SessionCtrlDtHrLogon = null;
             dbgravacao.SaveChanges();
 
-            var tsessaoHistorico = await (from h in dbgravacao.TsessaoHistoricos
+            var tsessaoHistorico = await (from h in dbgravacao.TsessaoHistorico
                                           where h.Usuario.ToUpper() == usuario.ToUpper()
                                           && h.DtHrInicio >= DateTime.Now.AddDays(-1)
                                           && h.SessionCtrlTicket == sessionCtrlTicketAnterior

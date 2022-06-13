@@ -54,7 +54,7 @@ namespace FormaPagamento
              * private string COD_VISANET_PRAZO_PAGTO_LOJA = "PRAZO_LOJA";
                 string SelectQtdeMaxParcelaCartaoVisa = "SELECT qtde_parcelas FROM t_PRAZO_PAGTO_VISANET WHERE tipo = @COD_VISANET_PRAZO_PAGTO_LOJA";
              */
-            var formaPagto = from c in db.TprazoPagtoVisanets
+            var formaPagto = from c in db.TprazoPagtoVisanet
                              where c.Tipo == Constantes.COD_VISANET_PRAZO_PAGTO_LOJA
                              select c.Qtde_parcelas;
             var qtdeParcelas = await formaPagto.FirstOrDefaultAsync();
@@ -65,9 +65,9 @@ namespace FormaPagamento
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var formaPagtoTask = from c in db.TformaPagtos
+            var formaPagtoTask = from c in db.TformaPagto
                                  where c.Hab_a_vista == 1 &&
-                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagtos
+                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
                                          where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
                                                d.Id_orcamentista_e_indicador == Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
                                                d.Tipo_cliente == tipo_pessoa &&
@@ -90,9 +90,9 @@ namespace FormaPagamento
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var formaPagtoTask = from c in db.TformaPagtos
+            var formaPagtoTask = from c in db.TformaPagto
                                  where c.Hab_parcela_unica == 1 &&
-                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagtos
+                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
                                          where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
                                                d.Id_orcamentista_e_indicador == Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
                                                d.Tipo_cliente == tipo_pessoa &&
@@ -117,7 +117,7 @@ namespace FormaPagamento
 
             var db = contextoProvider.GetContextoLeitura();
 
-            var flagTask = from c in db.TorcamentistaEIndicadorRestricaoFormaPagtos
+            var flagTask = from c in db.TorcamentistaEIndicadorRestricaoFormaPagto
                            where c.Id_orcamentista_e_indicador == apelido &&
                                  c.Id_forma_pagto == (short)Constantes.FormaPagto.ID_FORMA_PAGTO_CARTAO &&
                                  c.Tipo_cliente == tipo_pessoa &&
@@ -138,7 +138,7 @@ namespace FormaPagamento
 
             var db = contextoProvider.GetContextoLeitura();
 
-            var flagTask = from c in db.TorcamentistaEIndicadorRestricaoFormaPagtos
+            var flagTask = from c in db.TorcamentistaEIndicadorRestricaoFormaPagto
                            where c.Id_orcamentista_e_indicador == apelido &&
                                  c.Id_forma_pagto == (short)Constantes.FormaPagto.ID_FORMA_PAGTO_CARTAO_MAQUINETA &&
                                  c.Tipo_cliente == tipo_pessoa &&
@@ -157,9 +157,9 @@ namespace FormaPagamento
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var formaPagtoTask = from c in db.TformaPagtos
+            var formaPagtoTask = from c in db.TformaPagto
                                  where c.Hab_entrada == 1 &&
-                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagtos
+                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
                                          where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
                                                d.Id_orcamentista_e_indicador ==
                                                Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
@@ -183,9 +183,9 @@ namespace FormaPagamento
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var formaPagtoTask = from c in db.TformaPagtos
+            var formaPagtoTask = from c in db.TformaPagto
                                  where c.Hab_prestacao == 1 &&
-                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagtos
+                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
                                          where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
                                                d.Id_orcamentista_e_indicador == Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
                                                d.Tipo_cliente == tipo_pessoa &&
@@ -208,9 +208,9 @@ namespace FormaPagamento
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var formaPagtoTask = from c in db.TformaPagtos
+            var formaPagtoTask = from c in db.TformaPagto
                                  where c.Hab_prestacao == 1 &&
-                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagtos
+                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
                                          where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
                                                d.Id_orcamentista_e_indicador == Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
                                                d.Tipo_cliente == tipo_pessoa &&
@@ -233,9 +233,9 @@ namespace FormaPagamento
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var formaPagtoTask = from c in db.TformaPagtos
+            var formaPagtoTask = from c in db.TformaPagto
                                  where c.Hab_prestacao == 1 &&
-                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagtos
+                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
                                          where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
                                                d.Id_orcamentista_e_indicador == Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
                                                d.Tipo_cliente == tipo_pessoa &&

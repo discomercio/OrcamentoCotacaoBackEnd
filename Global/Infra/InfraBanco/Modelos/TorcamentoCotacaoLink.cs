@@ -17,18 +17,17 @@ namespace InfraBanco.Modelos
         [Required]
         public int IdOrcamentoCotacao { get; set; }
 
-
         [Column("Guid")]
         [Required]
         public Guid Guid { get; set; }
 
         [Column("Status")]
         [Required]
-        public int Status { get; set; }
+        public Int16 Status { get; set; }
 
         [Column("IdTipoUsuarioContextoUltStatus")]
         [Required]
-        public int IdTipoUsuarioContextoUltStatus { get; set; }
+        public Int16 IdTipoUsuarioContextoUltStatus { get; set; }
         
         [Column("IdUsuarioUltStatus")]
         [Required]
@@ -44,10 +43,10 @@ namespace InfraBanco.Modelos
 
         [Column("IdTipoUsuarioContextoCadastro")]
         [Required]
-        public int IdTipoUsuarioContextoCadastro { get; set; }
+        public Int16 IdTipoUsuarioContextoCadastro { get; set; }
 
         [Column("IdUsuarioCadastro")]        
-        public int IdUsuarioCadastro { get; set; }
+        public int? IdUsuarioCadastro { get; set; }
 
         [Column("DataCadastro")]
         [Required]

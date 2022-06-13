@@ -19,7 +19,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60
         public void GivenColocarNSUDoInfraBanco_Constantes_Constantes_NSU_PEDIDOCom(string p0)
         {
             using var dbgravacao = contextoBdProvider.GetContextoGravacaoParaUsing(global::InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM);
-            var controle = (from c in dbgravacao.Tcontroles
+            var controle = (from c in dbgravacao.Tcontrole
                             where c.Id_Nsu == InfraBanco.Constantes.Constantes.NSU_PEDIDO
                             select c).First();
             controle.Nsu = p0;
@@ -32,7 +32,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo60
         public void GivenColocarAno_Letra_SeqDoInfraBanco_Constantes_Constantes_NSU_PEDIDOCom(string p0)
         {
             using var dbgravacao = contextoBdProvider.GetContextoGravacaoParaUsing(global::InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM);
-            var controle = (from c in dbgravacao.Tcontroles
+            var controle = (from c in dbgravacao.Tcontrole
                             where c.Id_Nsu == InfraBanco.Constantes.Constantes.NSU_PEDIDO
                             select c).First();
             controle.Ano_Letra_Seq = p0;

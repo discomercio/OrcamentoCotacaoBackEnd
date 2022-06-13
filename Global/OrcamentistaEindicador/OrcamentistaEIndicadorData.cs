@@ -51,7 +51,7 @@ namespace OrcamentistaEindicador
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
-                    var saida = (from parceiro in db.TorcamentistaEindicadors
+                    var saida = (from parceiro in db.TorcamentistaEindicador
                                  select parceiro);
                     
                     if (!string.IsNullOrEmpty(obj.loja))
@@ -101,7 +101,7 @@ namespace OrcamentistaEindicador
 
             var db = contextoProvider.GetContextoLeitura();
             //Validar o dados no bd
-            var dados = from c in db.TorcamentistaEindicadors
+            var dados = from c in db.TorcamentistaEindicador
                         where c.Apelido == apelido
                         select c;
             //new

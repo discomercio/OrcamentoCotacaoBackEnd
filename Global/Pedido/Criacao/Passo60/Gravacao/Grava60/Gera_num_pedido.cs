@@ -42,7 +42,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
             //obtém a letra para o sufixo do pedido de acordo c / o ano da geração do 
             //nsu(importante: fazer a leitura somente após gerar o nsu, pois a letra pode ter 
             //sido alterada devido à mudança de ano!!)
-            var ret = await (from c in contextoBdGravacao.Tcontroles
+            var ret = await (from c in contextoBdGravacao.Tcontrole
                              where c.Id_Nsu == InfraBanco.Constantes.Constantes.NSU_PEDIDO
                              select new { c.Ano_Letra_Seq }).FirstOrDefaultAsync();
 

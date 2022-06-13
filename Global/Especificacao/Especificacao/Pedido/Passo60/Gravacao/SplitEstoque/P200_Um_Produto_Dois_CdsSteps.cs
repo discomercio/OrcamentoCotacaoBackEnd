@@ -62,7 +62,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
         private void CdGarantirCadastrado(int cd)
         {
             using var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM);
-            if ((from c in db.TnfEmitentes where c.Id == cd select c).Any())
+            if ((from c in db.TnfEmitente where c.Id == cd select c).Any())
                 return;
 
             //criar
@@ -134,10 +134,10 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
             }
             else
             {
-                id_wms_regra_cd = (from c in db.TwmsRegraCds select c.Id).Max() + 1;
+                id_wms_regra_cd = (from c in db.TwmsRegraCd select c.Id).Max() + 1;
             }
 
-            int idwmsRegraCdXUfPessoa = (from c in db.TwmsRegraCdXUfPessoas select c.Id).Max() + 1;
+            int idwmsRegraCdXUfPessoa = (from c in db.TwmsRegraCdXUfPessoa select c.Id).Max() + 1;
             //produto e fabricante é chave única, somente inserimos se não existir
             var apagar = (from r in db.TprodutoXwmsRegraCds where r.Fabricante == fabricante && r.Produto == produto select r).ToList();
             foreach (var registro in apagar)
@@ -146,8 +146,8 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
             if (!id_wms_regra_cd_usado.HasValue)
                 db.Add(new TwmsRegraCd() { Id = id_wms_regra_cd, Apelido = "testes", St_inativo = 0 });
 
-            int idRegraCdXUf = (from c in db.TwmsRegraCdXUfs select c.Id).Max() + 1;
-            var existeIdRegraCdXUf = (from c in db.TwmsRegraCdXUfs where c.Id_wms_regra_cd == id_wms_regra_cd && c.Uf == uf select c).ToList();
+            int idRegraCdXUf = (from c in db.TwmsRegraCdXUf select c.Id).Max() + 1;
+            var existeIdRegraCdXUf = (from c in db.TwmsRegraCdXUf where c.Id_wms_regra_cd == id_wms_regra_cd && c.Uf == uf select c).ToList();
             if (existeIdRegraCdXUf.Any())
             {
                 idRegraCdXUf = existeIdRegraCdXUf.First().Id;
@@ -161,7 +161,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
             db.Add(new TwmsRegraCdXUfPessoa() { Id_wms_regra_cd_x_uf = idRegraCdXUf, Spe_id_nfe_emitente = esperarCdNumero, St_inativo = 0, Tipo_pessoa = tipo_pessoa, Id = idwmsRegraCdXUfPessoa });
 
             int ordem_prioridade = 1;
-            int idwmsRegraCdXUfXPessoaXCd = (from c in db.TwmsRegraCdXUfXPessoaXCds select c.Id).Max() + 1;
+            int idwmsRegraCdXUfXPessoaXCd = (from c in db.TwmsRegraCdXUfXPessoaXCd select c.Id).Max() + 1;
             if (primeiroCdNumero != cdnaoInformado)
             {
                 db.Add(new TwmsRegraCdXUfXPessoaXCd() { Id = idwmsRegraCdXUfXPessoaXCd, Id_nfe_emitente = primeiroCdNumero, Ordem_prioridade = ordem_prioridade, St_inativo = 0, Id_wms_regra_cd_x_uf_x_pessoa = idwmsRegraCdXUfPessoa });
@@ -209,7 +209,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
             //local_desabilitar_regras: t_WMS_REGRA_CD
             if (tabela == "t_WMS_REGRA_CD".ToLower().Trim())
             {
-                var atualizar = (from p in db.TwmsRegraCds
+                var atualizar = (from p in db.TwmsRegraCd
                                  where lista_id_wms_regra_cd.Contains(p.Id)
                                  select p).ToList();
                 foreach (var registro in atualizar)
@@ -225,7 +225,7 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
             //local_desabilitar_regras: t_WMS_REGRA_CD_X_UF
             if (tabela == "t_WMS_REGRA_CD_X_UF".ToLower().Trim())
             {
-                var atualizar = (from p in db.TwmsRegraCdXUfs
+                var atualizar = (from p in db.TwmsRegraCdXUf
                                  where lista_id_wms_regra_cd.Contains(p.Id_wms_regra_cd)
                                  select p).ToList();
                 foreach (var registro in atualizar)
@@ -239,12 +239,12 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
             }
 
             //local_desabilitar_regras: t_WMS_REGRA_CD_X_UF_X_PESSOA
-            var lista_id_wms_regra_cd_x_uf = (from p in db.TwmsRegraCdXUfs
+            var lista_id_wms_regra_cd_x_uf = (from p in db.TwmsRegraCdXUf
                                               where lista_id_wms_regra_cd.Contains(p.Id_wms_regra_cd)
                                               select p.Id).ToList();
             if (tabela == "t_WMS_REGRA_CD_X_UF_X_PESSOA".ToLower().Trim())
             {
-                var atualizar = (from p in db.TwmsRegraCdXUfPessoas
+                var atualizar = (from p in db.TwmsRegraCdXUfPessoa
                                  where lista_id_wms_regra_cd_x_uf.Contains(p.Id_wms_regra_cd_x_uf)
                                  select p).ToList();
                 foreach (var registro in atualizar)
@@ -258,12 +258,12 @@ namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.SplitEstoque
             }
 
             //local_desabilitar_regras: t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD
-            var lista_id_wms_regra_cd_x_uf_x_pessoa = (from p in db.TwmsRegraCdXUfPessoas
+            var lista_id_wms_regra_cd_x_uf_x_pessoa = (from p in db.TwmsRegraCdXUfPessoa
                                                        where lista_id_wms_regra_cd_x_uf.Contains(p.Id_wms_regra_cd_x_uf)
                                                        select p.Id).ToList();
             if (tabela == "t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD".ToLower().Trim())
             {
-                var atualizar = (from p in db.TwmsRegraCdXUfXPessoaXCds
+                var atualizar = (from p in db.TwmsRegraCdXUfXPessoaXCd
                                  where lista_id_wms_regra_cd_x_uf_x_pessoa.Contains(p.Id_wms_regra_cd_x_uf_x_pessoa)
                                  select p).ToList();
                 foreach (var registro in atualizar)

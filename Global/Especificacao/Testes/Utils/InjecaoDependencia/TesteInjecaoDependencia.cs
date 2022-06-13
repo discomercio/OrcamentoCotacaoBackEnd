@@ -28,7 +28,7 @@ namespace Especificacao.Testes.Utils.InjecaoDependencia
 
             //e vamos testar o acesso ao banco
             var contexto = contextoBdProvider.GetContextoLeitura();
-            var clientes = from c in contexto.Tclientes
+            var clientes = from c in contexto.Tcliente
                            select c;
             Assert.NotEqual(-1, clientes.Count());
         }

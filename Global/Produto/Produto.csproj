@@ -1,8 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Configurations>Debug;Release_Banco_Pedido;Release_Banco_Prepedido;Release_OrcamentoCotacao;Debug_OrcamentoCotacao</Configurations>
+    <Configurations>Debug;Release;Release_OrcamentoCotacao;Debug_OrcamentoCotacao</Configurations>
+    <DebugType Condition=" '$(Configuration)' == 'Release_OrcamentoCotacao' ">None</DebugType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_Banco_Prepedido|AnyCPU'">

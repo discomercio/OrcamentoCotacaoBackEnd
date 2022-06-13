@@ -74,7 +74,7 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             //verifica se salvou direito
             var db = contextoProvider.GetContextoLeitura();
 
-            var ret = (from c in db.Tclientes
+            var ret = (from c in db.Tcliente
                        where c.Id == res.IdClienteCadastrado
                        select c).FirstOrDefault();
 

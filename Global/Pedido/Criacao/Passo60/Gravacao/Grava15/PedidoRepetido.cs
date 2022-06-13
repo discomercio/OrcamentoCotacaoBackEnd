@@ -67,7 +67,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava15
                                            orderby item.Pedido, item.Sequencia
                                            select new { pedidoBanco.Pedido, item.Fabricante, item.Produto, item.Qtde, item.Preco_Venda }).ToListAsync();
                                            */
-            var pedidosFiltradosSemData = await (from pedidoBanco in db.Tpedidos
+            var pedidosFiltradosSemData = await (from pedidoBanco in db.Tpedido
                                                  where pedidoBanco.Id_Cliente == pedido.Cliente.Id_cliente &&
                                                       pedidoBanco.Loja == pedido.Ambiente.Loja &&
                                                       pedidoBanco.Usuario_Cadastro == pedido.Ambiente.Usuario &&
@@ -79,7 +79,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava15
                                         hora.CompareTo(pedidoBanco.Hora) <= 0
                                     select pedidoBanco).ToList();
             var pedidosFiltradsPedidos = (from p in pedidosFiltrados select p.Pedido).Distinct();
-            var pedidosExistentes = await (from item in db.TpedidoItems
+            var pedidosExistentes = await (from item in db.TpedidoItem
                                            where pedidosFiltradsPedidos.Contains(item.Pedido)  //precisa desta linha para aplicar o where
                                            orderby item.Pedido, item.Sequencia
                                            select new { item.Pedido, item.Fabricante, item.Produto, item.Qtde, item.Preco_Venda }).ToListAsync();

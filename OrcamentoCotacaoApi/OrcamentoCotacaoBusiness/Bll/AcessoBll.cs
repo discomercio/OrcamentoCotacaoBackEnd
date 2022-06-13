@@ -30,7 +30,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             var db = contextoProvider.GetContextoLeitura();
             //Validar o dados no bd
-            var dados = from c in db.Tusuarios
+            var dados = from c in db.Tusuario
                         where c.Usuario == login
                         select new UsuarioLogin
                         {
@@ -53,7 +53,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (t == null)
             {
                 /*Busca de parceiros*/
-                dados = from c in db.TorcamentistaEindicadors
+                dados = from c in db.TorcamentistaEindicador
                         where c.Apelido == login
                         select new UsuarioLogin
                         {
@@ -74,7 +74,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 if (t == null)
                 {
                     /*Busca de vendedores de parceiros*/
-                    dados = from c in db.TorcamentistaEindicadorVendedors
+                    dados = from c in db.TorcamentistaEindicadorVendedor
                             where c.Email == login
                             select new UsuarioLogin
                             {
@@ -144,12 +144,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                     switch (tipo)
                     {
                         case (int)Constantes.TipoUsuario.GESTOR:
-                            Tusuario usuario = dbgravacao.Tusuarios
+                            Tusuario usuario = dbgravacao.Tusuario
                             .Where(c => c.Usuario == login && c.Datastamp == senha_digitada_decod).FirstOrDefault();
                             usuario.Dt_Ult_Acesso = DateTime.Now;
                             break;
                         case (int)Constantes.TipoUsuario.PARCEIRO:
-                            TorcamentistaEindicador parceiro = dbgravacao.TorcamentistaEindicadors
+                            TorcamentistaEindicador parceiro = dbgravacao.TorcamentistaEindicador
                             .Where(c => c.Apelido == login && c.Datastamp == senha_digitada_decod).FirstOrDefault();
                             parceiro.Dt_Ult_Acesso = DateTime.Now;
                             break;
@@ -182,7 +182,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var loja = (from c in db.TusuarioXLojas
+            var loja = (from c in db.TusuarioXLoja
                             //join usuario in db.TusuarioXLojas on c.Usuario = 
                         where c.Usuario == apelido
                         select c).ToList();
@@ -193,7 +193,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         public async Task<string> Buscar_unidade_negocio(List<TusuarioXLoja> lojas)
         {
             var db = contextoProvider.GetContextoLeitura();
-            var unidade_negocio = ((from c in db.Tlojas
+            var unidade_negocio = ((from c in db.Tloja
                                     join l in lojas on c.Loja equals l.Loja
                                     //where c.Loja == loja.Trim()
                                     select c.Unidade_Negocio).ToList());
@@ -219,7 +219,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
-                dbgravacao.TsessaoHistoricos.Add(sessaoHist);
+                dbgravacao.TsessaoHistorico.Add(sessaoHist);
                 await dbgravacao.SaveChangesAsync();
                 dbgravacao.transacao.Commit();
             }
@@ -254,14 +254,14 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
-                var sessaoHistTask = (from c in dbgravacao.TsessaoHistoricos
+                var sessaoHistTask = (from c in dbgravacao.TsessaoHistorico
                                       where c.Usuario == apelido
                                       orderby c.DtHrInicio descending
                                       select c).FirstOrDefaultAsync();
                 TsessaoHistorico sessaoHist = await sessaoHistTask;
                 sessaoHist.DtHrTermino = DateTime.Now;
 
-                dbgravacao.TsessaoHistoricos.Update(sessaoHist);
+                dbgravacao.TsessaoHistorico.Update(sessaoHist);
                 await dbgravacao.SaveChangesAsync();
                 dbgravacao.transacao.Commit();
             }
@@ -323,7 +323,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 //vamos alterar a senha na base de dados
                 using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTISTA_E_INDICADOR))
                 {
-                    TorcamentistaEindicador orcamentista = await (from c in dbgravacao.TorcamentistaEindicadors
+                    TorcamentistaEindicador orcamentista = await (from c in dbgravacao.TorcamentistaEindicador
                                                                   where c.Apelido == alterarSenhaDto.Apelido.ToUpper().Trim()
                                                                   select c).FirstOrDefaultAsync();
 

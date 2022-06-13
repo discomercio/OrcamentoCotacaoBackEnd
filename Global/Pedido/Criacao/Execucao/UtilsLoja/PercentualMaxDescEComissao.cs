@@ -23,7 +23,7 @@ namespace Pedido.Criacao.Execucao.UtilsLoja
         {
             var db = contextoBdProvider.GetContextoLeitura();
 
-            var ret = from c in db.Tlojas
+            var ret = from c in db.Tloja
                       where c.Loja == loja
                       select new PercentualMaxDescEComissao
                       {

@@ -17,7 +17,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll
         {
             var db = contexto.GetContextoLeitura();
 
-            TorcamentistaEindicador orcamentista = await (from c in db.TorcamentistaEindicadors
+            TorcamentistaEindicador orcamentista = await (from c in db.TorcamentistaEindicador
                                                           where c.Apelido == apelido
                                                           select c).FirstOrDefaultAsync();
 

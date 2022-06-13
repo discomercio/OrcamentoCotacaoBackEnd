@@ -33,8 +33,8 @@ namespace Testes.Automatizados.InicializarBanco
         {
             using (var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
-                foreach (var c in db.Tclientes)
-                    db.Tclientes.Remove(c);
+                foreach (var c in db.Tcliente)
+                    db.Tcliente.Remove(c);
 
                 db.SaveChanges();
             }
@@ -44,34 +44,34 @@ namespace Testes.Automatizados.InicializarBanco
         {
             using (var db = contextoBdProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
-                db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
+                db.TorcamentistaEindicador.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
                 {
                     Apelido = Dados.Orcamentista.Apelido.ToUpper(),
                     Vendedor = Dados.Orcamentista.Apelido_sem_ra.ToUpper(),
                     Loja = Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE,
                     Permite_RA_Status = 1
                 });
-                db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
+                db.TorcamentistaEindicador.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
                 {
                     Apelido = Dados.Orcamentista.Apelido_com_ra.ToUpper(),
                     Vendedor = Dados.Orcamentista.Apelido_com_ra.ToUpper(),
                     Loja = Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE,
                     Permite_RA_Status = 1
                 });
-                db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
+                db.TorcamentistaEindicador.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
                 {
                     Apelido = Dados.Orcamentista.Apelido_sem_ra.ToUpper(),
                     Vendedor = Dados.Orcamentista.Apelido_sem_ra.ToUpper(),
                     Loja = Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE,
                     Permite_RA_Status = 0
                 });
-                db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
+                db.TorcamentistaEindicador.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
                 {
                     Apelido = Dados.Orcamentista.Apelido_sem_vendedor.ToUpper(),
                     Loja = Constantes.NUMERO_LOJA_ECOMMERCE_AR_CLUBE,
                     Permite_RA_Status = 0
                 });
-                db.TorcamentistaEindicadors.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
+                db.TorcamentistaEindicador.Add(new InfraBanco.Modelos.TorcamentistaEindicador()
                 {
                     Apelido = Dados.Orcamentista.Apelido_sem_loja.ToUpper(),
                     Vendedor = Dados.Orcamentista.Apelido_sem_loja.ToUpper(),
@@ -83,16 +83,16 @@ namespace Testes.Automatizados.InicializarBanco
                 db.Tparametros.Add(new InfraBanco.Modelos.Tparametro() { Id = Constantes.ID_PARAMETRO_PERC_DESAGIO_RA_LIQUIDA, Campo_Real = 25 });
                 db.Tparametros.Add(new InfraBanco.Modelos.Tparametro() { Id = Constantes.ID_PARAMETRO_Flag_Orcamento_ConsisteDisponibilidadeEstoqueGlobal, Campo_inteiro = 1 });
 
-                db.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = "000000645506" });
-                db.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_ORCAMENTO, Nsu = "000000000006" });
+                db.Tcontrole.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_CADASTRO_CLIENTES, Nsu = "000000645506" });
+                db.Tcontrole.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.NSU_ORCAMENTO, Nsu = "000000000006" });
                 //deixamos com 26% porque com 6,2% dá erro nos casos que a gente estava usando
-                db.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.ID_PARAM_PercVlPedidoLimiteRA, Nsu = "26,20" });
+                db.Tcontrole.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.ID_PARAM_PercVlPedidoLimiteRA, Nsu = "26,20" });
 
 
-                db.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.ID_XLOCK_SYNC_CLIENTE });
-                db.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.ID_XLOCK_SYNC_ORCAMENTISTA_E_INDICADOR });
-                db.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.ID_XLOCK_SYNC_ORCAMENTO });
-                db.Tcontroles.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.ID_XLOCK_SYNC_PEDIDO });
+                db.Tcontrole.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.ID_XLOCK_SYNC_CLIENTE });
+                db.Tcontrole.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.ID_XLOCK_SYNC_ORCAMENTISTA_E_INDICADOR });
+                db.Tcontrole.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.ID_XLOCK_SYNC_ORCAMENTO });
+                db.Tcontrole.Add(new InfraBanco.Modelos.Tcontrole() { Id_Nsu = Constantes.ID_XLOCK_SYNC_PEDIDO });
 
                 db.Tbancos.Add(new InfraBanco.Modelos.Tbanco() { Codigo = Testes.Automatizados.InicializarBanco.InicializarClienteDados.ClienteNaoCadastradoPJ().RefBancaria[0].Banco });
 
@@ -100,9 +100,9 @@ namespace Testes.Automatizados.InicializarBanco
                 short idPagamentoAvista = 1;
                 short idPagamentoParcUnica = 5;
                 short idPagamentoComEntrada = 3;
-                db.TformaPagtos.Add(new InfraBanco.Modelos.TformaPagto() { Hab_a_vista = 1, Id = idPagamentoAvista });
-                db.TformaPagtos.Add(new InfraBanco.Modelos.TformaPagto() { Hab_parcela_unica = 1, Id = idPagamentoParcUnica });
-                db.TformaPagtos.Add(new InfraBanco.Modelos.TformaPagto() { Hab_prestacao = 1, Hab_entrada = 1, Id = idPagamentoComEntrada });
+                db.TformaPagto.Add(new InfraBanco.Modelos.TformaPagto() { Hab_a_vista = 1, Id = idPagamentoAvista });
+                db.TformaPagto.Add(new InfraBanco.Modelos.TformaPagto() { Hab_parcela_unica = 1, Id = idPagamentoParcUnica });
+                db.TformaPagto.Add(new InfraBanco.Modelos.TformaPagto() { Hab_prestacao = 1, Hab_entrada = 1, Id = idPagamentoComEntrada });
 
                 /*
                  * sem restrições
@@ -138,7 +138,7 @@ namespace Testes.Automatizados.InicializarBanco
             short Spe_id_nfe_emitente = 1;
             int Id_wms_regra_cd_x_uf_x_pessoa = 1;
 
-            db.TnfEmitentes.Add(new InfraBanco.Modelos.TnfEmitente()
+            db.TnfEmitente.Add(new InfraBanco.Modelos.TnfEmitente()
             {
                 Id = Spe_id_nfe_emitente,
                 St_Ativo = 1
@@ -149,15 +149,15 @@ namespace Testes.Automatizados.InicializarBanco
             var produtos = dado.ListaProdutos;
             foreach (var item in produtos)
             {
-                if (!db.Tfabricantes.Any(f => f.Fabricante == item.Fabricante))
+                if (!db.Tfabricante.Any(f => f.Fabricante == item.Fabricante))
                 {
-                    db.Tfabricantes.Add(new InfraBanco.Modelos.Tfabricante() { Fabricante = item.Fabricante });
+                    db.Tfabricante.Add(new InfraBanco.Modelos.Tfabricante() { Fabricante = item.Fabricante });
                     db.SaveChanges();
                 }
 
-                if (!db.Tprodutos.Any(f => f.Fabricante == item.Fabricante && f.Produto == item.Produto))
+                if (!db.Tproduto.Any(f => f.Fabricante == item.Fabricante && f.Produto == item.Produto))
                 {
-                    db.Tprodutos.Add(new InfraBanco.Modelos.Tproduto()
+                    db.Tproduto.Add(new InfraBanco.Modelos.Tproduto()
                     {
                         Fabricante = item.Fabricante,
                         Produto = item.Produto,
@@ -165,7 +165,7 @@ namespace Testes.Automatizados.InicializarBanco
                         Excluido_status = 0
                     });
 
-                    db.TprodutoLojas.Add(new InfraBanco.Modelos.TprodutoLoja()
+                    db.TprodutoLoja.Add(new InfraBanco.Modelos.TprodutoLoja()
                     {
                         Produto = item.Produto,
                         Fabricante = item.Fabricante,
@@ -185,7 +185,7 @@ namespace Testes.Automatizados.InicializarBanco
                             Id_wms_regra_cd = Id_wms_regra_cd
                         });
 
-                        db.TwmsRegraCds.Add(new InfraBanco.Modelos.TwmsRegraCd()
+                        db.TwmsRegraCd.Add(new InfraBanco.Modelos.TwmsRegraCd()
                         {
                             Id = Id_wms_regra_cd,
                             Apelido = "wmsRegra.Apelido",
@@ -193,7 +193,7 @@ namespace Testes.Automatizados.InicializarBanco
                             St_inativo = 0
                         });
 
-                        db.TwmsRegraCdXUfs.Add(new InfraBanco.Modelos.TwmsRegraCdXUf()
+                        db.TwmsRegraCdXUf.Add(new InfraBanco.Modelos.TwmsRegraCdXUf()
                         {
                             Id = Id_wms_regra_cd_x_uf,
                             Id_wms_regra_cd = Id_wms_regra_cd,
@@ -216,7 +216,7 @@ namespace Testes.Automatizados.InicializarBanco
             }
 
             //coeficientes
-            foreach (var f in db.Tfabricantes)
+            foreach (var f in db.Tfabricante)
             {
                 db.TpercentualCustoFinanceiroFornecedors.Add(new InfraBanco.Modelos.TpercentualCustoFinanceiroFornecedor()
                 {
@@ -247,7 +247,7 @@ namespace Testes.Automatizados.InicializarBanco
         private static void InicalizarProdutos_TwmsRegraCdXUfPessoas(ContextoBdGravacao db, int Id_wms_regra_cd_x_uf, short Spe_id_nfe_emitente, string Tipo_pessoa,
             ref int Id_wms_regra_cd_x_uf_x_pessoa)
         {
-            db.TwmsRegraCdXUfPessoas.Add(new InfraBanco.Modelos.TwmsRegraCdXUfPessoa()
+            db.TwmsRegraCdXUfPessoa.Add(new InfraBanco.Modelos.TwmsRegraCdXUfPessoa()
             {
                 Id = Id_wms_regra_cd_x_uf_x_pessoa,
                 Tipo_pessoa = Tipo_pessoa,
@@ -256,7 +256,7 @@ namespace Testes.Automatizados.InicializarBanco
                 St_inativo = 0
             });
 
-            db.TwmsRegraCdXUfXPessoaXCds.Add(new InfraBanco.Modelos.TwmsRegraCdXUfXPessoaXCd()
+            db.TwmsRegraCdXUfXPessoaXCd.Add(new InfraBanco.Modelos.TwmsRegraCdXUfXPessoaXCd()
             {
                 Id_wms_regra_cd_x_uf_x_pessoa = Id_wms_regra_cd_x_uf_x_pessoa,
                 Id_nfe_emitente = Spe_id_nfe_emitente
@@ -280,7 +280,7 @@ namespace Testes.Automatizados.InicializarBanco
 
         private static void InicializarListaEnderecoEntregaJustificativa(ContextoBdGravacao db)
         {
-            db.TcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            db.TcodigoDescricao.Add(new InfraBanco.Modelos.TcodigoDescricao()
             {
                 Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
                 Lojas_Habilitadas = null,
@@ -289,7 +289,7 @@ namespace Testes.Automatizados.InicializarBanco
                 Descricao = "Casa de Veraneio"
             });
 
-            db.TcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            db.TcodigoDescricao.Add(new InfraBanco.Modelos.TcodigoDescricao()
             {
                 //não posso adicionar o "Grupo" para os outros 
                 Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
@@ -299,7 +299,7 @@ namespace Testes.Automatizados.InicializarBanco
                 Descricao = "Doação"
             });
 
-            db.TcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            db.TcodigoDescricao.Add(new InfraBanco.Modelos.TcodigoDescricao()
             {
                 Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
                 Lojas_Habilitadas = null,
@@ -307,7 +307,7 @@ namespace Testes.Automatizados.InicializarBanco
                 Codigo = "003",
                 Descricao = "Nova Unidade da Empresa/Filial"
             });
-            db.TcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            db.TcodigoDescricao.Add(new InfraBanco.Modelos.TcodigoDescricao()
             {
                 Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
                 Lojas_Habilitadas = null,
@@ -315,7 +315,7 @@ namespace Testes.Automatizados.InicializarBanco
                 Codigo = "004",
                 Descricao = "Parente do Proprietário (Pais, Filhos e Irmãos)"
             });
-            db.TcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            db.TcodigoDescricao.Add(new InfraBanco.Modelos.TcodigoDescricao()
             {
                 Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
                 Lojas_Habilitadas = null,
@@ -323,7 +323,7 @@ namespace Testes.Automatizados.InicializarBanco
                 Codigo = "005",
                 Descricao = "Residência do Proprietário"
             });
-            db.TcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            db.TcodigoDescricao.Add(new InfraBanco.Modelos.TcodigoDescricao()
             {
                 Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
                 Lojas_Habilitadas = null,
@@ -331,7 +331,7 @@ namespace Testes.Automatizados.InicializarBanco
                 Codigo = "006",
                 Descricao = "Endereço Comercial do Proprietário"
             });
-            db.TcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            db.TcodigoDescricao.Add(new InfraBanco.Modelos.TcodigoDescricao()
             {
                 Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
                 Lojas_Habilitadas = null,
@@ -339,7 +339,7 @@ namespace Testes.Automatizados.InicializarBanco
                 Codigo = "007",
                 Descricao = "Pedido Arclube"
             });
-            db.TcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            db.TcodigoDescricao.Add(new InfraBanco.Modelos.TcodigoDescricao()
             {
                 Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
                 Lojas_Habilitadas = null,
@@ -347,7 +347,7 @@ namespace Testes.Automatizados.InicializarBanco
                 Codigo = "008",
                 Descricao = "Endereço da Obra"
             });
-            db.TcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            db.TcodigoDescricao.Add(new InfraBanco.Modelos.TcodigoDescricao()
             {
                 Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
                 Lojas_Habilitadas = null,
@@ -355,7 +355,7 @@ namespace Testes.Automatizados.InicializarBanco
                 Codigo = "009",
                 Descricao = "Endereço Novo Cliente"
             });
-            db.TcodigoDescricaos.Add(new InfraBanco.Modelos.TcodigoDescricao()
+            db.TcodigoDescricao.Add(new InfraBanco.Modelos.TcodigoDescricao()
             {
                 Grupo = Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA,
                 Lojas_Habilitadas = null,

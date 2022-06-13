@@ -3,9 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace InfraBanco
@@ -73,7 +71,7 @@ namespace InfraBanco
             if (string.IsNullOrEmpty(id_nsu))
                 throw new ArgumentException("Não foi especificado o NSU para bloqueio!");
 
-            var queryControle = from c in this.Tcontroles
+            var queryControle = from c in this.Tcontrole
                                 where c.Id_Nsu == id_nsu
                                 select c;
 
@@ -88,7 +86,6 @@ namespace InfraBanco
             this.SaveChanges();
         }
 
-        #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
@@ -110,7 +107,6 @@ namespace InfraBanco
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
         }
-        #endregion
 
         //acesso a métodos
         public EntityEntry Remove(object entity) => contexto.Remove(entity);
@@ -120,94 +116,93 @@ namespace InfraBanco
         public int SaveChanges() => contexto.SaveChanges();
 
         //acesso às tabelas
-        public DbSet<Tcliente> Tclientes { get => contexto.Tclientes; }
-        public DbSet<Torcamento> Torcamentos { get => contexto.Torcamentos; }
-        public DbSet<TorcamentoCotacaoLink> TorcamentoCotacaoLinks { get => contexto.TorcamentoCotacaoLinks; }
-        public DbSet<TorcamentoCotacaoMensagem> TorcamentoCotacaoMensagens { get => contexto.TorcamentoCotacaoMensagens; }
-        public DbSet<TorcamentoItem> TorcamentoItems { get => contexto.TorcamentoItems; }
-        public DbSet<TsessaoHistorico> TsessaoHistoricos { get => contexto.TsessaoHistoricos; }
-        public DbSet<Tcontrole> Tcontroles { get => contexto.Tcontroles; }
-        public DbSet<TprodutoLoja> TprodutoLojas { get => contexto.TprodutoLojas; }
-        public DbSet<TorcamentistaEindicador> TorcamentistaEindicadors { get => contexto.TorcamentistaEindicadors; }
-        public DbSet<TsessaoAbandonada> TsessaoAbandonadas { get => contexto.TsessaoAbandonadas; }
-        public DbSet<Tusuario> Tusuarios { get => contexto.Tusuarios; }
-        public DbSet<TecProdutoComposto> TecProdutoCompostos { get => contexto.TecProdutoCompostos; }
-        public DbSet<TecProdutoCompostoItem> TecProdutoCompostoItems { get => contexto.TecProdutoCompostoItems; }
-
-#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
-        public DbSet<TclienteRefBancaria> TclienteRefBancarias { get => contexto.TclienteRefBancarias; }
-        public DbSet<TclienteRefComercial> TclienteRefComercials { get => contexto.TclienteRefComercials; }
-        public DbSet<Tdesconto> Tdescontos { get => contexto.Tdescontos; }
-        public DbSet<Testoque> Testoques { get => contexto.Testoques; }
-        public DbSet<TestoqueItem> TestoqueItems { get => contexto.TestoqueItems; }
-        public DbSet<TestoqueLog> TestoqueLogs { get => contexto.TestoqueLogs; }
-        public DbSet<TestoqueMovimento> TestoqueMovimentos { get => contexto.TestoqueMovimentos; }
-        public DbSet<TfinControle> TfinControles { get => contexto.TfinControles; }
-        public DbSet<TnfEmitente> TnfEmitentes { get => contexto.TnfEmitentes; }
-        public DbSet<Tpedido> Tpedidos { get => contexto.Tpedidos; }
-        public DbSet<TpedidoDevolucao> TpedidoDevolucaos { get => contexto.TpedidoDevolucaos; }
-        public DbSet<TpedidoItemDevolvido> TpedidoItemDevolvidos { get => contexto.TpedidoItemDevolvidos; }
-        public DbSet<TpedidoAnaliseEndereco> TpedidoAnaliseEnderecos { get => contexto.TpedidoAnaliseEnderecos; }
-        public DbSet<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseConfrontacaos { get => contexto.TpedidoAnaliseConfrontacaos; }
-        public DbSet<TpedidoItem> TpedidoItems { get => contexto.TpedidoItems; }
-        public DbSet<TusuarioXLoja> TusuarioXLojas { get => contexto.TusuarioXLojas; }
-        public DbSet<TorcamentistaEIndicadorVendedor> TorcamentistaEIndicadorVendedor { get => contexto.TorcamentistaEIndicadorVendedor; }
-        public DbSet<TorcamentoCotacaoArquivos> TorcamentoCotacaoArquivos { get => contexto.TorcamentoCotacaoArquivos; }
+        public DbSet<Tcliente> Tcliente { get => contexto.Tcliente; }
+        public DbSet<Torcamento> Torcamento { get => contexto.Torcamento; }
+        public DbSet<TorcamentoCotacao> TorcamentoCotacao { get => contexto.TorcamentoCotacao; }
+        public DbSet<TorcamentoCotacaoLink> TorcamentoCotacaoLink { get => contexto.TorcamentoCotacaoLink; }
+        public DbSet<TorcamentoCotacaoMensagem> TorcamentoCotacaoMensagem { get => contexto.TorcamentoCotacaoMensagem; }
+        public DbSet<TorcamentoItem> TorcamentoItem { get => contexto.TorcamentoItem; }
+        public DbSet<TsessaoHistorico> TsessaoHistorico { get => contexto.TsessaoHistorico; }
+        public DbSet<Tcontrole> Tcontrole { get => contexto.Tcontrole; }
+        public DbSet<TprodutoLoja> TprodutoLoja { get => contexto.TprodutoLoja; }
+        public DbSet<TorcamentistaEindicador> TorcamentistaEindicador { get => contexto.TorcamentistaEindicador; }
+        public DbSet<TsessaoAbandonada> TsessaoAbandonada { get => contexto.TsessaoAbandonada; }
+        public DbSet<Tusuario> Tusuario { get => contexto.Tusuario; }
+        public DbSet<TecProdutoComposto> TecProdutoComposto { get => contexto.TecProdutoComposto; }
+        public DbSet<TecProdutoCompostoItem> TecProdutoCompostoItem { get => contexto.TecProdutoCompostoItem; }
+        public DbSet<TcfgOrcamentoCotacaoStatus> TcfgOrcamentoCotacaoStatus { get => contexto.TcfgOrcamentoCotacaoStatus; }
+        public DbSet<TcfgOrcamentoCotacaoEmailTemplate> TcfgOrcamentoCotacaoEmailTemplate { get => contexto.TcfgOrcamentoCotacaoEmailTemplate; }
+        public DbSet<TcfgUnidadeNegocioParametro> TcfgUnidadeNegocioParametro { get => contexto.TcfgUnidadeNegocioParametro; }
+        public DbSet<TcfgUnidadeNegocio> TcfgUnidadeNegocio { get => contexto.TcfgUnidadeNegocio; }
+        public DbSet<TpercentualCustoFinanceiroFornecedorHistorico> TpercentualCustoFinanceiroFornecedorHistorico { get => contexto.TpercentualCustoFinanceiroFornecedorHistorico; }
+        public DbSet<TcfgPagtoMeioStatus> TcfgPagtoMeioStatus { get => contexto.TcfgPagtoMeioStatus; }
+        public DbSet<TorcamentoCotacaoOpcaoItemAtomicoCustoFin> TorcamentoCotacaoOpcaoItemAtomicoCustoFin { get => contexto.TorcamentoCotacaoOpcaoItemAtomicoCustoFin; }
+        public DbSet<TorcamentoCotacaoOpcaoItemAtomico> TorcamentoCotacaoOpcaoItemAtomico { get => contexto.TorcamentoCotacaoOpcaoItemAtomico; }
+        public DbSet<TorcamentoCotacaoItemUnificado> TorcamentoCotacaoItemUnificado { get => contexto.TorcamentoCotacaoItemUnificado; }
+        public DbSet<Tproduto> Tproduto { get => contexto.Tproduto; }
         public DbSet<TprodutoCatalogo> TprodutoCatalogo { get => contexto.TprodutoCatalogo; }
         public DbSet<TprodutoCatalogoImagem> TprodutoCatalogoImagem { get => contexto.TprodutoCatalogoImagem; }
         public DbSet<TprodutoCatalogoImagemTipo> TprodutoCatalogoImagemTipo { get => contexto.TprodutoCatalogoImagemTipo; }
         public DbSet<TprodutoCatalogoItem> TprodutoCatalogoItem { get => contexto.TprodutoCatalogoItem; }
         public DbSet<TprodutoCatalogoItens> TprodutoCatalogoItens { get => contexto.TprodutoCatalogoItens; }
-        public DbSet<TorcamentoCotacao> TorcamentoCotacao { get => contexto.TorcamentoCotacao; }
-        public DbSet<TorcamentoCotacaoOpcao> TorcamentoCotacaoOpcao { get => contexto.TorcamentoCotacaoOpcao; }
-        public DbSet<TorcamentoCotacaoEmailQueue> TorcamentoCotacaoEmailQueue { get => contexto.TorcamentoCotacaoEmailQueue; }
-        public DbSet<TorcamentoCotacaoOpcaoPagto> TorcamentoCotacaoOpcaoPagtos { get => contexto.TorcamentoCotacaoOpcaoPagtos; }
-        public DbSet<TorcamentoCotacaoItemUnificado> TorcamentoCotacaoItemUnificados { get => contexto.TorcamentoCotacaoItemUnificados; }
-        public DbSet<TorcamentoCotacaoOpcaoItemAtomicoCustoFin> TorcamentoCotacaoOpcaoItemAtomicoCustoFins { get => contexto.TorcamentoCotacaoOpcaoItemAtomicoCustoFins; }
-        public DbSet<TorcamentoCotacaoOpcaoItemAtomico> TorcamentoCotacaoOpcaoItemAtomico { get => contexto.TorcamentoCotacaoOpcaoItemAtomicos; }
-        public DbSet<TcfgModulo> TcfgModulos { get => contexto.TcfgModulos; }
-        public DbSet<TcfgPagtoForma> TcfgPagtoFormas { get => contexto.TcfgPagtoFormas; }
+        public DbSet<TorcamentistaEIndicadorVendedor> TorcamentistaEIndicadorVendedor { get => contexto.TorcamentistaEindicadorVendedor; }
+        public DbSet<TorcamentistaEIndicadorRestricaoFormaPagto> TorcamentistaEIndicadorRestricaoFormaPagto { get => contexto.TorcamentistaEIndicadorRestricaoFormaPagto; }
+        public DbSet<Tfabricante> Tfabricante { get => contexto.Tfabricante; }
+        public DbSet<TProdutoCatalogoPropriedade> TProdutoCatalogoPropriedade { get => contexto.TProdutoCatalogoPropriedade; }
+        public DbSet<TprazoPagtoVisanet> TprazoPagtoVisanet { get => contexto.TprazoPagtoVisanet; }
         public DbSet<TcfgPagtoFormaStatus> TcfgPagtoFormaStatus { get => contexto.TcfgPagtoFormaStatus; }
-        public DbSet<TcfgPagtoMeio> TcfgPagtoMeios { get => contexto.TcfgPagtoMeios; }
-        public DbSet<TcfgPagtoMeioStatus> TcfgPagtoMeioStatus { get => contexto.TcfgPagtoMeioStatus; }
-        public DbSet<TcfgTipoParcela> TcfgTipoParcelas { get => contexto.TcfgTipoParcelas; }
-        public DbSet<TcfgTipoPessoa> TcfgTipoPessoas { get => contexto.TcfgTipoPessoas; }
-        public DbSet<TcfgTipoUsuario> TcfgTipoUsuarios { get => contexto.TcfgTipoUsuarios; }
-        public DbSet<TcfgTipoUsuarioPerfil> TcfgTipoUsuarioPerfis { get => contexto.TcfgTipoUsuarioPerfis; }
-        public DbSet<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContextos { get => contexto.TcfgTipoUsuarioContextos; }
-        public DbSet<TProdutoCatalogoPropriedade> TProdutoCatalogoPropriedades { get => contexto.TProdutoCatalogoPropriedades; }
-        public DbSet<TcfgOrcamentoCotacaoStatus> TcfgOrcamentoCotacaoStatus { get => contexto.TcfgOrcamentoCotacaoStatus; }
-        public DbSet<TcfgUnidadeNegocio> TcfgUnidadeNegocio { get => contexto.TcfgUnidadeNegocio; }
-        public DbSet<TcfgUnidadeNegocioParametro> TcfgUnidadeNegocioParametro { get => contexto.TcfgUnidadeNegocioParametro; }
+        public DbSet<TorcamentoCotacaoEmailQueue> TorcamentoCotacaoEmailQueue { get => contexto.TorcamentoCotacaoEmailQueue; }
+        public DbSet<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseConfrontacao { get => contexto.TpedidoAnaliseConfrontacao; }
+        public DbSet<Tpedido> Tpedido { get => contexto.Tpedido; }
+        public DbSet<TfinControle> TfinControle { get => contexto.TfinControle; }
+        public DbSet<TpedidoAnaliseEndereco> TpedidoAnaliseEndereco { get => contexto.TpedidoAnaliseEndereco; }
+        public DbSet<Tdesconto> Tdesconto { get => contexto.Tdesconto; }
+        public DbSet<TnfEmitente> TnfEmitente { get => contexto.TnfEmitente; }
+        public DbSet<TpedidoItem> TpedidoItem { get => contexto.TpedidoItem; }
+        public DbSet<TpedidoItemDevolvido> TpedidoItemDevolvido { get => contexto.TpedidoItemDevolvido; }
+        public DbSet<TpedidoDevolucao> TpedidoDevolucao { get => contexto.TpedidoDevolucao; }
+        public DbSet<TestoqueItem> TestoqueItem { get => contexto.TestoqueItem; }
+        public DbSet<TestoqueLog> TestoqueLog { get => contexto.TestoqueLog; }
+        public DbSet<Testoque> Testoque { get => contexto.Testoque; }
+        public DbSet<TorcamentoCotacaoArquivos> TorcamentoCotacaoArquivos { get => contexto.TorcamentoCotacaoArquivos; }
+        public DbSet<Tloja> Tloja { get => contexto.Tloja; }
+        public DbSet<TclienteRefComercial> TclienteRefComercial { get => contexto.TclienteRefComercial; }
+        public DbSet<TclienteRefBancaria> TclienteRefBancaria { get => contexto.TclienteRefBancaria; }
+        public DbSet<TestoqueMovimento> TestoqueMovimento { get => contexto.TestoqueMovimento; }
         
-#endif
 
-        //daqui para a frente só é necessário para os testes automatizados
-#if DEBUG_BANCO_DEBUG
-        public DbSet<TorcamentoItem> TorcamentoItem { get => contexto.TorcamentoItem; }
-        public DbSet<Tbanco> Tbancos { get => contexto.Tbancos; }
-        public DbSet<Tfabricante> Tfabricantes { get => contexto.Tfabricantes; }
-        public DbSet<Tproduto> Tprodutos { get => contexto.Tprodutos; }
-        public DbSet<TpercentualCustoFinanceiroFornecedor> TpercentualCustoFinanceiroFornecedors { get => contexto.TpercentualCustoFinanceiroFornecedors; }
-        public DbSet<TpercentualCustoFinanceiroFornecedorHistorico> TpercentualCustoFinanceiroFornecedorHistoricos { get => contexto.TpercentualCustoFinanceiroFornecedorHistoricos; }
-        public DbSet<Tparametro> Tparametros { get => contexto.Tparametros; }
-        public DbSet<TprodutoXwmsRegraCd> TprodutoXwmsRegraCds { get => contexto.TprodutoXwmsRegraCds; }
-        public DbSet<TwmsRegraCd> TwmsRegraCds { get => contexto.TwmsRegraCds; }
-        public DbSet<TwmsRegraCdXUf> TwmsRegraCdXUfs { get => contexto.TwmsRegraCdXUfs; }
-        public DbSet<TwmsRegraCdXUfPessoa> TwmsRegraCdXUfPessoas { get => contexto.TwmsRegraCdXUfPessoas; }
-        public DbSet<TwmsRegraCdXUfXPessoaXCd> TwmsRegraCdXUfXPessoaXCds { get => contexto.TwmsRegraCdXUfXPessoaXCds; }
-        public DbSet<TformaPagto> TformaPagtos { get => contexto.TformaPagtos; }
-        public DbSet<TorcamentistaEIndicadorRestricaoFormaPagto> TorcamentistaEIndicadorRestricaoFormaPagtos { get => contexto.TorcamentistaEIndicadorRestricaoFormaPagtos; }
-        public DbSet<TprazoPagtoVisanet> TprazoPagtoVisanets { get => contexto.TprazoPagtoVisanets; }
-        public DbSet<Tperfil> Tperfils { get => contexto.Tperfils; }
-        public DbSet<TperfilItem> TperfilItens { get => contexto.TperfilItens; }
-        public DbSet<TperfilUsuario> TperfilUsuarios { get => contexto.TperfilUsuarios; }
-        public DbSet<TcodigoDescricao> TcodigoDescricaos { get => contexto.TcodigoDescricaos; }
-        public DbSet<Tloja> Tlojas { get => contexto.Tlojas; }
-        public DbSet<Toperacao> Toperacaos { get => contexto.Toperacaos; }
-        public DbSet<Tlog> Tlogs { get => contexto.Tlogs; }
 
-#endif
+        public DbSet<TusuarioXLoja> TusuarioXLoja { get => contexto.TusuarioXLoja; }
+        public DbSet<TorcamentoCotacaoOpcao> TorcamentoCotacaoOpcao { get => contexto.TorcamentoCotacaoOpcao; }
+        public DbSet<TorcamentoCotacaoOpcaoPagto> TorcamentoCotacaoOpcaoPagto { get => contexto.TorcamentoCotacaoOpcaoPagto; }
+        public DbSet<TcfgModulo> TcfgModulo { get => contexto.TcfgModulo; }
+        public DbSet<TcfgPagtoForma> TcfgPagtoForma { get => contexto.TcfgPagtoForma; }
+        public DbSet<TcfgPagtoMeio> TcfgPagtoMeio { get => contexto.TcfgPagtoMeio; }
+        public DbSet<TcfgTipoParcela> TcfgTipoParcela { get => contexto.TcfgTipoParcela; }
+        public DbSet<TcfgTipoPessoa> TcfgTipoPessoa { get => contexto.TcfgTipoPessoa; }
+        public DbSet<TcfgTipoUsuario> TcfgTipoUsuario { get => contexto.TcfgTipoUsuario; }
+        public DbSet<TcfgTipoUsuarioPerfil> TcfgTipoUsuarioPerfil { get => contexto.TcfgTipoUsuarioPerfil; }
+        public DbSet<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContexto { get => contexto.TcfgTipoUsuarioContexto; }
+
+        public DbSet<Tbanco> Tbancos { get => contexto.Tbanco; }
+        public DbSet<Tfabricante> Tfabricantes { get => contexto.Tfabricante; }
+        public DbSet<Tproduto> Tprodutos { get => contexto.Tproduto; }
+        public DbSet<TpercentualCustoFinanceiroFornecedor> TpercentualCustoFinanceiroFornecedors { get => contexto.TpercentualCustoFinanceiroFornecedor; }
+        public DbSet<TpercentualCustoFinanceiroFornecedorHistorico> TpercentualCustoFinanceiroFornecedorHistoricos { get => contexto.TpercentualCustoFinanceiroFornecedorHistorico; }
+        public DbSet<Tparametro> Tparametros { get => contexto.Tparametro; }
+        public DbSet<TprodutoXwmsRegraCd> TprodutoXwmsRegraCds { get => contexto.TprodutoXwmsRegraCd; }
+        public DbSet<TwmsRegraCd> TwmsRegraCd { get => contexto.TwmsRegraCd; }
+        public DbSet<TwmsRegraCdXUf> TwmsRegraCdXUf { get => contexto.TwmsRegraCdXUf; }
+        public DbSet<TwmsRegraCdXUfPessoa> TwmsRegraCdXUfPessoa { get => contexto.TwmsRegraCdXUfPessoa; }
+        public DbSet<TwmsRegraCdXUfXPessoaXCd> TwmsRegraCdXUfXPessoaXCd { get => contexto.TwmsRegraCdXUfXPessoaXCd; }
+        public DbSet<TformaPagto> TformaPagto { get => contexto.TformaPagto; }
+        public DbSet<Tperfil> Tperfil { get => contexto.Tperfil; }
+        public DbSet<TperfilItem> TperfilIten { get => contexto.TperfilIten; }
+        public DbSet<TperfilUsuario> TperfilUsuario { get => contexto.TperfilUsuario; }
+        public DbSet<TcodigoDescricao> TcodigoDescricao { get => contexto.TcodigoDescricao; }
+        public DbSet<Toperacao> Toperacao { get => contexto.Toperacao; }
+        public DbSet<Tlog> Tlog { get => contexto.Tlog; }
+
 
     }
 }

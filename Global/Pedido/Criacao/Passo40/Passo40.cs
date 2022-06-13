@@ -59,7 +59,7 @@ namespace Pedido.Criacao.Passo40
 
             //vamos validar o usuario e atribuir alguns valores da base de dados
             var db = Criacao.ContextoProvider.GetContextoLeitura();
-            var tUsuario = await db.Tusuarios.Where(x => x.Usuario.ToUpper() == Pedido.Ambiente.Usuario.ToUpper())
+            var tUsuario = await db.Tusuario.Where(x => x.Usuario.ToUpper() == Pedido.Ambiente.Usuario.ToUpper())
                 .Select(u => new { u.Loja, u.Vendedor_Externo })
                 .FirstOrDefaultAsync();
             if (tUsuario == null)
@@ -78,7 +78,7 @@ namespace Pedido.Criacao.Passo40
                 else
                 {
 
-                    var tLoja = await db.Tlojas.Where(x => x.Loja == tUsuario.Loja).CountAsync();
+                    var tLoja = await db.Tloja.Where(x => x.Loja == tUsuario.Loja).CountAsync();
                     if (tLoja == 0)
                     {
                         Retorno.ListaErros.Add("Loja " + tUsuario.Loja + " não está cadastrada.");

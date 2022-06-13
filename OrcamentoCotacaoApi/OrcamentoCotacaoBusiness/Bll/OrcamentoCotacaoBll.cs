@@ -1,10 +1,14 @@
-﻿using InfraBanco.Constantes;
+﻿using Cfg.CfgUnidadeNegocio;
+using Cfg.CfgUnidadeNegocioParametro;
+using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
+using Loja;
 using Microsoft.Extensions.Options;
 using Orcamento;
 using Orcamento.Dto;
+using OrcamentoCotacao.Dto;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
 using PrepedidoBusiness.Bll;
@@ -27,6 +31,11 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly OrcamentoCotacao.OrcamentoCotacaoBll _orcamentoCotacaoBll;
         private readonly InfraBanco.ContextoBdProvider _contextoBdProvider;
         private readonly OrcamentoCotacaoOpcaoBll _orcamentoCotacaoOpcaoBll;
+        private readonly OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll _orcamentoCotacaoEmailQueueBll;
+        private readonly LojaBll _lojaBll;
+        private readonly CfgUnidadeNegocioBll _cfgUnidadeNegocioBll;
+        private readonly CfgUnidadeNegocioParametroBll _cfgUnidadeNegocioParametroBll;
+        private readonly FormaPagtoOrcamentoCotacaoBll _formaPagtoOrcamentoCotacaoBll;
 
         public OrcamentoCotacaoBll(
             OrcamentoBll orcamentoBll,
@@ -38,7 +47,12 @@ namespace OrcamentoCotacaoBusiness.Bll
             PedidoPrepedidoApiBll pedidoPrepedidoApiBll,
             OrcamentoCotacao.OrcamentoCotacaoBll orcamentoCotacaoBll,
             InfraBanco.ContextoBdProvider contextoBdProvider,
-            OrcamentoCotacaoOpcaoBll orcamentoCotacaoOpcaoBll
+            OrcamentoCotacaoOpcaoBll orcamentoCotacaoOpcaoBll,
+            OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll orcamentoCotacaoEmailQueueBll,
+            LojaBll lojaBll,
+            CfgUnidadeNegocioBll cfgUnidadeNegocioBll,
+            CfgUnidadeNegocioParametroBll cfgUnidadeNegocioParametroBll,
+            FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll
             )
         {
             _orcamentoBll = orcamentoBll;
@@ -51,8 +65,30 @@ namespace OrcamentoCotacaoBusiness.Bll
             _usuarioBll = usuarioBll;
             _orcamentistaEIndicadorVendedorBll = orcamentistaEIndicadorVendedorBll;
             _appSettings = appSettings.Value;
+            _orcamentoCotacaoEmailQueueBll = orcamentoCotacaoEmailQueueBll;
+            _lojaBll = lojaBll;
+            _cfgUnidadeNegocioBll = cfgUnidadeNegocioBll;
+            _cfgUnidadeNegocioParametroBll = cfgUnidadeNegocioParametroBll;
+            _formaPagtoOrcamentoCotacaoBll = formaPagtoOrcamentoCotacaoBll;
         }
 
+        public OrcamentoCotacaoDto PorGuid(string guid)
+        {
+            var orcamento = _orcamentoCotacaoBll.PorGuid(guid);
+
+            if (orcamento != null)
+            {
+                UsuarioLogin usuario = new UsuarioLogin { TipoUsuario = 4 }; //CLIENTE
+
+                orcamento.listaOpcoes = _orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro { IdOrcamentoCotacao = orcamento.id });
+                orcamento.listaFormasPagto = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(orcamento.tipoCliente, (Constantes.TipoUsuario)usuario.TipoUsuario, orcamento.vendedor, byte.Parse(orcamento.idIndicador.HasValue ? "1" : "0"));
+                orcamento.mensageria = BuscarDadosParaMensageria(usuario, orcamento.id, false);
+
+                return orcamento;
+            }
+
+            return null;
+        }
         public List<OrcamentoCotacaoListaDto> PorFiltro(TorcamentoFiltro tOrcamentoFiltro, UsuarioLogin usuarioLogin)
         {
             TorcamentoCotacaoFiltro orcamentoCotacaoFiltro = new TorcamentoCotacaoFiltro
@@ -118,14 +154,14 @@ namespace OrcamentoCotacaoBusiness.Bll
                     {
                         NumeroOrcamento = x.Id.ToString(),
                         NumPedido = String.IsNullOrEmpty(x.IdPedido) ? "-" : x.IdPedido,
-                        Cliente_Obra = $"{x.NomeCliente} - {x.NomeObra}",
-                        Vendedor = vendedores.FirstOrDefault(v => v.Id == x.IdVendedor)?.Nome,
+                        Cliente_Obra = !string.IsNullOrEmpty(x.NomeObra) ? $"{x.NomeCliente} - {x.NomeObra}" : x.NomeCliente,
+                        Vendedor = vendedores.FirstOrDefault(v => v.Id == x.IdVendedor)?.Usuario,
                         Parceiro = parceiros.FirstOrDefault(v => v.IdIndicador == x.IdIndicador) == null ? "-" : parceiros.FirstOrDefault(v => v.IdIndicador == x.IdIndicador).Apelido,
                         VendedorParceiro = vendParceiros.FirstOrDefault(v => v.Id == x.IdIndicadorVendedor)?.Nome,
                         Valor = "0",
                         Status = x.StatusNome,
                         VistoEm = "",
-                        Mensagem = _mensagemBll.ObterListaMensagemPendente(x.Id, x.Tusuarios.Id).Result.Any() ? "Sim" : "Não",
+                        Mensagem = _mensagemBll.ObterListaMensagemPendente(x.Id).Result.Any() ? "Sim" : "Não",
                         DtCadastro = x.DataCadastro,
                         DtExpiracao = x.Validade,
                         DtInicio = tOrcamentoFiltro.DtInicio,
@@ -162,7 +198,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 .BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = (int)orcamento.IdIndicador, acessoHabilitado = 1 }).Apelido : null;
 
             var vendedorParceiro = orcamento.IdIndicadorVendedor != null ? _orcamentistaEIndicadorVendedorBll
-                .PorFiltro(new TorcamentistaEIndicadorVendedorFiltro() {id = (int)orcamento.IdIndicadorVendedor}).FirstOrDefault().Nome : null;
+                .PorFiltro(new TorcamentistaEIndicadorVendedorFiltro() { id = (int)orcamento.IdIndicadorVendedor }).FirstOrDefault().Nome : null;
             OrcamentoResponseViewModel orcamentoResponse = new OrcamentoResponseViewModel()
             {
                 Id = orcamento.Id,
@@ -185,11 +221,29 @@ namespace OrcamentoCotacaoBusiness.Bll
                     Tipo = orcamento.TipoCliente,
                     Uf = orcamento.UF
                 },
-                ListaOrcamentoCotacaoDto = opcao
+                ListaOrcamentoCotacaoDto = opcao,
+                CadastradoPor = VerificarContextoCadastroOrcamento(orcamento.IdTipoUsuarioContextoCadastro, usuario, parceiro, vendedorParceiro)
             };
 
             return orcamentoResponse;
         }
+
+        private string VerificarContextoCadastroOrcamento(int idTipoUsuarioContextoCadastro, string usuario, string parceiro,
+            string vendedorParceiro)
+        {
+            var lstTipoUsuariosContexto = _usuarioBll.BuscarTipoUsuarioContexto();
+            if (lstTipoUsuariosContexto == null) return null;
+
+            var filtrado = lstTipoUsuariosContexto.Where(x => x.Id == idTipoUsuarioContextoCadastro).FirstOrDefault();
+            if (filtrado == null) return null;
+
+            if (filtrado.Id == (short)Constantes.TipoUsuarioContexto.UsuarioInterno) { return usuario; }
+            if (filtrado.Id == (short)Constantes.TipoUsuarioContexto.Parceiro) { return parceiro; }
+            if (filtrado.Id == (short)Constantes.TipoUsuarioContexto.VendedorParceiro) { return vendedorParceiro; }
+
+            return null;
+        }
+
 
         public RemetenteDestinatarioResponseViewModel BuscarDadosParaMensageria(UsuarioLogin usuario, int id, bool usuarioIterno)
         {
@@ -198,7 +252,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro() { Id = id }).FirstOrDefault();
             if (orcamento == null) throw new Exception("Falha ao buscar Orçamento!");
 
-            if (!usuarioIterno)return _mensagemBll.CriarRemetenteCliente(orcamento);
+            if (!usuarioIterno) return _mensagemBll.CriarRemetenteCliente(orcamento);
 
             return _mensagemBll.CriarRemetenteUsuarioInterno(orcamento, usuario.Id);
         }
@@ -224,9 +278,9 @@ namespace OrcamentoCotacaoBusiness.Bll
             return await _mensagemBll.ObterListaMensagem(IdOrcamentoCotacao);
         }
 
-        public async Task<List<TorcamentoCotacaoMensagem>> ObterListaMensagemPendente(int IdOrcamentoCotacao, int IdUsuarioDestinatario)
+        public async Task<List<TorcamentoCotacaoMensagem>> ObterListaMensagemPendente(int IdOrcamentoCotacao)
         {
-            return await _mensagemBll.ObterListaMensagemPendente(IdOrcamentoCotacao, IdUsuarioDestinatario);
+            return await _mensagemBll.ObterListaMensagemPendente(IdOrcamentoCotacao);
         }
 
         public bool EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem)
@@ -235,9 +289,9 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
 
-        public bool MarcarMensagemComoLida(int IdOrcamentoCotacao, int idUsuarioDestinatario)
+        public bool MarcarMensagemComoLida(int IdOrcamentoCotacao)
         {
-            return _mensagemBll.MarcarMensagemComoLida(IdOrcamentoCotacao, idUsuarioDestinatario);
+            return _mensagemBll.MarcarLida(IdOrcamentoCotacao);
         }
 
         public int CadastrarOrcamentoCotacao(OrcamentoRequestViewModel orcamento, UsuarioLogin usuarioLogado)
@@ -258,16 +312,57 @@ namespace OrcamentoCotacaoBusiness.Bll
                     var opcoes = _orcamentoCotacaoOpcaoBll.CadastrarOrcamentoCotacaoOpcoesComTransacao(orcamento.ListaOrcamentoCotacaoDto, tOrcamentoCotacao.Id,
                         usuarioLogado, dbGravacao, orcamento.Loja);
 
+                    AdicionarOrcamentoCotacaoEmailQueue(orcamento);
+
                     dbGravacao.transacao.Commit();
 
                     return ocamentoCotacao.Id;
                 }
-                catch (Exception ex)
+                catch
                 {
                     dbGravacao.transacao.Rollback();
                     throw new ArgumentException("Falha ao gravar orçamento!");
                 }
             }
+
+        }
+
+        private void AdicionarOrcamentoCotacaoEmailQueue(OrcamentoRequestViewModel orcamento)
+        {
+
+            TorcamentoCotacaoEmailQueue orcamentoCotacaoEmailQueueModel = new InfraBanco.Modelos.TorcamentoCotacaoEmailQueue();
+
+            var loja = _lojaBll.PorFiltro(new InfraBanco.Modelos.Filtros.TlojaFiltro() { Loja = orcamento.Loja });
+            var tcfgUnidadeNegocio = _cfgUnidadeNegocioBll.PorFiltro(new TcfgUnidadeNegocioFiltro() { Sigla = loja[0].Unidade_Negocio });
+            var tcfgUnidadeNegocioParametros = _cfgUnidadeNegocioParametroBll.PorFiltro(new TcfgUnidadeNegocioParametroFiltro() { IdCfgUnidadeNegocio = tcfgUnidadeNegocio.FirstOrDefault().Id });
+            var nomeEmpresa = "";
+
+            foreach (var item in tcfgUnidadeNegocioParametros)
+            {
+                switch (item.IdCfgParametro)
+                {
+                    case 5:
+                        orcamentoCotacaoEmailQueueModel.From = item.Valor;
+                        break;
+                    case 6:
+                        orcamentoCotacaoEmailQueueModel.FromDisplayName = item.Valor;
+                        nomeEmpresa = item.Valor;
+                        break;
+                }
+            }
+
+            orcamentoCotacaoEmailQueueModel.IdCfgUnidadeNegocio = tcfgUnidadeNegocioParametros[0].IdCfgUnidadeNegocio;
+            orcamentoCotacaoEmailQueueModel.To = orcamento.ClienteOrcamentoCotacaoDto.Email;
+            orcamentoCotacaoEmailQueueModel.Cc = "";
+            orcamentoCotacaoEmailQueueModel.Bcc = "";
+
+            string[] tagHtml = new string[] {
+                        orcamento.ClienteOrcamentoCotacaoDto.NomeCliente,
+                        nomeEmpresa
+                    };
+
+            _orcamentoCotacaoEmailQueueBll.InserirQueueComTemplateEHTML(2, orcamentoCotacaoEmailQueueModel, tagHtml);
+
         }
 
         private TorcamentoCotacao MontarTorcamentoCotacao(OrcamentoRequestViewModel orcamento, UsuarioLogin usuarioLogado)

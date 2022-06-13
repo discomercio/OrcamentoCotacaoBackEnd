@@ -114,13 +114,13 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.BuscarStatusPrepedido
             if (cadastrarPrepedido.UltimoPrePedidoResultadoUnisDto == null)
                 return;
 
-            var prepedido = (from p in db.Torcamentos
+            var prepedido = (from p in db.Torcamento
                              where p.Orcamento == (cadastrarPrepedido.UltimoPrePedidoResultadoUnisDto.IdPrePedidoCadastrado)
                              select p).First();
             prepedido.St_Orc_Virou_Pedido = (short)1;
             db.Update(prepedido);
 
-            var pedido = (from p in db.Tpedidos
+            var pedido = (from p in db.Tpedido
                           where p.Pedido == pedidoResultadoMagentoDto.IdPedidoCadastrado
                           select p).First();
             pedido.Orcamento = orcamento;

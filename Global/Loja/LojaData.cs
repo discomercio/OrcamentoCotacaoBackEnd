@@ -43,7 +43,7 @@ namespace Loja
                    WHERE orc.email = @login AND orc.senha = @senha*/
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
-                    var lojas = from L in db.Tlojas
+                    var lojas = from L in db.Tloja
                                 select L;
 
                     if (!string.IsNullOrEmpty(obj.Loja))
@@ -64,7 +64,7 @@ namespace Loja
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            return (from c in db.Tlojas
+            return (from c in db.Tloja
                           where c.Loja == loja
                           select new PercMaxDescEComissaoDados
                           {

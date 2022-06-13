@@ -141,10 +141,10 @@ namespace MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento
             #region consultas ao banco somente com os dados que vamos precisar
             //fazemos uam query inicial para ficar mais rápido
             var skusDistintos = (from p in listaProdutos select p.Sku).Distinct().ToList();
-            var task_t_ec_produto_composto_carregada = (from pc in contextoProvider.GetContextoLeitura().TecProdutoCompostos
+            var task_t_ec_produto_composto_carregada = (from pc in contextoProvider.GetContextoLeitura().TecProdutoComposto
                                                         where skusDistintos.Contains(pc.Produto_Composto)
                                                         select new { pc.Produto_Composto, pc.Fabricante_Composto }).ToListAsync();
-            var task_t_ec_produto_composto_item_carregada = (from pc in contextoProvider.GetContextoLeitura().TecProdutoCompostoItems
+            var task_t_ec_produto_composto_item_carregada = (from pc in contextoProvider.GetContextoLeitura().TecProdutoCompostoItem
                                                              where skusDistintos.Contains(pc.Produto_composto)
                                                              select new
                                                              {
@@ -157,7 +157,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento
                                                              }).ToListAsync();
 
             //os produtos podem ser somente os SKUs
-            var task_t_produto_carregada = (from pc in contextoProvider.GetContextoLeitura().Tprodutos
+            var task_t_produto_carregada = (from pc in contextoProvider.GetContextoLeitura().Tproduto
                                             where skusDistintos.Contains(pc.Produto)
                                             select new { pc.Produto, pc.Fabricante }).ToListAsync();
             var t_ec_produto_composto_item_carregada = await task_t_ec_produto_composto_item_carregada;

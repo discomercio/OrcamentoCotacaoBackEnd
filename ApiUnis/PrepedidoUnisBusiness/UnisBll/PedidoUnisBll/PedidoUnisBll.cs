@@ -24,7 +24,7 @@ namespace PrepedidoUnisBusiness.UnisBll.PedidoUnisBll
 
             if (!string.IsNullOrEmpty(pedido))
             {
-                string indicador = (from c in db.Tpedidos
+                string indicador = (from c in db.Tpedido
                                        where c.Pedido == pedido
                                        select c.Indicador).FirstOrDefault();
 

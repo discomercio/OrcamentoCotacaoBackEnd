@@ -212,7 +212,7 @@ namespace Loja.Bll.Bll.AcessoBll
         {
             if (_atualizarInfsTusuarioFeito)
                 return;
-            var dados = await (from u in contextoBdProvider.GetContextoLeitura().Tusuarios
+            var dados = await (from u in contextoBdProvider.GetContextoLeitura().Tusuario
                                where u.Usuario.ToUpper().Trim() == Usuario_atual.ToUpper().Trim()
                                select new { u.SessionCtrlTicket, u.SessionCtrlDtHrLogon }).FirstOrDefaultAsync();
             if (dados != null)

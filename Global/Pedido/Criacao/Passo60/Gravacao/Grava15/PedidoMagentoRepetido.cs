@@ -49,14 +49,14 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava15
             IQueryable<string>? existentesQuery = null;
             if (campo_pedido_bs_x_marketplace && !string.IsNullOrWhiteSpace(Pedido.Marketplace.Pedido_bs_x_marketplace))
             {
-                existentesQuery = from p in ContextoBdGravacao.Tpedidos
+                existentesQuery = from p in ContextoBdGravacao.Tpedido
                                   where p.Pedido_Bs_X_Marketplace == Pedido.Marketplace.Pedido_bs_x_marketplace
                                   && p.St_Entrega != Constantes.ST_ENTREGA_CANCELADO
                                   select p.Pedido;
             }
             if (!campo_pedido_bs_x_marketplace && !string.IsNullOrWhiteSpace(Pedido.Marketplace.Pedido_bs_x_ac))
             {
-                existentesQuery = from p in ContextoBdGravacao.Tpedidos
+                existentesQuery = from p in ContextoBdGravacao.Tpedido
                                   where p.Pedido_Bs_X_Ac == Pedido.Marketplace.Pedido_bs_x_ac
                                   && p.St_Entrega != Constantes.ST_ENTREGA_CANCELADO
                                   select p.Pedido;
@@ -96,7 +96,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava15
                 byte.Parse(Constantes.COD_ST_PEDIDO_DEVOLUCAO__EM_ANDAMENTO),
                 byte.Parse(Constantes.COD_ST_PEDIDO_DEVOLUCAO__CADASTRADA)
             };
-            var t_pedido_devolucao_task = (from tpd in ContextoBdGravacao.TpedidoDevolucaos
+            var t_pedido_devolucao_task = (from tpd in ContextoBdGravacao.TpedidoDevolucao
                                            where pedidoLista.Contains(tpd.Pedido)
                                            && statusPermitidos.Contains(tpd.Status)
                                            select tpd.Pedido).ToListAsync();
@@ -112,7 +112,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava15
             #						")"
             #			set rs = cn.execute(s)
             */
-            var t_pedido_item_devolvido_task = (from tpid in ContextoBdGravacao.TpedidoItemDevolvidos where pedidoLista.Contains(tpid.Pedido) select tpid.Pedido).ToListAsync();
+            var t_pedido_item_devolvido_task = (from tpid in ContextoBdGravacao.TpedidoItemDevolvido where pedidoLista.Contains(tpid.Pedido) select tpid.Pedido).ToListAsync();
 
 
             //acessa o banco
@@ -125,7 +125,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava15
                             .FirstOrDefault();
             if (sobrandoPedido == null)
                 return;
-            var sobrando = (from p in ContextoBdGravacao.Tpedidos
+            var sobrando = (from p in ContextoBdGravacao.Tpedido
                             where p.Pedido == sobrandoPedido
                             select new
                             {
@@ -153,7 +153,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava15
         #			end if 'if s_pedido_ac <> ""
         #		end if 'if alerta = ""
         */
-            var sobrando_nome_vendedor = (from u in ContextoBdGravacao.Tusuarios where u.Usuario == (sobrando.Vendedor ?? "") select u.Nome).FirstOrDefault();
+            var sobrando_nome_vendedor = (from u in ContextoBdGravacao.Tusuario where u.Usuario == (sobrando.Vendedor ?? "") select u.Nome).FirstOrDefault();
 
             var nomeCampo = "Pedido_Bs_X_Ac " + (sobrando.Pedido_Bs_X_Ac ?? "");
             if (campo_pedido_bs_x_marketplace)

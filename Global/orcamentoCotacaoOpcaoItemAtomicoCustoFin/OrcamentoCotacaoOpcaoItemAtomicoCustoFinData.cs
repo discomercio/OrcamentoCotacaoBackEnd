@@ -49,7 +49,7 @@ namespace OrcamentoCotacaoOpcaoItemAtomicoCustoFin
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
-                    var saida = from c in db.TorcamentoCotacaoOpcaoItemAtomicoCustoFins
+                    var saida = from c in db.TorcamentoCotacaoOpcaoItemAtomicoCustoFin
                                 select c;
 
                     if (saida == null) return null;

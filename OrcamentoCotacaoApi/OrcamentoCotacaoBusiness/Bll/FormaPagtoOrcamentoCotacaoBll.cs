@@ -9,7 +9,6 @@ using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento.MeiosPagamento;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace OrcamentoCotacaoBusiness.Bll
@@ -32,7 +31,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         public List<FormaPagamentoResponseViewModel> BuscarFormasPagamentos(string tipoCliente, Constantes.TipoUsuario tipoUsuario, string apelido, byte comIndicacao)
         {
             var tiposPagtos = _formaPagtoBll.BuscarFormasPagtos(true, Constantes.Modulos.COD_MODULO_ORCAMENTOCOTACAO,
-                tipoCliente, false, true, Constantes.TipoUsuarioPerfil.getUsuarioPerfil(tipoUsuario));
+                tipoCliente, comIndicacao == 1, true, Constantes.TipoUsuarioPerfil.getUsuarioPerfil(tipoUsuario));
 
             if (tiposPagtos == null) return null;
 

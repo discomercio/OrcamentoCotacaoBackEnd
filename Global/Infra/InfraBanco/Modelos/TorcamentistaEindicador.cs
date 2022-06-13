@@ -79,7 +79,6 @@ namespace InfraBanco.Modelos
         [MaxLength(11)]
         public string Tel_cel { get; set; }
 
-#if RELEASE_BANCO_PEDIDO || DEBUG_BANCO_DEBUG
         [Column("perc_desagio_RA")]
         public float? Perc_Desagio_RA { get; set; }
 
@@ -114,7 +113,5 @@ namespace InfraBanco.Modelos
         [Column("endereco_complemento")]
         [MaxLength(60)]
         public string Endereco_Complemento { get; set; }
-
-#endif
     }
 }

@@ -1,4 +1,5 @@
 ﻿using InfraBanco;
+using InfraBanco.Modelos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -68,6 +69,15 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<OrcamentoCotacaoOpcaoPagto.OrcamentoCotacaoOpcaoPagtoData, OrcamentoCotacaoOpcaoPagto.OrcamentoCotacaoOpcaoPagtoData>();
             services.AddTransient<OrcamentoCotacaoOpcaoItemAtomicoCustoFin.OrcamentoCotacaoOpcaoItemAtomicoCustoFinBll, OrcamentoCotacaoOpcaoItemAtomicoCustoFin.OrcamentoCotacaoOpcaoItemAtomicoCustoFinBll>();
             services.AddTransient<OrcamentoCotacaoOpcaoItemAtomicoCustoFin.OrcamentoCotacaoOpcaoItemAtomicoCustoFinData, OrcamentoCotacaoOpcaoItemAtomicoCustoFin.OrcamentoCotacaoOpcaoItemAtomicoCustoFinData>();
+            services.AddTransient<OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll, OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll>();
+            services.AddTransient<OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueData, OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueData>();            
+            
+            services.AddTransient<Cfg.CfgOrcamentoCotacaoEmailTemplate.CfgOrcamentoCotacaoEmailTemplateBll, Cfg.CfgOrcamentoCotacaoEmailTemplate.CfgOrcamentoCotacaoEmailTemplateBll>();
+            services.AddTransient<Cfg.CfgOrcamentoCotacaoEmailTemplate.CfgOrcamentoCotacaoEmailTemplateData, Cfg.CfgOrcamentoCotacaoEmailTemplate.CfgOrcamentoCotacaoEmailTemplateData>();
+           
+            services.AddTransient<Cfg.CfgUnidadeNegocio.CfgUnidadeNegocioBll, Cfg.CfgUnidadeNegocio.CfgUnidadeNegocioBll>();
+            services.AddTransient<Cfg.CfgUnidadeNegocio.CfgUnidadeNegocioData, Cfg.CfgUnidadeNegocio.CfgUnidadeNegocioData>();
+
             services.AddTransient<Produto.ProdutoGeralBll, Produto.ProdutoGeralBll>();
             services.AddTransient<ProdutoCatalogo.ProdutoCatalogoBll, ProdutoCatalogo.ProdutoCatalogoBll>();
             services.AddTransient<ProdutoCatalogo.ProdutoCatalogoData, ProdutoCatalogo.ProdutoCatalogoData>();
@@ -99,9 +109,14 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<OrcamentoCotacaoBll, OrcamentoCotacaoBll>();
             services.AddTransient<OrcamentistaEIndicadorVendedorBll, OrcamentistaEIndicadorVendedorBll>();
             services.AddTransient<OrcamentistaEIndicadorBll, OrcamentistaEIndicadorBll>();
+            services.AddTransient<TorcamentoCotacaoLink, TorcamentoCotacaoLink>();
             services.AddTransient<OrcamentoCotacaoOpcaoBll, OrcamentoCotacaoOpcaoBll>();
             services.AddTransient<ProdutoOrcamentoCotacaoBll, ProdutoOrcamentoCotacaoBll>();
             services.AddTransient<ProdutoCatalogoOrcamentoCotacaoBll, ProdutoCatalogoOrcamentoCotacaoBll>();
+            services.AddTransient<OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll, OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll>();
+            services.AddTransient<Cfg.CfgOrcamentoCotacaoEmailTemplate.CfgOrcamentoCotacaoEmailTemplateBll, Cfg.CfgOrcamentoCotacaoEmailTemplate.CfgOrcamentoCotacaoEmailTemplateBll>();
+            services.AddTransient<Cfg.CfgUnidadeNegocio.CfgUnidadeNegocioBll, Cfg.CfgUnidadeNegocio.CfgUnidadeNegocioBll>();
+            services.AddTransient<Cfg.CfgUnidadeNegocioParametro.CfgUnidadeNegocioParametroBll, Cfg.CfgUnidadeNegocioParametro.CfgUnidadeNegocioParametroBll>();           
 
             return services;
         }

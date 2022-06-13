@@ -44,7 +44,7 @@ namespace Cliente
                 {
                     var db = contextoProvider.GetContextoLeitura();
 
-                    Tcliente cliente = await (from c in db.Tclientes
+                    Tcliente cliente = await (from c in db.Tcliente
                                               where c.Cnpj_Cpf == dadosCliente.Cnpj_Cpf &&
                                                     c.Tipo == dadosCliente.Tipo
                                               select c).FirstOrDefaultAsync();

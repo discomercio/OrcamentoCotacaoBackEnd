@@ -58,8 +58,8 @@ namespace Loja.Bll.ClienteBll
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var nivelTask = from c in db.Tperfils
-                            join d in db.TperfilUsuarios on c.Id equals d.Id_perfil
+            var nivelTask = from c in db.Tperfil
+                            join d in db.TperfilUsuario on c.Id equals d.Id_perfil
                             where d.Usuario == apelido
                             select c;
 
@@ -75,8 +75,8 @@ namespace Loja.Bll.ClienteBll
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var nivelTask = from c in db.Tperfils
-                            join d in db.TperfilUsuarios on c.Id equals d.Id_perfil
+            var nivelTask = from c in db.Tperfil
+                            join d in db.TperfilUsuario on c.Id equals d.Id_perfil
                             where d.Usuario == apelido
                             select c;
 
@@ -91,7 +91,7 @@ namespace Loja.Bll.ClienteBll
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var bancos = from c in db.Tbancos
+            var bancos = from c in db.Tbanco
                          orderby c.Codigo
                          select new ListaBancoDto
                          {
@@ -108,7 +108,7 @@ namespace Loja.Bll.ClienteBll
 
             var db = contextoProvider.GetContextoLeitura();
 
-            var clienteTask = from c in db.Tclientes
+            var clienteTask = from c in db.Tcliente
                               where c.Cnpj_Cpf == cpf_cnpj
                               select c.Cnpj_Cpf;
             string cliente = await clienteTask.FirstOrDefaultAsync();
@@ -196,8 +196,8 @@ namespace Loja.Bll.ClienteBll
             var db = contextoProvider.GetContextoLeitura();
 
             //selecionamos as referências bancárias já incluindo a descrição do banco
-            var rBanco = from c in db.TclienteRefBancarias
-                         join banco in db.Tbancos on c.Banco equals banco.Codigo
+            var rBanco = from c in db.TclienteRefBancaria
+                         join banco in db.Tbanco on c.Banco equals banco.Codigo
                          where c.Id_Cliente == id_cliente
                          orderby c.Ordem
                          select new { c.Banco, c.Agencia, c.Conta, c.Contato, c.Ddd, c.Telefone, banco.Descricao };
@@ -225,7 +225,7 @@ namespace Loja.Bll.ClienteBll
             List<RefComercialDtoCliente> lstRefComercial = new List<RefComercialDtoCliente>();
             var db = contextoProvider.GetContextoLeitura();
 
-            var rComercial = from c in db.TclienteRefComercials
+            var rComercial = from c in db.TclienteRefComercial
                              where c.Id_Cliente == id_cliente
                              orderby c.Ordem
                              select c;
@@ -259,11 +259,11 @@ namespace Loja.Bll.ClienteBll
             //string apelido = "MARISARJ";
             var db = contextoProvider.GetContextoLeitura();
 
-            string loja = await (from c in db.TorcamentistaEindicadors
+            string loja = await (from c in db.TorcamentistaEindicador
                                  where c.Apelido == apelido
                                  select c.Loja).FirstOrDefaultAsync();
 
-            var retorno = from c in db.TcodigoDescricaos
+            var retorno = from c in db.TcodigoDescricao
                           where c.Grupo == Loja.Bll.Constantes.Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA &&
                           (c.Lojas_Habilitadas == null || c.Lojas_Habilitadas.Length == 0 || c.Lojas_Habilitadas.Contains("|" + loja + "|")) &&
                           (c.St_Inativo == 0 || c.Codigo == "")
@@ -1287,7 +1287,7 @@ namespace Loja.Bll.ClienteBll
 
             List<string> lstRetorno = new List<string>();
 
-            var lstRetornoTask = from c in (from c in db.Tpedidos.Include(x => x.Tcliente)
+            var lstRetornoTask = from c in (from c in db.Tpedido.Include(x => x.Tcliente)
                                             where c.Tcliente.Cnpj_Cpf == cpf_cnpj &&
                                                   c.St_Entrega == Constantes.Constantes.ST_ENTREGA_ENTREGUE
                                             select c).ToList()
