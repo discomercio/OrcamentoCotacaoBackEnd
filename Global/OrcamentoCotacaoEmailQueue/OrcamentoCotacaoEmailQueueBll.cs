@@ -32,6 +32,7 @@ namespace OrcamentoCotacaoEmailQueue
                 orcamentoCotacaoEmailQueue.DateCreated = DateTime.Now;
                 emailTemplateBody = emailTemplateBody.Replace("{Cliente}", tagHtml[0]);
                 emailTemplateBody = emailTemplateBody.Replace("{DadosEmpresa}", tagHtml[1]);
+                emailTemplateBody = emailTemplateBody.Replace("{LinkOrcamento}", tagHtml[2]);
                 orcamentoCotacaoEmailQueue.Body = emailTemplateBody;
                 _data.Inserir(orcamentoCotacaoEmailQueue);
 
