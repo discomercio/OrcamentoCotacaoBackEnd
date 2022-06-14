@@ -30,30 +30,30 @@ namespace OrcamentoCotacao
                 using (var db = contextoProvider.GetContextoLeitura())
                 {
                     var orcamento = (from l in db.TorcamentoCotacaoLink
-                            join o in db.TorcamentoCotacao on l.IdOrcamentoCotacao equals o.Id
-                            join u in db.Tusuario on o.IdVendedor equals u.Id into gg
-                            from lj in gg.DefaultIfEmpty()
-                            where l.Guid == Guid.Parse(guid)
-                            orderby o.Id descending
-                            select new OrcamentoCotacaoDto
-                            {
-                                //Orcamento
-                                id = o.Id,
-                                nomeObra = o.NomeObra,
-                                validade = o.Validade,
-                                vendedor = lj.Usuario,
-                                idUsuarioCadastro = o.IdUsuarioCadastro,
-                                idIndicador = o.IdIndicador,
-                                tipoCliente = o.TipoCliente,
-                                //parceiro = {{razaoSocialParceiro}}
-                                //vendedorParceiro
+                                     join o in db.TorcamentoCotacao on l.IdOrcamentoCotacao equals o.Id
+                                     join u in db.Tusuario on o.IdVendedor equals u.Id into gg
+                                     from lj in gg.DefaultIfEmpty()
+                                     where l.Guid == Guid.Parse(guid)
+                                     orderby o.Id descending
+                                     select new OrcamentoCotacaoDto
+                                     {
+                                         //Orcamento
+                                         id = o.Id,
+                                         nomeObra = o.NomeObra,
+                                         validade = o.Validade,
+                                         vendedor = lj.Usuario,
+                                         idUsuarioCadastro = o.IdUsuarioCadastro,
+                                         idVendedor = o.IdVendedor,
+                                         idIndicador = o.IdIndicador,
+                                         idIndicadorVendedor = o.IdIndicadorVendedor,
+                                         tipoCliente = o.TipoCliente,
 
-                                //Cliente
-                                nomeCliente = o.NomeCliente,
-                                email = o.Email,
-                                telefone = o.Telefone,
-                                uf = o.UF,
-                            })
+                                         //Cliente
+                                         nomeCliente = o.NomeCliente,
+                                         email = o.Email,
+                                         telefone = o.Telefone,
+                                         uf = o.UF,
+                                     })
                             .FirstOrDefault();
 
                     if (orcamento != null)
@@ -63,6 +63,10 @@ namespace OrcamentoCotacao
                         var u1 = db.Tusuario.FirstOrDefault(x => x.Id == orcamento.idUsuarioCadastro)?.Usuario;
 
                         orcamento.usuarioCadastro = u3 == null ? u2 == null ? u1 == null ? null : u1 : u2 : u3;
+
+                        orcamento.vendedorParceiro = db.TorcamentistaEindicadorVendedor.FirstOrDefault(x => x.Id == orcamento.idIndicadorVendedor)?.Nome;
+                        orcamento.parceiro = db.TorcamentistaEindicador.FirstOrDefault(x => x.IdIndicador == orcamento.idIndicador)?.Apelido;
+                        orcamento.vendedor = db.Tusuario.FirstOrDefault(x => x.Id == orcamento.idVendedor)?.Usuario;
 
                         return orcamento;
                     }

@@ -3,9 +3,6 @@ using InfraBanco;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using OrcamentoCotacao.Dto;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace OrcamentoCotacao
 {

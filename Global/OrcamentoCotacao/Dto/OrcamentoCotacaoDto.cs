@@ -18,13 +18,15 @@ namespace OrcamentoCotacao.Dto
         public int id { get; set; }
         public string nomeObra { get; set; }
         public DateTime validade { get; set; }
+        public int idVendedor { get; set; }
+        public int? idIndicador { get; set; }
+        public int? idIndicadorVendedor { get; set; }
         public string vendedor { get; set; }
+        public string parceiro { get; set; }
+        public string vendedorParceiro { get; set; }
         public int idUsuarioCadastro { get; set; }
         public string usuarioCadastro { get; set; }
         public string tipoCliente { get; set; }
-        public int? idIndicador { get; set; }
-        //parceiro
-        //vendedorParceiro
         public List<OrcamentoOpcaoResponseViewModel> listaOpcoes { get; set; }
         public RemetenteDestinatarioResponseViewModel mensageria { get; set; }
         public List<FormaPagamentoResponseViewModel> listaFormasPagto { get; set; }
