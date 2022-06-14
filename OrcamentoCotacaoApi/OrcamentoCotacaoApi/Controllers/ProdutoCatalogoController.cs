@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
+using Produto;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -18,11 +19,14 @@ namespace OrcamentoCotacaoApi.Controllers
     {
         private readonly ProdutoCatalogoOrcamentoCotacaoBll _bll;
         private readonly IOptions<Configuracoes> _appSettings;
+        private readonly ProdutoOrcamentoCotacaoBll _produtoOrcamentoCotacaoBll;
 
-        public ProdutoCatalogoController(ProdutoCatalogoOrcamentoCotacaoBll bll, IOptions<Configuracoes> appSettings)
+        public ProdutoCatalogoController(ProdutoCatalogoOrcamentoCotacaoBll bll, IOptions<Configuracoes> appSettings,
+            ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll)
         {
             _bll = bll;
             _appSettings = appSettings;
+            _produtoOrcamentoCotacaoBll = produtoOrcamentoCotacaoBll;
         }
 
         [HttpGet]
@@ -208,6 +212,13 @@ namespace OrcamentoCotacaoApi.Controllers
                 return StatusCode(500, ex.Message);
             }
         }
+        
+        [HttpGet("listar-produtos-propriedades/{propriedadeOculta}&{propriedadeOcultaItem}")]
+        public async Task<IActionResult> ListarProdutosPropriedadesAtivos(bool propriedadeOculta, bool propriedadeOcultaItem)
+        {
+            var saida = await _produtoOrcamentoCotacaoBll.ListarProdutoCatalogoParaVisualizacao(propriedadeOculta, propriedadeOcultaItem);
 
+            return Ok(saida);
+        }
     }
 }
