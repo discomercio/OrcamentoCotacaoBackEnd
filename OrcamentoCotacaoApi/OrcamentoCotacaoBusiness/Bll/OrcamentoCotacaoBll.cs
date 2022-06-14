@@ -7,6 +7,7 @@ using InfraIdentity;
 using Loja;
 using Microsoft.Extensions.Options;
 using Orcamento;
+using OrcamentoCotacaoLink;
 using Orcamento.Dto;
 using OrcamentoCotacao.Dto;
 using OrcamentoCotacaoBusiness.Models.Request;
@@ -32,6 +33,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly InfraBanco.ContextoBdProvider _contextoBdProvider;
         private readonly OrcamentoCotacaoOpcaoBll _orcamentoCotacaoOpcaoBll;
         private readonly OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll _orcamentoCotacaoEmailQueueBll;
+        private readonly OrcamentoCotacaoLink.OrcamentoCotacaoLinkBll _orcamentoCotacaoLinkBll;
         private readonly LojaBll _lojaBll;
         private readonly CfgUnidadeNegocioBll _cfgUnidadeNegocioBll;
         private readonly CfgUnidadeNegocioParametroBll _cfgUnidadeNegocioParametroBll;
@@ -52,7 +54,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             LojaBll lojaBll,
             CfgUnidadeNegocioBll cfgUnidadeNegocioBll,
             CfgUnidadeNegocioParametroBll cfgUnidadeNegocioParametroBll,
-            FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll
+            FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll,
+            OrcamentoCotacaoLinkBll orcamentoCotacaoLinkBll
             )
         {
             _orcamentoBll = orcamentoBll;
@@ -66,6 +69,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             _orcamentistaEIndicadorVendedorBll = orcamentistaEIndicadorVendedorBll;
             _appSettings = appSettings.Value;
             _orcamentoCotacaoEmailQueueBll = orcamentoCotacaoEmailQueueBll;
+            _orcamentoCotacaoLinkBll = orcamentoCotacaoLinkBll;
             _lojaBll = lojaBll;
             _cfgUnidadeNegocioBll = cfgUnidadeNegocioBll;
             _cfgUnidadeNegocioParametroBll = cfgUnidadeNegocioParametroBll;
@@ -89,6 +93,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             return null;
         }
+
         public List<OrcamentoCotacaoListaDto> PorFiltro(TorcamentoFiltro tOrcamentoFiltro, UsuarioLogin usuarioLogin)
         {
             TorcamentoCotacaoFiltro orcamentoCotacaoFiltro = new TorcamentoCotacaoFiltro
@@ -312,7 +317,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                     var opcoes = _orcamentoCotacaoOpcaoBll.CadastrarOrcamentoCotacaoOpcoesComTransacao(orcamento.ListaOrcamentoCotacaoDto, tOrcamentoCotacao.Id,
                         usuarioLogado, dbGravacao, orcamento.Loja);
 
-                    AdicionarOrcamentoCotacaoEmailQueue(orcamento);
+                    var guid = Guid.NewGuid();
+
+                    AdicionarOrcamentoCotacaoLink(tOrcamentoCotacao, guid, dbGravacao);
+                    AdicionarOrcamentoCotacaoEmailQueue(orcamento, guid);
+
 
                     dbGravacao.transacao.Commit();
 
@@ -325,9 +334,30 @@ namespace OrcamentoCotacaoBusiness.Bll
                 }
             }
 
+
         }
 
-        private void AdicionarOrcamentoCotacaoEmailQueue(OrcamentoRequestViewModel orcamento)
+        public void AdicionarOrcamentoCotacaoLink(TorcamentoCotacao orcamento, Guid guid, InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            TorcamentoCotacaoLink orcamentoCotacaoLinkModel = new InfraBanco.Modelos.TorcamentoCotacaoLink();
+            //orcamentoCotacaoLinkModel.DataHoraCadastro = System.DateTime.Now;
+            
+            orcamentoCotacaoLinkModel.IdOrcamentoCotacao = orcamento.Id;
+            orcamentoCotacaoLinkModel.Guid = guid;
+            orcamentoCotacaoLinkModel.Status = 1;
+            orcamentoCotacaoLinkModel.IdTipoUsuarioContextoUltStatus = 1;
+            orcamentoCotacaoLinkModel.IdUsuarioUltStatus = orcamento.IdUsuarioCadastro;
+            orcamentoCotacaoLinkModel.DataUltStatus = orcamento.DataUltStatus;
+            orcamentoCotacaoLinkModel.DataHoraUltStatus = orcamento.DataHoraUltStatus;
+            orcamentoCotacaoLinkModel.IdTipoUsuarioContextoCadastro = (short)orcamento.IdTipoUsuarioContextoCadastro;
+            orcamentoCotacaoLinkModel.IdUsuarioCadastro = orcamento.IdUsuarioCadastro;
+            orcamentoCotacaoLinkModel.DataCadastro = orcamento.DataCadastro;
+            orcamentoCotacaoLinkModel.DataHoraCadastro = orcamento.DataHoraCadastro;
+            _orcamentoCotacaoLinkBll.InserirOrcamentoCotacaoLink(orcamentoCotacaoLinkModel, contextoBdGravacao);
+
+        }
+
+        private void AdicionarOrcamentoCotacaoEmailQueue(OrcamentoRequestViewModel orcamento, Guid guid)
         {
 
             TorcamentoCotacaoEmailQueue orcamentoCotacaoEmailQueueModel = new InfraBanco.Modelos.TorcamentoCotacaoEmailQueue();
