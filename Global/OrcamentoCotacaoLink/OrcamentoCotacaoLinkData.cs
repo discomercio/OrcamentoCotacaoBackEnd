@@ -31,14 +31,12 @@ namespace OrcamentoCotacaoLink
             }
         }
 
-        public TorcamentoCotacaoLink InserirComTransacao(TorcamentoCotacaoLink obj)
+        public TorcamentoCotacaoLink InserirComTransacao(TorcamentoCotacaoLink obj, ContextoBdGravacao contextoBdGravacao)
         {
-            using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
-            {
-                db.TorcamentoCotacaoLink.Add(obj);
-                db.SaveChanges();
-                return obj;
-            }
+
+            contextoBdGravacao.TorcamentoCotacaoLink.Add(obj);
+            contextoBdGravacao.SaveChanges();
+            return obj;
         }
 
         public TorcamentoCotacaoLink Inserir(TorcamentoCotacaoLink obj)

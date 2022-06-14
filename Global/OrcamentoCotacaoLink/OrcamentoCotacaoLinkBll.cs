@@ -18,11 +18,11 @@ namespace OrcamentoCotacaoLink
             _data = new OrcamentoCotacaoLinkData(contextoBdProvider);
         }
 
-        public bool InserirOrcamentoCotacaoLink(TorcamentoCotacaoLink torcamentoCotacaoLink)
+        public bool InserirOrcamentoCotacaoLink(TorcamentoCotacaoLink torcamentoCotacaoLink, ContextoBdGravacao contextoBdGravacao)
         {
             try
             {
-                _data.Inserir(torcamentoCotacaoLink);
+                _data.InserirComTransacao(torcamentoCotacaoLink, contextoBdGravacao);
                 return true;
             }
             catch (Exception)
