@@ -50,7 +50,7 @@ namespace InfraBanco.Modelos
 
         [Column("DataCadastro")]
         [Required]
-        public DateTime IdUsuarDataCadastroioCadastro { get; set; }
+        public DateTime DataCadastro { get; set; }
 
         [Column("DataHoraCadastro")]
         [Required]
