@@ -36,9 +36,9 @@ namespace Mensagem
             return _data.EnviarMensagem(orcamentoCotacaoMensagem);
         }
 
-        public bool MarcarLida(int IdOrcamentoCotacao)
+        public bool MarcarLida(int IdOrcamentoCotacao, int idUsuarioRemetente)
         {
-            return _data.MarcarLida(IdOrcamentoCotacao);
+            return _data.MarcarLida(IdOrcamentoCotacao,idUsuarioRemetente);
         }
 
         public bool MarcarPendencia(int IdOrcamentoCotacao)

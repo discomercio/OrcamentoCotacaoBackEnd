@@ -95,13 +95,13 @@ namespace Mensagem
             return saida;
         }
 
-        public bool MarcarLida(int IdOrcamentoCotacao)
+        public bool MarcarLida(int IdOrcamentoCotacao, int idUsuarioRemetente)
         {
             var saida = false;
 
             using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
-                var orcamentoCotacaoMensagem = db.TorcamentoCotacaoMensagem.Where(item => item.IdOrcamentoCotacao == IdOrcamentoCotacao);
+                var orcamentoCotacaoMensagem = db.TorcamentoCotacaoMensagem.Where(item => item.IdOrcamentoCotacao == IdOrcamentoCotacao && item.IdUsuarioRemetente != idUsuarioRemetente);
 
                 if (orcamentoCotacaoMensagem != null)
                 {

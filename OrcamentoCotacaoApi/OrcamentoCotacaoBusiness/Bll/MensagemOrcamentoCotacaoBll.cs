@@ -40,9 +40,9 @@ namespace OrcamentoCotacaoBusiness.Bll
             return _bll.EnviarMensagem(orcamentoCotacaoMensagem);
         }
 
-        public bool MarcarLida(int IdOrcamentoCotacao)
+        public bool MarcarLida(int IdOrcamentoCotacao, int idUsuarioRemetente)
         {
-            return _bll.MarcarLida(IdOrcamentoCotacao);
+            return _bll.MarcarLida(IdOrcamentoCotacao,idUsuarioRemetente);
         }
 
         public bool MarcarPendencia(int IdOrcamentoCotacao)
