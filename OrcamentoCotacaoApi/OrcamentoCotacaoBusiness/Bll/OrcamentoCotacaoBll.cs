@@ -388,7 +388,8 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             string[] tagHtml = new string[] {
                         orcamento.ClienteOrcamentoCotacaoDto.NomeCliente,
-                        nomeEmpresa
+                        nomeEmpresa,
+                        guid.ToString()
                     };
 
             _orcamentoCotacaoEmailQueueBll.InserirQueueComTemplateEHTML(2, orcamentoCotacaoEmailQueueModel, tagHtml);
