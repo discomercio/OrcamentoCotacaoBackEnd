@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using InfraBanco.Constantes;
 using InfraBanco.Modelos;
+using InfraIdentity;
 using Microsoft.EntityFrameworkCore;
+using PrepedidoBusiness.Dto.Acesso;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using InfraBanco.Constantes;
-using PrepedidoBusiness.Dto.Acesso;
 using UtilsGlobais;
-using OrcamentoCotacaoBusiness.Enums;
-using InfraIdentity;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -180,24 +178,28 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public async Task<List<TusuarioXLoja>> BuscarLojaUsuario(string apelido)
         {
-            var db = contextoProvider.GetContextoLeitura();
-
-            var loja = (from c in db.TusuarioXLoja
-                            //join usuario in db.TusuarioXLojas on c.Usuario = 
-                        where c.Usuario == apelido
-                        select c).ToList();
-
-            return await Task.FromResult(loja);
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                return await (from ul in db.TusuarioXLoja
+                              join l in db.Tloja on ul.Loja equals l.Loja
+                              join n in db.TcfgUnidadeNegocio on l.Unidade_Negocio equals n.Sigla
+                              join p in db.TcfgUnidadeNegocioParametro on n.Id equals p.IdCfgUnidadeNegocio
+                              where ul.Usuario == apelido && p.IdCfgParametro == 13 && p.Valor == "1"
+                              select ul)
+                            .ToListAsync();
+            }
         }
 
         public async Task<string> Buscar_unidade_negocio(List<TusuarioXLoja> lojas)
         {
-            var db = contextoProvider.GetContextoLeitura();
-            var unidade_negocio = ((from c in db.Tloja
-                                    join l in lojas on c.Loja equals l.Loja
-                                    //where c.Loja == loja.Trim()
-                                    select c.Unidade_Negocio).ToList());
-            return string.Join(',', unidade_negocio);
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                var unidade_negocio = await ((from c in db.Tloja
+                                              join l in lojas on c.Loja equals l.Loja
+                                              select c.Unidade_Negocio).ToListAsync());
+
+                return string.Join(',', unidade_negocio);
+            }
         }
 
         public async Task GravarSessaoComTransacao(string ip, string apelido, string userAgent)
