@@ -73,9 +73,30 @@ namespace OrcamentoCotacaoLink
             throw new NotImplementedException();
         }
 
-        List<TorcamentoCotacaoLink> BaseData<TorcamentoCotacaoLink, TorcamentoCotacaoLinkFiltro>.PorFiltro(TorcamentoCotacaoLinkFiltro obj)
+        public List<TorcamentoCotacaoLink> PorFiltro(TorcamentoCotacaoLinkFiltro obj)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var db = contextoProvider.GetContextoLeitura())
+                {
+
+                    var saida = from c in db.TorcamentoCotacaoLink
+                                select c;
+
+                    if (obj.IdOrcamentoCotacao != 0)
+                    {
+                        saida = saida.Where(x => x.IdOrcamentoCotacao == obj.IdOrcamentoCotacao);
+                    }
+
+                    return saida.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
+
     }
 }

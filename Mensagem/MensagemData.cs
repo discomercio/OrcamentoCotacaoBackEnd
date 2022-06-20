@@ -38,7 +38,7 @@ namespace Mensagem
                                 x.PendenciaTratada == false).ToListAsync();
 
             }
-        }
+        }     
 
         public int ObterQuantidadeMensagemPendente(int IdUsuarioRemetente)
         {

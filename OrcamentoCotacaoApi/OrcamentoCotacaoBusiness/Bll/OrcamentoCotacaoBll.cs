@@ -288,9 +288,9 @@ namespace OrcamentoCotacaoBusiness.Bll
             return await _mensagemBll.ObterListaMensagemPendente(IdOrcamentoCotacao);
         }
 
-        public bool EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem)
+        public bool EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem, int IdUsuarioLogado)
         {
-            return _mensagemBll.EnviarMensagem(orcamentoCotacaoMensagem);
+            return _mensagemBll.EnviarMensagem(orcamentoCotacaoMensagem, IdUsuarioLogado);
         }
 
 
@@ -321,7 +321,6 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     AdicionarOrcamentoCotacaoLink(tOrcamentoCotacao, guid, dbGravacao);
                     AdicionarOrcamentoCotacaoEmailQueue(orcamento, guid);
-
 
                     dbGravacao.transacao.Commit();
 
@@ -389,7 +388,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             string[] tagHtml = new string[] {
                         orcamento.ClienteOrcamentoCotacaoDto.NomeCliente,
                         nomeEmpresa,
-                        guid.ToString()
+                        guid.ToString(),
+                        orcamento.Id.ToString()
                     };
 
             _orcamentoCotacaoEmailQueueBll.InserirQueueComTemplateEHTML(2, orcamentoCotacaoEmailQueueModel, tagHtml);

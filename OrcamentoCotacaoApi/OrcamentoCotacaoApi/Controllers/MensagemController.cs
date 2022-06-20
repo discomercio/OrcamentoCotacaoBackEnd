@@ -55,7 +55,17 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             _logger.LogInformation("EnviarMensagem");
 
-            var saida = _mensagemBll.EnviarMensagem(orcamentoCotacaoMensagem);
+            var saida = false;
+
+            try
+            {
+                var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+                saida = _mensagemBll.EnviarMensagem(orcamentoCotacaoMensagem, user.Id);
+            }
+            catch
+            {
+                saida = _mensagemBll.EnviarMensagem(orcamentoCotacaoMensagem, 0);
+            }
 
             if (saida)
             {
