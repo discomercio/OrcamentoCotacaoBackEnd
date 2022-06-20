@@ -88,10 +88,19 @@ namespace OrcamentoCotacaoApi.Controllers
         [Route("marcar/lida")]
         public async Task<IActionResult> MarcarLida(int IdOrcamentoCotacao)
         {
-            _logger.LogInformation("MarcarLida");
-            var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+            var saida = false;
 
-            var saida = _mensagemBll.MarcarLida(IdOrcamentoCotacao, user.Id);
+            _logger.LogInformation("MarcarLida");            
+            
+            try
+            {
+                var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+                saida = _mensagemBll.MarcarLida(IdOrcamentoCotacao, user.Id);
+            }
+            catch
+            {
+                saida = _mensagemBll.MarcarLida(IdOrcamentoCotacao, 0);
+            }            
 
             if (saida)
             {
