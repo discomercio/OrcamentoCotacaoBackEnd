@@ -90,5 +90,11 @@ namespace OrcamentoCotacaoApi.Controllers
             var dados = _orcamentoBll.BuscarDadosParaMensageria(user, idOrcamento, usuarioInterno);
             return Ok(dados);
         }
+
+        [HttpPut("atualizarOrcamentoOpcao")]
+        public IActionResult AtualizarOrcamentoOpcao()
+        {
+            return Ok();
+        }
     }
 }
