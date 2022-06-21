@@ -1,6 +1,8 @@
 ﻿using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using Loja.Dados;
+using Loja.Dto;
+using System;
 using System.Collections.Generic;
 
 namespace Loja
@@ -37,6 +39,11 @@ namespace Loja
         public PercMaxDescEComissaoDados BuscarPercMaxPorLoja(string loja)
         {
             return _lojaData.BuscarPercMaxPorLoja(loja);
+        }
+
+        public LojaViewModel BuscarLojaEstilo(string loja)
+        {
+            return _lojaData.BuscarLojaEstilo(loja);
         }
     }
 }

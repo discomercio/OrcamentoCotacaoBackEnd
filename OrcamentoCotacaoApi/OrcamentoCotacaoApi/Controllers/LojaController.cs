@@ -41,5 +41,16 @@ namespace OrcamentoCotacaoApi.Controllers
             else
                 return NotFound();
         }
+
+        [HttpGet("{loja}/estilo")]
+        public IActionResult BuscarLojaEstilo(string loja)
+        {
+            var saida = _lojaBll.BuscarLojaEstilo(loja);
+
+            if (saida != null)
+                return Ok(saida);
+            else
+                return NotFound();
+        }
     }
 }
