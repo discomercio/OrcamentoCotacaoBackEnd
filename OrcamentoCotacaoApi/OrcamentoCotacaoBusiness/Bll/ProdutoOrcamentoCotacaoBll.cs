@@ -209,9 +209,15 @@ namespace OrcamentoCotacaoBusiness.Bll
         {
             return produtoGeralBll.GravarPropriedadesProdutos(produtoCatalogoPropriedade);
         }
+
         public bool AtualizarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
         {
-            return produtoGeralBll.AtualizarPropriedadesProdutos(produtoCatalogoPropriedade);
+            if (produtoCatalogoPropriedade != null && produtoCatalogoPropriedade.ordem > 800)
+            {
+                return produtoGeralBll.AtualizarPropriedadesProdutos(produtoCatalogoPropriedade);
+            }
+
+            return false;
         }
 
         public List<TorcamentoCotacaoItemUnificado> CadastrarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(OrcamentoOpcaoRequestViewModel opcao,

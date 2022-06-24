@@ -34,11 +34,11 @@ namespace Mensagem
             using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 return await db.TorcamentoCotacaoMensagem
-                               .Where(x => x.IdOrcamentoCotacao == IdOrcamentoCotacao && 
+                               .Where(x => x.IdOrcamentoCotacao == IdOrcamentoCotacao &&
                                 x.PendenciaTratada == false).ToListAsync();
 
             }
-        }     
+        }
 
         public int ObterQuantidadeMensagemPendente(int IdUsuarioRemetente)
         {
@@ -46,17 +46,19 @@ namespace Mensagem
 
             try
             {
-                var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM);
+                using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+                {
+                    qtdMensagemPendente = db.TorcamentoCotacaoMensagem.Where(x => x.IdUsuarioRemetente == IdUsuarioRemetente && x.PendenciaTratada == false).GroupBy(x => x.IdOrcamentoCotacao).Count();
+                }
 
-                qtdMensagemPendente = db.TorcamentoCotacaoMensagem.Where(x => x.IdUsuarioRemetente == IdUsuarioRemetente && x.PendenciaTratada == false).GroupBy(x => x.IdOrcamentoCotacao).Count();
-                    
 
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 throw e;
             }
 
-            return qtdMensagemPendente;          
+            return qtdMensagemPendente;
         }
 
         public bool EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem)
