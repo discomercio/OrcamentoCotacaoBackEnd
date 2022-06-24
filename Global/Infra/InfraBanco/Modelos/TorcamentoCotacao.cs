@@ -87,6 +87,10 @@ namespace InfraBanco.Modelos
 
         public DateTime? DataHoraUltAtualizacao { get; set; }
 
+        public float? Perc_max_comissao_padrao { get; set; }
+
+        public float? Perc_max_comissao_e_desconto_padrao { get; set; }
+
         public virtual List<TorcamentoCotacaoMensagem> TorcamentoCotacaoMensagems { get; set; }
 
         public virtual List<TorcamentoCotacaoOpcao> TorcamentoCotacaoOpcaos { get; set; }

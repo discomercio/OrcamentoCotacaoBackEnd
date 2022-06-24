@@ -496,5 +496,11 @@ namespace InfraBanco.Modelos
         [Column("IdIndicadorVendedor")]
         public int? IdIndicadorVendedor { get; set; }
 
+        [Column("perc_max_comissao_padrao")]
+        public float? Perc_max_comissao_padrao { get; set; }
+
+        [Column("perc_max_comissao_e_desconto_padrao")]
+        public float? Perc_max_comissao_e_desconto_padrao { get; set; }
+
     }
 }

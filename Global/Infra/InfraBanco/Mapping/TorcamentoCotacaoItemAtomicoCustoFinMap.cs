@@ -58,6 +58,19 @@ namespace InfraBanco.Mapping
                 .HasColumnType("money")
                 .IsRequired();
 
+            builder.Property(x => x.StatusDescontoSuperior)
+                .HasColumnName("StatusDescontoSuperior")
+                .HasColumnType("bit")
+                .IsRequired();
+
+            builder.Property(x => x.IdUsuarioDescontoSuperior)
+                .HasColumnName("IdUsuarioDescontoSuperior")
+                .HasColumnType("int");
+
+            builder.Property(x => x.DataHoraDescontoSuperior)
+                .HasColumnName("DataHoraDescontoSuperior")
+                .HasColumnType("datetime");
+
             builder.Ignore(x => x.TorcamentoCotacaoOpcaoItemAtomico);
             builder.Ignore(x => x.TorcamentoCotacaoOpcaoPagto);
 
@@ -65,6 +78,11 @@ namespace InfraBanco.Mapping
                 .HasOne(x => x.TorcamentoCotacaoOpcaoItemAtomico)
                 .WithOne(o => o.TorcamentoCotacaoItemAtomicoCustoFin)
                 .HasForeignKey<TorcamentoCotacaoOpcaoItemAtomicoCustoFin>(f => f.IdItemAtomico);
+
+            //builder
+            //    .HasOne(x => x.Tusuario)
+            //    .WithOne(o => o.TorcamentoCotacaoOpcaoItemAtomicoCustoFin)
+            //    .HasForeignKey<Tusuario>(f => new { f.Id });
 
         }
     }

@@ -58,5 +58,16 @@ namespace InfraBanco.Modelos
         [Column("preco_venda", TypeName = "money")]
         [Required]
         public decimal Preco_Venda { get; set; }
+
+        [Column("StatusDescontoSuperior")]
+        public bool StatusDescontoSuperior { get; set; }
+
+        [Column("IdUsuarioDescontoSuperior")]
+        public int? IdUsuarioDescontoSuperior { get; set; }
+
+        [Column("DataHoraDescontoSuperior")]
+        public DateTime? DataHoraDescontoSuperior { get; set; }
+
+        public Tusuario Tusuario { get; set; }
     }
 }

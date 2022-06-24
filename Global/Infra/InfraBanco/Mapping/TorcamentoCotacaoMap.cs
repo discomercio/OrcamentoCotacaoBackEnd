@@ -157,6 +157,14 @@ namespace InfraBanco.Mapping
                 .HasColumnName("DataHoraUltAtualizacao")
                 .HasColumnType("datetime");
 
+            builder.Property(x => x.Perc_max_comissao_padrao)
+                .HasColumnName("perc_max_comissao_padrao")
+                .HasColumnType("real");
+
+            builder.Property(x => x.Perc_max_comissao_e_desconto_padrao)
+                .HasColumnName("perc_max_comissao_e_desconto_padrao")
+                .HasColumnType("real");
+
             builder.Ignore(x => x.TorcamentoCotacaoMensagems);
             builder.Ignore(x => x.TorcamentoCotacaoOpcaos);
             builder.Ignore(x => x.TorcamentoCotacaoLinks);

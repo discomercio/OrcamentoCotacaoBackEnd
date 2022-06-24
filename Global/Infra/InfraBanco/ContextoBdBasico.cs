@@ -176,6 +176,30 @@ namespace InfraBanco
                 .HasOne(x => x.TorcamentoCotacaoOpcaoPagto)
                 .WithOne(o => o.TcfgTipoUsuarioContexto)
                 .HasForeignKey<TorcamentoCotacaoOpcaoPagto>(f => f.IdTipoUsuarioContextoAprovado);
+
+            modelBuilder.Entity<Tusuario>()
+                .HasOne(o => o.TorcamentoCotacaoOpcaoItemAtomicoCustoFin)
+                .WithOne(f => f.Tusuario)
+                .HasForeignKey<TorcamentoCotacaoOpcaoItemAtomicoCustoFin>(f => f.IdUsuarioDescontoSuperior)
+                .HasPrincipalKey<Tusuario>(p => p.Id);
+
+            modelBuilder.Entity<TorcamentoItem>()
+                .HasOne(o => o.Tusuario)
+                .WithMany(m => m.TorcamentoItem)
+                .HasForeignKey(f => f.IdUsuarioDescontoSuperior)
+                .HasPrincipalKey(p => p.Id);
+
+            modelBuilder.Entity<TpedidoItem>()
+                .HasOne(o => o.Tusuario)
+                .WithMany(m => m.TpedidoItem)
+                .HasForeignKey(f => f.IdUsuarioDescontoSuperior)
+                .HasPrincipalKey(p => p.Id);
+
+            modelBuilder.Entity<TpedidoItemDevolvido>()
+                .HasOne(o => o.Tusuario)
+                .WithMany(m => m.TpedidoItemDevolvido)
+                .HasForeignKey(f => f.IdUsuarioDescontoSuperior)
+                .HasPrincipalKey(p => p.Id);
         }
 
         public DbSet<Tcliente> Tcliente { get; set; }

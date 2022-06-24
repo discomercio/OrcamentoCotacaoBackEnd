@@ -69,7 +69,7 @@ namespace InfraBanco.Modelos
         [Column("SessionCtrlModulo")]
         [MaxLength(5)]
         public string SessionCtrlModulo { get; set; }
-        
+
         [Column("SessionCtrlDtHrLogon")]
         public DateTime? SessionCtrlDtHrLogon { get; set; }
 
@@ -120,6 +120,12 @@ namespace InfraBanco.Modelos
         [Column("Id")]
         public int Id { get; set; }
 
-        //public virtual List<TorcamentoCotacao> TorcamentoCotacaos { get; set; }
+        public virtual TorcamentoCotacaoOpcaoItemAtomicoCustoFin TorcamentoCotacaoOpcaoItemAtomicoCustoFin { get; set; }
+
+        public List<TorcamentoItem> TorcamentoItem { get; set; }
+
+        public List<TpedidoItem> TpedidoItem { get; set; }
+
+        public List<TpedidoItemDevolvido> TpedidoItemDevolvido { get; set; }
     }
 }

@@ -18,9 +18,13 @@ namespace InfraBanco.Modelos
         public decimal PrecoNF { get; set; }
         public float CustoFinancFornecCoeficiente { get; set; }
         public decimal CustoFinancFornecPrecoListaBase { get; set; }
+        public bool StatusDescontoSuperior { get; set; }
+        public int? IdUsuarioDescontoSuperior { get; set; }
+        public DateTime? DataHoraDescontoSuperior { get; set; }
 
         public TorcamentoCotacaoOpcaoItemAtomico TorcamentoCotacaoOpcaoItemAtomico { get; set; }
         public TorcamentoCotacaoOpcaoPagto TorcamentoCotacaoOpcaoPagto { get; set; }
+        public virtual Tusuario Tusuario { get; set; }
 
     }
 }

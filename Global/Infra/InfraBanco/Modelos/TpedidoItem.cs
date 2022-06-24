@@ -135,6 +135,17 @@ namespace InfraBanco.Modelos
         [MaxLength(10)]
         public string Subgrupo { get; set; }
 
+        [Column("StatusDescontoSuperior")]
+        public bool StatusDescontoSuperior { get; set; }
+
+        [Column("IdUsuarioDescontoSuperior")]
+        public int? IdUsuarioDescontoSuperior { get; set; }
+
+        [Column("DataHoraDescontoSuperior")]
+        public DateTime? DataHoraDescontoSuperior { get; set; }
+
+        public Tusuario Tusuario { get; set; }
+
         public Tpedido Tpedido { get; set; }
     }
 }
