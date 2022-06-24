@@ -26,154 +26,156 @@ namespace OrcamentoCotacaoBusiness.Bll
             msgErro = "";
             int? tipo = 0;
 
-            var db = contextoProvider.GetContextoLeitura();
-            //Validar o dados no bd
-            var dados = from c in db.Tusuario
-                        where c.Usuario == login
-                        select new UsuarioLogin
-                        {
-                            Nome = c.Nome,
-                            Senha = c.Senha,
-                            Email = c.Email,
-                            Datastamp = c.Datastamp,
-                            Dt_Ult_Alteracao_Senha = c.Dt_Ult_Alteracao_Senha,
-                            Bloqueado = c.Bloqueado.HasValue ? (c.Bloqueado.Value == 1 ? true : false) : false,
-                            //c.Hab_Acesso_Sistema,
-                            //c.statStatus,
-                            Loja = c.Loja,
-                            TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR,
-                            Id = c.Id
-                        };
-
-            var t = dados.FirstOrDefault();
-
-            //se o apelido nao existe
-            if (t == null)
+            using (var db = contextoProvider.GetContextoLeitura())
             {
-                /*Busca de parceiros*/
-                dados = from c in db.TorcamentistaEindicador
-                        where c.Apelido == login
-                        select new UsuarioLogin
-                        {
-                            Nome = c.Razao_Social_Nome,
-                            Senha = c.Senha,
-                            Email = "",
-                            Datastamp = c.Datastamp,
-                            Dt_Ult_Alteracao_Senha = c.Dt_Ult_Alteracao_Senha,
-                            Bloqueado = (c.Status == "I"),
-                            //c.Hab_Acesso_Sistema,
-                            //c.statStatus,
-                            Loja = c.Loja,
-                            TipoUsuario = (int)Constantes.TipoUsuario.PARCEIRO,
-                            Id = c.IdIndicador
-                        };
-                t = dados.FirstOrDefault();
-                /*Busca de parceiros*/
-                if (t == null)
-                {
-                    /*Busca de vendedores de parceiros*/
-                    dados = from c in db.TorcamentistaEindicadorVendedor
-                            where c.Email == login
+                //Validar o dados no bd
+                var dados = from c in db.Tusuario
+                            where c.Usuario == login
                             select new UsuarioLogin
                             {
                                 Nome = c.Nome,
+                                Senha = c.Senha,
                                 Email = c.Email,
                                 Datastamp = c.Datastamp,
-                                Dt_Ult_Alteracao_Senha = c.DataUltimaAlteracao,
-                                Bloqueado = !c.Ativo,
+                                Dt_Ult_Alteracao_Senha = c.Dt_Ult_Alteracao_Senha,
+                                Bloqueado = c.Bloqueado.HasValue ? (c.Bloqueado.Value == 1 ? true : false) : false,
                                 //c.Hab_Acesso_Sistema,
                                 //c.statStatus,
                                 Loja = c.Loja,
-                                TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO,
+                                TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR,
                                 Id = c.Id
                             };
+
+                var t = dados.FirstOrDefault();
+
+                //se o apelido nao existe
+                if (t == null)
+                {
+                    /*Busca de parceiros*/
+                    dados = from c in db.TorcamentistaEindicador
+                            where c.Apelido == login
+                            select new UsuarioLogin
+                            {
+                                Nome = c.Razao_Social_Nome,
+                                Senha = c.Senha,
+                                Email = "",
+                                Datastamp = c.Datastamp,
+                                Dt_Ult_Alteracao_Senha = c.Dt_Ult_Alteracao_Senha,
+                                Bloqueado = (c.Status == "I"),
+                                //c.Hab_Acesso_Sistema,
+                                //c.statStatus,
+                                Loja = c.Loja,
+                                TipoUsuario = (int)Constantes.TipoUsuario.PARCEIRO,
+                                Id = c.IdIndicador
+                            };
                     t = dados.FirstOrDefault();
-                    if (t != null)
+                    /*Busca de parceiros*/
+                    if (t == null)
                     {
-                        tipo = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO;
+                        /*Busca de vendedores de parceiros*/
+                        dados = from c in db.TorcamentistaEindicadorVendedor
+                                where c.Email == login
+                                select new UsuarioLogin
+                                {
+                                    Nome = c.Nome,
+                                    Email = c.Email,
+                                    Datastamp = c.Datastamp,
+                                    Dt_Ult_Alteracao_Senha = c.DataUltimaAlteracao,
+                                    Bloqueado = !c.Ativo,
+                                    //c.Hab_Acesso_Sistema,
+                                    //c.statStatus,
+                                    Loja = c.Loja,
+                                    TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO,
+                                    Id = c.Id
+                                };
+                        t = dados.FirstOrDefault();
+                        if (t != null)
+                        {
+                            tipo = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO;
+                        }
+                        /*Busca de vendedores de parceiros*/
                     }
-                    /*Busca de vendedores de parceiros*/
+                    else
+                    {
+                        tipo = (int)Constantes.TipoUsuario.PARCEIRO;
+                    }
                 }
                 else
                 {
-                    tipo = (int)Constantes.TipoUsuario.PARCEIRO;
+                    tipo = (int)Constantes.TipoUsuario.GESTOR;
                 }
-            }
-            else
-            {
-                tipo = (int)Constantes.TipoUsuario.GESTOR;
-            }
-            if (t == null)
-            {
-                tipo = null;
-                msgErro = Constantes.ERR_USUARIO_NAO_CADASTRADO;
-                return null;// await Task.FromResult(Constantes.ERR_USUARIO_NAO_CADASTRADO);
-            }
-            if (t.Datastamp == "")
-            {
-                msgErro = Constantes.ERR_USUARIO_BLOQUEADO;
-                return null;
-            }
-            //if (t.Bloqueado)
-            //{
-            //    msgErro = Constantes.ERR_USUARIO_BLOQUEADO;
-            //    return null;
-            //}
-
-            if (!somenteValidar)
-            {
-                //validar a senha
-                var senha_digitada_decod = senha_digitada_datastamp;//, Constantes.FATOR_CRIPTO);
-
-                //para garantir que sempre a as senhas são maiusculas iremos decodificar o datastamp 
-                //e comparar os 2 convertido para maiusculas
-                //var senha_banco_datastamp_decod = Util.decodificaDado(t.Datastamp, Constantes.FATOR_CRIPTO);
-
-                //if (senha_digitada_decod.ToUpper().Trim() != senha_banco_datastamp_decod.ToUpper().Trim())
-                if (senha_digitada_decod != t.Datastamp)
+                if (t == null)
                 {
-                    msgErro = Constantes.ERR_SENHA_INVALIDA;
-                    return null;//await Task.FromResult(retorno);//retorna null
+                    tipo = null;
+                    msgErro = Constantes.ERR_USUARIO_NAO_CADASTRADO;
+                    return null;// await Task.FromResult(Constantes.ERR_USUARIO_NAO_CADASTRADO);
                 }
-
-                //Fazer Update no bd
-                using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+                if (t.Datastamp == "")
                 {
-                    switch (tipo)
+                    msgErro = Constantes.ERR_USUARIO_BLOQUEADO;
+                    return null;
+                }
+                //if (t.Bloqueado)
+                //{
+                //    msgErro = Constantes.ERR_USUARIO_BLOQUEADO;
+                //    return null;
+                //}
+
+                if (!somenteValidar)
+                {
+                    //validar a senha
+                    var senha_digitada_decod = senha_digitada_datastamp;//, Constantes.FATOR_CRIPTO);
+
+                    //para garantir que sempre a as senhas são maiusculas iremos decodificar o datastamp 
+                    //e comparar os 2 convertido para maiusculas
+                    //var senha_banco_datastamp_decod = Util.decodificaDado(t.Datastamp, Constantes.FATOR_CRIPTO);
+
+                    //if (senha_digitada_decod.ToUpper().Trim() != senha_banco_datastamp_decod.ToUpper().Trim())
+                    if (senha_digitada_decod != t.Datastamp)
                     {
-                        case (int)Constantes.TipoUsuario.GESTOR:
-                            Tusuario usuario = dbgravacao.Tusuario
-                            .Where(c => c.Usuario == login && c.Datastamp == senha_digitada_decod).FirstOrDefault();
-                            usuario.Dt_Ult_Acesso = DateTime.Now;
-                            break;
-                        case (int)Constantes.TipoUsuario.PARCEIRO:
-                            TorcamentistaEindicador parceiro = dbgravacao.TorcamentistaEindicador
-                            .Where(c => c.Apelido == login && c.Datastamp == senha_digitada_decod).FirstOrDefault();
-                            parceiro.Dt_Ult_Acesso = DateTime.Now;
-                            break;
-                        //TODO: Incluir campo de data ultimo login na tabela de vendedor do parceiro
-                        //case (int)Enums.Enums.TipoUsuario.VENDEDOR_DO_PARCEIRO:
-                        //    TorcamentistaEIndicadorVendedor vendedorParceiro = await dbgravacao.TorcamentistaEIndicadorVendedor
-                        //    .Where(c => c.Email == login && c.Senha == senha_digitada_decod).FirstOrDefaultAsync();
-                        //    vendedorParceiro.DataUltimoLogin = DateTime.Now;
-                        //    break;
-                        default:
-                            break;
+                        msgErro = Constantes.ERR_SENHA_INVALIDA;
+                        return null;//await Task.FromResult(retorno);//retorna null
                     }
-                    //dbgravacao.SaveChanges();
-                    //dbgravacao.transacao.Commit();
+
+                    //Fazer Update no bd
+                    using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+                    {
+                        switch (tipo)
+                        {
+                            case (int)Constantes.TipoUsuario.GESTOR:
+                                Tusuario usuario = dbgravacao.Tusuario
+                                .Where(c => c.Usuario == login && c.Datastamp == senha_digitada_decod).FirstOrDefault();
+                                usuario.Dt_Ult_Acesso = DateTime.Now;
+                                break;
+                            case (int)Constantes.TipoUsuario.PARCEIRO:
+                                TorcamentistaEindicador parceiro = dbgravacao.TorcamentistaEindicador
+                                .Where(c => c.Apelido == login && c.Datastamp == senha_digitada_decod).FirstOrDefault();
+                                parceiro.Dt_Ult_Acesso = DateTime.Now;
+                                break;
+                            //TODO: Incluir campo de data ultimo login na tabela de vendedor do parceiro
+                            //case (int)Enums.Enums.TipoUsuario.VENDEDOR_DO_PARCEIRO:
+                            //    TorcamentistaEIndicadorVendedor vendedorParceiro = await dbgravacao.TorcamentistaEIndicadorVendedor
+                            //    .Where(c => c.Email == login && c.Senha == senha_digitada_decod).FirstOrDefaultAsync();
+                            //    vendedorParceiro.DataUltimoLogin = DateTime.Now;
+                            //    break;
+                            default:
+                                break;
+                        }
+                        //dbgravacao.SaveChanges();
+                        //dbgravacao.transacao.Commit();
+                    }
+
+                    if (t.Dt_Ult_Alteracao_Senha == null)
+                    {
+                        //Senha expirada, precisa mandar alguma valor de senha expirada
+                        //coloquei o valor "4" para saber quando a senha esta expirada
+                        msgErro = Constantes.ERR_SENHA_EXPIRADA;
+                        return null;// await Task.FromResult("4");
+                    }
                 }
 
-                if (t.Dt_Ult_Alteracao_Senha == null)
-                {
-                    //Senha expirada, precisa mandar alguma valor de senha expirada
-                    //coloquei o valor "4" para saber quando a senha esta expirada
-                    msgErro = Constantes.ERR_SENHA_EXPIRADA;
-                    return null;// await Task.FromResult("4");
-                }
+                return t;
             }
-
-            return t;
         }
 
         public async Task<List<TusuarioXLoja>> BuscarLojaUsuario(string apelido)
