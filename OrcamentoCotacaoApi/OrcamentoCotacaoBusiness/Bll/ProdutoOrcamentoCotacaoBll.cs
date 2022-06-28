@@ -212,12 +212,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public bool AtualizarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
         {
-            if (produtoCatalogoPropriedade != null && produtoCatalogoPropriedade.ordem > 800)
-            {
-                return produtoGeralBll.AtualizarPropriedadesProdutos(produtoCatalogoPropriedade);
-            }
-
-            return false;
+            return produtoGeralBll.AtualizarPropriedadesProdutos(produtoCatalogoPropriedade);
         }
 
         public List<TorcamentoCotacaoItemUnificado> CadastrarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(OrcamentoOpcaoRequestViewModel opcao,

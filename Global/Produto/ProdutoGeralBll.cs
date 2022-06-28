@@ -241,13 +241,10 @@ namespace Produto
         public async Task<TecProdutoComposto> BuscarProdutoCompostoPorFabricanteECodigoComTransacao(string fabricante,
             string produto, ContextoBdGravacao contextoBdGravacao)
         {
-            var produtoCompostoTask = from c in contextoBdGravacao.TecProdutoComposto
-                                      where c.Fabricante_Composto == fabricante && c.Produto_Composto == produto
-                                      select c;
-
-            var t = await produtoCompostoTask.FirstOrDefaultAsync();
-
-            return t;
+            return await (from c in contextoBdGravacao.TecProdutoComposto
+                          where c.Fabricante_Composto == fabricante && c.Produto_Composto == produto
+                          select c)
+                            .FirstOrDefaultAsync();
         }
 
         private void IncluirEstoqueProduto(List<RegrasBll> lstRegras, List<Produto.Dados.ProdutoDados> lst_produtos, Tparametro parametro)
@@ -362,75 +359,70 @@ namespace Produto
 
         public async Task<List<Produto.Dados.ProdutoCatalogoPropriedadeDados>> ObterListaPropriedadesProdutos()
         {
-            var db = contextoProvider.GetContextoLeitura();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                return await (from p in db.TProdutoCatalogoPropriedade
+                              select new Produto.Dados.ProdutoCatalogoPropriedadeDados
+                              {
+                                  id = p.id,
+                                  IdCfgTipoPropriedade = p.IdCfgTipoPropriedade,
+                                  IdCfgTipoPermissaoEdicaoCadastro = p.IdCfgTipoPermissaoEdicaoCadastro,
+                                  IdCfgDataType = p.IdCfgDataType,
+                                  descricao = p.descricao,
+                                  oculto = p.oculto,
+                                  ordem = p.ordem,
+                                  dt_cadastro = p.dt_cadastro,
+                                  usuario_cadastro = p.usuario_cadastro
 
-            var produtoPropriedades = from p in db.TProdutoCatalogoPropriedade
-                                      select new Produto.Dados.ProdutoCatalogoPropriedadeDados
-                                      {
-                                          id = p.id,
-                                          IdCfgTipoPropriedade = p.IdCfgTipoPropriedade,
-                                          IdCfgTipoPermissaoEdicaoCadastro = p.IdCfgTipoPermissaoEdicaoCadastro,
-                                          IdCfgDataType = p.IdCfgDataType,
-                                          descricao = p.descricao,
-                                          oculto = p.oculto,
-                                          ordem = p.ordem,
-                                          dt_cadastro = p.dt_cadastro,
-                                          usuario_cadastro = p.usuario_cadastro
-
-                                      };
-
-            List<Produto.Dados.ProdutoCatalogoPropriedadeDados> lprodutosPropriedades = await produtoPropriedades.ToListAsync();
-
-            return lprodutosPropriedades;
+                              }).ToListAsync();
+            }
         }
 
         public async Task<List<Produto.Dados.ProdutoCatalogoPropriedadeDados>> ObterListaPropriedadesPorRange()
         {
-            var db = contextoProvider.GetContextoLeitura();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
 
-            var produtoPropriedades = from p in db.TProdutoCatalogoPropriedade
-                                      where p.IdCfgDataType == 0 && p.ordem <= 800
-                                      select new Produto.Dados.ProdutoCatalogoPropriedadeDados
-                                      {
-                                          id = p.id,
-                                          IdCfgTipoPropriedade = p.IdCfgTipoPropriedade,
-                                          IdCfgTipoPermissaoEdicaoCadastro = p.IdCfgTipoPermissaoEdicaoCadastro,
-                                          IdCfgDataType = p.IdCfgDataType,
-                                          descricao = p.descricao,
-                                          oculto = p.oculto,
-                                          ordem = p.ordem,
-                                          dt_cadastro = p.dt_cadastro,
-                                          usuario_cadastro = p.usuario_cadastro
+                return await (from p in db.TProdutoCatalogoPropriedade
+                              where p.IdCfgDataType == 0 && p.ordem <= 800
+                              select new Produto.Dados.ProdutoCatalogoPropriedadeDados
+                              {
+                                  id = p.id,
+                                  IdCfgTipoPropriedade = p.IdCfgTipoPropriedade,
+                                  IdCfgTipoPermissaoEdicaoCadastro = p.IdCfgTipoPermissaoEdicaoCadastro,
+                                  IdCfgDataType = p.IdCfgDataType,
+                                  descricao = p.descricao,
+                                  oculto = p.oculto,
+                                  ordem = p.ordem,
+                                  dt_cadastro = p.dt_cadastro,
+                                  usuario_cadastro = p.usuario_cadastro
 
-                                      };
-
-            List<Produto.Dados.ProdutoCatalogoPropriedadeDados> lprodutosPropriedades = await produtoPropriedades.ToListAsync();
-
-            return lprodutosPropriedades;
+                              })
+                                .ToListAsync();
+            }
         }
 
 
         public async Task<List<Produto.Dados.ProdutoCatalogoItemDados>> ObterListaPropriedadesProdutosById(int idProdutoCatalogo)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
 
-            var produtoItens = from pc in db.TprodutoCatalogo
-                               join pci in db.TprodutoCatalogoItem on pc.Id equals pci.IdProdutoCatalogo
-                               join pcp in db.TProdutoCatalogoPropriedade on pci.IdProdutoCatalogoPropriedade equals pcp.id
-                               join pco in db.TProdutoCatalogoPropriedadeOpcao on pci.IdProdutoCatalogoPropriedade equals pco.id_produto_catalogo_propriedade into gj
-                               from x in gj.DefaultIfEmpty()
-                               where pc.Id == idProdutoCatalogo
-                               select new Produto.Dados.ProdutoCatalogoItemDados
-                               {
-                                   idProdutoCatalogoPropriedade = pcp.id,
-                                   nome = pcp.descricao,
-                                   valor_item = pci.Valor,
-                                   valor_opcao = x.valor
-                               };
-
-            List<Produto.Dados.ProdutoCatalogoItemDados> lprodutosItens = await produtoItens.ToListAsync();
-
-            return lprodutosItens;
+                return await (from pc in db.TprodutoCatalogo
+                              join pci in db.TprodutoCatalogoItem on pc.Id equals pci.IdProdutoCatalogo
+                              join pcp in db.TProdutoCatalogoPropriedade on pci.IdProdutoCatalogoPropriedade equals pcp.id
+                              join pco in db.TProdutoCatalogoPropriedadeOpcao on pci.IdProdutoCatalogoPropriedade equals pco.id_produto_catalogo_propriedade into gj
+                              from x in gj.DefaultIfEmpty()
+                              where pc.Id == idProdutoCatalogo
+                              select new Produto.Dados.ProdutoCatalogoItemDados
+                              {
+                                  idProdutoCatalogoPropriedade = pcp.id,
+                                  nome = pcp.descricao,
+                                  valor_item = pci.Valor,
+                                  valor_opcao = x.valor
+                              })
+                                   .ToListAsync();
+            }
         }
 
         public async Task<List<Produto.Dados.ProdutoCatalogoItemProdutosAtivosDados>> ObterProdutoPropriedadesAtivosTexto(int idProduto,
@@ -439,42 +431,44 @@ namespace Produto
             try
             {
                 //para buscar produto com as propriedades ativas de texto
-                var db = contextoProvider.GetContextoLeitura();
-
-                var produtosAtivos = from tpc in db.TprodutoCatalogo
-                                     join tpci in db.TprodutoCatalogoItem on tpc.Id equals tpci.IdProdutoCatalogo
-                                     join tf in db.Tfabricante on tpc.Fabricante equals tf.Fabricante
-                                     join tpcp in db.TProdutoCatalogoPropriedade on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
-                                     where tpc.Ativo == true &&
-                                           tpcp.IdCfgTipoPropriedade == 0 &&
-                                           tpc.Id == idProduto
-                                     select new ProdutoCatalogoItemProdutosAtivosDados
-                                     {
-                                         Id = tpc.Id,
-                                         Produto = tpc.Produto,
-                                         Fabricante = tf.Fabricante,
-                                         FabricanteNome = tf.Nome,
-                                         Descricao = tpc.Nome,
-                                         DescricaoCompleta = tpc.Descricao,
-                                         IdPropriedade = tpcp.id,
-                                         NomePropriedade = tpcp.descricao,
-                                         IdValorPropriedadeOpcao = tpci.IdProdutoCatalogoPropriedadeOpcao,
-                                         ValorPropriedade = tpci.Valor,
-                                         Ordem = tpcp.ordem,
-                                         PropriedadeOcultaItem = tpci.Oculto,
-                                         PropriedadeOculta = tpcp.oculto
-                                     };
-
-                if (propriedadeOculta != null)
+                using (var db = contextoProvider.GetContextoLeitura())
                 {
-                    produtosAtivos = produtosAtivos.Where(x => x.PropriedadeOculta == propriedadeOculta);
-                }
-                if (propriedadeOcultaItem != null)
-                {
-                    produtosAtivos = produtosAtivos.Where(x => x.PropriedadeOcultaItem == propriedadeOcultaItem);
-                }
 
-                return await produtosAtivos.ToListAsync();
+                    var produtosAtivos = from tpc in db.TprodutoCatalogo
+                                         join tpci in db.TprodutoCatalogoItem on tpc.Id equals tpci.IdProdutoCatalogo
+                                         join tf in db.Tfabricante on tpc.Fabricante equals tf.Fabricante
+                                         join tpcp in db.TProdutoCatalogoPropriedade on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
+                                         where tpc.Ativo == true &&
+                                               tpcp.IdCfgTipoPropriedade == 0 &&
+                                               tpc.Id == idProduto
+                                         select new ProdutoCatalogoItemProdutosAtivosDados
+                                         {
+                                             Id = tpc.Id,
+                                             Produto = tpc.Produto,
+                                             Fabricante = tf.Fabricante,
+                                             FabricanteNome = tf.Nome,
+                                             Descricao = tpc.Nome,
+                                             DescricaoCompleta = tpc.Descricao,
+                                             IdPropriedade = tpcp.id,
+                                             NomePropriedade = tpcp.descricao,
+                                             IdValorPropriedadeOpcao = tpci.IdProdutoCatalogoPropriedadeOpcao,
+                                             ValorPropriedade = tpci.Valor,
+                                             Ordem = tpcp.ordem,
+                                             PropriedadeOcultaItem = tpci.Oculto,
+                                             PropriedadeOculta = tpcp.oculto
+                                         };
+
+                    if (propriedadeOculta != null)
+                    {
+                        produtosAtivos = produtosAtivos.Where(x => x.PropriedadeOculta == propriedadeOculta);
+                    }
+                    if (propriedadeOcultaItem != null)
+                    {
+                        produtosAtivos = produtosAtivos.Where(x => x.PropriedadeOcultaItem == propriedadeOcultaItem);
+                    }
+
+                    return await produtosAtivos.ToListAsync();
+                }
             }
             catch (Exception ex)
             {
@@ -488,41 +482,43 @@ namespace Produto
             try
             {
                 //para buscar produto com as propriedades ativas de texto
-                var db = contextoProvider.GetContextoLeitura();
-
-                var produtosAtivos = from tpc in db.TprodutoCatalogo
-                                     join tpci in db.TprodutoCatalogoItem on tpc.Id equals tpci.IdProdutoCatalogo
-                                     join tf in db.Tfabricante on tpc.Fabricante equals tf.Fabricante
-                                     join tpcp in db.TProdutoCatalogoPropriedade on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
-                                     where tpc.Ativo == true &&
-                                           tpcp.IdCfgTipoPropriedade == 0
-                                     select new ProdutoCatalogoItemProdutosAtivosDados
-                                     {
-                                         Id = tpc.Id,
-                                         Produto = tpc.Produto,
-                                         Fabricante = tf.Fabricante,
-                                         FabricanteNome = tf.Nome,
-                                         Descricao = tpc.Nome,
-                                         DescricaoCompleta = tpc.Descricao,
-                                         IdPropriedade = tpcp.id,
-                                         NomePropriedade = tpcp.descricao,
-                                         IdValorPropriedadeOpcao = tpci.IdProdutoCatalogoPropriedadeOpcao,
-                                         ValorPropriedade = tpci.Valor,
-                                         Ordem = tpcp.ordem,
-                                         PropriedadeOcultaItem = tpci.Oculto,
-                                         PropriedadeOculta = tpcp.oculto
-                                     };
-
-                if (propriedadeOculta != null)
+                using (var db = contextoProvider.GetContextoLeitura())
                 {
-                    produtosAtivos = produtosAtivos.Where(x => x.PropriedadeOculta == propriedadeOculta);
-                }
-                if (propriedadeOcultaItem != null)
-                {
-                    produtosAtivos = produtosAtivos.Where(x => x.PropriedadeOcultaItem == propriedadeOcultaItem);
-                }
 
-                return await produtosAtivos.ToListAsync();
+                    var produtosAtivos = from tpc in db.TprodutoCatalogo
+                                         join tpci in db.TprodutoCatalogoItem on tpc.Id equals tpci.IdProdutoCatalogo
+                                         join tf in db.Tfabricante on tpc.Fabricante equals tf.Fabricante
+                                         join tpcp in db.TProdutoCatalogoPropriedade on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
+                                         where tpc.Ativo == true &&
+                                               tpcp.IdCfgTipoPropriedade == 0
+                                         select new ProdutoCatalogoItemProdutosAtivosDados
+                                         {
+                                             Id = tpc.Id,
+                                             Produto = tpc.Produto,
+                                             Fabricante = tf.Fabricante,
+                                             FabricanteNome = tf.Nome,
+                                             Descricao = tpc.Nome,
+                                             DescricaoCompleta = tpc.Descricao,
+                                             IdPropriedade = tpcp.id,
+                                             NomePropriedade = tpcp.descricao,
+                                             IdValorPropriedadeOpcao = tpci.IdProdutoCatalogoPropriedadeOpcao,
+                                             ValorPropriedade = tpci.Valor,
+                                             Ordem = tpcp.ordem,
+                                             PropriedadeOcultaItem = tpci.Oculto,
+                                             PropriedadeOculta = tpcp.oculto
+                                         };
+
+                    if (propriedadeOculta != null)
+                    {
+                        produtosAtivos = produtosAtivos.Where(x => x.PropriedadeOculta == propriedadeOculta);
+                    }
+                    if (propriedadeOcultaItem != null)
+                    {
+                        produtosAtivos = produtosAtivos.Where(x => x.PropriedadeOcultaItem == propriedadeOcultaItem);
+                    }
+
+                    return await produtosAtivos.ToListAsync();
+                }
             }
             catch (Exception ex)
             {
@@ -537,42 +533,43 @@ namespace Produto
             try
             {
                 //para buscar produto com as propriedades ativas de listas
-                var db = contextoProvider.GetContextoLeitura();
-
-                var produtosAtivos = from tpci in db.TprodutoCatalogoItem
-                                     join tpc in db.TprodutoCatalogo on tpci.IdProdutoCatalogo equals tpc.Id
-                                     join tf in db.Tfabricante on tpc.Fabricante equals tf.Fabricante
-                                     join tpcpo in db.TProdutoCatalogoPropriedadeOpcao on tpci.IdProdutoCatalogoPropriedadeOpcao equals tpcpo.id
-                                     join tpcp in db.TProdutoCatalogoPropriedade on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
-                                     where tpc.Ativo == true &&
-                                           tpc.Id == idProduto
-                                     select new ProdutoCatalogoItemProdutosAtivosDados
-                                     {
-                                         Id = tpc.Id,
-                                         Produto = tpc.Produto,
-                                         Fabricante = tf.Fabricante,
-                                         FabricanteNome = tf.Nome,
-                                         Descricao = tpc.Nome,
-                                         DescricaoCompleta = tpc.Descricao,
-                                         IdPropriedade = tpcp.id,
-                                         NomePropriedade = tpcp.descricao,
-                                         IdValorPropriedadeOpcao = tpci.IdProdutoCatalogoPropriedadeOpcao,
-                                         ValorPropriedade = tpcpo.valor,
-                                         Ordem = tpcp.ordem,
-                                         PropriedadeOcultaItem = tpci.Oculto,
-                                         PropriedadeOculta = tpcp.oculto
-                                     };
-
-                if (propriedadeOculta != null)
+                using (var db = contextoProvider.GetContextoLeitura())
                 {
-                    produtosAtivos = produtosAtivos.Where(x => x.PropriedadeOculta == propriedadeOculta);
-                }
-                if (propriedadeOcultaItem != null)
-                {
-                    produtosAtivos = produtosAtivos.Where(x => x.PropriedadeOcultaItem == propriedadeOcultaItem);
-                }
+                    var produtosAtivos = from tpci in db.TprodutoCatalogoItem
+                                         join tpc in db.TprodutoCatalogo on tpci.IdProdutoCatalogo equals tpc.Id
+                                         join tf in db.Tfabricante on tpc.Fabricante equals tf.Fabricante
+                                         join tpcpo in db.TProdutoCatalogoPropriedadeOpcao on tpci.IdProdutoCatalogoPropriedadeOpcao equals tpcpo.id
+                                         join tpcp in db.TProdutoCatalogoPropriedade on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
+                                         where tpc.Ativo == true &&
+                                               tpc.Id == idProduto
+                                         select new ProdutoCatalogoItemProdutosAtivosDados
+                                         {
+                                             Id = tpc.Id,
+                                             Produto = tpc.Produto,
+                                             Fabricante = tf.Fabricante,
+                                             FabricanteNome = tf.Nome,
+                                             Descricao = tpc.Nome,
+                                             DescricaoCompleta = tpc.Descricao,
+                                             IdPropriedade = tpcp.id,
+                                             NomePropriedade = tpcp.descricao,
+                                             IdValorPropriedadeOpcao = tpci.IdProdutoCatalogoPropriedadeOpcao,
+                                             ValorPropriedade = tpcpo.valor,
+                                             Ordem = tpcp.ordem,
+                                             PropriedadeOcultaItem = tpci.Oculto,
+                                             PropriedadeOculta = tpcp.oculto
+                                         };
 
-                return await produtosAtivos.ToListAsync();
+                    if (propriedadeOculta != null)
+                    {
+                        produtosAtivos = produtosAtivos.Where(x => x.PropriedadeOculta == propriedadeOculta);
+                    }
+                    if (propriedadeOcultaItem != null)
+                    {
+                        produtosAtivos = produtosAtivos.Where(x => x.PropriedadeOcultaItem == propriedadeOcultaItem);
+                    }
+
+                    return await produtosAtivos.ToListAsync();
+                }
             }
             catch (Exception ex)
             {
@@ -586,41 +583,42 @@ namespace Produto
             try
             {
                 //para buscar produto com as propriedades ativas de listas
-                var db = contextoProvider.GetContextoLeitura();
-
-                var produtosAtivos = from tpci in db.TprodutoCatalogoItem
-                                     join tpc in db.TprodutoCatalogo on tpci.IdProdutoCatalogo equals tpc.Id
-                                     join tf in db.Tfabricante on tpc.Fabricante equals tf.Fabricante
-                                     join tpcpo in db.TProdutoCatalogoPropriedadeOpcao on tpci.IdProdutoCatalogoPropriedadeOpcao equals tpcpo.id
-                                     join tpcp in db.TProdutoCatalogoPropriedade on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
-                                     where tpc.Ativo == true 
-                                     select new ProdutoCatalogoItemProdutosAtivosDados
-                                     {
-                                         Id = tpc.Id,
-                                         Produto = tpc.Produto,
-                                         Fabricante = tf.Fabricante,
-                                         FabricanteNome = tf.Nome,
-                                         Descricao = tpc.Nome,
-                                         DescricaoCompleta = tpc.Descricao,
-                                         IdPropriedade = tpcp.id,
-                                         NomePropriedade = tpcp.descricao,
-                                         IdValorPropriedadeOpcao = tpci.IdProdutoCatalogoPropriedadeOpcao,
-                                         ValorPropriedade = tpcpo.valor,
-                                         Ordem = tpcp.ordem,
-                                         PropriedadeOcultaItem = tpci.Oculto,
-                                         PropriedadeOculta = tpcp.oculto
-                                     };
-
-                if (propriedadeOculta != null)
+                using (var db = contextoProvider.GetContextoLeitura())
                 {
-                    produtosAtivos = produtosAtivos.Where(x => x.PropriedadeOculta == propriedadeOculta);
-                }
-                if (propriedadeOcultaItem != null)
-                {
-                    produtosAtivos = produtosAtivos.Where(x => x.PropriedadeOcultaItem == propriedadeOcultaItem);
-                }
+                    var produtosAtivos = from tpci in db.TprodutoCatalogoItem
+                                         join tpc in db.TprodutoCatalogo on tpci.IdProdutoCatalogo equals tpc.Id
+                                         join tf in db.Tfabricante on tpc.Fabricante equals tf.Fabricante
+                                         join tpcpo in db.TProdutoCatalogoPropriedadeOpcao on tpci.IdProdutoCatalogoPropriedadeOpcao equals tpcpo.id
+                                         join tpcp in db.TProdutoCatalogoPropriedade on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
+                                         where tpc.Ativo == true
+                                         select new ProdutoCatalogoItemProdutosAtivosDados
+                                         {
+                                             Id = tpc.Id,
+                                             Produto = tpc.Produto,
+                                             Fabricante = tf.Fabricante,
+                                             FabricanteNome = tf.Nome,
+                                             Descricao = tpc.Nome,
+                                             DescricaoCompleta = tpc.Descricao,
+                                             IdPropriedade = tpcp.id,
+                                             NomePropriedade = tpcp.descricao,
+                                             IdValorPropriedadeOpcao = tpci.IdProdutoCatalogoPropriedadeOpcao,
+                                             ValorPropriedade = tpcpo.valor,
+                                             Ordem = tpcp.ordem,
+                                             PropriedadeOcultaItem = tpci.Oculto,
+                                             PropriedadeOculta = tpcp.oculto
+                                         };
 
-                return await produtosAtivos.ToListAsync();
+                    if (propriedadeOculta != null)
+                    {
+                        produtosAtivos = produtosAtivos.Where(x => x.PropriedadeOculta == propriedadeOculta);
+                    }
+                    if (propriedadeOcultaItem != null)
+                    {
+                        produtosAtivos = produtosAtivos.Where(x => x.PropriedadeOcultaItem == propriedadeOcultaItem);
+                    }
+
+                    return await produtosAtivos.ToListAsync();
+                }
             }
             catch (Exception ex)
             {
@@ -631,99 +629,93 @@ namespace Produto
 
         public async Task<List<Produto.Dados.ProdutoCatalogoItemProdutosAtivosDados>> ObterListaProdutosPropriedadesProdutosAtivos()
         {
-            var db = contextoProvider.GetContextoLeitura();
-
-            var produtosAtivos = from tpci in db.TprodutoCatalogoItem
-                                 join tpc in db.TprodutoCatalogo on tpci.IdProdutoCatalogo equals tpc.Id
-                                 join tf in db.Tfabricante on tpc.Fabricante equals tf.Fabricante
-                                 join tpcpo in db.TProdutoCatalogoPropriedadeOpcao on tpci.IdProdutoCatalogoPropriedadeOpcao equals tpcpo.id
-                                 join tpcp in db.TProdutoCatalogoPropriedade on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
-                                 where tpc.Ativo == true &&
-                                       tpcp.oculto == false
-                                 group new { tpc, tf, tpcpo } by new
-                                 {
-                                     tpc.Id,
-                                     tpc.Produto,
-                                     tf.Fabricante,
-                                     tpc.Nome,
-                                     FabricanteNome = tf.Nome,
-                                     tpcp.id,
-                                     tpcp.descricao,
-                                     tpcpo.valor
-                                 } into gr
-                                 select new ProdutoCatalogoItemProdutosAtivosDados
-                                 {
-                                     Id = gr.Key.Id,
-                                     Produto = gr.Key.Produto,
-                                     Fabricante = gr.Key.Fabricante,
-                                     FabricanteNome = gr.Key.FabricanteNome,
-                                     Descricao = gr.Key.Nome,
-                                     IdPropriedade = gr.Key.id,
-                                     NomePropriedade = gr.Key.descricao,
-                                     ValorPropriedade = gr.Key.valor
-                                 };
-
-
-            return await produtosAtivos.ToListAsync();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                return await (from tpci in db.TprodutoCatalogoItem
+                              join tpc in db.TprodutoCatalogo on tpci.IdProdutoCatalogo equals tpc.Id
+                              join tf in db.Tfabricante on tpc.Fabricante equals tf.Fabricante
+                              join tpcpo in db.TProdutoCatalogoPropriedadeOpcao on tpci.IdProdutoCatalogoPropriedadeOpcao equals tpcpo.id
+                              join tpcp in db.TProdutoCatalogoPropriedade on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
+                              where tpc.Ativo == true &&
+                                    tpcp.oculto == false
+                              group new { tpc, tf, tpcpo } by new
+                              {
+                                  tpc.Id,
+                                  tpc.Produto,
+                                  tf.Fabricante,
+                                  tpc.Nome,
+                                  FabricanteNome = tf.Nome,
+                                  tpcp.id,
+                                  tpcp.descricao,
+                                  tpcpo.valor
+                              } into gr
+                              select new ProdutoCatalogoItemProdutosAtivosDados
+                              {
+                                  Id = gr.Key.Id,
+                                  Produto = gr.Key.Produto,
+                                  Fabricante = gr.Key.Fabricante,
+                                  FabricanteNome = gr.Key.FabricanteNome,
+                                  Descricao = gr.Key.Nome,
+                                  IdPropriedade = gr.Key.id,
+                                  NomePropriedade = gr.Key.descricao,
+                                  ValorPropriedade = gr.Key.valor
+                              })
+                .ToListAsync();
+            }
         }
 
         public async Task<List<CatalogoPropriedadesOpcaoDados>> ObterPropriedadesEOpcoesProdutosAtivos()
         {
-            var db = contextoProvider.GetContextoLeitura();
-
-            var saida = from tf in db.Tfabricante
-                        join tpc in db.TprodutoCatalogo on tf.Fabricante equals tpc.Fabricante
-                        join tpci in db.TprodutoCatalogoItem on tpc.Id equals tpci.IdProdutoCatalogo
-                        join tpcp in db.TProdutoCatalogoPropriedade on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
-                        join tpcpo in db.TProdutoCatalogoPropriedadeOpcao on tpcp.id equals tpcpo.id_produto_catalogo_propriedade
-                        where tpc.Id == tpci.IdProdutoCatalogo &&
-                              tpc.Ativo == true &&
-                              tpci.Oculto == false &&
-                              tpcpo.oculto == false &&
-                              tpcp.ordem <= 700 &&
-                              tpcp.IdCfgTipoPropriedade == 1 &&
-                              tpcp.oculto == false
-                        group new { tpcp, tpcpo } by new
-                        {
-                            tpcpo.id_produto_catalogo_propriedade,
-                            tpcp.descricao,
-                            tpcpo.id,
-                            tpcpo.valor
-                        } into gr
-                        select new CatalogoPropriedadesOpcaoDados
-                        {
-                            IdProdpriedade = gr.Key.id_produto_catalogo_propriedade,
-                            NomePropriedade = gr.Key.descricao,
-                            IdPropriedadeOpcao = gr.Key.id,
-                            ValorPropriedadeOpcao = gr.Key.valor
-                        };
-
-
-
-            return await saida.ToListAsync();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                return await (from tf in db.Tfabricante
+                              join tpc in db.TprodutoCatalogo on tf.Fabricante equals tpc.Fabricante
+                              join tpci in db.TprodutoCatalogoItem on tpc.Id equals tpci.IdProdutoCatalogo
+                              join tpcp in db.TProdutoCatalogoPropriedade on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
+                              join tpcpo in db.TProdutoCatalogoPropriedadeOpcao on tpcp.id equals tpcpo.id_produto_catalogo_propriedade
+                              where tpc.Id == tpci.IdProdutoCatalogo &&
+                                    tpc.Ativo == true &&
+                                    tpci.Oculto == false &&
+                                    tpcpo.oculto == false &&
+                                    tpcp.ordem <= 700 &&
+                                    tpcp.IdCfgTipoPropriedade == 1 &&
+                                    tpcp.oculto == false
+                              group new { tpcp, tpcpo } by new
+                              {
+                                  tpcpo.id_produto_catalogo_propriedade,
+                                  tpcp.descricao,
+                                  tpcpo.id,
+                                  tpcpo.valor
+                              } into gr
+                              select new CatalogoPropriedadesOpcaoDados
+                              {
+                                  IdProdpriedade = gr.Key.id_produto_catalogo_propriedade,
+                                  NomePropriedade = gr.Key.descricao,
+                                  IdPropriedadeOpcao = gr.Key.id,
+                                  ValorPropriedadeOpcao = gr.Key.valor
+                              })
+                            .ToListAsync();
+            }
         }
 
         public async Task<List<Produto.Dados.ProdutoCatalogoItemDados>> ObterListaPropriedadesOpcoesProdutosById(int IdProdutoCatalogoPropriedade)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                return await (from pc in db.TprodutoCatalogo
+                              join pci in db.TprodutoCatalogoItem on pc.Id equals pci.IdProdutoCatalogo
+                              join pcp in db.TProdutoCatalogoPropriedade on pci.IdProdutoCatalogoPropriedade equals pcp.id
+                              join pco in db.TProdutoCatalogoPropriedadeOpcao on pci.IdProdutoCatalogoPropriedade equals pco.id_produto_catalogo_propriedade into gj
+                              from x in gj.DefaultIfEmpty()
+                              where pcp.id == IdProdutoCatalogoPropriedade
+                              select new Produto.Dados.ProdutoCatalogoItemDados
+                              {
+                                  idProdutoCatalogoPropriedade = pcp.id,
+                                  nome = pcp.descricao,
+                                  valor_item = pci.Valor,
+                              }).ToListAsync();
 
-            var produtoItens = from pc in db.TprodutoCatalogo
-                               join pci in db.TprodutoCatalogoItem on pc.Id equals pci.IdProdutoCatalogo
-                               join pcp in db.TProdutoCatalogoPropriedade on pci.IdProdutoCatalogoPropriedade equals pcp.id
-                               join pco in db.TProdutoCatalogoPropriedadeOpcao on pci.IdProdutoCatalogoPropriedade equals pco.id_produto_catalogo_propriedade into gj
-                               from x in gj.DefaultIfEmpty()
-                               where pcp.id == IdProdutoCatalogoPropriedade
-                               select new Produto.Dados.ProdutoCatalogoItemDados
-                               {
-                                   idProdutoCatalogoPropriedade = pcp.id,
-                                   nome = pcp.descricao,
-                                   valor_item = pci.Valor,
-                                   //valor_opcao = x.valor
-                               };
-
-            List<Produto.Dados.ProdutoCatalogoItemDados> lprodutosItens = await produtoItens.ToListAsync();
-
-            return lprodutosItens;
+            }
         }
 
         public async Task<List<Produto.Dados.FabricanteDados>> ObterListaFabricante()
@@ -742,48 +734,43 @@ namespace Produto
 
         public async Task<List<Produto.Dados.ProdutoCatalogoPropriedadeDados>> ObterListaPropriedadesProdutos(int id)
         {
-            var db = contextoProvider.GetContextoLeitura();
-
-            var produtoPropriedades = from p in db.TProdutoCatalogoPropriedade
-                                      where p.IdCfgDataType == 0 && p.id == id
-                                      select new Produto.Dados.ProdutoCatalogoPropriedadeDados
-                                      {
-                                          id = p.id,
-                                          IdCfgTipoPropriedade = p.IdCfgTipoPropriedade,
-                                          IdCfgTipoPermissaoEdicaoCadastro = p.IdCfgTipoPermissaoEdicaoCadastro,
-                                          IdCfgDataType = p.IdCfgDataType,
-                                          descricao = p.descricao,
-                                          oculto = p.oculto,
-                                          ordem = p.ordem,
-                                          dt_cadastro = p.dt_cadastro,
-                                          usuario_cadastro = p.usuario_cadastro
-
-                                      };
-
-            List<Produto.Dados.ProdutoCatalogoPropriedadeDados> lprodutosPropriedades = await produtoPropriedades.ToListAsync();
-
-            return lprodutosPropriedades;
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                return await (from p in db.TProdutoCatalogoPropriedade
+                              where p.id == id
+                              select new Produto.Dados.ProdutoCatalogoPropriedadeDados
+                              {
+                                  id = p.id,
+                                  IdCfgTipoPropriedade = p.IdCfgTipoPropriedade,
+                                  IdCfgTipoPermissaoEdicaoCadastro = p.IdCfgTipoPermissaoEdicaoCadastro,
+                                  IdCfgDataType = p.IdCfgDataType,
+                                  descricao = p.descricao,
+                                  oculto = p.oculto,
+                                  ordem = p.ordem,
+                                  dt_cadastro = p.dt_cadastro,
+                                  usuario_cadastro = p.usuario_cadastro
+                              })
+                                .ToListAsync();
+            }
         }
 
         public async Task<List<Produto.Dados.ProdutoCatalogoPropriedadeOpcoesDados>> ObterListaPropriedadesOpcoes()
         {
-            var db = contextoProvider.GetContextoLeitura();
-
-            var produtoPropriedades = from p in db.TProdutoCatalogoPropriedadeOpcao
-                                      select new Produto.Dados.ProdutoCatalogoPropriedadeOpcoesDados
-                                      {
-                                          id = p.id,
-                                          id_produto_catalogo_propriedade = p.id_produto_catalogo_propriedade,
-                                          valor = p.valor,
-                                          oculto = p.oculto,
-                                          ordem = p.ordem,
-                                          dt_cadastro = p.dt_cadastro,
-                                          usuario_cadastro = p.usuario_cadastro
-                                      };
-
-            List<Produto.Dados.ProdutoCatalogoPropriedadeOpcoesDados> lprodutosPropriedades = await produtoPropriedades.ToListAsync();
-
-            return lprodutosPropriedades;
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                return await (from p in db.TProdutoCatalogoPropriedadeOpcao
+                              select new Produto.Dados.ProdutoCatalogoPropriedadeOpcoesDados
+                              {
+                                  id = p.id,
+                                  id_produto_catalogo_propriedade = p.id_produto_catalogo_propriedade,
+                                  valor = p.valor,
+                                  oculto = p.oculto,
+                                  ordem = p.ordem,
+                                  dt_cadastro = p.dt_cadastro,
+                                  usuario_cadastro = p.usuario_cadastro
+                              })
+                                .ToListAsync();
+            }
         }
 
         public bool GravarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
@@ -856,8 +843,6 @@ namespace Produto
 
             return saida;
         }
-
-
 
     }
 }
