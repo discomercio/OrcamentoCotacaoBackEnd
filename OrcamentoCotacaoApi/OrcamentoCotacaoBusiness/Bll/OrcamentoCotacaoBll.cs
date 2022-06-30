@@ -217,6 +217,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                 ObservacoesGerais = orcamento.Observacao,
                 EntregaImediata = orcamento.StEtgImediata == 1 ? true : false,
                 DataEntregaImediata = orcamento.PrevisaoEntregaData,
+                DataCadastro = orcamento.DataCadastro,
+                IdIndicador = orcamento.IdIndicador,
                 ClienteOrcamentoCotacaoDto = new ClienteOrcamentoCotacaoRequestViewModel()
                 {
                     NomeCliente = orcamento.NomeCliente,

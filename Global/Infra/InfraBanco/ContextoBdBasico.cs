@@ -32,6 +32,11 @@ namespace InfraBanco
                 .HasForeignKey<Tproduto>(x => new { x.Fabricante, x.Produto });
 
             modelBuilder.Entity<TecProdutoComposto>()
+                .HasOne(x => x.Tproduto)
+                .WithOne(x => x.TecProdutoComposto)
+                .HasForeignKey<TecProdutoComposto>(x => new {x.Fabricante_Composto, x.Produto_Composto});
+
+            modelBuilder.Entity<TecProdutoComposto>()
                 .HasKey(x => new { x.Fabricante_Composto, x.Produto_Composto });
 
             modelBuilder.Entity<TecProdutoCompostoItem>()

@@ -1,7 +1,10 @@
 ﻿using InfraBanco.Modelos.Filtros;
+using InfraIdentity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Bll;
+using System.Linq;
+using System.Text.Json;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -32,9 +35,24 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpGet("buscarPercMaxPorLoja")]
-        public IActionResult BuscarPercMaxPorLoja(string loja)
+        public IActionResult BuscarPercMaxPorLoja(string loja, string tipoCliente)
         {
             var saida = _lojaBll.BuscarPercMaxPorLoja(loja);
+
+            if (saida != null)
+                return Ok(saida);
+            else
+                return NotFound();
+        }
+
+        //buscarPercMaxPorLojaAlcada
+        [HttpGet("buscarPercMaxPorLojaAlcada")]
+        public IActionResult BuscarPercMaxPorLojaAlcada(string loja, string tipoCliente)
+        {
+            var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+            var lstPermissoes = user.Permissoes;
+
+            var saida = _lojaBll.BuscarPercMaxPorLojaAlcada(loja, tipoCliente, lstPermissoes);
 
             if (saida != null)
                 return Ok(saida);

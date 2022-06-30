@@ -66,6 +66,12 @@ namespace InfraBanco.Constantes
             }
         }
 
+        public const string COMISSAO_DESCONTO_ALCADA_1 = "100800";
+        public const string COMISSAO_DESCONTO_ALCADA_2 = "100900";
+        public const string COMISSAO_DESCONTO_ALCADA_3 = "101000";
+
+
+
         public enum CodSistemaResponsavel
         {
             COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP = 1,
