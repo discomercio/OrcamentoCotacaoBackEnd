@@ -197,5 +197,11 @@ namespace OrcamentoCotacaoApi.BaseController
 
             return Ok(retorno);
         }
+
+        [HttpGet("listar-produtos-ativos")]
+        public async Task<IActionResult> ObterProdutosAtivos()
+        {
+           return Ok(await _produtoBll.ObterProdutosAtivos());
+        }
     }
 }

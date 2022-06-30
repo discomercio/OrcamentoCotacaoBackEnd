@@ -8,16 +8,20 @@ using Produto.RegrasCrtlEstoque;
 using Produto.Dados;
 using System;
 using InfraBanco;
+using Produto.Dto;
+using System.Data;
 
 namespace Produto
 {
     public class ProdutoGeralBll
     {
         private readonly ContextoBdProvider contextoProvider;
+        private readonly Contexto contexto;
 
-        public ProdutoGeralBll(InfraBanco.ContextoBdProvider contextoProvider)
+        public ProdutoGeralBll(InfraBanco.ContextoBdProvider contextoProvider, Contexto contexto)
         {
             this.contextoProvider = contextoProvider;
+            this.contexto = contexto;
         }
 
         public async Task<ProdutoComboDados> ListaProdutosComboDados(string loja, string uf, string tipo,
@@ -661,6 +665,61 @@ namespace Produto
                                   ValorPropriedade = gr.Key.valor
                               })
                 .ToListAsync();
+            }
+        }
+
+        public async Task<List<ProdutoAtivoDto>> ObterProdutosAtivos()
+        {
+            var listaOpcoes = new List<int> {
+                1,  // Incluir na calculadora VRF
+                2,  // Tipo da Unidade
+                3,  // Descarga Condensadora
+                4,  // Voltagem
+                5,  // Capacidade (BTU/h)
+                6,  // Ciclo
+                8   // Linha de Produto
+            };
+
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                var cte = await (
+                    from pc in db.TprodutoCatalogo
+                    join pci in db.TprodutoCatalogoItem on pc.Id equals pci.IdProdutoCatalogo
+                    join pcp in db.TProdutoCatalogoPropriedade on pci.IdProdutoCatalogoPropriedade equals pcp.id
+                    join pco in db.TProdutoCatalogoPropriedadeOpcao on pcp.id equals pco.id_produto_catalogo_propriedade
+                    join f in db.Tfabricante on pc.Fabricante equals f.Fabricante
+                    where
+                        pc.Ativo == true &&
+                        listaOpcoes.Contains(pci.IdProdutoCatalogoPropriedade) &&
+                        pco.id == pci.IdProdutoCatalogoPropriedadeOpcao.Value
+                    select new ProdutoAtivoDto
+                    {
+
+                        id = pc.Id.ToString(),
+                        produto = pc.Produto,
+                        fabricante = f.Nome,
+                        descricao = pc.Nome,
+                        propId = pcp.id,
+                        propValor = pco.valor
+                    }).ToListAsync();
+
+                return (
+                    from c in cte
+                    group c by new { c.id, c.produto, c.fabricante, c.descricao } into g
+                    select new ProdutoAtivoDto
+                    {
+                        id = g.Key.id.ToString(),
+                        produto = g.Key.produto,
+                        fabricante = g.Key.fabricante,
+                        descricao = g.Key.descricao,
+                        calculadoraVRF = cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 1) == null ? null : cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 1).propValor,  
+                        tipoUnidade = cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 2) == null ? null : cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 2).propValor,
+                        descargaCondensadora = cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 3) == null ? null : cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 3).propValor,     
+                        voltagem = cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 4) == null ? null : cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 4).propValor,
+                        capacidadeBTU = cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 5) == null ? null : cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 5).propValor,
+                        ciclo = cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 6) == null ? null : cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 6).propValor,
+                        linhaProduto = cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 8) == null ? null : cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 8).propValor
+                    }).ToList();
             }
         }
 

@@ -7,6 +7,7 @@ using InfraIdentity;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
 using Produto;
+using Produto.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -141,6 +142,10 @@ namespace OrcamentoCotacaoBusiness.Bll
             return retorno;
         }
 
+        public async Task<List<ProdutoAtivoDto>> ObterProdutosAtivos()
+        {
+            return await produtoGeralBll.ObterProdutosAtivos();
+        }
 
         public async Task<List<Produto.Dados.ProdutoCatalogoPropriedadeDados>> ObterListaPropriedadesProdutos()
         {
