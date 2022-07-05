@@ -11,23 +11,30 @@ namespace OrcamentoCotacao
 {
     public class OrcamentoCotacaoData : BaseData<TorcamentoCotacao, TorcamentoCotacaoFiltro>
     {
-        private readonly ContextoBdProvider contextoProvider;
+        private readonly ContextoBdProvider _contextoProvider;
 
         public OrcamentoCotacaoData(ContextoBdProvider contextoProvider)
         {
-            this.contextoProvider = contextoProvider;
+            _contextoProvider = contextoProvider;
         }
 
         public TorcamentoCotacao Atualizar(TorcamentoCotacao obj)
         {
-            throw new NotImplementedException();
+            using (var db = _contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                db.TorcamentoCotacao.Update(obj);
+                db.SaveChanges();
+                db.transacao.Commit();
+            }
+
+            return obj;
         }
 
         public OrcamentoCotacaoDto PorGuid(string guid)
         {
             try
             {
-                using (var db = contextoProvider.GetContextoLeitura())
+                using (var db = _contextoProvider.GetContextoLeitura())
                 {
                     var orcamento = (from l in db.TorcamentoCotacaoLink
                                      join o in db.TorcamentoCotacao on l.IdOrcamentoCotacao equals o.Id
@@ -89,7 +96,7 @@ namespace OrcamentoCotacao
         {
             try
             {
-                using (var db = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
+                using (var db = _contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
                     db.TorcamentoCotacao.Add(obj);
                     db.SaveChanges();
@@ -125,7 +132,7 @@ namespace OrcamentoCotacao
         {
             try
             {
-                using (var db = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
+                using (var db = _contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
                     var listaStatus = db.TcfgOrcamentoCotacaoStatus.ToList();
                     var saida = from c in db.TorcamentoCotacao select c;

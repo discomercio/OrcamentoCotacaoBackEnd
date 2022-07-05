@@ -2836,6 +2836,14 @@ namespace InfraBanco.Constantes
             MAGENTO_PEDIDO_STATUS_REJEITADO
         };
 
+        public enum eCfgOrcamentoCotacaoStatus
+        {
+            ENVIADO = 1,
+            CANCELADO = 2,
+            APROVADO = 3,
+            EMAIL_INCORRETO = 4,
+        };
+
         public enum ePermissoes
         {
             ACESSO_AO_MODULO_100100 = 100100,

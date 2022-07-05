@@ -48,5 +48,9 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 
         [JsonProperty("cadastradoPor")]
         public string CadastradoPor { get; set; }
+        
+        [JsonProperty("status")]
+        public short Status { get; set; }
+        
     }
 }

@@ -90,5 +90,11 @@ namespace OrcamentoCotacaoApi.Controllers
             var dados = _orcamentoBll.BuscarDadosParaMensageria(user, idOrcamento, usuarioInterno);
             return Ok(dados);
         }
+
+        [HttpPost("{id}/prorrogar")]
+        public IActionResult ProrrogarOrcamento(int id)
+        {
+            return Ok(_orcamentoBll.ProrrogarOrcamento(id, LoggedUser.Id));
+        }
     }
 }

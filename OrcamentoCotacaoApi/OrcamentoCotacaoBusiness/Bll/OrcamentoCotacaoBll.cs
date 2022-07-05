@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using OrcamentoCotacaoBusiness.Dto;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -74,6 +75,55 @@ namespace OrcamentoCotacaoBusiness.Bll
             _cfgUnidadeNegocioBll = cfgUnidadeNegocioBll;
             _cfgUnidadeNegocioParametroBll = cfgUnidadeNegocioParametroBll;
             _formaPagtoOrcamentoCotacaoBll = formaPagtoOrcamentoCotacaoBll;
+        }
+
+        public MensagemDto ProrrogarOrcamento(int id, int idUsuario)
+        {
+            //TODO: DESFIXAR VARIAVEIS
+            int QtdeDiasValidade = 20;
+            int QtdeGlobalValidade = 20;
+            int QtdeDiasProrrogacao = 20;
+            int QtdeMaxProrrogacao = 2;
+
+            var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro { Id = id }).FirstOrDefault();
+
+            if (orcamento != null)
+            {
+                if (orcamento.Status == (short)Constantes.eCfgOrcamentoCotacaoStatus.APROVADO ||
+                    orcamento.Status == (short)Constantes.eCfgOrcamentoCotacaoStatus.CANCELADO)
+                    return new MensagemDto
+                    {
+                        tipo = "WARN",
+                        mensagem = "Não é possível prorrogar, orçamentos aprovados ou cancelados!"
+                    };
+
+                if (orcamento.QtdeRenovacao >= QtdeMaxProrrogacao)
+                    return new MensagemDto
+                    {
+                        tipo = "WARN",
+                        mensagem = $"Excedida a quantidade máxima! {QtdeMaxProrrogacao} vezes"
+                    };
+
+                if (DateTime.Now.AddDays(QtdeDiasProrrogacao) > DateTime.Now.AddDays(QtdeGlobalValidade))
+                    orcamento.Validade = DateTime.Now.AddDays(QtdeGlobalValidade);
+                else
+                    orcamento.Validade = DateTime.Now.AddDays(QtdeDiasProrrogacao);
+
+                orcamento.ValidadeAnterior = orcamento.Validade;
+                orcamento.QtdeRenovacao += 1;
+                orcamento.IdUsuarioUltRenovacao = idUsuario;
+                orcamento.DataHoraUltRenovacao = DateTime.Now;
+
+                _orcamentoCotacaoBll.Atualizar(orcamento);
+
+                return new MensagemDto
+                {
+                    tipo = "INFO",
+                    mensagem = $"Prorrogado para: {orcamento.Validade.ToShortDateString()}"
+                };
+            }
+
+            return null;
         }
 
         public OrcamentoCotacaoDto PorGuid(string guid)
@@ -217,6 +267,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 ObservacoesGerais = orcamento.Observacao,
                 EntregaImediata = orcamento.StEtgImediata == 1 ? true : false,
                 DataEntregaImediata = orcamento.PrevisaoEntregaData,
+                Status = orcamento.Status,
                 ClienteOrcamentoCotacaoDto = new ClienteOrcamentoCotacaoRequestViewModel()
                 {
                     NomeCliente = orcamento.NomeCliente,
@@ -340,7 +391,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         {
             TorcamentoCotacaoLink orcamentoCotacaoLinkModel = new InfraBanco.Modelos.TorcamentoCotacaoLink();
             //orcamentoCotacaoLinkModel.DataHoraCadastro = System.DateTime.Now;
-            
+
             orcamentoCotacaoLinkModel.IdOrcamentoCotacao = orcamento.Id;
             orcamentoCotacaoLinkModel.Guid = guid;
             orcamentoCotacaoLinkModel.Status = 1;
