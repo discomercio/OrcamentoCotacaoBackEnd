@@ -119,7 +119,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 return new MensagemDto
                 {
                     tipo = "INFO",
-                    mensagem = $"Prorrogado para: {orcamento.Validade.ToShortDateString()}"
+                    mensagem = $"Prorrogado para: {orcamento.Validade.ToString("dd/MM/yyyy")}."
                 };
             }
 
