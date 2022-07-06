@@ -174,23 +174,24 @@ namespace OrcamentoCotacaoBusiness.Bll
              * filtrar para saber se é novo se for novo vamos inserir, senão vamos atualizar
              * para novo pagto criar uma lista de "List<FormaPagtoCriacaoRequestViewModel> FormaPagtos
              */
-            foreach(var pagto in formaPagtos)
+            List<TorcamentoCotacaoOpcaoPagto> lstRetorno = new List<TorcamentoCotacaoOpcaoPagto>();
+            foreach (var pagto in formaPagtos)
             {
                 var f = formaPagtoAntiga.Where(x => x.Id == pagto.Id).FirstOrDefault();
-                if(f == null)
+                if (f == null)
                 {
                     //vamos cadastrar
                     var p = mapper.Map<FormaPagtoCriacaoRequestViewModel>(pagto);
                     List<FormaPagtoCriacaoRequestViewModel> lstPagto = new List<FormaPagtoCriacaoRequestViewModel>();
                     lstPagto.Add(p);
-                    var ret = CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(lstPagto, idOrcamentoOpcao, dbGravacao);
+                    lstRetorno.Add(CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(lstPagto, idOrcamentoOpcao, dbGravacao).FirstOrDefault());
                 }
                 else
                 {
                     //vamos atualizar
                     TorcamentoCotacaoOpcaoPagto torcamentoCotacaoOpcaoPagto = new TorcamentoCotacaoOpcaoPagto()
                     {
-                        Id= pagto.Id,
+                        Id = pagto.Id,
                         IdOrcamentoCotacaoOpcao = idOrcamentoOpcao,
                         Aprovado = false,
                         Observacao = pagto.Observacao,
@@ -218,12 +219,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                         Pu_vencto_apos = pagto.Pu_vencto_apos
                     };
 
-                    orcamentoCotacaoOpcaoPagtoBll.AtualizarComTransacao(torcamentoCotacaoOpcaoPagto, dbGravacao);
+                    lstRetorno.Add(orcamentoCotacaoOpcaoPagtoBll.AtualizarComTransacao(torcamentoCotacaoOpcaoPagto, dbGravacao));
                 }
             }
-            
 
-            return null;
+
+            return lstRetorno;
         }
 
         public List<TorcamentoCotacaoOpcaoPagto> BuscarOpcaoFormasPagtos(int idOpcao)

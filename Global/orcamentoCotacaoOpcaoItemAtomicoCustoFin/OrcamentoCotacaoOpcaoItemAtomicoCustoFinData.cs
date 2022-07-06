@@ -23,7 +23,9 @@ namespace OrcamentoCotacaoOpcaoItemAtomicoCustoFin
 
         public TorcamentoCotacaoOpcaoItemAtomicoCustoFin AtualizarComTransacao(TorcamentoCotacaoOpcaoItemAtomicoCustoFin model, ContextoBdGravacao contextoBdGravacao)
         {
-            throw new NotImplementedException();
+            contextoBdGravacao.Update(model);
+            contextoBdGravacao.SaveChanges();
+            return model;
         }
 
         public bool Excluir(TorcamentoCotacaoOpcaoItemAtomicoCustoFin obj)

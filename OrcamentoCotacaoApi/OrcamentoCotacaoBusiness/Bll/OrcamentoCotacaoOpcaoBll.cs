@@ -125,10 +125,27 @@ namespace OrcamentoCotacaoBusiness.Bll
                 try
                 {
                     //atualizar opção com transação
-                    orcamentoCotacaoOpcaoBll.AtualizarComTransacao(opcaoNovo, dbGravacao); //deu certo
+                    var tOpcao = orcamentoCotacaoOpcaoBll.AtualizarComTransacao(opcaoNovo, dbGravacao); //deu certo
 
-                    formaPagtoOrcamentoCotacaoBll.AtualizarOrcamentoCotacaoOpcaoPagtoComTransacao(opcao.FormaPagto, opcao.Id, formaPagtoAntiga, dbGravacao); // deu certo
+                    //atualizar os produtos
+                    //atualiza somente a quantidade na t_ORCAMENTO_COTACAO_OPCAO_ITEM_UNIFICADO
+                    tOpcao.TorcamentoCotacaoItemUnificados = produtoOrcamentoCotacaoBll
+                        .AtualizarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(opcao.ListaProdutos, opcao.Id, dbGravacao);
+                    if (tOpcao.TorcamentoCotacaoItemUnificados == null) throw new ArgumentException("Falha ao atualizar os itens!");
 
+                    var topcaoPagtos = formaPagtoOrcamentoCotacaoBll
+                        .AtualizarOrcamentoCotacaoOpcaoPagtoComTransacao(opcao.FormaPagto, opcao.Id, formaPagtoAntiga, dbGravacao); // deu certo
+                    // atualiza somente a quantidade na t_ORCAMENTO_COTACAO_OPCAO_ITEM_ATOMICO => produtos separados
+                    //essa rotina esta fechando a transação quando retorna
+                    tOpcao.TorcamentoCotacaoItemUnificados = produtoOrcamentoCotacaoBll
+                        .AtualizarTorcamentoCotacaoOpcaoItemAtomicoComTransacao(opcao.ListaProdutos, opcao.Id,
+                        tOpcao.TorcamentoCotacaoItemUnificados, dbGravacao);
+                    // atualiza desconto, valores, coeficiente utilizado e se fez uso de desconto por alçada, na t_ORCAMENTO_COTACAO_OPCAO_ITEM_ATOMICO_CUSTO_FIN
+                    //tOpcao
+                    //    .TorcamentoCotacaoItemUnificados[0]
+                    //    .TorcamentoCotacaoOpcaoItemAtomicos[0]
+                    //    .TorcamentoCotacaoItemAtomicoCustoFin[0]
+                    //    .TorcamentoCotacaoOpcaoPagto
 
 
                     // temos que verificar qual produto esta fazendo uso da alçada => esperar definição
@@ -136,14 +153,10 @@ namespace OrcamentoCotacaoBusiness.Bll
                     // o limite de alçada pode ser usado por conta de outro produto que foi alterado e não o 
                     // produto que esta com o desconto maior que o limite padrão
 
-                    //atualizar os produtos
-                    //atualiza somente a quantidade na t_ORCAMENTO_COTACAO_OPCAO_ITEM_UNIFICADO
-                    var lstUnificados = produtoOrcamentoCotacaoBll.AtualizarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(opcao.ListaProdutos, opcao.Id, dbGravacao);
-                    if (lstUnificados == null) throw new ArgumentException("Falha ao atualizar os itens!");
-                    // atualiza somente a quantidade na t_ORCAMENTO_COTACAO_OPCAO_ITEM_ATOMICO => produtos separados
-                    //essa rotina esta fechando a transação quando retorna
-                    lstUnificados = produtoOrcamentoCotacaoBll.AtualizarTorcamentoCotacaoOpcaoItemAtomicoComTransacao(opcao.ListaProdutos, opcao.Id, lstUnificados, dbGravacao);
-                    // atualiza desconto, valores, coeficiente utilizado e se fez uso de desconto por alçada, na t_ORCAMENTO_COTACAO_OPCAO_ITEM_ATOMICO_CUSTO_FIN
+
+                    produtoOrcamentoCotacaoBll.AtualizarProdutoAtomicoCustoFinComTransacao(opcao, tOpcao.TorcamentoCotacaoItemUnificados, dbGravacao);
+
+
                     dbGravacao.transacao.Commit();
                 }
                 catch (Exception ex)

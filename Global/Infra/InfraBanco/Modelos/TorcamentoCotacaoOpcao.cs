@@ -21,6 +21,6 @@ namespace InfraBanco.Modelos
 
         public virtual TorcamentoCotacao TorcamentoCotacao { get; set; }
 
-        public virtual ICollection<TorcamentoCotacaoItemUnificado> TorcamentoCotacaoItemUnificados { get; set; }
+        public virtual List<TorcamentoCotacaoItemUnificado> TorcamentoCotacaoItemUnificados { get; set; }
     }
 }
