@@ -77,55 +77,6 @@ namespace OrcamentoCotacaoBusiness.Bll
             _formaPagtoOrcamentoCotacaoBll = formaPagtoOrcamentoCotacaoBll;
         }
 
-        public MensagemDto ProrrogarOrcamento(int id, int idUsuario)
-        {
-            //TODO: DESFIXAR VARIAVEIS
-            int QtdeDiasValidade = 20;
-            int QtdeGlobalValidade = 20;
-            int QtdeDiasProrrogacao = 20;
-            int QtdeMaxProrrogacao = 2;
-
-            var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro { Id = id }).FirstOrDefault();
-
-            if (orcamento != null)
-            {
-                if (orcamento.Status == (short)Constantes.eCfgOrcamentoCotacaoStatus.APROVADO ||
-                    orcamento.Status == (short)Constantes.eCfgOrcamentoCotacaoStatus.CANCELADO)
-                    return new MensagemDto
-                    {
-                        tipo = "WARN",
-                        mensagem = "Não é possível prorrogar, orçamentos aprovados ou cancelados!"
-                    };
-
-                if (orcamento.QtdeRenovacao >= QtdeMaxProrrogacao)
-                    return new MensagemDto
-                    {
-                        tipo = "WARN",
-                        mensagem = $"Excedida a quantidade máxima! {QtdeMaxProrrogacao} vezes"
-                    };
-
-                if (DateTime.Now.AddDays(QtdeDiasProrrogacao) > DateTime.Now.AddDays(QtdeGlobalValidade))
-                    orcamento.Validade = DateTime.Now.AddDays(QtdeGlobalValidade);
-                else
-                    orcamento.Validade = DateTime.Now.AddDays(QtdeDiasProrrogacao);
-
-                orcamento.ValidadeAnterior = orcamento.Validade;
-                orcamento.QtdeRenovacao += 1;
-                orcamento.IdUsuarioUltRenovacao = idUsuario;
-                orcamento.DataHoraUltRenovacao = DateTime.Now;
-
-                _orcamentoCotacaoBll.Atualizar(orcamento);
-
-                return new MensagemDto
-                {
-                    tipo = "INFO",
-                    mensagem = $"Prorrogado para: {orcamento.Validade.ToString("dd/MM/yyyy")}.({orcamento.QtdeRenovacao}x)"
-                };
-            }
-
-            return null;
-        }
-
         public OrcamentoCotacaoDto PorGuid(string guid)
         {
             var orcamento = _orcamentoCotacaoBll.PorGuid(guid);
@@ -526,6 +477,99 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             return torcamentoCotacao;
+        }
+
+        public MensagemDto ProrrogarOrcamento(int id, int idUsuario)
+        {
+            //TODO: DESFIXAR VARIAVEIS
+            int QtdeDiasValidade = 20;
+            int QtdeGlobalValidade = 20;
+            int QtdeDiasProrrogacao = 20;
+            int QtdeMaxProrrogacao = 2;
+
+            var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro { Id = id }).FirstOrDefault();
+
+            if (orcamento != null)
+            {
+                if (orcamento.Status == (short)Constantes.eCfgOrcamentoCotacaoStatus.APROVADO ||
+                    orcamento.Status == (short)Constantes.eCfgOrcamentoCotacaoStatus.CANCELADO)
+                    return new MensagemDto
+                    {
+                        tipo = "WARN",
+                        mensagem = "Não é possível prorrogar, orçamentos aprovados ou cancelados!"
+                    };
+
+                if (orcamento.QtdeRenovacao >= QtdeMaxProrrogacao)
+                    return new MensagemDto
+                    {
+                        tipo = "WARN",
+                        mensagem = $"Excedida a quantidade máxima! {QtdeMaxProrrogacao} vezes"
+                    };
+
+                if (DateTime.Now.AddDays(QtdeDiasProrrogacao) > DateTime.Now.AddDays(QtdeGlobalValidade))
+                    orcamento.Validade = DateTime.Now.AddDays(QtdeGlobalValidade);
+                else
+                    orcamento.Validade = DateTime.Now.AddDays(QtdeDiasProrrogacao);
+
+                orcamento.ValidadeAnterior = orcamento.Validade;
+                orcamento.QtdeRenovacao += 1;
+                orcamento.IdUsuarioUltRenovacao = idUsuario;
+                orcamento.DataHoraUltRenovacao = DateTime.Now;
+
+                _orcamentoCotacaoBll.Atualizar(orcamento);
+
+                return new MensagemDto
+                {
+                    tipo = "INFO",
+                    mensagem = $"Prorrogado para: {orcamento.Validade.ToString("dd/MM/yyyy")}. {orcamento.QtdeRenovacao}ª vez."
+                };
+            }
+
+            return null;
+        }
+
+        public MensagemDto AprovarOrcamento(int id, int idUsuario)
+        {
+            //TODO: DESFIXAR VARIAVEIS
+            int QtdeDiasValidade = 15;
+            int QtdeGlobalValidade = 30;
+            int QtdeDiasProrrogacao = 5;
+            int QtdeMaxProrrogacao = 2;
+
+            var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro { Id = id }).FirstOrDefault();
+
+            if (orcamento != null)
+            {
+                if (orcamento.Status == (short)Constantes.eCfgOrcamentoCotacaoStatus.APROVADO ||
+                    orcamento.Status == (short)Constantes.eCfgOrcamentoCotacaoStatus.CANCELADO)
+                    return new MensagemDto
+                    {
+                        tipo = "WARN",
+                        mensagem = "Não é possível aprovar, orçamentos aprovados ou cancelados!"
+                    };
+
+                if (orcamento.Validade.Date < DateTime.Now.Date)
+                    return new MensagemDto
+                    {
+                        tipo = "WARN",
+                        mensagem = "Não é possível aprovar, orçamentos com validade expirada!"
+                    };
+
+                orcamento.ValidadeAnterior = orcamento.Validade;
+                orcamento.QtdeRenovacao += 1;
+                orcamento.IdUsuarioUltRenovacao = idUsuario;
+                orcamento.DataHoraUltRenovacao = DateTime.Now;
+
+                _orcamentoCotacaoBll.Atualizar(orcamento);
+
+                return new MensagemDto
+                {
+                    tipo = "INFO",
+                    mensagem = String.Format("Prorrogado para: {0}. {1} {2}", orcamento.Validade.ToString("dd/MM/yyyy"), orcamento.QtdeRenovacao, orcamento.QtdeRenovacao == 1 ? "vez" : "vezes")
+                };
+            }
+
+            return null;
         }
     }
 }
