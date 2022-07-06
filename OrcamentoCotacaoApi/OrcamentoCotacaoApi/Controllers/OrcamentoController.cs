@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
+using OrcamentoCotacaoBusiness.Models.Response;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -91,9 +92,11 @@ namespace OrcamentoCotacaoApi.Controllers
             return Ok(dados);
         }
 
-        [HttpPut("atualizarOrcamentoOpcao")]
-        public IActionResult AtualizarOrcamentoOpcao()
+        [HttpPost("atualizarOrcamentoOpcao")]
+        public IActionResult AtualizarOrcamentoOpcao(OrcamentoOpcaoResponseViewModel opcao)
         {
+            var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+            _orcamentoBll.AtualizarOrcamentoOpcao(opcao, user);
             return Ok();
         }
     }

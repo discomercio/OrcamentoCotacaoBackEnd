@@ -19,9 +19,7 @@ namespace OrcamentoCotacaoApi.Utils
                 x.AddProfile(new LojaMapper());
                 x.AddProfile(new OrcamentoCotacaoOpcaoMapper());
                 x.AddProfile(new ProdutoMapper());
-                //x.AddProfile(new OrcamentoMapper());
-                //x.AddProfile(new OrcamentoOpcaoItemMapper());
-                //x.AddProfile(new FormaPagamentoMapper());
+                x.AddProfile(new FormaPagtoMapper());
             }, type);
         }
     }

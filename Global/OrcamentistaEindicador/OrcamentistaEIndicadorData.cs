@@ -25,7 +25,17 @@ namespace OrcamentistaEindicador
             throw new NotImplementedException();
         }
 
+        public TorcamentistaEindicador AtualizarComTransacao(TorcamentistaEindicador model, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Excluir(TorcamentistaEindicador obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExcluirComTransacao(TorcamentistaEindicador obj, ContextoBdGravacao contextoBdGravacao)
         {
             throw new NotImplementedException();
         }

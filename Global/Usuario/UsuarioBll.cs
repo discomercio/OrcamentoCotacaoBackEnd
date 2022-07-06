@@ -125,5 +125,15 @@ namespace Usuario
                         select c).ToList();
             }
         }
+
+        public Tusuario AtualizarComTransacao(Tusuario model, InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExcluirComTransacao(Tusuario obj, InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

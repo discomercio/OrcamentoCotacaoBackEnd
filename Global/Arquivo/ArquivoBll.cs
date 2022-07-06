@@ -151,5 +151,15 @@ namespace Arquivo
         {
             throw new NotImplementedException();
         }
+
+        public TorcamentoCotacaoArquivos AtualizarComTransacao(TorcamentoCotacaoArquivos model, InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExcluirComTransacao(TorcamentoCotacaoArquivos obj, InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

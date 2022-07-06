@@ -54,5 +54,8 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 
         [JsonProperty("idIndicador")]
         public int? IdIndicador { get; set; }
+
+        [JsonProperty("idIndicadorVendedor")]
+        public int? IdIndicadorVendedor { get; set; }
     }
 }

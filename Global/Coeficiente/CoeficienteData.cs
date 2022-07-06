@@ -22,7 +22,17 @@ namespace Coeficiente
             throw new NotImplementedException();
         }
 
+        public TpercentualCustoFinanceiroFornecedorHistorico AtualizarComTransacao(TpercentualCustoFinanceiroFornecedorHistorico model, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Excluir(TpercentualCustoFinanceiroFornecedorHistorico obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExcluirComTransacao(TpercentualCustoFinanceiroFornecedorHistorico obj, ContextoBdGravacao contextoBdGravacao)
         {
             throw new NotImplementedException();
         }

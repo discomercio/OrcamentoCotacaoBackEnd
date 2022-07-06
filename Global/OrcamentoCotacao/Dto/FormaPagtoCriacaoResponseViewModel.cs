@@ -8,7 +8,6 @@ namespace OrcamentoCotacaoBusiness.Models.Response
     public class FormaPagtoCriacaoResponseViewModel
     {
         [JsonProperty("id")]
-
         public int Id { get; set; }
 
         [JsonProperty("idOrcamentoCotacaoOpcao")]
@@ -87,6 +86,6 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         public int Pu_vencto_apos { get; set; }
 
         [JsonProperty("qtde_Parcelas")]
-        public int QtdeParcelas { get; set; }
+        public int Qtde_Parcelas { get; set; }
     }
 }

@@ -213,5 +213,15 @@ namespace OrcamentoCotacao
                 throw ex;
             }
         }
+
+        public TorcamentoCotacao AtualizarComTransacao(TorcamentoCotacao model, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExcluirComTransacao(TorcamentoCotacao obj, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

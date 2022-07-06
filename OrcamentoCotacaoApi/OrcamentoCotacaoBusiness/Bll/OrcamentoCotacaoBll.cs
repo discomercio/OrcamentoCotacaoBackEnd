@@ -17,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -38,6 +39,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly CfgUnidadeNegocioBll _cfgUnidadeNegocioBll;
         private readonly CfgUnidadeNegocioParametroBll _cfgUnidadeNegocioParametroBll;
         private readonly FormaPagtoOrcamentoCotacaoBll _formaPagtoOrcamentoCotacaoBll;
+        private readonly LojaOrcamentoCotacaoBll _lojaOrcamentoCotacaoBll;
 
         public OrcamentoCotacaoBll(
             OrcamentoBll orcamentoBll,
@@ -55,7 +57,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             CfgUnidadeNegocioBll cfgUnidadeNegocioBll,
             CfgUnidadeNegocioParametroBll cfgUnidadeNegocioParametroBll,
             FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll,
-            OrcamentoCotacaoLinkBll orcamentoCotacaoLinkBll
+            OrcamentoCotacaoLinkBll orcamentoCotacaoLinkBll,
+            LojaOrcamentoCotacaoBll _lojaOrcamentoCotacaoBll
             )
         {
             _orcamentoBll = orcamentoBll;
@@ -70,6 +73,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             _appSettings = appSettings.Value;
             _orcamentoCotacaoEmailQueueBll = orcamentoCotacaoEmailQueueBll;
             _orcamentoCotacaoLinkBll = orcamentoCotacaoLinkBll;
+            this._lojaOrcamentoCotacaoBll = _lojaOrcamentoCotacaoBll;
             _lojaBll = lojaBll;
             _cfgUnidadeNegocioBll = cfgUnidadeNegocioBll;
             _cfgUnidadeNegocioParametroBll = cfgUnidadeNegocioParametroBll;
@@ -219,6 +223,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 DataEntregaImediata = orcamento.PrevisaoEntregaData,
                 DataCadastro = orcamento.DataCadastro,
                 IdIndicador = orcamento.IdIndicador,
+                IdIndicadorVendedor = orcamento.IdIndicadorVendedor,
                 ClienteOrcamentoCotacaoDto = new ClienteOrcamentoCotacaoRequestViewModel()
                 {
                     NomeCliente = orcamento.NomeCliente,
@@ -334,7 +339,88 @@ namespace OrcamentoCotacaoBusiness.Bll
                     throw new ArgumentException("Falha ao gravar orçamento!");
                 }
             }
+        }
 
+        public void AtualizarOrcamentoOpcao(OrcamentoOpcaoResponseViewModel opcao, UsuarioLogin usuarioLogado)
+        {
+            //buscar orçamento
+            var orcamento = PorFiltro(opcao.IdOrcamentoCotacao);
+
+            bool temPermissao = false;
+
+            if (orcamento.IdIndicadorVendedor != null)
+            {
+                var vendedoresParceiro = _orcamentistaEIndicadorVendedorBll.BuscarVendedoresParceiro(orcamento.Parceiro);
+                if (vendedoresParceiro == null) throw new ArgumentException("Nenhum vendedor do parceiro encontrado!");
+
+                var nome = vendedoresParceiro //IdIndicadorVendedor
+                    .Where(x => x.Nome == orcamento.VendedorParceiro)
+                    .FirstOrDefault().Nome;
+
+                if (usuarioLogado.Apelido == nome) temPermissao = true;
+            }
+
+            if (orcamento.IdIndicadorVendedor == null && orcamento.IdIndicador != null)
+            {
+                var parceiro = _orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { apelido = orcamento.Parceiro, acessoHabilitado = 1 });
+
+                if (usuarioLogado.Apelido == parceiro.Apelido) temPermissao = true;
+            }
+
+            PercMaxDescEComissaoResponseViewModel descontoPorAlcada = new PercMaxDescEComissaoResponseViewModel();
+            if (!temPermissao)
+            {
+                if (usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_1) ||
+                    usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_2) ||
+                    usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_3))
+                {
+                    temPermissao = true;
+                    descontoPorAlcada = _lojaOrcamentoCotacaoBll.BuscarPercMaxPorLojaAlcada(opcao.Loja, orcamento.ClienteOrcamentoCotacaoDto.Tipo, usuarioLogado.Permissoes);
+
+                }
+            }
+
+            if (!temPermissao) throw new ArgumentException("Usuário não tem permissão para atualizar a opção de orçamento!");
+
+            //buscar limite padrão de desconto e comissão
+            var descontoPadrao = _lojaBll.BuscarPercMaxPorLoja(opcao.Loja);
+
+            
+
+            /*calcular desconto médio do que era 
+             * calcular desconto médio do veio e verificar se ultrapassa o desconto padrão
+             * se ultrapassou o desconto padrão, verificar se esta dentro do limite por alçada
+             * se fez uso do limite por alçada, comparamos cada item do que era com o que veio e atribuimos o
+             * usuário que esta logado 
+            */
+            var opcaoAntiga = orcamento.ListaOrcamentoCotacaoDto.Where(x => x.Id == opcao.Id).FirstOrDefault();
+            if (opcaoAntiga == null) throw new ArgumentException("Falha ao buscar a opção!");
+
+            var totalSemDescAntigo = opcaoAntiga.ListaProdutos.Sum(x => x.PrecoLista * x.Qtde);
+            var totalComDescAntigo = opcaoAntiga.ListaProdutos.Sum(x => x.TotalItem);
+            var descMedioAntigo = ((totalSemDescAntigo - totalComDescAntigo) / totalSemDescAntigo);
+            bool usouLimitesPorAlcada = false;
+            if (descMedioAntigo > (decimal)(descontoPadrao.PercMaxComissaoEDesconto - descontoPadrao.PercMaxComissao))
+            {
+                //teve uso da alçada
+                usouLimitesPorAlcada = true;
+                var totalSemDescNovo = opcao.ListaProdutos.Sum(x => x.PrecoLista * x.Qtde);
+                var totalComDescNovo = opcao.ListaProdutos.Sum(x => x.TotalItem);
+                var descMedioNovo = ((totalSemDescNovo - totalComDescNovo) / totalSemDescNovo);
+                if (descMedioNovo > (decimal)(descontoPorAlcada.PercMaxComissaoEDesconto - descontoPorAlcada.PercMaxComissao))
+                    throw new ArgumentException("O desconto médio ultrapassa o desconto por alçada");
+            }
+
+            //se fez uso do limite por alçada, comparamos cada item do que era com o que veio e atribuimos o
+            //usuário que esta logado
+
+            //a opção sempre será atualizada 
+            
+            _orcamentoCotacaoOpcaoBll.AtualizarOrcamentoOpcao(opcao, usuarioLogado, usouLimitesPorAlcada, temPermissao,
+                descontoPorAlcada, descontoPadrao);
+
+            //Verificar se usuário tem permissão de desconto superior
+            //Verificar item por item para saber se esta usando desconto superior
 
         }
 
@@ -342,7 +428,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         {
             TorcamentoCotacaoLink orcamentoCotacaoLinkModel = new InfraBanco.Modelos.TorcamentoCotacaoLink();
             //orcamentoCotacaoLinkModel.DataHoraCadastro = System.DateTime.Now;
-            
+
             orcamentoCotacaoLinkModel.IdOrcamentoCotacao = orcamento.Id;
             orcamentoCotacaoLinkModel.Guid = guid;
             orcamentoCotacaoLinkModel.Status = 1;

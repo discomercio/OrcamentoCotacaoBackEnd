@@ -22,7 +22,19 @@ namespace OrcamentoCotacaoOpcaoItemAtomico
             throw new NotImplementedException();
         }
 
+        public TorcamentoCotacaoOpcaoItemAtomico AtualizarComTransacao(TorcamentoCotacaoOpcaoItemAtomico model, ContextoBdGravacao contextoBdGravacao)
+        {
+            contextoBdGravacao.Update(model);
+            contextoBdGravacao.SaveChanges();
+            return model;
+        }
+
         public bool Excluir(TorcamentoCotacaoOpcaoItemAtomico obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExcluirComTransacao(TorcamentoCotacaoOpcaoItemAtomico obj, ContextoBdGravacao contextoBdGravacao)
         {
             throw new NotImplementedException();
         }
@@ -39,27 +51,20 @@ namespace OrcamentoCotacaoOpcaoItemAtomico
             return model;
         }
 
-        public List<TorcamentoCotacaoOpcaoItemAtomico> PorFilroComTransacao(TorcamentoCotacaoOpcaoItemAtomico model, TorcamentoCotacaoOpcaoItemAtomico obj, ContextoBdGravacao contextoBdGravacao)
-        {
-            throw new NotImplementedException();
-        }
-
         public List<TorcamentoCotacaoOpcaoItemAtomico> PorFilroComTransacao(TorcamentoCotacaoOpcaoItemAtomicoFiltro obj, ContextoBdGravacao contextoBdGravacao)
         {
             try
             {
-                using (var db = contextoBdGravacao)
+                var saida = from c in contextoBdGravacao.TorcamentoCotacaoOpcaoItemAtomico
+                            select c;
+
+                if (obj.IdItemUnificado != 0)
                 {
-                    var saida = from c in db.TorcamentoCotacaoOpcaoItemAtomico
-                                select c;
-
-                    if (obj.IdItemUnificado != 0)
-                    {
-                        saida = saida.Where(x => x.IdItemUnificado == obj.IdItemUnificado);
-                    }
-
-                    return saida.ToList();
+                    saida = saida.Where(x => x.IdItemUnificado == obj.IdItemUnificado);
                 }
+
+                return saida.ToList();
+
             }
             catch (Exception ex)
             {
@@ -77,9 +82,9 @@ namespace OrcamentoCotacaoOpcaoItemAtomico
                     var saida = from c in db.TorcamentoCotacaoOpcaoItemAtomico
                                 select c;
 
-                    if(saida == null) return null;
+                    if (saida == null) return null;
 
-                    if(obj.IdItemUnificado != 0)
+                    if (obj.IdItemUnificado != 0)
                     {
                         saida = saida.Where(x => x.IdItemUnificado == obj.IdItemUnificado);
                     }

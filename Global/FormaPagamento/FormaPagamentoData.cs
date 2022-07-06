@@ -110,5 +110,15 @@ namespace FormaPagamento
         {
             throw new NotImplementedException();
         }
+
+        public TcfgPagtoFormaStatus AtualizarComTransacao(TcfgPagtoFormaStatus model, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExcluirComTransacao(TcfgPagtoFormaStatus obj, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

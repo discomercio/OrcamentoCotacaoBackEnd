@@ -98,5 +98,14 @@ namespace OrcamentoCotacaoLink
             }
         }
 
+        public TorcamentoCotacaoLink AtualizarComTransacao(TorcamentoCotacaoLink model, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExcluirComTransacao(TorcamentoCotacaoLink obj, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

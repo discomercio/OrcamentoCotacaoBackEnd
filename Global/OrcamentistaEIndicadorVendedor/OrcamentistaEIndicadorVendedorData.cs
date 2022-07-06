@@ -29,7 +29,17 @@ namespace OrcamentistaEIndicadorVendedor
             }
         }
 
+        public TorcamentistaEIndicadorVendedor AtualizarComTransacao(TorcamentistaEIndicadorVendedor model, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Excluir(TorcamentistaEIndicadorVendedor obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExcluirComTransacao(TorcamentistaEIndicadorVendedor obj, ContextoBdGravacao contextoBdGravacao)
         {
             throw new NotImplementedException();
         }

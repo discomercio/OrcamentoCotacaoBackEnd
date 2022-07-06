@@ -22,7 +22,17 @@ namespace Cfg.CfgOrcamentoCotacaoEmailTemplate
             throw new NotImplementedException();
         }
 
+        public TcfgOrcamentoCotacaoEmailTemplate AtualizarComTransacao(TcfgOrcamentoCotacaoEmailTemplate model, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Excluir(TcfgOrcamentoCotacaoEmailTemplate obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExcluirComTransacao(TcfgOrcamentoCotacaoEmailTemplate obj, ContextoBdGravacao contextoBdGravacao)
         {
             throw new NotImplementedException();
         }

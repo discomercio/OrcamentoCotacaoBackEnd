@@ -321,6 +321,53 @@ namespace OrcamentoCotacaoBusiness.Bll
             return new List<TorcamentoCotacaoOpcaoItemAtomicoCustoFin>();
         }
 
+        public List<TorcamentoCotacaoItemUnificado> AtualizarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(List<ProdutoOrcamentoOpcaoResponseViewModel> lstProdutos, int idOpcao,
+            ContextoBdGravacao contextoBdGravacao)
+        {
+            List<TorcamentoCotacaoItemUnificado> lstIdsUnificados = new List<TorcamentoCotacaoItemUnificado>();
+
+            var produtosUnificados = orcamentoCotacaoOpcaoItemUnificadoBll.PorFiltroComTransacao(new TorcamentoCotacaoOpcaoItemUnificadoFiltro() { IdOpcao = idOpcao }, contextoBdGravacao);
+            if (produtosUnificados == null) throw new ArgumentException("Falha ao buscar itens para atualização!");
+
+            foreach (var item in lstProdutos)
+            {
+
+                var produto = produtosUnificados.Where(x => x.Fabricante == item.Fabricante && x.Produto == item.Produto).FirstOrDefault();
+                if (produto == null) throw new ArgumentException("Falha ao buscar item para atualização!");
+
+                produto.Qtde = item.Qtde;
+                orcamentoCotacaoOpcaoItemUnificadoBll.AtualizarComTransacao(produto, contextoBdGravacao);
+
+                lstIdsUnificados.Add(produto);
+            }
+            return lstIdsUnificados;
+        }
+
+        public List<TorcamentoCotacaoItemUnificado> AtualizarTorcamentoCotacaoOpcaoItemAtomicoComTransacao(List<ProdutoOrcamentoOpcaoResponseViewModel> lstProdutos, int idOpcao,
+            List<TorcamentoCotacaoItemUnificado> produtosUnificados, ContextoBdGravacao contextoBdGravacao)
+        {
+            List<TorcamentoCotacaoItemUnificado> lstUnificados = new List<TorcamentoCotacaoItemUnificado>();
+
+
+            foreach (var item in lstProdutos)
+            {
+
+                var unificado = produtosUnificados.Where(x => x.Fabricante == item.Fabricante && x.Produto == item.Produto).FirstOrDefault();
+                if (unificado == null) throw new ArgumentException("Falha ao buscar item para atualização!");
+
+                var TorcamentoCotacaoOpcaoItemAtomicos = orcamentoCotacaoOpcaoItemAtomicoBll.PorFiltroComTransacao(new TorcamentoCotacaoOpcaoItemAtomicoFiltro() { IdItemUnificado = item.IdItemUnificado }, contextoBdGravacao);
+                if (TorcamentoCotacaoOpcaoItemAtomicos == null) throw new ArgumentException("Falha ao buscar itens para atualização!");
+
+                foreach (var atomico in TorcamentoCotacaoOpcaoItemAtomicos)
+                {
+                    atomico.Qtde = (short)item.Qtde;
+                    var retorno = orcamentoCotacaoOpcaoItemAtomicoBll.AtualizarComTransacao(atomico, contextoBdGravacao);
+                }
+                lstUnificados.Add(unificado);
+            }
+            return lstUnificados;
+        }
+
         public async Task<List<ProdutoOrcamentoOpcaoResponseViewModel>> BuscarOpcaoProdutos(int idOpcao)
         {
             var opcaoProdutosUnificados = orcamentoCotacaoOpcaoItemUnificadoBll.PorFiltro(new TorcamentoCotacaoOpcaoItemUnificadoFiltro() { IdOpcao = idOpcao });

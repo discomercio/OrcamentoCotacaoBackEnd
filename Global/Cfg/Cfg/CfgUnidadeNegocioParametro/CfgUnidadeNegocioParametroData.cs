@@ -24,7 +24,17 @@ namespace Cfg.CfgUnidadeNegocioParametro
             throw new NotImplementedException();
         }
 
+        public TcfgUnidadeNegocioParametro AtualizarComTransacao(TcfgUnidadeNegocioParametro model, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Excluir(TcfgUnidadeNegocioParametro obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExcluirComTransacao(TcfgUnidadeNegocioParametro obj, ContextoBdGravacao contextoBdGravacao)
         {
             throw new NotImplementedException();
         }

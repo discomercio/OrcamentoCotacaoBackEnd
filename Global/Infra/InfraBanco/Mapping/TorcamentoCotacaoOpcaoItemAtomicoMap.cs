@@ -59,9 +59,9 @@ namespace InfraBanco.Mapping
                 .HasForeignKey(f => f.IdItemUnificado);
 
             builder
-                .HasOne(x => x.TorcamentoCotacaoItemAtomicoCustoFin)
+                .HasMany(x => x.TorcamentoCotacaoItemAtomicoCustoFin)
                 .WithOne(o => o.TorcamentoCotacaoOpcaoItemAtomico)
-                .HasForeignKey<TorcamentoCotacaoOpcaoItemAtomico>(f => f.IdItemUnificado);
+                .HasForeignKey(f => f.IdItemAtomico);
         }
     }
 }

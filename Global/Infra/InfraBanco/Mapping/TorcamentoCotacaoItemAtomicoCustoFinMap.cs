@@ -76,9 +76,14 @@ namespace InfraBanco.Mapping
 
             builder
                 .HasOne(x => x.TorcamentoCotacaoOpcaoItemAtomico)
-                .WithOne(o => o.TorcamentoCotacaoItemAtomicoCustoFin)
-                .HasForeignKey<TorcamentoCotacaoOpcaoItemAtomicoCustoFin>(f => f.IdItemAtomico);
+                .WithMany(o => o.TorcamentoCotacaoItemAtomicoCustoFin)
+                .HasForeignKey(f => f.IdItemAtomico);
 
+            builder
+                .HasOne(x => x.TorcamentoCotacaoOpcaoPagto)
+                .WithMany(m => m.TorcamentoCotacaoOpcaoItemAtomicoCustoFin)
+                .HasForeignKey(f => f.IdOpcaoPagto);
+            
             //builder
             //    .HasOne(x => x.Tusuario)
             //    .WithOne(o => o.TorcamentoCotacaoOpcaoItemAtomicoCustoFin)

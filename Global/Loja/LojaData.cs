@@ -103,5 +103,15 @@ namespace Loja
         {
             throw new NotImplementedException();
         }
+
+        public Tloja AtualizarComTransacao(Tloja model, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExcluirComTransacao(Tloja obj, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

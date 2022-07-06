@@ -44,5 +44,15 @@ namespace Orcamento
         {
             throw new NotImplementedException();
         }
+
+        public TorcamentoCotacaoOpcao AtualizarComTransacao(TorcamentoCotacaoOpcao model, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExcluirComTransacao(TorcamentoCotacaoOpcao obj, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
