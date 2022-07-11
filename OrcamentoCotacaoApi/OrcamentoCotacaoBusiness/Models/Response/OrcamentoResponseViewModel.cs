@@ -7,6 +7,9 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 {
     public class OrcamentoResponseViewModel : IViewModelResponse
     {
+        [JsonProperty("id")]
+        public long Id { get; set; }
+
         [JsonProperty("vendedor")]
         public string Vendedor { get; set; }
 
@@ -21,6 +24,9 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 
         [JsonProperty("validade")]
         public DateTime Validade { get; set; }
+
+        [JsonProperty("status")]
+        public int Status { get; set; }
 
         [JsonProperty("qtdeRenovacao")]
         public int QtdeRenovacao { get; set; }
@@ -43,9 +49,6 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         [JsonProperty("listaOrcamentoCotacaoDto")]
         public List<OrcamentoOpcaoResponseViewModel> ListaOrcamentoCotacaoDto { get; set; }
 
-        [JsonProperty("id")]
-        public long Id { get; set; }
-
         [JsonProperty("cadastradoPor")]
         public string CadastradoPor { get; set; }
 
@@ -57,5 +60,6 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 
         [JsonProperty("idIndicadorVendedor")]
         public int? IdIndicadorVendedor { get; set; }
+        
     }
 }

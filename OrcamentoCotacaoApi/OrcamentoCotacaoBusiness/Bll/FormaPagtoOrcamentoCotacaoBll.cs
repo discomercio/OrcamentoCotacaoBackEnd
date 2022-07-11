@@ -169,18 +169,12 @@ namespace OrcamentoCotacaoBusiness.Bll
         public List<TorcamentoCotacaoOpcaoPagto> AtualizarOrcamentoCotacaoOpcaoPagtoComTransacao(List<FormaPagtoCriacaoResponseViewModel> formaPagtos,
             int idOrcamentoOpcao, List<TorcamentoCotacaoOpcaoPagto> formaPagtoAntiga, ContextoBdGravacao dbGravacao)
         {
-            /* atualizar formas de pagtos
-             * precisamos verificar se existe uma nova opção para inserir, então precisamos 
-             * filtrar para saber se é novo se for novo vamos inserir, senão vamos atualizar
-             * para novo pagto criar uma lista de "List<FormaPagtoCriacaoRequestViewModel> FormaPagtos
-             */
             List<TorcamentoCotacaoOpcaoPagto> lstRetorno = new List<TorcamentoCotacaoOpcaoPagto>();
             foreach (var pagto in formaPagtos)
             {
                 var f = formaPagtoAntiga.Where(x => x.Id == pagto.Id).FirstOrDefault();
                 if (f == null)
                 {
-                    //vamos cadastrar
                     var p = mapper.Map<FormaPagtoCriacaoRequestViewModel>(pagto);
                     List<FormaPagtoCriacaoRequestViewModel> lstPagto = new List<FormaPagtoCriacaoRequestViewModel>();
                     lstPagto.Add(p);
@@ -188,7 +182,6 @@ namespace OrcamentoCotacaoBusiness.Bll
                 }
                 else
                 {
-                    //vamos atualizar
                     TorcamentoCotacaoOpcaoPagto torcamentoCotacaoOpcaoPagto = new TorcamentoCotacaoOpcaoPagto()
                     {
                         Id = pagto.Id,
@@ -222,7 +215,6 @@ namespace OrcamentoCotacaoBusiness.Bll
                     lstRetorno.Add(orcamentoCotacaoOpcaoPagtoBll.AtualizarComTransacao(torcamentoCotacaoOpcaoPagto, dbGravacao));
                 }
             }
-
 
             return lstRetorno;
         }

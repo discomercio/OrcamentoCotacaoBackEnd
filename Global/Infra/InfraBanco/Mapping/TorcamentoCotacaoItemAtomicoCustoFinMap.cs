@@ -71,6 +71,10 @@ namespace InfraBanco.Mapping
                 .HasColumnName("DataHoraDescontoSuperior")
                 .HasColumnType("datetime");
 
+            builder.Property(x => x.IdOperacaoAlcadaDescontoSuperior)
+                .HasColumnName("IdOperacaoAlcadaDescontoSuperior")
+                .HasColumnType("int");
+
             builder.Ignore(x => x.TorcamentoCotacaoOpcaoItemAtomico);
             builder.Ignore(x => x.TorcamentoCotacaoOpcaoPagto);
 

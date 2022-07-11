@@ -216,6 +216,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 VendedorParceiro = vendedorParceiro,
                 Loja = orcamento.Loja,
                 Validade = orcamento.Validade,
+                Status = orcamento.Status,
                 QtdeRenovacao = orcamento.QtdeRenovacao,
                 ConcordaWhatsapp = orcamento.AceiteWhatsApp,
                 ObservacoesGerais = orcamento.Observacao,
@@ -343,10 +344,16 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public void AtualizarOrcamentoOpcao(OrcamentoOpcaoResponseViewModel opcao, UsuarioLogin usuarioLogado)
         {
-            //buscar orçamento
             var orcamento = PorFiltro(opcao.IdOrcamentoCotacao);
 
-            bool temPermissao = false;
+            bool temPermissao = ValidarPermissaoAtualizarOpcaoOrcamentoCotacao(orcamento, usuarioLogado);
+            if (!temPermissao) throw new ArgumentException("Usuário não tem permissão para atualizar a opção de orçamento!");
+
+            _orcamentoCotacaoOpcaoBll.AtualizarOrcamentoOpcao(opcao, usuarioLogado, orcamento);
+        }
+
+        private bool ValidarPermissaoAtualizarOpcaoOrcamentoCotacao(OrcamentoResponseViewModel orcamento, UsuarioLogin usuarioLogado)
+        {
 
             if (orcamento.IdIndicadorVendedor != null)
             {
@@ -357,71 +364,23 @@ namespace OrcamentoCotacaoBusiness.Bll
                     .Where(x => x.Nome == orcamento.VendedorParceiro)
                     .FirstOrDefault().Nome;
 
-                if (usuarioLogado.Apelido == nome) temPermissao = true;
+                if (usuarioLogado.Apelido == nome) return true;
             }
 
             if (orcamento.IdIndicadorVendedor == null && orcamento.IdIndicador != null)
             {
                 var parceiro = _orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { apelido = orcamento.Parceiro, acessoHabilitado = 1 });
 
-                if (usuarioLogado.Apelido == parceiro.Apelido) temPermissao = true;
+                if (usuarioLogado.Apelido == parceiro.Apelido) return true;
             }
 
-            PercMaxDescEComissaoResponseViewModel descontoPorAlcada = new PercMaxDescEComissaoResponseViewModel();
-            if (!temPermissao)
-            {
-                if (usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_1) ||
-                    usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_2) ||
-                    usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_3))
-                {
-                    temPermissao = true;
-                    descontoPorAlcada = _lojaOrcamentoCotacaoBll.BuscarPercMaxPorLojaAlcada(opcao.Loja, orcamento.ClienteOrcamentoCotacaoDto.Tipo, usuarioLogado.Permissoes);
+            if (usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_1) ||
+                usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_2) ||
+                usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_3))
+                return true;
 
-                }
-            }
 
-            if (!temPermissao) throw new ArgumentException("Usuário não tem permissão para atualizar a opção de orçamento!");
-
-            //buscar limite padrão de desconto e comissão
-            var descontoPadrao = _lojaBll.BuscarPercMaxPorLoja(opcao.Loja);
-
-            
-
-            /*calcular desconto médio do que era 
-             * calcular desconto médio do veio e verificar se ultrapassa o desconto padrão
-             * se ultrapassou o desconto padrão, verificar se esta dentro do limite por alçada
-             * se fez uso do limite por alçada, comparamos cada item do que era com o que veio e atribuimos o
-             * usuário que esta logado 
-            */
-            var opcaoAntiga = orcamento.ListaOrcamentoCotacaoDto.Where(x => x.Id == opcao.Id).FirstOrDefault();
-            if (opcaoAntiga == null) throw new ArgumentException("Falha ao buscar a opção!");
-
-            var totalSemDescAntigo = opcaoAntiga.ListaProdutos.Sum(x => x.PrecoLista * x.Qtde);
-            var totalComDescAntigo = opcaoAntiga.ListaProdutos.Sum(x => x.TotalItem);
-            var descMedioAntigo = ((totalSemDescAntigo - totalComDescAntigo) / totalSemDescAntigo);
-            bool usouLimitesPorAlcada = false;
-            if (descMedioAntigo > (decimal)(descontoPadrao.PercMaxComissaoEDesconto - descontoPadrao.PercMaxComissao))
-            {
-                //teve uso da alçada
-                usouLimitesPorAlcada = true;
-                var totalSemDescNovo = opcao.ListaProdutos.Sum(x => x.PrecoLista * x.Qtde);
-                var totalComDescNovo = opcao.ListaProdutos.Sum(x => x.TotalItem);
-                var descMedioNovo = ((totalSemDescNovo - totalComDescNovo) / totalSemDescNovo);
-                if (descMedioNovo > (decimal)(descontoPorAlcada.PercMaxComissaoEDesconto - descontoPorAlcada.PercMaxComissao))
-                    throw new ArgumentException("O desconto médio ultrapassa o desconto por alçada");
-            }
-
-            //se fez uso do limite por alçada, comparamos cada item do que era com o que veio e atribuimos o
-            //usuário que esta logado
-
-            //a opção sempre será atualizada 
-            
-            _orcamentoCotacaoOpcaoBll.AtualizarOrcamentoOpcao(opcao, usuarioLogado, usouLimitesPorAlcada, temPermissao,
-                descontoPorAlcada, descontoPadrao);
-
-            //Verificar se usuário tem permissão de desconto superior
-            //Verificar item por item para saber se esta usando desconto superior
-
+            return false;
         }
 
         public void AdicionarOrcamentoCotacaoLink(TorcamentoCotacao orcamento, Guid guid, InfraBanco.ContextoBdGravacao contextoBdGravacao)

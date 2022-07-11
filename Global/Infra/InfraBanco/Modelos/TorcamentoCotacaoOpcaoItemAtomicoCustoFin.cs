@@ -21,6 +21,7 @@ namespace InfraBanco.Modelos
         public bool StatusDescontoSuperior { get; set; }
         public int? IdUsuarioDescontoSuperior { get; set; }
         public DateTime? DataHoraDescontoSuperior { get; set; }
+        public int? IdOperacaoAlcadaDescontoSuperior { get; set; }
 
         public TorcamentoCotacaoOpcaoItemAtomico TorcamentoCotacaoOpcaoItemAtomico { get; set; }
         public TorcamentoCotacaoOpcaoPagto TorcamentoCotacaoOpcaoPagto { get; set; }
