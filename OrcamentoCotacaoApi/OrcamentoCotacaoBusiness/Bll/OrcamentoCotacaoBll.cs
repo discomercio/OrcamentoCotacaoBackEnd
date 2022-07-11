@@ -482,9 +482,9 @@ namespace OrcamentoCotacaoBusiness.Bll
         public MensagemDto ProrrogarOrcamento(int id, int idUsuario)
         {
             //TODO: DESFIXAR VARIAVEIS
-            int QtdeDiasValidade = 20;
-            int QtdeGlobalValidade = 20;
-            int QtdeDiasProrrogacao = 20;
+            int QtdeDiasValidade = 15;
+            int QtdeGlobalValidade = 30;
+            int QtdeDiasProrrogacao = 5;
             int QtdeMaxProrrogacao = 2;
 
             var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro { Id = id }).FirstOrDefault();
@@ -555,12 +555,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                         mensagem = "Não é possível aprovar, orçamentos com validade expirada!"
                     };
 
-                orcamento.ValidadeAnterior = orcamento.Validade;
-                orcamento.QtdeRenovacao += 1;
-                orcamento.IdUsuarioUltRenovacao = idUsuario;
-                orcamento.DataHoraUltRenovacao = DateTime.Now;
+                //orcamento.ValidadeAnterior = orcamento.Validade;
+                //orcamento.QtdeRenovacao += 1;
+                //orcamento.IdUsuarioUltRenovacao = idUsuario;
+                //orcamento.DataHoraUltRenovacao = DateTime.Now;
 
-                _orcamentoCotacaoBll.Atualizar(orcamento);
+                //_orcamentoCotacaoBll.Atualizar(orcamento);
 
                 return new MensagemDto
                 {
