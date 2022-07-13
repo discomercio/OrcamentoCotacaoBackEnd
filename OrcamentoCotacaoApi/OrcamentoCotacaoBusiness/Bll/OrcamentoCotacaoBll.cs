@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
+using Loja.Dados;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -316,7 +317,10 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 try
                 {
-                    var tOrcamentoCotacao = MontarTorcamentoCotacao(orcamento, usuarioLogado);
+                    var percentualMaxDescontoEComissao = _lojaBll.BuscarPercMaxPorLoja(orcamento.Loja);
+                    if (percentualMaxDescontoEComissao == null) throw new ArgumentException("Falha ao tentar gravar orçamento!");
+
+                    var tOrcamentoCotacao = MontarTorcamentoCotacao(orcamento, usuarioLogado, percentualMaxDescontoEComissao);
 
                     var ocamentoCotacao = _orcamentoCotacaoBll.InserirComTransacao(tOrcamentoCotacao, dbGravacao);
 
@@ -443,7 +447,8 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         }
 
-        private TorcamentoCotacao MontarTorcamentoCotacao(OrcamentoRequestViewModel orcamento, UsuarioLogin usuarioLogado)
+        private TorcamentoCotacao MontarTorcamentoCotacao(OrcamentoRequestViewModel orcamento, UsuarioLogin usuarioLogado,
+            PercMaxDescEComissaoDados percMaxDescEComissaoDados)
         {
             TorcamentoCotacao torcamentoCotacao = new TorcamentoCotacao()
             {
@@ -465,7 +470,9 @@ namespace OrcamentoCotacaoBusiness.Bll
                 DataHoraUltStatus = DateTime.Now,
                 Status = 1,
                 StEtgImediata = orcamento.EntregaImediata ? 1 : 0,
-                PrevisaoEntregaData = orcamento.DataEntregaImediata
+                PrevisaoEntregaData = orcamento.DataEntregaImediata,
+                Perc_max_comissao_e_desconto_padrao = orcamento.ClienteOrcamentoCotacaoDto.Tipo == Constantes.ID_PF ?
+                    percMaxDescEComissaoDados.PercMaxComissaoEDesconto : percMaxDescEComissaoDados.PercMaxComissaoEDescontoPJ
             };
 
             if (!string.IsNullOrEmpty(orcamento.Vendedor))
@@ -495,6 +502,8 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     torcamentoCotacao.IdIndicador = torcamentista.IdIndicador;//IdIndicador
                 }
+
+                torcamentoCotacao.Perc_max_comissao_padrao = percMaxDescEComissaoDados.PercMaxComissao;
             }
 
             if (!string.IsNullOrEmpty(orcamento.VendedorParceiro))
