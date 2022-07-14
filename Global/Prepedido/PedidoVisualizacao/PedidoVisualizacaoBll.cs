@@ -472,10 +472,13 @@ namespace Prepedido.PedidoVisualizacao
                 Tpedido tPedidoPai = await pedido.Select(x => x).Where(x => x.Pedido == pedido_pai).FirstOrDefaultAsync();
 
                 //aqui vamos montar o pedido conforme o número do pedido que veio na entrada
-                Tpedido p = pedido.Select(x => x).Where(x => x.Pedido == numPedido && x.Indicador == apelido.ToUpper()).First();
+                Tpedido p = pedido
+                    .Where(x => x.Pedido == numPedido)
+                    .FirstOrDefault();
 
                 if (p == null)
                     return null;
+
                 DadosClienteCadastroDados dadosCliente = new DadosClienteCadastroDados();
                 if (p.St_memorizacao_completa_enderecos == 0)
                 {
@@ -486,11 +489,11 @@ namespace Prepedido.PedidoVisualizacao
                     dadosCliente = await ObterDadosClientePedido(p);
                 }
 
-                var enderecoEntregaTask = ObterEnderecoEntrega(p);
-                var lstProdutoTask = ObterProdutos(numPedido);
+                var enderecoEntregaTask = await ObterEnderecoEntrega(p);
+                var lstProdutoTask = await ObterProdutos(numPedido);
 
-                var vlTotalDestePedidoComRATask = lstProdutoTask.Result.Select(r => r.VlTotalItemComRA).Sum();
-                var vlTotalDestePedidoTask = lstProdutoTask.Result.Select(r => r.VlTotalItem).Sum();
+                var vlTotalDestePedidoComRATask = lstProdutoTask.Select(r => r.VlTotalItemComRA).Sum();
+                var vlTotalDestePedidoTask = lstProdutoTask.Select(r => r.VlTotalItem).Sum();
 
                 //buscar valor total de devoluções NF
                 var vlDevNf = from c in db.TpedidoItemDevolvido
@@ -498,7 +501,7 @@ namespace Prepedido.PedidoVisualizacao
                               select c.Qtde * c.Preco_NF;
                 var vl_TotalFamiliaDevolucaoPrecoNFTask = vlDevNf.Select(r => r.Value).SumAsync();
 
-                var vlFamiliaParcelaRATask = CalculaTotalFamiliaRA(pedido_pai);
+                var vlFamiliaParcelaRATask = await CalculaTotalFamiliaRA(pedido_pai);
 
                 string garantiaIndicadorStatus = Convert.ToString(p.GarantiaIndicadorStatus);
                 if (garantiaIndicadorStatus == Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO)
@@ -529,38 +532,38 @@ namespace Prepedido.PedidoVisualizacao
                 if (tPedidoPai.St_Entrega == Constantes.ST_ENTREGA_A_ENTREGAR || tPedidoPai.St_Entrega == Constantes.ST_ENTREGA_SEPARAR)
                     dataEntrega = tPedidoPai.A_Entregar_Data_Marcada;
 
-                var perdas = BuscarPerdas(numPedido);
-                var TranspNomeTask = ObterNomeTransportadora(p.Transportadora_Id);
-                var lstFormaPgtoTask = ObterFormaPagto(tPedidoPai);
+                var perdas = await BuscarPerdas(numPedido);
+                var TranspNomeTask = await ObterNomeTransportadora(p.Transportadora_Id);
+                var lstFormaPgtoTask = await ObterFormaPagto(tPedidoPai);
                 var analiseCreditoTask = DescricaoAnaliseCreditoCadastroPedido(Convert.ToString(tPedidoPai.Analise_Credito), true, numPedido, apelido);
                 string corAnalise = CorAnaliseCredito(Convert.ToString(tPedidoPai.Analise_Credito));
                 string corStatusPagto = CorSatusPagto(tPedidoPai.St_Pagto);
-                var saldo_a_pagarTask = CalculaSaldoAPagar(pedido_pai, await vl_TotalFamiliaDevolucaoPrecoNFTask);
-                var TotalPerda = (await perdas).Select(r => r.Valor).Sum();
-                var lstOcorrenciaTask = ObterOcorrencias(pedido_pai);
-                var lstBlocNotasDevolucaoTask = BuscarPedidoBlocoNotasDevolucao(pedido_pai);
-                var vlPagoTask = CalcularValorPago(pedido_pai);
+                var saldo_a_pagarTask = await CalculaSaldoAPagar(pedido_pai, await vl_TotalFamiliaDevolucaoPrecoNFTask);
+                var TotalPerda = perdas.Select(r => r.Valor).Sum();
+                var lstOcorrenciaTask = await ObterOcorrencias(pedido_pai);
+                var lstBlocNotasDevolucaoTask = await BuscarPedidoBlocoNotasDevolucao(pedido_pai);
+                var vlPagoTask = await CalcularValorPago(pedido_pai);
                 var vlTotalFamiliaPrecoNf = await CalcularVltotalFamiliPrecoNF(pedido_pai);
 
-                var saldo_a_pagar = await saldo_a_pagarTask;
+                var saldo_a_pagar = saldo_a_pagarTask;
                 if (tPedidoPai.St_Entrega == Constantes.ST_PAGTO_PAGO && saldo_a_pagar > 0)
                     saldo_a_pagar = 0;
 
                 DetalhesFormaPagamentosDados detalhesFormaPagto = new DetalhesFormaPagamentosDados();
 
-                detalhesFormaPagto.FormaPagto = (await lstFormaPgtoTask).ToList();
+                detalhesFormaPagto.FormaPagto = lstFormaPgtoTask.ToList();
                 detalhesFormaPagto.InfosAnaliseCredito = p.Forma_Pagto;
                 detalhesFormaPagto.StatusPagto = StatusPagto(tPedidoPai.St_Pagto).ToUpper();
                 detalhesFormaPagto.CorStatusPagto = corStatusPagto;
                 detalhesFormaPagto.VlTotalFamilia = vlTotalFamiliaPrecoNf;
-                detalhesFormaPagto.VlPago = await vlPagoTask;
+                detalhesFormaPagto.VlPago = vlPagoTask;
                 detalhesFormaPagto.VlDevolucao = await vl_TotalFamiliaDevolucaoPrecoNFTask;
                 detalhesFormaPagto.VlPerdas = TotalPerda;
                 detalhesFormaPagto.SaldoAPagar = saldo_a_pagar;
                 detalhesFormaPagto.AnaliseCredito = analiseCreditoTask;
                 detalhesFormaPagto.CorAnalise = corAnalise;
                 detalhesFormaPagto.DataColeta = dataEntrega;
-                detalhesFormaPagto.Transportadora = await TranspNomeTask;
+                detalhesFormaPagto.Transportadora = TranspNomeTask;
                 detalhesFormaPagto.VlFrete = p.Frete_Valor;
 
                 //vou montar uma lista fake para verificar como mostrar uma qtde de numeros de pedido por linha
@@ -586,7 +589,7 @@ namespace Prepedido.PedidoVisualizacao
                     }
                 }
 
-                PedidoDados DtoPedido = new PedidoDados
+                return new PedidoDados
                 {
                     NumeroPedido = numPedido,
                     Lista_NumeroPedidoFilhote = lstPorLinha,
@@ -594,7 +597,7 @@ namespace Prepedido.PedidoVisualizacao
                     StatusHoraPedido = await MontarDtoStatuPedido(p),
                     DadosCliente = dadosCliente,
                     ListaProdutos = (await ObterProdutos(numPedido)).ToList(),
-                    TotalFamiliaParcelaRA = await vlFamiliaParcelaRATask,
+                    TotalFamiliaParcelaRA = vlFamiliaParcelaRATask,
                     PermiteRAStatus = p.Permite_RA_Status,
                     OpcaoPossuiRA = p.Opcao_Possui_RA == "S",
                     PercRT = p.Perc_RT,
@@ -605,12 +608,10 @@ namespace Prepedido.PedidoVisualizacao
                     ListaProdutoDevolvido = (await BuscarProdutosDevolvidos(numPedido)).ToList(),
                     ListaPerdas = (await BuscarPerdas(numPedido)).ToList(),
                     ListaBlocoNotas = (await BuscarPedidoBlocoNotas(numPedido)).ToList(),
-                    EnderecoEntrega = (await enderecoEntregaTask),
-                    ListaOcorrencia = (await lstOcorrenciaTask).ToList(),
-                    ListaBlocoNotasDevolucao = (await lstBlocNotasDevolucaoTask).ToList()
+                    EnderecoEntrega = enderecoEntregaTask,
+                    ListaOcorrencia = lstOcorrenciaTask.ToList(),
+                    ListaBlocoNotasDevolucao = lstBlocNotasDevolucaoTask.ToList()
                 };
-
-                return await Task.FromResult(DtoPedido);
             }
         }
 
@@ -677,7 +678,9 @@ namespace Prepedido.PedidoVisualizacao
                 var transportadora = from c in db.Ttransportadora
                                      where c.Id == idTransportadora
                                      select c.Nome;
+
                 var retorno = await transportadora.Select(r => r.ToString()).FirstOrDefaultAsync();
+
                 if (!string.IsNullOrEmpty(retorno))
                     retorno = idTransportadora + " (" + retorno + ")";
 
@@ -1067,20 +1070,19 @@ namespace Prepedido.PedidoVisualizacao
         {
             using (var db = contextoProvider.GetContextoLeitura())
             {
-                var lista = from c in db.TpedidoItemDevolvido
-                            where c.Pedido.StartsWith(numPedido)
-                            select new ProdutoDevolvidoPedidoDados
-                            {
-                                Data = c.Devolucao_Data,
-                                Hora = c.Devolucao_Hora.Substring(0, 2) + ":" + c.Devolucao_Hora.Substring(2, 2),
-                                Qtde = c.Qtde,
-                                CodProduto = c.Produto,
-                                DescricaoProduto = c.Descricao_Html,
-                                Motivo = c.Motivo,
-                                NumeroNF = c.NFe_Numero_NF
-                            };
-
-                return await Task.FromResult(lista);
+                return await
+                    (from c in db.TpedidoItemDevolvido
+                     where c.Pedido.StartsWith(numPedido)
+                     select new ProdutoDevolvidoPedidoDados
+                     {
+                         Data = c.Devolucao_Data,
+                         Hora = c.Devolucao_Hora.Substring(0, 2) + ":" + c.Devolucao_Hora.Substring(2, 2),
+                         Qtde = c.Qtde,
+                         CodProduto = c.Produto,
+                         DescricaoProduto = c.Descricao_Html,
+                         Motivo = c.Motivo,
+                         NumeroNF = c.NFe_Numero_NF
+                     }).ToListAsync();
             }
         }
 
@@ -1088,17 +1090,15 @@ namespace Prepedido.PedidoVisualizacao
         {
             using (var db = contextoProvider.GetContextoLeitura())
             {
-                var lista = from c in db.TpedidoPerda
-                            where c.Pedido == numPedido
-                            select new PedidoPerdasPedidoDados
-                            {
-                                Data = c.Data,
-                                Hora = Formata_hhmmss_para_hh_minuto_ss(c.Hora),
-                                Valor = c.Valor,
-                                Obs = c.Obs
-                            };
-
-                return await Task.FromResult(lista);
+                return await (from c in db.TpedidoPerda
+                              where c.Pedido == numPedido
+                              select new PedidoPerdasPedidoDados
+                              {
+                                  Data = c.Data,
+                                  Hora = Formata_hhmmss_para_hh_minuto_ss(c.Hora),
+                                  Valor = c.Valor,
+                                  Obs = c.Obs
+                              }).ToListAsync();
             }
         }
 
