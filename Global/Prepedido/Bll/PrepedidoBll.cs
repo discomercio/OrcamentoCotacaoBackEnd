@@ -220,7 +220,7 @@ namespace Prepedido
             var db = contextoProvider.GetContextoLeitura();
 
             var prepedido = from c in db.Torcamento
-                            where c.Orcamentista == apelido && c.Orcamento == numPrePedido
+                            where c.Orcamento == numPrePedido
                             select c;
 
 
