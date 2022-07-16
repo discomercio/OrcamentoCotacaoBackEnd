@@ -167,7 +167,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         Cliente_Obra = !string.IsNullOrEmpty(x.NomeObra) ? $"{x.NomeCliente} - {x.NomeObra}" : x.NomeCliente,
                         Vendedor = vendedores.FirstOrDefault(v => v.Id == x.IdVendedor)?.Usuario,
                         Parceiro = parceiros.FirstOrDefault(v => v.IdIndicador == x.IdIndicador) == null ? "-" : parceiros.FirstOrDefault(v => v.IdIndicador == x.IdIndicador).Apelido,
-                        VendedorParceiro = vendParceiros.FirstOrDefault(v => v.Id == x.IdIndicadorVendedor)?.Nome,
+                        VendedorParceiro = tOrcamentoFiltro.TipoUsuario.Value == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO ? vendParceiros.FirstOrDefault(v => v.Id == x.IdIndicadorVendedor)?.Email : vendParceiros.FirstOrDefault(v => v.Id == x.IdIndicadorVendedor)?.Nome,
                         Valor = "0",
                         Status = x.StatusNome,
                         VistoEm = "",
@@ -195,7 +195,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 return lista;
             }
         }
-        public OrcamentoResponseViewModel PorFiltro(int id)
+        public OrcamentoResponseViewModel PorFiltro(int id, UsuarioLogin usuarioLogin)
         {
             var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro() { Id = id }).FirstOrDefault();
             if (orcamento == null) throw new Exception("Falha ao buscar Orçamento!");
@@ -207,8 +207,18 @@ namespace OrcamentoCotacaoBusiness.Bll
             var parceiro = orcamento.IdIndicador != null ? _orcamentistaEIndicadorBll
                 .BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = (int)orcamento.IdIndicador, acessoHabilitado = 1 }).Apelido : null;
 
-            var vendedorParceiro = orcamento.IdIndicadorVendedor != null ? _orcamentistaEIndicadorVendedorBll
-                .PorFiltro(new TorcamentistaEIndicadorVendedorFiltro() { id = (int)orcamento.IdIndicadorVendedor }).FirstOrDefault().Nome : null;
+            string vendedorParceiro = null;
+            if (orcamento.IdIndicadorVendedor != null)
+            {
+                var tVendedorParceiro = _orcamentistaEIndicadorVendedorBll.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro()
+                {
+                    id = (int)orcamento.IdIndicadorVendedor
+                }).FirstOrDefault();
+                vendedorParceiro = (int)usuarioLogin.TipoUsuario != (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO ?
+                    tVendedorParceiro?.Nome : tVendedorParceiro.Email;
+            }
+            
+
             OrcamentoResponseViewModel orcamentoResponse = new OrcamentoResponseViewModel()
             {
                 Id = orcamento.Id,
@@ -348,7 +358,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public void AtualizarOrcamentoOpcao(OrcamentoOpcaoResponseViewModel opcao, UsuarioLogin usuarioLogado)
         {
-            var orcamento = PorFiltro(opcao.IdOrcamentoCotacao);
+            var orcamento = PorFiltro(opcao.IdOrcamentoCotacao, usuarioLogado);
 
             bool temPermissao = ValidarPermissaoAtualizarOpcaoOrcamentoCotacao(orcamento, usuarioLogado);
             if (!temPermissao) throw new ArgumentException("Usuário não tem permissão para atualizar a opção de orçamento!");
@@ -364,11 +374,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                 var vendedoresParceiro = _orcamentistaEIndicadorVendedorBll.BuscarVendedoresParceiro(orcamento.Parceiro);
                 if (vendedoresParceiro == null) throw new ArgumentException("Nenhum vendedor do parceiro encontrado!");
 
-                var nome = vendedoresParceiro //IdIndicadorVendedor
-                    .Where(x => x.Nome == orcamento.VendedorParceiro)
-                    .FirstOrDefault().Nome;
+                var email = vendedoresParceiro //IdIndicadorVendedor
+                    .Where(x => x.Id == orcamento.IdIndicadorVendedor)
+                    .FirstOrDefault().Email;
 
-                if (usuarioLogado.Apelido == nome) return true;
+                if (usuarioLogado.Apelido == email.ToUpper()) return true;
             }
 
             if (orcamento.IdIndicadorVendedor == null && orcamento.IdIndicador != null)

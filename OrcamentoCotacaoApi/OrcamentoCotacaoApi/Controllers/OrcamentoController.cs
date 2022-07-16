@@ -79,7 +79,9 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(int id)
         {
-            var orcamentoCotacao = _orcamentoBll.PorFiltro(id);
+            var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+
+            var orcamentoCotacao = _orcamentoBll.PorFiltro(id, user);
 
             return Ok(orcamentoCotacao);
         }

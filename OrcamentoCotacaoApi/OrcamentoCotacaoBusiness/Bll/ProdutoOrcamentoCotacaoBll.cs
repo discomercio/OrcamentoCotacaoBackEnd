@@ -396,87 +396,155 @@ namespace OrcamentoCotacaoBusiness.Bll
                     foreach (var pagto in opcao.FormaPagto)
                     {
                         var pg = torcamentoCotacaoOpcaoItemAtomicosFin.Where(x => x.TorcamentoCotacaoOpcaoPagto.Tipo_parcelamento == pagto.Tipo_parcelamento).FirstOrDefault();
-                        var alcada = AtualizarDecontoSuperior(item, usuarioLogado, orcamento, opcao.Id);
-                        var p = pDados.Where(x => x.Produto == atomico.Produto).FirstOrDefault();
-                        if (pg == null)
+                        if (ValidarDescontoComissaoAlcada(item, usuarioLogado, orcamento, opcao.Id))
                         {
-                            var opcaoPagtoAvista = opcaoPagtos.Where(x => x.Tipo_parcelamento == pagto.Tipo_parcelamento).FirstOrDefault();
-                            pg = new TorcamentoCotacaoOpcaoItemAtomicoCustoFin();
-                            pg.IdItemAtomico = atomico.Id;
-                            pg.IdOpcaoPagto = opcaoPagtoAvista.Id;
-                            pg.DescDado = item.DescDado;
-                            pg.PrecoLista = (decimal)p.Preco_lista;
-                            pg.PrecoVenda = (decimal)p.Preco_lista * (decimal)(1 - item.DescDado / 100);
-                            pg.PrecoNF = (decimal)p.Preco_lista * (decimal)(1 - item.DescDado / 100);
-                            pg.CustoFinancFornecCoeficiente = 0;
-                            pg.CustoFinancFornecPrecoListaBase = (decimal)p.Preco_lista;
-                            pg.StatusDescontoSuperior = alcada != null ? true : false;
-                            pg.DataHoraDescontoSuperior = alcada != null ? (DateTime?)DateTime.Now : null;
-                            pg.IdUsuarioDescontoSuperior = alcada != null ? (int?)usuarioLogado.Id : null;
+                            var p = pDados.Where(x => x.Produto == atomico.Produto).FirstOrDefault();
 
-                            var orc = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.InserirComTransacao(pg, contextoBdGravacao);
-                        }
-                        else
-                        {
-                            pg.Id = pg.Id;
-                            pg.IdItemAtomico = atomico.Id;
-                            pg.IdOpcaoPagto = pagto.Id;
-                            pg.DescDado = item.DescDado;
-                            pg.PrecoLista = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? (decimal)p.Preco_lista : (decimal)p.Preco_lista * (decimal)item.CustoFinancFornecCoeficiente;
-                            pg.PrecoVenda = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? (decimal)p.Preco_lista * (decimal)(1 - item.DescDado / 100) : (decimal)p.Preco_lista * (decimal)item.CustoFinancFornecCoeficiente * (decimal)(1 - item.DescDado / 100);
-                            pg.PrecoNF = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? (decimal)p.Preco_lista * (decimal)(1 - item.DescDado / 100) : (decimal)p.Preco_lista * (decimal)item.CustoFinancFornecCoeficiente * (decimal)(1 - item.DescDado / 100);
-                            pg.CustoFinancFornecCoeficiente = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? 0 : item.CustoFinancFornecCoeficiente;
-                            pg.CustoFinancFornecPrecoListaBase = (decimal)p.Preco_lista;
-
-                            var opcaoAntiga = orcamento.ListaOrcamentoCotacaoDto.Where(x => x.Id == opcao.Id).FirstOrDefault();
-                            var produtoAntigo = opcaoAntiga.ListaProdutos.Where(x => x.Produto == item.Produto && x.Fabricante == item.Fabricante).FirstOrDefault();
-                            if (produtoAntigo != null)
+                            bool usoAlcada = VerificarUsoDeAlcada(usuarioLogado, orcamento, item);
+                            List<int> usuarioAlcadas;
+                            int idAlcada = 0;
+                            if (usoAlcada)
                             {
-                                if (produtoAntigo.DescDado != item.DescDado)
-                                {
-                                    pg.StatusDescontoSuperior = alcada != null ? true : false;
-                                    pg.DataHoraDescontoSuperior = alcada != null ? (DateTime?)DateTime.Now : null;
-                                    pg.IdUsuarioDescontoSuperior = alcada != null ? (int?)usuarioLogado.Id : null;
-                                    //pg.IdOperacaoAlcadaDescontoSuperior = usouAlcada ?  
-                                }
+                                usuarioAlcadas = new List<int>();
+                                if (usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_1))
+                                    usuarioAlcadas.Add(int.Parse(Constantes.COMISSAO_DESCONTO_ALCADA_1));
+                                if (usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_2))
+                                    usuarioAlcadas.Add(int.Parse(Constantes.COMISSAO_DESCONTO_ALCADA_2));
+                                if (usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_3))
+                                    usuarioAlcadas.Add(int.Parse(Constantes.COMISSAO_DESCONTO_ALCADA_3));
+
+                                idAlcada = usuarioAlcadas.Max(x => x);
                             }
 
+                            
+                            if (pg == null)
+                            {
+                                var opcaoPagtoAvista = opcaoPagtos.Where(x => x.Tipo_parcelamento == pagto.Tipo_parcelamento).FirstOrDefault();
+                                pg = new TorcamentoCotacaoOpcaoItemAtomicoCustoFin();
+                                pg.IdItemAtomico = atomico.Id;
+                                pg.IdOpcaoPagto = opcaoPagtoAvista.Id;
+                                pg.DescDado = item.DescDado;
+                                pg.PrecoLista = (decimal)p.Preco_lista;
+                                pg.PrecoVenda = (decimal)p.Preco_lista * (decimal)(1 - item.DescDado / 100);
+                                pg.PrecoNF = (decimal)p.Preco_lista * (decimal)(1 - item.DescDado / 100);
+                                pg.CustoFinancFornecCoeficiente = 0;
+                                pg.CustoFinancFornecPrecoListaBase = (decimal)p.Preco_lista;
+                                pg.StatusDescontoSuperior = usoAlcada ? true : false;
+                                pg.DataHoraDescontoSuperior = usoAlcada ? (DateTime?)DateTime.Now : null;
+                                pg.IdUsuarioDescontoSuperior = usoAlcada ? (int?)usuarioLogado.Id : null;
+                                pg.IdOperacaoAlcadaDescontoSuperior = usoAlcada ? (int?)idAlcada : null;
 
-                            var orc = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.AtualizarComTransacao(pg, contextoBdGravacao);
-                        }
+                                var orc = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.InserirComTransacao(pg, contextoBdGravacao);
+                            }
+                            else
+                            {
+                                pg.Id = pg.Id;
+                                pg.IdItemAtomico = atomico.Id;
+                                pg.IdOpcaoPagto = pagto.Id;
+                                pg.DescDado = item.DescDado;
+                                pg.PrecoLista = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? (decimal)p.Preco_lista : (decimal)p.Preco_lista * (decimal)item.CustoFinancFornecCoeficiente;
+                                pg.PrecoVenda = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? (decimal)p.Preco_lista * (decimal)(1 - item.DescDado / 100) : (decimal)p.Preco_lista * (decimal)item.CustoFinancFornecCoeficiente * (decimal)(1 - item.DescDado / 100);
+                                pg.PrecoNF = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? (decimal)p.Preco_lista * (decimal)(1 - item.DescDado / 100) : (decimal)p.Preco_lista * (decimal)item.CustoFinancFornecCoeficiente * (decimal)(1 - item.DescDado / 100);
+                                pg.CustoFinancFornecCoeficiente = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? 0 : item.CustoFinancFornecCoeficiente;
+                                pg.CustoFinancFornecPrecoListaBase = (decimal)p.Preco_lista;
+                                pg.StatusDescontoSuperior = usoAlcada ? true : false;
+                                pg.DataHoraDescontoSuperior = usoAlcada ? (DateTime?)DateTime.Now : null;
+                                pg.IdUsuarioDescontoSuperior = usoAlcada ? (int?)usuarioLogado.Id : null;
+                                pg.IdOperacaoAlcadaDescontoSuperior = usoAlcada ? (int?)idAlcada : null;
+
+                                var orc = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.AtualizarComTransacao(pg, contextoBdGravacao);
+                            }
+                        };
+
                     }
                 }
             }
 
         }
 
-        private PercMaxDescEComissaoResponseViewModel AtualizarDecontoSuperior(ProdutoOrcamentoOpcaoResponseViewModel produto,
+        public bool VerificarUsoDeAlcada(UsuarioLogin usuarioLogado, OrcamentoResponseViewModel orcamento,
+            ProdutoOrcamentoOpcaoResponseViewModel produto)
+        {
+            PercMaxDescEComissaoResponseViewModel percMaxPorAlcada = new PercMaxDescEComissaoResponseViewModel();
+            if (usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_1) ||
+                usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_2) ||
+                usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_3))
+            {
+                percMaxPorAlcada = _lojaOrcamentoCotacaoBll.BuscarPercMaxPorLojaAlcada(orcamento.Loja, orcamento.ClienteOrcamentoCotacaoDto.Tipo, usuarioLogado.Permissoes);
+            }
+
+            var percPadrao = _lojaOrcamentoCotacaoBll.BuscarPercMaxPorLoja(orcamento.Loja);
+            if (percPadrao == null) throw new ArgumentException("Ops! Não falha ao validar opcão!");
+
+            var percPadraoPorTipo = orcamento.ClienteOrcamentoCotacaoDto.Tipo == Constantes.ID_PF ?
+                percPadrao.PercMaxComissaoEDesconto : percPadrao.PercMaxComissaoEDescontoPJ;
+
+            if (produto.DescDado > percPadraoPorTipo && percMaxPorAlcada.PercMaxComissaoEDesconto == 0)
+                throw new ArgumentException("Ops! Não pode execeder o limite máximo de desconto.");
+
+            if (produto.DescDado > percPadraoPorTipo && percMaxPorAlcada.PercMaxComissaoEDesconto != null) return true;
+
+            return false;
+        }
+
+        private bool ValidarDescontoComissaoAlcada(ProdutoOrcamentoOpcaoResponseViewModel produto,
             UsuarioLogin usuarioLogado, OrcamentoResponseViewModel orcamento, int idOpcao)
         {
             var opcaoAntiga = orcamento.ListaOrcamentoCotacaoDto.Where(x => x.Id == idOpcao).FirstOrDefault();
             if (opcaoAntiga == null) throw new ArgumentException("Falha ao buscar a opção!");
 
-            var totalSemDescAntigo = opcaoAntiga.ListaProdutos.Sum(x => x.PrecoLista * x.Qtde);
-            var totalComDescAntigo = opcaoAntiga.ListaProdutos.Sum(x => x.TotalItem);
-            var descMedioAntigo = ((totalSemDescAntigo - totalComDescAntigo) / totalSemDescAntigo) * 100;
-
-            PercMaxDescEComissaoResponseViewModel descontoPorAlcada = new PercMaxDescEComissaoResponseViewModel();
+            bool temAlcada = false;
+            PercMaxDescEComissaoResponseViewModel percMaxPorAlcada = new PercMaxDescEComissaoResponseViewModel();
             if (usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_1) ||
                 usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_2) ||
                 usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_3))
             {
-                descontoPorAlcada = _lojaOrcamentoCotacaoBll.BuscarPercMaxPorLojaAlcada(orcamento.Loja, orcamento.ClienteOrcamentoCotacaoDto.Tipo, usuarioLogado.Permissoes);
-                if (produto.DescDado > descontoPorAlcada.PercMaxComissaoEDesconto)
+                percMaxPorAlcada = _lojaOrcamentoCotacaoBll.BuscarPercMaxPorLojaAlcada(orcamento.Loja, orcamento.ClienteOrcamentoCotacaoDto.Tipo, usuarioLogado.Permissoes);
+                if (produto.DescDado > percMaxPorAlcada.PercMaxComissaoEDesconto)
                     throw new ArgumentException($"O desconto no '{produto.Produto}' está excedendo o máximo permitido!");
+                temAlcada = true;
             }
 
-            var descontoPadrao = _lojaBll.BuscarPercMaxPorLoja(orcamento.Loja);
+            var percPadrao = _lojaOrcamentoCotacaoBll.BuscarPercMaxPorLoja(orcamento.Loja);
 
-            var percMaxComissaoEDescontoPadrao = orcamento.ClienteOrcamentoCotacaoDto.Tipo == Constantes.ID_PF ? descontoPadrao.PercMaxComissaoEDesconto : descontoPadrao.PercMaxComissaoEDescontoPJ;
+            var percAUtilizar = percMaxPorAlcada.PercMaxComissao > 0 ? percMaxPorAlcada : percPadrao;
 
-            if (produto.DescDado > percMaxComissaoEDescontoPadrao) return descontoPorAlcada;
+            ValidarComissao(percAUtilizar, orcamento, idOpcao);
 
-            return null;
+            ValidarDescontos(percAUtilizar, produto, orcamento.ClienteOrcamentoCotacaoDto.Tipo, temAlcada);
+
+            return true;
+        }
+
+        public void ValidarDescontos(PercMaxDescEComissaoResponseViewModel percMaxDescEComissaoResponse,
+            ProdutoOrcamentoOpcaoResponseViewModel produto, string tipoCliente, bool temAlcada)
+        {
+            if (produto.DescDado < 0) throw new ArgumentException($"O valor de desconto do produto {produto.Fabricante}/" +
+                 $"{produto.Produto} não pode ser negativo!");
+
+            var percMaxDescComissao = temAlcada ? percMaxDescEComissaoResponse.PercMaxComissaoEDesconto :
+                tipoCliente == Constantes.ID_PF ? percMaxDescEComissaoResponse.PercMaxComissaoEDesconto :
+                percMaxDescEComissaoResponse.PercMaxComissaoEDescontoPJ;
+
+            if (produto.DescDado > percMaxDescComissao) throw new ArgumentException($"O valor de desconto do produto " +
+                $"{produto.Fabricante}/{produto.Produto} excede o máximo permitido");
+
+        }
+
+        public void ValidarComissao(PercMaxDescEComissaoResponseViewModel percMaxDescEComissaoResponse,
+            OrcamentoResponseViewModel orcamento, int idOpcao)
+        {
+            var opcao = orcamento.ListaOrcamentoCotacaoDto.Where(o => o.Id == idOpcao).FirstOrDefault();
+            if (opcao == null) throw new ArgumentException("Ops! Não encotramos a opção em nossas bases.");
+
+            if (opcao.PercRT < 0) throw new ArgumentException("Ops! A comissão não pode ser negativa!");
+
+            if (orcamento.Parceiro == null && opcao.PercRT > 0)
+                throw new ArgumentException("Ops! Não pode conter percentual de comissão!");
+
+            if (opcao.PercRT > 0)
+                if (opcao.PercRT > percMaxDescEComissaoResponse.PercMaxComissao)
+                    throw new ArgumentException("Ops! O valor de comissão excede o máximo permitido");
         }
 
         public async Task<List<ProdutoOrcamentoOpcaoResponseViewModel>> BuscarOpcaoProdutos(int idOpcao)

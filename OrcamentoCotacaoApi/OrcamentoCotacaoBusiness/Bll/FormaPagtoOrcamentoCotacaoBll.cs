@@ -119,8 +119,6 @@ namespace OrcamentoCotacaoBusiness.Bll
         public async Task<int?> GetMaximaQtdeParcelasCartaoVisa(Constantes.TipoUsuario tipoUsuario)
         {
             var tipoPerfil = Constantes.TipoUsuarioPerfil.getUsuarioPerfil(tipoUsuario);
-            if (tipoPerfil != Constantes.eTipoUsuarioPerfil.USUÁRIO_DA_CENTRAL && tipoPerfil != Constantes.eTipoUsuarioPerfil.USUARIO_LOJA)
-                return null;
 
             return await _formaPagtoBll.BuscarQtdeParcCartaoVisa();
         }
