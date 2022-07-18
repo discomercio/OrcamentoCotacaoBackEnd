@@ -44,7 +44,6 @@
     <ProjectReference Include="..\..\Global\Orcamento\Orcamento.csproj" />
     <ProjectReference Include="..\..\Global\Produto\Produto.csproj" />
     <ProjectReference Include="..\..\Global\Usuario\Usuario.csproj" />
-    <ProjectReference Include="..\..\Loja\Loja.Modelo\Loja.Modelo.csproj" />
     <ProjectReference Include="..\OrcamentoCotacaoBusiness\OrcamentoCotacaoBusiness.csproj" />
   </ItemGroup>
 

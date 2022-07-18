@@ -191,3 +191,5 @@ function PessoaJuridica(): void {
     MascaraTelefones($("#endEntregaTelCom2"));
 }
 
+declare function swal(header, body);
+
