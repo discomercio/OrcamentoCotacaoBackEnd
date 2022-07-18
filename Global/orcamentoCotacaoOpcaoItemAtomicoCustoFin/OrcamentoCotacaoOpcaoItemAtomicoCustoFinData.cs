@@ -21,9 +21,22 @@ namespace OrcamentoCotacaoOpcaoItemAtomicoCustoFin
             throw new NotImplementedException();
         }
 
+        public TorcamentoCotacaoOpcaoItemAtomicoCustoFin AtualizarComTransacao(TorcamentoCotacaoOpcaoItemAtomicoCustoFin model, ContextoBdGravacao contextoBdGravacao)
+        {
+            contextoBdGravacao.Update(model);
+            contextoBdGravacao.SaveChanges();
+            return model;
+        }
+
         public bool Excluir(TorcamentoCotacaoOpcaoItemAtomicoCustoFin obj)
         {
             throw new NotImplementedException();
+        }
+
+        public void ExcluirComTransacao(TorcamentoCotacaoOpcaoItemAtomicoCustoFin obj, ContextoBdGravacao contextoBdGravacao)
+        {
+            contextoBdGravacao.TorcamentoCotacaoOpcaoItemAtomicoCustoFin.Remove(obj);
+            contextoBdGravacao.SaveChanges();
         }
 
         public TorcamentoCotacaoOpcaoItemAtomicoCustoFin Inserir(TorcamentoCotacaoOpcaoItemAtomicoCustoFin obj)
@@ -40,7 +53,22 @@ namespace OrcamentoCotacaoOpcaoItemAtomicoCustoFin
 
         public List<TorcamentoCotacaoOpcaoItemAtomicoCustoFin> PorFilroComTransacao(TorcamentoCotacaoOpcaoItemAtomicoCustoFinFiltro obj, ContextoBdGravacao contextoBdGravacao)
         {
-            throw new NotImplementedException();
+            var saida = from c in contextoBdGravacao.TorcamentoCotacaoOpcaoItemAtomicoCustoFin
+                        select c;
+
+            if (saida == null) return null;
+
+            if (obj.LstIdItemAtomico != null)
+            {
+                saida = saida.Where(x => obj.LstIdItemAtomico.Contains(x.IdItemAtomico));
+            }
+            if (obj.IdItemAtomico > 0)
+            {
+                saida = saida.Where(x => obj.IdItemAtomico == x.IdItemAtomico);
+            }
+
+            return saida.ToList();
+        
         }
 
         public List<TorcamentoCotacaoOpcaoItemAtomicoCustoFin> PorFiltro(TorcamentoCotacaoOpcaoItemAtomicoCustoFinFiltro obj)
@@ -57,6 +85,10 @@ namespace OrcamentoCotacaoOpcaoItemAtomicoCustoFin
                     if(obj.LstIdItemAtomico != null)
                     {
                         saida = saida.Where(x => obj.LstIdItemAtomico.Contains(x.IdItemAtomico));  
+                    }
+                    if(obj.IdItemAtomico > 0)
+                    {
+                        saida = saida.Where(x => obj.IdItemAtomico == x.IdItemAtomico);
                     }
 
                     return saida.ToList();

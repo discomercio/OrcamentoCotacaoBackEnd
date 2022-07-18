@@ -161,7 +161,11 @@ namespace InfraBanco.Mapping
             builder.HasOne(x => x.TcfgTipoUsuarioContexto)
                 .WithOne(x => x.TorcamentoCotacaoOpcaoPagto)
                 .HasForeignKey<TcfgTipoUsuarioContexto>(f => f.Id);
-                
+
+            builder
+                .HasMany(x => x.TorcamentoCotacaoOpcaoItemAtomicoCustoFin)
+                .WithOne(o => o.TorcamentoCotacaoOpcaoPagto)
+                .HasForeignKey(f => f.IdOpcaoPagto);
         }
     }
 }

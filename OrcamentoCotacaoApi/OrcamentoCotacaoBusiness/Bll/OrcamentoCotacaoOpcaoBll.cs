@@ -4,9 +4,12 @@ using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
+using Loja;
+using Loja.Dados;
 using OrcamentoCotacao.Dto;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
+using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using System;
 using System.Collections.Generic;
@@ -23,16 +26,20 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly IMapper mapper;
         private readonly ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll;
         private readonly FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll;
+        private readonly LojaBll _lojaBll;
 
         public OrcamentoCotacaoOpcaoBll(InfraBanco.ContextoBdProvider contextoBdProvider,
             OrcamentoCotacaoOpcao.OrcamentoCotacaoOpcaoBll orcamentoCotacaoOpcaoBll, IMapper mapper,
-            ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll, FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll)
+            ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll,
+            FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll,
+            LojaBll _lojaBll)
         {
             this.contextoBdProvider = contextoBdProvider;
             this.orcamentoCotacaoOpcaoBll = orcamentoCotacaoOpcaoBll;
             this.mapper = mapper;
             this.produtoOrcamentoCotacaoBll = produtoOrcamentoCotacaoBll;
             this.formaPagtoOrcamentoCotacaoBll = formaPagtoOrcamentoCotacaoBll;
+            this._lojaBll = _lojaBll;
         }
 
         public List<OrcamentoOpcaoResponseViewModel> CadastrarOrcamentoCotacaoOpcoesComTransacao(List<OrcamentoOpcaoRequestViewModel> orcamentoOpcoes,
@@ -81,6 +88,67 @@ namespace OrcamentoCotacaoBusiness.Bll
                 DataCadastro = DateTime.Now.Date,
                 DataHoraCadastro = DateTime.Now
             };
+
+
+        }
+
+        public void AtualizarOrcamentoOpcao(OrcamentoOpcaoResponseViewModel opcao, UsuarioLogin usuarioLogado,
+            OrcamentoResponseViewModel orcamento)
+        {
+            var lstOpcaoAntiga = orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro() { IdOrcamentoCotacao = opcao.IdOrcamentoCotacao });
+            
+            if (lstOpcaoAntiga == null) throw new ArgumentNullException("Falha ao buscar opção de orçamento");
+
+            var opcaoAntiga = lstOpcaoAntiga.Where(x => x.Id == opcao.Id).FirstOrDefault();
+
+            var opcaoNovo = new TorcamentoCotacaoOpcao()
+            {
+                Id = opcao.Id,
+                IdOrcamentoCotacao = opcao.IdOrcamentoCotacao,
+                PercRT = opcao.PercRT,
+                Sequencia = opcao.Sequencia,
+                DataCadastro = opcaoAntiga.DataCadastro,
+                DataHoraCadastro = opcaoAntiga.DataHoraCadastro,
+                IdUsuarioCadastro = opcaoAntiga.IdUsuarioCadastro,
+                IdTipoUsuarioContextoCadastro = opcaoAntiga.IdTipoUsuarioContextoCadastro,
+                IdTipoUsuarioContextoUltAtualizacao = (int)usuarioLogado.TipoUsuario,
+                DataHoraUltAtualizacao = DateTime.Now,
+                IdUsuarioUltAtualizacao = usuarioLogado.Id,
+            };
+
+            var formaPagtoAntiga = formaPagtoOrcamentoCotacaoBll.BuscarOpcaoFormasPagtos(opcao.Id);
+            if (formaPagtoAntiga == null) throw new ArgumentException("Falha ao busca formas de pagamentos da opção!");
+
+            using (var dbGravacao = contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                try
+                {
+                    var tOpcao = orcamentoCotacaoOpcaoBll.AtualizarComTransacao(opcaoNovo, dbGravacao); 
+
+                    tOpcao.TorcamentoCotacaoItemUnificados = produtoOrcamentoCotacaoBll
+                        .AtualizarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(opcao.ListaProdutos, opcao.Id, dbGravacao);
+                    if (tOpcao.TorcamentoCotacaoItemUnificados == null) throw new ArgumentException("Falha ao atualizar os itens!");
+
+                    var topcaoPagtos = formaPagtoOrcamentoCotacaoBll
+                        .AtualizarOrcamentoCotacaoOpcaoPagtoComTransacao(opcao.FormaPagto, opcao.Id, formaPagtoAntiga, dbGravacao);
+                    if (topcaoPagtos == null) throw new ArgumentException("Falha ao atualizar as formas de pagamentos!");
+
+                    tOpcao.TorcamentoCotacaoItemUnificados = produtoOrcamentoCotacaoBll
+                        .AtualizarTorcamentoCotacaoOpcaoItemAtomicoComTransacao(opcao.ListaProdutos, opcao.Id,
+                        tOpcao.TorcamentoCotacaoItemUnificados, dbGravacao);
+                    if (tOpcao.TorcamentoCotacaoItemUnificados == null) throw new ArgumentException("Falha ao atualizar os itens!");
+
+                    produtoOrcamentoCotacaoBll.AtualizarProdutoAtomicoCustoFinComTransacao(opcao, 
+                        tOpcao.TorcamentoCotacaoItemUnificados, topcaoPagtos, dbGravacao, usuarioLogado, orcamento);
+
+                    dbGravacao.transacao.Commit();
+                }
+                catch (Exception ex)
+                {
+                    dbGravacao.transacao.Rollback();
+                    throw;
+                }
+            }
         }
 
         public List<OrcamentoOpcaoResponseViewModel> PorFiltro(TorcamentoCotacaoOpcaoFiltro filtro)

@@ -22,7 +22,19 @@ namespace OrcamentoCotacaoOpcaoPagto
             throw new NotImplementedException();
         }
 
+        public TorcamentoCotacaoOpcaoPagto AtualizarComTransacao(TorcamentoCotacaoOpcaoPagto model, ContextoBdGravacao contextoBdGravacao)
+        {
+            contextoBdGravacao.Update(model);
+            contextoBdGravacao.SaveChanges();
+            return model;
+        }
+
         public bool Excluir(TorcamentoCotacaoOpcaoPagto obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExcluirComTransacao(TorcamentoCotacaoOpcaoPagto obj, ContextoBdGravacao contextoBdGravacao)
         {
             throw new NotImplementedException();
         }

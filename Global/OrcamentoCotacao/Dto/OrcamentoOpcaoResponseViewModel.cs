@@ -25,5 +25,8 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 
         [JsonProperty("percRT")]
         public float PercRT { get; set; }
+
+        [JsonProperty("loja")]
+        public string Loja { get; set; }
     }
 }

@@ -7,6 +7,9 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 {
     public class OrcamentoResponseViewModel : IViewModelResponse
     {
+        [JsonProperty("id")]
+        public long Id { get; set; }
+
         [JsonProperty("vendedor")]
         public string Vendedor { get; set; }
 
@@ -43,11 +46,18 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         [JsonProperty("listaOrcamentoCotacaoDto")]
         public List<OrcamentoOpcaoResponseViewModel> ListaOrcamentoCotacaoDto { get; set; }
 
-        [JsonProperty("id")]
-        public long Id { get; set; }
-
         [JsonProperty("cadastradoPor")]
         public string CadastradoPor { get; set; }
+
+        [JsonProperty("dataCadastro")]
+        public DateTime DataCadastro { get; set; }
+
+        [JsonProperty("idIndicador")]
+        public int? IdIndicador { get; set; }
+
+        [JsonProperty("idIndicadorVendedor")]
+        public int? IdIndicadorVendedor { get; set; }
+        
         
         [JsonProperty("status")]
         public short Status { get; set; }

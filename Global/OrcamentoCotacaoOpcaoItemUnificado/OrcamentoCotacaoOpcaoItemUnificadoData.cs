@@ -22,7 +22,19 @@ namespace OrcamentoCotacaoOpcaoItemUnificado
             throw new NotImplementedException();
         }
 
+        public TorcamentoCotacaoItemUnificado AtualizarComTransacao(TorcamentoCotacaoItemUnificado model, ContextoBdGravacao contextoBdGravacao)
+        {
+            contextoBdGravacao.Update(model);
+            contextoBdGravacao.SaveChanges();
+            return model;
+        }
+
         public bool Excluir(TorcamentoCotacaoItemUnificado obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExcluirComTransacao(TorcamentoCotacaoItemUnificado obj, ContextoBdGravacao contextoBdGravacao)
         {
             throw new NotImplementedException();
         }
@@ -41,7 +53,15 @@ namespace OrcamentoCotacaoOpcaoItemUnificado
 
         public List<TorcamentoCotacaoItemUnificado> PorFilroComTransacao(TorcamentoCotacaoOpcaoItemUnificadoFiltro obj, ContextoBdGravacao contextoBdGravacao)
         {
-            throw new NotImplementedException();
+            var saida = from c in contextoBdGravacao.TorcamentoCotacaoItemUnificado
+                        select c;
+
+            if (obj.IdOpcao != 0)
+            {
+                saida = saida.Where(x => x.IdOrcamentoCotacaoOpcao == obj.IdOpcao);
+            }
+
+            return saida.ToList();
         }
 
         public List<TorcamentoCotacaoItemUnificado> PorFiltro(TorcamentoCotacaoOpcaoItemUnificadoFiltro obj)

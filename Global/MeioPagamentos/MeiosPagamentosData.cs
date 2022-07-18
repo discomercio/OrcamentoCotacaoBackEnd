@@ -25,7 +25,17 @@ namespace MeioPagamentos
             throw new NotImplementedException();
         }
 
+        public TcfgPagtoMeioStatus AtualizarComTransacao(TcfgPagtoMeioStatus model, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Excluir(TcfgPagtoMeioStatus obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExcluirComTransacao(TcfgPagtoMeioStatus obj, ContextoBdGravacao contextoBdGravacao)
         {
             throw new NotImplementedException();
         }

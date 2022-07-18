@@ -15,8 +15,10 @@ namespace ClassesBase
         public abstract T Inserir(T obj);
         public abstract T Atualizar(T obj);
         public abstract bool Excluir(T obj);
+        public abstract void ExcluirComTransacao(T obj, ContextoBdGravacao contextoBdGravacao);
         public abstract T InserirComTransacao(T model, ContextoBdGravacao contextoBdGravacao);
         public abstract List<T> PorFilroComTransacao(U obj, ContextoBdGravacao contextoBdGravacao);
+        public abstract T AtualizarComTransacao(T model, ContextoBdGravacao contextoBdGravacao);
 
         //public MySqlConnection conn { get; set; }
         //public DynamicParameters p { get; set; }

@@ -58,13 +58,40 @@ namespace InfraBanco.Mapping
                 .HasColumnType("money")
                 .IsRequired();
 
+            builder.Property(x => x.StatusDescontoSuperior)
+                .HasColumnName("StatusDescontoSuperior")
+                .HasColumnType("bit")
+                .IsRequired();
+
+            builder.Property(x => x.IdUsuarioDescontoSuperior)
+                .HasColumnName("IdUsuarioDescontoSuperior")
+                .HasColumnType("int");
+
+            builder.Property(x => x.DataHoraDescontoSuperior)
+                .HasColumnName("DataHoraDescontoSuperior")
+                .HasColumnType("datetime");
+
+            builder.Property(x => x.IdOperacaoAlcadaDescontoSuperior)
+                .HasColumnName("IdOperacaoAlcadaDescontoSuperior")
+                .HasColumnType("int");
+
             builder.Ignore(x => x.TorcamentoCotacaoOpcaoItemAtomico);
             builder.Ignore(x => x.TorcamentoCotacaoOpcaoPagto);
 
             builder
                 .HasOne(x => x.TorcamentoCotacaoOpcaoItemAtomico)
-                .WithOne(o => o.TorcamentoCotacaoItemAtomicoCustoFin)
-                .HasForeignKey<TorcamentoCotacaoOpcaoItemAtomicoCustoFin>(f => f.IdItemAtomico);
+                .WithMany(o => o.TorcamentoCotacaoItemAtomicoCustoFin)
+                .HasForeignKey(f => f.IdItemAtomico);
+
+            builder
+                .HasOne(x => x.TorcamentoCotacaoOpcaoPagto)
+                .WithMany(m => m.TorcamentoCotacaoOpcaoItemAtomicoCustoFin)
+                .HasForeignKey(f => f.IdOpcaoPagto);
+            
+            //builder
+            //    .HasOne(x => x.Tusuario)
+            //    .WithOne(o => o.TorcamentoCotacaoOpcaoItemAtomicoCustoFin)
+            //    .HasForeignKey<Tusuario>(f => new { f.Id });
 
         }
     }

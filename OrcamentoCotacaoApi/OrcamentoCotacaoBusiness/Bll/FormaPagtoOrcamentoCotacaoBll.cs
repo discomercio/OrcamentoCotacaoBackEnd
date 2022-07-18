@@ -1,14 +1,17 @@
-﻿using FormaPagamento;
+﻿using AutoMapper;
+using FormaPagamento;
 using InfraBanco;
 using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using MeioPagamentos;
 using OrcamentoCotacaoBusiness.Models.Request;
+using OrcamentoCotacaoBusiness.Models.Response;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento.MeiosPagamento;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace OrcamentoCotacaoBusiness.Bll
@@ -18,14 +21,17 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly FormaPagtoBll _formaPagtoBll;
         private readonly MeiosPagamentosBll _meiosPagamentosBll;
         private readonly OrcamentoCotacaoOpcaoPagto.OrcamentoCotacaoOpcaoPagtoBll orcamentoCotacaoOpcaoPagtoBll;
+        private readonly IMapper mapper;
 
 
         public FormaPagtoOrcamentoCotacaoBll(FormaPagtoBll formaPagtoBll, MeiosPagamentosBll _meiosPagamentosBll,
-            OrcamentoCotacaoOpcaoPagto.OrcamentoCotacaoOpcaoPagtoBll orcamentoCotacaoOpcaoPagtoBll)
+            OrcamentoCotacaoOpcaoPagto.OrcamentoCotacaoOpcaoPagtoBll orcamentoCotacaoOpcaoPagtoBll,
+            IMapper mapper)
         {
             this._formaPagtoBll = formaPagtoBll;
             this._meiosPagamentosBll = _meiosPagamentosBll;
             this.orcamentoCotacaoOpcaoPagtoBll = orcamentoCotacaoOpcaoPagtoBll;
+            this.mapper = mapper;
         }
 
         public List<FormaPagamentoResponseViewModel> BuscarFormasPagamentos(string tipoCliente, Constantes.TipoUsuario tipoUsuario, string apelido, byte comIndicacao)
@@ -113,8 +119,6 @@ namespace OrcamentoCotacaoBusiness.Bll
         public async Task<int?> GetMaximaQtdeParcelasCartaoVisa(Constantes.TipoUsuario tipoUsuario)
         {
             var tipoPerfil = Constantes.TipoUsuarioPerfil.getUsuarioPerfil(tipoUsuario);
-            if (tipoPerfil != Constantes.eTipoUsuarioPerfil.USUÁRIO_DA_CENTRAL && tipoPerfil != Constantes.eTipoUsuarioPerfil.USUARIO_LOJA)
-                return null;
 
             return await _formaPagtoBll.BuscarQtdeParcCartaoVisa();
         }
@@ -130,28 +134,28 @@ namespace OrcamentoCotacaoBusiness.Bll
                     IdOrcamentoCotacaoOpcao = idOrcamentoCotacaoOpcao,
                     Aprovado = false,
                     Observacao = pagto.Observacao,
-                    Tipo_parcelamento = pagto.TipoParcelamento,
-                    Av_forma_pagto = pagto.AvFormaPagto,
-                    Pc_qtde_parcelas = pagto.PcQtdeParcelas,
-                    Pc_valor_parcela = pagto.PcValorParcela,
-                    Pc_maquineta_qtde_parcelas = pagto.PcMaquinetaQtdeParcelas,
-                    Pc_maquineta_valor_parcela = pagto.PcMaquinetaValorParcela,
-                    Pce_forma_pagto_entrada = pagto.PceFormaPagtoEntrada,
-                    Pce_forma_pagto_prestacao = pagto.PceFormaPagtoPrestacao,
-                    Pce_entrada_valor = pagto.PceFormaPagtoEntradaValor,
-                    Pce_prestacao_qtde = pagto.PcePrestacaoQtde,
-                    Pce_prestacao_valor = pagto.PcePrestacaoValor,
-                    Pce_prestacao_periodo = pagto.PcePrestacaoPeriodo,
-                    Pse_forma_pagto_prim_prest = pagto.PseFormaPagtoPrimPrest,
-                    Pse_forma_pagto_demais_prest = pagto.PseFormaPagtoDemaisPrest,
-                    Pse_prim_prest_valor = pagto.PsePrimPrestValor,
-                    Pse_prim_prest_apos = pagto.PsePrimPrestApos,
-                    Pse_demais_prest_qtde = pagto.PseDemaisPrestQtde,
-                    Pse_demais_prest_valor = pagto.PseDemaisPrestValor,
-                    Pse_demais_prest_periodo = pagto.PseDemaisPrestPeriodo,
-                    Pu_forma_pagto = pagto.PuFormaPagto,
-                    Pu_valor = pagto.PuValor,
-                    Pu_vencto_apos = pagto.PuVenctoApos
+                    Tipo_parcelamento = pagto.Tipo_parcelamento,
+                    Av_forma_pagto = pagto.Av_forma_pagto,
+                    Pc_qtde_parcelas = pagto.Pc_qtde_parcelas,
+                    Pc_valor_parcela = pagto.Pc_valor_parcela,
+                    Pc_maquineta_qtde_parcelas = pagto.Pc_maquineta_qtde_parcelas,
+                    Pc_maquineta_valor_parcela = pagto.Pc_maquineta_valor_parcela,
+                    Pce_forma_pagto_entrada = pagto.Pce_forma_pagto_entrada,
+                    Pce_forma_pagto_prestacao = pagto.Pce_forma_pagto_prestacao,
+                    Pce_entrada_valor = pagto.Pce_entrada_valor,
+                    Pce_prestacao_qtde = pagto.Pce_prestacao_qtde,
+                    Pce_prestacao_valor = pagto.Pce_prestacao_valor,
+                    Pce_prestacao_periodo = pagto.Pce_prestacao_periodo,
+                    Pse_forma_pagto_prim_prest = pagto.Pse_forma_pagto_prim_prest,
+                    Pse_forma_pagto_demais_prest = pagto.Pse_forma_pagto_demais_prest,
+                    Pse_prim_prest_valor = pagto.Pse_prim_prest_valor,
+                    Pse_prim_prest_apos = pagto.Pse_prim_prest_apos,
+                    Pse_demais_prest_qtde = pagto.Pse_demais_prest_qtde,
+                    Pse_demais_prest_valor = pagto.Pse_demais_prest_valor,
+                    Pse_demais_prest_periodo = pagto.Pse_demais_prest_periodo,
+                    Pu_forma_pagto = pagto.Pu_forma_pagto,
+                    Pu_valor = pagto.Pu_valor,
+                    Pu_vencto_apos = pagto.Pu_vencto_apos
                 };
 
                 retorno.Add(orcamentoCotacaoOpcaoPagtoBll.InserirComTransacao(torcamentoCotacaoOpcaoPagto, contextoBdGravacao));
@@ -160,9 +164,62 @@ namespace OrcamentoCotacaoBusiness.Bll
             return retorno;
         }
 
+        public List<TorcamentoCotacaoOpcaoPagto> AtualizarOrcamentoCotacaoOpcaoPagtoComTransacao(List<FormaPagtoCriacaoResponseViewModel> formaPagtos,
+            int idOrcamentoOpcao, List<TorcamentoCotacaoOpcaoPagto> formaPagtoAntiga, ContextoBdGravacao dbGravacao)
+        {
+            List<TorcamentoCotacaoOpcaoPagto> lstRetorno = new List<TorcamentoCotacaoOpcaoPagto>();
+            foreach (var pagto in formaPagtos)
+            {
+                var f = formaPagtoAntiga.Where(x => x.Id == pagto.Id).FirstOrDefault();
+                if (f == null)
+                {
+                    var p = mapper.Map<FormaPagtoCriacaoRequestViewModel>(pagto);
+                    List<FormaPagtoCriacaoRequestViewModel> lstPagto = new List<FormaPagtoCriacaoRequestViewModel>();
+                    lstPagto.Add(p);
+                    lstRetorno.Add(CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(lstPagto, idOrcamentoOpcao, dbGravacao).FirstOrDefault());
+                }
+                else
+                {
+                    TorcamentoCotacaoOpcaoPagto torcamentoCotacaoOpcaoPagto = new TorcamentoCotacaoOpcaoPagto()
+                    {
+                        Id = pagto.Id,
+                        IdOrcamentoCotacaoOpcao = idOrcamentoOpcao,
+                        Aprovado = false,
+                        Observacao = pagto.Observacao,
+                        Tipo_parcelamento = pagto.Tipo_parcelamento,
+                        Av_forma_pagto = pagto.Av_forma_pagto,
+                        Pc_qtde_parcelas = pagto.Pc_qtde_parcelas,
+                        Pc_valor_parcela = pagto.Pc_valor_parcela,
+                        Pc_maquineta_qtde_parcelas = pagto.Pc_maquineta_qtde_parcelas,
+                        Pc_maquineta_valor_parcela = pagto.Pc_maquineta_valor_parcela,
+                        Pce_forma_pagto_entrada = pagto.Pce_forma_pagto_entrada,
+                        Pce_forma_pagto_prestacao = pagto.Pce_forma_pagto_prestacao,
+                        Pce_entrada_valor = pagto.Pce_entrada_valor,
+                        Pce_prestacao_qtde = pagto.Pce_prestacao_qtde,
+                        Pce_prestacao_valor = pagto.Pce_prestacao_valor,
+                        Pce_prestacao_periodo = pagto.Pce_prestacao_periodo,
+                        Pse_forma_pagto_prim_prest = pagto.Pse_forma_pagto_prim_prest,
+                        Pse_forma_pagto_demais_prest = pagto.Pse_forma_pagto_demais_prest,
+                        Pse_prim_prest_valor = pagto.Pse_prim_prest_valor,
+                        Pse_prim_prest_apos = pagto.Pse_prim_prest_apos,
+                        Pse_demais_prest_qtde = pagto.Pse_demais_prest_qtde,
+                        Pse_demais_prest_valor = pagto.Pse_demais_prest_valor,
+                        Pse_demais_prest_periodo = pagto.Pse_demais_prest_periodo,
+                        Pu_forma_pagto = pagto.Pu_forma_pagto,
+                        Pu_valor = pagto.Pu_valor,
+                        Pu_vencto_apos = pagto.Pu_vencto_apos
+                    };
+
+                    lstRetorno.Add(orcamentoCotacaoOpcaoPagtoBll.AtualizarComTransacao(torcamentoCotacaoOpcaoPagto, dbGravacao));
+                }
+            }
+
+            return lstRetorno;
+        }
+
         public List<TorcamentoCotacaoOpcaoPagto> BuscarOpcaoFormasPagtos(int idOpcao)
         {
-            if(idOpcao == 0) return null;
+            if (idOpcao == 0) return null;
 
             var opcaoFormaPagtos = orcamentoCotacaoOpcaoPagtoBll.PorFiltro(new TorcamentoCotacaoOpcaoPagtoFiltro() { IdOpcao = idOpcao });
 

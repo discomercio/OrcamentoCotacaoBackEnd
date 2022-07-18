@@ -701,6 +701,12 @@ namespace InfraBanco.Modelos
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         [Column("num_obs_4")]
         public Int32 Num_obs_4 { get; private set; }
+
+        [Column("perc_max_comissao_padrao")]
+        public float? Perc_max_comissao_padrao { get; set; }
+
+        [Column("perc_max_comissao_e_desconto_padrao")]
+        public float? Perc_max_comissao_e_desconto_padrao { get; set; }
     }
 }
 

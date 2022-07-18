@@ -4,8 +4,10 @@ using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
+using Loja;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
+using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
 using Produto;
 using Produto.Dto;
 using System;
@@ -23,11 +25,14 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly OrcamentoCotacaoOpcaoItemUnificado.OrcamentoCotacaoOpcaoItemUnificadoBll orcamentoCotacaoOpcaoItemUnificadoBll;
         private readonly OrcamentoCotacaoOpcaoItemAtomico.OrcamentoCotacaoOpcaoItemAtomicoBll orcamentoCotacaoOpcaoItemAtomicoBll;
         private readonly OrcamentoCotacaoOpcaoItemAtomicoCustoFin.OrcamentoCotacaoOpcaoItemAtomicoCustoFinBll orcamentoCotacaoOpcaoItemAtomicoCustoFinBll;
-
+        private readonly LojaOrcamentoCotacaoBll _lojaOrcamentoCotacaoBll;
+        private readonly LojaBll _lojaBll;
         public ProdutoOrcamentoCotacaoBll(Produto.ProdutoGeralBll produtoGeralBll, CoeficienteBll coeficienteBll, IMapper mapper,
             OrcamentoCotacaoOpcaoItemUnificado.OrcamentoCotacaoOpcaoItemUnificadoBll orcamentoCotacaoOpcaoItemUnificadoBll,
             OrcamentoCotacaoOpcaoItemAtomico.OrcamentoCotacaoOpcaoItemAtomicoBll orcamentoCotacaoOpcaoItemAtomicoBll,
-            OrcamentoCotacaoOpcaoItemAtomicoCustoFin.OrcamentoCotacaoOpcaoItemAtomicoCustoFinBll orcamentoCotacaoOpcaoItemAtomicoCustoFinBll)
+            OrcamentoCotacaoOpcaoItemAtomicoCustoFin.OrcamentoCotacaoOpcaoItemAtomicoCustoFinBll orcamentoCotacaoOpcaoItemAtomicoCustoFinBll,
+            LojaOrcamentoCotacaoBll _lojaOrcamentoCotacaoBll,
+            LojaBll _lojaBll)
         {
             this.produtoGeralBll = produtoGeralBll;
             this.coeficienteBll = coeficienteBll;
@@ -35,6 +40,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             this.orcamentoCotacaoOpcaoItemUnificadoBll = orcamentoCotacaoOpcaoItemUnificadoBll;
             this.orcamentoCotacaoOpcaoItemAtomicoBll = orcamentoCotacaoOpcaoItemAtomicoBll;
             this.orcamentoCotacaoOpcaoItemAtomicoCustoFinBll = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll;
+            this._lojaOrcamentoCotacaoBll = _lojaOrcamentoCotacaoBll;
+            this._lojaBll = _lojaBll;
         }
 
         public async Task<ProdutoResponseViewModel> ListaProdutosCombo(ProdutosRequestViewModel produtos)
@@ -321,6 +328,225 @@ namespace OrcamentoCotacaoBusiness.Bll
             return new List<TorcamentoCotacaoOpcaoItemAtomicoCustoFin>();
         }
 
+        public List<TorcamentoCotacaoItemUnificado> AtualizarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(List<ProdutoOrcamentoOpcaoResponseViewModel> lstProdutos, int idOpcao,
+            ContextoBdGravacao contextoBdGravacao)
+        {
+            List<TorcamentoCotacaoItemUnificado> lstIdsUnificados = new List<TorcamentoCotacaoItemUnificado>();
+
+            var produtosUnificados = orcamentoCotacaoOpcaoItemUnificadoBll.PorFiltroComTransacao(new TorcamentoCotacaoOpcaoItemUnificadoFiltro() { IdOpcao = idOpcao }, contextoBdGravacao);
+            if (produtosUnificados == null) throw new ArgumentException("Falha ao buscar itens para atualização!");
+
+            foreach (var item in lstProdutos)
+            {
+
+                var produto = produtosUnificados.Where(x => x.Fabricante == item.Fabricante && x.Produto == item.Produto).FirstOrDefault();
+                if (produto == null) throw new ArgumentException("Falha ao buscar item para atualização!");
+
+                produto.Qtde = item.Qtde;
+                orcamentoCotacaoOpcaoItemUnificadoBll.AtualizarComTransacao(produto, contextoBdGravacao);
+
+                lstIdsUnificados.Add(produto);
+            }
+            return lstIdsUnificados;
+        }
+
+        public List<TorcamentoCotacaoItemUnificado> AtualizarTorcamentoCotacaoOpcaoItemAtomicoComTransacao(List<ProdutoOrcamentoOpcaoResponseViewModel> lstProdutos, int idOpcao,
+            List<TorcamentoCotacaoItemUnificado> produtosUnificados, ContextoBdGravacao contextoBdGravacao)
+        {
+            List<TorcamentoCotacaoItemUnificado> lstUnificados = new List<TorcamentoCotacaoItemUnificado>();
+
+
+            foreach (var item in lstProdutos)
+            {
+
+                var unificado = produtosUnificados.Where(x => x.Fabricante == item.Fabricante && x.Produto == item.Produto).FirstOrDefault();
+                if (unificado == null) throw new ArgumentException("Falha ao buscar item para atualização!");
+
+                var TorcamentoCotacaoOpcaoItemAtomicos = orcamentoCotacaoOpcaoItemAtomicoBll.PorFiltroComTransacao(new TorcamentoCotacaoOpcaoItemAtomicoFiltro() { IdItemUnificado = item.IdItemUnificado }, contextoBdGravacao);
+                if (TorcamentoCotacaoOpcaoItemAtomicos == null) throw new ArgumentException("Falha ao buscar itens para atualização!");
+
+                foreach (var atomico in TorcamentoCotacaoOpcaoItemAtomicos)
+                {
+                    atomico.Qtde = (short)item.Qtde;
+                    var retorno = orcamentoCotacaoOpcaoItemAtomicoBll.AtualizarComTransacao(atomico, contextoBdGravacao);
+                }
+                lstUnificados.Add(unificado);
+            }
+            return lstUnificados;
+        }
+
+        public void AtualizarProdutoAtomicoCustoFinComTransacao(OrcamentoOpcaoResponseViewModel opcao, List<TorcamentoCotacaoItemUnificado> produtosUnificados,
+            List<TorcamentoCotacaoOpcaoPagto> opcaoPagtos, ContextoBdGravacao contextoBdGravacao,
+            UsuarioLogin usuarioLogado, OrcamentoResponseViewModel orcamento)
+        {
+            foreach (var item in opcao.ListaProdutos)
+            {
+                //precisa cadastrar o custo fin no caso de ter cadastrado um pagamento 
+                var unificado = produtosUnificados.Where(x => x.Fabricante == item.Fabricante && x.Produto == item.Produto).FirstOrDefault();
+                if (unificado.TorcamentoCotacaoOpcaoItemAtomicos.Count <= 0) throw new ArgumentException("Falha ao buscar item atômico para atualização!");
+
+                var produtosEspecificos = unificado.TorcamentoCotacaoOpcaoItemAtomicos.Select(x => x.Produto).ToList();
+                var pDados = produtoGeralBll.BuscarProdutosEspecificos(opcao.Loja, produtosEspecificos).Result;
+
+                foreach (var atomico in unificado.TorcamentoCotacaoOpcaoItemAtomicos)
+                {
+                    var torcamentoCotacaoOpcaoItemAtomicosFin = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll
+                        .PorFiltroComTransacao(new TorcamentoCotacaoOpcaoItemAtomicoCustoFinFiltro() { IdItemAtomico = atomico.Id }, contextoBdGravacao);
+
+                    foreach (var pagto in opcao.FormaPagto)
+                    {
+                        var pg = torcamentoCotacaoOpcaoItemAtomicosFin.Where(x => x.TorcamentoCotacaoOpcaoPagto.Tipo_parcelamento == pagto.Tipo_parcelamento).FirstOrDefault();
+                        if (ValidarDescontoComissaoAlcada(item, usuarioLogado, orcamento, opcao.Id))
+                        {
+                            var p = pDados.Where(x => x.Produto == atomico.Produto).FirstOrDefault();
+
+                            bool usoAlcada = VerificarUsoDeAlcada(usuarioLogado, orcamento, item);
+                            List<int> usuarioAlcadas;
+                            int idAlcada = 0;
+                            if (usoAlcada)
+                            {
+                                usuarioAlcadas = new List<int>();
+                                if (usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_1))
+                                    usuarioAlcadas.Add(int.Parse(Constantes.COMISSAO_DESCONTO_ALCADA_1));
+                                if (usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_2))
+                                    usuarioAlcadas.Add(int.Parse(Constantes.COMISSAO_DESCONTO_ALCADA_2));
+                                if (usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_3))
+                                    usuarioAlcadas.Add(int.Parse(Constantes.COMISSAO_DESCONTO_ALCADA_3));
+
+                                idAlcada = usuarioAlcadas.Max(x => x);
+                            }
+
+                            
+                            if (pg == null)
+                            {
+                                var opcaoPagtoAvista = opcaoPagtos.Where(x => x.Tipo_parcelamento == pagto.Tipo_parcelamento).FirstOrDefault();
+                                pg = new TorcamentoCotacaoOpcaoItemAtomicoCustoFin();
+                                pg.IdItemAtomico = atomico.Id;
+                                pg.IdOpcaoPagto = opcaoPagtoAvista.Id;
+                                pg.DescDado = item.DescDado;
+                                pg.PrecoLista = (decimal)p.Preco_lista;
+                                pg.PrecoVenda = (decimal)p.Preco_lista * (decimal)(1 - item.DescDado / 100);
+                                pg.PrecoNF = (decimal)p.Preco_lista * (decimal)(1 - item.DescDado / 100);
+                                pg.CustoFinancFornecCoeficiente = 0;
+                                pg.CustoFinancFornecPrecoListaBase = (decimal)p.Preco_lista;
+                                pg.StatusDescontoSuperior = usoAlcada ? true : false;
+                                pg.DataHoraDescontoSuperior = usoAlcada ? (DateTime?)DateTime.Now : null;
+                                pg.IdUsuarioDescontoSuperior = usoAlcada ? (int?)usuarioLogado.Id : null;
+                                pg.IdOperacaoAlcadaDescontoSuperior = usoAlcada ? (int?)idAlcada : null;
+
+                                var orc = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.InserirComTransacao(pg, contextoBdGravacao);
+                            }
+                            else
+                            {
+                                pg.Id = pg.Id;
+                                pg.IdItemAtomico = atomico.Id;
+                                pg.IdOpcaoPagto = pagto.Id;
+                                pg.DescDado = item.DescDado;
+                                pg.PrecoLista = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? (decimal)p.Preco_lista : (decimal)p.Preco_lista * (decimal)item.CustoFinancFornecCoeficiente;
+                                pg.PrecoVenda = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? (decimal)p.Preco_lista * (decimal)(1 - item.DescDado / 100) : (decimal)p.Preco_lista * (decimal)item.CustoFinancFornecCoeficiente * (decimal)(1 - item.DescDado / 100);
+                                pg.PrecoNF = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? (decimal)p.Preco_lista * (decimal)(1 - item.DescDado / 100) : (decimal)p.Preco_lista * (decimal)item.CustoFinancFornecCoeficiente * (decimal)(1 - item.DescDado / 100);
+                                pg.CustoFinancFornecCoeficiente = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? 0 : item.CustoFinancFornecCoeficiente;
+                                pg.CustoFinancFornecPrecoListaBase = (decimal)p.Preco_lista;
+                                pg.StatusDescontoSuperior = usoAlcada ? true : false;
+                                pg.DataHoraDescontoSuperior = usoAlcada ? (DateTime?)DateTime.Now : null;
+                                pg.IdUsuarioDescontoSuperior = usoAlcada ? (int?)usuarioLogado.Id : null;
+                                pg.IdOperacaoAlcadaDescontoSuperior = usoAlcada ? (int?)idAlcada : null;
+
+                                var orc = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.AtualizarComTransacao(pg, contextoBdGravacao);
+                            }
+                        };
+
+                    }
+                }
+            }
+
+        }
+
+        public bool VerificarUsoDeAlcada(UsuarioLogin usuarioLogado, OrcamentoResponseViewModel orcamento,
+            ProdutoOrcamentoOpcaoResponseViewModel produto)
+        {
+            PercMaxDescEComissaoResponseViewModel percMaxPorAlcada = new PercMaxDescEComissaoResponseViewModel();
+            if (usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_1) ||
+                usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_2) ||
+                usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_3))
+            {
+                percMaxPorAlcada = _lojaOrcamentoCotacaoBll.BuscarPercMaxPorLojaAlcada(orcamento.Loja, orcamento.ClienteOrcamentoCotacaoDto.Tipo, usuarioLogado.Permissoes);
+            }
+
+            var percPadrao = _lojaOrcamentoCotacaoBll.BuscarPercMaxPorLoja(orcamento.Loja);
+            if (percPadrao == null) throw new ArgumentException("Ops! Não falha ao validar opcão!");
+
+            var percPadraoPorTipo = orcamento.ClienteOrcamentoCotacaoDto.Tipo == Constantes.ID_PF ?
+                percPadrao.PercMaxComissaoEDesconto : percPadrao.PercMaxComissaoEDescontoPJ;
+
+            if (produto.DescDado > percPadraoPorTipo && percMaxPorAlcada.PercMaxComissaoEDesconto == 0)
+                throw new ArgumentException("Ops! Não pode execeder o limite máximo de desconto.");
+
+            if (produto.DescDado > percPadraoPorTipo && percMaxPorAlcada.PercMaxComissaoEDesconto != null) return true;
+
+            return false;
+        }
+
+        private bool ValidarDescontoComissaoAlcada(ProdutoOrcamentoOpcaoResponseViewModel produto,
+            UsuarioLogin usuarioLogado, OrcamentoResponseViewModel orcamento, int idOpcao)
+        {
+            var opcaoAntiga = orcamento.ListaOrcamentoCotacaoDto.Where(x => x.Id == idOpcao).FirstOrDefault();
+            if (opcaoAntiga == null) throw new ArgumentException("Falha ao buscar a opção!");
+
+            bool temAlcada = false;
+            PercMaxDescEComissaoResponseViewModel percMaxPorAlcada = new PercMaxDescEComissaoResponseViewModel();
+            if (usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_1) ||
+                usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_2) ||
+                usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_3))
+            {
+                percMaxPorAlcada = _lojaOrcamentoCotacaoBll.BuscarPercMaxPorLojaAlcada(orcamento.Loja, orcamento.ClienteOrcamentoCotacaoDto.Tipo, usuarioLogado.Permissoes);
+                if (produto.DescDado > percMaxPorAlcada.PercMaxComissaoEDesconto)
+                    throw new ArgumentException($"O desconto no '{produto.Produto}' está excedendo o máximo permitido!");
+                temAlcada = true;
+            }
+
+            var percPadrao = _lojaOrcamentoCotacaoBll.BuscarPercMaxPorLoja(orcamento.Loja);
+
+            var percAUtilizar = percMaxPorAlcada.PercMaxComissao > 0 ? percMaxPorAlcada : percPadrao;
+
+            ValidarComissao(percAUtilizar, orcamento, idOpcao);
+
+            ValidarDescontos(percAUtilizar, produto, orcamento.ClienteOrcamentoCotacaoDto.Tipo, temAlcada);
+
+            return true;
+        }
+
+        public void ValidarDescontos(PercMaxDescEComissaoResponseViewModel percMaxDescEComissaoResponse,
+            ProdutoOrcamentoOpcaoResponseViewModel produto, string tipoCliente, bool temAlcada)
+        {
+            if (produto.DescDado < 0) throw new ArgumentException($"O valor de desconto do produto {produto.Fabricante}/" +
+                 $"{produto.Produto} não pode ser negativo!");
+
+            var percMaxDescComissao = temAlcada ? percMaxDescEComissaoResponse.PercMaxComissaoEDesconto :
+                tipoCliente == Constantes.ID_PF ? percMaxDescEComissaoResponse.PercMaxComissaoEDesconto :
+                percMaxDescEComissaoResponse.PercMaxComissaoEDescontoPJ;
+
+            if (produto.DescDado > percMaxDescComissao) throw new ArgumentException($"O valor de desconto do produto " +
+                $"{produto.Fabricante}/{produto.Produto} excede o máximo permitido");
+
+        }
+
+        public void ValidarComissao(PercMaxDescEComissaoResponseViewModel percMaxDescEComissaoResponse,
+            OrcamentoResponseViewModel orcamento, int idOpcao)
+        {
+            var opcao = orcamento.ListaOrcamentoCotacaoDto.Where(o => o.Id == idOpcao).FirstOrDefault();
+            if (opcao == null) throw new ArgumentException("Ops! Não encotramos a opção em nossas bases.");
+
+            if (opcao.PercRT < 0) throw new ArgumentException("Ops! A comissão não pode ser negativa!");
+
+            if (orcamento.Parceiro == null && opcao.PercRT > 0)
+                throw new ArgumentException("Ops! Não pode conter percentual de comissão!");
+
+            if (opcao.PercRT > 0)
+                if (opcao.PercRT > percMaxDescEComissaoResponse.PercMaxComissao)
+                    throw new ArgumentException("Ops! O valor de comissão excede o máximo permitido");
+        }
+
         public async Task<List<ProdutoOrcamentoOpcaoResponseViewModel>> BuscarOpcaoProdutos(int idOpcao)
         {
             var opcaoProdutosUnificados = orcamentoCotacaoOpcaoItemUnificadoBll.PorFiltro(new TorcamentoCotacaoOpcaoItemUnificadoFiltro() { IdOpcao = idOpcao });
@@ -353,7 +579,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     PrecoNf = itemAtomicoCusto.Where(x => x.CustoFinancFornecCoeficiente > 0).Sum(x => x.PrecoNF),
                     CustoFinancFornecPrecoListaBase = itemAtomicoCusto.Where(x => x.CustoFinancFornecCoeficiente > 0).Sum(x => x.CustoFinancFornecPrecoListaBase),
                     CustoFinancFornecCoeficiente = itemAtomicoCusto.FirstOrDefault().CustoFinancFornecCoeficiente,
-                    TotalItem = itemAtomico.Sum(x => x.Qtde * itemAtomicoCusto.Where(y => y.IdItemAtomico == x.Id && y.CustoFinancFornecCoeficiente > 0).FirstOrDefault().PrecoNF)
+                    TotalItem = itemAtomico.Sum(x => x.Qtde * itemAtomicoCusto.Where(y => y.IdItemAtomico == x.Id && y.CustoFinancFornecCoeficiente > 0).FirstOrDefault().PrecoNF),
+                    IdOperacaoAlcadaDescontoSuperior = itemAtomicoCusto.FirstOrDefault().IdOperacaoAlcadaDescontoSuperior
                 };
 
                 produtosResponse.Add(produtoResponse);

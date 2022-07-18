@@ -18,11 +18,21 @@ namespace ClassesBase
             data.Atualizar(model);
         }
 
+        public virtual T AtualizarComTransacao(T model, ContextoBdGravacao contextoBdGravacao)
+        {
+            return data.AtualizarComTransacao(model, contextoBdGravacao);
+        }
+
         public virtual void Excluir(T model)
         {
             data.Excluir(model);
         }
-        
+
+        public virtual void ExcluirComTransacao(T model, ContextoBdGravacao contextoBdGravacao)
+        {
+            data.ExcluirComTransacao(model, contextoBdGravacao);
+        }
+
         public virtual void Inserir(T model)
         {
             data.Inserir(model);

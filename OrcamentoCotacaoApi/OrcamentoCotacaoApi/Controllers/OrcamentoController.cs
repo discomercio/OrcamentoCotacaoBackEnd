@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
+using OrcamentoCotacaoBusiness.Models.Response;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -78,7 +79,9 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(int id)
         {
-            var orcamentoCotacao = _orcamentoBll.PorFiltro(id);
+            var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+
+            var orcamentoCotacao = _orcamentoBll.PorFiltro(id, user);
 
             return Ok(orcamentoCotacao);
         }
@@ -89,6 +92,14 @@ namespace OrcamentoCotacaoApi.Controllers
             var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
             var dados = _orcamentoBll.BuscarDadosParaMensageria(user, idOrcamento, usuarioInterno);
             return Ok(dados);
+        }
+
+        [HttpPost("atualizarOrcamentoOpcao")]
+        public IActionResult AtualizarOrcamentoOpcao(OrcamentoOpcaoResponseViewModel opcao)
+        {
+            var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+            _orcamentoBll.AtualizarOrcamentoOpcao(opcao, user);
+            return Ok();
         }
 
         [HttpPost("{id}/prorrogar")]

@@ -4,6 +4,15 @@ namespace OrcamentoCotacaoBusiness.Models.Request
 {
     public partial class ProdutoRequestViewModel
     {
+        [JsonProperty("id")]
+        public int Id { get; set; }
+
+        [JsonProperty("idItemUnificado")]
+        public int IdItemUnificado { get; set; }
+
+        [JsonProperty("idOpcaoPagto")]
+        public int IdOpcaoPagto { get; set; }
+
         [JsonProperty("fabricante")]
         public string Fabricante { get; set; }
 
@@ -42,6 +51,6 @@ namespace OrcamentoCotacaoBusiness.Models.Request
 
         [JsonProperty("alterouPrecoVenda")]
         public bool AlterouPrecoVenda { get; set; }
-        
+
     }
 }

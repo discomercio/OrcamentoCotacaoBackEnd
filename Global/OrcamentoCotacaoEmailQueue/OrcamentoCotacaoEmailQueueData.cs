@@ -31,6 +31,11 @@ namespace OrcamentoCotacaoEmailQueue
             }
         }
 
+        public TorcamentoCotacaoEmailQueue AtualizarComTransacao(TorcamentoCotacaoEmailQueue model, ContextoBdGravacao contextoBdGravacao)
+        {
+            throw new NotImplementedException();
+        }
+
         //public List<TcfgUnidadeNegocioParametro> GetCfgUnidadeNegocioParametros(string nomeLoja)
         //{
 
@@ -96,6 +101,11 @@ namespace OrcamentoCotacaoEmailQueue
         //}
 
         public bool Excluir(TorcamentoCotacaoEmailQueue obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ExcluirComTransacao(TorcamentoCotacaoEmailQueue obj, ContextoBdGravacao contextoBdGravacao)
         {
             throw new NotImplementedException();
         }

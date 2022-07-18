@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace OrcamentoCotacaoApi.Controllers
@@ -32,7 +33,8 @@ namespace OrcamentoCotacaoApi.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult BuscarFormasPagamentos(FormaPagtoRequestViewModel formaPagtoRequest)
         {
-            var retorno = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(formaPagtoRequest.TipoCliente, (Constantes.TipoUsuario)LoggedUser.TipoUsuario, LoggedUser.Apelido, byte.Parse(formaPagtoRequest.ComIndicacao));
+            var retorno = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(formaPagtoRequest.TipoCliente, 
+                formaPagtoRequest.TipoUsuario, formaPagtoRequest.Apelido, formaPagtoRequest.ComIndicacao);
 
             if (retorno == null)
                 return NoContent();
@@ -49,6 +51,17 @@ namespace OrcamentoCotacaoApi.Controllers
             if (retorno == null)
                 return NoContent();
             else return Ok(retorno);
+        }
+
+        [HttpGet("buscarMeiosPagtos")]
+        public IActionResult BuscarMeiosPagtos(List<int> tiposPagtos, string tipoCliente, byte comIndicacao)
+        {
+            var retorno = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(tipoCliente, (Constantes.TipoUsuario)LoggedUser.TipoUsuario, LoggedUser.Apelido, comIndicacao);
+
+            if (retorno == null)
+                return NoContent();
+            else
+                return Ok(retorno);
         }
     }
 }

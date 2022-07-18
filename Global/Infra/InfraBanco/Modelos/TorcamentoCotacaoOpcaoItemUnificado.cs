@@ -41,7 +41,7 @@ namespace InfraBanco.Modelos
         public int Sequencia { get; set; }
 
         public TorcamentoCotacaoOpcao TorcamentoCotacaoOpcao { get; set; }
-        public ICollection<TorcamentoCotacaoOpcaoItemAtomico> TorcamentoCotacaoOpcaoItemAtomicos { get; set; }
+        public List<TorcamentoCotacaoOpcaoItemAtomico> TorcamentoCotacaoOpcaoItemAtomicos { get; set; }
 
     }
 }

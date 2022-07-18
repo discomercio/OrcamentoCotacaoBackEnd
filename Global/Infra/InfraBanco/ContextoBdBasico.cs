@@ -32,6 +32,11 @@ namespace InfraBanco
                 .HasForeignKey<Tproduto>(x => new { x.Fabricante, x.Produto });
 
             modelBuilder.Entity<TecProdutoComposto>()
+                .HasOne(x => x.Tproduto)
+                .WithOne(x => x.TecProdutoComposto)
+                .HasForeignKey<TecProdutoComposto>(x => new {x.Fabricante_Composto, x.Produto_Composto});
+
+            modelBuilder.Entity<TecProdutoComposto>()
                 .HasKey(x => new { x.Fabricante_Composto, x.Produto_Composto });
 
             modelBuilder.Entity<TecProdutoCompostoItem>()
@@ -176,6 +181,30 @@ namespace InfraBanco
                 .HasOne(x => x.TorcamentoCotacaoOpcaoPagto)
                 .WithOne(o => o.TcfgTipoUsuarioContexto)
                 .HasForeignKey<TorcamentoCotacaoOpcaoPagto>(f => f.IdTipoUsuarioContextoAprovado);
+
+            modelBuilder.Entity<Tusuario>()
+                .HasOne(o => o.TorcamentoCotacaoOpcaoItemAtomicoCustoFin)
+                .WithOne(f => f.Tusuario)
+                .HasForeignKey<TorcamentoCotacaoOpcaoItemAtomicoCustoFin>(f => f.IdUsuarioDescontoSuperior)
+                .HasPrincipalKey<Tusuario>(p => p.Id);
+
+            modelBuilder.Entity<TorcamentoItem>()
+                .HasOne(o => o.Tusuario)
+                .WithMany(m => m.TorcamentoItem)
+                .HasForeignKey(f => f.IdUsuarioDescontoSuperior)
+                .HasPrincipalKey(p => p.Id);
+
+            modelBuilder.Entity<TpedidoItem>()
+                .HasOne(o => o.Tusuario)
+                .WithMany(m => m.TpedidoItem)
+                .HasForeignKey(f => f.IdUsuarioDescontoSuperior)
+                .HasPrincipalKey(p => p.Id);
+
+            modelBuilder.Entity<TpedidoItemDevolvido>()
+                .HasOne(o => o.Tusuario)
+                .WithMany(m => m.TpedidoItemDevolvido)
+                .HasForeignKey(f => f.IdUsuarioDescontoSuperior)
+                .HasPrincipalKey(p => p.Id);
         }
 
         public DbSet<Tcliente> Tcliente { get; set; }
