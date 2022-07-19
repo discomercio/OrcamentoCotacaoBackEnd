@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OrcamentoCotacaoApi.Utils;
 using System.Threading.Tasks;
+using UtilsGlobais;
 
 namespace PrepedidoApi.Controllers
 {

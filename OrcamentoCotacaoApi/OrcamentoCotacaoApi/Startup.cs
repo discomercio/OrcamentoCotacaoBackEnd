@@ -9,6 +9,7 @@ using OrcamentoCotacaoApi.Config;
 using OrcamentoCotacaoApi.Utils;
 using System.Linq;
 using System.Text;
+using UtilsGlobais;
 
 namespace OrcamentoCotacaoApi
 {

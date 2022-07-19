@@ -1,12 +1,11 @@
 ﻿using InfraBanco;
 using InfraBanco.Modelos;
+using InfraIdentity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
-using OrcamentoCotacaoBusiness.Interfaces;
-using OrcamentoCotacaoBusiness.Services;
+using UtilsGlobais;
 
 namespace OrcamentoCotacaoApi.Config
 {
@@ -37,6 +36,7 @@ namespace OrcamentoCotacaoApi.Config
             services.AddScoped<ITokenService, TokenService>();
 
             //#GLOBAL
+            services.AddTransient<PublicoBll, PublicoBll>();
             services.AddTransient<Arquivo.ArquivoBll, Arquivo.ArquivoBll>();
             services.AddTransient<Cep.CepBll, Cep.CepBll>();
             services.AddTransient<Cep.IBancoNFeMunicipio, Cep.BancoNFeMunicipio>();

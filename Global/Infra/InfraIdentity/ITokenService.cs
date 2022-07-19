@@ -1,7 +1,6 @@
-﻿using InfraIdentity;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 
-namespace OrcamentoCotacaoBusiness.Interfaces
+namespace InfraIdentity
 {
     public interface ITokenService
     {

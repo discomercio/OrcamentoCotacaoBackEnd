@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrcamentoCotacaoApi.Controllers;
-using OrcamentoCotacaoApi.Utils;
 using Prepedido.PedidoVisualizacao;
 using PrepedidoBusiness.Bll;
 using System;
 using System.Threading.Tasks;
+using UtilsGlobais;
 
 namespace PrepedidoApi.Controllers
 {
