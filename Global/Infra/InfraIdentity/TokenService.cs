@@ -1,15 +1,13 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
-using Microsoft.Extensions.Configuration;
-using OrcamentoCotacaoBusiness.Interfaces;
-using InfraIdentity;
 
-namespace OrcamentoCotacaoBusiness.Services
+namespace InfraIdentity
 {
     public class TokenService : ITokenService
     {
@@ -84,8 +82,6 @@ namespace OrcamentoCotacaoBusiness.Services
                 ValidateLifetime = false, // Validate expiration in the generated token
                 ValidateAudience = false, // Validate audiance in the generated token
                 ValidateIssuer = false,   // Validate issuer in the generated token
-                //ValidIssuer = "Sample",
-                //ValidAudience = "Sample",
                 IssuerSigningKey = new SymmetricSecurityKey(_appSecret) // The same key as the one that generate the token
             };
         }

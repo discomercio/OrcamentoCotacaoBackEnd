@@ -7,11 +7,12 @@ using InfraIdentity;
 using Loja;
 using Microsoft.Extensions.Options;
 using Orcamento;
-using OrcamentoCotacaoLink;
 using Orcamento.Dto;
 using OrcamentoCotacao.Dto;
+using OrcamentoCotacaoBusiness.Dto;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
+using OrcamentoCotacaoLink;
 using PrepedidoBusiness.Bll;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly CfgUnidadeNegocioBll _cfgUnidadeNegocioBll;
         private readonly CfgUnidadeNegocioParametroBll _cfgUnidadeNegocioParametroBll;
         private readonly FormaPagtoOrcamentoCotacaoBll _formaPagtoOrcamentoCotacaoBll;
-        private readonly LojaOrcamentoCotacaoBll _lojaOrcamentoCotacaoBll;
+        private readonly PublicoBll _publicoBll;
 
         public OrcamentoCotacaoBll(
             OrcamentoBll orcamentoBll,
@@ -60,7 +61,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             CfgUnidadeNegocioParametroBll cfgUnidadeNegocioParametroBll,
             FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll,
             OrcamentoCotacaoLinkBll orcamentoCotacaoLinkBll,
-            LojaOrcamentoCotacaoBll _lojaOrcamentoCotacaoBll
+            PublicoBll publicoBll
             )
         {
             _orcamentoBll = orcamentoBll;
@@ -80,6 +81,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             _cfgUnidadeNegocioBll = cfgUnidadeNegocioBll;
             _cfgUnidadeNegocioParametroBll = cfgUnidadeNegocioParametroBll;
             _formaPagtoOrcamentoCotacaoBll = formaPagtoOrcamentoCotacaoBll;
+            _publicoBll = publicoBll;
         }
 
         public OrcamentoCotacaoDto PorGuid(string guid)
@@ -88,11 +90,20 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             if (orcamento != null)
             {
-                UsuarioLogin usuario = new UsuarioLogin { TipoUsuario = 4 }; //CLIENTE
+                var usuario = new UsuarioLogin { TipoUsuario = 4 }; //CLIENTE
+                //var usuarioAuth = _servicoAutenticacao.ObterTokenAutenticacao(
+                //    usuario,
+                //    _appSettings.SegredoToken,
+                //    _appSettings.ValidadeTokenMinutos,
+                //    Autenticacao.RoleAcesso,
+                //    new Utils.ServicoAutenticacaoProvider(acessoBll),
+                //    out bool unidade_negocio_desconhecida
+                //);
 
                 orcamento.listaOpcoes = _orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro { IdOrcamentoCotacao = orcamento.id });
                 orcamento.listaFormasPagto = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(orcamento.tipoCliente, (Constantes.TipoUsuario)usuario.TipoUsuario, orcamento.vendedor, byte.Parse(orcamento.idIndicador.HasValue ? "1" : "0"));
                 orcamento.mensageria = BuscarDadosParaMensageria(usuario, orcamento.id, false);
+                orcamento.token = _publicoBll.ObterTokenServico();
 
                 return orcamento;
             }

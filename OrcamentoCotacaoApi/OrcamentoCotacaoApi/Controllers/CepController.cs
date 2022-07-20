@@ -1,10 +1,10 @@
 ﻿using Cep;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using OrcamentoCotacaoApi.Utils;
 using PrepedidoBusiness.Dto.Cep;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using UtilsGlobais;
 
 namespace PrepedidoApi.Controllers
 {

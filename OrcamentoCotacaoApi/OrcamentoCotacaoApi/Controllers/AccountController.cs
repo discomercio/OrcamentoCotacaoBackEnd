@@ -8,12 +8,12 @@ using Microsoft.Extensions.Logging;
 using OrcamentistaEindicador;
 using OrcamentistaEIndicadorVendedor;
 using OrcamentoCotacaoApi.Utils;
-using OrcamentoCotacaoBusiness.Interfaces;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
 using System;
 using System.Threading.Tasks;
 using Usuario;
+using UtilsGlobais;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -25,7 +25,6 @@ namespace OrcamentoCotacaoApi.Controllers
         private readonly IConfiguration _configuration;
         private readonly OrcamentoCotacaoBusiness.Bll.AcessoBll _acessoBll;
         private readonly ILogger<AccountController> _logger;
-        private readonly ITokenService _tokenService;
         private readonly UsuarioBll _usuarioBll;
         private readonly OrcamentistaEIndicadorBll _orcamentistaEindicadorBll;
         private readonly OrcamentistaEIndicadorVendedorBll _orcamentistaEindicadorVendedorBll;
@@ -38,7 +37,6 @@ namespace OrcamentoCotacaoApi.Controllers
             _servicoAutenticacao = servicoAutenticacao;
             _configuration = configuration;
             _acessoBll = acessoBll;
-            _tokenService = tokenService;
             _usuarioBll = usuarioBll;
             _orcamentistaEindicadorBll = orcamentistaEindicadorBll;
             _orcamentistaEindicadorVendedorBll = orcamentistaEindicadorVendedorBll;
@@ -54,7 +52,7 @@ namespace OrcamentoCotacaoApi.Controllers
             try
             {
                 var appSettingsSection = _configuration.GetSection("AppSettings");
-                var appSettings = appSettingsSection.Get<OrcamentoCotacaoApi.Utils.Configuracao>();
+                var appSettings = appSettingsSection.Get<Configuracao>();
                 string apelido = login.Login.ToUpper();
                 string senha = login.Senha;
 
@@ -68,7 +66,7 @@ namespace OrcamentoCotacaoApi.Controllers
                     objUsuarioLogin, 
                     appSettings.SegredoToken, 
                     appSettings.ValidadeTokenMinutos,
-                    OrcamentoCotacaoApi.Utils.Autenticacao.RoleAcesso, 
+                    Autenticacao.RoleAcesso, 
                     new ServicoAutenticacaoProvider(_acessoBll, _usuarioBll, _orcamentistaEindicadorBll, _orcamentistaEindicadorVendedorBll, _lojaBll),
                     out bool unidade_negocio_desconhecida
                     );
