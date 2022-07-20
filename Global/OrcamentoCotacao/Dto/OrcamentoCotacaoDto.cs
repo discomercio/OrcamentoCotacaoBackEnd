@@ -28,6 +28,7 @@ namespace OrcamentoCotacao.Dto
         public string tipoCliente { get; set; }
         public int stEntregaImediata { get; set; }
         public DateTime? dataEntregaImediata { get; set; }
+        public short status { get; set; }
         public string token { get; set; }
         
         public List<OrcamentoOpcaoResponseViewModel> listaOpcoes { get; set; }
