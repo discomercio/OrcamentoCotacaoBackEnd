@@ -5,6 +5,7 @@ using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
 using Loja;
+using Loja.Dados;
 using Microsoft.Extensions.Options;
 using Orcamento;
 using Orcamento.Dto;
@@ -18,9 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
-using Loja.Dados;
-using OrcamentoCotacaoBusiness.Dto;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -76,7 +74,6 @@ namespace OrcamentoCotacaoBusiness.Bll
             _appSettings = appSettings.Value;
             _orcamentoCotacaoEmailQueueBll = orcamentoCotacaoEmailQueueBll;
             _orcamentoCotacaoLinkBll = orcamentoCotacaoLinkBll;
-            this._lojaOrcamentoCotacaoBll = _lojaOrcamentoCotacaoBll;
             _lojaBll = lojaBll;
             _cfgUnidadeNegocioBll = cfgUnidadeNegocioBll;
             _cfgUnidadeNegocioParametroBll = cfgUnidadeNegocioParametroBll;
@@ -91,14 +88,6 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (orcamento != null)
             {
                 var usuario = new UsuarioLogin { TipoUsuario = 4 }; //CLIENTE
-                //var usuarioAuth = _servicoAutenticacao.ObterTokenAutenticacao(
-                //    usuario,
-                //    _appSettings.SegredoToken,
-                //    _appSettings.ValidadeTokenMinutos,
-                //    Autenticacao.RoleAcesso,
-                //    new Utils.ServicoAutenticacaoProvider(acessoBll),
-                //    out bool unidade_negocio_desconhecida
-                //);
 
                 orcamento.listaOpcoes = _orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro { IdOrcamentoCotacao = orcamento.id });
                 orcamento.listaFormasPagto = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(orcamento.tipoCliente, (Constantes.TipoUsuario)usuario.TipoUsuario, orcamento.vendedor, byte.Parse(orcamento.idIndicador.HasValue ? "1" : "0"));
