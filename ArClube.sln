@@ -133,7 +133,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cfg", "Global\Cfg\Cfg\Cfg.c
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrcamentoCotacaoLink", "Global\OrcamentoCotacaoLink\OrcamentoCotacaoLink.csproj", "{7BD32271-7CFF-4DDA-8566-EE7BA7480BA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Publico", "Publico\Publico.csproj", "{663B0C1E-EBEF-49C2-8702-BD40357DD429}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Publico", "Publico\Publico.csproj", "{663B0C1E-EBEF-49C2-8702-BD40357DD429}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -530,6 +530,7 @@ Global
 		{5B82213B-F651-461E-AC70-C569274C9F55}.Release_Loja|Any CPU.ActiveCfg = Release|Any CPU
 		{5B82213B-F651-461E-AC70-C569274C9F55}.Release_Loja|Any CPU.Build.0 = Release|Any CPU
 		{5B82213B-F651-461E-AC70-C569274C9F55}.Release_OrcamentoCotacao|Any CPU.ActiveCfg = Release_OrcamentoCotacao|Any CPU
+		{5B82213B-F651-461E-AC70-C569274C9F55}.Release_OrcamentoCotacao|Any CPU.Build.0 = Release_OrcamentoCotacao|Any CPU
 		{5B82213B-F651-461E-AC70-C569274C9F55}.Release_PrepedidoApi|Any CPU.ActiveCfg = Release|Any CPU
 		{5B82213B-F651-461E-AC70-C569274C9F55}.Release_PrepedidoApi|Any CPU.Build.0 = Release|Any CPU
 		{5B82213B-F651-461E-AC70-C569274C9F55}.Release|Any CPU.ActiveCfg = Release|Any CPU
