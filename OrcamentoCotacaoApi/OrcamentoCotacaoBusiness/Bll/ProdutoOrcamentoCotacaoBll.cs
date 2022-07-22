@@ -400,7 +400,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         {
                             var p = pDados.Where(x => x.Produto == atomico.Produto).FirstOrDefault();
 
-                            bool usoAlcada = VerificarUsoDeAlcada(usuarioLogado, orcamento, item);
+                            bool usoAlcada = VerificarUsoDeAlcada(usuarioLogado, orcamento, item, opcao.PercRT);
                             List<int> usuarioAlcadas;
                             int idAlcada = 0;
                             if (usoAlcada)
@@ -463,7 +463,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public bool VerificarUsoDeAlcada(UsuarioLogin usuarioLogado, OrcamentoResponseViewModel orcamento,
-            ProdutoOrcamentoOpcaoResponseViewModel produto)
+            ProdutoOrcamentoOpcaoResponseViewModel produto, float percRT)
         {
             PercMaxDescEComissaoResponseViewModel percMaxPorAlcada = new PercMaxDescEComissaoResponseViewModel();
             if (usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_1) ||
@@ -482,7 +482,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (produto.DescDado > percPadraoPorTipo && percMaxPorAlcada.PercMaxComissaoEDesconto == 0)
                 throw new ArgumentException("Ops! Não pode execeder o limite máximo de desconto.");
 
-            if (produto.DescDado > percPadraoPorTipo && percMaxPorAlcada.PercMaxComissaoEDesconto != null) return true;
+            if (produto.DescDado + percRT > percPadraoPorTipo) return true;
 
             return false;
         }
