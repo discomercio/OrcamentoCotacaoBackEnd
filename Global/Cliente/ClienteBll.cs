@@ -425,30 +425,31 @@ namespace Cliente
         public async Task<Cliente.Dados.ClienteCadastroDados> BuscarCliente(string cpf_cnpj, string apelido)
         {
 
-            var db = contextoProvider.GetContextoLeitura();
-
-            var dadosCliente = db.Tcliente.Where(r => r.Cnpj_Cpf == cpf_cnpj)
-                .FirstOrDefault();
-
-            if (dadosCliente == null)
-                return null;
-
-            var lojaOrcamentista = (from c in db.TorcamentistaEindicador
-                                    where c.Apelido == apelido
-                                    select c.Loja).FirstOrDefaultAsync();
-
-            var dadosClienteTask = ObterDadosClienteCadastro(dadosCliente, await lojaOrcamentista);
-            var refBancariaTask = ObterReferenciaBancaria(dadosCliente);
-            var refComercialTask = ObterReferenciaComercial(dadosCliente);
-
-            Cliente.Dados.ClienteCadastroDados cliente = new Cliente.Dados.ClienteCadastroDados
+            using (var db = contextoProvider.GetContextoLeitura())
             {
-                DadosCliente = dadosClienteTask,
-                RefBancaria = (await refBancariaTask).ToList(),
-                RefComercial = (await refComercialTask).ToList()
-            };
+                var dadosCliente = await db.Tcliente.Where(r => r.Cnpj_Cpf == cpf_cnpj)
+                    .FirstOrDefaultAsync();
 
-            return await Task.FromResult(cliente);
+                if (dadosCliente == null)
+                    return null;
+
+                var lojaOrcamentista = (from c in db.TorcamentistaEindicador
+                                        where c.Apelido == apelido
+                                        select c.Loja).FirstOrDefaultAsync();
+
+                var dadosClienteTask = ObterDadosClienteCadastro(dadosCliente, await lojaOrcamentista);
+                var refBancariaTask = ObterReferenciaBancaria(dadosCliente);
+                var refComercialTask = ObterReferenciaComercial(dadosCliente);
+
+                Cliente.Dados.ClienteCadastroDados cliente = new Cliente.Dados.ClienteCadastroDados
+                {
+                    DadosCliente = dadosClienteTask,
+                    RefBancaria = (await refBancariaTask).ToList(),
+                    RefComercial = (await refComercialTask).ToList()
+                };
+
+                return await Task.FromResult(cliente);
+            }
         }
 
         public async Task<IEnumerable<Cliente.Dados.ListaBancoDados>> ListarBancosCombo()
@@ -600,7 +601,7 @@ namespace Cliente
             return lstRefComercial;
         }
 
-        public async Task<(List<string> listaErros, bool registroJaExiste) > CadastrarCliente(Cliente.Dados.ClienteCadastroDados clienteCadastroDados, string indicador,
+        public async Task<(List<string> listaErros, bool registroJaExiste)> CadastrarCliente(Cliente.Dados.ClienteCadastroDados clienteCadastroDados, string indicador,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             string usuario_cadastro)
         {
