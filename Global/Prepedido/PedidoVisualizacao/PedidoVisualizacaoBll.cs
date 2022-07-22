@@ -94,7 +94,7 @@ namespace Prepedido.PedidoVisualizacao
                              {
                                  NumeroOrcamento = c.IdOrcamentoCotacao.HasValue ? c.IdOrcamentoCotacao.Value.ToString() : "-",
                                  NumPedido = c.Pedido,
-                                 Cliente_Obra = $"{c.Tcliente.Nome}",
+                                 Cliente_Obra = $"{c.Endereco_nome}",
                                  Vendedor = c.Vendedor,
                                  Parceiro = !String.IsNullOrEmpty(c.Indicador) ? c.Indicador : "-",
                                  VendedorParceiro = loj.Nome,
