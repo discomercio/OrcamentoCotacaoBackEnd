@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using OrcamentoCotacaoApi.Utils;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using UtilsGlobais;
 
 namespace PrepedidoApi.Controllers
 {

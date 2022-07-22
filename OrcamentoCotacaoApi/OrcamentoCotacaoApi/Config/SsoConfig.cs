@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using OrcamentoCotacaoApi.Utils;
 using System.Text;
+using UtilsGlobais;
 
 namespace OrcamentoCotacaoApi.Config
 {

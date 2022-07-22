@@ -3,12 +3,12 @@ using InfraBanco.Constantes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using OrcamentoCotacaoApi.Utils;
 using PrepedidoBusiness.Bll;
 using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using UtilsGlobais;
 
 namespace PrepedidoApi.Controllers
 {

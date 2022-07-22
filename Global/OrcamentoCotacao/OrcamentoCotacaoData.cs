@@ -54,6 +54,9 @@ namespace OrcamentoCotacao
                                          idIndicador = o.IdIndicador,
                                          idIndicadorVendedor = o.IdIndicadorVendedor,
                                          tipoCliente = o.TipoCliente,
+                                         stEntregaImediata = o.StEtgImediata,
+                                         dataEntregaImediata = o.PrevisaoEntregaData,
+                                         status = o.Status,
 
                                          //Cliente
                                          nomeCliente = o.NomeCliente,

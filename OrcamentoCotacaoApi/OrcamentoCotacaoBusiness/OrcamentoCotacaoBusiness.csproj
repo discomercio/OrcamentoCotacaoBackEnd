@@ -38,10 +38,13 @@
     <ProjectReference Include="..\..\Global\Usuario\Usuario.csproj" />
     <ProjectReference Include="..\..\Global\Utils\UtilsGlobais.csproj" />
     <ProjectReference Include="..\..\Mensagem\Mensagem.csproj" />
+    <ProjectReference Include="..\..\Publico\Publico.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Interfaces\" />
     <Folder Include="Models\Response\FormaPagamento\MeiosPagamento\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

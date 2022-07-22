@@ -5,21 +5,20 @@ using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
 using Loja;
+using Loja.Dados;
 using Microsoft.Extensions.Options;
 using Orcamento;
-using OrcamentoCotacaoLink;
 using Orcamento.Dto;
 using OrcamentoCotacao.Dto;
+using OrcamentoCotacaoBusiness.Dto;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
+using OrcamentoCotacaoLink;
 using PrepedidoBusiness.Bll;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
-using Loja.Dados;
-using OrcamentoCotacaoBusiness.Dto;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -41,7 +40,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly CfgUnidadeNegocioBll _cfgUnidadeNegocioBll;
         private readonly CfgUnidadeNegocioParametroBll _cfgUnidadeNegocioParametroBll;
         private readonly FormaPagtoOrcamentoCotacaoBll _formaPagtoOrcamentoCotacaoBll;
-        private readonly LojaOrcamentoCotacaoBll _lojaOrcamentoCotacaoBll;
+        private readonly PublicoBll _publicoBll;
 
         public OrcamentoCotacaoBll(
             OrcamentoBll orcamentoBll,
@@ -60,7 +59,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             CfgUnidadeNegocioParametroBll cfgUnidadeNegocioParametroBll,
             FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll,
             OrcamentoCotacaoLinkBll orcamentoCotacaoLinkBll,
-            LojaOrcamentoCotacaoBll _lojaOrcamentoCotacaoBll
+            PublicoBll publicoBll
             )
         {
             _orcamentoBll = orcamentoBll;
@@ -75,11 +74,11 @@ namespace OrcamentoCotacaoBusiness.Bll
             _appSettings = appSettings.Value;
             _orcamentoCotacaoEmailQueueBll = orcamentoCotacaoEmailQueueBll;
             _orcamentoCotacaoLinkBll = orcamentoCotacaoLinkBll;
-            this._lojaOrcamentoCotacaoBll = _lojaOrcamentoCotacaoBll;
             _lojaBll = lojaBll;
             _cfgUnidadeNegocioBll = cfgUnidadeNegocioBll;
             _cfgUnidadeNegocioParametroBll = cfgUnidadeNegocioParametroBll;
             _formaPagtoOrcamentoCotacaoBll = formaPagtoOrcamentoCotacaoBll;
+            _publicoBll = publicoBll;
         }
 
         public OrcamentoCotacaoDto PorGuid(string guid)
@@ -88,11 +87,12 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             if (orcamento != null)
             {
-                UsuarioLogin usuario = new UsuarioLogin { TipoUsuario = 4 }; //CLIENTE
+                var usuario = new UsuarioLogin { TipoUsuario = 4 }; //CLIENTE
 
                 orcamento.listaOpcoes = _orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro { IdOrcamentoCotacao = orcamento.id });
                 orcamento.listaFormasPagto = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(orcamento.tipoCliente, (Constantes.TipoUsuario)usuario.TipoUsuario, orcamento.vendedor, byte.Parse(orcamento.idIndicador.HasValue ? "1" : "0"));
                 orcamento.mensageria = BuscarDadosParaMensageria(usuario, orcamento.id, false);
+                orcamento.token = _publicoBll.ObterTokenServico();
 
                 return orcamento;
             }
@@ -596,48 +596,5 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
-        public MensagemDto AprovarOrcamento(int id, int idUsuario)
-        {
-            //TODO: DESFIXAR VARIAVEIS
-            int QtdeDiasValidade = 15;
-            int QtdeGlobalValidade = 30;
-            int QtdeDiasProrrogacao = 5;
-            int QtdeMaxProrrogacao = 2;
-
-            var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro { Id = id }).FirstOrDefault();
-
-            if (orcamento != null)
-            {
-                if (orcamento.Status == (short)Constantes.eCfgOrcamentoCotacaoStatus.APROVADO ||
-                    orcamento.Status == (short)Constantes.eCfgOrcamentoCotacaoStatus.CANCELADO)
-                    return new MensagemDto
-                    {
-                        tipo = "WARN",
-                        mensagem = "Não é possível aprovar, orçamentos aprovados ou cancelados!"
-                    };
-
-                if (orcamento.Validade.Date < DateTime.Now.Date)
-                    return new MensagemDto
-                    {
-                        tipo = "WARN",
-                        mensagem = "Não é possível aprovar, orçamentos com validade expirada!"
-                    };
-
-                //orcamento.ValidadeAnterior = orcamento.Validade;
-                //orcamento.QtdeRenovacao += 1;
-                //orcamento.IdUsuarioUltRenovacao = idUsuario;
-                //orcamento.DataHoraUltRenovacao = DateTime.Now;
-
-                //_orcamentoCotacaoBll.Atualizar(orcamento);
-
-                return new MensagemDto
-                {
-                    tipo = "INFO",
-                    mensagem = String.Format("Prorrogado para: {0}. {1} {2}", orcamento.Validade.ToString("dd/MM/yyyy"), orcamento.QtdeRenovacao, orcamento.QtdeRenovacao == 1 ? "vez" : "vezes")
-                };
-            }
-
-            return null;
-        }
     }
 }
