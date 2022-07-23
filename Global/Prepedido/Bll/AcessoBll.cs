@@ -99,11 +99,16 @@ namespace PrepedidoBusiness.Bll
 
         public async Task<string> Buscar_unidade_negocio(string loja)
         {
-            var db = contextoProvider.GetContextoLeitura();
-            var unidade_negocio = await ((from c in db.Tloja
-                                          where c.Loja == loja.Trim()
-                                          select c.Unidade_Negocio).FirstOrDefaultAsync());
-            return unidade_negocio;
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                var unidade_negocio = await
+                ((from c in db.Tloja
+                  where c.Loja == loja.Trim()
+                  select c.Unidade_Negocio)
+                              .FirstOrDefaultAsync());
+
+                return unidade_negocio;
+            }
         }
 
         public async Task GravarSessaoComTransacao(string ip, string apelido, string userAgent)

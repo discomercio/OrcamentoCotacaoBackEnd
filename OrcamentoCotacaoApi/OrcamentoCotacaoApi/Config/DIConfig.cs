@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OrcamentoCotacaoBusiness.Bll;
 using UtilsGlobais;
+using UtilsGlobais.Parametros;
 
 namespace OrcamentoCotacaoApi.Config
 {
@@ -36,6 +37,8 @@ namespace OrcamentoCotacaoApi.Config
             services.AddScoped<ITokenService, TokenService>();
 
             //#GLOBAL
+            services.AddTransient<ParametroOrcamentoCotacaoBll, ParametroOrcamentoCotacaoBll>();
+            services.AddTransient<ParametroOrcamentoCotacaoData, ParametroOrcamentoCotacaoData>();
             services.AddTransient<PublicoBll, PublicoBll>();
             services.AddTransient<Arquivo.ArquivoBll, Arquivo.ArquivoBll>();
             services.AddTransient<Cep.CepBll, Cep.CepBll>();

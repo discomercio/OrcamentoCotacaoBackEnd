@@ -14,6 +14,7 @@ namespace InfraIdentity
         public string Senha { get; set; }
         public string Nome { get; set; }
         public string Loja { get; set; }
+        public byte? IdUnidade_negocio { get; set; }
         public string Unidade_negocio { get; set; }
         //esse campo esta sendo incluido para verificar 
         //se o usuário esta bloqueado ou se iremos redirecionar para alterar a senha

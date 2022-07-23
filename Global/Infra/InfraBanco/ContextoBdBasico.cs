@@ -291,6 +291,7 @@ namespace InfraBanco
         public DbSet<TorcamentoCotacaoOpcaoItemAtomicoCustoFin> TorcamentoCotacaoOpcaoItemAtomicoCustoFin { get; set; }
         public DbSet<TorcamentoCotacaoOpcaoItemAtomico> TorcamentoCotacaoOpcaoItemAtomico { get; set; }
         public DbSet<TcfgUnidadeNegocio> TcfgUnidadeNegocio { get; set; }
+        public DbSet<TcfgParametro> TcfgParametro { get; set; }
         public DbSet<TusuarioXLoja> TusuarioXLoja { get; set; }
         public DbSet<Toperacao> Toperacao { get; set; }
         public DbSet<TperfilItem> TperfilItem { get; set; }

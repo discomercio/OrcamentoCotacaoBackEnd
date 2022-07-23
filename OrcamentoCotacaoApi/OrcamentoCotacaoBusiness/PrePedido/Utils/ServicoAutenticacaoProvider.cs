@@ -46,7 +46,13 @@ namespace PrepedidoApi.Utils
             {
                 var loja = await acessoBll.BuscarLojaUsuario(apelido);
                 var unidade_negocio = await acessoBll.Buscar_unidade_negocio(loja);
-                UsuarioLogin usuario = new UsuarioLogin { Apelido = apelido, Nome = dadosCliente.ToString(), Loja = loja, Unidade_negocio = unidade_negocio };
+                UsuarioLogin usuario = new UsuarioLogin
+                {
+                    Apelido = apelido,
+                    Nome = dadosCliente.ToString(),
+                    Loja = loja,
+                    Unidade_negocio = unidade_negocio
+                };
                 return usuario;
             }
         }
