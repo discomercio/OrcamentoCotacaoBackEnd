@@ -69,6 +69,7 @@ namespace InfraIdentity
                     new Claim(ClaimTypes.Name, usuario.Nome),
                     new Claim(ClaimTypes.Surname, usuario.Loja),
                     new Claim(ClaimTypes.Role, role),
+                    new Claim("Idunidade_negocio", usuario.IdUnidade_negocio.HasValue ? usuario.IdUnidade_negocio.Value.ToString() : ""),
                     new Claim("unidade_negocio", !string.IsNullOrEmpty(usuario.Unidade_negocio)?usuario.Unidade_negocio:""),
                     //new Claim("Email", !string.IsNullOrEmpty(usuario.Email)? usuario.Email:""),
                     new Claim("TipoUsuario", usuario.TipoUsuario.HasValue?usuario.TipoUsuario.Value.ToString():""),

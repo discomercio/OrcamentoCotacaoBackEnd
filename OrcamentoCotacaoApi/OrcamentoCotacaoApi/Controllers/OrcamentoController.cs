@@ -1,4 +1,5 @@
-﻿using InfraBanco.Modelos.Filtros;
+﻿using InfraBanco.Constantes;
+using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
+using System;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -105,7 +107,9 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost("{id}/prorrogar")]
         public IActionResult ProrrogarOrcamento(int id)
         {
-            return Ok(_orcamentoBll.ProrrogarOrcamento(id, LoggedUser.Id));
+            eUnidadeNegocio e = (eUnidadeNegocio)Enum.Parse(typeof(eUnidadeNegocio), LoggedUser.Unidade_negocio);
+
+            return Ok(_orcamentoBll.ProrrogarOrcamento(id, LoggedUser.Id, (int)e));
         }
     }
 }
