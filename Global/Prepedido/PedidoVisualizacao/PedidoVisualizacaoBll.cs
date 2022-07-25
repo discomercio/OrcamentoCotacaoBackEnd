@@ -941,8 +941,8 @@ namespace Prepedido.PedidoVisualizacao
 
         private async Task<IEnumerable<MensagemOcorrenciaPedidoDados>> ObterMensagemOcorrencia(int idOcorrencia)
         {
-            using (var db = contextoProvider.GetContextoLeitura())
-            {
+            var db = contextoProvider.GetContextoLeitura();
+            
                 var msg = from c in db.TpedidoOcorrenciaMensagem
                           where c.Id_Ocorrencia == idOcorrencia
                           select new MensagemOcorrenciaPedidoDados
@@ -954,7 +954,7 @@ namespace Prepedido.PedidoVisualizacao
                           };
 
                 return await Task.FromResult(msg);
-            }
+            
         }
 
         public string DescricaoAnaliseCreditoCadastroPedido(string codigo, bool visualizacao, string numero_pedido, string apelido)
