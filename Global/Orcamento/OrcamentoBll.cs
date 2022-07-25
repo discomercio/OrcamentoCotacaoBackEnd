@@ -108,7 +108,7 @@ namespace Orcamento
                                                             {
                                                                 NumeroOrcamento = !c.IdOrcamentoCotacao.HasValue || c.IdOrcamentoCotacao == 0 ? "-" : c.IdOrcamentoCotacao.Value.ToString(),
                                                                 NumPedido = c.Orcamento,
-                                                                Cliente_Obra = $"{c.Tcliente.Nome}",
+                                                                Cliente_Obra = $"{c.Endereco_nome}",
                                                                 Vendedor = c.Vendedor == null ? "-" : c.Vendedor,
                                                                 Parceiro = c.Orcamentista == null ? "-" : c.Orcamentista,
                                                                 VendedorParceiro = loj.Nome,

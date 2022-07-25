@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UtilsGlobais.Parametros;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -41,6 +42,8 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly CfgUnidadeNegocioParametroBll _cfgUnidadeNegocioParametroBll;
         private readonly FormaPagtoOrcamentoCotacaoBll _formaPagtoOrcamentoCotacaoBll;
         private readonly PublicoBll _publicoBll;
+        private readonly ParametroOrcamentoCotacaoBll _parametroOrcamentoCotacaoBll;
+
 
         public OrcamentoCotacaoBll(
             OrcamentoBll orcamentoBll,
@@ -59,7 +62,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             CfgUnidadeNegocioParametroBll cfgUnidadeNegocioParametroBll,
             FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll,
             OrcamentoCotacaoLinkBll orcamentoCotacaoLinkBll,
-            PublicoBll publicoBll
+            PublicoBll publicoBll,
+            ParametroOrcamentoCotacaoBll parametroOrcamentoCotacaoBll
             )
         {
             _orcamentoBll = orcamentoBll;
@@ -79,6 +83,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             _cfgUnidadeNegocioParametroBll = cfgUnidadeNegocioParametroBll;
             _formaPagtoOrcamentoCotacaoBll = formaPagtoOrcamentoCotacaoBll;
             _publicoBll = publicoBll;
+            _parametroOrcamentoCotacaoBll = parametroOrcamentoCotacaoBll;
         }
 
         public OrcamentoCotacaoDto PorGuid(string guid)
@@ -218,7 +223,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 vendedorParceiro = (int)usuarioLogin.TipoUsuario != (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO ?
                     tVendedorParceiro?.Nome : tVendedorParceiro.Email;
             }
-            
+
 
             OrcamentoResponseViewModel orcamentoResponse = new OrcamentoResponseViewModel()
             {
@@ -389,7 +394,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 if (usuarioLogado.Apelido == parceiro.Apelido) return true;
             }
 
-            
+
 
             if (usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_1) ||
                 usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_2) ||
@@ -398,7 +403,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             if (orcamento.CadastradoPor.ToUpper() == usuarioLogado.Apelido.ToUpper()) return true;
 
-                return false;
+            return false;
         }
 
         public void AdicionarOrcamentoCotacaoLink(TorcamentoCotacao orcamento, Guid guid, InfraBanco.ContextoBdGravacao contextoBdGravacao)
@@ -547,15 +552,10 @@ namespace OrcamentoCotacaoBusiness.Bll
             return torcamentoCotacao;
         }
 
-        public MensagemDto ProrrogarOrcamento(int id, int idUsuario)
+        public MensagemDto ProrrogarOrcamento(int id, int idUsuario, int idUnidadeNegocio)
         {
-            //TODO: DESFIXAR VARIAVEIS
-            int QtdeDiasValidade = 15;
-            int QtdeGlobalValidade = 30;
-            int QtdeDiasProrrogacao = 5;
-            int QtdeMaxProrrogacao = 2;
-
             var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro { Id = id }).FirstOrDefault();
+            var parametros = _parametroOrcamentoCotacaoBll.ObterParametros(idUnidadeNegocio);
 
             if (orcamento != null)
             {
@@ -567,29 +567,36 @@ namespace OrcamentoCotacaoBusiness.Bll
                         mensagem = "Não é possível prorrogar, orçamentos aprovados ou cancelados!"
                     };
 
-                if (orcamento.QtdeRenovacao >= QtdeMaxProrrogacao)
+                if (orcamento.QtdeRenovacao >= byte.Parse(parametros.QtdeMaxProrrogacao))
                     return new MensagemDto
                     {
                         tipo = "WARN",
-                        mensagem = $"Excedida a quantidade máxima! {QtdeMaxProrrogacao} vezes"
+                        mensagem = $"Excedida a quantidade máxima! {parametros.QtdeMaxProrrogacao} vezes"
                     };
-
-                if (DateTime.Now.AddDays(QtdeDiasProrrogacao) > DateTime.Now.AddDays(QtdeGlobalValidade))
-                    orcamento.Validade = DateTime.Now.AddDays(QtdeGlobalValidade);
-                else
-                    orcamento.Validade = DateTime.Now.AddDays(QtdeDiasProrrogacao);
 
                 orcamento.ValidadeAnterior = orcamento.Validade;
                 orcamento.QtdeRenovacao += 1;
                 orcamento.IdUsuarioUltRenovacao = idUsuario;
                 orcamento.DataHoraUltRenovacao = DateTime.Now;
 
+                if (DateTime.Now.AddDays(byte.Parse(parametros.QtdePadrao_DiasProrrogacao)) > DateTime.Now.AddDays(byte.Parse(parametros.QtdeGlobal_Validade)))
+                    orcamento.Validade = DateTime.Now.AddDays(byte.Parse(parametros.QtdeGlobal_Validade));
+                else
+                    orcamento.Validade = DateTime.Now.AddDays(byte.Parse(parametros.QtdePadrao_DiasProrrogacao));
+
+                if (orcamento.Validade.Date == orcamento.ValidadeAnterior.Value.Date)
+                    return new MensagemDto
+                    {
+                        tipo = "WARN",
+                        mensagem = $"Orçamento já foi prorrogado para {orcamento.Validade.ToString("dd/MM/yyyy")}!"
+                    };
+
                 _orcamentoCotacaoBll.Atualizar(orcamento);
 
                 return new MensagemDto
                 {
                     tipo = "INFO",
-                    mensagem = $"Prorrogado para: {orcamento.Validade.ToString("dd/MM/yyyy")}. {orcamento.QtdeRenovacao}ª vez."
+                    mensagem = $"{orcamento.Validade.ToString("yyyy-MM-ddTHH:mm:ss")}|Prorrogado para: {orcamento.Validade.ToString("dd/MM/yyyy")}. {orcamento.QtdeRenovacao}ª vez."
                 };
             }
 
