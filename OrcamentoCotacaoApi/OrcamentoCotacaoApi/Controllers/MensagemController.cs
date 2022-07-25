@@ -86,12 +86,19 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpGet("pendente/quantidade")]
         public int ObterQuantidadeMensagemPendente()
         {
-            _logger.LogInformation("ObterQuantidadeMensagemPendente");
-            var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+            if (User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin") != null)
+            {
+                _logger.LogInformation("ObterQuantidadeMensagemPendente");
+                var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
 
-            var saida = _mensagemBll.ObterQuantidadeMensagemPendente(user.Id);
+                var saida = _mensagemBll.ObterQuantidadeMensagemPendente(user.Id);
 
-            return saida;
+                return saida;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         [HttpPut]
@@ -100,8 +107,8 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             var saida = false;
 
-            _logger.LogInformation("MarcarLida");            
-            
+            _logger.LogInformation("MarcarLida");
+
             try
             {
                 var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
@@ -110,7 +117,7 @@ namespace OrcamentoCotacaoApi.Controllers
             catch
             {
                 saida = _mensagemBll.MarcarLida(IdOrcamentoCotacao, 0);
-            }            
+            }
 
             if (saida)
             {
@@ -127,7 +134,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 });
             }
         }
-        
+
         [HttpPut]
         [Route("marcar/pendencia")]
         public async Task<IActionResult> MarcarPendencia(int IdOrcamentoCotacao)
