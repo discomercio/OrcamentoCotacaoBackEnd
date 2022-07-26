@@ -165,6 +165,20 @@ namespace InfraBanco.Mapping
                 .HasColumnName("perc_max_comissao_e_desconto_padrao")
                 .HasColumnType("real");
 
+            builder.Property(x => x.ContribuinteIcms)
+                .HasColumnName("ContribuinteIcms")
+                .HasColumnType("tinyint");
+
+            builder.Property(x => x.VersaoPoliticaCredito)
+                .HasColumnName("VersaoPoliticaCredito")
+                .HasMaxLength(10)
+                .HasColumnType("string");
+
+            builder.Property(x => x.VersaoPoliticaPrivacidade)
+                .HasColumnName("VersaoPoliticaPrivacidade")
+                .HasMaxLength(10)
+                .HasColumnType("string");
+
             builder.Ignore(x => x.TorcamentoCotacaoMensagems);
             builder.Ignore(x => x.TorcamentoCotacaoOpcaos);
             builder.Ignore(x => x.TorcamentoCotacaoLinks);

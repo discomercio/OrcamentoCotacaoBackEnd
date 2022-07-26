@@ -44,5 +44,14 @@ namespace OrcamentoCotacaoBusiness.Models.Request
 
         [JsonProperty("id")]
         public long Id { get; set; }
+
+        [JsonProperty("contribuinteICMS")]
+        public byte ContribuinteICMS { get; set; }
+
+        [JsonProperty("versaoPoliticaCredito")]
+        public string VersaoPoliticaCredito { get; set; }
+
+        [JsonProperty("versaoPoliticaPrivacidade")]
+        public string VersaoPoliticaPrivacidade { get; set; }
     }
 }

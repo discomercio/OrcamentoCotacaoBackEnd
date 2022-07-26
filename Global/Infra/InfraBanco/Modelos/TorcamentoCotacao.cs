@@ -91,6 +91,12 @@ namespace InfraBanco.Modelos
 
         public float? Perc_max_comissao_e_desconto_padrao { get; set; }
 
+        public byte ContribuinteIcms { get; set; }
+
+        public string VersaoPoliticaCredito { get; set; }
+
+        public string VersaoPoliticaPrivacidade { get; set; }
+
         public virtual List<TorcamentoCotacaoMensagem> TorcamentoCotacaoMensagems { get; set; }
 
         public virtual List<TorcamentoCotacaoOpcao> TorcamentoCotacaoOpcaos { get; set; }
