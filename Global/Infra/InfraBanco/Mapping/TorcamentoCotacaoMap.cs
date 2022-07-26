@@ -17,11 +17,13 @@ namespace InfraBanco.Mapping
 
             builder.Property(x => x.Loja)
                 .HasColumnName("Loja")
-                .HasColumnType("varchar(3)");
+                .HasColumnType("varchar(3)")
+                .IsRequired(true);
 
             builder.Property(x => x.NomeCliente)
                 .HasColumnName("NomeCliente")
-                .HasColumnType("varchar(60)");
+                .HasColumnType("varchar(60)")
+                .IsRequired(true);
 
             builder.Property(x => x.NomeObra)
                 .HasColumnName("NomeObra")

@@ -17,6 +17,7 @@ using OrcamentoCotacaoLink;
 using PrepedidoBusiness.Bll;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using UtilsGlobais.Parametros;
@@ -324,9 +325,56 @@ namespace OrcamentoCotacaoBusiness.Bll
             return _mensagemBll.MarcarLida(IdOrcamentoCotacao, idUsuarioRemetente);
         }
 
+
+        private bool ValidarClienteOrcamento(ClienteOrcamentoCotacaoRequestViewModel cliente)
+        {
+            if (cliente == null) throw new ArgumentNullException("Ops! Favor preencher os dados do cliente!");
+
+            if (string.IsNullOrEmpty(cliente.NomeCliente))
+                throw new ArgumentNullException("O nome do cliente é obrigatório!");
+
+            if (cliente.NomeCliente.Length > 60)
+                throw new ArgumentException("O nome do cliente excede a quantidade máxima de caracteres permitido!");
+
+            if (!string.IsNullOrEmpty(cliente.NomeObra) && cliente.NomeObra.Length > 120)
+                throw new ArgumentException("O nome da obra execede a quantidade máxima de caracteres permitido!");
+
+            if (!new EmailAddressAttribute().IsValid(cliente.Email))
+                throw new ArgumentException("E-mail inválido!");
+
+            if (!string.IsNullOrEmpty(cliente.Telefone) && cliente.Telefone.Length > 15)
+                throw new ArgumentException("Telefone inválido!");
+
+            if (string.IsNullOrEmpty(cliente.Uf))
+                throw new ArgumentException("Informe a UF de entrega!");
+
+            if (!UtilsGlobais.Util.VerificaUf(cliente.Uf))
+                throw new ArgumentException("Uf de entrega inválida!");
+
+            if (string.IsNullOrEmpty(cliente.Tipo))
+                throw new ArgumentException("Informe se o cliente é pessoa física ou jurídica!");
+
+            if (cliente.Tipo.Length > 2)
+                throw new ArgumentException("O tipo do cliente execede a quantidade máxima de caracteres permitido!");
+
+            if (cliente.Tipo.ToUpper() != Constantes.ID_PF && cliente.Tipo.ToUpper() != Constantes.ID_PJ)
+                throw new ArgumentException("Tipo do cliente inválido!");
+
+            if (cliente.ContribuinteICMS == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL ||
+                (cliente.ContribuinteICMS != (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM &&
+                cliente.ContribuinteICMS != (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO &&
+                cliente.ContribuinteICMS != (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO))
+                throw new ArgumentException("Contribuinte de ICMS inválido!");
+
+            return true;
+        }
+
         public int CadastrarOrcamentoCotacao(OrcamentoRequestViewModel orcamento, UsuarioLogin usuarioLogado)
         {
             //TODO: VALIDAR OrcamentoRequestViewModel
+            //ValidarCredenciais campos obrigatórios
+            ValidarClienteOrcamento(orcamento.ClienteOrcamentoCotacaoDto);
+
             if (orcamento.ListaOrcamentoCotacaoDto.Count <= 0) throw new ArgumentException("Necessário ter ao menos uma opção de orçamento!");
 
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
@@ -491,7 +539,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                 StEtgImediata = orcamento.EntregaImediata ? 1 : 0,
                 PrevisaoEntregaData = orcamento.DataEntregaImediata,
                 Perc_max_comissao_e_desconto_padrao = orcamento.ClienteOrcamentoCotacaoDto.Tipo == Constantes.ID_PF ?
-                    percMaxDescEComissaoDados.PercMaxComissaoEDesconto : percMaxDescEComissaoDados.PercMaxComissaoEDescontoPJ
+                    percMaxDescEComissaoDados.PercMaxComissaoEDesconto : percMaxDescEComissaoDados.PercMaxComissaoEDescontoPJ,
+                ContribuinteIcms = orcamento.ClienteOrcamentoCotacaoDto.ContribuinteICMS
             };
 
             if (!string.IsNullOrEmpty(orcamento.Vendedor))

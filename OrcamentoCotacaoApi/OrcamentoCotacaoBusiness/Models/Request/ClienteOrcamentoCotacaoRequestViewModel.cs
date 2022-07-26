@@ -25,5 +25,8 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         [JsonProperty("tipo")]
         public string Tipo { get; set; }
 
+        [JsonProperty("contribuinteICMS")]
+        public byte ContribuinteICMS { get; set; }
+
     }
 }
