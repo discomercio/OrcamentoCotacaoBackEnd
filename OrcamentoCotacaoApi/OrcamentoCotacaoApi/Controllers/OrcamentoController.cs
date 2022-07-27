@@ -111,5 +111,13 @@ namespace OrcamentoCotacaoApi.Controllers
 
             return Ok(_orcamentoBll.ProrrogarOrcamento(id, LoggedUser.Id, (int)e));
         }
+
+        [HttpPost("atualizarDados")]
+        public IActionResult AtualizarDados(OrcamentoResponseViewModel model)
+        {
+            var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+            _orcamentoBll.AtualizarDadosOrcamento(model, user);
+            return Ok();
+        }
     }
 }

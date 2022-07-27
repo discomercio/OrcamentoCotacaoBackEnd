@@ -44,7 +44,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly FormaPagtoOrcamentoCotacaoBll _formaPagtoOrcamentoCotacaoBll;
         private readonly PublicoBll _publicoBll;
         private readonly ParametroOrcamentoCotacaoBll _parametroOrcamentoCotacaoBll;
-
+        private readonly ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll;
 
         public OrcamentoCotacaoBll(
             OrcamentoBll orcamentoBll,
@@ -64,7 +64,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll,
             OrcamentoCotacaoLinkBll orcamentoCotacaoLinkBll,
             PublicoBll publicoBll,
-            ParametroOrcamentoCotacaoBll parametroOrcamentoCotacaoBll
+            ParametroOrcamentoCotacaoBll parametroOrcamentoCotacaoBll,
+            ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll
             )
         {
             _orcamentoBll = orcamentoBll;
@@ -85,6 +86,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             _formaPagtoOrcamentoCotacaoBll = formaPagtoOrcamentoCotacaoBll;
             _publicoBll = publicoBll;
             _parametroOrcamentoCotacaoBll = parametroOrcamentoCotacaoBll;
+            this.produtoOrcamentoCotacaoBll = produtoOrcamentoCotacaoBll;
         }
 
         public OrcamentoCotacaoDto PorGuid(string guid)
@@ -243,6 +245,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 DataCadastro = orcamento.DataCadastro,
                 IdIndicador = orcamento.IdIndicador,
                 IdIndicadorVendedor = orcamento.IdIndicadorVendedor,
+                IdVendedor = orcamento.IdVendedor,
                 ClienteOrcamentoCotacaoDto = new ClienteOrcamentoCotacaoRequestViewModel()
                 {
                     NomeCliente = orcamento.NomeCliente,
@@ -250,7 +253,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     Email = orcamento.Email,
                     Telefone = orcamento.Telefone,
                     Tipo = orcamento.TipoCliente,
-                    Uf = orcamento.UF
+                    Uf = orcamento.UF,
+                    ContribuinteICMS = orcamento.ContribuinteIcms
                 },
                 ListaOrcamentoCotacaoDto = opcao,
                 CadastradoPor = VerificarContextoCadastroOrcamento(orcamento.IdTipoUsuarioContextoCadastro, usuario, parceiro, vendedorParceiro)
@@ -274,7 +278,6 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             return null;
         }
-
 
         public RemetenteDestinatarioResponseViewModel BuscarDadosParaMensageria(UsuarioLogin usuario, int id, bool usuarioIterno)
         {
@@ -326,7 +329,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
 
-        private bool ValidarClienteOrcamento(ClienteOrcamentoCotacaoRequestViewModel cliente)
+        private void ValidarClienteOrcamento(ClienteOrcamentoCotacaoRequestViewModel cliente)
         {
             if (cliente == null) throw new ArgumentNullException("Ops! Favor preencher os dados do cliente!");
 
@@ -365,8 +368,6 @@ namespace OrcamentoCotacaoBusiness.Bll
                 cliente.ContribuinteICMS != (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO &&
                 cliente.ContribuinteICMS != (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO))
                 throw new ArgumentException("Contribuinte de ICMS inválido!");
-
-            return true;
         }
 
         public int CadastrarOrcamentoCotacao(OrcamentoRequestViewModel orcamento, UsuarioLogin usuarioLogado)
@@ -418,6 +419,77 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (!temPermissao) throw new ArgumentException("Usuário não tem permissão para atualizar a opção de orçamento!");
 
             _orcamentoCotacaoOpcaoBll.AtualizarOrcamentoOpcao(opcao, usuarioLogado, orcamento);
+        }
+
+        public void AtualizarDadosOrcamento(OrcamentoResponseViewModel orcamento, UsuarioLogin usuarioLogado)
+        {
+            var orcamentoAntigo = PorFiltro((int)orcamento.Id, usuarioLogado);
+
+            if (!ValidarDonoOrcamentoCotacao(orcamentoAntigo, usuarioLogado))
+                throw new ArgumentException("Usuário não tem permissão para editar dados cadastrais do orçamento!");
+
+            ValidarClienteOrcamento(orcamento.ClienteOrcamentoCotacaoDto);
+
+            ValidarAtualizacaoDadosCadastraisOrcamentoCotacao(orcamento, orcamentoAntigo, usuarioLogado);
+
+            // atualizar t_orcamento
+
+
+
+        }
+
+        private bool ValidarDonoOrcamentoCotacao(OrcamentoResponseViewModel orcamentoAntigo,
+            UsuarioLogin usuarioLogado)
+        {
+            if (orcamentoAntigo.IdIndicadorVendedor != null)
+                if (usuarioLogado.Id == orcamentoAntigo.IdIndicadorVendedor) return true;
+                else return false;
+
+
+            if (orcamentoAntigo.IdIndicador != null)
+                if (usuarioLogado.Id == orcamentoAntigo.IdIndicador) return true;
+                else return false;
+
+            if (orcamentoAntigo.IdVendedor == usuarioLogado.Id) return true;
+
+            return false;
+        }
+
+        public void ValidarAtualizacaoDadosCadastraisOrcamentoCotacao(OrcamentoResponseViewModel orcamento,
+            OrcamentoResponseViewModel orcamentoAntigo, UsuarioLogin usuarioLogado)
+        {
+            foreach (var opcao in orcamentoAntigo.ListaOrcamentoCotacaoDto)
+            {
+                foreach (var item in opcao.ListaProdutos)
+                {
+                    if (produtoOrcamentoCotacaoBll.VerificarUsoDeAlcada(usuarioLogado, orcamentoAntigo, item,
+                        opcao.PercRT))
+                    {
+                        if (orcamento.ClienteOrcamentoCotacaoDto.ContribuinteICMS !=
+                            orcamentoAntigo.ClienteOrcamentoCotacaoDto.ContribuinteICMS)
+                            throw new ArgumentException("Enquadramento de ICMS não pode ser alterado!");
+                    }
+                }
+            }
+
+            if (orcamento.Validade != orcamentoAntigo.Validade)
+                throw new ArgumentException("A validade do orçamento não pode ser alterada!");
+
+            if (orcamento.ClienteOrcamentoCotacaoDto.Tipo.ToUpper() !=
+                orcamentoAntigo.ClienteOrcamentoCotacaoDto.Tipo.ToUpper())
+                throw new ArgumentException("O tipo do cliente não pode ser alterado!");
+
+            if (orcamento.Vendedor.ToUpper() != orcamentoAntigo.Vendedor.ToUpper() ||
+                orcamento.IdVendedor != orcamentoAntigo.IdVendedor)
+                throw new ArgumentException("O vendedor não pode ser alterado!");
+
+            if (orcamento.VendedorParceiro.ToUpper() != orcamentoAntigo.VendedorParceiro.ToUpper() ||
+                orcamento.IdIndicadorVendedor != orcamentoAntigo.IdIndicadorVendedor)
+                throw new ArgumentException("O Vendedor do parceiro não pode ser alterado!");
+
+            if (orcamento.Parceiro.ToUpper() != orcamentoAntigo.Parceiro.ToUpper() ||
+                orcamento.IdIndicador != orcamentoAntigo.IdIndicador)
+                throw new ArgumentException("O parceiro não pode ser alterado!");
         }
 
         private bool ValidarPermissaoAtualizarOpcaoOrcamentoCotacao(OrcamentoResponseViewModel orcamento, UsuarioLogin usuarioLogado)
