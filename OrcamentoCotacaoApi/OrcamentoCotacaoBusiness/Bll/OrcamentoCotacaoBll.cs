@@ -452,6 +452,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     tOrcamento.IdUsuarioUltAtualizacao = usuarioLogado.Id;
                     tOrcamento.DataHoraUltAtualizacao = DateTime.Now;
                     tOrcamento.AceiteWhatsApp = orcamento.ConcordaWhatsapp;
+                    tOrcamento.ContribuinteIcms = orcamento.ClienteOrcamentoCotacaoDto.ContribuinteICMS;
 
                     var retorno = _orcamentoCotacaoBll.AtualizarComTransacao(tOrcamento, dbGravacao);
 
