@@ -432,7 +432,6 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             ValidarAtualizacaoDadosCadastraisOrcamentoCotacao(orcamento, orcamentoAntigo, usuarioLogado);
 
-            // atualizar t_orcamento
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 try
@@ -494,7 +493,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                     {
                         if (orcamento.ClienteOrcamentoCotacaoDto.ContribuinteICMS !=
                             orcamentoAntigo.ClienteOrcamentoCotacaoDto.ContribuinteICMS)
-                            throw new ArgumentException("Enquadramento de ICMS não pode ser alterado!");
+                            throw new ArgumentException("O contribuinte de ICMS não pode ser alterado!");
+
+                        if (orcamento.ClienteOrcamentoCotacaoDto.Uf.ToUpper() !=
+                            orcamentoAntigo.ClienteOrcamentoCotacaoDto.Uf.ToUpper())
+                            throw new ArgumentException("A UF de entrega não ser alterada!");
                     }
                 }
             }
