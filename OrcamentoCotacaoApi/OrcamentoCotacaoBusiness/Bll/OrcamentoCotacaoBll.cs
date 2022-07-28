@@ -603,5 +603,40 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
+        public MensagemDto AtualizarStatus(int id, int idUsuario, short idStatus)
+        {
+            var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro { Id = id }).FirstOrDefault();
+
+            if (orcamento != null)
+            {
+                // CANCELADO
+                if (idStatus == 2)
+                {
+                    
+                    if (orcamento.Status == (short)Constantes.eCfgOrcamentoCotacaoStatus.APROVADO)
+                        return new MensagemDto
+                        {
+                            tipo = "WARN",
+                            mensagem = "Não é possível cancelar orçamentos aprovados!"
+                        };
+                }
+                
+                orcamento.Status = idStatus;
+                orcamento.DataHoraUltStatus = DateTime.Now;
+                orcamento.IdUsuarioUltStatus = idUsuario;
+                orcamento.DataHoraUltStatus = DateTime.Now;
+
+                _orcamentoCotacaoBll.Atualizar(orcamento);
+
+                return new MensagemDto
+                {
+                    tipo = "INFO",
+                    mensagem = $"Orçamento Cancelado com Sucesso."
+                };
+            }
+
+            return null;
+        }
+
     }
 }
