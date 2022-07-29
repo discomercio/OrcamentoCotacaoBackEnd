@@ -529,9 +529,19 @@ namespace OrcamentoCotacaoBusiness.Bll
                 orcamento.IdIndicadorVendedor != orcamentoAntigo.IdIndicadorVendedor)
                 throw new ArgumentException("O Vendedor do parceiro não pode ser alterado!");
 
-            if (orcamento.Parceiro != Constantes.SEM_INDICADOR && (orcamento.Parceiro?.ToUpper() != orcamentoAntigo.Parceiro?.ToUpper() ||
+            if (usuarioLogado.TipoUsuario == (int?)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
+            {
+                if (orcamento.Parceiro != Constantes.SEM_INDICADOR && (orcamento.Parceiro.ToUpper() != orcamentoAntigo.IdIndicador.ToString().ToUpper() ||
                 orcamento.IdIndicador != orcamentoAntigo.IdIndicador))
-                throw new ArgumentException("O parceiro não pode ser alterado!");
+                    throw new ArgumentException("O parceiro não pode ser alterado!");
+            }
+            else
+            {
+                if (orcamento.Parceiro != Constantes.SEM_INDICADOR && (orcamento.Parceiro?.ToUpper() != orcamentoAntigo.Parceiro?.ToUpper() ||
+                orcamento.IdIndicador != orcamentoAntigo.IdIndicador))
+                    throw new ArgumentException("O parceiro não pode ser alterado!");
+            }
+
         }
 
         private bool ValidarPermissaoAtualizarOpcaoOrcamentoCotacao(OrcamentoResponseViewModel orcamento, UsuarioLogin usuarioLogado)
