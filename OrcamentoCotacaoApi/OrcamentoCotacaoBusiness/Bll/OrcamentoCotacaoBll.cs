@@ -767,5 +767,44 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
+        public MensagemDto AtualizarStatus(int id, int idUsuario, short idStatus)
+        {
+            using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                try
+                {
+                    var tOrcamento = _orcamentoCotacaoBll.PorFiltroComTransacao(new TorcamentoCotacaoFiltro() { Id = id }, dbGravacao).FirstOrDefault();
+                    if (tOrcamento == null) throw new Exception("Falha ao buscar Orçamento!");
+
+                    if (idStatus == 2)
+                    {
+
+                        if (tOrcamento.Status == (short)Constantes.eCfgOrcamentoCotacaoStatus.APROVADO)
+                            return new MensagemDto
+                            {
+                                tipo = "WARN",
+                                mensagem = "Não é possível cancelar orçamentos aprovados!"
+                            };
+                    }
+
+                    tOrcamento.Status = idStatus;
+                    tOrcamento.DataHoraUltStatus = DateTime.Now;
+                    tOrcamento.IdUsuarioUltStatus = idUsuario;
+                    tOrcamento.DataHoraUltStatus = DateTime.Now;
+
+                    _orcamentoCotacaoBll.AtualizarComTransacao(tOrcamento, dbGravacao);
+
+                    dbGravacao.transacao.Commit();
+                }
+                catch (Exception ex)
+                {
+                    dbGravacao.transacao.Rollback();
+                    throw;
+                }
+            }                
+
+            return null;
+        }
+
     }
 }
