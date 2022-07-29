@@ -104,7 +104,7 @@ namespace OrcamentoCotacaoApi.Controllers
             return Ok();
         }
 
-        [HttpPut("{id}/status")]
+        [HttpPut("{id}/status/{idStatus}")]
         public IActionResult AtualizarStatus(int id,short idStatus)
         {
             return Ok(_orcamentoBll.AtualizarStatus(id, LoggedUser.Id, idStatus));            
