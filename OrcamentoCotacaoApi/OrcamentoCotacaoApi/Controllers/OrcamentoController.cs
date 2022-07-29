@@ -59,7 +59,9 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             _logger.LogInformation("Buscando ConfigValidade");
 
-            var saida = _orcamentoBll.BuscarConfigValidade();
+
+            eUnidadeNegocio unidadeNegocio = (eUnidadeNegocio)Enum.Parse(typeof(eUnidadeNegocio), LoggedUser.Unidade_negocio);
+            var saida = _orcamentoBll.BuscarConfigValidade(unidadeNegocio);
 
             if (saida != null)
                 return Ok(saida);

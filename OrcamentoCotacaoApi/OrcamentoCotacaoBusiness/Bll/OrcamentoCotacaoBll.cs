@@ -296,14 +296,17 @@ namespace OrcamentoCotacaoBusiness.Bll
             return await _orcamentoBll.ObterListaStatus(tOrcamentoFiltro);
         }
 
-        public ValidadeResponseViewModel BuscarConfigValidade()
+        public ValidadeResponseViewModel BuscarConfigValidade(eUnidadeNegocio idUnidadeNegocio)
         {
+            var parametros = _parametroOrcamentoCotacaoBll.ObterParametros((int)idUnidadeNegocio);
+            if (parametros == null) throw new ArgumentException("Falha ao buscar configurações de orçamento!");
+
             return new ValidadeResponseViewModel
             {
-                QtdeDiasValidade = _appSettings.QtdeDiasValidade,
-                QtdeDiasProrrogacao = _appSettings.QtdeDiasProrrogacao,
-                QtdeMaxProrrogacao = _appSettings.QtdeMaxProrrogacao,
-                QtdeGlobalValidade = _appSettings.QtdeGlobalValidade,
+                QtdeDiasValidade = int.Parse(parametros.QtdePadrao_DiasValidade),
+                QtdeDiasProrrogacao = int.Parse(parametros.QtdePadrao_DiasProrrogacao),
+                QtdeMaxProrrogacao = int.Parse(parametros.QtdeMaxProrrogacao),
+                QtdeGlobalValidade = int.Parse(parametros.QtdeGlobal_Validade),
             };
         }
 
@@ -363,11 +366,20 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (cliente.Tipo.ToUpper() != Constantes.ID_PF && cliente.Tipo.ToUpper() != Constantes.ID_PJ)
                 throw new ArgumentException("Tipo do cliente inválido!");
 
-            if (cliente.ContribuinteICMS == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL ||
+            if (cliente.Tipo == Constantes.ID_PJ)
+            {
+                if (cliente.ContribuinteICMS == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL ||
                 (cliente.ContribuinteICMS != (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM &&
                 cliente.ContribuinteICMS != (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO &&
                 cliente.ContribuinteICMS != (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO))
-                throw new ArgumentException("Contribuinte de ICMS inválido!");
+                    throw new ArgumentException("Contribuinte de ICMS inválido!");
+            }
+
+            if (cliente.Tipo == Constantes.ID_PF)
+            {
+                if (cliente.ContribuinteICMS != null && cliente.ContribuinteICMS > 0)
+                    throw new ArgumentException("Cliente pessoa física não pode ter valor de contribuinte ICMS!");
+            }
         }
 
         public int CadastrarOrcamentoCotacao(OrcamentoRequestViewModel orcamento, UsuarioLogin usuarioLogado)
@@ -451,7 +463,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     tOrcamento.IdUsuarioUltAtualizacao = usuarioLogado.Id;
                     tOrcamento.DataHoraUltAtualizacao = DateTime.Now;
                     tOrcamento.AceiteWhatsApp = orcamento.ConcordaWhatsapp;
-                    tOrcamento.ContribuinteIcms = orcamento.ClienteOrcamentoCotacaoDto.ContribuinteICMS;
+                    tOrcamento.ContribuinteIcms = (byte)orcamento.ClienteOrcamentoCotacaoDto.ContribuinteICMS;
 
                     var retorno = _orcamentoCotacaoBll.AtualizarComTransacao(tOrcamento, dbGravacao);
 
@@ -489,7 +501,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 foreach (var item in opcao.ListaProdutos)
                 {
-                    if(item.IdOperacaoAlcadaDescontoSuperior != null)
+                    if (item.IdOperacaoAlcadaDescontoSuperior != null)
                     {
                         if (orcamento.ClienteOrcamentoCotacaoDto.ContribuinteICMS !=
                             orcamentoAntigo.ClienteOrcamentoCotacaoDto.ContribuinteICMS)
@@ -643,7 +655,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 PrevisaoEntregaData = orcamento.DataEntregaImediata?.Date,
                 Perc_max_comissao_e_desconto_padrao = orcamento.ClienteOrcamentoCotacaoDto.Tipo == Constantes.ID_PF ?
                     percMaxDescEComissaoDados.PercMaxComissaoEDesconto : percMaxDescEComissaoDados.PercMaxComissaoEDescontoPJ,
-                ContribuinteIcms = orcamento.ClienteOrcamentoCotacaoDto.ContribuinteICMS
+                ContribuinteIcms = orcamento.ClienteOrcamentoCotacaoDto.ContribuinteICMS.HasValue ? (byte)orcamento.ClienteOrcamentoCotacaoDto.ContribuinteICMS : (byte)0
             };
 
             if (!string.IsNullOrEmpty(orcamento.Vendedor))
