@@ -128,7 +128,85 @@ namespace OrcamentoCotacao
 
         public List<TorcamentoCotacao> PorFilroComTransacao(TorcamentoCotacaoFiltro obj, ContextoBdGravacao contextoBdGravacao)
         {
-            throw new NotImplementedException();
+            var listaStatus = contextoBdGravacao.TcfgOrcamentoCotacaoStatus.ToList();
+            var saida = from c in contextoBdGravacao.TorcamentoCotacao select c;
+
+            if (saida == null) return null;
+
+            saida = saida.OrderByDescending(a => a.DataHoraCadastro);
+
+            if (obj.Id != 0)
+            {
+                saida = saida.Where(x => x.Id == obj.Id);
+            }
+            if (obj.LimitarData)
+            {
+                saida = saida.Where(x => x.DataCadastro > DateTime.Now.AddDays(-60));
+            }
+            if (!string.IsNullOrEmpty(obj.Loja))
+            {
+                saida = saida.Where(x => x.Loja == obj.Loja);
+            }
+            //if (!string.IsNullOrEmpty(obj.Vendedor))
+            //{
+            //    saida = saida.Where(x => x.IdVendedor == int.Parse(obj.Vendedor));
+            //}
+            //if (!string.IsNullOrEmpty(obj.Parceiro))
+            //{
+            //    saida = saida.Where(x => x.IdIndicador == int.Parse(obj.Parceiro));
+            //}
+            if (!string.IsNullOrEmpty(obj.Loja))
+            {
+                saida = saida.Where(x => x.Loja == obj.Loja);
+            }
+            if (obj.Tusuario)
+            {
+                saida = from c in saida
+                        join u in contextoBdGravacao.Tusuario on c.IdVendedor equals u.Id
+                        select new TorcamentoCotacao()
+                        {
+                            Id = c.Id,
+                            AceiteWhatsApp = c.AceiteWhatsApp,
+                            DataCadastro = c.DataCadastro,
+                            DataHoraCadastro = c.DataHoraCadastro,
+                            DataHoraUltAtualizacao = c.DataHoraUltAtualizacao,
+                            DataHoraUltRenovacao = c.DataHoraUltRenovacao,
+                            DataHoraUltStatus = c.DataHoraUltStatus,
+                            DataUltStatus = c.DataUltStatus,
+                            Email = c.Email,
+                            GarantiaIndicadorStatus = c.GarantiaIndicadorStatus,
+                            IdIndicador = c.IdIndicador,
+                            IdIndicadorVendedor = c.IdIndicadorVendedor,
+                            IdOrcamento = c.IdOrcamento,
+                            IdPedido = c.IdPedido,
+                            IdTipoUsuarioContextoCadastro = c.IdTipoUsuarioContextoCadastro,
+                            IdTipoUsuarioContextoUltAtualizacao = c.IdTipoUsuarioContextoUltAtualizacao,
+                            IdTipoUsuarioContextoUltStatus = c.IdTipoUsuarioContextoUltStatus,
+                            IdUsuarioCadastro = c.IdUsuarioCadastro,
+                            IdUsuarioUltAtualizacao = c.IdUsuarioUltAtualizacao,
+                            IdUsuarioUltRenovacao = c.IdUsuarioUltRenovacao,
+                            IdUsuarioUltStatus = c.IdUsuarioUltStatus,
+                            IdVendedor = c.IdVendedor,
+                            InstaladorInstalaStatus = c.InstaladorInstalaStatus,
+                            Loja = c.Loja,
+                            NomeCliente = c.NomeCliente,
+                            NomeObra = c.NomeObra,
+                            Observacao = c.Observacao,
+                            PrevisaoEntregaData = c.PrevisaoEntregaData,
+                            QtdeRenovacao = c.QtdeRenovacao,
+                            Status = c.Status,
+                            StatusNome = listaStatus.FirstOrDefault(x => x.Id == c.Status).Descricao,
+                            StEtgImediata = c.StEtgImediata,
+                            Telefone = c.Telefone,
+                            TipoCliente = c.TipoCliente,
+                            UF = c.UF,
+                            Validade = c.Validade,
+                            ValidadeAnterior = c.ValidadeAnterior,
+                            Tusuarios = u
+                        };
+            }
+
+            return saida.ToList();
         }
 
         public List<TorcamentoCotacao> PorFiltro(TorcamentoCotacaoFiltro obj)
@@ -226,7 +304,9 @@ namespace OrcamentoCotacao
 
         public TorcamentoCotacao AtualizarComTransacao(TorcamentoCotacao model, ContextoBdGravacao contextoBdGravacao)
         {
-            throw new NotImplementedException();
+            contextoBdGravacao.Update(model);
+            contextoBdGravacao.SaveChanges();
+            return model;
         }
 
         public void ExcluirComTransacao(TorcamentoCotacao obj, ContextoBdGravacao contextoBdGravacao)

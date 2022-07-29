@@ -17,6 +17,7 @@ using OrcamentoCotacaoLink;
 using PrepedidoBusiness.Bll;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using UtilsGlobais.Parametros;
@@ -43,7 +44,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly FormaPagtoOrcamentoCotacaoBll _formaPagtoOrcamentoCotacaoBll;
         private readonly PublicoBll _publicoBll;
         private readonly ParametroOrcamentoCotacaoBll _parametroOrcamentoCotacaoBll;
-
+        private readonly ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll;
 
         public OrcamentoCotacaoBll(
             OrcamentoBll orcamentoBll,
@@ -63,7 +64,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll,
             OrcamentoCotacaoLinkBll orcamentoCotacaoLinkBll,
             PublicoBll publicoBll,
-            ParametroOrcamentoCotacaoBll parametroOrcamentoCotacaoBll
+            ParametroOrcamentoCotacaoBll parametroOrcamentoCotacaoBll,
+            ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll
             )
         {
             _orcamentoBll = orcamentoBll;
@@ -84,6 +86,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             _formaPagtoOrcamentoCotacaoBll = formaPagtoOrcamentoCotacaoBll;
             _publicoBll = publicoBll;
             _parametroOrcamentoCotacaoBll = parametroOrcamentoCotacaoBll;
+            this.produtoOrcamentoCotacaoBll = produtoOrcamentoCotacaoBll;
         }
 
         public OrcamentoCotacaoDto PorGuid(string guid)
@@ -242,6 +245,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 DataCadastro = orcamento.DataCadastro,
                 IdIndicador = orcamento.IdIndicador,
                 IdIndicadorVendedor = orcamento.IdIndicadorVendedor,
+                IdVendedor = orcamento.IdVendedor,
                 ClienteOrcamentoCotacaoDto = new ClienteOrcamentoCotacaoRequestViewModel()
                 {
                     NomeCliente = orcamento.NomeCliente,
@@ -249,7 +253,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     Email = orcamento.Email,
                     Telefone = orcamento.Telefone,
                     Tipo = orcamento.TipoCliente,
-                    Uf = orcamento.UF
+                    Uf = orcamento.UF,
+                    ContribuinteICMS = orcamento.ContribuinteIcms
                 },
                 ListaOrcamentoCotacaoDto = opcao,
                 CadastradoPor = VerificarContextoCadastroOrcamento(orcamento.IdTipoUsuarioContextoCadastro, usuario, parceiro, vendedorParceiro)
@@ -273,7 +278,6 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             return null;
         }
-
 
         public RemetenteDestinatarioResponseViewModel BuscarDadosParaMensageria(UsuarioLogin usuario, int id, bool usuarioIterno)
         {
@@ -324,9 +328,54 @@ namespace OrcamentoCotacaoBusiness.Bll
             return _mensagemBll.MarcarLida(IdOrcamentoCotacao, idUsuarioRemetente);
         }
 
+
+        private void ValidarClienteOrcamento(ClienteOrcamentoCotacaoRequestViewModel cliente)
+        {
+            if (cliente == null) throw new ArgumentNullException("Ops! Favor preencher os dados do cliente!");
+
+            if (string.IsNullOrEmpty(cliente.NomeCliente))
+                throw new ArgumentNullException("O nome do cliente é obrigatório!");
+
+            if (cliente.NomeCliente.Length > 60)
+                throw new ArgumentException("O nome do cliente excede a quantidade máxima de caracteres permitido!");
+
+            if (!string.IsNullOrEmpty(cliente.NomeObra) && cliente.NomeObra.Length > 120)
+                throw new ArgumentException("O nome da obra execede a quantidade máxima de caracteres permitido!");
+
+            if (!new EmailAddressAttribute().IsValid(cliente.Email))
+                throw new ArgumentException("E-mail inválido!");
+
+            if (!string.IsNullOrEmpty(cliente.Telefone) && cliente.Telefone.Length > 15)
+                throw new ArgumentException("Telefone inválido!");
+
+            if (string.IsNullOrEmpty(cliente.Uf))
+                throw new ArgumentException("Informe a UF de entrega!");
+
+            if (!UtilsGlobais.Util.VerificaUf(cliente.Uf))
+                throw new ArgumentException("Uf de entrega inválida!");
+
+            if (string.IsNullOrEmpty(cliente.Tipo))
+                throw new ArgumentException("Informe se o cliente é pessoa física ou jurídica!");
+
+            if (cliente.Tipo.Length > 2)
+                throw new ArgumentException("O tipo do cliente execede a quantidade máxima de caracteres permitido!");
+
+            if (cliente.Tipo.ToUpper() != Constantes.ID_PF && cliente.Tipo.ToUpper() != Constantes.ID_PJ)
+                throw new ArgumentException("Tipo do cliente inválido!");
+
+            if (cliente.ContribuinteICMS == (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL ||
+                (cliente.ContribuinteICMS != (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_SIM &&
+                cliente.ContribuinteICMS != (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO &&
+                cliente.ContribuinteICMS != (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_ISENTO))
+                throw new ArgumentException("Contribuinte de ICMS inválido!");
+        }
+
         public int CadastrarOrcamentoCotacao(OrcamentoRequestViewModel orcamento, UsuarioLogin usuarioLogado)
         {
             //TODO: VALIDAR OrcamentoRequestViewModel
+            //ValidarCredenciais campos obrigatórios
+            ValidarClienteOrcamento(orcamento.ClienteOrcamentoCotacaoDto);
+
             if (orcamento.ListaOrcamentoCotacaoDto.Count <= 0) throw new ArgumentException("Necessário ter ao menos uma opção de orçamento!");
 
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
@@ -336,7 +385,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     var percentualMaxDescontoEComissao = _lojaBll.BuscarPercMaxPorLoja(orcamento.Loja);
                     if (percentualMaxDescontoEComissao == null) throw new ArgumentException("Falha ao tentar gravar orçamento!");
 
-                    var tOrcamentoCotacao = MontarTorcamentoCotacao(orcamento, usuarioLogado, percentualMaxDescontoEComissao);
+                    var tOrcamentoCotacao = MontarTorcamentoCotacao(orcamento, usuarioLogado, percentualMaxDescontoEComissao, 1);
 
                     var ocamentoCotacao = _orcamentoCotacaoBll.InserirComTransacao(tOrcamentoCotacao, dbGravacao);
 
@@ -370,6 +419,107 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (!temPermissao) throw new ArgumentException("Usuário não tem permissão para atualizar a opção de orçamento!");
 
             _orcamentoCotacaoOpcaoBll.AtualizarOrcamentoOpcao(opcao, usuarioLogado, orcamento);
+        }
+
+        public void AtualizarDadosCadastraisOrcamento(OrcamentoResponseViewModel orcamento, UsuarioLogin usuarioLogado)
+        {
+            var orcamentoAntigo = PorFiltro((int)orcamento.Id, usuarioLogado);
+
+            if (!ValidarDonoOrcamentoCotacao(orcamentoAntigo, usuarioLogado))
+                throw new ArgumentException("Usuário não tem permissão para editar dados cadastrais do orçamento!");
+
+            ValidarClienteOrcamento(orcamento.ClienteOrcamentoCotacaoDto);
+
+            ValidarAtualizacaoDadosCadastraisOrcamentoCotacao(orcamento, orcamentoAntigo, usuarioLogado);
+
+            using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                try
+                {
+                    var tOrcamento = _orcamentoCotacaoBll.PorFiltroComTransacao(new TorcamentoCotacaoFiltro() { Id = (int)orcamento.Id }, dbGravacao).FirstOrDefault();
+                    if (tOrcamento == null) throw new Exception("Falha ao buscar Orçamento!");
+
+                    tOrcamento.NomeCliente = orcamento.ClienteOrcamentoCotacaoDto.NomeCliente;
+                    tOrcamento.NomeObra = orcamento.ClienteOrcamentoCotacaoDto.NomeObra;
+                    tOrcamento.UF = orcamento.ClienteOrcamentoCotacaoDto.Uf;
+                    tOrcamento.Email = orcamento.ClienteOrcamentoCotacaoDto.Email;
+                    tOrcamento.Telefone = orcamento.ClienteOrcamentoCotacaoDto.Telefone;
+                    tOrcamento.StEtgImediata = orcamento.EntregaImediata ? 1 : 0;
+                    tOrcamento.PrevisaoEntregaData = orcamento.DataEntregaImediata?.Date;
+                    tOrcamento.Observacao = orcamento.ObservacoesGerais;
+                    tOrcamento.IdTipoUsuarioContextoUltAtualizacao = (int)usuarioLogado.TipoUsuario;
+                    tOrcamento.IdUsuarioUltAtualizacao = usuarioLogado.Id;
+                    tOrcamento.DataHoraUltAtualizacao = DateTime.Now;
+                    tOrcamento.AceiteWhatsApp = orcamento.ConcordaWhatsapp;
+                    tOrcamento.ContribuinteIcms = orcamento.ClienteOrcamentoCotacaoDto.ContribuinteICMS;
+
+                    var retorno = _orcamentoCotacaoBll.AtualizarComTransacao(tOrcamento, dbGravacao);
+
+                    dbGravacao.transacao.Commit();
+                }
+                catch (Exception ex)
+                {
+                    dbGravacao.transacao.Rollback();
+                    throw new ArgumentException("Falha ao atualizar orçamento!");
+                }
+            }
+        }
+
+        private bool ValidarDonoOrcamentoCotacao(OrcamentoResponseViewModel orcamentoAntigo,
+            UsuarioLogin usuarioLogado)
+        {
+            if (orcamentoAntigo.IdIndicadorVendedor != null)
+                if (usuarioLogado.Id == orcamentoAntigo.IdIndicadorVendedor) return true;
+                else return false;
+
+
+            if (orcamentoAntigo.IdIndicador != null)
+                if (usuarioLogado.Id == orcamentoAntigo.IdIndicador) return true;
+                else return false;
+
+            if (orcamentoAntigo.IdVendedor == usuarioLogado.Id) return true;
+
+            return false;
+        }
+
+        public void ValidarAtualizacaoDadosCadastraisOrcamentoCotacao(OrcamentoResponseViewModel orcamento,
+            OrcamentoResponseViewModel orcamentoAntigo, UsuarioLogin usuarioLogado)
+        {
+            foreach (var opcao in orcamentoAntigo.ListaOrcamentoCotacaoDto)
+            {
+                foreach (var item in opcao.ListaProdutos)
+                {
+                    if(item.IdOperacaoAlcadaDescontoSuperior != null)
+                    {
+                        if (orcamento.ClienteOrcamentoCotacaoDto.ContribuinteICMS !=
+                            orcamentoAntigo.ClienteOrcamentoCotacaoDto.ContribuinteICMS)
+                            throw new ArgumentException("O contribuinte de ICMS não pode ser alterado!");
+
+                        if (orcamento.ClienteOrcamentoCotacaoDto.Uf.ToUpper() !=
+                            orcamentoAntigo.ClienteOrcamentoCotacaoDto.Uf.ToUpper())
+                            throw new ArgumentException("A UF de entrega não ser alterada!");
+                    }
+                }
+            }
+
+            if (orcamento.Validade.Date != orcamentoAntigo.Validade.Date)
+                throw new ArgumentException("A validade do orçamento não pode ser alterada!");
+
+            if (orcamento.ClienteOrcamentoCotacaoDto.Tipo.ToUpper() !=
+                orcamentoAntigo.ClienteOrcamentoCotacaoDto.Tipo.ToUpper())
+                throw new ArgumentException("O tipo do cliente não pode ser alterado!");
+
+            if (orcamento.Vendedor.ToUpper() != orcamentoAntigo.Vendedor.ToUpper() ||
+                orcamento.IdVendedor != orcamentoAntigo.IdVendedor)
+                throw new ArgumentException("O vendedor não pode ser alterado!");
+
+            if (orcamento.VendedorParceiro?.ToUpper() != orcamentoAntigo.VendedorParceiro?.ToUpper() ||
+                orcamento.IdIndicadorVendedor != orcamentoAntigo.IdIndicadorVendedor)
+                throw new ArgumentException("O Vendedor do parceiro não pode ser alterado!");
+
+            if (orcamento.Parceiro != Constantes.SEM_INDICADOR && (orcamento.Parceiro?.ToUpper() != orcamentoAntigo.Parceiro?.ToUpper() ||
+                orcamento.IdIndicador != orcamentoAntigo.IdIndicador))
+                throw new ArgumentException("O parceiro não pode ser alterado!");
         }
 
         private bool ValidarPermissaoAtualizarOpcaoOrcamentoCotacao(OrcamentoResponseViewModel orcamento, UsuarioLogin usuarioLogado)
@@ -467,7 +617,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         private TorcamentoCotacao MontarTorcamentoCotacao(OrcamentoRequestViewModel orcamento, UsuarioLogin usuarioLogado,
-            PercMaxDescEComissaoDados percMaxDescEComissaoDados)
+            PercMaxDescEComissaoDados percMaxDescEComissaoDados, int status)
         {
             TorcamentoCotacao torcamentoCotacao = new TorcamentoCotacao()
             {
@@ -482,16 +632,18 @@ namespace OrcamentoCotacaoBusiness.Bll
                 Observacao = orcamento.ObservacoesGerais, //Observacao
                 AceiteWhatsApp = orcamento.ConcordaWhatsapp, //AceiteWhatsApp
                 IdTipoUsuarioContextoCadastro = (int)usuarioLogado.TipoUsuario, //IdTipoUsuarioContextoCadastro
+                IdTipoUsuarioContextoUltStatus = (int)usuarioLogado.TipoUsuario,
                 IdUsuarioCadastro = usuarioLogado.Id,
                 DataCadastro = DateTime.Now.Date.Date,
                 DataHoraCadastro = DateTime.Now,
                 DataUltStatus = DateTime.Now.Date,
                 DataHoraUltStatus = DateTime.Now,
-                Status = 1,
+                Status = (short)status,
                 StEtgImediata = orcamento.EntregaImediata ? 1 : 0,
-                PrevisaoEntregaData = orcamento.DataEntregaImediata,
+                PrevisaoEntregaData = orcamento.DataEntregaImediata?.Date,
                 Perc_max_comissao_e_desconto_padrao = orcamento.ClienteOrcamentoCotacaoDto.Tipo == Constantes.ID_PF ?
-                    percMaxDescEComissaoDados.PercMaxComissaoEDesconto : percMaxDescEComissaoDados.PercMaxComissaoEDescontoPJ
+                    percMaxDescEComissaoDados.PercMaxComissaoEDesconto : percMaxDescEComissaoDados.PercMaxComissaoEDescontoPJ,
+                ContribuinteIcms = orcamento.ClienteOrcamentoCotacaoDto.ContribuinteICMS
             };
 
             if (!string.IsNullOrEmpty(orcamento.Vendedor))

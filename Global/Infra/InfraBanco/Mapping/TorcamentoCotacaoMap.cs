@@ -17,11 +17,13 @@ namespace InfraBanco.Mapping
 
             builder.Property(x => x.Loja)
                 .HasColumnName("Loja")
-                .HasColumnType("varchar(3)");
+                .HasColumnType("varchar(3)")
+                .IsRequired(true);
 
             builder.Property(x => x.NomeCliente)
                 .HasColumnName("NomeCliente")
-                .HasColumnType("varchar(60)");
+                .HasColumnType("varchar(60)")
+                .IsRequired(true);
 
             builder.Property(x => x.NomeObra)
                 .HasColumnName("NomeObra")
@@ -164,6 +166,20 @@ namespace InfraBanco.Mapping
             builder.Property(x => x.Perc_max_comissao_e_desconto_padrao)
                 .HasColumnName("perc_max_comissao_e_desconto_padrao")
                 .HasColumnType("real");
+
+            builder.Property(x => x.ContribuinteIcms)
+                .HasColumnName("ContribuinteIcms")
+                .HasColumnType("tinyint");
+
+            builder.Property(x => x.VersaoPoliticaCredito)
+                .HasColumnName("VersaoPoliticaCredito")
+                .HasMaxLength(10)
+                .HasColumnType("string");
+
+            builder.Property(x => x.VersaoPoliticaPrivacidade)
+                .HasColumnName("VersaoPoliticaPrivacidade")
+                .HasMaxLength(10)
+                .HasColumnType("string");
 
             builder.Ignore(x => x.TorcamentoCotacaoMensagems);
             builder.Ignore(x => x.TorcamentoCotacaoOpcaos);

@@ -482,7 +482,11 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (produto.DescDado > percPadraoPorTipo && percMaxPorAlcada.PercMaxComissaoEDesconto == 0)
                 throw new ArgumentException("Ops! Não pode execeder o limite máximo de desconto.");
 
-            if (produto.DescDado + percRT > percPadraoPorTipo) return true;
+            if(produto.DescDado > 0 || percRT > 0)
+            {
+                float valor = float.Parse((produto.DescDado + percRT).ToString("#.##"));
+                if (valor > percPadraoPorTipo) return true;
+            }
 
             return false;
         }
