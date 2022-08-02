@@ -13,7 +13,7 @@ namespace UtilsGlobais.Parametros
             _contextoProvider = contextoProvider;
         }
 
-        public ParametroOrcamentoCotacaoDto ObterParametros(int idUnidadeNegocio)
+        public ParametroOrcamentoCotacaoDto ObterParametros(string lojaLogada)
         {
             List<int> lista = new List<int>
             {
@@ -25,18 +25,21 @@ namespace UtilsGlobais.Parametros
 
             using (var db = _contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
-                var saida = from p in db.TcfgParametro
-                            join pu in db.TcfgUnidadeNegocioParametro on p.Id equals pu.IdCfgParametro
-                            where
-                                pu.IdCfgUnidadeNegocio == idUnidadeNegocio &&
-                                lista.Contains(p.Id)
-                            select new
-                            {
-                                p.Id,
-                                p.Sigla,
-                                pu.Valor,
-                                pu.IdCfgUnidadeNegocio
-                            };
+                var saida =
+                    from p in db.TcfgParametro
+                     join pu in db.TcfgUnidadeNegocioParametro on p.Id equals pu.IdCfgParametro
+                     join un in db.TcfgUnidadeNegocio on pu.IdCfgUnidadeNegocio equals un.Id
+                     join l in db.Tloja on un.Sigla equals l.Unidade_Negocio
+                     where
+                         lista.Contains(p.Id) &&
+                         l.Loja == lojaLogada
+                     select new
+                     {
+                         p.Id,
+                         p.Sigla,
+                         pu.Valor,
+                         pu.IdCfgUnidadeNegocio
+                     };
 
                 return new ParametroOrcamentoCotacaoDto
                 {

@@ -296,9 +296,9 @@ namespace OrcamentoCotacaoBusiness.Bll
             return await _orcamentoBll.ObterListaStatus(tOrcamentoFiltro);
         }
 
-        public ValidadeResponseViewModel BuscarConfigValidade(eUnidadeNegocio idUnidadeNegocio)
+        public ValidadeResponseViewModel BuscarConfigValidade(string unidadeNegocio)
         {
-            var parametros = _parametroOrcamentoCotacaoBll.ObterParametros((int)idUnidadeNegocio);
+            var parametros = _parametroOrcamentoCotacaoBll.ObterParametros(unidadeNegocio);
             if (parametros == null) throw new ArgumentException("Falha ao buscar configurações de orçamento!");
 
             return new ValidadeResponseViewModel
@@ -726,10 +726,10 @@ namespace OrcamentoCotacaoBusiness.Bll
             return torcamentoCotacao;
         }
 
-        public MensagemDto ProrrogarOrcamento(int id, int idUsuario, int idUnidadeNegocio)
+        public MensagemDto ProrrogarOrcamento(int id, int idUsuario, string lojaLogada)
         {
             var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro { Id = id }).FirstOrDefault();
-            var parametros = _parametroOrcamentoCotacaoBll.ObterParametros(idUnidadeNegocio);
+            var parametros = _parametroOrcamentoCotacaoBll.ObterParametros(lojaLogada);
 
             if (orcamento != null)
             {

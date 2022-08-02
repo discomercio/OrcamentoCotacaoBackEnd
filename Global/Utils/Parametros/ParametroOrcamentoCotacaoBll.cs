@@ -9,9 +9,9 @@
             _data = data;
         }
 
-        public ParametroOrcamentoCotacaoDto ObterParametros(int idUnidadeNegocio)
+        public ParametroOrcamentoCotacaoDto ObterParametros(string lojaLogada)
         {
-            return _data.ObterParametros(idUnidadeNegocio);
+            return _data.ObterParametros(lojaLogada);
         }
     }
 }

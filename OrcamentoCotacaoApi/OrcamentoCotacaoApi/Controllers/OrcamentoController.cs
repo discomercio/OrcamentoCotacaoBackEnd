@@ -55,13 +55,11 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpGet("validade")]
-        public IActionResult BuscarConfigValidade()
+        public IActionResult BuscarConfigValidade(string lojaLogada)
         {
             _logger.LogInformation("Buscando ConfigValidade");
 
-
-            eUnidadeNegocio unidadeNegocio = (eUnidadeNegocio)Enum.Parse(typeof(eUnidadeNegocio), LoggedUser.Unidade_negocio);
-            var saida = _orcamentoBll.BuscarConfigValidade(unidadeNegocio);
+            var saida = _orcamentoBll.BuscarConfigValidade(lojaLogada);
 
             if (saida != null)
                 return Ok(saida);
@@ -113,11 +111,9 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpPost("{id}/prorrogar")]
-        public IActionResult ProrrogarOrcamento(int id)
+        public IActionResult ProrrogarOrcamento(int id, string lojaLogada)
         {
-            eUnidadeNegocio e = (eUnidadeNegocio)Enum.Parse(typeof(eUnidadeNegocio), LoggedUser.Unidade_negocio);
-
-            return Ok(_orcamentoBll.ProrrogarOrcamento(id, LoggedUser.Id, (int)e));
+            return Ok(_orcamentoBll.ProrrogarOrcamento(id, LoggedUser.Id, lojaLogada));
         }
 
         [HttpPost("atualizarDados")]
