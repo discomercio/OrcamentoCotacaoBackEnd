@@ -109,7 +109,8 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPut("{id}/status/{idStatus}")]
         public IActionResult AtualizarStatus(int id,short idStatus)
         {
-            return Ok(_orcamentoBll.AtualizarStatus(id, LoggedUser.Id, idStatus));            
+            var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+            return Ok(_orcamentoBll.AtualizarStatus(id, user, idStatus));            
         }
 
         [HttpPost("{id}/prorrogar")]
