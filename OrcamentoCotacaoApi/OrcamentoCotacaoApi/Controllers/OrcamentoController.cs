@@ -120,6 +120,14 @@ namespace OrcamentoCotacaoApi.Controllers
             return Ok(_orcamentoBll.ProrrogarOrcamento(id, LoggedUser.Id, (int)e));
         }
 
+        [HttpGet("parametros")]
+        public IActionResult BuscarParametrosOrcamento(int idCfgParametro)
+        {
+            eUnidadeNegocio e = (eUnidadeNegocio)Enum.Parse(typeof(eUnidadeNegocio), LoggedUser.Unidade_negocio);
+            return Ok(_orcamentoBll.BuscarParametrosOrcamento((int)e, idCfgParametro));
+        }
+
+
         [HttpPost("atualizarDados")]
         public IActionResult AtualizarDados(OrcamentoResponseViewModel model)
         {

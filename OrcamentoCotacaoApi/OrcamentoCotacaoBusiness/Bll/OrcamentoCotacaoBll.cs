@@ -777,6 +777,19 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
+        public List<TcfgUnidadeNegocioParametro> BuscarParametrosOrcamento(int idUnidadeNegocio, int idCfgParametro)
+        {
+            var tcfgUnidadeNegocioParametros = _cfgUnidadeNegocioParametroBll.PorFiltro(new TcfgUnidadeNegocioParametroFiltro() { IdCfgUnidadeNegocio = idUnidadeNegocio, IdCfgParametro = idCfgParametro });
+
+            if (tcfgUnidadeNegocioParametros != null)
+            {
+                return tcfgUnidadeNegocioParametros;
+            }
+
+            return null;
+        }
+
+
         public MensagemDto AtualizarStatus(int id, int idUsuario, short idStatus)
         {
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
