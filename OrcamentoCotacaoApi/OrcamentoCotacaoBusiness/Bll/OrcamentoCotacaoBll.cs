@@ -726,7 +726,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             return torcamentoCotacao;
         }
 
-        public MensagemDto ProrrogarOrcamento(int id, int idUsuario, string lojaLogada)
+        public MensagemDto ProrrogarOrcamento(int id, int idUsuario, string lojaLogada, int? IdTipoUsuarioContextoUltAtualizacao)
         {
             var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro { Id = id }).FirstOrDefault();
             var parametros = _parametroOrcamentoCotacaoBll.ObterParametros(lojaLogada);
@@ -752,6 +752,9 @@ namespace OrcamentoCotacaoBusiness.Bll
                 orcamento.QtdeRenovacao += 1;
                 orcamento.IdUsuarioUltRenovacao = idUsuario;
                 orcamento.DataHoraUltRenovacao = DateTime.Now;
+                orcamento.DataHoraUltAtualizacao = DateTime.Now;
+                orcamento.IdUsuarioUltAtualizacao = idUsuario;
+                orcamento.IdTipoUsuarioContextoUltAtualizacao = IdTipoUsuarioContextoUltAtualizacao.Value;
 
                 if (DateTime.Now.AddDays(byte.Parse(parametros.QtdePadrao_DiasProrrogacao)) > DateTime.Now.AddDays(byte.Parse(parametros.QtdeGlobal_Validade)))
                     orcamento.Validade = DateTime.Now.AddDays(byte.Parse(parametros.QtdeGlobal_Validade));

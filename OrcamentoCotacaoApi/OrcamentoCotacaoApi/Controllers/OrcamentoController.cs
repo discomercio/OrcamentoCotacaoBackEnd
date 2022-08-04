@@ -114,7 +114,7 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost("{id}/prorrogar")]
         public IActionResult ProrrogarOrcamento(int id, string lojaLogada)
         {
-            return Ok(_orcamentoBll.ProrrogarOrcamento(id, LoggedUser.Id, lojaLogada));
+            return Ok(_orcamentoBll.ProrrogarOrcamento(id, LoggedUser.Id, lojaLogada, LoggedUser.TipoUsuario));
         }
 
         [HttpGet("parametros")]
