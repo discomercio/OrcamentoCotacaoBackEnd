@@ -107,7 +107,8 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPut("{id}/status/{idStatus}")]
         public IActionResult AtualizarStatus(int id,short idStatus)
         {
-            return Ok(_orcamentoBll.AtualizarStatus(id, LoggedUser.Id, idStatus));            
+            var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+            return Ok(_orcamentoBll.AtualizarStatus(id, user, idStatus));            
         }
 
         [HttpPost("{id}/prorrogar")]
@@ -115,6 +116,14 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             return Ok(_orcamentoBll.ProrrogarOrcamento(id, LoggedUser.Id, lojaLogada));
         }
+
+        [HttpGet("parametros")]
+        public IActionResult BuscarParametrosOrcamento(int idCfgParametro)
+        {
+            eUnidadeNegocio e = (eUnidadeNegocio)Enum.Parse(typeof(eUnidadeNegocio), LoggedUser.Unidade_negocio);
+            return Ok(_orcamentoBll.BuscarParametrosOrcamento((int)e, idCfgParametro));
+        }
+
 
         [HttpPost("atualizarDados")]
         public IActionResult AtualizarDados(OrcamentoResponseViewModel model)

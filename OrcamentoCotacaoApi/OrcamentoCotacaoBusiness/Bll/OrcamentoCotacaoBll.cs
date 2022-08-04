@@ -777,7 +777,20 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
-        public MensagemDto AtualizarStatus(int id, int idUsuario, short idStatus)
+        public List<TcfgUnidadeNegocioParametro> BuscarParametrosOrcamento(int idUnidadeNegocio, int idCfgParametro)
+        {
+            var tcfgUnidadeNegocioParametros = _cfgUnidadeNegocioParametroBll.PorFiltro(new TcfgUnidadeNegocioParametroFiltro() { IdCfgUnidadeNegocio = idUnidadeNegocio, IdCfgParametro = idCfgParametro });
+
+            if (tcfgUnidadeNegocioParametros != null)
+            {
+                return tcfgUnidadeNegocioParametros;
+            }
+
+            return null;
+        }
+
+
+        public MensagemDto AtualizarStatus(int id, UsuarioLogin user, short idStatus)
         {
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
@@ -799,7 +812,12 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     tOrcamento.Status = idStatus;
                     tOrcamento.DataHoraUltStatus = DateTime.Now;
-                    tOrcamento.IdUsuarioUltStatus = idUsuario;
+                    tOrcamento.IdUsuarioUltStatus = user.Id;
+                    tOrcamento.IdTipoUsuarioContextoUltStatus = (int)user.TipoUsuario;
+                    tOrcamento.DataUltStatus = DateTime.Now;
+                    tOrcamento.IdTipoUsuarioContextoUltAtualizacao = (int)user.TipoUsuario;
+                    tOrcamento.IdUsuarioUltAtualizacao = user.Id;
+                    tOrcamento.DataHoraUltAtualizacao = DateTime.Now;
                     tOrcamento.DataHoraUltStatus = DateTime.Now;
 
                     _orcamentoCotacaoBll.AtualizarComTransacao(tOrcamento, dbGravacao);

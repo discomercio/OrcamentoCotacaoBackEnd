@@ -30,7 +30,12 @@ namespace OrcamentoCotacao.Dto
         public DateTime? dataEntregaImediata { get; set; }
         public short status { get; set; }
         public string token { get; set; }
-        
+        public string? observacao { get; set; }
+        public short? contribuinteIcms { get; set; }
+        public DateTime? dataCadastro { get; set; }
+        public DateTime? previsaoEntregaData { get; set; }
+        public string? statusDescricao { get; set; }
+
         public List<OrcamentoOpcaoResponseViewModel> listaOpcoes { get; set; }
         public RemetenteDestinatarioResponseViewModel mensageria { get; set; }
         public List<FormaPagamentoResponseViewModel> listaFormasPagto { get; set; }

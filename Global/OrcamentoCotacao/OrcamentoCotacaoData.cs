@@ -38,6 +38,7 @@ namespace OrcamentoCotacao
                 {
                     var orcamento = (from l in db.TorcamentoCotacaoLink
                                      join o in db.TorcamentoCotacao on l.IdOrcamentoCotacao equals o.Id
+                                     join s in db.TcfgOrcamentoCotacaoStatus on o.Status equals s.Id
                                      join u in db.Tusuario on o.IdVendedor equals u.Id into gg
                                      from lj in gg.DefaultIfEmpty()
                                      where l.Guid == Guid.Parse(guid)
@@ -57,12 +58,16 @@ namespace OrcamentoCotacao
                                          stEntregaImediata = o.StEtgImediata,
                                          dataEntregaImediata = o.PrevisaoEntregaData,
                                          status = o.Status,
-
+                                         observacao = o.Observacao,
+                                         contribuinteIcms = o.ContribuinteIcms,
+                                         dataCadastro = o.DataCadastro,
+                                         previsaoEntregaData = o.PrevisaoEntregaData,
                                          //Cliente
                                          nomeCliente = o.NomeCliente,
                                          email = o.Email,
                                          telefone = o.Telefone,
                                          uf = o.UF,
+                                         statusDescricao = s.Descricao
                                      })
                             .FirstOrDefault();
 
@@ -77,7 +82,6 @@ namespace OrcamentoCotacao
                         orcamento.vendedorParceiro = db.TorcamentistaEindicadorVendedor.FirstOrDefault(x => x.Id == orcamento.idIndicadorVendedor)?.Nome;
                         orcamento.parceiro = db.TorcamentistaEindicador.FirstOrDefault(x => x.IdIndicador == orcamento.idIndicador)?.Apelido;
                         orcamento.vendedor = db.Tusuario.FirstOrDefault(x => x.Id == orcamento.idVendedor)?.Usuario;
-
                         return orcamento;
                     }
 
