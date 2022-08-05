@@ -768,11 +768,10 @@ namespace OrcamentoCotacaoBusiness.Bll
                             mensagem = $"Não é possível prorrogar o orçamento. Validade máxima permitida de {parametros.QtdeGlobal_Validade} dias."
                         };
                 }
-
-                if (DateTime.Now.AddDays(byte.Parse(parametros.QtdePadrao_DiasProrrogacao)) > DateTime.Now.AddDays(byte.Parse(parametros.QtdeGlobal_Validade)))
-                    orcamento.Validade = DateTime.Now.AddDays(byte.Parse(parametros.QtdeGlobal_Validade));
                 else
+                {
                     orcamento.Validade = DateTime.Now.AddDays(byte.Parse(parametros.QtdePadrao_DiasProrrogacao));
+                }
 
                 if (orcamento.Validade.Date == orcamento.ValidadeAnterior.Value.Date)
                     return new MensagemDto
