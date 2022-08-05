@@ -57,57 +57,65 @@ namespace OrcamentoCotacaoBusiness.Bll
         private async Task<ProdutoResponseViewModel> CalcularCoeficiente(Produto.Dados.ProdutoComboDados produtoComboDados,
             string tipoParcela, short qtdeParcelas, DateTime? dataRefCoeficiente)
         {
-            if (produtoComboDados == null) return null;
-
-            ProdutoResponseViewModel produtoResponseViewModel = new ProdutoResponseViewModel();
-            produtoResponseViewModel.ProdutosCompostos = new List<ProdutoCompostoResponseViewModel>();
-            produtoResponseViewModel.ProdutosSimples = new List<ProdutoSimplesResponseViewModel>();
-
-
-            var lstFabricate = produtoComboDados.ProdutoDados.Select(x => x.Fabricante).Distinct().ToList();
-            var dicCoeficiente = await coeficienteBll.BuscarListaCoeficientesFabricantesHistoricoDistinct(new CoeficienteRequestViewModel()
+            try
             {
-                LstFabricantes = lstFabricate,
-                TipoParcela = tipoParcela,
-                QtdeParcelas = qtdeParcelas,
-                DataRefCoeficiente = dataRefCoeficiente.GetValueOrDefault(new DateTime())
-            });
+                if (produtoComboDados == null) return null;
 
-            foreach (Produto.Dados.ProdutoCompostoDados composto in produtoComboDados.ProdutoCompostoDados)
-            {
-                var produtoCompostoResponse = ProdutoCompostoResponseViewModel.ConverterProdutoCompostoDados(composto);
+                ProdutoResponseViewModel produtoResponseViewModel = new ProdutoResponseViewModel();
+                produtoResponseViewModel.ProdutosCompostos = new List<ProdutoCompostoResponseViewModel>();
+                produtoResponseViewModel.ProdutosSimples = new List<ProdutoSimplesResponseViewModel>();
 
-                foreach (var filhos in composto.Filhos)
+
+                var lstFabricate = produtoComboDados.ProdutoDados.Select(x => x.Fabricante).Distinct().ToList();
+                var dicCoeficiente = await coeficienteBll.BuscarListaCoeficientesFabricantesHistoricoDistinct(new CoeficienteRequestViewModel()
                 {
+                    LstFabricantes = lstFabricate,
+                    TipoParcela = tipoParcela,
+                    QtdeParcelas = qtdeParcelas,
+                    DataRefCoeficiente = dataRefCoeficiente.GetValueOrDefault(new DateTime())
+                });
 
+                foreach (Produto.Dados.ProdutoCompostoDados composto in produtoComboDados.ProdutoCompostoDados)
+                {
+                    var produtoCompostoResponse = ProdutoCompostoResponseViewModel.ConverterProdutoCompostoDados(composto);
 
-                    var filho = produtoComboDados.ProdutoDados
-                    .Where(x => x.Produto == filhos.Produto && x.Fabricante == filhos.Fabricante)
-                    .Select(x => x)
-                    .FirstOrDefault();
-
-                    if (filho == null)
+                    foreach (var filhos in composto.Filhos)
                     {
-                        break;
+
+
+                        var filho = produtoComboDados.ProdutoDados
+                        .Where(x => x.Produto == filhos.Produto && x.Fabricante == filhos.Fabricante)
+                        .Select(x => x)
+                        .FirstOrDefault();
+
+                        if (filho == null)
+                        {
+                            break;
+                        }
+
+                        produtoCompostoResponse.Filhos.Add(ProdutoCompostoFilhosResponseViewModel.ConverterProdutoFilhoDados(filho, filhos.Qtde, GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), composto.PaiFabricante)));
                     }
+                    var coeficiente = GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), composto.PaiFabricante).Coeficiente;
+                    produtoCompostoResponse.PaiPrecoTotalBase = composto.PaiPrecoTotal;
+                    produtoCompostoResponse.PaiPrecoTotal = produtoCompostoResponse.PaiPrecoTotal * Convert.ToDecimal(coeficiente);
 
-                    produtoCompostoResponse.Filhos.Add(ProdutoCompostoFilhosResponseViewModel.ConverterProdutoFilhoDados(filho, filhos.Qtde, GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), composto.PaiFabricante)));
+                    produtoResponseViewModel.ProdutosCompostos.Add(produtoCompostoResponse);
+
                 }
-                var coeficiente = GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), composto.PaiFabricante).Coeficiente;
-                produtoCompostoResponse.PaiPrecoTotalBase = composto.PaiPrecoTotal;
-                produtoCompostoResponse.PaiPrecoTotal = produtoCompostoResponse.PaiPrecoTotal * Convert.ToDecimal(coeficiente);
 
-                produtoResponseViewModel.ProdutosCompostos.Add(produtoCompostoResponse);
+                foreach (var produto in produtoComboDados.ProdutoDados)
+                {
+                    produtoResponseViewModel.ProdutosSimples.Add(ProdutoSimplesResponseViewModel.ConverterProdutoDados(produto, null, GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), produto.Fabricante)));
 
+                }
+
+                return produtoResponseViewModel;
             }
-
-            foreach (var produto in produtoComboDados.ProdutoDados)
+            catch (Exception ex)
             {
-                produtoResponseViewModel.ProdutosSimples.Add(ProdutoSimplesResponseViewModel.ConverterProdutoDados(produto, null, GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), produto.Fabricante)));
 
+                throw;
             }
-
-            return produtoResponseViewModel;
         }
 
         private CoeficienteResponseViewModel GetCoeficienteOuNull(IDictionary<string, CoeficienteResponseViewModel> dicCoeficiente, string fabricante)
