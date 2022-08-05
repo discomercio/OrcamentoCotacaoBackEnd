@@ -756,6 +756,19 @@ namespace OrcamentoCotacaoBusiness.Bll
                 orcamento.IdUsuarioUltAtualizacao = idUsuario;
                 orcamento.IdTipoUsuarioContextoUltAtualizacao = IdTipoUsuarioContextoUltAtualizacao.Value;
 
+                if (DateTime.Now.AddDays(byte.Parse(parametros.QtdePadrao_DiasProrrogacao)).Date > orcamento.DataCadastro.AddDays(byte.Parse(parametros.QtdeGlobal_Validade)).Date)
+                {
+                    if (orcamento.DataCadastro.AddDays(byte.Parse(parametros.QtdeGlobal_Validade)).Date > DateTime.Now.Date)
+                        orcamento.Validade = orcamento.DataCadastro.AddDays(byte.Parse(parametros.QtdeGlobal_Validade)).Date;
+
+                    if (DateTime.Now.Date > orcamento.DataCadastro.AddDays(byte.Parse(parametros.QtdeGlobal_Validade)).Date)
+                        return new MensagemDto
+                        {
+                            tipo = "WARN",
+                            mensagem = $"Não é possível prorrogar o orçamento. Validade máxima permitida de {parametros.QtdeGlobal_Validade} dias."
+                        };
+                }
+
                 if (DateTime.Now.AddDays(byte.Parse(parametros.QtdePadrao_DiasProrrogacao)) > DateTime.Now.AddDays(byte.Parse(parametros.QtdeGlobal_Validade)))
                     orcamento.Validade = DateTime.Now.AddDays(byte.Parse(parametros.QtdeGlobal_Validade));
                 else
@@ -832,7 +845,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     dbGravacao.transacao.Rollback();
                     throw;
                 }
-            }                
+            }
 
             return null;
         }
