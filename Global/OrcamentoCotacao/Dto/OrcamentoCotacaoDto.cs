@@ -35,6 +35,10 @@ namespace OrcamentoCotacao.Dto
         public DateTime? dataCadastro { get; set; }
         public DateTime? previsaoEntregaData { get; set; }
         public string? statusDescricao { get; set; }
+        public short? statusOrcamentoCotacaoLink { get; set; }
+        public string? prazoMaximoConsultaOrcamento { get; set; }
+        public string? loja { get; set; }
+        public string? condicoesGerais { get; set; }
 
         public List<OrcamentoOpcaoResponseViewModel> listaOpcoes { get; set; }
         public RemetenteDestinatarioResponseViewModel mensageria { get; set; }

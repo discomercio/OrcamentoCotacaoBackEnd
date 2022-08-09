@@ -97,15 +97,59 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 var usuario = new UsuarioLogin { TipoUsuario = 4 }; //CLIENTE
 
+                var loja = _lojaBll.PorFiltro(new InfraBanco.Modelos.Filtros.TlojaFiltro() { Loja = orcamento.loja });
+                var tcfgUnidadeNegocio = _cfgUnidadeNegocioBll.PorFiltro(new TcfgUnidadeNegocioFiltro() { Sigla = loja[0].Unidade_Negocio });
+
+                //Parametros
+                var prazoMaximoConsultaOrcamento = _cfgUnidadeNegocioParametroBll.PorFiltro(new TcfgUnidadeNegocioParametroFiltro() { IdCfgUnidadeNegocio = tcfgUnidadeNegocio.FirstOrDefault().Id, IdCfgParametro = 24 });
+                var condicoesGerais = _cfgUnidadeNegocioParametroBll.PorFiltro(new TcfgUnidadeNegocioParametroFiltro() { IdCfgUnidadeNegocio = tcfgUnidadeNegocio.FirstOrDefault().Id, IdCfgParametro = 12 });
+
+                orcamento.condicoesGerais = condicoesGerais[0].Valor;
+                orcamento.prazoMaximoConsultaOrcamento = prazoMaximoConsultaOrcamento[0].Valor;
                 orcamento.listaOpcoes = _orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro { IdOrcamentoCotacao = orcamento.id });
                 orcamento.listaFormasPagto = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(orcamento.tipoCliente, (Constantes.TipoUsuario)usuario.TipoUsuario, orcamento.vendedor, byte.Parse(orcamento.idIndicador.HasValue ? "1" : "0"));
                 orcamento.mensageria = BuscarDadosParaMensageria(usuario, orcamento.id, false);
                 orcamento.token = _publicoBll.ObterTokenServico();
 
+
+                if (!Validar(orcamento))
+                {
+                    orcamento = null;
+                }
+
                 return orcamento;
             }
 
             return null;
+        }
+
+        public bool Validar(OrcamentoCotacaoDto orcamentoCotacaoDto)
+        {
+            DateTime dataAtual = DateTime.Now;
+
+            if (orcamentoCotacaoDto.statusOrcamentoCotacaoLink != 1)
+                return false;
+
+            // [2] Cancelado
+            if (orcamentoCotacaoDto.status == 2)            
+                return false;            
+
+            // Expirado
+            if (dataAtual > orcamentoCotacaoDto.validade)            
+                return false;
+
+            // [3] Aprovado
+            if (orcamentoCotacaoDto.status == 3)
+            {
+
+                DateTime dataCriacao = (DateTime)orcamentoCotacaoDto.dataCadastro;
+                DateTime dataValidade = dataCriacao.AddDays(int.Parse(orcamentoCotacaoDto.prazoMaximoConsultaOrcamento));
+
+                if (dataAtual> dataValidade)
+                    return false;
+            }
+
+            return true;
         }
 
         public List<OrcamentoCotacaoListaDto> PorFiltro(TorcamentoFiltro tOrcamentoFiltro, UsuarioLogin usuarioLogin)

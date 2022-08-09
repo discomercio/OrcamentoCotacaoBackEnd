@@ -32,7 +32,7 @@ namespace OrcamentoCotacaoApi.Controllers
             if (orcamento != null)
                 return Ok(orcamento);
             else
-                return NoContent();
+                return NoContent();            
         }
 
     }

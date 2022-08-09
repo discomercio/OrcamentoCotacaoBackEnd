@@ -67,7 +67,9 @@ namespace OrcamentoCotacao
                                          email = o.Email,
                                          telefone = o.Telefone,
                                          uf = o.UF,
-                                         statusDescricao = s.Descricao
+                                         statusDescricao = s.Descricao,
+                                         statusOrcamentoCotacaoLink = l.Status,
+                                         loja = o.Loja
                                      })
                             .FirstOrDefault();
 
