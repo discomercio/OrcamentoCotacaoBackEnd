@@ -792,9 +792,13 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
-        public List<TcfgUnidadeNegocioParametro> BuscarParametrosOrcamento(int idUnidadeNegocio, int idCfgParametro)
+        public List<TcfgUnidadeNegocioParametro> BuscarParametros(int idCfgParametro, string lojaLogada)
         {
-            var tcfgUnidadeNegocioParametros = _cfgUnidadeNegocioParametroBll.PorFiltro(new TcfgUnidadeNegocioParametroFiltro() { IdCfgUnidadeNegocio = idUnidadeNegocio, IdCfgParametro = idCfgParametro });
+
+            var loja = _lojaBll.PorFiltro(new InfraBanco.Modelos.Filtros.TlojaFiltro() { Loja = lojaLogada });
+            var tcfgUnidadeNegocio = _cfgUnidadeNegocioBll.PorFiltro(new TcfgUnidadeNegocioFiltro() { Sigla = loja[0].Unidade_Negocio });
+
+            var tcfgUnidadeNegocioParametros = _cfgUnidadeNegocioParametroBll.PorFiltro(new TcfgUnidadeNegocioParametroFiltro() { IdCfgUnidadeNegocio = tcfgUnidadeNegocio.FirstOrDefault().Id, IdCfgParametro = idCfgParametro });            
 
             if (tcfgUnidadeNegocioParametros != null)
             {

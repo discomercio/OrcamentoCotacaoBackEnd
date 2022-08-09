@@ -118,10 +118,9 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpGet("parametros")]
-        public IActionResult BuscarParametrosOrcamento(int idCfgParametro)
-        {
-            eUnidadeNegocio e = (eUnidadeNegocio)Enum.Parse(typeof(eUnidadeNegocio), LoggedUser.Unidade_negocio);
-            return Ok(_orcamentoBll.BuscarParametrosOrcamento((int)e, idCfgParametro));
+        public IActionResult BuscarParametros(int idCfgParametro, string lojaLogada)
+        {            
+            return Ok(_orcamentoBll.BuscarParametros(idCfgParametro, lojaLogada));
         }
 
 
