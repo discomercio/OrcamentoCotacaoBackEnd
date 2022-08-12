@@ -21,6 +21,8 @@ namespace OrcamentoCotacaoApi.Utils
         private readonly OrcamentistaEIndicadorBll orcamentistaEindicadorBll;
         private readonly OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll;
         private readonly LojaBll lojaBll;
+        private const string permissaoParceiro = "000001000003";
+        private const string permissaoVendedorParceiro = "000001000004";
 
         public ServicoAutenticacaoProvider(
             OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll,
@@ -168,11 +170,7 @@ namespace OrcamentoCotacaoApi.Utils
                             Unidade_negocio = acessoBll.Buscar_unidade_negocio(lojaOrcamentista).Result,
                             VendedorResponsavel = orcamentista.FirstOrDefault().Vendedor,
                             IdParceiro = orcamentista.FirstOrDefault().Apelido,
-                            Permissoes = new List<string>()
-                            {
-                                ((int)ePermissao.AcessoAoModulo).ToString(),
-                                ((int)ePermissao.ParceiroIndicadorUsuarioMaster).ToString()
-                            },
+                            Permissoes = usuarioBll.buscarPermissoesPorPerfil(permissaoParceiro),
                             TipoUsuario = (int)Constantes.TipoUsuario.PARCEIRO,
                             Id = orcamentista.FirstOrDefault().IdIndicador,
                             Bloqueado = orcamentista.FirstOrDefault().Status != "A" ? true : false
@@ -191,10 +189,7 @@ namespace OrcamentoCotacaoApi.Utils
                             Unidade_negocio = acessoBll.Buscar_unidade_negocio(lojaOrcamentistaVendedor).Result,
                             VendedorResponsavel = orcamentistaVendedor.FirstOrDefault().VendedorResponsavel,
                             IdParceiro = orcamentistaVendedor.FirstOrDefault().IdIndicador.ToString(),
-                            Permissoes = new List<string>()
-                            {
-                                ((int)ePermissao.AcessoAoModulo).ToString()
-                            },
+                            Permissoes = usuarioBll.buscarPermissoesPorPerfil(permissaoVendedorParceiro),
                             TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO,
                             Id = orcamentistaVendedor.FirstOrDefault().Id,
                             Bloqueado = !orcamentistaVendedor.FirstOrDefault().Ativo
