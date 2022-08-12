@@ -117,6 +117,18 @@ namespace Usuario
             }
         }
 
+        public List<string> buscarPermissoesPorPerfil(string perfilId)
+        {
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                return (from o in db.Toperacao
+                        join pi in db.TperfilItem on o.Id equals pi.Id_operacao
+                        join p in db.Tperfil on pi.Id_perfil equals p.Id
+                        where p.Id == perfilId
+                        select o.Id.ToString()).ToList();
+            }
+        }
+
         public List<TcfgTipoUsuarioContexto> BuscarTipoUsuarioContexto()
         {
             using(var db = contextoProvider.GetContextoLeitura())
