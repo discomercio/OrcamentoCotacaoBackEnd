@@ -565,18 +565,18 @@ namespace OrcamentoCotacaoBusiness.Bll
                 orcamentoAntigo.ClienteOrcamentoCotacaoDto.Tipo.ToUpper())
                 throw new ArgumentException("O tipo do cliente não pode ser alterado!");
 
-            if (orcamento.Vendedor.ToUpper() != orcamentoAntigo.Vendedor.ToUpper() ||
-                orcamento.IdVendedor != orcamentoAntigo.IdVendedor)
+            if (orcamento.IdVendedor != orcamentoAntigo.IdVendedor &&
+                orcamento.Vendedor.ToUpper() != orcamentoAntigo.Vendedor.ToUpper())
                 throw new ArgumentException("O vendedor não pode ser alterado!");
 
-            if (orcamento.VendedorParceiro?.ToUpper() != orcamentoAntigo.VendedorParceiro?.ToUpper() ||
-                orcamento.IdIndicadorVendedor != orcamentoAntigo.IdIndicadorVendedor)
+            if (orcamento.IdIndicadorVendedor != orcamentoAntigo.IdIndicadorVendedor &&
+                orcamento.VendedorParceiro?.ToUpper() != orcamentoAntigo.VendedorParceiro?.ToUpper()                )
                 throw new ArgumentException("O Vendedor do parceiro não pode ser alterado!");
 
             if (usuarioLogado.TipoUsuario == (int?)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
             {
-                if (orcamento.Parceiro != Constantes.SEM_INDICADOR && (orcamento.Parceiro.ToUpper() != orcamentoAntigo.IdIndicador.ToString().ToUpper() ||
-                orcamento.IdIndicador != orcamentoAntigo.IdIndicador))
+                if (orcamento.Parceiro != Constantes.SEM_INDICADOR && (orcamento.IdIndicador != orcamentoAntigo.IdIndicador && 
+                    orcamento.Parceiro.ToUpper() != orcamentoAntigo.IdIndicador.ToString().ToUpper()))
                     throw new ArgumentException("O parceiro não pode ser alterado!");
             }
             else
