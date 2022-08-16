@@ -404,7 +404,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     foreach (var pagto in opcao.FormaPagto)
                     {
                         var pg = torcamentoCotacaoOpcaoItemAtomicosFin.Where(x => x.TorcamentoCotacaoOpcaoPagto.Tipo_parcelamento == pagto.Tipo_parcelamento).FirstOrDefault();
-                        if (ValidarDescontoComissaoAlcada(item, usuarioLogado, orcamento, opcao.Id))
+                        if (ValidarDescontoComissaoAlcada(item, usuarioLogado, orcamento, opcao))
                         {
                             var p = pDados.Where(x => x.Produto == atomico.Produto).FirstOrDefault();
 
@@ -492,17 +492,16 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             if(produto.DescDado > 0 || percRT > 0)
             {
-                float valor = float.Parse((produto.DescDado + percRT).ToString("#.##"));
-                if (valor > percPadraoPorTipo) return true;
+                if (produto.DescDado > percPadraoPorTipo) return true;
             }
 
             return false;
         }
 
         private bool ValidarDescontoComissaoAlcada(ProdutoOrcamentoOpcaoResponseViewModel produto,
-            UsuarioLogin usuarioLogado, OrcamentoResponseViewModel orcamento, int idOpcao)
+            UsuarioLogin usuarioLogado, OrcamentoResponseViewModel orcamento, OrcamentoOpcaoResponseViewModel opcao)
         {
-            var opcaoAntiga = orcamento.ListaOrcamentoCotacaoDto.Where(x => x.Id == idOpcao).FirstOrDefault();
+            var opcaoAntiga = orcamento.ListaOrcamentoCotacaoDto.Where(x => x.Id == opcao.Id).FirstOrDefault();
             if (opcaoAntiga == null) throw new ArgumentException("Falha ao buscar a opção!");
 
             bool temAlcada = false;
@@ -521,7 +520,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             var percAUtilizar = percMaxPorAlcada.PercMaxComissao > 0 ? percMaxPorAlcada : percPadrao;
 
-            ValidarComissao(percAUtilizar, orcamento, idOpcao);
+            ValidarComissao(percAUtilizar, orcamento, opcao);
 
             ValidarDescontos(percAUtilizar, produto, orcamento.ClienteOrcamentoCotacaoDto.Tipo, temAlcada);
 
@@ -544,11 +543,8 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public void ValidarComissao(PercMaxDescEComissaoResponseViewModel percMaxDescEComissaoResponse,
-            OrcamentoResponseViewModel orcamento, int idOpcao)
+            OrcamentoResponseViewModel orcamento, OrcamentoOpcaoResponseViewModel opcao)
         {
-            var opcao = orcamento.ListaOrcamentoCotacaoDto.Where(o => o.Id == idOpcao).FirstOrDefault();
-            if (opcao == null) throw new ArgumentException("Ops! Não encotramos a opção em nossas bases.");
-
             if (opcao.PercRT < 0) throw new ArgumentException("Ops! A comissão não pode ser negativa!");
 
             if (orcamento.Parceiro == null && opcao.PercRT > 0)
