@@ -152,6 +152,8 @@ namespace OrcamentoCotacaoBusiness.Bll
         {
             RemetenteDestinatarioResponseViewModel response = new RemetenteDestinatarioResponseViewModel();
             response.IdOrcamentoCotacao = orcamento.Id;
+            response.Status = orcamento.Status;
+            response.Validade = orcamento.Validade;
             response.IdTipoUsuarioContextoDestinatario = (int)Constantes.TipoUsuario.CLIENTE;
 
             setarDonoOrcamento(orcamento, idUsuario,response);

@@ -27,5 +27,11 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 
         [JsonProperty("idDonoOrcamento")]
         public virtual int? IdDonoOrcamento { get; set; }
+
+        [JsonProperty("status")]
+        public short? Status { get; set; }
+
+        [JsonProperty("validade")]
+        public DateTime? Validade { get; set; }
     }
 }
