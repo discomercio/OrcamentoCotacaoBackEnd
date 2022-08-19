@@ -129,15 +129,15 @@ namespace OrcamentoCotacaoBusiness.Bll
                         .AtualizarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(opcao.ListaProdutos, opcao.Id, dbGravacao);
                     if (tOpcao.TorcamentoCotacaoItemUnificados == null) throw new ArgumentException("Falha ao atualizar os itens!");
 
-                    var topcaoPagtos = formaPagtoOrcamentoCotacaoBll
-                        .AtualizarOrcamentoCotacaoOpcaoPagtoComTransacao(opcao.FormaPagto, opcao.Id, formaPagtoAntiga, dbGravacao);
-                    if (topcaoPagtos == null) throw new ArgumentException("Falha ao atualizar as formas de pagamentos!");
-
                     tOpcao.TorcamentoCotacaoItemUnificados = produtoOrcamentoCotacaoBll
                         .AtualizarTorcamentoCotacaoOpcaoItemAtomicoComTransacao(opcao.ListaProdutos, opcao.Id,
                         tOpcao.TorcamentoCotacaoItemUnificados, dbGravacao);
                     if (tOpcao.TorcamentoCotacaoItemUnificados == null) throw new ArgumentException("Falha ao atualizar os itens!");
 
+                    var topcaoPagtos = formaPagtoOrcamentoCotacaoBll
+                        .AtualizarOrcamentoCotacaoOpcaoPagtoComTransacao(opcao, formaPagtoAntiga, dbGravacao);
+                    if (topcaoPagtos == null) throw new ArgumentException("Falha ao atualizar as formas de pagamentos!");
+                    
                     produtoOrcamentoCotacaoBll.AtualizarProdutoAtomicoCustoFinComTransacao(opcao, 
                         tOpcao.TorcamentoCotacaoItemUnificados, topcaoPagtos, dbGravacao, usuarioLogado, orcamento);
 

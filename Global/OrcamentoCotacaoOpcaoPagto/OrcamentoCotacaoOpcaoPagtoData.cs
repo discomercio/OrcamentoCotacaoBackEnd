@@ -36,7 +36,8 @@ namespace OrcamentoCotacaoOpcaoPagto
 
         public void ExcluirComTransacao(TorcamentoCotacaoOpcaoPagto obj, ContextoBdGravacao contextoBdGravacao)
         {
-            throw new NotImplementedException();
+            contextoBdGravacao.TorcamentoCotacaoOpcaoPagto.Remove(obj);
+            contextoBdGravacao.SaveChanges();
         }
 
         public TorcamentoCotacaoOpcaoPagto Inserir(TorcamentoCotacaoOpcaoPagto obj)

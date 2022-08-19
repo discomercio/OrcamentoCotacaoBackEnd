@@ -90,6 +90,10 @@ namespace OrcamentoCotacaoOpcaoItemAtomicoCustoFin
                     {
                         saida = saida.Where(x => obj.IdItemAtomico == x.IdItemAtomico);
                     }
+                    if(obj.IdOpcaoPagto > 0)
+                    {
+                        saida = saida.Where(x => obj.IdOpcaoPagto == x.IdOpcaoPagto);
+                    }
 
                     return saida.ToList();
                 }

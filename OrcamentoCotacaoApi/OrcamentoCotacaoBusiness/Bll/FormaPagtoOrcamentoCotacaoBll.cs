@@ -22,16 +22,19 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly MeiosPagamentosBll _meiosPagamentosBll;
         private readonly OrcamentoCotacaoOpcaoPagto.OrcamentoCotacaoOpcaoPagtoBll orcamentoCotacaoOpcaoPagtoBll;
         private readonly IMapper mapper;
+        private readonly OrcamentoCotacaoOpcaoItemAtomicoCustoFin.OrcamentoCotacaoOpcaoItemAtomicoCustoFinBll orcamentoCotacaoOpcaoItemAtomicoCustoFinBll;
 
 
         public FormaPagtoOrcamentoCotacaoBll(FormaPagtoBll formaPagtoBll, MeiosPagamentosBll _meiosPagamentosBll,
             OrcamentoCotacaoOpcaoPagto.OrcamentoCotacaoOpcaoPagtoBll orcamentoCotacaoOpcaoPagtoBll,
-            IMapper mapper)
+            IMapper mapper,
+            OrcamentoCotacaoOpcaoItemAtomicoCustoFin.OrcamentoCotacaoOpcaoItemAtomicoCustoFinBll orcamentoCotacaoOpcaoItemAtomicoCustoFinBll)
         {
             this._formaPagtoBll = formaPagtoBll;
             this._meiosPagamentosBll = _meiosPagamentosBll;
             this.orcamentoCotacaoOpcaoPagtoBll = orcamentoCotacaoOpcaoPagtoBll;
             this.mapper = mapper;
+            this.orcamentoCotacaoOpcaoItemAtomicoCustoFinBll = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll;
         }
 
         public List<FormaPagamentoResponseViewModel> BuscarFormasPagamentos(string tipoCliente, Constantes.TipoUsuario tipoUsuario, string apelido, byte comIndicacao)
@@ -164,11 +167,15 @@ namespace OrcamentoCotacaoBusiness.Bll
             return retorno;
         }
 
-        public List<TorcamentoCotacaoOpcaoPagto> AtualizarOrcamentoCotacaoOpcaoPagtoComTransacao(List<FormaPagtoCriacaoResponseViewModel> formaPagtos,
-            int idOrcamentoOpcao, List<TorcamentoCotacaoOpcaoPagto> formaPagtoAntiga, ContextoBdGravacao dbGravacao)
+        public List<TorcamentoCotacaoOpcaoPagto> AtualizarOrcamentoCotacaoOpcaoPagtoComTransacao(
+            OrcamentoOpcaoResponseViewModel opcao, List<TorcamentoCotacaoOpcaoPagto> formaPagtoAntiga,
+            ContextoBdGravacao dbGravacao)
         {
             List<TorcamentoCotacaoOpcaoPagto> lstRetorno = new List<TorcamentoCotacaoOpcaoPagto>();
-            foreach (var pagto in formaPagtos)
+
+            RemoverOrcamentoCotacaoOpcaoPagtoComTransacao(formaPagtoAntiga, opcao, dbGravacao);
+            
+            foreach (var pagto in opcao.FormaPagto)
             {
                 var f = formaPagtoAntiga.Where(x => x.Id == pagto.Id).FirstOrDefault();
                 if (f == null)
@@ -176,14 +183,14 @@ namespace OrcamentoCotacaoBusiness.Bll
                     var p = mapper.Map<FormaPagtoCriacaoRequestViewModel>(pagto);
                     List<FormaPagtoCriacaoRequestViewModel> lstPagto = new List<FormaPagtoCriacaoRequestViewModel>();
                     lstPagto.Add(p);
-                    lstRetorno.Add(CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(lstPagto, idOrcamentoOpcao, dbGravacao).FirstOrDefault());
+                    lstRetorno.Add(CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(lstPagto, opcao.Id, dbGravacao).FirstOrDefault());
                 }
                 else
                 {
                     TorcamentoCotacaoOpcaoPagto torcamentoCotacaoOpcaoPagto = new TorcamentoCotacaoOpcaoPagto()
                     {
                         Id = pagto.Id,
-                        IdOrcamentoCotacaoOpcao = idOrcamentoOpcao,
+                        IdOrcamentoCotacaoOpcao = opcao.Id,
                         Aprovado = false,
                         Observacao = pagto.Observacao,
                         Tipo_parcelamento = pagto.Tipo_parcelamento,
@@ -224,6 +231,28 @@ namespace OrcamentoCotacaoBusiness.Bll
             var opcaoFormaPagtos = orcamentoCotacaoOpcaoPagtoBll.PorFiltro(new TorcamentoCotacaoOpcaoPagtoFiltro() { IdOpcao = idOpcao });
 
             return opcaoFormaPagtos;
+        }
+
+        public void RemoverOrcamentoCotacaoOpcaoPagtoComTransacao(List<TorcamentoCotacaoOpcaoPagto> formaPagtoAntiga,
+            OrcamentoOpcaoResponseViewModel opcao, ContextoBdGravacao dbGravacao)
+        {
+            foreach (var pagtoAntigo in formaPagtoAntiga)
+            {
+                var pagto = opcao.FormaPagto.Where(x => x.Id == pagtoAntigo.Id).FirstOrDefault();
+
+                if (pagto == null)
+                {
+                    var itemAtomicoCusto = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.PorFiltro(new TorcamentoCotacaoOpcaoItemAtomicoCustoFinFiltro() { IdOpcaoPagto = pagtoAntigo.Id });
+
+                    if (itemAtomicoCusto != null)
+                    {
+                        foreach (var item in itemAtomicoCusto)
+                            orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.ExcluirComTransacao(item, dbGravacao);
+                    }
+
+                    orcamentoCotacaoOpcaoPagtoBll.ExcluirComTransacao(pagtoAntigo, dbGravacao);
+                }
+            }
         }
     }
 }
