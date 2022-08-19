@@ -283,7 +283,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 QtdeRenovacao = orcamento.QtdeRenovacao,
                 ConcordaWhatsapp = orcamento.AceiteWhatsApp,
                 ObservacoesGerais = orcamento.Observacao,
-                EntregaImediata = orcamento.StEtgImediata == 1 ? true : false,
+                EntregaImediata = orcamento.StEtgImediata == (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ? false : true,
                 DataEntregaImediata = orcamento.PrevisaoEntregaData,
                 Status = orcamento.Status,
                 DataCadastro = orcamento.DataCadastro,
@@ -500,7 +500,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     tOrcamento.UF = orcamento.ClienteOrcamentoCotacaoDto.Uf;
                     tOrcamento.Email = orcamento.ClienteOrcamentoCotacaoDto.Email;
                     tOrcamento.Telefone = orcamento.ClienteOrcamentoCotacaoDto.Telefone;
-                    tOrcamento.StEtgImediata = orcamento.EntregaImediata ? 1 : 0;
+                    tOrcamento.StEtgImediata = orcamento.EntregaImediata ? (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM : (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO;
                     tOrcamento.PrevisaoEntregaData = orcamento.DataEntregaImediata?.Date;
                     tOrcamento.Observacao = orcamento.ObservacoesGerais;
                     tOrcamento.IdTipoUsuarioContextoUltAtualizacao = (int)usuarioLogado.TipoUsuario;
