@@ -705,7 +705,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 DataUltStatus = DateTime.Now.Date,
                 DataHoraUltStatus = DateTime.Now,
                 Status = (short)status,
-                StEtgImediata = orcamento.EntregaImediata ? 1 : 0,
+                StEtgImediata = orcamento.EntregaImediata ? (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM : (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO,
                 PrevisaoEntregaData = orcamento.DataEntregaImediata?.Date,
                 Perc_max_comissao_e_desconto_padrao = orcamento.ClienteOrcamentoCotacaoDto.Tipo == Constantes.ID_PF ?
                     percMaxDescEComissaoDados.PercMaxComissaoEDesconto : percMaxDescEComissaoDados.PercMaxComissaoEDescontoPJ,
