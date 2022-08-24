@@ -105,24 +105,18 @@ namespace OrcamentoCotacaoApi
                 }
             });
 
-            if (env.IsDevelopment() || env.IsProduction())
+            if (env.IsDevelopment())
             {
-                /*
-                 * nao precisamo de CORS porque servimos tudo do aplicativo principal
-                 * quer dizer, copiamos os arquivos do angular para o wwwroot
-                 * 
-                 * mas em dev precisamos sim!
-                 * */
-                // global cors policy
-                app.UseCors(x => x
+                app.UseSwaggerX(Configuration);
+            }
+
+            app.UseCors(x => x
                     .WithOrigins("*")
                     .AllowAnyMethod()
                     .AllowAnyHeader());
 
-                app.UseSwaggerX(Configuration);
+            app.UseDeveloperExceptionPage();
 
-                app.UseDeveloperExceptionPage();
-            }
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
