@@ -350,16 +350,19 @@ namespace ProdutoCatalogo
                                 });
                         }
 
-                        foreach (var img in produtoCatalogo?.imagens)
+                        if(produtoCatalogo?.imagens != null)
                         {
-                            prodCatalogo.imagens.Add(
-                                new TprodutoCatalogoImagem
-                                {
-                                    IdProdutoCatalogo = prodCatalogo.Id,
-                                    IdTipoImagem = 1,
-                                    Caminho = img.Caminho,
-                                    Ordem = img.Ordem
-                                });
+                            foreach (var img in produtoCatalogo?.imagens)
+                            {
+                                prodCatalogo.imagens.Add(
+                                    new TprodutoCatalogoImagem
+                                    {
+                                        IdProdutoCatalogo = prodCatalogo.Id,
+                                        IdTipoImagem = 1,
+                                        Caminho = img.Caminho,
+                                        Ordem = img.Ordem
+                                    });
+                            }
                         }
                     }
 

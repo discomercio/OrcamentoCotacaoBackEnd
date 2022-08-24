@@ -52,7 +52,7 @@ namespace ProdutoCatalogo
             return _data.SalvarArquivo(nomeArquivo, idProdutoCatalogo, idTipo, ordem);
         }
 
-        public bool Criar(TprodutoCatalogo obj, string usuario_cadastro)
+        public int Criar(TprodutoCatalogo obj, string usuario_cadastro)
         {
             //TODO: NAO TEM COMO DESABILITAR TRACKING
             var prodCatalogo = _data.Criar(obj, usuario_cadastro);
@@ -67,20 +67,24 @@ namespace ProdutoCatalogo
                     }
                 }
 
-                if (prodCatalogo.imagens?.Count > 0)
-                {
-                    foreach (var img in prodCatalogo.imagens)
-                    {
-                        _data.CriarImagens(img);
-                    }
-                }
+                //if (prodCatalogo.imagens?.Count > 0)
+                //{
+                //    var extensao = prodCatalogo.imagens[0].Caminho.Substring(prodCatalogo.imagens[0].Caminho.Length - 3, 3);
+                //    if (extensao == "png" || extensao == "jpeg" || extensao == "bmp" || extensao == "jpg")
+                //    {
+                //        foreach (var img in prodCatalogo.imagens)
+                //        {
+                //            _data.CriarImagens(img);
+                //        }
+                //    }
+                //}
 
-                _data.ExcluirImagemTmp();
+                //_data.ExcluirImagemTmp();
 
-                return true;
+                return prodCatalogo.Id;
             }
 
-            return false;
+            return 0;
         }
 
         public bool Atualizar(TprodutoCatalogo obj)

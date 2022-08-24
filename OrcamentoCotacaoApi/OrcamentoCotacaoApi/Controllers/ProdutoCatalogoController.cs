@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
+using OrcamentoCotacaoBusiness.Models.Request;
 using Produto;
 using System;
 using System.IO;
@@ -139,7 +140,7 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             produto.UsuarioEdicao = LoggedUser.Apelido;
 
-           var saida = _bll.Atualizar(produto);
+            var saida = _bll.Atualizar(produto);
 
             if (saida)
                 return Ok(true);
@@ -152,7 +153,7 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             try
             {
-                if (arquivo.ContentType.Contains("png") || arquivo.ContentType.Contains("jpeg") || arquivo.ContentType.Contains("bmp"))
+                if (arquivo.ContentType.Contains("png") || arquivo.ContentType.Contains("jpeg") || arquivo.ContentType.Contains("bmp") || arquivo.ContentType.Contains("jpg"))
                 {
                     Guid idArquivo = Guid.NewGuid();
                     var extensao = arquivo.FileName.Substring(arquivo.FileName.Length - 3, 3);
@@ -185,34 +186,18 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Criar(TprodutoCatalogo produtoCatalogo)
+        public async Task<IActionResult> Criar(TprodutoCatalogo produto)
         {
-            try
+            var usuario = User.Identity.Name;
+            var retorno = await _bll.Criar(produto, usuario, _appSettings.Value.ImgCaminho);
+            if (retorno != null)
             {
-                var usuario = User.Identity.Name;
-                var saida = _bll.Criar(produtoCatalogo, usuario);
+                return BadRequest(new { message = "Erro ao criar novo produto." });
+            }
 
-                if (saida)
-                {
-                    return Ok(new
-                    {
-                        message = "Produto criado com sucesso."
-                    });
-                }
-                else
-                {
-                    return BadRequest(new
-                    {
-                        message = "Erro ao criar novo produto."
-                    });
-                }
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            return Ok(new { message = "Produto criado com sucesso." });
         }
-        
+
         [HttpGet("listar-produtos-propriedades/{propriedadeOculta}&{propriedadeOcultaItem}")]
         public async Task<IActionResult> ListarProdutosPropriedadesAtivos(bool propriedadeOculta, bool propriedadeOcultaItem)
         {
