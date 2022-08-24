@@ -51,7 +51,27 @@ namespace Cfg.CfgUnidadeNegocioParametro
 
         public List<TcfgUnidadeNegocioParametro> PorFilroComTransacao(TcfgUnidadeNegocioParametroFiltro obj, ContextoBdGravacao contextoBdGravacao)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var parametros = from L in contextoBdGravacao.TcfgUnidadeNegocioParametro
+                                 select L;
+
+                if (obj.IdCfgUnidadeNegocio.HasValue)
+                {
+                    parametros = parametros.Where(x => x.IdCfgUnidadeNegocio == obj.IdCfgUnidadeNegocio);
+                }
+                if (obj.IdCfgParametro.HasValue)
+                {
+                    parametros = parametros.Where(x => x.IdCfgParametro == obj.IdCfgParametro);
+                }
+
+                return parametros.ToList();
+
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         public List<TcfgUnidadeNegocioParametro> PorFiltro(TcfgUnidadeNegocioParametroFiltro obj)
@@ -67,7 +87,7 @@ namespace Cfg.CfgUnidadeNegocioParametro
                     {
                         parametros = parametros.Where(x => x.IdCfgUnidadeNegocio == obj.IdCfgUnidadeNegocio);
                     }
-                    if(obj.IdCfgParametro.HasValue)
+                    if (obj.IdCfgParametro.HasValue)
                     {
                         parametros = parametros.Where(x => x.IdCfgParametro == obj.IdCfgParametro);
                     }

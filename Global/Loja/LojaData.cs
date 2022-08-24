@@ -61,6 +61,27 @@ namespace Loja
             }
         }
 
+        public List<Tloja> PorFiltroComTransacao(TlojaFiltro obj, ContextoBdGravacao contextoBdGravacao)
+        {
+            try
+            {
+                var lojas = from L in contextoBdGravacao.Tloja
+                            select L;
+
+                if (!string.IsNullOrEmpty(obj.Loja))
+                {
+                    lojas = lojas.Where(x => x.Loja == obj.Loja);
+                }
+
+                return lojas.ToList();
+
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public LojaViewModel BuscarLojaEstilo(string loja)
         {
             using (var db = contextoProvider.GetContextoLeitura())

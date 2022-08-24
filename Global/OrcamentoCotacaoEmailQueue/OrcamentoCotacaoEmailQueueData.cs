@@ -112,7 +112,7 @@ namespace OrcamentoCotacaoEmailQueue
 
         public TorcamentoCotacaoEmailQueue Inserir(TorcamentoCotacaoEmailQueue obj)
         {
-            
+
             try
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
@@ -154,7 +154,17 @@ namespace OrcamentoCotacaoEmailQueue
 
         public TorcamentoCotacaoEmailQueue InserirComTransacao(TorcamentoCotacaoEmailQueue model, ContextoBdGravacao contextoBdGravacao)
         {
-            throw new NotImplementedException();
+            try
+            {
+                contextoBdGravacao.TorcamentoCotacaoEmailQueue.Add(model);
+                contextoBdGravacao.SaveChanges();
+                return model;
+
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         public List<TorcamentoCotacaoEmailQueue> PorFilroComTransacao(TorcamentoCotacaoEmailQueueFiltro obj, ContextoBdGravacao contextoBdGravacao)

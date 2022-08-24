@@ -1,4 +1,5 @@
-﻿using InfraBanco.Modelos;
+﻿using InfraBanco;
+using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using Loja.Dados;
 using Loja.Dto;
@@ -34,6 +35,10 @@ namespace Loja
         public List<Tloja> PorFiltro(TlojaFiltro obj)
         {
             return _lojaData.PorFiltro(obj);
+        }
+        public List<Tloja> PorFiltroComTransacao(TlojaFiltro obj, ContextoBdGravacao contextoBdGravacao)
+        {
+            return _lojaData.PorFiltroComTransacao(obj, contextoBdGravacao);
         }
 
         public PercMaxDescEComissaoDados BuscarPercMaxPorLoja(string loja)

@@ -1,5 +1,6 @@
 ﻿using Cfg.CfgUnidadeNegocio;
 using Cfg.CfgUnidadeNegocioParametro;
+using InfraBanco;
 using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
@@ -453,7 +454,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     var guid = Guid.NewGuid();
 
                     AdicionarOrcamentoCotacaoLink(tOrcamentoCotacao, guid, dbGravacao);
-                    AdicionarOrcamentoCotacaoEmailQueue(orcamento, guid);
+                    AdicionarOrcamentoCotacaoEmailQueue(orcamento, guid, dbGravacao);
 
                     dbGravacao.transacao.Commit();
 
@@ -642,14 +643,15 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         }
 
-        private void AdicionarOrcamentoCotacaoEmailQueue(OrcamentoRequestViewModel orcamento, Guid guid)
+        private void AdicionarOrcamentoCotacaoEmailQueue(OrcamentoRequestViewModel orcamento, Guid guid, 
+            ContextoBdGravacao contextoBdGravacao)
         {
 
             TorcamentoCotacaoEmailQueue orcamentoCotacaoEmailQueueModel = new InfraBanco.Modelos.TorcamentoCotacaoEmailQueue();
 
-            var loja = _lojaBll.PorFiltro(new InfraBanco.Modelos.Filtros.TlojaFiltro() { Loja = orcamento.Loja });
-            var tcfgUnidadeNegocio = _cfgUnidadeNegocioBll.PorFiltro(new TcfgUnidadeNegocioFiltro() { Sigla = loja[0].Unidade_Negocio });
-            var tcfgUnidadeNegocioParametros = _cfgUnidadeNegocioParametroBll.PorFiltro(new TcfgUnidadeNegocioParametroFiltro() { IdCfgUnidadeNegocio = tcfgUnidadeNegocio.FirstOrDefault().Id });
+            var loja = _lojaBll.PorFiltroComTransacao(new InfraBanco.Modelos.Filtros.TlojaFiltro() { Loja = orcamento.Loja }, contextoBdGravacao);
+            var tcfgUnidadeNegocio = _cfgUnidadeNegocioBll.PorFiltroComTransacao(new TcfgUnidadeNegocioFiltro() { Sigla = loja[0].Unidade_Negocio }, contextoBdGravacao);
+            var tcfgUnidadeNegocioParametros = _cfgUnidadeNegocioParametroBll.PorFiltroComTransacao(new TcfgUnidadeNegocioParametroFiltro() { IdCfgUnidadeNegocio = tcfgUnidadeNegocio.FirstOrDefault().Id }, contextoBdGravacao);
             var nomeEmpresa = "";
 
             foreach (var item in tcfgUnidadeNegocioParametros)
@@ -678,7 +680,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                         orcamento.Id.ToString()
                     };
 
-            _orcamentoCotacaoEmailQueueBll.InserirQueueComTemplateEHTML(2, orcamentoCotacaoEmailQueueModel, tagHtml);
+            _orcamentoCotacaoEmailQueueBll.InserirQueueComTemplateEHTMLComTransacao(2, 
+                orcamentoCotacaoEmailQueueModel, tagHtml, contextoBdGravacao);
 
         }
 

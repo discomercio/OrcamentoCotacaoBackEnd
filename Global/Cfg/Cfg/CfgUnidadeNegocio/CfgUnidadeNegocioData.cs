@@ -49,7 +49,28 @@ namespace Cfg.CfgUnidadeNegocio
 
         public List<TcfgUnidadeNegocio> PorFilroComTransacao(TcfgUnidadeNegocioFiltro obj, ContextoBdGravacao contextoBdGravacao)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var unidadeNegocio = from L in contextoBdGravacao.TcfgUnidadeNegocio
+                                     select L;
+
+                if (!string.IsNullOrEmpty(obj.Sigla))
+                {
+                    unidadeNegocio = unidadeNegocio.Where(x => x.Sigla == obj.Sigla);
+                }
+
+                if (!string.IsNullOrEmpty(obj.NomeCurto))
+                {
+                    unidadeNegocio = unidadeNegocio.Where(x => x.NomeCurto == obj.NomeCurto);
+                }
+
+                return unidadeNegocio.ToList();
+
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         public List<TcfgUnidadeNegocio> PorFiltro(TcfgUnidadeNegocioFiltro obj)
