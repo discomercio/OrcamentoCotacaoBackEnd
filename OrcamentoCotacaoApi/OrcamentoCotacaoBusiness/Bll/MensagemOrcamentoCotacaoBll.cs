@@ -11,6 +11,7 @@ using Cfg.CfgUnidadeNegocio;
 using Cfg.CfgUnidadeNegocioParametro;
 using System.Linq;
 using System.Text.Json;
+using System;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -77,11 +78,17 @@ namespace OrcamentoCotacaoBusiness.Bll
             var tcfgUnidadeNegocio = _cfgUnidadeNegocioBll.PorFiltro(new TcfgUnidadeNegocioFiltro() { Sigla = loja[0].Unidade_Negocio });
             var tcfgUnidadeNegocioParametros = _cfgUnidadeNegocioParametroBll.PorFiltro(new TcfgUnidadeNegocioParametroFiltro() { IdCfgUnidadeNegocio = tcfgUnidadeNegocio.FirstOrDefault().Id });
             var nomeEmpresa = "";
+            var logoEmpresa = "";
+            var urlBaseFront = "";
+            var template = "";
 
             foreach (var item in tcfgUnidadeNegocioParametros)
             {
                 switch (item.IdCfgParametro)
                 {
+                    case 2:
+                        urlBaseFront = item.Valor;
+                        break;
                     case 5:
                         orcamentoCotacaoEmailQueueModel.From = item.Valor;
                         break;
@@ -89,9 +96,15 @@ namespace OrcamentoCotacaoBusiness.Bll
                         orcamentoCotacaoEmailQueueModel.FromDisplayName = item.Valor;
                         nomeEmpresa = item.Valor;
                         break;
+                    case 34:
+                        logoEmpresa = item.Valor;
+                        break;
+                    case 36:
+                        template = item.Valor;
+                        break;
                 }
             }
-
+            
             orcamentoCotacaoEmailQueueModel.IdCfgUnidadeNegocio = tcfgUnidadeNegocioParametros[0].IdCfgUnidadeNegocio;
             orcamentoCotacaoEmailQueueModel.To = orcamento.Email;
             orcamentoCotacaoEmailQueueModel.Cc = "";
@@ -101,10 +114,15 @@ namespace OrcamentoCotacaoBusiness.Bll
                         orcamento.NomeCliente,
                         nomeEmpresa,
                         orcamentoCotacaoLink.Guid.ToString(),
-                        orcamento.Id.ToString()
+                        orcamento.Id.ToString(),
+                        urlBaseFront,
+                        logoEmpresa
                     };
 
-            _orcamentoCotacaoEmailQueueBll.InserirQueueComTemplateEHTML(1, orcamentoCotacaoEmailQueueModel, tagHtml);
+            if (!_orcamentoCotacaoEmailQueueBll.InserirQueueComTemplateEHTML(Int32.Parse(template), orcamentoCotacaoEmailQueueModel, tagHtml))
+            {
+                throw new ArgumentException("Não foi possível enviar a mensagem. Problema no envio de e-mail!");
+            }
 
         }
 
