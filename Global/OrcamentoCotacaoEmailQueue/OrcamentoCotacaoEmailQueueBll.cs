@@ -22,7 +22,7 @@ namespace OrcamentoCotacaoEmailQueue
         }
 
         public bool InserirQueueComTemplateEHTML(int IdCfgOrcamentoCotacaoEmailTemplates, TorcamentoCotacaoEmailQueue orcamentoCotacaoEmailQueue, string[] tagHtml)
-        {
+        {            
             try
             {
                 List<TcfgOrcamentoCotacaoEmailTemplate> tcfgOrcamentoCotacaoEmailTemplates = cfgOrcamentoCotacaoEmailTemplateBll.PorFiltro(new TcfgOrcamentoCotacaoEmailTemplateFiltro() { Id = IdCfgOrcamentoCotacaoEmailTemplates });
@@ -34,6 +34,8 @@ namespace OrcamentoCotacaoEmailQueue
                 emailTemplateBody = emailTemplateBody.Replace("{DadosEmpresa}", tagHtml[1]);
                 emailTemplateBody = emailTemplateBody.Replace("{LinkOrcamento}", tagHtml[2]);
                 emailTemplateBody = emailTemplateBody.Replace("{NroOrcamento}", tagHtml[3]);
+                emailTemplateBody = emailTemplateBody.Replace("{URL_Base_Front}", tagHtml[4]);
+                emailTemplateBody = emailTemplateBody.Replace("{LogoEmpresa}", tagHtml[5]);
                 orcamentoCotacaoEmailQueue.Body = emailTemplateBody;
                 _data.Inserir(orcamentoCotacaoEmailQueue);
 
@@ -60,6 +62,8 @@ namespace OrcamentoCotacaoEmailQueue
                 emailTemplateBody = emailTemplateBody.Replace("{DadosEmpresa}", tagHtml[1]);
                 emailTemplateBody = emailTemplateBody.Replace("{LinkOrcamento}", tagHtml[2]);
                 emailTemplateBody = emailTemplateBody.Replace("{NroOrcamento}", tagHtml[3]);
+                emailTemplateBody = emailTemplateBody.Replace("{URL_Base_Front}", tagHtml[4]);
+                emailTemplateBody = emailTemplateBody.Replace("{LogoEmpresa}", tagHtml[5]);
                 orcamentoCotacaoEmailQueue.Body = emailTemplateBody;
                 _data.InserirComTransacao(orcamentoCotacaoEmailQueue, contextoBdGravacao);
 

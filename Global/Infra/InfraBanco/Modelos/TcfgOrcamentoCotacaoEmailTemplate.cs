@@ -51,7 +51,7 @@ namespace InfraBanco.Modelos
 
         [Column("DataHoraUltAtualizacao")]
         [MaxLength(8)]
-        public DateTime DataHoraUltAtualizacao { get; set; }
+        public DateTime ?DataHoraUltAtualizacao { get; set; }
 
         [Column("UsuarioUltAtualizacao")]
         [MaxLength(10)]
