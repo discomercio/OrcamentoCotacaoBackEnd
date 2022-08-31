@@ -137,16 +137,17 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Atualizar(TprodutoCatalogo produto)
+        public async Task<IActionResult> Atualizar(IFormFile arquivo, IFormCollection form)
         {
-            produto.UsuarioEdicao = LoggedUser.Apelido;
+            var tProduto = JsonConvert.DeserializeObject<TprodutoCatalogo>(form["produto"]);
+            tProduto.UsuarioEdicao = LoggedUser.Apelido;
 
-            var saida = _bll.Atualizar(produto);
+            var retorno = await _bll.Atualizar(tProduto, arquivo, _appSettings.Value.ImgCaminho);
 
-            if (saida)
-                return Ok(true);
-            else
-                return BadRequest();
+            if (retorno != null)
+                return BadRequest(new { message = retorno});
+
+            return Ok();
         }
 
         [HttpPost("imagem")]
@@ -189,12 +190,12 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost("criar")]
         public async Task<IActionResult> Criar(IFormFile arquivo, IFormCollection form)
         {
-            var usuario = User.Identity.Name;
+            var usuario = LoggedUser.Apelido;
             var tProduto = JsonConvert.DeserializeObject<TprodutoCatalogo>(form["produto"]);
             var retorno = await _bll.Criar(tProduto, usuario, arquivo, _appSettings.Value.ImgCaminho);
             if (retorno != null)
             {
-                return BadRequest(new { message = "Erro ao criar novo produto." });
+                return BadRequest(new { message = retorno });
             }
 
             return Ok(new { message = "Produto criado com sucesso." });

@@ -125,6 +125,28 @@ namespace ProdutoCatalogo
             return retorno;
         }
 
+        public TprodutoCatalogo AtualizarComTransacao(TprodutoCatalogo model,
+            InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            var tProdutoCatalogo = _data.AtualizarComTransacao(model, contextoBdGravacao);
+            return tProdutoCatalogo;
+        }
+
+        public List<TprodutoCatalogoItem> AtualizarItensComTransacao(List<TprodutoCatalogoItem> propriedades,
+            int idProduto, InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            List<TprodutoCatalogoItem> retorno = new List<TprodutoCatalogoItem>();
+
+            foreach (var prop in propriedades)
+            {
+                prop.IdProdutoCatalogo = idProduto;
+                if (!string.IsNullOrEmpty(prop.Valor)) prop.IdProdutoCatalogoPropriedadeOpcao = null;
+                retorno.Add(_data.AtualizarItemComTransacao(prop, contextoBdGravacao));
+            }
+
+            return retorno;
+        }
+
         public bool Atualizar(TprodutoCatalogo obj)
         {
             //TODO: NAO TEM COMO DESABILITAR TRACKING

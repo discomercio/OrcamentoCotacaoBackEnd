@@ -51,6 +51,47 @@ namespace ProdutoCatalogo
             return null;
         }
 
+        public TprodutoCatalogo AtualizarComTransacao(TprodutoCatalogo model, ContextoBdGravacao contextoBdGravacao)
+        {
+            var produtoCatalogo = (from c in contextoBdGravacao.TprodutoCatalogo
+                                   where c.Id == model.Id
+                                   select c).FirstOrDefault();
+            if (produtoCatalogo == null) return null;
+
+            produtoCatalogo.Nome = model.Nome == null ? "" : model.Nome;
+            produtoCatalogo.Descricao = model.Descricao;
+            produtoCatalogo.UsuarioEdicao = model.UsuarioEdicao;
+            produtoCatalogo.DtEdicao = DateTime.Now;
+            produtoCatalogo.Ativo = model.Ativo;
+
+            contextoBdGravacao.SaveChanges();
+
+            produtoCatalogo.campos = model.campos;
+            produtoCatalogo.imagens = model.imagens;
+            return produtoCatalogo;
+        }
+
+        public TprodutoCatalogoItem AtualizarItemComTransacao(TprodutoCatalogoItem model, 
+            ContextoBdGravacao contextoBdGravacao)
+        {
+            var tProdutoCatalogoItem = (from c in contextoBdGravacao.TprodutoCatalogoItem
+                                       where c.IdProdutoCatalogo == model.IdProdutoCatalogo &&
+                                             c.IdProdutoCatalogoPropriedade == model.IdProdutoCatalogoPropriedade
+                                       select c).FirstOrDefault();
+            if(tProdutoCatalogoItem == null) return null;
+
+            tProdutoCatalogoItem.IdProdutoCatalogo = model.IdProdutoCatalogo;
+            tProdutoCatalogoItem.IdProdutoCatalogoPropriedade = model.IdProdutoCatalogoPropriedade;
+            tProdutoCatalogoItem.IdProdutoCatalogoPropriedadeOpcao = model.IdProdutoCatalogoPropriedadeOpcao;
+            tProdutoCatalogoItem.Valor = model.Valor;
+            tProdutoCatalogoItem.Oculto = model.Oculto;
+
+            contextoBdGravacao.SaveChanges();
+
+            return tProdutoCatalogoItem;
+        }
+
+
         public bool Excluir(int id)
         {
             var saida = false;
@@ -385,14 +426,14 @@ namespace ProdutoCatalogo
             return produtoCatalogo;
         }
 
-        public TprodutoCatalogoItem CriarItensComTransacao(TprodutoCatalogoItem produtoCatalogoItem, 
+        public TprodutoCatalogoItem CriarItensComTransacao(TprodutoCatalogoItem produtoCatalogoItem,
             ContextoBdGravacao contextoBdGravacao)
         {
             var existe = (from c in contextoBdGravacao.TprodutoCatalogoItem
                           where c.IdProdutoCatalogo == produtoCatalogoItem.IdProdutoCatalogo &&
                                 c.IdProdutoCatalogoPropriedade == produtoCatalogoItem.IdProdutoCatalogoPropriedade
                           select c).FirstOrDefault();
-            if(existe == null)
+            if (existe == null)
             {
                 contextoBdGravacao.Add(produtoCatalogoItem);
                 contextoBdGravacao.SaveChanges();
@@ -506,7 +547,7 @@ namespace ProdutoCatalogo
             if (tipoImagem == null)
                 return null;
 
-            if(filtro.Id != 0)
+            if (filtro.Id != 0)
             {
                 tipoImagem = tipoImagem.Where(x => x.Id == filtro.Id);
             }

@@ -35,11 +35,6 @@ namespace OrcamentoCotacaoBusiness.Bll
             return _bll.Excluir(id);
         }
 
-        public bool Atualizar(TprodutoCatalogo produtoCatalogo)
-        {
-            return _bll.Atualizar(produtoCatalogo);
-        }
-
         public TprodutoCatalogo Detalhes(int id)
         {
             return _bll.Detalhes(id);
@@ -63,6 +58,47 @@ namespace OrcamentoCotacaoBusiness.Bll
         public bool SalvarArquivo(string nomeArquivo, int idProdutoCatalogo, int idTipo, string ordem)
         {
             return _bll.SalvarArquivo(nomeArquivo, idProdutoCatalogo, idTipo, ordem);
+        }
+
+        public async Task<string> Atualizar(TprodutoCatalogo produtoCatalogo, IFormFile arquivo, string caminho)
+        {
+            using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                try
+                {
+                    if (produtoCatalogo == null)
+                        return "Ops! Parece que não existe dados de produto para catálogo!";
+
+                    produtoCatalogo = _bll.AtualizarComTransacao(produtoCatalogo, dbGravacao);
+
+                    if (produtoCatalogo == null)
+                        return "Ops! Erro ao atualizar produto!";
+
+                    if (produtoCatalogo.campos == null || produtoCatalogo.campos.Count == 0)
+                        return "Ops! As propriedades do produto não pode estar vazio!";
+
+                    produtoCatalogo.campos = _bll.AtualizarItensComTransacao(produtoCatalogo.campos, produtoCatalogo.Id,
+                        dbGravacao);
+
+                    if (arquivo != null)
+                    {
+                        var retorno = await CriarImagemComTransacao(arquivo, produtoCatalogo.imagens, caminho, produtoCatalogo.Id,
+                            dbGravacao);
+                        if (!string.IsNullOrEmpty(retorno))
+                        {
+                            dbGravacao.transacao.Rollback();
+                            return retorno;
+                        }
+                    }
+
+                    dbGravacao.transacao.Commit();
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    return ex.Message;
+                }
+            }
         }
 
         public async Task<string> Criar(TprodutoCatalogo produtoCatalogo, string usuario_cadastro,
@@ -91,7 +127,10 @@ namespace OrcamentoCotacaoBusiness.Bll
                         var retorno = await CriarImagemComTransacao(arquivo, produtoCatalogo.imagens, caminho, produtoCatalogo.Id,
                             dbGravacao);
                         if (!string.IsNullOrEmpty(retorno))
+                        {
+                            dbGravacao.transacao.Rollback();
                             return retorno;
+                        }
                     }
 
                     dbGravacao.transacao.Commit();
@@ -105,7 +144,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
         }
 
-        public async Task<string> CriarImagemComTransacao(IFormFile arquivo, List<TprodutoCatalogoImagem> produtoCatalogoImagens, 
+        public async Task<string> CriarImagemComTransacao(IFormFile arquivo, List<TprodutoCatalogoImagem> produtoCatalogoImagens,
             string caminho, int idProdutoCatalogo, InfraBanco.ContextoBdGravacao dbGravacao)
         {
             if (arquivo == null)
