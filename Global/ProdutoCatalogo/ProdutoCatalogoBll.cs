@@ -146,6 +146,10 @@ namespace ProdutoCatalogo
 
             return retorno;
         }
+        public bool ExcluirImagemComTransacao(int idProduto, int idImagem, InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            return _data.ExcluirImagemComTransacao(idProduto, idImagem, contextoBdGravacao);
+        }
 
         public bool Atualizar(TprodutoCatalogo obj)
         {

@@ -117,12 +117,12 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpDelete("imagem")]
         public async Task<IActionResult> ExcluirImagem(int idProduto, int idImagem)
         {
-            var saida = _bll.ExcluirImagem(idProduto, idImagem);
+            var retorno = _bll.ExcluirImagem(idProduto, idImagem, _appSettings.Value.ImgCaminho);
 
-            if (saida)
-                return Ok(saida);
-            else
-                return NotFound();
+            if (retorno != null)
+                return BadRequest(new { message = retorno });
+
+            return Ok();
         }
 
         [HttpGet("{id}/itens")]
@@ -145,7 +145,7 @@ namespace OrcamentoCotacaoApi.Controllers
             var retorno = await _bll.Atualizar(tProduto, arquivo, _appSettings.Value.ImgCaminho);
 
             if (retorno != null)
-                return BadRequest(new { message = retorno});
+                return BadRequest(new { message = retorno });
 
             return Ok();
         }

@@ -40,9 +40,33 @@ namespace OrcamentoCotacaoBusiness.Bll
             return _bll.Detalhes(id);
         }
 
-        public bool ExcluirImagem(int idProduto, int idImagem)
+        public string ExcluirImagem(int idProduto, int idImagem, string caminho)
         {
-            return _bll.ExcluirImagem(idProduto, idImagem);
+            using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                try
+                {
+                    var tProdutoCatalogoImagem = ObterListaImagensPorId(idProduto);
+                    if (tProdutoCatalogoImagem.Count == 0) return "Ops! Imagem não encontrada!";
+
+                    if (!_bll.ExcluirImagemComTransacao(idProduto, idImagem, dbGravacao)) return "Falha ao excluir a imagem do produto!";
+
+                    var file = Path.Combine(caminho, tProdutoCatalogoImagem[0].Caminho);
+                    if (!File.Exists(file))
+                        return "Ops! O arquivo não foi encontrado no diretório!";
+
+                    File.Delete(file);
+
+                    if (File.Exists(file)) return "Falha ao deletar arquivo do diretório!";
+
+                    dbGravacao.transacao.Commit();
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+            }
         }
 
         public List<TprodutoCatalogoItem> ObterListaItens(int id)

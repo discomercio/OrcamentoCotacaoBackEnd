@@ -71,14 +71,14 @@ namespace ProdutoCatalogo
             return produtoCatalogo;
         }
 
-        public TprodutoCatalogoItem AtualizarItemComTransacao(TprodutoCatalogoItem model, 
+        public TprodutoCatalogoItem AtualizarItemComTransacao(TprodutoCatalogoItem model,
             ContextoBdGravacao contextoBdGravacao)
         {
             var tProdutoCatalogoItem = (from c in contextoBdGravacao.TprodutoCatalogoItem
-                                       where c.IdProdutoCatalogo == model.IdProdutoCatalogo &&
-                                             c.IdProdutoCatalogoPropriedade == model.IdProdutoCatalogoPropriedade
-                                       select c).FirstOrDefault();
-            if(tProdutoCatalogoItem == null) return null;
+                                        where c.IdProdutoCatalogo == model.IdProdutoCatalogo &&
+                                              c.IdProdutoCatalogoPropriedade == model.IdProdutoCatalogoPropriedade
+                                        select c).FirstOrDefault();
+            if (tProdutoCatalogoItem == null) return null;
 
             tProdutoCatalogoItem.IdProdutoCatalogo = model.IdProdutoCatalogo;
             tProdutoCatalogoItem.IdProdutoCatalogoPropriedade = model.IdProdutoCatalogoPropriedade;
@@ -145,6 +145,21 @@ namespace ProdutoCatalogo
             }
 
             return saida;
+        }
+
+        public bool ExcluirImagemComTransacao(int idProduto, int idImagem, ContextoBdGravacao contextoBdGravacao)
+        {
+            var tProdutoCatalogoImagem = (from c in contextoBdGravacao.TprodutoCatalogoImagem
+                                          where c.Id == idImagem &&
+                                                c.IdProdutoCatalogo == idProduto
+                                          select c).FirstOrDefault();
+
+            if (tProdutoCatalogoImagem == null) return false;
+
+            contextoBdGravacao.TprodutoCatalogoImagem.Remove(tProdutoCatalogoImagem);
+            contextoBdGravacao.SaveChanges();
+
+            return true;
         }
 
         public bool ExcluirImagemTmp()
