@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
@@ -185,11 +186,12 @@ namespace OrcamentoCotacaoApi.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Criar(TprodutoCatalogo produto)
+        [HttpPost("criar")]
+        public async Task<IActionResult> Criar(IFormFile arquivo, IFormCollection form)
         {
             var usuario = User.Identity.Name;
-            var retorno = await _bll.Criar(produto, usuario, _appSettings.Value.ImgCaminho);
+            var tProduto = JsonConvert.DeserializeObject<TprodutoCatalogo>(form["produto"]);
+            var retorno = await _bll.Criar(tProduto, usuario, arquivo, _appSettings.Value.ImgCaminho);
             if (retorno != null)
             {
                 return BadRequest(new { message = "Erro ao criar novo produto." });

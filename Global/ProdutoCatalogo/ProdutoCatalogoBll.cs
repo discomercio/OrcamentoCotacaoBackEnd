@@ -1,6 +1,7 @@
 ﻿using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ProdutoCatalogo
 {
@@ -85,6 +86,43 @@ namespace ProdutoCatalogo
             }
 
             return 0;
+        }
+
+        public TprodutoCatalogo CriarComTransacao(TprodutoCatalogo obj, string usuario_cadastro,
+            InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            //TODO: NAO TEM COMO DESABILITAR TRACKING
+            obj.UsuarioCadastro = usuario_cadastro;
+            var tProdCatalogo = _data.CriarComTransacao(obj, usuario_cadastro, contextoBdGravacao);
+
+            return tProdCatalogo;
+        }
+
+        public List<TprodutoCatalogoItem> CriarItensComTransacao(List<TprodutoCatalogoItem> propriedades,
+            int idProduto, InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            List<TprodutoCatalogoItem> retorno = new List<TprodutoCatalogoItem>();
+            foreach (var prop in propriedades)
+            {
+                prop.IdProdutoCatalogo = idProduto;
+                if (!string.IsNullOrEmpty(prop.Valor)) prop.IdProdutoCatalogoPropriedadeOpcao = null;
+                retorno.Add(_data.CriarItensComTransacao(prop, contextoBdGravacao));
+            }
+
+            return retorno;
+        }
+
+        public List<TprodutoCatalogoImagem> CriarImagensComTransacao(List<TprodutoCatalogoImagem> img, int idProduto,
+            InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            var tipo = _data.BuscarTipoImagemComTransacao(new TprodutoCatalogoImagemTipoFiltro() { Id = 1 }, contextoBdGravacao).FirstOrDefault();
+            if (tipo == null) return null;
+
+            img[0].IdProdutoCatalogo = idProduto;
+            img[0].IdTipoImagem = tipo.Id;
+            List<TprodutoCatalogoImagem> retorno = new List<TprodutoCatalogoImagem>();
+            retorno.Add(_data.CriarImagensComTransacao(img[0], contextoBdGravacao));
+            return retorno;
         }
 
         public bool Atualizar(TprodutoCatalogo obj)
