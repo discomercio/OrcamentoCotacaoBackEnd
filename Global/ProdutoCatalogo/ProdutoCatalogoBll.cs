@@ -1,6 +1,7 @@
 ﻿using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ProdutoCatalogo
 {
@@ -52,7 +53,7 @@ namespace ProdutoCatalogo
             return _data.SalvarArquivo(nomeArquivo, idProdutoCatalogo, idTipo, ordem);
         }
 
-        public bool Criar(TprodutoCatalogo obj, string usuario_cadastro)
+        public int Criar(TprodutoCatalogo obj, string usuario_cadastro)
         {
             //TODO: NAO TEM COMO DESABILITAR TRACKING
             var prodCatalogo = _data.Criar(obj, usuario_cadastro);
@@ -67,20 +68,87 @@ namespace ProdutoCatalogo
                     }
                 }
 
-                if (prodCatalogo.imagens?.Count > 0)
-                {
-                    foreach (var img in prodCatalogo.imagens)
-                    {
-                        _data.CriarImagens(img);
-                    }
-                }
+                //if (prodCatalogo.imagens?.Count > 0)
+                //{
+                //    var extensao = prodCatalogo.imagens[0].Caminho.Substring(prodCatalogo.imagens[0].Caminho.Length - 3, 3);
+                //    if (extensao == "png" || extensao == "jpeg" || extensao == "bmp" || extensao == "jpg")
+                //    {
+                //        foreach (var img in prodCatalogo.imagens)
+                //        {
+                //            _data.CriarImagens(img);
+                //        }
+                //    }
+                //}
 
-                _data.ExcluirImagemTmp();
+                //_data.ExcluirImagemTmp();
 
-                return true;
+                return prodCatalogo.Id;
             }
 
-            return false;
+            return 0;
+        }
+
+        public TprodutoCatalogo CriarComTransacao(TprodutoCatalogo obj, string usuario_cadastro,
+            InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            //TODO: NAO TEM COMO DESABILITAR TRACKING
+            obj.UsuarioCadastro = usuario_cadastro;
+            var tProdCatalogo = _data.CriarComTransacao(obj, usuario_cadastro, contextoBdGravacao);
+
+            return tProdCatalogo;
+        }
+
+        public List<TprodutoCatalogoItem> CriarItensComTransacao(List<TprodutoCatalogoItem> propriedades,
+            int idProduto, InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            List<TprodutoCatalogoItem> retorno = new List<TprodutoCatalogoItem>();
+            foreach (var prop in propriedades)
+            {
+                prop.IdProdutoCatalogo = idProduto;
+                if (!string.IsNullOrEmpty(prop.Valor)) prop.IdProdutoCatalogoPropriedadeOpcao = null;
+                retorno.Add(_data.CriarItensComTransacao(prop, contextoBdGravacao));
+            }
+
+            return retorno;
+        }
+
+        public List<TprodutoCatalogoImagem> CriarImagensComTransacao(List<TprodutoCatalogoImagem> img, int idProduto,
+            InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            var tipo = _data.BuscarTipoImagemComTransacao(new TprodutoCatalogoImagemTipoFiltro() { Id = 1 }, contextoBdGravacao).FirstOrDefault();
+            if (tipo == null) return null;
+
+            img[0].IdProdutoCatalogo = idProduto;
+            img[0].IdTipoImagem = tipo.Id;
+            List<TprodutoCatalogoImagem> retorno = new List<TprodutoCatalogoImagem>();
+            retorno.Add(_data.CriarImagensComTransacao(img[0], contextoBdGravacao));
+            return retorno;
+        }
+
+        public TprodutoCatalogo AtualizarComTransacao(TprodutoCatalogo model,
+            InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            var tProdutoCatalogo = _data.AtualizarComTransacao(model, contextoBdGravacao);
+            return tProdutoCatalogo;
+        }
+
+        public List<TprodutoCatalogoItem> AtualizarItensComTransacao(List<TprodutoCatalogoItem> propriedades,
+            int idProduto, InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            List<TprodutoCatalogoItem> retorno = new List<TprodutoCatalogoItem>();
+
+            foreach (var prop in propriedades)
+            {
+                prop.IdProdutoCatalogo = idProduto;
+                if (!string.IsNullOrEmpty(prop.Valor)) prop.IdProdutoCatalogoPropriedadeOpcao = null;
+                retorno.Add(_data.AtualizarItemComTransacao(prop, contextoBdGravacao));
+            }
+
+            return retorno;
+        }
+        public bool ExcluirImagemComTransacao(int idProduto, int idImagem, InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            return _data.ExcluirImagemComTransacao(idProduto, idImagem, contextoBdGravacao);
         }
 
         public bool Atualizar(TprodutoCatalogo obj)
