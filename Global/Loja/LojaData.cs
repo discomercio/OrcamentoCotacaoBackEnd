@@ -94,6 +94,7 @@ namespace Loja
                             Loja = l.Loja,
                             CorCabecalho = db.TcfgUnidadeNegocioParametro.FirstOrDefault(p => n.Id == p.IdCfgUnidadeNegocio && p.IdCfgParametro == 4).Valor,
                             ImagemLogotipo = db.TcfgUnidadeNegocioParametro.FirstOrDefault(p => n.Id == p.IdCfgUnidadeNegocio && p.IdCfgParametro == 3).Valor,
+                            Titulo = db.TcfgUnidadeNegocioParametro.FirstOrDefault(p => n.Id == p.IdCfgUnidadeNegocio && p.IdCfgParametro == 32).Valor,
                         })
                        .FirstOrDefault();
             }
