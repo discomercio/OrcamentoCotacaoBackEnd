@@ -12,5 +12,8 @@ namespace Loja.Dto
 
         [JsonProperty("corCabecalho")]
         public string CorCabecalho { get; set; }
+
+        [JsonProperty("titulo")]
+        public string Titulo { get; set; }
     }
 }
