@@ -10,6 +10,7 @@ using OrcamentistaEIndicadorVendedor;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
+using Prepedido.Dto;
 using System;
 using System.Threading.Tasks;
 using Usuario;
@@ -125,6 +126,32 @@ namespace OrcamentoCotacaoApi.Controllers
             catch 
             {
                 throw;
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("AtualzarSenha")]
+        public async Task<ActionResult<object>> AtualzarSenha(AtualizarSenhaRequestViewModel request)
+        {
+            var response = new AtualizarSenhaResponseViewModel();
+
+            try
+            {
+                response.MensagemRetorno = await _acessoBll.AtualizarSenhaAsync(new AtualizarSenhaDto()
+                {
+                    TipoUsuario = request.TipoUsuario,
+                    Apelido = request.Apelido,
+                    Senha = request.Senha,
+                    NovaSenha = request.NovaSenha,
+                    ConfirmacaoSenha = request.ConfirmacaoSenha
+                });
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

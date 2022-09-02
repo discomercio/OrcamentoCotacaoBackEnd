@@ -20,7 +20,11 @@ namespace InfraBanco.Modelos
         [MaxLength(255)]
         [Column("Email")]
         public string Email { get; set; }
-        
+
+        [MaxLength(100)]
+        [Column("Senha")]
+        public string Senha { get; set; }
+
         [Column("datastamp")]
         [MaxLength(32)]
         public string Datastamp { get; set; }
