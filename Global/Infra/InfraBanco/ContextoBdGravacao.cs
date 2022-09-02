@@ -152,6 +152,7 @@ namespace InfraBanco
         public DbSet<TprazoPagtoVisanet> TprazoPagtoVisanet { get => contexto.TprazoPagtoVisanet; }
         public DbSet<TcfgPagtoFormaStatus> TcfgPagtoFormaStatus { get => contexto.TcfgPagtoFormaStatus; }
         public DbSet<TorcamentoCotacaoEmailQueue> TorcamentoCotacaoEmailQueue { get => contexto.TorcamentoCotacaoEmailQueue; }
+        public DbSet<TorcamentoCotacaoEmail> TorcamentoCotacaoEmail { get => contexto.TorcamentoCotacaoEmail; }
         public DbSet<TpedidoAnaliseEnderecoConfrontacao> TpedidoAnaliseConfrontacao { get => contexto.TpedidoAnaliseConfrontacao; }
         public DbSet<Tpedido> Tpedido { get => contexto.Tpedido; }
         public DbSet<TfinControle> TfinControle { get => contexto.TfinControle; }

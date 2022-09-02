@@ -286,6 +286,7 @@ namespace InfraBanco
         public DbSet<TcfgOrcamentoCotacaoEmailTemplate> TcfgOrcamentoCotacaoEmailTemplate { get; set; }
         public DbSet<TorcamentoCotacaoOpcao> TorcamentoCotacaoOpcao { get; set; }
         public DbSet<TorcamentoCotacaoEmailQueue> TorcamentoCotacaoEmailQueue { get; set; }
+        public DbSet<TorcamentoCotacaoEmail> TorcamentoCotacaoEmail { get; set; }
         public DbSet<TorcamentoCotacaoOpcaoPagto> TorcamentoCotacaoOpcaoPagto { get; set; }
         public DbSet<TorcamentoCotacaoItemUnificado> TorcamentoCotacaoItemUnificado { get; set; }
         public DbSet<TorcamentoCotacaoOpcaoItemAtomicoCustoFin> TorcamentoCotacaoOpcaoItemAtomicoCustoFin { get; set; }

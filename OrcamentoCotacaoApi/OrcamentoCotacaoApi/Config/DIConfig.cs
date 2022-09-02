@@ -75,6 +75,9 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll, OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll>();
             services.AddTransient<OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueData, OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueData>();
 
+            services.AddTransient<OrcamentoCotacaoEmail.OrcamentoCotacaoEmailBll, OrcamentoCotacaoEmail.OrcamentoCotacaoEmailBll>();
+            services.AddTransient<OrcamentoCotacaoEmail.OrcamentoCotacaoEmailData, OrcamentoCotacaoEmail.OrcamentoCotacaoEmailData>();
+
             services.AddTransient<OrcamentoCotacaoLink.OrcamentoCotacaoLinkBll, OrcamentoCotacaoLink.OrcamentoCotacaoLinkBll>();
             services.AddTransient<OrcamentoCotacaoLink.OrcamentoCotacaoLinkData, OrcamentoCotacaoLink.OrcamentoCotacaoLinkData>();
 

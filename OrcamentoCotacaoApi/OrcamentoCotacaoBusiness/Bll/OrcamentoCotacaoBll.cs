@@ -38,6 +38,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly InfraBanco.ContextoBdProvider _contextoBdProvider;
         private readonly OrcamentoCotacaoOpcaoBll _orcamentoCotacaoOpcaoBll;
         private readonly OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll _orcamentoCotacaoEmailQueueBll;
+        private readonly OrcamentoCotacaoEmail.OrcamentoCotacaoEmailBll _orcamentoCotacaoEmailBll;
         private readonly OrcamentoCotacaoLink.OrcamentoCotacaoLinkBll _orcamentoCotacaoLinkBll;
         private readonly LojaBll _lojaBll;
         private readonly CfgUnidadeNegocioBll _cfgUnidadeNegocioBll;
@@ -59,6 +60,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             InfraBanco.ContextoBdProvider contextoBdProvider,
             OrcamentoCotacaoOpcaoBll orcamentoCotacaoOpcaoBll,
             OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll orcamentoCotacaoEmailQueueBll,
+            OrcamentoCotacaoEmail.OrcamentoCotacaoEmailBll orcamentoCotacaoEmailBll,
             LojaBll lojaBll,
             CfgUnidadeNegocioBll cfgUnidadeNegocioBll,
             CfgUnidadeNegocioParametroBll cfgUnidadeNegocioParametroBll,
@@ -80,6 +82,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             _orcamentistaEIndicadorVendedorBll = orcamentistaEIndicadorVendedorBll;
             _appSettings = appSettings.Value;
             _orcamentoCotacaoEmailQueueBll = orcamentoCotacaoEmailQueueBll;
+            _orcamentoCotacaoEmailBll = orcamentoCotacaoEmailBll;
             _orcamentoCotacaoLinkBll = orcamentoCotacaoLinkBll;
             _lojaBll = lojaBll;
             _cfgUnidadeNegocioBll = cfgUnidadeNegocioBll;
@@ -454,7 +457,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     var guid = Guid.NewGuid();
 
                     AdicionarOrcamentoCotacaoLink(tOrcamentoCotacao, guid, dbGravacao);
-                    AdicionarOrcamentoCotacaoEmailQueue(orcamento, guid, dbGravacao);
+                    AdicionarOrcamentoCotacaoEmailQueue(orcamento, guid, tOrcamentoCotacao.Id, dbGravacao);
 
                     dbGravacao.transacao.Commit();
 
@@ -647,7 +650,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         }
 
-        private void AdicionarOrcamentoCotacaoEmailQueue(OrcamentoRequestViewModel orcamento, Guid guid, 
+        private void AdicionarOrcamentoCotacaoEmailQueue(OrcamentoRequestViewModel orcamento, Guid guid, int idOrcamentoCotacao,
             ContextoBdGravacao contextoBdGravacao)
         {
             
@@ -700,12 +703,20 @@ namespace OrcamentoCotacaoBusiness.Bll
                         logoEmpresa
                     };
 
-            if (!_orcamentoCotacaoEmailQueueBll.InserirQueueComTemplateEHTMLComTransacao(Int32.Parse(template), 
-                orcamentoCotacaoEmailQueueModel, tagHtml, contextoBdGravacao))
-                
+            var torcamentoCotacaoEmailQueue = _orcamentoCotacaoEmailQueueBll.InserirQueueComTemplateEHTMLComTransacao(Int32.Parse(template),
+                orcamentoCotacaoEmailQueueModel, tagHtml, contextoBdGravacao);
+
+            if (torcamentoCotacaoEmailQueue.Id == 0)
             {
                 throw new ArgumentException("Não foi possível cadastrar o orçamento. Problema no envio de e-mail!");
-            }                
+            }
+            else
+            {
+                TorcamentoCotacaoEmail orcamentoCotacaoEmailModel = new InfraBanco.Modelos.TorcamentoCotacaoEmail();
+                orcamentoCotacaoEmailModel.IdOrcamentoCotacao = idOrcamentoCotacao;
+                orcamentoCotacaoEmailModel.IdOrcamentoCotacaoEmailQueue = torcamentoCotacaoEmailQueue.Id;
+                var torcamentoCotacaoEmail = _orcamentoCotacaoEmailBll.InserirComTransacao(orcamentoCotacaoEmailModel, contextoBdGravacao);
+            }
 
         }
 
