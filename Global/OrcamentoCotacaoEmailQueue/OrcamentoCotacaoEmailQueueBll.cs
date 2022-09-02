@@ -47,7 +47,7 @@ namespace OrcamentoCotacaoEmailQueue
             }
         }
 
-        public bool InserirQueueComTemplateEHTMLComTransacao(int IdCfgOrcamentoCotacaoEmailTemplates,
+        public TorcamentoCotacaoEmailQueue InserirQueueComTemplateEHTMLComTransacao(int IdCfgOrcamentoCotacaoEmailTemplates,
             TorcamentoCotacaoEmailQueue orcamentoCotacaoEmailQueue, string[] tagHtml,
             ContextoBdGravacao contextoBdGravacao)
         {
@@ -65,13 +65,14 @@ namespace OrcamentoCotacaoEmailQueue
                 emailTemplateBody = emailTemplateBody.Replace("{URL_Base_Front}", tagHtml[4]);
                 emailTemplateBody = emailTemplateBody.Replace("{LogoEmpresa}", tagHtml[5]);
                 orcamentoCotacaoEmailQueue.Body = emailTemplateBody;
-                _data.InserirComTransacao(orcamentoCotacaoEmailQueue, contextoBdGravacao);
+                
+                var data = _data.InserirComTransacao(orcamentoCotacaoEmailQueue, contextoBdGravacao);
 
-                return true;
+                return data;
             }
             catch (Exception)
             {
-                return false;
+                throw new ArgumentException("Não foi possível cadastrar o orçamento. Problema no envio de e-mail!");
             }
         }
     }

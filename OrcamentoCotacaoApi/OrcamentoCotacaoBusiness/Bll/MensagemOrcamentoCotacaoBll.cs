@@ -121,7 +121,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             if (!_orcamentoCotacaoEmailQueueBll.InserirQueueComTemplateEHTML(Int32.Parse(template), orcamentoCotacaoEmailQueueModel, tagHtml))
             {
-                throw new ArgumentException("Não foi possível enviar a mensagem. Problema no envio de e-mail!");
+                throw new ArgumentException("Não foi possível enviar a mensagem. Problema ao enviar para fila de e-mail [Mensagem]!");
             }
 
         }
