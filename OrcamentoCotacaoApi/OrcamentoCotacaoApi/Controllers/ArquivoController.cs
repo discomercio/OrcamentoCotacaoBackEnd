@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static OrcamentoCotacaoBusiness.Enums.Enums;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -138,6 +139,9 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost("Upload")]
         public async Task<IActionResult> Upload(IFormFile arquivo, [FromForm] string idPai, [FromForm] string descricao)
         {
+            if (!User.ValidaPermissao((int)ePermissao.ArquivosDownloadIncluirEditarPastasArquivos))
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
             Guid idArquivo = Guid.NewGuid();
 
             if (!arquivo.ContentType.Equals("application/pdf") && !arquivo.ContentType.Equals("pdf"))
@@ -185,6 +189,9 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost("CriarPasta")]
         public IActionResult CriarPasta(string nome, string idPai)
         {
+            if (!User.ValidaPermissao((int)ePermissao.ArquivosDownloadIncluirEditarPastasArquivos))
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
             Guid id = Guid.NewGuid();
 
             var saida = arquivoBll.Inserir(new TorcamentoCotacaoArquivos()
@@ -207,6 +214,9 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPut("Editar")]
         public IActionResult Editar(string id, [FromQuery] string nome, [FromQuery] string descricao)
         {
+            if (!User.ValidaPermissao((int)ePermissao.ArquivosDownloadIncluirEditarPastasArquivos))
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
             var retorno = arquivoBll.Editar(new TorcamentoCotacaoArquivos
             {
                 Id = Guid.Parse(id),
@@ -230,6 +240,9 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost("Excluir/{id}")]
         public IActionResult Excluir(string id)
         {
+            if (!User.ValidaPermissao((int)ePermissao.ArquivosDownloadIncluirEditarPastasArquivos))
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
             var retorno = arquivoBll.Excluir(new TorcamentoCotacaoArquivos
             {
                 Id = Guid.Parse(id)

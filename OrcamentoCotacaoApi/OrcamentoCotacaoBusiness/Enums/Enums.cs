@@ -14,6 +14,7 @@ namespace OrcamentoCotacaoBusiness.Enums
             SelecionarQualquerIndicadorDaLoja = 100400,
             CadastroVendedorParceiroIncluirEditar = 100320,
             ProrrogarVencimentoOrcamento = 100500,
+            ArquivosDownloadIncluirEditarPastasArquivos = 102800
         }
     }
 }
