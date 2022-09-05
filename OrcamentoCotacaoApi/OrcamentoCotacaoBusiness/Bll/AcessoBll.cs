@@ -2,10 +2,12 @@
 using InfraBanco.Modelos;
 using InfraIdentity;
 using Microsoft.EntityFrameworkCore;
+using Prepedido.Dto;
 using PrepedidoBusiness.Dto.Acesso;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UtilsGlobais;
 
@@ -356,6 +358,187 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             return retorno;
+        }
+
+        public async Task<string> AtualizarSenhaAsync(AtualizarSenhaDto atualizarSenhaDto)
+        {
+            if (string.IsNullOrEmpty(atualizarSenhaDto.Apelido)
+               || string.IsNullOrEmpty(atualizarSenhaDto.Senha)
+               || string.IsNullOrEmpty(atualizarSenhaDto.NovaSenha)
+               || string.IsNullOrEmpty(atualizarSenhaDto.ConfirmacaoSenha)
+               )
+            {
+                return "Favor preencher todos os campos.";
+            }
+
+            var senha = Util.decodificaDado(atualizarSenhaDto.Senha, Constantes.FATOR_CRIPTO).ToUpper().Trim();
+            var senha_nova = Util.decodificaDado(atualizarSenhaDto.NovaSenha, Constantes.FATOR_CRIPTO).Trim();
+            var senha_nova_confirma = Util.decodificaDado(atualizarSenhaDto.ConfirmacaoSenha, Constantes.FATOR_CRIPTO).Trim();
+
+            var atualizarSenha = ValidaAtualizacaoSenha(
+                atualizarSenhaDto.Apelido,
+                senha,
+                senha_nova,
+                senha_nova_confirma);
+
+            if (atualizarSenha.Length > 0)
+            {
+                return atualizarSenha;
+            }
+
+            var senha_codificada = Util.codificaDado(senha_nova, false);
+
+            if (string.IsNullOrEmpty(senha_codificada))
+                throw new ArgumentException("Falha na codificação de senha.");
+
+            if (atualizarSenhaDto.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
+            {
+                await AtualizarSenhaVendedorAsync(atualizarSenhaDto.Apelido, senha_codificada);
+            }
+
+            if (atualizarSenhaDto.TipoUsuario == (int)Constantes.TipoUsuario.PARCEIRO)
+            {
+                await AtualizarSenhaParceiroAsync(atualizarSenhaDto.Apelido, senha_codificada);
+            }
+
+            if (atualizarSenhaDto.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
+            {
+                await AtualizarSenhaVendedoParceiro(atualizarSenhaDto.Apelido, senha_codificada);
+            }
+
+            return "Alteração de senha realizada com sucesso.";
+        }
+
+        private string ValidaAtualizacaoSenha(
+            string usuario,
+            string senha,
+            string senha_nova,
+            string senha_nova_confirma)
+        {
+            var regex = new Regex(@"^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]{8,}$");
+
+            if (!regex.IsMatch(senha_nova))
+            {
+                return "A senha deve conter pelo menos 8 caracteres entre letras e dígitos.";
+            }
+
+            if (!regex.IsMatch(senha_nova_confirma))
+            {
+                return "A confirmação da nova senha deve conter pelo menos 8 caracteres entre letras e dígitos.";
+            }
+
+            if (senha_nova != senha_nova_confirma)
+            {
+                return "A confirmação da nova senha está incorreta.";
+            }
+
+            if (senha == senha_nova)
+            {
+                return "A nova senha deve ser diferente da senha atual.";
+            }
+
+            if (senha_nova == usuario.ToUpper().Trim())
+            {
+                return "A nova senha não pode ser igual ao identificador do usuário!";
+            }
+
+            return string.Empty;
+        }
+
+        private async Task AtualizarSenhaVendedorAsync(string apelido, string senha)
+        {
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTISTA_E_INDICADOR))
+            {
+                var usuario = await (from u in dbgravacao.Tusuario
+                                     where u.Usuario == apelido.ToUpper().Trim()
+                                     select u).FirstOrDefaultAsync();
+
+                usuario.Senha = Util.GerarSenhaAleatoria();
+                usuario.Datastamp = senha;
+                usuario.Dt_Ult_Alteracao_Senha = DateTime.Now.Date;
+                usuario.Dt_Ult_Atualizacao = DateTime.Now;
+
+                var novoLog = Util.GravaLog(
+                                            dbgravacao,
+                                            apelido,
+                                            usuario.Loja,
+                                            "",
+                                            "",
+                                            Constantes.OP_LOG_SENHA_ALTERACAO,
+                                            "SENHA ALTERADA PELO USUARIO");
+
+                if (novoLog)
+                {
+                    dbgravacao.Update(usuario);
+                    await dbgravacao.SaveChangesAsync();
+
+                    dbgravacao.transacao.Commit();
+                }
+            }
+        }
+
+        private async Task AtualizarSenhaParceiroAsync(string apelido, string senha)
+        {
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTISTA_E_INDICADOR))
+            {
+                var orcamentista = await (from u in dbgravacao.TorcamentistaEindicador
+                                          where u.Apelido == apelido.ToUpper().Trim()
+                                          select u).FirstOrDefaultAsync();
+
+                orcamentista.Senha = Util.GerarSenhaAleatoria();
+                orcamentista.Datastamp = senha;
+                orcamentista.Dt_Ult_Alteracao_Senha = DateTime.Now.Date;
+                orcamentista.Dt_Ult_Atualizacao = DateTime.Now;
+
+                var novoLog = Util.GravaLog(
+                                            dbgravacao,
+                                            apelido,
+                                            orcamentista.Loja,
+                                            "",
+                                            "",
+                                            Constantes.OP_LOG_SENHA_ALTERACAO,
+                                            "SENHA ALTERADA PELO ORÇAMENTISTA");
+
+                if (novoLog)
+                {
+                    dbgravacao.Update(orcamentista);
+                    await dbgravacao.SaveChangesAsync();
+
+                    dbgravacao.transacao.Commit();
+                }
+            }
+        }
+
+        private async Task AtualizarSenhaVendedoParceiro(string apelido, string senha)
+        {
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTISTA_E_INDICADOR))
+            {
+                var vendedorParceiro = await (from u in dbgravacao.TorcamentistaEIndicadorVendedor
+                                              where u.Nome == apelido.ToUpper().Trim()
+                                              select u).FirstOrDefaultAsync();
+
+                vendedorParceiro.Senha = Util.GerarSenhaAleatoria();
+                vendedorParceiro.Datastamp = senha;
+                vendedorParceiro.DataUltimaAlteracao = DateTime.Now;
+                vendedorParceiro.DataUltimaAlteracaoSenha = DateTime.Now;
+
+                var novoLog = Util.GravaLog(
+                                            dbgravacao,
+                                            apelido,
+                                            vendedorParceiro.Loja,
+                                            "",
+                                            "",
+                                            Constantes.OP_LOG_SENHA_ALTERACAO,
+                                            "SENHA ALTERADA PELO VENDEDOR DO PARCEIRO");
+
+                if (novoLog)
+                {
+                    dbgravacao.Update(vendedorParceiro);
+                    await dbgravacao.SaveChangesAsync();
+
+                    dbgravacao.transacao.Commit();
+                }
+            }
         }
     }
 }
