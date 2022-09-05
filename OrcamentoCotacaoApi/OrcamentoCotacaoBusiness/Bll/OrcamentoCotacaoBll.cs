@@ -471,6 +471,39 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
         }
 
+        public MensagemDto ReenviarOrcamentoCotacao(int idOrcamentoCotacao)
+        {
+
+            using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                try
+                {
+                    var tOrcamento = _orcamentoCotacaoBll.PorFiltroComTransacao(new TorcamentoCotacaoFiltro() { Id = idOrcamentoCotacao }, dbGravacao).FirstOrDefault();
+
+                    var guid = Guid.NewGuid();
+
+                    AdicionarOrcamentoCotacaoLink(tOrcamento, guid, dbGravacao);
+                    AdicionarOrcamentoCotacaoEmailQueue(tOrcamento, guid, idOrcamentoCotacao, dbGravacao);
+
+                    dbGravacao.transacao.Commit();
+
+                    return new MensagemDto
+                    {
+                        tipo = "INFO",
+                        mensagem = "Reenviado com Sucesso"
+                    };
+                 
+                }
+                catch
+                {
+                    dbGravacao.transacao.Rollback();
+                    throw new ArgumentException("Falha ao gravar orçamento!");
+                }
+
+                return null;
+            }
+        }
+
         public void AtualizarOrcamentoOpcao(OrcamentoOpcaoResponseViewModel opcao, UsuarioLogin usuarioLogado)
         {
             var orcamento = PorFiltro(opcao.IdOrcamentoCotacao, usuarioLogado);
@@ -696,6 +729,76 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             string[] tagHtml = new string[] {
                         orcamento.ClienteOrcamentoCotacaoDto.NomeCliente,
+                        nomeEmpresa,
+                        guid.ToString(),
+                        orcamento.Id.ToString(),
+                        urlBaseFront,
+                        logoEmpresa
+                    };
+
+            var torcamentoCotacaoEmailQueue = _orcamentoCotacaoEmailQueueBll.InserirQueueComTemplateEHTMLComTransacao(Int32.Parse(template),
+                orcamentoCotacaoEmailQueueModel, tagHtml, contextoBdGravacao);
+
+            if (torcamentoCotacaoEmailQueue.Id == 0)
+            {
+                throw new ArgumentException("Não foi possível cadastrar o orçamento. Problema no envio de e-mail!");
+            }
+            else
+            {
+                TorcamentoCotacaoEmail orcamentoCotacaoEmailModel = new InfraBanco.Modelos.TorcamentoCotacaoEmail();
+                orcamentoCotacaoEmailModel.IdOrcamentoCotacao = idOrcamentoCotacao;
+                orcamentoCotacaoEmailModel.IdOrcamentoCotacaoEmailQueue = torcamentoCotacaoEmailQueue.Id;
+                var torcamentoCotacaoEmail = _orcamentoCotacaoEmailBll.InserirComTransacao(orcamentoCotacaoEmailModel, contextoBdGravacao);
+            }
+
+        }
+
+        private void AdicionarOrcamentoCotacaoEmailQueue(TorcamentoCotacao orcamento, Guid guid, int idOrcamentoCotacao,
+                    ContextoBdGravacao contextoBdGravacao)
+        {
+
+            TorcamentoCotacaoEmailQueue orcamentoCotacaoEmailQueueModel = new InfraBanco.Modelos.TorcamentoCotacaoEmailQueue();
+
+            var loja = _lojaBll.PorFiltroComTransacao(new InfraBanco.Modelos.Filtros.TlojaFiltro() { Loja = orcamento.Loja }, contextoBdGravacao);
+            var tcfgUnidadeNegocio = _cfgUnidadeNegocioBll.PorFiltroComTransacao(new TcfgUnidadeNegocioFiltro() { Sigla = loja[0].Unidade_Negocio }, contextoBdGravacao);
+            var tcfgUnidadeNegocioParametros = _cfgUnidadeNegocioParametroBll.PorFiltroComTransacao(new TcfgUnidadeNegocioParametroFiltro() { IdCfgUnidadeNegocio = tcfgUnidadeNegocio.FirstOrDefault().Id }, contextoBdGravacao);
+            var nomeEmpresa = "";
+            var logoEmpresa = "";
+            var urlBaseFront = "";
+            var template = "";
+
+            foreach (var item in tcfgUnidadeNegocioParametros)
+            {
+                switch (item.IdCfgParametro)
+                {
+
+                    case 2:
+                        urlBaseFront = item.Valor;
+                        break;
+                    case 5:
+                        orcamentoCotacaoEmailQueueModel.From = item.Valor;
+                        break;
+                    case 6:
+                        orcamentoCotacaoEmailQueueModel.FromDisplayName = item.Valor;
+                        nomeEmpresa = item.Valor;
+                        break;
+                    case 34:
+                        logoEmpresa = item.Valor;
+                        break;
+                    case 35:
+                        template = item.Valor;
+                        break;
+
+                }
+            }
+
+            orcamentoCotacaoEmailQueueModel.IdCfgUnidadeNegocio = tcfgUnidadeNegocioParametros[0].IdCfgUnidadeNegocio;
+            orcamentoCotacaoEmailQueueModel.To = orcamento.Email;
+            orcamentoCotacaoEmailQueueModel.Cc = "";
+            orcamentoCotacaoEmailQueueModel.Bcc = "";
+
+            string[] tagHtml = new string[] {
+                        orcamento.NomeCliente,
                         nomeEmpresa,
                         guid.ToString(),
                         orcamento.Id.ToString(),
