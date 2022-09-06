@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
+using OrcamentoCotacaoBusiness.Models.Request;
 using Produto;
 using System;
 using System.IO;
@@ -115,12 +117,12 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpDelete("imagem")]
         public async Task<IActionResult> ExcluirImagem(int idProduto, int idImagem)
         {
-            var saida = _bll.ExcluirImagem(idProduto, idImagem);
+            var retorno = _bll.ExcluirImagem(idProduto, idImagem, _appSettings.Value.ImgCaminho);
 
-            if (saida)
-                return Ok(saida);
-            else
-                return NotFound();
+            if (retorno != null)
+                return BadRequest(new { message = retorno });
+
+            return Ok();
         }
 
         [HttpGet("{id}/itens")]
@@ -135,16 +137,17 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Atualizar(TprodutoCatalogo produto)
+        public async Task<IActionResult> Atualizar(IFormFile arquivo, IFormCollection form)
         {
-            produto.UsuarioEdicao = LoggedUser.Apelido;
+            var tProduto = JsonConvert.DeserializeObject<TprodutoCatalogo>(form["produto"]);
+            tProduto.UsuarioEdicao = LoggedUser.Apelido;
 
-           var saida = _bll.Atualizar(produto);
+            var retorno = await _bll.Atualizar(tProduto, arquivo, _appSettings.Value.ImgCaminho);
 
-            if (saida)
-                return Ok(true);
-            else
-                return BadRequest();
+            if (retorno != null)
+                return BadRequest(new { message = retorno });
+
+            return Ok();
         }
 
         [HttpPost("imagem")]
@@ -152,7 +155,7 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             try
             {
-                if (arquivo.ContentType.Contains("png") || arquivo.ContentType.Contains("jpeg") || arquivo.ContentType.Contains("bmp"))
+                if (arquivo.ContentType.Contains("png") || arquivo.ContentType.Contains("jpeg") || arquivo.ContentType.Contains("bmp") || arquivo.ContentType.Contains("jpg"))
                 {
                     Guid idArquivo = Guid.NewGuid();
                     var extensao = arquivo.FileName.Substring(arquivo.FileName.Length - 3, 3);
@@ -184,35 +187,20 @@ namespace OrcamentoCotacaoApi.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Criar(TprodutoCatalogo produtoCatalogo)
+        [HttpPost("criar")]
+        public async Task<IActionResult> Criar(IFormFile arquivo, IFormCollection form)
         {
-            try
+            var usuario = LoggedUser.Apelido;
+            var tProduto = JsonConvert.DeserializeObject<TprodutoCatalogo>(form["produto"]);
+            var retorno = await _bll.Criar(tProduto, usuario, arquivo, _appSettings.Value.ImgCaminho);
+            if (retorno != null)
             {
-                var usuario = User.Identity.Name;
-                var saida = _bll.Criar(produtoCatalogo, usuario);
+                return BadRequest(new { message = retorno });
+            }
 
-                if (saida)
-                {
-                    return Ok(new
-                    {
-                        message = "Produto criado com sucesso."
-                    });
-                }
-                else
-                {
-                    return BadRequest(new
-                    {
-                        message = "Erro ao criar novo produto."
-                    });
-                }
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            return Ok(new { message = "Produto criado com sucesso." });
         }
-        
+
         [HttpGet("listar-produtos-propriedades/{propriedadeOculta}&{propriedadeOcultaItem}")]
         public async Task<IActionResult> ListarProdutosPropriedadesAtivos(bool propriedadeOculta, bool propriedadeOcultaItem)
         {

@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ClassesBase\ClassesBase.csproj" />
     <ProjectReference Include="..\FormaPagamento\FormaPagamento.csproj" />
+    <ProjectReference Include="..\Loja\Loja.csproj" />
     <ProjectReference Include="..\Prepedido\Prepedido.csproj" />
   </ItemGroup>
 

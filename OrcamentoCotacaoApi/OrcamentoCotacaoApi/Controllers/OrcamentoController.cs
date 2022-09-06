@@ -4,6 +4,7 @@ using InfraIdentity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
@@ -11,6 +12,7 @@ using System;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static OrcamentoCotacaoBusiness.Enums.Enums;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -114,6 +116,9 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost("{id}/prorrogar")]
         public IActionResult ProrrogarOrcamento(int id, string lojaLogada)
         {
+            if(!User.ValidaPermissao((int)ePermissao.ProrrogarVencimentoOrcamento))
+                return BadRequest(new {message = "Não encontramos a permissão necessária para realizar atividade!" });
+
             return Ok(_orcamentoBll.ProrrogarOrcamento(id, LoggedUser.Id, lojaLogada, LoggedUser.TipoUsuario));
         }
 

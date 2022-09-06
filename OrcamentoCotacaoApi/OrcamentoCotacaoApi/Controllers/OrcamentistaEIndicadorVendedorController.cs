@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static OrcamentoCotacaoBusiness.Enums.Enums;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -43,7 +44,7 @@ namespace OrcamentoCotacaoApi.Controllers
             var torcamentista = orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = parceiro, acessoHabilitado = 1 });
             var usuarios = _orcamentistaEindicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { IdIndicador = torcamentista.IdIndicador });
 
-            if(usuarios != null) usuarios = usuarios.OrderBy(x => x.Nome).ToList();
+            if (usuarios != null) usuarios = usuarios.OrderBy(x => x.Nome).ToList();
 
             return _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(usuarios);
         }
@@ -75,19 +76,19 @@ namespace OrcamentoCotacaoApi.Controllers
 
         [HttpPost]
         [Route("vendedores-parceiros")]
-        public async Task<ActionResult<OrcamentistaEIndicadorVendedorResponseViewModel>> Post(UsuarioRequestViewModel model)
+        public IActionResult Post(UsuarioRequestViewModel model)
         {
             _logger.LogInformation("Inserindo vendedor parceiro");
-            if (User.GetTipoUsuario() != InfraBanco.Constantes.Constantes.TipoUsuario.PARCEIRO)
-            {
-                return Unauthorized("Somente usuários do tipo parceiro");
-            }
+
+            if (!User.ValidaPermissao((int)ePermissao.CadastroVendedorParceiroIncluirEditar))
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
             var objOrcamentistaEIndicadorVendedor = _mapper.Map<TorcamentistaEIndicadorVendedor>(model);
             try
             {
                 var result = _orcamentistaEindicadorVendedorBll.Inserir(objOrcamentistaEIndicadorVendedor, model.Senha, User.GetParceiro(), User.GetVendedor());
 
-                return _mapper.Map<OrcamentistaEIndicadorVendedorResponseViewModel>(result);
+                return Ok(_mapper.Map<OrcamentistaEIndicadorVendedorResponseViewModel>(result));
             }
             catch (ArgumentException e)
             {
@@ -97,16 +98,15 @@ namespace OrcamentoCotacaoApi.Controllers
 
         [HttpPut]
         [Route("vendedores-parceiros")]
-        public async Task<OrcamentistaEIndicadorVendedorResponseViewModel> Put(UsuarioRequestViewModel model)
+        public IActionResult Put(UsuarioRequestViewModel model)
         {
             _logger.LogInformation("Altera vendedor parceiro");
-            if (User.GetTipoUsuario() != InfraBanco.Constantes.Constantes.TipoUsuario.PARCEIRO)
-            {
-                this.Unauthorized("Somente usuários do tipo parceiro");
-            }
+            if (!User.ValidaPermissao((int)ePermissao.CadastroVendedorParceiroIncluirEditar))
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+            
             var objOrcamentistaEIndicadorVendedor = _mapper.Map<TorcamentistaEIndicadorVendedor>(model);
             var result = _orcamentistaEindicadorVendedorBll.Atualizar(objOrcamentistaEIndicadorVendedor, model.Senha, User.GetParceiro(), User.GetVendedor());
-            return _mapper.Map<OrcamentistaEIndicadorVendedorResponseViewModel>(result); ;
+            return Ok(result);
         }
     }
 }

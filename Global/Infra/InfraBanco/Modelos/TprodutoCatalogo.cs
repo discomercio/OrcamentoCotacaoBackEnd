@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
 
 namespace InfraBanco.Modelos
 {
@@ -23,5 +24,6 @@ namespace InfraBanco.Modelos
 
         public List<TprodutoCatalogoItem> campos { get; set; }
         public List<TprodutoCatalogoImagem> imagens { get; set; }
+
     }
 }
