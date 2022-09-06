@@ -301,6 +301,15 @@ namespace ProdutoCatalogo
             }
         }
 
+        public List<TprodutoCatalogoItem> ObterListaItensComTransacao(int idProduto, ContextoBdGravacao contextoBdGravacao)
+        {
+            var retorno = from item in contextoBdGravacao.TprodutoCatalogoItem
+                          where item.IdProdutoCatalogo == idProduto
+                          select item;
+
+            return retorno.ToList();
+        }
+
         public List<TprodutoCatalogoImagem> ObterListaImagensPorId(int id)
         {
             try
@@ -524,6 +533,19 @@ namespace ProdutoCatalogo
             }
 
             return saida;
+        }
+
+        public bool ExcluirItensComTransacao(TprodutoCatalogoItem model, ContextoBdGravacao contextoBdGravacao)
+        {
+            var itemResponse = (from c in contextoBdGravacao.TprodutoCatalogoItem
+                                where c.IdProdutoCatalogoPropriedade == model.IdProdutoCatalogoPropriedade
+                                select c).FirstOrDefault();
+
+            if (itemResponse == null) return false;
+
+            contextoBdGravacao.Remove(itemResponse);
+            contextoBdGravacao.SaveChanges();
+            return true;
         }
 
         public bool CriarImagens(TprodutoCatalogoImagem img)
