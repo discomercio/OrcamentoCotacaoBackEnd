@@ -717,7 +717,15 @@ namespace OrcamentoCotacaoBusiness.Bll
                 TorcamentoCotacaoEmail orcamentoCotacaoEmailModel = new InfraBanco.Modelos.TorcamentoCotacaoEmail();
                 orcamentoCotacaoEmailModel.IdOrcamentoCotacao = idOrcamentoCotacao;
                 orcamentoCotacaoEmailModel.IdOrcamentoCotacaoEmailQueue = torcamentoCotacaoEmailQueue.Id;
-                var torcamentoCotacaoEmail = _orcamentoCotacaoEmailBll.InserirComTransacao(orcamentoCotacaoEmailModel, contextoBdGravacao);
+
+                try
+                {
+                    var torcamentoCotacaoEmail = _orcamentoCotacaoEmailBll.InserirComTransacao(orcamentoCotacaoEmailModel, contextoBdGravacao);
+                }
+                catch {
+                    throw new ArgumentException("Não foi possível cadastrar o orçamento. Problema no envio de e-mail!");
+                }
+                
             }
 
         }

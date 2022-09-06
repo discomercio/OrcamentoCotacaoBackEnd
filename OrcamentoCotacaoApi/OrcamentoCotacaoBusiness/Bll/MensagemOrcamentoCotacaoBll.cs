@@ -21,6 +21,8 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly OrcamentistaEIndicadorBll _orcamentistaEIndicadorBll;
         private readonly LojaBll _lojaBll;
         private readonly CfgUnidadeNegocioBll _cfgUnidadeNegocioBll;
+        private readonly InfraBanco.ContextoBdProvider _contextoBdProvider;
+        private readonly OrcamentoCotacaoEmail.OrcamentoCotacaoEmailBll _orcamentoCotacaoEmailBll;
         private readonly CfgUnidadeNegocioParametroBll _cfgUnidadeNegocioParametroBll;
         private readonly OrcamentoCotacao.OrcamentoCotacaoBll _orcamentoCotacaoBll;
         private readonly OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll _orcamentoCotacaoEmailQueueBll;
@@ -28,7 +30,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public MensagemOrcamentoCotacaoBll(MensagemBll bll, OrcamentistaEIndicadorBll orcamentistaEIndicadorBll, LojaBll lojaBll, CfgUnidadeNegocioBll cfgUnidadeNegocioBll, 
             CfgUnidadeNegocioParametroBll cfgUnidadeNegocioParametroBll, OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll orcamentoCotacaoEmailQueueBll, 
-            OrcamentoCotacao.OrcamentoCotacaoBll orcamentoCotacaoBll, OrcamentoCotacaoLink.OrcamentoCotacaoLinkBll orcamentoCotacaoLinkBll)
+            OrcamentoCotacao.OrcamentoCotacaoBll orcamentoCotacaoBll, OrcamentoCotacaoLink.OrcamentoCotacaoLinkBll orcamentoCotacaoLinkBll, OrcamentoCotacaoEmail.OrcamentoCotacaoEmailBll orcamentoCotacaoEmailBll, InfraBanco.ContextoBdProvider contextoBdProvider)
         {
             _bll = bll;
             _orcamentistaEIndicadorBll = orcamentistaEIndicadorBll;
@@ -38,6 +40,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             _orcamentoCotacaoEmailQueueBll = orcamentoCotacaoEmailQueueBll;
             _orcamentoCotacaoBll = orcamentoCotacaoBll;
             _orcamentoCotacaoLinkBll = orcamentoCotacaoLinkBll;
+            _orcamentoCotacaoEmailBll = orcamentoCotacaoEmailBll;
+            _contextoBdProvider = contextoBdProvider;
         }
 
         public async Task<List<TorcamentoCotacaoMensagem>> ObterListaMensagem(int IdOrcamentoCotacao)
@@ -57,24 +61,44 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public bool EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem, int IdUsuarioLogado)
         {
-            if (IdUsuarioLogado != 0)
+            var saida = false;
+
+            try
             {
-                EnviarEmail(orcamentoCotacaoMensagem.IdOrcamentoCotacao);
+                using (var contextoBdGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+                {
+
+                    if (IdUsuarioLogado != 0)
+                    {
+                        EnviarEmail(orcamentoCotacaoMensagem.IdOrcamentoCotacao, contextoBdGravacao);
+                        _bll.EnviarMensagem(orcamentoCotacaoMensagem, contextoBdGravacao);
+                        saida = true;
+                    }
+                    else
+                    {
+                        _bll.EnviarMensagem(orcamentoCotacaoMensagem, contextoBdGravacao);
+                        saida = true;
+                    }
+                }
+            }
+            catch
+            {
+                saida = false;
+                throw new ArgumentException("Não foi possível enviar a mensagem");
             }
 
-            return _bll.EnviarMensagem(orcamentoCotacaoMensagem);
+            return saida;
         }
 
-        private void EnviarEmail(int IdOrcamentoCotacao)
+        private void EnviarEmail(int IdOrcamentoCotacao, InfraBanco.ContextoBdGravacao contextoBdGravacao)
         {
 
             TorcamentoCotacaoEmailQueue orcamentoCotacaoEmailQueueModel = new InfraBanco.Modelos.TorcamentoCotacaoEmailQueue();
-            //TorcamentoCotacao torcamentoCotacao = new InfraBanco.Modelos.TorcamentoCotacao();
 
             var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro() { Id = IdOrcamentoCotacao }).FirstOrDefault();
             var orcamentoCotacaoLink = _orcamentoCotacaoLinkBll.PorFiltro(new TorcamentoCotacaoLinkFiltro() { IdOrcamentoCotacao = IdOrcamentoCotacao }).FirstOrDefault();
-
             var loja = _lojaBll.PorFiltro(new InfraBanco.Modelos.Filtros.TlojaFiltro() { Loja = orcamento.Loja });
+
             var tcfgUnidadeNegocio = _cfgUnidadeNegocioBll.PorFiltro(new TcfgUnidadeNegocioFiltro() { Sigla = loja[0].Unidade_Negocio });
             var tcfgUnidadeNegocioParametros = _cfgUnidadeNegocioParametroBll.PorFiltro(new TcfgUnidadeNegocioParametroFiltro() { IdCfgUnidadeNegocio = tcfgUnidadeNegocio.FirstOrDefault().Id });
             var nomeEmpresa = "";
@@ -119,10 +143,29 @@ namespace OrcamentoCotacaoBusiness.Bll
                         logoEmpresa
                     };
 
-            if (!_orcamentoCotacaoEmailQueueBll.InserirQueueComTemplateEHTML(Int32.Parse(template), orcamentoCotacaoEmailQueueModel, tagHtml))
+            var torcamentoCotacaoEmailQueue = _orcamentoCotacaoEmailQueueBll.InserirQueueComTemplateEHTMLComTransacao(Int32.Parse(template), orcamentoCotacaoEmailQueueModel, tagHtml,contextoBdGravacao);
+                       
+            if (torcamentoCotacaoEmailQueue.Id == 0)
             {
-                throw new ArgumentException("Não foi possível enviar a mensagem. Problema ao enviar para fila de e-mail [Mensagem]!");
+                throw new ArgumentException("Não foi possível cadastrar o orçamento. Problema no envio de e-mail!");
             }
+            else
+            {
+                TorcamentoCotacaoEmail orcamentoCotacaoEmailModel = new InfraBanco.Modelos.TorcamentoCotacaoEmail();
+                orcamentoCotacaoEmailModel.IdOrcamentoCotacao = orcamento.Id;
+                orcamentoCotacaoEmailModel.IdOrcamentoCotacaoEmailQueue = torcamentoCotacaoEmailQueue.Id;
+
+                try
+                {
+                    var torcamentoCotacaoEmail = _orcamentoCotacaoEmailBll.InserirComTransacao(orcamentoCotacaoEmailModel, contextoBdGravacao);
+                }
+                catch
+                {
+                    throw new ArgumentException("Não foi possível cadastrar o orçamento. Problema no envio de e-mail!");
+                }
+                
+            }
+
 
         }
 
