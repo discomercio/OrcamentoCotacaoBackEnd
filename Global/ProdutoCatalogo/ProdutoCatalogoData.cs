@@ -78,7 +78,10 @@ namespace ProdutoCatalogo
                                         where c.IdProdutoCatalogo == model.IdProdutoCatalogo &&
                                               c.IdProdutoCatalogoPropriedade == model.IdProdutoCatalogoPropriedade
                                         select c).FirstOrDefault();
-            if (tProdutoCatalogoItem == null) return null;
+            if (tProdutoCatalogoItem == null)
+            {
+                return CriarItensComTransacao(model, contextoBdGravacao);
+            }
 
             tProdutoCatalogoItem.IdProdutoCatalogo = model.IdProdutoCatalogo;
             tProdutoCatalogoItem.IdProdutoCatalogoPropriedade = model.IdProdutoCatalogoPropriedade;
