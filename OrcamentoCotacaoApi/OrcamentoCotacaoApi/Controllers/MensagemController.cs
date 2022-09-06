@@ -55,17 +55,21 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             _logger.LogInformation("EnviarMensagem");
 
-            var saida = false;
+            var  saida = false;
+            bool logado = false;
 
             try
             {
-                var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
-                saida = _mensagemBll.EnviarMensagem(orcamentoCotacaoMensagem, user.Id);
+                 var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+                 logado = true;
             }
             catch
             {
-                saida = _mensagemBll.EnviarMensagem(orcamentoCotacaoMensagem, 0);
+                saida = _mensagemBll.EnviarMensagem(orcamentoCotacaoMensagem,0);
             }
+
+            if (logado)
+                saida = _mensagemBll.EnviarMensagem(orcamentoCotacaoMensagem, JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value).Id);
 
             if (saida)
             {

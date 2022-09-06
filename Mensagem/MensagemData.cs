@@ -61,37 +61,35 @@ namespace Mensagem
             return qtdMensagemPendente;
         }
 
-        public bool EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem)
+        public bool EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem, InfraBanco.ContextoBdGravacao contextoBdGravacao)
         {
             var saida = false;
 
             try
             {
-                using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
-                {
-                    db.TorcamentoCotacaoMensagem.Add(
-                        new TorcamentoCotacaoMensagem
-                        {
-                            IdOrcamentoCotacao = orcamentoCotacaoMensagem.IdOrcamentoCotacao,
-                            IdTipoUsuarioContextoRemetente = (Int16)orcamentoCotacaoMensagem.IdTipoUsuarioContextoRemetente,
-                            IdUsuarioRemetente = orcamentoCotacaoMensagem.IdUsuarioRemetente,
-                            IdTipoUsuarioContextoDestinatario = (Int16)orcamentoCotacaoMensagem.IdTipoUsuarioContextoDestinatario,
-                            IdUsuarioDestinatario = orcamentoCotacaoMensagem.IdUsuarioDestinatario,
-                            PendenciaTratada = false,
-                            Lida = false,
-                            Mensagem = orcamentoCotacaoMensagem.Mensagem,
-                            DataCadastro = DateTime.Now,
-                            DataHoraCadastro = DateTime.Now
-                        }); ; ;
+                contextoBdGravacao.TorcamentoCotacaoMensagem.Add(
+                    new TorcamentoCotacaoMensagem
+                    {
+                        IdOrcamentoCotacao = orcamentoCotacaoMensagem.IdOrcamentoCotacao,
+                        IdTipoUsuarioContextoRemetente = (Int16)orcamentoCotacaoMensagem.IdTipoUsuarioContextoRemetente,
+                        IdUsuarioRemetente = orcamentoCotacaoMensagem.IdUsuarioRemetente,
+                        IdTipoUsuarioContextoDestinatario = (Int16)orcamentoCotacaoMensagem.IdTipoUsuarioContextoDestinatario,
+                        IdUsuarioDestinatario = orcamentoCotacaoMensagem.IdUsuarioDestinatario,
+                        PendenciaTratada = false,
+                        Lida = false,
+                        Mensagem = orcamentoCotacaoMensagem.Mensagem,
+                        DataCadastro = DateTime.Now,
+                        DataHoraCadastro = DateTime.Now
+                    }); ; ;
 
-                    db.SaveChanges();
-                    db.transacao.Commit();
-                    saida = true;
-                }
+                contextoBdGravacao.SaveChanges();
+                contextoBdGravacao.transacao.Commit();
+                saida = true;            
             }
             catch (Exception e)
             {
-                throw e;
+                contextoBdGravacao.transacao.Rollback();
+                throw new ArgumentException("Falha ao gravar orçamento!");
             }
 
             return saida;

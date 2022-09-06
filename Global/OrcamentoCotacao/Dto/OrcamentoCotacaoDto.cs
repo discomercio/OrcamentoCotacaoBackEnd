@@ -1,4 +1,5 @@
-﻿using OrcamentoCotacaoBusiness.Models.Response;
+﻿using Loja.Dto;
+using OrcamentoCotacaoBusiness.Models.Response;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,7 @@ namespace OrcamentoCotacao.Dto
         public RemetenteDestinatarioResponseViewModel mensageria { get; set; }
         public List<FormaPagamentoResponseViewModel> listaFormasPagto { get; set; }
 
+        public LojaViewModel lojaViewModel { get; set; }
     }
 }
 
