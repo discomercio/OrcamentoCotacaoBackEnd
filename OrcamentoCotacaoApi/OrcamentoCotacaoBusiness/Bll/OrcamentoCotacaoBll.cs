@@ -473,6 +473,39 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
         }
 
+        public MensagemDto ReenviarOrcamentoCotacao(int idOrcamentoCotacao)
+        {
+
+            using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                try
+                {
+                    var tOrcamento = _orcamentoCotacaoBll.PorFiltroComTransacao(new TorcamentoCotacaoFiltro() { Id = idOrcamentoCotacao }, dbGravacao).FirstOrDefault();
+
+                    var guid = Guid.NewGuid();
+
+                    AtualizarOrcamentoCotacaoLink(tOrcamento, guid, dbGravacao);
+                    AdicionarOrcamentoCotacaoEmailQueue(tOrcamento, guid, idOrcamentoCotacao, dbGravacao);
+
+                    dbGravacao.transacao.Commit();
+
+                    return new MensagemDto
+                    {
+                        tipo = "INFO",
+                        mensagem = "Reenviado com Sucesso"
+                    };
+                 
+                }
+                catch
+                {
+                    dbGravacao.transacao.Rollback();
+                    throw new ArgumentException("Falha ao gravar orçamento!");
+                }
+                
+            }
+            
+        }
+
         public void AtualizarOrcamentoOpcao(OrcamentoOpcaoResponseViewModel opcao, UsuarioLogin usuarioLogado)
         {
             var orcamento = PorFiltro(opcao.IdOrcamentoCotacao, usuarioLogado);
@@ -649,7 +682,39 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 throw new ArgumentException("Orçamento não cadastrado. Problemas ao gravar o Link!");
             }
+        }
 
+        public void AtualizarOrcamentoCotacaoLink(TorcamentoCotacao orcamento, Guid guid, InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            TorcamentoCotacaoLink orcamentoCotacaoLinkModel = new InfraBanco.Modelos.TorcamentoCotacaoLink();
+            
+            var orcamentoCotacaoLink = _orcamentoCotacaoLinkBll.PorFiltro(new TorcamentoCotacaoLinkFiltro() { IdOrcamentoCotacao = orcamento.Id }).FirstOrDefault();
+
+            orcamentoCotacaoLinkModel.IdOrcamentoCotacao = orcamento.Id;
+            orcamentoCotacaoLinkModel.Guid = guid;
+            orcamentoCotacaoLinkModel.Status = 1;
+            orcamentoCotacaoLinkModel.IdTipoUsuarioContextoUltStatus = 1;
+            orcamentoCotacaoLinkModel.IdUsuarioUltStatus = orcamento.IdUsuarioCadastro;
+            orcamentoCotacaoLinkModel.DataUltStatus = orcamento.DataUltStatus;
+            orcamentoCotacaoLinkModel.DataHoraUltStatus = orcamento.DataHoraUltStatus;
+            orcamentoCotacaoLinkModel.IdTipoUsuarioContextoCadastro = (short)orcamento.IdTipoUsuarioContextoCadastro;
+            orcamentoCotacaoLinkModel.IdUsuarioCadastro = orcamento.IdUsuarioCadastro;
+            orcamentoCotacaoLinkModel.DataCadastro = orcamento.DataCadastro;
+            orcamentoCotacaoLinkModel.DataHoraCadastro = orcamento.DataHoraCadastro;
+
+            try
+            {
+                _orcamentoCotacaoLinkBll.ExcluirComTransacao(orcamentoCotacaoLink, contextoBdGravacao);
+            }
+            catch
+            {
+                throw new ArgumentException("Orçamento não reenviado. Problemas ao gravar o Link!");
+            }            
+
+            if (!_orcamentoCotacaoLinkBll.InserirOrcamentoCotacaoLink(orcamentoCotacaoLinkModel, contextoBdGravacao))
+            {
+                throw new ArgumentException("Orçamento não reenviado. Problemas ao gravar o Link!");
+            }
         }
 
         private void AdicionarOrcamentoCotacaoEmailQueue(OrcamentoRequestViewModel orcamento, Guid guid, int idOrcamentoCotacao,
@@ -726,6 +791,76 @@ namespace OrcamentoCotacaoBusiness.Bll
                     throw new ArgumentException("Não foi possível cadastrar o orçamento. Problema no envio de e-mail!");
                 }
                 
+            }
+
+        }
+
+        private void AdicionarOrcamentoCotacaoEmailQueue(TorcamentoCotacao orcamento, Guid guid, int idOrcamentoCotacao,
+                    ContextoBdGravacao contextoBdGravacao)
+        {
+
+            TorcamentoCotacaoEmailQueue orcamentoCotacaoEmailQueueModel = new InfraBanco.Modelos.TorcamentoCotacaoEmailQueue();
+
+            var loja = _lojaBll.PorFiltroComTransacao(new InfraBanco.Modelos.Filtros.TlojaFiltro() { Loja = orcamento.Loja }, contextoBdGravacao);
+            var tcfgUnidadeNegocio = _cfgUnidadeNegocioBll.PorFiltroComTransacao(new TcfgUnidadeNegocioFiltro() { Sigla = loja[0].Unidade_Negocio }, contextoBdGravacao);
+            var tcfgUnidadeNegocioParametros = _cfgUnidadeNegocioParametroBll.PorFiltroComTransacao(new TcfgUnidadeNegocioParametroFiltro() { IdCfgUnidadeNegocio = tcfgUnidadeNegocio.FirstOrDefault().Id }, contextoBdGravacao);
+            var nomeEmpresa = "";
+            var logoEmpresa = "";
+            var urlBaseFront = "";
+            var template = "";
+
+            foreach (var item in tcfgUnidadeNegocioParametros)
+            {
+                switch (item.IdCfgParametro)
+                {
+
+                    case 2:
+                        urlBaseFront = item.Valor;
+                        break;
+                    case 5:
+                        orcamentoCotacaoEmailQueueModel.From = item.Valor;
+                        break;
+                    case 6:
+                        orcamentoCotacaoEmailQueueModel.FromDisplayName = item.Valor;
+                        nomeEmpresa = item.Valor;
+                        break;
+                    case 34:
+                        logoEmpresa = item.Valor;
+                        break;
+                    case 35:
+                        template = item.Valor;
+                        break;
+
+                }
+            }
+
+            orcamentoCotacaoEmailQueueModel.IdCfgUnidadeNegocio = tcfgUnidadeNegocioParametros[0].IdCfgUnidadeNegocio;
+            orcamentoCotacaoEmailQueueModel.To = orcamento.Email;
+            orcamentoCotacaoEmailQueueModel.Cc = "";
+            orcamentoCotacaoEmailQueueModel.Bcc = "";
+
+            string[] tagHtml = new string[] {
+                        orcamento.NomeCliente,
+                        nomeEmpresa,
+                        guid.ToString(),
+                        orcamento.Id.ToString(),
+                        urlBaseFront,
+                        logoEmpresa
+                    };
+
+            var torcamentoCotacaoEmailQueue = _orcamentoCotacaoEmailQueueBll.InserirQueueComTemplateEHTMLComTransacao(Int32.Parse(template),
+                orcamentoCotacaoEmailQueueModel, tagHtml, contextoBdGravacao);
+
+            if (torcamentoCotacaoEmailQueue.Id == 0)
+            {
+                throw new ArgumentException("Não foi possível cadastrar o orçamento. Problema no envio de e-mail!");
+            }
+            else
+            {
+                TorcamentoCotacaoEmail orcamentoCotacaoEmailModel = new InfraBanco.Modelos.TorcamentoCotacaoEmail();
+                orcamentoCotacaoEmailModel.IdOrcamentoCotacao = idOrcamentoCotacao;
+                orcamentoCotacaoEmailModel.IdOrcamentoCotacaoEmailQueue = torcamentoCotacaoEmailQueue.Id;
+                var torcamentoCotacaoEmail = _orcamentoCotacaoEmailBll.InserirComTransacao(orcamentoCotacaoEmailModel, contextoBdGravacao);
             }
 
         }

@@ -105,7 +105,9 @@ namespace OrcamentoCotacaoLink
 
         public void ExcluirComTransacao(TorcamentoCotacaoLink obj, ContextoBdGravacao contextoBdGravacao)
         {
-            throw new NotImplementedException();
+            contextoBdGravacao.TorcamentoCotacaoLink.Remove(obj);
+            contextoBdGravacao.SaveChanges();
         }
+
     }
 }

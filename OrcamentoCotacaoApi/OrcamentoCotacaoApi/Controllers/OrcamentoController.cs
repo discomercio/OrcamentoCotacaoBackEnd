@@ -113,6 +113,13 @@ namespace OrcamentoCotacaoApi.Controllers
             return Ok(_orcamentoBll.AtualizarStatus(id, user, idStatus));            
         }
 
+        [HttpPut("{id}/reenviar")]
+        public IActionResult ReenviarOrcamento(int id)
+        {
+            var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+            return Ok(_orcamentoBll.ReenviarOrcamentoCotacao(id));
+        }
+
         [HttpPost("{id}/prorrogar")]
         public IActionResult ProrrogarOrcamento(int id, string lojaLogada)
         {
