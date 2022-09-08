@@ -106,7 +106,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 }
 
                 //vamos verificar o tipo no campo idCfgDataType
-                var tCfgDataType = 
+                //var tCfgDataType = 
             }
 
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
