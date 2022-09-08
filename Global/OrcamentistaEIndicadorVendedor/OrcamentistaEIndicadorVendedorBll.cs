@@ -6,6 +6,7 @@ using OrcamentistaEindicador;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace OrcamentistaEIndicadorVendedor
 {
@@ -38,6 +39,15 @@ namespace OrcamentistaEIndicadorVendedor
                 throw new ArgumentException("Email já cadastrado");
             }
 
+            var atualizacaoSenhaMensagem = SenhaValida(
+                objOrcamentistaEIndicadorVendedor.Nome,
+                senha);
+
+            if (atualizacaoSenhaMensagem.Length > 0)
+            {
+                throw new ArgumentException(atualizacaoSenhaMensagem);
+            }
+
             string senha_codificada = UtilsGlobais.Util.codificaDado(senha, false);
 
             if (string.IsNullOrEmpty(senha_codificada))
@@ -55,7 +65,6 @@ namespace OrcamentistaEIndicadorVendedor
             return _data.Inserir(objOrcamentistaEIndicadorVendedor);
         }
 
-
         public TorcamentistaEIndicadorVendedor Atualizar(TorcamentistaEIndicadorVendedor objOrcamentistaEIndicadorVendedor, string senha, string parceiro, string vendedor)
         {
             var oeiv = _data.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro() { id = objOrcamentistaEIndicadorVendedor.Id }).FirstOrDefault();
@@ -71,6 +80,15 @@ namespace OrcamentistaEIndicadorVendedor
 
             if (existeEmail.Any() && existeEmail.FirstOrDefault().Id != objOrcamentistaEIndicadorVendedor.Id)
                 throw new ArgumentException("Email já cadastrado");
+
+            var atualizacaoSenhaMensagem = SenhaValida(
+                objOrcamentistaEIndicadorVendedor.Nome,
+                senha);
+
+            if (atualizacaoSenhaMensagem.Length > 0)
+            {
+                throw new ArgumentException(atualizacaoSenhaMensagem);
+            }
 
             string senha_codificada = UtilsGlobais.Util.codificaDado(senha, false);
 
@@ -94,6 +112,25 @@ namespace OrcamentistaEIndicadorVendedor
             oeiv.DataUltimaAlteracao = DateTime.Now;
 
             return _data.Atualizar(oeiv);
+        }
+
+        private string SenhaValida(
+            string usuario,
+            string senha)
+        {
+            var regex = new Regex(@"^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]{8,}$");
+
+            if (!regex.IsMatch(senha))
+            {
+                return "A senha deve conter pelo menos 8 caracteres entre letras e dígitos.";
+            }
+
+            if (senha == usuario.ToUpper().Trim())
+            {
+                return "A nova senha não pode ser igual ao identificador do usuário!";
+            }
+
+            return string.Empty;
         }
     }
 }
