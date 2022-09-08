@@ -91,7 +91,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 try
                 {
                     if (produtoCatalogo == null)
-                        return "Ops! Parece que não existe dados de produto para catálogo!";
+                        throw new ArgumentException("Ops! Parece que não existe dados de produto para catálogo!");
 
                     produtoCatalogo = _bll.AtualizarComTransacao(produtoCatalogo, dbGravacao);
 
@@ -103,6 +103,8 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     produtoCatalogo.campos = _bll.AtualizarItensComTransacao(produtoCatalogo.campos, produtoCatalogo.Id,
                         dbGravacao);
+                    if (produtoCatalogo.campos == null || produtoCatalogo.campos.Count == 0)
+                        return "Falha ao atualizar as propriedades do produto catálogo!";
 
                     if (arquivo != null)
                     {

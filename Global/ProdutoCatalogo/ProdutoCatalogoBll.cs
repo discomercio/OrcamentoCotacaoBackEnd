@@ -34,6 +34,12 @@ namespace ProdutoCatalogo
             return _data.ObterListaItens(id);
         }
 
+        public List<TprodutoCatalogoItem> ObterListaItensComTransacao(int idProduto,
+            InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            return _data.ObterListaItens(idProduto);
+        }
+
         public List<TprodutoCatalogoImagem> ObterListaImagensPorId(int id)
         {
             return _data.ObterListaImagensPorId(id);
@@ -91,7 +97,6 @@ namespace ProdutoCatalogo
         public TprodutoCatalogo CriarComTransacao(TprodutoCatalogo obj, string usuario_cadastro,
             InfraBanco.ContextoBdGravacao contextoBdGravacao)
         {
-            //TODO: NAO TEM COMO DESABILITAR TRACKING
             obj.UsuarioCadastro = usuario_cadastro;
             var tProdCatalogo = _data.CriarComTransacao(obj, usuario_cadastro, contextoBdGravacao);
 
@@ -136,6 +141,20 @@ namespace ProdutoCatalogo
             int idProduto, InfraBanco.ContextoBdGravacao contextoBdGravacao)
         {
             List<TprodutoCatalogoItem> retorno = new List<TprodutoCatalogoItem>();
+
+            List<TprodutoCatalogoItem> propriedadesAntigas = ObterListaItensComTransacao(idProduto, contextoBdGravacao);
+            if (propriedadesAntigas == null || propriedadesAntigas.Count == 0) return null;
+
+            foreach (var prop in propriedadesAntigas)
+            {
+                var existe = propriedades
+                    .Where(x => x.IdProdutoCatalogoPropriedade == prop.IdProdutoCatalogoPropriedade)
+                    .FirstOrDefault();
+
+                if (existe == null)
+                    if (!_data.ExcluirItensComTransacao(prop, contextoBdGravacao))
+                        return null;
+            }
 
             foreach (var prop in propriedades)
             {
