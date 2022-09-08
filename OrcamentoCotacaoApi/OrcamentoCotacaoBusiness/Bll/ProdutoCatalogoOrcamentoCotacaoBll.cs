@@ -87,33 +87,9 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public async Task<string> Atualizar(TprodutoCatalogo produtoCatalogo, IFormFile arquivo, string caminho)
         {
-            //VALIDAR OS TIPOS DAS PROPRIEDADES DOS PRODUTOS
-            //fazer a busca de todas as propriedades
-            var tProdutoCatalogoPropriedades = await _produtoGeralBll.ObterListaPropriedadesProdutos();
-            if (tProdutoCatalogoPropriedades == null)
-                return "Falha ao validar propriedades do produto!";
+            var retornoValidacao = await ValidarTiposPropriedadesProdutoCatalogo(produtoCatalogo.campos);
 
-            var propriedadesTextoLivre = tProdutoCatalogoPropriedades.Where(x => x.IdCfgTipoPropriedade == 0).ToList();
-            if (propriedadesTextoLivre == null)
-                return "Falha ao buscar propriedades do produto";
-
-            foreach(var prop in produtoCatalogo.campos)
-            {
-                var item = propriedadesTextoLivre.Where(x => x.id == prop.IdProdutoCatalogoPropriedade).FirstOrDefault();
-                if(item == null)
-                {
-                    //tem que falhar e parar o foreach
-                }
-
-                //vamos verificar o tipo no campo idCfgDataType
-                var tCfgDataType = _bll.ObterTipoPropriedadePorFiltro(new TcfgDataTypeFiltro() { Id = item.id }).FirstOrDefault();
-                if(tCfgDataType == null)
-                {
-                    //tem que falhar e parar o foreach
-                }
-
-
-            }
+            if (!string.IsNullOrEmpty(retornoValidacao)) return retornoValidacao;
 
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
@@ -159,7 +135,9 @@ namespace OrcamentoCotacaoBusiness.Bll
         public async Task<string> Criar(TprodutoCatalogo produtoCatalogo, string usuario_cadastro,
             IFormFile arquivo, string caminho)
         {
-            //VALIDAR OS TIPOS DAS PROPRIEDADES DOS PRODUTOS
+            var retornoValidacao = await ValidarTiposPropriedadesProdutoCatalogo(produtoCatalogo.campos);
+
+            if (!string.IsNullOrEmpty(retornoValidacao)) return retornoValidacao;
 
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
@@ -301,6 +279,79 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 return "Formato inválido. O arquivo deve ser imagem png, jpg ou bmp.";
             }
+        }
+
+        private async Task<string> ValidarTiposPropriedadesProdutoCatalogo(List<TprodutoCatalogoItem> propriedades)
+        {
+            var tProdutoCatalogoPropriedades = await _produtoGeralBll.ObterListaPropriedadesProdutos();
+            if (tProdutoCatalogoPropriedades == null)
+                return "Falha ao validar propriedades do produto!";
+
+            string retorno;
+
+            retorno = await ValidarTiposPropriedadesTextoLivreProdutoCatalogo(propriedades, tProdutoCatalogoPropriedades);
+            if (!string.IsNullOrEmpty(retorno)) return retorno;
+
+            return await Task.FromResult(retorno);
+        }
+
+        private async Task<string> ValidarTiposPropriedadesTextoLivreProdutoCatalogo(List<TprodutoCatalogoItem> propriedades,
+            List<Produto.Dados.ProdutoCatalogoPropriedadeDados> propriedadeDados)
+        {
+            var propriedadesTextoLivre = propriedadeDados.Where(x => x.IdCfgTipoPropriedade == 0).ToList();
+            if (propriedadesTextoLivre == null)
+                return "Falha ao buscar propriedades do produto";
+
+            string retorno = "";
+            foreach (var prop in propriedades)
+            {
+                var item = propriedadesTextoLivre.Where(x => x.id == prop.IdProdutoCatalogoPropriedade).FirstOrDefault();
+                if (item != null)
+                {
+                    var tCfgDataType = _bll.ObterTipoPropriedadePorFiltro(new TcfgDataTypeFiltro() { Id = item.IdCfgDataType }).FirstOrDefault();
+                    if (tCfgDataType == null)
+                    {
+                        retorno = $"Falha ao validar a propriedade '{item.descricao}'.";
+                        break;
+                    }
+
+                    if (tCfgDataType.Sigla == "real")
+                    {
+                        if (!prop.Valor.Contains("."))
+                            retorno = $"Propriedade '{item.descricao}' precisa conter ponto ('.')!";
+
+                        if (!string.IsNullOrEmpty(retorno)) break;
+
+                        if (!Single.TryParse(prop.Valor, out float valor))
+                            retorno = $"Propriedade '{item.descricao}' está inválida!";
+
+                        if (!string.IsNullOrEmpty(retorno)) break;
+                    }
+
+                    if (tCfgDataType.Sigla == "string")
+                    {
+                        if (string.IsNullOrEmpty(prop.Valor))
+                            retorno = $"Propriedade '{item.descricao}' precisa ser preenchida!";
+
+                        if (!string.IsNullOrEmpty(retorno)) break;
+                    }
+
+                    if (tCfgDataType.Sigla == "int")
+                    {
+                        if (!prop.Valor.Contains("."))
+                            retorno = $"Propriedade '{item.descricao}' não pode conter letras e símbolos!";
+
+                        if (!string.IsNullOrEmpty(retorno)) break;
+
+                        if (!int.TryParse(prop.Valor, out int valor))
+                            retorno = $"Propriedade '{item.descricao}' está inválida!";
+
+                        if (!string.IsNullOrEmpty(retorno)) break;
+                    }
+                }
+            }
+
+            return await Task.FromResult(retorno);
         }
     }
 }
