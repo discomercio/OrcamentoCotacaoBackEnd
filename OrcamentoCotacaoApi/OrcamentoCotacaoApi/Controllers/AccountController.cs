@@ -134,11 +134,9 @@ namespace OrcamentoCotacaoApi.Controllers
         [Route("AtualzarSenha")]
         public async Task<ActionResult<object>> AtualzarSenha(AtualizarSenhaRequestViewModel request)
         {
-            var response = new AtualizarSenhaResponseViewModel();
-
             try
             {
-                response.MensagemRetorno = await _acessoBll.AtualizarSenhaAsync(new AtualizarSenhaDto()
+                var response = await _acessoBll.AtualizarSenhaAsync(new AtualizarSenhaDto()
                 {
                     TipoUsuario = request.TipoUsuario,
                     Apelido = request.Apelido,

@@ -2,6 +2,7 @@
 using InfraBanco.Modelos;
 using InfraIdentity;
 using Microsoft.EntityFrameworkCore;
+using OrcamentoCotacaoBusiness.Models.Response;
 using Prepedido.Dto;
 using PrepedidoBusiness.Dto.Acesso;
 using System;
@@ -360,7 +361,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             return retorno;
         }
 
-        public async Task<string> AtualizarSenhaAsync(AtualizarSenhaDto atualizarSenhaDto)
+        public async Task<AtualizarSenhaResponseViewModel> AtualizarSenhaAsync(AtualizarSenhaDto atualizarSenhaDto)
         {
             if (string.IsNullOrEmpty(atualizarSenhaDto.Apelido)
                || string.IsNullOrEmpty(atualizarSenhaDto.Senha)
@@ -368,22 +369,22 @@ namespace OrcamentoCotacaoBusiness.Bll
                || string.IsNullOrEmpty(atualizarSenhaDto.ConfirmacaoSenha)
                )
             {
-                return "Favor preencher todos os campos.";
+                return new AtualizarSenhaResponseViewModel(false, "Favor preencher todos os campos.");
             }
 
-            var senha = Util.decodificaDado(atualizarSenhaDto.Senha, Constantes.FATOR_CRIPTO).ToUpper().Trim();
+            var senha = Util.decodificaDado(atualizarSenhaDto.Senha, Constantes.FATOR_CRIPTO).Trim();
             var senha_nova = Util.decodificaDado(atualizarSenhaDto.NovaSenha, Constantes.FATOR_CRIPTO).Trim();
             var senha_nova_confirma = Util.decodificaDado(atualizarSenhaDto.ConfirmacaoSenha, Constantes.FATOR_CRIPTO).Trim();
 
-            var atualizarSenha = ValidaAtualizacaoSenha(
+            var atualizacaoSenhaMensagem = SenhaValida(
                 atualizarSenhaDto.Apelido,
                 senha,
                 senha_nova,
                 senha_nova_confirma);
 
-            if (atualizarSenha.Length > 0)
+            if (atualizacaoSenhaMensagem.Length > 0)
             {
-                return atualizarSenha;
+                return new AtualizarSenhaResponseViewModel(false, atualizacaoSenhaMensagem);
             }
 
             var senha_codificada = Util.codificaDado(senha_nova, false);
@@ -406,10 +407,10 @@ namespace OrcamentoCotacaoBusiness.Bll
                 await AtualizarSenhaVendedoParceiro(atualizarSenhaDto.Apelido, senha_codificada);
             }
 
-            return "Alteração de senha realizada com sucesso.";
+            return new AtualizarSenhaResponseViewModel(true, "Alteração de senha realizada com sucesso.");
         }
 
-        private string ValidaAtualizacaoSenha(
+        private string SenhaValida(
             string usuario,
             string senha,
             string senha_nova,
