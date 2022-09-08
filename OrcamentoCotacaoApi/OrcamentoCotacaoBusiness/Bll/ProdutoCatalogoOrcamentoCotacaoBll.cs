@@ -106,7 +106,13 @@ namespace OrcamentoCotacaoBusiness.Bll
                 }
 
                 //vamos verificar o tipo no campo idCfgDataType
-                //var tCfgDataType = 
+                var tCfgDataType = _bll.ObterTipoPropriedadePorFiltro(new TcfgDataTypeFiltro() { Id = item.id }).FirstOrDefault();
+                if(tCfgDataType == null)
+                {
+                    //tem que falhar e parar o foreach
+                }
+
+
             }
 
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))

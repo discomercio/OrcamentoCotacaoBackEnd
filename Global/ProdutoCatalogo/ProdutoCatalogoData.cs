@@ -594,5 +594,31 @@ namespace ProdutoCatalogo
 
             return tipoImagem.ToList();
         }
+
+        public List<TcfgDataType> ObterTipoPropriedadePorFiltro(TcfgDataTypeFiltro filtro)
+        {
+            if (filtro == null) return null;
+
+            try
+            {
+                using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+                {
+                    var tCfgDataTypes = from c in db.TcfgDataType
+                                        select c;
+
+                    if(filtro.Id != 0)
+                    {
+                        tCfgDataTypes = tCfgDataTypes.Where(x => x.Id == filtro.Id);
+                    }
+
+                    return tCfgDataTypes.ToList();
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+        }
     }
 }
