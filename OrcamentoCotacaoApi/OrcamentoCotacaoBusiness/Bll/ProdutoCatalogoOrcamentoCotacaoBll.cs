@@ -6,6 +6,7 @@ using ProdutoCatalogo;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -86,6 +87,28 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public async Task<string> Atualizar(TprodutoCatalogo produtoCatalogo, IFormFile arquivo, string caminho)
         {
+            //VALIDAR OS TIPOS DAS PROPRIEDADES DOS PRODUTOS
+            //fazer a busca de todas as propriedades
+            var tProdutoCatalogoPropriedades = await _produtoGeralBll.ObterListaPropriedadesProdutos();
+            if (tProdutoCatalogoPropriedades == null)
+                return "Falha ao validar propriedades do produto!";
+
+            var propriedadesTextoLivre = tProdutoCatalogoPropriedades.Where(x => x.IdCfgTipoPropriedade == 0).ToList();
+            if (propriedadesTextoLivre == null)
+                return "Falha ao buscar propriedades do produto";
+
+            foreach(var prop in produtoCatalogo.campos)
+            {
+                var item = propriedadesTextoLivre.Where(x => x.id == prop.IdProdutoCatalogoPropriedade).FirstOrDefault();
+                if(item == null)
+                {
+                    //tem que falhar e parar o foreach
+                }
+
+                //vamos verificar o tipo no campo idCfgDataType
+                var tCfgDataType = 
+            }
+
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 try
@@ -130,6 +153,8 @@ namespace OrcamentoCotacaoBusiness.Bll
         public async Task<string> Criar(TprodutoCatalogo produtoCatalogo, string usuario_cadastro,
             IFormFile arquivo, string caminho)
         {
+            //VALIDAR OS TIPOS DAS PROPRIEDADES DOS PRODUTOS
+
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 try
