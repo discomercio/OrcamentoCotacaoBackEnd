@@ -185,6 +185,7 @@ namespace InfraBanco
         public DbSet<TcfgTipoUsuarioPerfil> TcfgTipoUsuarioPerfil { get => contexto.TcfgTipoUsuarioPerfil; }
         public DbSet<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContexto { get => contexto.TcfgTipoUsuarioContexto; }
         public DbSet<TcfgParametro> TcfgParametro { get => contexto.TcfgParametro; }
+        public DbSet<TcfgDataType> TcfgDataType { get => contexto.TcfgDataType; }
 
         public DbSet<Tbanco> Tbancos { get => contexto.Tbanco; }
         public DbSet<Tfabricante> Tfabricantes { get => contexto.Tfabricante; }

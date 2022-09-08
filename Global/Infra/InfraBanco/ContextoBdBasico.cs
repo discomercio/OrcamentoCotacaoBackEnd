@@ -278,6 +278,7 @@ namespace InfraBanco
         public DbSet<TcfgTipoUsuario> TcfgTipoUsuario { get; set; }
         public DbSet<TcfgTipoUsuarioPerfil> TcfgTipoUsuarioPerfil { get; set; }
         public DbSet<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContexto { get; set; }
+        public DbSet<TcfgDataType> TcfgDataType { get; set; }
 
         public DbSet<TorcamentoCotacao> TorcamentoCotacao { get; set; }
         public DbSet<TorcamentoCotacaoLink> TorcamentoCotacaoLink { get; set; }

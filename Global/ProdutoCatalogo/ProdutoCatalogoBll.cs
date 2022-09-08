@@ -205,5 +205,10 @@ namespace ProdutoCatalogo
 
             return false;
         }
+
+        public List<TcfgDataType> ObterTipoPropriedadePorFiltro(TcfgDataTypeFiltro filtro)
+        {
+            return _data.ObterTipoPropriedadePorFiltro(filtro);
+        }
     }
 }
