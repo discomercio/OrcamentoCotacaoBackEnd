@@ -338,11 +338,6 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     if (tCfgDataType.Sigla == "int")
                     {
-                        if (!prop.Valor.Contains("."))
-                            retorno = $"Propriedade '{item.descricao}' não pode conter letras e símbolos!";
-
-                        if (!string.IsNullOrEmpty(retorno)) break;
-
                         if (!int.TryParse(prop.Valor, out int valor))
                             retorno = $"Propriedade '{item.descricao}' está inválida!";
 
