@@ -103,10 +103,17 @@ namespace OrcamentoCotacaoApi.Controllers
             _logger.LogInformation("Altera vendedor parceiro");
             if (!User.ValidaPermissao((int)ePermissao.CadastroVendedorParceiroIncluirEditar))
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
-            
-            var objOrcamentistaEIndicadorVendedor = _mapper.Map<TorcamentistaEIndicadorVendedor>(model);
-            var result = _orcamentistaEindicadorVendedorBll.Atualizar(objOrcamentistaEIndicadorVendedor, model.Senha, User.GetParceiro(), User.GetVendedor());
-            return Ok(result);
+
+            try
+            {
+                var objOrcamentistaEIndicadorVendedor = _mapper.Map<TorcamentistaEIndicadorVendedor>(model);
+                var result = _orcamentistaEindicadorVendedorBll.Atualizar(objOrcamentistaEIndicadorVendedor, model.Senha, User.GetParceiro(), User.GetVendedor());
+                return Ok(result);
+            }
+            catch (ArgumentException e)
+            {
+                return UnprocessableEntity(e);
+            }
         }
     }
 }
