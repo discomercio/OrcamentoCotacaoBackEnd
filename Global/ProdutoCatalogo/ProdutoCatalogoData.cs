@@ -537,13 +537,7 @@ namespace ProdutoCatalogo
 
         public bool ExcluirItensComTransacao(TprodutoCatalogoItem model, ContextoBdGravacao contextoBdGravacao)
         {
-            var itemResponse = (from c in contextoBdGravacao.TprodutoCatalogoItem
-                                where c.IdProdutoCatalogoPropriedade == model.IdProdutoCatalogoPropriedade
-                                select c).FirstOrDefault();
-
-            if (itemResponse == null) return false;
-
-            contextoBdGravacao.Remove(itemResponse);
+            contextoBdGravacao.TprodutoCatalogoItem.Remove(model);
             contextoBdGravacao.SaveChanges();
             return true;
         }
