@@ -482,10 +482,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
                     var tOrcamento = _orcamentoCotacaoBll.PorFiltroComTransacao(new TorcamentoCotacaoFiltro() { Id = idOrcamentoCotacao }, dbGravacao).FirstOrDefault();
 
-                    var guid = Guid.NewGuid();
+                    var tOrcamentoCotacaoLink = _orcamentoCotacaoLinkBll.PorFiltroComTransacao(new TorcamentoCotacaoLinkFiltro() { IdOrcamentoCotacao = idOrcamentoCotacao, Status = 1 }, dbGravacao).FirstOrDefault();
+                    //var guid = Guid.NewGuid();
 
-                    AtualizarOrcamentoCotacaoLink(tOrcamento, guid, dbGravacao);
-                    AdicionarOrcamentoCotacaoEmailQueue(tOrcamento, guid, idOrcamentoCotacao, dbGravacao);
+                    //AdicionarOrcamentoCotacaoLink(tOrcamento, guid, dbGravacao);
+                    AdicionarOrcamentoCotacaoEmailQueue(tOrcamento, tOrcamentoCotacaoLink.Guid, idOrcamentoCotacao, dbGravacao);
 
                     dbGravacao.transacao.Commit();
 
