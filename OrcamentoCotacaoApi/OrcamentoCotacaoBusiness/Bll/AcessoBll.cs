@@ -515,7 +515,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTISTA_E_INDICADOR))
             {
                 var vendedorParceiro = await (from u in dbgravacao.TorcamentistaEIndicadorVendedor
-                                              where u.Nome == apelido.ToUpper().Trim()
+                                              where u.Email == apelido.ToUpper().Trim()
                                               select u).FirstOrDefaultAsync();
 
                 vendedorParceiro.Senha = Util.GerarSenhaAleatoria();
