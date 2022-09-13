@@ -546,6 +546,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
                     var tOrcamento = _orcamentoCotacaoBll.PorFiltroComTransacao(new TorcamentoCotacaoFiltro() { Id = (int)orcamento.Id }, dbGravacao).FirstOrDefault();
                     if (tOrcamento == null) throw new Exception("Falha ao buscar Orçamento!");
+                    
+                    bool alterouEmail = false;
+
+                    if (orcamento.ClienteOrcamentoCotacaoDto.Email != tOrcamento.Email)
+                        alterouEmail = true;
+
 
                     tOrcamento.NomeCliente = orcamento.ClienteOrcamentoCotacaoDto.NomeCliente;
                     tOrcamento.NomeObra = orcamento.ClienteOrcamentoCotacaoDto.NomeObra;
@@ -563,11 +569,46 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     var retorno = _orcamentoCotacaoBll.AtualizarComTransacao(tOrcamento, dbGravacao);
 
+                    bool atualizouLink = false;
+                    
+                    if (alterouEmail)
+                    {                        
+                        AtualizarOrcamentoCotacaoLink(orcamento,dbGravacao);
+
+                        atualizouLink = true;                       
+                    }                    
+                    
                     dbGravacao.transacao.Commit();
+
+                    if (atualizouLink)
+                    {
+                        GerarNovoLink(tOrcamento);                        
+                    }
+
                 }
                 catch (Exception ex)
                 {
                     dbGravacao.transacao.Rollback();
+                    throw new ArgumentException("Falha ao atualizar orçamento!");
+                }
+            }
+        }
+
+        private void GerarNovoLink(TorcamentoCotacao tOrcamento)
+        {
+            var guid = Guid.NewGuid();
+
+            using (var db = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                try
+                {
+                    AdicionarOrcamentoCotacaoLink(tOrcamento, guid, db);
+                    AdicionarOrcamentoCotacaoEmailQueue(tOrcamento, guid, tOrcamento.Id, db);
+                    db.transacao.Commit();
+                }
+                catch
+                {
+                    db.transacao.Rollback();
                     throw new ArgumentException("Falha ao atualizar orçamento!");
                 }
             }
@@ -697,37 +738,23 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
         }
 
-        public void AtualizarOrcamentoCotacaoLink(TorcamentoCotacao orcamento, Guid guid, InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        public void AtualizarOrcamentoCotacaoLink(OrcamentoResponseViewModel orcamento, InfraBanco.ContextoBdGravacao contextoBdGravacao)
         {
             TorcamentoCotacaoLink orcamentoCotacaoLinkModel = new InfraBanco.Modelos.TorcamentoCotacaoLink();
-            
-            var orcamentoCotacaoLink = _orcamentoCotacaoLinkBll.PorFiltro(new TorcamentoCotacaoLinkFiltro() { IdOrcamentoCotacao = orcamento.Id }).FirstOrDefault();
 
-            orcamentoCotacaoLinkModel.IdOrcamentoCotacao = orcamento.Id;
-            orcamentoCotacaoLinkModel.Guid = guid;
-            orcamentoCotacaoLinkModel.Status = 1;
-            orcamentoCotacaoLinkModel.IdTipoUsuarioContextoUltStatus = 1;
-            orcamentoCotacaoLinkModel.IdUsuarioUltStatus = orcamento.IdUsuarioCadastro;
-            orcamentoCotacaoLinkModel.DataUltStatus = orcamento.DataUltStatus;
-            orcamentoCotacaoLinkModel.DataHoraUltStatus = orcamento.DataHoraUltStatus;
-            orcamentoCotacaoLinkModel.IdTipoUsuarioContextoCadastro = (short)orcamento.IdTipoUsuarioContextoCadastro;
-            orcamentoCotacaoLinkModel.IdUsuarioCadastro = orcamento.IdUsuarioCadastro;
-            orcamentoCotacaoLinkModel.DataCadastro = orcamento.DataCadastro;
-            orcamentoCotacaoLinkModel.DataHoraCadastro = orcamento.DataHoraCadastro;
+            orcamentoCotacaoLinkModel.IdOrcamentoCotacao = unchecked((int)orcamento.Id);
+            orcamentoCotacaoLinkModel.Status = 2;
 
             try
             {
-                _orcamentoCotacaoLinkBll.ExcluirComTransacao(orcamentoCotacaoLink, contextoBdGravacao);
+                _orcamentoCotacaoLinkBll.AtualizarComTransacao(orcamentoCotacaoLinkModel, contextoBdGravacao);                
+                
             }
             catch
             {
                 throw new ArgumentException("Orçamento não reenviado. Problemas ao gravar o Link!");
             }            
 
-            if (!_orcamentoCotacaoLinkBll.InserirOrcamentoCotacaoLink(orcamentoCotacaoLinkModel, contextoBdGravacao))
-            {
-                throw new ArgumentException("Orçamento não reenviado. Problemas ao gravar o Link!");
-            }
         }
 
         private void AdicionarOrcamentoCotacaoEmailQueue(OrcamentoRequestViewModel orcamento, Guid guid, int idOrcamentoCotacao,
