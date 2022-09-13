@@ -58,6 +58,20 @@ namespace OrcamentoCotacaoLink
             }
         }
 
+        public TorcamentoCotacaoLink AtualizarComTransacao(TorcamentoCotacaoLink model, ContextoBdGravacao contextoBdGravacao)
+        {
+            var orcamentoCotacaoLink = (from c in contextoBdGravacao.TorcamentoCotacaoLink
+                                        where c.IdOrcamentoCotacao == model.IdOrcamentoCotacao
+                                        select c).LastOrDefault();
+            if (orcamentoCotacaoLink == null) return null;
+
+            orcamentoCotacaoLink.Status = model.Status;
+
+            contextoBdGravacao.SaveChanges();
+
+            return orcamentoCotacaoLink;
+        }
+
         bool BaseData<TorcamentoCotacaoLink, TorcamentoCotacaoLinkFiltro>.Excluir(TorcamentoCotacaoLink obj)
         {
             throw new NotImplementedException();
@@ -118,11 +132,6 @@ namespace OrcamentoCotacaoLink
 
                 throw;
             }
-        }
-
-        public TorcamentoCotacaoLink AtualizarComTransacao(TorcamentoCotacaoLink model, ContextoBdGravacao contextoBdGravacao)
-        {
-            throw new NotImplementedException();
         }
 
         public void ExcluirComTransacao(TorcamentoCotacaoLink obj, ContextoBdGravacao contextoBdGravacao)
