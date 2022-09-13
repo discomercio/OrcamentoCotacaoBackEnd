@@ -31,9 +31,9 @@ namespace Mensagem
         }
 
 
-        public bool EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem, InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        public bool EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem, InfraBanco.ContextoBdGravacao contextoBdGravacao, TorcamentoCotacaoEmailQueue torcamentoCotacaoEmailQueue = null)
         {
-            return _data.EnviarMensagem(orcamentoCotacaoMensagem, contextoBdGravacao);
+            return _data.EnviarMensagem(orcamentoCotacaoMensagem, contextoBdGravacao, torcamentoCotacaoEmailQueue);
         }
 
         public bool MarcarLida(int IdOrcamentoCotacao, int idUsuarioRemetente)

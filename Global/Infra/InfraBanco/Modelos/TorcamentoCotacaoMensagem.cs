@@ -53,7 +53,7 @@ namespace InfraBanco.Modelos
         public DateTime DataHoraCadastro { get; set; }
 
         [Column("IdOrcamentoCotacaoEmailQueue")]
-        public int? IdOrcamentoCotacaoEmailQueue { get; set; }
+        public long? IdOrcamentoCotacaoEmailQueue { get; set; }
         
         [Column("PendenciaTratada")]
         public bool? PendenciaTratada { get; set; }
