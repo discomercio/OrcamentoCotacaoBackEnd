@@ -124,6 +124,11 @@ namespace OrcamentoCotacaoLink
                         saida = saida.Where(x => x.IdOrcamentoCotacao == obj.IdOrcamentoCotacao);
                     }
 
+                    if (obj.Status != 0)
+                    {
+                        saida = saida.Where(x => x.Status == obj.Status);
+                    }
+
                     return saida.ToList();
                 }
             }
