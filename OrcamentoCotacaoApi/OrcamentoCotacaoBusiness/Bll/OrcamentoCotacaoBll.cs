@@ -482,17 +482,30 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
                     var tOrcamento = _orcamentoCotacaoBll.PorFiltroComTransacao(new TorcamentoCotacaoFiltro() { Id = idOrcamentoCotacao }, dbGravacao).FirstOrDefault();
 
-                    var guid = Guid.NewGuid();
+                    var tOrcamentoCotacaoLink = _orcamentoCotacaoLinkBll.PorFiltroComTransacao(new TorcamentoCotacaoLinkFiltro() { IdOrcamentoCotacao = idOrcamentoCotacao, Status = 1 }, dbGravacao).FirstOrDefault();
+                    //var guid = Guid.NewGuid();
 
-                    AtualizarOrcamentoCotacaoLink(tOrcamento, guid, dbGravacao);
-                    AdicionarOrcamentoCotacaoEmailQueue(tOrcamento, guid, idOrcamentoCotacao, dbGravacao);
+                    if (tOrcamentoCotacaoLink == null)
+                    {
+                        dbGravacao.transacao.Rollback();
+
+                        return new MensagemDto
+                        {
+                            tipo = "WARN",
+                            mensagem = "O endereço de e-mail necessita ser alterado, pois houve problema no envio."
+                        };
+
+                    }
+
+                    //AdicionarOrcamentoCotacaoLink(tOrcamento, guid, dbGravacao);
+                    AdicionarOrcamentoCotacaoEmailQueue(tOrcamento, tOrcamentoCotacaoLink.Guid, idOrcamentoCotacao, dbGravacao);
 
                     dbGravacao.transacao.Commit();
 
                     return new MensagemDto
                     {
-                        tipo = "INFO",
-                        mensagem = "Reenviado com Sucesso"
+                        tipo = "SUCCESS",
+                        mensagem = "Orçamento reenviado."
                     };
                  
                 }
