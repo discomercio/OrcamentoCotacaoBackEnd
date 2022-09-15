@@ -467,13 +467,17 @@ namespace Cliente
             return await bancos.ToListAsync();
         }
 
-        public async Task<IEnumerable<Cliente.Dados.EnderecoEntregaJustificativaDados>> ListarComboJustificaEndereco(string apelido)
+        public async Task<IEnumerable<Cliente.Dados.EnderecoEntregaJustificativaDados>> ListarComboJustificaEndereco(string apelido, string loja = null)
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            string loja = await (from c in db.TorcamentistaEindicador
-                                 where c.Apelido == apelido
-                                 select c.Loja).FirstOrDefaultAsync();
+            if (string.IsNullOrEmpty(loja))
+            {
+                loja = await (from c in db.TorcamentistaEindicador
+                                     where c.Apelido == apelido
+                                     select c.Loja).FirstOrDefaultAsync();
+            }
+
 
             return await ListarComboJustificaEnderecoPorLoja(db, loja);
         }
