@@ -58,6 +58,20 @@ namespace OrcamentoCotacaoLink
             }
         }
 
+        public TorcamentoCotacaoLink AtualizarComTransacao(TorcamentoCotacaoLink model, ContextoBdGravacao contextoBdGravacao)
+        {
+            var orcamentoCotacaoLink = (from c in contextoBdGravacao.TorcamentoCotacaoLink
+                                        where c.IdOrcamentoCotacao == model.IdOrcamentoCotacao
+                                        select c).LastOrDefault();
+            if (orcamentoCotacaoLink == null) return null;
+
+            orcamentoCotacaoLink.Status = model.Status;
+
+            contextoBdGravacao.SaveChanges();
+
+            return orcamentoCotacaoLink;
+        }
+
         bool BaseData<TorcamentoCotacaoLink, TorcamentoCotacaoLinkFiltro>.Excluir(TorcamentoCotacaoLink obj)
         {
             throw new NotImplementedException();
@@ -70,7 +84,29 @@ namespace OrcamentoCotacaoLink
 
         List<TorcamentoCotacaoLink> BaseData<TorcamentoCotacaoLink, TorcamentoCotacaoLinkFiltro>.PorFilroComTransacao(TorcamentoCotacaoLinkFiltro obj, ContextoBdGravacao contextoBdGravacao)
         {
-            throw new NotImplementedException();
+
+            try
+            {                
+                var saida = from c in contextoBdGravacao.TorcamentoCotacaoLink
+                            select c;
+
+                if (obj.IdOrcamentoCotacao != 0)
+                {
+                    saida = saida.Where(x => x.IdOrcamentoCotacao == obj.IdOrcamentoCotacao);
+                }
+
+                if (obj.Status != 0)
+                {
+                    saida = saida.Where(x => x.Status == obj.Status);
+                }
+
+                return saida.ToList();                
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
         }
 
         public List<TorcamentoCotacaoLink> PorFiltro(TorcamentoCotacaoLinkFiltro obj)
@@ -88,6 +124,11 @@ namespace OrcamentoCotacaoLink
                         saida = saida.Where(x => x.IdOrcamentoCotacao == obj.IdOrcamentoCotacao);
                     }
 
+                    if (obj.Status != 0)
+                    {
+                        saida = saida.Where(x => x.Status == obj.Status);
+                    }
+
                     return saida.ToList();
                 }
             }
@@ -96,11 +137,6 @@ namespace OrcamentoCotacaoLink
 
                 throw;
             }
-        }
-
-        public TorcamentoCotacaoLink AtualizarComTransacao(TorcamentoCotacaoLink model, ContextoBdGravacao contextoBdGravacao)
-        {
-            throw new NotImplementedException();
         }
 
         public void ExcluirComTransacao(TorcamentoCotacaoLink obj, ContextoBdGravacao contextoBdGravacao)

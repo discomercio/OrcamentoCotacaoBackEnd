@@ -8,5 +8,6 @@ namespace InfraBanco.Modelos.Filtros
     public class TorcamentoCotacaoLinkFiltro : IFilter
     {
         public int? IdOrcamentoCotacao { get; set; }
+        public Int16? Status { get; set; }
     }
 }
