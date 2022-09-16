@@ -66,6 +66,8 @@ namespace OrcamentoCotacaoLink
             if (orcamentoCotacaoLink == null) return null;
 
             orcamentoCotacaoLink.Status = model.Status;
+            orcamentoCotacaoLink.DataUltStatus = model.DataUltStatus;
+            orcamentoCotacaoLink.DataHoraUltStatus = model.DataHoraUltStatus;
 
             contextoBdGravacao.SaveChanges();
 

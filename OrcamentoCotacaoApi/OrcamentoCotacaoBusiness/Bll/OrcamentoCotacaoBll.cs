@@ -745,6 +745,8 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             orcamentoCotacaoLinkModel.IdOrcamentoCotacao = unchecked((int)orcamento.Id);
             orcamentoCotacaoLinkModel.Status = 2;
+            orcamentoCotacaoLinkModel.DataUltStatus = DateTime.Now;
+            orcamentoCotacaoLinkModel.DataHoraUltStatus = DateTime.Now;
 
             try
             {
