@@ -262,6 +262,53 @@ namespace OrcamentoCotacaoBusiness.Bll
             var opcao = _orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro() { IdOrcamentoCotacao = id });
             if (opcao.Count <= 0) throw new Exception("Falha ao buscar Opções do Orçamento!");
 
+            string statusEmail;
+
+            var orcamentoCotacaoEmail = _orcamentoCotacaoEmailBll.PorFiltro(new TorcamentoCotacaoEmailFiltro() { IdOrcamentoCotacao = id }).LastOrDefault();
+
+            if (orcamentoCotacaoEmail== null)
+            {
+                statusEmail = "Erro no envio do email";
+            }
+            else
+            {
+                var orcamentoCotacaoEmailQueue = _orcamentoCotacaoEmailQueueBll.PorFiltro(new TorcamentoCotacaoEmailQueueFiltro() { Id = orcamentoCotacaoEmail.IdOrcamentoCotacaoEmailQueue }).FirstOrDefault();
+
+                switch (orcamentoCotacaoEmailQueue.Status)
+                {
+                    case 0:
+                        statusEmail = "Aguardando envio do email";
+                        break;
+                    case 2:
+                        statusEmail = "Email enviado com sucesso";
+                        break;
+                    case 3:
+                        statusEmail = "Erro no envio do email";
+                        break;
+                    case 4:
+                        statusEmail = "Erro no envio do email";
+                        break;
+                    default:
+                        statusEmail = "Erro no envio do email";
+                        break;
+                }
+
+                var orcamentoCotacaoLink = _orcamentoCotacaoLinkBll.PorFiltro(new TorcamentoCotacaoLinkFiltro() { IdOrcamentoCotacao = id, Status = 3 }).LastOrDefault();
+
+                if (orcamentoCotacaoLink != null)
+                {
+                    statusEmail = "Erro no envio do email";
+                }
+
+                if (orcamentoCotacaoEmailQueue.AttemptsQty > 3)
+                {
+                    statusEmail = "Erro no envio do email";
+                }
+
+            }
+
+            if (opcao.Count <= 0) throw new Exception("Falha ao buscar Opções do Orçamento!");
+
             var usuario = _usuarioBll.PorFiltro(new TusuarioFiltro() { id = orcamento.IdVendedor }).FirstOrDefault().Usuario;
             var parceiro = orcamento.IdIndicador != null ? _orcamentistaEIndicadorBll
                 .BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = (int)orcamento.IdIndicador, acessoHabilitado = 1 }).Apelido : null;
@@ -292,6 +339,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 EntregaImediata = orcamento.StEtgImediata == (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ? false : true,
                 DataEntregaImediata = orcamento.PrevisaoEntregaData,
                 Status = orcamento.Status,
+                statusEmail = statusEmail,
                 DataCadastro = orcamento.DataCadastro,
                 IdIndicador = orcamento.IdIndicador,
                 IdIndicadorVendedor = orcamento.IdIndicadorVendedor,

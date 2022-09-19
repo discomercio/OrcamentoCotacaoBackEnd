@@ -63,6 +63,9 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 
         [JsonProperty("status")]
         public short Status { get; set; }
-        
+
+        [JsonProperty("statusEmail")]
+        public string statusEmail { get; set; }
+
     }
 }

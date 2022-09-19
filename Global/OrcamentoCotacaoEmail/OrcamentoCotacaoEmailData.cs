@@ -81,7 +81,23 @@ namespace OrcamentoCotacaoEmail
 
         public List<TorcamentoCotacaoEmail> PorFiltro(TorcamentoCotacaoEmailFiltro obj)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var db = contextoProvider.GetContextoLeitura())
+                {
+
+                    var saida = from c in db.torcamentoCotacaoEmail where c.IdOrcamentoCotacao == obj.IdOrcamentoCotacao
+                                select c;
+
+                    return saida.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
+
     }
 }
