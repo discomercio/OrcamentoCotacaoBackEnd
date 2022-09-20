@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace PrepedidoBusiness.Dto.Pedido
+namespace OrcamentoCotacaoBusiness.Dto.Pedido
 {
     public class PedidoDtoPedido
     {

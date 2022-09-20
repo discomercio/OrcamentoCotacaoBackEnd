@@ -5,18 +5,18 @@ using System.Collections.Generic;
 using System.Text;
 using Xunit;
 using System.Linq;
-namespace Especificacao.Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApiBll.CadastrarPrepedido
+namespace Especificacao.Ambiente.PrepedidoApi.Prepedido.Bll.PrepedidoApiBll.CadastrarPrepedido
 {
-    class CadastrarPrepedidoPrepedidoApi : Testes.Pedido.IPedidoPassosComuns
+    public class CadastrarPrepedidoPrepedidoApi : Testes.Pedido.IPedidoPassosComuns
     {
-        private readonly global::PrepedidoBusiness.Bll.PrepedidoApiBll prepedidoApiBll;
+        private readonly global::Prepedido.Bll.PrepedidoApiBll prepedidoApiBll;
 
         public CadastrarPrepedidoPrepedidoApi()
         {
-            prepedidoApiBll = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<global::PrepedidoBusiness.Bll.PrepedidoApiBll>();
+            prepedidoApiBll = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<global::Prepedido.Bll.PrepedidoApiBll>();
         }
 
-        private global::PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido.PrePedidoDto prePedidoDto = CadastrarPrepedidoDados.PrepedidoBase();
+        private global::Prepedido.Dto.PrePedidoDto prePedidoDto = CadastrarPrepedidoDados.PrepedidoBase();
         public void GivenPrepedidoBase()
         {
             if (ignorarFeature) return;
@@ -116,7 +116,7 @@ namespace Especificacao.Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApi
                     prePedidoDto.EnderecoCadastroClientePrepedido.Endereco_tipo_pessoa = valor;
                     return;
                 default:
-                    Assert.Equal("", $"{campo} desconhecido na rotina Especificacao.Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApiBll.CadastrarPrepedido.WhenInformo");
+                    Assert.Equal("", $"{campo} desconhecido na rotina Especificacao.Ambiente.PrepedidoApi.Prepedido.Bll.PrepedidoApiBll.CadastrarPrepedido.WhenInformo");
                     break;
             }
         }
@@ -129,7 +129,7 @@ namespace Especificacao.Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApi
             numeroItens = numeroItens > 100 ? 100 : numeroItens;
             var lp = prePedidoDto.ListaProdutos;
             while (lp.Count < numeroItens)
-                lp.Add(new global::PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido.PrepedidoProdutoDtoPrepedido());
+                lp.Add(new global::Prepedido.Dto.PrepedidoProdutoDtoPrepedido());
             while (lp.Count > numeroItens)
                 lp.RemoveAt(lp.Count - 1);
         }
@@ -141,7 +141,7 @@ namespace Especificacao.Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApi
             var item = prePedidoDto.ListaProdutos[numeroItem];
             if (Testes.Utils.WhenInformoCampo.InformarCampo(campo, valor, item))
                 return;
-            Assert.Equal("", $"{campo} desconhecido na rotina Especificacao.Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApiBll.CadastrarPrepedido.ListaDeItensInformo");
+            Assert.Equal("", $"{campo} desconhecido na rotina Especificacao.Ambiente.PrepedidoApi.Prepedido.Bll.PrepedidoApiBll.CadastrarPrepedido.ListaDeItensInformo");
         }
 
 

@@ -1,7 +1,7 @@
 ﻿using Prepedido.PedidoVisualizacao.Dados.DetalhesPedido;
 using System.Collections.Generic;
 
-namespace PrepedidoBusiness.Dto.Pedido.DetalhesPedido
+namespace OrcamentoCotacaoBusiness.Dto.Pedido.DetalhesPedido
 {
     public class PedidoProdutosDtoPedido
     {

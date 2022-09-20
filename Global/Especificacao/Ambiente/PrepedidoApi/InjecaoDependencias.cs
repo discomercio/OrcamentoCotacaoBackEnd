@@ -8,23 +8,23 @@ namespace Especificacao.Ambiente.PrepedidoApi
         public static void ConfigurarDependencias(IServiceCollection services)
         {
             //bll
-            services.AddTransient<global::PrepedidoBusiness.Bll.PrepedidoApiBll, global::PrepedidoBusiness.Bll.PrepedidoApiBll>();
-            services.AddTransient<Prepedido.PrepedidoBll, Prepedido.PrepedidoBll>();
-            services.AddTransient<global::PrepedidoBusiness.Bll.ClientePrepedidoBll, global::PrepedidoBusiness.Bll.ClientePrepedidoBll>();
+            services.AddTransient<global::Prepedido.Bll.PrepedidoApiBll, global::Prepedido.Bll.PrepedidoApiBll>();
+            services.AddTransient<global::Prepedido.Bll.PrepedidoBll, global::Prepedido.Bll.PrepedidoBll>();
+            services.AddTransient<global::Prepedido.Bll.ClientePrepedidoBll, global::Prepedido.Bll.ClientePrepedidoBll>();
             services.AddTransient<Cliente.ClienteBll, Cliente.ClienteBll>();
-            services.AddTransient<Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll, Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll>();
-            services.AddTransient<global::PrepedidoBusiness.Bll.AcessoBll, global::PrepedidoBusiness.Bll.AcessoBll>();
+            services.AddTransient<global::Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll, global::Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll>();
+            services.AddTransient<global::Prepedido.Bll.AcessoBll, global::Prepedido.Bll.AcessoBll>();
             services.AddTransient<Produto.ProdutoGeralBll, Produto.ProdutoGeralBll>();
-            services.AddTransient<global::PrepedidoBusiness.Bll.ProdutoPrepedidoBll, global::PrepedidoBusiness.Bll.ProdutoPrepedidoBll>();
+            services.AddTransient<global::Prepedido.Bll.ProdutoPrepedidoBll, global::Prepedido.Bll.ProdutoPrepedidoBll>();
             services.AddTransient<Cep.CepBll, Cep.CepBll>();
-            services.AddTransient<global::PrepedidoBusiness.Bll.CepPrepedidoBll, global::PrepedidoBusiness.Bll.CepPrepedidoBll>();
+            services.AddTransient<global::Prepedido.Bll.CepPrepedidoBll, global::Prepedido.Bll.CepPrepedidoBll>();
             services.AddTransient<FormaPagtoBll, FormaPagtoBll>();
-            services.AddTransient<global::PrepedidoBusiness.Bll.FormaPagtoPrepedidoBll, global::PrepedidoBusiness.Bll.FormaPagtoPrepedidoBll>();
+            services.AddTransient<global::Prepedido.Bll.FormaPagtoPrepedidoBll, global::Prepedido.Bll.FormaPagtoPrepedidoBll>();
             services.AddTransient<ValidacoesFormaPagtoBll, ValidacoesFormaPagtoBll>();
             services.AddTransient<Produto.CoeficienteBll, Produto.CoeficienteBll>();
-            services.AddTransient<global::PrepedidoBusiness.Bll.CoeficientePrepedidoBll, global::PrepedidoBusiness.Bll.CoeficientePrepedidoBll>();
-            services.AddTransient<Prepedido.ValidacoesPrepedidoBll, Prepedido.ValidacoesPrepedidoBll>();
-            services.AddTransient<Prepedido.MontarLogPrepedidoBll, Prepedido.MontarLogPrepedidoBll>();
+            services.AddTransient<global::Prepedido.Bll.CoeficientePrepedidoBll, global::Prepedido.Bll.CoeficientePrepedidoBll>();
+            services.AddTransient<global::Prepedido.Bll.ValidacoesPrepedidoBll, global::Prepedido.Bll.ValidacoesPrepedidoBll>();
+            services.AddTransient<global::Prepedido.Bll.MontarLogPrepedidoBll, global::Prepedido.Bll.MontarLogPrepedidoBll>();
 
             services.AddTransient<Cep.IBancoNFeMunicipio, Testes.Utils.BancoTestes.TestesBancoNFeMunicipio>();
         }

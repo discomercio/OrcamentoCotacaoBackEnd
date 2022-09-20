@@ -1,9 +1,9 @@
 ﻿using Cep;
-using PrepedidoBusiness.Dto.Cep;
+using Prepedido.Dto;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace PrepedidoBusiness.Bll
+namespace Prepedido.Bll
 {
     public class CepPrepedidoBll
     {

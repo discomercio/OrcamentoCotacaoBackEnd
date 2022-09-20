@@ -16,9 +16,9 @@ namespace Pedido.Criacao
         #region construtor
         public readonly InfraBanco.ContextoBdProvider ContextoProvider;
         public readonly ValidacoesFormaPagtoBll ValidacoesFormaPagtoBll;
-        public readonly Prepedido.PrepedidoBll PrepedidoBll;
+        public readonly Prepedido.Bll.PrepedidoBll PrepedidoBll;
         public readonly FormaPagtoBll FormaPagtoBll;
-        public readonly Prepedido.ValidacoesPrepedidoBll ValidacoesPrepedidoBll;
+        public readonly Prepedido.Bll.ValidacoesPrepedidoBll ValidacoesPrepedidoBll;
         public readonly PedidoVisualizacaoBll pedidoVisualizacaoBll;
         public readonly ClienteBll ClienteBll;
         public readonly CepBll CepBll;
@@ -27,8 +27,8 @@ namespace Pedido.Criacao
         internal readonly Execucao.Gravacao Gravacao;
 
         public PedidoCriacao(InfraBanco.ContextoBdProvider contextoProvider,
-            ValidacoesFormaPagtoBll validacoesFormaPagtoBll, Prepedido.PrepedidoBll prepedidoBll,
-            FormaPagtoBll formaPagtoBll, Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll,
+            ValidacoesFormaPagtoBll validacoesFormaPagtoBll, Prepedido.Bll.PrepedidoBll prepedidoBll,
+            FormaPagtoBll formaPagtoBll, Prepedido.Bll.ValidacoesPrepedidoBll validacoesPrepedidoBll,
             Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll pedidoVisualizacaoBll,
             ClienteBll clienteBll, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio)
         {

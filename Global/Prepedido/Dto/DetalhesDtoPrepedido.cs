@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
+namespace Prepedido.Dto
 {
     public class DetalhesDtoPrepedido
     {

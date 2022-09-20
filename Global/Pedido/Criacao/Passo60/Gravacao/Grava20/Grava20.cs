@@ -30,7 +30,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava20
                 Execucao.Id_cliente);
 
             //estes dados são lidso com o contexto de leitura, e ficam fora da transação
-            List<Produto.RegrasCrtlEstoque.RegrasBll> listaRegras = await Prepedido.PrepedidoBll.ObtemCtrlEstoqueProdutoRegra(
+            List<Produto.RegrasCrtlEstoque.RegrasBll> listaRegras = await Prepedido.Bll.PrepedidoBll.ObtemCtrlEstoqueProdutoRegra(
                 Criacao.ContextoProvider, prepedido, Retorno.ListaErros);
 
             return listaRegras;

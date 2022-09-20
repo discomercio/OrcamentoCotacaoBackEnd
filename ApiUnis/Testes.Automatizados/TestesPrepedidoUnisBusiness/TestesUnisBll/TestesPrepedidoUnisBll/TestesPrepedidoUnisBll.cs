@@ -1,11 +1,11 @@
 ﻿using Cliente;
 using Newtonsoft.Json;
 using Prepedido;
+using Prepedido.Bll;
+using Prepedido.Dto;
 using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll;
 using PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto;
-using PrepedidoBusiness.Dto.ClienteCadastro;
-using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using PrepedidoUnisBusiness.UnisDto.ClienteUnisDto;
 using System;
 using System.Collections.Generic;

@@ -1,5 +1,6 @@
 ﻿
-using PrepedidoBusiness.Dto.FormaPagto;
+
+using Prepedido.Dto;
 
 namespace PrepedidoUnisBusiness.UnisDto.FormaPagtoUnisDto
 {

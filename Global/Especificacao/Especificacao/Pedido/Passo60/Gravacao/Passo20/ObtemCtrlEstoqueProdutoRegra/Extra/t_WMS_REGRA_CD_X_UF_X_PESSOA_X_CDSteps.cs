@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using TechTalk.SpecFlow;
 using Xunit;
+using Prepedido.Bll;
 
 namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo20.ObtemCtrlEstoqueProdutoRegra.t_WMS_REGRA_CD_X_UF_X_PESSOA_CD
 {

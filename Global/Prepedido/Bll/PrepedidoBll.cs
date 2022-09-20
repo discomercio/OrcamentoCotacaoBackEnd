@@ -16,27 +16,27 @@ using System.Linq;
 using System.Threading.Tasks;
 using UtilsGlobais;
 
-namespace Prepedido
+namespace Prepedido.Bll
 {
     public class PrepedidoBll
     {
         private readonly ContextoBdProvider contextoProvider;
         private readonly Cliente.ClienteBll clienteBll;
-        private readonly Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll;
+        private readonly ValidacoesPrepedidoBll validacoesPrepedidoBll;
         private readonly CepBll cepBll;
         private readonly ValidacoesFormaPagtoBll validacoesFormaPagtoBll;
-        private readonly Prepedido.MontarLogPrepedidoBll montarLogPrepedidoBll;
+        private readonly MontarLogPrepedidoBll montarLogPrepedidoBll;
         private readonly IBancoNFeMunicipio bancoNFeMunicipio;
         private readonly FormaPagtoBll formaPagtoBll;
-        private readonly Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll pedidoVisualizacaoBll;
+        private readonly PedidoVisualizacao.PedidoVisualizacaoBll pedidoVisualizacaoBll;
 
         public PrepedidoBll(
             ContextoBdProvider contextoProvider,
             Cliente.ClienteBll clienteBll,
-            Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll,
+            ValidacoesPrepedidoBll validacoesPrepedidoBll,
             CepBll cepBll,
             ValidacoesFormaPagtoBll validacoesFormaPagtoBll,
-            Prepedido.MontarLogPrepedidoBll montarLogPrepedidoBll,
+            Prepedido.Bll.MontarLogPrepedidoBll montarLogPrepedidoBll,
             IBancoNFeMunicipio bancoNFeMunicipio,
             FormaPagtoBll formaPagtoBll,
             PedidoVisualizacao.PedidoVisualizacaoBll pedidoVisualizacaoBll
@@ -843,7 +843,7 @@ namespace Prepedido
                     //verifica se o prepedio já foi gravado
                     if (verificarPrepedidoRepetido)
                     {
-                        var prepedidoJaCadastradoNumero = await new Prepedido.PrepedidoRepetidoBll(dbgravacao).PrepedidoJaCadastradoCriterioSiteColors(prePedido);
+                        var prepedidoJaCadastradoNumero = await new PrepedidoRepetidoBll(dbgravacao).PrepedidoJaCadastradoCriterioSiteColors(prePedido);
                         if (!String.IsNullOrEmpty(prepedidoJaCadastradoNumero))
                         {
                             lstErros.Add($"Esta solicitação já foi gravada com o número {prepedidoJaCadastradoNumero}");

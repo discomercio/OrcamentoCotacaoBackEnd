@@ -1,8 +1,7 @@
 ﻿using Prepedido.Dados.DetalhesPrepedido;
-using PrepedidoBusiness.Dto.ClienteCadastro;
 using System.Collections.Generic;
 
-namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
+namespace Prepedido.Dto
 {
     public class PrePedidoDto
     {

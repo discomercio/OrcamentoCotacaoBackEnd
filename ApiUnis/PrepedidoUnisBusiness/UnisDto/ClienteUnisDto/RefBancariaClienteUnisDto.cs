@@ -1,4 +1,4 @@
-﻿using PrepedidoBusiness.Dto.ClienteCadastro.Referencias;
+﻿using Prepedido.Dto;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

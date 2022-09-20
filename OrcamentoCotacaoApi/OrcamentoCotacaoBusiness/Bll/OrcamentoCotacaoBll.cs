@@ -15,7 +15,6 @@ using OrcamentoCotacaoBusiness.Dto;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
 using OrcamentoCotacaoLink;
-using PrepedidoBusiness.Bll;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

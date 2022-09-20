@@ -1,8 +1,8 @@
 ﻿using InfraBanco.Constantes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PrepedidoBusiness.Bll;
-using PrepedidoBusiness.Dto.ClienteCadastro;
+using Prepedido.Bll;
+using Prepedido.Dto;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UtilsGlobais;

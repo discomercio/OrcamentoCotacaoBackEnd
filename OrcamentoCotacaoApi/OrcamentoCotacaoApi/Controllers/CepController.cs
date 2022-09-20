@@ -1,7 +1,7 @@
 ﻿using Cep;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PrepedidoBusiness.Dto.Cep;
+using Prepedido.Dto;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UtilsGlobais;
@@ -13,11 +13,11 @@ namespace PrepedidoApi.Controllers
     [Authorize(Roles = Autenticacao.RoleAcesso)]
     public class CepController : Controller
     {
-        private readonly PrepedidoBusiness.Bll.CepPrepedidoBll cepPrepedidoBll;
+        private readonly Prepedido.Bll.CepPrepedidoBll cepPrepedidoBll;
         private readonly CepBll cepBll;
 
         public CepController(
-            PrepedidoBusiness.Bll.CepPrepedidoBll cepPrepedidoBll, 
+            Prepedido.Bll.CepPrepedidoBll cepPrepedidoBll, 
             Cep.CepBll cepBll)
         {
             this.cepPrepedidoBll = cepPrepedidoBll;

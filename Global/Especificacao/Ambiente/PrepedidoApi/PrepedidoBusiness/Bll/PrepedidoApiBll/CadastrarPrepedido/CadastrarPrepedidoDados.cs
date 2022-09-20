@@ -3,22 +3,22 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
-namespace Especificacao.Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApiBll.CadastrarPrepedido
+namespace Especificacao.Ambiente.PrepedidoApi.Prepedido.Bll.PrepedidoApiBll.CadastrarPrepedido
 {
     static class CadastrarPrepedidoDados
     {
-        public static global::PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido.PrePedidoDto PrepedidoBase() => PrepedidoParceladoCartao1vez();
+        public static global::Prepedido.Dto.PrePedidoDto PrepedidoBase() => PrepedidoParceladoCartao1vez();
 
-        public static global::PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido.PrePedidoDto PrepedidoParceladoCartao1vez()
+        public static global::Prepedido.Dto.PrePedidoDto PrepedidoParceladoCartao1vez()
         {
-            var ret = JsonConvert.DeserializeObject<global::PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido.PrePedidoDto>(
+            var ret = JsonConvert.DeserializeObject<global::Prepedido.Dto.PrePedidoDto>(
                 JsonConvert.SerializeObject(PrepedidoBaseParceladoCartao1vez()));
             return ret;
         }
 
         public static readonly string Usuario = "USRPAPI";
 
-        public static global::PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido.PrePedidoDto PrepedidoParceladoAvista()
+        public static global::Prepedido.Dto.PrePedidoDto PrepedidoParceladoAvista()
         {
             var ret = PrepedidoParceladoCartao1vez();
             ret.FormaPagtoCriacao.CustoFinancFornecTipoParcelamento = "AV";
@@ -40,7 +40,7 @@ namespace Especificacao.Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApi
             return ret;
         }
 
-        public static global::PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido.PrePedidoDto PrepedidoBaseComEnderecoDeEntrega()
+        public static global::Prepedido.Dto.PrePedidoDto PrepedidoBaseComEnderecoDeEntrega()
         {
             var ret = PrepedidoParceladoCartao1vez();
             ret.EnderecoEntrega.OutroEndereco = true;
@@ -48,26 +48,26 @@ namespace Especificacao.Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApi
             return ret;
         }
 
-        public static global::PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido.PrePedidoDto PrepedidoBaseClientePF()
+        public static global::Prepedido.Dto.PrePedidoDto PrepedidoBaseClientePF()
         {
             return PrepedidoParceladoCartao1vez();
         }
 
-        public static global::PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido.PrePedidoDto PrepedidoBaseClientePJ()
+        public static global::Prepedido.Dto.PrePedidoDto PrepedidoBaseClientePJ()
         {
             var ret = PrepedidoParceladoCartao1vez();
             MudarParaClientePj(ret);
             return ret;
         }
 
-        public static global::PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido.PrePedidoDto PrepedidoBaseClientePJComEnderecoDeEntrega()
+        public static global::Prepedido.Dto.PrePedidoDto PrepedidoBaseClientePJComEnderecoDeEntrega()
         {
             var ret = PrepedidoBaseComEnderecoDeEntrega();
             MudarParaClientePj(ret);
             return ret;
         }
 
-        private static void MudarParaClientePj(global::PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido.PrePedidoDto ret)
+        private static void MudarParaClientePj(global::Prepedido.Dto.PrePedidoDto ret)
         {
             ret.EnderecoCadastroClientePrepedido.Endereco_tipo_pessoa = "PJ";
             ret.EnderecoCadastroClientePrepedido.Endereco_cnpj_cpf = "76297703000195";
@@ -85,18 +85,18 @@ namespace Especificacao.Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApi
             ret.DadosCliente.Cnpj_Cpf = ret.EnderecoCadastroClientePrepedido.Endereco_cnpj_cpf;
         }
 
-        private static global::PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido.PrePedidoDto PrepedidoBaseParceladoCartao1vez()
+        private static global::Prepedido.Dto.PrePedidoDto PrepedidoBaseParceladoCartao1vez()
         {
             Cliente.ClienteBll clienteBll = Testes.Utils.InjecaoDependencia.ProvedorServicos.ObterServicos().GetRequiredService<Cliente.ClienteBll>();
 
             //pegamos da uni!!
             var prePedidoUnis = global::Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido.CadastrarPrepedidoDados.PrepedidoBase();
-            global::PrepedidoBusiness.Dto.ClienteCadastro.EnderecoCadastralClientePrepedidoDto endCadastralArclube =
+            global::Prepedido.Dto.EnderecoCadastralClientePrepedidoDto endCadastralArclube =
                 PrepedidoUnisBusiness.UnisDto.ClienteUnisDto.EnderecoCadastralClientePrepedidoUnisDto.EnderecoCadastralClientePrepedidoDtoDeEnderecoCadastralClientePrepedidoUnisDto(
                     prePedidoUnis.EnderecoCadastralCliente);
 
-            List<global::PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido.PrepedidoProdutoDtoPrepedido> lstProdutosArclube
-                = new List<global::PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido.PrepedidoProdutoDtoPrepedido>();
+            List<global::Prepedido.Dto.PrepedidoProdutoDtoPrepedido> lstProdutosArclube
+                = new List<global::Prepedido.Dto.PrepedidoProdutoDtoPrepedido>();
             prePedidoUnis.ListaProdutos.ForEach(x =>
             {
                 var ret = PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto.PrePedidoProdutoPrePedidoUnisDto.
@@ -105,7 +105,7 @@ namespace Especificacao.Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApi
                 lstProdutosArclube.Add(ret);
             });
 
-            global::PrepedidoBusiness.Dto.ClienteCadastro.ClienteCadastroDto clienteArclube = global::PrepedidoBusiness.Dto.ClienteCadastro.ClienteCadastroDto.ClienteCadastroDto_De_ClienteCadastroDados(clienteBll.BuscarCliente(prePedidoUnis.Cnpj_Cpf,
+            global::Prepedido.Dto.ClienteCadastroDto clienteArclube = global::Prepedido.Dto.ClienteCadastroDto.ClienteCadastroDto_De_ClienteCadastroDados(clienteBll.BuscarCliente(prePedidoUnis.Cnpj_Cpf,
                 prePedidoUnis.Indicador_Orcamentista).Result);
 
             //precisa para forçar a conversao do endereço de engtrega

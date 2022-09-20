@@ -5,7 +5,7 @@ using MagentoBusiness.MagentoDto.ClienteMagentoDto;
 using MagentoBusiness.MagentoDto.PedidoMagentoDto;
 using MagentoBusiness.UtilsMagento;
 using Microsoft.EntityFrameworkCore;
-using Prepedido;
+using Prepedido.Bll;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,7 +27,7 @@ namespace MagentoBusiness.MagentoBll.MagentoBll.PedidoMagento
 
         public PedidoMagentoBll(InfraBanco.ContextoBdProvider contextoProvider,
             Produto.ProdutoGeralBll produtoGeralBll,
-            Prepedido.ValidacoesPrepedidoBll validacoesPrepedidoBll, PrepedidoBll prepedidoBll,
+            ValidacoesPrepedidoBll validacoesPrepedidoBll, PrepedidoBll prepedidoBll,
             ConfiguracaoApiMagento configuracaoApiMagento, Pedido.Criacao.PedidoCriacao pedidoCriacao,
             PedidoMagento.PedidoMagentoClienteBll pedidoMagentoClienteBll)
         {

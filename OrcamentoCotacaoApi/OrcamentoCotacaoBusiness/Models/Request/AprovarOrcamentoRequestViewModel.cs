@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using PrepedidoBusiness.Dto.ClienteCadastro;
+using Prepedido.Dto;
 using System;
 using System.Collections.Generic;
 using System.Text;

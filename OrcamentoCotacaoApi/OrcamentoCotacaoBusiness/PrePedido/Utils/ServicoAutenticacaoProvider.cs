@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PrepedidoApi.Utils
+namespace OrcamentoCotacaoBusiness.PrePedido.Utils
 {
     /*
      * efetivamente faz o lofgin; quer dizer, efetivamente verifica a senha
@@ -12,9 +12,9 @@ namespace PrepedidoApi.Utils
     public class ServicoAutenticacaoProvider : InfraIdentity.IServicoAutenticacaoProvider
     {
 
-        private readonly PrepedidoBusiness.Bll.AcessoBll acessoBll;
+        private readonly Prepedido.Bll.AcessoBll acessoBll;
 
-        public ServicoAutenticacaoProvider(PrepedidoBusiness.Bll.AcessoBll acessoBll)
+        public ServicoAutenticacaoProvider(Prepedido.Bll.AcessoBll acessoBll)
         {
             this.acessoBll = acessoBll;
         }

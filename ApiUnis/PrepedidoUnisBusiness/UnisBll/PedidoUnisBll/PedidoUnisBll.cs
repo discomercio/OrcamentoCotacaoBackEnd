@@ -33,12 +33,12 @@ namespace PrepedidoUnisBusiness.UnisBll.PedidoUnisBll
 
                 if (pedidoDados != null)
                 {
-                    PrepedidoBusiness.Dto.ClienteCadastro.DadosClienteCadastroDto dadosCliente =
-                    PrepedidoBusiness.Dto.ClienteCadastro.DadosClienteCadastroDto
+                    Prepedido.Dto.DadosClienteCadastroDto dadosCliente =
+                    Prepedido.Dto.DadosClienteCadastroDto
                     .DadosClienteCadastroDto_De_DadosClienteCadastroDados(pedidoDados.DadosCliente);
 
-                    PrepedidoBusiness.Dto.ClienteCadastro.EnderecoEntregaDtoClienteCadastro enderecoEntrega =
-                        PrepedidoBusiness.Dto.ClienteCadastro.EnderecoEntregaDtoClienteCadastro
+                    Prepedido.Dto.EnderecoEntregaDtoClienteCadastro enderecoEntrega =
+                        Prepedido.Dto.EnderecoEntregaDtoClienteCadastro
                         .EnderecoEntregaDtoClienteCadastro_De_EnderecoEntregaClienteCadastroDados(pedidoDados.EnderecoEntrega);
 
                     pedidoUnis = PedidoUnisDto.PedidoUnisDto_De_PedidoDados(pedidoDados, dadosCliente, enderecoEntrega);

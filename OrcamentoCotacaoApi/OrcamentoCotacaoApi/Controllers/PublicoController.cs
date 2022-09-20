@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
-using PrepedidoBusiness.Bll;
-using PrepedidoBusiness.Dto.Cep;
+using Prepedido.Bll;
+using Prepedido.Dto;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,14 +18,14 @@ namespace OrcamentoCotacaoApi.Controllers
     {
         private readonly ILogger<OrcamentoController> _logger;
         private readonly OrcamentoCotacaoBll _orcamentoBll;
-        private readonly PrepedidoBusiness.Bll.CepPrepedidoBll _cepPrepedidoBll;
+        private readonly CepPrepedidoBll _cepPrepedidoBll;
         private readonly CepBll _cepBll;
         private readonly ClientePrepedidoBll _clientePrepedidoBll;
 
         public PublicoController(
             ILogger<OrcamentoController> logger,
             OrcamentoCotacaoBll orcamentoBll,
-            PrepedidoBusiness.Bll.CepPrepedidoBll cepPrepedidoBll,
+            CepPrepedidoBll cepPrepedidoBll,
             CepBll cepBll,
             ClientePrepedidoBll _clientePrepedidoBll
             )

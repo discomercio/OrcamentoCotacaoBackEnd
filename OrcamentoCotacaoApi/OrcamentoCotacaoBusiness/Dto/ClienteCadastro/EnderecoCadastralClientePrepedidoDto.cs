@@ -1,6 +1,6 @@
 ﻿using Cliente.Dados;
 
-namespace PrepedidoBusiness.Dto.ClienteCadastro
+namespace OrcamentoCotacaoBusiness.Dto.ClienteCadastro
 {
     public class EnderecoCadastralClientePrepedidoDto
     {

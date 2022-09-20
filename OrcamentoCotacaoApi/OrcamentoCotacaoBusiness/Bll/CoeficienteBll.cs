@@ -1,4 +1,4 @@
-﻿using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
+﻿using Prepedido.Dto;
 using OrcamentoCotacaoBusiness.Dto.Produto;
 using System;
 using System.Collections.Generic;
@@ -40,19 +40,19 @@ namespace OrcamentoCotacaoBusiness.Bll
 
 
 
-        public async Task<IEnumerable<CoeficienteDto>> BuscarListaCoeficientes(List<PrepedidoProdutoDtoPrepedido> produtos)
+        public async Task<IEnumerable<Dto.Produto.CoeficienteDto>> BuscarListaCoeficientes(List<PrepedidoProdutoDtoPrepedido> produtos)
         {
             List<string> fabricantesDistinct = (from c in produtos
                                                 select c.Fabricante).Distinct().ToList();
             IEnumerable<Produto.Dados.CoeficienteDados> ret = await coeficienteBll.BuscarListaCoeficientesFabricantesDistinct(fabricantesDistinct);
 
-            return CoeficienteDto.CoeficienteDtoLista_De_CoeficienteDados(ret);
+            return Dto.Produto.CoeficienteDto.CoeficienteDtoLista_De_CoeficienteDados(ret);
         }
 
-        public async Task<IEnumerable<IEnumerable<CoeficienteDto>>> BuscarListaCoeficientesFornecedores(List<string> lstFornecedores)
+        public async Task<IEnumerable<IEnumerable<Dto.Produto.CoeficienteDto>>> BuscarListaCoeficientesFornecedores(List<string> lstFornecedores)
         {
             IEnumerable<IEnumerable<Produto.Dados.CoeficienteDados>> ret = await coeficienteBll.BuscarListaCoeficientesFornecedores(lstFornecedores);
-            return CoeficienteDto.CoeficienteDtoListaLista_De_CoeficienteDados(ret);
+            return Dto.Produto.CoeficienteDto.CoeficienteDtoListaLista_De_CoeficienteDados(ret);
         }
 
     }

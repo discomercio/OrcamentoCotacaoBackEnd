@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PrepedidoBusiness.Dto.Cep
+namespace Prepedido.Dto
 {
     public class CepDto
     {

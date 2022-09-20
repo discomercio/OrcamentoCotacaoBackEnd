@@ -1,7 +1,6 @@
 ﻿using InfraBanco.Constantes;
 using Newtonsoft.Json;
 using PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto;
-using PrepedidoBusiness.Dto.ClienteCadastro.Referencias;
 using System;
 using System.Collections.Generic;
 using System.Linq;

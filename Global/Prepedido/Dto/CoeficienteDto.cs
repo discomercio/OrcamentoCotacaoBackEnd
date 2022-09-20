@@ -1,7 +1,7 @@
 ﻿using Produto.Dados;
 using System.Collections.Generic;
 
-namespace PrepedidoBusiness.Dto.Produto
+namespace Prepedido.Dto
 {
     public class CoeficienteDto
     {

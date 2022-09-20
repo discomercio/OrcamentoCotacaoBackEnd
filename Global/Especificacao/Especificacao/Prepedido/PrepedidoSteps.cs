@@ -17,7 +17,7 @@ namespace Especificacao.Especificacao.Prepedido
                     "Especificacao.Prepedido.Prepedido.PrepedidoListaDependencias");
             }
             {
-                var imp = new Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApiBll.CadastrarPrepedido.CadastrarPrepedidoPrepedidoApi();
+                var imp = new Ambiente.PrepedidoApi.Prepedido.Bll.PrepedidoApiBll.CadastrarPrepedido.CadastrarPrepedidoPrepedidoApi();
                 base.AdicionarImplementacao(imp);
                 RegistroDependencias.AdicionarDependencia("Ambiente.PrepedidoApi.PrepedidoBusiness.Bll.PrepedidoApiBll.CadastrarPrepedido.CadastrarPrepedidoPrepedidoApiListaDependencias", imp,
                     "Especificacao.Prepedido.Prepedido.PrepedidoListaDependencias");

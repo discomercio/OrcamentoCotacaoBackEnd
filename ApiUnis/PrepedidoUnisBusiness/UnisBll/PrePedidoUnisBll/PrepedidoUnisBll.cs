@@ -2,10 +2,11 @@
 using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using Prepedido;
+using Prepedido.Bll;
 using Prepedido.Dados.DetalhesPrepedido;
+using Prepedido.Dto;
 using PrepedidoApiUnisBusiness.UnisBll.ClienteUnisBll;
 using PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto;
-using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
 using PrepedidoUnisBusiness.UnisDto.ClienteUnisDto;
 using PrepedidoUnisBusiness.UnisDto.PrepedidoUnisDto;
 using PrepedidoUnisBusiness.Utils;
@@ -177,7 +178,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
 
         public async Task<string> PrepedidosRepetidos(Prepedido.Dados.DetalhesPrepedido.PrePedidoDados prePedidoDados, InfraBanco.ContextoBdGravacao dbgravacao)
         {
-            Prepedido.PrepedidoRepetidoBll prepedidoRepetidoBll = new Prepedido.PrepedidoRepetidoBll(dbgravacao);
+            PrepedidoRepetidoBll prepedidoRepetidoBll = new PrepedidoRepetidoBll(dbgravacao);
 
             //repetição totalmente igual
             var repetidos = await prepedidoRepetidoBll.PrepedidoJaCadastradoDesdeData(prePedidoDados, DateTime.Now.AddSeconds(-1 * configuracaoApiUnis.LimitePrepedidos.LimitePrepedidosExatamenteIguais_TempoSegundos));

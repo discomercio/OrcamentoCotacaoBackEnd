@@ -185,7 +185,7 @@ namespace Especificacao.Ambiente.ApiUnis.PrepedidoUnis.CadastrarPrepedido
             }
         }
         //3 versoes da mesma rotina...
-        public static void EstaticoDeixarFormaDePagamentoConsistente(global::PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido.PrePedidoDto prePedidoUnisDto)
+        public static void EstaticoDeixarFormaDePagamentoConsistente(global::Prepedido.Dto.PrePedidoDto prePedidoUnisDto)
         {
             var total = prePedidoUnisDto.ValorTotalDestePedidoComRA;
             var fp = prePedidoUnisDto.FormaPagtoCriacao;

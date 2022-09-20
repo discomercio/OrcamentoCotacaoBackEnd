@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PrepedidoUnisBusiness.UnisDto.ProdutoUnisDto
 {
-    public class ProdutoFilhoUnisDto : PrepedidoBusiness.Dto.Prepedido.ProdutoFilhoDto
+    public class ProdutoFilhoUnisDto : Prepedido.Dto.ProdutoFilhoDto
     {
         internal static List<ProdutoFilhoUnisDto> ProdutoFilhoUnisDtoListaDeProdutoFilhoDados(List<ProdutoFilhoDados> filhos)
         {

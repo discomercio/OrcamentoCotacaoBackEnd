@@ -32,8 +32,8 @@ namespace PrepedidoUnisBusiness.UnisDto.PedidoUnisDto
 
         //iremos receber a parte dadoscliente e endereco entrega
         public static PedidoUnisDto PedidoUnisDto_De_PedidoDados(PedidoDados origem, 
-            PrepedidoBusiness.Dto.ClienteCadastro.DadosClienteCadastroDto dadosCliente,
-            PrepedidoBusiness.Dto.ClienteCadastro.EnderecoEntregaDtoClienteCadastro enderecoEntrega)
+            Prepedido.Dto.DadosClienteCadastroDto dadosCliente,
+            Prepedido.Dto.EnderecoEntregaDtoClienteCadastro enderecoEntrega)
         {
             if (origem == null) return null;
             return new PedidoUnisDto()

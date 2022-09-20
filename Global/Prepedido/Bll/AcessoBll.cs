@@ -1,13 +1,13 @@
 ﻿using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using Microsoft.EntityFrameworkCore;
-using PrepedidoBusiness.Dto.Acesso;
+using Prepedido.Dto;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using UtilsGlobais;
 
-namespace PrepedidoBusiness.Bll
+namespace Prepedido.Bll
 {
     public class AcessoBll
     {

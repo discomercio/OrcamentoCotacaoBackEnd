@@ -1,5 +1,5 @@
 ﻿using InfraBanco.Constantes;
-using PrepedidoBusiness.Dto.ClienteCadastro;
+using Prepedido.Dto;
 using System.ComponentModel.DataAnnotations;
 using UtilsGlobais;
 

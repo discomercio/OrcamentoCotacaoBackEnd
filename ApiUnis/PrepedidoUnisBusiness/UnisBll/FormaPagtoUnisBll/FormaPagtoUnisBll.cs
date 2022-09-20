@@ -2,7 +2,8 @@
 using FormaPagamento;
 using InfraBanco.Constantes;
 using Prepedido;
-using PrepedidoBusiness.Dto.FormaPagto;
+using Prepedido.Bll;
+using Prepedido.Dto;
 using PrepedidoUnisBusiness.UnisDto.FormaPagtoUnisDto;
 using System.Threading.Tasks;
 

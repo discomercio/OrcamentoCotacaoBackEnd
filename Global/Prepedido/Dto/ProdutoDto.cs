@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace PrepedidoBusiness.Dto.Produto
+namespace Prepedido.Dto
 {
     public class ProdutoDto
     {

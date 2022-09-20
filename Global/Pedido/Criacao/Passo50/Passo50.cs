@@ -145,7 +145,7 @@ namespace Pedido.Criacao.Passo50
         private void EntregaImediata()
         {
             //valida somente EntregaImediataData e EntregaImediata
-            Prepedido.ValidacoesPrepedidoBll.ValidarDetalhesPrepedido(Pedido.DetalhesPedido, Retorno.ListaErros);
+            Prepedido.Bll.ValidacoesPrepedidoBll.ValidarDetalhesPrepedido(Pedido.DetalhesPedido, Retorno.ListaErros);
         }
         private void ValidarRA()
         {

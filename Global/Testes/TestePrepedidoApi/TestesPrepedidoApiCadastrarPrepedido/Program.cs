@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
+using Prepedido.Dto;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -102,7 +102,7 @@ namespace TestesPrepedidoApiCadastrarPrepedido
 
         }
 
-        private static PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido.PrePedidoDto CriarPrepPedidoBase()
+        private static Prepedido.Dto.PrePedidoDto CriarPrepPedidoBase()
         {
             return LerJson();
         }

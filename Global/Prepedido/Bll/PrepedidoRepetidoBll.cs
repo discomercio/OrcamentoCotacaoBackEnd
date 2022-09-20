@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using UtilsGlobais;
 using Prepedido.Dados.DetalhesPrepedido;
 
-namespace Prepedido
+namespace Prepedido.Bll
 {
     public class PrepedidoRepetidoBll
     {

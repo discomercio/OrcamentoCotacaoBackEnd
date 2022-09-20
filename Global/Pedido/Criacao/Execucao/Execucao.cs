@@ -100,7 +100,7 @@ namespace Pedido.Criacao.Execucao
                 Vl_limite_mensal_disponivel = Vl_limite_mensal - Vl_limite_mensal_consumido;
             }
             C_custoFinancFornecTipoParcelamento = Criacao.PrepedidoBll.ObterSiglaFormaPagto(pedido.FormaPagtoCriacao);
-            C_custoFinancFornecQtdeParcelas = (short)Prepedido.PrepedidoBll.ObterCustoFinancFornecQtdeParcelasDeFormaPagto(pedido.FormaPagtoCriacao);
+            C_custoFinancFornecQtdeParcelas = (short)Prepedido.Bll.PrepedidoBll.ObterCustoFinancFornecQtdeParcelasDeFormaPagto(pedido.FormaPagtoCriacao);
 
 
 
