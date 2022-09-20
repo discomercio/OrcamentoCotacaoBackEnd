@@ -47,6 +47,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly PublicoBll _publicoBll;
         private readonly ParametroOrcamentoCotacaoBll _parametroOrcamentoCotacaoBll;
         private readonly ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll;
+        private readonly ClienteBll _clienteBll;
 
         public OrcamentoCotacaoBll(
             OrcamentoBll orcamentoBll,
@@ -68,7 +69,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             OrcamentoCotacaoLinkBll orcamentoCotacaoLinkBll,
             PublicoBll publicoBll,
             ParametroOrcamentoCotacaoBll parametroOrcamentoCotacaoBll,
-            ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll
+            ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll,
+            ClienteBll clienteBll
             )
         {
             _orcamentoBll = orcamentoBll;
@@ -91,6 +93,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             _publicoBll = publicoBll;
             _parametroOrcamentoCotacaoBll = parametroOrcamentoCotacaoBll;
             this.produtoOrcamentoCotacaoBll = produtoOrcamentoCotacaoBll;
+            _clienteBll = clienteBll;
         }
 
         public OrcamentoCotacaoDto PorGuid(string guid)
@@ -1179,6 +1182,12 @@ namespace OrcamentoCotacaoBusiness.Bll
              *      => se existir vamos colocar os dados em endereço cadastral para aparecer somente no prepedido
              *      => se não existir vamos cadastrar o cliente e colocar os dados em endereço cadastral para aparecer no prepedido
              */
+            List<string> retorno = new List<string>();
+            retorno = _clienteBll.ValidarClienteOrcamentoCotacao();
+
+            if(retorno.Count > 0) return retorno;
+
+
 
 
             return null;
