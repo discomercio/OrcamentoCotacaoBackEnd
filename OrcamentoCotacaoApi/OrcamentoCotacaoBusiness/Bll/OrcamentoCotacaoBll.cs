@@ -137,11 +137,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                 return false;
 
             // [2] Cancelado
-            if (orcamentoCotacaoDto.status == 2)            
-                return false;            
+            if (orcamentoCotacaoDto.status == 2)
+                return false;
 
             // Expirado
-            if (dataAtual > orcamentoCotacaoDto.validade)            
+            if (dataAtual > orcamentoCotacaoDto.validade)
                 return false;
 
             // [3] Aprovado
@@ -151,7 +151,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 DateTime dataCriacao = (DateTime)orcamentoCotacaoDto.dataCadastro;
                 DateTime dataValidade = dataCriacao.AddDays(int.Parse(orcamentoCotacaoDto.prazoMaximoConsultaOrcamento));
 
-                if (dataAtual> dataValidade)
+                if (dataAtual > dataValidade)
                     return false;
             }
 
@@ -267,7 +267,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             var orcamentoCotacaoEmail = _orcamentoCotacaoEmailBll.PorFiltro(new TorcamentoCotacaoEmailFiltro() { IdOrcamentoCotacao = id }).LastOrDefault();
 
-            if (orcamentoCotacaoEmail== null)
+            if (orcamentoCotacaoEmail == null)
             {
                 statusEmail = "Erro no envio do email";
             }
@@ -556,16 +556,16 @@ namespace OrcamentoCotacaoBusiness.Bll
                         tipo = "SUCCESS",
                         mensagem = "Orçamento reenviado."
                     };
-                 
+
                 }
                 catch
                 {
                     dbGravacao.transacao.Rollback();
                     throw new ArgumentException("Falha ao gravar orçamento!");
                 }
-                
+
             }
-            
+
         }
 
         public void AtualizarOrcamentoOpcao(OrcamentoOpcaoResponseViewModel opcao, UsuarioLogin usuarioLogado)
@@ -595,7 +595,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
                     var tOrcamento = _orcamentoCotacaoBll.PorFiltroComTransacao(new TorcamentoCotacaoFiltro() { Id = (int)orcamento.Id }, dbGravacao).FirstOrDefault();
                     if (tOrcamento == null) throw new Exception("Falha ao buscar Orçamento!");
-                    
+
                     bool alterouEmail = false;
 
                     if (orcamento.ClienteOrcamentoCotacaoDto.Email != tOrcamento.Email)
@@ -619,19 +619,19 @@ namespace OrcamentoCotacaoBusiness.Bll
                     var retorno = _orcamentoCotacaoBll.AtualizarComTransacao(tOrcamento, dbGravacao);
 
                     bool atualizouLink = false;
-                    
-                    if (alterouEmail)
-                    {                        
-                        AtualizarOrcamentoCotacaoLink(orcamento,dbGravacao);
 
-                        atualizouLink = true;                       
-                    }                    
-                    
+                    if (alterouEmail)
+                    {
+                        AtualizarOrcamentoCotacaoLink(orcamento, dbGravacao);
+
+                        atualizouLink = true;
+                    }
+
                     dbGravacao.transacao.Commit();
 
                     if (atualizouLink)
                     {
-                        GerarNovoLink(tOrcamento);                        
+                        GerarNovoLink(tOrcamento);
                     }
 
                 }
@@ -712,12 +712,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                 throw new ArgumentException("O vendedor não pode ser alterado!");
 
             if (orcamento.IdIndicadorVendedor != orcamentoAntigo.IdIndicadorVendedor &&
-                orcamento.VendedorParceiro?.ToUpper() != orcamentoAntigo.VendedorParceiro?.ToUpper()                )
+                orcamento.VendedorParceiro?.ToUpper() != orcamentoAntigo.VendedorParceiro?.ToUpper())
                 throw new ArgumentException("O Vendedor do parceiro não pode ser alterado!");
 
             if (usuarioLogado.TipoUsuario == (int?)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
             {
-                if (orcamento.Parceiro != Constantes.SEM_INDICADOR && (orcamento.IdIndicador != orcamentoAntigo.IdIndicador && 
+                if (orcamento.Parceiro != Constantes.SEM_INDICADOR && (orcamento.IdIndicador != orcamentoAntigo.IdIndicador &&
                     orcamento.Parceiro.ToUpper() != orcamentoAntigo.IdIndicador.ToString().ToUpper()))
                     throw new ArgumentException("O parceiro não pode ser alterado!");
             }
@@ -798,20 +798,20 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             try
             {
-                _orcamentoCotacaoLinkBll.AtualizarComTransacao(orcamentoCotacaoLinkModel, contextoBdGravacao);                
-                
+                _orcamentoCotacaoLinkBll.AtualizarComTransacao(orcamentoCotacaoLinkModel, contextoBdGravacao);
+
             }
             catch
             {
                 throw new ArgumentException("Orçamento não reenviado. Problemas ao gravar o Link!");
-            }            
+            }
 
         }
 
         private void AdicionarOrcamentoCotacaoEmailQueue(OrcamentoRequestViewModel orcamento, Guid guid, int idOrcamentoCotacao,
             ContextoBdGravacao contextoBdGravacao)
         {
-            
+
             TorcamentoCotacaoEmailQueue orcamentoCotacaoEmailQueueModel = new InfraBanco.Modelos.TorcamentoCotacaoEmailQueue();
 
             var loja = _lojaBll.PorFiltroComTransacao(new InfraBanco.Modelos.Filtros.TlojaFiltro() { Loja = orcamento.Loja }, contextoBdGravacao);
@@ -878,10 +878,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
                     var torcamentoCotacaoEmail = _orcamentoCotacaoEmailBll.InserirComTransacao(orcamentoCotacaoEmailModel, contextoBdGravacao);
                 }
-                catch {
+                catch
+                {
                     throw new ArgumentException("Não foi possível cadastrar o orçamento. Problema no envio de e-mail!");
                 }
-                
+
             }
 
         }
@@ -1116,7 +1117,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             var loja = _lojaBll.PorFiltro(new InfraBanco.Modelos.Filtros.TlojaFiltro() { Loja = lojaLogada });
             var tcfgUnidadeNegocio = _cfgUnidadeNegocioBll.PorFiltro(new TcfgUnidadeNegocioFiltro() { Sigla = loja[0].Unidade_Negocio });
 
-            var tcfgUnidadeNegocioParametros = _cfgUnidadeNegocioParametroBll.PorFiltro(new TcfgUnidadeNegocioParametroFiltro() { IdCfgUnidadeNegocio = tcfgUnidadeNegocio.FirstOrDefault().Id, IdCfgParametro = idCfgParametro });            
+            var tcfgUnidadeNegocioParametros = _cfgUnidadeNegocioParametroBll.PorFiltro(new TcfgUnidadeNegocioParametroFiltro() { IdCfgUnidadeNegocio = tcfgUnidadeNegocio.FirstOrDefault().Id, IdCfgParametro = idCfgParametro });
 
             if (tcfgUnidadeNegocioParametros != null)
             {
@@ -1171,8 +1172,15 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
-        public List<string> AprovarOrcamento()
+        public List<string> AprovarOrcamento(AprovarOrcamentoRequestViewModel aprovarOrcamento)
         {
+            /* detalhar o que precisamos para cadastrar de forma correta
+             * verificar se cpf ou cnpj já existe
+             *      => se existir vamos colocar os dados em endereço cadastral para aparecer somente no prepedido
+             *      => se não existir vamos cadastrar o cliente e colocar os dados em endereço cadastral para aparecer no prepedido
+             */
+
+
             return null;
         }
 
