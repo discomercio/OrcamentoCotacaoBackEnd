@@ -22,9 +22,9 @@ namespace PrepedidoBusiness.Bll
             return listaBancos;
         }
 
-        public async Task<IEnumerable<EnderecoEntregaJustificativaDto>> ListarComboJustificaEndereco(string apelido)
+        public async Task<IEnumerable<EnderecoEntregaJustificativaDto>> ListarComboJustificaEndereco(string apelido = null, string loja = null)
         {
-            IEnumerable<Cliente.Dados.EnderecoEntregaJustificativaDados> retorno = await clienteBll.ListarComboJustificaEndereco(apelido.Trim());
+            IEnumerable<Cliente.Dados.EnderecoEntregaJustificativaDados> retorno = await clienteBll.ListarComboJustificaEndereco(apelido?.Trim(), loja);
             IEnumerable<EnderecoEntregaJustificativaDto> enderecoEntregaJustificativaDtos = EnderecoEntregaJustificativaDto.EnderecoEntregaJustificativaDto_De_EnderecoEntregaJustificativaDadosLista(retorno);
             return enderecoEntregaJustificativaDtos;
         }

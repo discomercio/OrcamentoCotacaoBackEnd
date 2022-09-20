@@ -10,7 +10,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         [JsonProperty("id")]
         public int Id { get; set; }
 
-        [JsonProperty("idOrcamentoCotacaoOpcao")]
+        [JsonProperty("idOpcao")]
         public int IdOrcamentoCotacaoOpcao { get; set; }
 
         [JsonProperty("aprovado")]

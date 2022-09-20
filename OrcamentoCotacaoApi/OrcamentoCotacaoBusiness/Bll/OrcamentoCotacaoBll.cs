@@ -254,6 +254,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 return lista;
             }
         }
+
         public OrcamentoResponseViewModel PorFiltro(int id, UsuarioLogin usuarioLogin)
         {
             var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro() { Id = id }).FirstOrDefault();
@@ -1167,6 +1168,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                 }
             }
 
+            return null;
+        }
+
+        public List<string> AprovarOrcamento()
+        {
             return null;
         }
 
