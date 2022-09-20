@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Bll;
+using OrcamentoCotacaoBusiness.Models.Request;
 using PrepedidoBusiness.Bll;
 using PrepedidoBusiness.Dto.Cep;
 using System.Collections.Generic;
@@ -80,7 +81,7 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpPost("aprovarOrcamento")]
-        public IActionResult AprovarOrcamento()
+        public IActionResult AprovarOrcamento(AprovarOrcamentoRequestViewModel aprovarOrcamento)
         {
             return Ok();
         }
