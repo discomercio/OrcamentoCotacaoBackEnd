@@ -8,5 +8,7 @@ namespace InfraBanco.Modelos.Filtros
     public class TorcamentoCotacaoEmailQueueFiltro : IFilter
     {
         public bool? Sent { get; set; }
+
+        public long? Id { get; set; }
     }
 }

@@ -196,6 +196,11 @@ namespace OrcamentoCotacaoEmailQueue
                         parametros = parametros.Skip(obj.RecordsPerPage.Value * (obj.Page.Value - 1)).Take(obj.RecordsPerPage.Value);
                     }
 
+                    if (obj.Id != 0)
+                    {
+                        parametros = parametros.Where(x => x.Id == obj.Id);
+                    }
+
                     parametros = parametros.OrderBy(x => x.DateScheduled);
 
                     return parametros.ToList();
