@@ -1176,7 +1176,9 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public List<string> AprovarOrcamento(AprovarOrcamentoRequestViewModel aprovarOrcamento)
         {
+            
             /* detalhar o que precisamos para cadastrar de forma correta
+             * atribuir loja e parceiro caso exista
              * verificar se cpf ou cnpj já existe
              *      => se existir vamos colocar os dados em endereço cadastral para aparecer somente no prepedido
              *      => se não existir vamos cadastrar o cliente e colocar os dados em endereço cadastral para aparecer no prepedido

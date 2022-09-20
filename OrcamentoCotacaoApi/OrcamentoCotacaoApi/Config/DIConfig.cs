@@ -126,6 +126,7 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll, OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll>();
             services.AddTransient<Cfg.CfgOrcamentoCotacaoEmailTemplate.CfgOrcamentoCotacaoEmailTemplateBll, Cfg.CfgOrcamentoCotacaoEmailTemplate.CfgOrcamentoCotacaoEmailTemplateBll>();
             services.AddTransient<Cfg.CfgUnidadeNegocio.CfgUnidadeNegocioBll, Cfg.CfgUnidadeNegocio.CfgUnidadeNegocioBll>();
+            services.AddTransient<PermissaoBll, PermissaoBll>();
             services.AddTransient<Cfg.CfgUnidadeNegocioParametro.CfgUnidadeNegocioParametroBll, Cfg.CfgUnidadeNegocioParametro.CfgUnidadeNegocioParametroBll>();
             services.AddTransient<ClienteBll, ClienteBll>();
 

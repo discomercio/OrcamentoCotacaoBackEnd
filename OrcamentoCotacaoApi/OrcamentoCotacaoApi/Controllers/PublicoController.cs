@@ -83,6 +83,7 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost("aprovarOrcamento")]
         public IActionResult AprovarOrcamento(AprovarOrcamentoRequestViewModel aprovarOrcamento)
         {
+            var retorno = _orcamentoBll.AprovarOrcamento(aprovarOrcamento);
             return Ok();
         }
     }
