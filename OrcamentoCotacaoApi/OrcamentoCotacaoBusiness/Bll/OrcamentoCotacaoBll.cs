@@ -297,7 +297,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 if (orcamentoCotacaoLink != null)
                 {
-                    statusEmail = "Erro no envio do email";
+                    statusEmail = "Email recusado pelo cliente";
                 }
 
                 if (orcamentoCotacaoEmailQueue.AttemptsQty > 3)
