@@ -79,5 +79,10 @@ namespace OrcamentoCotacaoApi.Controllers
             return Ok(await _clientePrepedidoBll.ListarComboJustificaEndereco(null, loja));
         }
 
+        [HttpPost("aprovarOrcamento")]
+        public IActionResult AprovarOrcamento()
+        {
+            return Ok();
+        }
     }
 }

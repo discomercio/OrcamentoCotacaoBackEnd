@@ -1123,5 +1123,10 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
+        public List<string> AprovarOrcamento()
+        {
+            return null;
+        }
+
     }
 }
