@@ -81,9 +81,9 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpPost("aprovarOrcamento")]
-        public IActionResult AprovarOrcamento(AprovarOrcamentoRequestViewModel aprovarOrcamento)
+        public async Task<IActionResult> AprovarOrcamento(AprovarOrcamentoRequestViewModel aprovarOrcamento)
         {
-            var retorno = _orcamentoBll.AprovarOrcamento(aprovarOrcamento);
+            var retorno = await _orcamentoBll.AprovarOrcamento(aprovarOrcamento);
             return Ok(retorno);
         }
     }

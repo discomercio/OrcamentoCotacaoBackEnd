@@ -72,7 +72,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             await Cliente.ValidacoesClienteBll.ValidarDadosCliente(clienteCadastroDados.DadosCliente, false,
                clienteCadastroDados.RefBancaria, clienteCadastroDados.RefComercial, lstErros, _contextoBdProvider,
-               _cepBll, _bancoNFeMunicipio, lstBanco, true,
+               _cepBll, _bancoNFeMunicipio, lstBanco, false,
                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, true);
 
             if (lstErros.Count() > 0) return lstErros;
