@@ -41,6 +41,7 @@ namespace Prepedido.Dto
         public string Email { get; set; }
         public string EmailXml { get; set; }
         public string Contato { get; set; }
+        public string UsuarioCadastro { get; set; }
 
         public static DadosClienteCadastroDto DadosClienteCadastroDto_De_DadosClienteCadastroDados(Cliente.Dados.DadosClienteCadastroDados origem)
         {
@@ -80,7 +81,8 @@ namespace Prepedido.Dto
                 Ramal2 = origem.Ramal2,
                 Email = origem.Email,
                 EmailXml = origem.EmailXml,
-                Contato = origem.Contato
+                Contato = origem.Contato,
+                UsuarioCadastro = ""
             };
         }
 
@@ -122,7 +124,8 @@ namespace Prepedido.Dto
                 Ramal2 = origem.Ramal2,
                 Email = origem.Email,
                 EmailXml = origem.EmailXml,
-                Contato = origem.Contato
+                Contato = origem.Contato,
+                UsuarioCadastro = origem.UsuarioCadastro
             };
         }
 

@@ -78,7 +78,8 @@ namespace InfraBanco.Constantes
             COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS = 2,
             COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS = 3,
             COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI = 4,   //Web api do ERP
-            COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO = 5   //API magento
+            COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO = 5,   //API magento
+            COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO = 6
         };
 
         public enum Modulos

@@ -672,7 +672,7 @@ namespace Cliente
             return (lstErros, registroJaExiste);
         }
 
-        private async Task<string> CadastrarDadosClienteDados(InfraBanco.ContextoBdGravacao dbgravacao,
+        public async Task<string> CadastrarDadosClienteDados(InfraBanco.ContextoBdGravacao dbgravacao,
             Cliente.Dados.DadosClienteCadastroDados clienteDados, string indicador, Tcliente tCliente,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             string usuario_cadastro)

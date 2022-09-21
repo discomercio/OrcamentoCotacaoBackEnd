@@ -7,6 +7,7 @@ using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
 using Loja;
 using Loja.Dados;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Orcamento;
 using Orcamento.Dto;
@@ -47,6 +48,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly ParametroOrcamentoCotacaoBll _parametroOrcamentoCotacaoBll;
         private readonly ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll;
         private readonly ClienteBll _clienteBll;
+        private readonly ILogger<OrcamentoCotacaoBll> _logger;
 
         public OrcamentoCotacaoBll(
             OrcamentoBll orcamentoBll,
@@ -69,7 +71,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             PublicoBll publicoBll,
             ParametroOrcamentoCotacaoBll parametroOrcamentoCotacaoBll,
             ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll,
-            ClienteBll clienteBll
+            ClienteBll clienteBll,
+            ILogger<OrcamentoCotacaoBll> logger
             )
         {
             _orcamentoBll = orcamentoBll;
@@ -93,6 +96,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             _parametroOrcamentoCotacaoBll = parametroOrcamentoCotacaoBll;
             this.produtoOrcamentoCotacaoBll = produtoOrcamentoCotacaoBll;
             _clienteBll = clienteBll;
+            _logger = logger;
         }
 
         public OrcamentoCotacaoDto PorGuid(string guid)
@@ -1174,21 +1178,50 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
-        public List<string> AprovarOrcamento(AprovarOrcamentoRequestViewModel aprovarOrcamento)
+        public async Task<List<string>> AprovarOrcamento(AprovarOrcamentoRequestViewModel aprovarOrcamento)
         {
-            
-            /* detalhar o que precisamos para cadastrar de forma correta
-             * atribuir loja e parceiro caso exista
-             * verificar se cpf ou cnpj já existe
-             *      => se existir vamos colocar os dados em endereço cadastral para aparecer somente no prepedido
-             *      => se não existir vamos cadastrar o cliente e colocar os dados em endereço cadastral para aparecer no prepedido
-             */
-            List<string> retorno = new List<string>();
-            retorno = _clienteBll.ValidarClienteOrcamentoCotacao();
+            if (aprovarOrcamento == null) return new List<string>() { "É necessário preencher o cadastro do cliente!" };
 
-            if(retorno.Count > 0) return retorno;
+            var clienteCadastroDados = Prepedido.Dto.ClienteCadastroDto
+                .ClienteCadastroDados_De_ClienteCadastroDto(aprovarOrcamento.ClienteCadastroDto);
 
+            _logger.LogInformation("Validando cadastro de cliente!");
+            var erros = await _clienteBll.ValidarClienteOrcamentoCotacao(clienteCadastroDados);
+            if (erros != null) return erros;
 
+            _logger.LogInformation("Fim da validação do cadastro de cliente!");
+
+            var cliente = await _clienteBll.BuscarTcliente(UtilsGlobais.Util.SoDigitosCpf_Cnpj(clienteCadastroDados.DadosCliente.Cnpj_Cpf));
+
+            var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro() { Id = aprovarOrcamento.IdOrcamento }).FirstOrDefault();
+            if (orcamento == null) throw new Exception("Falha ao buscar Orçamento!");
+
+            using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                try
+                {
+                    List<string> retorno = new List<string>();
+                    //não existe
+                    if (cliente == null)
+                    {
+                        retorno = await _clienteBll.CadastrarClienteOrcamentoCotacao(clienteCadastroDados.DadosCliente, 
+                            dbGravacao, orcamento.Loja);
+                        if (retorno != null) return retorno;
+
+                        _logger.LogInformation("Cliente cadastrado com sucesso!");
+                    }
+
+                    //vamos tranformar em prepedido
+
+                    await dbGravacao.SaveChangesAsync();
+                    dbGravacao.transacao.Commit();
+                }
+                catch (Exception ex)
+                {
+                    dbGravacao.transacao.Rollback();
+                    throw ex;
+                }
+            }
 
 
             return null;

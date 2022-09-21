@@ -40,6 +40,7 @@ namespace Cliente.Dados
         public string Email { get; set; }
         public string EmailXml { get; set; }
         public string Contato { get; set; }
+        public string UsuarioCadastro { get; set; }
 
         public static DadosClienteCadastroDados DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(
             EnderecoCadastralClientePrepedidoDados endCadastral, string indicadorOrcamentista, string loja,
@@ -88,7 +89,8 @@ namespace Cliente.Dados
                 Cidade = endCadastral.Endereco_cidade,
                 Uf = endCadastral.Endereco_uf,
                 Complemento = endCadastral.Endereco_complemento,
-                Contato = endCadastral.Endereco_contato
+                Contato = endCadastral.Endereco_contato,
+                UsuarioCadastro = ""
             };
 
             return ret;
