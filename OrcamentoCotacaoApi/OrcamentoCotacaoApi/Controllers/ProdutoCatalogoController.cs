@@ -136,6 +136,28 @@ namespace OrcamentoCotacaoApi.Controllers
                 return NotFound();
         }
 
+        [HttpGet("{id}/imagem")]
+        public async Task<IActionResult> ObterImagem(int id)
+        {
+            var saida = _bll.ObterListaImagensPorId(id);
+
+            if (saida != null)
+                return Ok(saida);
+            else
+                return NotFound();
+        }
+
+        [HttpGet("imagem/{produto}")]
+        public async Task<IActionResult> ObterDadosImagemPorProduto(string produto)
+        {
+            var saida = _bll.ObterDadosImagemPorProduto(produto);
+
+            if (saida != null)
+                return Ok(saida);
+            else
+                return NotFound();
+        }
+
         [HttpPut]
         public async Task<IActionResult> Atualizar(IFormFile arquivo, IFormCollection form)
         {
