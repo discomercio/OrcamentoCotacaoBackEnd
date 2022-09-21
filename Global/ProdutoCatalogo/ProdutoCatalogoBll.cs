@@ -45,6 +45,32 @@ namespace ProdutoCatalogo
             return _data.ObterListaImagensPorId(id);
         }
 
+        public List<TprodutoCatalogoImagem> ObterDadosImagemPorProduto(string produto)
+        {            
+            var produtoCatalogo = _data.PorFiltro(new TprodutoCatalogoFiltro() { Produto = produto }).FirstOrDefault();
+            List<TprodutoCatalogoImagem> produtoCatalogoImagemLst = new List<TprodutoCatalogoImagem>();
+
+            if (produtoCatalogo != null)
+            {
+                produtoCatalogoImagemLst = _data.ObterListaImagensPorId(produtoCatalogo.Id);                
+            }
+
+            if (produtoCatalogoImagemLst == null || 
+                produtoCatalogoImagemLst.Count == 0 ||
+                produtoCatalogo == null
+                )
+            {
+                var produtoCatalogoImagem = new TprodutoCatalogoImagem();
+
+                produtoCatalogoImagem.Id = 1;
+                produtoCatalogoImagem.Caminho = "sem-imagem.png";
+                produtoCatalogoImagemLst.Add(produtoCatalogoImagem);
+
+            }
+
+            return produtoCatalogoImagemLst;
+        }
+
         public List<TprodutoCatalogoImagem> ObterListaImagem(List<int> idProdutos)
         {
             return _data.ObterListaImagens(idProdutos);

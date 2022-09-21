@@ -80,6 +80,11 @@ namespace OrcamentoCotacaoBusiness.Bll
             return _bll.ObterListaImagensPorId(id);
         }
 
+        public List<TprodutoCatalogoImagem> ObterDadosImagemPorProduto(string produto)
+        {
+            return _bll.ObterDadosImagemPorProduto(produto);
+        }
+
         public bool SalvarArquivo(string nomeArquivo, int idProdutoCatalogo, int idTipo, string ordem)
         {
             return _bll.SalvarArquivo(nomeArquivo, idProdutoCatalogo, idTipo, ordem);
