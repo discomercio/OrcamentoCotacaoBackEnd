@@ -52,5 +52,8 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         [JsonProperty("alterouPrecoVenda")]
         public bool AlterouPrecoVenda { get; set; }
 
+        [JsonProperty("urlImagem")]
+        public string UrlImagem { get; set; }
+
     }
 }
