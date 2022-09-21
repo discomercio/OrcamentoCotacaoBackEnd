@@ -1,7 +1,7 @@
 ﻿using FormaPagamento.Dados;
-using Prepedido;
+using Prepedido.Bll;
 
-namespace PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido
+namespace Prepedido.Dto
 {
     public class FormaPagtoCriacaoDto
     {

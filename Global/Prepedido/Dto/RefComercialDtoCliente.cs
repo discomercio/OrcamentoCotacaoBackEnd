@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace PrepedidoBusiness.Dto.ClienteCadastro.Referencias
+namespace Prepedido.Dto
 {
     public class RefComercialDtoCliente
     {

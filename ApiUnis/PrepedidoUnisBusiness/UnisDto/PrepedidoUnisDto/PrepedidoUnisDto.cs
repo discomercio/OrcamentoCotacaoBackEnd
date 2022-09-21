@@ -1,6 +1,5 @@
-﻿using PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto;
-using PrepedidoBusiness.Dto.ClienteCadastro;
-using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
+﻿using Prepedido.Dto;
+using PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto;
 using PrepedidoUnisBusiness.UnisDto.ClienteUnisDto;
 using System;
 using System.Collections.Generic;

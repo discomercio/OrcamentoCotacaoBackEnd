@@ -1,7 +1,7 @@
 ﻿using FormaPagamento.Dados;
 using System.Collections.Generic;
 
-namespace PrepedidoBusiness.Dto.FormaPagto
+namespace Prepedido.Dto
 {
     public class ParcComEntradaDto
     {

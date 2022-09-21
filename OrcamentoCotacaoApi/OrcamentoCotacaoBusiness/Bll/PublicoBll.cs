@@ -1,6 +1,6 @@
 ﻿using InfraIdentity;
 using Microsoft.Extensions.Configuration;
-using PrepedidoApi.Utils;
+using OrcamentoCotacaoBusiness.PrePedido.Utils;
 using UtilsGlobais;
 
 namespace OrcamentoCotacaoBusiness.Bll
@@ -9,12 +9,12 @@ namespace OrcamentoCotacaoBusiness.Bll
     {
         private readonly IServicoAutenticacao _servicoAutenticacao;
         private readonly IConfiguration _configuration;
-        private readonly PrepedidoBusiness.Bll.AcessoBll _acessoBll;
+        private readonly Prepedido.Bll.AcessoBll _acessoBll;
 
         public PublicoBll(
             IServicoAutenticacao servicoAutenticacao,
             IConfiguration configuration,
-            PrepedidoBusiness.Bll.AcessoBll acessoBll
+            Prepedido.Bll.AcessoBll acessoBll
             )
         {
             _servicoAutenticacao = servicoAutenticacao;

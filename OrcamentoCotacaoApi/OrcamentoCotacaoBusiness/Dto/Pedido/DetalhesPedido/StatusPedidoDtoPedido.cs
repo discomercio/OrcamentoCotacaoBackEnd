@@ -1,6 +1,6 @@
 ﻿using Prepedido.PedidoVisualizacao.Dados.DetalhesPedido;
 
-namespace PrepedidoBusiness.Dto.Pedido.DetalhesPedido
+namespace OrcamentoCotacaoBusiness.Dto.Pedido.DetalhesPedido
 {
     public class StatusPedidoDtoPedido
     {

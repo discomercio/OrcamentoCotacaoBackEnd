@@ -3,8 +3,8 @@ using InfraBanco.Constantes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using PrepedidoBusiness.Bll;
-using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
+using Prepedido.Bll;
+using Prepedido.Dto;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,7 +17,7 @@ namespace PrepedidoApi.Controllers
     [Authorize(Roles = Autenticacao.RoleAcesso)]
     public class PrepedidoController : ControllerBase
     {
-        private readonly Prepedido.PrepedidoBll prepedidoBll;
+        private readonly PrepedidoBll prepedidoBll;
         private readonly PrepedidoApiBll prepedidoApiBll;
         private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
         private readonly FormaPagtoBll formaPagtoBll;
@@ -26,12 +26,12 @@ namespace PrepedidoApi.Controllers
         private readonly IConfiguration configuration;
 
         public PrepedidoController(
-            Prepedido.PrepedidoBll prepedidoBll,
-            PrepedidoBusiness.Bll.PrepedidoApiBll prepedidoApiBll,
+            PrepedidoBll prepedidoBll,
+            Prepedido.Bll.PrepedidoApiBll prepedidoApiBll,
             InfraIdentity.IServicoDecodificarToken servicoDecodificarToken,
             FormaPagtoBll formaPagtoBll,
-            PrepedidoBusiness.Bll.FormaPagtoPrepedidoBll formaPagtoPrepedidoBll,
-            PrepedidoBusiness.Bll.CoeficientePrepedidoBll coeficientePrepedidoBll,
+            Prepedido.Bll.FormaPagtoPrepedidoBll formaPagtoPrepedidoBll,
+            Prepedido.Bll.CoeficientePrepedidoBll coeficientePrepedidoBll,
             IConfiguration configuration)
         {
             this.prepedidoBll = prepedidoBll;
@@ -68,8 +68,8 @@ namespace PrepedidoApi.Controllers
         {
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            IEnumerable<PrepedidoBusiness.Dto.Prepedido.PrepedidosCadastradosDtoPrepedido> lista = await prepedidoApiBll.ListarPrePedidos(apelido,
-                (Prepedido.PrepedidoBll.TipoBuscaPrepedido)tipoBusca,
+            IEnumerable<Prepedido.Dto.PrepedidosCadastradosDtoPrepedido> lista = await prepedidoApiBll.ListarPrePedidos(apelido,
+                (PrepedidoBll.TipoBuscaPrepedido)tipoBusca,
                 clienteBusca, numeroPrePedido, dataInicial, dataFinal);
 
             return Ok(lista);
@@ -153,7 +153,7 @@ namespace PrepedidoApi.Controllers
 
         [HttpPost("buscarCoeficiente")]
         public async Task<IActionResult> BuscarCoeficiente(
-            List<PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido.PrepedidoProdutoDtoPrepedido> lstProdutos)
+            List<Prepedido.Dto.PrepedidoProdutoDtoPrepedido> lstProdutos)
         {
             return Ok(await coeficientePrepedidoBll.BuscarListaCoeficientes(lstProdutos));
         }

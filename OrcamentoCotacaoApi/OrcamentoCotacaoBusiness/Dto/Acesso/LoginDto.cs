@@ -1,4 +1,4 @@
-﻿namespace PrepedidoBusiness.Dto.Acesso
+﻿namespace OrcamentoCotacaoBusiness.Dto.Acesso
 {
     public class LoginDto
     {

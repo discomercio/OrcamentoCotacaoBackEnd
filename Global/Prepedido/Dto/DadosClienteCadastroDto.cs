@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace PrepedidoBusiness.Dto.ClienteCadastro
+namespace Prepedido.Dto
 {
     public class DadosClienteCadastroDto
     {
@@ -41,6 +41,7 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro
         public string Email { get; set; }
         public string EmailXml { get; set; }
         public string Contato { get; set; }
+        public string UsuarioCadastro { get; set; }
 
         public static DadosClienteCadastroDto DadosClienteCadastroDto_De_DadosClienteCadastroDados(Cliente.Dados.DadosClienteCadastroDados origem)
         {
@@ -80,7 +81,8 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro
                 Ramal2 = origem.Ramal2,
                 Email = origem.Email,
                 EmailXml = origem.EmailXml,
-                Contato = origem.Contato
+                Contato = origem.Contato,
+                UsuarioCadastro = ""
             };
         }
 
@@ -122,7 +124,8 @@ namespace PrepedidoBusiness.Dto.ClienteCadastro
                 Ramal2 = origem.Ramal2,
                 Email = origem.Email,
                 EmailXml = origem.EmailXml,
-                Contato = origem.Contato
+                Contato = origem.Contato,
+                UsuarioCadastro = origem.UsuarioCadastro
             };
         }
 

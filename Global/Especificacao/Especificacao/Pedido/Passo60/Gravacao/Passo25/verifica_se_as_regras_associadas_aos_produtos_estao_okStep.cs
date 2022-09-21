@@ -7,6 +7,7 @@ using TechTalk.SpecFlow;
 using Prepedido;
 using Prepedido.Dados.DetalhesPrepedido;
 using Xunit;
+using Prepedido.Bll;
 
 namespace Especificacao.Especificacao.Pedido.Passo60.Gravacao.Passo25
 {

@@ -1,10 +1,11 @@
 ﻿using InfraBanco.Constantes;
 using Microsoft.EntityFrameworkCore;
+using Prepedido.Dto;
 using Produto;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PrepedidoBusiness.Bll
+namespace Prepedido.Bll
 {
     public class ProdutoPrepedidoBll
     {
@@ -20,7 +21,7 @@ namespace PrepedidoBusiness.Bll
             this.contextoProvider = contextoProvider;
         }
 
-        public async Task<PrepedidoBusiness.Dto.Produto.ProdutoComboDto> ListaProdutosComboApiArclube(string loja, string id_cliente)
+        public async Task<ProdutoComboDto> ListaProdutosComboApiArclube(string loja, string id_cliente)
         {
             var db = contextoProvider.GetContextoLeitura();
             //Buscar dados do cliente
@@ -43,7 +44,7 @@ namespace PrepedidoBusiness.Bll
                 (Constantes.ContribuinteICMS)cliente.contribuite_icms_status, 
                 (Constantes.ProdutorRural)cliente.produtor_rural_status);
 
-            return PrepedidoBusiness.Dto.Produto.ProdutoComboDto.ProdutoComboDto_De_ProdutoComboDados(aux);
+            return ProdutoComboDto.ProdutoComboDto_De_ProdutoComboDados(aux);
         }
     }
 }

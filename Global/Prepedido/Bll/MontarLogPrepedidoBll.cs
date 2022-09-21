@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 using System.Text;
 
-namespace Prepedido
+namespace Prepedido.Bll
 {
     public class MontarLogPrepedidoBll
     {

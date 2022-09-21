@@ -1,7 +1,5 @@
-﻿using FormaPagamento.Dados;
-using System.Collections.Generic;
-
-namespace PrepedidoBusiness.Dto.FormaPagto
+﻿
+namespace OrcamentoCotacaoBusiness.Dto.FormaPagto
 {
     //public class ParcSemEntradaPrimPrestDto
     //{

@@ -14,7 +14,7 @@ using Prepedido.Dados.DetalhesPrepedido;
 using Produto.Dados;
 using Cep.Dados;
 
-namespace Prepedido
+namespace Prepedido.Bll
 {
     public class ValidacoesPrepedidoBll
     {

@@ -3,6 +3,7 @@ using InfraBanco;
 using MagentoBusiness.MagentoDto.PedidoMagentoDto;
 using Microsoft.EntityFrameworkCore;
 using Prepedido;
+using Prepedido.Bll;
 using Produto;
 using System.Collections.Generic;
 using System.Linq;

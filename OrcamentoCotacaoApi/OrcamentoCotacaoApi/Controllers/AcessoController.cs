@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using OrcamentoCotacaoBusiness.Dto.Acesso;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -17,11 +18,11 @@ namespace PrepedidoApi.Controllers
     {
         private readonly IServicoAutenticacao servicoAutenticacao;
         private readonly IConfiguration configuration;
-        private readonly PrepedidoBusiness.Bll.AcessoBll acessoBll;
+        private readonly Prepedido.Bll.AcessoBll acessoBll;
         private readonly IServicoDecodificarToken servicoDecodificarToken;
         private readonly ILogger<AcessoController> logger;
 
-        public AcessoController(IServicoAutenticacao servicoAutenticacao, IConfiguration configuration, PrepedidoBusiness.Bll.AcessoBll acessoBll,
+        public AcessoController(IServicoAutenticacao servicoAutenticacao, IConfiguration configuration, Prepedido.Bll.AcessoBll acessoBll,
             IServicoDecodificarToken servicoDecodificarToken, ILogger<AcessoController> logger)
         {
             this.servicoAutenticacao = servicoAutenticacao;
@@ -70,7 +71,7 @@ namespace PrepedidoApi.Controllers
         //erro 403: t_LOJA.unidade_negocio desconhecida
         [AllowAnonymous]
         [HttpPost("fazerLogin")]
-        public async Task<IActionResult> FazerLogin(PrepedidoBusiness.Dto.Acesso.LoginDto login)
+        public async Task<IActionResult> FazerLogin(LoginDto login)
         {
             var appSettingsSection = configuration.GetSection("AppSettings");
             var appSettings = appSettingsSection.Get<Configuracao>();
@@ -83,7 +84,7 @@ namespace PrepedidoApi.Controllers
             };
 
             objUsuarioLogin = servicoAutenticacao.ObterTokenAutenticacao(objUsuarioLogin, appSettings.SegredoToken, appSettings.ValidadeTokenMinutos,
-                Autenticacao.RoleAcesso, new Utils.ServicoAutenticacaoProvider(acessoBll), out bool unidade_negocio_desconhecida);
+                Autenticacao.RoleAcesso, new OrcamentoCotacaoBusiness.PrePedido.Utils.ServicoAutenticacaoProvider(acessoBll), out bool unidade_negocio_desconhecida);
 
             if (unidade_negocio_desconhecida)
             {
@@ -116,7 +117,7 @@ namespace PrepedidoApi.Controllers
 
         [HttpPost("alterarSenha")]
         [AllowAnonymous]
-        public async Task<IActionResult> AlterarSenha(PrepedidoBusiness.Dto.Acesso.AlterarSenhaDto alterarSenhaDto)
+        public async Task<IActionResult> AlterarSenha(Prepedido.Dto.AlterarSenhaDto alterarSenhaDto)
         {
             var retorno = "";
 

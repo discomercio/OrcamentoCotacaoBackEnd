@@ -1,5 +1,5 @@
 ﻿using FormaPagamento.Dados;
-using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
+using Prepedido.Dto;
 using System.ComponentModel.DataAnnotations;
 
 namespace PrepedidoApiUnisBusiness.UnisDto.PrePedidoUnisDto

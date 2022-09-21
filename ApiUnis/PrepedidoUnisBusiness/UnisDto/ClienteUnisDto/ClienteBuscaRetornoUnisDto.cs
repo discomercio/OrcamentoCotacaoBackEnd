@@ -1,5 +1,5 @@
 ﻿using PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto;
-using PrepedidoBusiness.Dto.ClienteCadastro;
+using Prepedido.Dto;
 using System.Collections.Generic;
 
 namespace PrepedidoUnisBusiness.UnisDto.ClienteUnisDto

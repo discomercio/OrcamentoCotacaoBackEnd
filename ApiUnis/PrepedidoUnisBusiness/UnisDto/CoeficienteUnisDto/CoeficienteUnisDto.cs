@@ -1,4 +1,4 @@
-﻿using PrepedidoBusiness.Dto.Produto;
+﻿using Prepedido.Dto;
 using System.Collections.Generic;
 
 namespace PrepedidoUnisBusiness.UnisDto.CoeficienteUnisDto

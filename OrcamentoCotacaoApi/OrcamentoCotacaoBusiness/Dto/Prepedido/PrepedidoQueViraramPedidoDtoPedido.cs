@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace PrepedidoBusiness.Dto.Prepedido
+namespace OrcamentoCotacaoBusiness.Dto.Prepedido
 {
     public class PrepedidoQueViraramPedidoDtoPedido
     {

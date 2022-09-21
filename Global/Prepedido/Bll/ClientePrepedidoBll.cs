@@ -1,11 +1,11 @@
 ﻿using InfraBanco.Constantes;
-using PrepedidoBusiness.Dto.ClienteCadastro;
+using Prepedido.Dto;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PrepedidoBusiness.Bll
+namespace Prepedido.Bll
 {
     public class ClientePrepedidoBll
     {

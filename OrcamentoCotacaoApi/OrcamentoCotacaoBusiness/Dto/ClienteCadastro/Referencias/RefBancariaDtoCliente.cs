@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PrepedidoBusiness.Dto.ClienteCadastro.Referencias
+namespace OrcamentoCotacaoBusiness.Dto.ClienteCadastro.Referencias
 {
     public class RefBancariaDtoCliente
     {

@@ -1,4 +1,4 @@
-﻿using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
+﻿using Prepedido.Dto;
 using System;
 using System.ComponentModel.DataAnnotations;
 

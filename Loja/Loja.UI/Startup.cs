@@ -92,12 +92,12 @@ namespace Loja.UI
             services.AddTransient<Pedido.Criacao.PedidoCriacao, Pedido.Criacao.PedidoCriacao>();
             services.AddTransient<Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll, Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll>();
             services.AddTransient<ValidacoesFormaPagtoBll, ValidacoesFormaPagtoBll>();
-            services.AddTransient<Prepedido.PrepedidoBll, Prepedido.PrepedidoBll>();
+            services.AddTransient<Prepedido.Bll.PrepedidoBll, Prepedido.Bll.PrepedidoBll>();
             services.AddTransient<Cliente.ClienteBll, Cliente.ClienteBll>();
             services.AddTransient<Cep.CepBll, Cep.CepBll>();
             services.AddTransient<Cep.IBancoNFeMunicipio, Cep.BancoNFeMunicipio>();
-            services.AddTransient<Prepedido.ValidacoesPrepedidoBll, Prepedido.ValidacoesPrepedidoBll>();
-            services.AddTransient<Prepedido.MontarLogPrepedidoBll, Prepedido.MontarLogPrepedidoBll>();
+            services.AddTransient<Prepedido.Bll.ValidacoesPrepedidoBll, Prepedido.Bll.ValidacoesPrepedidoBll>();
+            services.AddTransient<Prepedido.Bll.MontarLogPrepedidoBll, Prepedido.Bll.MontarLogPrepedidoBll>();
             services.AddTransient<Produto.CoeficienteBll, Produto.CoeficienteBll>();
             services.AddTransient<Produto.ProdutoGeralBll, Produto.ProdutoGeralBll>();
             services.AddTransient<FormaPagtoBll, FormaPagtoBll>();

@@ -8,7 +8,6 @@ using MagentoBusiness.MagentoDto.ClienteMagentoDto;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using InfraBanco.Constantes;
-using Prepedido;
 using MagentoBusiness.UtilsMagento;
 using MagentoBusiness.MagentoDto;
 using MagentoBusiness.MagentoDto.MarketplaceDto;

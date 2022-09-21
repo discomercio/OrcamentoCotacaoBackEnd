@@ -10,9 +10,9 @@ namespace PrepedidoApi.Controllers
     [Authorize(Roles = Autenticacao.RoleAcesso)]
     public class ProdutoPrePedidoController : Controller
     {
-        private readonly PrepedidoBusiness.Bll.ProdutoPrepedidoBll _bll;
+        private readonly Prepedido.Bll.ProdutoPrepedidoBll _bll;
 
-        public ProdutoPrePedidoController(PrepedidoBusiness.Bll.ProdutoPrepedidoBll bll)
+        public ProdutoPrePedidoController(Prepedido.Bll.ProdutoPrepedidoBll bll)
         {
             _bll = bll;
         }

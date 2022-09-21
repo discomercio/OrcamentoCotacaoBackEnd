@@ -1,11 +1,10 @@
-﻿using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
-using PrepedidoBusiness.Dto.Produto;
+﻿using Prepedido.Dto;
 using Produto;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PrepedidoBusiness.Bll
+namespace Prepedido.Bll
 {
     public class CoeficientePrepedidoBll
     {

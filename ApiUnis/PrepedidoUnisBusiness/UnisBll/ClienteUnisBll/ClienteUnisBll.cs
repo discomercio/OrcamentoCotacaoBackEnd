@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
-using PrepedidoBusiness.Dto.ClienteCadastro;
+using Prepedido.Dto;
 using Microsoft.EntityFrameworkCore;
 using PrepedidoUnisBusiness.UnisDto.ClienteUnisDto;
 using InfraBanco.Modelos;

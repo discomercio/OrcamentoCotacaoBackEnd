@@ -78,7 +78,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava17
                     {
                         coeficiente = 1;
                         Retorno.ListaErros.Add("Opção de parcelamento não disponível para fornecedor " + linha_pedido.Pedido.Fabricante + ": " +
-                            Prepedido.PrepedidoBll.DecodificaCustoFinanFornecQtdeParcelas(Criacao.Execucao.C_custoFinancFornecTipoParcelamento, Criacao.Execucao.C_custoFinancFornecQtdeParcelas) + " parcela(s).");
+                            Prepedido.Bll.PrepedidoBll.DecodificaCustoFinanFornecQtdeParcelas(Criacao.Execucao.C_custoFinancFornecTipoParcelamento, Criacao.Execucao.C_custoFinancFornecQtdeParcelas) + " parcela(s).");
                     }
                     else
                     {

@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using OrcamentoCotacaoApi.Controllers;
 using Prepedido.PedidoVisualizacao;
-using PrepedidoBusiness.Bll;
+using Prepedido.Bll;
 using System;
 using System.Threading.Tasks;
 using UtilsGlobais;
+using OrcamentoCotacaoBusiness.Bll;
 
 namespace PrepedidoApi.Controllers
 {
@@ -22,7 +23,7 @@ namespace PrepedidoApi.Controllers
         public PedidoController(
             PedidoVisualizacaoBll pedidoBll, 
             InfraIdentity.IServicoDecodificarToken servicoDecodificarToken,
-            PrepedidoBusiness.Bll.PedidoPrepedidoApiBll pedidoPrepedidoApiBll)
+            PedidoPrepedidoApiBll pedidoPrepedidoApiBll)
         {
             this.pedidoBll = pedidoBll;
             this.servicoDecodificarToken = servicoDecodificarToken;

@@ -1,20 +1,19 @@
 ﻿using Prepedido.Dados;
 using Prepedido.Dados.DetalhesPrepedido;
-using PrepedidoBusiness.Dto.Prepedido;
-using PrepedidoBusiness.Dto.Prepedido.DetalhesPrepedido;
+using Prepedido.Dto;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PrepedidoBusiness.Bll
+namespace Prepedido.Bll
 {
     public class PrepedidoApiBll
     {
-        private readonly Prepedido.PrepedidoBll prepedidoBll;
+        private readonly Prepedido.Bll.PrepedidoBll prepedidoBll;
         
 
-        public PrepedidoApiBll(Prepedido.PrepedidoBll prepedidoBll)
+        public PrepedidoApiBll(Prepedido.Bll.PrepedidoBll prepedidoBll)
         {
             this.prepedidoBll = prepedidoBll;
         }
@@ -43,7 +42,7 @@ namespace PrepedidoBusiness.Bll
         }
 
         public async Task<IEnumerable<PrepedidosCadastradosDtoPrepedido>> ListarPrePedidos(string apelido,
-        Prepedido.PrepedidoBll.TipoBuscaPrepedido tipoBusca,
+        Prepedido.Bll.PrepedidoBll.TipoBuscaPrepedido tipoBusca,
         string clienteBusca, string numeroPrePedido, DateTime? dataInicial, DateTime? dataFinal)
         {
             IEnumerable<PrepedidosCadastradosPrepedidoDados> lista = await prepedidoBll.ListarPrePedidos(apelido,

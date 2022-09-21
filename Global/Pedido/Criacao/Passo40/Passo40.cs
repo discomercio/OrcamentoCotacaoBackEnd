@@ -111,7 +111,7 @@ namespace Pedido.Criacao.Passo40
             await Criacao.ValidacoesPrepedidoBll.MontarProdutosParaComparacao(prepedido,
                         Criacao.Execucao.C_custoFinancFornecTipoParcelamento, Criacao.Execucao.C_custoFinancFornecQtdeParcelas,
                         Pedido.Ambiente.Loja, Retorno.ListaErros, (decimal)Criacao.Execucao.Perc_limite_RA_sem_desagio, Pedido.Configuracao.LimiteArredondamentoPorItem,
-                        Prepedido.ValidacoesPrepedidoBll.AmbienteValidacao.PedidoValidacao);
+                        Prepedido.Bll.ValidacoesPrepedidoBll.AmbienteValidacao.PedidoValidacao);
 
             //se tiver erro vamos retornar
             if (Retorno.ListaErros.Count > 0)
@@ -153,7 +153,7 @@ namespace Pedido.Criacao.Passo40
 
                     if (custoFinancFornec == null)
                         lstErros.Add("Opção de parcelamento não disponível para fornecedor " + prod.Fabricante + ": " +
-                            Prepedido.PrepedidoBll.DecodificaCustoFinanFornecQtdeParcelas(Criacao.Execucao.C_custoFinancFornecTipoParcelamento, Criacao.Execucao.C_custoFinancFornecQtdeParcelas) + " parcela(s).");
+                            Prepedido.Bll.PrepedidoBll.DecodificaCustoFinanFornecQtdeParcelas(Criacao.Execucao.C_custoFinancFornecTipoParcelamento, Criacao.Execucao.C_custoFinancFornecQtdeParcelas) + " parcela(s).");
 
 
                     TprodutoLoja prodLoja = (from c in Criacao.Execucao.TabelasBanco.TprodutoLoja_Include_Tprodtuo_Tfabricante_Validado

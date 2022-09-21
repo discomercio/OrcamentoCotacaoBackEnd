@@ -1,10 +1,10 @@
-﻿using Prepedido.PedidoVisualizacao.Dados.DetalhesPedido;
-using PrepedidoBusiness.Dto.ClienteCadastro;
+﻿using Prepedido.Dto;
+using Prepedido.PedidoVisualizacao.Dados.DetalhesPedido;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PrepedidoBusiness.Dto.Pedido.DetalhesPedido
+namespace OrcamentoCotacaoBusiness.Dto.Pedido.DetalhesPedido
 {
     public class PedidoDto
     {

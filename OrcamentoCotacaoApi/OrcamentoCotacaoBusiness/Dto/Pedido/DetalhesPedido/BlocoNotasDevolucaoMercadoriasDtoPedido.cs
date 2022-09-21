@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PrepedidoBusiness.Dto.Pedido.DetalhesPedido
+namespace OrcamentoCotacaoBusiness.Dto.Pedido.DetalhesPedido
 {
     public class BlocoNotasDevolucaoMercadoriasDtoPedido
     {

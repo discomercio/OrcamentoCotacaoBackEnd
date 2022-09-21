@@ -1,14 +1,14 @@
 ﻿using InfraBanco.Modelos.Filtros;
 using Orcamento.Dto;
+using OrcamentoCotacaoBusiness.Dto.Pedido;
+using OrcamentoCotacaoBusiness.Dto.Pedido.DetalhesPedido;
 using Prepedido.PedidoVisualizacao;
-using PrepedidoBusiness.Dto.Pedido;
-using PrepedidoBusiness.Dto.Pedido.DetalhesPedido;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll;
 
-namespace PrepedidoBusiness.Bll
+namespace OrcamentoCotacaoBusiness.Bll
 {
     public class PedidoPrepedidoApiBll
     {

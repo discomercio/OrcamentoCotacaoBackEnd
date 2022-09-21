@@ -1,7 +1,7 @@
 ﻿using Cep.Dados;
 using InfraBanco;
 using InfraBanco.Modelos;
-using PrepedidoBusiness.Dto.Cep;
+using Prepedido.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
