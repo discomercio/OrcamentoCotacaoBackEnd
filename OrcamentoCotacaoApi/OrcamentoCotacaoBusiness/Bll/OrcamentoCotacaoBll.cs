@@ -23,6 +23,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using UtilsGlobais.Parametros;
+using Microsoft.EntityFrameworkCore;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -50,6 +51,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll;
         private readonly ClienteBll _clienteBll;
         private readonly ILogger<OrcamentoCotacaoBll> _logger;
+        private readonly Prepedido.Bll.PrepedidoApiBll _prepedidoApiBll;
 
         public OrcamentoCotacaoBll(
             OrcamentoBll orcamentoBll,
@@ -73,7 +75,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             ParametroOrcamentoCotacaoBll parametroOrcamentoCotacaoBll,
             ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll,
             ClienteBll clienteBll,
-            ILogger<OrcamentoCotacaoBll> logger
+            ILogger<OrcamentoCotacaoBll> logger,
+            Prepedido.Bll.PrepedidoApiBll _prepedidoApiBll
             )
         {
             _orcamentoBll = orcamentoBll;
@@ -98,6 +101,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             this.produtoOrcamentoCotacaoBll = produtoOrcamentoCotacaoBll;
             _clienteBll = clienteBll;
             _logger = logger;
+            this._prepedidoApiBll = _prepedidoApiBll;
         }
 
         public OrcamentoCotacaoDto PorGuid(string guid)
@@ -1183,6 +1187,9 @@ namespace OrcamentoCotacaoBusiness.Bll
         {
             if (aprovarOrcamento == null) return new List<string>() { "É necessário preencher o cadastro do cliente!" };
 
+            //Verificar se orçamento pode ser aprovado
+            //comparar se o tipo do cliente é o mesmo do orçamento?
+
             var clienteCadastroDados = Prepedido.Dto.ClienteCadastroDto
                 .ClienteCadastroDados_De_ClienteCadastroDto(aprovarOrcamento.ClienteCadastroDto);
 
@@ -1212,7 +1219,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                         _logger.LogInformation("Cliente cadastrado com sucesso!");
                     }
 
-                    //vamos tranformar em prepedido
+                    _logger.LogInformation("Iniciando criação de Pré-Pedido.");
+
                     // criar prepedidoDto
                     PrePedidoDto prepedido = new PrePedidoDto();
                     prepedido.DadosCliente = aprovarOrcamento.ClienteCadastroDto.DadosCliente;
@@ -1225,29 +1233,27 @@ namespace OrcamentoCotacaoBusiness.Bll
                     {
                         prepedido.EnderecoEntrega = aprovarOrcamento.enderecoEntrega;
                     }
-                    //buscar a opção selecionada
+
                     var opcaoSelecionada = _orcamentoCotacaoOpcaoBll
-                        .PorFiltro(new TorcamentoCotacaoOpcaoFiltro() { Id = aprovarOrcamento.IdOpcao}).FirstOrDefault();
+                        .PorFiltro(new TorcamentoCotacaoOpcaoFiltro() { Id = aprovarOrcamento.IdOpcao }).FirstOrDefault();
                     if (opcaoSelecionada == null) return new List<string>() { "Falha ao buscar opção selecionada para aprovação do orçamento!" };
-                    //forma de pagamento selecionada
+
                     var formaPagtoSelecionada = opcaoSelecionada.FormaPagto.Where(x => x.Id == aprovarOrcamento.IdFormaPagto).FirstOrDefault();
-                    if(formaPagtoSelecionada == null) return new List<string>() { "Falha ao buscar forma de pagamento selecionada da opção!" };
+                    if (formaPagtoSelecionada == null) return new List<string>() { "Falha ao buscar forma de pagamento selecionada da opção!" };
 
                     prepedido.FormaPagtoCriacao = new FormaPagtoCriacaoDto();
-                    //prepedido.FormaPagtoCriacao.CustoFinancFornecTipoParcelamento = esta no produto
-                    prepedido.FormaPagtoCriacao.C_forma_pagto = formaPagtoSelecionada.Observacao;
-                    prepedido.FormaPagtoCriacao.Tipo_parcelamento = (short)formaPagtoSelecionada.Tipo_parcelamento;
-                    prepedido.FormaPagtoCriacao.Op_av_forma_pagto = formaPagtoSelecionada.Av_forma_pagto.ToString();
-                    prepedido.FormaPagtoCriacao.Op_pce_entrada_forma_pagto = formaPagtoSelecionada.Pce_forma_pagto_entrada.ToString();
-                    prepedido.FormaPagtoCriacao.C_pce_entrada_valor = formaPagtoSelecionada.Pce_entrada_valor;
-                    prepedido.FormaPagtoCriacao.C_pce_prestacao_qtde = formaPagtoSelecionada.Pce_prestacao_qtde;
-                    prepedido.FormaPagtoCriacao.C_pce_prestacao_valor = formaPagtoSelecionada.Pce_prestacao_valor;
-                    prepedido.FormaPagtoCriacao.C_pce_prestacao_periodo = formaPagtoSelecionada.Pce_prestacao_periodo;
-                    //incluir o restante dos campos de pagto
+                    prepedido.FormaPagtoCriacao = await IncluirFormaPagtoCriacaoParaPrepedido(formaPagtoSelecionada);
+
+                    prepedido.ListaProdutos = await IncluirProdutosParaPrepedido(opcaoSelecionada.ListaProdutos, formaPagtoSelecionada.Id);
+                    new List<string>() { "Falha ao buscar produtos atômicos da opção!" };
 
                     prepedido.PercRT = opcaoSelecionada.PercRT;
                     prepedido.VlTotalDestePedido = opcaoSelecionada.ListaProdutos.Sum(x => x.TotalItem);
-                    
+                    prepedido.DetalhesPrepedido.EntregaImediata = orcamento.StEtgImediata.ToString();
+                    prepedido.DetalhesPrepedido.EntregaImediataData = orcamento.PrevisaoEntregaData.HasValue ? orcamento.PrevisaoEntregaData : null;
+
+                    IEnumerable<string> ret = _prepedidoApiBll.CadastrarPrepedido(prepedido, "", 0.01M, false,
+                        Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS, 12).Result;
 
                     await dbGravacao.SaveChangesAsync();
                     //dbGravacao.transacao.Commit();
@@ -1263,5 +1269,77 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
+        public async Task<FormaPagtoCriacaoDto> IncluirFormaPagtoCriacaoParaPrepedido(FormaPagtoCriacaoResponseViewModel formaPagtoSelecionada)
+        {
+            return await Task.FromResult(new FormaPagtoCriacaoDto()
+            {
+                Op_av_forma_pagto = formaPagtoSelecionada.Av_forma_pagto.ToString(),
+                Op_pu_forma_pagto = formaPagtoSelecionada.Pu_forma_pagto.ToString(),
+                C_pu_valor = formaPagtoSelecionada.Pu_valor,
+                C_pu_vencto_apos = formaPagtoSelecionada.Pu_vencto_apos,
+                C_pc_qtde = formaPagtoSelecionada.Pc_qtde_parcelas,
+                C_pc_valor = formaPagtoSelecionada.Pc_valor_parcela,
+                C_pc_maquineta_qtde = formaPagtoSelecionada.Pc_maquineta_qtde_parcelas,
+                C_pc_maquineta_valor = formaPagtoSelecionada.Pc_maquineta_valor_parcela,
+                Op_pce_entrada_forma_pagto = formaPagtoSelecionada.Pce_forma_pagto_entrada.ToString(),
+                C_pce_entrada_valor = formaPagtoSelecionada.Pce_entrada_valor,
+                Op_pce_prestacao_forma_pagto = formaPagtoSelecionada.Pce_forma_pagto_prestacao.ToString(),
+                C_pce_prestacao_qtde = formaPagtoSelecionada.Pce_prestacao_qtde,
+                C_pce_prestacao_valor = formaPagtoSelecionada.Pce_prestacao_valor,
+                C_pce_prestacao_periodo = formaPagtoSelecionada.Pce_prestacao_periodo,
+                Op_pse_prim_prest_forma_pagto = formaPagtoSelecionada.Pse_forma_pagto_prim_prest.ToString(),
+                C_pse_prim_prest_valor = formaPagtoSelecionada.Pse_prim_prest_valor,
+                C_pse_prim_prest_apos = formaPagtoSelecionada.Pse_prim_prest_apos,
+                Op_pse_demais_prest_forma_pagto = formaPagtoSelecionada.Pse_forma_pagto_demais_prest.ToString(),
+                C_pse_demais_prest_qtde = formaPagtoSelecionada.Pse_demais_prest_qtde,
+                C_pse_demais_prest_valor = formaPagtoSelecionada.Pse_demais_prest_valor,
+                C_pse_demais_prest_periodo = formaPagtoSelecionada.Pse_demais_prest_periodo,
+                C_forma_pagto = formaPagtoSelecionada.Observacao,
+                Tipo_parcelamento = (short)formaPagtoSelecionada.Tipo_parcelamento
+            });
+        }
+
+        public async Task<List<PrepedidoProdutoDtoPrepedido>> IncluirProdutosParaPrepedido(List<ProdutoOrcamentoOpcaoResponseViewModel> produtosOpcaoSelecionada, int idFormaPagto)
+        {
+            var itensAtomicosOpcao = await produtoOrcamentoCotacaoBll
+                        .BuscarTorcamentoCotacaoOpcaoItemAtomicosCustoFin(new TorcamentoCotacaoOpcaoItemAtomicoCustoFinFiltro()
+                        { IdOpcaoPagto = idFormaPagto, IncluirTorcamentoCotacaoOpcaoItemAtomico = true });
+            if (itensAtomicosOpcao == null) return null;
+
+            List<PrepedidoProdutoDtoPrepedido> prepedidoProdutos = new List<PrepedidoProdutoDtoPrepedido>();
+            foreach (var item in produtosOpcaoSelecionada)
+            {
+                var itensAtomicosCustoFin = itensAtomicosOpcao.Where(x => x.TorcamentoCotacaoOpcaoItemAtomico.IdItemUnificado == item.IdItemUnificado);
+                foreach (var itemAtomico in itensAtomicosCustoFin)
+                {
+                    PrepedidoProdutoDtoPrepedido produtoPrepedido = new PrepedidoProdutoDtoPrepedido();
+                    produtoPrepedido.Fabricante = itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Fabricante;
+                    produtoPrepedido.Produto = itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Produto;
+                    produtoPrepedido.Descricao = itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Descricao;
+                    produtoPrepedido.Obs = "";
+                    produtoPrepedido.Qtde = itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Qtde;
+                    produtoPrepedido.BlnTemRa = false;
+                    produtoPrepedido.CustoFinancFornecPrecoListaBase = itemAtomico.CustoFinancFornecPrecoListaBase;
+                    produtoPrepedido.Preco_Lista = itemAtomico.PrecoLista;
+                    produtoPrepedido.Desc_Dado = itemAtomico.DescDado;
+                    produtoPrepedido.Preco_Venda = itemAtomico.PrecoVenda;
+                    produtoPrepedido.VlTotalItem = item.Qtde * itemAtomico.PrecoVenda;
+                    produtoPrepedido.TotalItem = item.Qtde * itemAtomico.PrecoVenda;
+                    produtoPrepedido.Qtde_estoque_total_disponivel = 0;
+                    produtoPrepedido.CustoFinancFornecCoeficiente = itemAtomico.CustoFinancFornecCoeficiente;
+                    produtoPrepedido.Preco_NF = itemAtomico.PrecoNF;
+                    //produtoPrepedido.Permite_Ra_Status =
+                    //produtoPrepedido.VlTotalRA =
+                    //produtoPrepedido.Comissao =
+                    //produtoPrepedido.TotalItemRA =
+
+                    prepedidoProdutos.Add(produtoPrepedido);
+                }
+            }
+
+            //Arrumar os produtos repetidos, descontos, alçada
+             
+            return prepedidoProdutos;
+        }
     }
 }
