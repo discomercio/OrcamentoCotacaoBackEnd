@@ -10,6 +10,7 @@ using OrcamentoCotacaoBusiness.Models.Response;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
 using Produto;
 using Produto.Dto;
+using ProdutoCatalogo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,12 +28,15 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly OrcamentoCotacaoOpcaoItemAtomicoCustoFin.OrcamentoCotacaoOpcaoItemAtomicoCustoFinBll orcamentoCotacaoOpcaoItemAtomicoCustoFinBll;
         private readonly LojaOrcamentoCotacaoBll _lojaOrcamentoCotacaoBll;
         private readonly LojaBll _lojaBll;
+        private readonly ProdutoCatalogoBll _produtoCatalogoBll;
+
         public ProdutoOrcamentoCotacaoBll(Produto.ProdutoGeralBll produtoGeralBll, CoeficienteBll coeficienteBll, IMapper mapper,
             OrcamentoCotacaoOpcaoItemUnificado.OrcamentoCotacaoOpcaoItemUnificadoBll orcamentoCotacaoOpcaoItemUnificadoBll,
             OrcamentoCotacaoOpcaoItemAtomico.OrcamentoCotacaoOpcaoItemAtomicoBll orcamentoCotacaoOpcaoItemAtomicoBll,
             OrcamentoCotacaoOpcaoItemAtomicoCustoFin.OrcamentoCotacaoOpcaoItemAtomicoCustoFinBll orcamentoCotacaoOpcaoItemAtomicoCustoFinBll,
             LojaOrcamentoCotacaoBll _lojaOrcamentoCotacaoBll,
-            LojaBll _lojaBll)
+            LojaBll _lojaBll,
+            ProdutoCatalogoBll _produtoCatalogoBll)
         {
             this.produtoGeralBll = produtoGeralBll;
             this.coeficienteBll = coeficienteBll;
@@ -42,6 +46,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             this.orcamentoCotacaoOpcaoItemAtomicoCustoFinBll = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll;
             this._lojaOrcamentoCotacaoBll = _lojaOrcamentoCotacaoBll;
             this._lojaBll = _lojaBll;
+            this._produtoCatalogoBll = _produtoCatalogoBll;
         }
 
         public async Task<ProdutoResponseViewModel> ListaProdutosCombo(ProdutosRequestViewModel produtos)
@@ -577,6 +582,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     Fabricante = item.Fabricante,
                     FabricanteNome = (await produtoGeralBll.ObterListaFabricante()).Where(x => x.Fabricante == item.Fabricante).FirstOrDefault().Nome,
                     Produto = item.Produto,
+                    UrlImagem =  _produtoCatalogoBll.ObterDadosImagemPorProduto(item.Produto).FirstOrDefault().Caminho,
                     Descricao = item.DescricaoHtml,
                     Qtde = item.Qtde,
                     //ITEM ATOMICO CUSTO
