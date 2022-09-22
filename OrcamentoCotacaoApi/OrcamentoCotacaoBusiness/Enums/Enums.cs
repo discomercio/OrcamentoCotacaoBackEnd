@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace OrcamentoCotacaoBusiness.Enums
+﻿namespace OrcamentoCotacaoBusiness.Enums
 {
     public class Enums
     {
@@ -22,6 +18,13 @@ namespace OrcamentoCotacaoBusiness.Enums
             VisualizarOrcamentoConsultar = 103000,
             AcessoUniversalOrcamentoEditar = 103100,
             AprovarOrcamento = 100550,
+        }
+
+        public enum StatusOrcamento
+        {
+            Enviado = 1,
+            Cancelado = 2,
+            Aprovado = 3
         }
     }
 }
