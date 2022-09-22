@@ -9,7 +9,8 @@
         public bool ClonarOrcamento { get; set; }
         public bool ReenviarOrcamento { get; set; }
         public bool EditarOpcaoOrcamento { get; set; }
-        public bool AprovarOpcaoOrcamento { get; set; }
+        public bool DesabilitarAprovarOpcaoOrcamento { get; set; }
+        public bool MensagemOrcamento { get; set; }
         public bool NenhumaOpcaoOrcamento { get; set; }
         public bool DesabilitarBotoes { get; set; }
     }

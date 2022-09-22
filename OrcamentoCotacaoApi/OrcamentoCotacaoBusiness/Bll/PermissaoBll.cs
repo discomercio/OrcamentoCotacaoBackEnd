@@ -43,7 +43,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (request.IdOrcamento <= 0)
             {
                 response.Sucesso = false;
-                response.Mensagem = "Obrigatório o preenchimento do campo IdOrçamento.";
+                response.Mensagem = "Obrigatório o preenchimento do campo IdOrcamento.";
                 return response;
             }
 
@@ -51,71 +51,92 @@ namespace OrcamentoCotacaoBusiness.Bll
             var usuario = request.Usuario.ToUpper().Trim();
             var idOrcamento = request.IdOrcamento;
 
-            // Permissões
-            var permissaoVisualizarOrcamentoConsultar = ValidaPermissao(request.PermissoesUsuario, ePermissao.VisualizarOrcamentoConsultar);
-            var permissaoAcessoUniversalOrcamentoEditar = ValidaPermissao(request.PermissoesUsuario, ePermissao.AcessoUniversalOrcamentoEditar);
-            var permissaoProrrogarVencimentoOrcamento = ValidaPermissao(request.PermissoesUsuario, ePermissao.ProrrogarVencimentoOrcamento);
-            var permissaoAprovarOrcamento = ValidaPermissao(request.PermissoesUsuario, ePermissao.AprovarOrcamento);
-            var permissaoDescontoSuperior1 = ValidaPermissao(request.PermissoesUsuario,ePermissao.DescontoSuperior1);
-            var permissaoDescontoSuperior2 = ValidaPermissao(request.PermissoesUsuario, ePermissao.DescontoSuperior2);
-            var permissaoDescontoSuperior3 = ValidaPermissao(request.PermissoesUsuario, ePermissao.DescontoSuperior3);
-
             // Orçamento
             var usuarioEnvolvidoOrcamento = UsuarioEnvolvidoOrcamento(idTipoUsuario, usuario, idOrcamento);
 
-            if (usuarioEnvolvidoOrcamento || permissaoVisualizarOrcamentoConsultar)
+            if (usuarioEnvolvidoOrcamento)
             {
-                var usuarioAcessaLoja = true; // ??
-
-                // Loja
-                if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
-                {
-                    var loja = ObterLojaPorOrcamento(request.IdOrcamento);
-
-                    if (string.IsNullOrEmpty(loja))
-                    {
-                        response.Sucesso = false;
-                        response.Mensagem = "Orçamento não esta relacionado com uma loja.";
-                        return response;
-                    }
-
-                    usuarioAcessaLoja = UsuarioAcessaLoja(usuario, loja);
-                    if (!usuarioAcessaLoja)
-                    {
-                        response.VizualizarOrcamento = false;
-
-                        response.Sucesso = false;
-                        response.Mensagem = "Não encontramos a permissão necessária para acessar essa funcionalidade!";
-                        return response;
-                    }
-                }
-
                 // Status Orçamento
                 var statusOrcamentoEnviado = ObterStatusOrcamento(idOrcamento);
 
                 // Orçamento Expirado
                 var orcamentoExpirado = VerificarValidadeOrcamento(idOrcamento);
 
-                // cenarios
-                var cenario1 = usuarioEnvolvidoOrcamento;
-                var cenario2 = (usuarioAcessaLoja && permissaoAcessoUniversalOrcamentoEditar);
-                var cenario3 = (permissaoDescontoSuperior1 || permissaoDescontoSuperior2 || permissaoDescontoSuperior3);
+                // Permissões
+                var permissaoVisualizarOrcamentoConsultar = ValidaPermissao(request.PermissoesUsuario, ePermissao.VisualizarOrcamentoConsultar);
+                var permissaoAcessoUniversalOrcamentoEditar = ValidaPermissao(request.PermissoesUsuario, ePermissao.AcessoUniversalOrcamentoEditar);
+                var permissaoProrrogarVencimentoOrcamento = ValidaPermissao(request.PermissoesUsuario, ePermissao.ProrrogarVencimentoOrcamento);
+                var permissaoAprovarOrcamento = ValidaPermissao(request.PermissoesUsuario, ePermissao.AprovarOrcamento);
+                var permissaoDescontoSuperior1 = ValidaPermissao(request.PermissoesUsuario, ePermissao.DescontoSuperior1);
+                var permissaoDescontoSuperior2 = ValidaPermissao(request.PermissoesUsuario, ePermissao.DescontoSuperior2);
+                var permissaoDescontoSuperior3 = ValidaPermissao(request.PermissoesUsuario, ePermissao.DescontoSuperior3);
 
+                if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
+                {
+                    var loja = ObterLojaPorOrcamento(request.IdOrcamento);
+
+                    if (string.IsNullOrEmpty(loja))
+                    {
+                        response.VizualizarOrcamento = false;
+                        response.Sucesso = false;
+                        response.Mensagem = "Orçamento não esta relacionado com uma loja.";
+                        return response;
+                    }
+
+                    var usuarioAcessaLoja = UsuarioAcessaLoja(usuario, loja);
+                    if (!usuarioAcessaLoja && !permissaoVisualizarOrcamentoConsultar)
+                    {
+                        response.VizualizarOrcamento = false;
+                        response.Sucesso = false;
+                        response.Mensagem = "Não encontramos a permissão necessária para acessar essa funcionalidade!";
+                        return response;
+                    }
+                }
 
                 response.VizualizarOrcamento = true;
-                response.ProrrogarOrcamento = (permissaoProrrogarVencimentoOrcamento && (cenario1 || cenario2) && statusOrcamentoEnviado);
-                response.EditarOrcamento = ((cenario1 || cenario2) && (statusOrcamentoEnviado || !orcamentoExpirado));
-                response.CancelarOrcamento = ((cenario1 || cenario2) && statusOrcamentoEnviado);
                 response.ClonarOrcamento = true;
-                response.NenhumaOpcaoOrcamento = false;
-                response.ReenviarOrcamento = statusOrcamentoEnviado;
-                response.DesabilitarBotoes = !statusOrcamentoEnviado;
-                response.EditarOpcaoOrcamento = ((cenario1 || cenario2 || cenario3) && (statusOrcamentoEnviado || !orcamentoExpirado));
-                response.AprovarOpcaoOrcamento = (permissaoAprovarOrcamento && (cenario1 || cenario2) && (statusOrcamentoEnviado || !orcamentoExpirado));
 
-                if (!response.CancelarOrcamento && !response.ProrrogarOrcamento && !response.EditarOrcamento)
+                if (statusOrcamentoEnviado == StatusOrcamento.Enviado)
                 {
-                    response.NenhumaOpcaoOrcamento = true;
+                    response.EditarOrcamento = true;
+                    response.CancelarOrcamento = true;
+                    response.ProrrogarOrcamento = permissaoProrrogarVencimentoOrcamento;
+                    response.ReenviarOrcamento = true;
+
+                    if (permissaoAcessoUniversalOrcamentoEditar || idTipoUsuario != (int)Constantes.TipoUsuario.VENDEDOR)
+                    {
+                        response.EditarOpcaoOrcamento = true;
+                    }
+                    else
+                    {
+                        response.EditarOpcaoOrcamento =
+                            (permissaoDescontoSuperior1
+                            || permissaoDescontoSuperior2
+                            || permissaoDescontoSuperior3);
+                    }
+
+                    response.DesabilitarAprovarOpcaoOrcamento = !permissaoAprovarOrcamento;
+                    response.MensagemOrcamento = true;
+
+                    if (orcamentoExpirado)
+                    {
+                        response.EditarOrcamento = false;
+                        response.ReenviarOrcamento = false;
+                        response.EditarOpcaoOrcamento = false;
+                        response.DesabilitarAprovarOpcaoOrcamento = true;
+                        response.MensagemOrcamento = false;
+                    }
+                }
+                else if (statusOrcamentoEnviado == StatusOrcamento.Aprovado
+                        || statusOrcamentoEnviado == StatusOrcamento.Cancelado)
+                {
+                    response.ProrrogarOrcamento = false;
+                    response.EditarOrcamento = false;
+                    response.CancelarOrcamento = false;
+                    response.ReenviarOrcamento = false;
+                    response.DesabilitarBotoes = false;
+                    response.EditarOpcaoOrcamento = false;
+                    response.DesabilitarAprovarOpcaoOrcamento = true;
                 }
             }
             else
@@ -125,50 +146,200 @@ namespace OrcamentoCotacaoBusiness.Bll
                 response.Mensagem = "Não encontramos a permissão necessária para acessar essa funcionalidade!";
             }
 
+            response.NenhumaOpcaoOrcamento = false;
+            response.DesabilitarBotoes = false;
+
             return response;
+        }
+
+        public async Task<PermissaoPrePedidoResponse> RetornarPermissaoPrePedido(PermissaoPrePedidoRequest request)
+        {
+            var response = new PermissaoPrePedidoResponse();
+
+            if (request.TipoUsuario <= 0)
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Obrigatório o preenchimento do campo Tipo de Usuario.";
+                return response;
+            }
+
+            if (string.IsNullOrEmpty(request.Usuario))
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Obrigatório o preenchimento do campo Usuário.";
+                return response;
+            }
+
+            if (request.IdPrePedido <= 0)
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Obrigatório o preenchimento do campo IdPrePedido .";
+                return response;
+            }
+
+            var idTipoUsuario = request.TipoUsuario;
+            var usuario = request.Usuario.ToUpper().Trim();
+            var idPrePedido = request.IdPrePedido;
+
+            var usuarioEnvolvidoOrcamento = UsuarioEnvolvidoPrePedido(idTipoUsuario, usuario, idPrePedido);
+
+            if (usuarioEnvolvidoOrcamento)
+            {
+
+            }
+            else
+            {
+                response.VizualizarPrePedido = false;
+                response.Sucesso = false;
+                response.Mensagem = "Não encontramos a permissão necessária para acessar essa funcionalidade!";
+            }
+
+            return response;
+        }
+
+        public async Task<PermissaoPedidoResponse> RetornarPermissaoPedido(PermissaoPedidoRequest request)
+        {
+            var response = new PermissaoPedidoResponse();
+
+            if (request.TipoUsuario <= 0)
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Obrigatório o preenchimento do campo Tipo de Usuario.";
+                return response;
+            }
+
+            if (string.IsNullOrEmpty(request.Usuario))
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Obrigatório o preenchimento do campo Usuário.";
+                return response;
+            }
+
+            if (request.IdPedido <= 0)
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Obrigatório o preenchimento do campo IdPedido.";
+                return response;
+            }
+
+            var idTipoUsuario = request.TipoUsuario;
+            var usuario = request.Usuario.ToUpper().Trim();
+            var idPedido = request.IdPedido;
+
+            var usuarioEnvolvido = UsuarioEnvolvidoPedido(idTipoUsuario, usuario, idPedido);
+
+            if (usuarioEnvolvido)
+            {
+
+            }
+            else
+            {
+                response.VizualizarPedido = false;
+                response.Sucesso = false;
+                response.Mensagem = "Não encontramos a permissão necessária para acessar essa funcionalidade!";
+            }
+
+            return response;
+        }
+
+        private bool ValidaPermissao(List<string> permissoesUsuario, ePermissao permissao)
+        {
+            var idPermissao = (int)permissao;
+
+            return permissoesUsuario.Contains(idPermissao.ToString());
         }
 
         private bool UsuarioEnvolvidoOrcamento(int idTipoUsuario, string usuario, int idOrcamento)
         {
-            bool usuarioEnvolvidoOrcamento = false;
+            bool usuarioEnvolvido = false;
 
             using (var db = _contextoProvider.GetContextoLeitura())
             {
                 if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
                 {
-                    usuarioEnvolvidoOrcamento = (from o in db.TorcamentoCotacao
-                                                 join u in db.Tusuario
-                                                      on o.IdVendedor equals u.Id
-                                                 where
-                                                      u.Usuario == usuario
-                                                      && o.Id == idOrcamento
-                                                 select o).Any();
+                    usuarioEnvolvido = (from o in db.TorcamentoCotacao
+                                        join u in db.Tusuario
+                                             on o.IdVendedor equals u.Id
+                                        where
+                                             u.Usuario == usuario
+                                             && o.Id == idOrcamento
+                                        select o).Any();
                 }
 
                 if (idTipoUsuario == (int)Constantes.TipoUsuario.PARCEIRO)
                 {
-                    usuarioEnvolvidoOrcamento = (from o in db.TorcamentoCotacao
-                                                 join u in db.TorcamentistaEindicador
-                                                      on o.IdIndicador equals u.IdIndicador
-                                                 where
-                                                      u.Apelido == usuario
-                                                      && o.Id == idOrcamento
-                                                 select o).Any();
+                    usuarioEnvolvido = (from o in db.TorcamentoCotacao
+                                        join u in db.TorcamentistaEindicador
+                                             on o.IdIndicador equals u.IdIndicador
+                                        where
+                                             u.Apelido == usuario
+                                             && o.Id == idOrcamento
+                                        select o).Any();
                 }
 
-                if (idTipoUsuario == (int)Constantes.TipoUsuario.PARCEIRO)
+                if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
                 {
-                    usuarioEnvolvidoOrcamento = (from o in db.TorcamentoCotacao
-                                                 join u in db.TorcamentistaEindicadorVendedor
-                                                      on o.IdIndicadorVendedor equals u.Id
-                                                 where
-                                                      u.Email == usuario
-                                                      && o.Id == idOrcamento
-                                                 select o).Any();
+                    usuarioEnvolvido = (from o in db.TorcamentoCotacao
+                                        join u in db.TorcamentistaEindicadorVendedor
+                                             on o.IdIndicadorVendedor equals u.Id
+                                        where
+                                             u.Email == usuario
+                                             && o.Id == idOrcamento
+                                        select o).Any();
                 }
             }
 
-            return usuarioEnvolvidoOrcamento;
+            return usuarioEnvolvido;
+        }
+
+        private bool UsuarioEnvolvidoPrePedido(int idTipoUsuario, string usuario, int idPrePedido)
+        {
+            bool usuarioEnvolvido = false;
+
+            using (var db = _contextoProvider.GetContextoLeitura())
+            {
+                if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
+                {
+                    usuarioEnvolvido = true;
+                }
+
+                if (idTipoUsuario == (int)Constantes.TipoUsuario.PARCEIRO)
+                {
+                    usuarioEnvolvido = true;
+                }
+
+                if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
+                {
+                    usuarioEnvolvido = true;
+                }
+            }
+
+            return usuarioEnvolvido;
+        }
+
+        private bool UsuarioEnvolvidoPedido(int idTipoUsuario, string usuario, int idPedido)
+        {
+            bool usuarioEnvolvido = false;
+
+            using (var db = _contextoProvider.GetContextoLeitura())
+            {
+                if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
+                {
+                    usuarioEnvolvido = true;
+                }
+
+                if (idTipoUsuario == (int)Constantes.TipoUsuario.PARCEIRO)
+                {
+                    usuarioEnvolvido = true;
+                }
+
+                if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
+                {
+                    usuarioEnvolvido = true;
+                }
+            }
+
+            return usuarioEnvolvido;
         }
 
         private string ObterLojaPorOrcamento(int idOrcamento)
@@ -203,20 +374,19 @@ namespace OrcamentoCotacaoBusiness.Bll
             return usuarioAcessaLoja;
         }
 
-        private bool ObterStatusOrcamento(int idOrcamento)
+        private StatusOrcamento ObterStatusOrcamento(int idOrcamento)
         {
             int statusOrcamentoEnviado;
 
             using (var db = _contextoProvider.GetContextoLeitura())
             {
                 statusOrcamentoEnviado = (from o in db.TorcamentoCotacao
-                                          join s in db.TcfgOrcamentoCotacaoStatus on o.Status equals s.Id
                                           where
                                                o.Id == idOrcamento
                                           select o.Status).FirstOrDefault();
             }
 
-            return statusOrcamentoEnviado == 1;
+            return (StatusOrcamento)statusOrcamentoEnviado;
         }
 
         private bool VerificarValidadeOrcamento(int idOrcamento)
@@ -231,13 +401,6 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             return dataValidadeOrcamento.Date < DateTime.Now.Date;
-        }
-
-        private bool ValidaPermissao(List<string> permissoesUsuario, ePermissao permissao)
-        {
-            var idPermissao = (int)permissao;
-
-            return permissoesUsuario.Contains(idPermissao.ToString());
         }
     }
 }
