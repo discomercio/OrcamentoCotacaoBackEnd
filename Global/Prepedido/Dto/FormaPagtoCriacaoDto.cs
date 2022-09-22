@@ -105,5 +105,9 @@ namespace Prepedido.Dto
             ret.CustoFinancFornecQtdeParcelas = PrepedidoBll.ObterCustoFinancFornecQtdeParcelasDeFormaPagto(ret);
             return ret;
         }
+
+        //public static FormaPagtoCriacaoDados FormaPagtoCriacaoDto_De_FormaPagtoCriacaoResponseViewModel(OrcamentoCotacaoBusiness.Models.Response.FormaPagtoCriacaoResponseViewModel origem)
+        //{
+        //}
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Cliente.Dados;
+using InfraBanco.Constantes;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -104,6 +105,51 @@ namespace Prepedido.Dto
                 Endereco_rg = origem.Endereco_rg,
                 Endereco_contato = origem.Endereco_contato
             };
+        }
+        public static EnderecoCadastralClientePrepedidoDto EnderecoCadastralClientePrepedidoDto_De_DadosClienteCadastroDto(DadosClienteCadastroDto dadosClienteCadastroDto)
+        {
+            EnderecoCadastralClientePrepedidoDto enderecoCadastralClientePrepedidoDto = new EnderecoCadastralClientePrepedidoDto();
+
+            enderecoCadastralClientePrepedidoDto.Endereco_cep = dadosClienteCadastroDto.Cep;
+            enderecoCadastralClientePrepedidoDto.Endereco_logradouro = dadosClienteCadastroDto.Endereco;
+            enderecoCadastralClientePrepedidoDto.Endereco_numero = dadosClienteCadastroDto.Numero;
+            enderecoCadastralClientePrepedidoDto.Endereco_bairro = dadosClienteCadastroDto.Bairro;
+            enderecoCadastralClientePrepedidoDto.Endereco_cidade = dadosClienteCadastroDto.Cidade;
+            enderecoCadastralClientePrepedidoDto.Endereco_uf = dadosClienteCadastroDto.Uf;
+            enderecoCadastralClientePrepedidoDto.Endereco_complemento = dadosClienteCadastroDto.Complemento;
+            enderecoCadastralClientePrepedidoDto.Endereco_cnpj_cpf = dadosClienteCadastroDto.Cnpj_Cpf;
+            enderecoCadastralClientePrepedidoDto.Endereco_nome = dadosClienteCadastroDto.Nome;
+            enderecoCadastralClientePrepedidoDto.Endereco_rg = dadosClienteCadastroDto.Rg;
+            enderecoCadastralClientePrepedidoDto.Endereco_tipo_pessoa = dadosClienteCadastroDto.Tipo;
+            enderecoCadastralClientePrepedidoDto.Endereco_ddd_cel = "";
+            enderecoCadastralClientePrepedidoDto.Endereco_ddd_res = "";
+            if (dadosClienteCadastroDto.Tipo == Constantes.ID_PF)
+            {
+                enderecoCadastralClientePrepedidoDto.Endereco_tel_cel = dadosClienteCadastroDto.DddCelular != null ?
+                  dadosClienteCadastroDto.DddCelular + dadosClienteCadastroDto.Celular : "";
+
+                enderecoCadastralClientePrepedidoDto.Endereco_tel_res = dadosClienteCadastroDto.DddResidencial != null ?
+                  dadosClienteCadastroDto.DddResidencial + dadosClienteCadastroDto.TelefoneResidencial : "";
+            }
+            enderecoCadastralClientePrepedidoDto.Endereco_ddd_com = "";
+            enderecoCadastralClientePrepedidoDto.Endereco_tel_com = dadosClienteCadastroDto.DddComercial != null && dadosClienteCadastroDto.TelComercial != null ?
+              dadosClienteCadastroDto.DddComercial + dadosClienteCadastroDto.TelComercial : "";
+            enderecoCadastralClientePrepedidoDto.Endereco_ramal_com = dadosClienteCadastroDto.Ramal;
+            enderecoCadastralClientePrepedidoDto.Endereco_ddd_com_2 = "";
+            enderecoCadastralClientePrepedidoDto.Endereco_tel_com_2 =
+              dadosClienteCadastroDto.Tipo == Constantes.ID_PJ && dadosClienteCadastroDto.DddComercial2 != null ?
+                dadosClienteCadastroDto.DddComercial2 + dadosClienteCadastroDto.TelComercial2 : "";
+            enderecoCadastralClientePrepedidoDto.Endereco_ramal_com_2 = dadosClienteCadastroDto.Tipo == Constantes.ID_PJ ?
+              dadosClienteCadastroDto.Ramal2 : "";
+            enderecoCadastralClientePrepedidoDto.Endereco_email = dadosClienteCadastroDto.Email;
+            enderecoCadastralClientePrepedidoDto.Endereco_email_xml = dadosClienteCadastroDto.EmailXml;
+            enderecoCadastralClientePrepedidoDto.Endereco_produtor_rural_status = dadosClienteCadastroDto.ProdutorRural;
+            enderecoCadastralClientePrepedidoDto.Endereco_contribuinte_icms_status = dadosClienteCadastroDto.Contribuinte_Icms_Status;
+            enderecoCadastralClientePrepedidoDto.Endereco_ie = dadosClienteCadastroDto.Ie;
+            enderecoCadastralClientePrepedidoDto.Endereco_contato = dadosClienteCadastroDto.Contato;
+            enderecoCadastralClientePrepedidoDto.St_memorizacao_completa_enderecos = true;
+
+            return enderecoCadastralClientePrepedidoDto;
         }
     }
 }

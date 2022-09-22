@@ -16,6 +16,7 @@ using OrcamentoCotacaoBusiness.Dto;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
 using OrcamentoCotacaoLink;
+using Prepedido.Dto;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -261,7 +262,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
         }
 
-        public OrcamentoResponseViewModel PorFiltro(int id, UsuarioLogin usuarioLogin)
+        public OrcamentoResponseViewModel PorFiltro(int id, int tipoUsuario)
         {
             var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro() { Id = id }).FirstOrDefault();
             if (orcamento == null) throw new Exception("Falha ao buscar Orçamento!");
@@ -327,7 +328,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
                     id = (int)orcamento.IdIndicadorVendedor
                 }).FirstOrDefault();
-                vendedorParceiro = (int)usuarioLogin.TipoUsuario != (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO ?
+                vendedorParceiro = tipoUsuario != (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO ?
                     tVendedorParceiro?.Nome : tVendedorParceiro.Email;
             }
 
@@ -576,7 +577,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public void AtualizarOrcamentoOpcao(OrcamentoOpcaoResponseViewModel opcao, UsuarioLogin usuarioLogado)
         {
-            var orcamento = PorFiltro(opcao.IdOrcamentoCotacao, usuarioLogado);
+            var orcamento = PorFiltro(opcao.IdOrcamentoCotacao, (int)usuarioLogado.TipoUsuario);
 
             bool temPermissao = ValidarPermissaoAtualizarOpcaoOrcamentoCotacao(orcamento, usuarioLogado);
             if (!temPermissao) throw new ArgumentException("Usuário não tem permissão para atualizar a opção de orçamento!");
@@ -586,7 +587,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public void AtualizarDadosCadastraisOrcamento(OrcamentoResponseViewModel orcamento, UsuarioLogin usuarioLogado)
         {
-            var orcamentoAntigo = PorFiltro((int)orcamento.Id, usuarioLogado);
+            var orcamentoAntigo = PorFiltro((int)orcamento.Id, (int)usuarioLogado.TipoUsuario);
 
             if (!ValidarDonoOrcamentoCotacao(orcamentoAntigo, usuarioLogado))
                 throw new ArgumentException("Usuário não tem permissão para editar dados cadastrais do orçamento!");
@@ -1194,7 +1195,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             var cliente = await _clienteBll.BuscarTcliente(UtilsGlobais.Util.SoDigitosCpf_Cnpj(clienteCadastroDados.DadosCliente.Cnpj_Cpf));
 
             var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro() { Id = aprovarOrcamento.IdOrcamento }).FirstOrDefault();
-            if (orcamento == null) throw new Exception("Falha ao buscar Orçamento!");
+            if (orcamento == null) return new List<string>() { "Falha ao buscar Orçamento!" };
 
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
@@ -1204,7 +1205,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     //não existe
                     if (cliente == null)
                     {
-                        retorno = await _clienteBll.CadastrarClienteOrcamentoCotacao(clienteCadastroDados.DadosCliente, 
+                        retorno = await _clienteBll.CadastrarClienteOrcamentoCotacao(clienteCadastroDados.DadosCliente,
                             dbGravacao, orcamento.Loja);
                         if (retorno != null) return retorno;
 
@@ -1212,9 +1213,44 @@ namespace OrcamentoCotacaoBusiness.Bll
                     }
 
                     //vamos tranformar em prepedido
+                    // criar prepedidoDto
+                    PrePedidoDto prepedido = new PrePedidoDto();
+                    prepedido.DadosCliente = aprovarOrcamento.ClienteCadastroDto.DadosCliente;
+                    prepedido.EnderecoCadastroClientePrepedido = new EnderecoCadastralClientePrepedidoDto();
+                    prepedido.EnderecoCadastroClientePrepedido =
+                        EnderecoCadastralClientePrepedidoDto
+                        .EnderecoCadastralClientePrepedidoDto_De_DadosClienteCadastroDto
+                        (aprovarOrcamento.ClienteCadastroDto.DadosCliente);
+                    if (aprovarOrcamento.enderecoEntrega.OutroEndereco)
+                    {
+                        prepedido.EnderecoEntrega = aprovarOrcamento.enderecoEntrega;
+                    }
+                    //buscar a opção selecionada
+                    var opcaoSelecionada = _orcamentoCotacaoOpcaoBll
+                        .PorFiltro(new TorcamentoCotacaoOpcaoFiltro() { Id = aprovarOrcamento.IdOpcao}).FirstOrDefault();
+                    if (opcaoSelecionada == null) return new List<string>() { "Falha ao buscar opção selecionada para aprovação do orçamento!" };
+                    //forma de pagamento selecionada
+                    var formaPagtoSelecionada = opcaoSelecionada.FormaPagto.Where(x => x.Id == aprovarOrcamento.IdFormaPagto).FirstOrDefault();
+                    if(formaPagtoSelecionada == null) return new List<string>() { "Falha ao buscar forma de pagamento selecionada da opção!" };
+
+                    prepedido.FormaPagtoCriacao = new FormaPagtoCriacaoDto();
+                    //prepedido.FormaPagtoCriacao.CustoFinancFornecTipoParcelamento = esta no produto
+                    prepedido.FormaPagtoCriacao.C_forma_pagto = formaPagtoSelecionada.Observacao;
+                    prepedido.FormaPagtoCriacao.Tipo_parcelamento = (short)formaPagtoSelecionada.Tipo_parcelamento;
+                    prepedido.FormaPagtoCriacao.Op_av_forma_pagto = formaPagtoSelecionada.Av_forma_pagto.ToString();
+                    prepedido.FormaPagtoCriacao.Op_pce_entrada_forma_pagto = formaPagtoSelecionada.Pce_forma_pagto_entrada.ToString();
+                    prepedido.FormaPagtoCriacao.C_pce_entrada_valor = formaPagtoSelecionada.Pce_entrada_valor;
+                    prepedido.FormaPagtoCriacao.C_pce_prestacao_qtde = formaPagtoSelecionada.Pce_prestacao_qtde;
+                    prepedido.FormaPagtoCriacao.C_pce_prestacao_valor = formaPagtoSelecionada.Pce_prestacao_valor;
+                    prepedido.FormaPagtoCriacao.C_pce_prestacao_periodo = formaPagtoSelecionada.Pce_prestacao_periodo;
+                    //incluir o restante dos campos de pagto
+
+                    prepedido.PercRT = opcaoSelecionada.PercRT;
+                    prepedido.VlTotalDestePedido = opcaoSelecionada.ListaProdutos.Sum(x => x.TotalItem);
+                    
 
                     await dbGravacao.SaveChangesAsync();
-                    dbGravacao.transacao.Commit();
+                    //dbGravacao.transacao.Commit();
                 }
                 catch (Exception ex)
                 {

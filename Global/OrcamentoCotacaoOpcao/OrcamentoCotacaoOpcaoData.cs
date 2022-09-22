@@ -70,6 +70,10 @@ namespace OrcamentoCotacaoOpcao
                     {
                         saida = saida.Where(x => x.IdOrcamentoCotacao == obj.IdOrcamentoCotacao);
                     }
+                    if(obj.Id != 0)
+                    {
+                        saida = saida.Where(x => x.Id == obj.Id);
+                    }
 
                     return saida.ToList();
                 }

@@ -85,7 +85,7 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
 
-            var orcamentoCotacao = _orcamentoBll.PorFiltro(id, user);
+            var orcamentoCotacao = _orcamentoBll.PorFiltro(id, (int)user.TipoUsuario);
 
             return Ok(orcamentoCotacao);
         }
