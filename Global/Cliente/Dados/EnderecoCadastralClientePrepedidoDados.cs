@@ -34,5 +34,9 @@ namespace Cliente.Dados
         public string Endereco_ie { get; set; }
         public string Endereco_rg { get; set; }
         public string Endereco_contato { get; set; }
+        public int? IdOrcamentoCotacao { get; set; }
+        public int? IdIndicadorVendedor { get; set; }
+        public float? Perc_max_comissao_padrao { get; set; }
+        public float? Perc_max_comissao_e_desconto_padrao { get; set; }
     }
 }

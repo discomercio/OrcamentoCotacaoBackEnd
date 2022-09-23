@@ -1939,7 +1939,10 @@ namespace Prepedido.Bll
                     Obs = p.Obs == null ? "" : p.Obs,
                     Desc_Dado = p.Desc_Dado,
                     Preco_Lista = Math.Round(p.Preco_Lista, 2),
-                    CustoFinancFornecCoeficiente = 1
+                    CustoFinancFornecCoeficiente = 1,
+                    StatusDescontoSuperior = p.StatusDescontoSuperior,
+                    IdUsuarioDescontoSuperior = p.IdUsuarioDescontoSuperior,
+                    DataHoraDescontoSuperior = p.DataHoraDescontoSuperior
                 };
                 lstOrcamentoItem.Add(item);
             }
@@ -1969,7 +1972,10 @@ namespace Prepedido.Bll
                             Obs = p.Obs == null ? "" : p.Obs,
                             Desc_Dado = p.Desc_Dado,
                             Preco_Lista = Math.Round(p.Preco_Lista, 2),
-                            CustoFinancFornecCoeficiente = percCustoFinanFornec.Coeficiente
+                            CustoFinancFornecCoeficiente = percCustoFinanFornec.Coeficiente,
+                            StatusDescontoSuperior = p.StatusDescontoSuperior,
+                            IdUsuarioDescontoSuperior = p.IdUsuarioDescontoSuperior,
+                            DataHoraDescontoSuperior = p.DataHoraDescontoSuperior
                         };
                         lstOrcamentoItem.Add(item);
                     }

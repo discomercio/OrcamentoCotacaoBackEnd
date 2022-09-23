@@ -1323,7 +1323,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 var itensAtomicosCustoFin = itensAtomicosOpcao.Where(x => x.TorcamentoCotacaoOpcaoItemAtomico.IdItemUnificado == item.IdItemUnificado);
                 foreach (var itemAtomico in itensAtomicosCustoFin)
                 {
-                    //verificar se tem alçada
+                    
                     var existe = prepedidoProdutos.Where(x => x.Fabricante == itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Fabricante &&
                     x.Produto == itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Produto).FirstOrDefault();
                     if (existe != null)
@@ -1352,6 +1352,10 @@ namespace OrcamentoCotacaoBusiness.Bll
                         produtoPrepedido.Qtde_estoque_total_disponivel = 0;
                         produtoPrepedido.CustoFinancFornecCoeficiente = itemAtomico.CustoFinancFornecCoeficiente;
                         produtoPrepedido.Preco_NF = itemAtomico.PrecoNF;
+                        //verificar se tem alçada e se com o ajuste da média de desconto ainda ultrapassa o padrão
+                        produtoPrepedido.StatusDescontoSuperior = itemAtomico.StatusDescontoSuperior;
+                        produtoPrepedido.IdUsuarioDescontoSuperior = itemAtomico.IdUsuarioDescontoSuperior;
+                        produtoPrepedido.DataHoraDescontoSuperior = itemAtomico.DataHoraDescontoSuperior;
                         //produtoPrepedido.Permite_Ra_Status =
                         //produtoPrepedido.VlTotalRA =
                         //produtoPrepedido.Comissao =

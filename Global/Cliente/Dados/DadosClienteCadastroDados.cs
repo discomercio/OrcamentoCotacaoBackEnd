@@ -41,6 +41,10 @@ namespace Cliente.Dados
         public string EmailXml { get; set; }
         public string Contato { get; set; }
         public string UsuarioCadastro { get; set; }
+        public int? IdOrcamentoCotacao { get; set; }
+        public int? IdIndicadorVendedor { get; set; }
+        public float? Perc_max_comissao_padrao { get; set; }
+        public float? Perc_max_comissao_e_desconto_padrao { get; set; }
 
         public static DadosClienteCadastroDados DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(
             EnderecoCadastralClientePrepedidoDados endCadastral, string indicadorOrcamentista, string loja,
@@ -90,7 +94,11 @@ namespace Cliente.Dados
                 Uf = endCadastral.Endereco_uf,
                 Complemento = endCadastral.Endereco_complemento,
                 Contato = endCadastral.Endereco_contato,
-                UsuarioCadastro = ""
+                UsuarioCadastro = "",
+                IdOrcamentoCotacao = endCadastral.IdOrcamentoCotacao,
+                IdIndicadorVendedor = endCadastral.IdIndicadorVendedor,
+                Perc_max_comissao_padrao = endCadastral.Perc_max_comissao_padrao,
+                Perc_max_comissao_e_desconto_padrao = endCadastral.Perc_max_comissao_e_desconto_padrao
             };
 
             return ret;
