@@ -1249,10 +1249,21 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     prepedido.PercRT = opcaoSelecionada.PercRT;
                     prepedido.VlTotalDestePedido = opcaoSelecionada.ListaProdutos.Sum(x => x.TotalItem);
+
+                    prepedido.DetalhesPrepedido = new DetalhesDtoPrepedido();
                     prepedido.DetalhesPrepedido.EntregaImediata = orcamento.StEtgImediata.ToString();
                     prepedido.DetalhesPrepedido.EntregaImediataData = orcamento.PrevisaoEntregaData.HasValue ? orcamento.PrevisaoEntregaData : null;
 
-                    IEnumerable<string> ret = _prepedidoApiBll.CadastrarPrepedido(prepedido, "", 0.01M, false,
+                    // se tiver vendedor do parceiro, vamos passar o parceiro no apelido e somente alteramos os usuário cadastro
+                    //se tiver parceiro, vamos passar o parceiro no apelido, normalmente
+                    //se não tiver parceiro, vamos ter que seguir caminhos paralelos onde se utiliza parceiro
+                    //tá fácil
+                    string parceiro = null;
+                    if (!string.IsNullOrEmpty(prepedido.DadosCliente.Indicador_Orcamentista)){
+                        parceiro = prepedido.DadosCliente.Indicador_Orcamentista;
+                    }
+
+                    IEnumerable<string> ret = _prepedidoApiBll.CadastrarPrepedido(prepedido, parceiro, 0.01M, false,
                         Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS, 12).Result;
 
                     await dbGravacao.SaveChangesAsync();
@@ -1312,33 +1323,48 @@ namespace OrcamentoCotacaoBusiness.Bll
                 var itensAtomicosCustoFin = itensAtomicosOpcao.Where(x => x.TorcamentoCotacaoOpcaoItemAtomico.IdItemUnificado == item.IdItemUnificado);
                 foreach (var itemAtomico in itensAtomicosCustoFin)
                 {
-                    PrepedidoProdutoDtoPrepedido produtoPrepedido = new PrepedidoProdutoDtoPrepedido();
-                    produtoPrepedido.Fabricante = itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Fabricante;
-                    produtoPrepedido.Produto = itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Produto;
-                    produtoPrepedido.Descricao = itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Descricao;
-                    produtoPrepedido.Obs = "";
-                    produtoPrepedido.Qtde = itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Qtde;
-                    produtoPrepedido.BlnTemRa = false;
-                    produtoPrepedido.CustoFinancFornecPrecoListaBase = itemAtomico.CustoFinancFornecPrecoListaBase;
-                    produtoPrepedido.Preco_Lista = itemAtomico.PrecoLista;
-                    produtoPrepedido.Desc_Dado = itemAtomico.DescDado;
-                    produtoPrepedido.Preco_Venda = itemAtomico.PrecoVenda;
-                    produtoPrepedido.VlTotalItem = item.Qtde * itemAtomico.PrecoVenda;
-                    produtoPrepedido.TotalItem = item.Qtde * itemAtomico.PrecoVenda;
-                    produtoPrepedido.Qtde_estoque_total_disponivel = 0;
-                    produtoPrepedido.CustoFinancFornecCoeficiente = itemAtomico.CustoFinancFornecCoeficiente;
-                    produtoPrepedido.Preco_NF = itemAtomico.PrecoNF;
-                    //produtoPrepedido.Permite_Ra_Status =
-                    //produtoPrepedido.VlTotalRA =
-                    //produtoPrepedido.Comissao =
-                    //produtoPrepedido.TotalItemRA =
-
-                    prepedidoProdutos.Add(produtoPrepedido);
+                    //verificar se tem alçada
+                    var existe = prepedidoProdutos.Where(x => x.Fabricante == itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Fabricante &&
+                    x.Produto == itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Produto).FirstOrDefault();
+                    if (existe != null)
+                    {
+                        existe.Qtde += itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Qtde;
+                        existe.Desc_Dado = (existe.Desc_Dado + itemAtomico.DescDado) / existe.Qtde;//média
+                        existe.VlTotalItem = existe.Qtde * existe.Preco_Venda;
+                        existe.TotalItem = existe.Qtde * existe.Preco_Venda;
+                        //to aqui
+                    }
+                    else
+                    {
+                        PrepedidoProdutoDtoPrepedido produtoPrepedido = new PrepedidoProdutoDtoPrepedido();
+                        produtoPrepedido.Fabricante = itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Fabricante;
+                        produtoPrepedido.Produto = itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Produto;
+                        produtoPrepedido.Descricao = itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Descricao;
+                        produtoPrepedido.Obs = "";
+                        produtoPrepedido.Qtde = itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Qtde;
+                        produtoPrepedido.BlnTemRa = false;
+                        produtoPrepedido.CustoFinancFornecPrecoListaBase = itemAtomico.CustoFinancFornecPrecoListaBase;
+                        produtoPrepedido.Preco_Lista = itemAtomico.PrecoLista;
+                        produtoPrepedido.Desc_Dado = itemAtomico.DescDado;
+                        produtoPrepedido.Preco_Venda = itemAtomico.PrecoVenda;
+                        produtoPrepedido.VlTotalItem = item.Qtde * itemAtomico.PrecoVenda;
+                        produtoPrepedido.TotalItem = item.Qtde * itemAtomico.PrecoVenda;
+                        produtoPrepedido.Qtde_estoque_total_disponivel = 0;
+                        produtoPrepedido.CustoFinancFornecCoeficiente = itemAtomico.CustoFinancFornecCoeficiente;
+                        produtoPrepedido.Preco_NF = itemAtomico.PrecoNF;
+                        //produtoPrepedido.Permite_Ra_Status =
+                        //produtoPrepedido.VlTotalRA =
+                        //produtoPrepedido.Comissao =
+                        //produtoPrepedido.TotalItemRA =
+                        prepedidoProdutos.Add(produtoPrepedido);
+                    }
                 }
             }
 
             //Arrumar os produtos repetidos, descontos, alçada
-             
+
+
+
             return prepedidoProdutos;
         }
     }
