@@ -7,13 +7,13 @@ using System.Linq;
 using System.Threading.Tasks;
 
 
-namespace Mensagem
+namespace OrcamentoCotacaoMensagem
 {
-    public class MensagemData
+    public class OrcamentoCotacaoMensagemData
     {
         private readonly InfraBanco.ContextoBdProvider contextoProvider;
 
-        public MensagemData(InfraBanco.ContextoBdProvider contextoProvider)
+        public OrcamentoCotacaoMensagemData(InfraBanco.ContextoBdProvider contextoProvider)
         {
             this.contextoProvider = contextoProvider;
         }

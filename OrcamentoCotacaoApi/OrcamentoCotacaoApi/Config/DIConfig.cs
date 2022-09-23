@@ -53,8 +53,8 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<Loja.LojaData, Loja.LojaData>();
             services.AddTransient<MeioPagamentos.MeiosPagamentosBll, MeioPagamentos.MeiosPagamentosBll>();
             services.AddTransient<MeioPagamentos.MeiosPagamentosData, MeioPagamentos.MeiosPagamentosData>();
-            services.AddTransient<Mensagem.MensagemBll, Mensagem.MensagemBll>();
-            services.AddTransient<Mensagem.MensagemData, Mensagem.MensagemData>();
+            services.AddTransient<OrcamentoCotacaoMensagem.OrcamentoCotacaoMensagemBll, OrcamentoCotacaoMensagem.OrcamentoCotacaoMensagemBll>();
+            services.AddTransient<OrcamentoCotacaoMensagem.OrcamentoCotacaoMensagemData, OrcamentoCotacaoMensagem.OrcamentoCotacaoMensagemData>();
             services.AddTransient<Orcamento.OrcamentoBll, Orcamento.OrcamentoBll>();
             services.AddTransient<Orcamento.OrcamentoOpcaoBll, Orcamento.OrcamentoOpcaoBll>();
             services.AddTransient<OrcamentistaEindicador.OrcamentistaEIndicadorBll, OrcamentistaEindicador.OrcamentistaEIndicadorBll>();

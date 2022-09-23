@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 
-namespace Mensagem
+namespace OrcamentoCotacaoMensagem
 {
-    public class MensagemBll 
+    public class OrcamentoCotacaoMensagemBll 
     {
-        private readonly MensagemData _data;
+        private readonly OrcamentoCotacaoMensagemData _data;
 
-        public MensagemBll(MensagemData data)
+        public OrcamentoCotacaoMensagemBll(OrcamentoCotacaoMensagemData data)
         {
             _data = data;
         }

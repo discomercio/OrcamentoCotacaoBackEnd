@@ -1,7 +1,7 @@
 ﻿using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
-using Mensagem;
+using OrcamentoCotacaoMensagem;
 using InfraIdentity;
 using OrcamentoCotacaoBusiness.Models.Response;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 {
     public class MensagemOrcamentoCotacaoBll
     {
-        private readonly MensagemBll _bll;
+        private readonly OrcamentoCotacaoMensagemBll _bll;
         private readonly OrcamentistaEIndicadorBll _orcamentistaEIndicadorBll;
         private readonly LojaBll _lojaBll;
         private readonly CfgUnidadeNegocioBll _cfgUnidadeNegocioBll;
@@ -28,7 +28,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll _orcamentoCotacaoEmailQueueBll;
         private readonly OrcamentoCotacaoLink.OrcamentoCotacaoLinkBll _orcamentoCotacaoLinkBll;
 
-        public MensagemOrcamentoCotacaoBll(MensagemBll bll, OrcamentistaEIndicadorBll orcamentistaEIndicadorBll, LojaBll lojaBll, CfgUnidadeNegocioBll cfgUnidadeNegocioBll, 
+        public MensagemOrcamentoCotacaoBll(OrcamentoCotacaoMensagemBll bll, OrcamentistaEIndicadorBll orcamentistaEIndicadorBll, LojaBll lojaBll, CfgUnidadeNegocioBll cfgUnidadeNegocioBll, 
             CfgUnidadeNegocioParametroBll cfgUnidadeNegocioParametroBll, OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll orcamentoCotacaoEmailQueueBll, 
             OrcamentoCotacao.OrcamentoCotacaoBll orcamentoCotacaoBll, OrcamentoCotacaoLink.OrcamentoCotacaoLinkBll orcamentoCotacaoLinkBll, OrcamentoCotacaoEmail.OrcamentoCotacaoEmailBll orcamentoCotacaoEmailBll, InfraBanco.ContextoBdProvider contextoBdProvider)
         {
