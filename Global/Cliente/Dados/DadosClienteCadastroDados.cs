@@ -85,7 +85,7 @@ namespace Cliente.Dados
                 Contribuinte_Icms_Status = endCadastral.Endereco_contribuinte_icms_status,
                 Email = endCadastral.Endereco_email,
                 EmailXml = endCadastral.Endereco_email_xml,
-                Vendedor = "",// esse campo não é utilizado em TCliente
+                Vendedor = string.IsNullOrEmpty(endCadastral.Vendedor)? "": endCadastral.Vendedor,// esse campo não é utilizado em TCliente
                 Cep = UtilsGlobais.Util.Cep_SoDigito(endCadastral.Endereco_cep),
                 Endereco = endCadastral.Endereco_logradouro,
                 Numero = endCadastral.Endereco_numero,

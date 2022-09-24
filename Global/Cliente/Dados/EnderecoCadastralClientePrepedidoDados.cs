@@ -38,5 +38,6 @@ namespace Cliente.Dados
         public int? IdIndicadorVendedor { get; set; }
         public float? Perc_max_comissao_padrao { get; set; }
         public float? Perc_max_comissao_e_desconto_padrao { get; set; }
+        public string Vendedor { get; set; }
     }
 }

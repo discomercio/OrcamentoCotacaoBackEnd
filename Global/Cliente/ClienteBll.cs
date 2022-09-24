@@ -474,8 +474,8 @@ namespace Cliente
             if (string.IsNullOrEmpty(loja))
             {
                 loja = await (from c in db.TorcamentistaEindicador
-                                     where c.Apelido == apelido
-                                     select c.Loja).FirstOrDefaultAsync();
+                              where c.Apelido == apelido
+                              select c.Loja).FirstOrDefaultAsync();
             }
 
 
@@ -835,6 +835,15 @@ namespace Cliente
             return retorno;
         }
 
+        public async Task<Tcliente> BuscarTclienteComTransacao(string cpf_cnpj, ContextoBdGravacao dbGravacao)
+        {
+            cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
+            var retorno = (from c in dbGravacao.Tcliente
+                           where c.Cnpj_Cpf == cpf_cnpj
+                           select c).FirstOrDefaultAsync();
+            return await retorno;
+        }
+
         public static async Task<string> BuscarIdCliente(string cpf_cnpj, ContextoBd db)
         {
             string retorno = "";
@@ -842,6 +851,18 @@ namespace Cliente
             cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
 
             retorno = await (from c in db.Tcliente
+                             where c.Cnpj_Cpf == cpf_cnpj
+                             select c.Id).FirstOrDefaultAsync();
+            return retorno;
+        }
+
+        public async Task<string> BuscarIdClienteComTransacao(string cpf_cnpj, ContextoBdGravacao dbGravacao)
+        {
+            string retorno = "";
+
+            cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
+
+            retorno = await (from c in dbGravacao.Tcliente
                              where c.Cnpj_Cpf == cpf_cnpj
                              select c.Id).FirstOrDefaultAsync();
             return retorno;

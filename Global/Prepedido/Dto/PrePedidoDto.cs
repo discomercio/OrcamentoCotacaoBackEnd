@@ -1,4 +1,5 @@
 ﻿using Prepedido.Dados.DetalhesPrepedido;
+using System;
 using System.Collections.Generic;
 
 namespace Prepedido.Dto
