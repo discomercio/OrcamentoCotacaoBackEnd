@@ -319,5 +319,14 @@ namespace OrcamentoCotacao
         {
             throw new NotImplementedException();
         }
+
+        public TcfgOrcamentoCotacaoStatus BuscarStatusParaOrcamentoCotacaoComtransacao(string status, ContextoBdGravacao dbGravacao)
+        {
+            var tcfgStatus = (from c in dbGravacao.TcfgOrcamentoCotacaoStatus
+                             where c.Descricao.ToUpper() == status.ToUpper()
+                             select c).FirstOrDefault();
+
+            return tcfgStatus;
+        }
     }
 }

@@ -1184,7 +1184,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
-        public async Task<List<string>> AprovarOrcamento(AprovarOrcamentoRequestViewModel aprovarOrcamento)
+        public async Task<List<string>> AprovarOrcamento(AprovarOrcamentoRequestViewModel aprovarOrcamento, 
+            Constantes.TipoUsuarioContexto tipoUsuarioContexto, int idUsuarioUltAtualizacao)
         {
             if (aprovarOrcamento == null) return new List<string>() { "É necessário preencher o cadastro do cliente!" };
 
@@ -1231,9 +1232,27 @@ namespace OrcamentoCotacaoBusiness.Bll
                         return retorno;
                     }
 
-                    //atualizar os campos do orçamento
-                    //Atualizar status do orçamento e o tipo de usuário que atualizou o status(tipo 4 - cliente final)
-                    // atualizar 
+                    //PAREI ATUALIZANDO ORCAMENTO
+                    var tcfgStatus = _orcamentoCotacaoBll.BuscarStatusParaOrcamentoCotacaoComtransacao("APROVADO", dbGravacao);
+                    //mudar os parametros para receber tipo do usuário
+                    //_orcamentoBll.AtualizarStatus(id, user, idStatus)
+                    //orcamento.DataHoraUltAtualizacao = DateTime.Now;
+                    //orcamento.Status = tcfgStatus.Id;
+                    //orcamento.DataHoraUltStatus = DateTime.Now;
+                    //orcamento.IdUsuarioUltStatus = idUsuarioUltAtualizacao;
+                    //orcamento.IdTipoUsuarioContextoUltStatus = (int)tipoUsuarioContexto;
+                    //orcamento.DataUltStatus = DateTime.Now;
+                    //orcamento.IdTipoUsuarioContextoUltAtualizacao = (int)tipoUsuarioContexto;
+                    //orcamento.IdUsuarioUltAtualizacao = idUsuarioUltAtualizacao;
+                    //orcamento.DataHoraUltAtualizacao = DateTime.Now;
+                    //orcamento.DataHoraUltStatus = DateTime.Now;
+                    _orcamentoCotacaoBll.AtualizarComTransacao(orcamento, dbGravacao);
+
+                    //falta atualizar os produtos
+                    //analisar para ver se da pra adicionar campos
+                    //_orcamentoCotacaoOpcaoBll.AtualizarOrcamentoOpcao(opcao, usuarioLogado, orcamento);
+
+
 
                     await dbGravacao.SaveChangesAsync();
                     dbGravacao.transacao.Commit();
