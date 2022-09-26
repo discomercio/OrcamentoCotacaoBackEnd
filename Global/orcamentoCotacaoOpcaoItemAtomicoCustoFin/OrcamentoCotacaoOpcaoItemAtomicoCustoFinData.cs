@@ -2,6 +2,7 @@
 using InfraBanco;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,7 +69,7 @@ namespace OrcamentoCotacaoOpcaoItemAtomicoCustoFin
             }
 
             return saida.ToList();
-        
+
         }
 
         public List<TorcamentoCotacaoOpcaoItemAtomicoCustoFin> PorFiltro(TorcamentoCotacaoOpcaoItemAtomicoCustoFinFiltro obj)
@@ -82,17 +83,21 @@ namespace OrcamentoCotacaoOpcaoItemAtomicoCustoFin
 
                     if (saida == null) return null;
 
-                    if(obj.LstIdItemAtomico != null)
+                    if (obj.LstIdItemAtomico != null)
                     {
-                        saida = saida.Where(x => obj.LstIdItemAtomico.Contains(x.IdItemAtomico));  
+                        saida = saida.Where(x => obj.LstIdItemAtomico.Contains(x.IdItemAtomico));
                     }
-                    if(obj.IdItemAtomico > 0)
+                    if (obj.IdItemAtomico > 0)
                     {
                         saida = saida.Where(x => obj.IdItemAtomico == x.IdItemAtomico);
                     }
-                    if(obj.IdOpcaoPagto > 0)
+                    if (obj.IdOpcaoPagto > 0)
                     {
                         saida = saida.Where(x => obj.IdOpcaoPagto == x.IdOpcaoPagto);
+                    }
+                    if (obj.IncluirTorcamentoCotacaoOpcaoItemAtomico)
+                    {
+                        saida = saida.Include(x => x.TorcamentoCotacaoOpcaoItemAtomico);
                     }
 
                     return saida.ToList();

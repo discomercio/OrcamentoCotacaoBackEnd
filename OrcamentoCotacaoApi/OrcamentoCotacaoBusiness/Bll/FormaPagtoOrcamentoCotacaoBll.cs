@@ -254,5 +254,15 @@ namespace OrcamentoCotacaoBusiness.Bll
                 }
             }
         }
+
+        public List<TorcamentoCotacaoOpcaoPagto> PorFiltroComTransacao(TorcamentoCotacaoOpcaoPagtoFiltro filtro, ContextoBdGravacao dbGravacao)
+        {
+            return orcamentoCotacaoOpcaoPagtoBll.PorFiltroComTransacao(filtro, dbGravacao);
+        }
+
+        public TorcamentoCotacaoOpcaoPagto AtualizarOpcaoPagtoComTransacao(TorcamentoCotacaoOpcaoPagto pagto, ContextoBdGravacao dbGravacao)
+        {
+            return orcamentoCotacaoOpcaoPagtoBll.AtualizarComTransacao(pagto, dbGravacao);
+        }
     }
 }

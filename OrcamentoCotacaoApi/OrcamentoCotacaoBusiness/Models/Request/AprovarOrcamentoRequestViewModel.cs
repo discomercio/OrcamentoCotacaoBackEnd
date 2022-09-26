@@ -19,5 +19,8 @@ namespace OrcamentoCotacaoBusiness.Models.Request
 
         [JsonProperty("clienteCadastroDto")]
         public ClienteCadastroDto ClienteCadastroDto { get; set; }
+
+        [JsonProperty("enderecoEntregaDto")]
+        public EnderecoEntregaDtoClienteCadastro enderecoEntrega { get; set; }
     }
 }

@@ -37,7 +37,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public async Task<List<string>> CadastrarClienteOrcamentoCotacao(DadosClienteCadastroDados dadosClienteCadastroDados,
-            ContextoBdGravacao dbGravacao, string loja)
+            ContextoBdGravacao dbGravacao, string loja, Tcliente tCliente)
         {
             //vamos verificar se existe
             _logger.LogInformation($"Cadastrando cliente");
@@ -46,8 +46,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             string indicador = dadosClienteCadastroDados.Indicador_Orcamentista;
             string usuarioCadastro = dadosClienteCadastroDados.UsuarioCadastro;
 
-            Tcliente clienteCadastrado = new Tcliente();
-            var idCliente = await clienteBll.CadastrarDadosClienteDados(dbGravacao, dadosClienteCadastroDados, indicador, clienteCadastrado,
+            
+            var idCliente = await clienteBll.CadastrarDadosClienteDados(dbGravacao, dadosClienteCadastroDados, indicador, tCliente,
                 Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, usuarioCadastro);
             if (string.IsNullOrEmpty(idCliente)) return new List<string>() { "Falha ao gerar o id!" };
 
@@ -55,7 +55,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 string campos_a_omitir = "dt_cadastro|usuario_cadastro|dt_ult_atualizacao|usuario_ult_atualizacao";
                 string log = "";
-                log = UtilsGlobais.Util.MontaLog(clienteCadastrado, log, campos_a_omitir);
+                log = UtilsGlobais.Util.MontaLog(tCliente, log, campos_a_omitir);
 
                 bool gravouLog = UtilsGlobais.Util.GravaLog(dbGravacao, usuarioCadastro, loja, "", idCliente,
                         Constantes.OP_LOG_CLIENTE_INCLUSAO, log);

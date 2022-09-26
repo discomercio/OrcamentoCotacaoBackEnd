@@ -11,11 +11,13 @@ namespace Prepedido.Bll
     public class PrepedidoApiBll
     {
         private readonly Prepedido.Bll.PrepedidoBll prepedidoBll;
-        
+        private readonly InfraBanco.ContextoBdProvider _contextoBdProvider;
 
-        public PrepedidoApiBll(Prepedido.Bll.PrepedidoBll prepedidoBll)
+
+        public PrepedidoApiBll(Prepedido.Bll.PrepedidoBll prepedidoBll, InfraBanco.ContextoBdProvider _contextoBdProvider)
         {
             this.prepedidoBll = prepedidoBll;
+            this._contextoBdProvider = _contextoBdProvider;
         }
 
         public async Task DeletarOrcamentoExisteComTransacao(PrePedidoDto prePedido, string apelido)
@@ -24,15 +26,20 @@ namespace Prepedido.Bll
             await prepedidoBll.DeletarOrcamentoExisteComTransacao(prePedidoDados, apelido.Trim());
         }
 
-        public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDto prePedido, string apelido, 
-            decimal limiteArredondamento, bool verificarPrepedidoRepetido, 
+        public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDto prePedido, string apelido,
+            decimal limiteArredondamento, bool verificarPrepedidoRepetido,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             int limite_de_itens)
         {
             PrePedidoDados prePedidoDados = PrePedidoDto.PrePedidoDados_De_PrePedidoDto(prePedido);
-            var ret = await prepedidoBll.CadastrarPrepedido(prePedidoDados, apelido, 
-                limiteArredondamento, verificarPrepedidoRepetido, sistemaResponsavelCadastro, limite_de_itens);
-            return ret;
+
+            using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTO))
+            {
+                var ret = await prepedidoBll.CadastrarPrepedido(prePedidoDados, apelido,
+                limiteArredondamento, verificarPrepedidoRepetido, sistemaResponsavelCadastro, limite_de_itens, dbGravacao);
+                return ret;
+            }
+
         }
 
         public async Task<PrePedidoDto> BuscarPrePedido(string apelido, string numPrePedido)

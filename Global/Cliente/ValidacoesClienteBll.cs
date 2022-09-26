@@ -35,7 +35,7 @@ namespace Cliente
             List<Cliente.Dados.Referencias.RefComercialClienteDados> lstRefComercial,
             List<string> lstErros, ContextoBdProvider contextoProvider, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio,
             List<Cliente.Dados.ListaBancoDados> lstBanco, bool flagMsg_IE_Cadastro_PF,
-            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel, bool novoCliente)
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel, bool novoCliente, Tcliente cliente = null)
         {
             if (dadosCliente != null)
             {
@@ -44,11 +44,13 @@ namespace Cliente
                 {
                     var db = contextoProvider.GetContextoLeitura();
 
-                    Tcliente cliente = await (from c in db.Tcliente
-                                              where c.Cnpj_Cpf == dadosCliente.Cnpj_Cpf &&
-                                                    c.Tipo == dadosCliente.Tipo
-                                              select c).FirstOrDefaultAsync();
-
+                    if (cliente == null)
+                    {
+                        cliente = await (from c in db.Tcliente
+                                         where c.Cnpj_Cpf == dadosCliente.Cnpj_Cpf &&
+                                               c.Tipo == dadosCliente.Tipo
+                                         select c).FirstOrDefaultAsync();
+                    }
 
                     bool tipoDesconhecido = true;
                     //é cliente PF
@@ -471,7 +473,7 @@ namespace Cliente
 
 
             //validação da UF
-            if(!UtilsGlobais.Util.VerificaUf(cepCliente.Uf))
+            if (!UtilsGlobais.Util.VerificaUf(cepCliente.Uf))
             {
                 lstErros.Add("UF INVÁLIDA.");
             }

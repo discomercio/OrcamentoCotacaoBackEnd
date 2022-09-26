@@ -429,7 +429,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                                 idAlcada = usuarioAlcadas.Max(x => x);
                             }
 
-                            
+
                             if (pg == null)
                             {
                                 var opcaoPagtoAvista = opcaoPagtos.Where(x => x.Tipo_parcelamento == pagto.Tipo_parcelamento).FirstOrDefault();
@@ -495,7 +495,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (produto.DescDado > percPadraoPorTipo && percMaxPorAlcada.PercMaxComissaoEDesconto == 0)
                 throw new ArgumentException("Ops! Não pode execeder o limite máximo de desconto.");
 
-            if(produto.DescDado > 0 || percRT > 0)
+            if (produto.DescDado > 0 || percRT > 0)
             {
                 if (produto.DescDado > percPadraoPorTipo) return true;
             }
@@ -582,7 +582,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     Fabricante = item.Fabricante,
                     FabricanteNome = (await produtoGeralBll.ObterListaFabricante()).Where(x => x.Fabricante == item.Fabricante).FirstOrDefault().Nome,
                     Produto = item.Produto,
-                    UrlImagem =  _produtoCatalogoBll.ObterDadosImagemPorProduto(item.Produto).FirstOrDefault().Caminho,
+                    UrlImagem = _produtoCatalogoBll.ObterDadosImagemPorProduto(item.Produto).FirstOrDefault().Caminho,
                     Descricao = item.DescricaoHtml,
                     Qtde = item.Qtde,
                     //ITEM ATOMICO CUSTO
@@ -601,6 +601,18 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             return produtosResponse;
+        }
+
+        public async Task<List<TorcamentoCotacaoOpcaoItemAtomico>> BuscarTorcamentoCotacaoOpcaoItemAtomicos(int idAtomico)
+        {
+            var retorno = orcamentoCotacaoOpcaoItemAtomicoBll.PorFiltro(new TorcamentoCotacaoOpcaoItemAtomicoFiltro() { IdItemUnificado = idAtomico });
+            return await Task.FromResult(retorno);
+        }
+
+        public async Task<List<TorcamentoCotacaoOpcaoItemAtomicoCustoFin>> BuscarTorcamentoCotacaoOpcaoItemAtomicosCustoFin(TorcamentoCotacaoOpcaoItemAtomicoCustoFinFiltro filtro)
+        {
+            var retorno = await Task.FromResult(orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.PorFiltro(filtro));
+            return await Task.FromResult(retorno);
         }
     }
 }

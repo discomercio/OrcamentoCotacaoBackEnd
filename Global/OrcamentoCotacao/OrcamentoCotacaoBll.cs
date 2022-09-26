@@ -19,5 +19,10 @@ namespace OrcamentoCotacao
         {
             return _data.PorGuid(guid);
         }
+
+        public TcfgOrcamentoCotacaoStatus BuscarStatusParaOrcamentoCotacaoComtransacao(string status, ContextoBdGravacao dbGravacao)
+        {
+            return _data.BuscarStatusParaOrcamentoCotacaoComtransacao(status, dbGravacao);
+        }
     }
 }

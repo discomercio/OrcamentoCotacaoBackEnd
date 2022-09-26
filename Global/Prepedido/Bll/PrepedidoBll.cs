@@ -654,42 +654,52 @@ namespace Prepedido.Bll
             return await raStatus;
         }
 
-        public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDados prePedido,
-            string apelido, decimal limiteArredondamento, bool verificarPrepedidoRepetido,
-            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro, int limite_de_itens)
+        public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDados prePedido, string apelido,
+            decimal limiteArredondamento, bool verificarPrepedidoRepetido, Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
+            int limite_de_itens, ContextoBdGravacao dbGravacao)
         {
             List<string> lstErros = new List<string>();
 
-            TorcamentistaEindicador tOrcamentista = await BuscarTorcamentista(apelido);
-            if (tOrcamentista == null)
+            string loja = "";
+            if (!string.IsNullOrEmpty(apelido))
             {
-                lstErros.Add("O Orçamentista não existe!");
-                return lstErros;
+                TorcamentistaEindicador tOrcamentista = await BuscarTorcamentista(apelido);
+                if (tOrcamentista == null)
+                {
+                    lstErros.Add("O Orçamentista não existe!");
+                    return lstErros;
+                }
+
+                //complementar os dados Cadastrais do cliente
+                prePedido.DadosCliente.Indicador_Orcamentista = tOrcamentista.Apelido.ToUpper();
+                prePedido.DadosCliente.Loja = tOrcamentista.Loja;
+                //prePedido.DadosCliente.Vendedor = tOrcamentista.Vendedor?.ToUpper();
+
+                if (string.IsNullOrEmpty(tOrcamentista.Vendedor))
+                    lstErros.Add("NÃO HÁ NENHUM VENDEDOR DEFINIDO PARA ATENDÊ-LO");
+
+                //validar o Orcamentista
+                if (tOrcamentista.Apelido != apelido)
+                    lstErros.Add("Falha ao recuperar os dados cadastrais!");
+
+                loja = tOrcamentista.Loja;
             }
 
-            //complementar os dados Cadastrais do cliente
-            prePedido.DadosCliente.Indicador_Orcamentista = tOrcamentista.Apelido.ToUpper();
-            prePedido.DadosCliente.Loja = tOrcamentista.Loja;
-            prePedido.DadosCliente.Vendedor = tOrcamentista.Vendedor?.ToUpper();
-
-            if (string.IsNullOrEmpty(tOrcamentista.Vendedor))
-                lstErros.Add("NÃO HÁ NENHUM VENDEDOR DEFINIDO PARA ATENDÊ-LO");
-
-            //validar o Orcamentista
-            if (tOrcamentista.Apelido != apelido)
-                lstErros.Add("Falha ao recuperar os dados cadastrais!");
 
             if (string.IsNullOrEmpty(prePedido.DadosCliente.Id))
             {
                 lstErros.Add("Id do cliente não informado.");
             }
 
+            //setamos a loja aqui para o caso de não ter parceiro
+            loja = !string.IsNullOrEmpty(apelido) ? prePedido.DadosCliente.Loja : loja;
+
             //verificamos se tem ID para saber que o cliente existe
-            ClienteCadastroDados cliente = (await clienteBll.BuscarCliente(
-                prePedido.EnderecoCadastroClientePrepedido.Endereco_cnpj_cpf, tOrcamentista.Apelido.ToUpper()));
+            Tcliente cliente = (await clienteBll.BuscarTclienteComTransacao(prePedido.EnderecoCadastroClientePrepedido.Endereco_cnpj_cpf,
+                dbGravacao));
 
             if (cliente != null)
-            {
+            {                                   
                 // Foi solicitado pelo Hamilton que removesse a confrontação de nome do cliente para ApiUnis.
                 // Impossibilitava que para cliente tipo PF não poderia ter o nome diferente do cadastro.
                 // Para flexibilizar estamos alterando a validação e iremos salvar para o prepedido
@@ -700,29 +710,29 @@ namespace Prepedido.Bll
                 //Somente a ApiUnis poderá inserir um Prepedido com cliente PF com nome diferente do que está cadastrado na base
                 if (sistemaResponsavelCadastro != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS)
                 {
-                    if (cliente.DadosCliente.Tipo == Constantes.ID_PF)
+                    if (cliente.Tipo == Constantes.ID_PF)
                     {
                         if (prePedido.EnderecoCadastroClientePrepedido.Endereco_nome.ToUpper() !=
-                            cliente.DadosCliente.Nome.ToUpper())
+                            cliente.Nome.ToUpper())
                         {
                             lstErros.Add("Nome do cliente diferente do nome cadastrado!");
                         }
                     }
-                }
+                }   
 
-                prePedido.DadosCliente.Id = cliente.DadosCliente.Id;
-                prePedido.DadosCliente.Sexo = cliente.DadosCliente.Sexo;
-                prePedido.DadosCliente.Nascimento = cliente.DadosCliente.Nascimento;
+                prePedido.DadosCliente.Id = cliente.Id;
+                prePedido.DadosCliente.Sexo = cliente.Sexo;
+                prePedido.DadosCliente.Nascimento = cliente.Dt_Nasc;
             }
 
-            if (cliente.DadosCliente.Tipo == Constantes.ID_PF)
+            if (cliente.Tipo == Constantes.ID_PF)
             {
                 if (prePedido.EnderecoCadastroClientePrepedido.Endereco_tipo_pessoa != Constantes.ID_PF)
                 {
                     lstErros.Add("Se cliente é tipo PF, o tipo da pessoa de endereço cadastral deve ser PF.");
                 }
             }
-            if (cliente.DadosCliente.Tipo == Constantes.ID_PJ)
+            if (cliente.Tipo == Constantes.ID_PJ)
             {
                 if (prePedido.EnderecoCadastroClientePrepedido.Endereco_tipo_pessoa != Constantes.ID_PJ)
                 {
@@ -733,14 +743,14 @@ namespace Prepedido.Bll
             //antes de validar vamos passar o EnderecoCadastral para dadoscliente
             prePedido.DadosCliente =
                 DadosClienteCadastroDados.DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(
-                    prePedido.EnderecoCadastroClientePrepedido, tOrcamentista.Apelido.ToUpper(), tOrcamentista.Loja,
+                    prePedido.EnderecoCadastroClientePrepedido, apelido.ToUpper(), loja,
                     prePedido.DadosCliente.Sexo, prePedido.DadosCliente.Nascimento, prePedido.DadosCliente.Id);
 
             //vamos validar os dados do cliente
             await Cliente.ValidacoesClienteBll.ValidarDadosCliente(prePedido.DadosCliente, false,
                 null, null,
                 lstErros, contextoProvider, cepBll, bancoNFeMunicipio, null,
-                prePedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false, sistemaResponsavelCadastro, false);
+                prePedido.DadosCliente.Tipo == Constantes.ID_PF ? true : false, sistemaResponsavelCadastro, false, cliente);
 
             //verificar como esta sendo salvo
             if (!ValidacoesPrepedidoBll.ValidarDetalhesPrepedido(prePedido.DetalhesPrepedido, lstErros))
@@ -770,7 +780,7 @@ namespace Prepedido.Bll
             string c_custoFinancFornecTipoParcelamento = ObterSiglaFormaPagto(prePedido.FormaPagtoCriacao);
 
             //precisa incluir uma validação de forma de pagamento com base no orçamentista enviado
-            FormaPagtoDados formasPagto = await formaPagtoBll.ObterFormaPagto(tOrcamentista.Apelido, prePedido.DadosCliente.Tipo, sistemaResponsavelCadastro);
+            FormaPagtoDados formasPagto = await formaPagtoBll.ObterFormaPagto(apelido, prePedido.DadosCliente.Tipo, sistemaResponsavelCadastro);
             validacoesFormaPagtoBll.ValidarFormaPagto(prePedido.FormaPagtoCriacao, lstErros, limiteArredondamento,
                 0.1M, c_custoFinancFornecTipoParcelamento, formasPagto, prePedido.PermiteRAStatus,
                 prePedido.Vl_total_NF, prePedido.Vl_total);
@@ -838,54 +848,54 @@ namespace Prepedido.Bll
 
             if (lstErros.Count <= 0)
             {
-                using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTO))
+                //verifica se o prepedio já foi gravado
+                if (verificarPrepedidoRepetido)
                 {
-                    //verifica se o prepedio já foi gravado
-                    if (verificarPrepedidoRepetido)
+                    var prepedidoJaCadastradoNumero = await new PrepedidoRepetidoBll(dbGravacao).PrepedidoJaCadastradoCriterioSiteColors(prePedido);
+                    if (!String.IsNullOrEmpty(prepedidoJaCadastradoNumero))
                     {
-                        var prepedidoJaCadastradoNumero = await new PrepedidoRepetidoBll(dbgravacao).PrepedidoJaCadastradoCriterioSiteColors(prePedido);
-                        if (!String.IsNullOrEmpty(prepedidoJaCadastradoNumero))
-                        {
-                            lstErros.Add($"Esta solicitação já foi gravada com o número {prepedidoJaCadastradoNumero}");
-                            return lstErros;
-                        }
+                        lstErros.Add($"Esta solicitação já foi gravada com o número {prepedidoJaCadastradoNumero}");
+                        return lstErros;
                     }
-
-                    //Se orcamento existir, fazer o delete das informações
-                    if (!string.IsNullOrEmpty(prePedido.NumeroPrePedido))
-                    {
-                        await DeletarOrcamentoExiste(dbgravacao, prePedido, apelido);
-                    }
-
-                    if (string.IsNullOrEmpty(prePedido.NumeroPrePedido))
-                    {
-                        //gerar o numero de orçamento
-                        await GerarNumeroOrcamento(dbgravacao, prePedido);
-                    }
-
-                    if (string.IsNullOrEmpty(prePedido.NumeroPrePedido))
-                        lstErros.Add("FALHA NA OPERAÇÃO COM O BANCO DE DADOS AO TENTAR GERAR NSU.");
-
-                    //Cadastrar dados do Orcamento e endereço de entrega 
-                    string log = await EfetivarCadastroPrepedido(dbgravacao,
-                        prePedido, tOrcamentista, c_custoFinancFornecTipoParcelamento,
-                        sistemaResponsavelCadastro, perc_limite_RA_sem_desagio);
-                    //Cadastrar orcamento itens
-                    List<TorcamentoItem> lstOrcamentoItem = (await MontaListaOrcamentoItem(prePedido,
-                        lstPercentualCustoFinanFornec, dbgravacao)).ToList();
-
-                    //vamos passar o coeficiente que foi criado na linha 596 e passar como param para cadastrar nos itens
-                    //await ComplementarInfosOrcamentoItem(dbgravacao, lstOrcamentoItem,
-                    //    prePedido.DadosCliente.Loja);
-
-                    log = await CadastrarOrctoItens(dbgravacao, lstOrcamentoItem, log);
-
-                    bool gravouLog = Util.GravaLog(dbgravacao, apelido, prePedido.DadosCliente.Loja, prePedido.NumeroPrePedido,
-                        prePedido.DadosCliente.Id, Constantes.OP_LOG_ORCAMENTO_NOVO, log);
-
-                    dbgravacao.transacao.Commit();
-                    lstErros.Add(prePedido.NumeroPrePedido);
                 }
+
+                //Se orcamento existir, fazer o delete das informações
+                if (!string.IsNullOrEmpty(prePedido.NumeroPrePedido))
+                {
+                    await DeletarOrcamentoExiste(dbGravacao, prePedido, apelido);
+                }
+
+                if (string.IsNullOrEmpty(prePedido.NumeroPrePedido))
+                {
+                    //gerar o numero de orçamento
+                    await GerarNumeroOrcamento(dbGravacao, prePedido);
+                }
+
+                if (string.IsNullOrEmpty(prePedido.NumeroPrePedido))
+                    lstErros.Add("FALHA NA OPERAÇÃO COM O BANCO DE DADOS AO TENTAR GERAR NSU.");
+
+                //Cadastrar dados do Orcamento e endereço de entrega 
+                string log = await EfetivarCadastroPrepedido(dbGravacao,
+                    prePedido, loja, c_custoFinancFornecTipoParcelamento,
+                    sistemaResponsavelCadastro, perc_limite_RA_sem_desagio);
+                //Cadastrar orcamento itens
+                List<TorcamentoItem> lstOrcamentoItem = (await MontaListaOrcamentoItem(prePedido,
+                    lstPercentualCustoFinanFornec, dbGravacao)).ToList();
+
+                //vamos passar o coeficiente que foi criado na linha 596 e passar como param para cadastrar nos itens
+                //await ComplementarInfosOrcamentoItem(dbgravacao, lstOrcamentoItem,
+                //    prePedido.DadosCliente.Loja);
+
+                log = await CadastrarOrctoItens(dbGravacao, lstOrcamentoItem, log);
+
+                bool gravouLog = Util.GravaLog(dbGravacao, apelido, prePedido.DadosCliente.Loja, prePedido.NumeroPrePedido,
+                    prePedido.DadosCliente.Id, Constantes.OP_LOG_ORCAMENTO_NOVO, log);
+
+                lstErros.Add(prePedido.NumeroPrePedido);
+                //using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTO))
+                //{
+                //dbGravacao.transacao.Commit();
+                //}
             }
 
             return lstErros;
@@ -935,7 +945,7 @@ namespace Prepedido.Bll
         }
 
         private async Task<string> EfetivarCadastroPrepedido(ContextoBdGravacao dbgravacao, PrePedidoDados prepedido,
-            TorcamentistaEindicador orcamentista, string siglaPagto, InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
+            string loja, string siglaPagto, InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             float perc_limite_RA_sem_desagio = 0)
         {
             //vamos buscar a midia do cliente para cadastrar no orçamento
@@ -944,18 +954,18 @@ namespace Prepedido.Bll
                                   select c.Midia).FirstOrDefaultAsync();
 
             Torcamento torcamento = new Torcamento();
-
+            //Varificar se tem tem os dados no prepedido => loja, apelido, vendedor e permiteRaStatus(se não tiver parceiro = false)
             torcamento.Orcamento = prepedido.NumeroPrePedido;
-            torcamento.Loja = orcamentista.Loja;
+            torcamento.Loja = loja;
             torcamento.Data = DateTime.Now.Date;
             torcamento.Hora = Util.HoraParaBanco(DateTime.Now);
             torcamento.Id_Cliente = prepedido.DadosCliente.Id;
-            torcamento.Orcamentista = orcamentista.Apelido;
+            torcamento.Orcamentista = prepedido.DadosCliente.Indicador_Orcamentista;
             torcamento.Midia = midia == null ? midia = "" : midia;
             torcamento.Comissao_Loja_Indicou = 0;
             torcamento.Servicos = "";
             torcamento.Venda_Externa = 0;//Obs:NÃO ACHEI ESSE CAMPOS SENDO SALVO NOS ARQUIVOS DE ORCAMENTO
-            torcamento.Vendedor = orcamentista.Vendedor;
+            torcamento.Vendedor = prepedido.DadosCliente.Vendedor;
             torcamento.St_Orcamento = "";
             torcamento.St_Fechamento = "";
             torcamento.St_Orc_Virou_Pedido = 0;
@@ -965,11 +975,14 @@ namespace Prepedido.Bll
             torcamento.Vl_Total_RA = prepedido.PermiteRAStatus == 1 ? CalcularVl_Total_NF(prepedido) - Calcular_Vl_Total(prepedido) : 0M;
             torcamento.Perc_RT = 0;
             torcamento.Perc_Desagio_RA_Liquida = perc_limite_RA_sem_desagio;
-            torcamento.Permite_RA_Status = orcamentista.Permite_RA_Status;
+            torcamento.Permite_RA_Status = prepedido.PermiteRAStatus;
             torcamento.St_End_Entrega = prepedido.EnderecoEntrega.OutroEndereco == true ? (short)1 : (short)0;
             torcamento.CustoFinancFornecTipoParcelamento = siglaPagto;//sigla pagto
             torcamento.Sistema_responsavel_cadastro = (int)sistemaResponsavelCadastro;
             torcamento.Sistema_responsavel_atualizacao = (int)sistemaResponsavelCadastro;
+            torcamento.Perc_max_comissao_padrao = prepedido.DadosCliente.Perc_max_comissao_padrao;
+            torcamento.Perc_max_comissao_e_desconto_padrao = prepedido.DadosCliente.Perc_max_comissao_e_desconto_padrao;
+            torcamento.IdOrcamentoCotacao = prepedido.DadosCliente.IdOrcamentoCotacao;
 
             //inclui os campos de endereço cadastral no Torccamento
             IncluirDadosClienteParaTorcamento(prepedido, torcamento);
@@ -978,7 +991,7 @@ namespace Prepedido.Bll
             IncluirFormaPagtoParaTorcamento(prepedido, torcamento);
 
             //vamos incluir os campos de detalhesPrepedido para Torcamento
-            IncluirDetalhesPrepedidoParaTorcamento(prepedido, torcamento, orcamentista.Apelido.ToUpper());
+            IncluirDetalhesPrepedidoParaTorcamento(prepedido, torcamento, prepedido.DadosCliente.UsuarioCadastro.ToUpper());
 
             if (prepedido.EnderecoEntrega == null)
             {
@@ -1939,7 +1952,10 @@ namespace Prepedido.Bll
                     Obs = p.Obs == null ? "" : p.Obs,
                     Desc_Dado = p.Desc_Dado,
                     Preco_Lista = Math.Round(p.Preco_Lista, 2),
-                    CustoFinancFornecCoeficiente = 1
+                    CustoFinancFornecCoeficiente = 1,
+                    StatusDescontoSuperior = p.StatusDescontoSuperior,
+                    IdUsuarioDescontoSuperior = p.IdUsuarioDescontoSuperior,
+                    DataHoraDescontoSuperior = p.DataHoraDescontoSuperior
                 };
                 lstOrcamentoItem.Add(item);
             }
@@ -1969,7 +1985,10 @@ namespace Prepedido.Bll
                             Obs = p.Obs == null ? "" : p.Obs,
                             Desc_Dado = p.Desc_Dado,
                             Preco_Lista = Math.Round(p.Preco_Lista, 2),
-                            CustoFinancFornecCoeficiente = percCustoFinanFornec.Coeficiente
+                            CustoFinancFornecCoeficiente = percCustoFinanFornec.Coeficiente,
+                            StatusDescontoSuperior = p.StatusDescontoSuperior,
+                            IdUsuarioDescontoSuperior = p.IdUsuarioDescontoSuperior,
+                            DataHoraDescontoSuperior = p.DataHoraDescontoSuperior
                         };
                         lstOrcamentoItem.Add(item);
                     }

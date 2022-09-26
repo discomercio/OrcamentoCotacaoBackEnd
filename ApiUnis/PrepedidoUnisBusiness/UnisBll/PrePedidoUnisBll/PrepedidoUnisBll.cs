@@ -110,28 +110,34 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
                 }
             }
 
-            //vamos cadastrar
-            List<string> lstRet = (await prepedidoBll.CadastrarPrepedido(prePedidoDados,
+            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                //vamos cadastrar
+                List<string> lstRet = (await prepedidoBll.CadastrarPrepedido(prePedidoDados,
                 prePedidoUnis.Indicador_Orcamentista.ToUpper(),
                 Convert.ToDecimal(configuracaoApiUnis.LimiteArredondamentoPrecoVendaOrcamentoItem), false,
                 Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS,
-                configuracaoApiUnis.LimiteItens)).ToList();
+                configuracaoApiUnis.LimiteItens, dbgravacao)).ToList();
 
-            if (lstRet.Count > 0)
-            {
-                if (lstRet.Count > 1)
+                if (lstRet.Count > 0)
                 {
-                    retorno.ListaErros = lstRet;
-                    return retorno;
+                    if (lstRet.Count > 1)
+                    {
+                        retorno.ListaErros = lstRet;
+                        return retorno;
+                    }
+                    if (lstRet[0].Length > Constantes.TAM_MAX_ID_ORCAMENTO)
+                    {
+                        retorno.ListaErros = lstRet;
+                        return retorno;
+                    }
+                    retorno.IdPrePedidoCadastrado = lstRet[0];
+                    await dbgravacao.SaveChangesAsync();
+                    dbgravacao.transacao.Commit();
                 }
-                if (lstRet[0].Length > Constantes.TAM_MAX_ID_ORCAMENTO)
-                {
-                    retorno.ListaErros = lstRet;
-                    return retorno;
-                }
-                retorno.IdPrePedidoCadastrado = lstRet[0];
+
+
             }
-
 
             return retorno;
         }

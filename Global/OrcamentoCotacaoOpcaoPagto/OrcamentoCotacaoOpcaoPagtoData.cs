@@ -54,7 +54,19 @@ namespace OrcamentoCotacaoOpcaoPagto
 
         public List<TorcamentoCotacaoOpcaoPagto> PorFilroComTransacao(TorcamentoCotacaoOpcaoPagtoFiltro obj, ContextoBdGravacao contextoBdGravacao)
         {
-            throw new NotImplementedException();
+            var saida = from c in contextoBdGravacao.TorcamentoCotacaoOpcaoPagto
+                        select c;
+
+            if (obj.IdOpcao != 0)
+            {
+                saida = saida.Where(x => x.IdOrcamentoCotacaoOpcao == obj.IdOpcao);
+            }
+            if(obj.Id != 0)
+            {
+                saida = saida.Where(x => x.Id == obj.Id);
+            }
+
+            return saida.ToList();
         }
 
         public List<TorcamentoCotacaoOpcaoPagto> PorFiltro(TorcamentoCotacaoOpcaoPagtoFiltro obj)

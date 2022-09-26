@@ -42,6 +42,10 @@ namespace Prepedido.Dto
         public string EmailXml { get; set; }
         public string Contato { get; set; }
         public string UsuarioCadastro { get; set; }
+        public int? IdOrcamentoCotacao { get; set; }
+        public int? IdIndicadorVendedor { get; set; }
+        public float? Perc_max_comissao_padrao { get; set; }
+        public float? Perc_max_comissao_e_desconto_padrao { get; set; }
 
         public static DadosClienteCadastroDto DadosClienteCadastroDto_De_DadosClienteCadastroDados(Cliente.Dados.DadosClienteCadastroDados origem)
         {
@@ -82,7 +86,11 @@ namespace Prepedido.Dto
                 Email = origem.Email,
                 EmailXml = origem.EmailXml,
                 Contato = origem.Contato,
-                UsuarioCadastro = ""
+                UsuarioCadastro = "",
+                IdOrcamentoCotacao = origem.IdOrcamentoCotacao,
+                IdIndicadorVendedor = origem.IdIndicadorVendedor,
+                Perc_max_comissao_padrao = origem.Perc_max_comissao_padrao,
+                Perc_max_comissao_e_desconto_padrao = origem.Perc_max_comissao_e_desconto_padrao
             };
         }
 
@@ -125,7 +133,11 @@ namespace Prepedido.Dto
                 Email = origem.Email,
                 EmailXml = origem.EmailXml,
                 Contato = origem.Contato,
-                UsuarioCadastro = origem.UsuarioCadastro
+                UsuarioCadastro = origem.UsuarioCadastro,
+                IdOrcamentoCotacao = origem.IdOrcamentoCotacao,
+                IdIndicadorVendedor = origem.IdIndicadorVendedor,
+                Perc_max_comissao_padrao = origem.Perc_max_comissao_padrao,
+                Perc_max_comissao_e_desconto_padrao = origem.Perc_max_comissao_e_desconto_padrao
             };
         }
 

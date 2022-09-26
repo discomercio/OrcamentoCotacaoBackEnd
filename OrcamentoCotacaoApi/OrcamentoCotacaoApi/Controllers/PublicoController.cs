@@ -1,4 +1,5 @@
 ﻿using Cep;
+using InfraBanco.Constantes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -47,7 +48,7 @@ namespace OrcamentoCotacaoApi.Controllers
             if (orcamento != null)
                 return Ok(orcamento);
             else
-                return NoContent();            
+                return NoContent();
         }
 
         [HttpGet("buscarCep")]
@@ -83,7 +84,9 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost("aprovarOrcamento")]
         public async Task<IActionResult> AprovarOrcamento(AprovarOrcamentoRequestViewModel aprovarOrcamento)
         {
-            var retorno = await _orcamentoBll.AprovarOrcamento(aprovarOrcamento);
+
+            var retorno = await _orcamentoBll.AprovarOrcamento(aprovarOrcamento, Constantes.TipoUsuarioContexto.Cliente,
+                (int)Constantes.TipoUsuario.CLIENTE);
             return Ok(retorno);
         }
     }
