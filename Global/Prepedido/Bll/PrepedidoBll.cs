@@ -981,7 +981,7 @@ namespace Prepedido.Bll
             torcamento.Sistema_responsavel_cadastro = (int)sistemaResponsavelCadastro;
             torcamento.Sistema_responsavel_atualizacao = (int)sistemaResponsavelCadastro;
             torcamento.Perc_max_comissao_padrao = prepedido.DadosCliente.Perc_max_comissao_padrao;
-            torcamento.Perc_max_comissao_padrao = prepedido.DadosCliente.Perc_max_comissao_padrao;
+            torcamento.Perc_max_comissao_e_desconto_padrao = prepedido.DadosCliente.Perc_max_comissao_e_desconto_padrao;
             torcamento.IdOrcamentoCotacao = prepedido.DadosCliente.IdOrcamentoCotacao;
 
             //inclui os campos de endereço cadastral no Torccamento

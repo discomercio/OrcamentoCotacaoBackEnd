@@ -1227,12 +1227,13 @@ namespace OrcamentoCotacaoBusiness.Bll
                     //passar o id do cliente para o modelo
                     //verificar os erros 
                     retorno = await CadastrarPrepedido(aprovarOrcamento, orcamento, dbGravacao);
-                    if (retorno.Count > 1)
+                    //precisamos mudar isso, precisamos verificar se existe um número de orçamento válido
+                    if (retorno.Count == 1)
                     {
-                        return retorno;
+                        if (!retorno[0].Contains(Constantes.SUFIXO_ID_ORCAMENTO))
+                            return retorno;
                     }
 
-                    //PAREI ATUALIZANDO ORCAMENTO
                     var tcfgStatus = _orcamentoCotacaoBll.BuscarStatusParaOrcamentoCotacaoComtransacao("APROVADO", dbGravacao);
                     //mudar os parametros para receber tipo do usuário
                     orcamento.DataHoraUltAtualizacao = DateTime.Now;
@@ -1263,7 +1264,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     //atualiza forma pagto
                     var formaPagtoSelecionada = _formaPagtoOrcamentoCotacaoBll
                         .PorFiltroComTransacao(new TorcamentoCotacaoOpcaoPagtoFiltro() { Id = aprovarOrcamento.IdFormaPagto }, dbGravacao).FirstOrDefault();
-                    
+
                     if (formaPagtoSelecionada == null)
                         return new List<string>() { "Falha ao buscar forma de pagamento da opção selecionada para aprovação do orçamento!" };
 
@@ -1319,7 +1320,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 new List<string>() { "Falha ao buscar produtos atômicos da opção!" };
 
             prepedido.PercRT = opcaoSelecionada.PercRT;
-            prepedido.VlTotalDestePedido = Math.Round(opcaoSelecionada.ListaProdutos.Sum(x => x.TotalItem), 2);
+            prepedido.VlTotalDestePedido = prepedido.ListaProdutos.Sum(x => x.Preco_Venda * (x.Qtde ?? 0));
             //passar esses dados abaixo
             prepedido.DadosCliente.IdOrcamentoCotacao = orcamento.Id;
             prepedido.DadosCliente.Perc_max_comissao_padrao = orcamento.Perc_max_comissao_padrao;
@@ -1398,7 +1399,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                             if (itemAtomico.DescDado > existe.Desc_Dado)
                             {
                                 existe.StatusDescontoSuperior = true;
-                                existe.IdUsuarioDescontoSuperior = itemAtomico.IdOperacaoAlcadaDescontoSuperior;
+                                existe.IdUsuarioDescontoSuperior = itemAtomico.IdUsuarioDescontoSuperior;
                                 existe.DataHoraDescontoSuperior = itemAtomico.DataHoraDescontoSuperior;
                             }
                         }
@@ -1457,7 +1458,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         var maiorAlcada = produtos.Max(x => x.IdOperacaoAlcadaDescontoSuperior);
                         var p = produtos.Where(x => x.IdOperacaoAlcadaDescontoSuperior == maiorAlcada).FirstOrDefault();
                         item.StatusDescontoSuperior = true;
-                        item.IdUsuarioDescontoSuperior = p.IdOperacaoAlcadaDescontoSuperior;
+                        item.IdUsuarioDescontoSuperior = p.IdUsuarioDescontoSuperior;
                         item.DataHoraDescontoSuperior = p.DataHoraDescontoSuperior;
                     }
                 }
