@@ -1232,7 +1232,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     //verificar os erros 
                     retorno = await CadastrarPrepedido(aprovarOrcamento, orcamento, dbGravacao);
                     //precisamos mudar isso, precisamos verificar se existe um número de orçamento válido
-                    if (retorno.Count == 1)
+                    if (retorno.Count >= 1)
                     {
                         if (!retorno[0].Contains(Constantes.SUFIXO_ID_ORCAMENTO))
                             return retorno;
