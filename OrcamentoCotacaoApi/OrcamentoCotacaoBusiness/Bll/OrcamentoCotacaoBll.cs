@@ -1184,7 +1184,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
-        public async Task<List<string>> AprovarOrcamento(AprovarOrcamentoRequestViewModel aprovarOrcamento, 
+        public async Task<List<string>> AprovarOrcamento(AprovarOrcamentoRequestViewModel aprovarOrcamento,
             Constantes.TipoUsuarioContexto tipoUsuarioContexto, int idUsuarioUltAtualizacao)
         {
             if (aprovarOrcamento == null) return new List<string>() { "É necessário preencher o cadastro do cliente!" };
@@ -1235,24 +1235,44 @@ namespace OrcamentoCotacaoBusiness.Bll
                     //PAREI ATUALIZANDO ORCAMENTO
                     var tcfgStatus = _orcamentoCotacaoBll.BuscarStatusParaOrcamentoCotacaoComtransacao("APROVADO", dbGravacao);
                     //mudar os parametros para receber tipo do usuário
-                    //_orcamentoBll.AtualizarStatus(id, user, idStatus)
-                    //orcamento.DataHoraUltAtualizacao = DateTime.Now;
-                    //orcamento.Status = tcfgStatus.Id;
-                    //orcamento.DataHoraUltStatus = DateTime.Now;
-                    //orcamento.IdUsuarioUltStatus = idUsuarioUltAtualizacao;
-                    //orcamento.IdTipoUsuarioContextoUltStatus = (int)tipoUsuarioContexto;
-                    //orcamento.DataUltStatus = DateTime.Now;
-                    //orcamento.IdTipoUsuarioContextoUltAtualizacao = (int)tipoUsuarioContexto;
-                    //orcamento.IdUsuarioUltAtualizacao = idUsuarioUltAtualizacao;
-                    //orcamento.DataHoraUltAtualizacao = DateTime.Now;
-                    //orcamento.DataHoraUltStatus = DateTime.Now;
+                    orcamento.DataHoraUltAtualizacao = DateTime.Now;
+                    orcamento.Status = tcfgStatus.Id;
+                    orcamento.DataHoraUltStatus = DateTime.Now;
+                    orcamento.IdUsuarioUltStatus = idUsuarioUltAtualizacao;
+                    orcamento.IdTipoUsuarioContextoUltStatus = (int)tipoUsuarioContexto;
+                    orcamento.DataUltStatus = DateTime.Now;
+                    orcamento.IdTipoUsuarioContextoUltAtualizacao = (int)tipoUsuarioContexto;
+                    orcamento.IdUsuarioUltAtualizacao = idUsuarioUltAtualizacao;
+                    orcamento.DataHoraUltAtualizacao = DateTime.Now;
+                    orcamento.DataHoraUltStatus = DateTime.Now;
                     _orcamentoCotacaoBll.AtualizarComTransacao(orcamento, dbGravacao);
 
-                    //falta atualizar os produtos
-                    //analisar para ver se da pra adicionar campos
-                    //_orcamentoCotacaoOpcaoBll.AtualizarOrcamentoOpcao(opcao, usuarioLogado, orcamento);
+                    var opcaoSelecionada = _orcamentoCotacaoOpcaoBll
+                        .PorFiltroComTransacao(new TorcamentoCotacaoOpcaoFiltro() { Id = aprovarOrcamento.IdOpcao }, dbGravacao).FirstOrDefault();
+                    if (opcaoSelecionada == null)
+                        return new List<string>() { "Falha ao buscar opção selecionada para aprovação do orçamento!" };
 
+                    //atualiza opcão
+                    opcaoSelecionada.IdTipoUsuarioContextoUltAtualizacao = idUsuarioUltAtualizacao;
+                    opcaoSelecionada.IdUsuarioUltAtualizacao = idUsuarioUltAtualizacao;
+                    opcaoSelecionada.DataHoraUltAtualizacao = DateTime.Now;
+                    var objOpcao = _orcamentoCotacaoOpcaoBll.AtualizarOpcaoComTransacao(opcaoSelecionada, dbGravacao);
+                    if (objOpcao == null)
+                        return new List<string>() { "Falha ao atualizar opção selecionada para aprovação do orçamento!" };
 
+                    //atualiza forma pagto
+                    var formaPagtoSelecionada = _formaPagtoOrcamentoCotacaoBll
+                        .PorFiltroComTransacao(new TorcamentoCotacaoOpcaoPagtoFiltro() { Id = aprovarOrcamento.IdFormaPagto }, dbGravacao).FirstOrDefault();
+                    
+                    if (formaPagtoSelecionada == null)
+                        return new List<string>() { "Falha ao buscar forma de pagamento da opção selecionada para aprovação do orçamento!" };
+
+                    formaPagtoSelecionada.IdTipoUsuarioContextoAprovado = (short?)idUsuarioUltAtualizacao;
+                    formaPagtoSelecionada.IdUsuarioAprovado = idUsuarioUltAtualizacao;
+                    formaPagtoSelecionada.DataAprovado = DateTime.Now.Date;
+                    formaPagtoSelecionada.DataHoraAprovado = DateTime.Now;
+                    formaPagtoSelecionada.Aprovado = true;
+                    var objPagto = _formaPagtoOrcamentoCotacaoBll.AtualizarOpcaoPagtoComTransacao(formaPagtoSelecionada, dbGravacao);
 
                     await dbGravacao.SaveChangesAsync();
                     dbGravacao.transacao.Commit();
@@ -1310,10 +1330,6 @@ namespace OrcamentoCotacaoBusiness.Bll
             prepedido.DetalhesPrepedido.EntregaImediata = orcamento.StEtgImediata.ToString();
             prepedido.DetalhesPrepedido.EntregaImediataData = orcamento.PrevisaoEntregaData.HasValue ? orcamento.PrevisaoEntregaData : null;
 
-            // se tiver vendedor do parceiro, vamos passar o parceiro no apelido e somente alteramos os usuário cadastro
-            //se tiver parceiro, vamos passar o parceiro no apelido, normalmente
-            //se não tiver parceiro, vamos ter que seguir caminhos paralelos onde se utiliza parceiro
-            //tá fácil
             string parceiro = null;
             if (!string.IsNullOrEmpty(prepedido.DadosCliente.Indicador_Orcamentista))
             {
