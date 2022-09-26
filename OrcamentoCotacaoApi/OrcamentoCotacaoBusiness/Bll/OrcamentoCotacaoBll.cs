@@ -1194,6 +1194,10 @@ namespace OrcamentoCotacaoBusiness.Bll
             var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro() { Id = aprovarOrcamento.IdOrcamento }).FirstOrDefault();
             if (orcamento == null) return new List<string>() { "Falha ao buscar Orçamento!" };
 
+            if (orcamento.Status == (short)Constantes.eCfgOrcamentoCotacaoStatus.APROVADO ||
+                orcamento.Status == (short)Constantes.eCfgOrcamentoCotacaoStatus.CANCELADO)
+                return new List<string>() { "Esse orçamento não pode ser aprovado!" };
+
             aprovarOrcamento.ClienteCadastroDto.DadosCliente.Perc_max_comissao_e_desconto_padrao = orcamento.Perc_max_comissao_e_desconto_padrao;
             aprovarOrcamento.ClienteCadastroDto.DadosCliente.Perc_max_comissao_padrao = orcamento.Perc_max_comissao_padrao;
             aprovarOrcamento.ClienteCadastroDto.DadosCliente.IdIndicadorVendedor = orcamento.IdIndicadorVendedor;
