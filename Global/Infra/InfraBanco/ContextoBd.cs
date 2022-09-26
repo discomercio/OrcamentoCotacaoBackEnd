@@ -52,6 +52,7 @@ namespace InfraBanco
         public IQueryable<TorcamentoCotacaoLink> TorcamentoCotacaoLink { get => contexto.TorcamentoCotacaoLink.AsNoTracking(); }
         public IQueryable<TcfgUnidadeNegocioParametro> TcfgUnidadeNegocioParametro { get => contexto.TcfgUnidadeNegocioParametro.AsNoTracking(); }
         public IQueryable<TorcamentoCotacaoMensagem> TorcamentoCotacaoMensagem { get => contexto.TorcamentoCotacaoMensagem.AsNoTracking(); }
+        public IQueryable<TorcamentoCotacaoMensagemStatus> TorcamentoCotacaoMensagemStatus { get => contexto.TorcamentoCotacaoMensagemStatus.AsNoTracking(); }
         public IQueryable<TorcamentoCotacaoOpcao> torcamentoCotacaoOpcao { get => contexto.TorcamentoCotacaoOpcao.AsNoTracking(); }
         public IQueryable<TorcamentoCotacaoEmailQueue> torcamentoCotacaoEmailQueue { get => contexto.TorcamentoCotacaoEmailQueue.AsNoTracking(); }
         public IQueryable<TorcamentoCotacaoEmail> torcamentoCotacaoEmail { get => contexto.TorcamentoCotacaoEmail.AsNoTracking(); }
