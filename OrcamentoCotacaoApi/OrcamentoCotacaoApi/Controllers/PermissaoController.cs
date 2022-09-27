@@ -42,7 +42,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
                 _logger.LogInformation(
                     $"Retornando permissões do usuario: {LoggedUser.Nome} para o orçamento: {idOrcamento}. " +
-                    $"VizualizarOrcamento = {response.VizualizarOrcamento}" +
+                    $"VizualizarOrcamento = {response.VisualizarOrcamento}" +
                     $"ProrrogarOrcamento = {response.ProrrogarOrcamento}" +
                     $"EditarOrcamento = {response.EditarOrcamento}" +
                     $"CancelarOrcamento = {response.CancelarOrcamento}" +
@@ -63,7 +63,7 @@ namespace OrcamentoCotacaoApi.Controllers
         
         [HttpGet]
         [Route("RetornarPermissaoPrePedido")]
-        public async Task<IActionResult> RetornarPermissaoPrePedido(int idPrePedido)
+        public async Task<IActionResult> RetornarPermissaoPrePedido(string idPrePedido)
         {
             try
             {
@@ -79,18 +79,10 @@ namespace OrcamentoCotacaoApi.Controllers
 
                 var response = await _permissaoBll.RetornarPermissaoPrePedido(request);
 
-                //_logger.LogInformation(
-                //    $"Retornando permissões do usuario: {LoggedUser.Nome} para o orçamento: {idOrcamento}. " +
-                //    $"VizualizarOrcamento = {response.VizualizarOrcamento}" +
-                //    $"ProrrogarOrcamento = {response.ProrrogarOrcamento}" +
-                //    $"EditarOrcamento = {response.EditarOrcamento}" +
-                //    $"CancelarOrcamento = {response.CancelarOrcamento}" +
-                //    $"ClonarOrcamento = {response.ClonarOrcamento}" +
-                //    $"ReenviarOrcamento = {response.ReenviarOrcamento}" +
-                //    $"EditarOpcaoOrcamento = {response.EditarOpcaoOrcamento}" +
-                //    $"AprovarOpcaoOrcamento = {response.DesabilitarAprovarOpcaoOrcamento}" +
-                //    $"NenhumaOpcaoOrcamento = {response.NenhumaOpcaoOrcamento}" +
-                //    $"DesabilitarBotoes = {response.DesabilitarBotoes}");
+                _logger.LogInformation(
+                    $"Retornando permissões do usuario: {LoggedUser.Nome} para o pré pedido: {idPrePedido}. " +
+                    $"VizualizarOrcamento = {response.VisualizarPrePedido}" +
+                    $"ProrrogarOrcamento = {response.CancelarPrePedido}");
 
                 return Ok(response);
             }
@@ -102,7 +94,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
         [HttpGet]
         [Route("RetornarPermissaoPedido")]
-        public async Task<IActionResult> RetornarPermissaoPedido(int idPedido)
+        public async Task<IActionResult> RetornarPermissaoPedido(string idPedido)
         {
             try
             {
@@ -118,18 +110,9 @@ namespace OrcamentoCotacaoApi.Controllers
 
                 var response = await _permissaoBll.RetornarPermissaoPedido(request);
 
-                //_logger.LogInformation(
-                //    $"Retornando permissões do usuario: {LoggedUser.Nome} para o orçamento: {idOrcamento}. " +
-                //    $"VizualizarOrcamento = {response.VizualizarOrcamento}" +
-                //    $"ProrrogarOrcamento = {response.ProrrogarOrcamento}" +
-                //    $"EditarOrcamento = {response.EditarOrcamento}" +
-                //    $"CancelarOrcamento = {response.CancelarOrcamento}" +
-                //    $"ClonarOrcamento = {response.ClonarOrcamento}" +
-                //    $"ReenviarOrcamento = {response.ReenviarOrcamento}" +
-                //    $"EditarOpcaoOrcamento = {response.EditarOpcaoOrcamento}" +
-                //    $"AprovarOpcaoOrcamento = {response.DesabilitarAprovarOpcaoOrcamento}" +
-                //    $"NenhumaOpcaoOrcamento = {response.NenhumaOpcaoOrcamento}" +
-                //    $"DesabilitarBotoes = {response.DesabilitarBotoes}");
+                _logger.LogInformation(
+                    $"Retornando permissões do usuario: {LoggedUser.Nome} para o pedido: {idPedido}. " +
+                    $"VizualizarOrcamento = {response.VisualizarPedido}");
 
                 return Ok(response);
             }

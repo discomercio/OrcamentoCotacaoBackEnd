@@ -77,7 +77,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     if (string.IsNullOrEmpty(loja))
                     {
-                        response.VizualizarOrcamento = false;
+                        response.VisualizarOrcamento = false;
                         response.Sucesso = false;
                         response.Mensagem = "Orçamento não esta relacionado com uma loja.";
                         return response;
@@ -86,14 +86,14 @@ namespace OrcamentoCotacaoBusiness.Bll
                     var usuarioAcessaLoja = UsuarioAcessaLoja(usuario, loja);
                     if (!usuarioAcessaLoja && !permissaoVisualizarOrcamentoConsultar)
                     {
-                        response.VizualizarOrcamento = false;
+                        response.VisualizarOrcamento = false;
                         response.Sucesso = false;
                         response.Mensagem = "Não encontramos a permissão necessária para acessar essa funcionalidade!";
                         return response;
                     }
                 }
 
-                response.VizualizarOrcamento = true;
+                response.VisualizarOrcamento = true;
                 response.ClonarOrcamento = true;
 
                 if (statusOrcamentoEnviado == StatusOrcamento.Enviado)
@@ -141,7 +141,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
             else
             {
-                response.VizualizarOrcamento = false;
+                response.VisualizarOrcamento = false;
                 response.Sucesso = false;
                 response.Mensagem = "Não encontramos a permissão necessária para acessar essa funcionalidade!";
             }
@@ -170,10 +170,10 @@ namespace OrcamentoCotacaoBusiness.Bll
                 return response;
             }
 
-            if (request.IdPrePedido <= 0)
+            if (string.IsNullOrEmpty(request.IdPrePedido))
             {
                 response.Sucesso = false;
-                response.Mensagem = "Obrigatório o preenchimento do campo IdPrePedido .";
+                response.Mensagem = "Obrigatório o preenchimento do campo IdPrePedido.";
                 return response;
             }
 
@@ -185,15 +185,43 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             if (usuarioEnvolvidoOrcamento)
             {
+                var permissaoVisualizarOrcamentoConsultar = ValidaPermissao(request.PermissoesUsuario, ePermissao.VisualizarOrcamentoConsultar);
+                var permissaoVisualizarPrePedidoConsultar = ValidaPermissao(request.PermissoesUsuario, ePermissao.VisualizarPrePedidoConsultar);
+                var permissaoCancelarPrePedido = ValidaPermissao(request.PermissoesUsuario, ePermissao.CancelarPrePedido);
 
+                if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
+                {
+                    var loja = ObterLojaPorPrePedido(idPrePedido);
+
+                    if (string.IsNullOrEmpty(loja))
+                    {
+                        response.VisualizarPrePedido = false;
+                        response.Sucesso = false;
+                        response.Mensagem = "Pre Pedido não esta relacionado com uma loja.";
+                        return response;
+                    }
+
+                    var usuarioAcessaLoja = UsuarioAcessaLoja(usuario, loja);
+
+                    if (!usuarioAcessaLoja && !permissaoVisualizarOrcamentoConsultar)
+                    {
+                        response.VisualizarPrePedido = false;
+                        response.Sucesso = false;
+                        response.Mensagem = "Não encontramos a permissão necessária para acessar essa funcionalidade!";
+                        return response;
+                    }
+                }
+
+                response.VisualizarPrePedido = permissaoVisualizarPrePedidoConsultar;
+                response.CancelarPrePedido = permissaoCancelarPrePedido;
             }
             else
             {
-                response.VizualizarPrePedido = false;
+                response.VisualizarPrePedido = false;
                 response.Sucesso = false;
                 response.Mensagem = "Não encontramos a permissão necessária para acessar essa funcionalidade!";
             }
-
+            
             return response;
         }
 
@@ -215,7 +243,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 return response;
             }
 
-            if (request.IdPedido <= 0)
+            if (string.IsNullOrEmpty(request.IdPedido))
             {
                 response.Sucesso = false;
                 response.Mensagem = "Obrigatório o preenchimento do campo IdPedido.";
@@ -230,15 +258,41 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             if (usuarioEnvolvido)
             {
+                var permissaoVisualizarOrcamentoConsultar = ValidaPermissao(request.PermissoesUsuario, ePermissao.VisualizarOrcamentoConsultar);
+                var permissaoConsultarPedido = ValidaPermissao(request.PermissoesUsuario, ePermissao.ConsultarPedido);
 
+                if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
+                {
+                    var loja = ObterLojaPorPedido(idPedido);
+
+                    if (string.IsNullOrEmpty(loja))
+                    {
+                        response.VisualizarPedido = false;
+                        response.Sucesso = false;
+                        response.Mensagem = "Pedido não esta relacionado com uma loja.";
+                        return response;
+                    }
+
+                    var usuarioAcessaLoja = UsuarioAcessaLoja(usuario, loja);
+
+                    if (!usuarioAcessaLoja && !permissaoVisualizarOrcamentoConsultar)
+                    {
+                        response.VisualizarPedido = false;
+                        response.Sucesso = false;
+                        response.Mensagem = "Não encontramos a permissão necessária para acessar essa funcionalidade!";
+                        return response;
+                    }
+                }
+
+                response.VisualizarPedido = permissaoConsultarPedido;
             }
             else
             {
-                response.VizualizarPedido = false;
+                response.VisualizarPedido = false;
                 response.Sucesso = false;
                 response.Mensagem = "Não encontramos a permissão necessária para acessar essa funcionalidade!";
             }
-
+            
             return response;
         }
 
@@ -292,7 +346,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             return usuarioEnvolvido;
         }
 
-        private bool UsuarioEnvolvidoPrePedido(int idTipoUsuario, string usuario, int idPrePedido)
+        private bool UsuarioEnvolvidoPrePedido(int idTipoUsuario, string usuario, string idPrePedido)
         {
             bool usuarioEnvolvido = false;
 
@@ -300,24 +354,43 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
                 {
-                    usuarioEnvolvido = true;
+                    usuarioEnvolvido = (from o in db.Torcamento
+                                        where
+                                             o.Vendedor == usuario
+                                             && o.Orcamento == idPrePedido
+                                        select o).Any();
                 }
 
                 if (idTipoUsuario == (int)Constantes.TipoUsuario.PARCEIRO)
                 {
-                    usuarioEnvolvido = true;
+                    usuarioEnvolvido = (from o in db.Torcamento
+                                        where
+                                             o.Orcamentista == usuario
+                                             && o.Orcamento == idPrePedido
+                                        select o).Any();
                 }
 
                 if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
                 {
-                    usuarioEnvolvido = true;
+                    var idIndicadorVendedor = 0;
+
+                    if (!int.TryParse(usuario, out idIndicadorVendedor))
+                    {
+                        throw new Exception("Problemas na conversão de Vendedor do parceiro.");
+                    }
+
+                    usuarioEnvolvido = (from o in db.Torcamento
+                                        where
+                                             o.IdIndicadorVendedor == idIndicadorVendedor
+                                             && o.Orcamento == idPrePedido
+                                        select o).Any();
                 }
             }
 
             return usuarioEnvolvido;
         }
 
-        private bool UsuarioEnvolvidoPedido(int idTipoUsuario, string usuario, int idPedido)
+        private bool UsuarioEnvolvidoPedido(int idTipoUsuario, string usuario, string idPedido)
         {
             bool usuarioEnvolvido = false;
 
@@ -325,21 +398,70 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
                 {
-                    usuarioEnvolvido = true;
+                    usuarioEnvolvido = (from o in db.Tpedido
+                                        where
+                                             o.Vendedor == usuario
+                                             && o.Pedido == idPedido
+                                        select o).Any();
                 }
 
                 if (idTipoUsuario == (int)Constantes.TipoUsuario.PARCEIRO)
                 {
-                    usuarioEnvolvido = true;
+                    usuarioEnvolvido = (from o in db.Tpedido
+                                        where
+                                             o.Orcamentista == usuario
+                                             && o.Pedido == idPedido
+                                        select o).Any();
                 }
 
                 if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
                 {
-                    usuarioEnvolvido = true;
+                    var idIndicadorVendedor = 0;
+
+                    if (!int.TryParse(usuario, out idIndicadorVendedor))
+                    {
+                        throw new Exception("Problemas na conversão de Vendedor do parceiro.");
+                    }
+
+                    usuarioEnvolvido = (from o in db.Tpedido
+                                        where
+                                             o.IdIndicadorVendedor == idIndicadorVendedor
+                                             && o.Pedido == idPedido
+                                        select o).Any();
                 }
             }
 
             return usuarioEnvolvido;
+        }
+
+        private string ObterLojaPorPrePedido(string idPrePedido)
+        {
+            string loja = string.Empty;
+
+            using (var db = _contextoProvider.GetContextoLeitura())
+            {
+                loja = (from o in db.Torcamento
+                        where
+                             o.Orcamento == idPrePedido
+                        select o.Loja).FirstOrDefault();
+            }
+
+            return loja;
+        }
+
+        private string ObterLojaPorPedido(string idPedido)
+        {
+            string loja = string.Empty;
+
+            using (var db = _contextoProvider.GetContextoLeitura())
+            {
+                loja = (from o in db.Tpedido
+                        where
+                             o.Pedido == idPedido
+                        select o.Loja).FirstOrDefault();
+            }
+
+            return loja;
         }
 
         private string ObterLojaPorOrcamento(int idOrcamento)
