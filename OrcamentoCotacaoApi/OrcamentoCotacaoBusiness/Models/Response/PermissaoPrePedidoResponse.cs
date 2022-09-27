@@ -2,6 +2,7 @@
 {
     public sealed class PermissaoPrePedidoResponse : ResponseBase
     {
-        public bool VizualizarPrePedido { get; set; }
+        public bool VisualizarPrePedido { get; set; }
+        public bool CancelarPrePedido { get; set; }
     }
 }

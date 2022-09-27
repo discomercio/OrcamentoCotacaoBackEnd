@@ -588,9 +588,6 @@ namespace OrcamentoCotacaoBusiness.Bll
         {
             var orcamentoAntigo = PorFiltro((int)orcamento.Id, usuarioLogado);
 
-            if (!ValidarDonoOrcamentoCotacao(orcamentoAntigo, usuarioLogado))
-                throw new ArgumentException("Usuário não tem permissão para editar dados cadastrais do orçamento!");
-
             ValidarClienteOrcamento(orcamento.ClienteOrcamentoCotacaoDto);
 
             ValidarAtualizacaoDadosCadastraisOrcamentoCotacao(orcamento, orcamentoAntigo, usuarioLogado);

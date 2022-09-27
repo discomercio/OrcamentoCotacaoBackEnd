@@ -2,6 +2,6 @@
 {
     public sealed class PermissaoPedidoResponse : ResponseBase
     {
-        public bool VizualizarPedido { get; set; }
+        public bool VisualizarPedido { get; set; }
     }
 }
