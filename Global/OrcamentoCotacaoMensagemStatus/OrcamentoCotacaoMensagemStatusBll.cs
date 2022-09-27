@@ -15,5 +15,13 @@ namespace OrcamentoCotacaoMensagemStatus
             _data = data;
         }
 
+        public TorcamentoCotacaoMensagemStatus InserirComTransacao(TorcamentoCotacaoMensagemStatus torcamentoCotacaoMensagemStatus, InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            var data = _data.InserirComTransacao(torcamentoCotacaoMensagemStatus, contextoBdGravacao);
+            
+            return data;
+
+        }
+
     }
 }

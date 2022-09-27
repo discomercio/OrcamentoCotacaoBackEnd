@@ -16,7 +16,23 @@ namespace OrcamentoCotacaoMensagemStatus
         public OrcamentoCotacaoMensagemStatusData(InfraBanco.ContextoBdProvider contextoProvider)
         {
             this.contextoProvider = contextoProvider;
-        }       
+        }
+
+
+        public TorcamentoCotacaoMensagemStatus InserirComTransacao(TorcamentoCotacaoMensagemStatus torcamentoCotacaoMensagemStatus, InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            try
+            {
+                contextoBdGravacao.TorcamentoCotacaoMensagemStatus.Add(torcamentoCotacaoMensagemStatus);
+                contextoBdGravacao.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            return torcamentoCotacaoMensagemStatus;
+        }
 
     }
 }
