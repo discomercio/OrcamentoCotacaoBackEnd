@@ -1,6 +1,7 @@
 ﻿using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Produto;
 using ProdutoCatalogo;
 using System;
@@ -17,13 +18,18 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly ProdutoCatalogoBll _bll;
         private readonly InfraBanco.ContextoBdProvider _contextoBdProvider;
         private readonly ProdutoGeralBll _produtoGeralBll;
+        private readonly ILogger<ProdutoCatalogoOrcamentoCotacaoBll> _logger;
 
-        public ProdutoCatalogoOrcamentoCotacaoBll(ProdutoCatalogoBll bll,
-            InfraBanco.ContextoBdProvider contextoBdProvider, ProdutoGeralBll produtoGeralBll)
+        public ProdutoCatalogoOrcamentoCotacaoBll(
+            ProdutoCatalogoBll bll,
+            InfraBanco.ContextoBdProvider contextoBdProvider, 
+            ProdutoGeralBll produtoGeralBll,
+            ILogger<ProdutoCatalogoOrcamentoCotacaoBll> logger)
         {
             _bll = bll;
             _contextoBdProvider = contextoBdProvider;
             _produtoGeralBll = produtoGeralBll;
+            _logger = logger;
         }
 
         public List<TprodutoCatalogo> PorFiltro(TprodutoCatalogoFiltro filtro)
@@ -140,93 +146,169 @@ namespace OrcamentoCotacaoBusiness.Bll
         public async Task<string> Criar(TprodutoCatalogo produtoCatalogo, string usuario_cadastro,
             IFormFile arquivo, string caminho)
         {
+            _logger.LogInformation($"Método Criar Produto");
+            
             var retornoValidacao = await ValidarTiposPropriedadesProdutoCatalogo(produtoCatalogo.campos);
 
-            if (!string.IsNullOrEmpty(retornoValidacao)) return retornoValidacao;
+            _logger.LogInformation($"Método Criar Produto - Verifica e valida tipo de propriedades.");
+            if (!string.IsNullOrEmpty(retornoValidacao))
+            {
+                _logger.LogInformation($"Método Criar Produto - Houve um erro na validação de propriedades.");
+                return retornoValidacao;
+            }
 
+            _logger.LogInformation($"Método Criar Produto - Inicia contexto de transação de banco de dados.");
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 try
                 {
+                    _logger.LogInformation($"Método Criar Produto - Verifica catalago do produto.");
                     if (produtoCatalogo == null)
+                    {
                         return "Ops! Parece que não existe dados de produto para catálogo!";
+                    }
 
+                    _logger.LogInformation($"Método Criar Produto - Grava Produto.");
                     produtoCatalogo = _bll.CriarComTransacao(produtoCatalogo, usuario_cadastro, dbGravacao);
 
+                    _logger.LogInformation($"Método Criar Produto - Verifica se produto foi saldo com sucesso.");
                     if (produtoCatalogo.Id == 0)
+                    {
                         return "Ops! Erro ao criar novo produto!";
+                    }
 
-                    if (produtoCatalogo.campos == null || produtoCatalogo.campos.Count == 0)
+                    _logger.LogInformation($"Método Criar Produto - Verifica se existe propriedades do produto.");
+                    if (produtoCatalogo.campos == null
+                        || produtoCatalogo.campos.Count == 0)
+                    {
                         return "Ops! As propriedades do produto não pode estar vazio!";
+                    }
 
-                    produtoCatalogo.campos = _bll.CriarItensComTransacao(produtoCatalogo.campos, produtoCatalogo.Id,
+                    _logger.LogInformation($"Método Criar Produto - Grava as propriedade relacionando com produto atual.");
+                    produtoCatalogo.campos = _bll.CriarItensComTransacao(
+                        produtoCatalogo.campos,
+                        produtoCatalogo.Id,
                         dbGravacao);
 
+                    _logger.LogInformation($"Método Criar Produto - Verifica se tem imagens.");
                     if (produtoCatalogo.imagens != null && produtoCatalogo.imagens.Count > 0)
                     {
-                        var retorno = await CriarImagemComTransacao(arquivo, produtoCatalogo.imagens, caminho, produtoCatalogo.Id,
+                        _logger.LogInformation($"Método Criar Produto - Grava a imagem e faz upload no diretio - [{caminho}].");
+                        var retorno = await CriarImagemComTransacao(
+                            arquivo,
+                            produtoCatalogo.imagens,
+                            caminho,
+                            produtoCatalogo.Id,
                             dbGravacao);
+
+                        _logger.LogInformation($"Método Criar Produto - Verificação se cadastro e upload da imagem de certo.");
                         if (!string.IsNullOrEmpty(retorno))
                         {
+                            _logger.LogInformation($"Método Criar Produto - Houve um problema no cadastro da imagem.");
                             dbGravacao.transacao.Rollback();
                             return retorno;
                         }
                     }
 
+                    _logger.LogInformation($"Método Criar Produto - Commit do cadastro do produto.");
                     dbGravacao.transacao.Commit();
                     return null;
 
                 }
                 catch (Exception ex)
                 {
-                    return ex.Message;
+                    var innerException = ex.InnerException != null ? ex.InnerException.Message : string.Empty;
+                    var msgError = $"Método Criar Produto - Houve uma Exception no processo de Gravação e Upload do produto. Exception: {ex.Message} / InnerException: {innerException}";
+
+                    _logger.LogError(msgError);
+                    return msgError;
                 }
             }
         }
 
-        public async Task<string> CriarImagemComTransacao(IFormFile arquivo, List<TprodutoCatalogoImagem> produtoCatalogoImagens,
-            string caminho, int idProdutoCatalogo, InfraBanco.ContextoBdGravacao dbGravacao)
+        public async Task<string> CriarImagemComTransacao(
+            IFormFile arquivo, 
+            List<TprodutoCatalogoImagem> produtoCatalogoImagens,
+            string caminho, 
+            int idProdutoCatalogo, 
+            InfraBanco.ContextoBdGravacao dbGravacao)
         {
+            _logger.LogInformation($"Método Criar Produto - CriarImagemComTransacao.");
+
+            _logger.LogInformation($"Método Criar Produto - CriarImagemComTransacao - Verifica se tem imgem para salvar e fazer upload.");
             if (arquivo == null)
             {
                 var nomeArquivoCopia = produtoCatalogoImagens[0].Caminho;
                 var extensaoCopia = produtoCatalogoImagens[0].Caminho.Split(".")[1];
-
+                
                 var novoNomeArquivo = CriarNomeArquivo(extensaoCopia);
+                
                 if (string.IsNullOrEmpty(novoNomeArquivo))
+                {
                     return "Falha ao gerar nome do arquivo!";
+                }
 
                 produtoCatalogoImagens[0].Caminho = novoNomeArquivo;
-                produtoCatalogoImagens = _bll.CriarImagensComTransacao(produtoCatalogoImagens,
-                        idProdutoCatalogo, dbGravacao);
+
+                produtoCatalogoImagens = _bll.CriarImagensComTransacao(
+                    produtoCatalogoImagens,
+                    idProdutoCatalogo, dbGravacao);
 
                 if (produtoCatalogoImagens[0].Id == 0)
+                {
                     return "Ops! Erro ao salvar dados da imagem!";
+                }
 
                 var arquivoABuscar = Path.Combine(caminho, nomeArquivoCopia);
+
                 var retorno = await ClonarImagemDiretorio(arquivoABuscar, novoNomeArquivo, caminho);
+
                 if (!string.IsNullOrEmpty(retorno))
+                {
                     return retorno;
+                }
 
                 return null;
             }
             else
             {
                 var extensao = arquivo.FileName.Substring(arquivo.FileName.Length - 3, 3);
+
                 var nomeArquivo = CriarNomeArquivo(extensao);
+
+                _logger.LogInformation($"Método Criar Produto - CriarImagemComTransacao. Verifica novo nome do arquivo [{nomeArquivo}]");
                 if (string.IsNullOrEmpty(nomeArquivo))
+                {
+                    _logger.LogInformation($"Método Criar Produto - CriarImagemComTransacao. Houve uma falha para gerar novo do arquivo.");
                     return "Falha ao gerar nome do arquivo!";
+                }
 
                 produtoCatalogoImagens[0].Caminho = nomeArquivo;
-                produtoCatalogoImagens = _bll.CriarImagensComTransacao(produtoCatalogoImagens,
-                                    idProdutoCatalogo, dbGravacao);
+
+                _logger.LogInformation($"Método Criar Produto - CriarImagemComTransacao. Grava imagem {nomeArquivo} com código do produto {idProdutoCatalogo}.");
+                produtoCatalogoImagens = _bll.CriarImagensComTransacao(
+                    produtoCatalogoImagens,
+                    idProdutoCatalogo,
+                    dbGravacao);
+
+                _logger.LogInformation($"Método Criar Produto - CriarImagemComTransacao. Verifica se gravação da imagem com código da imagem.");
                 if (produtoCatalogoImagens[0].Id == 0)
+                {
+                    _logger.LogInformation($"Método Criar Produto - CriarImagemComTransacao. Houve um erro na gravação do arquivo no banco de dados.");
                     return "Ops! Erro ao salvar dados da imagem!";
+                }
 
+                _logger.LogInformation($"Método Criar Produto - CriarImagemComTransacao. Upload da imagem no diretório: {caminho} e nome do arquivo:{nomeArquivo}.");
                 var retorno = await InserirImagemDiretorio(arquivo, caminho, nomeArquivo);
-                if (!string.IsNullOrEmpty(retorno))
-                    return retorno;
 
+                _logger.LogInformation($"Método Criar Produto - CriarImagemComTransacao. Verifica se Upload foi com sucesso.");
+                if (!string.IsNullOrEmpty(retorno))
+                {
+                    _logger.LogInformation($"Método Criar Produto - CriarImagemComTransacao. Houve um erro no Upload do arquivo. Mensagem de erro: {retorno}");
+                    return retorno;
+                }
+
+                _logger.LogInformation($"Método Criar Produto - CriarImagemComTransacao. Processo de gravação e upload foi finalizado com sucesso.");
                 return null;
             }
         }

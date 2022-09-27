@@ -212,15 +212,25 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost("criar")]
         public async Task<IActionResult> Criar(IFormFile arquivo, IFormCollection form)
         {
-            var usuario = LoggedUser.Apelido;
-            var tProduto = JsonConvert.DeserializeObject<TprodutoCatalogo>(form["produto"]);
-            var retorno = await _bll.Criar(tProduto, usuario, arquivo, _appSettings.Value.ImgCaminho);
-            if (retorno != null)
+            try
             {
-                return BadRequest(new { message = retorno });
-            }
+                var usuario = LoggedUser.Apelido;
 
-            return Ok(new { message = "Produto criado com sucesso." });
+                var tProduto = JsonConvert.DeserializeObject<TprodutoCatalogo>(form["produto"]);
+
+                var retorno = await _bll.Criar(tProduto, usuario, arquivo, _appSettings.Value.ImgCaminho);
+
+                if (retorno != null)
+                {
+                    return BadRequest(new { message = retorno });
+                }
+
+                return Ok(new { message = "Produto criado com sucesso." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpGet("listar-produtos-propriedades/{propriedadeOculta}&{propriedadeOcultaItem}")]
