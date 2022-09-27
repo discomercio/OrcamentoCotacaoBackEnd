@@ -28,6 +28,9 @@ namespace Prepedido.Dto
         public float CustoFinancFornecCoeficiente { get; set; }//coeficiente do fabricante
         //incluimos esse campos apenas para validar o que esta sendo enviado pela API da Unis
         public decimal? Preco_NF { get; set; }
+        public bool StatusDescontoSuperior { get; set; }
+        public int? IdUsuarioDescontoSuperior { get; set; }
+        public DateTime? DataHoraDescontoSuperior { get; set; }
 
         private static PrepedidoProdutoDtoPrepedido PrepedidoProdutoDtoPrepedido_De_PrepedidoProdutoPrepedidoDados(PrepedidoProdutoPrepedidoDados origem)
         {
@@ -52,7 +55,10 @@ namespace Prepedido.Dto
                 TotalItem = origem.TotalItem,
                 Qtde_estoque_total_disponivel = origem.Qtde_estoque_total_disponivel,
                 CustoFinancFornecCoeficiente = origem.CustoFinancFornecCoeficiente,
-                Preco_NF = origem.Preco_NF
+                Preco_NF = origem.Preco_NF,
+                StatusDescontoSuperior = origem.StatusDescontoSuperior,
+                IdUsuarioDescontoSuperior = origem.IdUsuarioDescontoSuperior,
+                DataHoraDescontoSuperior = origem.DataHoraDescontoSuperior
             };
         }
         private static PrepedidoProdutoPrepedidoDados PrepedidoProdutoPrepedidoDados_De_PrepedidoProdutoDtoPrepedido(PrepedidoProdutoDtoPrepedido origem, short permiteRaStatus)
@@ -79,7 +85,10 @@ namespace Prepedido.Dto
                 TotalItem = origem.TotalItem ?? 0,
                 Qtde_estoque_total_disponivel = origem.Qtde_estoque_total_disponivel,
                 CustoFinancFornecCoeficiente = origem.CustoFinancFornecCoeficiente,
-                Preco_NF = origem.Preco_NF ?? 0
+                Preco_NF = origem.Preco_NF ?? 0,
+                StatusDescontoSuperior = origem.StatusDescontoSuperior,
+                IdUsuarioDescontoSuperior = origem.IdUsuarioDescontoSuperior,
+                DataHoraDescontoSuperior = origem.DataHoraDescontoSuperior
             };
 
             return ret;

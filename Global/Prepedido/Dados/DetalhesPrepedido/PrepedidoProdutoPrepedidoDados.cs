@@ -38,5 +38,8 @@ namespace Prepedido.Dados.DetalhesPrepedido
         public short Permite_Ra_Status { get; set; }
         public bool BlnTemRa { get; set; }
         public short? Qtde_estoque_total_disponivel { get; set; }
+        public bool StatusDescontoSuperior { get; set; }
+        public int? IdUsuarioDescontoSuperior { get; set; }
+        public DateTime? DataHoraDescontoSuperior { get; set; }
     }
 }
