@@ -61,61 +61,37 @@ namespace OrcamentoCotacaoMensagem
             return qtdMensagemPendente;
         }
 
-        public bool EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem, InfraBanco.ContextoBdGravacao contextoBdGravacao, TorcamentoCotacaoEmailQueue torcamentoCotacaoEmailQueue = null)
+        public TorcamentoCotacaoMensagem InserirComTransacao(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem, InfraBanco.ContextoBdGravacao contextoBdGravacao, TorcamentoCotacaoEmailQueue torcamentoCotacaoEmailQueue = null)
         {
-            var saida = false;
+
+            var orcamentoCotacaoMensagemModel = new TorcamentoCotacaoMensagem();
+
+            orcamentoCotacaoMensagemModel.IdOrcamentoCotacao = orcamentoCotacaoMensagem.IdOrcamentoCotacao;
+            orcamentoCotacaoMensagemModel.IdTipoUsuarioContextoRemetente = (Int16)orcamentoCotacaoMensagem.IdTipoUsuarioContextoRemetente;
+            orcamentoCotacaoMensagemModel.IdUsuarioRemetente = orcamentoCotacaoMensagem.IdUsuarioRemetente;
+
+            if (torcamentoCotacaoEmailQueue != null)
+                orcamentoCotacaoMensagemModel.IdOrcamentoCotacaoEmailQueue = unchecked((int)torcamentoCotacaoEmailQueue.Id);
+
+            orcamentoCotacaoMensagemModel.IdTipoUsuarioContextoDestinatario = (Int16)orcamentoCotacaoMensagem.IdTipoUsuarioContextoDestinatario;
+            orcamentoCotacaoMensagemModel.IdUsuarioDestinatario = orcamentoCotacaoMensagem.IdUsuarioDestinatario;
+            orcamentoCotacaoMensagemModel.PendenciaTratada = false;
+            orcamentoCotacaoMensagemModel.Lida = false;
+            orcamentoCotacaoMensagemModel.Mensagem = orcamentoCotacaoMensagem.Mensagem;
+            orcamentoCotacaoMensagemModel.DataCadastro = DateTime.Now;
+            orcamentoCotacaoMensagemModel.DataHoraCadastro = DateTime.Now;
 
             try
             {
-
-                if (torcamentoCotacaoEmailQueue != null)
-                {
-
-                    contextoBdGravacao.TorcamentoCotacaoMensagem.Add(
-                        new TorcamentoCotacaoMensagem
-                        {
-                            IdOrcamentoCotacao = orcamentoCotacaoMensagem.IdOrcamentoCotacao,
-                            IdTipoUsuarioContextoRemetente = (Int16)orcamentoCotacaoMensagem.IdTipoUsuarioContextoRemetente,
-                            IdUsuarioRemetente = orcamentoCotacaoMensagem.IdUsuarioRemetente,
-                            IdOrcamentoCotacaoEmailQueue = unchecked((int)torcamentoCotacaoEmailQueue.Id),
-                            IdTipoUsuarioContextoDestinatario = (Int16)orcamentoCotacaoMensagem.IdTipoUsuarioContextoDestinatario,
-                            IdUsuarioDestinatario = orcamentoCotacaoMensagem.IdUsuarioDestinatario,
-                            PendenciaTratada = false,
-                            Lida = false,
-                            Mensagem = orcamentoCotacaoMensagem.Mensagem,
-                            DataCadastro = DateTime.Now,
-                            DataHoraCadastro = DateTime.Now
-                        });
-                }
-                else
-                {
-                    contextoBdGravacao.TorcamentoCotacaoMensagem.Add(
-                        new TorcamentoCotacaoMensagem
-                        {
-                            IdOrcamentoCotacao = orcamentoCotacaoMensagem.IdOrcamentoCotacao,
-                            IdTipoUsuarioContextoRemetente = (Int16)orcamentoCotacaoMensagem.IdTipoUsuarioContextoRemetente,
-                            IdUsuarioRemetente = orcamentoCotacaoMensagem.IdUsuarioRemetente,
-                            IdTipoUsuarioContextoDestinatario = (Int16)orcamentoCotacaoMensagem.IdTipoUsuarioContextoDestinatario,
-                            IdUsuarioDestinatario = orcamentoCotacaoMensagem.IdUsuarioDestinatario,
-                            PendenciaTratada = false,
-                            Lida = false,
-                            Mensagem = orcamentoCotacaoMensagem.Mensagem,
-                            DataCadastro = DateTime.Now,
-                            DataHoraCadastro = DateTime.Now
-                        });
-                }
-
+                contextoBdGravacao.TorcamentoCotacaoMensagem.Add(orcamentoCotacaoMensagemModel);
                 contextoBdGravacao.SaveChanges();
-                contextoBdGravacao.transacao.Commit();
-                saida = true;            
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                contextoBdGravacao.transacao.Rollback();
-                throw new ArgumentException("Falha ao gravar orçamento!");
-            }
+                throw new Exception(ex.Message);
+            }                                 
 
-            return saida;
+            return orcamentoCotacaoMensagemModel;
         }
 
         public bool MarcarLida(int IdOrcamentoCotacao, int idUsuarioRemetente)
