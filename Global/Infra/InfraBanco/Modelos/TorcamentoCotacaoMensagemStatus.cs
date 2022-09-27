@@ -22,7 +22,7 @@ namespace InfraBanco.Modelos
         public short IdTipoUsuarioContexto { get; set; }
 
         [Column("IdUsuario")]
-        public int IdUsuario { get; set; }
+        public int? IdUsuario { get; set; }
 
         [Column("Lida")]
         [Required]
@@ -42,7 +42,6 @@ namespace InfraBanco.Modelos
 
         [Column("DataHoraPendenciaTratada")]
         public DateTime? DataHoraPendenciaTratada { get; set; }
-        public TorcamentoCotacao TorcamentoCotacao { get; set; }
 
     }
 }
