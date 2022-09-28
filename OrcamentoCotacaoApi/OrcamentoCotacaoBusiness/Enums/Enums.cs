@@ -18,6 +18,10 @@
             VisualizarOrcamentoConsultar = 103000,
             AcessoUniversalOrcamentoEditar = 103100,
             AprovarOrcamento = 100550,
+
+            VisualizarPrePedidoConsultar = 102000,
+            CancelarPrePedido = 102200,
+            ConsultarPedido = 102300
         }
 
         public enum StatusOrcamento

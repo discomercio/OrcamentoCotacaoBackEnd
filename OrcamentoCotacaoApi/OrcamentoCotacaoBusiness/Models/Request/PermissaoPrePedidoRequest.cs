@@ -7,6 +7,6 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         public List<string> PermissoesUsuario { get; set; }
         public int TipoUsuario { get; set; }
         public string Usuario { get; set; }
-        public int IdPrePedido { get; set; }
+        public string IdPrePedido { get; set; }
     }
 }

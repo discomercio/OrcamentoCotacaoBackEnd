@@ -2,7 +2,7 @@
 {
     public sealed class PermissaoOrcamentoResponse : ResponseBase
     {
-        public bool VizualizarOrcamento { get; set; }
+        public bool VisualizarOrcamento { get; set; }
         public bool ProrrogarOrcamento { get; set; }
         public bool EditarOrcamento { get; set; }
         public bool CancelarOrcamento { get; set; }

@@ -121,6 +121,7 @@ namespace InfraBanco
         public DbSet<TorcamentoCotacao> TorcamentoCotacao { get => contexto.TorcamentoCotacao; }
         public DbSet<TorcamentoCotacaoLink> TorcamentoCotacaoLink { get => contexto.TorcamentoCotacaoLink; }
         public DbSet<TorcamentoCotacaoMensagem> TorcamentoCotacaoMensagem { get => contexto.TorcamentoCotacaoMensagem; }
+        public DbSet<TorcamentoCotacaoMensagemStatus> TorcamentoCotacaoMensagemStatus { get => contexto.TorcamentoCotacaoMensagemStatus; }
         public DbSet<TorcamentoItem> TorcamentoItem { get => contexto.TorcamentoItem; }
         public DbSet<TsessaoHistorico> TsessaoHistorico { get => contexto.TsessaoHistorico; }
         public DbSet<Tcontrole> Tcontrole { get => contexto.Tcontrole; }
