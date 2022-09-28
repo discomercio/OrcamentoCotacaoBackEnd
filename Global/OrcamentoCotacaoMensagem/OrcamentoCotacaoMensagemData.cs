@@ -145,6 +145,7 @@ namespace OrcamentoCotacaoMensagem
                         item.Lida = true;
                         item.DataHoraLida = DateTime.Now;
                         item.DataLida = DateTime.Now;
+                        item.IdUsuario = idUsuarioRemetente;
 
                         db.TorcamentoCotacaoMensagemStatus.Update(item);
                     }
