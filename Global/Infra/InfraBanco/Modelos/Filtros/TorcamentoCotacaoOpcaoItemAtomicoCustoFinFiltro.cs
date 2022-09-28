@@ -11,5 +11,6 @@ namespace InfraBanco.Modelos.Filtros
         public int IdItemAtomico { get; set; }
         public int IdOpcaoPagto { get; set; }
         public bool IncluirTorcamentoCotacaoOpcaoItemAtomico { get; set; } = false;
+        public bool IncluirTorcamentoCotacaoOpcaoPagto { get; set; } = false;
     }
 }

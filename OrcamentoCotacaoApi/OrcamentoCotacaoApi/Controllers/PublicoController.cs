@@ -89,5 +89,11 @@ namespace OrcamentoCotacaoApi.Controllers
                 (int)Constantes.TipoUsuario.CLIENTE);
             return Ok(retorno);
         }
+
+        [HttpGet("parametros")]
+        public IActionResult BuscarParametros(int idCfgParametro, string lojaLogada)
+        {
+            return Ok(_orcamentoBll.BuscarParametros(idCfgParametro, lojaLogada));
+        }
     }
 }

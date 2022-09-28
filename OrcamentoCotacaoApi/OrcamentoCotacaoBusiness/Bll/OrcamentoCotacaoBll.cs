@@ -1382,7 +1382,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         {
             var itensAtomicosFinOpcao = await produtoOrcamentoCotacaoBll
                         .BuscarTorcamentoCotacaoOpcaoItemAtomicosCustoFin(new TorcamentoCotacaoOpcaoItemAtomicoCustoFinFiltro()
-                        { IdOpcaoPagto = idFormaPagto, IncluirTorcamentoCotacaoOpcaoItemAtomico = true });
+                        { IdOpcaoPagto = idFormaPagto, IncluirTorcamentoCotacaoOpcaoItemAtomico = true, IncluirTorcamentoCotacaoOpcaoPagto = true });
             if (itensAtomicosFinOpcao == null) return null;
 
             List<PrepedidoProdutoDtoPrepedido> prepedidoProdutos = new List<PrepedidoProdutoDtoPrepedido>();
@@ -1431,7 +1431,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                         produtoPrepedido.VlTotalItem = Math.Round(item.Qtde * itemAtomico.PrecoVenda, 2);
                         produtoPrepedido.TotalItem = Math.Round(item.Qtde * itemAtomico.PrecoVenda, 2);
                         produtoPrepedido.Qtde_estoque_total_disponivel = 0;
-                        produtoPrepedido.CustoFinancFornecCoeficiente = itemAtomico.CustoFinancFornecCoeficiente;
+                        produtoPrepedido.CustoFinancFornecCoeficiente = itemAtomico.TorcamentoCotacaoOpcaoPagto.Tipo_parcelamento == int.Parse(Constantes.COD_FORMA_PAGTO_A_VISTA) ?
+                            int.Parse(Constantes.COD_FORMA_PAGTO_A_VISTA) : itemAtomico.CustoFinancFornecCoeficiente;
                         produtoPrepedido.Preco_NF = Math.Round(itemAtomico.PrecoNF, 2);
                         produtoPrepedido.StatusDescontoSuperior = itemAtomico.StatusDescontoSuperior;
                         produtoPrepedido.IdUsuarioDescontoSuperior = itemAtomico.IdUsuarioDescontoSuperior;
