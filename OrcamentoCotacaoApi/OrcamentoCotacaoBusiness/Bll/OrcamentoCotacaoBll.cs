@@ -1200,7 +1200,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             aprovarOrcamento.ClienteCadastroDto.DadosCliente.IdIndicadorVendedor = orcamento.IdIndicadorVendedor;
             aprovarOrcamento.ClienteCadastroDto.DadosCliente.IdOrcamentoCotacao = aprovarOrcamento.IdOrcamento;
 
-            var clienteCadastroDados = Prepedido.Dto.ClienteCadastroDto
+            var clienteCadastroDados = ClienteCadastroDto
                 .ClienteCadastroDados_De_ClienteCadastroDto(aprovarOrcamento.ClienteCadastroDto);
 
             _logger.LogInformation("Validando cadastro de cliente!");
@@ -1228,7 +1228,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     //passar o id do cliente para o modelo
                     //verificar os erros 
                     retorno = await CadastrarPrepedido(aprovarOrcamento, orcamento, dbGravacao);
-                    //precisamos mudar isso, precisamos verificar se existe um número de orçamento válido
+                    //precisamos mudar isso, precisamos verificar se existe um número de orçamento válido ou adicionar alguma prop na classe
                     if (retorno.Count >= 1)
                     {
                         if (!retorno[0].Contains(Constantes.SUFIXO_ID_ORCAMENTO))
@@ -1236,7 +1236,6 @@ namespace OrcamentoCotacaoBusiness.Bll
                     }
 
                     var tcfgStatus = _orcamentoCotacaoBll.BuscarStatusParaOrcamentoCotacaoComtransacao("APROVADO", dbGravacao);
-                    //mudar os parametros para receber tipo do usuário
                     orcamento.DataHoraUltAtualizacao = DateTime.Now;
                     orcamento.Status = tcfgStatus.Id;
                     orcamento.DataHoraUltStatus = DateTime.Now;

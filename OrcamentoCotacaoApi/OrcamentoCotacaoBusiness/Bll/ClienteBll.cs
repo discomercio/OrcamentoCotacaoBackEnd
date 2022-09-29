@@ -43,7 +43,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             _logger.LogInformation($"Cadastrando cliente");
 
             //precisa receber esses dados
-            string indicador = dadosClienteCadastroDados.Indicador_Orcamentista;
+            string indicador = !string.IsNullOrEmpty(dadosClienteCadastroDados.Indicador_Orcamentista) ? dadosClienteCadastroDados.Indicador_Orcamentista: dadosClienteCadastroDados.Vendedor;
             string usuarioCadastro = dadosClienteCadastroDados.UsuarioCadastro;
 
             

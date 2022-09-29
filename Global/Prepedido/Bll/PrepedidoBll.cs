@@ -723,7 +723,7 @@ namespace Prepedido.Bll
             //antes de validar vamos passar o EnderecoCadastral para dadoscliente
             prePedido.DadosCliente =
                 DadosClienteCadastroDados.DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(
-                    prePedido.EnderecoCadastroClientePrepedido, apelido.ToUpper(), loja,
+                    prePedido.EnderecoCadastroClientePrepedido, apelido?.ToUpper(), prePedido.DadosCliente.Loja,
                     prePedido.DadosCliente.Sexo, prePedido.DadosCliente.Nascimento, prePedido.DadosCliente.Id,
                     prePedido.DadosCliente.UsuarioCadastro);
 
@@ -761,7 +761,7 @@ namespace Prepedido.Bll
             string c_custoFinancFornecTipoParcelamento = ObterSiglaFormaPagto(prePedido.FormaPagtoCriacao);
 
             //precisa incluir uma validação de forma de pagamento com base no orçamentista enviado
-            FormaPagtoDados formasPagto = await formaPagtoBll.ObterFormaPagto(apelido, prePedido.DadosCliente.Tipo, sistemaResponsavelCadastro);
+            FormaPagtoDados formasPagto = await formaPagtoBll.ObterFormaPagto(apelido??prePedido.DadosCliente.Vendedor, prePedido.DadosCliente.Tipo, sistemaResponsavelCadastro);
             validacoesFormaPagtoBll.ValidarFormaPagto(prePedido.FormaPagtoCriacao, lstErros, limiteArredondamento,
                 0.1M, c_custoFinancFornecTipoParcelamento, formasPagto, prePedido.PermiteRAStatus,
                 prePedido.Vl_total_NF, prePedido.Vl_total);
@@ -780,12 +780,14 @@ namespace Prepedido.Bll
             if (prePedido.ListaProdutos.Count <= 0)
                 lstErros.Add("Não há itens na lista de produtos!");
 
-            await validacoesPrepedidoBll.MontarProdutosParaComparacao(prePedido,
+            if(sistemaResponsavelCadastro != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO)
+            {
+                await validacoesPrepedidoBll.MontarProdutosParaComparacao(prePedido,
                 c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas,
                 prePedido.DadosCliente.Loja, lstErros, percVlPedidoRA, limiteArredondamento,
                 ValidacoesPrepedidoBll.AmbienteValidacao.PrepedidoValidacao);
-
-
+            }
+            
             Util.ValidarTipoCustoFinanceiroFornecedor(lstErros, c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas);
             if (lstErros.Count > 0)
                 return lstErros;
@@ -861,7 +863,7 @@ namespace Prepedido.Bll
                     sistemaResponsavelCadastro, perc_limite_RA_sem_desagio);
                 //Cadastrar orcamento itens
                 List<TorcamentoItem> lstOrcamentoItem = (await MontaListaOrcamentoItem(prePedido,
-                    lstPercentualCustoFinanFornec, dbGravacao)).ToList();
+                    lstPercentualCustoFinanFornec, dbGravacao, sistemaResponsavelCadastro)).ToList();
 
                 //vamos passar o coeficiente que foi criado na linha 596 e passar como param para cadastrar nos itens
                 //await ComplementarInfosOrcamentoItem(dbgravacao, lstOrcamentoItem,
@@ -937,7 +939,7 @@ namespace Prepedido.Bll
             Torcamento torcamento = new Torcamento();
             //Varificar se tem tem os dados no prepedido => loja, apelido, vendedor e permiteRaStatus(se não tiver parceiro = false)
             torcamento.Orcamento = prepedido.NumeroPrePedido;
-            torcamento.Loja = loja;
+            torcamento.Loja = prepedido.DadosCliente.Loja;
             torcamento.Data = DateTime.Now.Date;
             torcamento.Hora = Util.HoraParaBanco(DateTime.Now);
             torcamento.Id_Cliente = prepedido.DadosCliente.Id;
@@ -1898,13 +1900,14 @@ namespace Prepedido.Bll
         }
 
         private async Task<IEnumerable<TorcamentoItem>> MontaListaOrcamentoItem(PrePedidoDados prepedido,
-            List<TpercentualCustoFinanceiroFornecedor> lstPercentualCustoFinanFornec, ContextoBdGravacao dbgravacao)
+            List<TpercentualCustoFinanceiroFornecedor> lstPercentualCustoFinanFornec, ContextoBdGravacao dbgravacao,
+            Constantes.CodSistemaResponsavel sistemaResponsavelCadastro)
         {
             List<TorcamentoItem> lstOrcamentoItem = new List<TorcamentoItem>();
 
             if (prepedido.FormaPagtoCriacao.Rb_forma_pagto != Constantes.COD_FORMA_PAGTO_A_VISTA)
             {
-                lstOrcamentoItem = MontaListaOrcamentoItemComCoeficiente(prepedido, lstPercentualCustoFinanFornec);
+                lstOrcamentoItem = MontaListaOrcamentoItemComCoeficiente(prepedido, lstPercentualCustoFinanFornec, sistemaResponsavelCadastro);
             }
             else
             {
@@ -1946,9 +1949,31 @@ namespace Prepedido.Bll
         }
 
         private List<TorcamentoItem> MontaListaOrcamentoItemComCoeficiente(PrePedidoDados prepedido,
-            List<TpercentualCustoFinanceiroFornecedor> lstPercentualCustoFinanFornec)
+            List<TpercentualCustoFinanceiroFornecedor> lstPercentualCustoFinanFornec, Constantes.CodSistemaResponsavel sistemaResponsavelCadastro)
         {
             List<TorcamentoItem> lstOrcamentoItem = new List<TorcamentoItem>();
+
+            foreach (PrepedidoProdutoPrepedidoDados p in prepedido.ListaProdutos)
+            {
+                var coeficiente = lstPercentualCustoFinanFornec.Where(x => x.Fabricante == p.Fabricante);
+                TorcamentoItem item = new TorcamentoItem
+                {
+                    Orcamento = prepedido.NumeroPrePedido,
+                    Produto = p.Produto,
+                    Fabricante = UtilsGlobais.Util.Normaliza_Codigo(p.Fabricante, Constantes.TAM_MIN_FABRICANTE),
+                    Qtde = p.Qtde,
+                    Preco_Venda = Math.Round(p.Preco_Venda, 2),
+                    Preco_NF = prepedido.PermiteRAStatus == 1 ? Math.Round((decimal)p.Preco_NF, 2) : Math.Round(p.Preco_Venda, 2),
+                    Obs = p.Obs == null ? "" : p.Obs,
+                    Desc_Dado = p.Desc_Dado,
+                    Preco_Lista = Math.Round(p.Preco_Lista, 2),
+                    //CustoFinancFornecCoeficiente = percCustoFinanFornec.Coeficiente,
+                    StatusDescontoSuperior = p.StatusDescontoSuperior,
+                    IdUsuarioDescontoSuperior = p.IdUsuarioDescontoSuperior,
+                    DataHoraDescontoSuperior = p.DataHoraDescontoSuperior
+                };
+                lstOrcamentoItem.Add(item);
+            }
 
             foreach (var percCustoFinanFornec in lstPercentualCustoFinanFornec)
             {
