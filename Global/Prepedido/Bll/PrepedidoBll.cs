@@ -699,27 +699,7 @@ namespace Prepedido.Bll
                 dbGravacao));
 
             if (cliente != null)
-            {                                   
-                // Foi solicitado pelo Hamilton que removesse a confrontação de nome do cliente para ApiUnis.
-                // Impossibilitava que para cliente tipo PF não poderia ter o nome diferente do cadastro.
-                // Para flexibilizar estamos alterando a validação e iremos salvar para o prepedido
-                // o nome que vier na solicitação de cadastro de prepedido.Caso ocorra alteração no cadastro do cliente
-                // isso impediria de realizar o cadastro de prepedido e acarretaria que, alguém deveria ajustar o cadastro do
-                // cliente pelo ERP para que a ApiUnis pudesse cadastrar um prepedido com o cadastro do cliente alterado
-
-                //Somente a ApiUnis poderá inserir um Prepedido com cliente PF com nome diferente do que está cadastrado na base
-                if (sistemaResponsavelCadastro != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS)
-                {
-                    if (cliente.Tipo == Constantes.ID_PF)
-                    {
-                        if (prePedido.EnderecoCadastroClientePrepedido.Endereco_nome.ToUpper() !=
-                            cliente.Nome.ToUpper())
-                        {
-                            lstErros.Add("Nome do cliente diferente do nome cadastrado!");
-                        }
-                    }
-                }   
-
+            {    
                 prePedido.DadosCliente.Id = cliente.Id;
                 prePedido.DadosCliente.Sexo = cliente.Sexo;
                 prePedido.DadosCliente.Nascimento = cliente.Dt_Nasc;
@@ -744,7 +724,8 @@ namespace Prepedido.Bll
             prePedido.DadosCliente =
                 DadosClienteCadastroDados.DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(
                     prePedido.EnderecoCadastroClientePrepedido, apelido.ToUpper(), loja,
-                    prePedido.DadosCliente.Sexo, prePedido.DadosCliente.Nascimento, prePedido.DadosCliente.Id);
+                    prePedido.DadosCliente.Sexo, prePedido.DadosCliente.Nascimento, prePedido.DadosCliente.Id,
+                    prePedido.DadosCliente.UsuarioCadastro);
 
             //vamos validar os dados do cliente
             await Cliente.ValidacoesClienteBll.ValidarDadosCliente(prePedido.DadosCliente, false,
@@ -973,7 +954,7 @@ namespace Prepedido.Bll
             torcamento.Vl_Total = Calcular_Vl_Total(prepedido);
             torcamento.Vl_Total_NF = CalcularVl_Total_NF(prepedido);
             torcamento.Vl_Total_RA = prepedido.PermiteRAStatus == 1 ? CalcularVl_Total_NF(prepedido) - Calcular_Vl_Total(prepedido) : 0M;
-            torcamento.Perc_RT = 0;
+            torcamento.Perc_RT = prepedido.PercRT;
             torcamento.Perc_Desagio_RA_Liquida = perc_limite_RA_sem_desagio;
             torcamento.Permite_RA_Status = prepedido.PermiteRAStatus;
             torcamento.St_End_Entrega = prepedido.EnderecoEntrega.OutroEndereco == true ? (short)1 : (short)0;
@@ -983,6 +964,7 @@ namespace Prepedido.Bll
             torcamento.Perc_max_comissao_padrao = prepedido.DadosCliente.Perc_max_comissao_padrao;
             torcamento.Perc_max_comissao_e_desconto_padrao = prepedido.DadosCliente.Perc_max_comissao_e_desconto_padrao;
             torcamento.IdOrcamentoCotacao = prepedido.DadosCliente.IdOrcamentoCotacao;
+            torcamento.IdIndicadorVendedor = prepedido.DadosCliente.IdIndicadorVendedor;
 
             //inclui os campos de endereço cadastral no Torccamento
             IncluirDadosClienteParaTorcamento(prepedido, torcamento);

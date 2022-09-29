@@ -99,6 +99,10 @@ namespace OrcamentoCotacaoOpcaoItemAtomicoCustoFin
                     {
                         saida = saida.Include(x => x.TorcamentoCotacaoOpcaoItemAtomico);
                     }
+                    if (obj.IncluirTorcamentoCotacaoOpcaoPagto)
+                    {
+                        saida = saida.Include(x => x.TorcamentoCotacaoOpcaoPagto);
+                    }
 
                     return saida.ToList();
                 }
