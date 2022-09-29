@@ -88,7 +88,18 @@ namespace OrcamentoCotacaoBusiness.Bll
             // Envolvido com orçamento
             var usuarioEnvolvidoOrcamento = UsuarioEnvolvidoOrcamento(idTipoUsuario, usuario, idOrcamento);
 
-            if (usuarioEnvolvidoOrcamento)
+            // Permissões
+            var permissaoVisualizarOrcamentoConsultar = ValidaPermissao(request.PermissoesUsuario, ePermissao.VisualizarOrcamentoConsultar);
+            var permissaoAcessoUniversalOrcamentoEditar = ValidaPermissao(request.PermissoesUsuario, ePermissao.AcessoUniversalOrcamentoEditar);
+            var permissaoDescontoSuperior1 = ValidaPermissao(request.PermissoesUsuario, ePermissao.DescontoSuperior1);
+            var permissaoDescontoSuperior2 = ValidaPermissao(request.PermissoesUsuario, ePermissao.DescontoSuperior2);
+            var permissaoDescontoSuperior3 = ValidaPermissao(request.PermissoesUsuario, ePermissao.DescontoSuperior3);
+            var permissaoDesconto = (permissaoDescontoSuperior1 || permissaoDescontoSuperior2 || permissaoDescontoSuperior3);
+
+            if (usuarioEnvolvidoOrcamento 
+                || permissaoVisualizarOrcamentoConsultar 
+                || permissaoAcessoUniversalOrcamentoEditar
+                || permissaoDesconto)
             {
                 // Status Orçamento
                 var statusOrcamentoEnviado = ObterStatusOrcamento(orcamento);
@@ -97,13 +108,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                 var orcamentoExpirado = VerificarValidadeOrcamento(orcamento);
 
                 // Permissões
-                var permissaoVisualizarOrcamentoConsultar = ValidaPermissao(request.PermissoesUsuario, ePermissao.VisualizarOrcamentoConsultar);
-                var permissaoAcessoUniversalOrcamentoEditar = ValidaPermissao(request.PermissoesUsuario, ePermissao.AcessoUniversalOrcamentoEditar);
                 var permissaoProrrogarVencimentoOrcamento = ValidaPermissao(request.PermissoesUsuario, ePermissao.ProrrogarVencimentoOrcamento);
                 var permissaoAprovarOrcamento = ValidaPermissao(request.PermissoesUsuario, ePermissao.AprovarOrcamento);
-                var permissaoDescontoSuperior1 = ValidaPermissao(request.PermissoesUsuario, ePermissao.DescontoSuperior1);
-                var permissaoDescontoSuperior2 = ValidaPermissao(request.PermissoesUsuario, ePermissao.DescontoSuperior2);
-                var permissaoDescontoSuperior3 = ValidaPermissao(request.PermissoesUsuario, ePermissao.DescontoSuperior3);
 
                 if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
                 {
@@ -126,19 +132,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     response.CancelarOrcamento = true;
                     response.ProrrogarOrcamento = permissaoProrrogarVencimentoOrcamento;
                     response.ReenviarOrcamento = true;
-
-                    if (permissaoAcessoUniversalOrcamentoEditar || idTipoUsuario != (int)Constantes.TipoUsuario.VENDEDOR)
-                    {
-                        response.EditarOpcaoOrcamento = true;
-                    }
-                    else
-                    {
-                        response.EditarOpcaoOrcamento =
-                            (permissaoDescontoSuperior1
-                            || permissaoDescontoSuperior2
-                            || permissaoDescontoSuperior3);
-                    }
-
+                    response.EditarOpcaoOrcamento = true;
                     response.DesabilitarAprovarOpcaoOrcamento = !permissaoAprovarOrcamento;
                     response.MensagemOrcamento = true;
 
