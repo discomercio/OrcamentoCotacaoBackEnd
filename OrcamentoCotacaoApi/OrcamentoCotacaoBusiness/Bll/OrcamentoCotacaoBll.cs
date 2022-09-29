@@ -1341,8 +1341,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             PrePedidoDados prePedidoDados = PrePedidoDto.PrePedidoDados_De_PrePedidoDto(prepedido);
-            return (await _prepedidoBll.CadastrarPrepedido(prePedidoDados, parceiro,
-                0.01M, false, Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS, 12, dbGravacao)).ToList();
+            return (await _prepedidoBll.CadastrarPrepedido(prePedidoDados, parceiro, 0.01M, false, 
+                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, 12, dbGravacao)).ToList();
         }
 
         public async Task<FormaPagtoCriacaoDto> IncluirFormaPagtoCriacaoParaPrepedido(FormaPagtoCriacaoResponseViewModel formaPagtoSelecionada)
@@ -1354,7 +1354,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 C_pu_valor = formaPagtoSelecionada.Pu_valor,
                 C_pu_vencto_apos = formaPagtoSelecionada.Pu_vencto_apos,
                 C_pc_qtde = formaPagtoSelecionada.Pc_qtde_parcelas,
-                C_pc_valor = formaPagtoSelecionada.Pc_valor_parcela,
+                C_pc_valor = Math.Round(formaPagtoSelecionada.Pc_valor_parcela, 2),
                 C_pc_maquineta_qtde = formaPagtoSelecionada.Pc_maquineta_qtde_parcelas,
                 C_pc_maquineta_valor = formaPagtoSelecionada.Pc_maquineta_valor_parcela,
                 Op_pce_entrada_forma_pagto = formaPagtoSelecionada.Pce_forma_pagto_entrada.ToString(),

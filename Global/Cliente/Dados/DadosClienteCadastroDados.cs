@@ -48,7 +48,7 @@ namespace Cliente.Dados
 
         public static DadosClienteCadastroDados DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(
             EnderecoCadastralClientePrepedidoDados endCadastral, string indicadorOrcamentista, string loja,
-            string sexo, DateTime? nascimento, string idCliente)
+            string sexo, DateTime? nascimento, string idCliente, string usuarioCadastro)
         {
             if (endCadastral == null) return null;
             /* Ao criar um novo pré-pedido será permitido que seja alterado os dados do cliente 
@@ -85,7 +85,7 @@ namespace Cliente.Dados
                 Contribuinte_Icms_Status = endCadastral.Endereco_contribuinte_icms_status,
                 Email = endCadastral.Endereco_email,
                 EmailXml = endCadastral.Endereco_email_xml,
-                Vendedor = string.IsNullOrEmpty(endCadastral.Vendedor)? "": endCadastral.Vendedor,// esse campo não é utilizado em TCliente
+                Vendedor = string.IsNullOrEmpty(endCadastral.Vendedor) ? "" : endCadastral.Vendedor,// esse campo não é utilizado em TCliente
                 Cep = UtilsGlobais.Util.Cep_SoDigito(endCadastral.Endereco_cep),
                 Endereco = endCadastral.Endereco_logradouro,
                 Numero = endCadastral.Endereco_numero,
@@ -94,7 +94,7 @@ namespace Cliente.Dados
                 Uf = endCadastral.Endereco_uf,
                 Complemento = endCadastral.Endereco_complemento,
                 Contato = endCadastral.Endereco_contato,
-                UsuarioCadastro = "",
+                UsuarioCadastro = !string.IsNullOrEmpty(usuarioCadastro) ? usuarioCadastro : "",
                 IdOrcamentoCotacao = endCadastral.IdOrcamentoCotacao,
                 IdIndicadorVendedor = endCadastral.IdIndicadorVendedor,
                 Perc_max_comissao_padrao = endCadastral.Perc_max_comissao_padrao,
