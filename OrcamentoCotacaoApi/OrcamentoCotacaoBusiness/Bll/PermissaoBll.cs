@@ -1,5 +1,6 @@
 ﻿using InfraBanco;
 using InfraBanco.Constantes;
+using InfraBanco.Modelos;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
@@ -52,15 +53,48 @@ namespace OrcamentoCotacaoBusiness.Bll
             var idOrcamento = request.IdOrcamento;
 
             // Orçamento
+            var orcamento = ObterOrcamentoPorIdOrcamento(idOrcamento);
+
+            if (orcamento == null)
+            {
+                response.VisualizarOrcamento = false;
+                response.Sucesso = false;
+                response.Mensagem = "Orçamento não encontrado.";
+                return response;
+            }
+
+            // Loja 
+            var loja = ObterLojaPorOrcamento(idOrcamento);
+
+            if (string.IsNullOrEmpty(loja))
+            {
+                response.VisualizarOrcamento = false;
+                response.Sucesso = false;
+                response.Mensagem = "Orçamento não esta relacionado com uma loja.";
+                return response;
+            }
+
+            // Prazo orçamento encerrado
+            var prazoOrcamentoEncerrado = VerificarOrcamentoEncerrado(orcamento);
+
+            if (prazoOrcamentoEncerrado)
+            {
+                response.VisualizarOrcamento = false;
+                response.Sucesso = false;
+                response.Mensagem = "Não encontramos a permissão necessária para acessar essa funcionalidade!";
+                return response;
+            }
+
+            // Envolvido com orçamento
             var usuarioEnvolvidoOrcamento = UsuarioEnvolvidoOrcamento(idTipoUsuario, usuario, idOrcamento);
 
             if (usuarioEnvolvidoOrcamento)
             {
                 // Status Orçamento
-                var statusOrcamentoEnviado = ObterStatusOrcamento(idOrcamento);
+                var statusOrcamentoEnviado = ObterStatusOrcamento(orcamento);
 
                 // Orçamento Expirado
-                var orcamentoExpirado = VerificarValidadeOrcamento(idOrcamento);
+                var orcamentoExpirado = VerificarValidadeOrcamento(orcamento);
 
                 // Permissões
                 var permissaoVisualizarOrcamentoConsultar = ValidaPermissao(request.PermissoesUsuario, ePermissao.VisualizarOrcamentoConsultar);
@@ -73,16 +107,6 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
                 {
-                    var loja = ObterLojaPorOrcamento(request.IdOrcamento);
-
-                    if (string.IsNullOrEmpty(loja))
-                    {
-                        response.VisualizarOrcamento = false;
-                        response.Sucesso = false;
-                        response.Mensagem = "Orçamento não esta relacionado com uma loja.";
-                        return response;
-                    }
-
                     var usuarioAcessaLoja = UsuarioAcessaLoja(usuario, loja);
                     if (!usuarioAcessaLoja && !permissaoVisualizarOrcamentoConsultar)
                     {
@@ -296,6 +320,21 @@ namespace OrcamentoCotacaoBusiness.Bll
             return response;
         }
 
+        private TorcamentoCotacao ObterOrcamentoPorIdOrcamento(int idOrcamento)
+        {
+            TorcamentoCotacao orcamentoCotacao = null;
+
+            using (var db = _contextoProvider.GetContextoLeitura())
+            {
+                orcamentoCotacao = (from o in db.TorcamentoCotacao
+                                    where
+                                        o.Id == idOrcamento
+                                    select o).FirstOrDefault();
+            }
+
+            return orcamentoCotacao;
+        }
+
         private bool ValidaPermissao(List<string> permissoesUsuario, ePermissao permissao)
         {
             var idPermissao = (int)permissao;
@@ -479,6 +518,30 @@ namespace OrcamentoCotacaoBusiness.Bll
             return loja;
         }
 
+        private bool VerificarOrcamentoEncerrado(TorcamentoCotacao orcamento)
+        {
+            var MaxPrazoConsultaOrcamentoEncerrado = 18;
+            var valor = string.Empty;
+            TimeSpan result;
+
+            using (var db = _contextoProvider.GetContextoLeitura())
+            {
+                valor = (from o in db.Tloja
+                         join u in db.TcfgUnidadeNegocio
+                              on o.Unidade_Negocio equals u.Sigla
+                         join p in db.TcfgUnidadeNegocioParametro
+                              on u.Id equals p.IdCfgUnidadeNegocio
+                         where
+                              o.Loja == orcamento.Loja
+                              && p.IdCfgParametro == MaxPrazoConsultaOrcamentoEncerrado
+                         select p.Valor).FirstOrDefault();
+
+                result = DateTime.Now.Date.Subtract(orcamento.DataCadastro.Date);
+            }
+
+            return result.Days > Convert.ToInt32(valor);
+        }
+
         private bool UsuarioAcessaLoja(string usuario, string loja)
         {
             bool usuarioAcessaLoja = false;
@@ -496,33 +559,14 @@ namespace OrcamentoCotacaoBusiness.Bll
             return usuarioAcessaLoja;
         }
 
-        private StatusOrcamento ObterStatusOrcamento(int idOrcamento)
+        private StatusOrcamento ObterStatusOrcamento(TorcamentoCotacao orcamento)
         {
-            int statusOrcamentoEnviado;
-
-            using (var db = _contextoProvider.GetContextoLeitura())
-            {
-                statusOrcamentoEnviado = (from o in db.TorcamentoCotacao
-                                          where
-                                               o.Id == idOrcamento
-                                          select o.Status).FirstOrDefault();
-            }
-
-            return (StatusOrcamento)statusOrcamentoEnviado;
+            return (StatusOrcamento)orcamento.Status;
         }
-
-        private bool VerificarValidadeOrcamento(int idOrcamento)
+        
+        private bool VerificarValidadeOrcamento(TorcamentoCotacao orcamento)
         {
-            DateTime dataValidadeOrcamento;
-
-            using (var db = _contextoProvider.GetContextoLeitura())
-            {
-                dataValidadeOrcamento = (from o in db.TorcamentoCotacao
-                                        where o.Id == idOrcamento
-                                        select o.Validade).FirstOrDefault();
-            }
-
-            return dataValidadeOrcamento.Date < DateTime.Now.Date;
+            return orcamento.Validade < DateTime.Now.Date;
         }
     }
 }
