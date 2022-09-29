@@ -1247,6 +1247,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     orcamento.IdUsuarioUltAtualizacao = idUsuarioUltAtualizacao;
                     orcamento.DataHoraUltAtualizacao = DateTime.Now;
                     orcamento.DataHoraUltStatus = DateTime.Now;
+                    orcamento.VersaoPoliticaCredito = BuscarParametros(25, orcamento.Loja).FirstOrDefault().Valor;
+                    orcamento.VersaoPoliticaPrivacidade = BuscarParametros(26, orcamento.Loja).FirstOrDefault().Valor;
                     _orcamentoCotacaoBll.AtualizarComTransacao(orcamento, dbGravacao);
 
                     var opcaoSelecionada = _orcamentoCotacaoOpcaoBll
