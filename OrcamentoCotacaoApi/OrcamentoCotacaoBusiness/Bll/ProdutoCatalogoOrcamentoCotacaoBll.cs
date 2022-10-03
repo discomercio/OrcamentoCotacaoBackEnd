@@ -254,7 +254,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     produtoCatalogoImagens,
                     idProdutoCatalogo, dbGravacao);
 
-                if (produtoCatalogoImagens[0].Id == 0)
+                if (produtoCatalogoImagens == null || produtoCatalogoImagens[0].Id == 0)
                 {
                     return "Ops! Erro ao salvar dados da imagem!";
                 }
@@ -292,7 +292,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     dbGravacao);
 
                 _logger.LogInformation($"Método Criar Produto - CriarImagemComTransacao. Verifica se gravação da imagem com código da imagem.");
-                if (produtoCatalogoImagens[0].Id == 0)
+                if (produtoCatalogoImagens == null || produtoCatalogoImagens[0].Id == 0)
                 {
                     _logger.LogInformation($"Método Criar Produto - CriarImagemComTransacao. Houve um erro na gravação do arquivo no banco de dados.");
                     return "Ops! Erro ao salvar dados da imagem!";
