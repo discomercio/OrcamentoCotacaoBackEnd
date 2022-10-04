@@ -53,31 +53,7 @@ namespace OrcamentoCotacaoMensagem
                 orcamentoCotacaoMensagemStatus.Lida = false;
                 orcamentoCotacaoMensagemStatus.PendenciaTratada = false;
 
-                var torcamentoCotacaoMensagemStatus = _orcamentoCotacaoMensagemStatusBll.InserirComTransacao(orcamentoCotacaoMensagemStatus, contextoBdGravacao);
-
-                TorcamentoCotacaoMensagem participantes = null;
-
-                if (orcamentoCotacaoMensagem.IdUsuarioRemetente == 0)
-                {
-                    participantes = (from ocm in contextoBdGravacao.TorcamentoCotacaoMensagem
-                                                   where ocm.IdOrcamentoCotacao == orcamentoCotacaoMensagem.IdOrcamentoCotacao &&
-                                                   ocm.IdUsuarioRemetente != 0 && 
-                                                   ocm.IdUsuarioRemetente != orcamentoCotacaoMensagem.IdUsuarioDestinatario
-                                        select ocm).FirstOrDefault();                
-;
-
-                    if (participantes != null)
-                    {
-
-                        orcamentoCotacaoMensagemStatus.IdOrcamentoCotacaoMensagem = torcamentoCotacaoMensagem.Id;
-                        orcamentoCotacaoMensagemStatus.IdTipoUsuarioContexto = participantes.IdTipoUsuarioContextoRemetente;
-                        orcamentoCotacaoMensagemStatus.IdUsuario = participantes.IdUsuarioRemetente;
-                        orcamentoCotacaoMensagemStatus.Lida = false;
-                        orcamentoCotacaoMensagemStatus.PendenciaTratada = false;
-                        torcamentoCotacaoMensagemStatus = _orcamentoCotacaoMensagemStatusBll.InserirComTransacao(orcamentoCotacaoMensagemStatus, contextoBdGravacao);
-                    }
-                    
-                }
+                var torcamentoCotacaoMensagemStatus = _orcamentoCotacaoMensagemStatusBll.InserirComTransacao(orcamentoCotacaoMensagemStatus, contextoBdGravacao);      
 
                 if (torcamentoCotacaoMensagemStatus != null)
                 {
