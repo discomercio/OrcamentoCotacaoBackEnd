@@ -104,7 +104,7 @@ namespace MeioPagamentos
                                   select c;
                     }
 
-                    return saida.ToList();
+                        return saida.ToList();
                 }
             }
             catch (Exception ex)

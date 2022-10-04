@@ -51,6 +51,7 @@ namespace OrcamentoCotacao
                                          validade = o.Validade,
                                          vendedor = lj.Usuario,
                                          idUsuarioCadastro = o.IdUsuarioCadastro,
+                                         idTipoUsuarioContextoCadastro = o.IdTipoUsuarioContextoCadastro,
                                          idVendedor = o.IdVendedor,
                                          idIndicador = o.IdIndicador,
                                          idIndicadorVendedor = o.IdIndicadorVendedor,
@@ -73,21 +74,7 @@ namespace OrcamentoCotacao
                                      })
                             .FirstOrDefault();
 
-                    if (orcamento != null)
-                    {
-                        var u3 = db.TorcamentistaEindicadorVendedor.FirstOrDefault(x => x.Id == orcamento.idUsuarioCadastro)?.Nome;
-                        var u2 = db.TorcamentistaEindicador.FirstOrDefault(x => x.IdIndicador == orcamento.idUsuarioCadastro)?.Apelido;
-                        var u1 = db.Tusuario.FirstOrDefault(x => x.Id == orcamento.idUsuarioCadastro)?.Usuario;
-
-                        orcamento.usuarioCadastro = u3 == null ? u2 == null ? u1 == null ? null : u1 : u2 : u3;
-
-                        orcamento.vendedorParceiro = db.TorcamentistaEindicadorVendedor.FirstOrDefault(x => x.Id == orcamento.idIndicadorVendedor)?.Nome;
-                        orcamento.parceiro = db.TorcamentistaEindicador.FirstOrDefault(x => x.IdIndicador == orcamento.idIndicador)?.Apelido;
-                        orcamento.vendedor = db.Tusuario.FirstOrDefault(x => x.Id == orcamento.idVendedor)?.Usuario;
-                        return orcamento;
-                    }
-
-                    return null;
+                    return orcamento;
                 }
             }
             catch (Exception ex)
@@ -323,8 +310,8 @@ namespace OrcamentoCotacao
         public TcfgOrcamentoCotacaoStatus BuscarStatusParaOrcamentoCotacaoComtransacao(string status, ContextoBdGravacao dbGravacao)
         {
             var tcfgStatus = (from c in dbGravacao.TcfgOrcamentoCotacaoStatus
-                             where c.Descricao.ToUpper() == status.ToUpper()
-                             select c).FirstOrDefault();
+                              where c.Descricao.ToUpper() == status.ToUpper()
+                              select c).FirstOrDefault();
 
             return tcfgStatus;
         }
