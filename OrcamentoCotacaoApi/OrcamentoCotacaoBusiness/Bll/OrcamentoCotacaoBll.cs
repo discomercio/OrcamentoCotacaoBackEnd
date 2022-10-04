@@ -421,27 +421,6 @@ namespace OrcamentoCotacaoBusiness.Bll
             };
         }
 
-        public async Task<List<TorcamentoCotacaoMensagemFiltro>> ObterListaMensagem(int IdOrcamentoCotacao)
-        {
-            return await _mensagemBll.ObterListaMensagem(IdOrcamentoCotacao);
-        }
-
-        public async Task<List<TorcamentoCotacaoMensagemFiltro>> ObterListaMensagemPendente(int IdOrcamentoCotacao)
-        {
-            return await _mensagemBll.ObterListaMensagemPendente(IdOrcamentoCotacao);
-        }
-
-        public bool EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem, int IdUsuarioLogado)
-        {
-            return _mensagemBll.EnviarMensagem(orcamentoCotacaoMensagem, IdUsuarioLogado);
-        }
-
-
-        public bool MarcarMensagemComoLida(int IdOrcamentoCotacao, int idUsuarioRemetente)
-        {
-            return _mensagemBll.MarcarLida(IdOrcamentoCotacao, idUsuarioRemetente);
-        }
-
 
         private void ValidarClienteOrcamento(ClienteOrcamentoCotacaoRequestViewModel cliente)
         {

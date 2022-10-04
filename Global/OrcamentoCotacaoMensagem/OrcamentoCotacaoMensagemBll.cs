@@ -47,8 +47,9 @@ namespace OrcamentoCotacaoMensagem
                 var orcamentoCotacaoMensagemStatus = new TorcamentoCotacaoMensagemStatus();
 
                 orcamentoCotacaoMensagemStatus.IdOrcamentoCotacaoMensagem = torcamentoCotacaoMensagem.Id;
-                orcamentoCotacaoMensagemStatus.IdTipoUsuarioContexto = (short)orcamentoCotacaoMensagem.IdTipoUsuarioContextoRemetente;
-                orcamentoCotacaoMensagemStatus.IdUsuario = orcamentoCotacaoMensagem.IdUsuarioRemetente;
+                orcamentoCotacaoMensagemStatus.IdTipoUsuarioContexto = (short)orcamentoCotacaoMensagem.IdTipoUsuarioContextoDestinatario;
+
+                orcamentoCotacaoMensagemStatus.IdUsuario = orcamentoCotacaoMensagem.IdUsuarioDestinatario;
                 orcamentoCotacaoMensagemStatus.Lida = false;
                 orcamentoCotacaoMensagemStatus.PendenciaTratada = false;
 
@@ -70,7 +71,15 @@ namespace OrcamentoCotacaoMensagem
 
         public bool MarcarLida(int IdOrcamentoCotacao, int idUsuarioRemetente)
         {
-            return _data.MarcarLida(IdOrcamentoCotacao,idUsuarioRemetente);
+            if (idUsuarioRemetente >0)
+            {
+                return _data.MarcarLida(IdOrcamentoCotacao, idUsuarioRemetente);
+            }
+            else
+            {
+                return _data.MarcarLidaCliente(IdOrcamentoCotacao, idUsuarioRemetente);
+            }            
+
         }
 
         public bool MarcarPendencia(int IdOrcamentoCotacao)

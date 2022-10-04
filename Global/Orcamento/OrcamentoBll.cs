@@ -18,7 +18,7 @@ namespace Orcamento
             this.contextoProvider = contextoProvider;
         }
 
-        public List<OrcamentoCotacaoListaDto> OrcamentoCotacaoPorFiltro(TorcamentoFiltro filtro)
+        /*public List<OrcamentoCotacaoListaDto> OrcamentoCotacaoPorFiltro(TorcamentoFiltro filtro)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace Orcamento
             {
                 throw e;
             }
-        }
+        }*/
 
         public List<OrcamentoCotacaoListaDto> OrcamentoPorFiltro(TorcamentoFiltro filtro)
         {
