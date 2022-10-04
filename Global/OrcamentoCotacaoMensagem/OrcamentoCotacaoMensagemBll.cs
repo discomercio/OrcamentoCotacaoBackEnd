@@ -3,7 +3,7 @@ using InfraBanco.Modelos.Filtros;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using OrcamentoCotacaoMensagemStatus;
-
+using System.Linq;
 
 
 namespace OrcamentoCotacaoMensagem
@@ -19,12 +19,12 @@ namespace OrcamentoCotacaoMensagem
             _orcamentoCotacaoMensagemStatusBll = orcamentoCotacaoMensagemStatusBll;
         }
 
-        public async Task<List<TorcamentoCotacaoMensagem>> ObterListaMensagem(int IdOrcamentoCotacao)
+        public async Task<List<TorcamentoCotacaoMensagemFiltro>> ObterListaMensagem(int IdOrcamentoCotacao)
         {
             return await _data.ObterListaMensagem(IdOrcamentoCotacao);
         }
 
-        public async Task<List<TorcamentoCotacaoMensagem>> ObterListaMensagemPendente(int IdOrcamentoCotacao)
+        public async Task<List<TorcamentoCotacaoMensagemFiltro>> ObterListaMensagemPendente(int IdOrcamentoCotacao)
         {
             return await _data.ObterListaMensagemPendente(IdOrcamentoCotacao);
         }
@@ -47,12 +47,37 @@ namespace OrcamentoCotacaoMensagem
                 var orcamentoCotacaoMensagemStatus = new TorcamentoCotacaoMensagemStatus();
 
                 orcamentoCotacaoMensagemStatus.IdOrcamentoCotacaoMensagem = torcamentoCotacaoMensagem.Id;
-                orcamentoCotacaoMensagemStatus.IdTipoUsuarioContexto = (short)orcamentoCotacaoMensagem.IdTipoUsuarioContextoRemetente;
-                orcamentoCotacaoMensagemStatus.IdUsuario = orcamentoCotacaoMensagem.IdUsuarioRemetente;
+                orcamentoCotacaoMensagemStatus.IdTipoUsuarioContexto = (short)orcamentoCotacaoMensagem.IdTipoUsuarioContextoDestinatario;
+
+                orcamentoCotacaoMensagemStatus.IdUsuario = orcamentoCotacaoMensagem.IdUsuarioDestinatario;
                 orcamentoCotacaoMensagemStatus.Lida = false;
                 orcamentoCotacaoMensagemStatus.PendenciaTratada = false;
 
                 var torcamentoCotacaoMensagemStatus = _orcamentoCotacaoMensagemStatusBll.InserirComTransacao(orcamentoCotacaoMensagemStatus, contextoBdGravacao);
+
+                TorcamentoCotacaoMensagem participantes = null;
+
+                if (orcamentoCotacaoMensagem.IdUsuarioRemetente == 0)
+                {
+                    participantes = (from ocm in contextoBdGravacao.TorcamentoCotacaoMensagem
+                                                   where ocm.IdOrcamentoCotacao == orcamentoCotacaoMensagem.IdOrcamentoCotacao &&
+                                                   ocm.IdUsuarioRemetente != 0 && 
+                                                   ocm.IdUsuarioRemetente != orcamentoCotacaoMensagem.IdUsuarioDestinatario
+                                        select ocm).FirstOrDefault();                
+;
+
+                    if (participantes != null)
+                    {
+
+                        orcamentoCotacaoMensagemStatus.IdOrcamentoCotacaoMensagem = torcamentoCotacaoMensagem.Id;
+                        orcamentoCotacaoMensagemStatus.IdTipoUsuarioContexto = participantes.IdTipoUsuarioContextoRemetente;
+                        orcamentoCotacaoMensagemStatus.IdUsuario = participantes.IdUsuarioRemetente;
+                        orcamentoCotacaoMensagemStatus.Lida = false;
+                        orcamentoCotacaoMensagemStatus.PendenciaTratada = false;
+                        torcamentoCotacaoMensagemStatus = _orcamentoCotacaoMensagemStatusBll.InserirComTransacao(orcamentoCotacaoMensagemStatus, contextoBdGravacao);
+                    }
+                    
+                }
 
                 if (torcamentoCotacaoMensagemStatus != null)
                 {
@@ -70,7 +95,15 @@ namespace OrcamentoCotacaoMensagem
 
         public bool MarcarLida(int IdOrcamentoCotacao, int idUsuarioRemetente)
         {
-            return _data.MarcarLida(IdOrcamentoCotacao,idUsuarioRemetente);
+            if (idUsuarioRemetente >0)
+            {
+                return _data.MarcarLida(IdOrcamentoCotacao, idUsuarioRemetente);
+            }
+            else
+            {
+                return _data.MarcarLidaCliente(IdOrcamentoCotacao, idUsuarioRemetente);
+            }            
+
         }
 
         public bool MarcarPendencia(int IdOrcamentoCotacao)

@@ -56,21 +56,16 @@ namespace OrcamentoCotacaoApi.Controllers
             _logger.LogInformation("EnviarMensagem");
 
             var  saida = false;
-            bool logado = false;
 
-            try
+            if (orcamentoCotacaoMensagem.IdUsuarioRemetente == 0)
             {
-                 var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
-                 logado = true;
+                saida = _mensagemBll.EnviarMensagem(orcamentoCotacaoMensagem, orcamentoCotacaoMensagem.IdUsuarioRemetente);
             }
-            catch
+            else
             {
-                saida = _mensagemBll.EnviarMensagem(orcamentoCotacaoMensagem,0);
-            }
-
-            if (logado)
                 saida = _mensagemBll.EnviarMensagem(orcamentoCotacaoMensagem, JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value).Id);
-
+            }
+         
             if (saida)
             {
                 return Ok(new
@@ -113,15 +108,9 @@ namespace OrcamentoCotacaoApi.Controllers
 
             _logger.LogInformation("MarcarLida");
 
-            try
-            {
-                var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
-                saida = _mensagemBll.MarcarLida(IdOrcamentoCotacao, user.Id);
-            }
-            catch
-            {
-                saida = _mensagemBll.MarcarLida(IdOrcamentoCotacao, 0);
-            }
+            var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+            
+            saida = _mensagemBll.MarcarLida(IdOrcamentoCotacao, user.Id);
 
             if (saida)
             {
@@ -138,6 +127,31 @@ namespace OrcamentoCotacaoApi.Controllers
                 });
             }
         }
+
+        [HttpPut]
+        [Route("marcar/lida/publica")]
+        public async Task<IActionResult> MarcarLidaRotaPublica(int IdOrcamentoCotacao)
+        {
+            var saida = false;
+
+            _logger.LogInformation("MarcarLida");
+            saida = _mensagemBll.MarcarLida(IdOrcamentoCotacao, 0);
+
+            if (saida)
+            {
+                return Ok(new
+                {
+                    message = "Mensagens marcadas como lida"
+                });
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    message = "Não foi possível marcar como lida."
+                });
+            }
+        }          
 
         [HttpPut]
         [Route("marcar/pendencia")]
