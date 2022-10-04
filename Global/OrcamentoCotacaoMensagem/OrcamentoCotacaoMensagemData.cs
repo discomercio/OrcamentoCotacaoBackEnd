@@ -169,7 +169,7 @@ namespace OrcamentoCotacaoMensagem
                         item.Lida = true;
                         item.DataHoraLida = DateTime.Now;
                         item.DataLida = DateTime.Now;
-                        item.IdUsuario = idUsuarioRemetente;
+                        //item.IdUsuario = idUsuarioRemetente;
 
                         db.TorcamentoCotacaoMensagemStatus.Update(item);
                     }
@@ -194,7 +194,7 @@ namespace OrcamentoCotacaoMensagem
                 var orcamentoCotacaoMensagemStatus = (from ocm in db.TorcamentoCotacaoMensagem
                                                       join ocms in db.TorcamentoCotacaoMensagemStatus on ocm.Id equals ocms.IdOrcamentoCotacaoMensagem
 
-                                                      where ocm.IdOrcamentoCotacao == IdOrcamentoCotacao && ocms.IdUsuario != 0
+                                                      where ocm.IdOrcamentoCotacao == IdOrcamentoCotacao && ocms.IdUsuario == 0
 
                                                       select new TorcamentoCotacaoMensagemStatus()
                                                       {
@@ -217,7 +217,7 @@ namespace OrcamentoCotacaoMensagem
                         item.Lida = true;
                         item.DataHoraLida = DateTime.Now;
                         item.DataLida = DateTime.Now;
-                        item.IdUsuario = idUsuarioRemetente;
+                       // item.IdUsuario = idUsuarioRemetente;
 
                         db.TorcamentoCotacaoMensagemStatus.Update(item);
                     }
