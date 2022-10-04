@@ -66,6 +66,7 @@ namespace Orcamento
                     if (filtro.DtInicio.HasValue && filtro.DtFim.HasValue)
                         saida = saida.Where(x => filtro.DtInicio.Value >= x.DtInicio.Value && filtro.DtFim.Value <= x.DtFim.Value).ToList();
 
+                    /*
                     if (filtro.Origem == "ORCAMENTOS")
                     {
                         foreach (var item in saida)
@@ -80,7 +81,7 @@ namespace Orcamento
                                 item.Mensagem = "Não";
                             }
                         }
-                    }
+                    }*/
 
                     return saida;
                 }

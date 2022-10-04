@@ -18,7 +18,7 @@ namespace OrcamentoCotacaoMensagem
             this.contextoProvider = contextoProvider;
         }
 
-        public async Task<List<TorcamentoCotacaoMensagem>> ObterListaMensagem(int IdOrcamentoCotacao)
+        public async Task<List<TorcamentoCotacaoMensagemFiltro>> ObterListaMensagem(int IdOrcamentoCotacao)
         {
             using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
@@ -26,7 +26,7 @@ namespace OrcamentoCotacaoMensagem
                 return await (from ocm in db.TorcamentoCotacaoMensagem
                                                       join ocms in db.TorcamentoCotacaoMensagemStatus on ocm.Id equals ocms.IdOrcamentoCotacaoMensagem
                                                       where ocm.IdOrcamentoCotacao == IdOrcamentoCotacao
-                               select new TorcamentoCotacaoMensagem()
+                               select new TorcamentoCotacaoMensagemFiltro()
                                {
                                    Id = ocm.Id,
                                    IdTipoUsuarioContextoRemetente = ocm.IdTipoUsuarioContextoRemetente,
@@ -48,14 +48,33 @@ namespace OrcamentoCotacaoMensagem
             }
         }
 
-        public async Task<List<TorcamentoCotacaoMensagem>> ObterListaMensagemPendente(int IdOrcamentoCotacao)
+        public async Task<List<TorcamentoCotacaoMensagemFiltro>> ObterListaMensagemPendente(int IdOrcamentoCotacao)
         {
             using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
-                return await db.TorcamentoCotacaoMensagem
-                               .Where(x => x.IdOrcamentoCotacao == IdOrcamentoCotacao &&
-                                x.PendenciaTratada == false).ToListAsync();
 
+                return await (from ocm in db.TorcamentoCotacaoMensagem
+                              join ocms in db.TorcamentoCotacaoMensagemStatus on ocm.Id equals ocms.IdOrcamentoCotacaoMensagem
+                              where ocm.IdOrcamentoCotacao == IdOrcamentoCotacao && ocms.PendenciaTratada == false
+                              select new TorcamentoCotacaoMensagemFiltro()
+                              {
+                                  Id = ocm.Id,
+                                  IdTipoUsuarioContextoRemetente = ocm.IdTipoUsuarioContextoRemetente,
+                                  IdUsuarioRemetente = ocm.IdUsuarioRemetente,
+                                  IdTipoUsuarioContextoDestinatario = ocm.IdTipoUsuarioContextoDestinatario,
+                                  IdUsuarioDestinatario = ocm.IdUsuarioDestinatario,
+                                  Lida = ocms.Lida,
+                                  DataLida = ocms.DataHoraLida,
+                                  DataHoraLida = ocms.DataHoraLida,
+                                  Mensagem = ocm.Mensagem,
+                                  DataCadastro = ocm.DataCadastro,
+                                  DataHoraCadastro = ocm.DataHoraCadastro,
+                                  PendenciaTratada = ocms.PendenciaTratada,
+                                  DataPendenciaTratada = ocms.DataHoraPendenciaTratada,
+                                  DataHoraPendenciaTratada = ocms.DataHoraPendenciaTratada
+                              })
+                               .OrderByDescending(x => x.Id)
+                               .ToListAsync();
             }
         }
 
@@ -66,19 +85,25 @@ namespace OrcamentoCotacaoMensagem
             try
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
-                {                                       
-                    qtdMensagemPendente = db.TorcamentoCotacaoMensagem.Where(x => x.IdUsuarioRemetente == IdUsuarioRemetente && x.PendenciaTratada == false).GroupBy(x => x.IdOrcamentoCotacao).Count();
+                {
+
+                    qtdMensagemPendente = (from ocm in db.TorcamentoCotacaoMensagem
+                                join ocms in db.TorcamentoCotacaoMensagemStatus on ocm.Id equals ocms.IdOrcamentoCotacaoMensagem
+                                where ocm.IdUsuarioRemetente == IdUsuarioRemetente && ocms.PendenciaTratada == false
+                                group ocm by ocm.IdOrcamentoCotacao
+                                ).Count();
+                    
                 }
 
+                return qtdMensagemPendente;
 
             }
             catch (Exception e)
             {
                 throw e;
             }
-
-            return qtdMensagemPendente;
-        }
+            
+        }      
 
         public TorcamentoCotacaoMensagem InserirComTransacao(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem, InfraBanco.ContextoBdGravacao contextoBdGravacao, TorcamentoCotacaoEmailQueue torcamentoCotacaoEmailQueue = null)
         {
@@ -94,8 +119,6 @@ namespace OrcamentoCotacaoMensagem
 
             orcamentoCotacaoMensagemModel.IdTipoUsuarioContextoDestinatario = (Int16)orcamentoCotacaoMensagem.IdTipoUsuarioContextoDestinatario;
             orcamentoCotacaoMensagemModel.IdUsuarioDestinatario = orcamentoCotacaoMensagem.IdUsuarioDestinatario;
-            orcamentoCotacaoMensagemModel.PendenciaTratada = false;
-            orcamentoCotacaoMensagemModel.Lida = false;
             orcamentoCotacaoMensagemModel.Mensagem = orcamentoCotacaoMensagem.Mensagem;
             orcamentoCotacaoMensagemModel.DataCadastro = DateTime.Now;
             orcamentoCotacaoMensagemModel.DataHoraCadastro = DateTime.Now;
@@ -117,14 +140,15 @@ namespace OrcamentoCotacaoMensagem
         {
             var saida = false;
 
+
             using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 var orcamentoCotacaoMensagemStatus = (from ocm in db.TorcamentoCotacaoMensagem
                                                 join ocms in db.TorcamentoCotacaoMensagemStatus on ocm.Id equals ocms.IdOrcamentoCotacaoMensagem
                                                 
-                                                where ocm.IdOrcamentoCotacao == IdOrcamentoCotacao && ocm.IdUsuarioRemetente != idUsuarioRemetente
+                                                where ocm.IdOrcamentoCotacao == IdOrcamentoCotacao && ocms.IdUsuario == idUsuarioRemetente
 
-                                                select new TorcamentoCotacaoMensagemStatus()
+                                                      select new TorcamentoCotacaoMensagemStatus()
                                                 {
                                                     Id = ocms.Id,
                                                     IdOrcamentoCotacaoMensagem = ocms.IdOrcamentoCotacaoMensagem,
@@ -145,7 +169,55 @@ namespace OrcamentoCotacaoMensagem
                         item.Lida = true;
                         item.DataHoraLida = DateTime.Now;
                         item.DataLida = DateTime.Now;
-                        item.IdUsuario = idUsuarioRemetente;
+                        //item.IdUsuario = idUsuarioRemetente;
+
+                        db.TorcamentoCotacaoMensagemStatus.Update(item);
+                    }
+                }
+
+                db.SaveChanges();
+                db.transacao.Commit();
+                saida = true;
+
+            }
+
+            return saida;
+        }
+
+        public bool MarcarLidaCliente(int IdOrcamentoCotacao, int idUsuarioRemetente)
+        {
+            var saida = false;
+
+
+            using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                var orcamentoCotacaoMensagemStatus = (from ocm in db.TorcamentoCotacaoMensagem
+                                                      join ocms in db.TorcamentoCotacaoMensagemStatus on ocm.Id equals ocms.IdOrcamentoCotacaoMensagem
+
+                                                      where ocm.IdOrcamentoCotacao == IdOrcamentoCotacao && ocms.IdUsuario == 0
+
+                                                      select new TorcamentoCotacaoMensagemStatus()
+                                                      {
+                                                          Id = ocms.Id,
+                                                          IdOrcamentoCotacaoMensagem = ocms.IdOrcamentoCotacaoMensagem,
+                                                          IdTipoUsuarioContexto = ocms.IdTipoUsuarioContexto,
+                                                          IdUsuario = ocms.IdUsuario,
+                                                          Lida = ocms.Lida,
+                                                          DataLida = ocms.DataLida,
+                                                          DataHoraLida = ocms.DataHoraLida,
+                                                          PendenciaTratada = ocms.PendenciaTratada,
+                                                          DataPendenciaTratada = ocms.DataPendenciaTratada,
+                                                          DataHoraPendenciaTratada = ocms.DataHoraPendenciaTratada
+                                                      });
+
+                if (orcamentoCotacaoMensagemStatus != null)
+                {
+                    foreach (var item in orcamentoCotacaoMensagemStatus)
+                    {
+                        item.Lida = true;
+                        item.DataHoraLida = DateTime.Now;
+                        item.DataLida = DateTime.Now;
+                       // item.IdUsuario = idUsuarioRemetente;
 
                         db.TorcamentoCotacaoMensagemStatus.Update(item);
                     }

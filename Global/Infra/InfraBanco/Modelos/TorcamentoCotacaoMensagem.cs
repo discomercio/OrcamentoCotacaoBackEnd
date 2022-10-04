@@ -29,16 +29,7 @@ namespace InfraBanco.Modelos
         public short IdTipoUsuarioContextoDestinatario { get; set; }
 
         [Column("IdUsuarioDestinatario")]
-        public int IdUsuarioDestinatario { get; set; }
-
-        [Column("Lida")]
-        public bool Lida { get; set; } = false;
-
-        [Column("DataLida")]
-        public DateTime? DataLida { get; set; }
-
-        [Column("DataHoraLida")]
-        public DateTime? DataHoraLida { get; set; }
+        public int IdUsuarioDestinatario { get; set; }       
 
         [Column("Mensagem")]
         [Required]
@@ -54,15 +45,7 @@ namespace InfraBanco.Modelos
 
         [Column("IdOrcamentoCotacaoEmailQueue")]
         public long? IdOrcamentoCotacaoEmailQueue { get; set; }
-        
-        [Column("PendenciaTratada")]
-        public bool? PendenciaTratada { get; set; }
 
-        [Column("DataPendenciaTratada")]
-        public DateTime? DataPendenciaTratada { get; set; }
-
-        [Column("DataHoraPendenciaTratada")]
-        public DateTime? DataHoraPendenciaTratada { get; set; }
         public TorcamentoCotacao TorcamentoCotacao { get; set; }
 
     }

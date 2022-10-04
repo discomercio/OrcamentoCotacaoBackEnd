@@ -429,19 +429,23 @@ namespace Prepedido.Bll
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA:
                     lista.Add(String.Format("Entrada: " + "{0:c2} (" +
                         Util.OpcaoFormaPagto(torcamento.Pce_Forma_Pagto_Entrada) + ")", torcamento.Pce_Entrada_Valor));
-                    if (torcamento.Pce_Forma_Pagto_Prestacao != 5 && torcamento.Pce_Forma_Pagto_Prestacao != 7)
-                    {
-                        lista.Add(String.Format("Prestações: " + torcamento.Pce_Prestacao_Qtde + " x " + " {0:c2}" +
+                    lista.Add(String.Format("Prestações: " + torcamento.Pce_Prestacao_Qtde + " x " + " {0:c2}" +
                             " (" + Util.OpcaoFormaPagto(torcamento.Pce_Forma_Pagto_Prestacao) +
                             ") vencendo a cada " +
                             torcamento.Pce_Prestacao_Periodo + " dias", torcamento.Pce_Prestacao_Valor));
-                    }
-                    else
-                    {
-                        lista.Add(String.Format("Prestações: " + torcamento.Pce_Prestacao_Qtde + " x " + " {0:c2}" +
-                            " (" + Util.OpcaoFormaPagto(torcamento.Pce_Forma_Pagto_Prestacao) + ")",
-                            torcamento.Pce_Prestacao_Valor));
-                    }
+                    //if (torcamento.Pce_Forma_Pagto_Prestacao != 5 && torcamento.Pce_Forma_Pagto_Prestacao != 7)
+                    //{
+                    //    lista.Add(String.Format("Prestações: " + torcamento.Pce_Prestacao_Qtde + " x " + " {0:c2}" +
+                    //        " (" + Util.OpcaoFormaPagto(torcamento.Pce_Forma_Pagto_Prestacao) +
+                    //        ") vencendo a cada " +
+                    //        torcamento.Pce_Prestacao_Periodo + " dias", torcamento.Pce_Prestacao_Valor));
+                    //}
+                    //else
+                    //{
+                    //    lista.Add(String.Format("Prestações: " + torcamento.Pce_Prestacao_Qtde + " x " + " {0:c2}" +
+                    //        " (" + Util.OpcaoFormaPagto(torcamento.Pce_Forma_Pagto_Prestacao) + ")",
+                    //        torcamento.Pce_Prestacao_Valor));
+                    //}
                     break;
                 case Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA:
                     lista.Add(String.Format("1ª Prestação: " + " {0:c2} (" +
@@ -1084,9 +1088,9 @@ namespace Prepedido.Bll
                     torcamento.Pce_Entrada_Valor = prepedido.FormaPagtoCriacao.C_pce_entrada_valor;
                     torcamento.Pce_Prestacao_Qtde = (short)prepedido.FormaPagtoCriacao.C_pce_prestacao_qtde;
                     torcamento.Pce_Prestacao_Valor = prepedido.FormaPagtoCriacao.C_pce_prestacao_valor;
-                    if (prepedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto != "5" &&
-                        prepedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto != "7")
-                        torcamento.Pce_Prestacao_Periodo = (short)prepedido.FormaPagtoCriacao.C_pce_prestacao_periodo;
+                    //if (prepedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto != "5" &&
+                    //    prepedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto != "7")
+                    torcamento.Pce_Prestacao_Periodo = (short)prepedido.FormaPagtoCriacao.C_pce_prestacao_periodo;
                     torcamento.Qtde_Parcelas = ObterQtdeParcelasDeFormaPagto(prepedido.FormaPagtoCriacao);
                 }
                 else if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELADO_SEM_ENTRADA)

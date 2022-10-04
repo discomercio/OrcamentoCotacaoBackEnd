@@ -44,12 +44,12 @@ namespace OrcamentoCotacaoBusiness.Bll
             _contextoBdProvider = contextoBdProvider;
         }
 
-        public async Task<List<TorcamentoCotacaoMensagem>> ObterListaMensagem(int IdOrcamentoCotacao)
+        public async Task<List<TorcamentoCotacaoMensagemFiltro>> ObterListaMensagem(int IdOrcamentoCotacao)
         {
             return await _bll.ObterListaMensagem(IdOrcamentoCotacao);
         }
 
-        public async Task<List<TorcamentoCotacaoMensagem>> ObterListaMensagemPendente(int IdOrcamentoCotacao)
+        public async Task<List<TorcamentoCotacaoMensagemFiltro>> ObterListaMensagemPendente(int IdOrcamentoCotacao)
         {
             return await _bll.ObterListaMensagemPendente(IdOrcamentoCotacao);
         }
