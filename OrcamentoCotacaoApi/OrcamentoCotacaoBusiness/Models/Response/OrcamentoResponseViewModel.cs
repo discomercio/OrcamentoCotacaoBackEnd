@@ -12,9 +12,14 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 
         [JsonProperty("vendedor")]
         public string Vendedor { get; set; }
+        [JsonProperty("nomeIniciaisEmMaiusculasVendedor")]
+        public string NomeIniciaisEmMaiusculasVendedor { get; set; }
 
         [JsonProperty("parceiro")]
         public string Parceiro { get; set; }
+
+        [JsonProperty("razaoSocialNomeIniciaisEmMaiusculasParceiro")]
+        public string RazaoSocialNomeIniciaisEmMaiusculasParceiro { get; set; }
 
         [JsonProperty("vendedorParceiro")]
         public string VendedorParceiro { get; set; }
@@ -49,6 +54,9 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         [JsonProperty("cadastradoPor")]
         public string CadastradoPor { get; set; }
 
+        [JsonProperty("amigavelCadastradoPor")]
+        public string AmigavelCadastradoPor { get; set; }
+
         [JsonProperty("dataCadastro")]
         public DateTime DataCadastro { get; set; }
 
@@ -57,7 +65,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 
         [JsonProperty("idIndicadorVendedor")]
         public int? IdIndicadorVendedor { get; set; }
-        
+
         [JsonProperty("idVendedor")]
         public int IdVendedor { get; set; }
 
