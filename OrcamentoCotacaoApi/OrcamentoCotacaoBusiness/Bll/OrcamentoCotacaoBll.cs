@@ -111,7 +111,31 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             if (orcamento != null)
             {
-                var usuario = new UsuarioLogin { TipoUsuario = 4 }; //CLIENTE
+                var usuarioLogin = new UsuarioLogin() { TipoUsuario = (int)Constantes.TipoUsuario.CLIENTE }; //CLIENTE
+
+                var usuario = _usuarioBll.PorFiltro(new TusuarioFiltro() { id = orcamento.idVendedor }).FirstOrDefault();
+                var parceiro = orcamento.idIndicador != null ? _orcamentistaEIndicadorBll
+                    .BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = (int)orcamento.idIndicador, acessoHabilitado = 1 }) : null;
+
+                string vendedorParceiro = null;
+                if (orcamento.idIndicadorVendedor != null)
+                {
+                    var tVendedorParceiro = _orcamentistaEIndicadorVendedorBll.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro()
+                    {
+                        id = (int)orcamento.idIndicadorVendedor
+                    }).FirstOrDefault();
+                    vendedorParceiro = usuarioLogin.TipoUsuario != (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO ?
+                        tVendedorParceiro?.Nome : tVendedorParceiro.Email;
+                }
+
+                orcamento.usuarioCadastro = VerificarContextoCadastroOrcamento(orcamento.idTipoUsuarioContextoCadastro, usuario.Usuario, parceiro?.Apelido, vendedorParceiro);
+                orcamento.amigavelUsuarioCadastro = BuscarCadastradoPorAmigavel(orcamento.idTipoUsuarioContextoCadastro, usuario.Nome_Iniciais_Em_Maiusculas, parceiro?.Razao_social_nome_iniciais_em_maiusculas, vendedorParceiro);
+                orcamento.vendedor = usuario.Usuario;
+                orcamento.nomeIniciaisEmMaiusculasVendedor = usuario.Nome_Iniciais_Em_Maiusculas;
+                orcamento.parceiro = parceiro != null ? parceiro.Apelido : null;
+                orcamento.razaoSocialNomeIniciaisEmMaiusculasParceiro = parceiro != null ? parceiro.Razao_social_nome_iniciais_em_maiusculas : null;
+                orcamento.razaoSocialNomeIniciaisEmMaiusculasParceiro = parceiro != null ? parceiro.Razao_social_nome_iniciais_em_maiusculas : null;
+                orcamento.vendedorParceiro = vendedorParceiro;
 
                 var loja = _lojaBll.PorFiltro(new InfraBanco.Modelos.Filtros.TlojaFiltro() { Loja = orcamento.loja });
                 var tcfgUnidadeNegocio = _cfgUnidadeNegocioBll.PorFiltro(new TcfgUnidadeNegocioFiltro() { Sigla = loja[0].Unidade_Negocio });
@@ -125,10 +149,9 @@ namespace OrcamentoCotacaoBusiness.Bll
                 orcamento.condicoesGerais = condicoesGerais[0].Valor;
                 orcamento.prazoMaximoConsultaOrcamento = prazoMaximoConsultaOrcamento[0].Valor;
                 orcamento.listaOpcoes = _orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro { IdOrcamentoCotacao = orcamento.id });
-                orcamento.listaFormasPagto = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(orcamento.tipoCliente, (Constantes.TipoUsuario)usuario.TipoUsuario, orcamento.vendedor, byte.Parse(orcamento.idIndicador.HasValue ? "1" : "0"));
-                orcamento.mensageria = BuscarDadosParaMensageria(usuario, orcamento.id, false);
+                orcamento.listaFormasPagto = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(orcamento.tipoCliente, (Constantes.TipoUsuario)usuarioLogin.TipoUsuario, orcamento.vendedor, byte.Parse(orcamento.idIndicador.HasValue ? "1" : "0"));
+                orcamento.mensageria = BuscarDadosParaMensageria(usuarioLogin, orcamento.id, false);
                 orcamento.token = _publicoBll.ObterTokenServico();
-
 
                 if (!Validar(orcamento))
                 {
@@ -322,9 +345,9 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             if (opcao.Count <= 0) throw new Exception("Falha ao buscar Opções do Orçamento!");
 
-            var usuario = _usuarioBll.PorFiltro(new TusuarioFiltro() { id = orcamento.IdVendedor }).FirstOrDefault().Usuario;
+            var usuario = _usuarioBll.PorFiltro(new TusuarioFiltro() { id = orcamento.IdVendedor }).FirstOrDefault();
             var parceiro = orcamento.IdIndicador != null ? _orcamentistaEIndicadorBll
-                .BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = (int)orcamento.IdIndicador, acessoHabilitado = 1 }).Apelido : null;
+                .BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = (int)orcamento.IdIndicador, acessoHabilitado = 1 }) : null;
 
             string vendedorParceiro = null;
             if (orcamento.IdIndicadorVendedor != null)
@@ -341,8 +364,10 @@ namespace OrcamentoCotacaoBusiness.Bll
             OrcamentoResponseViewModel orcamentoResponse = new OrcamentoResponseViewModel()
             {
                 Id = orcamento.Id,
-                Vendedor = usuario,
-                Parceiro = parceiro,
+                Vendedor = usuario.Usuario,
+                NomeIniciaisEmMaiusculasVendedor = usuario.Nome_Iniciais_Em_Maiusculas,
+                Parceiro = parceiro != null ? parceiro.Apelido : null,
+                RazaoSocialNomeIniciaisEmMaiusculasParceiro = parceiro != null ? parceiro.Razao_social_nome_iniciais_em_maiusculas : null,
                 VendedorParceiro = vendedorParceiro,
                 Loja = orcamento.Loja,
                 Validade = orcamento.Validade,
@@ -368,10 +393,26 @@ namespace OrcamentoCotacaoBusiness.Bll
                     ContribuinteICMS = orcamento.ContribuinteIcms
                 },
                 ListaOrcamentoCotacaoDto = opcao,
-                CadastradoPor = VerificarContextoCadastroOrcamento(orcamento.IdTipoUsuarioContextoCadastro, usuario, parceiro, vendedorParceiro)
+                CadastradoPor = VerificarContextoCadastroOrcamento(orcamento.IdTipoUsuarioContextoCadastro, usuario.Usuario, parceiro?.Apelido, vendedorParceiro),
+                AmigavelCadastradoPor = BuscarCadastradoPorAmigavel(orcamento.IdTipoUsuarioContextoCadastro, usuario.Nome_Iniciais_Em_Maiusculas, parceiro?.Razao_social_nome_iniciais_em_maiusculas, vendedorParceiro)
             };
 
             return orcamentoResponse;
+        }
+
+        private string BuscarCadastradoPorAmigavel(int idTipoUsuarioContextoCadastro, string vendedor, string parceiro, string vendedorParceiro)
+        {
+            var lstTipoUsuariosContexto = _usuarioBll.BuscarTipoUsuarioContexto();
+            if (lstTipoUsuariosContexto == null) return null;
+
+            var filtrado = lstTipoUsuariosContexto.Where(x => x.Id == idTipoUsuarioContextoCadastro).FirstOrDefault();
+            if (filtrado == null) return null;
+
+            if (filtrado.Id == (short)Constantes.TipoUsuarioContexto.UsuarioInterno) { return vendedor; }
+            if (filtrado.Id == (short)Constantes.TipoUsuarioContexto.Parceiro) { return parceiro; }
+            if (filtrado.Id == (short)Constantes.TipoUsuarioContexto.VendedorParceiro) { return vendedorParceiro; }
+
+            return null;
         }
 
         private string VerificarContextoCadastroOrcamento(int idTipoUsuarioContextoCadastro, string usuario, string parceiro,
@@ -1340,7 +1381,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             PrePedidoDados prePedidoDados = PrePedidoDto.PrePedidoDados_De_PrePedidoDto(prepedido);
-            return (await _prepedidoBll.CadastrarPrepedido(prePedidoDados, parceiro, 0.01M, false, 
+            return (await _prepedidoBll.CadastrarPrepedido(prePedidoDados, parceiro, 0.01M, false,
                 Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, 12, dbGravacao)).ToList();
         }
 

@@ -113,5 +113,9 @@ namespace InfraBanco.Modelos
         [Column("endereco_complemento")]
         [MaxLength(60)]
         public string Endereco_Complemento { get; set; }
+
+        [Column("razao_social_nome_iniciais_em_maiusculas")]
+        [MaxLength(60)]
+        public string Razao_social_nome_iniciais_em_maiusculas { get; set; }
     }
 }

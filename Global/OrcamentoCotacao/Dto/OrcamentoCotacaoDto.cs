@@ -22,10 +22,14 @@ namespace OrcamentoCotacao.Dto
         public int? idIndicador { get; set; }
         public int? idIndicadorVendedor { get; set; }
         public string vendedor { get; set; }
+        public string nomeIniciaisEmMaiusculasVendedor { get; set; }
         public string parceiro { get; set; }
+        public string razaoSocialNomeIniciaisEmMaiusculasParceiro { get; set; }
         public string vendedorParceiro { get; set; }
         public int idUsuarioCadastro { get; set; }
         public string usuarioCadastro { get; set; }
+        public int idTipoUsuarioContextoCadastro { get; set; }
+        public string amigavelUsuarioCadastro { get; set; }
         public string tipoCliente { get; set; }
         public int stEntregaImediata { get; set; }
         public DateTime? dataEntregaImediata { get; set; }
