@@ -79,17 +79,15 @@ namespace PrepedidoApi.Controllers
         public async Task<IActionResult> RemoverPrePedido(string numeroPrePedido)
         {
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            if (numeroPrePedido == null || numeroPrePedido == "")
-            {
-                return NotFound();
-            }
 
             bool ret = await prepedidoBll.RemoverPrePedido(numeroPrePedido, apelido);
 
-            if (ret == true)
+            if (ret)
+            {
                 return Ok();
-            else
-                return NotFound();
+            }
+
+            return NotFound();
         }
 
         [HttpGet("buscarPrepedido")]
