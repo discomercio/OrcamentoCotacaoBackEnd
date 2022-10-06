@@ -75,7 +75,11 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             // Prazo orçamento encerrado
-            var prazoOrcamentoEncerrado = VerificarOrcamentoEncerrado(orcamento);
+            var MaxPrazoConsultaOrcamentoEncerrado = 18;
+            var prazoOrcamentoEncerrado = VerificarUnidadeNegocioParametro(
+                orcamento.Loja,
+                orcamento.DataCadastro,
+                MaxPrazoConsultaOrcamentoEncerrado);
 
             if (prazoOrcamentoEncerrado)
             {
@@ -199,12 +203,44 @@ namespace OrcamentoCotacaoBusiness.Bll
             var usuario = request.Usuario.ToUpper().Trim();
             var idPrePedido = request.IdPrePedido;
 
+            // Pedido
+            var prePedido = ObterPrePedidoPorIdPrePedido(idPrePedido);
+
+            if (prePedido == null)
+            {
+                response.VisualizarPrePedido = false;
+                response.Sucesso = false;
+                response.Mensagem = "Pré Pedido não encontrado.";
+                return response;
+            }
+
+            // Prazo pre pedido encerrado
+            var MaxPrazoConsultaOrcamentoEncerrado = 18;
+            var prazoPedidoEncerrado = VerificarUnidadeNegocioParametro(
+                prePedido.Loja,
+                prePedido.Data.Value,
+                MaxPrazoConsultaOrcamentoEncerrado);
+
+            if (prazoPedidoEncerrado)
+            {
+                response.VisualizarPrePedido = false;
+                response.Sucesso = false;
+                response.Mensagem = "Não encontramos a permissão necessária para acessar essa funcionalidade!";
+                return response;
+            }
+
             var usuarioEnvolvidoOrcamento = UsuarioEnvolvidoPrePedido(idTipoUsuario, usuario, idPrePedido);
 
-            if (usuarioEnvolvidoOrcamento)
+            var permissaoVisualizarOrcamentoConsultar = ValidaPermissao(request.PermissoesUsuario, ePermissao.VisualizarOrcamentoConsultar);
+            var permissaoAcessoUniversalOrcamentoEditar = ValidaPermissao(request.PermissoesUsuario, ePermissao.AcessoUniversalOrcamentoEditar);
+            var permissaoVisualizarPrePedidoConsultar = ValidaPermissao(request.PermissoesUsuario, ePermissao.VisualizarPrePedidoConsultar);
+
+            if (usuarioEnvolvidoOrcamento 
+                || permissaoVisualizarOrcamentoConsultar
+                || permissaoAcessoUniversalOrcamentoEditar
+                || permissaoVisualizarPrePedidoConsultar)
             {
-                var permissaoVisualizarOrcamentoConsultar = ValidaPermissao(request.PermissoesUsuario, ePermissao.VisualizarOrcamentoConsultar);
-                var permissaoVisualizarPrePedidoConsultar = ValidaPermissao(request.PermissoesUsuario, ePermissao.VisualizarPrePedidoConsultar);
+                
                 var permissaoCancelarPrePedido = ValidaPermissao(request.PermissoesUsuario, ePermissao.CancelarPrePedido);
 
                 if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
@@ -269,14 +305,42 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             var idTipoUsuario = request.TipoUsuario;
+            var idUsuario = request.IdUsuario;
             var usuario = request.Usuario.ToUpper().Trim();
             var idPedido = request.IdPedido;
 
-            var usuarioEnvolvido = UsuarioEnvolvidoPedido(idTipoUsuario, usuario, idPedido);
+            // Pedido
+            var pedido = ObterPedidoPorIdPedido(idPedido);
 
-            if (usuarioEnvolvido)
+            if (pedido == null)
             {
-                var permissaoVisualizarOrcamentoConsultar = ValidaPermissao(request.PermissoesUsuario, ePermissao.VisualizarOrcamentoConsultar);
+                response.VisualizarPedido = false;
+                response.Sucesso = false;
+                response.Mensagem = "Pedido não encontrado.";
+                return response;
+            }
+
+            // Prazo pedido encerrado
+            var MaxPrazoConsultaOrcamentoEncerrado = 19;
+            var prazoPedidoEncerrado = VerificarUnidadeNegocioParametro(
+                pedido.Loja,
+                pedido.Data.Value,
+                MaxPrazoConsultaOrcamentoEncerrado);
+
+            if (prazoPedidoEncerrado)
+            {
+                response.VisualizarPedido = false;
+                response.Sucesso = false;
+                response.Mensagem = "Não encontramos a permissão necessária para acessar essa funcionalidade!";
+                return response;
+            }
+
+            var usuarioEnvolvido = UsuarioEnvolvidoPedido(idTipoUsuario, idUsuario, usuario, idPedido);
+
+            var permissaoVisualizarOrcamentoConsultar = ValidaPermissao(request.PermissoesUsuario, ePermissao.VisualizarOrcamentoConsultar);
+
+            if (usuarioEnvolvido || permissaoVisualizarOrcamentoConsultar)
+            {
                 var permissaoConsultarPedido = ValidaPermissao(request.PermissoesUsuario, ePermissao.ConsultarPedido);
 
                 if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
@@ -314,6 +378,26 @@ namespace OrcamentoCotacaoBusiness.Bll
             return response;
         }
 
+        public async Task<PermissaoIncluirPrePedidoResponse> RetornarPermissaoIncluirPrePedido(PermissaoIncluirPrePedidoRequest request)
+        {
+            var response = new PermissaoIncluirPrePedidoResponse();
+
+            var permissaoIncluirPrePedido = ValidaPermissao(request.PermissoesUsuario, ePermissao.IncluirPrePedido);
+
+            if (!permissaoIncluirPrePedido)
+            {
+                response.IncluirPrePedido = false;
+                response.Sucesso = false;
+                response.Mensagem = "Não encontramos a permissão necessária para acessar essa funcionalidade!";
+                return response;
+            }
+
+            response.IncluirPrePedido = true;
+            response.Sucesso = true;
+            response.Mensagem = string.Empty;
+            return response;
+        }
+
         private TorcamentoCotacao ObterOrcamentoPorIdOrcamento(int idOrcamento)
         {
             TorcamentoCotacao orcamentoCotacao = null;
@@ -327,6 +411,36 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             return orcamentoCotacao;
+        }
+
+        private Torcamento ObterPrePedidoPorIdPrePedido(string idPrePedido)
+        {
+            Torcamento orcamento = null;
+
+            using (var db = _contextoProvider.GetContextoLeitura())
+            {
+                orcamento = (from o in db.Torcamento
+                             where
+                                 o.Orcamento == idPrePedido
+                             select o).FirstOrDefault();
+            }
+
+            return orcamento;
+        }
+
+        private Tpedido ObterPedidoPorIdPedido(string idPedido)
+        {
+            Tpedido pedido = null;
+
+            using (var db = _contextoProvider.GetContextoLeitura())
+            {
+                pedido = (from o in db.Tpedido
+                          where
+                              o.Pedido == idPedido
+                          select o).FirstOrDefault();
+            }
+
+            return pedido;
         }
 
         private bool ValidaPermissao(List<string> permissoesUsuario, ePermissao permissao)
@@ -423,7 +537,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             return usuarioEnvolvido;
         }
 
-        private bool UsuarioEnvolvidoPedido(int idTipoUsuario, string usuario, string idPedido)
+        private bool UsuarioEnvolvidoPedido(int idTipoUsuario, int idUsuario, string usuario, string idPedido)
         {
             bool usuarioEnvolvido = false;
 
@@ -434,7 +548,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     usuarioEnvolvido = (from o in db.Tpedido
                                         where
                                              o.Vendedor == usuario
-                                             && o.Pedido == idPedido
+                                             && (o.Pedido == idPedido || o.Orcamento == idPedido)
                                         select o).Any();
                 }
 
@@ -443,23 +557,16 @@ namespace OrcamentoCotacaoBusiness.Bll
                     usuarioEnvolvido = (from o in db.Tpedido
                                         where
                                              o.Orcamentista == usuario
-                                             && o.Pedido == idPedido
+                                             && (o.Pedido == idPedido || o.Orcamento == idPedido)
                                         select o).Any();
                 }
 
                 if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
                 {
-                    var idIndicadorVendedor = 0;
-
-                    if (!int.TryParse(usuario, out idIndicadorVendedor))
-                    {
-                        throw new Exception("Problemas na conversão de Vendedor do parceiro.");
-                    }
-
                     usuarioEnvolvido = (from o in db.Tpedido
                                         where
-                                             o.IdIndicadorVendedor == idIndicadorVendedor
-                                             && o.Pedido == idPedido
+                                             o.IdIndicadorVendedor == idUsuario
+                                             && (o.Pedido == idPedido || o.Orcamento == idPedido)
                                         select o).Any();
                 }
             }
@@ -512,9 +619,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             return loja;
         }
 
-        private bool VerificarOrcamentoEncerrado(TorcamentoCotacao orcamento)
+        private bool VerificarUnidadeNegocioParametro(string loja, DateTime dataCadastro, int maxPrazoConsulta)
         {
-            var MaxPrazoConsultaOrcamentoEncerrado = 18;
             var valor = string.Empty;
             TimeSpan result;
 
@@ -526,11 +632,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                          join p in db.TcfgUnidadeNegocioParametro
                               on u.Id equals p.IdCfgUnidadeNegocio
                          where
-                              o.Loja == orcamento.Loja
-                              && p.IdCfgParametro == MaxPrazoConsultaOrcamentoEncerrado
+                              o.Loja == loja
+                              && p.IdCfgParametro == maxPrazoConsulta
                          select p.Valor).FirstOrDefault();
 
-                result = DateTime.Now.Date.Subtract(orcamento.DataCadastro.Date);
+                result = DateTime.Now.Date.Subtract(dataCadastro.Date);
             }
 
             return result.Days > Convert.ToInt32(valor);

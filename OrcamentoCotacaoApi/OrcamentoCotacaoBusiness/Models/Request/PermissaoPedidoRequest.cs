@@ -8,5 +8,6 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         public int TipoUsuario { get; set; }
         public string Usuario { get; set; }
         public string IdPedido { get; set; }
+        public int IdUsuario { get; set; }
     }
 }

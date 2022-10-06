@@ -104,6 +104,7 @@ namespace OrcamentoCotacaoApi.Controllers
                     Usuario = LoggedUser.Apelido,
                     IdPedido = idPedido,
                     TipoUsuario = LoggedUser.TipoUsuario.Value,
+                    IdUsuario = LoggedUser.Id
                 };
 
                 _logger.LogInformation($"Verificando permissões do usuario: {LoggedUser.Nome} para o pedido: {idPedido}.");
@@ -113,6 +114,31 @@ namespace OrcamentoCotacaoApi.Controllers
                 _logger.LogInformation(
                     $"Retornando permissões do usuario: {LoggedUser.Nome} para o pedido: {idPedido}. " +
                     $"VizualizarOrcamento = {response.VisualizarPedido}");
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("RetornarPermissaoIncluirPrePedido")]
+        public async Task<IActionResult> RetornarPermissaoIncluirPrePedido()
+        {
+            try
+            {
+                var request = new PermissaoIncluirPrePedidoRequest()
+                {
+                    PermissoesUsuario = LoggedUser.Permissoes,
+                };
+
+                _logger.LogInformation($"Verificando permissões do usuario: {LoggedUser.Nome} para incluir pré pedido.");
+
+                var response = await _permissaoBll.RetornarPermissaoIncluirPrePedido(request);
+
+                _logger.LogInformation($"Retornando permissões do usuario: {LoggedUser.Nome} para incluir pré pedido. {response.IncluirPrePedido}");
 
                 return Ok(response);
             }
