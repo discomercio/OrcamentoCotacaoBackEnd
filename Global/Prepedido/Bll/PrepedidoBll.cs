@@ -6,6 +6,7 @@ using InfraBanco;
 using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Prepedido.Dados;
 using Prepedido.Dados.DetalhesPrepedido;
 using Produto;
@@ -20,6 +21,7 @@ namespace Prepedido.Bll
 {
     public class PrepedidoBll
     {
+        private readonly ILogger<PrepedidoBll> _logger;
         private readonly ContextoBdProvider contextoProvider;
         private readonly Cliente.ClienteBll clienteBll;
         private readonly ValidacoesPrepedidoBll validacoesPrepedidoBll;
@@ -31,6 +33,7 @@ namespace Prepedido.Bll
         private readonly PedidoVisualizacao.PedidoVisualizacaoBll pedidoVisualizacaoBll;
 
         public PrepedidoBll(
+            ILogger<PrepedidoBll> logger,
             ContextoBdProvider contextoProvider,
             Cliente.ClienteBll clienteBll,
             ValidacoesPrepedidoBll validacoesPrepedidoBll,
@@ -42,6 +45,7 @@ namespace Prepedido.Bll
             PedidoVisualizacao.PedidoVisualizacaoBll pedidoVisualizacaoBll
             )
         {
+            this._logger = logger;
             this.contextoProvider = contextoProvider;
             this.clienteBll = clienteBll;
             this.validacoesPrepedidoBll = validacoesPrepedidoBll;
@@ -194,24 +198,53 @@ namespace Prepedido.Bll
 
         public async Task<bool> RemoverPrePedido(string numeroPrePedido, string apelido)
         {
-            using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTO))
-            {
-                var prepedido = await dbgravacao.Torcamento
-                    .Where(c => c.Orcamento == numeroPrePedido
-                        && (c.St_Orcamento == "" || c.St_Orcamento == null)
-                        && c.St_Orc_Virou_Pedido == 0)
-                    .FirstOrDefaultAsync();
+            this._logger.LogInformation($"Começo do processo para Remover Pré-Pedido.");
 
-                if (prepedido != null)
+            if (string.IsNullOrEmpty(apelido))
+            {
+                this._logger.LogInformation($"Não foi possivel remover Pré-Pedido. Campos apelido não foi preenchido.");
+                return await Task.FromResult(false);
+            }
+
+            if (string.IsNullOrEmpty(numeroPrePedido))
+            {
+                this._logger.LogInformation($"Não foi possivel remover Pré-Pedido. Campos numeroPrePedido não foi preenchido.");
+                return await Task.FromResult(false);
+            }
+
+            this._logger.LogInformation($"Remover Pré-Pedido: {numeroPrePedido} com usuário: {apelido}.");
+
+            try
+            {
+                this._logger.LogInformation($"Abrindo contexto para consulta e update para remover Pré-Pedido: {numeroPrePedido} com usuário: {apelido}.");
+                using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTO))
                 {
-                    prepedido.St_Orcamento = "CAN";
-                    prepedido.Cancelado_Data = DateTime.Now;
-                    prepedido.Cancelado_Usuario = apelido;
-                    await dbgravacao.SaveChangesAsync();
-                    dbgravacao.transacao.Commit();
-                    return await Task.FromResult(true);
+                    var prepedido = await dbgravacao.Torcamento
+                        .Where(c => c.Orcamento == numeroPrePedido
+                            && (c.St_Orcamento == "" || c.St_Orcamento == null)
+                            && c.St_Orc_Virou_Pedido == 0)
+                        .FirstOrDefaultAsync();
+
+                    if (prepedido != null)
+                    {
+                        prepedido.St_Orcamento = "CAN";
+                        prepedido.Cancelado_Data = DateTime.Now;
+                        prepedido.Cancelado_Usuario = apelido;
+                        await dbgravacao.SaveChangesAsync();
+                        dbgravacao.transacao.Commit();
+
+                        this._logger.LogInformation($"Pré-Pedido: {numeroPrePedido} com usuário: {apelido}, foi cancelado com sucesso.");
+                        return await Task.FromResult(true);
+                    }
                 }
             }
+            catch (Exception ex)
+            {
+                this._logger.LogInformation($"Ocorreu um problema para cancelar Pré-Pedido: {numeroPrePedido} com usuário: {apelido}, foi cancelado com sucesso. Exception: {ex.Message}");
+                throw new Exception(ex.Message);
+            }
+
+            this._logger.LogInformation($"Pré-Pedido: {numeroPrePedido} com usuário: {apelido}, não foi cancelado.");
             return await Task.FromResult(false);
         }
 
