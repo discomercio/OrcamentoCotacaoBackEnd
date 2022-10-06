@@ -404,8 +404,6 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     if (tCfgDataType.Sigla == "real")
                     {
-                        if (!prop.Valor.Contains("."))
-                            retorno = $"Propriedade '{item.descricao}' precisa conter ponto ('.')!";
 
                         if (!string.IsNullOrEmpty(retorno)) break;
 
