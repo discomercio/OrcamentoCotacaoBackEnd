@@ -3,6 +3,7 @@ using InfraBanco;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
+using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
 using System;
@@ -18,50 +19,54 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly IMapper mapper;
         private readonly ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll;
         private readonly FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll;
+        private readonly ILogger<OrcamentoCotacaoOpcaoBll> _logger;
 
         public OrcamentoCotacaoOpcaoBll(ContextoBdProvider contextoBdProvider,
             OrcamentoCotacaoOpcao.OrcamentoCotacaoOpcaoBll orcamentoCotacaoOpcaoBll, IMapper mapper,
             ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll,
-            FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll)
+            FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll, ILogger<OrcamentoCotacaoOpcaoBll> _logger)
         {
             this.contextoBdProvider = contextoBdProvider;
             this.orcamentoCotacaoOpcaoBll = orcamentoCotacaoOpcaoBll;
             this.mapper = mapper;
             this.produtoOrcamentoCotacaoBll = produtoOrcamentoCotacaoBll;
             this.formaPagtoOrcamentoCotacaoBll = formaPagtoOrcamentoCotacaoBll;
+            this._logger = _logger;
         }
 
-        public List<OrcamentoOpcaoResponseViewModel> CadastrarOrcamentoCotacaoOpcoesComTransacao(List<OrcamentoOpcaoRequestViewModel> orcamentoOpcoes,
+        public string CadastrarOrcamentoCotacaoOpcoesComTransacao(List<OrcamentoOpcaoRequestViewModel> orcamentoOpcoes,
             int idOrcamentoCotacao, UsuarioLogin usuarioLogado, ContextoBdGravacao contextoBdGravacao, string loja)
         {
-            List<OrcamentoOpcaoResponseViewModel> orcamentoOpcaoResponseViewModels = new List<OrcamentoOpcaoResponseViewModel>();
-
+            _logger.LogInformation($"Método Cadastrar opções de orçamento - Cadastrar opções de orçamento cotação.");
             int seq = 0;
             foreach (var opcao in orcamentoOpcoes)
             {
                 seq++;
+                _logger.LogInformation($"Método Cadastrar opções de orçamento - Cadastrando opção {seq}");
                 TorcamentoCotacaoOpcao torcamentoCotacaoOpcao = MontarTorcamentoCotacaoOpcao(opcao, idOrcamentoCotacao,
                     usuarioLogado, seq);
-
                 var opcaoResponse = orcamentoCotacaoOpcaoBll.InserirComTransacao(torcamentoCotacaoOpcao, contextoBdGravacao);
+                if (torcamentoCotacaoOpcao.Id == 0) return "Ops! Não gerou Id na opção de orçamento!";
 
-                if (torcamentoCotacaoOpcao.Id == 0) throw new ArgumentException("Ops! Não gerou Id na opção de orçamento!");
-
-                orcamentoOpcaoResponseViewModels.Add(mapper.Map<OrcamentoOpcaoResponseViewModel>(torcamentoCotacaoOpcao));
-
+                _logger.LogInformation($"Método Cadastrar opções de orçamento - Cadastrando formas de pagamentos da opção {seq}");
                 var tOrcamentoCotacaoOpcaoPagtos = formaPagtoOrcamentoCotacaoBll.CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(opcao.FormaPagto, opcaoResponse.Id, contextoBdGravacao);
+                if (tOrcamentoCotacaoOpcaoPagtos.Count == 0) return "Falha ao gravar forma de pagamento!";
 
+                string erro = "";
+                _logger.LogInformation($"Método Cadastrar opções de orçamento - Cadastrando produtos unificados da opção {seq}");
                 var tOrcamentoCotacaoItemUnificados = produtoOrcamentoCotacaoBll.CadastrarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(opcao,
-                    opcaoResponse.Id, loja, contextoBdGravacao);
+                    opcaoResponse.Id, loja, contextoBdGravacao, ref erro);
+                if (!string.IsNullOrEmpty(erro)) return erro;
 
-                if (tOrcamentoCotacaoOpcaoPagtos.Count == 0 || tOrcamentoCotacaoItemUnificados.Count == 0)
-                    throw new ArgumentException("Ops! Não gerou Id ao salvar os pagamentos e produtos!");
+                if (tOrcamentoCotacaoItemUnificados.Count == 0) return "Ops! Não gerou Id ao salvar os pagamentos e produtos!";
 
+
+                _logger.LogInformation($"Método Cadastrar opções de orçamento - Cadastrando produtos atômicos da opção {seq}");
                 var tOrcamentoCotacaoOpcaoItemAtomicoCustoFin = produtoOrcamentoCotacaoBll.CadastrarProdutoAtomicoCustoFinComTransacao(tOrcamentoCotacaoOpcaoPagtos,
                     tOrcamentoCotacaoItemUnificados, opcao.ListaProdutos, loja, contextoBdGravacao);
             }
 
-            return orcamentoOpcaoResponseViewModels;
+            return null;
         }
 
         private TorcamentoCotacaoOpcao MontarTorcamentoCotacaoOpcao(OrcamentoOpcaoRequestViewModel opcao, int idOrcamentoCotacao,

@@ -70,14 +70,14 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(OrcamentoRequestViewModel model)
+        public IActionResult Post(OrcamentoRequestViewModel model)
         {
             _logger.LogInformation("Inserindo Orcamento");
 
             var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
 
-            var id = _orcamentoBll.CadastrarOrcamentoCotacao(model, user);
-            return Ok(id);
+            var orcamento = _orcamentoBll.CadastrarOrcamentoCotacao(model, user);
+            return Ok(orcamento);
         }
 
         [HttpGet]

@@ -241,7 +241,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public List<TorcamentoCotacaoItemUnificado> CadastrarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(OrcamentoOpcaoRequestViewModel opcao,
-            int idOrcamentoCotacaoOpcao, string loja, ContextoBdGravacao contextoBdGravacao)
+            int idOrcamentoCotacaoOpcao, string loja, ContextoBdGravacao contextoBdGravacao, ref string erro)
         {
             List<TorcamentoCotacaoItemUnificado> itensUnificados = new List<TorcamentoCotacaoItemUnificado>();
             int sequencia = 0;
@@ -251,7 +251,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                 var tProduto = produtoGeralBll.BuscarProdutoPorFabricanteECodigoComTransacao(produto.Fabricante,
                     produto.Produto, loja, contextoBdGravacao).Result;
 
-                if (tProduto == null) throw new ArgumentException("Ops! Não achamos o produto!");
+                if (tProduto == null)
+                {
+                    erro = "Ops! Não achamos o produto!";
+                    return null;
+                }
 
                 sequencia++;
                 TorcamentoCotacaoItemUnificado torcamentoCotacaoItemUnificado = new TorcamentoCotacaoItemUnificado(idOrcamentoCotacaoOpcao,
@@ -259,14 +263,22 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 var produtoUnificado = orcamentoCotacaoOpcaoItemUnificadoBll.InserirComTransacao(torcamentoCotacaoItemUnificado, contextoBdGravacao);
 
-                if (produtoUnificado.Id == 0) throw new ArgumentException("Ops! Não gerou o Id de produto unificado!");
+                if (produtoUnificado.Id == 0)
+                {
+                    erro = "Ops! Não gerou o Id de produto unificado!";
+                    return null;
+                }
 
                 itensUnificados.Add(produtoUnificado);
 
                 var itensAtomicos = CadastrarTorcamentoCotacaoOpcaoItemAtomicoComTransacao(produtoUnificado.Id,
                     tProduto, produto.Qtde, loja, contextoBdGravacao);
 
-                if (itensAtomicos.Count <= 0) throw new ArgumentException("Ops! Não gerou o Id de produto atomicos!");
+                if (itensAtomicos.Count <= 0)
+                {
+                    erro = "Ops! Não gerou o Id de produto atomicos!";
+                    return null;
+                }
             }
 
             return itensUnificados;
@@ -306,7 +318,8 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public List<TorcamentoCotacaoOpcaoItemAtomicoCustoFin> CadastrarProdutoAtomicoCustoFinComTransacao(List<TorcamentoCotacaoOpcaoPagto> tOrcamentoCotacaoOpcaoPagtos,
-            List<TorcamentoCotacaoItemUnificado> tOrcamentoCotacaoItemUnificados, List<ProdutoRequestViewModel> produtosOpcao, string loja, ContextoBdGravacao contextoBdGravacao)
+            List<TorcamentoCotacaoItemUnificado> tOrcamentoCotacaoItemUnificados, List<ProdutoRequestViewModel> produtosOpcao, string loja, 
+            ContextoBdGravacao contextoBdGravacao)
         {
             int index = 0;
             foreach (var pagto in tOrcamentoCotacaoOpcaoPagtos)
