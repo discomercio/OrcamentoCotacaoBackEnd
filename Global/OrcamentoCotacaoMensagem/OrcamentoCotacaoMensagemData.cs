@@ -232,6 +232,26 @@ namespace OrcamentoCotacaoMensagem
             return saida;
         }
 
+        public List<TorcamentoCotacaoMensagem> ObterParticipantes(int IdOrcamentoCotacao, int idUsuarioDonoOrcamento)
+        {
+
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+
+                var orcamentoCotacaoMensagem = (from ocm in db.TorcamentoCotacaoMensagem                                                 
+                                                where ocm.IdOrcamentoCotacao == IdOrcamentoCotacao &&
+                                                ocm.IdUsuarioRemetente != 0 &&
+                                                ocm.IdUsuarioRemetente != idUsuarioDonoOrcamento
+                                                select ocm
+                                                ).Distinct().ToList();
+          
+
+                return orcamentoCotacaoMensagem;
+
+            }
+
+        }
+
 
         public bool MarcarPendencia(int IdOrcamentoCotacao)
         {

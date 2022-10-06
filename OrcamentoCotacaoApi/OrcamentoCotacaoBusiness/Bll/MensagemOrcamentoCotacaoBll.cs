@@ -63,6 +63,14 @@ namespace OrcamentoCotacaoBusiness.Bll
         {
             var saida = false;
 
+            List<TorcamentoCotacaoMensagem> participantesMensagem = null;
+
+            if (IdUsuarioLogado == 0)
+                participantesMensagem = _bll.ObterParticipantes(
+                    orcamentoCotacaoMensagem.IdOrcamentoCotacao, 
+                    orcamentoCotacaoMensagem.IdUsuarioDestinatario
+                    );
+
             try
             {
                 using (var contextoBdGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
@@ -86,7 +94,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                     }
                     else
                     {
-                        _bll.EnviarMensagem(orcamentoCotacaoMensagem, contextoBdGravacao);
+                        _bll.EnviarMensagem(orcamentoCotacaoMensagem, 
+                            contextoBdGravacao,
+                            null, 
+                            participantesMensagem);
+
                         saida = true;
                     }
                 }
