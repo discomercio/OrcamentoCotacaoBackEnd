@@ -590,6 +590,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     _logger.LogInformation($"Método Cadastrar orçamento - falha ao efetivar dados de orçamento cotação na base.");
                 }
             }
+            _logger.LogInformation($"Método Cadastrar orçamento - Finalizando cadastro de orçamento.");
             return orcamento;
         }
 
@@ -649,20 +650,32 @@ namespace OrcamentoCotacaoBusiness.Bll
             _orcamentoCotacaoOpcaoBll.AtualizarOrcamentoOpcao(opcao, usuarioLogado, orcamento);
         }
 
-        public void AtualizarDadosCadastraisOrcamento(OrcamentoResponseViewModel orcamento, UsuarioLogin usuarioLogado)
+        public OrcamentoResponseViewModel AtualizarDadosCadastraisOrcamento(OrcamentoResponseViewModel orcamento, UsuarioLogin usuarioLogado)
         {
+            _logger.LogInformation($"Método Atualizar dados cadastrais de orçamento - Iniciando.");
+            _logger.LogInformation($"Método Atualizar dados cadastrais de orçamento - Buscando orçamento.");
             var orcamentoAntigo = PorFiltro((int)orcamento.Id, (int)usuarioLogado.TipoUsuario);
+            if (orcamentoAntigo == null) orcamento.Erro = "Orçamento não encontrado!";
 
-            ValidarClienteOrcamento(orcamento.ClienteOrcamentoCotacaoDto);
+            if (!string.IsNullOrEmpty(orcamento.Erro)) return orcamento;
 
-            ValidarAtualizacaoDadosCadastraisOrcamentoCotacao(orcamento, orcamentoAntigo, usuarioLogado);
+            _logger.LogInformation($"Método Atualizar dados cadastrais de orçamento - Validar dados do cliente.");
+            orcamento.Erro = ValidarClienteOrcamento(orcamento.ClienteOrcamentoCotacaoDto);
+            if (!string.IsNullOrEmpty(orcamento.Erro)) return orcamento;
 
+            _logger.LogInformation($"Método Atualizar dados cadastrais de orçamento - Validar dados cadastrais do orçamento.");
+            orcamento.Erro = ValidarAtualizacaoDadosCadastraisOrcamentoCotacao(orcamento, orcamentoAntigo, usuarioLogado);
+            if (!string.IsNullOrEmpty(orcamento.Erro)) return orcamento;
+
+            _logger.LogInformation($"Método Atualizar dados cadastrais de orçamento - Abrindo transação.");
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 try
                 {
+                    _logger.LogInformation($"Método Atualizar dados cadastrais de orçamento - Buscando orçamento para atualizar.");
                     var tOrcamento = _orcamentoCotacaoBll.PorFiltroComTransacao(new TorcamentoCotacaoFiltro() { Id = (int)orcamento.Id }, dbGravacao).FirstOrDefault();
-                    if (tOrcamento == null) throw new Exception("Falha ao buscar Orçamento!");
+                    if (tOrcamento == null) orcamento.Erro = "Falha ao buscar Orçamento!";
+                    if (!string.IsNullOrEmpty(orcamento.Erro)) return orcamento;
 
                     bool alterouEmail = false;
 
@@ -675,10 +688,10 @@ namespace OrcamentoCotacaoBusiness.Bll
                     tOrcamento.Email = orcamento.ClienteOrcamentoCotacaoDto.Email;
                     tOrcamento.Telefone = orcamento.ClienteOrcamentoCotacaoDto.Telefone;
 
-                    if(tOrcamento.StEtgImediata != (orcamento.EntregaImediata? (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM : (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO))
+                    if (tOrcamento.StEtgImediata != (orcamento.EntregaImediata ? (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM : (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO))
                     {
                         tOrcamento.StEtgImediata = orcamento.EntregaImediata ? (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM : (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO;
-                        if(tOrcamento.PrevisaoEntregaData != orcamento.DataEntregaImediata)
+                        if (tOrcamento.PrevisaoEntregaData != orcamento.DataEntregaImediata)
                         {
                             tOrcamento.PrevisaoEntregaData = orcamento.DataEntregaImediata?.Date;
                             tOrcamento.PrevisaoEntregaIdTipoUsuarioContexto = usuarioLogado.TipoUsuario;
@@ -689,7 +702,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         tOrcamento.EtgImediataIdTipoUsuarioContexto = usuarioLogado.TipoUsuario;
                         tOrcamento.EtgImediataIdUsuarioUltAtualiz = usuarioLogado.Id;
                     }
-                    
+
                     tOrcamento.Observacao = orcamento.ObservacoesGerais;
                     tOrcamento.IdTipoUsuarioContextoUltAtualizacao = (int)usuarioLogado.TipoUsuario;
                     tOrcamento.IdUsuarioUltAtualizacao = usuarioLogado.Id;
@@ -705,7 +718,14 @@ namespace OrcamentoCotacaoBusiness.Bll
                         tOrcamento.InstaladorInstalaDtHrUltAtualiz = DateTime.Now;
                     }
 
+                    _logger.LogInformation($"Método Atualizar dados cadastrais de orçamento - Atualizando dados cadastrais.");
                     var retorno = _orcamentoCotacaoBll.AtualizarComTransacao(tOrcamento, dbGravacao);
+                    if(retorno == null)
+                    {
+                        _logger.LogInformation($"Método Atualizar dados cadastrais de orçamento - Falha ao atualizar dados cadastrais.");
+                        orcamento.Erro = "Falha ao atualizar dados cadastrais!";
+                        return orcamento;
+                    }
 
                     bool atualizouLink = false;
 
@@ -727,9 +747,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                 catch (Exception ex)
                 {
                     dbGravacao.transacao.Rollback();
-                    throw new ArgumentException("Falha ao atualizar orçamento!");
+                    _logger.LogInformation($"Método Atualizar dados cadastrais de orçamento - Falha ao atualizar dados cadatrais do orçamento.");
                 }
             }
+            _logger.LogInformation($"Método Atualizar dados cadastrais de orçamento - Finalizando atualização de dados cadastrais.");
+            return orcamento;
         }
 
         private void GerarNovoLink(TorcamentoCotacao tOrcamento)
@@ -769,7 +791,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             return false;
         }
 
-        public void ValidarAtualizacaoDadosCadastraisOrcamentoCotacao(OrcamentoResponseViewModel orcamento,
+        public string ValidarAtualizacaoDadosCadastraisOrcamentoCotacao(OrcamentoResponseViewModel orcamento,
             OrcamentoResponseViewModel orcamentoAntigo, UsuarioLogin usuarioLogado)
         {
             foreach (var opcao in orcamentoAntigo.ListaOrcamentoCotacaoDto)
@@ -780,43 +802,45 @@ namespace OrcamentoCotacaoBusiness.Bll
                     {
                         if (orcamento.ClienteOrcamentoCotacaoDto.ContribuinteICMS !=
                             orcamentoAntigo.ClienteOrcamentoCotacaoDto.ContribuinteICMS)
-                            throw new ArgumentException("O contribuinte de ICMS não pode ser alterado!");
+                            return "O contribuinte de ICMS não pode ser alterado!";
 
                         if (orcamento.ClienteOrcamentoCotacaoDto.Uf.ToUpper() !=
                             orcamentoAntigo.ClienteOrcamentoCotacaoDto.Uf.ToUpper())
-                            throw new ArgumentException("A UF de entrega não ser alterada!");
+                            return "A UF de entrega não ser alterada!";
                     }
                 }
             }
 
             if (orcamento.Validade.Date != orcamentoAntigo.Validade.Date)
-                throw new ArgumentException("A validade do orçamento não pode ser alterada!");
+                return "A validade do orçamento não pode ser alterada!";
 
             if (orcamento.ClienteOrcamentoCotacaoDto.Tipo.ToUpper() !=
                 orcamentoAntigo.ClienteOrcamentoCotacaoDto.Tipo.ToUpper())
-                throw new ArgumentException("O tipo do cliente não pode ser alterado!");
+                return "O tipo do cliente não pode ser alterado!";
 
             if (orcamento.IdVendedor != orcamentoAntigo.IdVendedor &&
                 orcamento.Vendedor.ToUpper() != orcamentoAntigo.Vendedor.ToUpper())
-                throw new ArgumentException("O vendedor não pode ser alterado!");
+                return "O vendedor não pode ser alterado!";
 
             if (orcamento.IdIndicadorVendedor != orcamentoAntigo.IdIndicadorVendedor &&
                 orcamento.VendedorParceiro?.ToUpper() != orcamentoAntigo.VendedorParceiro?.ToUpper())
-                throw new ArgumentException("O Vendedor do parceiro não pode ser alterado!");
+                return "O Vendedor do parceiro não pode ser alterado!";
 
             if (usuarioLogado.TipoUsuario == (int?)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
             {
                 if (orcamento.Parceiro != Constantes.SEM_INDICADOR && (orcamento.IdIndicador != orcamentoAntigo.IdIndicador &&
                     orcamento.Parceiro.ToUpper() != orcamentoAntigo.IdIndicador.ToString().ToUpper()))
-                    throw new ArgumentException("O parceiro não pode ser alterado!");
+                    return "O parceiro não pode ser alterado!";
             }
             else
             {
-                if (orcamento.Parceiro != Constantes.SEM_INDICADOR && (orcamento.Parceiro?.ToUpper() != orcamentoAntigo.Parceiro?.ToUpper() ||
-                orcamento.IdIndicador != orcamentoAntigo.IdIndicador))
-                    throw new ArgumentException("O parceiro não pode ser alterado!");
+                if (orcamento.Parceiro != Constantes.SEM_INDICADOR &&
+                   (orcamento.Parceiro?.ToUpper() != orcamentoAntigo.Parceiro?.ToUpper() ||
+                   orcamento.IdIndicador != orcamentoAntigo.IdIndicador))
+                    return "O parceiro não pode ser alterado!";
             }
 
+            return null;
         }
 
         private bool ValidarPermissaoAtualizarOpcaoOrcamentoCotacao(OrcamentoResponseViewModel orcamento, UsuarioLogin usuarioLogado)

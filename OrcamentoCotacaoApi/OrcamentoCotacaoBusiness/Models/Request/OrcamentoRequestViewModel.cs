@@ -54,6 +54,7 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         [JsonProperty("versaoPoliticaPrivacidade")]
         public string VersaoPoliticaPrivacidade { get; set; }
 
+        [JsonProperty("erro")]
         public string Erro { get; set; }
     }
 }

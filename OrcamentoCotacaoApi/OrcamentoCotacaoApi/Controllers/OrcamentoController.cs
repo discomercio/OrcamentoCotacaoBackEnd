@@ -140,8 +140,8 @@ namespace OrcamentoCotacaoApi.Controllers
         public IActionResult AtualizarDados(OrcamentoResponseViewModel model)
         {
             var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
-            _orcamentoBll.AtualizarDadosCadastraisOrcamento(model, user);
-            return Ok();
+            var retorno = _orcamentoBll.AtualizarDadosCadastraisOrcamento(model, user);
+            return Ok(retorno);
         }
     }
 }

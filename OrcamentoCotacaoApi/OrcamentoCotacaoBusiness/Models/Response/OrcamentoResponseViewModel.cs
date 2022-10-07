@@ -78,5 +78,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         [JsonProperty("instaladorInstala")]
         public int InstaladorInstala { get; set; }
 
+        [JsonProperty("erro")]
+        public string Erro { get; set; }
     }
 }
