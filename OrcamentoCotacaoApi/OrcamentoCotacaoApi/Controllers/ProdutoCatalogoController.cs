@@ -2,12 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
-using OrcamentoCotacaoBusiness.Models.Request;
-using Produto;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -19,13 +18,18 @@ namespace OrcamentoCotacaoApi.Controllers
     [Authorize]
     public class ProdutoCatalogoController : BaseController
     {
+        private readonly ILogger<ProdutoCatalogoController> _logger;
         private readonly ProdutoCatalogoOrcamentoCotacaoBll _bll;
         private readonly IOptions<Configuracoes> _appSettings;
         private readonly ProdutoOrcamentoCotacaoBll _produtoOrcamentoCotacaoBll;
 
-        public ProdutoCatalogoController(ProdutoCatalogoOrcamentoCotacaoBll bll, IOptions<Configuracoes> appSettings,
+        public ProdutoCatalogoController(
+            ILogger<ProdutoCatalogoController> logger,
+            ProdutoCatalogoOrcamentoCotacaoBll bll, 
+            IOptions<Configuracoes> appSettings,
             ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll)
         {
+            _logger = logger;
             _bll = bll;
             _appSettings = appSettings;
             _produtoOrcamentoCotacaoBll = produtoOrcamentoCotacaoBll;
@@ -161,14 +165,31 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPut]
         public async Task<IActionResult> Atualizar(IFormFile arquivo, IFormCollection form)
         {
+            _logger.LogInformation("Inicio Atualizar ProdutoCatalogo.");
+
             var tProduto = JsonConvert.DeserializeObject<TprodutoCatalogo>(form["produto"]);
             tProduto.UsuarioEdicao = LoggedUser.Apelido;
+
+            _logger.LogInformation("Atualizar ProdutoCatalogo Dados de entrada Produto: ID:{0} - Nome{1}", tProduto.Id, tProduto.Nome);
+            foreach (var campo in tProduto.campos)
+            {
+                _logger.LogInformation("Atualizar ProdutoCatalogo Dados de entrada Campos: IdProdutoCatalogo:{0} - IdProdutoCatalogoPropriedade:{1} - IdProdutoCatalogoPropriedadeOpcao:{2} - Valor:{3} - Oculto:{4}",
+                    campo.IdProdutoCatalogo,
+                    campo.IdProdutoCatalogoPropriedade,
+                    campo.IdProdutoCatalogoPropriedadeOpcao,
+                    campo.Valor,
+                    campo.Oculto);
+            }
 
             var retorno = await _bll.Atualizar(tProduto, arquivo, _appSettings.Value.ImgCaminho);
 
             if (retorno != null)
+            {
+                _logger.LogInformation("Final Atualizar ProdutoCatalogo. Retorno: {0}", retorno);
                 return BadRequest(new { message = retorno });
+            }
 
+            _logger.LogInformation("Final Atualizar ProdutoCatalogo com sucesso.");
             return Ok();
         }
 

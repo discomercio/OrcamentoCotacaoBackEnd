@@ -5,6 +5,7 @@ using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
 using Loja;
+using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
@@ -20,6 +21,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 {
     public class ProdutoOrcamentoCotacaoBll
     {
+        private readonly ILogger<ProdutoOrcamentoCotacaoBll> _logger;
         private readonly ProdutoGeralBll produtoGeralBll;
         private readonly CoeficienteBll coeficienteBll;
         private readonly IMapper _mapper;
@@ -30,7 +32,9 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly LojaBll _lojaBll;
         private readonly ProdutoCatalogoBll _produtoCatalogoBll;
 
-        public ProdutoOrcamentoCotacaoBll(Produto.ProdutoGeralBll produtoGeralBll, CoeficienteBll coeficienteBll, IMapper mapper,
+        public ProdutoOrcamentoCotacaoBll(
+            ILogger<ProdutoOrcamentoCotacaoBll> logger,
+            Produto.ProdutoGeralBll produtoGeralBll, CoeficienteBll coeficienteBll, IMapper mapper,
             OrcamentoCotacaoOpcaoItemUnificado.OrcamentoCotacaoOpcaoItemUnificadoBll orcamentoCotacaoOpcaoItemUnificadoBll,
             OrcamentoCotacaoOpcaoItemAtomico.OrcamentoCotacaoOpcaoItemAtomicoBll orcamentoCotacaoOpcaoItemAtomicoBll,
             OrcamentoCotacaoOpcaoItemAtomicoCustoFin.OrcamentoCotacaoOpcaoItemAtomicoCustoFinBll orcamentoCotacaoOpcaoItemAtomicoCustoFinBll,
@@ -38,6 +42,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             LojaBll _lojaBll,
             ProdutoCatalogoBll _produtoCatalogoBll)
         {
+            _logger = logger;
             this.produtoGeralBll = produtoGeralBll;
             this.coeficienteBll = coeficienteBll;
             _mapper = mapper;
@@ -139,7 +144,11 @@ namespace OrcamentoCotacaoBusiness.Bll
             var produtosPropTexto = await produtoGeralBll.ObterProdutoPropriedadesAtivosTexto(idProduto, propriedadeOculta, propriedadeOcultaItem);
             var produtosPropListas = await produtoGeralBll.ObterProdutoPropriedadesAtivosLista(idProduto, propriedadeOculta, propriedadeOcultaItem);
 
-            List<ProdutoCatalogoItemProdutosAtivosResponseViewModel> retorno = new List<ProdutoCatalogoItemProdutosAtivosResponseViewModel>();
+            _logger.LogInformation("Quantidade de propriedades texto: {0}", produtosPropTexto.Count);
+            _logger.LogInformation("Quantidade de propriedades lista: {0}", produtosPropListas.Count);
+
+            var retorno = new List<ProdutoCatalogoItemProdutosAtivosResponseViewModel>();
+
             if (produtosPropListas != null && produtosPropTexto != null)
             {
                 produtosPropListas.AddRange(produtosPropTexto);

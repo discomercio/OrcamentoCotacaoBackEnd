@@ -5,7 +5,6 @@ using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
 using System.Threading.Tasks;
 
-
 namespace OrcamentoCotacaoApi.BaseController
 {
     [Route("[controller]")]
@@ -17,7 +16,9 @@ namespace OrcamentoCotacaoApi.BaseController
         private readonly ProdutoOrcamentoCotacaoBll _produtoBll;
         private readonly CoeficienteBll _coeficienteBll;
 
-        public ProdutoController(ILogger<ProdutoController> logger, ProdutoOrcamentoCotacaoBll produtoBll,
+        public ProdutoController(
+            ILogger<ProdutoController> logger, 
+            ProdutoOrcamentoCotacaoBll produtoBll,
             CoeficienteBll coeficienteBll)
         {
             _logger = logger;
@@ -190,11 +191,28 @@ namespace OrcamentoCotacaoApi.BaseController
         }
 
         [HttpGet("buscar-produtos-opcoes-ativos/{idProduto}&{propriedadeOculta}&{propriedadeOcultaItem}")]
-        public async Task<IActionResult> ObterPropriedadesEOpcoesProdutosAtivosPorProduto(int idProduto, bool propriedadeOculta, 
+        public async Task<IActionResult> ObterPropriedadesEOpcoesProdutosAtivosPorProduto(
+            int idProduto, 
+            bool propriedadeOculta, 
             bool propriedadeOcultaItem)
         {
+            _logger.LogInformation("Inicio ObterPropriedadesEOpcoesProdutosAtivosPorProduto Produto.");
+
+            _logger.LogInformation("Buscar  BuscarProdutoCatalogoParaVisualizacao dados de entrada Produto: ID: {0} - propriedadeOculta: {1} - propriedadeOcultaItem: {2}", idProduto, propriedadeOculta, propriedadeOcultaItem);
             var retorno = await _produtoBll.BuscarProdutoCatalogoParaVisualizacao(idProduto, propriedadeOculta, propriedadeOcultaItem);
 
+            foreach (var item in retorno)
+            {
+                _logger.LogInformation(@"Buscar BuscarProdutoCatalogoParaVisualizacao. Retorno: 
+                                    Id: {0} - Produto: {1} - Fabricante: {2} - FabricanteNome: {3} - 
+                                    Descricao: {4} - DescricaoCompleta: {5} - IdPropriedade: {6} - 
+                                    NomePropriedade: {7} - IdValorPropriedadeOpcao: {8} - ValorPropriedade: {9} - 
+                                    PropriedadeOculta: {10} - PropriedadeOcultaItem: {11} - Ordem: {12}.",
+                                    item.Id, item.Produto, item.Fabricante, item.FabricanteNome, item.Descricao, item.DescricaoCompleta, item.IdPropriedade,
+                                    item.NomePropriedade, item.IdValorPropriedadeOpcao, item.ValorPropriedade, item.PropriedadeOculta, item.PropriedadeOcultaItem, item.Ordem);
+            }
+
+            _logger.LogInformation("Final BuscarProdutoCatalogoParaVisualizacao com sucesso.");
             return Ok(retorno);
         }
 
