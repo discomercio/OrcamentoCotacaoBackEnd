@@ -840,6 +840,27 @@ namespace OrcamentoCotacaoBusiness.Bll
                     return "O parceiro não pode ser alterado!";
             }
 
+            if (orcamento.EntregaImediata)
+            {
+                var param = BuscarParametros(37, orcamento.Loja).FirstOrDefault();
+                if (param == null) return "Falha ao buscar parâmentro para validação!";//aletrar retorno para mensagem
+
+                var dataAtual = DateTime.Now.Date;
+                if (orcamento.DataEntregaImediata?.Date < dataAtual) return "A Data de entrega não pode ser menor que a data atual!";
+                if (orcamento.DataEntregaImediata?.Date > dataAtual.AddDays(int.Parse(param.Valor)))
+                    return "A Data de entrega ultrapassa o valor máximo permitido!";
+            }
+
+            if (!string.IsNullOrEmpty(orcamento.Parceiro) && orcamento.Parceiro != Constantes.SEM_INDICADOR)
+            {
+                string msgInstalador = "É necessário informar um valor válido para instalador instala!";
+                if (orcamento.InstaladorInstala != (int)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO &&
+                    orcamento.InstaladorInstala != (int)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_SIM)
+                    return msgInstalador;
+                if (orcamento.InstaladorInstala == (int)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO_DEFINIDO)
+                    return msgInstalador;
+            }
+
             return null;
         }
 
