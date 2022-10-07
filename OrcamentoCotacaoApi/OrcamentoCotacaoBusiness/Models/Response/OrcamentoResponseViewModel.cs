@@ -75,5 +75,8 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         [JsonProperty("statusEmail")]
         public string statusEmail { get; set; }
 
+        [JsonProperty("instaladorInstala")]
+        public int InstaladorInstala { get; set; }
+
     }
 }

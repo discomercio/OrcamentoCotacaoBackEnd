@@ -394,7 +394,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                 },
                 ListaOrcamentoCotacaoDto = opcao,
                 CadastradoPor = VerificarContextoCadastroOrcamento(orcamento.IdTipoUsuarioContextoCadastro, usuario.Usuario, parceiro?.Apelido, vendedorParceiro),
-                AmigavelCadastradoPor = BuscarCadastradoPorAmigavel(orcamento.IdTipoUsuarioContextoCadastro, usuario.Nome_Iniciais_Em_Maiusculas, parceiro?.Razao_social_nome_iniciais_em_maiusculas, vendedorParceiro)
+                AmigavelCadastradoPor = BuscarCadastradoPorAmigavel(orcamento.IdTipoUsuarioContextoCadastro, usuario.Nome_Iniciais_Em_Maiusculas, parceiro?.Razao_social_nome_iniciais_em_maiusculas, vendedorParceiro),
+                InstaladorInstala = orcamento.InstaladorInstalaStatus
             };
 
             return orcamentoResponse;
@@ -668,20 +669,41 @@ namespace OrcamentoCotacaoBusiness.Bll
                     if (orcamento.ClienteOrcamentoCotacaoDto.Email != tOrcamento.Email)
                         alterouEmail = true;
 
-
                     tOrcamento.NomeCliente = orcamento.ClienteOrcamentoCotacaoDto.NomeCliente;
                     tOrcamento.NomeObra = orcamento.ClienteOrcamentoCotacaoDto.NomeObra;
                     tOrcamento.UF = orcamento.ClienteOrcamentoCotacaoDto.Uf;
                     tOrcamento.Email = orcamento.ClienteOrcamentoCotacaoDto.Email;
                     tOrcamento.Telefone = orcamento.ClienteOrcamentoCotacaoDto.Telefone;
-                    tOrcamento.StEtgImediata = orcamento.EntregaImediata ? (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM : (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO;
-                    tOrcamento.PrevisaoEntregaData = orcamento.DataEntregaImediata?.Date;
+
+                    if(tOrcamento.StEtgImediata != (orcamento.EntregaImediata? (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM : (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO))
+                    {
+                        tOrcamento.StEtgImediata = orcamento.EntregaImediata ? (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM : (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO;
+                        if(tOrcamento.PrevisaoEntregaData != orcamento.DataEntregaImediata)
+                        {
+                            tOrcamento.PrevisaoEntregaData = orcamento.DataEntregaImediata?.Date;
+                            tOrcamento.PrevisaoEntregaIdTipoUsuarioContexto = usuarioLogado.TipoUsuario;
+                            tOrcamento.PrevisaoEntregaIdUsuarioUltAtualiz = usuarioLogado.Id;
+                            tOrcamento.PrevisaoEntregaDtHrUltAtualiz = DateTime.Now;
+                        }
+                        tOrcamento.EtgImediataDtHrUltAtualiz = DateTime.Now;
+                        tOrcamento.EtgImediataIdTipoUsuarioContexto = usuarioLogado.TipoUsuario;
+                        tOrcamento.EtgImediataIdUsuarioUltAtualiz = usuarioLogado.Id;
+                    }
+                    
                     tOrcamento.Observacao = orcamento.ObservacoesGerais;
                     tOrcamento.IdTipoUsuarioContextoUltAtualizacao = (int)usuarioLogado.TipoUsuario;
                     tOrcamento.IdUsuarioUltAtualizacao = usuarioLogado.Id;
                     tOrcamento.DataHoraUltAtualizacao = DateTime.Now;
                     tOrcamento.AceiteWhatsApp = orcamento.ConcordaWhatsapp;
                     tOrcamento.ContribuinteIcms = (byte)orcamento.ClienteOrcamentoCotacaoDto.ContribuinteICMS;
+
+                    if (orcamento.InstaladorInstala != tOrcamento.InstaladorInstalaStatus)
+                    {
+                        tOrcamento.InstaladorInstalaStatus = orcamento.InstaladorInstala;
+                        tOrcamento.InstaladorInstalaIdTipoUsuarioContexto = usuarioLogado.TipoUsuario;
+                        tOrcamento.InstaladorInstalaIdUsuarioUltAtualiz = usuarioLogado.Id;
+                        tOrcamento.InstaladorInstalaDtHrUltAtualiz = DateTime.Now;
+                    }
 
                     var retorno = _orcamentoCotacaoBll.AtualizarComTransacao(tOrcamento, dbGravacao);
 
