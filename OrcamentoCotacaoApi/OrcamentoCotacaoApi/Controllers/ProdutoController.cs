@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace OrcamentoCotacaoApi.BaseController
@@ -196,23 +197,12 @@ namespace OrcamentoCotacaoApi.BaseController
             bool propriedadeOculta, 
             bool propriedadeOcultaItem)
         {
-            _logger.LogInformation("Inicio ObterPropriedadesEOpcoesProdutosAtivosPorProduto Produto.");
+            _logger.LogInformation("BuscarProdutoCatalogoParaVisualizacao - Request: [idProduto: {0} - propriedadeOculta: {1} - propriedadeOcultaItem: {2}]", idProduto, propriedadeOculta, propriedadeOcultaItem);
 
-            _logger.LogInformation("Buscar  BuscarProdutoCatalogoParaVisualizacao dados de entrada Produto: ID: {0} - propriedadeOculta: {1} - propriedadeOcultaItem: {2}", idProduto, propriedadeOculta, propriedadeOcultaItem);
             var retorno = await _produtoBll.BuscarProdutoCatalogoParaVisualizacao(idProduto, propriedadeOculta, propriedadeOcultaItem);
 
-            foreach (var item in retorno)
-            {
-                _logger.LogInformation(@"Buscar BuscarProdutoCatalogoParaVisualizacao. Retorno: 
-                                    Id: {0} - Produto: {1} - Fabricante: {2} - FabricanteNome: {3} - 
-                                    Descricao: {4} - DescricaoCompleta: {5} - IdPropriedade: {6} - 
-                                    NomePropriedade: {7} - IdValorPropriedadeOpcao: {8} - ValorPropriedade: {9} - 
-                                    PropriedadeOculta: {10} - PropriedadeOcultaItem: {11} - Ordem: {12}.",
-                                    item.Id, item.Produto, item.Fabricante, item.FabricanteNome, item.Descricao, item.DescricaoCompleta, item.IdPropriedade,
-                                    item.NomePropriedade, item.IdValorPropriedadeOpcao, item.ValorPropriedade, item.PropriedadeOculta, item.PropriedadeOcultaItem, item.Ordem);
-            }
-
-            _logger.LogInformation("Final BuscarProdutoCatalogoParaVisualizacao com sucesso.");
+            _logger.LogInformation("BuscarProdutoCatalogoParaVisualizacao - Response: {0}", JsonSerializer.Serialize(retorno));
+            
             return Ok(retorno);
         }
 

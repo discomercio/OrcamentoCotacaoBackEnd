@@ -165,31 +165,19 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPut]
         public async Task<IActionResult> Atualizar(IFormFile arquivo, IFormCollection form)
         {
-            _logger.LogInformation("Inicio Atualizar ProdutoCatalogo.");
-
             var tProduto = JsonConvert.DeserializeObject<TprodutoCatalogo>(form["produto"]);
             tProduto.UsuarioEdicao = LoggedUser.Apelido;
 
-            _logger.LogInformation("Atualizar ProdutoCatalogo Dados de entrada Produto: ID:{0} - Nome{1}", tProduto.Id, tProduto.Nome);
-            foreach (var campo in tProduto.campos)
-            {
-                _logger.LogInformation("Atualizar ProdutoCatalogo Dados de entrada Campos: IdProdutoCatalogo:{0} - IdProdutoCatalogoPropriedade:{1} - IdProdutoCatalogoPropriedadeOpcao:{2} - Valor:{3} - Oculto:{4}",
-                    campo.IdProdutoCatalogo,
-                    campo.IdProdutoCatalogoPropriedade,
-                    campo.IdProdutoCatalogoPropriedadeOpcao,
-                    campo.Valor,
-                    campo.Oculto);
-            }
+            _logger.LogInformation("Atualizar - Request: {0}", System.Text.Json.JsonSerializer.Serialize(tProduto));
 
             var retorno = await _bll.Atualizar(tProduto, arquivo, _appSettings.Value.ImgCaminho);
 
             if (retorno != null)
             {
-                _logger.LogInformation("Final Atualizar ProdutoCatalogo. Retorno: {0}", retorno);
+                _logger.LogInformation("Atualizar - Response: {0}", retorno);
                 return BadRequest(new { message = retorno });
             }
-
-            _logger.LogInformation("Final Atualizar ProdutoCatalogo com sucesso.");
+            
             return Ok();
         }
 
@@ -239,10 +227,13 @@ namespace OrcamentoCotacaoApi.Controllers
 
                 var tProduto = JsonConvert.DeserializeObject<TprodutoCatalogo>(form["produto"]);
 
+                _logger.LogInformation("Criar - Request: {0}", System.Text.Json.JsonSerializer.Serialize(tProduto));
+
                 var retorno = await _bll.Criar(tProduto, usuario, arquivo, _appSettings.Value.ImgCaminho);
 
                 if (retorno != null)
                 {
+                    _logger.LogInformation("Atualizar - Response: {0}", retorno);
                     return BadRequest(new { message = retorno });
                 }
 
