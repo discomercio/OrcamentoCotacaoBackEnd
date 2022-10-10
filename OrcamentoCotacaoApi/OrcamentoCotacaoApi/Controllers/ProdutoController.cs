@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
+using System.Text.Json;
 using System.Threading.Tasks;
-
 
 namespace OrcamentoCotacaoApi.BaseController
 {
@@ -17,7 +17,9 @@ namespace OrcamentoCotacaoApi.BaseController
         private readonly ProdutoOrcamentoCotacaoBll _produtoBll;
         private readonly CoeficienteBll _coeficienteBll;
 
-        public ProdutoController(ILogger<ProdutoController> logger, ProdutoOrcamentoCotacaoBll produtoBll,
+        public ProdutoController(
+            ILogger<ProdutoController> logger, 
+            ProdutoOrcamentoCotacaoBll produtoBll,
             CoeficienteBll coeficienteBll)
         {
             _logger = logger;
@@ -190,11 +192,17 @@ namespace OrcamentoCotacaoApi.BaseController
         }
 
         [HttpGet("buscar-produtos-opcoes-ativos/{idProduto}&{propriedadeOculta}&{propriedadeOcultaItem}")]
-        public async Task<IActionResult> ObterPropriedadesEOpcoesProdutosAtivosPorProduto(int idProduto, bool propriedadeOculta, 
+        public async Task<IActionResult> ObterPropriedadesEOpcoesProdutosAtivosPorProduto(
+            int idProduto, 
+            bool propriedadeOculta, 
             bool propriedadeOcultaItem)
         {
+            _logger.LogInformation("BuscarProdutoCatalogoParaVisualizacao - Request: [idProduto: {0} - propriedadeOculta: {1} - propriedadeOcultaItem: {2}]", idProduto, propriedadeOculta, propriedadeOcultaItem);
+
             var retorno = await _produtoBll.BuscarProdutoCatalogoParaVisualizacao(idProduto, propriedadeOculta, propriedadeOcultaItem);
 
+            _logger.LogInformation("BuscarProdutoCatalogoParaVisualizacao - Response: {0}", JsonSerializer.Serialize(retorno));
+            
             return Ok(retorno);
         }
 

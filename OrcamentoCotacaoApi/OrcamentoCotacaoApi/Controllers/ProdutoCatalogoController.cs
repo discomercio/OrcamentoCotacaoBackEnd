@@ -2,12 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
-using OrcamentoCotacaoBusiness.Models.Request;
-using Produto;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -19,13 +18,18 @@ namespace OrcamentoCotacaoApi.Controllers
     [Authorize]
     public class ProdutoCatalogoController : BaseController
     {
+        private readonly ILogger<ProdutoCatalogoController> _logger;
         private readonly ProdutoCatalogoOrcamentoCotacaoBll _bll;
         private readonly IOptions<Configuracoes> _appSettings;
         private readonly ProdutoOrcamentoCotacaoBll _produtoOrcamentoCotacaoBll;
 
-        public ProdutoCatalogoController(ProdutoCatalogoOrcamentoCotacaoBll bll, IOptions<Configuracoes> appSettings,
+        public ProdutoCatalogoController(
+            ILogger<ProdutoCatalogoController> logger,
+            ProdutoCatalogoOrcamentoCotacaoBll bll, 
+            IOptions<Configuracoes> appSettings,
             ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll)
         {
+            _logger = logger;
             _bll = bll;
             _appSettings = appSettings;
             _produtoOrcamentoCotacaoBll = produtoOrcamentoCotacaoBll;
@@ -164,11 +168,16 @@ namespace OrcamentoCotacaoApi.Controllers
             var tProduto = JsonConvert.DeserializeObject<TprodutoCatalogo>(form["produto"]);
             tProduto.UsuarioEdicao = LoggedUser.Apelido;
 
+            _logger.LogInformation("Atualizar - Request: {0}", System.Text.Json.JsonSerializer.Serialize(tProduto));
+
             var retorno = await _bll.Atualizar(tProduto, arquivo, _appSettings.Value.ImgCaminho);
 
             if (retorno != null)
+            {
+                _logger.LogInformation("Atualizar - Response: {0}", retorno);
                 return BadRequest(new { message = retorno });
-
+            }
+            
             return Ok();
         }
 
@@ -218,10 +227,13 @@ namespace OrcamentoCotacaoApi.Controllers
 
                 var tProduto = JsonConvert.DeserializeObject<TprodutoCatalogo>(form["produto"]);
 
+                _logger.LogInformation("Criar - Request: {0}", System.Text.Json.JsonSerializer.Serialize(tProduto));
+
                 var retorno = await _bll.Criar(tProduto, usuario, arquivo, _appSettings.Value.ImgCaminho);
 
                 if (retorno != null)
                 {
+                    _logger.LogInformation("Atualizar - Response: {0}", retorno);
                     return BadRequest(new { message = retorno });
                 }
 
