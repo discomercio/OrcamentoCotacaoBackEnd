@@ -97,6 +97,30 @@ namespace InfraBanco.Modelos
 
         public string VersaoPoliticaPrivacidade { get; set; }
 
+        public int? InstaladorInstalaIdTipoUsuarioContexto { get; set; }
+
+        public int? InstaladorInstalaIdUsuarioUltAtualiz { get; set; }
+
+        public DateTime? InstaladorInstalaDtHrUltAtualiz { get; set; }
+
+        public int? GarantiaIndicadorIdTipoUsuarioContexto { get; set; }
+
+        public int? GarantiaIndicadorIdUsuarioUltAtualiz { get; set; }
+
+        public DateTime? GarantiaIndicadorDtHrUltAtualiz { get; set; }
+
+        public int? EtgImediataIdTipoUsuarioContexto { get; set; }
+
+        public int? EtgImediataIdUsuarioUltAtualiz { get; set; }
+
+        public DateTime? EtgImediataDtHrUltAtualiz { get; set; }
+
+        public int? PrevisaoEntregaIdTipoUsuarioContexto { get; set; }
+
+        public int? PrevisaoEntregaIdUsuarioUltAtualiz { get; set; }
+
+        public DateTime? PrevisaoEntregaDtHrUltAtualiz { get; set; }
+
         public virtual List<TorcamentoCotacaoMensagem> TorcamentoCotacaoMensagems { get; set; }
 
         public virtual List<TorcamentoCotacaoOpcao> TorcamentoCotacaoOpcaos { get; set; }

@@ -36,6 +36,9 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         [JsonProperty("dataEntregaImediata")]
         public DateTime? DataEntregaImediata { get; set; }
 
+        [JsonProperty("instaladorInstala")]
+        public int InstaladorInstala { get; set; }
+
         [JsonProperty("clienteOrcamentoCotacaoDto")]
         public ClienteOrcamentoCotacaoRequestViewModel ClienteOrcamentoCotacaoDto { get; set; }
 
@@ -50,5 +53,8 @@ namespace OrcamentoCotacaoBusiness.Models.Request
 
         [JsonProperty("versaoPoliticaPrivacidade")]
         public string VersaoPoliticaPrivacidade { get; set; }
+
+        [JsonProperty("erro")]
+        public string Erro { get; set; }
     }
 }

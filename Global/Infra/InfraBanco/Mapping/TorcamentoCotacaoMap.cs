@@ -181,6 +181,54 @@ namespace InfraBanco.Mapping
                 .HasMaxLength(10)
                 .HasColumnType("string");
 
+            builder.Property(x => x.InstaladorInstalaIdTipoUsuarioContexto)
+                .HasColumnName("InstaladorInstalaIdTipoUsuarioContexto")
+                .HasColumnType("smallint");
+
+            builder.Property(x => x.InstaladorInstalaIdUsuarioUltAtualiz)
+                .HasColumnName("InstaladorInstalaIdUsuarioUltAtualiz")
+                .HasColumnType("int");
+
+            builder.Property(x => x.InstaladorInstalaDtHrUltAtualiz)
+                .HasColumnName("InstaladorInstalaDtHrUltAtualiz")
+                .HasColumnType("datetime");
+
+            builder.Property(x => x.GarantiaIndicadorIdTipoUsuarioContexto)
+                .HasColumnName("GarantiaIndicadorIdTipoUsuarioContexto")
+                .HasColumnType("smallint");
+
+            builder.Property(x => x.GarantiaIndicadorIdUsuarioUltAtualiz)
+                .HasColumnName("GarantiaIndicadorIdUsuarioUltAtualiz")
+                .HasColumnType("int");
+
+            builder.Property(x => x.GarantiaIndicadorDtHrUltAtualiz)
+                .HasColumnName("GarantiaIndicadorDtHrUltAtualiz")
+                .HasColumnType("datetime");
+
+            builder.Property(x => x.EtgImediataIdTipoUsuarioContexto)
+                .HasColumnName("EtgImediataIdTipoUsuarioContexto")
+                .HasColumnType("smallint");
+
+            builder.Property(x => x.EtgImediataIdUsuarioUltAtualiz)
+                .HasColumnName("EtgImediataIdUsuarioUltAtualiz")
+                .HasColumnType("int");
+
+            builder.Property(x => x.EtgImediataDtHrUltAtualiz)
+                .HasColumnName("EtgImediataDtHrUltAtualiz")
+                .HasColumnType("datetime");
+
+            builder.Property(x => x.PrevisaoEntregaIdTipoUsuarioContexto)
+                .HasColumnName("PrevisaoEntregaIdTipoUsuarioContexto")
+                .HasColumnType("smallint");
+
+            builder.Property(x => x.PrevisaoEntregaIdUsuarioUltAtualiz)
+                .HasColumnName("PrevisaoEntregaIdUsuarioUltAtualiz")
+                .HasColumnType("int");
+
+            builder.Property(x => x.PrevisaoEntregaDtHrUltAtualiz)
+                .HasColumnName("PrevisaoEntregaDtHrUltAtualiz")
+                .HasColumnType("datetime");
+
             builder.Ignore(x => x.TorcamentoCotacaoMensagems);
             builder.Ignore(x => x.TorcamentoCotacaoOpcaos);
             builder.Ignore(x => x.TorcamentoCotacaoLinks);
