@@ -85,7 +85,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 response.VisualizarOrcamento = false;
                 response.Sucesso = false;
-                response.Mensagem = "Não encontramos a permissão necessária para acessar essa funcionalidade!";
+                response.Mensagem = "Orçamento não esta mais disponível para visualização.";
                 return response;
             }
 
@@ -225,7 +225,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 response.VisualizarPrePedido = false;
                 response.Sucesso = false;
-                response.Mensagem = "Não encontramos a permissão necessária para acessar essa funcionalidade!";
+                response.Mensagem = "Pré pedido não esta mais disponível para visualização.";
                 return response;
             }
 
@@ -322,16 +322,32 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             // Prazo pedido encerrado
             var MaxPrazoConsultaOrcamentoEncerrado = 19;
+
+            DateTime data;
+
+            if (pedido.Cancelado_Data.HasValue)
+            {
+                data = pedido.Cancelado_Data.Value;
+            }
+            else if (pedido.Entregue_Data.HasValue)
+            {
+                data = pedido.Entregue_Data.Value;
+            }
+            else
+            {
+                data = DateTime.Now;
+            }
+
             var prazoPedidoEncerrado = VerificarUnidadeNegocioParametro(
                 pedido.Loja,
-                pedido.Data.Value,
+                data,
                 MaxPrazoConsultaOrcamentoEncerrado);
 
             if (prazoPedidoEncerrado)
             {
                 response.VisualizarPedido = false;
                 response.Sucesso = false;
-                response.Mensagem = "Não encontramos a permissão necessária para acessar essa funcionalidade!";
+                response.Mensagem = "Pedido não esta mais disponível para visualização.";
                 return response;
             }
 
