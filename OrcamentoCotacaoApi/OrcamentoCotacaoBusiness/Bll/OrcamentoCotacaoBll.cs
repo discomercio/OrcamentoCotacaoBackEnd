@@ -171,6 +171,16 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (orcamentoCotacaoDto.statusOrcamentoCotacaoLink != 1)
                 return false;
 
+            // [3] Aprovado
+            if (orcamentoCotacaoDto.status == 3)
+            {
+                DateTime dataCriacao = (DateTime)orcamentoCotacaoDto.dataCadastro;
+                DateTime dataValidade = dataCriacao.AddDays(int.Parse(orcamentoCotacaoDto.prazoMaximoConsultaOrcamento));
+
+                if (dataAtual > dataValidade) return false;
+                else return true;
+            }
+
             // [2] Cancelado
             if (orcamentoCotacaoDto.status == 2)
                 return false;
@@ -178,17 +188,6 @@ namespace OrcamentoCotacaoBusiness.Bll
             // Expirado
             if (dataAtual > orcamentoCotacaoDto.validade)
                 return false;
-
-            // [3] Aprovado
-            if (orcamentoCotacaoDto.status == 3)
-            {
-
-                DateTime dataCriacao = (DateTime)orcamentoCotacaoDto.dataCadastro;
-                DateTime dataValidade = dataCriacao.AddDays(int.Parse(orcamentoCotacaoDto.prazoMaximoConsultaOrcamento));
-
-                if (dataAtual > dataValidade)
-                    return false;
-            }
 
             return true;
         }
