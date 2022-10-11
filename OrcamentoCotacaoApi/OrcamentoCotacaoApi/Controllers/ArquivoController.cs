@@ -245,10 +245,11 @@ namespace OrcamentoCotacaoApi.Controllers
         {
 
             _logger.LogInformation("Inicio de Exclusão de arquivos.");
+            _logger.LogInformation("HttpPost: Excluir/{0}", id);
 
             if (!User.ValidaPermissao((int)ePermissao.ArquivosDownloadIncluirEditarPastasArquivos))
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
-
+            
             var retorno = arquivoBll.Excluir(new TorcamentoCotacaoArquivos
             {
                 Id = Guid.Parse(id)
@@ -265,7 +266,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 if (System.IO.File.Exists(file))
                 {
                     System.IO.File.Delete(file);
-                    _logger.LogInformation("Excluído fisicamente com sucesso");
+                    _logger.LogInformation("Excluído fisicamente o arquivo {0} com sucesso",file);
                 }
 
                 return Ok(retorno);
