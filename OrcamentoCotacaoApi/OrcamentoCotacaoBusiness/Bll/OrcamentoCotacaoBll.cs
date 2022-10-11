@@ -1381,7 +1381,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     orcamento.DataHoraUltStatus = DateTime.Now;
                     orcamento.IdUsuarioUltStatus = idUsuarioUltAtualizacao;
                     orcamento.IdTipoUsuarioContextoUltStatus = (int)tipoUsuarioContexto;
-                    orcamento.DataUltStatus = DateTime.Now;
+                    orcamento.DataUltStatus = DateTime.Now.Date;
                     orcamento.IdTipoUsuarioContextoUltAtualizacao = tipoUsuarioContexto == Constantes.TipoUsuarioContexto.Cliente ? null : (int?)tipoUsuarioContexto;
                     orcamento.IdUsuarioUltAtualizacao = idUsuarioUltAtualizacao == (int)Constantes.TipoUsuarioContexto.Cliente ? null : (int?)idUsuarioUltAtualizacao;
                     orcamento.DataHoraUltAtualizacao = DateTime.Now;
@@ -1396,8 +1396,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                         return new List<string>() { "Falha ao buscar opção selecionada para aprovação do orçamento!" };
 
                     //atualiza opcão
-                    opcaoSelecionada.IdTipoUsuarioContextoUltAtualizacao = idUsuarioUltAtualizacao;
-                    opcaoSelecionada.IdUsuarioUltAtualizacao = idUsuarioUltAtualizacao;
+                    opcaoSelecionada.IdTipoUsuarioContextoUltAtualizacao = tipoUsuarioContexto == Constantes.TipoUsuarioContexto.Cliente ? null : (int?)tipoUsuarioContexto;
+                    opcaoSelecionada.IdUsuarioUltAtualizacao = idUsuarioUltAtualizacao == (int)Constantes.TipoUsuarioContexto.Cliente ? null : (int?)idUsuarioUltAtualizacao;
                     opcaoSelecionada.DataHoraUltAtualizacao = DateTime.Now;
                     var objOpcao = _orcamentoCotacaoOpcaoBll.AtualizarOpcaoComTransacao(opcaoSelecionada, dbGravacao);
                     if (objOpcao == null)
