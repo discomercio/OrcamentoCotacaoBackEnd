@@ -240,6 +240,8 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost("Excluir/{id}")]
         public IActionResult Excluir(string id)
         {
+
+
             if (!User.ValidaPermissao((int)ePermissao.ArquivosDownloadIncluirEditarPastasArquivos))
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
@@ -247,6 +249,13 @@ namespace OrcamentoCotacaoApi.Controllers
             {
                 Id = Guid.Parse(id)
             });
+
+            var file = Path.Combine(_appSettings.Value.PdfCaminho, $"{id}.pdf");
+
+            if (System.IO.File.Exists(file))
+            {
+                System.IO.File.Delete(file);
+            }            
 
             if (retorno)
             {
