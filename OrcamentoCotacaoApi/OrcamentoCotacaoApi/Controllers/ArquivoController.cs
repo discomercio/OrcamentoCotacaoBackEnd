@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using static OrcamentoCotacaoBusiness.Enums.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -23,11 +24,13 @@ namespace OrcamentoCotacaoApi.Controllers
     {
         private readonly Arquivo.ArquivoBll arquivoBll;
         private readonly IOptions<Configuracoes> _appSettings;
+        private readonly ILogger<ArquivoController> _logger;
 
-        public ArquivoController(Arquivo.ArquivoBll arquivoBll, IOptions<Configuracoes> appSettings)
+        public ArquivoController(Arquivo.ArquivoBll arquivoBll, IOptions<Configuracoes> appSettings, ILogger<ArquivoController> logger)
         {
             this.arquivoBll = arquivoBll;
             _appSettings = appSettings;
+            _logger = logger;
         }
 
         [HttpGet("Download/{id}")]
@@ -241,6 +244,7 @@ namespace OrcamentoCotacaoApi.Controllers
         public IActionResult Excluir(string id)
         {
 
+            _logger.LogInformation("Inicio de Exclusão de arquivos.");
 
             if (!User.ValidaPermissao((int)ePermissao.ArquivosDownloadIncluirEditarPastasArquivos))
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
@@ -252,17 +256,23 @@ namespace OrcamentoCotacaoApi.Controllers
 
             var file = Path.Combine(_appSettings.Value.PdfCaminho, $"{id}.pdf");
 
-            if (System.IO.File.Exists(file))
-            {
-                System.IO.File.Delete(file);
-            }            
+            _logger.LogInformation("Arquivo localizado em: {0}", file);
 
             if (retorno)
             {
+                _logger.LogInformation("Excluído do banco de dados com sucesso");
+
+                if (System.IO.File.Exists(file))
+                {
+                    System.IO.File.Delete(file);
+                    _logger.LogInformation("Excluído fisicamente com sucesso");
+                }
+
                 return Ok(retorno);
             }
             else
             {
+                _logger.LogInformation("Erro ao excluir o arquivo: {0}",file);
                 return BadRequest(new
                 {
                     message = $"Erro ao excluir!"
