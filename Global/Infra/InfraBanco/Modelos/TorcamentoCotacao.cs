@@ -63,7 +63,7 @@ namespace InfraBanco.Modelos
 
         public int IdTipoUsuarioContextoUltStatus { get; set; }
 
-        public int IdUsuarioUltStatus { get; set; }
+        public int? IdUsuarioUltStatus { get; set; }
 
         public DateTime DataUltStatus { get; set; }
 
@@ -81,9 +81,9 @@ namespace InfraBanco.Modelos
 
         public DateTime DataHoraCadastro { get; set; }
 
-        public int IdTipoUsuarioContextoUltAtualizacao { get; set; }
+        public int? IdTipoUsuarioContextoUltAtualizacao { get; set; }
 
-        public int IdUsuarioUltAtualizacao { get; set; }
+        public int? IdUsuarioUltAtualizacao { get; set; }
 
         public DateTime? DataHoraUltAtualizacao { get; set; }
 

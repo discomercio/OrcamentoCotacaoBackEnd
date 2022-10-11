@@ -719,7 +719,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     _logger.LogInformation($"Método Atualizar dados cadastrais de orçamento - Atualizando dados cadastrais.");
                     var retorno = _orcamentoCotacaoBll.AtualizarComTransacao(tOrcamento, dbGravacao);
-                    if(retorno == null)
+                    if (retorno == null)
                     {
                         _logger.LogInformation($"Método Atualizar dados cadastrais de orçamento - Falha ao atualizar dados cadastrais.");
                         orcamento.Erro = "Falha ao atualizar dados cadastrais!";
@@ -1382,8 +1382,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     orcamento.IdUsuarioUltStatus = idUsuarioUltAtualizacao;
                     orcamento.IdTipoUsuarioContextoUltStatus = (int)tipoUsuarioContexto;
                     orcamento.DataUltStatus = DateTime.Now;
-                    orcamento.IdTipoUsuarioContextoUltAtualizacao = (int)tipoUsuarioContexto;
-                    orcamento.IdUsuarioUltAtualizacao = idUsuarioUltAtualizacao;
+                    orcamento.IdTipoUsuarioContextoUltAtualizacao = tipoUsuarioContexto == Constantes.TipoUsuarioContexto.Cliente ? null : (int?)tipoUsuarioContexto;
+                    orcamento.IdUsuarioUltAtualizacao = idUsuarioUltAtualizacao == (int)Constantes.TipoUsuarioContexto.Cliente ? null : (int?)idUsuarioUltAtualizacao;
                     orcamento.DataHoraUltAtualizacao = DateTime.Now;
                     orcamento.DataHoraUltStatus = DateTime.Now;
                     orcamento.VersaoPoliticaCredito = BuscarParametros(25, orcamento.Loja).FirstOrDefault().Valor;
