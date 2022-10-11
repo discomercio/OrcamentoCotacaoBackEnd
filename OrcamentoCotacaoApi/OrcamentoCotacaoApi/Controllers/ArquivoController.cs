@@ -126,6 +126,30 @@ namespace OrcamentoCotacaoApi.Controllers
                                                                         size = e.Tamanho,
                                                                         descricao = e.Descricao
                                                                     },
+                                        children = lista.Where(x => x.Pai == c.Id)
+                                                .Select(d => new Child
+                                                {
+                                                    data = new Data
+                                                    {
+                                                        key = d.Id.ToString(),
+                                                        name = d.Nome,
+                                                        type = d.Tipo,
+                                                        size = d.Tamanho,
+                                                        descricao = d.Descricao
+                                                    },
+                                                    children = lista.Where(x => x.Pai == d.Id)
+                                                                .Select(e => new Child
+                                                                {
+                                                                    data = new Data
+                                                                    {
+                                                                        key = e.Id.ToString(),
+                                                                        name = e.Nome,
+                                                                        type = e.Tipo,
+                                                                        size = e.Tamanho,
+                                                                        descricao = e.Descricao
+                                                                    },
+                                                                }).ToList()
+                                                }).ToList()
                                                                 }).ToList()
                                                 }).ToList()
                                 }).ToList()
