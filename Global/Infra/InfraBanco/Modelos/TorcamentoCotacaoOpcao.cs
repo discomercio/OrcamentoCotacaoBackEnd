@@ -15,8 +15,8 @@ namespace InfraBanco.Modelos
         public int IdUsuarioCadastro { get; set; }
         public DateTime DataCadastro { get; set; }
         public DateTime DataHoraCadastro { get; set; }
-        public int IdTipoUsuarioContextoUltAtualizacao { get; set; }
-        public int IdUsuarioUltAtualizacao { get; set; }
+        public int? IdTipoUsuarioContextoUltAtualizacao { get; set; }
+        public int? IdUsuarioUltAtualizacao { get; set; }
         public DateTime? DataHoraUltAtualizacao { get; set; }
 
         public virtual TorcamentoCotacao TorcamentoCotacao { get; set; }
