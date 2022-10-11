@@ -384,6 +384,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                         if (!Single.TryParse(prop.Valor, out float valor))
                             retorno = $"Propriedade '{item.descricao}' está inválida!";
 
+                        if(prop.Valor.Contains(".")) retorno = $"Propriedade '{item.descricao}' está com ponto, esperamos vírgula!";
+
                         if (!string.IsNullOrEmpty(retorno)) break;
                     }
 
