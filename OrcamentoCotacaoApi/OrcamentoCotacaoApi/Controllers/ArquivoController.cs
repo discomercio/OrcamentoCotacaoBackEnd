@@ -13,6 +13,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using static OrcamentoCotacaoBusiness.Enums.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -23,11 +24,13 @@ namespace OrcamentoCotacaoApi.Controllers
     {
         private readonly Arquivo.ArquivoBll arquivoBll;
         private readonly IOptions<Configuracoes> _appSettings;
+        private readonly ILogger<ArquivoController> _logger;
 
-        public ArquivoController(Arquivo.ArquivoBll arquivoBll, IOptions<Configuracoes> appSettings)
+        public ArquivoController(Arquivo.ArquivoBll arquivoBll, IOptions<Configuracoes> appSettings, ILogger<ArquivoController> logger)
         {
             this.arquivoBll = arquivoBll;
             _appSettings = appSettings;
+            _logger = logger;
         }
 
         [HttpGet("Download/{id}")]
@@ -123,6 +126,30 @@ namespace OrcamentoCotacaoApi.Controllers
                                                                         size = e.Tamanho,
                                                                         descricao = e.Descricao
                                                                     },
+                                        children = lista.Where(x => x.Pai == c.Id)
+                                                .Select(d => new Child
+                                                {
+                                                    data = new Data
+                                                    {
+                                                        key = d.Id.ToString(),
+                                                        name = d.Nome,
+                                                        type = d.Tipo,
+                                                        size = d.Tamanho,
+                                                        descricao = d.Descricao
+                                                    },
+                                                    children = lista.Where(x => x.Pai == d.Id)
+                                                                .Select(e => new Child
+                                                                {
+                                                                    data = new Data
+                                                                    {
+                                                                        key = e.Id.ToString(),
+                                                                        name = e.Nome,
+                                                                        type = e.Tipo,
+                                                                        size = e.Tamanho,
+                                                                        descricao = e.Descricao
+                                                                    },
+                                                                }).ToList()
+                                                }).ToList()
                                                                 }).ToList()
                                                 }).ToList()
                                 }).ToList()
@@ -240,20 +267,37 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost("Excluir/{id}")]
         public IActionResult Excluir(string id)
         {
+
+            _logger.LogInformation("Inicio de Exclusão de arquivos.");
+            _logger.LogInformation("HttpPost: Excluir/{0}", id);
+
             if (!User.ValidaPermissao((int)ePermissao.ArquivosDownloadIncluirEditarPastasArquivos))
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
-
+            
             var retorno = arquivoBll.Excluir(new TorcamentoCotacaoArquivos
             {
                 Id = Guid.Parse(id)
             });
 
+            var file = Path.Combine(_appSettings.Value.PdfCaminho, $"{id}.pdf");
+
+            _logger.LogInformation("Arquivo localizado em: {0}", file);
+
             if (retorno)
             {
+                _logger.LogInformation("Excluído do banco de dados com sucesso");
+
+                if (System.IO.File.Exists(file))
+                {
+                    System.IO.File.Delete(file);
+                    _logger.LogInformation("Excluído fisicamente o arquivo {0} com sucesso",file);
+                }
+
                 return Ok(retorno);
             }
             else
             {
+                _logger.LogInformation("Erro ao excluir o arquivo: {0}",file);
                 return BadRequest(new
                 {
                     message = $"Erro ao excluir!"
