@@ -73,6 +73,7 @@ namespace OrcamentoCotacaoApi.Controllers
                     Usuario = LoggedUser.Apelido,
                     IdPrePedido = idPrePedido,
                     TipoUsuario = LoggedUser.TipoUsuario.Value,
+                    IdUsuario = LoggedUser.Id
                 };
 
                 _logger.LogInformation($"Verificando permissões do usuario: {LoggedUser.Nome} para o orçamento: {idPrePedido}.");

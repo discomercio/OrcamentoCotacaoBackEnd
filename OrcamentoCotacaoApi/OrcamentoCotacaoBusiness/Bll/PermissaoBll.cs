@@ -200,6 +200,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             var idTipoUsuario = request.TipoUsuario;
+            var idUsuario = request.IdUsuario;
             var usuario = request.Usuario.ToUpper().Trim();
             var idPrePedido = request.IdPrePedido;
 
@@ -229,7 +230,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 return response;
             }
 
-            var usuarioEnvolvidoOrcamento = UsuarioEnvolvidoPrePedido(idTipoUsuario, usuario, idPrePedido);
+            var usuarioEnvolvidoOrcamento = UsuarioEnvolvidoPrePedido(idTipoUsuario, idUsuario, usuario, idPrePedido);
 
             var permissaoVisualizarOrcamentoConsultar = ValidaPermissao(request.PermissoesUsuario, ePermissao.VisualizarOrcamentoConsultar);
             var permissaoAcessoUniversalOrcamentoEditar = ValidaPermissao(request.PermissoesUsuario, ePermissao.AcessoUniversalOrcamentoEditar);
@@ -300,7 +301,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (string.IsNullOrEmpty(request.IdPedido))
             {
                 response.Sucesso = false;
-                response.Mensagem = "Obrigatório o preenchimento do campo IdPedido.";
+                response.Mensagem = "Obrigatório o preenchimento do campo IdPedido/IdPrePedido.";
                 return response;
             }
 
@@ -308,6 +309,18 @@ namespace OrcamentoCotacaoBusiness.Bll
             var idUsuario = request.IdUsuario;
             var usuario = request.Usuario.ToUpper().Trim();
             var idPedido = request.IdPedido;
+
+            if (idPedido.ToUpper().Contains("Z"))
+            {
+                var idPrePedido = request.IdPedido;
+
+                var prePedido = ObterPrePedidoPorIdPrePedido(idPrePedido);
+
+                if (prePedido != null)
+                {
+                    idPedido = prePedido.Pedido;
+                }
+            }
 
             // Pedido
             var pedido = ObterPedidoPorIdPedido(idPedido);
@@ -509,7 +522,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             return usuarioEnvolvido;
         }
 
-        private bool UsuarioEnvolvidoPrePedido(int idTipoUsuario, string usuario, string idPrePedido)
+        private bool UsuarioEnvolvidoPrePedido(int idTipoUsuario, int idUsuario, string usuario, string idPrePedido)
         {
             bool usuarioEnvolvido = false;
 
@@ -535,16 +548,9 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
                 {
-                    var idIndicadorVendedor = 0;
-
-                    if (!int.TryParse(usuario, out idIndicadorVendedor))
-                    {
-                        throw new Exception("Problemas na conversão de Vendedor do parceiro.");
-                    }
-
                     usuarioEnvolvido = (from o in db.Torcamento
                                         where
-                                             o.IdIndicadorVendedor == idIndicadorVendedor
+                                             o.IdIndicadorVendedor == idUsuario
                                              && o.Orcamento == idPrePedido
                                         select o).Any();
                 }
@@ -564,7 +570,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     usuarioEnvolvido = (from o in db.Tpedido
                                         where
                                              o.Vendedor == usuario
-                                             && (o.Pedido == idPedido || o.Orcamento == idPedido)
+                                             && o.Pedido == idPedido
                                         select o).Any();
                 }
 
@@ -573,7 +579,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     usuarioEnvolvido = (from o in db.Tpedido
                                         where
                                              o.Orcamentista == usuario
-                                             && (o.Pedido == idPedido || o.Orcamento == idPedido)
+                                             && o.Pedido == idPedido
                                         select o).Any();
                 }
 
@@ -582,7 +588,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     usuarioEnvolvido = (from o in db.Tpedido
                                         where
                                              o.IdIndicadorVendedor == idUsuario
-                                             && (o.Pedido == idPedido || o.Orcamento == idPedido)
+                                             && o.Pedido == idPedido
                                         select o).Any();
                 }
             }
