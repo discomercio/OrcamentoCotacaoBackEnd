@@ -1,8 +1,10 @@
-﻿using Prepedido.Dados;
+﻿using InfraBanco.Constantes;
+using Prepedido.Dados;
 using Prepedido.Dados.DetalhesPrepedido;
 using Prepedido.Dto;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -35,8 +37,17 @@ namespace Prepedido.Bll
 
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTO))
             {
-                var ret = await prepedidoBll.CadastrarPrepedido(prePedidoDados, apelido,
-                limiteArredondamento, verificarPrepedidoRepetido, sistemaResponsavelCadastro, limite_de_itens, dbGravacao);
+                var ret = (await prepedidoBll.CadastrarPrepedido(prePedidoDados, apelido,
+                limiteArredondamento, verificarPrepedidoRepetido, sistemaResponsavelCadastro, limite_de_itens, dbGravacao)).ToList();
+
+                if (ret.Count == 1)
+                {
+                    if (ret[0].Contains(Constantes.SUFIXO_ID_ORCAMENTO))
+                    {
+                        dbGravacao.transacao.Commit();
+                    }
+                        
+                }
                 return ret;
             }
 
