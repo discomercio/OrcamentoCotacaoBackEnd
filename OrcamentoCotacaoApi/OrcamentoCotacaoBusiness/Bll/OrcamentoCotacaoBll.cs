@@ -687,7 +687,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     tOrcamento.Email = orcamento.ClienteOrcamentoCotacaoDto.Email;
                     tOrcamento.Telefone = orcamento.ClienteOrcamentoCotacaoDto.Telefone;
 
-                    if (tOrcamento.StEtgImediata != (orcamento.EntregaImediata ? (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM : (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO))
+                    if (tOrcamento.StEtgImediata != (orcamento.EntregaImediata ? (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM : (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO) ||
+                        tOrcamento.PrevisaoEntregaData != orcamento.DataEntregaImediata)
                     {
                         tOrcamento.StEtgImediata = orcamento.EntregaImediata ? (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM : (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO;
                         if (tOrcamento.PrevisaoEntregaData != orcamento.DataEntregaImediata)
