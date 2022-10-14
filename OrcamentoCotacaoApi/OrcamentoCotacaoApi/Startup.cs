@@ -64,40 +64,39 @@ namespace OrcamentoCotacaoApi
             {
                 if (context.Request.Method.ToUpper() == "POST" || context.Request.Method.ToUpper() == "GET")
                 {
-                    if (context.Request.Path.Value.ToLower().Contains("/api/"))
+
+                    /*
+                     * sem cache se for da API:
+                        Cache-Control: no-store,no-cache
+                        Pragma: no-cache
+
+                    e tb retornamos a versão da API
+                        */
+                    context.Response.Headers.Add("Cache-Control", "no-store,no-cache");
+                    context.Response.Headers.Add("Pragma", "no-cache");
+                    context.Response.Headers.Add("X-API-Version", nossaApiVersion);
+                    context.Response.Headers.Add("Access-Control-Expose-Headers", "X-API-Version");
+
+                    /*
+                     * exigimos a versão da API
+                     * X-API-Version: SUBSTITUIR_VERSAO_API
+                     * */
+                    var apiVersion = context.Request.Headers["X-API-Version"];
+                    if (!apiVersion.Any(r => r == nossaApiVersion))
                     {
-                        /*
-                         * sem cache se for da API:
-                            Cache-Control: no-store,no-cache
-                            Pragma: no-cache
+                        context.Response.StatusCode = 412; // 412 Precondition Failed 
 
-                        e tb retornamos a versão da API
-                            */
-                        context.Response.Headers.Add("Cache-Control", "no-store,no-cache");
-                        context.Response.Headers.Add("Pragma", "no-cache");
-                        context.Response.Headers.Add("X-API-Version", nossaApiVersion);
-                        context.Response.Headers.Add("Access-Control-Expose-Headers", "X-API-Version");
+                        //os cabeçalhos devem ser definidos antes do conteúdo
+                        if (env.IsDevelopment())
+                            context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
 
-                        /*
-                         * exigimos a versão da API
-                         * X-API-Version: SUBSTITUIR_VERSAO_API
-                         * */
-                        var apiVersion = context.Request.Headers["X-API-Version"];
-                        if (!apiVersion.Any(r => r == nossaApiVersion))
-                        {
-                            context.Response.StatusCode = 412; // 412 Precondition Failed 
+                        context.Response.Headers.Add("Content-Type", "text/html; charset=UTF-8");
+                        var msg = $"Erro: use um cabeçalho \"X-API-Version\" com o valor {nossaApiVersion}. Formato: <br><br>X-API-Version: {nossaApiVersion}";
+                        context.Response.Body.Write(Encoding.UTF8.GetBytes(msg));
 
-                            //os cabeçalhos devem ser definidos antes do conteúdo
-                            if (env.IsDevelopment())
-                                context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-
-                            context.Response.Headers.Add("Content-Type", "text/html; charset=UTF-8");
-                            var msg = $"Erro: use um cabeçalho \"X-API-Version\" com o valor {nossaApiVersion}. Formato: <br><br>X-API-Version: {nossaApiVersion}";
-                            context.Response.Body.Write(Encoding.UTF8.GetBytes(msg));
-
-                            return;
-                        }
+                        return;
                     }
+
                 }
                 await next();
 
