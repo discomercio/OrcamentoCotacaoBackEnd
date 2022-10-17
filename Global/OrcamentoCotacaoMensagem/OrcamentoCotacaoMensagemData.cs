@@ -24,7 +24,6 @@ namespace OrcamentoCotacaoMensagem
             {
 
                 return await (from ocm in db.TorcamentoCotacaoMensagem
-                                                      join ocms in db.TorcamentoCotacaoMensagemStatus on ocm.Id equals ocms.IdOrcamentoCotacaoMensagem
                                                       where ocm.IdOrcamentoCotacao == IdOrcamentoCotacao
                                select new TorcamentoCotacaoMensagemFiltro()
                                {
@@ -33,15 +32,9 @@ namespace OrcamentoCotacaoMensagem
                                    IdUsuarioRemetente = ocm.IdUsuarioRemetente,
                                    IdTipoUsuarioContextoDestinatario = ocm.IdTipoUsuarioContextoDestinatario,
                                    IdUsuarioDestinatario = ocm.IdUsuarioDestinatario,
-                                   Lida = ocms.Lida,
-                                   DataLida = ocms.DataHoraLida,
-                                   DataHoraLida = ocms.DataHoraLida,
                                    Mensagem = ocm.Mensagem,
                                    DataCadastro = ocm.DataCadastro,
-                                   DataHoraCadastro = ocm.DataHoraCadastro,
-                                   PendenciaTratada = ocms.PendenciaTratada,
-                                   DataPendenciaTratada = ocms.DataHoraPendenciaTratada,
-                                   DataHoraPendenciaTratada = ocms.DataHoraPendenciaTratada
+                                   DataHoraCadastro = ocm.DataHoraCadastro
                                })
                                .OrderByDescending(x => x.Id)
                                .ToListAsync();
@@ -232,7 +225,7 @@ namespace OrcamentoCotacaoMensagem
             return saida;
         }
 
-        public List<TorcamentoCotacaoMensagem> ObterParticipantes(int IdOrcamentoCotacao, int idUsuarioDonoOrcamento)
+        public TorcamentoCotacaoMensagem ObterDadosOutroParticipante(int IdOrcamentoCotacao, int idUsuarioDonoOrcamento)
         {
 
             using (var db = contextoProvider.GetContextoLeitura())
@@ -243,7 +236,7 @@ namespace OrcamentoCotacaoMensagem
                                                 ocm.IdUsuarioRemetente != 0 &&
                                                 ocm.IdUsuarioRemetente != idUsuarioDonoOrcamento
                                                 select ocm
-                                                ).Distinct().ToList();
+                                                ).Distinct().FirstOrDefault();
           
 
                 return orcamentoCotacaoMensagem;
