@@ -63,10 +63,10 @@ namespace OrcamentoCotacaoBusiness.Bll
         {
             var saida = false;
 
-            List<TorcamentoCotacaoMensagem> participantesMensagem = null;
+            TorcamentoCotacaoMensagem outroParticipante = null;
 
             if (IdUsuarioLogado == 0)
-                participantesMensagem = _bll.ObterParticipantes(
+                outroParticipante = _bll.ObterDadosOutroParticipante(
                     orcamentoCotacaoMensagem.IdOrcamentoCotacao, 
                     orcamentoCotacaoMensagem.IdUsuarioDestinatario
                     );
@@ -96,8 +96,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     {
                         _bll.EnviarMensagem(orcamentoCotacaoMensagem, 
                             contextoBdGravacao,
-                            null, 
-                            participantesMensagem);
+                            null,
+                            outroParticipante);
 
                         saida = true;
                     }
