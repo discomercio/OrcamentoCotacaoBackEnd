@@ -252,5 +252,12 @@ namespace OrcamentoCotacaoApi.Controllers
 
             return Ok(saida);
         }
+
+        [HttpGet("buscarTiposPropriedades")]
+        public async Task<IActionResult> BuscarTiposPropriedadesProdutoCatalago()
+        {
+            //var saida = await _bll.BuscarTiposPropriedadesProdutoCatalago();
+            return Ok();
+        }
     }
 }
