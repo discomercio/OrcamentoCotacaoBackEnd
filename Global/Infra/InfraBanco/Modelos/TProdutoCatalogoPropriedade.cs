@@ -27,5 +27,7 @@ namespace InfraBanco.Modelos
         public TcfgTipoPropriedadeProdutoCatalogo TcfgTipoPropriedadeProdutoCatalogo { get; set; }
 
         public List<TProdutoCatalogoPropriedadeOpcao> TprodutoCatalogoPropriedadeOpcaos{ get; set; }
+
+        public List<TprodutoCatalogoItem> TprodutoCatalogoItems { get; set; }
     }
 }
