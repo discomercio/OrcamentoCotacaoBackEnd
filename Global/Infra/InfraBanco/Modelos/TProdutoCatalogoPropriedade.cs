@@ -19,5 +19,9 @@ namespace InfraBanco.Modelos
         public int ordem { get; set; }
         public DateTime dt_cadastro { get; set; }
         public string usuario_cadastro { get; set; }
+
+        public TcfgDataType TcfgDataType { get; set; }
+
+        public TcfgTipoPermissaoEdicaoCadastro TcfgTipoPermissaoEdicaoCadastro { get; set; }
     }
 }

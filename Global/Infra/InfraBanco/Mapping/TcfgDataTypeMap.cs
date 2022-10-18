@@ -33,6 +33,11 @@ namespace InfraBanco.Mapping
                 .HasColumnName("Ordenacao")
                 .HasColumnType("smallint")
                 .IsRequired();
+
+            builder
+                .HasMany(x => x.TprodutoCatalogoPropriedades)
+                .WithOne(x => x.TcfgDataType)
+                .HasForeignKey(x => x.IdCfgDataType);
         }
     }
 }

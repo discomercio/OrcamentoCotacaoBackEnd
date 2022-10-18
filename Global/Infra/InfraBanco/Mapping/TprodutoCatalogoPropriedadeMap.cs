@@ -47,6 +47,16 @@ namespace InfraBanco.Mapping
                 .HasColumnName("usuario_cadastro")
                 .HasColumnType("varchar(10)")
                 .IsRequired();
+
+            builder
+                .HasOne(x => x.TcfgDataType)
+                .WithMany(x => x.TprodutoCatalogoPropriedades)
+                .HasForeignKey(x => x.IdCfgDataType);
+
+            builder
+                .HasOne(x => x.TcfgTipoPermissaoEdicaoCadastro)
+                .WithMany(x => x.TprodutoCatalogoPropriedades)
+                .HasForeignKey(x => x.IdCfgTipoPermissaoEdicaoCadastro);
         }
     }
 }

@@ -28,6 +28,11 @@ namespace InfraBanco.Mapping
                 .HasColumnName("Descricao")
                 .HasColumnType("varchar(80)")
                 .IsRequired();
+
+            builder
+                .HasMany(x => x.TprodutoCatalogoPropriedades)
+                .WithOne(x => x.TcfgTipoPermissaoEdicaoCadastro)
+                .HasForeignKey(x => x.IdCfgTipoPermissaoEdicaoCadastro);
         }
     }
 }
