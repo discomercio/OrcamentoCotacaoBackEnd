@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using InfraBanco.Modelos;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,11 @@ namespace InfraBanco.Mapping
                 .HasColumnName("Descricao")
                 .HasColumnType("varchar(80)")
                 .IsRequired();
+
+            builder
+                .HasMany(x => x.TprodutoCatalogoPropriedades)
+                .WithOne(x => x.TcfgTipoPropriedadeProdutoCatalogo)
+                .HasForeignKey(x => x.IdCfgTipoPropriedade);
         }
     }
 }

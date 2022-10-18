@@ -57,6 +57,11 @@ namespace InfraBanco.Mapping
                 .HasOne(x => x.TcfgTipoPermissaoEdicaoCadastro)
                 .WithMany(x => x.TprodutoCatalogoPropriedades)
                 .HasForeignKey(x => x.IdCfgTipoPermissaoEdicaoCadastro);
+
+            builder
+                .HasOne(x => x.TcfgTipoPropriedadeProdutoCatalogo)
+                .WithMany(x => x.TprodutoCatalogoPropriedades)
+                .HasForeignKey(x => x.IdCfgTipoPropriedade);
         }
     }
 }
