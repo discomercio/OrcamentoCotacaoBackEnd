@@ -52,6 +52,11 @@ namespace InfraBanco.Mapping
                 .HasOne(x => x.TprodutoCatalogoPropriedade)
                 .WithMany(x => x.TprodutoCatalogoPropriedadeOpcaos)
                 .HasForeignKey(x => x.id_produto_catalogo_propriedade);
+
+            builder
+                .HasMany(x => x.TprodutoCatalogoItems)
+                .WithOne(x => x.TprodutoCatalogoPropriedadeOpcao)
+                .HasForeignKey(x => x.IdProdutoCatalogoPropriedadeOpcao);
         }
     }
 }
