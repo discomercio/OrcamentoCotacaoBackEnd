@@ -25,5 +25,7 @@ namespace InfraBanco.Modelos
         public TcfgTipoPermissaoEdicaoCadastro TcfgTipoPermissaoEdicaoCadastro { get; set; }
 
         public TcfgTipoPropriedadeProdutoCatalogo TcfgTipoPropriedadeProdutoCatalogo { get; set; }
+
+        public List<TProdutoCatalogoPropriedadeOpcao> TprodutoCatalogoPropriedadeOpcaos{ get; set; }
     }
 }
