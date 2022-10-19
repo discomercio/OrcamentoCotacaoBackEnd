@@ -68,6 +68,7 @@ namespace InfraBanco.Mapping
                 .HasOne(x => x.imagem)
                 .WithOne(x => x.TprodutoCatalogo)
                 .HasForeignKey<TprodutoCatalogoImagem>(x => x.IdProdutoCatalogo);
+
         }
     }
 }

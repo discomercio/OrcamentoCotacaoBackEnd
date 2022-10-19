@@ -205,6 +205,11 @@ namespace InfraBanco
                 .WithMany(m => m.TpedidoItemDevolvido)
                 .HasForeignKey(f => f.IdUsuarioDescontoSuperior)
                 .HasPrincipalKey(p => p.Id);
+
+            modelBuilder.Entity<Tfabricante>()
+                .HasMany(o => o.TprodutoCatalogos)
+                .WithOne(w => w.Tfabricante)
+                .HasForeignKey(f => f.Fabricante);
         }
 
         public DbSet<Tcliente> Tcliente { get; set; }

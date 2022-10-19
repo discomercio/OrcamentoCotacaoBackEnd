@@ -21,6 +21,7 @@ namespace InfraBanco.Modelos
 
         public List<TprodutoCatalogoItem> campos { get; set; }
         public TprodutoCatalogoImagem imagem { get; set; }
+        public Tfabricante Tfabricante { get; set; }
 
     }
 }

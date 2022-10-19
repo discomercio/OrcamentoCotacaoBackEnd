@@ -21,5 +21,7 @@ namespace InfraBanco.Modelos
 
         [Column("markup")]
         public float Markup { get; set; }
+
+        public List<TprodutoCatalogo> TprodutoCatalogos{ get; set; }
     }
 }
