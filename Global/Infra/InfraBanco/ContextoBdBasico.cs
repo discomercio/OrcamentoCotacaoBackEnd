@@ -205,6 +205,11 @@ namespace InfraBanco
                 .WithMany(m => m.TpedidoItemDevolvido)
                 .HasForeignKey(f => f.IdUsuarioDescontoSuperior)
                 .HasPrincipalKey(p => p.Id);
+
+            modelBuilder.Entity<Tfabricante>()
+                .HasMany(o => o.TprodutoCatalogos)
+                .WithOne(w => w.Tfabricante)
+                .HasForeignKey(f => f.Fabricante);
         }
 
         public DbSet<Tcliente> Tcliente { get; set; }
@@ -279,6 +284,8 @@ namespace InfraBanco
         public DbSet<TcfgTipoUsuarioPerfil> TcfgTipoUsuarioPerfil { get; set; }
         public DbSet<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContexto { get; set; }
         public DbSet<TcfgDataType> TcfgDataType { get; set; }
+        public DbSet<TcfgTipoPermissaoEdicaoCadastro> TcfgTipoPermissaoEdicaoCadastro { get; set; }
+        public DbSet<TcfgTipoPropriedadeProdutoCatalogo> TcfgTipoPropriedadeProdutoCatalogo { get; set; }
 
         public DbSet<TorcamentoCotacao> TorcamentoCotacao { get; set; }
         public DbSet<TorcamentoCotacaoLink> TorcamentoCotacaoLink { get; set; }

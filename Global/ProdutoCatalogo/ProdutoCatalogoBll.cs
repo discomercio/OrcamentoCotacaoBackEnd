@@ -143,17 +143,24 @@ namespace ProdutoCatalogo
             return retorno;
         }
 
-        public List<TprodutoCatalogoImagem> CriarImagensComTransacao(List<TprodutoCatalogoImagem> img, int idProduto,
+        public TprodutoCatalogoImagem CriarImagensComTransacao(TprodutoCatalogoImagem img, int idProduto,
             InfraBanco.ContextoBdGravacao contextoBdGravacao)
         {
-            var tipo = _data.BuscarTipoImagemComTransacao(new TprodutoCatalogoImagemTipoFiltro() { Id = 1 }, contextoBdGravacao).FirstOrDefault();
+            var tipo = BuscarTipoImagemComTransacao(new TprodutoCatalogoImagemTipoFiltro() { Id = 1 }, contextoBdGravacao).FirstOrDefault();
             if (tipo == null) return null;
 
-            img[0].IdProdutoCatalogo = idProduto;
-            img[0].IdTipoImagem = tipo.Id;
-            List<TprodutoCatalogoImagem> retorno = new List<TprodutoCatalogoImagem>();
-            retorno.Add(_data.CriarImagensComTransacao(img[0], contextoBdGravacao));
-            return retorno;
+            img.IdProdutoCatalogo = idProduto;
+            img.IdTipoImagem = tipo.Id;
+            //List<TprodutoCatalogoImagem> retorno = new List<TprodutoCatalogoImagem>();
+            //retorno.Add(_data.CriarImagensComTransacao(img, contextoBdGravacao));
+            //return retorno;
+            return _data.CriarImagensComTransacao(img, contextoBdGravacao);
+        }
+
+        public List<TprodutoCatalogoImagemTipo> BuscarTipoImagemComTransacao(TprodutoCatalogoImagemTipoFiltro filtro,
+            InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            return _data.BuscarTipoImagemComTransacao(new TprodutoCatalogoImagemTipoFiltro() { Id = 1 }, contextoBdGravacao);
         }
 
         public TprodutoCatalogo AtualizarComTransacao(TprodutoCatalogo model,
@@ -196,41 +203,41 @@ namespace ProdutoCatalogo
             return _data.ExcluirImagemComTransacao(idProduto, idImagem, contextoBdGravacao);
         }
 
-        public bool Atualizar(TprodutoCatalogo obj)
-        {
-            //TODO: NAO TEM COMO DESABILITAR TRACKING
-            var prodCatalogo = _data.Atualizar(obj);
+        //public bool Atualizar(TprodutoCatalogo obj)
+        //{
+        //    //TODO: NAO TEM COMO DESABILITAR TRACKING
+        //    var prodCatalogo = _data.Atualizar(obj);
 
-            if (prodCatalogo != null)
-            {
-                _data.ExcluirItens(obj);
+        //    if (prodCatalogo != null)
+        //    {
+        //        _data.ExcluirItens(obj);
 
-                if (obj != null && obj.Id > 0)
-                {
-                    if (obj.campos?.Count > 0)
-                    {
-                        foreach (var c in obj.campos)
-                        {
-                            _data.CriarItens(c);
-                        }
-                    }
+        //        if (obj != null && obj.Id > 0)
+        //        {
+        //            if (obj.campos?.Count > 0)
+        //            {
+        //                foreach (var c in obj.campos)
+        //                {
+        //                    _data.CriarItens(c);
+        //                }
+        //            }
 
-                    if (obj.imagens?.Count > 0)
-                    {
-                        foreach (var img in obj.imagens)
-                        {
-                            _data.CriarImagens(img);
-                        }
-                    }
+        //            if (obj.imagens?.Count > 0)
+        //            {
+        //                foreach (var img in obj.imagens)
+        //                {
+        //                    _data.CriarImagens(img);
+        //                }
+        //            }
 
-                    _data.ExcluirImagemTmp();
+        //            _data.ExcluirImagemTmp();
 
-                    return true;
-                }
-            }
+        //            return true;
+        //        }
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
         public List<TcfgDataType> ObterTipoPropriedadePorFiltro(TcfgDataTypeFiltro filtro)
         {

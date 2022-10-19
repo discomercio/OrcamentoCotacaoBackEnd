@@ -7,11 +7,11 @@ using System.Text;
 
 namespace InfraBanco.Mapping
 {
-    public class TcfgDataTypeMap : IEntityTypeConfiguration<TcfgDataType>
+    public class TcfgTipoPermissaoEdicaoCadastroMap : IEntityTypeConfiguration<TcfgTipoPermissaoEdicaoCadastro>
     {
-        public void Configure(EntityTypeBuilder<TcfgDataType> builder)
+        public void Configure(EntityTypeBuilder<TcfgTipoPermissaoEdicaoCadastro> builder)
         {
-            builder.ToTable("t_CFG_DATA_TYPE");
+            builder.ToTable("t_CFG_TIPO_PERMISSAO_EDICAO_CADASTRO");
             builder.HasKey(o => o.Id);
 
             builder.Property(x => x.Id)
@@ -21,7 +21,7 @@ namespace InfraBanco.Mapping
 
             builder.Property(x => x.Sigla)
                 .HasColumnName("Sigla")
-                .HasColumnType("varchar(30)")
+                .HasColumnType("varchar(20)")
                 .IsRequired();
 
             builder.Property(x => x.Descricao)
@@ -29,15 +29,10 @@ namespace InfraBanco.Mapping
                 .HasColumnType("varchar(80)")
                 .IsRequired();
 
-            builder.Property(x => x.Ordenacao)
-                .HasColumnName("Ordenacao")
-                .HasColumnType("smallint")
-                .IsRequired();
-
             builder
                 .HasMany(x => x.TprodutoCatalogoPropriedades)
-                .WithOne(x => x.TcfgDataType)
-                .HasForeignKey(x => x.IdCfgDataType);
+                .WithOne(x => x.TcfgTipoPermissaoEdicaoCadastro)
+                .HasForeignKey(x => x.IdCfgTipoPermissaoEdicaoCadastro);
         }
     }
 }

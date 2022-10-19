@@ -13,11 +13,13 @@ namespace InfraBanco.Mapping
 
             builder.Property(x => x.IdProdutoCatalogo)
                 .HasColumnName("id_produto_catalogo")
-                .HasColumnType("int");
+                .HasColumnType("int")
+                .IsRequired();
 
             builder.Property(x => x.IdProdutoCatalogoPropriedade)
                 .HasColumnName("id_produto_catalogo_propriedade")
-                .HasColumnType("int");
+                .HasColumnType("int")
+                .IsRequired();
 
             builder.Property(x => x.IdProdutoCatalogoPropriedadeOpcao)
                 .HasColumnName("id_produto_catalogo_propriedade_opcao")
@@ -30,6 +32,21 @@ namespace InfraBanco.Mapping
             builder.Property(x => x.Oculto)
                 .HasColumnName("oculto")
                 .HasColumnType("bool");
+
+            builder
+                .HasOne(x => x.TprodutoCatalogoPropriedadeOpcao)
+                .WithMany(x => x.TprodutoCatalogoItems)
+                .HasForeignKey(x => x.IdProdutoCatalogoPropriedadeOpcao);
+
+            builder
+                .HasOne(x => x.TprodutoCatalogoPropriedade)
+                .WithMany(x => x.TprodutoCatalogoItems)
+                .HasForeignKey(x => x.IdProdutoCatalogoPropriedade);
+
+            builder
+                .HasOne(x => x.TprodutoCatalogo)
+                .WithMany(x => x.campos)
+                .HasForeignKey(x => x.IdProdutoCatalogo);
         }
     }
 }
