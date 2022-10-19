@@ -1,0 +1,9 @@
+﻿using UtilsGlobais.RequestResponse;
+
+namespace Arquivo.Responses
+{
+    public sealed class ArquivoCriarPastaResponse : ResponseBase
+    {
+
+    }
+}
