@@ -38,7 +38,7 @@ namespace OrcamentoCotacaoMensagem
         public bool EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem,
             InfraBanco.ContextoBdGravacao contextoBdGravacao, 
             TorcamentoCotacaoEmailQueue torcamentoCotacaoEmailQueue = null,
-            List<TorcamentoCotacaoMensagem> participantesMensagem = null 
+            TorcamentoCotacaoMensagem outroParticipante = null 
             )
         {
 
@@ -58,29 +58,24 @@ namespace OrcamentoCotacaoMensagem
 
                 var torcamentoCotacaoMensagemStatus = _orcamentoCotacaoMensagemStatusBll.InserirComTransacao(orcamentoCotacaoMensagemStatus, contextoBdGravacao);
 
-                if (participantesMensagem != null && torcamentoCotacaoMensagemStatus != null)
+                if (outroParticipante != null && torcamentoCotacaoMensagemStatus != null)
                 {
 
                     var participantesStatus = new TorcamentoCotacaoMensagemStatus();
 
-                    foreach (var item in participantesMensagem)
-                    {
-                        participantesStatus.IdOrcamentoCotacaoMensagem = item.Id;
-                        participantesStatus.IdTipoUsuarioContexto = item.IdTipoUsuarioContextoRemetente;
-                        participantesStatus.IdUsuario = item.IdUsuarioRemetente;
-                        participantesStatus.Lida = false;
-                        participantesStatus.PendenciaTratada = false;
+                    participantesStatus.IdOrcamentoCotacaoMensagem = torcamentoCotacaoMensagem.Id;
+                    participantesStatus.IdTipoUsuarioContexto = outroParticipante.IdTipoUsuarioContextoRemetente;
+                    participantesStatus.IdUsuario = outroParticipante.IdUsuarioRemetente;
+                    participantesStatus.Lida = false;
+                    participantesStatus.PendenciaTratada = false;
 
-                        contextoBdGravacao.TorcamentoCotacaoMensagemStatus.Add(participantesStatus);
-                        contextoBdGravacao.SaveChanges();
-                    }                    
-                    
+                    contextoBdGravacao.TorcamentoCotacaoMensagemStatus.Add(participantesStatus);
+                    contextoBdGravacao.SaveChanges();                    
                 }
 
                 if (torcamentoCotacaoMensagemStatus != null)
                 {                    
                     contextoBdGravacao.transacao.Commit();
-
                     saida = true;
                 }
             }
@@ -88,9 +83,9 @@ namespace OrcamentoCotacaoMensagem
             return saida;            
         }
 
-        public List<TorcamentoCotacaoMensagem> ObterParticipantes(int idORcamentoCotacao, int idDonoOrcamento)
+        public TorcamentoCotacaoMensagem ObterDadosOutroParticipante(int idORcamentoCotacao, int idDonoOrcamento)
         {
-            return _data.ObterParticipantes(idORcamentoCotacao, idDonoOrcamento);
+            return _data.ObterDadosOutroParticipante(idORcamentoCotacao, idDonoOrcamento);
         }
 
         public bool MarcarLida(int IdOrcamentoCotacao, int idUsuarioRemetente)
