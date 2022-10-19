@@ -17,6 +17,8 @@ namespace InfraBanco.Modelos
         public int Ordem { get; set; }
 
         public TprodutoCatalogo TprodutoCatalogo { get; set; }
+
+        public TprodutoCatalogoImagemTipo TprodutoCatalogoImagemTipo { get; set; }
     }
 }
 
