@@ -23,7 +23,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public ProdutoCatalogoOrcamentoCotacaoBll(
             ProdutoCatalogoBll bll,
-            InfraBanco.ContextoBdProvider contextoBdProvider, 
+            InfraBanco.ContextoBdProvider contextoBdProvider,
             ProdutoGeralBll produtoGeralBll,
             ILogger<ProdutoCatalogoOrcamentoCotacaoBll> logger)
         {
@@ -110,22 +110,22 @@ namespace OrcamentoCotacaoBusiness.Bll
                     if (produtoCatalogo == null)
                         throw new ArgumentException("Ops! Parece que não existe dados de produto para catálogo!");
 
-                    produtoCatalogo = _bll.AtualizarComTransacao(produtoCatalogo, dbGravacao);
+                    var tProdutoCatalogo = _bll.AtualizarComTransacao(produtoCatalogo, dbGravacao);
 
-                    if (produtoCatalogo == null)
+                    if (tProdutoCatalogo == null)
                         return "Ops! Erro ao atualizar produto!";
 
                     if (produtoCatalogo.campos == null || produtoCatalogo.campos.Count == 0)
                         return "Ops! As propriedades do produto não pode estar vazio!";
 
-                    produtoCatalogo.campos = _bll.AtualizarItensComTransacao(produtoCatalogo.campos, produtoCatalogo.Id,
+                    tProdutoCatalogo.campos = _bll.AtualizarItensComTransacao(produtoCatalogo.campos, tProdutoCatalogo.Id,
                         dbGravacao);
-                    if (produtoCatalogo.campos == null || produtoCatalogo.campos.Count == 0)
+                    if (tProdutoCatalogo.campos == null || tProdutoCatalogo.campos.Count == 0)
                         return "Falha ao atualizar as propriedades do produto catálogo!";
 
                     if (arquivo != null)
                     {
-                        var retorno = await CriarImagemComTransacao(arquivo, produtoCatalogo.imagens, caminho, produtoCatalogo.Id,
+                        var retorno = await CriarImagemComTransacao(arquivo, produtoCatalogo.imagem, caminho, tProdutoCatalogo.Id,
                             dbGravacao);
                         if (!string.IsNullOrEmpty(retorno))
                         {
@@ -145,61 +145,91 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public async Task<string> Criar(
-            TprodutoCatalogo produtoCatalogo, 
+            TprodutoCatalogo produtoCatalogo1,
             string usuario_cadastro,
-            IFormFile arquivo, 
+            IFormFile arquivo,
             string caminho)
         {
-            var retornoValidacao = await ValidarTiposPropriedadesProdutoCatalogo(produtoCatalogo.campos);
-            
+            var retornoValidacao = await ValidarTiposPropriedadesProdutoCatalogo(produtoCatalogo1.campos);
+
             if (!string.IsNullOrEmpty(retornoValidacao))
             {
                 return retornoValidacao;
             }
-            
+
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 try
                 {
-                    if (produtoCatalogo == null)
+                    if (produtoCatalogo1 == null)
                     {
                         return "Ops! Parece que não existe dados de produto para catálogo!";
                     }
-                    
-                    produtoCatalogo = _bll.CriarComTransacao(produtoCatalogo, usuario_cadastro, dbGravacao);
-                    
-                    if (produtoCatalogo.Id == 0)
+
+                    if (produtoCatalogo1.imagem != null)
+                    {
+                        var tipo = _bll.BuscarTipoImagemComTransacao(new TprodutoCatalogoImagemTipoFiltro() { Id = 1 }, dbGravacao).FirstOrDefault();
+                        produtoCatalogo1.imagem.IdTipoImagem = tipo.Id;
+                    }
+
+                    var prod = new TprodutoCatalogo()
+                    {
+                        Ativo = produtoCatalogo1.Ativo,
+                        Descricao = produtoCatalogo1.Descricao,
+                        Fabricante = produtoCatalogo1.Fabricante,
+                        Nome = produtoCatalogo1.Nome,
+                        Produto = produtoCatalogo1.Produto
+                    };
+
+                    var tProdutoCatalogo = _bll.CriarComTransacao(prod, usuario_cadastro, dbGravacao);
+
+                    if (tProdutoCatalogo.Id == 0)
                     {
                         return "Ops! Erro ao criar novo produto!";
                     }
-                    
-                    if (produtoCatalogo.campos == null
-                        || produtoCatalogo.campos.Count == 0)
+
+                    if (produtoCatalogo1.campos == null
+                        || produtoCatalogo1.campos.Count == 0)
                     {
                         return "Ops! As propriedades do produto não pode estar vazio!";
                     }
-                    
-                    produtoCatalogo.campos = _bll.CriarItensComTransacao(
-                        produtoCatalogo.campos,
-                        produtoCatalogo.Id,
+
+                    tProdutoCatalogo.campos = _bll.CriarItensComTransacao(
+                        produtoCatalogo1.campos,
+                        tProdutoCatalogo.Id,
                         dbGravacao);
-                    
-                    if (produtoCatalogo.imagens != null && produtoCatalogo.imagens.Count > 0)
+
+                    if (produtoCatalogo1.imagem != null)
                     {
                         var retorno = await CriarImagemComTransacao(
                             arquivo,
-                            produtoCatalogo.imagens,
+                            produtoCatalogo1.imagem,
                             caminho,
-                            produtoCatalogo.Id,
+                            tProdutoCatalogo.Id,
                             dbGravacao);
-                        
+
                         if (!string.IsNullOrEmpty(retorno))
                         {
                             dbGravacao.transacao.Rollback();
                             return retorno;
                         }
                     }
-                    
+                    //if (produtoCatalogo.imagens != null && produtoCatalogo.imagens.Count > 0)
+                    //{
+                    //    var retorno = await CriarImagemComTransacao(
+                    //        arquivo,
+                    //        produtoCatalogo.imagens,
+                    //        caminho,
+                    //        produtoCatalogo.Id,
+                    //        dbGravacao);
+
+                    //    if (!string.IsNullOrEmpty(retorno))
+                    //    {
+                    //        dbGravacao.transacao.Rollback();
+                    //        return retorno;
+                    //    }
+                    //}
+
                     dbGravacao.transacao.Commit();
                     return null;
 
@@ -213,31 +243,31 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public async Task<string> CriarImagemComTransacao(
-            IFormFile arquivo, 
-            List<TprodutoCatalogoImagem> produtoCatalogoImagens,
-            string caminho, 
-            int idProdutoCatalogo, 
+            IFormFile arquivo,
+            TprodutoCatalogoImagem produtoCatalogoImagem,
+            string caminho,
+            int idProdutoCatalogo,
             InfraBanco.ContextoBdGravacao dbGravacao)
         {
             if (arquivo == null)
             {
-                var nomeArquivoCopia = produtoCatalogoImagens[0].Caminho;
-                var extensaoCopia = produtoCatalogoImagens[0].Caminho.Split(".")[1];
-                
+                var nomeArquivoCopia = produtoCatalogoImagem.Caminho;
+                var extensaoCopia = produtoCatalogoImagem.Caminho.Split(".")[1];
+
                 var novoNomeArquivo = CriarNomeArquivo(extensaoCopia);
-                
+
                 if (string.IsNullOrEmpty(novoNomeArquivo))
                 {
                     return "Falha ao gerar nome do arquivo!";
                 }
 
-                produtoCatalogoImagens[0].Caminho = novoNomeArquivo;
+                produtoCatalogoImagem.Caminho = novoNomeArquivo;
 
-                produtoCatalogoImagens = _bll.CriarImagensComTransacao(
-                    produtoCatalogoImagens,
+                produtoCatalogoImagem = _bll.CriarImagensComTransacao(
+                    produtoCatalogoImagem,
                     idProdutoCatalogo, dbGravacao);
 
-                if (produtoCatalogoImagens == null || produtoCatalogoImagens[0].Id == 0)
+                if (produtoCatalogoImagem == null)
                 {
                     return "Ops! Erro ao salvar dados da imagem!";
                 }
@@ -258,26 +288,26 @@ namespace OrcamentoCotacaoBusiness.Bll
                 var extensao = arquivo.FileName.Substring(arquivo.FileName.Length - 3, 3);
 
                 var nomeArquivo = CriarNomeArquivo(extensao);
-                
+
                 if (string.IsNullOrEmpty(nomeArquivo))
                 {
                     return "Falha ao gerar nome do arquivo!";
                 }
 
-                produtoCatalogoImagens[0].Caminho = nomeArquivo;
-                
-                produtoCatalogoImagens = _bll.CriarImagensComTransacao(
-                    produtoCatalogoImagens,
+                produtoCatalogoImagem.Caminho = nomeArquivo;
+
+                produtoCatalogoImagem = _bll.CriarImagensComTransacao(
+                    produtoCatalogoImagem,
                     idProdutoCatalogo,
                     dbGravacao);
-                
-                if (produtoCatalogoImagens == null || produtoCatalogoImagens[0].Id == 0)
+
+                if (produtoCatalogoImagem == null)
                 {
                     return "Ops! Erro ao salvar dados da imagem!";
                 }
-                
+
                 var retorno = await InserirImagemDiretorio(arquivo, caminho, nomeArquivo);
-                
+
                 if (!string.IsNullOrEmpty(retorno))
                 {
                     return retorno;
@@ -384,7 +414,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         if (!Single.TryParse(prop.Valor, out float valor))
                             retorno = $"Propriedade '{item.descricao}' está inválida!";
 
-                        if(prop.Valor.Contains(".")) retorno = $"Propriedade '{item.descricao}' está com ponto, esperamos vírgula!";
+                        if (prop.Valor.Contains(".")) retorno = $"Propriedade '{item.descricao}' está com ponto, esperamos vírgula!";
 
                         if (!string.IsNullOrEmpty(retorno)) break;
                     }

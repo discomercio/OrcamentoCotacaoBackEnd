@@ -66,8 +66,8 @@ namespace ProdutoCatalogo
 
             contextoBdGravacao.SaveChanges();
 
-            produtoCatalogo.campos = model.campos;
-            produtoCatalogo.imagens = model.imagens;
+            //produtoCatalogo.campos = model.campos;
+            //produtoCatalogo.imagem = model.imagem;
             return produtoCatalogo;
         }
 
@@ -83,8 +83,8 @@ namespace ProdutoCatalogo
                 return CriarItensComTransacao(model, contextoBdGravacao);
             }
 
-            tProdutoCatalogoItem.IdProdutoCatalogo = model.IdProdutoCatalogo;
-            tProdutoCatalogoItem.IdProdutoCatalogoPropriedade = model.IdProdutoCatalogoPropriedade;
+            //tProdutoCatalogoItem.IdProdutoCatalogo = model.IdProdutoCatalogo;
+            //tProdutoCatalogoItem.IdProdutoCatalogoPropriedade = model.IdProdutoCatalogoPropriedade;
             tProdutoCatalogoItem.IdProdutoCatalogoPropriedadeOpcao = model.IdProdutoCatalogoPropriedadeOpcao;
             tProdutoCatalogoItem.Valor = model.Valor;
             tProdutoCatalogoItem.Oculto = model.Oculto;
@@ -214,7 +214,7 @@ namespace ProdutoCatalogo
                                        Fabricante = f.Nome,
                                        Nome = pc.Nome,
                                        Descricao = pc.Descricao,
-                                       IdProdutoCatalogoImagem = images.Id,
+                                       imagem = images,
                                        Ativo = pc.Ativo
                                    };
 
@@ -262,7 +262,7 @@ namespace ProdutoCatalogo
                     if (saida != null)
                     {
                         saida.campos = ObterListaItens(id);
-                        saida.imagens = ObterListaImagensPorId(id);
+                        saida.imagem = ObterListaImagensPorId(id).FirstOrDefault();
 
                         return saida;
                     }
@@ -397,7 +397,7 @@ namespace ProdutoCatalogo
                             DtCadastro = DateTime.Now,
                             Ativo = produtoCatalogo.Ativo,
                             campos = new List<TprodutoCatalogoItem>(),
-                            imagens = new List<TprodutoCatalogoImagem>()
+                            imagem = new TprodutoCatalogoImagem()
                         }).Entity;
 
                     db.SaveChanges();
@@ -418,20 +418,31 @@ namespace ProdutoCatalogo
                                 });
                         }
 
-                        if (produtoCatalogo?.imagens != null)
+                        if (produtoCatalogo?.imagem != null)
                         {
-                            foreach (var img in produtoCatalogo?.imagens)
+                            prodCatalogo.imagem = new TprodutoCatalogoImagem()
                             {
-                                prodCatalogo.imagens.Add(
-                                    new TprodutoCatalogoImagem
-                                    {
-                                        IdProdutoCatalogo = prodCatalogo.Id,
-                                        IdTipoImagem = 1,
-                                        Caminho = img.Caminho,
-                                        Ordem = img.Ordem
-                                    });
-                            }
+                                IdProdutoCatalogo = prodCatalogo.Id,
+                                IdTipoImagem = 1,
+                                Caminho = prodCatalogo.imagem.Caminho,
+                                Ordem = prodCatalogo.imagem.Ordem
+                            };
                         }
+
+                        //if (produtoCatalogo?.imagens != null)
+                        //{
+                        //    foreach (var img in produtoCatalogo?.imagens)
+                        //    {
+                        //        prodCatalogo.imagens.Add(
+                        //            new TprodutoCatalogoImagem
+                        //            {
+                        //                IdProdutoCatalogo = prodCatalogo.Id,
+                        //                IdTipoImagem = 1,
+                        //                Caminho = img.Caminho,
+                        //                Ordem = img.Ordem
+                        //            });
+                        //    }
+                        //}
                     }
 
                     db.Dispose();
@@ -537,9 +548,21 @@ namespace ProdutoCatalogo
 
         public bool ExcluirItensComTransacao(TprodutoCatalogoItem model, ContextoBdGravacao contextoBdGravacao)
         {
-            contextoBdGravacao.TprodutoCatalogoItem.Remove(model);
-            contextoBdGravacao.SaveChanges();
-            return true;
+            
+            var prop = (from c in contextoBdGravacao.TprodutoCatalogoItem
+                       where model.IdProdutoCatalogo == c.IdProdutoCatalogo &&
+                             model.IdProdutoCatalogoPropriedade == c.IdProdutoCatalogoPropriedade
+                             select c).AsNoTracking().FirstOrDefault();
+
+            if(prop != null)
+            {
+
+                contextoBdGravacao.TprodutoCatalogoItem.Remove(prop);
+                contextoBdGravacao.SaveChanges();
+                return true;
+            }
+            
+            return false;
         }
 
         public bool CriarImagens(TprodutoCatalogoImagem img)

@@ -11,13 +11,10 @@ namespace InfraBanco.Mapping
             builder.ToTable("t_PRODUTO_CATALOGO");
             builder.HasKey(o => o.Id);
 
-            
-            /*
-            builder.Property(x => x.Codigo)
-                .HasColumnName("produto")
-                .HasColumnType("varchar(8)")
-                .IsRequired();*/
-
+            builder.Property(x => x.Id)
+                .HasColumnName("id")
+                .HasColumnType("int")
+                .UseSqlServerIdentityColumn();
 
             builder.Property(x => x.Produto)
                 .HasColumnName("produto")
@@ -62,11 +59,15 @@ namespace InfraBanco.Mapping
                 .HasColumnType("bit")
                 .HasDefaultValueSql("1");
 
-            builder.Ignore(x => x.campos);
-            builder.Ignore(x => x.imagens);
+            builder
+                .HasMany(x => x.campos)
+                .WithOne(x => x.TprodutoCatalogo)
+                .HasForeignKey(x => x.IdProdutoCatalogo);
 
-            //public List<TorcamentoProdutoCatalogoItens> campos { get; set; }
-            //public List<TorcamentoProdutoCatalogoImagem> imagens { get; set; }
-    }
+            builder
+                .HasOne(x => x.imagem)
+                .WithOne(x => x.TprodutoCatalogo)
+                .HasForeignKey<TprodutoCatalogoImagem>(x => x.IdProdutoCatalogo);
+        }
     }
 }

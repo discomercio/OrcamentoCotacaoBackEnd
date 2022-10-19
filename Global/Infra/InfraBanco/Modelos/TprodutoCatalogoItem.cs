@@ -13,5 +13,7 @@ namespace InfraBanco.Modelos
 
         public TProdutoCatalogoPropriedadeOpcao TprodutoCatalogoPropriedadeOpcao { get; set; }
         public TProdutoCatalogoPropriedade TprodutoCatalogoPropriedade { get; set; }
+
+        public TprodutoCatalogo TprodutoCatalogo { get; set; }
     }
 }
