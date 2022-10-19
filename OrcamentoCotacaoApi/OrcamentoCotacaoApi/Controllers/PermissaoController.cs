@@ -11,6 +11,7 @@ namespace OrcamentoCotacaoApi.Controllers
     [ApiController]
     [Route("[controller]")]
     [Authorize]
+    //[TypeFilter(typeof(ExceptionFilter))]
     public class PermissaoController : BaseController
     {
         private readonly ILogger<PermissaoController> _logger;
