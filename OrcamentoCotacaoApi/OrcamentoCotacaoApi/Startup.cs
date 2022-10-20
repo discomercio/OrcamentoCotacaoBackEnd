@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Serialization;
 using Orcamento.Dto;
 using OrcamentoCotacaoApi.Config;
+using OrcamentoCotacaoApi.Filters;
 using OrcamentoCotacaoApi.Utils;
 using System.Linq;
 using System.Text;
@@ -32,6 +33,11 @@ namespace OrcamentoCotacaoApi
             //services.Configure<IISServerOptions>(options =>
             //{
             //    options.AllowSynchronousIO = true;
+            //});
+
+            //services.AddControllers(c =>
+            //{
+            //    c.Filters.Add<ExceptionFilter>();
             //});
 
             services.Configure<KestrelServerOptions>(options =>

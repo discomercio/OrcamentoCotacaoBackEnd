@@ -9,6 +9,11 @@
   <ItemGroup>
     <ProjectReference Include="..\ClassesBase\ClassesBase.csproj" />
     <ProjectReference Include="..\Infra\InfraBanco\InfraBanco.csproj" />
+    <ProjectReference Include="..\Utils\UtilsGlobais.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
   </ItemGroup>
 
 </Project>
