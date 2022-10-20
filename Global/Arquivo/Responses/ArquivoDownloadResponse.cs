@@ -6,6 +6,6 @@ namespace Arquivo.Responses
     {
         public string Nome { get; set; }
         public string FileLength { get; set; }
-        public byte[] ByteArray { get; set; }       
+        public byte[] ByteArray { get; set; }
     }
 }
