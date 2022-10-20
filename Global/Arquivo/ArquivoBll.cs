@@ -26,51 +26,13 @@ namespace Arquivo
             _contextoProvider = contextoProvider;
         }
 
-        public async Task<ArquivoDownloadResponse> ArquivoDownload(ArquivoDownloadRequest request)
-        {
-            var response = new ArquivoDownloadResponse();
-
-            if (string.IsNullOrEmpty(request.Id))
-            {
-                response.Sucesso = false;
-                response.Mensagem = "Favor preencher campo Id.";
-                return response;
-            }
-
-            if (string.IsNullOrEmpty(request.Caminho))
-            {
-                response.Sucesso = false;
-                response.Mensagem = "Erro inesperado! Favor entrar em contato com o suporte técnico.";
-                return response;
-            }
-
-            try
-            {
-                var caminho = Path.Combine(request.Caminho, $"{request.Id}.pdf");
-                var fileinfo = new FileInfo(caminho);
-                byte[] byteArray = File.ReadAllBytes(caminho);
-                var arquivo = this.ObterArquivoPorID(Guid.Parse(request.Id));
-
-                response.Sucesso = true;
-                response.Mensagem = "Download feito com sucesso.";
-                response.Nome = arquivo.Nome;
-                response.FileLength = fileinfo.Length.ToString();
-                response.ByteArray = byteArray;
-                return response;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
         public async Task<ArquivoObterEstruturaResponse> ArquivoObterEstrutura(ArquivoObterEstruturaRequest request)
         {
             var response = new ArquivoObterEstruturaResponse();
 
             try
             {
-                List<TorcamentoCotacaoArquivos> lista = this.ObterEstrutura();
+                var lista = this.ObterEstrutura();
 
                 var root = lista.Where(x => x.Pai == null).FirstOrDefault();
 
@@ -149,6 +111,44 @@ namespace Arquivo
                 response.Sucesso = true;
                 response.Mensagem = "ObterEstrutura sucesso.";
                 response.Childs = data;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ArquivoDownloadResponse> ArquivoDownload(ArquivoDownloadRequest request)
+        {
+            var response = new ArquivoDownloadResponse();
+
+            if (string.IsNullOrEmpty(request.Id))
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Favor preencher campo Id.";
+                return response;
+            }
+
+            if (string.IsNullOrEmpty(request.Caminho))
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Erro inesperado! Favor entrar em contato com o suporte técnico.";
+                return response;
+            }
+
+            try
+            {
+                var caminho = Path.Combine(request.Caminho, $"{request.Id}.pdf");
+                var fileinfo = new FileInfo(caminho);
+                byte[] byteArray = File.ReadAllBytes(caminho);
+                var arquivo = this.ObterArquivoPorID(Guid.Parse(request.Id));
+
+                response.Sucesso = true;
+                response.Mensagem = "Download efetuado com sucesso.";
+                response.Nome = arquivo.Nome;
+                response.FileLength = fileinfo.Length.ToString();
+                response.ByteArray = byteArray;
                 return response;
             }
             catch (Exception ex)
@@ -252,6 +252,8 @@ namespace Arquivo
                     Tipo = "Folder"
                 });
 
+
+                response.Id = tOrcamentoCotacaoArquivos.Id;
                 response.Sucesso = true;
                 response.Mensagem = $"Pasta '{request.Nome}' criada com sucesso.";
                 return response;
@@ -297,7 +299,7 @@ namespace Arquivo
                 });
 
                 response.Sucesso = true;
-                response.Mensagem = "Edição concluida com sucesso.";
+                response.Mensagem = "Salvo com sucesso.";
                 return response;
             }
             catch (Exception ex)
