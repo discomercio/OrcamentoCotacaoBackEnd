@@ -399,7 +399,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 var item = propriedadesTextoLivre.Where(x => x.id == prop.IdProdutoCatalogoPropriedade).FirstOrDefault();
                 if (item != null)
                 {
-                    var tCfgDataType = _bll.ObterTipoPropriedadePorFiltro(new TcfgDataTypeFiltro() { Id = item.IdCfgDataType }).FirstOrDefault();
+                    var tCfgDataType = _bll.ObterDataTypesPorFiltro(new TcfgDataTypeFiltro() { Id = item.IdCfgDataType }).FirstOrDefault();
                     if (tCfgDataType == null)
                     {
                         retorno = $"Falha ao validar a propriedade '{item.descricao}'.";
@@ -438,6 +438,16 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             return await Task.FromResult(retorno);
+        }
+
+        public async Task<List<TcfgDataType>> BuscarDataTypes()
+        {
+            return await Task.FromResult(_bll.ObterDataTypesPorFiltro(new TcfgDataTypeFiltro()));
+        }
+
+        public async Task<List<TcfgTipoPropriedadeProdutoCatalogo>> BuscarTipoPropriedades()
+        {
+            return await Task.FromResult(_bll.ObterTipoPropriedadesPorFiltro(new TcfgTipoPropriedadeProdutoCatalogoFiltro()));
         }
     }
 }

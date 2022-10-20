@@ -239,9 +239,14 @@ namespace ProdutoCatalogo
         //    return false;
         //}
 
-        public List<TcfgDataType> ObterTipoPropriedadePorFiltro(TcfgDataTypeFiltro filtro)
+        public List<TcfgDataType> ObterDataTypesPorFiltro(TcfgDataTypeFiltro filtro)
         {
-            return _data.ObterTipoPropriedadePorFiltro(filtro);
+            return _data.ObterDataTypesPorFiltro(filtro);
+        }
+
+        public List<TcfgTipoPropriedadeProdutoCatalogo> ObterTipoPropriedadesPorFiltro(TcfgTipoPropriedadeProdutoCatalogoFiltro filtro)
+        {
+            return _data.ObterTipoPropriedadesPorFiltro(filtro);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
         public ProdutoCatalogoController(
             ILogger<ProdutoCatalogoController> logger,
-            ProdutoCatalogoOrcamentoCotacaoBll bll, 
+            ProdutoCatalogoOrcamentoCotacaoBll bll,
             IOptions<Configuracoes> appSettings,
             ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll)
         {
@@ -177,7 +177,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 _logger.LogInformation("Atualizar - Response: {0}", retorno);
                 return BadRequest(new { message = retorno });
             }
-            
+
             return Ok();
         }
 
@@ -258,6 +258,20 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             //var saida = await _bll.BuscarTiposPropriedadesProdutoCatalago();
             return Ok();
+        }
+
+        [HttpGet("buscarDataTypes")]
+        public async Task<IActionResult> BuscarDataTypes()
+        {
+            var saida = await _bll.BuscarDataTypes();
+            return Ok(saida);
+        }
+
+        [HttpGet("buscarTipoPropriedades")]
+        public async Task<IActionResult> BuscarTipoPropriedades()
+        {
+            var saida = await _bll.BuscarTipoPropriedades();
+            return Ok(saida);
         }
     }
 }
