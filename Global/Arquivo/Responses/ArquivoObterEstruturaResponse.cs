@@ -11,6 +11,6 @@ namespace Arquivo.Responses
             Childs = new List<Child>();
         }
 
-        public List<Child> Childs { get; set; }
+        public List<Child> Childs { get; set; }        
     }
 }
