@@ -91,38 +91,27 @@ namespace OrcamentoCotacaoApi.Controllers
 
             return Ok(response);
         }
-
+        
         [HttpPost("CriarPasta")]
-        public async Task<IActionResult> CriarPasta(
-            string nome,
-            string idPai)
+        public async Task<IActionResult> CriarPasta(ArquivoCriarPastaRequest request)
         {
             if (!User.ValidaPermissao((int)ePermissao.ArquivosDownloadIncluirEditarPastasArquivos))
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
-
-            var request = new ArquivoCriarPastaRequest()
-            {
-                IdPai = idPai,
-                Nome = nome
-            };
 
             var response = await _arquivoBll.ArquivoCriarPasta(request);
 
             return Ok(response);
         }
 
-        [HttpPost("Upload")]
-        public async Task<IActionResult> Upload(
-            IFormFile arquivo,
-            [FromForm] string idPai,
-            [FromForm] string descricao)
+        [HttpPost("Upload/{idPai}")]
+        public async Task<IActionResult> Upload(string idPai)
         {
             if (!User.ValidaPermissao((int)ePermissao.ArquivosDownloadIncluirEditarPastasArquivos))
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
             var request = new ArquivoUploadRequest()
             {
-                Arquivo = arquivo,
+                Arquivo = Request.Form.Files[0],
                 Caminho = _appSettings.Value.PdfCaminho,
                 IdPai = idPai
             };

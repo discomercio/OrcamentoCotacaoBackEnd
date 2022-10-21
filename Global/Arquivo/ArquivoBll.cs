@@ -34,7 +34,86 @@ namespace Arquivo
             {
                 var lista = this.ObterEstrutura();
 
+                if (lista.Count <= 0)
+                {
+                    response.Sucesso = false;
+                    response.Mensagem = "Não existem pastas cadastrada. Favor criar nova pasta.";
+                    return response;
+                }
+
                 var root = lista.Where(x => x.Pai == null).FirstOrDefault();
+
+                //var data = new List<Child>{
+                //new Child
+                //{
+                //    data = new Data {
+                //        key = root.Id.ToString(),
+                //        name = root.Nome,
+                //        type = "Folder",
+                //        size = root.Tamanho,
+                //        descricao = root.Descricao
+                //    },
+                //    children = lista.Where(x => x.Pai == root.Id)
+                //                .Select(c => new Child
+                //                {
+                //                    data = new Data
+                //                    {
+                //                        key = c.Id.ToString(),
+                //                        name = c.Nome,
+                //                        type = c.Tipo,
+                //                        size = c.Tamanho,
+                //                        descricao = c.Descricao
+                //                    },
+                //                    children = lista.Where(x => x.Pai == c.Id)
+                //                                .Select(d => new Child
+                //                                {
+                //                                    data = new Data
+                //                                    {
+                //                                        key = d.Id.ToString(),
+                //                                        name = d.Nome,
+                //                                        type = d.Tipo,
+                //                                        size = d.Tamanho,
+                //                                        descricao = d.Descricao
+                //                                    },
+                //                                    children = lista.Where(x => x.Pai == d.Id)
+                //                                                .Select(e => new Child
+                //                                                {
+                //                                                    data = new Data
+                //                                                    {
+                //                                                        key = e.Id.ToString(),
+                //                                                        name = e.Nome,
+                //                                                        type = e.Tipo,
+                //                                                        size = e.Tamanho,
+                //                                                        descricao = e.Descricao
+                //                                                    },
+                //                        children = lista.Where(x => x.Pai == c.Id)
+                //                                .Select(d => new Child
+                //                                {
+                //                                    data = new Data
+                //                                    {
+                //                                        key = d.Id.ToString(),
+                //                                        name = d.Nome,
+                //                                        type = d.Tipo,
+                //                                        size = d.Tamanho,
+                //                                        descricao = d.Descricao
+                //                                    },
+                //                                    children = lista.Where(x => x.Pai == d.Id)
+                //                                                .Select(e => new Child
+                //                                                {
+                //                                                    data = new Data
+                //                                                    {
+                //                                                        key = e.Id.ToString(),
+                //                                                        name = e.Nome,
+                //                                                        type = e.Tipo,
+                //                                                        size = e.Tamanho,
+                //                                                        descricao = e.Descricao
+                //                                                    },
+                //                                                }).ToList()
+                //                                }).ToList()
+                //                                                }).ToList()
+                //                                }).ToList()
+                //                }).ToList()
+                //}};
 
                 var data = new List<Child>{
                 new Child
@@ -79,30 +158,6 @@ namespace Arquivo
                                                                         size = e.Tamanho,
                                                                         descricao = e.Descricao
                                                                     },
-                                        children = lista.Where(x => x.Pai == c.Id)
-                                                .Select(d => new Child
-                                                {
-                                                    data = new Data
-                                                    {
-                                                        key = d.Id.ToString(),
-                                                        name = d.Nome,
-                                                        type = d.Tipo,
-                                                        size = d.Tamanho,
-                                                        descricao = d.Descricao
-                                                    },
-                                                    children = lista.Where(x => x.Pai == d.Id)
-                                                                .Select(e => new Child
-                                                                {
-                                                                    data = new Data
-                                                                    {
-                                                                        key = e.Id.ToString(),
-                                                                        name = e.Nome,
-                                                                        type = e.Tipo,
-                                                                        size = e.Tamanho,
-                                                                        descricao = e.Descricao
-                                                                    },
-                                                                }).ToList()
-                                                }).ToList()
                                                                 }).ToList()
                                                 }).ToList()
                                 }).ToList()
@@ -149,6 +204,151 @@ namespace Arquivo
                 response.Nome = arquivo.Nome;
                 response.FileLength = fileinfo.Length.ToString();
                 response.ByteArray = byteArray;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ArquivoExcluirResponse> ArquivoExcluir(ArquivoExcluirRequest request)
+        {
+            var response = new ArquivoExcluirResponse();
+
+            if (string.IsNullOrEmpty(request.Id))
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Favor preencher campo Id.";
+                return response;
+            }
+
+            if (string.IsNullOrEmpty(request.Caminho))
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Erro inesperado! Favor entrar em contato com o suporte técnico.";
+                return response;
+            }
+
+            try
+            {
+                var retorno = this.Excluir(new TorcamentoCotacaoArquivos
+                {
+                    Id = Guid.Parse(request.Id)
+                });
+
+                var file = Path.Combine(request.Caminho, $"{request.Id}.pdf");
+
+                if (retorno)
+                {
+                    if (File.Exists(file))
+                    {
+                        File.Delete(file);
+                    }
+                }
+
+                response.Sucesso = true;
+                response.Mensagem = "Exclusão concluida com sucesso.";
+                return response;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ArquivoEditarResponse> ArquivoEditar(ArquivoEditarRequest request)
+        {
+            var response = new ArquivoEditarResponse();
+
+            if (string.IsNullOrEmpty(request.Id))
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Favor preencher campo Id.";
+                return response;
+            }
+
+            if (string.IsNullOrEmpty(request.Nome))
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Favor preencher campo Nome.";
+                return response;
+            }
+
+            if (string.IsNullOrEmpty(request.Nome))
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Favor preencher campo Nome.";
+                return response;
+            }
+
+            if (request.Descricao.Length > 500)
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Descrição excedeu máximo de 500 caracteres.";
+                return response;
+            }
+
+            try
+            {
+                var retorno = this.Editar(new TorcamentoCotacaoArquivos
+                {
+                    Id = Guid.Parse(request.Id),
+                    Nome = request.Nome,
+                    Descricao = request.Descricao
+                });
+
+                response.Sucesso = true;
+                response.Mensagem = "Salvo com sucesso.";
+                return response;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ArquivoCriarPastaResponse> ArquivoCriarPasta(ArquivoCriarPastaRequest request)
+        {
+            var response = new ArquivoCriarPastaResponse();
+
+            if (string.IsNullOrEmpty(request.Nome))
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Favor preencher campo Nome.";
+                return response;
+            }
+
+            if (request.Nome.Length > 255)
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Nome excedeu máximo de 255 caracteres.";
+                return response;
+            }
+
+            if (!string.IsNullOrEmpty(request.Descricao) 
+                && request.Descricao.Length > 500)
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Descrição excedeu máximo de 500 caracteres.";
+                return response;
+            }
+
+            try
+            {
+                var tOrcamentoCotacaoArquivos = this.Inserir(new TorcamentoCotacaoArquivos()
+                {
+                    Id = Guid.NewGuid(),
+                    Nome = request.Nome,
+                    Pai = !string.IsNullOrEmpty(request.IdPai) ? Guid.Parse(request.IdPai) : (Guid?)null,
+                    Descricao = !string.IsNullOrEmpty(request.Descricao) ? request.Descricao : string.Empty,
+                    Tamanho = string.Empty,
+                    Tipo = "Folder"
+                });
+
+                response.Id = tOrcamentoCotacaoArquivos.Id;
+                response.Sucesso = true;
+                response.Mensagem = $"Pasta '{request.Nome}' criada com sucesso.";
                 return response;
             }
             catch (Exception ex)
@@ -213,138 +413,7 @@ namespace Arquivo
                 });
 
                 response.Sucesso = true;
-                response.Mensagem = "Arquivo salvo com sucesso.";
-                return response;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<ArquivoCriarPastaResponse> ArquivoCriarPasta(ArquivoCriarPastaRequest request)
-        {
-            var response = new ArquivoCriarPastaResponse();
-
-            if (string.IsNullOrEmpty(request.IdPai))
-            {
-                response.Sucesso = false;
-                response.Mensagem = "Favor preencher campo IdPai.";
-                return response;
-            }
-
-            if (string.IsNullOrEmpty(request.Nome))
-            {
-                response.Sucesso = false;
-                response.Mensagem = "Favor preencher campo Nome.";
-                return response;
-            }
-
-            try
-            {
-                var tOrcamentoCotacaoArquivos = this.Inserir(new TorcamentoCotacaoArquivos()
-                {
-                    Id = Guid.NewGuid(),
-                    Nome = request.Nome,
-                    Pai = !string.IsNullOrEmpty(request.IdPai) ? Guid.Parse(request.IdPai) : (Guid?)null,
-                    Descricao = request.Nome,
-                    Tamanho = "",
-                    Tipo = "Folder"
-                });
-
-
-                response.Id = tOrcamentoCotacaoArquivos.Id;
-                response.Sucesso = true;
-                response.Mensagem = $"Pasta '{request.Nome}' criada com sucesso.";
-                return response;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<ArquivoEditarResponse> ArquivoEditar(ArquivoEditarRequest request)
-        {
-            var response = new ArquivoEditarResponse();
-
-            if (string.IsNullOrEmpty(request.Id))
-            {
-                response.Sucesso = false;
-                response.Mensagem = "Favor preencher campo Id.";
-                return response;
-            }
-
-            if (string.IsNullOrEmpty(request.Nome))
-            {
-                response.Sucesso = false;
-                response.Mensagem = "Favor preencher campo Nome.";
-                return response;
-            }
-
-            if (request.Descricao.Length > 500)
-            {
-                response.Sucesso = false;
-                response.Mensagem = "Descrição excedeu máximo de 500 caracteres.";
-                return response;
-            }
-
-            try
-            {
-                var retorno = this.Editar(new TorcamentoCotacaoArquivos
-                {
-                    Id = Guid.Parse(request.Id),
-                    Nome = request.Nome,
-                    Descricao = request.Descricao
-                });
-
-                response.Sucesso = true;
-                response.Mensagem = "Salvo com sucesso.";
-                return response;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<ArquivoExcluirResponse> ArquivoExcluir(ArquivoExcluirRequest request)
-        {
-            var response = new ArquivoExcluirResponse();
-
-            if (string.IsNullOrEmpty(request.Id))
-            {
-                response.Sucesso = false;
-                response.Mensagem = "Favor preencher campo Id.";
-                return response;
-            }
-
-            if (string.IsNullOrEmpty(request.Caminho))
-            {
-                response.Sucesso = false;
-                response.Mensagem = "Erro inesperado! Favor entrar em contato com o suporte técnico.";
-                return response;
-            }
-
-            try
-            {
-                var retorno = this.Excluir(new TorcamentoCotacaoArquivos
-                {
-                    Id = Guid.Parse(request.Id)
-                });
-
-                var file = Path.Combine(request.Caminho, $"{request.Id}.pdf");
-
-                if (retorno)
-                {
-                    if (File.Exists(file))
-                    {
-                        File.Delete(file);
-                    }
-                }
-
-                response.Sucesso = true;
-                response.Mensagem = "Exclusão concluida com sucesso.";
+                response.Mensagem = "Upload efetuado com sucesso.";
                 return response;
             }
             catch (Exception ex)
@@ -362,7 +431,7 @@ namespace Arquivo
                     return (
                         from orcamentoCotacaoArquivos
                         in db.TorcamentoCotacaoArquivos
-                        orderby orcamentoCotacaoArquivos.Nome
+                        orderby orcamentoCotacaoArquivos.Tipo descending, orcamentoCotacaoArquivos.Nome
                         select orcamentoCotacaoArquivos)
                     .ToList();
                 }
@@ -433,6 +502,7 @@ namespace Arquivo
 
 
 
+        
         public TorcamentoCotacaoArquivos Atualizar(TorcamentoCotacaoArquivos obj)
         {
             try
