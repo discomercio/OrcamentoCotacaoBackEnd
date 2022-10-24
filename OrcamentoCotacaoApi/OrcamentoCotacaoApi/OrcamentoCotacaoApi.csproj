@@ -33,6 +33,7 @@
     <ProjectReference Include="..\..\Global\Arquivo\Arquivo.csproj" />
     <ProjectReference Include="..\..\Global\FormaPagamento\FormaPagamento.csproj" />
     <ProjectReference Include="..\..\Global\Loja\Loja.csproj" />
+    <ProjectReference Include="..\..\Global\Operacao\Operacao.csproj" />
     <ProjectReference Include="..\..\Global\MeioPagamentos\MeioPagamentos.csproj" />
     <ProjectReference Include="..\..\Global\OrcamentistaEIndicadorVendedor\OrcamentistaEIndicadorVendedor.csproj" />
     <ProjectReference Include="..\..\Global\OrcamentistaEindicador\OrcamentistaEindicador.csproj" />
