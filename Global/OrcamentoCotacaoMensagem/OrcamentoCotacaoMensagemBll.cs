@@ -29,9 +29,9 @@ namespace OrcamentoCotacaoMensagem
             return await _data.ObterListaMensagemPendente(IdOrcamentoCotacao);
         }
 
-        public int ObterQuantidadeMensagemPendente(int idUsuarioRemetente)
+        public int ObterQuantidadeMensagemPendente(int idUsuarioRemetente, int idTipoUsuarioRemetente)
         {
-            return _data.ObterQuantidadeMensagemPendente(idUsuarioRemetente);
+            return _data.ObterQuantidadeMensagemPendente(idUsuarioRemetente, idTipoUsuarioRemetente);
         }
 
 
