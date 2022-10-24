@@ -57,7 +57,27 @@ namespace Operacao
 
         public List<Toperacao> PorFiltro(ToperacaoFiltro obj)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var db = contextoProvider.GetContextoLeitura())
+                {
+
+                    var saida = from c in db.Toperacao
+                                select c;
+
+                    if (obj.Modulo != null)
+                    {
+                        saida = saida.Where(x => x.Modulo == obj.Modulo);
+                    }
+
+                    return saida.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
     }
 }
