@@ -1,6 +1,8 @@
-﻿namespace Arquivo.Requests
+﻿using UtilsGlobais.RequestResponse;
+
+namespace Arquivo.Requests
 {
-    public sealed class ArquivoObterEstruturaRequest
+    public sealed class ArquivoObterEstruturaRequest : RequestBase
     {
 
     }

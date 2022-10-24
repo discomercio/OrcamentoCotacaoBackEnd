@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Net;
+using UtilsGlobais.Configs;
+using UtilsGlobais.Exceptions;
 
 namespace OrcamentoCotacaoApi.Filters
 {
@@ -8,45 +12,38 @@ namespace OrcamentoCotacaoApi.Filters
     {
         private readonly ILogger<ExceptionFilter> _logger;
 
-        public ExceptionFilter(
-            ILogger<ExceptionFilter> logger)
+        public ExceptionFilter(ILogger<ExceptionFilter> logger)
         {
             _logger = logger;
         }
 
         public void OnException(ExceptionContext context)
         {
-            context.ExceptionHandled = true;
+            var headers = context.HttpContext.Request.Headers;
+            var correlationId = headers[HttpHeader.CorrelationIdHeader];
+            var correlationIdParsed = Guid.TryParse(correlationId, out var guid) ? guid : Guid.NewGuid(); 
 
             var exception = context.Exception;
 
-            //var response = new MessageResponse();
+            var response = new MensagemExceptionResponse();
+            response.Sucesso = false;
 
-            //if (exception is DomainException)
-            //{
-            //    response.Sucesso = false;
-            //    response.Mensagem = exception.Message;
-            //    response.StatusCode = 400;
-            //}
-            //else if (exception is DomainException)
-            //{
-            //    response.Sucesso = false;
-            //    response.Mensagem = "Regras de negócio.";
-            //    response.StatusCode = 404;
-            //}
-            //else
-            //{
-            //    response.Sucesso = false;
-            //    response.Mensagem = exception.Message;
-            //    response.StatusCode = 500;
-            //}
+            if (exception is DomainException)
+            {
+                response.StatusCode = (int)HttpStatusCode.BadRequest;
+            }
+            else
+            {
+                response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            }
 
-            //_logger.LogDebug(exception.Message);
-            //context.HttpContext.Response.StatusCode = response.StatusCode;
-            //context.Result = new JsonResult(response) { StatusCode = response.StatusCode };
+            response.Mensagem = $"Erro inesperado! Favor entrar em contato com o suporte técnico. (Código: [{response.StatusCode}]).";
 
-            context.HttpContext.Response.StatusCode = 500;
-            context.Result = new ObjectResult(exception);
+            _logger.LogInformation($"EXCEPTION: {exception} / INNEREXCEPTION: {exception?.InnerException} / CorrelationId => [{correlationIdParsed}].");
+
+            context.ExceptionHandled = true;
+            context.Result = new ObjectResult(response);
+            context.HttpContext.Response.StatusCode = response.StatusCode;
         }
     }
 }
