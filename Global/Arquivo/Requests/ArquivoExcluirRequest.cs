@@ -1,8 +1,10 @@
-﻿namespace Arquivo.Requests
+﻿using UtilsGlobais.RequestResponse;
+
+namespace Arquivo.Requests
 {
-    public sealed class ArquivoExcluirRequest
+    public sealed class ArquivoExcluirRequest : RequestBase
     {
         public string Id { get; set; }
-        public string Caminho { get; set; }       
+        public string CaminhoArquivo { get; set; }       
     }
 }
