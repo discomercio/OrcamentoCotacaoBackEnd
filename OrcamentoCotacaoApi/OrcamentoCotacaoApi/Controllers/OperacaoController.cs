@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Operacao;
+using System;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Text.Json;
@@ -26,14 +27,20 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpGet("modulo")]
         public async Task<IActionResult> ObterOperacaoPorModulo(string modulo)
         {
+
             _logger.LogInformation("ObterOperacaoPorModulo");
 
-            var saida =  _operacaoBll.PorFiltro(new ToperacaoFiltro() { Modulo = modulo });
-
-            if (saida != null)
+            try
+            {
+                var saida = _operacaoBll.PorFiltro(new ToperacaoFiltro() { Modulo = modulo });
+                
                 return Ok(saida);
-            else
-                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }            
+
         }
     }
 }
