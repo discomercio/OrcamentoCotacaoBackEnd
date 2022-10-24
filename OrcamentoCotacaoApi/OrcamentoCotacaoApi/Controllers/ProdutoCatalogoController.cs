@@ -253,12 +253,12 @@ namespace OrcamentoCotacaoApi.Controllers
             return Ok(saida);
         }
 
-        [HttpGet("buscarTiposPropriedades")]
-        public async Task<IActionResult> BuscarTiposPropriedadesProdutoCatalago()
-        {
-            //var saida = await _bll.BuscarTiposPropriedadesProdutoCatalago();
-            return Ok();
-        }
+        //[HttpGet("buscarTiposPropriedades")]
+        //public async Task<IActionResult> BuscarTiposPropriedadesProdutoCatalago()
+        //{
+        //    var saida = await _bll.BuscarTiposPropriedadesProdutoCatalago();
+        //    return Ok();
+        //}
 
         [HttpGet("buscarDataTypes")]
         public async Task<IActionResult> BuscarDataTypes()
@@ -272,6 +272,18 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             var saida = await _bll.BuscarTipoPropriedades();
             return Ok(saida);
+        }
+
+        [HttpPost("propriedades")]
+        public async Task<IActionResult> GravarPropriedade(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
+        {
+            _logger.LogInformation("Inserindo Propriedade nova propriedade");
+
+            var saida = await _bll.GravarPropriedadesProdutos(produtoCatalogoPropriedade);
+
+            if(!string.IsNullOrEmpty(saida)) return BadRequest(new {message = saida});
+            
+            return Ok();
         }
     }
 }

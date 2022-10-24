@@ -17,7 +17,7 @@ namespace InfraBanco.Mapping
             builder.Property(x => x.id)
                 .HasColumnName("id")
                 .HasColumnType("int")
-                .IsRequired();
+                .HasDefaultValueSql("NEXT VALUE FOR id"); ;
 
             builder.Property(x => x.id_produto_catalogo_propriedade)
                 .HasColumnName("id_produto_catalogo_propriedade")

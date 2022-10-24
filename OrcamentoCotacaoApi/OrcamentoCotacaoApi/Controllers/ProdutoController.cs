@@ -129,29 +129,6 @@ namespace OrcamentoCotacaoApi.BaseController
                 return Ok(ret);
         }        
 
-        [HttpPost("propriedades")]
-        public async Task<IActionResult> GravarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
-        {
-            _logger.LogInformation("Inserindo Propriedade do Produto");
-
-            var saida = _produtoBll.GravarPropriedadesProdutos(produtoCatalogoPropriedade);
-
-            if (saida)
-            {
-                return Ok(new
-                {
-                    message = "Propriedade do produto criada com sucesso."
-                });
-            }
-            else
-            {
-                return BadRequest(new
-                {
-                    message = "Não foi possível criar a propriedade do produto."
-                });
-            }
-        }
-
         [HttpPut("propriedades")]
         public async Task<IActionResult> AtualizarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
         {

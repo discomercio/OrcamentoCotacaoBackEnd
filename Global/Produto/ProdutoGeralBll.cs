@@ -846,7 +846,7 @@ namespace Produto
                     db.TProdutoCatalogoPropriedade.Add(
                         new TProdutoCatalogoPropriedade
                         {
-                            id = maxId,
+                            //id = maxId,
                             IdCfgTipoPropriedade = produtoCatalogoPropriedade.IdCfgTipoPropriedade,
                             IdCfgTipoPermissaoEdicaoCadastro = produtoCatalogoPropriedade.IdCfgTipoPermissaoEdicaoCadastro,
                             IdCfgDataType = produtoCatalogoPropriedade.IdCfgDataType,
@@ -903,5 +903,42 @@ namespace Produto
             return saida;
         }
 
+        public TProdutoCatalogoPropriedade GravarPropriedadeComTransacao(ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade, ContextoBdGravacao dbGravacao)
+        {
+            TProdutoCatalogoPropriedade tProdutoCatalogoPropriedade = new TProdutoCatalogoPropriedade()
+            {
+                IdCfgDataType = produtoCatalogoPropriedade.IdCfgDataType,
+                IdCfgTipoPropriedade = produtoCatalogoPropriedade.IdCfgTipoPropriedade,
+                IdCfgTipoPermissaoEdicaoCadastro = produtoCatalogoPropriedade.IdCfgTipoPermissaoEdicaoCadastro,
+                descricao = produtoCatalogoPropriedade.descricao,
+                oculto = produtoCatalogoPropriedade.oculto,
+                ordem = produtoCatalogoPropriedade.ordem,
+                dt_cadastro = DateTime.Now,
+                usuario_cadastro = produtoCatalogoPropriedade.usuario_cadastro
+            };
+
+            dbGravacao.Add(tProdutoCatalogoPropriedade);
+            dbGravacao.SaveChanges();
+
+            return tProdutoCatalogoPropriedade;
+        }
+
+        public TProdutoCatalogoPropriedadeOpcao GravarPropriedadeOpcaoComTransacao(ProdutoCatalogoPropriedadeOpcoesDados produtoCatalogoPropriedadeOpcao, ContextoBdGravacao dbGravacao)
+        {
+            TProdutoCatalogoPropriedadeOpcao tProdutoCatalogoPropriedadeOpcao = new TProdutoCatalogoPropriedadeOpcao()
+            {
+                id_produto_catalogo_propriedade = produtoCatalogoPropriedadeOpcao.id_produto_catalogo_propriedade,
+                valor = produtoCatalogoPropriedadeOpcao.valor,
+                oculto = produtoCatalogoPropriedadeOpcao.oculto,
+                ordem = produtoCatalogoPropriedadeOpcao.ordem,
+                dt_cadastro = DateTime.Now,
+                usuario_cadastro = produtoCatalogoPropriedadeOpcao.usuario_cadastro
+            };
+
+            dbGravacao.Add(tProdutoCatalogoPropriedadeOpcao);
+            dbGravacao.SaveChanges();
+
+            return tProdutoCatalogoPropriedadeOpcao;
+        }
     }
 }
