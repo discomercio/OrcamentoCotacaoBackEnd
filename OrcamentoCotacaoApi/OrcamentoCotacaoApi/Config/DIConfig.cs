@@ -134,6 +134,9 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<Cfg.CfgUnidadeNegocioParametro.CfgUnidadeNegocioParametroBll, Cfg.CfgUnidadeNegocioParametro.CfgUnidadeNegocioParametroBll>();
             services.AddTransient<ClienteBll, ClienteBll>();
 
+            services.AddTransient<Operacao.OperacaoBll, Operacao.OperacaoBll>();
+            services.AddTransient<Operacao.OperacaoData, Operacao.OperacaoData>();
+
             return services;
         }
     }
