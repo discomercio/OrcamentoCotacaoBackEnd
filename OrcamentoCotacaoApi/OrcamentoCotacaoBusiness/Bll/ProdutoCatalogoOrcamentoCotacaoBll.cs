@@ -450,12 +450,15 @@ namespace OrcamentoCotacaoBusiness.Bll
             return await Task.FromResult(_bll.ObterTipoPropriedadesPorFiltro(new TcfgTipoPropriedadeProdutoCatalogoFiltro()));
         }
 
-        public async Task<string> GravarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
+        public async Task<string> GravarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade, Guid correlationId)
         {
             if (produtoCatalogoPropriedade == null) return "Dados inválidos!";
             if (string.IsNullOrEmpty(produtoCatalogoPropriedade.descricao)) return "Descrição da propriedade inválido!";
 
+            _logger.LogInformation($"GravarPropriedadesProdutos: Buscando DataTypes. CorrelationId => [{correlationId}].");
             var lstTcfgDataType = await BuscarDataTypes();
+
+            _logger.LogInformation($"GravarPropriedadesProdutos: Buscando TipoPropriedades. CorrelationId => [{correlationId}].");
             var lstTcfgTipoPropriedadeProdutoCatalogo = await BuscarTipoPropriedades();
 
             if (lstTcfgDataType == null || lstTcfgTipoPropriedadeProdutoCatalogo == null) return "Falha ao buscar dados para validação!";
@@ -466,6 +469,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             var tipo = lstTcfgTipoPropriedadeProdutoCatalogo.Where(x => x.Id == produtoCatalogoPropriedade.IdCfgTipoPropriedade).FirstOrDefault();
             if (tipo == null) return "Falha ao buscar tipo da propriedade!";
 
+            _logger.LogInformation($"GravarPropriedadesProdutos: Validando propriedade. CorrelationId => [{correlationId}].");
             if (produtoCatalogoPropriedade.IdCfgTipoPropriedade == 0)
             {
                 if (produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados != null)
@@ -484,6 +488,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             //vamos abrir a transação aqui 
+            _logger.LogInformation($"GravarPropriedadesProdutos: Cadastrando propriedade. CorrelationId => [{correlationId}].");
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 var tProdutoCatalogoPropriedade = _produtoGeralBll.GravarPropriedadeComTransacao(produtoCatalogoPropriedade, dbGravacao);
@@ -499,6 +504,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 }
 
                 dbGravacao.transacao.Commit();
+                _logger.LogInformation($"GravarPropriedadesProdutos: Finalizando cadastro de propriedade. CorrelationId => [{correlationId}].");
             }
 
             return null;

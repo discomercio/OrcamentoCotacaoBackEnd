@@ -10,6 +10,7 @@ using OrcamentoCotacaoBusiness.Bll;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using UtilsGlobais.Configs;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -277,9 +278,11 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost("propriedades")]
         public async Task<IActionResult> GravarPropriedade(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
         {
-            _logger.LogInformation("Inserindo Propriedade nova propriedade");
+            _logger.LogInformation($"ProdutoCatalogoController/GravarPropriedade/POST - Request => [{JsonConvert.SerializeObject(produtoCatalogoPropriedade)}].");
+            
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
-            var saida = await _bll.GravarPropriedadesProdutos(produtoCatalogoPropriedade);
+            var saida = await _bll.GravarPropriedadesProdutos(produtoCatalogoPropriedade, correlationId);
 
             if(!string.IsNullOrEmpty(saida)) return BadRequest(new {message = saida});
             
