@@ -24,7 +24,8 @@ namespace OrcamentoCotacaoMensagem
             {
 
                 return await (from ocm in db.TorcamentoCotacaoMensagem
-                                                      where ocm.IdOrcamentoCotacao == IdOrcamentoCotacao
+                              join ocms in db.TorcamentoCotacaoMensagemStatus on ocm.Id equals ocms.IdOrcamentoCotacaoMensagem
+                              where ocm.IdOrcamentoCotacao == IdOrcamentoCotacao
                                select new TorcamentoCotacaoMensagemFiltro()
                                {
                                    Id = ocm.Id,
@@ -34,7 +35,8 @@ namespace OrcamentoCotacaoMensagem
                                    IdUsuarioDestinatario = ocm.IdUsuarioDestinatario,
                                    Mensagem = ocm.Mensagem,
                                    DataCadastro = ocm.DataCadastro,
-                                   DataHoraCadastro = ocm.DataHoraCadastro
+                                   DataHoraCadastro = ocm.DataHoraCadastro,
+                                   PendenciaTratada = ocms.PendenciaTratada
                                })
                                .OrderByDescending(x => x.Id)
                                .ToListAsync();
@@ -82,7 +84,7 @@ namespace OrcamentoCotacaoMensagem
 
                     qtdMensagemPendente = (from ocm in db.TorcamentoCotacaoMensagem
                                 join ocms in db.TorcamentoCotacaoMensagemStatus on ocm.Id equals ocms.IdOrcamentoCotacaoMensagem
-                                where ocm.IdUsuarioRemetente == IdUsuarioRemetente && ocms.PendenciaTratada == false
+                                where ocm.IdUsuarioDestinatario == IdUsuarioRemetente && ocms.PendenciaTratada == false
                                 group ocm by ocm.IdOrcamentoCotacao
                                 ).Count();
                     

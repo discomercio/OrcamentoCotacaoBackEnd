@@ -1,13 +1,15 @@
-﻿using System;
+﻿using Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
+
 namespace InfraBanco.Modelos
 {
     [Table("t_OPERACAO")]
-    public class Toperacao
+    public class Toperacao : IModel
     {
         //[Key]
         [Required]

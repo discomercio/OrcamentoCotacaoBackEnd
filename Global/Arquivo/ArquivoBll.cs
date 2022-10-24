@@ -1,7 +1,6 @@
 ﻿using Arquivo.Dto;
 using Arquivo.Requests;
 using Arquivo.Responses;
-using ClassesBase;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using Microsoft.Extensions.Logging;
@@ -10,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using UtilsGlobais.Exceptions;
 
 namespace Arquivo
 {
@@ -30,11 +30,99 @@ namespace Arquivo
         {
             var response = new ArquivoObterEstruturaResponse();
 
+            // TESTES
+            //throw new DomainException("mensagem de erro");
+            //throw new DomainException("mensagem de erro", new Exception("inner mensagem de erro"));
+            //throw new Exception("Teste" );
+            //throw new Exception("Teste",new Exception("inner mensagem de erro"));
+
             try
             {
+                _logger.LogInformation($"ArquivoObterEstrutura: Obter estrutura da tela de download. CorrelationId => [{request.CorrelationId}].");
                 var lista = this.ObterEstrutura();
 
+                _logger.LogInformation($"ArquivoObterEstrutura: Retorno estrutura de tela de download. Retorno => [{lista.Count}]. CorrelationId => [{request.CorrelationId}].");
+                if (lista.Count <= 0)
+                {
+                    response.Sucesso = false;
+                    response.Mensagem = "Não existem pastas cadastrada. Favor criar nova pasta.";
+                    return response;
+                }
+
+                _logger.LogInformation($"ArquivoObterEstrutura: Retorno estrutura filtando pelo IdPai igual null. CorrelationId => [{request.CorrelationId}].");
                 var root = lista.Where(x => x.Pai == null).FirstOrDefault();
+
+                //var data = new List<Child>{
+                //new Child
+                //{
+                //    data = new Data {
+                //        key = root.Id.ToString(),
+                //        name = root.Nome,
+                //        type = "Folder",
+                //        size = root.Tamanho,
+                //        descricao = root.Descricao
+                //    },
+                //    children = lista.Where(x => x.Pai == root.Id)
+                //                .Select(c => new Child
+                //                {
+                //                    data = new Data
+                //                    {
+                //                        key = c.Id.ToString(),
+                //                        name = c.Nome,
+                //                        type = c.Tipo,
+                //                        size = c.Tamanho,
+                //                        descricao = c.Descricao
+                //                    },
+                //                    children = lista.Where(x => x.Pai == c.Id)
+                //                                .Select(d => new Child
+                //                                {
+                //                                    data = new Data
+                //                                    {
+                //                                        key = d.Id.ToString(),
+                //                                        name = d.Nome,
+                //                                        type = d.Tipo,
+                //                                        size = d.Tamanho,
+                //                                        descricao = d.Descricao
+                //                                    },
+                //                                    children = lista.Where(x => x.Pai == d.Id)
+                //                                                .Select(e => new Child
+                //                                                {
+                //                                                    data = new Data
+                //                                                    {
+                //                                                        key = e.Id.ToString(),
+                //                                                        name = e.Nome,
+                //                                                        type = e.Tipo,
+                //                                                        size = e.Tamanho,
+                //                                                        descricao = e.Descricao
+                //                                                    },
+                //                        children = lista.Where(x => x.Pai == c.Id)
+                //                                .Select(d => new Child
+                //                                {
+                //                                    data = new Data
+                //                                    {
+                //                                        key = d.Id.ToString(),
+                //                                        name = d.Nome,
+                //                                        type = d.Tipo,
+                //                                        size = d.Tamanho,
+                //                                        descricao = d.Descricao
+                //                                    },
+                //                                    children = lista.Where(x => x.Pai == d.Id)
+                //                                                .Select(e => new Child
+                //                                                {
+                //                                                    data = new Data
+                //                                                    {
+                //                                                        key = e.Id.ToString(),
+                //                                                        name = e.Nome,
+                //                                                        type = e.Tipo,
+                //                                                        size = e.Tamanho,
+                //                                                        descricao = e.Descricao
+                //                                                    },
+                //                                                }).ToList()
+                //                                }).ToList()
+                //                                                }).ToList()
+                //                                }).ToList()
+                //                }).ToList()
+                //}};
 
                 var data = new List<Child>{
                 new Child
@@ -79,37 +167,14 @@ namespace Arquivo
                                                                         size = e.Tamanho,
                                                                         descricao = e.Descricao
                                                                     },
-                                        children = lista.Where(x => x.Pai == c.Id)
-                                                .Select(d => new Child
-                                                {
-                                                    data = new Data
-                                                    {
-                                                        key = d.Id.ToString(),
-                                                        name = d.Nome,
-                                                        type = d.Tipo,
-                                                        size = d.Tamanho,
-                                                        descricao = d.Descricao
-                                                    },
-                                                    children = lista.Where(x => x.Pai == d.Id)
-                                                                .Select(e => new Child
-                                                                {
-                                                                    data = new Data
-                                                                    {
-                                                                        key = e.Id.ToString(),
-                                                                        name = e.Nome,
-                                                                        type = e.Tipo,
-                                                                        size = e.Tamanho,
-                                                                        descricao = e.Descricao
-                                                                    },
-                                                                }).ToList()
-                                                }).ToList()
                                                                 }).ToList()
                                                 }).ToList()
                                 }).ToList()
                 }};
-
+                
+                _logger.LogInformation($"ArquivoObterEstrutura: Retorno da estrutura com sucesso. CorrelationId => [{request.CorrelationId}].");
                 response.Sucesso = true;
-                response.Mensagem = "ObterEstrutura sucesso.";
+                response.Mensagem = "Retorno da estrutura com sucesso.";
                 response.Childs = data;
                 return response;
             }
@@ -123,6 +188,7 @@ namespace Arquivo
         {
             var response = new ArquivoDownloadResponse();
 
+            _logger.LogInformation($"ArquivoDownload: Verificando campo preenchido. Id => [{request.Id}]. CorrelationId => [{request.CorrelationId}].");
             if (string.IsNullOrEmpty(request.Id))
             {
                 response.Sucesso = false;
@@ -130,7 +196,8 @@ namespace Arquivo
                 return response;
             }
 
-            if (string.IsNullOrEmpty(request.Caminho))
+            _logger.LogInformation($"ArquivoDownload: Verificando campo preenchido. CaminhoArquivo => [{request.CaminhoArquivo}]. CorrelationId => [{request.CorrelationId}].");
+            if (string.IsNullOrEmpty(request.CaminhoArquivo))
             {
                 response.Sucesso = false;
                 response.Mensagem = "Erro inesperado! Favor entrar em contato com o suporte técnico.";
@@ -139,11 +206,13 @@ namespace Arquivo
 
             try
             {
-                var caminho = Path.Combine(request.Caminho, $"{request.Id}.pdf");
+                _logger.LogInformation($"ArquivoDownload: Salvando arquivo no caminho. Arquivo => [{request.Id}]. CorrelationId => [{request.CorrelationId}].");
+                var caminho = Path.Combine(request.CaminhoArquivo, $"{request.Id}.pdf");
                 var fileinfo = new FileInfo(caminho);
                 byte[] byteArray = File.ReadAllBytes(caminho);
                 var arquivo = this.ObterArquivoPorID(Guid.Parse(request.Id));
 
+                _logger.LogInformation($"ArquivoDownload: Download efetuado com sucesso. CorrelationId => [{request.CorrelationId}].");
                 response.Sucesso = true;
                 response.Mensagem = "Download efetuado com sucesso.";
                 response.Nome = arquivo.Nome;
@@ -157,105 +226,48 @@ namespace Arquivo
             }
         }
 
-        public async Task<ArquivoUploadResponse> ArquivoUpload(ArquivoUploadRequest request)
+        public async Task<ArquivoExcluirResponse> ArquivoExcluir(ArquivoExcluirRequest request)
         {
-            var response = new ArquivoUploadResponse();
+            var response = new ArquivoExcluirResponse();
 
-            if (string.IsNullOrEmpty(request.Caminho))
+            _logger.LogInformation($"ArquivoExcluir: Verificando campo preenchido. Id => [{request.Id}]. CorrelationId => [{request.CorrelationId}].");
+            if (string.IsNullOrEmpty(request.Id))
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Favor preencher campo Id.";
+                return response;
+            }
+
+            _logger.LogInformation($"ArquivoExcluir: Verificando campo preenchido. CaminhoArquivo => [{request.CaminhoArquivo}]. CorrelationId => [{request.CorrelationId}].");
+            if (string.IsNullOrEmpty(request.CaminhoArquivo))
             {
                 response.Sucesso = false;
                 response.Mensagem = "Erro inesperado! Favor entrar em contato com o suporte técnico.";
                 return response;
             }
 
-            if (request.Arquivo == null || string.IsNullOrEmpty(request.Arquivo.FileName))
-            {
-                response.Sucesso = false;
-                response.Mensagem = "Favor preencher campo nome arquivo.";
-                return response;
-            }
-
-            if (request.Arquivo.FileName.Length > 255)
-            {
-                response.Sucesso = false;
-                response.Mensagem = "Nome excedeu máximo de 255 caracteres.";
-                return response;
-            }
-
-            if (!request.Arquivo.ContentType.Equals("application/pdf") && !request.Arquivo.ContentType.Equals("pdf"))
-            {
-                response.Sucesso = false;
-                response.Mensagem = "Formato inválido. O arquivo deve ser no formato PDF.";
-                return response;
-            }
-
             try
             {
-                var idArquivo = Guid.NewGuid();
-
-                var file = Path.Combine(request.Caminho, $"{idArquivo}.pdf");
-
-                using (var fileStream = new FileStream(file, FileMode.Create))
+                _logger.LogInformation($"ArquivoExcluir: Excluindo arquivo do banco de dados. Arquivo => [{request.Id}]. CorrelationId => [{request.CorrelationId}].");
+                var retorno = this.Excluir(new TorcamentoCotacaoArquivos
                 {
-                    await request.Arquivo.CopyToAsync(fileStream);
+                    Id = Guid.Parse(request.Id)
+                });
+                
+                var file = Path.Combine(request.CaminhoArquivo, $"{request.Id}.pdf");
+
+                _logger.LogInformation($"ArquivoExcluir: Excluindo arquivo da pasta na reder banco de dados. CaminhoArquivo => [{request.CaminhoArquivo}]. Arquivo => [{request.Id}]. CorrelationId => [{request.CorrelationId}].");
+                if (retorno)
+                {
+                    if (File.Exists(file))
+                    {
+                        File.Delete(file);
+                    }
                 }
 
-                var tamanho = new FileInfo(file).Length;
-                
-                this.Inserir(new TorcamentoCotacaoArquivos()
-                {
-                    Id = idArquivo,
-                    Nome = request.Arquivo.FileName,
-                    Pai = !string.IsNullOrEmpty(request.IdPai) ? Guid.Parse(request.IdPai) : (Guid?)null,
-                    Descricao = string.Empty,
-                    Tamanho = calculaTamanho(tamanho),
-                    Tipo = "File"
-                });
-
+                _logger.LogInformation($"ArquivoExcluir: Exclusão concluida com sucesso. CorrelationId => [{request.CorrelationId}].");
                 response.Sucesso = true;
-                response.Mensagem = "Arquivo salvo com sucesso.";
-                return response;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public async Task<ArquivoCriarPastaResponse> ArquivoCriarPasta(ArquivoCriarPastaRequest request)
-        {
-            var response = new ArquivoCriarPastaResponse();
-
-            if (string.IsNullOrEmpty(request.IdPai))
-            {
-                response.Sucesso = false;
-                response.Mensagem = "Favor preencher campo IdPai.";
-                return response;
-            }
-
-            if (string.IsNullOrEmpty(request.Nome))
-            {
-                response.Sucesso = false;
-                response.Mensagem = "Favor preencher campo Nome.";
-                return response;
-            }
-
-            try
-            {
-                var tOrcamentoCotacaoArquivos = this.Inserir(new TorcamentoCotacaoArquivos()
-                {
-                    Id = Guid.NewGuid(),
-                    Nome = request.Nome,
-                    Pai = !string.IsNullOrEmpty(request.IdPai) ? Guid.Parse(request.IdPai) : (Guid?)null,
-                    Descricao = request.Nome,
-                    Tamanho = "",
-                    Tipo = "Folder"
-                });
-
-
-                response.Id = tOrcamentoCotacaoArquivos.Id;
-                response.Sucesso = true;
-                response.Mensagem = $"Pasta '{request.Nome}' criada com sucesso.";
+                response.Mensagem = "Exclusão concluida com sucesso.";
                 return response;
             }
             catch (Exception ex)
@@ -268,6 +280,7 @@ namespace Arquivo
         {
             var response = new ArquivoEditarResponse();
 
+            _logger.LogInformation($"ArquivoEditar: Verificando campo preenchido. Id => [{request.Id}]. CorrelationId => [{request.CorrelationId}].");
             if (string.IsNullOrEmpty(request.Id))
             {
                 response.Sucesso = false;
@@ -275,6 +288,7 @@ namespace Arquivo
                 return response;
             }
 
+            _logger.LogInformation($"ArquivoEditar: Verificando campo preenchido. Nome => [{request.Nome}]. CorrelationId => [{request.CorrelationId}].");
             if (string.IsNullOrEmpty(request.Nome))
             {
                 response.Sucesso = false;
@@ -282,7 +296,9 @@ namespace Arquivo
                 return response;
             }
 
-            if (request.Descricao.Length > 500)
+            _logger.LogInformation($"ArquivoEditar: Verificando campo Descricao excedeu máximo de 500 caracteres. CorrelationId => [{request.CorrelationId}].");
+            if (!string.IsNullOrEmpty(request.Descricao) 
+                && request.Descricao.Length > 500)
             {
                 response.Sucesso = false;
                 response.Mensagem = "Descrição excedeu máximo de 500 caracteres.";
@@ -291,6 +307,7 @@ namespace Arquivo
 
             try
             {
+                _logger.LogInformation($"ArquivoEditar: Editando Pasta/Arquivo do banco de dados. Arquivo => [{request.Id}]. Nome => [{request.Nome}]. Descrição => [{request.Descricao}]. CorrelationId => [{request.CorrelationId}].");
                 var retorno = this.Editar(new TorcamentoCotacaoArquivos
                 {
                     Id = Guid.Parse(request.Id),
@@ -298,6 +315,7 @@ namespace Arquivo
                     Descricao = request.Descricao
                 });
 
+                _logger.LogInformation($"ArquivoEditar: Salvo com sucesso. CorrelationId => [{request.CorrelationId}].");
                 response.Sucesso = true;
                 response.Mensagem = "Salvo com sucesso.";
                 return response;
@@ -308,43 +326,124 @@ namespace Arquivo
             }
         }
 
-        public async Task<ArquivoExcluirResponse> ArquivoExcluir(ArquivoExcluirRequest request)
+        public async Task<ArquivoCriarPastaResponse> ArquivoCriarPasta(ArquivoCriarPastaRequest request)
         {
-            var response = new ArquivoExcluirResponse();
+            var response = new ArquivoCriarPastaResponse();
 
-            if (string.IsNullOrEmpty(request.Id))
+            _logger.LogInformation($"ArquivoCriarPasta: Verificando campo preenchido. Nome => [{request.Nome}]. CorrelationId => [{request.CorrelationId}].");
+            if (string.IsNullOrEmpty(request.Nome))
             {
                 response.Sucesso = false;
-                response.Mensagem = "Favor preencher campo Id.";
+                response.Mensagem = "Favor preencher campo Nome.";
+                return response;
+            }
+            
+            _logger.LogInformation($"ArquivoCriarPasta: Verificando campo Nome excedeu máximo de 255 caracteres. CorrelationId => [{request.CorrelationId}].");
+            if (request.Nome.Length > 255)
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Nome excedeu máximo de 255 caracteres.";
                 return response;
             }
 
-            if (string.IsNullOrEmpty(request.Caminho))
+            _logger.LogInformation($"ArquivoCriarPasta: Verificando campo Descrição excedeu máximo de 500 caracteres. CorrelationId => [{request.CorrelationId}].");
+            if (!string.IsNullOrEmpty(request.Descricao) 
+                && request.Descricao.Length > 500)
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Descrição excedeu máximo de 500 caracteres.";
+                return response;
+            }
+
+            try
+            {
+                _logger.LogInformation($"ArquivoCriarPasta: Criando pasta no banco de dados. Nome => [{request.Nome}]. CorrelationId => [{request.CorrelationId}].");
+                var tOrcamentoCotacaoArquivos = this.Inserir(new TorcamentoCotacaoArquivos()
+                {
+                    Id = Guid.NewGuid(),
+                    Nome = request.Nome,
+                    Pai = !string.IsNullOrEmpty(request.IdPai) ? Guid.Parse(request.IdPai) : (Guid?)null,
+                    Descricao = !string.IsNullOrEmpty(request.Descricao) ? request.Descricao : string.Empty,
+                    Tamanho = string.Empty,
+                    Tipo = "Folder"
+                });
+
+                _logger.LogInformation($"ArquivoCriarPasta: Pasta [{request.Nome}] criada com sucesso. CorrelationId => [{request.CorrelationId}].");
+                response.Id = tOrcamentoCotacaoArquivos.Id;
+                response.Sucesso = true;
+                response.Mensagem = $"Pasta '{request.Nome}' criada com sucesso.";
+                return response;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<ArquivoUploadResponse> ArquivoUpload(ArquivoUploadRequest request)
+        {
+            var response = new ArquivoUploadResponse();
+
+            _logger.LogInformation($"ArquivoUpload: Verificando campo preenchido. CaminhoArquivo => [{request.CaminhoArquivo}]. CorrelationId => [{request.CorrelationId}].");
+            if (string.IsNullOrEmpty(request.CaminhoArquivo))
             {
                 response.Sucesso = false;
                 response.Mensagem = "Erro inesperado! Favor entrar em contato com o suporte técnico.";
                 return response;
             }
 
+            _logger.LogInformation($"ArquivoUpload: Verificando se o upload esta foi enviado. CorrelationId => [{request.CorrelationId}].");
+            if (request.Arquivo == null || string.IsNullOrEmpty(request.Arquivo.FileName))
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Favor preencher campo nome arquivo.";
+                return response;
+            }
+
+            _logger.LogInformation($"ArquivoUpload: Verificando campo Nome do aquivo excedeu máximo de 255 caracteres. CorrelationId => [{request.CorrelationId}].");
+            if (request.Arquivo.FileName.Length > 255)
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Nome excedeu máximo de 255 caracteres.";
+                return response;
+            }
+
+            _logger.LogInformation($"ArquivoUpload: Verificando se o upload é um PDF. CorrelationId => [{request.CorrelationId}].");
+            if (!request.Arquivo.ContentType.Equals("application/pdf") && !request.Arquivo.ContentType.Equals("pdf"))
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Formato inválido. O arquivo deve ser no formato PDF.";
+                return response;
+            }
+
             try
             {
-                var retorno = this.Excluir(new TorcamentoCotacaoArquivos
-                {
-                    Id = Guid.Parse(request.Id)
-                });
+                var idArquivo = Guid.NewGuid();
 
-                var file = Path.Combine(request.Caminho, $"{request.Id}.pdf");
+                _logger.LogInformation($"ArquivoUpload: Fazendo o upload do PDF. CaminhoArquivo => [{request.CaminhoArquivo}]. Arquivo => [{idArquivo}]. CorrelationId => [{request.CorrelationId}].");
+                var file = Path.Combine(request.CaminhoArquivo, $"{idArquivo}.pdf");
 
-                if (retorno)
+                using (var fileStream = new FileStream(file, FileMode.Create))
                 {
-                    if (File.Exists(file))
-                    {
-                        File.Delete(file);
-                    }
+                    await request.Arquivo.CopyToAsync(fileStream);
                 }
 
+                var tamanho = new FileInfo(file).Length;
+
+                _logger.LogInformation($"ArquivoUpload: Salvando arquivo no banco de dados. Arquivo => [{idArquivo}]. CorrelationId => [{request.CorrelationId}].");
+                this.Inserir(new TorcamentoCotacaoArquivos()
+                {
+                    Id = idArquivo,
+                    Nome = request.Arquivo.FileName,
+                    Pai = !string.IsNullOrEmpty(request.IdPai) ? Guid.Parse(request.IdPai) : (Guid?)null,
+                    Descricao = string.Empty,
+                    Tamanho = calculaTamanho(tamanho),
+                    Tipo = "File"
+                });
+
+                _logger.LogInformation($"ArquivoUpload: Upload efetuado com sucesso. CorrelationId => [{request.CorrelationId}].");
                 response.Sucesso = true;
-                response.Mensagem = "Exclusão concluida com sucesso.";
+                response.Mensagem = "Upload efetuado com sucesso.";
                 return response;
             }
             catch (Exception ex)
@@ -362,7 +461,7 @@ namespace Arquivo
                     return (
                         from orcamentoCotacaoArquivos
                         in db.TorcamentoCotacaoArquivos
-                        orderby orcamentoCotacaoArquivos.Nome
+                        orderby orcamentoCotacaoArquivos.Tipo descending, orcamentoCotacaoArquivos.Nome
                         select orcamentoCotacaoArquivos)
                     .ToList();
                 }
@@ -433,6 +532,7 @@ namespace Arquivo
 
 
 
+        
         public TorcamentoCotacaoArquivos Atualizar(TorcamentoCotacaoArquivos obj)
         {
             try

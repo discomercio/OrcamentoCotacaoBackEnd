@@ -1,12 +1,14 @@
 ﻿using Arquivo.Requests;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using OrcamentoCotacaoApi.Filters;
 using OrcamentoCotacaoApi.Utils;
+using System;
 using System.Text.Json;
 using System.Threading.Tasks;
+using UtilsGlobais.Configs;
 using static OrcamentoCotacaoBusiness.Enums.Enums;
 
 namespace OrcamentoCotacaoApi.Controllers
@@ -14,6 +16,8 @@ namespace OrcamentoCotacaoApi.Controllers
     [ApiController]
     [Route("[controller]")]
     [Authorize]
+    [TypeFilter(typeof(ResourceFilter))]
+    [TypeFilter(typeof(ExceptionFilter))]
     public class ArquivoController : BaseController
     {
         private readonly ILogger<ArquivoController> _logger;
@@ -33,10 +37,19 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpGet("ObterEstrutura")]
         public async Task<IActionResult> ObterEstrutura()
         {
-            var request = new ArquivoObterEstruturaRequest();
+            var request = new ArquivoObterEstruturaRequest()
+            {
+                CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]),
+                Usuario = ""
+            };
+
+            //_logger.LogWarning("ENDPOINT: ObterEstrutura: LogWarning");
+            _logger.LogInformation($"ArquivoController/ObterEstrutura/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
             var response = await _arquivoBll.ArquivoObterEstrutura(request);
-            
+
+            _logger.LogInformation($"ArquivoController/ObterEstrutura/GET - Response => [{JsonSerializer.Serialize(response)}].");
+
             return Ok(response);
         }
 
@@ -46,10 +59,16 @@ namespace OrcamentoCotacaoApi.Controllers
             var request = new ArquivoDownloadRequest()
             {
                 Id = id,
-                Caminho = _appSettings.Value.PdfCaminho
+                CaminhoArquivo = _appSettings.Value.PdfCaminho,
+                CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]),
+                Usuario = ""
             };
 
+            _logger.LogInformation($"ArquivoController/Download/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
             var response = await _arquivoBll.ArquivoDownload(request);
+
+            _logger.LogInformation($"ArquivoController/Download/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
             return Ok(response);
         }
@@ -63,10 +82,16 @@ namespace OrcamentoCotacaoApi.Controllers
             var request = new ArquivoExcluirRequest()
             {
                 Id = id,
-                Caminho = _appSettings.Value.PdfCaminho
+                CaminhoArquivo = _appSettings.Value.PdfCaminho,
+                CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]),
+                Usuario = ""
             };
 
+            _logger.LogInformation($"ArquivoController/Excluir/POST - Request => [{JsonSerializer.Serialize(request)}].");
+
             var response = await _arquivoBll.ArquivoExcluir(request);
+
+            _logger.LogInformation($"ArquivoController/Excluir/POST - Response => [{JsonSerializer.Serialize(response)}].");
 
             return Ok(response);
         }
@@ -84,50 +109,60 @@ namespace OrcamentoCotacaoApi.Controllers
             {
                 Id = id,
                 Nome = nome,
-                Descricao = descricao
+                Descricao = descricao,
+                CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]),
+                Usuario = ""
             };
+
+            _logger.LogInformation($"ArquivoController/Editar/PUT - Request => [{JsonSerializer.Serialize(request)}].");
 
             var response = await _arquivoBll.ArquivoEditar(request);
 
+            _logger.LogInformation($"ArquivoController/Editar/PUT - Response => [{JsonSerializer.Serialize(response)}].");
+
             return Ok(response);
         }
-
+        
         [HttpPost("CriarPasta")]
-        public async Task<IActionResult> CriarPasta(
-            string nome,
-            string idPai)
+        public async Task<IActionResult> CriarPasta(ArquivoCriarPastaRequest request)
         {
             if (!User.ValidaPermissao((int)ePermissao.ArquivosDownloadIncluirEditarPastasArquivos))
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
-            var request = new ArquivoCriarPastaRequest()
-            {
-                IdPai = idPai,
-                Nome = nome
-            };
+            request.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+            request.Usuario = "";
+
+            _logger.LogInformation($"ArquivoController/CriarPasta/POST - Request => [{JsonSerializer.Serialize(request)}].");
 
             var response = await _arquivoBll.ArquivoCriarPasta(request);
+
+            _logger.LogInformation($"ArquivoController/CriarPasta/POST - Response => [{JsonSerializer.Serialize(response)}].");
 
             return Ok(response);
         }
 
-        [HttpPost("Upload")]
-        public async Task<IActionResult> Upload(
-            IFormFile arquivo,
-            [FromForm] string idPai,
-            [FromForm] string descricao)
+        [HttpPost("Upload/{idPai}")]
+        public async Task<IActionResult> Upload(string idPai)
         {
             if (!User.ValidaPermissao((int)ePermissao.ArquivosDownloadIncluirEditarPastasArquivos))
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
             var request = new ArquivoUploadRequest()
             {
-                Arquivo = arquivo,
-                Caminho = _appSettings.Value.PdfCaminho,
-                IdPai = idPai
+                IdPai = idPai,
+                CaminhoArquivo = _appSettings.Value.PdfCaminho,
+                //Arquivo = Request.Form.Files[0],
+                CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]),
+                Usuario = ""
             };
 
+            _logger.LogInformation($"ArquivoController/Upload/POST - Request => [{JsonSerializer.Serialize(request)}].");
+
+            request.Arquivo = Request.Form.Files[0];
+
             var response = await _arquivoBll.ArquivoUpload(request);
+
+            _logger.LogInformation($"ArquivoController/Upload/POST - Response => [{JsonSerializer.Serialize(response)}].");
 
             return Ok(response);
         }
