@@ -54,9 +54,9 @@ namespace OrcamentoCotacaoBusiness.Bll
             return await _bll.ObterListaMensagemPendente(IdOrcamentoCotacao);
         }
 
-        public int ObterQuantidadeMensagemPendente(int idUsuarioRemetente)
+        public int ObterQuantidadeMensagemPendente(int idUsuarioRemetente, int idTipoUsuarioRemetente)
         {
-            return _bll.ObterQuantidadeMensagemPendente(idUsuarioRemetente);
+            return _bll.ObterQuantidadeMensagemPendente(idUsuarioRemetente, idTipoUsuarioRemetente);
         }
 
         public bool EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem, int IdUsuarioLogado)

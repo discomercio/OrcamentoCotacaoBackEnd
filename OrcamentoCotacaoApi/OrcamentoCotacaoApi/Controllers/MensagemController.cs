@@ -90,7 +90,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 _logger.LogInformation("ObterQuantidadeMensagemPendente");
                 var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
 
-                var saida = _mensagemBll.ObterQuantidadeMensagemPendente(user.Id);
+                var saida = _mensagemBll.ObterQuantidadeMensagemPendente(user.Id,(int)user.TipoUsuario);
 
                 return saida;
             }

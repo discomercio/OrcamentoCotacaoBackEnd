@@ -73,7 +73,7 @@ namespace OrcamentoCotacaoMensagem
             }
         }
 
-        public int ObterQuantidadeMensagemPendente(int IdUsuarioRemetente)
+        public int ObterQuantidadeMensagemPendente(int IdUsuarioRemetente, int IdTipoUsuarioRemetente)
         {
             var qtdMensagemPendente = 0;
 
@@ -84,7 +84,9 @@ namespace OrcamentoCotacaoMensagem
 
                     qtdMensagemPendente = (from ocm in db.TorcamentoCotacaoMensagem
                                 join ocms in db.TorcamentoCotacaoMensagemStatus on ocm.Id equals ocms.IdOrcamentoCotacaoMensagem
-                                where ocm.IdUsuarioDestinatario == IdUsuarioRemetente && ocms.PendenciaTratada == false
+                                where ocm.IdUsuarioDestinatario == IdUsuarioRemetente &&
+                                ocm.IdTipoUsuarioContextoDestinatario == IdTipoUsuarioRemetente
+                                && ocms.PendenciaTratada == false
                                 group ocm by ocm.IdOrcamentoCotacao
                                 ).Count();
                     
