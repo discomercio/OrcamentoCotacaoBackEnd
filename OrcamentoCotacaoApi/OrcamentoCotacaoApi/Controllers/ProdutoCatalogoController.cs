@@ -280,9 +280,9 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             _logger.LogInformation($"ProdutoCatalogoController/GravarPropriedade/POST - Request => [{JsonConvert.SerializeObject(produtoCatalogoPropriedade)}].");
             
-            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+            //var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
-            var saida = await _bll.GravarPropriedadesProdutos(produtoCatalogoPropriedade, correlationId);
+            var saida = await _bll.GravarPropriedadesProdutos(produtoCatalogoPropriedade);
 
             if(!string.IsNullOrEmpty(saida)) return BadRequest(new {message = saida});
             
