@@ -12,13 +12,18 @@ using OrcamentoCotacaoApi.Utils;
 using System.Linq;
 using System.Text;
 using UtilsGlobais;
+using System.IO;
+using Microsoft.AspNetCore.Http;
+using System.Text.Json;
 
 namespace OrcamentoCotacaoApi
 {
     public class Startup
     {
+
         public Startup(IConfiguration configuration)
         {
+         
             Configuration = configuration;
         }
 
@@ -30,6 +35,7 @@ namespace OrcamentoCotacaoApi
             services.Configure<Configuracoes>(Configuration.GetSection("Configuracoes"));
             services.Configure<ConfigOrcamentoCotacao>(Configuration.GetSection("OrcamentoCotacao"));
 
+
             //services.Configure<IISServerOptions>(options =>
             //{
             //    options.AllowSynchronousIO = true;
@@ -39,6 +45,16 @@ namespace OrcamentoCotacaoApi
             //{
             //    c.Filters.Add<ExceptionFilter>();
             //});
+
+
+            services.AddHttpContextAccessor();
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
 
             services.Configure<KestrelServerOptions>(options =>
             {
@@ -63,11 +79,21 @@ namespace OrcamentoCotacaoApi
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            var nossaApiVersion = Configuration.GetSection("Configuracoes").GetSection("VersaoApi").Value;
+
+            app.UseSession();           
+
+            var nossaApiVersion = System.IO.File.ReadAllText("version.txt");
+            
+
+            //var nossaApiVersion = Configuration.GetSection("Configuracoes").GetSection("VersaoApi").Value;
+            //var nossaApiVersion = Configuration.GetSection("Configuracoes").GetSection("VersaoApi").Value;
 
             // Route all unknown requests to app root
             app.Use(async (context, next) =>
             {
+
+                context.Session.SetString("versaoApi", nossaApiVersion);
+
                 if (context.Request.Method.ToUpper() == "POST" || context.Request.Method.ToUpper() == "GET")
                 {
                     if (context.Request.Path.Value.ToLower().Contains("/api/"))
