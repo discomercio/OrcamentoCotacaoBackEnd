@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using OrcamentoCotacaoBusiness.Bll;
-using OrcamentoCotacaoBusiness.Models.Request;
 using System;
 using System.IO;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using OrcamentoCotacaoApi.Utils;
+using System.Text.Json;
+using Microsoft.AspNetCore.Http;
+
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -17,22 +18,21 @@ namespace OrcamentoCotacaoApi.Controllers
     public class SistemaController : BaseController
     {
         private readonly ILogger<SistemaController> _logger;
-        private readonly IOptions<Configuracoes> _appSettings;
 
-        public SistemaController(ILogger<SistemaController> logger, IOptions<Configuracoes> appSettings)
+        public SistemaController(ILogger<SistemaController> logger)
         {
-            _appSettings = appSettings;
             _logger = logger;
         }
-        
-        [HttpGet]
-        [Route("versao")]
-        public async Task<IActionResult> RetornarVersao()
+
+        [HttpGet("cache")]
+        public async Task<IActionResult> RetornarVersaoCache()
         {
+            _logger.LogInformation("RetornarVersaoCache");
+
             try
-            {
-                string versaoApi = _appSettings.Value.VersaoApi;
-                
+            {               
+                var versaoApi = JsonSerializer.Serialize(HttpContext.Session.GetString("versaoApi"));
+
                 return Ok(versaoApi);
             }
             catch (Exception ex)
@@ -40,6 +40,23 @@ namespace OrcamentoCotacaoApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        
+
+        [HttpGet("versao")]
+        public async Task<IActionResult> RetornarVersao()
+        {
+            _logger.LogInformation("RetornarVersao");
+
+            try
+            {
+                var versaoApi = JsonSerializer.Serialize(System.IO.File.ReadAllText("version.txt"));
+
+                return Ok(versaoApi);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }
