@@ -171,7 +171,7 @@ namespace InfraBanco
         public DbSet<TclienteRefComercial> TclienteRefComercial { get => contexto.TclienteRefComercial; }
         public DbSet<TclienteRefBancaria> TclienteRefBancaria { get => contexto.TclienteRefBancaria; }
         public DbSet<TestoqueMovimento> TestoqueMovimento { get => contexto.TestoqueMovimento; }
-        
+
 
 
         public DbSet<TusuarioXLoja> TusuarioXLoja { get => contexto.TusuarioXLoja; }
@@ -187,8 +187,8 @@ namespace InfraBanco
         public DbSet<TcfgTipoUsuarioContexto> TcfgTipoUsuarioContexto { get => contexto.TcfgTipoUsuarioContexto; }
         public DbSet<TcfgParametro> TcfgParametro { get => contexto.TcfgParametro; }
         public DbSet<TcfgDataType> TcfgDataType { get => contexto.TcfgDataType; }
-        public DbSet<TcfgTipoPermissaoEdicaoCadastro> TcfgTipoPermissaoEdicaoCadastro { get; set; }
-        public DbSet<TcfgTipoPropriedadeProdutoCatalogo> TcfgTipoPropriedadeProdutoCatalogo { get; set; }
+        public DbSet<TcfgTipoPermissaoEdicaoCadastro> TcfgTipoPermissaoEdicaoCadastro { get => contexto.TcfgTipoPermissaoEdicaoCadastro; }
+        public DbSet<TcfgTipoPropriedadeProdutoCatalogo> TcfgTipoPropriedadeProdutoCatalogo { get => contexto.TcfgTipoPropriedadeProdutoCatalogo; }
 
         public DbSet<Tbanco> Tbancos { get => contexto.Tbanco; }
         public DbSet<Tfabricante> Tfabricantes { get => contexto.Tfabricante; }

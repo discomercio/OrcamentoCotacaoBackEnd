@@ -7,7 +7,6 @@ using System.Text;
 
 namespace InfraBanco.Modelos
 {
-    [Table("t_PRODUTO_CATALOGO_PROPRIEDADE")]
     public class TProdutoCatalogoPropriedade : IModel
     {  
         public int id { get; set; }

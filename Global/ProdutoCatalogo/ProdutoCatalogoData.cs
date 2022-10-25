@@ -548,20 +548,20 @@ namespace ProdutoCatalogo
 
         public bool ExcluirItensComTransacao(TprodutoCatalogoItem model, ContextoBdGravacao contextoBdGravacao)
         {
-            
-            var prop = (from c in contextoBdGravacao.TprodutoCatalogoItem
-                       where model.IdProdutoCatalogo == c.IdProdutoCatalogo &&
-                             model.IdProdutoCatalogoPropriedade == c.IdProdutoCatalogoPropriedade
-                             select c).AsNoTracking().FirstOrDefault();
 
-            if(prop != null)
+            var prop = (from c in contextoBdGravacao.TprodutoCatalogoItem
+                        where model.IdProdutoCatalogo == c.IdProdutoCatalogo &&
+                              model.IdProdutoCatalogoPropriedade == c.IdProdutoCatalogoPropriedade
+                        select c).AsNoTracking().FirstOrDefault();
+
+            if (prop != null)
             {
 
                 contextoBdGravacao.TprodutoCatalogoItem.Remove(prop);
                 contextoBdGravacao.SaveChanges();
                 return true;
             }
-            
+
             return false;
         }
 
@@ -612,7 +612,7 @@ namespace ProdutoCatalogo
             return tipoImagem.ToList();
         }
 
-        public List<TcfgDataType> ObterTipoPropriedadePorFiltro(TcfgDataTypeFiltro filtro)
+        public List<TcfgDataType> ObterDataTypesPorFiltro(TcfgDataTypeFiltro filtro)
         {
             if (filtro == null) return null;
 
@@ -623,7 +623,7 @@ namespace ProdutoCatalogo
                     var tCfgDataTypes = from c in db.TcfgDataType
                                         select c;
 
-                    if(filtro.Id != 0)
+                    if (filtro.Id != 0)
                     {
                         tCfgDataTypes = tCfgDataTypes.Where(x => x.Id == filtro.Id);
                     }
@@ -634,6 +634,27 @@ namespace ProdutoCatalogo
             catch (Exception e)
             {
 
+                throw e;
+            }
+        }
+
+        public List<TcfgTipoPropriedadeProdutoCatalogo> ObterTipoPropriedadesPorFiltro(TcfgTipoPropriedadeProdutoCatalogoFiltro filtro)
+        {
+            if (filtro == null) return null;
+
+            try
+            {
+                using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+                {
+                    var tcfgTipoPropriedadeProdutoCatalogo = from c in db.TcfgTipoPropriedadeProdutoCatalogo
+                                                             select c;
+
+
+                    return tcfgTipoPropriedadeProdutoCatalogo.ToList();
+                }
+            }
+            catch (Exception e)
+            {
                 throw e;
             }
         }

@@ -399,45 +399,118 @@ namespace OrcamentoCotacaoBusiness.Bll
                 var item = propriedadesTextoLivre.Where(x => x.id == prop.IdProdutoCatalogoPropriedade).FirstOrDefault();
                 if (item != null)
                 {
-                    var tCfgDataType = _bll.ObterTipoPropriedadePorFiltro(new TcfgDataTypeFiltro() { Id = item.IdCfgDataType }).FirstOrDefault();
+                    var tCfgDataType = _bll.ObterDataTypesPorFiltro(new TcfgDataTypeFiltro() { Id = item.IdCfgDataType }).FirstOrDefault();
                     if (tCfgDataType == null)
                     {
                         retorno = $"Falha ao validar a propriedade '{item.descricao}'.";
                         break;
                     }
 
-                    if (tCfgDataType.Sigla == "real")
-                    {
-
-                        if (!string.IsNullOrEmpty(retorno)) break;
-
-                        if (!Single.TryParse(prop.Valor, out float valor))
-                            retorno = $"Propriedade '{item.descricao}' está inválida!";
-
-                        if (prop.Valor.Contains(".")) retorno = $"Propriedade '{item.descricao}' está com ponto, esperamos vírgula!";
-
-                        if (!string.IsNullOrEmpty(retorno)) break;
-                    }
-
-                    if (tCfgDataType.Sigla == "string")
-                    {
-                        if (string.IsNullOrEmpty(prop.Valor))
-                            retorno = $"Propriedade '{item.descricao}' precisa ser preenchida!";
-
-                        if (!string.IsNullOrEmpty(retorno)) break;
-                    }
-
-                    if (tCfgDataType.Sigla == "int")
-                    {
-                        if (!int.TryParse(prop.Valor, out int valor))
-                            retorno = $"Propriedade '{item.descricao}' está inválida!";
-
-                        if (!string.IsNullOrEmpty(retorno)) break;
-                    }
+                    retorno = ValidarTipoPropriedade(prop.Valor, item.descricao, tCfgDataType.Sigla);
+                    if (!string.IsNullOrEmpty(retorno)) break;
                 }
             }
 
             return await Task.FromResult(retorno);
+        }
+
+        private string ValidarTipoPropriedade(string valor, string descricao, string sigla)
+        {
+            string retorno = "";
+            if (sigla == "real")
+            {
+                if (!Single.TryParse(valor, out float valorRetorno))
+                    retorno = $"Propriedade '{descricao}' está inválida!";
+
+                if (valor.Contains(".")) retorno = $"Propriedade '{descricao}' está com ponto, esperamos vírgula!";
+            }
+
+            if (sigla == "string")
+            {
+                if (string.IsNullOrEmpty(valor))
+                    retorno = $"Propriedade '{descricao}' precisa ser preenchida!";
+            }
+
+            if (sigla == "int")
+            {
+                if (!int.TryParse(valor, out int valorRetorno))
+                    retorno = $"Propriedade '{descricao}' está inválida!";
+            }
+
+            return retorno;
+        }
+
+        public async Task<List<TcfgDataType>> BuscarDataTypes()
+        {
+            return await Task.FromResult(_bll.ObterDataTypesPorFiltro(new TcfgDataTypeFiltro()));
+        }
+
+        public async Task<List<TcfgTipoPropriedadeProdutoCatalogo>> BuscarTipoPropriedades()
+        {
+            return await Task.FromResult(_bll.ObterTipoPropriedadesPorFiltro(new TcfgTipoPropriedadeProdutoCatalogoFiltro()));
+        }
+
+        public async Task<string> GravarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
+        {
+            if (produtoCatalogoPropriedade == null) return "Dados inválidos!";
+            if (string.IsNullOrEmpty(produtoCatalogoPropriedade.descricao)) return "Descrição da propriedade inválido!";
+
+            _logger.LogInformation($"GravarPropriedadesProdutos: Buscando DataTypes.");
+            var lstTcfgDataType = await BuscarDataTypes();
+
+            _logger.LogInformation($"GravarPropriedadesProdutos: Buscando TipoPropriedades.");
+            var lstTcfgTipoPropriedadeProdutoCatalogo = await BuscarTipoPropriedades();
+
+            if (lstTcfgDataType == null || lstTcfgTipoPropriedadeProdutoCatalogo == null) return "Falha ao buscar dados para validação!";
+
+            var dataType = lstTcfgDataType.Where(x => x.Id == produtoCatalogoPropriedade.IdCfgDataType).FirstOrDefault();
+            if (dataType == null) return "Falha ao buscar tipos válidos para validação da propriedade!";
+
+            var tipo = lstTcfgTipoPropriedadeProdutoCatalogo.Where(x => x.Id == produtoCatalogoPropriedade.IdCfgTipoPropriedade).FirstOrDefault();
+            if (tipo == null) return "Falha ao buscar tipo da propriedade!";
+
+            _logger.LogInformation($"GravarPropriedadesProdutos: Validando propriedade.");
+            if (produtoCatalogoPropriedade.IdCfgTipoPropriedade == 0)
+            {
+                if (produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados != null)
+                    return "Se a propriedade é de preenchimento livre, não deve conter lista de valores válidos!";
+            }
+            if (produtoCatalogoPropriedade.IdCfgTipoPropriedade == 1)
+            {
+                if (produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados.Count() == 0)
+                    return "Se a propriedade é de valores limitados a opções pré-definidas, é necessário informar uma lista de valores válidos!";
+
+                foreach (var prop in produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados)
+                {
+                    var retorno = ValidarTipoPropriedade(prop.valor, produtoCatalogoPropriedade.descricao, dataType.Sigla);
+                    if (!string.IsNullOrEmpty(retorno)) return retorno;
+                }
+            }
+
+            //vamos abrir a transação aqui 
+            _logger.LogInformation($"GravarPropriedadesProdutos: Cadastrando propriedade.");
+            using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                var tProdutoCatalogoPropriedade = _produtoGeralBll.GravarPropriedadeComTransacao(produtoCatalogoPropriedade, dbGravacao);
+                if (tProdutoCatalogoPropriedade.id == 0) return "Falha ao gravar propriedade!";
+
+                if (produtoCatalogoPropriedade.IdCfgTipoPropriedade == 1)
+                {
+                    int index = 1;
+                    foreach (var opcao in produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados)
+                    {
+                        opcao.id_produto_catalogo_propriedade = tProdutoCatalogoPropriedade.id;
+                        opcao.ordem = index;
+                        var tProdutoCatalogoPropriedadeOpcao = _produtoGeralBll.GravarPropriedadeOpcaoComTransacao(opcao, dbGravacao);
+                        index++;
+                    }
+                }
+
+                dbGravacao.transacao.Commit();
+                _logger.LogInformation($"GravarPropriedadesProdutos: Finalizando cadastro de propriedade.");
+            }
+
+            return null;
         }
     }
 }

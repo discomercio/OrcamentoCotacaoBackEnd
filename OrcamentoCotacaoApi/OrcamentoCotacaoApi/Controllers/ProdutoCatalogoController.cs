@@ -10,6 +10,7 @@ using OrcamentoCotacaoBusiness.Bll;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using UtilsGlobais.Configs;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -25,7 +26,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
         public ProdutoCatalogoController(
             ILogger<ProdutoCatalogoController> logger,
-            ProdutoCatalogoOrcamentoCotacaoBll bll, 
+            ProdutoCatalogoOrcamentoCotacaoBll bll,
             IOptions<Configuracoes> appSettings,
             ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll)
         {
@@ -177,7 +178,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 _logger.LogInformation("Atualizar - Response: {0}", retorno);
                 return BadRequest(new { message = retorno });
             }
-            
+
             return Ok();
         }
 
@@ -253,10 +254,38 @@ namespace OrcamentoCotacaoApi.Controllers
             return Ok(saida);
         }
 
-        [HttpGet("buscarTiposPropriedades")]
-        public async Task<IActionResult> BuscarTiposPropriedadesProdutoCatalago()
+        //[HttpGet("buscarTiposPropriedades")]
+        //public async Task<IActionResult> BuscarTiposPropriedadesProdutoCatalago()
+        //{
+        //    var saida = await _bll.BuscarTiposPropriedadesProdutoCatalago();
+        //    return Ok();
+        //}
+
+        [HttpGet("buscarDataTypes")]
+        public async Task<IActionResult> BuscarDataTypes()
         {
-            //var saida = await _bll.BuscarTiposPropriedadesProdutoCatalago();
+            var saida = await _bll.BuscarDataTypes();
+            return Ok(saida);
+        }
+
+        [HttpGet("buscarTipoPropriedades")]
+        public async Task<IActionResult> BuscarTipoPropriedades()
+        {
+            var saida = await _bll.BuscarTipoPropriedades();
+            return Ok(saida);
+        }
+
+        [HttpPost("propriedades")]
+        public async Task<IActionResult> GravarPropriedade(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
+        {
+            _logger.LogInformation($"ProdutoCatalogoController/GravarPropriedade/POST - Request => [{JsonConvert.SerializeObject(produtoCatalogoPropriedade)}].");
+            
+            //var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var saida = await _bll.GravarPropriedadesProdutos(produtoCatalogoPropriedade);
+
+            if(!string.IsNullOrEmpty(saida)) return BadRequest(new {message = saida});
+            
             return Ok();
         }
     }
