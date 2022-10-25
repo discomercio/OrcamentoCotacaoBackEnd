@@ -808,8 +808,7 @@ namespace Produto
                                   ordem = p.ordem,
                                   dt_cadastro = p.dt_cadastro,
                                   usuario_cadastro = p.usuario_cadastro
-                              })
-                                .ToListAsync();
+                              }).ToListAsync();
             }
         }
 
@@ -818,6 +817,26 @@ namespace Produto
             using (var db = contextoProvider.GetContextoLeitura())
             {
                 return await (from p in db.TProdutoCatalogoPropriedadeOpcao
+                              select new Produto.Dados.ProdutoCatalogoPropriedadeOpcoesDados
+                              {
+                                  id = p.id,
+                                  id_produto_catalogo_propriedade = p.id_produto_catalogo_propriedade,
+                                  valor = p.valor,
+                                  oculto = p.oculto,
+                                  ordem = p.ordem,
+                                  dt_cadastro = p.dt_cadastro,
+                                  usuario_cadastro = p.usuario_cadastro
+                              })
+                                .ToListAsync();
+            }
+        }
+
+        public async Task<List<Produto.Dados.ProdutoCatalogoPropriedadeOpcoesDados>> ObterListaPropriedadesOpcoes(int idProdutoCatalogoPropriedade)
+        {
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                return await (from p in db.TProdutoCatalogoPropriedadeOpcao
+                              where p.id_produto_catalogo_propriedade == idProdutoCatalogoPropriedade
                               select new Produto.Dados.ProdutoCatalogoPropriedadeOpcoesDados
                               {
                                   id = p.id,

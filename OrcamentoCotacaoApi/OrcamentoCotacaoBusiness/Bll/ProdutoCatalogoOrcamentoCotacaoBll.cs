@@ -452,6 +452,36 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public async Task<string> GravarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
         {
+            var validacao = await ValidarPropriedade(produtoCatalogoPropriedade);
+            if (!string.IsNullOrEmpty(validacao)) return validacao;
+
+            _logger.LogInformation($"GravarPropriedadesProdutos: Cadastrando propriedade.");
+            using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                var tProdutoCatalogoPropriedade = _produtoGeralBll.GravarPropriedadeComTransacao(produtoCatalogoPropriedade, dbGravacao);
+                if (tProdutoCatalogoPropriedade.id == 0) return "Falha ao gravar propriedade!";
+
+                if (produtoCatalogoPropriedade.IdCfgTipoPropriedade == 1)
+                {
+                    int index = 1;
+                    foreach (var opcao in produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados)
+                    {
+                        opcao.id_produto_catalogo_propriedade = tProdutoCatalogoPropriedade.id;
+                        opcao.ordem = index;
+                        var tProdutoCatalogoPropriedadeOpcao = _produtoGeralBll.GravarPropriedadeOpcaoComTransacao(opcao, dbGravacao);
+                        index++;
+                    }
+                }
+
+                dbGravacao.transacao.Commit();
+                _logger.LogInformation($"GravarPropriedadesProdutos: Finalizando cadastro de propriedade.");
+            }
+
+            return null;
+        }
+
+        private async Task<string> ValidarPropriedade(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
+        {
             if (produtoCatalogoPropriedade == null) return "Dados inválidos!";
             if (string.IsNullOrEmpty(produtoCatalogoPropriedade.descricao)) return "Descrição da propriedade inválido!";
 
@@ -487,30 +517,53 @@ namespace OrcamentoCotacaoBusiness.Bll
                 }
             }
 
-            //vamos abrir a transação aqui 
-            _logger.LogInformation($"GravarPropriedadesProdutos: Cadastrando propriedade.");
-            using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
-            {
-                var tProdutoCatalogoPropriedade = _produtoGeralBll.GravarPropriedadeComTransacao(produtoCatalogoPropriedade, dbGravacao);
-                if (tProdutoCatalogoPropriedade.id == 0) return "Falha ao gravar propriedade!";
+            return null;
+        }
 
-                if (produtoCatalogoPropriedade.IdCfgTipoPropriedade == 1)
+        public async Task<List<Produto.Dados.ProdutoCatalogoPropriedadeDados>> ObterListaPropriedadesProdutos(int id)
+        {
+            var lstPropriedades = await _produtoGeralBll.ObterListaPropriedadesProdutos(id);
+
+            if (lstPropriedades != null && lstPropriedades.Count > 0)
+            {
+                if (lstPropriedades[0].IdCfgTipoPropriedade == 1)
                 {
-                    int index = 1;
-                    foreach (var opcao in produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados)
+                    var lstPropriedadeOpcoes = await _produtoGeralBll.ObterListaPropriedadesOpcoes(id);
+                    if (lstPropriedadeOpcoes != null)
                     {
-                        opcao.id_produto_catalogo_propriedade = tProdutoCatalogoPropriedade.id;
-                        opcao.ordem = index;
-                        var tProdutoCatalogoPropriedadeOpcao = _produtoGeralBll.GravarPropriedadeOpcaoComTransacao(opcao, dbGravacao);
-                        index++;
+                        lstPropriedades[0].produtoCatalogoPropriedadeOpcoesDados = new List<Produto.Dados.ProdutoCatalogoPropriedadeOpcoesDados>();
+                        lstPropriedades[0].produtoCatalogoPropriedadeOpcoesDados = lstPropriedadeOpcoes;
                     }
                 }
-
-                dbGravacao.transacao.Commit();
-                _logger.LogInformation($"GravarPropriedadesProdutos: Finalizando cadastro de propriedade.");
             }
 
-            return null;
+            return lstPropriedades;
+        }
+
+        public async Task<bool> AtualizarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
+        {
+            //vamos validar os dados
+            var validacao = await ValidarPropriedade(produtoCatalogoPropriedade);
+            if (!string.IsNullOrEmpty(validacao)) return false;
+
+            if (produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados != null)
+            {
+                var todosProdutos = PorFiltro(new TprodutoCatalogoFiltro());
+
+                foreach (var itens in produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados)
+                {
+                    if (produtoCatalogoPropriedade.IdCfgTipoPermissaoEdicaoCadastro == 1)
+                    {
+
+                    }
+                }
+            }
+
+
+            //Não pode editar propriedades pré-definidas" (id<=10000) e "Sistema" (IdCfgTipoPermissaoEdicaoCadastro=1)
+            //Ao excluir um item da lista de valores válidos, verificar se existe produto que utiliza essa propriedade
+
+            return _produtoGeralBll.AtualizarPropriedadesProdutos(produtoCatalogoPropriedade);
         }
     }
 }

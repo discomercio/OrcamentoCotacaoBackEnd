@@ -288,5 +288,41 @@ namespace OrcamentoCotacaoApi.Controllers
             
             return Ok();
         }
+
+        [HttpGet("propriedades/{id}")]
+        public async Task<IActionResult> ObterListaPropriedadesProdutos(int id)
+        {
+            _logger.LogInformation("Buscando propriedades do produto");
+
+            var ret = await _bll.ObterListaPropriedadesProdutos(id);
+
+            if (ret == null)
+                return NoContent();
+            else
+                return Ok(ret);
+        }
+
+        [HttpPut("propriedades")]
+        public async Task<IActionResult> AtualizarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
+        {
+            _logger.LogInformation("Inserindo Propriedade do Produto");
+
+            var saida = await _bll.AtualizarPropriedadesProdutos(produtoCatalogoPropriedade);
+
+            if (saida)
+            {
+                return Ok(new
+                {
+                    message = "Propriedade do produto atualizada com sucesso."
+                });
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    message = "Não foi possível atualizar a propriedade do produto."
+                });
+            }
+        }
     }
 }
