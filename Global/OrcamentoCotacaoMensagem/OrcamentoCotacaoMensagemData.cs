@@ -24,8 +24,9 @@ namespace OrcamentoCotacaoMensagem
             {
 
                 return await (from ocm in db.TorcamentoCotacaoMensagem
-                              join ocms in db.TorcamentoCotacaoMensagemStatus on ocm.Id equals ocms.IdOrcamentoCotacaoMensagem
-                              where ocm.IdOrcamentoCotacao == IdOrcamentoCotacao
+                              join ocms in db.TorcamentoCotacaoMensagemStatus on ocm.Id equals ocms.IdOrcamentoCotacaoMensagem                                                            
+                              where ocm.IdOrcamentoCotacao == IdOrcamentoCotacao && ocms.IdUsuario == ocm.IdUsuarioDestinatario
+
                                select new TorcamentoCotacaoMensagemFiltro()
                                {
                                    Id = ocm.Id,
@@ -36,7 +37,8 @@ namespace OrcamentoCotacaoMensagem
                                    Mensagem = ocm.Mensagem,
                                    DataCadastro = ocm.DataCadastro,
                                    DataHoraCadastro = ocm.DataHoraCadastro,
-                                   PendenciaTratada = ocms.PendenciaTratada
+                                   PendenciaTratada = ocms.PendenciaTratada,
+                                   Lida = ocms.Lida
                                })
                                .OrderByDescending(x => x.Id)
                                .ToListAsync();
