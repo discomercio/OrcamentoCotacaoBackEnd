@@ -40,7 +40,7 @@ namespace OrcamentoCotacaoApi.Controllers
             var request = new ArquivoObterEstruturaRequest()
             {
                 CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]),
-                Usuario = ""
+                Usuario = LoggedUser.Apelido
             };
 
             //_logger.LogWarning("ENDPOINT: ObterEstrutura: LogWarning");
@@ -61,7 +61,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 Id = id,
                 CaminhoArquivo = _appSettings.Value.PdfCaminho,
                 CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]),
-                Usuario = ""
+                Usuario = LoggedUser.Apelido
             };
 
             _logger.LogInformation($"ArquivoController/Download/GET - Request => [{JsonSerializer.Serialize(request)}].");
@@ -84,7 +84,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 Id = id,
                 CaminhoArquivo = _appSettings.Value.PdfCaminho,
                 CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]),
-                Usuario = ""
+                Usuario = LoggedUser.Apelido
             };
 
             _logger.LogInformation($"ArquivoController/Excluir/POST - Request => [{JsonSerializer.Serialize(request)}].");
@@ -111,7 +111,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 Nome = nome,
                 Descricao = descricao,
                 CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]),
-                Usuario = ""
+                Usuario = LoggedUser.Apelido
             };
 
             _logger.LogInformation($"ArquivoController/Editar/PUT - Request => [{JsonSerializer.Serialize(request)}].");
@@ -130,7 +130,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
             request.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
-            request.Usuario = "";
+            request.Usuario = LoggedUser.Apelido;
 
             _logger.LogInformation($"ArquivoController/CriarPasta/POST - Request => [{JsonSerializer.Serialize(request)}].");
 
@@ -153,7 +153,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 CaminhoArquivo = _appSettings.Value.PdfCaminho,
                 //Arquivo = Request.Form.Files[0],
                 CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]),
-                Usuario = ""
+                Usuario = LoggedUser.Apelido
             };
 
             _logger.LogInformation($"ArquivoController/Upload/POST - Request => [{JsonSerializer.Serialize(request)}].");
