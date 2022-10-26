@@ -710,7 +710,8 @@ namespace Prepedido.Bll
                 //complementar os dados Cadastrais do cliente
                 prePedido.DadosCliente.Indicador_Orcamentista = tOrcamentista.Apelido.ToUpper();
                 prePedido.DadosCliente.Loja = tOrcamentista.Loja;
-                //prePedido.DadosCliente.Vendedor = tOrcamentista.Vendedor?.ToUpper();
+                prePedido.DadosCliente.Vendedor = tOrcamentista.Vendedor?.ToUpper();
+                prePedido.EnderecoCadastroClientePrepedido.Vendedor = tOrcamentista.Vendedor?.ToUpper();
 
                 if (string.IsNullOrEmpty(tOrcamentista.Vendedor))
                     lstErros.Add("NÃO HÁ NENHUM VENDEDOR DEFINIDO PARA ATENDÊ-LO");
