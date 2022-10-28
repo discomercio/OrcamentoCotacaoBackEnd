@@ -487,21 +487,27 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (produtoCatalogoPropriedade == null) return "Dados inválidos!";
             if (string.IsNullOrEmpty(produtoCatalogoPropriedade.descricao)) return "Descrição da propriedade inválido!";
 
-            _logger.LogInformation($"GravarPropriedadesProdutos: Buscando DataTypes.");
+            _logger.LogInformation($"ValidarPropriedade: Buscando lista de DataTypes.");
             var lstTcfgDataType = await BuscarDataTypes();
+            _logger.LogInformation($"ValidarPropriedade: Retorno da lista de DataTypes. Retorno => [{JsonSerializer.Serialize(lstTcfgDataType)}]");
 
-            _logger.LogInformation($"GravarPropriedadesProdutos: Buscando TipoPropriedades.");
+            _logger.LogInformation($"ValidarPropriedade: Buscando lista de tipos de propriedades.");
             var lstTcfgTipoPropriedadeProdutoCatalogo = await BuscarTipoPropriedades();
+            _logger.LogInformation($"ValidarPropriedade: Retorno da lista de tipos de propriedades. Retorno => [{JsonSerializer.Serialize(lstTcfgTipoPropriedadeProdutoCatalogo)}]");
 
             if (lstTcfgDataType == null || lstTcfgTipoPropriedadeProdutoCatalogo == null) return "Falha ao buscar dados para validação!";
 
+            _logger.LogInformation($"ValidarPropriedade: Filtrando lista de DataTypes.");
             var dataType = lstTcfgDataType.Where(x => x.Id == produtoCatalogoPropriedade.IdCfgDataType).FirstOrDefault();
             if (dataType == null) return "Falha ao buscar tipos válidos para validação da propriedade!";
+            _logger.LogInformation($"ValidarPropriedade: DataType filtrado. Retorno => [{JsonSerializer.Serialize(dataType)}]");
 
+            _logger.LogInformation($"ValidarPropriedade: Filtrando lista de tipo de propriedades.");
             var tipo = lstTcfgTipoPropriedadeProdutoCatalogo.Where(x => x.Id == produtoCatalogoPropriedade.IdCfgTipoPropriedade).FirstOrDefault();
             if (tipo == null) return "Falha ao buscar tipo da propriedade!";
+            _logger.LogInformation($"ValidarPropriedade: tipo de propriedade filtrado. Retorno => [{JsonSerializer.Serialize(tipo)}]");
 
-            _logger.LogInformation($"GravarPropriedadesProdutos: Validando propriedade.");
+            _logger.LogInformation($"ValidarPropriedade: Verificando tipo de propriedade e lista de opcoes.");
             if (produtoCatalogoPropriedade.IdCfgTipoPropriedade == 0)
             {
                 if (produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados != null)
@@ -512,6 +518,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 if (produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados.Count() == 0)
                     return "Se a propriedade é de valores limitados a opções pré-definidas, é necessário informar uma lista de valores válidos!";
 
+                _logger.LogInformation($"ValidarPropriedade: Validando tipo da propriedade da opcao.");
                 foreach (var prop in produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados)
                 {
                     var retorno = ValidarTipoPropriedade(prop.valor, produtoCatalogoPropriedade.descricao, dataType.Sigla);
@@ -548,31 +555,31 @@ namespace OrcamentoCotacaoBusiness.Bll
             var retorno = new ProdutoCatalogoPropriedadeResponseViewModel();
             retorno.Sucesso = false;
 
+            _logger.LogInformation($"AtualizarPropriedadesProdutos: Validando propriedade.");
             var validacao = await ValidarPropriedade(produtoCatalogoPropriedade);
+
             if (!string.IsNullOrEmpty(validacao))
             {
                 retorno.Mensagem = validacao;
                 return retorno;
             }
 
-            var naoEdita = produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados?.Where(x => x.id <= 10000);
-            if (produtoCatalogoPropriedade.IdCfgTipoPermissaoEdicaoCadastro == 1 && naoEdita.Any())
-            {
-                retorno.Mensagem = $"A propriedade {produtoCatalogoPropriedade.descricao} não pode ser editada!";
-                return retorno;
-            }
-            
+            _logger.LogInformation($"AtualizarPropriedadesProdutos: Obter propriedade para comparacao.");
             var prodPropriedadesParaComparacao = (await ObterListaPropriedadesProdutos(produtoCatalogoPropriedade.id)).FirstOrDefault();
+            _logger.LogInformation($"AtualizarPropriedadesProdutos: Retorno da propriedade para comparacao. Retorno => [{JsonSerializer.Serialize(prodPropriedadesParaComparacao)}].");
 
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
+                _logger.LogInformation($"AtualizarPropriedadesProdutos: Atualizando propriedade.");
                 var tProdutoCatalogoPropriedade = await _produtoGeralBll.AtualizarPropriedadeComTransacao(produtoCatalogoPropriedade, dbGravacao);
 
                 if (produtoCatalogoPropriedade.IdCfgTipoPropriedade == 1)
                 {
+                    _logger.LogInformation($"AtualizarPropriedadesProdutos: Verificando regra para remover opcoes da propriedade.");
                     retorno = await VerificarRegraRemoverPropriedadesProdutosOpcao(produtoCatalogoPropriedade, prodPropriedadesParaComparacao, dbGravacao);
                     if (retorno.ProdutosCatalogo != null) return retorno;
 
+                    _logger.LogInformation($"AtualizarPropriedadesProdutos: Atualizando opcoes da propriedade.");
                     retorno = await AtualizarPropriedadesProdutosOpcao(produtoCatalogoPropriedade, prodPropriedadesParaComparacao, tProdutoCatalogoPropriedade.id, dbGravacao);
                     if (!string.IsNullOrEmpty(retorno.Mensagem)) return retorno;
                 }
@@ -607,7 +614,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                 var comparar = produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados
                     .Where(x => x.id == prop.id).FirstOrDefault();
 
-                if (comparar == null) await _produtoGeralBll.RemoverPropriedadeOpcaoComTransacao(prop, dbGravacao);
+                if (comparar == null)
+                {
+                    _logger.LogInformation($"AtualizarPropriedadesProdutosOpcao: Removendo opção da propriedade. Opcao => [{JsonSerializer.Serialize(prop)}]");
+                    await _produtoGeralBll.RemoverPropriedadeOpcaoComTransacao(prop, dbGravacao);
+                }
 
             }
 
@@ -619,6 +630,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 prop.ordem = index;
                 if (existe == null)
                 {
+                    _logger.LogInformation($"AtualizarPropriedadesProdutosOpcao: Inserido nova opcao da propriedade. Opcao => [{JsonSerializer.Serialize(prop)}]");
                     prop.id_produto_catalogo_propriedade = idPropriedade;
                     var tProdutoCatalogoPropriedadeOpcao = await _produtoGeralBll.GravarPropriedadeOpcaoComTransacao(prop, dbGravacao);
                     if (idPropriedade == 0)
@@ -630,8 +642,19 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 if (existe != null)
                 {
+
+
                     if (existe.oculto != prop.oculto || existe.valor != prop.valor || existe.ordem != prop.ordem)
                     {
+                        _logger.LogInformation($"AtualizarPropriedadesProdutosOpcao: Verificando se opcao pode ser editada. Id => {existe.id}");
+                        var naoEdita = produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados?.Where(x => x.id <= 10000);
+                        if (naoEdita.Any())
+                        {
+                            retorno.Mensagem = $"A propriedade {prop.valor} não pode ser editada!";
+                            return retorno;
+                        }
+
+                        _logger.LogInformation($"AtualizarPropriedadesProdutosOpcao: Atualizando opcao da propriedade. Opcao => [{JsonSerializer.Serialize(prop)}]");
                         var tProproedadeOpcao = await _produtoGeralBll.AtualizarPropriedadeOpcaoComTransacao(prop, dbGravacao);
                         if (tProproedadeOpcao.id == 0)
                         {
@@ -662,10 +685,14 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     if (comparar == null)
                     {
+                        _logger.LogInformation($"VerificarRegraRemoverPropriedadesProdutosOpcao: Buscando produtos do catálogo que utilizam a opcao da propriedade que sera removida.");
                         var produtos = await _produtoGeralBll.BuscarProdutosCatalogoPorPropriedadeOpcaoComTransacao(produtoCatalogoPropriedade.id, prop.id, dbGravacao);
 
                         if (produtos.Count > 0)
                         {
+                            _logger.LogInformation($"VerificarRegraRemoverPropriedadesProdutosOpcao: retorno da lista de " +
+                                $"produtos do catálogo que utilizam a opcao da propriedade que será removida. Retorno => [{JsonSerializer.Serialize(produtos)}].");
+
                             retorno.ProdutosCatalogo = new List<TprodutoCatalogo>();
                             retorno.ProdutosCatalogo = produtos;
                             return retorno;

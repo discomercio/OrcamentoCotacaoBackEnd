@@ -12,13 +12,15 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Text.Json;
+using OrcamentoCotacaoBusiness.Models.Response;
+using UtilsGlobais.Configs;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     [Authorize]
-    [TypeFilter(typeof(ResourceFilter))]
+    //[TypeFilter(typeof(ResourceFilter))]
     public class ProdutoCatalogoController : BaseController
     {
         private readonly ILogger<ProdutoCatalogoController> _logger;
@@ -168,7 +170,7 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPut]
         public async Task<IActionResult> Atualizar(IFormFile arquivo, IFormCollection form)
         {
-            var tProduto = JsonConvert.DeserializeObject<TprodutoCatalogo>(form["produto"]);
+            var tProduto = JsonSerializer.Deserialize<TprodutoCatalogo>(form["produto"]);
             tProduto.UsuarioEdicao = LoggedUser.Apelido;
 
             _logger.LogInformation("Atualizar - Request: {0}", System.Text.Json.JsonSerializer.Serialize(tProduto));
@@ -310,13 +312,13 @@ namespace OrcamentoCotacaoApi.Controllers
             try
             {
                 _logger.LogInformation($"ProdutoCatalogoController/AtualizarPropriedadesProdutos/PUT - Request => [{JsonSerializer.Serialize(produtoCatalogoPropriedade)}]");
-                //_logger.LogInformation($"ArquivoController/Download/GET - Request => [{JsonSerializer.Serialize(request)}].");
-
+                
                 var saida = await _bll.AtualizarPropriedadesProdutos(produtoCatalogoPropriedade);
 
                 if (!string.IsNullOrEmpty(saida.Mensagem) || saida.ProdutosCatalogo?.Count > 0) return Ok(saida);
 
-                _logger.LogInformation("Retornando atualização de propriedade do produto");
+                _logger.LogInformation($"ProdutoCatalogoController/AtualizarPropriedadesProdutos/PUT - Response => [{JsonSerializer.Serialize(saida)}]");
+
 
                 return Ok(saida);
             }
