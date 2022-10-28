@@ -4,12 +4,15 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
+//using Newtonsoft.Json;
+using OrcamentoCotacaoApi.Filters;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using System.Text.Json;
+using OrcamentoCotacaoBusiness.Models.Response;
 using UtilsGlobais.Configs;
 
 namespace OrcamentoCotacaoApi.Controllers
@@ -17,6 +20,7 @@ namespace OrcamentoCotacaoApi.Controllers
     [ApiController]
     [Route("[controller]")]
     [Authorize]
+    //[TypeFilter(typeof(ResourceFilter))]
     public class ProdutoCatalogoController : BaseController
     {
         private readonly ILogger<ProdutoCatalogoController> _logger;
@@ -166,7 +170,7 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPut]
         public async Task<IActionResult> Atualizar(IFormFile arquivo, IFormCollection form)
         {
-            var tProduto = JsonConvert.DeserializeObject<TprodutoCatalogo>(form["produto"]);
+            var tProduto = JsonSerializer.Deserialize<TprodutoCatalogo>(form["produto"]);
             tProduto.UsuarioEdicao = LoggedUser.Apelido;
 
             _logger.LogInformation("Atualizar - Request: {0}", System.Text.Json.JsonSerializer.Serialize(tProduto));
@@ -226,7 +230,7 @@ namespace OrcamentoCotacaoApi.Controllers
             {
                 var usuario = LoggedUser.Apelido;
 
-                var tProduto = JsonConvert.DeserializeObject<TprodutoCatalogo>(form["produto"]);
+                var tProduto = JsonSerializer.Deserialize<TprodutoCatalogo>(form["produto"]);
 
                 _logger.LogInformation("Criar - Request: {0}", System.Text.Json.JsonSerializer.Serialize(tProduto));
 
@@ -278,15 +282,53 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost("propriedades")]
         public async Task<IActionResult> GravarPropriedade(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
         {
-            _logger.LogInformation($"ProdutoCatalogoController/GravarPropriedade/POST - Request => [{JsonConvert.SerializeObject(produtoCatalogoPropriedade)}].");
-            
+            _logger.LogInformation($"ProdutoCatalogoController/GravarPropriedade/POST - Request => [{JsonSerializer.Serialize(produtoCatalogoPropriedade)}].");
+
             //var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
             var saida = await _bll.GravarPropriedadesProdutos(produtoCatalogoPropriedade);
 
-            if(!string.IsNullOrEmpty(saida)) return BadRequest(new {message = saida});
-            
+            if (!string.IsNullOrEmpty(saida)) return BadRequest(new { message = saida });
+
             return Ok();
+        }
+
+        [HttpGet("propriedades/{id}")]
+        public async Task<IActionResult> ObterListaPropriedadesProdutos(int id)
+        {
+            _logger.LogInformation("Buscando propriedades do produto");
+
+            var ret = await _bll.ObterListaPropriedadesProdutos(id);
+
+            if (ret == null)
+                return NoContent();
+            else
+                return Ok(ret);
+        }
+
+        [HttpPut("propriedades")]
+        public async Task<IActionResult> AtualizarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
+        {
+            try
+            {
+                _logger.LogInformation($"ProdutoCatalogoController/AtualizarPropriedadesProdutos/PUT - Request => [{JsonSerializer.Serialize(produtoCatalogoPropriedade)}]");
+                
+                var saida = await _bll.AtualizarPropriedadesProdutos(produtoCatalogoPropriedade);
+
+                if (!string.IsNullOrEmpty(saida.Mensagem) || saida.ProdutosCatalogo?.Count > 0) return Ok(saida);
+
+                _logger.LogInformation($"ProdutoCatalogoController/AtualizarPropriedadesProdutos/PUT - Response => [{JsonSerializer.Serialize(saida)}]");
+
+
+                return Ok(saida);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
+
+            
         }
     }
 }

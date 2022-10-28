@@ -129,29 +129,6 @@ namespace OrcamentoCotacaoApi.BaseController
                 return Ok(ret);
         }        
 
-        [HttpPut("propriedades")]
-        public async Task<IActionResult> AtualizarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
-        {
-            _logger.LogInformation("Inserindo Propriedade do Produto");
-
-            var saida = _produtoBll.AtualizarPropriedadesProdutos(produtoCatalogoPropriedade);
-
-            if (saida)
-            {
-                return Ok(new
-                {
-                    message = "Propriedade do produto atualizada com sucesso."
-                });
-            }
-            else
-            {
-                return BadRequest(new
-                {
-                    message = "Não foi possível atualizar a propriedade do produto."
-                });
-            }
-        }
-
         [HttpGet("listar-produtos-propriedades-ativos")]
         public async Task<IActionResult> ObterListaProdutosPropriedadesProdutosAtivos()
         {

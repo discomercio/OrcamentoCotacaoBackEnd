@@ -4,10 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
+using UtilsGlobais.RequestResponse;
 
 namespace Produto.Dados
 {
-    public class ProdutoCatalogoPropriedadeDados
+    public class ProdutoCatalogoPropriedadeDados: RequestBase
     {
         public int id { get; set; }
         public short IdCfgTipoPropriedade { get; set; }

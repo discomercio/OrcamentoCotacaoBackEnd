@@ -239,16 +239,6 @@ namespace OrcamentoCotacaoBusiness.Bll
             return lstProdutoPropriedades;
         }
 
-        public bool GravarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
-        {
-            return produtoGeralBll.GravarPropriedadesProdutos(produtoCatalogoPropriedade);
-        }
-
-        public bool AtualizarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
-        {
-            return produtoGeralBll.AtualizarPropriedadesProdutos(produtoCatalogoPropriedade);
-        }
-
         public List<TorcamentoCotacaoItemUnificado> CadastrarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(OrcamentoOpcaoRequestViewModel opcao,
             int idOrcamentoCotacaoOpcao, string loja, ContextoBdGravacao contextoBdGravacao, ref string erro)
         {
@@ -389,7 +379,6 @@ namespace OrcamentoCotacaoBusiness.Bll
             List<TorcamentoCotacaoItemUnificado> produtosUnificados, ContextoBdGravacao contextoBdGravacao)
         {
             List<TorcamentoCotacaoItemUnificado> lstUnificados = new List<TorcamentoCotacaoItemUnificado>();
-
 
             foreach (var item in lstProdutos)
             {
