@@ -39,143 +39,42 @@ namespace Arquivo
             try
             {
                 _logger.LogInformation($"ArquivoObterEstrutura: Obter estrutura da tela de download. CorrelationId => [{request.CorrelationId}].");
-                var lista = this.ObterEstrutura();
+                var estruturas = this.ObterEstrutura();
 
-                _logger.LogInformation($"ArquivoObterEstrutura: Retorno estrutura de tela de download. Retorno => [{lista.Count}]. CorrelationId => [{request.CorrelationId}].");
-                if (lista.Count <= 0)
+                _logger.LogInformation($"ArquivoObterEstrutura: Retorno estrutura de tela de download. Retorno => [{estruturas.Count}]. CorrelationId => [{request.CorrelationId}].");
+                if (estruturas.Count <= 0)
                 {
                     response.Sucesso = false;
                     response.Mensagem = "Não existem pastas cadastrada. Favor criar nova pasta.";
                     return response;
                 }
 
-                _logger.LogInformation($"ArquivoObterEstrutura: Retorno estrutura filtando pelo IdPai igual null. CorrelationId => [{request.CorrelationId}].");
-                var root = lista.Where(x => x.Pai == null).FirstOrDefault();
+                var child = new List<Child>();
 
-                //var data = new List<Child>{
-                //new Child
-                //{
-                //    data = new Data {
-                //        key = root.Id.ToString(),
-                //        name = root.Nome,
-                //        type = "Folder",
-                //        size = root.Tamanho,
-                //        descricao = root.Descricao
-                //    },
-                //    children = lista.Where(x => x.Pai == root.Id)
-                //                .Select(c => new Child
-                //                {
-                //                    data = new Data
-                //                    {
-                //                        key = c.Id.ToString(),
-                //                        name = c.Nome,
-                //                        type = c.Tipo,
-                //                        size = c.Tamanho,
-                //                        descricao = c.Descricao
-                //                    },
-                //                    children = lista.Where(x => x.Pai == c.Id)
-                //                                .Select(d => new Child
-                //                                {
-                //                                    data = new Data
-                //                                    {
-                //                                        key = d.Id.ToString(),
-                //                                        name = d.Nome,
-                //                                        type = d.Tipo,
-                //                                        size = d.Tamanho,
-                //                                        descricao = d.Descricao
-                //                                    },
-                //                                    children = lista.Where(x => x.Pai == d.Id)
-                //                                                .Select(e => new Child
-                //                                                {
-                //                                                    data = new Data
-                //                                                    {
-                //                                                        key = e.Id.ToString(),
-                //                                                        name = e.Nome,
-                //                                                        type = e.Tipo,
-                //                                                        size = e.Tamanho,
-                //                                                        descricao = e.Descricao
-                //                                                    },
-                //                        children = lista.Where(x => x.Pai == c.Id)
-                //                                .Select(d => new Child
-                //                                {
-                //                                    data = new Data
-                //                                    {
-                //                                        key = d.Id.ToString(),
-                //                                        name = d.Nome,
-                //                                        type = d.Tipo,
-                //                                        size = d.Tamanho,
-                //                                        descricao = d.Descricao
-                //                                    },
-                //                                    children = lista.Where(x => x.Pai == d.Id)
-                //                                                .Select(e => new Child
-                //                                                {
-                //                                                    data = new Data
-                //                                                    {
-                //                                                        key = e.Id.ToString(),
-                //                                                        name = e.Nome,
-                //                                                        type = e.Tipo,
-                //                                                        size = e.Tamanho,
-                //                                                        descricao = e.Descricao
-                //                                                    },
-                //                                                }).ToList()
-                //                                }).ToList()
-                //                                                }).ToList()
-                //                                }).ToList()
-                //                }).ToList()
-                //}};
-
-                var data = new List<Child>{
-                new Child
+                foreach (TorcamentoCotacaoArquivos itemPai in estruturas)
                 {
-                    data = new Data {
-                        key = root.Id.ToString(),
-                        name = root.Nome,
-                        type = "Folder",
-                        size = root.Tamanho,
-                        descricao = root.Descricao
-                    },
-                    children = lista.Where(x => x.Pai == root.Id)
-                                .Select(c => new Child
-                                {
-                                    data = new Data
-                                    {
-                                        key = c.Id.ToString(),
-                                        name = c.Nome,
-                                        type = c.Tipo,
-                                        size = c.Tamanho,
-                                        descricao = c.Descricao
-                                    },
-                                    children = lista.Where(x => x.Pai == c.Id)
-                                                .Select(d => new Child
-                                                {
-                                                    data = new Data
-                                                    {
-                                                        key = d.Id.ToString(),
-                                                        name = d.Nome,
-                                                        type = d.Tipo,
-                                                        size = d.Tamanho,
-                                                        descricao = d.Descricao
-                                                    },
-                                                    children = lista.Where(x => x.Pai == d.Id)
-                                                                .Select(e => new Child
-                                                                {
-                                                                    data = new Data
-                                                                    {
-                                                                        key = e.Id.ToString(),
-                                                                        name = e.Nome,
-                                                                        type = e.Tipo,
-                                                                        size = e.Tamanho,
-                                                                        descricao = e.Descricao
-                                                                    },
-                                                                }).ToList()
-                                                }).ToList()
-                                }).ToList()
-                }};
-                
+                    if (itemPai.Pai == null)
+                    {
+                        child.Add(new Child()
+                        {
+                            data = new Data()
+                            {
+                                key = itemPai.Id.ToString(),
+                                name = itemPai.Nome,
+                                size = itemPai.Tamanho,
+                                type = itemPai.Tipo,
+                                descricao = itemPai.Descricao
+                            },
+                            children = ObterEstruturaFilho(estruturas, itemPai.Id)
+                        });
+                    }
+                }
+
                 _logger.LogInformation($"ArquivoObterEstrutura: Retorno da estrutura com sucesso. CorrelationId => [{request.CorrelationId}].");
+                response.CorrelationId = request.CorrelationId;
                 response.Sucesso = true;
                 response.Mensagem = "Retorno da estrutura com sucesso.";
-                response.Childs = data;
+                response.Childs = child;
                 return response;
             }
             catch (Exception ex)
@@ -213,6 +112,7 @@ namespace Arquivo
                 var arquivo = this.ObterArquivoPorID(Guid.Parse(request.Id));
 
                 _logger.LogInformation($"ArquivoDownload: Download efetuado com sucesso. CorrelationId => [{request.CorrelationId}].");
+                response.CorrelationId = request.CorrelationId;
                 response.Sucesso = true;
                 response.Mensagem = "Download efetuado com sucesso.";
                 response.Nome = arquivo.Nome;
@@ -266,6 +166,7 @@ namespace Arquivo
                 }
 
                 _logger.LogInformation($"ArquivoExcluir: Exclusão concluida com sucesso. CorrelationId => [{request.CorrelationId}].");
+                response.CorrelationId = request.CorrelationId;
                 response.Sucesso = true;
                 response.Mensagem = "Exclusão concluida com sucesso.";
                 return response;
@@ -296,6 +197,14 @@ namespace Arquivo
                 return response;
             }
 
+            _logger.LogInformation($"ArquivoEditar: Verificando campo Nome excedeu máximo de 255 caracteres. CorrelationId => [{request.CorrelationId}].");
+            if (request.Nome.Length > 255)
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Nome excedeu máximo de 255 caracteres.";
+                return response;
+            }
+
             _logger.LogInformation($"ArquivoEditar: Verificando campo Descricao excedeu máximo de 500 caracteres. CorrelationId => [{request.CorrelationId}].");
             if (!string.IsNullOrEmpty(request.Descricao) 
                 && request.Descricao.Length > 500)
@@ -311,11 +220,12 @@ namespace Arquivo
                 var retorno = this.Editar(new TorcamentoCotacaoArquivos
                 {
                     Id = Guid.Parse(request.Id),
-                    Nome = request.Nome,
-                    Descricao = request.Descricao
+                    Nome = request.Nome.Trim(),
+                    Descricao = !string.IsNullOrEmpty(request.Descricao) ? request.Descricao.Trim() : string.Empty,
                 });
 
                 _logger.LogInformation($"ArquivoEditar: Salvo com sucesso. CorrelationId => [{request.CorrelationId}].");
+                response.CorrelationId = request.CorrelationId;
                 response.Sucesso = true;
                 response.Mensagem = "Salvo com sucesso.";
                 return response;
@@ -361,14 +271,15 @@ namespace Arquivo
                 var tOrcamentoCotacaoArquivos = this.Inserir(new TorcamentoCotacaoArquivos()
                 {
                     Id = Guid.NewGuid(),
-                    Nome = request.Nome,
+                    Nome = request.Nome.Trim(),
                     Pai = !string.IsNullOrEmpty(request.IdPai) ? Guid.Parse(request.IdPai) : (Guid?)null,
-                    Descricao = !string.IsNullOrEmpty(request.Descricao) ? request.Descricao : string.Empty,
+                    Descricao = !string.IsNullOrEmpty(request.Descricao) ? request.Descricao.Trim() : string.Empty,
                     Tamanho = string.Empty,
                     Tipo = "Folder"
                 });
 
                 _logger.LogInformation($"ArquivoCriarPasta: Pasta [{request.Nome}] criada com sucesso. CorrelationId => [{request.CorrelationId}].");
+                response.CorrelationId = request.CorrelationId;
                 response.Id = tOrcamentoCotacaoArquivos.Id;
                 response.Sucesso = true;
                 response.Mensagem = $"Pasta '{request.Nome}' criada com sucesso.";
@@ -442,6 +353,7 @@ namespace Arquivo
                 });
 
                 _logger.LogInformation($"ArquivoUpload: Upload efetuado com sucesso. CorrelationId => [{request.CorrelationId}].");
+                response.CorrelationId = request.CorrelationId;
                 response.Sucesso = true;
                 response.Mensagem = "Upload efetuado com sucesso.";
                 return response;
@@ -451,7 +363,7 @@ namespace Arquivo
                 throw new Exception(ex.Message);
             }
         }
-
+        
         private List<TorcamentoCotacaoArquivos> ObterEstrutura()
         {
             try
@@ -470,6 +382,23 @@ namespace Arquivo
             {
                 throw e;
             }
+        }
+
+        private List<Child> ObterEstruturaFilho(List<TorcamentoCotacaoArquivos> estruturas, Guid IdPai)
+        {
+            return estruturas.Where(x => x.Pai == IdPai)
+                            .Select(c => new Child
+                            {
+                                data = new Data()
+                                {
+                                    key = c.Id.ToString(),
+                                    name = c.Nome,
+                                    type = c.Tipo,
+                                    size = c.Tamanho,
+                                    descricao = c.Descricao
+                                },
+                                children = ObterEstruturaFilho(estruturas, c.Id)
+                            }).ToList();
         }
 
         private TorcamentoCotacaoArquivos Inserir(TorcamentoCotacaoArquivos obj)
