@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using System.Net;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
+using System;
 using UtilsGlobais.Configs;
-using UtilsGlobais.Exceptions;
 
 namespace OrcamentoCotacaoApi.Filters
 {
@@ -11,20 +9,8 @@ namespace OrcamentoCotacaoApi.Filters
         public void OnResourceExecuting(ResourceExecutingContext context)
         {
             var headers = context.HttpContext.Request.Headers;
-
-            if (!headers.ContainsKey(HttpHeader.CorrelationIdHeader))
-            {
-                var response = new MensagemExceptionResponse()
-                {
-                    Sucesso = false,
-                    Mensagem = "Não foi encontrado Header => [CorrelationId]."
-                };
-
-                context.Result = new JsonResult(response)
-                {
-                    StatusCode = (int)HttpStatusCode.InternalServerError
-                };
-            }
+            
+            headers.Add(HttpHeader.CorrelationIdHeader, Guid.NewGuid().ToString());
         }
 
         public void OnResourceExecuted(ResourceExecutedContext context)

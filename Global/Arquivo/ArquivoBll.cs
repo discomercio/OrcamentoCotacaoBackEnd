@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using UtilsGlobais.Exceptions;
 
 namespace Arquivo
 {
@@ -29,19 +28,14 @@ namespace Arquivo
         public async Task<ArquivoObterEstruturaResponse> ArquivoObterEstrutura(ArquivoObterEstruturaRequest request)
         {
             var response = new ArquivoObterEstruturaResponse();
-
-            // TESTES
-            //throw new DomainException("mensagem de erro");
-            //throw new DomainException("mensagem de erro", new Exception("inner mensagem de erro"));
-            //throw new Exception("Teste" );
-            //throw new Exception("Teste",new Exception("inner mensagem de erro"));
+            var nomeMetodo = response.ObterNomeMetodoAtualAsync();
 
             try
             {
-                _logger.LogInformation($"ArquivoObterEstrutura: Obter estrutura da tela de download. CorrelationId => [{request.CorrelationId}].");
+                _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Obter estrutura da tela de download.");
                 var estruturas = this.ObterEstrutura();
 
-                _logger.LogInformation($"ArquivoObterEstrutura: Retorno estrutura de tela de download. Retorno => [{estruturas.Count}]. CorrelationId => [{request.CorrelationId}].");
+                _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Retorno estrutura de tela de download. Retorno => [{estruturas.Count}].");
                 if (estruturas.Count <= 0)
                 {
                     response.Sucesso = false;
@@ -49,13 +43,13 @@ namespace Arquivo
                     return response;
                 }
 
-                var child = new List<Child>();
+                var childs = new List<Child>();
 
                 foreach (TorcamentoCotacaoArquivos itemPai in estruturas)
                 {
                     if (itemPai.Pai == null)
                     {
-                        child.Add(new Child()
+                        childs.Add(new Child()
                         {
                             data = new Data()
                             {
@@ -70,11 +64,11 @@ namespace Arquivo
                     }
                 }
 
-                _logger.LogInformation($"ArquivoObterEstrutura: Retorno da estrutura com sucesso. CorrelationId => [{request.CorrelationId}].");
+                _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Retorno da estrutura com sucesso.");
                 response.CorrelationId = request.CorrelationId;
                 response.Sucesso = true;
                 response.Mensagem = "Retorno da estrutura com sucesso.";
-                response.Childs = child;
+                response.Childs = childs;
                 return response;
             }
             catch (Exception ex)
@@ -86,8 +80,9 @@ namespace Arquivo
         public async Task<ArquivoDownloadResponse> ArquivoDownload(ArquivoDownloadRequest request)
         {
             var response = new ArquivoDownloadResponse();
+            var nomeMetodo = response.ObterNomeMetodoAtualAsync();
 
-            _logger.LogInformation($"ArquivoDownload: Verificando campo preenchido. Id => [{request.Id}]. CorrelationId => [{request.CorrelationId}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Verificando campo preenchido. Id => [{request.Id}].");
             if (string.IsNullOrEmpty(request.Id))
             {
                 response.Sucesso = false;
@@ -95,7 +90,7 @@ namespace Arquivo
                 return response;
             }
 
-            _logger.LogInformation($"ArquivoDownload: Verificando campo preenchido. CaminhoArquivo => [{request.CaminhoArquivo}]. CorrelationId => [{request.CorrelationId}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Verificando campo preenchido. CaminhoArquivo => [{request.CaminhoArquivo}].");
             if (string.IsNullOrEmpty(request.CaminhoArquivo))
             {
                 response.Sucesso = false;
@@ -105,13 +100,13 @@ namespace Arquivo
 
             try
             {
-                _logger.LogInformation($"ArquivoDownload: Salvando arquivo no caminho. Arquivo => [{request.Id}]. CorrelationId => [{request.CorrelationId}].");
+                _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Salvando arquivo no caminho. Arquivo => [{request.Id}].");
                 var caminho = Path.Combine(request.CaminhoArquivo, $"{request.Id}.pdf");
                 var fileinfo = new FileInfo(caminho);
                 byte[] byteArray = File.ReadAllBytes(caminho);
                 var arquivo = this.ObterArquivoPorID(Guid.Parse(request.Id));
 
-                _logger.LogInformation($"ArquivoDownload: Download efetuado com sucesso. CorrelationId => [{request.CorrelationId}].");
+                _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Download efetuado com sucesso.");
                 response.CorrelationId = request.CorrelationId;
                 response.Sucesso = true;
                 response.Mensagem = "Download efetuado com sucesso.";
@@ -129,8 +124,9 @@ namespace Arquivo
         public async Task<ArquivoExcluirResponse> ArquivoExcluir(ArquivoExcluirRequest request)
         {
             var response = new ArquivoExcluirResponse();
+            var nomeMetodo = response.ObterNomeMetodoAtualAsync();
 
-            _logger.LogInformation($"ArquivoExcluir: Verificando campo preenchido. Id => [{request.Id}]. CorrelationId => [{request.CorrelationId}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Verificando campo preenchido. Id => [{request.Id}].");
             if (string.IsNullOrEmpty(request.Id))
             {
                 response.Sucesso = false;
@@ -138,7 +134,7 @@ namespace Arquivo
                 return response;
             }
 
-            _logger.LogInformation($"ArquivoExcluir: Verificando campo preenchido. CaminhoArquivo => [{request.CaminhoArquivo}]. CorrelationId => [{request.CorrelationId}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Verificando campo preenchido. CaminhoArquivo => [{request.CaminhoArquivo}].");
             if (string.IsNullOrEmpty(request.CaminhoArquivo))
             {
                 response.Sucesso = false;
@@ -148,7 +144,7 @@ namespace Arquivo
 
             try
             {
-                _logger.LogInformation($"ArquivoExcluir: Excluindo arquivo do banco de dados. Arquivo => [{request.Id}]. CorrelationId => [{request.CorrelationId}].");
+                _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Excluindo arquivo do banco de dados. Arquivo => [{request.Id}].");
                 var retorno = this.Excluir(new TorcamentoCotacaoArquivos
                 {
                     Id = Guid.Parse(request.Id)
@@ -156,7 +152,7 @@ namespace Arquivo
                 
                 var file = Path.Combine(request.CaminhoArquivo, $"{request.Id}.pdf");
 
-                _logger.LogInformation($"ArquivoExcluir: Excluindo arquivo da pasta na reder banco de dados. CaminhoArquivo => [{request.CaminhoArquivo}]. Arquivo => [{request.Id}]. CorrelationId => [{request.CorrelationId}].");
+                _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Excluindo arquivo da pasta na reder banco de dados. CaminhoArquivo => [{request.CaminhoArquivo}]. Arquivo => [{request.Id}].");
                 if (retorno)
                 {
                     if (File.Exists(file))
@@ -165,7 +161,7 @@ namespace Arquivo
                     }
                 }
 
-                _logger.LogInformation($"ArquivoExcluir: Exclusão concluida com sucesso. CorrelationId => [{request.CorrelationId}].");
+                _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Exclusão concluida com sucesso.");
                 response.CorrelationId = request.CorrelationId;
                 response.Sucesso = true;
                 response.Mensagem = "Exclusão concluida com sucesso.";
@@ -180,8 +176,9 @@ namespace Arquivo
         public async Task<ArquivoEditarResponse> ArquivoEditar(ArquivoEditarRequest request)
         {
             var response = new ArquivoEditarResponse();
+            var nomeMetodo = response.ObterNomeMetodoAtualAsync();
 
-            _logger.LogInformation($"ArquivoEditar: Verificando campo preenchido. Id => [{request.Id}]. CorrelationId => [{request.CorrelationId}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Verificando campo preenchido. Id => [{request.Id}].");
             if (string.IsNullOrEmpty(request.Id))
             {
                 response.Sucesso = false;
@@ -189,7 +186,7 @@ namespace Arquivo
                 return response;
             }
 
-            _logger.LogInformation($"ArquivoEditar: Verificando campo preenchido. Nome => [{request.Nome}]. CorrelationId => [{request.CorrelationId}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Verificando campo preenchido. Nome => [{request.Nome}].");
             if (string.IsNullOrEmpty(request.Nome))
             {
                 response.Sucesso = false;
@@ -197,7 +194,7 @@ namespace Arquivo
                 return response;
             }
 
-            _logger.LogInformation($"ArquivoEditar: Verificando campo Nome excedeu máximo de 255 caracteres. CorrelationId => [{request.CorrelationId}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Verificando campo Nome excedeu máximo de 255 caracteres.");
             if (request.Nome.Length > 255)
             {
                 response.Sucesso = false;
@@ -205,7 +202,7 @@ namespace Arquivo
                 return response;
             }
 
-            _logger.LogInformation($"ArquivoEditar: Verificando campo Descricao excedeu máximo de 500 caracteres. CorrelationId => [{request.CorrelationId}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Verificando campo Descricao excedeu máximo de 500 caracteres.");
             if (!string.IsNullOrEmpty(request.Descricao) 
                 && request.Descricao.Length > 500)
             {
@@ -216,7 +213,7 @@ namespace Arquivo
 
             try
             {
-                _logger.LogInformation($"ArquivoEditar: Editando Pasta/Arquivo do banco de dados. Arquivo => [{request.Id}]. Nome => [{request.Nome}]. Descrição => [{request.Descricao}]. CorrelationId => [{request.CorrelationId}].");
+                _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Editando Pasta/Arquivo do banco de dados. Arquivo => [{request.Id}]. Nome => [{request.Nome}]. Descrição => [{request.Descricao}].");
                 var retorno = this.Editar(new TorcamentoCotacaoArquivos
                 {
                     Id = Guid.Parse(request.Id),
@@ -224,7 +221,7 @@ namespace Arquivo
                     Descricao = !string.IsNullOrEmpty(request.Descricao) ? request.Descricao.Trim() : string.Empty,
                 });
 
-                _logger.LogInformation($"ArquivoEditar: Salvo com sucesso. CorrelationId => [{request.CorrelationId}].");
+                _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Salvo com sucesso.");
                 response.CorrelationId = request.CorrelationId;
                 response.Sucesso = true;
                 response.Mensagem = "Salvo com sucesso.";
@@ -239,8 +236,9 @@ namespace Arquivo
         public async Task<ArquivoCriarPastaResponse> ArquivoCriarPasta(ArquivoCriarPastaRequest request)
         {
             var response = new ArquivoCriarPastaResponse();
+            var nomeMetodo = response.ObterNomeMetodoAtualAsync();
 
-            _logger.LogInformation($"ArquivoCriarPasta: Verificando campo preenchido. Nome => [{request.Nome}]. CorrelationId => [{request.CorrelationId}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Verificando campo preenchido. Nome => [{request.Nome}].");
             if (string.IsNullOrEmpty(request.Nome))
             {
                 response.Sucesso = false;
@@ -248,7 +246,7 @@ namespace Arquivo
                 return response;
             }
             
-            _logger.LogInformation($"ArquivoCriarPasta: Verificando campo Nome excedeu máximo de 255 caracteres. CorrelationId => [{request.CorrelationId}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Verificando campo Nome excedeu máximo de 255 caracteres.");
             if (request.Nome.Length > 255)
             {
                 response.Sucesso = false;
@@ -256,7 +254,7 @@ namespace Arquivo
                 return response;
             }
 
-            _logger.LogInformation($"ArquivoCriarPasta: Verificando campo Descrição excedeu máximo de 500 caracteres. CorrelationId => [{request.CorrelationId}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Verificando campo Descrição excedeu máximo de 500 caracteres.");
             if (!string.IsNullOrEmpty(request.Descricao) 
                 && request.Descricao.Length > 500)
             {
@@ -267,7 +265,7 @@ namespace Arquivo
 
             try
             {
-                _logger.LogInformation($"ArquivoCriarPasta: Criando pasta no banco de dados. Nome => [{request.Nome}]. CorrelationId => [{request.CorrelationId}].");
+                _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Criando pasta no banco de dados. Nome => [{request.Nome}].");
                 var tOrcamentoCotacaoArquivos = this.Inserir(new TorcamentoCotacaoArquivos()
                 {
                     Id = Guid.NewGuid(),
@@ -278,7 +276,7 @@ namespace Arquivo
                     Tipo = "Folder"
                 });
 
-                _logger.LogInformation($"ArquivoCriarPasta: Pasta [{request.Nome}] criada com sucesso. CorrelationId => [{request.CorrelationId}].");
+                _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Pasta [{request.Nome}] criada com sucesso.");
                 response.CorrelationId = request.CorrelationId;
                 response.Id = tOrcamentoCotacaoArquivos.Id;
                 response.Sucesso = true;
@@ -294,8 +292,9 @@ namespace Arquivo
         public async Task<ArquivoUploadResponse> ArquivoUpload(ArquivoUploadRequest request)
         {
             var response = new ArquivoUploadResponse();
+            var nomeMetodo = response.ObterNomeMetodoAtualAsync();
 
-            _logger.LogInformation($"ArquivoUpload: Verificando campo preenchido. CaminhoArquivo => [{request.CaminhoArquivo}]. CorrelationId => [{request.CorrelationId}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Verificando campo preenchido. CaminhoArquivo => [{request.CaminhoArquivo}].");
             if (string.IsNullOrEmpty(request.CaminhoArquivo))
             {
                 response.Sucesso = false;
@@ -303,7 +302,7 @@ namespace Arquivo
                 return response;
             }
 
-            _logger.LogInformation($"ArquivoUpload: Verificando se o upload esta foi enviado. CorrelationId => [{request.CorrelationId}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Verificando se o upload esta foi enviado.");
             if (request.Arquivo == null || string.IsNullOrEmpty(request.Arquivo.FileName))
             {
                 response.Sucesso = false;
@@ -311,7 +310,7 @@ namespace Arquivo
                 return response;
             }
 
-            _logger.LogInformation($"ArquivoUpload: Verificando campo Nome do aquivo excedeu máximo de 255 caracteres. CorrelationId => [{request.CorrelationId}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Verificando campo Nome do aquivo excedeu máximo de 255 caracteres.");
             if (request.Arquivo.FileName.Length > 255)
             {
                 response.Sucesso = false;
@@ -319,7 +318,7 @@ namespace Arquivo
                 return response;
             }
 
-            _logger.LogInformation($"ArquivoUpload: Verificando se o upload é um PDF. CorrelationId => [{request.CorrelationId}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Verificando se o upload é um PDF.");
             if (!request.Arquivo.ContentType.Equals("application/pdf") && !request.Arquivo.ContentType.Equals("pdf"))
             {
                 response.Sucesso = false;
@@ -331,7 +330,7 @@ namespace Arquivo
             {
                 var idArquivo = Guid.NewGuid();
 
-                _logger.LogInformation($"ArquivoUpload: Fazendo o upload do PDF. CaminhoArquivo => [{request.CaminhoArquivo}]. Arquivo => [{idArquivo}]. CorrelationId => [{request.CorrelationId}].");
+                _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Fazendo o upload do PDF. CaminhoArquivo => [{request.CaminhoArquivo}]. Arquivo => [{idArquivo}].");
                 var file = Path.Combine(request.CaminhoArquivo, $"{idArquivo}.pdf");
 
                 using (var fileStream = new FileStream(file, FileMode.Create))
@@ -341,7 +340,7 @@ namespace Arquivo
 
                 var tamanho = new FileInfo(file).Length;
 
-                _logger.LogInformation($"ArquivoUpload: Salvando arquivo no banco de dados. Arquivo => [{idArquivo}]. CorrelationId => [{request.CorrelationId}].");
+                _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Salvando arquivo no banco de dados. Arquivo => [{idArquivo}].");
                 this.Inserir(new TorcamentoCotacaoArquivos()
                 {
                     Id = idArquivo,
@@ -352,7 +351,7 @@ namespace Arquivo
                     Tipo = "File"
                 });
 
-                _logger.LogInformation($"ArquivoUpload: Upload efetuado com sucesso. CorrelationId => [{request.CorrelationId}].");
+                _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Upload efetuado com sucesso.");
                 response.CorrelationId = request.CorrelationId;
                 response.Sucesso = true;
                 response.Mensagem = "Upload efetuado com sucesso.";

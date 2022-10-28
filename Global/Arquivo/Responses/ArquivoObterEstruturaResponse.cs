@@ -12,6 +12,5 @@ namespace Arquivo.Responses
         }
 
         public List<Child> Childs { get; set; }
-        //public Child Childs { get; set; }
     }
 }

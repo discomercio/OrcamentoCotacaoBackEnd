@@ -44,11 +44,11 @@ namespace OrcamentoCotacaoApi.Controllers
             };
 
             //_logger.LogWarning("ENDPOINT: ObterEstrutura: LogWarning");
-            _logger.LogInformation($"ArquivoController/ObterEstrutura/GET - Request => [{JsonSerializer.Serialize(request)}].");
-
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ArquivoController/ObterEstrutura/GET - Request => [{JsonSerializer.Serialize(request)}].");
+            
             var response = await _arquivoBll.ArquivoObterEstrutura(request);
 
-            _logger.LogInformation($"ArquivoController/ObterEstrutura/GET - Response => [{JsonSerializer.Serialize(response)}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ArquivoController/ObterEstrutura/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
             return Ok(response);
         }
@@ -64,11 +64,11 @@ namespace OrcamentoCotacaoApi.Controllers
                 Usuario = LoggedUser.Apelido
             };
 
-            _logger.LogInformation($"ArquivoController/Download/GET - Request => [{JsonSerializer.Serialize(request)}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ArquivoController/Download/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
             var response = await _arquivoBll.ArquivoDownload(request);
 
-            _logger.LogInformation($"ArquivoController/Download/GET - Response => [{JsonSerializer.Serialize(response)}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ArquivoController/Download/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
             return Ok(response);
         }
@@ -87,11 +87,11 @@ namespace OrcamentoCotacaoApi.Controllers
                 Usuario = LoggedUser.Apelido
             };
 
-            _logger.LogInformation($"ArquivoController/Excluir/POST - Request => [{JsonSerializer.Serialize(request)}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ArquivoController/Excluir/POST - Request => [{JsonSerializer.Serialize(request)}].");
 
             var response = await _arquivoBll.ArquivoExcluir(request);
 
-            _logger.LogInformation($"ArquivoController/Excluir/POST - Response => [{JsonSerializer.Serialize(response)}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ArquivoController/Excluir/POST - Response => [{JsonSerializer.Serialize(response)}].");
 
             return Ok(response);
         }
@@ -114,11 +114,11 @@ namespace OrcamentoCotacaoApi.Controllers
                 Usuario = LoggedUser.Apelido
             };
 
-            _logger.LogInformation($"ArquivoController/Editar/PUT - Request => [{JsonSerializer.Serialize(request)}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ArquivoController/Editar/PUT - Request => [{JsonSerializer.Serialize(request)}].");
 
             var response = await _arquivoBll.ArquivoEditar(request);
 
-            _logger.LogInformation($"ArquivoController/Editar/PUT - Response => [{JsonSerializer.Serialize(response)}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ArquivoController/Editar/PUT - Response => [{JsonSerializer.Serialize(response)}].");
 
             return Ok(response);
         }
@@ -132,11 +132,11 @@ namespace OrcamentoCotacaoApi.Controllers
             request.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
             request.Usuario = LoggedUser.Apelido;
 
-            _logger.LogInformation($"ArquivoController/CriarPasta/POST - Request => [{JsonSerializer.Serialize(request)}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ArquivoController/CriarPasta/POST - Request => [{JsonSerializer.Serialize(request)}].");
 
             var response = await _arquivoBll.ArquivoCriarPasta(request);
 
-            _logger.LogInformation($"ArquivoController/CriarPasta/POST - Response => [{JsonSerializer.Serialize(response)}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ArquivoController/CriarPasta/POST - Response => [{JsonSerializer.Serialize(response)}].");
 
             return Ok(response);
         }
@@ -156,13 +156,13 @@ namespace OrcamentoCotacaoApi.Controllers
                 Usuario = LoggedUser.Apelido
             };
 
-            _logger.LogInformation($"ArquivoController/Upload/POST - Request => [{JsonSerializer.Serialize(request)}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ArquivoController/Upload/POST - Request => [{JsonSerializer.Serialize(request)}].");
 
             request.Arquivo = Request.Form.Files[0];
 
             var response = await _arquivoBll.ArquivoUpload(request);
 
-            _logger.LogInformation($"ArquivoController/Upload/POST - Response => [{JsonSerializer.Serialize(response)}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ArquivoController/Upload/POST - Response => [{JsonSerializer.Serialize(response)}].");
 
             return Ok(response);
         }
