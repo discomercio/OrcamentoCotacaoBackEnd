@@ -150,6 +150,7 @@ namespace InfraBanco
         public DbSet<TorcamentistaEIndicadorRestricaoFormaPagto> TorcamentistaEIndicadorRestricaoFormaPagto { get => contexto.TorcamentistaEIndicadorRestricaoFormaPagto; }
         public DbSet<Tfabricante> Tfabricante { get => contexto.Tfabricante; }
         public DbSet<TProdutoCatalogoPropriedade> TProdutoCatalogoPropriedade { get => contexto.TProdutoCatalogoPropriedade; }
+        public DbSet<TProdutoCatalogoPropriedadeOpcao> TProdutoCatalogoPropriedadeOpcao { get => contexto.TProdutoCatalogoPropriedadeOpcao; }
         public DbSet<TprazoPagtoVisanet> TprazoPagtoVisanet { get => contexto.TprazoPagtoVisanet; }
         public DbSet<TcfgPagtoFormaStatus> TcfgPagtoFormaStatus { get => contexto.TcfgPagtoFormaStatus; }
         public DbSet<TorcamentoCotacaoEmailQueue> TorcamentoCotacaoEmailQueue { get => contexto.TorcamentoCotacaoEmailQueue; }

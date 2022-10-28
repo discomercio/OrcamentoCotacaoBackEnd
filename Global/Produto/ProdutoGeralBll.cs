@@ -712,9 +712,9 @@ namespace Produto
                         produto = g.Key.produto,
                         fabricante = g.Key.fabricante,
                         descricao = g.Key.descricao,
-                        calculadoraVRF = cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 1) == null ? null : cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 1).propValor,  
+                        calculadoraVRF = cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 1) == null ? null : cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 1).propValor,
                         tipoUnidade = cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 2) == null ? null : cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 2).propValor,
-                        descargaCondensadora = cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 3) == null ? null : cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 3).propValor,     
+                        descargaCondensadora = cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 3) == null ? null : cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 3).propValor,
                         voltagem = cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 4) == null ? null : cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 4).propValor,
                         capacidadeBTU = cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 5) == null ? null : cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 5).propValor,
                         ciclo = cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 6) == null ? null : cte.FirstOrDefault(c => c.id == g.Key.id && c.propId == 6).propValor,
@@ -851,78 +851,7 @@ namespace Produto
             }
         }
 
-        public bool GravarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
-        {
-            var saida = false;
-
-            try
-            {
-                using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
-                {
-                    int maxId = db.TProdutoCatalogoPropriedade.Max(p => p.id) + 1;
-                    int maxOrdem = db.TProdutoCatalogoPropriedade.Max(p => p.ordem) + 1;
-
-                    db.TProdutoCatalogoPropriedade.Add(
-                        new TProdutoCatalogoPropriedade
-                        {
-                            //id = maxId,
-                            IdCfgTipoPropriedade = produtoCatalogoPropriedade.IdCfgTipoPropriedade,
-                            IdCfgTipoPermissaoEdicaoCadastro = produtoCatalogoPropriedade.IdCfgTipoPermissaoEdicaoCadastro,
-                            IdCfgDataType = produtoCatalogoPropriedade.IdCfgDataType,
-                            descricao = produtoCatalogoPropriedade.descricao,
-                            oculto = produtoCatalogoPropriedade.oculto,
-                            ordem = maxOrdem,
-                            dt_cadastro = DateTime.Now,
-                            usuario_cadastro = produtoCatalogoPropriedade.usuario_cadastro
-                        });
-
-                    db.SaveChanges();
-                    db.transacao.Commit();
-                    saida = true;
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
-            return saida;
-        }
-
-        public bool AtualizarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
-        {
-            var saida = false;
-
-            try
-            {
-                using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
-                {
-                    var produtoCatalogoPropriedades = db.TProdutoCatalogoPropriedade.Where(item => item.id == produtoCatalogoPropriedade.id);
-
-                    if (produtoCatalogoPropriedades != null)
-                    {
-                        foreach (var item in produtoCatalogoPropriedades)
-                        {
-                            item.descricao = produtoCatalogoPropriedade.descricao;
-                            item.oculto = produtoCatalogoPropriedade.oculto;
-                        }
-                    }
-
-                    db.SaveChanges();
-                    db.transacao.Commit();
-                    saida = true;
-
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
-            return saida;
-        }
-
-        public TProdutoCatalogoPropriedade GravarPropriedadeComTransacao(ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade, ContextoBdGravacao dbGravacao)
+        public async Task<TProdutoCatalogoPropriedade> GravarPropriedadeComTransacao(ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade, ContextoBdGravacao dbGravacao)
         {
             TProdutoCatalogoPropriedade tProdutoCatalogoPropriedade = new TProdutoCatalogoPropriedade()
             {
@@ -937,12 +866,36 @@ namespace Produto
             };
 
             dbGravacao.Add(tProdutoCatalogoPropriedade);
-            dbGravacao.SaveChanges();
+            await dbGravacao.SaveChangesAsync();
 
             return tProdutoCatalogoPropriedade;
         }
 
-        public TProdutoCatalogoPropriedadeOpcao GravarPropriedadeOpcaoComTransacao(ProdutoCatalogoPropriedadeOpcoesDados produtoCatalogoPropriedadeOpcao, ContextoBdGravacao dbGravacao)
+        public async Task<TProdutoCatalogoPropriedade> AtualizarPropriedadeComTransacao(ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade, ContextoBdGravacao dbGravacao)
+        {
+            TProdutoCatalogoPropriedade tProdutoCatalogoPropriedade = new TProdutoCatalogoPropriedade()
+            {
+                id = produtoCatalogoPropriedade.id,
+                IdCfgDataType = produtoCatalogoPropriedade.IdCfgDataType,
+                IdCfgTipoPropriedade = produtoCatalogoPropriedade.IdCfgTipoPropriedade,
+                IdCfgTipoPermissaoEdicaoCadastro = produtoCatalogoPropriedade.IdCfgTipoPermissaoEdicaoCadastro,
+                descricao = produtoCatalogoPropriedade.descricao,
+                oculto = produtoCatalogoPropriedade.oculto,
+                ordem = produtoCatalogoPropriedade.ordem,
+                usuario_cadastro = produtoCatalogoPropriedade.usuario_cadastro,
+                dt_cadastro = DateTime.Now
+            };
+
+            dbGravacao.Update(tProdutoCatalogoPropriedade);
+            await dbGravacao.SaveChangesAsync();
+
+            return tProdutoCatalogoPropriedade;
+        }
+
+
+
+
+        public async Task<TProdutoCatalogoPropriedadeOpcao> GravarPropriedadeOpcaoComTransacao(ProdutoCatalogoPropriedadeOpcoesDados produtoCatalogoPropriedadeOpcao, ContextoBdGravacao dbGravacao)
         {
             TProdutoCatalogoPropriedadeOpcao tProdutoCatalogoPropriedadeOpcao = new TProdutoCatalogoPropriedadeOpcao()
             {
@@ -955,7 +908,62 @@ namespace Produto
             };
 
             dbGravacao.Add(tProdutoCatalogoPropriedadeOpcao);
-            dbGravacao.SaveChanges();
+            await dbGravacao.SaveChangesAsync();
+
+            return tProdutoCatalogoPropriedadeOpcao;
+        }
+
+        public async Task RemoverPropriedadeOpcaoComTransacao(ProdutoCatalogoPropriedadeOpcoesDados produtoCatalogoPropriedadeOpcao, ContextoBdGravacao dbGravacao)
+        {
+            TProdutoCatalogoPropriedadeOpcao tProdutoCatalogoPropriedadeOpcao = new TProdutoCatalogoPropriedadeOpcao()
+            {
+                id = produtoCatalogoPropriedadeOpcao.id,
+                id_produto_catalogo_propriedade = produtoCatalogoPropriedadeOpcao.id_produto_catalogo_propriedade,
+                valor = produtoCatalogoPropriedadeOpcao.valor,
+                oculto = produtoCatalogoPropriedadeOpcao.oculto,
+                ordem = produtoCatalogoPropriedadeOpcao.ordem,
+                dt_cadastro = DateTime.Now,
+                usuario_cadastro = produtoCatalogoPropriedadeOpcao.usuario_cadastro
+            };
+
+            dbGravacao.Remove(tProdutoCatalogoPropriedadeOpcao);
+            await dbGravacao.SaveChangesAsync();
+        }
+
+        public async Task<List<TprodutoCatalogo>> BuscarProdutosCatalogoPorPropriedadeOpcaoComTransacao(int idPropriedade,
+            int idOpcao, ContextoBdGravacao dbGravacao)
+        {
+            var produtos = (from c in dbGravacao.TProdutoCatalogoPropriedade
+                           join d in dbGravacao.TProdutoCatalogoPropriedadeOpcao on c.id equals d.id_produto_catalogo_propriedade
+                           join e in dbGravacao.TprodutoCatalogoItem on d.id equals e.IdProdutoCatalogoPropriedadeOpcao
+                           join f in dbGravacao.TprodutoCatalogo on e.IdProdutoCatalogo equals f.Id
+                           where c.id == idPropriedade &&
+                                 d.id == idOpcao
+                           select new TprodutoCatalogo
+                           {
+                               Id = f.Id,
+                               Produto = f.Produto,
+                               Descricao = f.Descricao
+                           }).ToListAsync();
+
+            return await produtos;
+        }
+
+        public async Task<TProdutoCatalogoPropriedadeOpcao> AtualizarPropriedadeOpcaoComTransacao(ProdutoCatalogoPropriedadeOpcoesDados produtoCatalogoPropriedadeOpcao, ContextoBdGravacao dbGravacao)
+        {
+            TProdutoCatalogoPropriedadeOpcao tProdutoCatalogoPropriedadeOpcao = new TProdutoCatalogoPropriedadeOpcao()
+            {
+                id = produtoCatalogoPropriedadeOpcao.id,
+                id_produto_catalogo_propriedade = produtoCatalogoPropriedadeOpcao.id_produto_catalogo_propriedade,
+                valor = produtoCatalogoPropriedadeOpcao.valor,
+                oculto = produtoCatalogoPropriedadeOpcao.oculto,
+                ordem = produtoCatalogoPropriedadeOpcao.ordem,
+                dt_cadastro = DateTime.Now,
+                usuario_cadastro = produtoCatalogoPropriedadeOpcao.usuario_cadastro
+            };
+
+            dbGravacao.Update(tProdutoCatalogoPropriedadeOpcao);
+            await dbGravacao.SaveChangesAsync();
 
             return tProdutoCatalogoPropriedadeOpcao;
         }

@@ -4,19 +4,21 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
+//using Newtonsoft.Json;
+using OrcamentoCotacaoApi.Filters;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using UtilsGlobais.Configs;
+using System.Text.Json;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     [Authorize]
+    [TypeFilter(typeof(ResourceFilter))]
     public class ProdutoCatalogoController : BaseController
     {
         private readonly ILogger<ProdutoCatalogoController> _logger;
@@ -226,7 +228,7 @@ namespace OrcamentoCotacaoApi.Controllers
             {
                 var usuario = LoggedUser.Apelido;
 
-                var tProduto = JsonConvert.DeserializeObject<TprodutoCatalogo>(form["produto"]);
+                var tProduto = JsonSerializer.Deserialize<TprodutoCatalogo>(form["produto"]);
 
                 _logger.LogInformation("Criar - Request: {0}", System.Text.Json.JsonSerializer.Serialize(tProduto));
 
@@ -278,14 +280,14 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost("propriedades")]
         public async Task<IActionResult> GravarPropriedade(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
         {
-            _logger.LogInformation($"ProdutoCatalogoController/GravarPropriedade/POST - Request => [{JsonConvert.SerializeObject(produtoCatalogoPropriedade)}].");
-            
+            _logger.LogInformation($"ProdutoCatalogoController/GravarPropriedade/POST - Request => [{JsonSerializer.Serialize(produtoCatalogoPropriedade)}].");
+
             //var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
             var saida = await _bll.GravarPropriedadesProdutos(produtoCatalogoPropriedade);
 
-            if(!string.IsNullOrEmpty(saida)) return BadRequest(new {message = saida});
-            
+            if (!string.IsNullOrEmpty(saida)) return BadRequest(new { message = saida });
+
             return Ok();
         }
 
@@ -305,24 +307,26 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPut("propriedades")]
         public async Task<IActionResult> AtualizarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
         {
-            _logger.LogInformation("Inserindo Propriedade do Produto");
-
-            var saida = await _bll.AtualizarPropriedadesProdutos(produtoCatalogoPropriedade);
-
-            if (saida)
+            try
             {
-                return Ok(new
-                {
-                    message = "Propriedade do produto atualizada com sucesso."
-                });
+                _logger.LogInformation($"ProdutoCatalogoController/AtualizarPropriedadesProdutos/PUT - Request => [{JsonSerializer.Serialize(produtoCatalogoPropriedade)}]");
+                //_logger.LogInformation($"ArquivoController/Download/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
+                var saida = await _bll.AtualizarPropriedadesProdutos(produtoCatalogoPropriedade);
+
+                if (!string.IsNullOrEmpty(saida.Mensagem) || saida.ProdutosCatalogo?.Count > 0) return Ok(saida);
+
+                _logger.LogInformation("Retornando atualização de propriedade do produto");
+
+                return Ok(saida);
             }
-            else
+            catch (Exception ex)
             {
-                return BadRequest(new
-                {
-                    message = "Não foi possível atualizar a propriedade do produto."
-                });
+                return BadRequest(ex.Message);
             }
+            
+
+            
         }
     }
 }
