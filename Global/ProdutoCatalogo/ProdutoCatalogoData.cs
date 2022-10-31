@@ -658,5 +658,16 @@ namespace ProdutoCatalogo
                 throw e;
             }
         }
+
+        public List<TcfgTipoPermissaoEdicaoCadastro> ObterTipoPermissaoEdicaoCadastro()
+        {
+            using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+            {
+                var retorno = from c in db.TcfgTipoPermissaoEdicaoCadastro
+                              select c;
+
+                return retorno.ToList();
+            }
+        }
     }
 }

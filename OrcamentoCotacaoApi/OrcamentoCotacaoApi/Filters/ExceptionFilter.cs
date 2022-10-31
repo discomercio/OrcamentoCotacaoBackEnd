@@ -39,7 +39,7 @@ namespace OrcamentoCotacaoApi.Filters
 
             response.Mensagem = $"Erro inesperado! Favor entrar em contato com o suporte técnico. (Código: [{response.StatusCode}]).";
 
-            _logger.LogInformation($"EXCEPTION: {exception} / INNEREXCEPTION: {exception?.InnerException} / CorrelationId => [{correlationIdParsed}].");
+            _logger.LogError($"CorrelationId => [{correlationIdParsed}] / EXCEPTION: [{exception}] / INNEREXCEPTION: [{exception?.InnerException}].");
 
             context.ExceptionHandled = true;
             context.Result = new ObjectResult(response);

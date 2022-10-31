@@ -930,23 +930,24 @@ namespace Produto
             await dbGravacao.SaveChangesAsync();
         }
 
-        public async Task<List<TprodutoCatalogo>> BuscarProdutosCatalogoPorPropriedadeOpcaoComTransacao(int idPropriedade,
-            int idOpcao, ContextoBdGravacao dbGravacao)
+        public async Task<List<TprodutoCatalogo>> BuscarProdutosCatalogoPorPropriedadeOpcao(int idPropriedade,
+            int idOpcao)
         {
-            var produtos = (from c in dbGravacao.TProdutoCatalogoPropriedade
-                           join d in dbGravacao.TProdutoCatalogoPropriedadeOpcao on c.id equals d.id_produto_catalogo_propriedade
-                           join e in dbGravacao.TprodutoCatalogoItem on d.id equals e.IdProdutoCatalogoPropriedadeOpcao
-                           join f in dbGravacao.TprodutoCatalogo on e.IdProdutoCatalogo equals f.Id
-                           where c.id == idPropriedade &&
-                                 d.id == idOpcao
-                           select new TprodutoCatalogo
-                           {
-                               Id = f.Id,
-                               Produto = f.Produto,
-                               Descricao = f.Descricao
-                           }).ToListAsync();
-
-            return await produtos;
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                return await (from c in db.TProdutoCatalogoPropriedade
+                              join d in db.TProdutoCatalogoPropriedadeOpcao on c.id equals d.id_produto_catalogo_propriedade
+                              join e in db.TprodutoCatalogoItem on d.id equals e.IdProdutoCatalogoPropriedadeOpcao
+                              join f in db.TprodutoCatalogo on e.IdProdutoCatalogo equals f.Id
+                              where c.id == idPropriedade &&
+                                    d.id == idOpcao
+                              select new TprodutoCatalogo
+                              {
+                                  Id = f.Id,
+                                  Produto = f.Produto,
+                                  Descricao = f.Descricao
+                              }).ToListAsync();
+            }
         }
 
         public async Task<TProdutoCatalogoPropriedadeOpcao> AtualizarPropriedadeOpcaoComTransacao(ProdutoCatalogoPropriedadeOpcoesDados produtoCatalogoPropriedadeOpcao, ContextoBdGravacao dbGravacao)
