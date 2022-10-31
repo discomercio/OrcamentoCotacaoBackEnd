@@ -4,14 +4,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-//using Newtonsoft.Json;
+using Newtonsoft.Json;
 using OrcamentoCotacaoApi.Filters;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using System.Text.Json;
 using OrcamentoCotacaoBusiness.Models.Response;
 using UtilsGlobais.Configs;
 
@@ -170,7 +169,7 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPut]
         public async Task<IActionResult> Atualizar(IFormFile arquivo, IFormCollection form)
         {
-            var tProduto = JsonSerializer.Deserialize<TprodutoCatalogo>(form["produto"]);
+            var tProduto = JsonConvert.DeserializeObject<TprodutoCatalogo>(form["produto"]);
             tProduto.UsuarioEdicao = LoggedUser.Apelido;
 
             _logger.LogInformation("Atualizar - Request: {0}", System.Text.Json.JsonSerializer.Serialize(tProduto));
@@ -230,7 +229,7 @@ namespace OrcamentoCotacaoApi.Controllers
             {
                 var usuario = LoggedUser.Apelido;
 
-                var tProduto = JsonSerializer.Deserialize<TprodutoCatalogo>(form["produto"]);
+                var tProduto = JsonConvert.DeserializeObject<TprodutoCatalogo>(form["produto"]);
 
                 _logger.LogInformation("Criar - Request: {0}", System.Text.Json.JsonSerializer.Serialize(tProduto));
 
@@ -282,7 +281,7 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost("propriedades")]
         public async Task<IActionResult> GravarPropriedade(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
         {
-            _logger.LogInformation($"ProdutoCatalogoController/GravarPropriedade/POST - Request => [{JsonSerializer.Serialize(produtoCatalogoPropriedade)}].");
+            _logger.LogInformation($"ProdutoCatalogoController/GravarPropriedade/POST - Request => [{JsonConvert.SerializeObject(produtoCatalogoPropriedade)}].");
 
             //var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
@@ -311,13 +310,13 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             try
             {
-                _logger.LogInformation($"ProdutoCatalogoController/AtualizarPropriedadesProdutos/PUT - Request => [{JsonSerializer.Serialize(produtoCatalogoPropriedade)}]");
+                _logger.LogInformation($"ProdutoCatalogoController/AtualizarPropriedadesProdutos/PUT - Request => [{JsonConvert.SerializeObject(produtoCatalogoPropriedade)}]");
                 
                 var saida = await _bll.AtualizarPropriedadesProdutos(produtoCatalogoPropriedade);
 
                 if (!string.IsNullOrEmpty(saida.Mensagem) || saida.ProdutosCatalogo?.Count > 0) return Ok(saida);
 
-                _logger.LogInformation($"ProdutoCatalogoController/AtualizarPropriedadesProdutos/PUT - Response => [{JsonSerializer.Serialize(saida)}]");
+                _logger.LogInformation($"ProdutoCatalogoController/AtualizarPropriedadesProdutos/PUT - Response => [{JsonConvert.SerializeObject(saida)}]");
 
 
                 return Ok(saida);

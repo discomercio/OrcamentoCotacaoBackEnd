@@ -248,5 +248,10 @@ namespace ProdutoCatalogo
         {
             return _data.ObterTipoPropriedadesPorFiltro(filtro);
         }
+
+        public List<TcfgTipoPermissaoEdicaoCadastro> ObterTipoPermissaoEdicaoCadastro()
+        {
+            return _data.ObterTipoPermissaoEdicaoCadastro();
+        }
     }
 }
