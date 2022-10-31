@@ -555,7 +555,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             var retorno = new ProdutoCatalogoPropriedadeResponseViewModel();
             retorno.Sucesso = false;
 
-            _logger.LogInformation($"AtualizarPropriedadesProdutos: Validando propriedade.");
+            _logger.LogInformation($"AtualizarPropriedadesProdutos: Validando dados da propriedade.");
             var validacao = await ValidarPropriedade(produtoCatalogoPropriedade);
 
             if (!string.IsNullOrEmpty(validacao))
@@ -568,6 +568,10 @@ namespace OrcamentoCotacaoBusiness.Bll
             var prodPropriedadesParaComparacao = (await ObterListaPropriedadesProdutos(produtoCatalogoPropriedade.id)).FirstOrDefault();
             _logger.LogInformation($"AtualizarPropriedadesProdutos: Retorno da propriedade para comparacao. Retorno => [{JsonSerializer.Serialize(prodPropriedadesParaComparacao)}].");
 
+            _logger.LogInformation($"AtualizarPropriedadesProdutos: Verificando regras para atualiza propriedade.");
+            retorno = await VerificarRegraEdicaoPropriedadesProdutosOpcao(produtoCatalogoPropriedade, prodPropriedadesParaComparacao);
+            if (!string.IsNullOrEmpty(retorno.Mensagem) || retorno.ProdutosCatalogo != null) return retorno;
+
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 _logger.LogInformation($"AtualizarPropriedadesProdutos: Atualizando propriedade.");
@@ -576,8 +580,6 @@ namespace OrcamentoCotacaoBusiness.Bll
                 if (produtoCatalogoPropriedade.IdCfgTipoPropriedade == 1)
                 {
                     _logger.LogInformation($"AtualizarPropriedadesProdutos: Verificando regra para remover opcoes da propriedade.");
-                    retorno = await VerificarRegraRemoverPropriedadesProdutosOpcao(produtoCatalogoPropriedade, prodPropriedadesParaComparacao, dbGravacao);
-                    if (retorno.ProdutosCatalogo != null) return retorno;
 
                     _logger.LogInformation($"AtualizarPropriedadesProdutos: Atualizando opcoes da propriedade.");
                     retorno = await AtualizarPropriedadesProdutosOpcao(produtoCatalogoPropriedade, prodPropriedadesParaComparacao, tProdutoCatalogoPropriedade.id, dbGravacao);
@@ -619,7 +621,6 @@ namespace OrcamentoCotacaoBusiness.Bll
                     _logger.LogInformation($"AtualizarPropriedadesProdutosOpcao: Removendo opção da propriedade. Opcao => [{JsonSerializer.Serialize(prop)}]");
                     await _produtoGeralBll.RemoverPropriedadeOpcaoComTransacao(prop, dbGravacao);
                 }
-
             }
 
             int index = 1;
@@ -642,18 +643,8 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 if (existe != null)
                 {
-
-
                     if (existe.oculto != prop.oculto || existe.valor != prop.valor || existe.ordem != prop.ordem)
                     {
-                        _logger.LogInformation($"AtualizarPropriedadesProdutosOpcao: Verificando se opcao pode ser editada. Id => {existe.id}");
-                        var naoEdita = produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados?.Where(x => x.id <= 10000);
-                        if (naoEdita.Any())
-                        {
-                            retorno.Mensagem = $"A propriedade {prop.valor} não pode ser editada!";
-                            return retorno;
-                        }
-
                         _logger.LogInformation($"AtualizarPropriedadesProdutosOpcao: Atualizando opcao da propriedade. Opcao => [{JsonSerializer.Serialize(prop)}]");
                         var tProproedadeOpcao = await _produtoGeralBll.AtualizarPropriedadeOpcaoComTransacao(prop, dbGravacao);
                         if (tProproedadeOpcao.id == 0)
@@ -669,24 +660,87 @@ namespace OrcamentoCotacaoBusiness.Bll
             return retorno;
         }
 
-        private async Task<ProdutoCatalogoPropriedadeResponseViewModel> VerificarRegraRemoverPropriedadesProdutosOpcao(
+        private async Task<ProdutoCatalogoPropriedadeResponseViewModel> VerificarRegraEdicaoPropriedadesProdutosOpcao(
             Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade,
-            Produto.Dados.ProdutoCatalogoPropriedadeDados prodPropriedadesParaComparacao,
-            InfraBanco.ContextoBdGravacao dbGravacao)
+            Produto.Dados.ProdutoCatalogoPropriedadeDados prodPropriedadesParaComparacao)
         {
             var retorno = new ProdutoCatalogoPropriedadeResponseViewModel();
             retorno.Sucesso = false;
-            if (prodPropriedadesParaComparacao != null)
+
+            var tiposEdicaoPermissaoCadastro = _bll.ObterTipoPermissaoEdicaoCadastro();
+            if (tiposEdicaoPermissaoCadastro == null)
             {
+                retorno.Mensagem = "Falha ao buscar a lista de tipos de permissão para edição de cadastro";
+                return retorno;
+            }
+
+            //id == 1 => Sistema
+            var tipoPermissaoEdicaoCadastroUsuario = tiposEdicaoPermissaoCadastro.Where(x => x.Id == 1).FirstOrDefault();
+            if (tipoPermissaoEdicaoCadastroUsuario == null)
+            {
+                retorno.Mensagem = "Ops! Não encontramos a informação do tipo de permissão para edição de cadastro!";
+                return retorno;
+            }
+
+            if (produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados != null)
+            {
+                if (produtoCatalogoPropriedade.id <= 10000 &&
+                produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados.Count != prodPropriedadesParaComparacao.produtoCatalogoPropriedadeOpcoesDados.Count &&
+                produtoCatalogoPropriedade.IdCfgTipoPermissaoEdicaoCadastro == tipoPermissaoEdicaoCadastroUsuario.Id)
+                {
+                    retorno.Mensagem = $"Não é permitido alterar a lista de valores válidos!";
+                    return retorno;
+                }
+
+                int index = 1;
+                foreach (var prop in produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados)
+                {
+                    if (produtoCatalogoPropriedade.id <= 10000 &&
+                                produtoCatalogoPropriedade.IdCfgTipoPermissaoEdicaoCadastro == tipoPermissaoEdicaoCadastroUsuario.Id && prop.id == 0)
+                    {
+                        retorno.Mensagem = $"Não é permitido inserir um novo valor válido para essa propriedade!";
+                        return retorno;
+                    }
+
+                    prop.ordem = index;
+                    index++;
+                }
+
                 foreach (var prop in prodPropriedadesParaComparacao.produtoCatalogoPropriedadeOpcoesDados)
                 {
                     var comparar = produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados
                             .Where(x => x.id == prop.id).FirstOrDefault();
 
+                    if (comparar != null)
+                    {
+                        //verifica se foi editado
+                        if (comparar.oculto != prop.oculto || comparar.valor != prop.valor || comparar.ordem != prop.ordem)
+                        {
+                            //não pode editar opção
+                            if (produtoCatalogoPropriedade.id <= 10000 &&
+                                produtoCatalogoPropriedade.IdCfgTipoPermissaoEdicaoCadastro == tipoPermissaoEdicaoCadastroUsuario.Id)
+                            {
+                                retorno.Mensagem = $"A opção '{prop.valor}' não pode ser editada!";
+                                return retorno;
+                            }
+                        }
+                    }
+
                     if (comparar == null)
                     {
+                        if (produtoCatalogoPropriedade.id <= 10000 &&
+                                produtoCatalogoPropriedade.IdCfgTipoPermissaoEdicaoCadastro == tipoPermissaoEdicaoCadastroUsuario.Id)
+                        {
+                            if (produtoCatalogoPropriedade.id <= 10000 &&
+                                produtoCatalogoPropriedade.IdCfgTipoPermissaoEdicaoCadastro == tipoPermissaoEdicaoCadastroUsuario.Id)
+                            {
+                                retorno.Mensagem = $"Não é permitido remover valor válido para essa propriedade!";
+                                return retorno;
+                            }
+                        }
+                        // não pode remover se tem opção sendo utilizada por produtos
                         _logger.LogInformation($"VerificarRegraRemoverPropriedadesProdutosOpcao: Buscando produtos do catálogo que utilizam a opcao da propriedade que sera removida.");
-                        var produtos = await _produtoGeralBll.BuscarProdutosCatalogoPorPropriedadeOpcaoComTransacao(produtoCatalogoPropriedade.id, prop.id, dbGravacao);
+                        var produtos = await _produtoGeralBll.BuscarProdutosCatalogoPorPropriedadeOpcao(produtoCatalogoPropriedade.id, prop.id);
 
                         if (produtos.Count > 0)
                         {
