@@ -96,8 +96,7 @@ namespace OrcamentoCotacaoApi
 
                 if (context.Request.Method.ToUpper() == "POST" || context.Request.Method.ToUpper() == "GET")
                 {
-                    if (context.Request.Path.Value.ToLower().Contains("/api/"))
-                    {
+               
                         /*
                          * sem cache se for da API:
                             Cache-Control: no-store,no-cache
@@ -129,7 +128,7 @@ namespace OrcamentoCotacaoApi
 
                             return;
                         }
-                    }
+                    
                 }
                 await next();
 
