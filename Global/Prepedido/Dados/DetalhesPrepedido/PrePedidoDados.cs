@@ -30,5 +30,8 @@ namespace Prepedido.Dados.DetalhesPrepedido
         public FormaPagtoCriacaoDados FormaPagtoCriacao { get; set; }
         public bool St_Orc_Virou_Pedido { get; set; }//se virou pedido retornar esse campo
         public string NumeroPedido { get; set; }//se virou pedido retornar esse campo
+        public short? UsuarioCadastroIdTipoUsuarioContexto { get; set; }
+        public int? UsuarioCadastroId { get; set; }
+        public string Usuario_cadastro { get; set; }
     }
 }

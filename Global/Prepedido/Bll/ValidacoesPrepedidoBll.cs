@@ -516,8 +516,8 @@ namespace Prepedido.Bll
             if (byte.Parse(detalhesPrepedido.EntregaImediata) ==
                 (byte)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO)//Não
             {
-                if (detalhesPrepedido.EntregaImediataData == null ||
-                    detalhesPrepedido.EntregaImediataData.Value.Date <= DateTime.Now.Date)
+                if (detalhesPrepedido.PrevisaoEntrega == null ||
+                    detalhesPrepedido.PrevisaoEntrega.Value.Date <= DateTime.Now.Date)
                 {
                     lstErros.Add("Favor informar a data de 'Entrega Imediata' posterior a data atual!");
                     retorno = false;

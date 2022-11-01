@@ -15,10 +15,11 @@ namespace OrcamentoCotacaoBusiness.Dto.Prepedido.DetalhesPrepedido
         public DateTime? EntregaImediataData { get; set; }
         public string BemDeUso_Consumo { get; set; }
         public string InstaladorInstala { get; set; }
-        public string GarantiaIndicador { get; set; }
+        public byte GarantiaIndicador { get; set; }
         public string FormaDePagamento { get; set; }
         public string DescricaoFormaPagamento { get; set; }
-        public string PrevisaoEntrega { get; set; }//para mostrar finalizado na tela
+        public DateTime? PrevisaoEntrega { get; set; }
+        public string PrevisaoEntregaTexto { get; set; }//para mostrar finalizado na tela
 
         public static DetalhesDtoPrepedido DetalhesDtoPrepedido_De_DetalhesPrepedidoDados(DetalhesPrepedidoDados origem)
         {
@@ -34,7 +35,7 @@ namespace OrcamentoCotacaoBusiness.Dto.Prepedido.DetalhesPrepedido
                 GarantiaIndicador = origem.GarantiaIndicador,
                 FormaDePagamento = origem.FormaDePagamento,
                 DescricaoFormaPagamento = origem.DescricaoFormaPagamento,
-                PrevisaoEntrega = origem.PrevisaoEntrega
+                PrevisaoEntregaTexto = origem.PrevisaoEntregaTexto
             };
         }
         public static DetalhesPrepedidoDados DetalhesPrepedidoDados_De_DetalhesDtoPrepedido(DetalhesDtoPrepedido origem)

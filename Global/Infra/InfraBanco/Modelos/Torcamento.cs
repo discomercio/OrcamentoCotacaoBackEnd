@@ -256,7 +256,7 @@ namespace InfraBanco.Modelos
         public string GarantiaIndicadorUsuarioUltAtualiz { get; set; }
 
         [Column("GarantiaIndicadorDtHrUltAtualiz")]
-        public DateTime? GarantiaInidicadorDtHrUltAtualiz { get; set; }
+        public DateTime? GarantiaIndicadorDtHrUltAtualiz { get; set; }
 
         [Column("perc_desagio_RA_liquida")]
         [Required]
@@ -510,31 +510,31 @@ namespace InfraBanco.Modelos
         public string Usuario_cadastro { get; set; }
 
         [Column("InstaladorInstalaIdTipoUsuarioContexto")]
-        public int? InstaladorInstalaIdTipoUsuarioContexto { get; set; }
+        public short? InstaladorInstalaIdTipoUsuarioContexto { get; set; }
 
         [Column("InstaladorInstalaIdUsuarioUltAtualiz")]
         public int? InstaladorInstalaIdUsuarioUltAtualiz { get; set; }
 
         [Column("GarantiaIndicadorIdTipoUsuarioContexto")]
-        public int? GarantiaIndicadorIdTipoUsuarioContexto { get; set; }
+        public short? GarantiaIndicadorIdTipoUsuarioContexto { get; set; }
 
         [Column("GarantiaIndicadorIdUsuarioUltAtualiz")]
         public int? GarantiaIndicadorIdUsuarioUltAtualiz { get; set; }
 
         [Column("EtgImediataIdTipoUsuarioContexto")]
-        public int? EtgImediataIdTipoUsuarioContexto { get; set; }
+        public short? EtgImediataIdTipoUsuarioContexto { get; set; }
 
         [Column("EtgImediataIdUsuarioUltAtualiz")]
         public int? EtgImediataIdUsuarioUltAtualiz { get; set; }
 
         [Column("PrevisaoEntregaIdTipoUsuarioContexto")]
-        public int? PrevisaoEntregaIdTipoUsuarioContexto { get; set; }
+        public short? PrevisaoEntregaIdTipoUsuarioContexto { get; set; }
 
         [Column("PrevisaoEntregaIdUsuarioUltAtualiz")]
         public int? PrevisaoEntregaIdUsuarioUltAtualiz { get; set; }
 
         [Column("UsuarioCadastroIdTipoUsuarioContexto")]
-        public int? UsuarioCadastroIdTipoUsuarioContexto { get; set; }
+        public short? UsuarioCadastroIdTipoUsuarioContexto { get; set; }
 
         [Column("UsuarioCadastroId")]
         public int? UsuarioCadastroId { get; set; }

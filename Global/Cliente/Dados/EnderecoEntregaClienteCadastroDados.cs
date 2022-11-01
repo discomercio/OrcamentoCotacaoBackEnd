@@ -41,5 +41,9 @@ namespace Cliente.Dados
         public string EndEtg_ie { get; set; }
         public string EndEtg_rg { get; set; }
         public bool St_memorizacao_completa_enderecos { get; set; }
+        public DateTime? Etg_imediata_data { get; set; }
+        public string Etg_Imediata_Usuario { get; set; }
+        public short? EtgImediataIdTipoUsuarioContexto { get; set; }
+        public int? EtgImediataIdUsuarioUltAtualiz { get; set; }
     }
 }

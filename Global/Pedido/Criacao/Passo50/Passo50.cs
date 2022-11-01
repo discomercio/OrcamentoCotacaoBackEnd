@@ -70,25 +70,25 @@ namespace Pedido.Criacao.Passo50
                 {
                     Retorno.ListaErros.Add("O campo Indicador deve estar vazio se o campo ComIndicador for falso.");
                 }
-                if(Pedido.Valor.PedidoPossuiRa())
+                if (Pedido.Valor.PedidoPossuiRa())
                 {
                     Retorno.ListaErros.Add("O pedido não pode ter RA se o campo ComIndicador for falso.");
                 }
 
-                Pedido.DetalhesPedido.GarantiaIndicador = Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO;
+                Pedido.DetalhesPedido.GarantiaIndicador = byte.Parse(Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO);
             }
         }
         private void Validar_garantia_indicador()
         {
             //# alert('Preencha o campo "Garantia Indicador"');
-            if (string.IsNullOrWhiteSpace(Pedido.DetalhesPedido.GarantiaIndicador))
+            if (Pedido.DetalhesPedido.GarantiaIndicador == 0)
             {
                 Retorno.ListaErros.Add("Preencha o campo \"Garantia Indicador\"");
                 return;
             }
 
-            if (Pedido.DetalhesPedido.GarantiaIndicador != Constantes.COD_GARANTIA_INDICADOR_STATUS__SIM
-                && Pedido.DetalhesPedido.GarantiaIndicador != Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO)
+            if (Pedido.DetalhesPedido.GarantiaIndicador != byte.Parse(Constantes.COD_GARANTIA_INDICADOR_STATUS__SIM)
+                && Pedido.DetalhesPedido.GarantiaIndicador != byte.Parse(Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO))
             {
                 Retorno.ListaErros.Add("Preencha o campo \"Garantia Indicador\" com 0 ou 1");
             }
