@@ -623,7 +623,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 }
             }
 
-            int index = 1;
+            int index = 100;
             foreach (var prop in produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados)
             {
                 var existe = prodPropriedadesParaComparacao.produtoCatalogoPropriedadeOpcoesDados
@@ -654,7 +654,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         }
                     }
                 }
-                index++;
+                index = index + 100;
             }
 
             return retorno;
@@ -692,7 +692,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     return retorno;
                 }
 
-                int index = 1;
+                int index = 100;
                 foreach (var prop in produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados)
                 {
                     if (produtoCatalogoPropriedade.id <= 10000 &&
@@ -703,7 +703,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     }
 
                     prop.ordem = index;
-                    index++;
+                    index = index + 100;
                 }
 
                 foreach (var prop in prodPropriedadesParaComparacao.produtoCatalogoPropriedadeOpcoesDados)
