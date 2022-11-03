@@ -420,7 +420,7 @@ namespace Prepedido.Bll
             {
                 Observacoes = torcamento.Obs_1,
                 NumeroNF = torcamento.Obs_2,
-                PrevisaoEntrega = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
+                PrevisaoEntregaTexto = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
                 torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + " (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) +
                 " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" : null,
                 EntregaImediata = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
@@ -428,7 +428,7 @@ namespace Prepedido.Bll
                 "SIM (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")",
                 BemDeUso_Consumo = torcamento.StBemUsoConsumo,
                 InstaladorInstala = torcamento.InstaladorInstalaStatus,
-                GarantiaIndicador = Convert.ToString(torcamento.GarantiaIndicadorStatus) ==
+                GarantiaIndicadorTexto = Convert.ToString(torcamento.GarantiaIndicadorStatus) ==
                 Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO ?
                 "NÃO" : "SIM",
                 DescricaoFormaPagamento = torcamento.Forma_Pagamento
@@ -1005,6 +1005,10 @@ namespace Prepedido.Bll
             torcamento.Perc_max_comissao_e_desconto_padrao = prepedido.DadosCliente.Perc_max_comissao_e_desconto_padrao;
             torcamento.IdOrcamentoCotacao = prepedido.DadosCliente.IdOrcamentoCotacao;
             torcamento.IdIndicadorVendedor = prepedido.DadosCliente.IdIndicadorVendedor;
+            torcamento.UsuarioCadastroIdTipoUsuarioContexto = prepedido.UsuarioCadastroIdTipoUsuarioContexto;//Id do contexto do usuário logado de acordo com a tabela t_CFG_TIPO_USUARIO_CONTEXTO.Id Se aprovação pelo cliente em rota pública preencher com 4
+            torcamento.UsuarioCadastroId = prepedido.UsuarioCadastroId;//Id do registro do usuário logado (t_ORCAMENTISTA_E_INDICADOR_VENDEDOR.Id, t_ORCAMENTISTA_E_INDICADOR.Id ou t_USUARIO.Id) Se aprovação pelo cliente em rota pública deve ser nulo
+            torcamento.Usuario_cadastro = prepedido.Usuario_cadastro;//preencher com "[N] 999999", onde  N = UsuarioCadastroIdTipoUsuarioContexto  999999 = UsuarioCadastroId
+            
 
             //inclui os campos de endereço cadastral no Torccamento
             IncluirDadosClienteParaTorcamento(prepedido, torcamento);
@@ -1164,45 +1168,29 @@ namespace Prepedido.Bll
                 (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_SIM :
                 (short)Constantes.Instalador_Instala.COD_INSTALADOR_INSTALA_NAO;
 
-            torcamento.InstaladorInstalaUsuarioUltAtualiz = orcamentista;
-            torcamento.InstaladorInstalaDtHrUltAtualiz = DateTime.Now;
+            torcamento.InstaladorInstalaIdTipoUsuarioContexto = prepedido.DetalhesPrepedido.InstaladorInstalaIdTipoUsuarioContexto;//mesmo campo da T_ORCAMENTO_COTACAO ou o prepedido tb pode passar esse valor
+            torcamento.InstaladorInstalaIdUsuarioUltAtualiz = prepedido.DetalhesPrepedido.InstaladorInstalaIdUsuarioUltAtualiz;//mesmo campo da T_ORCAMENTO_COTACAO
+            torcamento.InstaladorInstalaUsuarioUltAtualiz = prepedido.DetalhesPrepedido.InstaladorInstalaUsuarioUltAtualiz;//preencher com '[N] 999999' onde  N = InstaladorInstalaIdTipoUsuarioContexto  999999 = InstaladorInstalaIdUsuarioUltAtualiz Se tipo usuário = 4 preencher com 'Cliente'
+            torcamento.InstaladorInstalaDtHrUltAtualiz = prepedido.DetalhesPrepedido.InstaladorInstalaDtHrUltAtualiz;//mesmo campo da T_ORCAMENTO_COTACAO
 
-            if (byte.Parse(prepedido.DetalhesPrepedido.EntregaImediata) == (byte)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO)
-            {
-                //verificar se a data esta correta
-                torcamento.St_Etg_Imediata = (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO;
-                //montar a data
-                //estou montando a data, pois comparando com a data que esta sendo salvo na base 
-                //preciso montar a data com no formato "yyyy-MM-dd hh:mm:ss.ms"
-                //a data que vem da tela esta com o horário zerado
+            torcamento.PrevisaoEntregaData = prepedido.DetalhesPrepedido.PrevisaoEntrega;
+            torcamento.PrevisaoEntregaUsuarioUltAtualiz = prepedido.DetalhesPrepedido.PrevisaoEntregaUsuarioUltAtualiz;
+            torcamento.PrevisaoEntregaDtHrUltAtualiz = prepedido.DetalhesPrepedido.PrevisaoEntregaDtHrUltAtualiz;
+            torcamento.PrevisaoEntregaIdTipoUsuarioContexto = prepedido.DetalhesPrepedido.PrevisaoEntregaIdTipoUsuarioContexto;
+            torcamento.PrevisaoEntregaIdUsuarioUltAtualiz = prepedido.DetalhesPrepedido.PrevisaoEntregaIdUsuarioUltAtualiz;
+            
+            torcamento.St_Etg_Imediata = short.Parse(prepedido.DetalhesPrepedido.EntregaImediata) == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
+                   (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO : (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM;
+            torcamento.Etg_Imediata_Usuario = prepedido.EnderecoEntrega.Etg_Imediata_Usuario;
+            torcamento.EtgImediataIdTipoUsuarioContexto = prepedido.EnderecoEntrega.EtgImediataIdTipoUsuarioContexto;
+            torcamento.EtgImediataIdUsuarioUltAtualiz = prepedido.EnderecoEntrega.EtgImediataIdUsuarioUltAtualiz;
+            torcamento.Etg_Imediata_Data = prepedido.EnderecoEntrega.Etg_imediata_data;
 
-                int dd = prepedido.DetalhesPrepedido.EntregaImediataData.Value.Day;
-                int MM = prepedido.DetalhesPrepedido.EntregaImediataData.Value.Month;
-                int yyyy = prepedido.DetalhesPrepedido.EntregaImediataData.Value.Year;
-                int hh = DateTime.Now.Hour;
-                int mm = DateTime.Now.Minute;
-                int ss = DateTime.Now.Second;
-                int ms = DateTime.Now.Millisecond;
-
-                torcamento.Etg_Imediata_Data = new DateTime(yyyy, MM, dd, hh, mm, ss, ms);
-                torcamento.Etg_Imediata_Usuario = orcamentista;
-
-                //novos campos:Vamos esperar o Hamilton dar ok para inclusão desses novos campos
-                torcamento.PrevisaoEntregaData = new DateTime(yyyy, MM, dd, hh, mm, ss, ms);
-                torcamento.PrevisaoEntregaUsuarioUltAtualiz = orcamentista;
-                torcamento.PrevisaoEntregaDtHrUltAtualiz = new DateTime(yyyy, MM, dd, hh, mm, ss, ms);
-
-            }
-            else
-            {
-                torcamento.St_Etg_Imediata = (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM;
-                torcamento.Etg_Imediata_Data = DateTime.Now;
-                torcamento.Etg_Imediata_Usuario = orcamentista;
-            }
-
-            torcamento.GarantiaIndicadorStatus = prepedido.DetalhesPrepedido.GarantiaIndicador == null ? byte.Parse(Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO) : byte.Parse(Constantes.COD_GARANTIA_INDICADOR_STATUS__SIM);
-            torcamento.GarantiaIndicadorUsuarioUltAtualiz = orcamentista;
-            torcamento.GarantiaInidicadorDtHrUltAtualiz = DateTime.Now;
+            torcamento.GarantiaIndicadorStatus = prepedido.DetalhesPrepedido.GarantiaIndicador;// == null ? byte.Parse(Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO) : byte.Parse(Constantes.COD_GARANTIA_INDICADOR_STATUS__SIM);
+            torcamento.GarantiaIndicadorIdTipoUsuarioContexto = prepedido.DetalhesPrepedido.GarantiaIndicadorIdTipoUsuarioContexto;
+            torcamento.GarantiaIndicadorIdUsuarioUltAtualiz = prepedido.DetalhesPrepedido.GarantiaIndicadorIdUsuarioUltAtualiz;
+            torcamento.GarantiaIndicadorUsuarioUltAtualiz = prepedido.DetalhesPrepedido.GarantiaIndicadorUsuarioUltAtualiz;
+            torcamento.GarantiaIndicadorDtHrUltAtualiz = prepedido.DetalhesPrepedido.GarantiaIndicadorDtHrUltAtualiz;
         }
 
         private void IncluirEnderecoEntregaParaTorcamento(PrePedidoDados prepedido, Torcamento torcamento)
@@ -1263,6 +1251,7 @@ namespace Prepedido.Bll
                         "" : prepedido.EnderecoEntrega.EndEtg_ie;
                     torcamento.EndEtg_rg = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_rg) ?
                         "" : prepedido.EnderecoEntrega.EndEtg_rg;
+                    
                 }
             }
         }

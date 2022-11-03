@@ -39,10 +39,10 @@ namespace Loja.Bll.Dto.PedidoDto.DetalhesPedido
                 EntregaImediataData = origem.EntregaImediataData,
                 BemDeUso_Consumo = origem.StBemUsoConsumo,
                 InstaladorInstala = origem.InstaladorInstala,
-                GarantiaIndicador = origem.GarantiaIndicadorStatus,
+                GarantiaIndicador = Byte.Parse(origem.GarantiaIndicadorStatus),
                 FormaDePagamento = origem.FormaDePagamento,
                 DescricaoFormaPagamento = origem.DescricaoFormaPagamento,
-                PrevisaoEntrega = origem.PrevisaoEntrega
+                PrevisaoEntrega = DateTime.Parse(origem.PrevisaoEntrega)
             };
         }
         public static DetalhesNFPedidoDtoPedido DetalhesNFPedidoDtoPedido_De_DetalhesNFPedidoPedidoDados(DetalhesNFPedidoPedidoDados origem)

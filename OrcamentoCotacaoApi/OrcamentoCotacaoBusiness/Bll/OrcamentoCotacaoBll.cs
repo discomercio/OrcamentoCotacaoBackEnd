@@ -699,7 +699,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                             tOrcamento.PrevisaoEntregaDtHrUltAtualiz = DateTime.Now;
                         }
                         tOrcamento.EtgImediataDtHrUltAtualiz = DateTime.Now;
-                        tOrcamento.EtgImediataIdTipoUsuarioContexto = usuarioLogado.TipoUsuario;
+                        tOrcamento.EtgImediataIdTipoUsuarioContexto = (short?)usuarioLogado.TipoUsuario;
                         tOrcamento.EtgImediataIdUsuarioUltAtualiz = usuarioLogado.Id;
                     }
 
@@ -1131,7 +1131,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             torcamentoCotacao.GarantiaIndicadorIdUsuarioUltAtualiz = usuarioLogado.Id;
             torcamentoCotacao.GarantiaIndicadorDtHrUltAtualiz = DateTime.Now;
             torcamentoCotacao.EtgImediataDtHrUltAtualiz = DateTime.Now;
-            torcamentoCotacao.EtgImediataIdTipoUsuarioContexto = usuarioLogado.TipoUsuario;
+            torcamentoCotacao.EtgImediataIdTipoUsuarioContexto = (short?)usuarioLogado.TipoUsuario;
             torcamentoCotacao.EtgImediataIdUsuarioUltAtualiz = usuarioLogado.Id;
             torcamentoCotacao.PrevisaoEntregaIdTipoUsuarioContexto = usuarioLogado.TipoUsuario;
             torcamentoCotacao.PrevisaoEntregaIdUsuarioUltAtualiz = usuarioLogado.Id;
@@ -1341,6 +1341,15 @@ namespace OrcamentoCotacaoBusiness.Bll
             aprovarOrcamento.ClienteCadastroDto.DadosCliente.IdIndicadorVendedor = orcamento.IdIndicadorVendedor;
             aprovarOrcamento.ClienteCadastroDto.DadosCliente.IdOrcamentoCotacao = aprovarOrcamento.IdOrcamento;
 
+            //endereço entrega
+            aprovarOrcamento.enderecoEntrega.Etg_imediata_data = orcamento.EtgImediataDtHrUltAtualiz;
+            aprovarOrcamento.enderecoEntrega.EtgImediataIdTipoUsuarioContexto = orcamento.EtgImediataIdTipoUsuarioContexto;
+            aprovarOrcamento.enderecoEntrega.EtgImediataIdUsuarioUltAtualiz = orcamento.EtgImediataIdUsuarioUltAtualiz;
+            aprovarOrcamento.enderecoEntrega.Etg_Imediata_Usuario = $"[{orcamento.EtgImediataIdTipoUsuarioContexto}] {orcamento.EtgImediataIdUsuarioUltAtualiz}";
+
+            //previsão entrega
+            
+
             var clienteCadastroDados = ClienteCadastroDto
                 .ClienteCadastroDados_De_ClienteCadastroDto(aprovarOrcamento.ClienteCadastroDto);
 
@@ -1368,7 +1377,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     aprovarOrcamento.ClienteCadastroDto.DadosCliente.Id = tCliente.Id;
                     //passar o id do cliente para o modelo
                     //verificar os erros 
-                    retorno = await CadastrarPrepedido(aprovarOrcamento, orcamento, dbGravacao);
+                    retorno = await CadastrarPrepedido(aprovarOrcamento, orcamento, dbGravacao, tipoUsuarioContexto, idUsuarioUltAtualizacao);
                     //precisamos mudar isso, precisamos verificar se existe um número de orçamento válido ou adicionar alguma prop na classe
                     if (retorno.Count >= 1)
                     {
@@ -1433,11 +1442,15 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public async Task<List<string>> CadastrarPrepedido(AprovarOrcamentoRequestViewModel aprovarOrcamento, TorcamentoCotacao orcamento,
-            ContextoBdGravacao dbGravacao)
+            ContextoBdGravacao dbGravacao, Constantes.TipoUsuarioContexto tipoUsuarioContexto, int idUsuarioUltAtualizacao)
         {
             _logger.LogInformation("Iniciando criação de Pré-Pedido.");
             // criar prepedidoDto
             PrePedidoDto prepedido = new PrePedidoDto();
+            prepedido.UsuarioCadastroId = tipoUsuarioContexto == Constantes.TipoUsuarioContexto.Cliente ? null : (int?)idUsuarioUltAtualizacao;
+            prepedido.Usuario_cadastro = $"[{idUsuarioUltAtualizacao}] {tipoUsuarioContexto}";
+            prepedido.UsuarioCadastroIdTipoUsuarioContexto = (short?)idUsuarioUltAtualizacao;
+            prepedido.DadosCliente = new DadosClienteCadastroDto();
             prepedido.DadosCliente = aprovarOrcamento.ClienteCadastroDto.DadosCliente;
             prepedido.EnderecoCadastroClientePrepedido = new EnderecoCadastralClientePrepedidoDto();
             prepedido.EnderecoCadastroClientePrepedido =
@@ -1446,6 +1459,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 (aprovarOrcamento.ClienteCadastroDto.DadosCliente);
 
             prepedido.EnderecoEntrega = aprovarOrcamento.enderecoEntrega;
+
 
             var opcaoSelecionada = _orcamentoCotacaoOpcaoBll
                 .PorFiltro(new TorcamentoCotacaoOpcaoFiltro() { Id = aprovarOrcamento.IdOpcao }).FirstOrDefault();
@@ -1471,9 +1485,32 @@ namespace OrcamentoCotacaoBusiness.Bll
             prepedido.DadosCliente.Perc_max_comissao_e_desconto_padrao = orcamento.Perc_max_comissao_e_desconto_padrao;
             prepedido.DadosCliente.Vendedor = aprovarOrcamento.ClienteCadastroDto.DadosCliente.Vendedor;
 
+            prepedido.EnderecoEntrega.EtgImediataIdTipoUsuarioContexto = orcamento.EtgImediataIdTipoUsuarioContexto;
+            prepedido.EnderecoEntrega.EtgImediataIdUsuarioUltAtualiz = orcamento.EtgImediataIdUsuarioUltAtualiz;
+            prepedido.EnderecoEntrega.Etg_Imediata_Usuario = aprovarOrcamento.enderecoEntrega.Etg_Imediata_Usuario;
+
             prepedido.DetalhesPrepedido = new DetalhesDtoPrepedido();
             prepedido.DetalhesPrepedido.EntregaImediata = orcamento.StEtgImediata.ToString();
-            prepedido.DetalhesPrepedido.EntregaImediataData = orcamento.PrevisaoEntregaData.HasValue ? orcamento.PrevisaoEntregaData : null;
+            prepedido.DetalhesPrepedido.EntregaImediataData = orcamento.EtgImediataDtHrUltAtualiz.HasValue ? orcamento.EtgImediataDtHrUltAtualiz : null;
+            prepedido.DetalhesPrepedido.PrevisaoEntregaData = orcamento.PrevisaoEntregaData;
+            prepedido.DetalhesPrepedido.PrevisaoEntregaIdTipoUsuarioContexto = (short?)orcamento.PrevisaoEntregaIdTipoUsuarioContexto;
+            prepedido.DetalhesPrepedido.PrevisaoEntregaIdUsuarioUltAtualiz = orcamento.PrevisaoEntregaIdUsuarioUltAtualiz;
+            prepedido.DetalhesPrepedido.PrevisaoEntregaDtHrUltAtualiz = orcamento.PrevisaoEntregaDtHrUltAtualiz;
+            prepedido.DetalhesPrepedido.PrevisaoEntregaUsuarioUltAtualiz = $"[{orcamento.PrevisaoEntregaIdTipoUsuarioContexto}] {orcamento.PrevisaoEntregaIdUsuarioUltAtualiz}";
+
+            prepedido.DetalhesPrepedido.BemDeUso_Consumo = Convert.ToString((byte)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_SIM);
+
+            prepedido.DetalhesPrepedido.InstaladorInstala = orcamento.InstaladorInstalaStatus.ToString();
+            prepedido.DetalhesPrepedido.InstaladorInstalaIdTipoUsuarioContexto = (short?)orcamento.InstaladorInstalaIdTipoUsuarioContexto;
+            prepedido.DetalhesPrepedido.InstaladorInstalaIdUsuarioUltAtualiz = orcamento.InstaladorInstalaIdUsuarioUltAtualiz;
+            prepedido.DetalhesPrepedido.InstaladorInstalaUsuarioUltAtualiz = $"[{orcamento.InstaladorInstalaIdTipoUsuarioContexto}] {orcamento.InstaladorInstalaIdUsuarioUltAtualiz}";
+            prepedido.DetalhesPrepedido.InstaladorInstalaDtHrUltAtualiz = orcamento.InstaladorInstalaDtHrUltAtualiz;
+
+            prepedido.DetalhesPrepedido.GarantiaIndicador = orcamento.GarantiaIndicadorStatus.ToString();
+            prepedido.DetalhesPrepedido.GarantiaIndicadorIdTipoUsuarioContexto = (short?)orcamento.GarantiaIndicadorIdTipoUsuarioContexto;
+            prepedido.DetalhesPrepedido.GarantiaIndicadorIdUsuarioUltAtualiz = orcamento.GarantiaIndicadorIdUsuarioUltAtualiz;
+            prepedido.DetalhesPrepedido.GarantiaIndicadorUsuarioUltAtualiz = $"[{orcamento.GarantiaIndicadorIdTipoUsuarioContexto}] {orcamento.GarantiaIndicadorIdUsuarioUltAtualiz}";
+            prepedido.DetalhesPrepedido.GarantiaIndicadorDtHrUltAtualiz = orcamento.GarantiaIndicadorDtHrUltAtualiz;
 
             string parceiro = null;
             if (!string.IsNullOrEmpty(prepedido.DadosCliente.Indicador_Orcamentista))

@@ -108,7 +108,7 @@ namespace MagentoBusiness.MagentoDto.PedidoMagentoDto
                             Convert.ToString((byte)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO);
             pedidoCriacaoDetalhesPedido.EntregaImediataData = null;
             pedidoCriacaoDetalhesPedido.Observacoes = pedidoMagento.Obs_1;
-            pedidoCriacaoDetalhesPedido.GarantiaIndicador = Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO;
+            pedidoCriacaoDetalhesPedido.GarantiaIndicador = byte.Parse(Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO);
 
             var pedidoCriacaoValor = new Pedido.Dados.Criacao.PedidoCriacaoValorDados(
                 perc_RT: 0,

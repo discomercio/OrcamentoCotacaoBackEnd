@@ -28,6 +28,9 @@ namespace Prepedido.Dto
         public FormaPagtoCriacaoDto FormaPagtoCriacao { get; set; }
         public bool St_Orc_Virou_Pedido { get; set; }//se virou pedido retornar esse campo
         public string NumeroPedido { get; set; }//se virou pedido retornar esse campo
+        public int? UsuarioCadastroId { get; set; }
+        public short? UsuarioCadastroIdTipoUsuarioContexto { get; set; }
+        public string Usuario_cadastro { get; set; }
 
         public static PrePedidoDto PrePedidoDto_De_PrePedidoDados(PrePedidoDados origem)
         {
@@ -62,6 +65,7 @@ namespace Prepedido.Dto
 
         public static PrePedidoDados PrePedidoDados_De_PrePedidoDto(PrePedidoDto origem)
         {
+            //Constantes.TipoUsuarioContexto tipoUsuarioContexto
             if (origem == null) return null;
 
             PrePedidoDados ret = new PrePedidoDados()
@@ -87,7 +91,11 @@ namespace Prepedido.Dto
                 FormaPagto = origem.FormaPagto,
                 FormaPagtoCriacao = FormaPagtoCriacaoDto.FormaPagtoCriacaoDados_De_FormaPagtoCriacaoDto(origem.FormaPagtoCriacao),
                 St_Orc_Virou_Pedido = origem.St_Orc_Virou_Pedido,
-                NumeroPedido = origem.NumeroPedido
+                NumeroPedido = origem.NumeroPedido,
+                UsuarioCadastroId = origem.UsuarioCadastroId,//Id do registro do usuário logado (t_ORCAMENTISTA_E_INDICADOR_VENDEDOR.Id, t_ORCAMENTISTA_E_INDICADOR.Id ou t_USUARIO.Id) Se aprovação pelo cliente em rota pública deve ser nulo
+                UsuarioCadastroIdTipoUsuarioContexto = origem.UsuarioCadastroIdTipoUsuarioContexto,//Id do contexto do usuário logado de acordo com a tabela t_CFG_TIPO_USUARIO_CONTEXTO.Id Se aprovação pelo cliente em rota pública preencher com 4
+                Usuario_cadastro = origem.Usuario_cadastro,//preencher com "[N] 999999", onde  N = UsuarioCadastroIdTipoUsuarioContexto  999999 = UsuarioCadastroId
+
             };
 
             return ret;

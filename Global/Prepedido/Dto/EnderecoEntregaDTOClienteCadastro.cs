@@ -42,6 +42,10 @@ namespace Prepedido.Dto
         public string EndEtg_ie { get; set; }
         public string EndEtg_rg { get; set; }
         public byte St_memorizacao_completa_enderecos { get; set; }
+        public DateTime? Etg_imediata_data { get; set; }
+        public string Etg_Imediata_Usuario { get; set; }
+        public short? EtgImediataIdTipoUsuarioContexto { get; set; }
+        public int? EtgImediataIdUsuarioUltAtualiz { get; set; }
 
         public static EnderecoEntregaDtoClienteCadastro EnderecoEntregaDtoClienteCadastro_De_EnderecoEntregaClienteCadastroDados(Cliente.Dados.EnderecoEntregaClienteCadastroDados origem)
         {
@@ -116,7 +120,11 @@ namespace Prepedido.Dto
                 EndEtg_produtor_rural_status = origem.EndEtg_produtor_rural_status,
                 EndEtg_ie = origem.EndEtg_ie,
                 EndEtg_rg = origem.EndEtg_rg,
-                St_memorizacao_completa_enderecos = origem.St_memorizacao_completa_enderecos == 1
+                St_memorizacao_completa_enderecos = origem.St_memorizacao_completa_enderecos == 1,
+                Etg_imediata_data = origem.Etg_imediata_data,
+                Etg_Imediata_Usuario = origem.Etg_Imediata_Usuario,
+                EtgImediataIdTipoUsuarioContexto= origem.EtgImediataIdTipoUsuarioContexto,
+                EtgImediataIdUsuarioUltAtualiz = origem.EtgImediataIdUsuarioUltAtualiz
             };
             return ret;
         }

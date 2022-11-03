@@ -33,6 +33,13 @@ namespace Prepedido.Bll
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             int limite_de_itens)
         {
+            
+            if(!string.IsNullOrEmpty(prePedido.DetalhesPrepedido.EntregaImediata) && 
+                short.Parse(prePedido.DetalhesPrepedido.EntregaImediata) == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO)
+            {
+                prePedido.DetalhesPrepedido.PrevisaoEntregaData = prePedido.DetalhesPrepedido.EntregaImediataData;
+                prePedido.DetalhesPrepedido.EntregaImediataData = DateTime.Now;
+            }
             PrePedidoDados prePedidoDados = PrePedidoDto.PrePedidoDados_De_PrePedidoDto(prePedido);
 
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTO))

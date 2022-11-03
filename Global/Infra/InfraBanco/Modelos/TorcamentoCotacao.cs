@@ -109,7 +109,7 @@ namespace InfraBanco.Modelos
 
         public DateTime? GarantiaIndicadorDtHrUltAtualiz { get; set; }
 
-        public int? EtgImediataIdTipoUsuarioContexto { get; set; }
+        public short? EtgImediataIdTipoUsuarioContexto { get; set; }
 
         public int? EtgImediataIdUsuarioUltAtualiz { get; set; }
 

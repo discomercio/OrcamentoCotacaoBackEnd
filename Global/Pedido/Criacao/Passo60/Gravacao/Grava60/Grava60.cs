@@ -316,7 +316,7 @@ namespace Pedido.Criacao.Passo60.Gravacao.Grava60
             tpedido.Venda_Externa = Pedido.Ambiente.Venda_Externa ? (short)1 : (short)0;
             tpedido.Indicador = GarantirNaoNull(Pedido.Ambiente.Indicador);
 
-            tpedido.GarantiaIndicadorStatus = byte.Parse(Pedido.DetalhesPedido.GarantiaIndicador);
+            tpedido.GarantiaIndicadorStatus = Pedido.DetalhesPedido.GarantiaIndicador;
             tpedido.GarantiaIndicadorUsuarioUltAtualiz = GarantirNaoNull(Pedido.Ambiente.Usuario);
             tpedido.GarantiaIndicadorDtHrUltAtualiz = Gravacao.DataHoraCriacao;
 

@@ -28,9 +28,6 @@ namespace InfraBanco.Modelos
         [MaxLength(6)]
         public string Hora { get; set; }
 
-        [Column("data_hora")]
-        public DateTime? Data_hora { get;}
-
         [Column("id_cliente")]
         [MaxLength(12)]
         [ForeignKey("Tcliente")]
@@ -259,7 +256,7 @@ namespace InfraBanco.Modelos
         public string GarantiaIndicadorUsuarioUltAtualiz { get; set; }
 
         [Column("GarantiaIndicadorDtHrUltAtualiz")]
-        public DateTime? GarantiaInidicadorDtHrUltAtualiz { get; set; }
+        public DateTime? GarantiaIndicadorDtHrUltAtualiz { get; set; }
 
         [Column("perc_desagio_RA_liquida")]
         [Required]
@@ -268,6 +265,13 @@ namespace InfraBanco.Modelos
         [Column("permite_RA_status")]
         [Required]
         public short Permite_RA_Status { get; set; }
+
+        [Column("data_hora")]
+        public DateTime? Data_hora { get; }
+
+        [Column("EndEtg_obs")]
+        [MaxLength(100)]
+        public string EndEtg_obs { get; set; }
 
         [Column("EndEtg_cod_justificativa")]
         [MaxLength(3)]
@@ -291,7 +295,16 @@ namespace InfraBanco.Modelos
         [Required]
         public int Sistema_responsavel_atualizacao { get; set; }
 
-        /*Novos campos para memorização de endereço*/
+        [Column("PrevisaoEntregaData")]
+        public DateTime? PrevisaoEntregaData { get; set; }
+
+        [Column("PrevisaoEntregaUsuarioUltAtualiz")]
+        [MaxLength(20)]
+        public string PrevisaoEntregaUsuarioUltAtualiz { get; set; }
+
+        [Column("PrevisaoEntregaDtHrUltAtualiz")]
+        public DateTime? PrevisaoEntregaDtHrUltAtualiz { get; set; }
+
         [Column("st_memorizacao_completa_enderecos")]
         [Required]
         public byte St_memorizacao_completa_enderecos { get; set; }
@@ -478,17 +491,7 @@ namespace InfraBanco.Modelos
 
         [Column("EndEtg_rg")]
         [MaxLength(20)]
-        public string EndEtg_rg { get; set; }
-
-        [Column("PrevisaoEntregaData")]
-        public DateTime? PrevisaoEntregaData { get; set; }
-
-        [Column("PrevisaoEntregaUsuarioUltAtualiz")]
-        [MaxLength(20)]
-        public string PrevisaoEntregaUsuarioUltAtualiz { get; set; }
-
-        [Column("PrevisaoEntregaDtHrUltAtualiz")]
-        public DateTime? PrevisaoEntregaDtHrUltAtualiz { get; set; }
+        public string EndEtg_rg { get; set; }        
 
         [Column("IdOrcamentoCotacao")]
         public int? IdOrcamentoCotacao { get; set; }
@@ -502,5 +505,38 @@ namespace InfraBanco.Modelos
         [Column("perc_max_comissao_e_desconto_padrao")]
         public float? Perc_max_comissao_e_desconto_padrao { get; set; }
 
+        [Column("usuario_cadastro")]
+        [MaxLength(20)]
+        public string Usuario_cadastro { get; set; }
+
+        [Column("InstaladorInstalaIdTipoUsuarioContexto")]
+        public short? InstaladorInstalaIdTipoUsuarioContexto { get; set; }
+
+        [Column("InstaladorInstalaIdUsuarioUltAtualiz")]
+        public int? InstaladorInstalaIdUsuarioUltAtualiz { get; set; }
+
+        [Column("GarantiaIndicadorIdTipoUsuarioContexto")]
+        public short? GarantiaIndicadorIdTipoUsuarioContexto { get; set; }
+
+        [Column("GarantiaIndicadorIdUsuarioUltAtualiz")]
+        public int? GarantiaIndicadorIdUsuarioUltAtualiz { get; set; }
+
+        [Column("EtgImediataIdTipoUsuarioContexto")]
+        public short? EtgImediataIdTipoUsuarioContexto { get; set; }
+
+        [Column("EtgImediataIdUsuarioUltAtualiz")]
+        public int? EtgImediataIdUsuarioUltAtualiz { get; set; }
+
+        [Column("PrevisaoEntregaIdTipoUsuarioContexto")]
+        public short? PrevisaoEntregaIdTipoUsuarioContexto { get; set; }
+
+        [Column("PrevisaoEntregaIdUsuarioUltAtualiz")]
+        public int? PrevisaoEntregaIdUsuarioUltAtualiz { get; set; }
+
+        [Column("UsuarioCadastroIdTipoUsuarioContexto")]
+        public short? UsuarioCadastroIdTipoUsuarioContexto { get; set; }
+
+        [Column("UsuarioCadastroId")]
+        public int? UsuarioCadastroId { get; set; }
     }
 }
