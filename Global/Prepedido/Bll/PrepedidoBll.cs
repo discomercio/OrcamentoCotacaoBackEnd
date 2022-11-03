@@ -1173,8 +1173,6 @@ namespace Prepedido.Bll
             torcamento.InstaladorInstalaUsuarioUltAtualiz = prepedido.DetalhesPrepedido.InstaladorInstalaUsuarioUltAtualiz;//preencher com '[N] 999999' onde  N = InstaladorInstalaIdTipoUsuarioContexto  999999 = InstaladorInstalaIdUsuarioUltAtualiz Se tipo usuário = 4 preencher com 'Cliente'
             torcamento.InstaladorInstalaDtHrUltAtualiz = prepedido.DetalhesPrepedido.InstaladorInstalaDtHrUltAtualiz;//mesmo campo da T_ORCAMENTO_COTACAO
 
-
-            
             torcamento.PrevisaoEntregaData = prepedido.DetalhesPrepedido.PrevisaoEntrega;
             torcamento.PrevisaoEntregaUsuarioUltAtualiz = prepedido.DetalhesPrepedido.PrevisaoEntregaUsuarioUltAtualiz;
             torcamento.PrevisaoEntregaDtHrUltAtualiz = prepedido.DetalhesPrepedido.PrevisaoEntregaDtHrUltAtualiz;

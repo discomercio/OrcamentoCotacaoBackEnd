@@ -1498,7 +1498,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             prepedido.DetalhesPrepedido.PrevisaoEntregaDtHrUltAtualiz = orcamento.PrevisaoEntregaDtHrUltAtualiz;
             prepedido.DetalhesPrepedido.PrevisaoEntregaUsuarioUltAtualiz = $"[{orcamento.PrevisaoEntregaIdTipoUsuarioContexto}] {orcamento.PrevisaoEntregaIdUsuarioUltAtualiz}";
 
-            prepedido.DetalhesPrepedido.BemDeUso_Consumo = Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_SIM.ToString();
+            prepedido.DetalhesPrepedido.BemDeUso_Consumo = Convert.ToString((byte)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_SIM);
 
             prepedido.DetalhesPrepedido.InstaladorInstala = orcamento.InstaladorInstalaStatus.ToString();
             prepedido.DetalhesPrepedido.InstaladorInstalaIdTipoUsuarioContexto = (short?)orcamento.InstaladorInstalaIdTipoUsuarioContexto;
