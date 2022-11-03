@@ -31,15 +31,15 @@ namespace OrcamentoCotacaoApi.Filters
             if (exception is DomainException)
             {
                 response.StatusCode = (int)HttpStatusCode.BadRequest;
+                _logger.LogInformation($"CorrelationId => [{correlationIdParsed}] / EXCEPTION: [{exception}] / INNEREXCEPTION: [{exception?.InnerException}].");
             }
             else
             {
                 response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                _logger.LogError($"CorrelationId => [{correlationIdParsed}] / EXCEPTION: [{exception}] / INNEREXCEPTION: [{exception?.InnerException}].");
             }
 
             response.Mensagem = $"Erro inesperado! Favor entrar em contato com o suporte técnico. (Código: [{response.StatusCode}]).";
-
-            _logger.LogError($"CorrelationId => [{correlationIdParsed}] / EXCEPTION: [{exception}] / INNEREXCEPTION: [{exception?.InnerException}].");
 
             context.ExceptionHandled = true;
             context.Result = new ObjectResult(response);
