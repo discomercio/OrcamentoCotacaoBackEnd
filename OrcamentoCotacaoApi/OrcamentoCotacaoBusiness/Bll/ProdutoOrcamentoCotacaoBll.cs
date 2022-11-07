@@ -157,7 +157,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             return retorno;
         }
 
-        public async Task<List<ProdutoCatalogoItemProdutosAtivosResponseViewModel>> ListarProdutoCatalogoParaVisualizacao(bool propriedadeOculta, bool propriedadeOcultaItem)
+        public async Task<List<ProdutoCatalogoItemProdutosAtivosResponseViewModel>> ListarProdutoCatalogoParaVisualizacao(bool? propriedadeOculta, bool? propriedadeOcultaItem)
         {
             var produtosPropTexto = await produtoGeralBll.ListarProdutoPropriedadesAtivosTexto(propriedadeOculta, propriedadeOcultaItem);
             var produtosPropListas = await produtoGeralBll.ListarProdutoPropriedadesAtivosLista(propriedadeOculta, propriedadeOcultaItem);

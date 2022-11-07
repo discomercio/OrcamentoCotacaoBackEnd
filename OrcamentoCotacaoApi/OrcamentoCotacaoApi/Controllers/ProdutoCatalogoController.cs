@@ -13,6 +13,7 @@ using System.IO;
 using System.Threading.Tasks;
 using OrcamentoCotacaoBusiness.Models.Response;
 using UtilsGlobais.Configs;
+using OrcamentoCotacaoBusiness.Models.Request;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -249,20 +250,13 @@ namespace OrcamentoCotacaoApi.Controllers
             }
         }
 
-        [HttpGet("listar-produtos-propriedades/{propriedadeOculta}&{propriedadeOcultaItem}")]
-        public async Task<IActionResult> ListarProdutosPropriedadesAtivos(bool propriedadeOculta, bool propriedadeOcultaItem)
+        [HttpPost("listar-produtos-propriedades")]
+        public async Task<IActionResult> ListarProdutosPropriedadesAtivos(ProdutoCalculadoraVrfRequestViewModel request)
         {
-            var saida = await _produtoOrcamentoCotacaoBll.ListarProdutoCatalogoParaVisualizacao(propriedadeOculta, propriedadeOcultaItem);
+            var saida = await _produtoOrcamentoCotacaoBll.ListarProdutoCatalogoParaVisualizacao(request.propriedadeOculta, request.propriedadeOcultaItem);
 
             return Ok(saida);
         }
-
-        //[HttpGet("buscarTiposPropriedades")]
-        //public async Task<IActionResult> BuscarTiposPropriedadesProdutoCatalago()
-        //{
-        //    var saida = await _bll.BuscarTiposPropriedadesProdutoCatalago();
-        //    return Ok();
-        //}
 
         [HttpGet("buscarDataTypes")]
         public async Task<IActionResult> BuscarDataTypes()
