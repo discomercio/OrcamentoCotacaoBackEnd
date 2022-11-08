@@ -471,7 +471,7 @@ namespace Produto
                         produtosAtivos = produtosAtivos.Where(x => x.PropriedadeOcultaItem == propriedadeOcultaItem);
                     }
 
-                    return await produtosAtivos.ToListAsync();
+                    return await produtosAtivos.OrderBy(x => x.Ordem).ToListAsync();
                 }
             }
             catch (Exception ex)
@@ -560,7 +560,8 @@ namespace Produto
                                              ValorPropriedade = tpcpo.valor,
                                              Ordem = tpcp.ordem,
                                              PropriedadeOcultaItem = tpci.Oculto,
-                                             PropriedadeOculta = tpcp.oculto
+                                             PropriedadeOculta = tpcp.oculto,
+                                             TProdutoCatalogoPropriedadeOpcaoOculto = tpcpo.oculto
                                          };
 
                     if (propriedadeOculta != null)
@@ -569,10 +570,10 @@ namespace Produto
                     }
                     if (propriedadeOcultaItem != null)
                     {
-                        produtosAtivos = produtosAtivos.Where(x => x.PropriedadeOcultaItem == propriedadeOcultaItem);
+                        produtosAtivos = produtosAtivos.Where(x => x.TProdutoCatalogoPropriedadeOpcaoOculto == propriedadeOcultaItem);
                     }
 
-                    return await produtosAtivos.ToListAsync();
+                    return await produtosAtivos.OrderBy(x => x.Ordem).ToListAsync();
                 }
             }
             catch (Exception ex)
@@ -641,7 +642,7 @@ namespace Produto
                               join tpcpo in db.TProdutoCatalogoPropriedadeOpcao on tpci.IdProdutoCatalogoPropriedadeOpcao equals tpcpo.id
                               join tpcp in db.TProdutoCatalogoPropriedade on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
                               where tpc.Ativo == true &&
-                                    tpcp.oculto == false
+                                    tpcp.oculto == true
                               group new { tpc, tf, tpcpo } by new
                               {
                                   tpc.Id,

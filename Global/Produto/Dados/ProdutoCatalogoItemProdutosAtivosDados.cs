@@ -19,5 +19,6 @@ namespace Produto.Dados
         public int Ordem { get; set; }
         public bool PropriedadeOculta { get; set; }
         public bool PropriedadeOcultaItem { get; set; }
+        public bool TProdutoCatalogoPropriedadeOpcaoOculto { get; set; }
     }
 }
