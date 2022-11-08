@@ -145,15 +145,12 @@ namespace OrcamentoCotacaoApi.BaseController
             return Ok(saida);
         }
 
-        [HttpGet("buscar-produtos-opcoes-ativos/{idProduto}&{propriedadeOculta}&{propriedadeOcultaItem}")]
-        public async Task<IActionResult> ObterPropriedadesEOpcoesProdutosAtivosPorProduto(
-            int idProduto, 
-            bool propriedadeOculta, 
-            bool propriedadeOcultaItem)
+        [HttpPost("buscar-produtos-opcoes-ativos")]
+        public async Task<IActionResult> ObterPropriedadesEOpcoesProdutosAtivosPorProduto(ProdutosAtivosRequestViewModel obj)
         {
-            _logger.LogInformation("BuscarProdutoCatalogoParaVisualizacao - Request: [idProduto: {0} - propriedadeOculta: {1} - propriedadeOcultaItem: {2}]", idProduto, propriedadeOculta, propriedadeOcultaItem);
+            _logger.LogInformation("BuscarProdutoCatalogoParaVisualizacao - Request: [idProduto: {0} - propriedadeOculta: {1} - propriedadeOcultaItem: {2}]", obj.idProduto, obj.propriedadeOculta, obj.propriedadeOcultaItem);
 
-            var retorno = await _produtoBll.BuscarProdutoCatalogoParaVisualizacao(idProduto, propriedadeOculta, propriedadeOcultaItem);
+            var retorno = await _produtoBll.BuscarProdutoCatalogoParaVisualizacao(obj.idProduto, obj.propriedadeOculta, obj.propriedadeOcultaItem);
 
             _logger.LogInformation("BuscarProdutoCatalogoParaVisualizacao - Response: {0}", JsonSerializer.Serialize(retorno));
             

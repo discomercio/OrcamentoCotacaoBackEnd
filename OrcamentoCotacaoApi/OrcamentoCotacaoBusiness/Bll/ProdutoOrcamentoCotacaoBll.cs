@@ -139,7 +139,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public async Task<List<ProdutoCatalogoItemProdutosAtivosResponseViewModel>> BuscarProdutoCatalogoParaVisualizacao(int idProduto,
-            bool propriedadeOculta, bool propriedadeOcultaItem)
+            bool? propriedadeOculta, bool? propriedadeOcultaItem)
         {
             var produtosPropTexto = await produtoGeralBll.ObterProdutoPropriedadesAtivosTexto(idProduto, propriedadeOculta, propriedadeOcultaItem);
             var produtosPropListas = await produtoGeralBll.ObterProdutoPropriedadesAtivosLista(idProduto, propriedadeOculta, propriedadeOcultaItem);
@@ -180,7 +180,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         {
             var lstProdutoPropriedades = await produtoGeralBll.ObterListaPropriedadesProdutos();
 
-            return lstProdutoPropriedades;
+            return lstProdutoPropriedades.OrderBy(x => x.ordem).ToList();
         }
 
         public async Task<List<ProdutoCatalogoItemProdutosAtivosResponseViewModel>> ObterListaProdutosPropriedadesProdutosAtivos()
@@ -222,7 +222,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         {
             var lstProdutoPropriedades = await produtoGeralBll.ObterListaPropriedadesOpcoes();
 
-            return lstProdutoPropriedades;
+            return lstProdutoPropriedades.OrderBy(x => x.ordem).ToList();
         }
 
         public async Task<List<Produto.Dados.ProdutoCatalogoItemDados>> ObterListaPropriedadesProdutosById(int idProdutoCatalogo)

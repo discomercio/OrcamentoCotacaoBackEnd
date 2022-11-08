@@ -641,7 +641,7 @@ namespace Produto
                               join tpcpo in db.TProdutoCatalogoPropriedadeOpcao on tpci.IdProdutoCatalogoPropriedadeOpcao equals tpcpo.id
                               join tpcp in db.TProdutoCatalogoPropriedade on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
                               where tpc.Ativo == true &&
-                                    tpcp.oculto == false
+                                    tpcp.oculto == true
                               group new { tpc, tf, tpcpo } by new
                               {
                                   tpc.Id,
