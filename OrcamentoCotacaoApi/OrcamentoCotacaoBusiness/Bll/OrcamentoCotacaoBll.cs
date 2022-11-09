@@ -164,6 +164,23 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
+        public OrcamentoCotacaoDto ObterIdOrcamentoCotacao(string guid)
+        {
+            var orcamento = _orcamentoCotacaoBll.PorGuid(guid);
+
+            if (orcamento != null)
+            {
+                if (!Validar(orcamento))
+                {
+                    orcamento = null;
+                }
+
+                return orcamento;
+            }
+
+            return null;
+        }
+
         public bool Validar(OrcamentoCotacaoDto orcamentoCotacaoDto)
         {
             DateTime dataAtual = DateTime.Now;
