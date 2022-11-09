@@ -154,7 +154,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 produtosPropListas.AddRange(produtosPropTexto);
                 retorno = _mapper.Map<List<ProdutoCatalogoItemProdutosAtivosResponseViewModel>>(produtosPropListas);
             }
-            return retorno;
+            return retorno.OrderBy(x => int.Parse(x.Ordem)).ToList(); ;
         }
 
         public async Task<List<ProdutoCatalogoItemProdutosAtivosResponseViewModel>> ListarProdutoCatalogoParaVisualizacao(bool? propriedadeOculta, bool? propriedadeOcultaItem)
