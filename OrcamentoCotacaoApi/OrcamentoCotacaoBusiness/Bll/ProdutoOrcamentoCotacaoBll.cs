@@ -296,7 +296,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         item.Produto_item, loja, contextoBdGravacao).Result;
 
                     TorcamentoCotacaoOpcaoItemAtomico itemAtomico = new TorcamentoCotacaoOpcaoItemAtomico(idItemUnificado,
-                        tProdutoAtomico.Fabricante, tProdutoAtomico.Produto, (short)(qtde * tProduto.TecProdutoComposto.TecProdutoCompostoItems.First().Qtde),
+                        tProdutoAtomico.Fabricante, tProdutoAtomico.Produto, (short)(qtde * item.Qtde),
                         tProdutoAtomico.Descricao, tProdutoAtomico.Descricao_Html);
 
                     torcamentoCotacaoOpcaoItemAtomicos.Add(orcamentoCotacaoOpcaoItemAtomicoBll.InserirComTransacao(itemAtomico, contextoBdGravacao));
