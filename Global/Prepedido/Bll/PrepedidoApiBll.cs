@@ -28,8 +28,11 @@ namespace Prepedido.Bll
             await prepedidoBll.DeletarOrcamentoExisteComTransacao(prePedidoDados, apelido.Trim());
         }
 
-        public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDto prePedido, string apelido,
-            decimal limiteArredondamento, bool verificarPrepedidoRepetido,
+        public async Task<IEnumerable<string>> CadastrarPrepedido(
+            PrePedidoDto prePedido, 
+            string apelido,
+            decimal limiteArredondamento, 
+            bool verificarPrepedidoRepetido,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             int limite_de_itens)
         {
@@ -38,8 +41,15 @@ namespace Prepedido.Bll
                 short.Parse(prePedido.DetalhesPrepedido.EntregaImediata) == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO)
             {
                 prePedido.DetalhesPrepedido.PrevisaoEntregaData = prePedido.DetalhesPrepedido.EntregaImediataData;
+
+                if (prePedido.DetalhesPrepedido.EntregaImediataData.HasValue)
+                {
+                    prePedido.DetalhesPrepedido.PrevisaoEntregaData = prePedido.DetalhesPrepedido.EntregaImediataData.Value.Date;
+                }
+                
                 prePedido.DetalhesPrepedido.EntregaImediataData = DateTime.Now;
             }
+
             PrePedidoDados prePedidoDados = PrePedidoDto.PrePedidoDados_De_PrePedidoDto(prePedido);
 
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTO))

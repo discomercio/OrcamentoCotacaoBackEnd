@@ -151,6 +151,11 @@ namespace InfraBanco.Mapping
                 .HasColumnName("IdTipoUsuarioContextoUltAtualizacao")
                 .HasColumnType("smallint");
 
+            
+            builder.Property(x => x.IdTipoUsuarioContextoUltRenovacao)
+                .HasColumnName("IdTipoUsuarioContextoUltRenovacao")
+                .HasColumnType("smallint");
+
             builder.Property(x => x.IdUsuarioUltAtualizacao)
                 .HasColumnName("IdUsuarioUltAtualizacao")
                 .HasColumnType("int");

@@ -917,15 +917,13 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public string AdicionarOrcamentoCotacaoLink(TorcamentoCotacao orcamento, Guid guid, InfraBanco.ContextoBdGravacao contextoBdGravacao)
         {
-            TorcamentoCotacaoLink orcamentoCotacaoLinkModel = new InfraBanco.Modelos.TorcamentoCotacaoLink();
-            //orcamentoCotacaoLinkModel.DataHoraCadastro = System.DateTime.Now;
-
+            var orcamentoCotacaoLinkModel = new TorcamentoCotacaoLink();
             orcamentoCotacaoLinkModel.IdOrcamentoCotacao = orcamento.Id;
             orcamentoCotacaoLinkModel.Guid = guid;
             orcamentoCotacaoLinkModel.Status = 1;
             orcamentoCotacaoLinkModel.IdTipoUsuarioContextoUltStatus = 1;
             orcamentoCotacaoLinkModel.IdUsuarioUltStatus = orcamento.IdUsuarioCadastro;
-            orcamentoCotacaoLinkModel.DataUltStatus = orcamento.DataUltStatus;
+            orcamentoCotacaoLinkModel.DataUltStatus = orcamento.DataUltStatus.Date;
             orcamentoCotacaoLinkModel.DataHoraUltStatus = orcamento.DataHoraUltStatus;
             orcamentoCotacaoLinkModel.IdTipoUsuarioContextoCadastro = (short)orcamento.IdTipoUsuarioContextoCadastro;
             orcamentoCotacaoLinkModel.IdUsuarioCadastro = orcamento.IdUsuarioCadastro;
@@ -944,7 +942,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             orcamentoCotacaoLinkModel.IdOrcamentoCotacao = unchecked((int)orcamento.Id);
             orcamentoCotacaoLinkModel.Status = 2;
-            orcamentoCotacaoLinkModel.DataUltStatus = DateTime.Now;
+            orcamentoCotacaoLinkModel.DataUltStatus = DateTime.Now.Date;
             orcamentoCotacaoLinkModel.DataHoraUltStatus = DateTime.Now;
 
             try
@@ -1241,6 +1239,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 orcamento.DataHoraUltAtualizacao = DateTime.Now;
                 orcamento.IdUsuarioUltAtualizacao = idUsuario;
                 orcamento.IdTipoUsuarioContextoUltAtualizacao = IdTipoUsuarioContextoUltAtualizacao.Value;
+                orcamento.IdTipoUsuarioContextoUltRenovacao = IdTipoUsuarioContextoUltAtualizacao.Value;
 
                 if (DateTime.Now.AddDays(byte.Parse(parametros.QtdePadrao_DiasProrrogacao)).Date > orcamento.DataCadastro.AddDays(byte.Parse(parametros.QtdeGlobal_Validade)).Date)
                 {
@@ -1256,7 +1255,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 }
                 else
                 {
-                    orcamento.Validade = DateTime.Now.AddDays(byte.Parse(parametros.QtdePadrao_DiasProrrogacao));
+                    orcamento.Validade = orcamento.Validade.AddDays(byte.Parse(parametros.QtdePadrao_DiasProrrogacao));
                 }
 
                 if (orcamento.Validade.Date == orcamento.ValidadeAnterior.Value.Date)
