@@ -7,23 +7,27 @@ using OrcamentoCotacaoBusiness.Bll;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Text.Json;
+using System;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
-    [Route("[controller]")]
+    [Route("[controller]")]    
     [ApiController]
-    [AllowAnonymous]
+   
     public class MensagemController : BaseController
     {
         private readonly ILogger<MensagemController> _logger;
         private readonly MensagemOrcamentoCotacaoBll _mensagemBll;
+        private readonly OrcamentoCotacaoBll _orcamentoCotacaoBll;
 
-        public MensagemController(ILogger<MensagemController> logger, MensagemOrcamentoCotacaoBll mensagemBll)
+        public MensagemController(ILogger<MensagemController> logger, MensagemOrcamentoCotacaoBll mensagemBll, OrcamentoCotacaoBll orcamentoCotacaoBll)
         {
             _logger = logger;
             _mensagemBll = mensagemBll;
+            _orcamentoCotacaoBll = orcamentoCotacaoBll;
         }
 
+        [Authorize]
         [HttpGet()]
         public async Task<IActionResult> ObterListaMensagem(int IdOrcamentoCotacao)
         {
@@ -37,6 +41,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 return NoContent();
         }
 
+        [Authorize]
         [HttpGet("pendente")]
         public async Task<IActionResult> ObterListaMensagemPendente(int IdOrcamentoCotacao)
         {
@@ -50,6 +55,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 return NoContent();
         }
 
+        [Authorize]
         [HttpPost()]
         public async Task<IActionResult> EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem)
         {
@@ -57,15 +63,8 @@ namespace OrcamentoCotacaoApi.Controllers
 
             var  saida = false;
 
-            if (orcamentoCotacaoMensagem.IdUsuarioRemetente == 0)
-            {
-                saida = _mensagemBll.EnviarMensagem(orcamentoCotacaoMensagem, orcamentoCotacaoMensagem.IdUsuarioRemetente);
-            }
-            else
-            {
-                saida = _mensagemBll.EnviarMensagem(orcamentoCotacaoMensagem, JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value).Id);
-            }
-         
+            saida = _mensagemBll.EnviarMensagem(orcamentoCotacaoMensagem, JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value).Id);
+
             if (saida)
             {
                 return Ok(new
@@ -82,6 +81,7 @@ namespace OrcamentoCotacaoApi.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("pendente/quantidade")]
         public int ObterQuantidadeMensagemPendente()
         {
@@ -100,6 +100,7 @@ namespace OrcamentoCotacaoApi.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut]
         [Route("marcar/lida")]
         public async Task<IActionResult> MarcarLida(int IdOrcamentoCotacao)
@@ -128,31 +129,7 @@ namespace OrcamentoCotacaoApi.Controllers
             }
         }
 
-        [HttpPut]
-        [Route("marcar/lida/publica")]
-        public async Task<IActionResult> MarcarLidaRotaPublica(int IdOrcamentoCotacao)
-        {
-            var saida = false;
-
-            _logger.LogInformation("MarcarLida");
-            saida = _mensagemBll.MarcarLida(IdOrcamentoCotacao, 0);
-
-            if (saida)
-            {
-                return Ok(new
-                {
-                    message = "Mensagens marcadas como lida"
-                });
-            }
-            else
-            {
-                return BadRequest(new
-                {
-                    message = "Não foi possível marcar como lida."
-                });
-            }
-        }          
-
+        [Authorize]
         [HttpPut]
         [Route("marcar/pendencia")]
         public async Task<IActionResult> MarcarPendencia(int IdOrcamentoCotacao)
@@ -177,6 +154,7 @@ namespace OrcamentoCotacaoApi.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut]
         [Route("desmarcar/pendencia")]
         public async Task<IActionResult> DesmarcarPendencia(int IdOrcamentoCotacao)
@@ -200,6 +178,105 @@ namespace OrcamentoCotacaoApi.Controllers
                 });
             }
         }
+
+        #region "Métodos Públicos"
+
+        /* Para aumentar a segurança,
+         * todos os métodos publicos (AllowAnonymous) DEVEM receber o guid ao invés do número do orçamento,
+         * isso evita que um usuário não autenticado, consiga obter informações de um determiado orçamento
+         * Receba sempre o guid e obtenha o id do orçamento dentro do método - l1ng
+         */
+
+        [AllowAnonymous]
+        [HttpPut]
+        [Route("publico/marcar/lida")]
+        public async Task<IActionResult> MarcarLidaRotaPublica(String guid)
+        {
+
+            var orcamento = _orcamentoCotacaoBll.ObterIdOrcamentoCotacao(guid);
+
+            if (orcamento == null) return BadRequest(new
+            {
+                message = "Acesso negado."
+            });
+
+            var saida = false;           
+
+            _logger.LogInformation("MarcarLida");
+            saida = _mensagemBll.MarcarLida(orcamento.id, 0);
+
+            if (saida)
+            {
+                return Ok(new
+                {
+                    message = "Mensagens marcadas como lida"
+                });
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    message = "Não foi possível marcar como lida."
+                });
+            }
+        }
+
+        [HttpGet()]
+        [Route("publico")]
+        public async Task<IActionResult> ObterListaMensagemRotaPublica(String guid)
+        {
+
+            var orcamento = _orcamentoCotacaoBll.ObterIdOrcamentoCotacao(guid);
+
+            if (orcamento == null) return BadRequest(new
+            {
+                message = "Acesso negado."
+            });
+
+            _logger.LogInformation("ObterListaMensagem");
+
+            var saida = await _mensagemBll.ObterListaMensagem(orcamento.id);
+
+            if (saida != null)
+                return Ok(saida);
+            else
+                return NoContent();
+        }
+
+        [HttpPost()]
+        [Route("publico")]
+        public async Task<IActionResult> EnviarMensagemRotaPublica(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem, string guid)
+        {
+
+            var saida = false;
+            var orcamento = _orcamentoCotacaoBll.ObterIdOrcamentoCotacao(guid);
+
+            if (orcamento == null) return BadRequest(new
+            {
+                message = "Acesso negado."
+            });
+
+            _logger.LogInformation("EnviarMensagem");            
+            saida = _mensagemBll.EnviarMensagem(orcamentoCotacaoMensagem, orcamentoCotacaoMensagem.IdUsuarioRemetente);
+
+
+            if (saida)
+            {
+                return Ok(new
+                {
+                    message = "Mensagem criada com sucesso."
+                });
+            }
+            else
+            {
+                return BadRequest(new
+                {
+                    message = "Não foi possível criar a mensagem."
+                });
+            }
+        }
+
+        #endregion
 
     }
 }

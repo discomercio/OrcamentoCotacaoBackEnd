@@ -11,6 +11,9 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         [JsonProperty("idOrcamento")]
         public int IdOrcamento { get; set; }
 
+        [JsonProperty("guid")]
+        public string Guid { get; set; }
+
         [JsonProperty("idOpcao")]
         public int IdOpcao { get; set; }
 
