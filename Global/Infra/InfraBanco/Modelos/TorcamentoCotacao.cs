@@ -82,6 +82,7 @@ namespace InfraBanco.Modelos
         public DateTime DataHoraCadastro { get; set; }
 
         public int? IdTipoUsuarioContextoUltAtualizacao { get; set; }
+        public int? IdTipoUsuarioContextoUltRenovacao { get; set; }
 
         public int? IdUsuarioUltAtualizacao { get; set; }
 

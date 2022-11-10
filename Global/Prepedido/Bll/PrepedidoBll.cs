@@ -416,16 +416,22 @@ namespace Prepedido.Bll
 
         private DetalhesPrepedidoDados ObterDetalhesPrePedido(Torcamento torcamento, string apelido)
         {
-            DetalhesPrepedidoDados detail = new DetalhesPrepedidoDados
+            //TODO: Retornar usuario torcamento.Etg_Imediata_Usuario
+            //var usuario = torcamento.Etg_Imediata_Usuario // tipo usuario[1] idusario 50116 
+
+            var detail = new DetalhesPrepedidoDados
             {
                 Observacoes = torcamento.Obs_1,
                 NumeroNF = torcamento.Obs_2,
+
                 PrevisaoEntregaTexto = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
-                torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + " (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) +
-                " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" : null,
+                torcamento.PrevisaoEntregaData?.ToString("dd/MM/yyyy") + " (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) +
+                " - " + torcamento.PrevisaoEntregaData?.ToString("dd/MM/yyyy") + ")" : null,
+
                 EntregaImediata = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
                 "NÃO (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
                 "SIM (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")",
+
                 BemDeUso_Consumo = torcamento.StBemUsoConsumo,
                 InstaladorInstala = torcamento.InstaladorInstalaStatus,
                 GarantiaIndicadorTexto = Convert.ToString(torcamento.GarantiaIndicadorStatus) ==
