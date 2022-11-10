@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
+
     [Route("[controller]")]
     [ApiController]
     [AllowAnonymous]
@@ -84,6 +85,13 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost("aprovarOrcamento")]
         public async Task<IActionResult> AprovarOrcamento(AprovarOrcamentoRequestViewModel aprovarOrcamento)
         {
+
+            var orcamento = _orcamentoBll.ObterIdOrcamentoCotacao(aprovarOrcamento.Guid);
+
+            if (orcamento == null) return BadRequest(new
+            {
+                message = "Acesso negado."
+            });           
 
             var retorno = await _orcamentoBll.AprovarOrcamento(aprovarOrcamento, Constantes.TipoUsuarioContexto.Cliente,
                 (int)Constantes.TipoUsuario.CLIENTE);
