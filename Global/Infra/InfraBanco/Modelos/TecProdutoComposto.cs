@@ -9,10 +9,12 @@ namespace InfraBanco.Modelos
 
         public string Produto_Composto { get; set; }
 
+        public string Descricao { get; set; }
+
         ////fkProduto
         //public string Fabricante { get; set; }
         //public string Produto{ get; set; }
-        public Tproduto Tproduto { get; set; }
+        //public Tproduto Tproduto { get; set; }
 
         public ICollection<TecProdutoCompostoItem> TecProdutoCompostoItems { get; set; }
     }

@@ -44,7 +44,48 @@ namespace Prepedido.Bll
                 (Constantes.ContribuinteICMS)cliente.contribuite_icms_status, 
                 (Constantes.ProdutorRural)cliente.produtor_rural_status);
 
-            return ProdutoComboDto.ProdutoComboDto_De_ProdutoComboDados(aux);
+            //tratar a lista de compostos
+            foreach (Produto.Dados.ProdutoCompostoDados composto in aux.ProdutoCompostoDados)
+            {
+                decimal? somaFilhotes = 0;
+
+                var filhotes = (from c in aux.ProdutoDados
+                                join d in composto.Filhos on new { a = c.Fabricante, b = c.Produto } equals new { a = d.Fabricante, b = d.Produto }
+                                select c).ToList();
+
+
+                if (composto.Filhos.Count != filhotes.Count)
+                {
+                    var prodARemover = aux.ProdutoDados.Where(x => x.Fabricante == composto.PaiFabricante && x.Produto == composto.PaiProduto).FirstOrDefault();
+                    if (prodARemover != null) aux.ProdutoDados.Remove(prodARemover);
+                    continue;
+                }
+
+                foreach (var filho in filhotes)
+                {
+                    var compostoFilho = composto.Filhos.Where(x => x.Produto == filho.Produto).FirstOrDefault();
+
+                    somaFilhotes += filho.Preco_lista * compostoFilho.Qtde;
+                }
+
+                var pai = aux.ProdutoDados.Where(x => x.Fabricante == composto.PaiFabricante && x.Produto == composto.PaiProduto).FirstOrDefault();
+                if (pai == null)
+                {
+                    var produtoCompostoAInserir = new Produto.Dados.ProdutoDados()
+                    {
+                        Fabricante = composto.PaiFabricante,
+                        Fabricante_Nome = composto.PaiFabricanteNome,
+                        Produto = composto.PaiProduto,
+                        Descricao_html = composto.PaiDescricao,
+                        Descricao = composto.PaiDescricao,
+                        Preco_lista = somaFilhotes,
+                        Qtde_Max_Venda = filhotes.Min(x => x.Qtde_Max_Venda),
+                        Desc_Max = filhotes.Min(x => x.Desc_Max)
+                    };
+                    aux.ProdutoDados.Add(produtoCompostoAInserir);
+                }
+            }
+                return ProdutoComboDto.ProdutoComboDto_De_ProdutoComboDados(aux);
         }
     }
 }
