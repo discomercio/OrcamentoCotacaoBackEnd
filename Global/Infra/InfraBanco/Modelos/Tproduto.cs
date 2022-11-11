@@ -75,8 +75,6 @@ namespace InfraBanco.Modelos
         [Column("excluido_status")]
         public short? Excluido_status { get; set; }
 
-        public TecProdutoComposto TecProdutoComposto { get; set; }
-
         public ICollection<TprodutoLoja> TprodutoLoja { get; set; }
     }
 }

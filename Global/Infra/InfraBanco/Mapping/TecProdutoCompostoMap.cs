@@ -26,6 +26,11 @@ namespace InfraBanco.Mapping
                 .HasMaxLength(8)
                 .IsRequired();
 
+            builder.Property(x => x.Descricao)
+                .HasColumnName("descricao")
+                .HasColumnType("varchar")
+                .HasMaxLength(80);
+
             builder.Ignore(x => x.TecProdutoCompostoItems);
 
             builder
@@ -33,10 +38,10 @@ namespace InfraBanco.Mapping
                 .WithOne(o => o.TecProdutoComposto)
                 .HasForeignKey(f => new { f.Fabricante_composto, f.Produto_composto });
 
-            builder
-                .HasOne(x => x.Tproduto)
-                .WithOne(x => x.TecProdutoComposto)
-                .HasForeignKey<TecProdutoComposto>(x => new { x.Fabricante_Composto, x.Produto_Composto });
+            //builder
+            //    .HasOne(x => x.Tproduto)
+            //    .WithOne(x => x.TecProdutoComposto)
+            //    .HasForeignKey<TecProdutoComposto>(x => new { x.Fabricante_Composto, x.Produto_Composto });
         }
     }
 }

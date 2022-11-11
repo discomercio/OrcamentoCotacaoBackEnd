@@ -87,29 +87,57 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 foreach (Produto.Dados.ProdutoCompostoDados composto in produtoComboDados.ProdutoCompostoDados)
                 {
-                    var produtoCompostoResponse = ProdutoCompostoResponseViewModel.ConverterProdutoCompostoDados(composto);
+                    var produtoCompostoResponse = new ProdutoCompostoResponseViewModel();
+                    produtoCompostoResponse.Filhos = new List<ProdutoCompostoFilhosResponseViewModel>();
+                    decimal? somaFilhotes = 0;
 
-                    foreach (var filhos in composto.Filhos)
+                    var produtoCompostoResponseApoio = new ProdutoCompostoResponseViewModel();
+                    produtoCompostoResponseApoio.Filhos = new List<ProdutoCompostoFilhosResponseViewModel>();
+
+                    var filhotes = (from c in produtoComboDados.ProdutoDados
+                                    join d in composto.Filhos on new { a = c.Fabricante, b = c.Produto } equals new { a = d.Fabricante, b = d.Produto }
+                                    select c).ToList();
+
+                    if (composto.Filhos.Count != filhotes.Count)
                     {
-
-
-                        var filho = produtoComboDados.ProdutoDados
-                        .Where(x => x.Produto == filhos.Produto && x.Fabricante == filhos.Fabricante)
-                        .Select(x => x)
-                        .FirstOrDefault();
-
-                        if (filho == null)
-                        {
-                            break;
-                        }
-
-                        produtoCompostoResponse.Filhos.Add(ProdutoCompostoFilhosResponseViewModel.ConverterProdutoFilhoDados(filho, filhos.Qtde, GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), composto.PaiFabricante)));
+                        var prodARemover = produtoComboDados.ProdutoDados.Where(x => x.Fabricante == composto.PaiFabricante && x.Produto == composto.PaiProduto).FirstOrDefault();
+                        if (prodARemover != null) produtoComboDados.ProdutoDados.Remove(prodARemover);
+                        continue;
                     }
-                    var coeficiente = GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), composto.PaiFabricante).Coeficiente;
-                    produtoCompostoResponse.PaiPrecoTotalBase = composto.PaiPrecoTotal;
-                    produtoCompostoResponse.PaiPrecoTotal = produtoCompostoResponse.PaiPrecoTotal * Convert.ToDecimal(coeficiente);
 
+                    foreach (var filho in filhotes)
+                    {
+                        var compostoFilho = composto.Filhos.Where(x => x.Produto == filho.Produto).FirstOrDefault();
+                        produtoCompostoResponseApoio.Filhos.Add(ProdutoCompostoFilhosResponseViewModel.ConverterProdutoFilhoDados(filho, compostoFilho.Qtde, GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), composto.PaiFabricante)));
+
+                        somaFilhotes += filho.Preco_lista * compostoFilho.Qtde;
+                    }
+
+                    var pai = produtoComboDados.ProdutoDados.Where(x => x.Fabricante == composto.PaiFabricante && x.Produto == composto.PaiProduto).FirstOrDefault();
+                    if (pai == null)
+                    {
+                        var produtoCompostoAInserir = new Produto.Dados.ProdutoDados()
+                        {
+                            Fabricante = composto.PaiFabricante,
+                            Fabricante_Nome = composto.PaiFabricanteNome,
+                            Produto = composto.PaiProduto,
+                            Descricao_html = composto.PaiDescricao,
+                            Descricao = composto.PaiDescricao,
+                            Preco_lista = somaFilhotes,
+                            Qtde_Max_Venda = filhotes.Min(x => x.Qtde_Max_Venda),
+                            Desc_Max = filhotes.Min(x => x.Desc_Max)
+                        };
+                        produtoComboDados.ProdutoDados.Add(produtoCompostoAInserir);
+                    }
+                    
+                    produtoCompostoResponse = ProdutoCompostoResponseViewModel.ConverterProdutoCompostoDados(composto);
+
+                    var coeficiente = GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), composto.PaiFabricante).Coeficiente;
+                    produtoCompostoResponse.PaiPrecoTotalBase = somaFilhotes;
+                    produtoCompostoResponse.PaiPrecoTotal = somaFilhotes * Convert.ToDecimal(coeficiente);
+                    produtoCompostoResponse.Filhos = produtoCompostoResponseApoio.Filhos;
                     produtoResponseViewModel.ProdutosCompostos.Add(produtoCompostoResponse);
+
 
                 }
 
@@ -118,6 +146,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     produtoResponseViewModel.ProdutosSimples.Add(ProdutoSimplesResponseViewModel.ConverterProdutoDados(produto, null, GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), produto.Fabricante)));
 
                 }
+
+                produtoResponseViewModel.ProdutosSimples = produtoResponseViewModel.ProdutosSimples.OrderBy(x => x.Fabricante).ToList();
 
                 return produtoResponseViewModel;
             }
@@ -247,18 +277,34 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             foreach (var produto in opcao.ListaProdutos)
             {
-                var tProduto = produtoGeralBll.BuscarProdutoPorFabricanteECodigoComTransacao(produto.Fabricante,
+                TorcamentoCotacaoItemUnificado torcamentoCotacaoItemUnificado = new TorcamentoCotacaoItemUnificado();
+                Tproduto tProduto = new Tproduto();
+                //buscar produto composto para cadastrar os atômicos
+                var tEcProdutoComposto = produtoGeralBll.BuscarProdutoCompostoPorFabricanteECodigoComTransacao(produto.Fabricante,
                     produto.Produto, loja, contextoBdGravacao).Result;
 
-                if (tProduto == null)
-                {
-                    erro = "Ops! Não achamos o produto!";
-                    return null;
-                }
-
                 sequencia++;
-                TorcamentoCotacaoItemUnificado torcamentoCotacaoItemUnificado = new TorcamentoCotacaoItemUnificado(idOrcamentoCotacaoOpcao,
+                //se não é composto
+                if (tEcProdutoComposto == null)
+                {
+
+                    tProduto = produtoGeralBll.BuscarProdutoSimplesPorFabricanteECodigoComTransacao(produto.Fabricante,
+                    produto.Produto, loja, contextoBdGravacao).Result;
+
+                    if (tProduto == null)
+                    {
+                        erro = "Ops! Não achamos o produto!";
+                        return null;
+                    }
+
+                    torcamentoCotacaoItemUnificado = new TorcamentoCotacaoItemUnificado(idOrcamentoCotacaoOpcao,
                     tProduto.Fabricante, tProduto.Produto, produto.Qtde, tProduto.Descricao, tProduto.Descricao_Html, sequencia);
+                }
+                else
+                {
+                    torcamentoCotacaoItemUnificado = new TorcamentoCotacaoItemUnificado(idOrcamentoCotacaoOpcao,
+                    tEcProdutoComposto.Fabricante_Composto, tEcProdutoComposto.Produto_Composto, produto.Qtde, tEcProdutoComposto.Descricao, tEcProdutoComposto.Descricao, sequencia);
+                }
 
                 var produtoUnificado = orcamentoCotacaoOpcaoItemUnificadoBll.InserirComTransacao(torcamentoCotacaoItemUnificado, contextoBdGravacao);
 
@@ -271,7 +317,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 itensUnificados.Add(produtoUnificado);
 
                 var itensAtomicos = CadastrarTorcamentoCotacaoOpcaoItemAtomicoComTransacao(produtoUnificado.Id,
-                    tProduto, produto.Qtde, loja, contextoBdGravacao);
+                    tProduto, tEcProdutoComposto, produto.Qtde, loja, contextoBdGravacao);
 
                 if (itensAtomicos.Count <= 0)
                 {
@@ -284,15 +330,15 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         private List<TorcamentoCotacaoOpcaoItemAtomico> CadastrarTorcamentoCotacaoOpcaoItemAtomicoComTransacao(int idItemUnificado,
-            Tproduto tProduto, int qtde, string loja, ContextoBdGravacao contextoBdGravacao)
+            Tproduto tProduto, TecProdutoComposto tEcProdutoComposto, int qtde, string loja, ContextoBdGravacao contextoBdGravacao)
         {
             List<TorcamentoCotacaoOpcaoItemAtomico> torcamentoCotacaoOpcaoItemAtomicos = new List<TorcamentoCotacaoOpcaoItemAtomico>();
-            if (tProduto.TecProdutoComposto != null)
+            if (tEcProdutoComposto != null)
             {
-                foreach (var item in tProduto.TecProdutoComposto.TecProdutoCompostoItems)
+                foreach (var item in tEcProdutoComposto.TecProdutoCompostoItems)
                 {
 
-                    var tProdutoAtomico = produtoGeralBll.BuscarProdutoPorFabricanteECodigoComTransacao(item.Fabricante_item,
+                    var tProdutoAtomico = produtoGeralBll.BuscarProdutoSimplesPorFabricanteECodigoComTransacao(item.Fabricante_item,
                         item.Produto_item, loja, contextoBdGravacao).Result;
 
                     TorcamentoCotacaoOpcaoItemAtomico itemAtomico = new TorcamentoCotacaoOpcaoItemAtomico(idItemUnificado,
@@ -317,7 +363,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public List<TorcamentoCotacaoOpcaoItemAtomicoCustoFin> CadastrarProdutoAtomicoCustoFinComTransacao(List<TorcamentoCotacaoOpcaoPagto> tOrcamentoCotacaoOpcaoPagtos,
-            List<TorcamentoCotacaoItemUnificado> tOrcamentoCotacaoItemUnificados, List<ProdutoRequestViewModel> produtosOpcao, string loja, 
+            List<TorcamentoCotacaoItemUnificado> tOrcamentoCotacaoItemUnificados, List<ProdutoRequestViewModel> produtosOpcao, string loja,
             ContextoBdGravacao contextoBdGravacao)
         {
             int index = 0;

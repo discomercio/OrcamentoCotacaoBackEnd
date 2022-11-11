@@ -113,36 +113,32 @@ namespace Produto
         {
             var db = contextoProvider.GetContextoLeitura();
 
-            var produtosCompostosSemGrupo = await (from d in (from c in db.Tproduto
-                                                              join pc in db.TecProdutoComposto on c.Produto equals pc.Produto_Composto
-                                                              join pci in db.TecProdutoCompostoItem on pc.Fabricante_Composto equals pci.Fabricante_composto
-                                                              join pl in db.TprodutoLoja on pci.Produto_item equals pl.Produto
-                                                              join fab in db.Tfabricante on c.Fabricante equals fab.Fabricante
-                                                              where c.Descricao_Html != "." &&
-                                                                    pl.Preco_Lista > 0 &&
-                                                                    pl.Loja == loja &&
-                                                                    pl.Vendavel == "S" &&
-                                                                    c.Fabricante == pc.Fabricante_Composto &&
-                                                                    pc.Produto_Composto == pci.Produto_composto &&
-                                                                    c.Excluido_status == 0 &&
-                                                                    pl.Excluido_status == 0
-                                                              select new
-                                                              {
-                                                                  fabricante_pai = c.Fabricante,
-                                                                  fabricante_pai_nome = fab.Nome,
-                                                                  produto_pai = c.Produto,
-                                                                  pai_descricao = c.Descricao_Html,
-                                                                  valor = (decimal)pl.Preco_Lista,
-                                                                  qtde = (int)pci.Qtde,
-                                                                  produtosFilhos = new ProdutoFilhoDados
-                                                                  {
-                                                                      Fabricante = c.Fabricante,
-                                                                      Fabricante_Nome = fab.Nome,
-                                                                      Produto = pci.Produto_item,
-                                                                      Qtde = pci.Qtde
-                                                                  }
-                                                              })
-                                                   select d).ToListAsync();
+            //buscar todos os produtos compostos com seus filhos
+            //não acessar t_produto
+            //não verificar se o produto é vendavel => o que vai definir são os filhotes
+            var produtosCompostosSemGrupo = await (from tpl in db.TprodutoLoja
+                                                   join tepc in db.TecProdutoComposto on new { a = tpl.Produto, b = tpl.Fabricante } equals new { a = tepc.Produto_Composto, b = tepc.Fabricante_Composto }
+                                                   join tepci in db.TecProdutoCompostoItem on new { a = tepc.Produto_Composto, b = tepc.Fabricante_Composto } equals new { a = tepci.Produto_composto, b = tepci.Fabricante_composto }
+                                                   join tf in db.Tfabricante on tpl.Fabricante equals tf.Fabricante
+                                                   where tpl.Loja == loja &&
+                                                         tepc.Descricao != "." &&
+                                                         !string.IsNullOrEmpty(tepc.Descricao)
+                                                   select new
+                                                   {
+                                                       fabricante_pai = tf.Fabricante,
+                                                       fabricante_pai_nome = tf.Nome,
+                                                       produto_pai = tepc.Produto_Composto,
+                                                       pai_descricao = tepc.Descricao,
+                                                       valor = 0,
+                                                       qtde = 1,
+                                                       produtosFilhos = new ProdutoFilhoDados
+                                                       {
+                                                           Fabricante = tf.Fabricante,
+                                                           Fabricante_Nome = tf.Nome,
+                                                           Produto = tepci.Produto_item,
+                                                           Qtde = tepci.Qtde,
+                                                       }
+                                                   }).ToListAsync();
 
             var produtosCompostosGrupo = from d in produtosCompostosSemGrupo
                                          group d by d.produto_pai into g
@@ -222,33 +218,25 @@ namespace Produto
             return lstTodosProdutos;
         }
 
-        public async Task<Tproduto> BuscarProdutoPorFabricanteECodigoComTransacao(string fabricante, string produto, string loja,
+        public async Task<Tproduto> BuscarProdutoSimplesPorFabricanteECodigoComTransacao(string fabricante, string produto, string loja,
             ContextoBdGravacao contextoBdGravacao)
         {
-
-            var produtoComposto = await contextoBdGravacao.Tproduto
-                .Where(x => x.Fabricante == fabricante && x.Produto == produto)
-                .Include(t => t.TecProdutoComposto.TecProdutoCompostoItems)
-                .Select(x => x).FirstOrDefaultAsync();
-
-            if (produtoComposto != null) return produtoComposto;
-
-            var produtoSimples = contextoBdGravacao.Tproduto
-                .Where(x => x.Fabricante == fabricante && x.Produto == produto).FirstOrDefault();
-
-            if (produtoSimples == null) return null;
-
+            var produtoSimples = await contextoBdGravacao.Tproduto
+                .Where(x => x.Fabricante == fabricante && x.Produto == produto).FirstOrDefaultAsync();
 
             return produtoSimples;
         }
 
-        public async Task<TecProdutoComposto> BuscarProdutoCompostoPorFabricanteECodigoComTransacao(string fabricante,
-            string produto, ContextoBdGravacao contextoBdGravacao)
+        public async Task<TecProdutoComposto> BuscarProdutoCompostoPorFabricanteECodigoComTransacao(string fabricante, string produto, string loja,
+            ContextoBdGravacao contextoBdGravacao)
         {
-            return await (from c in contextoBdGravacao.TecProdutoComposto
-                          where c.Fabricante_Composto == fabricante && c.Produto_Composto == produto
-                          select c)
-                            .FirstOrDefaultAsync();
+
+            var produtoComposto = await (contextoBdGravacao.TecProdutoComposto
+                .Where(x => x.Fabricante_Composto == fabricante && x.Produto_Composto == produto)
+                .Include(x => x.TecProdutoCompostoItems)
+                .Select(x => x)).FirstOrDefaultAsync();
+
+            return produtoComposto;
         }
 
         private void IncluirEstoqueProduto(List<RegrasBll> lstRegras, List<Produto.Dados.ProdutoDados> lst_produtos, Tparametro parametro)
