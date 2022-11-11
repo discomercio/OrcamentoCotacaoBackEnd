@@ -191,8 +191,11 @@ namespace OrcamentoCotacaoBusiness.Bll
             // [3] Aprovado
             if (orcamentoCotacaoDto.status == 3)
             {
+
+                var prazomaximoConsultaOrcamento = this.BuscarParametros(14, orcamentoCotacaoDto.loja)[0].Valor;
+
                 DateTime dataCriacao = (DateTime)orcamentoCotacaoDto.dataCadastro;
-                DateTime dataValidade = dataCriacao.AddDays(int.Parse(orcamentoCotacaoDto.prazoMaximoConsultaOrcamento));
+                DateTime dataValidade = dataCriacao.AddDays(int.Parse(prazomaximoConsultaOrcamento));
 
                 if (dataAtual > dataValidade) return false;
                 else return true;
