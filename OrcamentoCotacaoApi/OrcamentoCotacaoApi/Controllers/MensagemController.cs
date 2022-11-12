@@ -11,9 +11,9 @@ using System;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
-    [Route("[controller]")]    
+    [Route("[controller]")]
     [ApiController]
-   
+
     public class MensagemController : BaseController
     {
         private readonly ILogger<MensagemController> _logger;
@@ -61,7 +61,7 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             _logger.LogInformation("EnviarMensagem");
 
-            var  saida = false;
+            var saida = false;
 
             saida = _mensagemBll.EnviarMensagem(orcamentoCotacaoMensagem, JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value).Id);
 
@@ -90,7 +90,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 _logger.LogInformation("ObterQuantidadeMensagemPendente");
                 var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
 
-                var saida = _mensagemBll.ObterQuantidadeMensagemPendente(user.Id,(int)user.TipoUsuario);
+                var saida = _mensagemBll.ObterQuantidadeMensagemPendente(user.Id, (int)user.TipoUsuario);
 
                 return saida;
             }
@@ -110,7 +110,7 @@ namespace OrcamentoCotacaoApi.Controllers
             _logger.LogInformation("MarcarLida");
 
             var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
-            
+
             saida = _mensagemBll.MarcarLida(IdOrcamentoCotacao, user.Id);
 
             if (saida)
@@ -200,7 +200,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 message = "Acesso negado."
             });
 
-            var saida = false;           
+            var saida = false;
 
             _logger.LogInformation("MarcarLida");
             saida = _mensagemBll.MarcarLida(orcamento.id, 0);
@@ -256,7 +256,12 @@ namespace OrcamentoCotacaoApi.Controllers
                 message = "Acesso negado."
             });
 
-            _logger.LogInformation("EnviarMensagem");            
+            if (orcamento.id != orcamentoCotacaoMensagem.IdOrcamentoCotacao) return BadRequest(new
+            {
+                message = "Acesso negado."
+            });
+
+            _logger.LogInformation("EnviarMensagem");
             saida = _mensagemBll.EnviarMensagem(orcamentoCotacaoMensagem, orcamentoCotacaoMensagem.IdUsuarioRemetente);
 
 
