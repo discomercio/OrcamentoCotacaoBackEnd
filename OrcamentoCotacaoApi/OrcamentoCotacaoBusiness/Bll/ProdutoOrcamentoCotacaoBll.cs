@@ -129,7 +129,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         };
                         produtoComboDados.ProdutoDados.Add(produtoCompostoAInserir);
                     }
-                    
+
                     produtoCompostoResponse = ProdutoCompostoResponseViewModel.ConverterProdutoCompostoDados(composto);
 
                     var coeficiente = GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), composto.PaiFabricante).Coeficiente;
@@ -342,7 +342,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         item.Produto_item, loja, contextoBdGravacao).Result;
 
                     TorcamentoCotacaoOpcaoItemAtomico itemAtomico = new TorcamentoCotacaoOpcaoItemAtomico(idItemUnificado,
-                        tProdutoAtomico.Fabricante, tProdutoAtomico.Produto, (short)(qtde * item.Qtde),
+                        tProdutoAtomico.Fabricante, tProdutoAtomico.Produto, item.Qtde,
                         tProdutoAtomico.Descricao, tProdutoAtomico.Descricao_Html);
 
                     torcamentoCotacaoOpcaoItemAtomicos.Add(orcamentoCotacaoOpcaoItemAtomicoBll.InserirComTransacao(itemAtomico, contextoBdGravacao));
@@ -437,7 +437,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 foreach (var atomico in TorcamentoCotacaoOpcaoItemAtomicos)
                 {
-                    atomico.Qtde = (short)item.Qtde;
+                    //atomico.Qtde = (short)item.Qtde;
                     var retorno = orcamentoCotacaoOpcaoItemAtomicoBll.AtualizarComTransacao(atomico, contextoBdGravacao);
                 }
                 lstUnificados.Add(unificado);
@@ -631,28 +631,37 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 if (itemAtomico == null || itemAtomicoCusto == null) break;
 
-                var produtoResponse = new ProdutoOrcamentoOpcaoResponseViewModel()
+                var produtoResponse = new ProdutoOrcamentoOpcaoResponseViewModel();
+
+                //ITEM ATOMICO
+                //Id = item.Id,
+                produtoResponse.IdItemUnificado = item.Id;
+                produtoResponse.Fabricante = item.Fabricante;
+                produtoResponse.FabricanteNome = (await produtoGeralBll.ObterListaFabricante()).Where(x => x.Fabricante == item.Fabricante).FirstOrDefault().Nome;
+                produtoResponse.Produto = item.Produto;
+                produtoResponse.UrlImagem = _produtoCatalogoBll.ObterDadosImagemPorProduto(item.Produto).FirstOrDefault().Caminho;
+                produtoResponse.Descricao = item.DescricaoHtml;
+                produtoResponse.Qtde = item.Qtde;
+                //ITEM ATOMICO CUSTO
+                produtoResponse.IdOpcaoPagto = item.Id;
+                produtoResponse.DescDado = itemAtomicoCusto.FirstOrDefault().DescDado;
+
+                itemAtomico.ForEach(x =>
                 {
-                    //ITEM ATOMICO
-                    //Id = item.Id,
-                    IdItemUnificado = item.Id,
-                    Fabricante = item.Fabricante,
-                    FabricanteNome = (await produtoGeralBll.ObterListaFabricante()).Where(x => x.Fabricante == item.Fabricante).FirstOrDefault().Nome,
-                    Produto = item.Produto,
-                    UrlImagem = _produtoCatalogoBll.ObterDadosImagemPorProduto(item.Produto).FirstOrDefault().Caminho,
-                    Descricao = item.DescricaoHtml,
-                    Qtde = item.Qtde,
-                    //ITEM ATOMICO CUSTO
-                    IdOpcaoPagto = item.Id,
-                    DescDado = itemAtomicoCusto.FirstOrDefault().DescDado,
-                    PrecoLista = itemAtomicoCusto.Where(x => x.CustoFinancFornecCoeficiente > 0).Sum(x => x.PrecoLista),
-                    PrecoVenda = itemAtomicoCusto.Where(x => x.CustoFinancFornecCoeficiente > 0).Sum(x => x.PrecoVenda),
-                    PrecoNf = itemAtomicoCusto.Where(x => x.CustoFinancFornecCoeficiente > 0).Sum(x => x.PrecoNF),
-                    CustoFinancFornecPrecoListaBase = itemAtomicoCusto.Where(x => x.CustoFinancFornecCoeficiente > 0).Sum(x => x.CustoFinancFornecPrecoListaBase),
-                    CustoFinancFornecCoeficiente = itemAtomicoCusto.FirstOrDefault().CustoFinancFornecCoeficiente,
-                    TotalItem = itemAtomico.Sum(x => x.Qtde * itemAtomicoCusto.Where(y => y.IdItemAtomico == x.Id && y.CustoFinancFornecCoeficiente > 0).FirstOrDefault().PrecoNF),
-                    IdOperacaoAlcadaDescontoSuperior = itemAtomicoCusto.FirstOrDefault().IdOperacaoAlcadaDescontoSuperior
-                };
+                    var custo = itemAtomicoCusto.Where(c => c.IdItemAtomico == x.Id && c.CustoFinancFornecCoeficiente > 0).FirstOrDefault();
+                    //testar
+                    produtoResponse.PrecoLista += x.Qtde * custo.PrecoLista;
+                    produtoResponse.PrecoVenda += x.Qtde * custo.PrecoVenda;
+                    produtoResponse.PrecoNf += x.Qtde * custo.PrecoNF;
+                    produtoResponse.CustoFinancFornecPrecoListaBase += x.Qtde * custo.CustoFinancFornecPrecoListaBase;
+                });
+                
+                produtoResponse.CustoFinancFornecCoeficiente = itemAtomicoCusto.Where(x => x.CustoFinancFornecCoeficiente > 0).FirstOrDefault().CustoFinancFornecCoeficiente;
+                //produtoResponse.TotalItem = produtoResponse.PrecoNf * produtoResponse.Qtde;
+                produtoResponse.TotalItem = produtoResponse.PrecoNf * item.Qtde; // aqui esta errado
+                produtoResponse.IdOperacaoAlcadaDescontoSuperior = itemAtomicoCusto.FirstOrDefault().IdOperacaoAlcadaDescontoSuperior;
+
+
 
                 produtosResponse.Add(produtoResponse);
             }
