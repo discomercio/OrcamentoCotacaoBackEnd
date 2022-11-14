@@ -727,5 +727,33 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             return retorno;
         }
+
+        public async Task<bool> ObterPropriedadesUtilizadosPorProdutos(int idPropriedade)
+        {
+            var propriedadesUtilizadas = await _produtoGeralBll.ObterPropriedadesUtilizadosPorProdutos(idPropriedade);
+
+            return propriedadesUtilizadas;
+        }
+
+        public async Task<bool> ExcluirPropriedades(int idPropriedade)
+        {
+            var propriedadesExcluida = false;
+
+            using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                try
+                {
+                    propriedadesExcluida = await _produtoGeralBll.ExcluirPropriedades(idPropriedade, dbGravacao);
+                    dbGravacao.transacao.Commit();
+                }
+                catch
+                {
+                    dbGravacao.transacao.Rollback();
+                    propriedadesExcluida = false;
+                }
+            }
+
+            return propriedadesExcluida;
+        }
     }
 }
