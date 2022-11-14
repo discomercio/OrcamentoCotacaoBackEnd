@@ -91,7 +91,13 @@ namespace OrcamentoCotacaoApi.Controllers
             if (orcamento == null) return BadRequest(new
             {
                 message = "Acesso negado."
-            });           
+            });
+
+
+            if (orcamento.id != aprovarOrcamento.IdOrcamento) return BadRequest(new
+            {
+                message = "Acesso negado."
+            });
 
             var retorno = await _orcamentoBll.AprovarOrcamento(aprovarOrcamento, Constantes.TipoUsuarioContexto.Cliente,
                 (int)Constantes.TipoUsuario.CLIENTE);
