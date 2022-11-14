@@ -556,7 +556,7 @@ namespace Produto
                     }
                     if (propriedadeOcultaItem != null)
                     {
-                        produtosAtivos = produtosAtivos.Where(x => x.TProdutoCatalogoPropriedadeOpcaoOculto == propriedadeOcultaItem);
+                        produtosAtivos = produtosAtivos.Where(x => x.PropriedadeOcultaItem == propriedadeOcultaItem);
                     }
 
                     return await produtosAtivos.OrderBy(x => x.Ordem).ToListAsync();
