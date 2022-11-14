@@ -20,7 +20,7 @@ namespace OrcamentoCotacaoApi.Controllers
     [ApiController]
     [Route("[controller]")]
     [Authorize]
-    //[TypeFilter(typeof(ResourceFilter))]
+    [TypeFilter(typeof(ResourceFilter))]
     public class ProdutoCatalogoController : BaseController
     {
         private readonly ILogger<ProdutoCatalogoController> _logger;
@@ -322,6 +322,34 @@ namespace OrcamentoCotacaoApi.Controllers
             
 
             
+        }
+
+        [HttpGet("ObterPropriedadesUtilizadosPorProdutos/{idPropriedade}")]
+        public async Task<IActionResult> ObterPropriedadesUtilizadosPorProdutos(int idPropriedade)
+        {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoCatalogoController/ObterPropriedadesUtilizadosPorProdutos/GET - Request => [{idPropriedade}].");
+
+            var response = await _bll.ObterPropriedadesUtilizadosPorProdutos(idPropriedade);
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. ArquivoController/ObterPropriedadesUtilizadosPorProdutos/GET - Response => [{response}].");
+
+            return Ok(response);
+        }
+
+        [HttpPost("ExcluirPropriedades/{idPropriedade}")]
+        public async Task<IActionResult> ExcluirPropriedades(int idPropriedade)
+        {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoCatalogoController/ExcluirPropriedades/POST - Request => [{idPropriedade}].");
+
+            var response = await _bll.ExcluirPropriedades(idPropriedade);
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. ArquivoController/ExcluirPropriedades/POST - Response => [{response}].");
+
+            return Ok(response);
         }
     }
 }
