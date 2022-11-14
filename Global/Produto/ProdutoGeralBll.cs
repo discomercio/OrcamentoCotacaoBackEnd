@@ -430,8 +430,7 @@ namespace Produto
                                          join tpci in db.TprodutoCatalogoItem on tpc.Id equals tpci.IdProdutoCatalogo
                                          join tf in db.Tfabricante on tpc.Fabricante equals tf.Fabricante
                                          join tpcp in db.TProdutoCatalogoPropriedade on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
-                                         where tpc.Ativo == true &&
-                                               tpcp.IdCfgTipoPropriedade == 0 &&
+                                         where tpcp.IdCfgTipoPropriedade == 0 &&
                                                tpc.Id == idProduto
                                          select new ProdutoCatalogoItemProdutosAtivosDados
                                          {
@@ -532,8 +531,7 @@ namespace Produto
                                          join tf in db.Tfabricante on tpc.Fabricante equals tf.Fabricante
                                          join tpcpo in db.TProdutoCatalogoPropriedadeOpcao on tpci.IdProdutoCatalogoPropriedadeOpcao equals tpcpo.id
                                          join tpcp in db.TProdutoCatalogoPropriedade on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
-                                         where tpc.Ativo == true &&
-                                               tpc.Id == idProduto
+                                         where tpc.Id == idProduto
                                          select new ProdutoCatalogoItemProdutosAtivosDados
                                          {
                                              Id = tpc.Id,
