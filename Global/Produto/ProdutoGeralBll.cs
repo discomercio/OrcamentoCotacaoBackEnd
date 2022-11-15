@@ -430,8 +430,7 @@ namespace Produto
                                          join tpci in db.TprodutoCatalogoItem on tpc.Id equals tpci.IdProdutoCatalogo
                                          join tf in db.Tfabricante on tpc.Fabricante equals tf.Fabricante
                                          join tpcp in db.TProdutoCatalogoPropriedade on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
-                                         where tpc.Ativo == true &&
-                                               tpcp.IdCfgTipoPropriedade == 0 &&
+                                         where tpcp.IdCfgTipoPropriedade == 0 &&
                                                tpc.Id == idProduto
                                          select new ProdutoCatalogoItemProdutosAtivosDados
                                          {
@@ -532,8 +531,7 @@ namespace Produto
                                          join tf in db.Tfabricante on tpc.Fabricante equals tf.Fabricante
                                          join tpcpo in db.TProdutoCatalogoPropriedadeOpcao on tpci.IdProdutoCatalogoPropriedadeOpcao equals tpcpo.id
                                          join tpcp in db.TProdutoCatalogoPropriedade on tpci.IdProdutoCatalogoPropriedade equals tpcp.id
-                                         where tpc.Ativo == true &&
-                                               tpc.Id == idProduto
+                                         where tpc.Id == idProduto
                                          select new ProdutoCatalogoItemProdutosAtivosDados
                                          {
                                              Id = tpc.Id,
@@ -558,7 +556,7 @@ namespace Produto
                     }
                     if (propriedadeOcultaItem != null)
                     {
-                        produtosAtivos = produtosAtivos.Where(x => x.TProdutoCatalogoPropriedadeOpcaoOculto == propriedadeOcultaItem);
+                        produtosAtivos = produtosAtivos.Where(x => x.PropriedadeOcultaItem == propriedadeOcultaItem);
                     }
 
                     return await produtosAtivos.OrderBy(x => x.Ordem).ToListAsync();
@@ -956,6 +954,55 @@ namespace Produto
             await dbGravacao.SaveChangesAsync();
 
             return tProdutoCatalogoPropriedadeOpcao;
+        }
+
+        public async Task<bool> ObterPropriedadesUtilizadosPorProdutos(int idPropriedade)
+        {
+            var count = 0;
+
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                count = await (from p in db.TprodutoCatalogoItem
+                               where p.IdProdutoCatalogoPropriedade == idPropriedade
+                               select p).CountAsync();
+            }
+
+            return count > 0;
+        }
+
+        public async Task<bool> ExcluirPropriedades(int idPropriedade, ContextoBdGravacao dbGravacao)
+        {
+            TProdutoCatalogoPropriedade tProdutoCatalogoPropriedade;
+            List<TProdutoCatalogoPropriedadeOpcao> tProdutoCatalogoPropriedadeOpcaos;
+
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                tProdutoCatalogoPropriedade = await (from p in db.TProdutoCatalogoPropriedade
+                                                     where p.id == idPropriedade
+                                                     select p).SingleOrDefaultAsync();
+
+                tProdutoCatalogoPropriedadeOpcaos = await (from p in db.TProdutoCatalogoPropriedadeOpcao
+                                                          where p.id_produto_catalogo_propriedade == idPropriedade
+                                                          select p).ToListAsync();
+            }
+
+            if (tProdutoCatalogoPropriedadeOpcaos != null)
+            {
+                foreach (var propriedadeOpcao in tProdutoCatalogoPropriedadeOpcaos)
+                {
+                    dbGravacao.Remove(propriedadeOpcao);
+                    await dbGravacao.SaveChangesAsync();
+                }
+            }
+
+            if (tProdutoCatalogoPropriedade != null)
+            {
+                dbGravacao.Remove(tProdutoCatalogoPropriedade);
+                var result = await dbGravacao.SaveChangesAsync();
+                return result > 0;
+            }
+
+            return false;
         }
     }
 }

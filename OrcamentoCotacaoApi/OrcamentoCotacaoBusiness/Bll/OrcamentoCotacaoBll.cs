@@ -1603,8 +1603,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                                 existe.DataHoraDescontoSuperior = itemAtomico.DataHoraDescontoSuperior;
                             }
                         }
-
-                        existe.Qtde += itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Qtde;
+                        existe.Qtde += (short?)(itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Qtde * (short)item.Qtde);
                         existe.Desc_Dado = (existe.Desc_Dado + itemAtomico.DescDado) / existe.Qtde;//média
                         existe.Preco_Venda = Math.Round(existe.Preco_Lista * (decimal)(1 - existe.Desc_Dado / 100), 2);
                         existe.Preco_NF = existe.Preco_Venda;
@@ -1618,7 +1617,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         produtoPrepedido.Produto = itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Produto;
                         produtoPrepedido.Descricao = itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Descricao;
                         produtoPrepedido.Obs = "";
-                        produtoPrepedido.Qtde = itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Qtde;
+                        produtoPrepedido.Qtde = (short?)(itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Qtde * (short)item.Qtde);
                         produtoPrepedido.BlnTemRa = false;
                         produtoPrepedido.CustoFinancFornecPrecoListaBase = Math.Round(itemAtomico.CustoFinancFornecPrecoListaBase, 2);
                         produtoPrepedido.Preco_Lista = Math.Round(itemAtomico.PrecoLista, 2);

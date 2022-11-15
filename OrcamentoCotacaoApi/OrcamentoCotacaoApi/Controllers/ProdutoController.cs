@@ -146,7 +146,7 @@ namespace OrcamentoCotacaoApi.BaseController
         }
 
         [HttpPost("buscar-produtos-opcoes-ativos")]
-        public async Task<IActionResult> ObterPropriedadesEOpcoesProdutosAtivosPorProduto(ProdutosAtivosRequestViewModel obj)
+        public async Task<IActionResult> ObterPropriedadesEOpcoesProdutosPorProduto(ProdutosAtivosRequestViewModel obj)
         {
             _logger.LogInformation("BuscarProdutoCatalogoParaVisualizacao - Request: [idProduto: {0} - propriedadeOculta: {1} - propriedadeOcultaItem: {2}]", obj.idProduto, obj.propriedadeOculta, obj.propriedadeOcultaItem);
 
