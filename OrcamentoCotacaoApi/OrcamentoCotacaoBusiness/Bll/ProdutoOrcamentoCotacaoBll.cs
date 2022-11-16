@@ -114,6 +114,10 @@ namespace OrcamentoCotacaoBusiness.Bll
                     }
 
                     var pai = produtoComboDados.ProdutoDados.Where(x => x.Fabricante == composto.PaiFabricante && x.Produto == composto.PaiProduto).FirstOrDefault();
+                    if(composto.PaiProduto == "034908")
+                    {
+
+                    }
                     if (pai == null)
                     {
                         var produtoCompostoAInserir = new Produto.Dados.ProdutoDados()
@@ -128,6 +132,10 @@ namespace OrcamentoCotacaoBusiness.Bll
                             Desc_Max = filhotes.Min(x => x.Desc_Max)
                         };
                         produtoComboDados.ProdutoDados.Add(produtoCompostoAInserir);
+                    }
+                    else
+                    {
+                        pai.Preco_lista = somaFilhotes;
                     }
 
                     produtoCompostoResponse = ProdutoCompostoResponseViewModel.ConverterProdutoCompostoDados(composto);
