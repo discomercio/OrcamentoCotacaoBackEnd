@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UtilsGlobais;
+using System.Text.Json;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -409,6 +410,47 @@ namespace OrcamentoCotacaoBusiness.Bll
             return new AtualizarSenhaResponseViewModel(true, "Alteração de senha realizada com sucesso.");
         }
 
+        public async Task<ExpiracaoSenhaResponseViewModel> VerificarExpiracao(AtualizarSenhaDto atualizarSenhaDto)
+        {
+
+            var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM);
+
+            bool expirada = false;
+
+
+            if (atualizarSenhaDto.TipoUsuario == 1)
+            {
+                var usuario = await (from u in dbgravacao.Tusuario
+                                     where u.Usuario == atualizarSenhaDto.Apelido.ToUpper().Trim()
+                                     select u).FirstOrDefaultAsync();
+
+
+                if (usuario.Dt_Ult_Atualizacao == null) expirada = true;
+
+            }
+            else if (atualizarSenhaDto.TipoUsuario == 2)
+            {
+                var orcamentista = await (from u in dbgravacao.TorcamentistaEindicador
+                                          where u.Apelido == atualizarSenhaDto.Apelido.ToUpper().Trim()
+                                          select u).FirstOrDefaultAsync();
+
+                if (orcamentista.Dt_Ult_Atualizacao == null) expirada = true;
+
+            }
+            else
+            {
+                var vendedorParceiro = await (from u in dbgravacao.TorcamentistaEIndicadorVendedor
+                                              where u.Email == atualizarSenhaDto.Apelido.ToUpper().Trim()
+                                              select u).FirstOrDefaultAsync();
+
+                if (vendedorParceiro.DataUltimaAlteracaoSenha == null) expirada = true;
+
+            }
+
+            return new ExpiracaoSenhaResponseViewModel(expirada, "Senha expirada ou primeiro acesso.");
+
+        }
+
         private string SenhaValida(
             string usuario,
             string senha,
@@ -522,6 +564,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 vendedorParceiro.DataUltimaAlteracao = DateTime.Now;
                 vendedorParceiro.DataUltimaAlteracaoSenha = DateTime.Now;
 
+                
                 var novoLog = Util.GravaLog(
                                             dbgravacao,
                                             apelido,
@@ -530,7 +573,9 @@ namespace OrcamentoCotacaoBusiness.Bll
                                             "",
                                             Constantes.OP_LOG_SENHA_ALTERACAO,
                                             "SENHA ALTERADA PELO VENDEDOR DO PARCEIRO");
+                
 
+                
                 if (novoLog)
                 {
                     dbgravacao.Update(vendedorParceiro);
