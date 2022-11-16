@@ -84,6 +84,10 @@ namespace Prepedido.Bll
                     };
                     aux.ProdutoDados.Add(produtoCompostoAInserir);
                 }
+                else
+                {
+                    pai.Preco_lista = somaFilhotes;
+                }
             }
                 return ProdutoComboDto.ProdutoComboDto_De_ProdutoComboDados(aux);
         }
