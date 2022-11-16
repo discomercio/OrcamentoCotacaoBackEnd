@@ -129,6 +129,26 @@ namespace OrcamentoCotacaoApi.Controllers
             }
         }
 
+        [Authorize]
+        [HttpPost("expiracao")]
+        public async Task<ActionResult<object>> VerificarExpiracao(ExpiracaoSenhaRequestViewModel request)
+        {
+            try
+            {
+                var response = await _acessoBll.VerificarExpiracao(new AtualizarSenhaDto()
+                {
+                    TipoUsuario = request.TipoUsuario,
+                    Apelido = request.Apelido
+                });
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [AllowAnonymous]
         [HttpPost]
         [Route("AtualzarSenha")]
@@ -152,5 +172,6 @@ namespace OrcamentoCotacaoApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
     }
 }
