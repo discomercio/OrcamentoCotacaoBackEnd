@@ -426,7 +426,7 @@ namespace Prepedido.Bll
 
                 PrevisaoEntregaTexto = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
                 torcamento.PrevisaoEntregaData?.ToString("dd/MM/yyyy") + " (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) +
-                " - " + torcamento.PrevisaoEntregaData?.ToString("dd/MM/yyyy") + ")" : null,
+                " - " + torcamento.PrevisaoEntregaDtHrUltAtualiz?.ToString("dd/MM/yyyy HH:mm") + ")" : null,
 
                 EntregaImediata = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
                 "NÃO (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
