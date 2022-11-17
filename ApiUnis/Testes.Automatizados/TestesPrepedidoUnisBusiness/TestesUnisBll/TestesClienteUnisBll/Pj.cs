@@ -95,11 +95,6 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 
             testesClienteUnisBll.TestarCadastro(c =>
             {
-                c.DadosCliente.Nascimento = new DateTime(1984, 06, 19);
-            }, "Se cliente é tipo PJ, o Nascimento não deve ser preenchido.", TipoPessoa.PJ);
-
-            testesClienteUnisBll.TestarCadastro(c =>
-            {
                 c.DadosCliente.Nome = "";
             }, "PREENCHA A RAZÃO SOCIAL DO CLIENTE.", TipoPessoa.PJ);
 

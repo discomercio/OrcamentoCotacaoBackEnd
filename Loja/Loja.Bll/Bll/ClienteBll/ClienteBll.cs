@@ -160,8 +160,6 @@ namespace Loja.Bll.ClienteBll
                 Contribuinte_Icms_Status = cli.Contribuinte_Icms_Status,
                 Tipo = cli.Tipo,
                 Observacao_Filiacao = cli.Filiacao,
-                Nascimento = cli.Dt_Nasc,
-                Sexo = cli.Sexo,
                 Nome = cli.Nome,
                 Indicador_Orcamentista = cli.Indicador,
                 ProdutorRural = cli.Produtor_Rural_Status,

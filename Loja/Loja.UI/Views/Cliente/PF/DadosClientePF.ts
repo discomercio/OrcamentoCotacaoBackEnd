@@ -7,26 +7,9 @@ declare var window: any;
 let cpfCnpj = $('#cpf_cnpj').val().toString();
 $('#cpf_cnpj').val(CpfCnpjUtils.cnpj_cpf_formata(cpfCnpj));
 $("#cpf_cnpj").prop("readonly", true);
-$(function () {
-    ($("#nascimento") as any).mask("00/00/0000");
-    //verificar produtor rural no inicio da tela
-    if ($("#tipo").val() == Constantes.ID_PF) {
-        if (Number($("#produtor").val()) == Constantes.COD_ST_CLIENTE_PRODUTOR_RURAL_SIM) {
-            $("#div_ie").css('visibility', 'visible');
-            $("#div_contribuinte").css('visibility', 'visible');
-        }
-    }
-});
-/* ========== CHAMADAS DIRETAS DA TELA ====================================*/
-window.AjustaData = (el: JQuery<HTMLInputElement>) => {
-    filtra_data();
-    if (tem_info((el.val() as string)) && !IsDate(el)) {
-        swal("Erro", "Data inválida!");
 
-        $("#nascimento").val("");
-        return false;
-    }
-}
+/* ========== CHAMADAS DIRETAS DA TELA ====================================*/
+
 /* ============ FIM DE CHAMADAS DIRETAS DA TELA ===========*/
 /* ============ FUNÇÕES ===========*/
 function filtra_data(): void {

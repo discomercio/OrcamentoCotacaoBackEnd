@@ -106,8 +106,8 @@ namespace Cliente
 
                 //ie: "" => 361.289.183.714;
                 log_retorno += logIE;
-                //rg: "" => 12345666; nome: Teste PJ => Teste PJ 2; sexo: "" => M
-                log_retorno += MontarLogAlteracao_RG_Nome_Sexo(cli, clienteCadastroDados.DadosCliente);
+                //rg: "" => 12345666; nome: Teste PJ => Teste PJ 2; 
+                log_retorno += MontarLogAlteracao_RG_Nome(cli, clienteCadastroDados.DadosCliente);
                 //endereco: Rua Professor Fábio Fanucchiqsxqsx => Rua Leblon
                 //bairro: Jardim São Paulo(Zona Norte)qsdqsx => Leblon
                 //cidade: São Paulo => Rio de Janeiro
@@ -154,7 +154,7 @@ namespace Cliente
             return log_retorno;
         }
 
-        private string MontarLogAlteracao_RG_Nome_Sexo(Tcliente cli, Cliente.Dados.DadosClienteCadastroDados dados)
+        private string MontarLogAlteracao_RG_Nome(Tcliente cli, Cliente.Dados.DadosClienteCadastroDados dados)
         {
             string log = "";
             string campo_vazio = "\"\"";
@@ -175,16 +175,6 @@ namespace Cliente
                 log += "nome: " + (!string.IsNullOrEmpty(cli.Nome) ? cli.Nome : campo_vazio) +
                    " => " + (!string.IsNullOrEmpty(dados.Nome) ? dados.Nome : campo_vazio) + "; ";
                 cli.Nome = dados.Nome;
-            }
-
-            if (dados.Tipo == Constantes.ID_PF)
-            {
-                if (dados.Sexo != cli.Sexo)
-                {
-                    log += "sexo: " + (!string.IsNullOrEmpty(cli.Sexo) ? cli.Sexo : campo_vazio) +
-                        " => " + (!string.IsNullOrEmpty(dados.Sexo) ? dados.Sexo : campo_vazio) + "; ";
-                    cli.Sexo = dados.Sexo;
-                }
             }
 
             return log;
@@ -312,14 +302,14 @@ namespace Cliente
 
             if (dados.Tipo == Constantes.ID_PF)
             {
-                DateTime data_banco = cli.Dt_Nasc ?? new DateTime();
-                DateTime data_dados = dados.Nascimento ?? new DateTime();
-                if (data_dados != data_banco)
-                {
-                    log += "dt_nasc: " + (data_banco != new DateTime() ? data_banco.ToString("dd/MM/yyyy") : campo_vazio) +
-                        " => " + (data_dados != new DateTime() ? data_dados.ToString("dd/MM/yyyy") : campo_vazio) + "; ";
-                    cli.Dt_Nasc = dados.Nascimento;
-                }
+                //DateTime data_banco = cli.Dt_Nasc ?? new DateTime();
+                //DateTime data_dados = dados.Nascimento ?? new DateTime();
+                //if (data_dados != data_banco)
+                //{
+                //    log += "dt_nasc: " + (data_banco != new DateTime() ? data_banco.ToString("dd/MM/yyyy") : campo_vazio) +
+                //        " => " + (data_dados != new DateTime() ? data_dados.ToString("dd/MM/yyyy") : campo_vazio) + "; ";
+                //    cli.Dt_Nasc = dados.Nascimento;
+                //}
                 if (dados.Observacao_Filiacao != cli.Filiacao)
                     log += "filiacao: " + (!string.IsNullOrEmpty(cli.Filiacao) ? cli.Filiacao : campo_vazio) +
                         " => " + (!string.IsNullOrEmpty(dados.Observacao_Filiacao) ? dados.Observacao_Filiacao : campo_vazio) + "; ";
@@ -369,15 +359,6 @@ namespace Cliente
             string aux = "";
             string campo_vazio = "\"\"";
 
-
-
-            DateTime data_banco = cli.Dt_Nasc ?? new DateTime();
-            DateTime data_dados = dados.Nascimento ?? new DateTime();
-            if (data_dados != data_banco)
-            {
-                aux += "dt_nasc: " + (data_banco != new DateTime() ? data_banco.ToString() : campo_vazio) +
-                    " => " + (data_dados != new DateTime() ? data_dados.ToString() : campo_vazio) + ";";
-            }
             if (dados.Observacao_Filiacao != cli.Filiacao)
                 aux += "filiacao: " + (!string.IsNullOrEmpty(cli.Filiacao) ? cli.Filiacao : campo_vazio) +
                     " => " + (!string.IsNullOrEmpty(dados.Observacao_Filiacao) ? dados.Observacao_Filiacao : campo_vazio) + ";";

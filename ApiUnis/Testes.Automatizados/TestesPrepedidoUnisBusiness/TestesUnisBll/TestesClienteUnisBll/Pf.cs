@@ -228,48 +228,6 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
 
         }
 
-
-        [Fact]
-        public void Sexo()
-        {
-            inicializarBanco.TclientesApagar();
-
-            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Sexo = "",
-                "GÊNERO DO CLIENTE NÃO INFORMADO!.",
-                    TipoPessoa.PF);
-            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Sexo = "X",
-                "FORMATO DO TIPO DE SEXO INVÁLIDO!",
-                    TipoPessoa.PF);
-        }
-
-        [Fact]
-        public void Nascimento()
-        {
-            inicializarBanco.TclientesApagar();
-
-            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Nascimento = new DateTime(0084, 06, 19),
-                "Data de nascimento inválida!", TipoPessoa.PF);
-
-            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Nascimento = new DateTime(84, 06, 19),
-                "Data de nascimento inválida!", TipoPessoa.PF);
-
-            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Nascimento = new DateTime(1900, 06, 19),
-                "Data de nascimento inválida!", TipoPessoa.PF);
-
-            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Nascimento = DateTime.Now,
-                "Data de nascimento não pode ser igual ou maior que a data atual!", TipoPessoa.PF);
-
-            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Nascimento = DateTime.Now.AddDays(10),
-                "Data de nascimento não pode ser igual ou maior que a data atual!", TipoPessoa.PF);
-
-            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Nascimento = DateTime.Now.AddMonths(1),
-                "Data de nascimento não pode ser igual ou maior que a data atual!", TipoPessoa.PF);
-
-            testesClienteUnisBll.TestarCadastro(c => c.DadosCliente.Nascimento = DateTime.Now.AddYears(1),
-                "Data de nascimento não pode ser igual ou maior que a data atual!", TipoPessoa.PF);
-        }
-
-
         [Fact]
         public void Nome()
         {
@@ -389,41 +347,6 @@ namespace Testes.Automatizados.TestesPrepedidoUnisBusiness.TestesUnisBll.TestesC
             //e apaga o registro
             inicializarBanco.TclientesApagar();
         }
-
-
-        [Fact]
-        public void DataNascimentoSemHora()
-        {
-            //e apaga o registro
-            inicializarBanco.TclientesApagar();
-
-            //tem que tirar a hora da data de nascimento
-            ClienteCadastroUnisDto clienteDto = InicializarClienteDados.ClienteNaoCadastradoPF();
-            ClienteCadastroResultadoUnisDto res;
-            var ano = 1990;
-            var mes = 11;
-            var dia = 5;
-            clienteDto.DadosCliente.Nascimento = new DateTime(ano, mes, dia, 12, 23, 34);
-            res = clienteUnisBll.CadastrarClienteUnis(clienteDto, clienteDto.DadosCliente.Indicador_Orcamentista).Result;
-
-            if (res.ListaErros.Count > 0)
-                output.WriteLine(JsonConvert.SerializeObject(res));
-
-            Assert.Empty(res.ListaErros);
-
-            //verifica se salvou direito
-            var db = contextoProvider.GetContextoLeitura();
-
-            var ret = (from c in db.Tcliente
-                       where c.Id == res.IdClienteCadastrado
-                       select c).FirstOrDefault();
-
-            Assert.Equal(new DateTime(ano, mes, dia), ret.Dt_Nasc);
-
-            //e apaga o registro
-            inicializarBanco.TclientesApagar();
-        }
-
 
         [Fact]
         public void Telefones_repetidos()

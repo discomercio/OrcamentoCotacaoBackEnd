@@ -19,7 +19,6 @@ namespace Loja.UI.Models.Cliente
         public List<RefBancariaDtoCliente> RefBancaria { get; set; }
         public List<RefComercialDtoCliente> RefComercial { get; set; }
         public EnderecoEntregaDtoClienteCadastro EndEntrega { get; set; }
-        public SelectList LstSexo { get; set; }
         public SelectList LstContribuinte { get; set; }
         public SelectList LstProdutoRural { get; set; }
         public SelectList LstIndicadores { get; set; }
@@ -40,7 +39,6 @@ namespace Loja.UI.Models.Cliente
             DadosCliente = clienteCadastroDto.DadosCliente;
             RefBancaria = clienteCadastroDto.RefBancaria;
             RefComercial = clienteCadastroDto.RefComercial;
-            MontarListaSexo();
             MontarListaContribuinteICMS();
             MontarListaProdutorRural();
             MontarListaIndicadores(lstIndicadores);
@@ -75,17 +73,6 @@ namespace Loja.UI.Models.Cliente
                 });
             }
             LstComboBanco = new SelectList(lstbancos, "Value", "Text");
-        }
-
-        private void MontarListaSexo()
-        {
-            var lstSexo = new[]
-            {
-                new SelectListItem{Value = "", Text = "Selecione"},
-                new SelectListItem{Value = "M", Text = "Masculino"},
-                new SelectListItem{Value = "F", Text = "Feminino"}
-            };
-            LstSexo = new SelectList(lstSexo, "Value", "Text");
         }
 
         private void MontarListaContribuinteICMS()

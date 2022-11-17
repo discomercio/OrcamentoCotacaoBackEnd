@@ -517,8 +517,6 @@ namespace Cliente
                 Contribuinte_Icms_Status = cli.Contribuinte_Icms_Status,
                 Tipo = cli.Tipo,
                 Observacao_Filiacao = cli.Filiacao,
-                Nascimento = cli.Dt_Nasc,
-                Sexo = cli.Sexo,
                 Nome = cli.Nome,
                 ProdutorRural = cli.Produtor_Rural_Status,
                 DddResidencial = cli.Ddd_Res,
@@ -693,7 +691,6 @@ namespace Cliente
             tCliente.Ie = clienteDados.Ie;
             tCliente.Rg = clienteDados.Rg;
             tCliente.Nome = clienteDados.Nome;
-            tCliente.Sexo = clienteDados.Sexo;
             tCliente.Contribuinte_Icms_Status = clienteDados.Contribuinte_Icms_Status;
             tCliente.Contribuinte_Icms_Data = DateTime.Now;
             tCliente.Contribuinte_Icms_Data_Hora = DateTime.Now;
@@ -725,11 +722,9 @@ namespace Cliente
             tCliente.Ddd_Cel = clienteDados.DddCelular;
             tCliente.Tel_Cel = clienteDados.Celular;
 
-            //definição em 20200930: data de nascimento é somente a data, sem hora
-            if (clienteDados.Nascimento.HasValue)
-                tCliente.Dt_Nasc = clienteDados.Nascimento.Value.Date;
-            else
-                tCliente.Dt_Nasc = null;
+
+
+            tCliente.Dt_Nasc = null;
 
             tCliente.Filiacao = clienteDados.Observacao_Filiacao == null ? "" : clienteDados.Observacao_Filiacao;
             tCliente.Obs_crediticias = "";

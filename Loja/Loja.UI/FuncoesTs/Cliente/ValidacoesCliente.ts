@@ -28,10 +28,7 @@ export class ValidacoesCliente {
 
         let ehPf: boolean = dados.Tipo == Constantes.ID_PF;
         //validações específicas para PF e PJ
-        if (ehPf) {
-            retorno += this.validarGeralPf(dados);
-        }
-        else {
+        if (!ehPf) {
             retorno += this.validarGeralPj(dados, true);
         }
 
@@ -124,19 +121,6 @@ export class ValidacoesCliente {
             let s = dadosClienteCadastroDto.Contato.trim();
             if (s === "") {
                 ret = 'Informe o nome da pessoa para contato!<br>';
-            }
-        }
-
-        return ret;
-    }
-
-    private validarGeralPf(dadosClienteCadastroDto: DadosClienteCadastroDto): string {
-        let ret: string = "";
-
-        let s = dadosClienteCadastroDto.Sexo;
-        if (!!s) {
-            if (!ValidacoesUtils.sexo_ok(s)) {
-                ret = 'Indique qual o sexo!<br>';
             }
         }
 
