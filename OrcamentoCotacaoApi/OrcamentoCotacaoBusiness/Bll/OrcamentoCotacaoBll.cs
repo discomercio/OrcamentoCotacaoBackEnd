@@ -926,12 +926,15 @@ namespace OrcamentoCotacaoBusiness.Bll
             orcamentoCotacaoLinkModel.Status = 1;
             orcamentoCotacaoLinkModel.IdTipoUsuarioContextoUltStatus = 1;
             orcamentoCotacaoLinkModel.IdUsuarioUltStatus = orcamento.IdUsuarioCadastro;
-            orcamentoCotacaoLinkModel.DataUltStatus = orcamento.DataUltStatus.Date;
-            orcamentoCotacaoLinkModel.DataHoraUltStatus = orcamento.DataHoraUltStatus;
+            
+            orcamentoCotacaoLinkModel.DataUltStatus = DateTime.Now.Date;
+            orcamentoCotacaoLinkModel.DataHoraUltStatus = DateTime.Now;
+
             orcamentoCotacaoLinkModel.IdTipoUsuarioContextoCadastro = (short)orcamento.IdTipoUsuarioContextoCadastro;
             orcamentoCotacaoLinkModel.IdUsuarioCadastro = orcamento.IdUsuarioCadastro;
-            orcamentoCotacaoLinkModel.DataCadastro = orcamento.DataCadastro;
-            orcamentoCotacaoLinkModel.DataHoraCadastro = orcamento.DataHoraCadastro;
+
+            orcamentoCotacaoLinkModel.DataCadastro = DateTime.Now.Date;
+            orcamentoCotacaoLinkModel.DataHoraCadastro = DateTime.Now;
 
             if (!_orcamentoCotacaoLinkBll.InserirOrcamentoCotacaoLink(orcamentoCotacaoLinkModel, contextoBdGravacao))
                 return "Orçamento não cadastrado. Problemas ao gravar o Link!";
@@ -939,25 +942,26 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
-        public void AtualizarOrcamentoCotacaoLink(OrcamentoResponseViewModel orcamento, InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        public void AtualizarOrcamentoCotacaoLink(
+            OrcamentoResponseViewModel orcamento,
+            ContextoBdGravacao contextoBdGravacao)
         {
-            TorcamentoCotacaoLink orcamentoCotacaoLinkModel = new InfraBanco.Modelos.TorcamentoCotacaoLink();
-
-            orcamentoCotacaoLinkModel.IdOrcamentoCotacao = unchecked((int)orcamento.Id);
-            orcamentoCotacaoLinkModel.Status = 2;
-            orcamentoCotacaoLinkModel.DataUltStatus = DateTime.Now.Date;
-            orcamentoCotacaoLinkModel.DataHoraUltStatus = DateTime.Now;
+            var orcamentoCotacaoLinkModel = new TorcamentoCotacaoLink()
+            {
+                IdOrcamentoCotacao = unchecked((int)orcamento.Id),
+                Status = 2,
+                DataUltStatus = DateTime.Now.Date,
+                DataHoraUltStatus = DateTime.Now
+            };
 
             try
             {
                 _orcamentoCotacaoLinkBll.AtualizarComTransacao(orcamentoCotacaoLinkModel, contextoBdGravacao);
-
             }
-            catch
+            catch (Exception ex)
             {
                 throw new ArgumentException("Orçamento não reenviado. Problemas ao gravar o Link!");
             }
-
         }
 
         private string AdicionarOrcamentoCotacaoEmailQueue(OrcamentoRequestViewModel orcamento, Guid guid, int idOrcamentoCotacao,
@@ -1125,10 +1129,12 @@ namespace OrcamentoCotacaoBusiness.Bll
             torcamentoCotacao.IdTipoUsuarioContextoCadastro = (int)usuarioLogado.TipoUsuario;
             torcamentoCotacao.IdTipoUsuarioContextoUltStatus = (int)usuarioLogado.TipoUsuario;
             torcamentoCotacao.IdUsuarioCadastro = usuarioLogado.Id;
-            torcamentoCotacao.DataCadastro = DateTime.Now.Date.Date;
+
+            torcamentoCotacao.DataCadastro = DateTime.Now.Date;
             torcamentoCotacao.DataHoraCadastro = DateTime.Now;
             torcamentoCotacao.DataUltStatus = DateTime.Now.Date;
             torcamentoCotacao.DataHoraUltStatus = DateTime.Now;
+
             torcamentoCotacao.Status = (short)status;
             torcamentoCotacao.IdUsuarioUltStatus = usuarioLogado.Id;
             torcamentoCotacao.StEtgImediata = orcamento.EntregaImediata ? (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM : (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO;
