@@ -168,13 +168,14 @@ namespace OrcamentoCotacaoBusiness.Bll
                         //dbgravacao.transacao.Commit();
                     }
 
+                    /* RETORNA E EXIGE A TROCA DE SENHA
                     if (t.Dt_Ult_Alteracao_Senha == null)
                     {
                         //Senha expirada, precisa mandar alguma valor de senha expirada
                         //coloquei o valor "4" para saber quando a senha esta expirada
                         msgErro = Constantes.ERR_SENHA_EXPIRADA;
                         return null;// await Task.FromResult("4");
-                    }
+                    }*/
                 }
 
                 return t;
@@ -425,7 +426,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                                      select u).FirstOrDefaultAsync();
 
 
-                if (usuario.Dt_Ult_Atualizacao == null) expirada = true;
+                if (usuario.Dt_Ult_Alteracao_Senha == null) expirada = true;
 
             }
             else if (atualizarSenhaDto.TipoUsuario == 2)
@@ -434,7 +435,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                                           where u.Apelido == atualizarSenhaDto.Apelido.ToUpper().Trim()
                                           select u).FirstOrDefaultAsync();
 
-                if (orcamentista.Dt_Ult_Atualizacao == null) expirada = true;
+                if (orcamentista.Dt_Ult_Alteracao_Senha == null) expirada = true;
 
             }
             else
@@ -500,6 +501,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                 usuario.Dt_Ult_Alteracao_Senha = DateTime.Now.Date;
                 usuario.Dt_Ult_Atualizacao = DateTime.Now;
 
+                // Campo da tabela t_log hoje comporta até 20 e no futuro iremos utilizar outra tabela de log v2
+                if (apelido.Length > 20)
+                {
+                    apelido = apelido.Substring(0, 20);
+                }
+
                 var novoLog = Util.GravaLog(
                                             dbgravacao,
                                             apelido,
@@ -531,6 +538,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                 orcamentista.Datastamp = senha;
                 orcamentista.Dt_Ult_Alteracao_Senha = DateTime.Now.Date;
                 orcamentista.Dt_Ult_Atualizacao = DateTime.Now;
+
+                // Campo da tabela t_log hoje comporta até 20 e no futuro iremos utilizar outra tabela de log v2
+                if (apelido.Length > 20)
+                {
+                    apelido = apelido.Substring(0, 20);
+                }
 
                 var novoLog = Util.GravaLog(
                                             dbgravacao,
@@ -564,7 +577,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                 vendedorParceiro.DataUltimaAlteracao = DateTime.Now;
                 vendedorParceiro.DataUltimaAlteracaoSenha = DateTime.Now;
 
-                
+                // Campo da tabela t_log hoje comporta até 20 e no futuro iremos utilizar outra tabela de log v2
+                if (apelido.Length > 20)
+                {
+                    apelido = apelido.Substring(0, 20);
+                }
+
                 var novoLog = Util.GravaLog(
                                             dbgravacao,
                                             apelido,
