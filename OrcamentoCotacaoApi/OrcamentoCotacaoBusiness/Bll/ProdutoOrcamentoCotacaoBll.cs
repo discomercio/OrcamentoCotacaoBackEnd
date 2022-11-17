@@ -391,11 +391,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                             IdItemAtomico = atomico.Id,
                             IdOpcaoPagto = pagto.Id,
                             DescDado = itemOpcao.DescDado,
-                            PrecoLista = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? (decimal)item.Preco_lista : (decimal)item.Preco_lista * (decimal)itemOpcao.CustoFinancFornecCoeficiente,
-                            PrecoVenda = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? (decimal)item.Preco_lista * (decimal)(1 - itemOpcao.DescDado / 100) : (decimal)item.Preco_lista * (decimal)itemOpcao.CustoFinancFornecCoeficiente * (decimal)(1 - itemOpcao.DescDado / 100),
-                            PrecoNF = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? (decimal)item.Preco_lista * (decimal)(1 - itemOpcao.DescDado / 100) : (decimal)item.Preco_lista * (decimal)itemOpcao.CustoFinancFornecCoeficiente * (decimal)(1 - itemOpcao.DescDado / 100),
+                            PrecoLista = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? Math.Round((decimal)item.Preco_lista, 2) : Math.Round((decimal)item.Preco_lista * (decimal)itemOpcao.CustoFinancFornecCoeficiente, 2),
+                            PrecoVenda = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? Math.Round((decimal)item.Preco_lista * (decimal)(1 - itemOpcao.DescDado / 100), 2) : Math.Round((decimal)item.Preco_lista * (decimal)itemOpcao.CustoFinancFornecCoeficiente * (decimal)(1 - itemOpcao.DescDado / 100), 2),
+                            PrecoNF = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? Math.Round((decimal)item.Preco_lista * (decimal)(1 - itemOpcao.DescDado / 100), 2) : Math.Round((decimal)item.Preco_lista * (decimal)itemOpcao.CustoFinancFornecCoeficiente * (decimal)(1 - itemOpcao.DescDado / 100), 2),
                             CustoFinancFornecCoeficiente = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? 0 : itemOpcao.CustoFinancFornecCoeficiente,
-                            CustoFinancFornecPrecoListaBase = (decimal)item.Preco_lista
+                            CustoFinancFornecPrecoListaBase = Math.Round((decimal)item.Preco_lista, 2)
                         };
 
                         var orc = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.InserirComTransacao(atomicoCustoFin, contextoBdGravacao);
@@ -502,11 +502,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                                 pg.IdItemAtomico = atomico.Id;
                                 pg.IdOpcaoPagto = opcaoPagtoAvista.Id;
                                 pg.DescDado = item.DescDado;
-                                pg.PrecoLista = (decimal)p.Preco_lista;
-                                pg.PrecoVenda = (decimal)p.Preco_lista * (decimal)(1 - item.DescDado / 100);
-                                pg.PrecoNF = (decimal)p.Preco_lista * (decimal)(1 - item.DescDado / 100);
+                                pg.PrecoLista = Math.Round((decimal)p.Preco_lista, 2);
+                                pg.PrecoVenda = Math.Round((decimal)p.Preco_lista * (decimal)(1 - item.DescDado / 100), 2);
+                                pg.PrecoNF = Math.Round((decimal)p.Preco_lista * (decimal)(1 - item.DescDado / 100), 2);
                                 pg.CustoFinancFornecCoeficiente = 0;
-                                pg.CustoFinancFornecPrecoListaBase = (decimal)p.Preco_lista;
+                                pg.CustoFinancFornecPrecoListaBase = Math.Round((decimal)p.Preco_lista, 2);
                                 pg.StatusDescontoSuperior = usoAlcada ? true : false;
                                 pg.DataHoraDescontoSuperior = usoAlcada ? (DateTime?)DateTime.Now : null;
                                 pg.IdUsuarioDescontoSuperior = usoAlcada ? (int?)usuarioLogado.Id : null;
@@ -520,11 +520,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                                 pg.IdItemAtomico = atomico.Id;
                                 pg.IdOpcaoPagto = pagto.Id;
                                 pg.DescDado = item.DescDado;
-                                pg.PrecoLista = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? (decimal)p.Preco_lista : (decimal)p.Preco_lista * (decimal)item.CustoFinancFornecCoeficiente;
-                                pg.PrecoVenda = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? (decimal)p.Preco_lista * (decimal)(1 - item.DescDado / 100) : (decimal)p.Preco_lista * (decimal)item.CustoFinancFornecCoeficiente * (decimal)(1 - item.DescDado / 100);
-                                pg.PrecoNF = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? (decimal)p.Preco_lista * (decimal)(1 - item.DescDado / 100) : (decimal)p.Preco_lista * (decimal)item.CustoFinancFornecCoeficiente * (decimal)(1 - item.DescDado / 100);
+                                pg.PrecoLista = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? Math.Round((decimal)p.Preco_lista, 2) : Math.Round((decimal)p.Preco_lista * (decimal)item.CustoFinancFornecCoeficiente, 2);
+                                pg.PrecoVenda = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? Math.Round((decimal)p.Preco_lista * (decimal)(1 - item.DescDado / 100), 2) : Math.Round((decimal)p.Preco_lista * (decimal)item.CustoFinancFornecCoeficiente * (decimal)(1 - item.DescDado / 100), 2);
+                                pg.PrecoNF = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? Math.Round((decimal)p.Preco_lista * (decimal)(1 - item.DescDado / 100), 2) : Math.Round((decimal)p.Preco_lista * (decimal)item.CustoFinancFornecCoeficiente * (decimal)(1 - item.DescDado / 100), 2);
                                 pg.CustoFinancFornecCoeficiente = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? 0 : item.CustoFinancFornecCoeficiente;
-                                pg.CustoFinancFornecPrecoListaBase = (decimal)p.Preco_lista;
+                                pg.CustoFinancFornecPrecoListaBase = Math.Round((decimal)p.Preco_lista, 2);
                                 pg.StatusDescontoSuperior = usoAlcada ? true : false;
                                 pg.DataHoraDescontoSuperior = usoAlcada ? (DateTime?)DateTime.Now : null;
                                 pg.IdUsuarioDescontoSuperior = usoAlcada ? (int?)usuarioLogado.Id : null;
