@@ -561,7 +561,6 @@ namespace Prepedido.Bll
                 Contribuinte_Icms_Status = orcamento.Endereco_contribuinte_icms_status,
                 Tipo = cli.Tipo,
                 Observacao_Filiacao = cli.Filiacao,
-                Sexo = cli.Sexo,
                 Nome = orcamento.Endereco_nome,
                 ProdutorRural = orcamento.Endereco_produtor_rural_status,
                 DddResidencial = orcamento.Endereco_ddd_res,
@@ -609,7 +608,6 @@ namespace Prepedido.Bll
                 Contribuinte_Icms_Status = cli.Contribuinte_Icms_Status,
                 Tipo = cli.Tipo,
                 Observacao_Filiacao = cli.Filiacao,
-                Sexo = cli.Sexo,
                 Nome = cli.Nome,
                 ProdutorRural = cli.Produtor_Rural_Status,
                 DddResidencial = cli.Ddd_Res,
@@ -743,7 +741,6 @@ namespace Prepedido.Bll
             if (cliente != null)
             {
                 prePedido.DadosCliente.Id = cliente.Id;
-                prePedido.DadosCliente.Sexo = cliente.Sexo;
             }
 
             if (cliente.Tipo == Constantes.ID_PF)
@@ -764,8 +761,7 @@ namespace Prepedido.Bll
             //antes de validar vamos passar o EnderecoCadastral para dadoscliente
             prePedido.DadosCliente =
                 DadosClienteCadastroDados.DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(
-                    prePedido.EnderecoCadastroClientePrepedido, apelido?.ToUpper(), prePedido.DadosCliente.Loja,
-                    prePedido.DadosCliente.Sexo, prePedido.DadosCliente.Id,
+                    prePedido.EnderecoCadastroClientePrepedido, apelido?.ToUpper(), prePedido.DadosCliente.Loja, prePedido.DadosCliente.Id,
                     prePedido.DadosCliente.UsuarioCadastro);
 
             //vamos validar os dados do cliente

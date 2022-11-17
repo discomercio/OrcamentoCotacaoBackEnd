@@ -17,7 +17,6 @@ namespace Prepedido.Dto
         public byte Contribuinte_Icms_Status { get; set; }
         public string Tipo { get; set; }
         public string Observacao_Filiacao { get; set; }
-        public string Sexo { get; set; }
         public string Nome { get; set; }
         public byte ProdutorRural { get; set; }
         public string Endereco { get; set; }
@@ -61,7 +60,6 @@ namespace Prepedido.Dto
                 Contribuinte_Icms_Status = origem.Contribuinte_Icms_Status,
                 Tipo = origem.Tipo,
                 Observacao_Filiacao = origem.Observacao_Filiacao,
-                Sexo = origem.Sexo,
                 Nome = origem.Nome,
                 ProdutorRural = origem.ProdutorRural,
                 Endereco = origem.Endereco,
@@ -107,7 +105,6 @@ namespace Prepedido.Dto
                 Contribuinte_Icms_Status = origem.Contribuinte_Icms_Status,
                 Tipo = origem.Tipo,
                 Observacao_Filiacao = origem.Observacao_Filiacao,
-                Sexo = origem.Sexo,
                 Nome = origem.Nome,
                 ProdutorRural = origem.ProdutorRural,
                 Endereco = origem.Endereco,

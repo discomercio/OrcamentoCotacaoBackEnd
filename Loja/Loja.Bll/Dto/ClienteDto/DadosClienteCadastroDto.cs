@@ -16,7 +16,6 @@ namespace Loja.Bll.Dto.ClienteDto
         public byte Contribuinte_Icms_Status { get; set; }
         public string Tipo { get; set; }
         public string Observacao_Filiacao { get; set; }
-        public string Sexo { get; set; }
         public string Nome { get; set; }
         public byte ProdutorRural { get; set; }
         public string Endereco { get; set; }
@@ -56,7 +55,6 @@ namespace Loja.Bll.Dto.ClienteDto
                 Contribuinte_Icms_Status = origem.Contribuinte_Icms_Status,
                 Tipo = origem.Tipo,
                 Observacao_Filiacao = origem.Observacao_Filiacao,
-                Sexo = origem.Sexo,
                 Nome = origem.Nome,
                 ProdutorRural = origem.ProdutorRural,
                 Endereco = origem.Endereco,
@@ -132,7 +130,6 @@ namespace Loja.Bll.Dto.ClienteDto
                 Contribuinte_Icms_Status = dadosClienteCadastroDto.Contribuinte_Icms_Status,
                 Tipo = dadosClienteCadastroDto.Tipo,
                 Observacao_Filiacao = dadosClienteCadastroDto.Observacao_Filiacao,
-                Sexo = dadosClienteCadastroDto.Sexo??"",
                 Nome = dadosClienteCadastroDto.Nome,
                 ProdutorRural = dadosClienteCadastroDto.ProdutorRural,
                 Endereco = dadosClienteCadastroDto.Endereco,

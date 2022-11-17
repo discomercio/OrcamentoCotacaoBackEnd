@@ -176,7 +176,6 @@ Ao cadastrar o cliente:
                 Nome = dadosClienteMagento.Endereco_nome,
                 Cnpj_Cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(dadosClienteMagento.Endereco_cnpj_cpf.Trim()),
                 Tipo = dadosClienteMagento.Endereco_tipo_pessoa,
-                Sexo = "",
                 Rg = "",
                 DddCelular = dadosClienteMagento.Endereco_ddd_cel,
                 Celular = dadosClienteMagento.Endereco_tel_cel,

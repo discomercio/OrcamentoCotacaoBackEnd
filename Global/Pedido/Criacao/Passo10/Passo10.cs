@@ -31,8 +31,7 @@ namespace Pedido.Criacao.Passo10
 
             //vamos validar os dados do cliente que esta vindo no pedido
             var dadosClienteCadastroDados = Cliente.Dados.DadosClienteCadastroDados.DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(Pedido.EnderecoCadastralCliente,
-                Pedido.Ambiente.Indicador, Pedido.Ambiente.Loja,
-                "", Criacao.Execucao.Id_cliente, null);
+                Pedido.Ambiente.Indicador, Pedido.Ambiente.Loja, Criacao.Execucao.Id_cliente, null);
             await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDados,
                 false,
                 null,

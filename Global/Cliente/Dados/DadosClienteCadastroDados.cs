@@ -16,7 +16,6 @@ namespace Cliente.Dados
         public byte Contribuinte_Icms_Status { get; set; }
         public string Tipo { get; set; }
         public string Observacao_Filiacao { get; set; }
-        public string Sexo { get; set; }
         public string Nome { get; set; }
         public byte ProdutorRural { get; set; }
         public string Endereco { get; set; }
@@ -46,8 +45,7 @@ namespace Cliente.Dados
         public float? Perc_max_comissao_e_desconto_padrao { get; set; }
 
         public static DadosClienteCadastroDados DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(
-            EnderecoCadastralClientePrepedidoDados endCadastral, string indicadorOrcamentista, string loja,
-            string sexo, string idCliente, string usuarioCadastro)
+            EnderecoCadastralClientePrepedidoDados endCadastral, string indicadorOrcamentista, string loja, string idCliente, string usuarioCadastro)
         {
             if (endCadastral == null) return null;
             /* Ao criar um novo pré-pedido será permitido que seja alterado os dados do cliente 
@@ -66,7 +64,6 @@ namespace Cliente.Dados
                 Nome = endCadastral.Endereco_nome,
                 Cnpj_Cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(endCadastral.Endereco_cnpj_cpf.Trim()),
                 Tipo = endCadastral.Endereco_tipo_pessoa,
-                Sexo = sexo == null ? "" : sexo,
                 Rg = endCadastral.Endereco_rg == null ? "" : endCadastral.Endereco_rg,
                 DddCelular = endCadastral.Endereco_ddd_cel,
                 Celular = endCadastral.Endereco_tel_cel,

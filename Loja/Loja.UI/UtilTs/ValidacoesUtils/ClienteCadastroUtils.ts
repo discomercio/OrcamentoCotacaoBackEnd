@@ -237,7 +237,6 @@ export class ClienteCadastroUtils {
         obj.Ie = "";
         obj.Tipo = "";
         obj.Observacao_Filiacao = "";
-        obj.Sexo = "";
         obj.Nome = "";
         obj.Endereco = "";
         obj.Numero = "";

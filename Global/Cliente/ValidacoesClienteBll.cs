@@ -23,7 +23,6 @@ namespace Cliente
                             "Certifique-se de que a UF informada corresponde à UF responsável pelo registro da IE.";
             public static string CPF_INVALIDO = "CPF INVÁLIDO.";
             public static string CPF_NAO_FORNECIDO = "CPF NÃO FORNECIDO.";
-            public static string GENERO_DO_CLIENTE_NAO_INFORMADO = "GÊNERO DO CLIENTE NÃO INFORMADO!.";
             public static string INFORME_SE_O_CLIENTE_E_PF_OU_PJ = "INFORME SE O CLIENTE É PF OU PJ!";
             public static string Tipo_de_cliente_nao_e_PF_nem_PJ = "Tipo de cliente não é PF nem PJ.";
             public static string CNPJ_INVALIDO = "CNPJ INVÁLIDO.";
@@ -194,9 +193,6 @@ namespace Cliente
                 }
             }
 
-            //vamos validar o sexo
-            ValidarGenero(dadosCliente, lstErros, sistemaResponsavel, novoCliente);
-
             await ValidacoesClienteTelefones.ValidarTelefones_PF(dadosCliente, cliente, lstErros, contextoProvider, sistemaResponsavel);
 
             if (!string.IsNullOrEmpty(dadosCliente.Email))
@@ -219,25 +215,6 @@ namespace Cliente
             }
         }
 
-        private static void ValidarGenero(Cliente.Dados.DadosClienteCadastroDados dadosCliente, List<string> lstErros,
-            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel, bool novoCliente)
-        {
-            if (string.IsNullOrEmpty(dadosCliente.Sexo))
-            {
-                if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO &&
-                    novoCliente)
-                {
-                    lstErros.Add(MensagensErro.GENERO_DO_CLIENTE_NAO_INFORMADO);
-                }
-            }
-            var sexo = dadosCliente.Sexo ?? "";
-            if (sexo.Length > 1 || (sexo != "M" && sexo != "F") &&
-                sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO && novoCliente)
-            {
-                lstErros.Add("FORMATO DO TIPO DE SEXO INVÁLIDO!");
-
-            }
-        }
         private static async Task ValidarDadosCliente_PJ(Cliente.Dados.DadosClienteCadastroDados dadosCliente, Tcliente cliente,
             List<string> lstErros, ContextoBdProvider contextoProvider, InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel)
         {
@@ -260,16 +237,11 @@ namespace Cliente
             {
                 lstErros.Add("Se cliente é tipo PJ, não pode ser Produtor Rural");
             }
-            //verificar de criar esses testes
-            if (!string.IsNullOrEmpty(dadosCliente.Sexo))
-            {
-                lstErros.Add("Se cliente é tipo PJ, o sexo não deve ser preenchido.");
-            }
+            
             if (!string.IsNullOrEmpty(dadosCliente.Rg))
             {
                 lstErros.Add("Se cliente é tipo PJ, o RG não deve ser preenchido.");
             }
-
 
             if (string.IsNullOrEmpty(dadosCliente.Nome))
             {

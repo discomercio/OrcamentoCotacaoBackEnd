@@ -517,7 +517,6 @@ namespace Cliente
                 Contribuinte_Icms_Status = cli.Contribuinte_Icms_Status,
                 Tipo = cli.Tipo,
                 Observacao_Filiacao = cli.Filiacao,
-                Sexo = cli.Sexo,
                 Nome = cli.Nome,
                 ProdutorRural = cli.Produtor_Rural_Status,
                 DddResidencial = cli.Ddd_Res,
@@ -692,7 +691,6 @@ namespace Cliente
             tCliente.Ie = clienteDados.Ie;
             tCliente.Rg = clienteDados.Rg;
             tCliente.Nome = clienteDados.Nome;
-            tCliente.Sexo = clienteDados.Sexo;
             tCliente.Contribuinte_Icms_Status = clienteDados.Contribuinte_Icms_Status;
             tCliente.Contribuinte_Icms_Data = DateTime.Now;
             tCliente.Contribuinte_Icms_Data_Hora = DateTime.Now;

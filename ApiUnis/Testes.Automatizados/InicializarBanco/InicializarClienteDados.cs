@@ -20,7 +20,6 @@ namespace Testes.Automatizados.InicializarBanco
             var ret = JsonConvert.DeserializeObject<ClienteCadastroUnisDto>(ClienteNaoCadastradoPJJson);
             ret.DadosCliente.Tipo = "PF";
             ret.DadosCliente.Cnpj_Cpf = "479.378.150-00";
-            ret.DadosCliente.Sexo = "M";
             ret.DadosCliente.ProdutorRural = (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
             ret.DadosCliente.Contribuinte_Icms_Status = (byte)Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_INICIAL;
             ret.DadosCliente.Ie = "";
@@ -41,7 +40,6 @@ namespace Testes.Automatizados.InicializarBanco
     ""Contribuinte_Icms_Status"": 2,
     ""Tipo"": ""PJ"",
     ""Observacao_Filiacao"": """",
-    ""Sexo"": null,
     ""Nome"": ""Teste Cadastro Empresa Unis 4"",
     ""ProdutorRural"": 0,
     ""Endereco"": ""teste de teste"",

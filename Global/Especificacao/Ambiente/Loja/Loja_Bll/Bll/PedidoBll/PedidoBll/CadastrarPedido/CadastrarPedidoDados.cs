@@ -47,7 +47,6 @@ namespace Especificacao.Ambiente.Loja.Loja_Bll.Bll.PedidoBll.PedidoBll.Cadastrar
         {
             ret.DadosCliente.Tipo = "PJ";
             ret.DadosCliente.Cnpj_Cpf = "76297703000195";
-            ret.DadosCliente.Sexo = "";
             ret.DadosCliente.Rg = "";
             ret.DadosCliente.DddResidencial = "";
             ret.DadosCliente.TelefoneResidencial = "";

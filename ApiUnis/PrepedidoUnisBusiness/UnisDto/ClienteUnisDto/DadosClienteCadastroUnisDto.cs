@@ -48,13 +48,6 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         [MaxLength(60)]
         public string Observacao_Filiacao { get; set; }
 
-        public DateTime? Nascimento { get; set; }
-
-        /// <summary>
-        /// Sexo = "M", "F"
-        /// </summary>
-        [MaxLength(1)]
-        public string Sexo { get; set; }
 
         [MaxLength(60)]
         [Required]
@@ -141,8 +134,7 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
         //public int Sistema_responsavel_atualizacao { get; set; }
 
         public static DadosClienteCadastroDto DadosClienteCadastroDtoDeEnderecoCadastralClientePrepedidoUnisDto(
-            EnderecoCadastralClientePrepedidoUnisDto endCadastral, string indicadorOrcamentista, string loja, 
-            string sexo, DateTime nascimento, string idCliente)
+            EnderecoCadastralClientePrepedidoUnisDto endCadastral, string indicadorOrcamentista, string loja, DateTime nascimento, string idCliente)
         {
             /* Ao criar um novo pré-pedido será permitido que seja alterado os dados do cliente 
              * sem que altere o cadastro do cliente na base de dados, 
@@ -160,7 +152,6 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
                 Nome = endCadastral.Endereco_nome,
                 Cnpj_Cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(endCadastral.Endereco_cnpj_cpf.Trim()),
                 Tipo = endCadastral.Endereco_tipo_pessoa,
-                Sexo = sexo == null ? "" : sexo,
                 Rg = endCadastral.Endereco_rg == null ? "" : endCadastral.Endereco_rg,
                 DddCelular = endCadastral.Endereco_ddd_cel,
                 Celular = endCadastral.Endereco_tel_cel,
@@ -203,7 +194,6 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
                 Contribuinte_Icms_Status = clienteCadastroDto.Contribuinte_Icms_Status,
                 Tipo = clienteCadastroDto.Tipo,
                 Observacao_Filiacao = clienteCadastroDto.Observacao_Filiacao,
-                Sexo = clienteCadastroDto.Sexo,
                 Nome = clienteCadastroDto.Nome,
                 ProdutorRural = clienteCadastroDto.ProdutorRural,
                 Endereco = clienteCadastroDto.Endereco,
@@ -239,7 +229,6 @@ namespace PrepedidoApiUnisBusiness.UnisDto.ClienteUnisDto
                 Nome = dadosClienteUnis.Nome,
                 Cnpj_Cpf = UtilsGlobais.Util.SoDigitosCpf_Cnpj(dadosClienteUnis.Cnpj_Cpf.Trim()),
                 Tipo = dadosClienteUnis.Tipo,
-                Sexo = dadosClienteUnis.Sexo == null ? "" : dadosClienteUnis.Sexo,
                 Rg = dadosClienteUnis.Rg == null ? "" : dadosClienteUnis.Rg,
                 DddCelular = dadosClienteUnis.DddCelular,
                 Celular = dadosClienteUnis.Celular,
