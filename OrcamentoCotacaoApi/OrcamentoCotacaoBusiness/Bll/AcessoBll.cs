@@ -461,12 +461,12 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             if (!regex.IsMatch(senha_nova))
             {
-                return "A senha deve conter pelo menos 8 caracteres entre letras e dígitos.";
+                return "A senha deve ter de 8 a 15 caracteres com pelo menos uma letra e um número.";
             }
 
             if (!regex.IsMatch(senha_nova_confirma))
             {
-                return "A confirmação da nova senha deve conter pelo menos 8 caracteres entre letras e dígitos.";
+                return "A confirmação da nova senha deve ter de 8 a 15 caracteres com pelo menos uma letra e um número.";
             }
 
             if (senha_nova != senha_nova_confirma)
