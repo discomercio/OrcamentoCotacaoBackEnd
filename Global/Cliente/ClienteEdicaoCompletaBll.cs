@@ -312,14 +312,14 @@ namespace Cliente
 
             if (dados.Tipo == Constantes.ID_PF)
             {
-                DateTime data_banco = cli.Dt_Nasc ?? new DateTime();
-                DateTime data_dados = dados.Nascimento ?? new DateTime();
-                if (data_dados != data_banco)
-                {
-                    log += "dt_nasc: " + (data_banco != new DateTime() ? data_banco.ToString("dd/MM/yyyy") : campo_vazio) +
-                        " => " + (data_dados != new DateTime() ? data_dados.ToString("dd/MM/yyyy") : campo_vazio) + "; ";
-                    cli.Dt_Nasc = dados.Nascimento;
-                }
+                //DateTime data_banco = cli.Dt_Nasc ?? new DateTime();
+                //DateTime data_dados = dados.Nascimento ?? new DateTime();
+                //if (data_dados != data_banco)
+                //{
+                //    log += "dt_nasc: " + (data_banco != new DateTime() ? data_banco.ToString("dd/MM/yyyy") : campo_vazio) +
+                //        " => " + (data_dados != new DateTime() ? data_dados.ToString("dd/MM/yyyy") : campo_vazio) + "; ";
+                //    cli.Dt_Nasc = dados.Nascimento;
+                //}
                 if (dados.Observacao_Filiacao != cli.Filiacao)
                     log += "filiacao: " + (!string.IsNullOrEmpty(cli.Filiacao) ? cli.Filiacao : campo_vazio) +
                         " => " + (!string.IsNullOrEmpty(dados.Observacao_Filiacao) ? dados.Observacao_Filiacao : campo_vazio) + "; ";
@@ -369,15 +369,6 @@ namespace Cliente
             string aux = "";
             string campo_vazio = "\"\"";
 
-
-
-            DateTime data_banco = cli.Dt_Nasc ?? new DateTime();
-            DateTime data_dados = dados.Nascimento ?? new DateTime();
-            if (data_dados != data_banco)
-            {
-                aux += "dt_nasc: " + (data_banco != new DateTime() ? data_banco.ToString() : campo_vazio) +
-                    " => " + (data_dados != new DateTime() ? data_dados.ToString() : campo_vazio) + ";";
-            }
             if (dados.Observacao_Filiacao != cli.Filiacao)
                 aux += "filiacao: " + (!string.IsNullOrEmpty(cli.Filiacao) ? cli.Filiacao : campo_vazio) +
                     " => " + (!string.IsNullOrEmpty(dados.Observacao_Filiacao) ? dados.Observacao_Filiacao : campo_vazio) + ";";

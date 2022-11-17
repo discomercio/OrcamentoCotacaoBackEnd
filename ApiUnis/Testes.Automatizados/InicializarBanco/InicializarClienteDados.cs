@@ -41,7 +41,6 @@ namespace Testes.Automatizados.InicializarBanco
     ""Contribuinte_Icms_Status"": 2,
     ""Tipo"": ""PJ"",
     ""Observacao_Filiacao"": """",
-    ""Nascimento"": null,
     ""Sexo"": null,
     ""Nome"": ""Teste Cadastro Empresa Unis 4"",
     ""ProdutorRural"": 0,

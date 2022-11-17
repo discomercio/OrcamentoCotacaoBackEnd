@@ -197,9 +197,6 @@ namespace Cliente
             //vamos validar o sexo
             ValidarGenero(dadosCliente, lstErros, sistemaResponsavel, novoCliente);
 
-            //validar nascimento
-            ValidarNascimento(dadosCliente, lstErros, sistemaResponsavel, novoCliente);
-
             await ValidacoesClienteTelefones.ValidarTelefones_PF(dadosCliente, cliente, lstErros, contextoProvider, sistemaResponsavel);
 
             if (!string.IsNullOrEmpty(dadosCliente.Email))
@@ -218,29 +215,6 @@ namespace Cliente
                 if (!string.IsNullOrEmpty(dadosCliente.Contato))
                 {
                     lstErros.Add("Se cliente é tipo PF não deve ter o campo contato preenchido.");
-                }
-            }
-        }
-
-        private static void ValidarNascimento(Cliente.Dados.DadosClienteCadastroDados dadosCliente, List<string> lstErros,
-            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel, bool novoCliente)
-        {
-            if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ERP_WEBAPI &&
-                novoCliente)
-            {
-                if (dadosCliente.Nascimento.HasValue)
-                {
-                    if (!DateTime.TryParse(dadosCliente.Nascimento.ToString(), out DateTime value))
-                        lstErros.Add("Data de nascimento inválida!");
-                    //vamos validar
-                    if (dadosCliente.Nascimento.Value.Year <= 1900 ||
-                        dadosCliente.Nascimento.Value.Year.ToString().Length < 4)
-                        lstErros.Add("Data de nascimento inválida!");
-                    //if (dadosCliente.Nascimento.Value.Day >= DateTime.Now.Day &&
-                    //    dadosCliente.Nascimento.Value.Month >= DateTime.Now.Month &&
-                    //    dadosCliente.Nascimento.Value.Year >= DateTime.Now.Year)
-                    if (dadosCliente.Nascimento.Value.Date >= DateTime.Now.Date)
-                        lstErros.Add("Data de nascimento não pode ser igual ou maior que a data atual!");
                 }
             }
         }
@@ -294,10 +268,6 @@ namespace Cliente
             if (!string.IsNullOrEmpty(dadosCliente.Rg))
             {
                 lstErros.Add("Se cliente é tipo PJ, o RG não deve ser preenchido.");
-            }
-            if (dadosCliente.Nascimento != null)
-            {
-                lstErros.Add("Se cliente é tipo PJ, o Nascimento não deve ser preenchido.");
             }
 
 

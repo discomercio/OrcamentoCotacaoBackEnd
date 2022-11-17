@@ -375,7 +375,6 @@ function converterParaDadosClienteCadastroDto(): DadosClienteCadastroDto {
     dadosClienteCadastroDto.Contribuinte_Icms_Status = parseInt($("#contribuinte")?.val() as string);
     dadosClienteCadastroDto.Tipo = $("#tipo").val() as string;
     dadosClienteCadastroDto.Observacao_Filiacao = $("#observacoes").val() as string;
-    dadosClienteCadastroDto.Nascimento = $("#nascimento").val() as string;
     dadosClienteCadastroDto.Sexo = $("#sexo").val() as string;
     dadosClienteCadastroDto.Nome = dadosClienteCadastroDto.Tipo == Constantes.ID_PF ? $("#nome").val() as string : $("#razao").val() as string;
     dadosClienteCadastroDto.ProdutorRural = parseInt($('#produtor').val() as string);

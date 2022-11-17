@@ -178,7 +178,6 @@ Ao cadastrar o cliente:
                 Tipo = dadosClienteMagento.Endereco_tipo_pessoa,
                 Sexo = "",
                 Rg = "",
-                Nascimento = null,
                 DddCelular = dadosClienteMagento.Endereco_ddd_cel,
                 Celular = dadosClienteMagento.Endereco_tel_cel,
                 DddResidencial = dadosClienteMagento.Endereco_ddd_res ?? "",
