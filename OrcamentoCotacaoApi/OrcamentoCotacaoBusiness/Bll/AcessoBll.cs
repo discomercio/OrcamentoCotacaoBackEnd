@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UtilsGlobais;
+using System.Text.Json;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -167,13 +168,14 @@ namespace OrcamentoCotacaoBusiness.Bll
                         //dbgravacao.transacao.Commit();
                     }
 
+                    /* RETORNA E EXIGE A TROCA DE SENHA
                     if (t.Dt_Ult_Alteracao_Senha == null)
                     {
                         //Senha expirada, precisa mandar alguma valor de senha expirada
                         //coloquei o valor "4" para saber quando a senha esta expirada
                         msgErro = Constantes.ERR_SENHA_EXPIRADA;
                         return null;// await Task.FromResult("4");
-                    }
+                    }*/
                 }
 
                 return t;
@@ -409,6 +411,47 @@ namespace OrcamentoCotacaoBusiness.Bll
             return new AtualizarSenhaResponseViewModel(true, "Alteração de senha realizada com sucesso.");
         }
 
+        public async Task<ExpiracaoSenhaResponseViewModel> VerificarExpiracao(AtualizarSenhaDto atualizarSenhaDto)
+        {
+
+            var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM);
+
+            bool expirada = false;
+
+
+            if (atualizarSenhaDto.TipoUsuario == 1)
+            {
+                var usuario = await (from u in dbgravacao.Tusuario
+                                     where u.Usuario == atualizarSenhaDto.Apelido.ToUpper().Trim()
+                                     select u).FirstOrDefaultAsync();
+
+
+                if (usuario.Dt_Ult_Alteracao_Senha == null) expirada = true;
+
+            }
+            else if (atualizarSenhaDto.TipoUsuario == 2)
+            {
+                var orcamentista = await (from u in dbgravacao.TorcamentistaEindicador
+                                          where u.Apelido == atualizarSenhaDto.Apelido.ToUpper().Trim()
+                                          select u).FirstOrDefaultAsync();
+
+                if (orcamentista.Dt_Ult_Alteracao_Senha == null) expirada = true;
+
+            }
+            else
+            {
+                var vendedorParceiro = await (from u in dbgravacao.TorcamentistaEIndicadorVendedor
+                                              where u.Email == atualizarSenhaDto.Apelido.ToUpper().Trim()
+                                              select u).FirstOrDefaultAsync();
+
+                if (vendedorParceiro.DataUltimaAlteracaoSenha == null) expirada = true;
+
+            }
+
+            return new ExpiracaoSenhaResponseViewModel(expirada, "Senha expirada ou primeiro acesso.");
+
+        }
+
         private string SenhaValida(
             string usuario,
             string senha,
@@ -419,12 +462,12 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             if (!regex.IsMatch(senha_nova))
             {
-                return "A senha deve conter pelo menos 8 caracteres entre letras e dígitos.";
+                return "A senha deve ter de 8 a 15 caracteres com pelo menos uma letra e um número.";
             }
 
             if (!regex.IsMatch(senha_nova_confirma))
             {
-                return "A confirmação da nova senha deve conter pelo menos 8 caracteres entre letras e dígitos.";
+                return "A confirmação da nova senha deve ter de 8 a 15 caracteres com pelo menos uma letra e um número.";
             }
 
             if (senha_nova != senha_nova_confirma)
@@ -458,6 +501,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                 usuario.Dt_Ult_Alteracao_Senha = DateTime.Now.Date;
                 usuario.Dt_Ult_Atualizacao = DateTime.Now;
 
+                // Campo da tabela t_log hoje comporta até 20 e no futuro iremos utilizar outra tabela de log v2
+                if (apelido.Length > 20)
+                {
+                    apelido = apelido.Substring(0, 20);
+                }
+
                 var novoLog = Util.GravaLog(
                                             dbgravacao,
                                             apelido,
@@ -489,6 +538,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                 orcamentista.Datastamp = senha;
                 orcamentista.Dt_Ult_Alteracao_Senha = DateTime.Now.Date;
                 orcamentista.Dt_Ult_Atualizacao = DateTime.Now;
+
+                // Campo da tabela t_log hoje comporta até 20 e no futuro iremos utilizar outra tabela de log v2
+                if (apelido.Length > 20)
+                {
+                    apelido = apelido.Substring(0, 20);
+                }
 
                 var novoLog = Util.GravaLog(
                                             dbgravacao,
@@ -522,6 +577,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                 vendedorParceiro.DataUltimaAlteracao = DateTime.Now;
                 vendedorParceiro.DataUltimaAlteracaoSenha = DateTime.Now;
 
+                // Campo da tabela t_log hoje comporta até 20 e no futuro iremos utilizar outra tabela de log v2
+                if (apelido.Length > 20)
+                {
+                    apelido = apelido.Substring(0, 20);
+                }
+
                 var novoLog = Util.GravaLog(
                                             dbgravacao,
                                             apelido,
@@ -530,7 +591,9 @@ namespace OrcamentoCotacaoBusiness.Bll
                                             "",
                                             Constantes.OP_LOG_SENHA_ALTERACAO,
                                             "SENHA ALTERADA PELO VENDEDOR DO PARCEIRO");
+                
 
+                
                 if (novoLog)
                 {
                     dbgravacao.Update(vendedorParceiro);
