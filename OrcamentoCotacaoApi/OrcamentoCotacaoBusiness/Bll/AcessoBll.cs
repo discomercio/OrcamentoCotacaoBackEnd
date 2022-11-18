@@ -373,6 +373,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 return new AtualizarSenhaResponseViewModel(false, "Favor preencher todos os campos.");
             }
 
+            var senha_digitada = atualizarSenhaDto.Senha;
             var senha = Util.decodificaDado(atualizarSenhaDto.Senha, Constantes.FATOR_CRIPTO).Trim();
             var senha_nova = Util.decodificaDado(atualizarSenhaDto.NovaSenha, Constantes.FATOR_CRIPTO).Trim();
             var senha_nova_confirma = Util.decodificaDado(atualizarSenhaDto.ConfirmacaoSenha, Constantes.FATOR_CRIPTO).Trim();
@@ -395,17 +396,17 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             if (atualizarSenhaDto.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
             {
-                await AtualizarSenhaVendedorAsync(atualizarSenhaDto.Apelido, senha_codificada);
+                await AtualizarSenhaVendedorAsync(atualizarSenhaDto.Apelido, senha_codificada, senha_digitada);
             }
 
             if (atualizarSenhaDto.TipoUsuario == (int)Constantes.TipoUsuario.PARCEIRO)
             {
-                await AtualizarSenhaParceiroAsync(atualizarSenhaDto.Apelido, senha_codificada);
+                await AtualizarSenhaParceiroAsync(atualizarSenhaDto.Apelido, senha_codificada, senha_digitada);
             }
 
             if (atualizarSenhaDto.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
             {
-                await AtualizarSenhaVendedoParceiro(atualizarSenhaDto.Apelido, senha_codificada);
+                await AtualizarSenhaVendedoParceiro(atualizarSenhaDto.Apelido, senha_codificada, senha_digitada);
             }
 
             return new AtualizarSenhaResponseViewModel(true, "Alteração de senha realizada com sucesso.");
@@ -488,13 +489,19 @@ namespace OrcamentoCotacaoBusiness.Bll
             return string.Empty;
         }
 
-        private async Task AtualizarSenhaVendedorAsync(string apelido, string senha)
+        private async Task AtualizarSenhaVendedorAsync(string apelido, string senha, string senha_digitada)
         {
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTISTA_E_INDICADOR))
             {
                 var usuario = await (from u in dbgravacao.Tusuario
                                      where u.Usuario == apelido.ToUpper().Trim()
                                      select u).FirstOrDefaultAsync();
+
+
+                if (usuario.Datastamp != senha_digitada)
+                {
+                    throw new ArgumentException("A senha digitada não é a mesma cadastrada no sistema!");
+                }
 
                 usuario.Senha = Util.GerarSenhaAleatoria();
                 usuario.Datastamp = senha;
@@ -521,18 +528,24 @@ namespace OrcamentoCotacaoBusiness.Bll
                     dbgravacao.Update(usuario);
                     await dbgravacao.SaveChangesAsync();
 
-                    dbgravacao.transacao.Commit();
+                    dbgravacao.transacao.Commit();                    
                 }
-            }
+            }            
         }
 
-        private async Task AtualizarSenhaParceiroAsync(string apelido, string senha)
+        private async Task AtualizarSenhaParceiroAsync(string apelido, string senha, string senha_digitada)
         {
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTISTA_E_INDICADOR))
             {
                 var orcamentista = await (from u in dbgravacao.TorcamentistaEindicador
                                           where u.Apelido == apelido.ToUpper().Trim()
                                           select u).FirstOrDefaultAsync();
+
+                if (orcamentista.Datastamp != senha_digitada)
+                {
+                    throw new ArgumentException("A senha digitada não é a mesma cadastrada no sistema!");
+                }
+
 
                 orcamentista.Senha = Util.GerarSenhaAleatoria();
                 orcamentista.Datastamp = senha;
@@ -561,10 +574,10 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     dbgravacao.transacao.Commit();
                 }
-            }
+            }            
         }
 
-        private async Task AtualizarSenhaVendedoParceiro(string apelido, string senha)
+        private async Task<string> AtualizarSenhaVendedoParceiro(string apelido, string senha, string senha_digitada)
         {
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTISTA_E_INDICADOR))
             {
@@ -572,10 +585,16 @@ namespace OrcamentoCotacaoBusiness.Bll
                                               where u.Email == apelido.ToUpper().Trim()
                                               select u).FirstOrDefaultAsync();
 
+                if (vendedorParceiro.Datastamp != senha_digitada)
+                {
+                    throw new ArgumentException("A senha digitada não é a mesma cadastrada no sistema!");
+                }
+
                 vendedorParceiro.Senha = Util.GerarSenhaAleatoria();
                 vendedorParceiro.Datastamp = senha;
                 vendedorParceiro.DataUltimaAlteracao = DateTime.Now;
                 vendedorParceiro.DataUltimaAlteracaoSenha = DateTime.Now;
+
 
                 // Campo da tabela t_log hoje comporta até 20 e no futuro iremos utilizar outra tabela de log v2
                 if (apelido.Length > 20)
@@ -602,6 +621,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     dbgravacao.transacao.Commit();
                 }
             }
+
+            return string.Empty;
         }
     }
 }
