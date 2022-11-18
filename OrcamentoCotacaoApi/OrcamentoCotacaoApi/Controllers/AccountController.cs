@@ -149,7 +149,7 @@ namespace OrcamentoCotacaoApi.Controllers
             }
         }
 
-        [AllowAnonymous]
+        [Authorize]
         [HttpPost]
         [Route("AtualzarSenha")]
         public async Task<ActionResult<object>> AtualzarSenha(AtualizarSenhaRequestViewModel request)
