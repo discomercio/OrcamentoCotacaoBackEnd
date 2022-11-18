@@ -101,9 +101,8 @@ namespace Orcamento
                     List<OrcamentoCotacaoListaDto> saida = (from c in db.Torcamento
                                                             join vp in db.TorcamentistaEIndicadorVendedor on c.IdIndicadorVendedor equals vp.Id into gj
                                                             from loj in gj.DefaultIfEmpty()
-                                                            where c.Data > DateTime.Now.AddDays(-60)
-                                                                    && c.St_Orcamento != "CAN" //CANCELADOS
-                                                                    && c.Loja == filtro.Loja
+                                                            where c.Data > DateTime.Now.AddDays(-60) && 
+                                                                  c.Loja == filtro.Loja
                                                             orderby c.Data descending
                                                             select new OrcamentoCotacaoListaDto
                                                             {
@@ -115,7 +114,7 @@ namespace Orcamento
                                                                 VendedorParceiro = loj.Nome,
                                                                 Valor = c.Permite_RA_Status == 1 ? c.Vl_Total_NF.Value.ToString() : c.Vl_Total.ToString(),
                                                                 Orcamentista = c.Orcamentista == null ? "" : c.Orcamentista,
-                                                                Status = c.St_Orc_Virou_Pedido == 1 ? "Pedido em andamento" : "Pedido em processamento",
+                                                                Status = c.St_Orc_Virou_Pedido == 1 ? "Pedido em andamento" : c.St_Orcamento != "CAN" ? "Pedido em processamento" : "Cancelado",
                                                                 VistoEm = "",
                                                                 IdIndicadorVendedor = c.IdIndicadorVendedor == null ? null : c.IdIndicadorVendedor,
                                                                 St_Orc_Virou_Pedido = c.St_Orc_Virou_Pedido,
@@ -161,7 +160,7 @@ namespace Orcamento
                 {
                     return await db.TcfgOrcamentoCotacaoStatus
                         .OrderBy(x => x.Id)
-                        .Select(x=> new TcfgSelectItem
+                        .Select(x => new TcfgSelectItem
                         {
                             Id = x.Id.ToString(),
                             Value = x.Descricao
