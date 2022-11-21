@@ -91,7 +91,7 @@ namespace Cep
             List<CepDados> lista1 = await (from c in db.LogLogradouros
                                          join d in db.LogBairros on c.Bai_nu_sequencial_ini equals d.Bai_nu_sequencial
                                          join e in db.LogLocalidades on c.Loc_nu_sequencial equals e.Loc_nu_sequencial
-                                         where c.Cep_dig.EndsWith(cep)
+                                         where EF.Functions.Like(c.Cep_dig, cep+"%")
                                          select new CepDados
                                          {
                                              Cep = c.Cep_dig,
@@ -106,7 +106,7 @@ namespace Cep
                                            join d in db.LogLogradouros on c.Log_nu_sequencial equals d.Log_nu_sequencial
                                            join e in db.LogBairros on c.Bai_nu_sequencial equals e.Bai_nu_sequencial
                                            join f in db.LogLocalidades on c.Loc_nu_sequencial equals f.Loc_nu_sequencial
-                                           where c.Cep_dig.EndsWith(cep)
+                                           where EF.Functions.Like(c.Cep_dig, cep + "%")
                                            select new CepDados
                                            {
                                                Cep = c.Cep_dig,
@@ -118,8 +118,8 @@ namespace Cep
                                            }).ToListAsync();
 
             List<CepDados> lista3 = await (from c in db.LogLocalidades
-                                         where c.Cep_dig.EndsWith(cep)
-                                         select new CepDados
+                                         where EF.Functions.Like(c.Cep_dig, cep + "%")
+                                           select new CepDados
                                          {
                                              Cep = c.Cep_dig,
                                              Uf = c.Ufe_sg,
@@ -127,8 +127,8 @@ namespace Cep
                                          }).ToListAsync();
 
             List<CepDados> lista4 = await (from c in db.TcepLogradouros
-                                         where c.Cep8_log.EndsWith(cep)
-                                         select new CepDados
+                                         where EF.Functions.Like(c.Cep8_log, cep + "%")
+                                           select new CepDados
                                          {
                                              Cep = c.Cep8_log,
                                              Uf = c.Uf_log,
