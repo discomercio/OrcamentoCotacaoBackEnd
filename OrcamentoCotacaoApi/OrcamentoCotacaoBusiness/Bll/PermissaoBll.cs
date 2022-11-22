@@ -308,9 +308,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             var idTipoUsuario = request.TipoUsuario;
             var idUsuario = request.IdUsuario;
             var usuario = request.Usuario.ToUpper().Trim();
-            var idPedido = request.IdPedido;
 
-            if (idPedido.ToUpper().Contains("Z"))
+            if (request.IdPedido.ToUpper().Contains("Z"))
             {
                 var idPrePedido = request.IdPedido;
 
@@ -318,9 +317,12 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 if (prePedido != null)
                 {
-                    idPedido = prePedido.Pedido;
+                    response.PrePedidoVirouPedido = true;
+                    response.IdPedido = prePedido.Pedido;
                 }
             }
+
+            var idPedido = response.PrePedidoVirouPedido ? response.IdPedido : request.IdPedido;
 
             // Pedido
             var pedido = ObterPedidoPorIdPedido(idPedido);
