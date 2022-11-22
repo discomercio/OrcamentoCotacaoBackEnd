@@ -514,6 +514,7 @@ namespace Prepedido.Bll
 
             foreach (var p in produtos)
             {
+                var desc = Math.Round(1 - (decimal)p.Desc_Dado / 100, 4);
                 PrepedidoProdutoPrepedidoDados produtoPrepedido = new PrepedidoProdutoPrepedidoDados
                 {
                     Fabricante = p.Fabricante,
@@ -531,8 +532,8 @@ namespace Prepedido.Bll
                     VlTotalRA = (decimal)(p.Qtde * (p.Preco_NF - p.Preco_Venda)),
                     Comissao = orc.Perc_RT,
                     TotalItemRA = (p.Qtde ?? 0) * (p.Preco_NF ?? 0),
-                    TotalItem = (p.Qtde ?? 0) * (p.Preco_Venda),
-                    VlTotalItem = (p.Qtde ?? 0) * (p.Preco_Venda)
+                    TotalItem = Math.Round((decimal)(p.Preco_Lista * p.Qtde) * (decimal)desc, 2),
+                    VlTotalItem = Math.Round((decimal)(p.Preco_Lista * p.Qtde) * (decimal)desc, 2)
 
                 };
 
