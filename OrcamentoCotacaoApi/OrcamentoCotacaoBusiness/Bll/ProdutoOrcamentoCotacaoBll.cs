@@ -392,8 +392,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                             IdOpcaoPagto = pagto.Id,
                             DescDado = itemOpcao.DescDado,
                             PrecoLista = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? Math.Round((decimal)item.Preco_lista, 2) : Math.Round((decimal)item.Preco_lista * (decimal)itemOpcao.CustoFinancFornecCoeficiente, 2),
-                            PrecoVenda = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? Math.Round((decimal)item.Preco_lista * (decimal)(1 - itemOpcao.DescDado / 100), 2) : Math.Round((decimal)item.Preco_lista * (decimal)itemOpcao.CustoFinancFornecCoeficiente * (decimal)(1 - itemOpcao.DescDado / 100), 2),
-                            PrecoNF = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? Math.Round((decimal)item.Preco_lista * (decimal)(1 - itemOpcao.DescDado / 100), 2) : Math.Round((decimal)item.Preco_lista * (decimal)itemOpcao.CustoFinancFornecCoeficiente * (decimal)(1 - itemOpcao.DescDado / 100), 2),
+                            PrecoVenda = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? Math.Round((decimal)item.Preco_lista * (decimal)(1 - itemOpcao.DescDado / 100), 2) : Math.Round(Math.Round((decimal)item.Preco_lista * (decimal)itemOpcao.CustoFinancFornecCoeficiente, 2) * (decimal)(1 - itemOpcao.DescDado / 100), 2),
+                            PrecoNF = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? Math.Round((decimal)item.Preco_lista * (decimal)(1 - itemOpcao.DescDado / 100), 2) : Math.Round(Math.Round((decimal)item.Preco_lista * (decimal)itemOpcao.CustoFinancFornecCoeficiente, 2) * (decimal)(1 - itemOpcao.DescDado / 100), 2),
                             CustoFinancFornecCoeficiente = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? 0 : itemOpcao.CustoFinancFornecCoeficiente,
                             CustoFinancFornecPrecoListaBase = Math.Round((decimal)item.Preco_lista, 2)
                         };
@@ -654,16 +654,21 @@ namespace OrcamentoCotacaoBusiness.Bll
                 produtoResponse.IdOpcaoPagto = item.Id;
                 produtoResponse.DescDado = itemAtomicoCusto.FirstOrDefault().DescDado;
 
-                itemAtomico.ForEach(x =>
-                {
-                    var custo = itemAtomicoCusto.Where(c => c.IdItemAtomico == x.Id && c.CustoFinancFornecCoeficiente > 0).FirstOrDefault();
-                    //testar
-                    produtoResponse.PrecoLista += x.Qtde * custo.PrecoLista;
-                    produtoResponse.PrecoVenda += x.Qtde * custo.PrecoVenda;
-                    produtoResponse.PrecoNf += x.Qtde * custo.PrecoNF;
-                    produtoResponse.CustoFinancFornecPrecoListaBase += x.Qtde * custo.CustoFinancFornecPrecoListaBase;
-                });
-                
+                //itemAtomico.ForEach(x =>
+                //{
+                //    var custo = itemAtomicoCusto.Where(c => c.IdItemAtomico == x.Id && c.CustoFinancFornecCoeficiente > 0).FirstOrDefault();
+                //    //testar
+                //    produtoResponse.PrecoLista += x.Qtde * custo.PrecoLista;
+                //    //produtoResponse.PrecoVenda += x.Qtde * custo.PrecoVenda;
+                //    //produtoResponse.PrecoNf += x.Qtde * custo.PrecoNF;
+                //    produtoResponse.CustoFinancFornecPrecoListaBase += x.Qtde * custo.CustoFinancFornecPrecoListaBase;
+                //});
+                var precoLista = itemAtomico.Sum(x => x.Qtde * itemAtomicoCusto.Where(c => c.IdItemAtomico == x.Id && c.CustoFinancFornecCoeficiente > 0).FirstOrDefault().PrecoLista);
+                produtoResponse.PrecoLista = precoLista;
+                produtoResponse.PrecoVenda = Math.Round(precoLista * (decimal)(1 - produtoResponse.DescDado / 100), 2);
+                produtoResponse.PrecoNf = Math.Round(precoLista * (decimal)(1 - produtoResponse.DescDado / 100), 2);
+                produtoResponse.CustoFinancFornecPrecoListaBase = itemAtomico.Sum(x => x.Qtde * itemAtomicoCusto.Where(c => c.IdItemAtomico == x.Id && c.CustoFinancFornecCoeficiente > 0).FirstOrDefault().CustoFinancFornecPrecoListaBase);
+
                 produtoResponse.CustoFinancFornecCoeficiente = itemAtomicoCusto.Where(x => x.CustoFinancFornecCoeficiente > 0).FirstOrDefault().CustoFinancFornecCoeficiente;
                 //produtoResponse.TotalItem = produtoResponse.PrecoNf * produtoResponse.Qtde;
                 produtoResponse.TotalItem = produtoResponse.PrecoNf * item.Qtde; // aqui esta errado

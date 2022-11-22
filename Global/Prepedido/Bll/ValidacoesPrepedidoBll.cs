@@ -349,7 +349,9 @@ namespace Prepedido.Bll
 
             prepedido.ListaProdutos.ForEach(x =>
             {
-                totalCompare += Math.Round((decimal)(x.Preco_Venda * (x.Qtde ?? 0)), 2);
+                var desc = Math.Round(1 - x.Desc_Dado / 100, 4);
+                var precoVenda = Math.Round((decimal)(x.Preco_Lista * x.Qtde) * (decimal)desc, 2);
+                totalCompare += precoVenda;
                 totalRaCompare += Math.Round((decimal)(x.Preco_NF * (x.Qtde ?? 0)), 2);
             });
 
