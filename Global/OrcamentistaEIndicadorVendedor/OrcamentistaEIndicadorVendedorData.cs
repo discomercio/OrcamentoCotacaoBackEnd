@@ -92,7 +92,8 @@ namespace OrcamentistaEIndicadorVendedor
                                                DataCadastro = usr.DataCadastro,
                                                DataUltimaAlteracao = usr.DataUltimaAlteracao,
                                                Loja = par.Loja,
-                                               VendedorResponsavel = par.Vendedor
+                                               VendedorResponsavel = par.Vendedor,
+                                               Parceiro = par.Apelido
                                            };
 
                     if (obj.id > 0)
