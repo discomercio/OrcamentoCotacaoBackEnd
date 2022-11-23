@@ -264,6 +264,11 @@ namespace ProdutoCatalogo
                         saida.campos = ObterListaItens(id);
                         saida.imagem = ObterListaImagensPorId(id).FirstOrDefault();
 
+                        if (saida.imagem == null)
+                        {
+                            saida.imagem = new TprodutoCatalogoImagem() { Caminho = "sem-imagem.png" };
+                        }
+
                         return saida;
                     }
 
