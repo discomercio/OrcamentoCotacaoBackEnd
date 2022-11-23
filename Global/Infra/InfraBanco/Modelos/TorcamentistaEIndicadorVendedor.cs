@@ -67,6 +67,9 @@ namespace InfraBanco.Modelos
         [NotMapped]
         public string VendedorResponsavel { get; set; }
 
+        [NotMapped]
+        public string Parceiro { get; set; }
+
         /*
 Column_name	Type	Length	Nullable
 Id	int	4	no
