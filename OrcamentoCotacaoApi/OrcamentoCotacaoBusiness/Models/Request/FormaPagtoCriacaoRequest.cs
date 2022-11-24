@@ -1,9 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using UtilsGlobais.RequestResponse;
 
 namespace OrcamentoCotacaoBusiness.Models.Request
 {
-    public class FormaPagtoCriacaoRequestViewModel : IViewModelRequest
+    public class FormaPagtoCriacaoRequest : RequestBase
     {
         [JsonProperty("id")]
         public int Id { get; set; }

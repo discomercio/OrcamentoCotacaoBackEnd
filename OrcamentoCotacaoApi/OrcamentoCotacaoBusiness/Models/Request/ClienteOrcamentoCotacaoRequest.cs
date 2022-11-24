@@ -2,10 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using UtilsGlobais.RequestResponse;
 
 namespace OrcamentoCotacaoBusiness.Models.Request
 {
-    public  class ClienteOrcamentoCotacaoRequestViewModel
+    public  class ClienteOrcamentoCotacaoRequest: RequestBase
     {
         [JsonProperty("nomeCliente")]
         public string NomeCliente { get; set; }

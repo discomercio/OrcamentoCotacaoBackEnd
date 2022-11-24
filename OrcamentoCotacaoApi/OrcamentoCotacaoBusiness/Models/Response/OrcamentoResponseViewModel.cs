@@ -46,7 +46,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         public DateTime? DataEntregaImediata { get; set; }
 
         [JsonProperty("clienteOrcamentoCotacaoDto")]
-        public ClienteOrcamentoCotacaoRequestViewModel ClienteOrcamentoCotacaoDto { get; set; }
+        public ClienteOrcamentoCotacaoRequest ClienteOrcamentoCotacaoDto { get; set; }
 
         [JsonProperty("listaOrcamentoCotacaoDto")]
         public List<OrcamentoOpcaoResponseViewModel> ListaOrcamentoCotacaoDto { get; set; }

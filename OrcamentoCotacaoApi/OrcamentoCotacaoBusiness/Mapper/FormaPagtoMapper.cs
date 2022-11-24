@@ -11,7 +11,7 @@ namespace OrcamentoCotacaoBusiness.Mapper
     {
         public FormaPagtoMapper()
         {
-            CreateMap<FormaPagtoCriacaoResponseViewModel, FormaPagtoCriacaoRequestViewModel>();
+            CreateMap<FormaPagtoCriacaoResponseViewModel, FormaPagtoCriacaoRequest>();
         }
     }
 }

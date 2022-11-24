@@ -25,6 +25,8 @@ using System.Threading.Tasks;
 using UtilsGlobais.Parametros;
 using Microsoft.EntityFrameworkCore;
 using Prepedido.Dados.DetalhesPrepedido;
+using System.Text.Json;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -402,7 +404,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 IdIndicador = orcamento.IdIndicador,
                 IdIndicadorVendedor = orcamento.IdIndicadorVendedor,
                 IdVendedor = orcamento.IdVendedor,
-                ClienteOrcamentoCotacaoDto = new ClienteOrcamentoCotacaoRequestViewModel()
+                ClienteOrcamentoCotacaoDto = new ClienteOrcamentoCotacaoRequest()
                 {
                     NomeCliente = orcamento.NomeCliente,
                     NomeObra = orcamento.NomeObra,
@@ -484,7 +486,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
 
-        private string ValidarClienteOrcamento(ClienteOrcamentoCotacaoRequestViewModel cliente)
+        private string ValidarClienteOrcamento(ClienteOrcamentoCotacaoRequest cliente)
         {
             if (cliente == null) return "Ops! Favor preencher os dados do cliente!";
 
@@ -530,7 +532,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
-        private string ValidarDetalhesOrcamento(OrcamentoRequestViewModel orcamento)
+        private string ValidarDetalhesOrcamento(OrcamentoRequest orcamento)
         {
             if (orcamento.EntregaImediata)
             {
@@ -556,62 +558,81 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
-        public OrcamentoRequestViewModel CadastrarOrcamentoCotacao(OrcamentoRequestViewModel orcamento, UsuarioLogin usuarioLogado)
+        public CadastroOrcamentoResponse CadastrarOrcamentoCotacao(OrcamentoRequest orcamento, UsuarioLogin usuarioLogado)
         {
-            _logger.LogInformation($"Método Cadastrar orçamento - Iniciando.");
-            if (orcamento.ListaOrcamentoCotacaoDto.Count <= 0) orcamento.Erro = "Necessário ter ao menos uma opção de orçamento!";
-            if (!string.IsNullOrEmpty(orcamento.Erro)) return orcamento;
+            var response = new CadastroOrcamentoResponse();
+            response.Sucesso = false;
+            var nomeMetodo = response.ObterNomeMetodoAtualAsync();
 
-            _logger.LogInformation($"Método Cadastrar orçamento - Validar dados do cliente.");
-            orcamento.Erro = ValidarClienteOrcamento(orcamento.ClienteOrcamentoCotacaoDto);
-            if (!string.IsNullOrEmpty(orcamento.Erro)) return orcamento;
+            _logger.LogInformation($"CorrelationId => [{orcamento.CorrelationId}]. {nomeMetodo}. Iniciando validações do orçamento. Orçamento => [{JsonSerializer.Serialize(orcamento)}].");
 
-            _logger.LogInformation($"Método Cadastrar orçamento - Validar entrega imediata e instalador instala.");
-            orcamento.Erro = ValidarDetalhesOrcamento(orcamento);
-            if (!string.IsNullOrEmpty(orcamento.Erro)) return orcamento;
+            _logger.LogInformation($"CorrelationId => [{orcamento.CorrelationId}]. {nomeMetodo}. Verificando quantidade de opções. Quantidade de opções => [{orcamento.ListaOrcamentoCotacaoDto.Count}].");
+            if (orcamento.ListaOrcamentoCotacaoDto.Count <= 0)
+            {
+                response.Mensagem = "Necessário ter ao menos uma opção de orçamento!";
+                return response;
+            }
 
-            _logger.LogInformation($"Método Cadastrar orçamento - Abrindo transação.");
+            _logger.LogInformation($"CorrelationId => [{orcamento.CorrelationId}]. {nomeMetodo}. Validar dados do cliente. Cliente => [{JsonSerializer.Serialize(orcamento.ClienteOrcamentoCotacaoDto)}].");
+            response.Mensagem = ValidarClienteOrcamento(orcamento.ClienteOrcamentoCotacaoDto);
+            if (!string.IsNullOrEmpty(response.Mensagem)) return response;
+
+            _logger.LogInformation($"CorrelationId => [{orcamento.CorrelationId}]. {nomeMetodo}. Validar entrega imediata e instalador instala.");
+            response.Mensagem = ValidarDetalhesOrcamento(orcamento);
+            if (!string.IsNullOrEmpty(response.Mensagem)) return response;
+
+            _logger.LogInformation($"CorrelationId => [{orcamento.CorrelationId}]. {nomeMetodo}. Abrindo transação.");
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 try
                 {
-                    _logger.LogInformation($"Método Cadastrar orçamento - Buscar percentual de desconto e comissão por loja.");
+                    _logger.LogInformation($"CorrelationId => [{orcamento.CorrelationId}]. {nomeMetodo}. Buscar percentual de desconto e comissão por loja. Loja => [{orcamento.Loja}].");
                     var percentualMaxDescontoEComissao = _lojaBll.BuscarPercMaxPorLoja(orcamento.Loja);
-                    if (percentualMaxDescontoEComissao == null) orcamento.Erro = "Falha ao tentar gravar orçamento!";
-                    if (!string.IsNullOrEmpty(orcamento.Erro)) return orcamento;
+                    if (percentualMaxDescontoEComissao == null)
+                    {
+                        response.Mensagem = "Falha ao tentar gravar orçamento!";
+                        return response;
+                    }
+                    _logger.LogInformation($"CorrelationId => [{orcamento.CorrelationId}]. {nomeMetodo}. Retorno da busca de percentual de desconto e comissão por loja. Response => [{JsonSerializer.Serialize(percentualMaxDescontoEComissao)}].");
 
-                    _logger.LogInformation($"Método Cadastrar orçamento - Cadastrar orçamento cotação.");
                     var tOrcamentoCotacao = MontarTorcamentoCotacao(orcamento, usuarioLogado, percentualMaxDescontoEComissao, 1);
-                    var ocamentoCotacao = _orcamentoCotacaoBll.InserirComTransacao(tOrcamentoCotacao, dbGravacao);
-                    if (tOrcamentoCotacao.Id == 0) orcamento.Erro = "Ops! Não gerou Id!";
-                    if (!string.IsNullOrEmpty(orcamento.Erro)) return orcamento;
+                    _logger.LogInformation($"CorrelationId => [{orcamento.CorrelationId}]. {nomeMetodo}. Cadastrar orçamento cotação. Request => [{JsonSerializer.Serialize(tOrcamentoCotacao)}].");
+                    tOrcamentoCotacao = _orcamentoCotacaoBll.InserirComTransacao(tOrcamentoCotacao, dbGravacao);
+                    if (tOrcamentoCotacao.Id == 0)
+                    {
+                        response.Mensagem = "Ops! Falha ao cadastrar orçamento!";
+                        return response;
+                    }
 
-                    _logger.LogInformation($"Método Cadastrar orçamento - Cadastrar opções de orçamento cotação.");
-                    orcamento.Erro = _orcamentoCotacaoOpcaoBll.CadastrarOrcamentoCotacaoOpcoesComTransacao(orcamento.ListaOrcamentoCotacaoDto,
-                        tOrcamentoCotacao.Id, usuarioLogado, dbGravacao, orcamento.Loja);
-                    if (!string.IsNullOrEmpty(orcamento.Erro)) return orcamento;
+                    var responseOpcoes = _orcamentoCotacaoOpcaoBll.CadastrarOrcamentoCotacaoOpcoesComTransacao(orcamento.ListaOrcamentoCotacaoDto,
+                        tOrcamentoCotacao.Id, usuarioLogado, dbGravacao, orcamento.Loja, orcamento.CorrelationId);
+                    if (!string.IsNullOrEmpty(response.Mensagem))
+                    {
+                        response.Mensagem = responseOpcoes.Mensagem;
+                        return response;
+                    }
 
                     var guid = Guid.NewGuid();
 
-                    _logger.LogInformation($"Método Cadastrar orçamento - Cadastrar link de orçamento cotação.");
-                    orcamento.Erro = AdicionarOrcamentoCotacaoLink(tOrcamentoCotacao, guid, dbGravacao);
-                    if (!string.IsNullOrEmpty(orcamento.Erro)) return orcamento;
+                    _logger.LogInformation($"CorrelationId => [{orcamento.CorrelationId}]. {nomeMetodo}. Cadastrar link de orçamento cotação.");
+                    response.Mensagem = AdicionarOrcamentoCotacaoLink(tOrcamentoCotacao, guid, dbGravacao);
+                    if (!string.IsNullOrEmpty(response.Mensagem)) return response;
 
-                    _logger.LogInformation($"Método Cadastrar orçamento - Cadastrar e-mail orçamento cotação.");
-                    orcamento.Erro = AdicionarOrcamentoCotacaoEmailQueue(orcamento, guid, tOrcamentoCotacao.Id, dbGravacao);
-                    if (!string.IsNullOrEmpty(orcamento.Erro)) return orcamento;
+                    _logger.LogInformation($"CorrelationId => [{orcamento.CorrelationId}]. {nomeMetodo}. Cadastrar e-mail orçamento cotação.");
+                    response.Mensagem = AdicionarOrcamentoCotacaoEmailQueue(orcamento, guid, tOrcamentoCotacao.Id, dbGravacao);
+                    if (!string.IsNullOrEmpty(response.Mensagem)) return response;
 
                     dbGravacao.transacao.Commit();
-                    _logger.LogInformation($"Método Cadastrar orçamento - efetivando dados inseridos na base.");
                 }
                 catch (Exception ex)
                 {
                     dbGravacao.transacao.Rollback();
-                    _logger.LogInformation($"Método Cadastrar orçamento - falha ao efetivar dados de orçamento cotação na base.");
+                    throw new Exception(ex.Message);
                 }
             }
-            _logger.LogInformation($"Método Cadastrar orçamento - Finalizando cadastro de orçamento.");
-            return orcamento;
+            _logger.LogInformation($"CorrelationId => [{orcamento.CorrelationId}]. {nomeMetodo}. Cadastro de orçamento cotação finalizado.");
+            response.Sucesso = true;
+            return response;
         }
 
         public MensagemDto ReenviarOrcamentoCotacao(int idOrcamentoCotacao)
@@ -660,14 +681,34 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         }
 
-        public void AtualizarOrcamentoOpcao(OrcamentoOpcaoResponseViewModel opcao, UsuarioLogin usuarioLogado)
+        public AtualizarOrcamentoOpcaoResponse AtualizarOrcamentoOpcao(AtualizarOrcamentoOpcaoRequest opcao, UsuarioLogin usuarioLogado)
         {
+            var response = new AtualizarOrcamentoOpcaoResponse();
+            response.Sucesso = false;
+            var nomeMetodo = response.ObterNomeMetodoAtualAsync();
+
+            _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Buscando orçamento cotação. Id => [{opcao.Id}]");
             var orcamento = PorFiltro(opcao.IdOrcamentoCotacao, (int)usuarioLogado.TipoUsuario);
+            _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Retorno da busca de orçamento cotação. Response => [{JsonSerializer.Serialize(orcamento)}]");
 
-            bool temPermissao = ValidarPermissaoAtualizarOpcaoOrcamentoCotacao(orcamento, usuarioLogado);
-            if (!temPermissao) throw new ArgumentException("Usuário não tem permissão para atualizar a opção de orçamento!");
+            _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Início da validação de permissão para atualizar orçamento.");
+            string retorno = ValidarPermissaoAtualizarOpcaoOrcamentoCotacao(orcamento, usuarioLogado);
+            if (!string.IsNullOrEmpty(retorno))
+            {
+                response.Mensagem = retorno;
+                return response;
+            }
 
-            _orcamentoCotacaoOpcaoBll.AtualizarOrcamentoOpcao(opcao, usuarioLogado, orcamento);
+            response = _orcamentoCotacaoOpcaoBll.AtualizarOrcamentoOpcao(opcao, usuarioLogado, orcamento);
+            if (!string.IsNullOrEmpty(response.Mensagem))
+            {
+                response.Mensagem = response.Mensagem;
+                return response;
+            }
+            _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Atualização da opção Id[{opcao.Id}] do orçamento Id[{opcao.IdOrcamentoCotacao}] finalizada!");
+
+            response.Sucesso = true;
+            return response;
         }
 
         public OrcamentoResponseViewModel AtualizarDadosCadastraisOrcamento(OrcamentoResponseViewModel orcamento, UsuarioLogin usuarioLogado)
@@ -885,26 +926,25 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
-        private bool ValidarPermissaoAtualizarOpcaoOrcamentoCotacao(OrcamentoResponseViewModel orcamento, UsuarioLogin usuarioLogado)
+        private string ValidarPermissaoAtualizarOpcaoOrcamentoCotacao(OrcamentoResponseViewModel orcamento, UsuarioLogin usuarioLogado)
         {
-
             if (orcamento.IdIndicadorVendedor != null)
             {
                 var vendedoresParceiro = _orcamentistaEIndicadorVendedorBll.BuscarVendedoresParceiro(orcamento.Parceiro);
-                if (vendedoresParceiro == null) throw new ArgumentException("Nenhum vendedor do parceiro encontrado!");
+                if (vendedoresParceiro == null) return "Nenhum vendedor do parceiro encontrado!";
 
                 var email = vendedoresParceiro //IdIndicadorVendedor
                     .Where(x => x.Id == orcamento.IdIndicadorVendedor)
                     .FirstOrDefault().Email;
 
-                if (usuarioLogado.Apelido == email.ToUpper()) return true;
+                if (usuarioLogado.Apelido == email.ToUpper()) return null;
             }
 
             if (orcamento.IdIndicadorVendedor == null && orcamento.IdIndicador != null)
             {
                 var parceiro = _orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { apelido = orcamento.Parceiro, acessoHabilitado = 1 });
 
-                if (usuarioLogado.Apelido == parceiro.Apelido) return true;
+                if (usuarioLogado.Apelido == parceiro.Apelido) return null;
             }
 
 
@@ -912,11 +952,11 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_1) ||
                 usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_2) ||
                 usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_3))
-                return true;
+                return null;
 
-            if (orcamento.CadastradoPor.ToUpper() == usuarioLogado.Apelido.ToUpper()) return true;
+            if (orcamento.CadastradoPor.ToUpper() == usuarioLogado.Apelido.ToUpper()) return null;
 
-            return false;
+            return "Não encontramos a permissão do usuário necessária para atualizar o orçamento!";
         }
 
         public string AdicionarOrcamentoCotacaoLink(TorcamentoCotacao orcamento, Guid guid, InfraBanco.ContextoBdGravacao contextoBdGravacao)
@@ -927,7 +967,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             orcamentoCotacaoLinkModel.Status = 1;
             orcamentoCotacaoLinkModel.IdTipoUsuarioContextoUltStatus = 1;
             orcamentoCotacaoLinkModel.IdUsuarioUltStatus = orcamento.IdUsuarioCadastro;
-            
+
             orcamentoCotacaoLinkModel.DataUltStatus = DateTime.Now.Date;
             orcamentoCotacaoLinkModel.DataHoraUltStatus = DateTime.Now;
 
@@ -965,7 +1005,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
         }
 
-        private string AdicionarOrcamentoCotacaoEmailQueue(OrcamentoRequestViewModel orcamento, Guid guid, int idOrcamentoCotacao,
+        private string AdicionarOrcamentoCotacaoEmailQueue(OrcamentoRequest orcamento, Guid guid, int idOrcamentoCotacao,
             ContextoBdGravacao contextoBdGravacao)
         {
 
@@ -1113,7 +1153,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         }
 
-        private TorcamentoCotacao MontarTorcamentoCotacao(OrcamentoRequestViewModel orcamento, UsuarioLogin usuarioLogado,
+        private TorcamentoCotacao MontarTorcamentoCotacao(OrcamentoRequest orcamento, UsuarioLogin usuarioLogado,
             PercMaxDescEComissaoDados percMaxDescEComissaoDados, int status)
         {
             TorcamentoCotacao torcamentoCotacao = new TorcamentoCotacao();
@@ -1374,7 +1414,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             aprovarOrcamento.enderecoEntrega.Etg_Imediata_Usuario = $"[{orcamento.EtgImediataIdTipoUsuarioContexto}] {orcamento.EtgImediataIdUsuarioUltAtualiz}";
 
             //previsão entrega
-            
+
 
             var clienteCadastroDados = ClienteCadastroDto
                 .ClienteCadastroDados_De_ClienteCadastroDto(aprovarOrcamento.ClienteCadastroDto);

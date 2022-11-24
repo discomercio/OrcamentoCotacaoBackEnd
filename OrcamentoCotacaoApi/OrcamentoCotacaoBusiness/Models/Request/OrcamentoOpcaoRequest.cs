@@ -1,9 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using UtilsGlobais.RequestResponse;
 
 namespace OrcamentoCotacaoBusiness.Models.Request
 {
-    public class OrcamentoOpcaoRequestViewModel : IViewModelRequest
+    public class OrcamentoOpcaoRequest : RequestBase
     {
         [JsonProperty("listaProdutos")]
         public List<ProdutoRequestViewModel> ListaProdutos { get; set; }
@@ -12,7 +13,7 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         public decimal VlTotal { get; set; }
 
         [JsonProperty("formaPagto")]
-        public List<FormaPagtoCriacaoRequestViewModel> FormaPagto { get; set; }
+        public List<FormaPagtoCriacaoRequest> FormaPagto { get; set; }
 
         [JsonProperty("percRT")]
         public float PercRT { get; set; }
