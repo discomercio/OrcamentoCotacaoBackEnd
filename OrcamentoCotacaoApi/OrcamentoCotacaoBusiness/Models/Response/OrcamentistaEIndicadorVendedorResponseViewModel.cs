@@ -34,5 +34,8 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         [JsonProperty("senha")]
         public string Senha { get; set; }
 
+        [JsonProperty("parceiro")]
+        public string Parceiro { get; set; }
+
     }
 }
