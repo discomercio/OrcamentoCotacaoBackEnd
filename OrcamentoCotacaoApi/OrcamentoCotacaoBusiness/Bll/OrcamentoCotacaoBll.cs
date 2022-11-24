@@ -558,9 +558,9 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
-        public CadastroOrcamentoResponse CadastrarOrcamentoCotacao(OrcamentoRequest orcamento, UsuarioLogin usuarioLogado)
+        public CadastroOrcamentoCotacaoResponse CadastrarOrcamentoCotacao(OrcamentoRequest orcamento, UsuarioLogin usuarioLogado)
         {
-            var response = new CadastroOrcamentoResponse();
+            var response = new CadastroOrcamentoCotacaoResponse();
             response.Sucesso = false;
             var nomeMetodo = response.ObterNomeMetodoAtualAsync();
 

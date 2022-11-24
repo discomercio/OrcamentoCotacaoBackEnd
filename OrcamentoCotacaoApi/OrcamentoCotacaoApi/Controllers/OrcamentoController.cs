@@ -4,6 +4,7 @@ using InfraIdentity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using OrcamentoCotacaoApi.Filters;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
@@ -20,6 +21,8 @@ namespace OrcamentoCotacaoApi.Controllers
     [Route("[controller]")]
     [ApiController]
     [Authorize]
+    [TypeFilter(typeof(ResourceFilter))]
+    [TypeFilter(typeof(ExceptionFilter))]
     public class OrcamentoController : BaseController
     {
         private readonly ILogger<OrcamentoController> _logger;
@@ -105,7 +108,7 @@ namespace OrcamentoCotacaoApi.Controllers
             return Ok(dados);
         }
 
-        [HttpPost("atualizarOrcamentoOpcao")]
+        [HttpPut("atualizarOrcamentoOpcao")]
         public IActionResult AtualizarOrcamentoOpcao(AtualizarOrcamentoOpcaoRequest opcao)
         {
             opcao.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);

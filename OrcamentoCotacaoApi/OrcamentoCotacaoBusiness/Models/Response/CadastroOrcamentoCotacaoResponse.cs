@@ -4,7 +4,7 @@ using System.Text;
 
 namespace OrcamentoCotacaoBusiness.Models.Response
 {
-    public class CadastroOrcamentoResponse : UtilsGlobais.RequestResponse.ResponseBase
+    public class CadastroOrcamentoCotacaoResponse : UtilsGlobais.RequestResponse.ResponseBase
     {
     }
 }

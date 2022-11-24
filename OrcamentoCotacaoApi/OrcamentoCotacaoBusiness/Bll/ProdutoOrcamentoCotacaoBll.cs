@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace OrcamentoCotacaoBusiness.Bll
@@ -465,7 +466,6 @@ namespace OrcamentoCotacaoBusiness.Bll
                 response.Mensagem = "Falha ao buscar itens para atualização!";
                 return response;
             }
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Retorno da busca da lista de produtos unificados. Response => {JsonSerializer.Serialize(produtosUnificados)}");
 
             foreach (var item in lstProdutos)
             {
@@ -478,7 +478,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                 }
 
                 produto.Qtde = item.Qtde;
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Atualizando produto unificado Id[{produto.Id}]. Resquest => {JsonSerializer.Serialize(produto)}");
+                JsonSerializerOptions options = new JsonSerializerOptions() { ReferenceHandler = ReferenceHandler.IgnoreCycles, WriteIndented = true };
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Atualizando produto unificado Id[{produto.Id}]. Resquest => {JsonSerializer.Serialize(produto, options)}");
                 var retorno = orcamentoCotacaoOpcaoItemUnificadoBll.AtualizarComTransacao(produto, contextoBdGravacao);
 
                 response.TorcamentoCotacaoItemUnificados.Add(retorno);
@@ -511,12 +512,14 @@ namespace OrcamentoCotacaoBusiness.Bll
                     response.Mensagem = "Falha ao buscar itens para atualização!";
                     return response;
                 }
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Retorno da busca de lista de produtos atômicos. Response => [{JsonSerializer.Serialize(TorcamentoCotacaoOpcaoItemAtomicos)}]");
+
+                JsonSerializerOptions options = new JsonSerializerOptions() { ReferenceHandler = ReferenceHandler.IgnoreCycles, WriteIndented = true };
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Retorno da busca de lista de produtos atômicos. Response => [{JsonSerializer.Serialize(TorcamentoCotacaoOpcaoItemAtomicos, options)}]");
 
 
                 foreach (var atomico in TorcamentoCotacaoOpcaoItemAtomicos)
                 {
-                    _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Atualizando produto atômico. Resquest => {JsonSerializer.Serialize(atomico)}");
+                    _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Atualizando produto atômico. Resquest => {JsonSerializer.Serialize(atomico, options)}");
                     var retorno = orcamentoCotacaoOpcaoItemAtomicoBll.AtualizarComTransacao(atomico, contextoBdGravacao);
                     response.TorcamentoCotacaoOpcaoItemAtomicos.Add(retorno);
                 }
@@ -621,9 +624,10 @@ namespace OrcamentoCotacaoBusiness.Bll
                                 atomicoCustoFin.IdUsuarioDescontoSuperior = idAlcada > 0 ? (int?)usuarioLogado.Id : null;
                                 atomicoCustoFin.IdOperacaoAlcadaDescontoSuperior = idAlcada > 0 ? (int?)idAlcada : null;
 
-                                _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Atualizando produto atômico custo fin. Resquest => {JsonSerializer.Serialize(atomicoCustoFin)}");
+                                JsonSerializerOptions options = new JsonSerializerOptions() { ReferenceHandler = ReferenceHandler.IgnoreCycles, WriteIndented = true };
+                                _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Atualizando produto atômico custo fin. Resquest => {JsonSerializer.Serialize(atomicoCustoFin, options)}");
                                 var responseAtomicoCustoFin = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.AtualizarComTransacao(atomicoCustoFin, contextoBdGravacao);
-                            
+
                                 response.TorcamentoCotacaoOpcaoItemAtomicoCustoFins.Add(responseAtomicoCustoFin);
                             }
                         };
@@ -647,13 +651,13 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             var percPadrao = _lojaOrcamentoCotacaoBll.BuscarPercMaxPorLoja(orcamento.Loja);
-            if (percPadrao == null)return "Ops! Não falha ao validar opcão!";
+            if (percPadrao == null) return "Ops! Não falha ao validar opcão!";
 
             var percPadraoPorTipo = orcamento.ClienteOrcamentoCotacaoDto.Tipo == Constantes.ID_PF ?
                 percPadrao.PercMaxComissaoEDesconto : percPadrao.PercMaxComissaoEDescontoPJ;
 
             if (produto.DescDado > percPadraoPorTipo && percMaxPorAlcada.PercMaxComissaoEDesconto == 0)
-                return"Ops! Não pode execeder o limite máximo de desconto.";
+                return "Ops! Não pode execeder o limite máximo de desconto.";
 
             if (produto.DescDado > 0 || percRT > 0)
             {
