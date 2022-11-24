@@ -46,9 +46,11 @@ namespace Prepedido.Bll
                 {
                     prePedido.DetalhesPrepedido.PrevisaoEntregaData = prePedido.DetalhesPrepedido.EntregaImediataData.Value.Date;
                 }
-                
-                prePedido.DetalhesPrepedido.EntregaImediataData = DateTime.Now;
+
+                prePedido.DetalhesPrepedido.PrevisaoEntregaDtHrUltAtualiz = DateTime.Now;
             }
+
+            prePedido.DetalhesPrepedido.EntregaImediataData = DateTime.Now;
 
             PrePedidoDados prePedidoDados = PrePedidoDto.PrePedidoDados_De_PrePedidoDto(prePedido);
 
