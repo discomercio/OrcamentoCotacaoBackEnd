@@ -142,6 +142,28 @@ namespace OrcamentoCotacaoApi.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("vendedores-parceiros-usuario-interno")]
+        public IActionResult PostPorUsuarioInterno(UsuarioRequestViewModel model)
+        {
+            _logger.LogInformation("Inserindo vendedor parceiro");
+
+            if (!User.ValidaPermissao((int)ePermissao.CadastroVendedorParceiroIncluirEditar))
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
+            var objOrcamentistaEIndicadorVendedor = _mapper.Map<TorcamentistaEIndicadorVendedor>(model);
+            try
+            {
+                var result = _orcamentistaEindicadorVendedorBll.Inserir(objOrcamentistaEIndicadorVendedor, model.Senha, model.Parceiro, User.GetVendedor());
+
+                return Ok(_mapper.Map<OrcamentistaEIndicadorVendedorResponseViewModel>(result));
+            }
+            catch (ArgumentException e)
+            {
+                return UnprocessableEntity(e);
+            }
+        }
+
         [HttpPut]
         [Route("vendedores-parceiros")]
         public IActionResult Put(UsuarioRequestViewModel model)
