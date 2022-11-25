@@ -120,7 +120,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public AtualizarOrcamentoOpcaoResponse AtualizarOrcamentoOpcao(AtualizarOrcamentoOpcaoRequest opcao, UsuarioLogin usuarioLogado,
-            OrcamentoResponseViewModel orcamento)
+            OrcamentoResponse orcamento)
         {
             var response = new AtualizarOrcamentoOpcaoResponse();
             response.Sucesso = false;
@@ -129,15 +129,15 @@ namespace OrcamentoCotacaoBusiness.Bll
             _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Início da atualização da opção Id[{opcao.Id}] orçamento Id[{opcao.IdOrcamentoCotacao}].");
 
             _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Buscando opção a ser atualizada.");
-            var lstOpcaoAntiga = orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro() { IdOrcamentoCotacao = opcao.IdOrcamentoCotacao });
-            if (lstOpcaoAntiga == null)
+            var tOrcamentoCotacaoOpcoes = orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro() { IdOrcamentoCotacao = opcao.IdOrcamentoCotacao });
+            if (tOrcamentoCotacaoOpcoes == null)
             {
                 response.Mensagem = "Falha ao buscar opção de orçamento";
                 return response;
             }
 
-            var opcaoAntiga = lstOpcaoAntiga.Where(x => x.Id == opcao.Id).FirstOrDefault();
-            _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Retorno da busca de opção a ser atualizada. Response => [{JsonSerializer.Serialize(opcaoAntiga)}]");
+            var tOrcamentoCotacaoOpcaoAntiga = tOrcamentoCotacaoOpcoes.Where(x => x.Id == opcao.Id).FirstOrDefault();
+            _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Retorno da busca de opção a ser atualizada. Response => [{JsonSerializer.Serialize(tOrcamentoCotacaoOpcaoAntiga)}]");
 
             var opcaoNovo = new TorcamentoCotacaoOpcao()
             {
@@ -145,24 +145,24 @@ namespace OrcamentoCotacaoBusiness.Bll
                 IdOrcamentoCotacao = opcao.IdOrcamentoCotacao,
                 PercRT = opcao.PercRT,
                 Sequencia = opcao.Sequencia,
-                DataCadastro = opcaoAntiga.DataCadastro,
-                DataHoraCadastro = opcaoAntiga.DataHoraCadastro,
-                IdUsuarioCadastro = opcaoAntiga.IdUsuarioCadastro,
-                IdTipoUsuarioContextoCadastro = opcaoAntiga.IdTipoUsuarioContextoCadastro,
+                DataCadastro = tOrcamentoCotacaoOpcaoAntiga.DataCadastro,
+                DataHoraCadastro = tOrcamentoCotacaoOpcaoAntiga.DataHoraCadastro,
+                IdUsuarioCadastro = tOrcamentoCotacaoOpcaoAntiga.IdUsuarioCadastro,
+                IdTipoUsuarioContextoCadastro = tOrcamentoCotacaoOpcaoAntiga.IdTipoUsuarioContextoCadastro,
                 IdTipoUsuarioContextoUltAtualizacao = (int)usuarioLogado.TipoUsuario,
                 DataHoraUltAtualizacao = DateTime.Now,
                 IdUsuarioUltAtualizacao = usuarioLogado.Id,
             };
 
             _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Buscando todas as formas de pagamentos da opção a ser atualizada.");
-            var formaPagtoAntiga = formaPagtoOrcamentoCotacaoBll.BuscarOpcaoFormasPagtos(opcao.Id);
-            if (formaPagtoAntiga == null)
+            var tOrcamentoCotacaoOpcaoPagtosAntiga = formaPagtoOrcamentoCotacaoBll.BuscarOpcaoFormasPagtos(opcao.Id);
+            if (tOrcamentoCotacaoOpcaoPagtosAntiga == null)
             {
                 response.Mensagem = "Falha ao busca formas de pagamentos da opção!";
                 return response;
             }
 
-            _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Retorno da busca de todas as formas de pagamentos da opção a ser atualizada. Response => [{JsonSerializer.Serialize(formaPagtoAntiga)}]");
+            _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Retorno da busca de todas as formas de pagamentos da opção a ser atualizada. Response => [{JsonSerializer.Serialize(tOrcamentoCotacaoOpcaoPagtosAntiga)}]");
 
 
             using (var dbGravacao = contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
@@ -203,7 +203,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     }                    
 
                     var responseFormaPagto = formaPagtoOrcamentoCotacaoBll
-                        .AtualizarOrcamentoCotacaoOpcaoPagtoComTransacao(opcao, formaPagtoAntiga, dbGravacao);
+                        .AtualizarOrcamentoCotacaoOpcaoPagtoComTransacao(opcao, tOrcamentoCotacaoOpcaoPagtosAntiga, dbGravacao);
                     if (!string.IsNullOrEmpty(responseFormaPagto.Mensagem))
                     {
                         response.Mensagem = responseFormaPagto.Mensagem;
@@ -234,7 +234,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 catch (Exception ex)
                 {
                     dbGravacao.transacao.Rollback();
-                    throw;
+                    throw new Exception(ex.Message);
                 }
             }
 

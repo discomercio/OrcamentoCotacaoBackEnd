@@ -425,6 +425,132 @@ namespace OrcamentoCotacaoBusiness.Bll
             return orcamentoResponse;
         }
 
+        public OrcamentoResponse PorFiltroNovo(int id, int tipoUsuario)
+        {
+            OrcamentoResponse response = new OrcamentoResponse();
+            response.Sucesso = false;
+            var nomeMetodo = response.ObterNomeMetodoAtualAsync();
+
+            var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro() { Id = id }).FirstOrDefault();
+            if (orcamento == null)
+            {
+                response.Mensagem = "Falha ao buscar Orçamento!";
+                return response;
+            }
+
+            var opcao = _orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro() { IdOrcamentoCotacao = id });
+            if (opcao.Count <= 0)
+            {
+                response.Mensagem = "Falha ao buscar Opções do Orçamento!";
+                return response;
+            }
+
+            string statusEmail;
+
+            var orcamentoCotacaoEmail = _orcamentoCotacaoEmailBll.PorFiltro(new TorcamentoCotacaoEmailFiltro() { IdOrcamentoCotacao = id }).LastOrDefault();
+
+            if (orcamentoCotacaoEmail == null)
+            {
+                statusEmail = "Erro no envio do email";
+            }
+            else
+            {
+                var orcamentoCotacaoEmailQueue = _orcamentoCotacaoEmailQueueBll.PorFiltro(new TorcamentoCotacaoEmailQueueFiltro() { Id = orcamentoCotacaoEmail.IdOrcamentoCotacaoEmailQueue }).FirstOrDefault();
+
+                switch (orcamentoCotacaoEmailQueue.Status)
+                {
+                    case 0:
+                        statusEmail = "Aguardando envio do email";
+                        break;
+                    case 2:
+                        statusEmail = "Email enviado com sucesso";
+                        break;
+                    case 3:
+                        statusEmail = "Erro no envio do email";
+                        break;
+                    case 4:
+                        statusEmail = "Erro no envio do email";
+                        break;
+                    default:
+                        statusEmail = "Erro no envio do email";
+                        break;
+                }
+
+                var orcamentoCotacaoLink = _orcamentoCotacaoLinkBll.PorFiltro(new TorcamentoCotacaoLinkFiltro() { IdOrcamentoCotacao = id, Status = 3 }).LastOrDefault();
+
+                if (orcamentoCotacaoLink != null)
+                {
+                    statusEmail = "Email recusado pelo cliente";
+                }
+
+                if (orcamentoCotacaoEmailQueue.AttemptsQty > 3)
+                {
+                    statusEmail = "Erro no envio do email";
+                }
+
+            }
+
+            if (opcao.Count <= 0)
+            {
+                response.Mensagem = "Falha ao buscar Opções do Orçamento!";
+                return response;
+            }
+
+            var usuario = _usuarioBll.PorFiltro(new TusuarioFiltro() { id = orcamento.IdVendedor }).FirstOrDefault();
+            var parceiro = orcamento.IdIndicador != null ? _orcamentistaEIndicadorBll
+                .BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = (int)orcamento.IdIndicador, acessoHabilitado = 1 }) : null;
+
+            string vendedorParceiro = null;
+            if (orcamento.IdIndicadorVendedor != null)
+            {
+                var tVendedorParceiro = _orcamentistaEIndicadorVendedorBll.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro()
+                {
+                    id = (int)orcamento.IdIndicadorVendedor
+                }).FirstOrDefault();
+                vendedorParceiro = tipoUsuario != (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO ?
+                    tVendedorParceiro?.Nome : tVendedorParceiro.Email;
+            }
+
+            response.Id = orcamento.Id;
+            response.Vendedor = usuario.Usuario;
+            response.NomeIniciaisEmMaiusculasVendedor = usuario.Nome_Iniciais_Em_Maiusculas;
+            response.Parceiro = parceiro != null ? parceiro.Apelido : null;
+            response.RazaoSocialNomeIniciaisEmMaiusculasParceiro = parceiro != null ? parceiro.Razao_social_nome_iniciais_em_maiusculas : null;
+            response.VendedorParceiro = vendedorParceiro;
+            response.Loja = orcamento.Loja;
+            response.Validade = orcamento.Validade;
+            response.QtdeRenovacao = orcamento.QtdeRenovacao;
+            response.ConcordaWhatsapp = orcamento.AceiteWhatsApp;
+            response.ObservacoesGerais = orcamento.Observacao;
+            response.EntregaImediata = orcamento.StEtgImediata == (int)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ? false : true;
+            response.DataEntregaImediata = orcamento.PrevisaoEntregaData;
+            response.Status = orcamento.Status;
+            response.statusEmail = statusEmail;
+            response.DataCadastro = orcamento.DataCadastro;
+            response.IdIndicador = orcamento.IdIndicador;
+            response.IdIndicadorVendedor = orcamento.IdIndicadorVendedor;
+            response.IdVendedor = orcamento.IdVendedor;
+            response.ClienteOrcamentoCotacaoDto = new OrcamentoClienteResponse()
+            {
+                NomeCliente = orcamento.NomeCliente,
+                NomeObra = orcamento.NomeObra,
+                Email = orcamento.Email,
+                Telefone = orcamento.Telefone,
+                Tipo = orcamento.TipoCliente,
+                Uf = orcamento.UF,
+                ContribuinteICMS = orcamento.ContribuinteIcms
+            };
+            response.ListaOrcamentoCotacaoDto = opcao;
+            response.CadastradoPor = VerificarContextoCadastroOrcamento(orcamento.IdTipoUsuarioContextoCadastro,
+                usuario.Usuario, parceiro?.Apelido, vendedorParceiro);
+            response.AmigavelCadastradoPor = BuscarCadastradoPorAmigavel(orcamento.IdTipoUsuarioContextoCadastro,
+                usuario.Nome_Iniciais_Em_Maiusculas, parceiro?.Razao_social_nome_iniciais_em_maiusculas, vendedorParceiro);
+            response.InstaladorInstala = orcamento.InstaladorInstalaStatus;
+
+            response.Sucesso = true;
+            return response;
+        }
+
         private string BuscarCadastradoPorAmigavel(int idTipoUsuarioContextoCadastro, string vendedor, string parceiro, string vendedorParceiro)
         {
             var lstTipoUsuariosContexto = _usuarioBll.BuscarTipoUsuarioContexto();
@@ -690,18 +816,23 @@ namespace OrcamentoCotacaoBusiness.Bll
             var nomeMetodo = response.ObterNomeMetodoAtualAsync();
 
             _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Buscando orçamento cotação. Id => [{opcao.Id}]");
-            var orcamento = PorFiltro(opcao.IdOrcamentoCotacao, (int)usuarioLogado.TipoUsuario);
-            _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Retorno da busca de orçamento cotação. Response => [{JsonSerializer.Serialize(orcamento)}]");
+            var orcamentoResponse = PorFiltroNovo(opcao.IdOrcamentoCotacao, (int)usuarioLogado.TipoUsuario);
+            if (!orcamentoResponse.Sucesso)
+            {
+                response.Mensagem = orcamentoResponse.Mensagem;
+                return response;
+            }
+            _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Retorno da busca de orçamento cotação. Response => [{JsonSerializer.Serialize(orcamentoResponse)}]");
 
             _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Início da validação de permissão para atualizar orçamento.");
-            string retorno = ValidarPermissaoAtualizarOpcaoOrcamentoCotacao(orcamento, usuarioLogado);
+            string retorno = ValidarPermissaoAtualizarOpcaoOrcamentoCotacao(orcamentoResponse, usuarioLogado);
             if (!string.IsNullOrEmpty(retorno))
             {
                 response.Mensagem = retorno;
                 return response;
             }
 
-            response = _orcamentoCotacaoOpcaoBll.AtualizarOrcamentoOpcao(opcao, usuarioLogado, orcamento);
+            response = _orcamentoCotacaoOpcaoBll.AtualizarOrcamentoOpcao(opcao, usuarioLogado, orcamentoResponse);
             if (!string.IsNullOrEmpty(response.Mensagem))
             {
                 response.Mensagem = response.Mensagem;
@@ -928,7 +1059,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
-        private string ValidarPermissaoAtualizarOpcaoOrcamentoCotacao(OrcamentoResponseViewModel orcamento, UsuarioLogin usuarioLogado)
+        private string ValidarPermissaoAtualizarOpcaoOrcamentoCotacao(OrcamentoResponse orcamento, UsuarioLogin usuarioLogado)
         {
             if (orcamento.IdIndicadorVendedor != null)
             {
@@ -948,8 +1079,6 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 if (usuarioLogado.Apelido == parceiro.Apelido) return null;
             }
-
-
 
             if (usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_1) ||
                 usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_2) ||
