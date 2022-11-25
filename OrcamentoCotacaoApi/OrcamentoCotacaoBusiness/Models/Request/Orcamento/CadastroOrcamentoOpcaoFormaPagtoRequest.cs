@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UtilsGlobais.RequestResponse;
 
-namespace OrcamentoCotacaoBusiness.Models.Request
+namespace OrcamentoCotacaoBusiness.Models.Request.Orcamento
 {
-    public class FormaPagtoCriacaoRequest : RequestBase
+    public class CadastroOrcamentoOpcaoFormaPagtoRequest : RequestBase
     {
         [JsonProperty("id")]
         public int Id { get; set; }

@@ -7,6 +7,7 @@ using InfraBanco.Modelos.Filtros;
 using MeioPagamentos;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Models.Request;
+using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento.MeiosPagamento;
@@ -130,7 +131,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             return await _formaPagtoBll.BuscarQtdeParcCartaoVisa();
         }
 
-        public CadastroOpcaoFormaPagtosResponse CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(List<FormaPagtoCriacaoRequest> FormaPagtos,
+        public CadastroOpcaoFormaPagtosResponse CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(List<CadastroOrcamentoOpcaoFormaPagtoRequest> FormaPagtos,
             int idOrcamentoCotacaoOpcao, ContextoBdGravacao contextoBdGravacao, Guid correlationId)
         {
             CadastroOpcaoFormaPagtosResponse response = new CadastroOpcaoFormaPagtosResponse();
@@ -194,8 +195,8 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 if (f == null)
                 {
-                    var p = mapper.Map<FormaPagtoCriacaoRequest>(pagto);
-                    List<FormaPagtoCriacaoRequest> lstPagto = new List<FormaPagtoCriacaoRequest>();
+                    var p = mapper.Map<CadastroOrcamentoOpcaoFormaPagtoRequest>(pagto);
+                    List<CadastroOrcamentoOpcaoFormaPagtoRequest> lstPagto = new List<CadastroOrcamentoOpcaoFormaPagtoRequest>();
                     lstPagto.Add(p);
                     var responseOpcoesPagtoResponse = CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(lstPagto, opcao.Id, dbGravacao, opcao.CorrelationId);
                     if (responseOpcoesPagtoResponse.Sucesso && responseOpcoesPagtoResponse.TorcamentoCotacaoOpcaoPagtos.Count == 0)

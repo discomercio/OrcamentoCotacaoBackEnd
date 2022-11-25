@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Text;
 using UtilsGlobais.RequestResponse;
 
-namespace OrcamentoCotacaoBusiness.Models.Request
+namespace OrcamentoCotacaoBusiness.Models.Request.Orcamento
 {
-    public  class ClienteOrcamentoCotacaoRequest: RequestBase
+    public  class CadastroOrcamentoClienteRequest : RequestBase
     {
         [JsonProperty("nomeCliente")]
         public string NomeCliente { get; set; }

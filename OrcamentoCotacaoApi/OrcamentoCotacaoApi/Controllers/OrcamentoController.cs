@@ -8,6 +8,7 @@ using OrcamentoCotacaoApi.Filters;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
+using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response;
 using System;
 using System.Linq;
@@ -74,7 +75,7 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(OrcamentoRequest model)
+        public IActionResult Post(CadastroOrcamentoRequest model)
         {
             model.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
             model.Usuario = LoggedUser.Apelido;

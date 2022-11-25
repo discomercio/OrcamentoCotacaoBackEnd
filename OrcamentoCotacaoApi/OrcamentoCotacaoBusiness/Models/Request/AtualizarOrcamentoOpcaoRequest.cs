@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,7 +25,7 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         public decimal VlTotal { get; set; }
 
         [JsonProperty("formaPagto")]
-        public List<FormaPagtoCriacaoRequest> FormaPagto { get; set; }
+        public List<CadastroOrcamentoOpcaoFormaPagtoRequest> FormaPagto { get; set; }
 
         [JsonProperty("percRT")]
         public float PercRT { get; set; }

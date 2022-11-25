@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using UtilsGlobais.RequestResponse;
 
-namespace OrcamentoCotacaoBusiness.Models.Request
+namespace OrcamentoCotacaoBusiness.Models.Request.Orcamento
 {
-    public class OrcamentoOpcaoRequest : RequestBase
+    public class CadastroOrcamentoOpcaoRequest : RequestBase
     {
         [JsonProperty("listaProdutos")]
-        public List<ProdutoRequestViewModel> ListaProdutos { get; set; }
+        public List<CadastroOrcamentoOpcaoProdutoRequest> ListaProdutos { get; set; }
 
         [JsonProperty("vlTotal")]
         public decimal VlTotal { get; set; }
 
         [JsonProperty("formaPagto")]
-        public List<FormaPagtoCriacaoRequest> FormaPagto { get; set; }
+        public List<CadastroOrcamentoOpcaoFormaPagtoRequest> FormaPagto { get; set; }
 
         [JsonProperty("percRT")]
         public float PercRT { get; set; }

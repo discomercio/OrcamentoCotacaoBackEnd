@@ -27,6 +27,7 @@ using Microsoft.EntityFrameworkCore;
 using Prepedido.Dados.DetalhesPrepedido;
 using System.Text.Json;
 using System.ComponentModel.DataAnnotations.Schema;
+using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -404,7 +405,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 IdIndicador = orcamento.IdIndicador,
                 IdIndicadorVendedor = orcamento.IdIndicadorVendedor,
                 IdVendedor = orcamento.IdVendedor,
-                ClienteOrcamentoCotacaoDto = new ClienteOrcamentoCotacaoRequest()
+                ClienteOrcamentoCotacaoDto = new CadastroOrcamentoClienteRequest()
                 {
                     NomeCliente = orcamento.NomeCliente,
                     NomeObra = orcamento.NomeObra,
@@ -486,7 +487,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
 
-        private string ValidarClienteOrcamento(ClienteOrcamentoCotacaoRequest cliente)
+        private string ValidarClienteOrcamento(CadastroOrcamentoClienteRequest cliente)
         {
             if (cliente == null) return "Ops! Favor preencher os dados do cliente!";
 
@@ -532,7 +533,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
-        private string ValidarDetalhesOrcamento(OrcamentoRequest orcamento)
+        private string ValidarDetalhesOrcamento(CadastroOrcamentoRequest orcamento)
         {
             if (orcamento.EntregaImediata)
             {
@@ -558,7 +559,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
-        public CadastroOrcamentoCotacaoResponse CadastrarOrcamentoCotacao(OrcamentoRequest orcamento, UsuarioLogin usuarioLogado)
+        public CadastroOrcamentoCotacaoResponse CadastrarOrcamentoCotacao(CadastroOrcamentoRequest orcamento, UsuarioLogin usuarioLogado)
         {
             var response = new CadastroOrcamentoCotacaoResponse();
             response.Sucesso = false;
@@ -1005,7 +1006,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
         }
 
-        private string AdicionarOrcamentoCotacaoEmailQueue(OrcamentoRequest orcamento, Guid guid, int idOrcamentoCotacao,
+        private string AdicionarOrcamentoCotacaoEmailQueue(CadastroOrcamentoRequest orcamento, Guid guid, int idOrcamentoCotacao,
             ContextoBdGravacao contextoBdGravacao)
         {
 
@@ -1153,7 +1154,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         }
 
-        private TorcamentoCotacao MontarTorcamentoCotacao(OrcamentoRequest orcamento, UsuarioLogin usuarioLogado,
+        private TorcamentoCotacao MontarTorcamentoCotacao(CadastroOrcamentoRequest orcamento, UsuarioLogin usuarioLogado,
             PercMaxDescEComissaoDados percMaxDescEComissaoDados, int status)
         {
             TorcamentoCotacao torcamentoCotacao = new TorcamentoCotacao();

@@ -5,6 +5,7 @@ using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Models.Request;
+using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             this._logger = _logger;
         }
 
-        public CadastroOpcoesOrcamentoResponse CadastrarOrcamentoCotacaoOpcoesComTransacao(List<OrcamentoOpcaoRequest> orcamentoOpcoes,
+        public CadastroOpcoesOrcamentoResponse CadastrarOrcamentoCotacaoOpcoesComTransacao(List<CadastroOrcamentoOpcaoRequest> orcamentoOpcoes,
             int idOrcamentoCotacao, UsuarioLogin usuarioLogado, ContextoBdGravacao contextoBdGravacao, string loja,
             Guid correlationId)
         {
@@ -66,10 +67,9 @@ namespace OrcamentoCotacaoBusiness.Bll
                     return response;
                 }
 
-                string erro = "";
                 _logger.LogInformation($"Método Cadastrar opções de orçamento - Cadastrando produtos unificados e atômicos da opção {seq}");
                 var responseUnificadosEAtomicos = produtoOrcamentoCotacaoBll.CadastrarOrcamentoCotacaoOpcaoProdutosUnificadosEAtomicosComTransacao(opcao,
-                    opcaoResponse.Id, loja, contextoBdGravacao, ref erro, correlationId);
+                    opcaoResponse.Id, loja, contextoBdGravacao, correlationId);
 
                 if (!string.IsNullOrEmpty(responseUnificadosEAtomicos.Mensagem))
                 {
@@ -101,7 +101,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             return response;
         }
 
-        private TorcamentoCotacaoOpcao MontarTorcamentoCotacaoOpcao(OrcamentoOpcaoRequest opcao, int idOrcamentoCotacao,
+        private TorcamentoCotacaoOpcao MontarTorcamentoCotacaoOpcao(CadastroOrcamentoOpcaoRequest opcao, int idOrcamentoCotacao,
             UsuarioLogin usuarioLogado, int sequencia)
         {
             return new TorcamentoCotacaoOpcao()

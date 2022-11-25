@@ -7,6 +7,7 @@ using InfraIdentity;
 using Loja;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Models.Request;
+using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
 using Produto;
@@ -279,8 +280,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             return lstProdutoPropriedades;
         }
 
-        public CadastroOpcaoProdutosUnificadosResponse CadastrarOrcamentoCotacaoOpcaoProdutosUnificadosEAtomicosComTransacao(OrcamentoOpcaoRequest opcao,
-            int idOrcamentoCotacaoOpcao, string loja, ContextoBdGravacao contextoBdGravacao, ref string erro, Guid correlationId)
+        public CadastroOpcaoProdutosUnificadosResponse CadastrarOrcamentoCotacaoOpcaoProdutosUnificadosEAtomicosComTransacao(CadastroOrcamentoOpcaoRequest opcao,
+            int idOrcamentoCotacaoOpcao, string loja, ContextoBdGravacao contextoBdGravacao, Guid correlationId)
         {
             CadastroOpcaoProdutosUnificadosResponse response = new CadastroOpcaoProdutosUnificadosResponse();
             response.TorcamentoCotacaoItemUnificados = new List<TorcamentoCotacaoItemUnificado>();
@@ -392,7 +393,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public CadastroOpcaoProdutoAtomicosCustoFinResponse CadastrarProdutoAtomicoCustoFinComTransacao(List<TorcamentoCotacaoOpcaoPagto> tOrcamentoCotacaoOpcaoPagtos,
-            List<TorcamentoCotacaoItemUnificado> tOrcamentoCotacaoItemUnificados, List<ProdutoRequestViewModel> produtosOpcao, string loja,
+            List<TorcamentoCotacaoItemUnificado> tOrcamentoCotacaoItemUnificados, List<CadastroOrcamentoOpcaoProdutoRequest> produtosOpcao, string loja,
             ContextoBdGravacao contextoBdGravacao, Guid correlationId)
         {
             CadastroOpcaoProdutoAtomicosCustoFinResponse response = new CadastroOpcaoProdutoAtomicosCustoFinResponse();

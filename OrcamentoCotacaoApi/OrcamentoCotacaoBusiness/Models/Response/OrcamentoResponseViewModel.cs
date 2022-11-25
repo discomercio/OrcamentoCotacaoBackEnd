@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using OrcamentoCotacaoBusiness.Models.Request;
+using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
 using System;
 using System.Collections.Generic;
 
@@ -46,7 +47,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         public DateTime? DataEntregaImediata { get; set; }
 
         [JsonProperty("clienteOrcamentoCotacaoDto")]
-        public ClienteOrcamentoCotacaoRequest ClienteOrcamentoCotacaoDto { get; set; }
+        public CadastroOrcamentoClienteRequest ClienteOrcamentoCotacaoDto { get; set; }
 
         [JsonProperty("listaOrcamentoCotacaoDto")]
         public List<OrcamentoOpcaoResponseViewModel> ListaOrcamentoCotacaoDto { get; set; }
