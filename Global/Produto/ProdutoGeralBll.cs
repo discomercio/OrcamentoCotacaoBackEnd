@@ -167,6 +167,7 @@ namespace Produto
                                     join pl in db.TprodutoLoja on c.Produto equals pl.Produto
                                     join fab in db.Tfabricante on c.Fabricante equals fab.Fabricante
                                     where pl.Vendavel == "S" &&
+                                          c.Descontinuado != "S" &&
                                           pl.Loja == loja &&
                                           c.Excluido_status == 0 &&
                                           pl.Excluido_status == 0 &&
