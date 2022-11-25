@@ -10,6 +10,7 @@ using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
+using OrcamentoCotacaoBusiness.Models.Response.Orcamento;
 using Produto;
 using Produto.Dto;
 using ProdutoCatalogo;
@@ -280,10 +281,10 @@ namespace OrcamentoCotacaoBusiness.Bll
             return lstProdutoPropriedades;
         }
 
-        public CadastroOpcaoProdutosUnificadosResponse CadastrarOrcamentoCotacaoOpcaoProdutosUnificadosEAtomicosComTransacao(CadastroOrcamentoOpcaoRequest opcao,
+        public CadastroOrcamentoOpcaoProdutoUnificadoResponse CadastrarOrcamentoCotacaoOpcaoProdutosUnificadosEAtomicosComTransacao(CadastroOrcamentoOpcaoRequest opcao,
             int idOrcamentoCotacaoOpcao, string loja, ContextoBdGravacao contextoBdGravacao, Guid correlationId)
         {
-            CadastroOpcaoProdutosUnificadosResponse response = new CadastroOpcaoProdutosUnificadosResponse();
+            CadastroOrcamentoOpcaoProdutoUnificadoResponse response = new CadastroOrcamentoOpcaoProdutoUnificadoResponse();
             response.TorcamentoCotacaoItemUnificados = new List<TorcamentoCotacaoItemUnificado>();
             response.Sucesso = false;
             var nomeMetodo = response.ObterNomeMetodoAtualAsync();
@@ -349,11 +350,11 @@ namespace OrcamentoCotacaoBusiness.Bll
             return response;
         }
 
-        private CadastroOpcaoProdutosAtomicosResponse CadastrarTorcamentoCotacaoOpcaoItemAtomicoComTransacao(int idItemUnificado,
+        private CadastroOrcamentoOpcaoProdutoAtomicoResponse CadastrarTorcamentoCotacaoOpcaoItemAtomicoComTransacao(int idItemUnificado,
             Tproduto tProduto, TecProdutoComposto tEcProdutoComposto, int qtde, string loja, ContextoBdGravacao contextoBdGravacao,
             Guid correlationId)
         {
-            CadastroOpcaoProdutosAtomicosResponse response = new CadastroOpcaoProdutosAtomicosResponse();
+            CadastroOrcamentoOpcaoProdutoAtomicoResponse response = new CadastroOrcamentoOpcaoProdutoAtomicoResponse();
             response.TorcamentoCotacaoOpcaoItemAtomicos = new List<TorcamentoCotacaoOpcaoItemAtomico>();
             response.Sucesso = false;
             var nomeMetodo = response.ObterNomeMetodoAtualAsync();
@@ -392,11 +393,11 @@ namespace OrcamentoCotacaoBusiness.Bll
             return response;
         }
 
-        public CadastroOpcaoProdutoAtomicosCustoFinResponse CadastrarProdutoAtomicoCustoFinComTransacao(List<TorcamentoCotacaoOpcaoPagto> tOrcamentoCotacaoOpcaoPagtos,
+        public CadastroOrcamentoOpcaoProdutoAtomicoCustoFinResponse CadastrarProdutoAtomicoCustoFinComTransacao(List<TorcamentoCotacaoOpcaoPagto> tOrcamentoCotacaoOpcaoPagtos,
             List<TorcamentoCotacaoItemUnificado> tOrcamentoCotacaoItemUnificados, List<CadastroOrcamentoOpcaoProdutoRequest> produtosOpcao, string loja,
             ContextoBdGravacao contextoBdGravacao, Guid correlationId)
         {
-            CadastroOpcaoProdutoAtomicosCustoFinResponse response = new CadastroOpcaoProdutoAtomicosCustoFinResponse();
+            CadastroOrcamentoOpcaoProdutoAtomicoCustoFinResponse response = new CadastroOrcamentoOpcaoProdutoAtomicoCustoFinResponse();
             response.TorcamentoCotacaoOpcaoItemAtomicoCustoFins = new List<TorcamentoCotacaoOpcaoItemAtomicoCustoFin>();
             response.Sucesso = false;
             var nomeMetodo = response.ObterNomeMetodoAtualAsync();

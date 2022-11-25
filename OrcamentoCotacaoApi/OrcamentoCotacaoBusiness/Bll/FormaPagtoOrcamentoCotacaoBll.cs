@@ -11,6 +11,7 @@ using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento.MeiosPagamento;
+using OrcamentoCotacaoBusiness.Models.Response.Orcamento;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -131,10 +132,10 @@ namespace OrcamentoCotacaoBusiness.Bll
             return await _formaPagtoBll.BuscarQtdeParcCartaoVisa();
         }
 
-        public CadastroOpcaoFormaPagtosResponse CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(List<CadastroOrcamentoOpcaoFormaPagtoRequest> FormaPagtos,
+        public CadastroOrcamentoOpcaoFormaPagtoResponse CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(List<CadastroOrcamentoOpcaoFormaPagtoRequest> FormaPagtos,
             int idOrcamentoCotacaoOpcao, ContextoBdGravacao contextoBdGravacao, Guid correlationId)
         {
-            CadastroOpcaoFormaPagtosResponse response = new CadastroOpcaoFormaPagtosResponse();
+            CadastroOrcamentoOpcaoFormaPagtoResponse response = new CadastroOrcamentoOpcaoFormaPagtoResponse();
             response.Sucesso = true;
             response.TorcamentoCotacaoOpcaoPagtos = new List<TorcamentoCotacaoOpcaoPagto>();
             var nomeMetodo = response.ObterNomeMetodoAtualAsync();

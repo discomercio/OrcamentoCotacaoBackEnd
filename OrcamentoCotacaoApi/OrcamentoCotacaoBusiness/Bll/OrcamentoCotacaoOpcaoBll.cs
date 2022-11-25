@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response;
+using OrcamentoCotacaoBusiness.Models.Response.Orcamento;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,11 +37,11 @@ namespace OrcamentoCotacaoBusiness.Bll
             this._logger = _logger;
         }
 
-        public CadastroOpcoesOrcamentoResponse CadastrarOrcamentoCotacaoOpcoesComTransacao(List<CadastroOrcamentoOpcaoRequest> orcamentoOpcoes,
+        public CadastroOrcamentoOpcaoResponse CadastrarOrcamentoCotacaoOpcoesComTransacao(List<CadastroOrcamentoOpcaoRequest> orcamentoOpcoes,
             int idOrcamentoCotacao, UsuarioLogin usuarioLogado, ContextoBdGravacao contextoBdGravacao, string loja,
             Guid correlationId)
         {
-            var response = new CadastroOpcoesOrcamentoResponse();
+            var response = new CadastroOrcamentoOpcaoResponse();
             response.Sucesso = false;
             var nomeMetodo = response.ObterNomeMetodoAtualAsync();
             _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Iniciando cadastro das opções de orçamento. Opções => [{JsonSerializer.Serialize(orcamentoOpcoes)}].");

@@ -9,6 +9,7 @@ namespace OrcamentoCotacaoBusiness.Mapper
         public FormaPagtoMapper()
         {
             CreateMap<FormaPagtoCriacaoResponseViewModel, CadastroOrcamentoOpcaoFormaPagtoRequest>();
+            CreateMap<AtualizarOrcamentoOpcaoFormaPagtoRequest, CadastroOrcamentoOpcaoFormaPagtoRequest>();
         }
     }
 }

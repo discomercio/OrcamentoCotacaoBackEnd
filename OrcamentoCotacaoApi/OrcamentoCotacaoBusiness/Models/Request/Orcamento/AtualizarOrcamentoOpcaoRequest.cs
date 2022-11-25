@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using UtilsGlobais.RequestResponse;
 
-namespace OrcamentoCotacaoBusiness.Models.Request
+namespace OrcamentoCotacaoBusiness.Models.Request.Orcamento
 {
     public class AtualizarOrcamentoOpcaoRequest: RequestBase
     {
@@ -25,7 +25,7 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         public decimal VlTotal { get; set; }
 
         [JsonProperty("formaPagto")]
-        public List<CadastroOrcamentoOpcaoFormaPagtoRequest> FormaPagto { get; set; }
+        public List<AtualizarOrcamentoOpcaoFormaPagtoRequest> FormaPagto { get; set; }
 
         [JsonProperty("percRT")]
         public float PercRT { get; set; }

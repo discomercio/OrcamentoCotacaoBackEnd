@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OrcamentoCotacaoBusiness.Models.Response
+namespace OrcamentoCotacaoBusiness.Models.Response.Orcamento
 {
-    public class CadastroOpcaoProdutosUnificadosResponse: UtilsGlobais.RequestResponse.ResponseBase
+    public class CadastroOrcamentoOpcaoProdutoUnificadoResponse : UtilsGlobais.RequestResponse.ResponseBase
     {
         public List<TorcamentoCotacaoItemUnificado> TorcamentoCotacaoItemUnificados { get; set; }
     }

@@ -48,6 +48,7 @@
   <ItemGroup>
     <Folder Include="Interfaces\" />
     <Folder Include="Models\Response\FormaPagamento\MeiosPagamento\" />
+    <Folder Include="Models\Response\Orcamento\" />
     <Folder Include="Services\" />
   </ItemGroup>
 

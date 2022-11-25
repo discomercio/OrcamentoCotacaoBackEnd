@@ -28,6 +28,7 @@ using Prepedido.Dados.DetalhesPrepedido;
 using System.Text.Json;
 using System.ComponentModel.DataAnnotations.Schema;
 using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
+using OrcamentoCotacaoBusiness.Models.Response.Orcamento;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -559,9 +560,9 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
-        public CadastroOrcamentoCotacaoResponse CadastrarOrcamentoCotacao(CadastroOrcamentoRequest orcamento, UsuarioLogin usuarioLogado)
+        public CadastroOrcamentoResponse CadastrarOrcamentoCotacao(CadastroOrcamentoRequest orcamento, UsuarioLogin usuarioLogado)
         {
-            var response = new CadastroOrcamentoCotacaoResponse();
+            var response = new CadastroOrcamentoResponse();
             response.Sucesso = false;
             var nomeMetodo = response.ObterNomeMetodoAtualAsync();
 
