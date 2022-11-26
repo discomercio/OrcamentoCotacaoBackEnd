@@ -40,10 +40,10 @@ namespace OrcamentoCotacaoBusiness.Models.Request.Orcamento
         [JsonProperty("instaladorInstala")]
         public int InstaladorInstala { get; set; }
 
-        [JsonProperty("clienteOrcamentoCotacaoDto")]
+        [JsonProperty("clienteOrcamento")]
         public CadastroOrcamentoClienteRequest ClienteOrcamentoCotacaoDto { get; set; }
 
-        [JsonProperty("listaOrcamentoCotacaoDto")]
+        [JsonProperty("listaOrcamentoCotacao")]
         public List<CadastroOrcamentoOpcaoRequest> ListaOrcamentoCotacaoDto { get; set; }
 
         [JsonProperty("id")]
