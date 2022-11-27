@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using OrcamentoCotacaoBusiness.Models.Response;
 using UtilsGlobais.Configs;
 using OrcamentoCotacaoBusiness.Models.Request;
+using static OrcamentoCotacaoBusiness.Enums.Enums;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -43,6 +44,9 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Listar(int page, int pageItens, int idCliente)
         {
+            if (!User.ValidaPermissao((int)ePermissao.ConsultarProdutos))
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
             var saida = _bll.PorFiltro(new InfraBanco.Modelos.Filtros.TprodutoCatalogoFiltro()
             {
                 Page = page,
@@ -104,6 +108,9 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpGet("{id}/detalhes")]
         public async Task<IActionResult> Detalhes(int id)
         {
+            if (!User.ValidaPermissao((int)ePermissao.IncluirProdutos))
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
             var saida = _bll.Detalhes(id);
 
             if (saida != null)
@@ -170,6 +177,9 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPut]
         public async Task<IActionResult> Atualizar(IFormFile arquivo, IFormCollection form)
         {
+            if (!User.ValidaPermissao((int)ePermissao.IncluirProdutos))
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
             var tProduto = JsonConvert.DeserializeObject<TprodutoCatalogo>(form["produto"]);
             tProduto.UsuarioEdicao = LoggedUser.Apelido;
 
@@ -226,6 +236,9 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost("criar")]
         public async Task<IActionResult> Criar(IFormFile arquivo, IFormCollection form)
         {
+            if (!User.ValidaPermissao((int)ePermissao.IncluirProdutos))
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
             try
             {
                 var usuario = LoggedUser.Apelido;

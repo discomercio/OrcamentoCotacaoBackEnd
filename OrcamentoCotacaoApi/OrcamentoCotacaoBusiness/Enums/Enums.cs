@@ -22,7 +22,9 @@
             VisualizarPrePedidoConsultar = 102000,
             CancelarPrePedido = 102200,
             IncluirPrePedido = 102100,
-            ConsultarPedido = 102300
+            ConsultarPedido = 102300,
+            ConsultarProdutos = 102400,
+            IncluirProdutos = 102500
         }
 
         public enum StatusOrcamento
