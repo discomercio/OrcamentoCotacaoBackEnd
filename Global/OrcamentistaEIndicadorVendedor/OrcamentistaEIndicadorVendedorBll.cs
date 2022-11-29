@@ -111,7 +111,7 @@ namespace OrcamentistaEIndicadorVendedor
 
             if (oeiv.Datastamp != senha_codificada)
             {
-                oeiv.DataUltimaAlteracaoSenha = DateTime.Now;
+                oeiv.DataUltimaAlteracaoSenha = null;
             }
             oeiv.Datastamp = senha_codificada;
 
