@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace OrcamentoCotacaoBusiness.Models.Request
+namespace OrcamentoCotacaoBusiness.Models.Response.Orcamento
 {
-    public  class ClienteOrcamentoCotacaoRequestViewModel
+    public class OrcamentoClienteResponse : UtilsGlobais.RequestResponse.ResponseBase
     {
         [JsonProperty("nomeCliente")]
         public string NomeCliente { get; set; }
@@ -27,6 +27,5 @@ namespace OrcamentoCotacaoBusiness.Models.Request
 
         [JsonProperty("contribuinteICMS")]
         public byte? ContribuinteICMS { get; set; }
-
     }
 }

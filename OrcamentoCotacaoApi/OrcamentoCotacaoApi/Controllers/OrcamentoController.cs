@@ -4,14 +4,17 @@ using InfraIdentity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using OrcamentoCotacaoApi.Filters;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
+using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response;
 using System;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using UtilsGlobais.Configs;
 using static OrcamentoCotacaoBusiness.Enums.Enums;
 
 namespace OrcamentoCotacaoApi.Controllers
@@ -19,6 +22,8 @@ namespace OrcamentoCotacaoApi.Controllers
     [Route("[controller]")]
     [ApiController]
     [Authorize]
+    [TypeFilter(typeof(ResourceFilter))]
+    [TypeFilter(typeof(ExceptionFilter))]
     public class OrcamentoController : BaseController
     {
         private readonly ILogger<OrcamentoController> _logger;
@@ -70,14 +75,20 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(OrcamentoRequestViewModel model)
+        public IActionResult Post(CadastroOrcamentoRequest model)
         {
-            _logger.LogInformation("Inserindo Orcamento");
+            model.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+            model.Usuario = LoggedUser.Apelido;
+
+            _logger.LogInformation($"CorrelationId => [{model.CorrelationId}]. OrcamentoController/POST - Request => [{JsonSerializer.Serialize(model)}].");
 
             var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
 
-            var orcamento = _orcamentoBll.CadastrarOrcamentoCotacao(model, user);
-            return Ok(orcamento);
+            var response = _orcamentoBll.CadastrarOrcamentoCotacao(model, user);
+
+            _logger.LogInformation($"CorrelationId => [{model.CorrelationId}]. ArquivoController/Download/GET - Response => [{JsonSerializer.Serialize(response)}].");
+
+            return Ok(response);
         }
 
         [HttpGet]
@@ -98,12 +109,19 @@ namespace OrcamentoCotacaoApi.Controllers
             return Ok(dados);
         }
 
-        [HttpPost("atualizarOrcamentoOpcao")]
-        public IActionResult AtualizarOrcamentoOpcao(OrcamentoOpcaoResponseViewModel opcao)
+        [HttpPut("atualizarOrcamentoOpcao")]
+        public IActionResult AtualizarOrcamentoOpcao(AtualizarOrcamentoOpcaoRequest opcao)
         {
+            opcao.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+            opcao.Usuario = LoggedUser.Apelido;
+
+            _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. OrcamentoController/POST - Request => [{JsonSerializer.Serialize(opcao)}].");
+
             var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
-            _orcamentoBll.AtualizarOrcamentoOpcao(opcao, user);
-            return Ok();
+            var response = _orcamentoBll.AtualizarOrcamentoOpcao(opcao, user);
+            _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. OrcamentoController/POST - Response => [{JsonSerializer.Serialize(response)}].");
+
+            return Ok(response);
         }
 
         [HttpPut("{id}/status/{idStatus}")]

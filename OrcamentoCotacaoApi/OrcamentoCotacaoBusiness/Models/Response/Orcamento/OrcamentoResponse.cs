@@ -1,12 +1,11 @@
 ﻿using Newtonsoft.Json;
-using OrcamentoCotacaoBusiness.Models.Request;
-using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace OrcamentoCotacaoBusiness.Models.Response
+namespace OrcamentoCotacaoBusiness.Models.Response.Orcamento
 {
-    public class OrcamentoResponseViewModel : IViewModelResponse
+    public class OrcamentoResponse : UtilsGlobais.RequestResponse.ResponseBase
     {
         [JsonProperty("id")]
         public long Id { get; set; }
@@ -47,7 +46,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         public DateTime? DataEntregaImediata { get; set; }
 
         [JsonProperty("clienteOrcamentoCotacaoDto")]
-        public CadastroOrcamentoClienteRequest ClienteOrcamentoCotacaoDto { get; set; }
+        public OrcamentoClienteResponse ClienteOrcamentoCotacaoDto { get; set; }
 
         [JsonProperty("listaOrcamentoCotacaoDto")]
         public List<OrcamentoOpcaoResponseViewModel> ListaOrcamentoCotacaoDto { get; set; }
@@ -78,8 +77,5 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 
         [JsonProperty("instaladorInstala")]
         public int InstaladorInstala { get; set; }
-
-        [JsonProperty("erro")]
-        public string Erro { get; set; }
     }
 }
