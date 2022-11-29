@@ -109,6 +109,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 Nome = usuarios.Nome,
                 Email = usuarios.Email,
                 IdIndicador = usuarios.IdIndicador,
+                Parceiro = usuarios.Parceiro,
                 Ativo = usuarios.Ativo,
                 Id = usuarios.Id,
                 Telefone = usuarios.Telefone,
@@ -175,7 +176,12 @@ namespace OrcamentoCotacaoApi.Controllers
             try
             {
                 var objOrcamentistaEIndicadorVendedor = _mapper.Map<TorcamentistaEIndicadorVendedor>(model);
-                var result = _orcamentistaEindicadorVendedorBll.Atualizar(objOrcamentistaEIndicadorVendedor, model.Senha, User.GetParceiro(), User.GetVendedor());
+                var result = _orcamentistaEindicadorVendedorBll.Atualizar(
+                    objOrcamentistaEIndicadorVendedor, 
+                    model.Senha, 
+                    model.Parceiro, 
+                    User.GetVendedor(),
+                    User.GetTipoUsuario());
                 return Ok(result);
             }
             catch (ArgumentException e)
