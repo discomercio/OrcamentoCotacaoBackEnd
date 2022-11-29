@@ -90,14 +90,14 @@ namespace OrcamentoCotacaoApi.Controllers
 
                 if (objUsuarioLogin == null || objUsuarioLogin.Token == null)
                 {
-                    response.Mensagem = "Usuário ou senha incorretos!";
+                    response.Mensagem = "Usuário ou senha incorretos";
                     _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - {response.Mensagem}. Response => [{JsonSerializer.Serialize(objUsuarioLogin)}].");
                     return Ok(response);
                 }
 
                 if (objUsuarioLogin.Bloqueado)
                 {
-                    response.Mensagem = "Usuário inativo.";
+                    response.Mensagem = "Usuário inativo";
                     _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - {response.Mensagem}. Response => [{JsonSerializer.Serialize(objUsuarioLogin)}]");
                     return Ok(response);
                 }
@@ -110,7 +110,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 if (objUsuarioLogin.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR &&
                     !objUsuarioLogin.Permissoes.Contains(((int)Constantes.ePermissoes.ACESSO_AO_MODULO_100100).ToString()))
                 {
-                    response.Mensagem = "Usuário não possui acesso ao Módulo.";
+                    response.Mensagem = "Usuário não possui acesso ao Módulo";
                     _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - {response.Mensagem}. Response => [{JsonSerializer.Serialize(objUsuarioLogin)}]");
                     return Ok(response);
                 }
