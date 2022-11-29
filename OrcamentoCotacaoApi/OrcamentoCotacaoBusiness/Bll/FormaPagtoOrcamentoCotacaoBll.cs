@@ -5,13 +5,17 @@ using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using MeioPagamentos;
+using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Models.Request;
+using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento.MeiosPagamento;
+using OrcamentoCotacaoBusiness.Models.Response.Orcamento;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace OrcamentoCotacaoBusiness.Bll
@@ -23,18 +27,20 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly OrcamentoCotacaoOpcaoPagto.OrcamentoCotacaoOpcaoPagtoBll orcamentoCotacaoOpcaoPagtoBll;
         private readonly IMapper mapper;
         private readonly OrcamentoCotacaoOpcaoItemAtomicoCustoFin.OrcamentoCotacaoOpcaoItemAtomicoCustoFinBll orcamentoCotacaoOpcaoItemAtomicoCustoFinBll;
-
+        private readonly ILogger<FormaPagtoOrcamentoCotacaoBll> _logger;
 
         public FormaPagtoOrcamentoCotacaoBll(FormaPagtoBll formaPagtoBll, MeiosPagamentosBll _meiosPagamentosBll,
             OrcamentoCotacaoOpcaoPagto.OrcamentoCotacaoOpcaoPagtoBll orcamentoCotacaoOpcaoPagtoBll,
             IMapper mapper,
-            OrcamentoCotacaoOpcaoItemAtomicoCustoFin.OrcamentoCotacaoOpcaoItemAtomicoCustoFinBll orcamentoCotacaoOpcaoItemAtomicoCustoFinBll)
+            OrcamentoCotacaoOpcaoItemAtomicoCustoFin.OrcamentoCotacaoOpcaoItemAtomicoCustoFinBll orcamentoCotacaoOpcaoItemAtomicoCustoFinBll,
+            ILogger<FormaPagtoOrcamentoCotacaoBll> _logger)
         {
             this._formaPagtoBll = formaPagtoBll;
             this._meiosPagamentosBll = _meiosPagamentosBll;
             this.orcamentoCotacaoOpcaoPagtoBll = orcamentoCotacaoOpcaoPagtoBll;
             this.mapper = mapper;
             this.orcamentoCotacaoOpcaoItemAtomicoCustoFinBll = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll;
+            this._logger = _logger;
         }
 
         public List<FormaPagamentoResponseViewModel> BuscarFormasPagamentos(string tipoCliente, Constantes.TipoUsuario tipoUsuario, string apelido, byte comIndicacao)
@@ -126,10 +132,13 @@ namespace OrcamentoCotacaoBusiness.Bll
             return await _formaPagtoBll.BuscarQtdeParcCartaoVisa();
         }
 
-        public List<TorcamentoCotacaoOpcaoPagto> CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(List<FormaPagtoCriacaoRequestViewModel> FormaPagtos,
-            int idOrcamentoCotacaoOpcao, ContextoBdGravacao contextoBdGravacao)
+        public CadastroOrcamentoOpcaoFormaPagtoResponse CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(List<CadastroOrcamentoOpcaoFormaPagtoRequest> FormaPagtos,
+            int idOrcamentoCotacaoOpcao, ContextoBdGravacao contextoBdGravacao, Guid correlationId)
         {
-            List<TorcamentoCotacaoOpcaoPagto> retorno = new List<TorcamentoCotacaoOpcaoPagto>();
+            CadastroOrcamentoOpcaoFormaPagtoResponse response = new CadastroOrcamentoOpcaoFormaPagtoResponse();
+            response.Sucesso = true;
+            response.TorcamentoCotacaoOpcaoPagtos = new List<TorcamentoCotacaoOpcaoPagto>();
+            var nomeMetodo = response.ObterNomeMetodoAtualAsync();
             foreach (var pagto in FormaPagtos)
             {
                 TorcamentoCotacaoOpcaoPagto torcamentoCotacaoOpcaoPagto = new TorcamentoCotacaoOpcaoPagto()
@@ -161,29 +170,43 @@ namespace OrcamentoCotacaoBusiness.Bll
                     Pu_vencto_apos = pagto.Pu_vencto_apos
                 };
 
-                retorno.Add(orcamentoCotacaoOpcaoPagtoBll.InserirComTransacao(torcamentoCotacaoOpcaoPagto, contextoBdGravacao));
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Cadastrando forma de pagamento. t_ORCAMENTO_COTACAO_OPCAO => [{JsonSerializer.Serialize(torcamentoCotacaoOpcaoPagto)}].");
+                response.TorcamentoCotacaoOpcaoPagtos.Add(orcamentoCotacaoOpcaoPagtoBll.InserirComTransacao(torcamentoCotacaoOpcaoPagto, contextoBdGravacao));
             }
 
-            return retorno;
+            return response;
         }
 
-        public List<TorcamentoCotacaoOpcaoPagto> AtualizarOrcamentoCotacaoOpcaoPagtoComTransacao(
-            OrcamentoOpcaoResponseViewModel opcao, List<TorcamentoCotacaoOpcaoPagto> formaPagtoAntiga,
+        public AtualizarOrcamentoOpcaoFormaPagtoResponse AtualizarOrcamentoCotacaoOpcaoPagtoComTransacao(
+            AtualizarOrcamentoOpcaoRequest opcao, List<TorcamentoCotacaoOpcaoPagto> formaPagtoAntiga,
             ContextoBdGravacao dbGravacao)
         {
-            List<TorcamentoCotacaoOpcaoPagto> lstRetorno = new List<TorcamentoCotacaoOpcaoPagto>();
+            var response = new AtualizarOrcamentoOpcaoFormaPagtoResponse();
+            response.Sucesso = false;
+            var nomeMetodo = response.ObterNomeMetodoAtualAsync();
+            response.TorcamentoCotacaoOpcaoPagtos = new List<TorcamentoCotacaoOpcaoPagto>();
 
+            _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Verificando a remoção de formas de pagamentos");
             RemoverOrcamentoCotacaoOpcaoPagtoComTransacao(formaPagtoAntiga, opcao, dbGravacao);
-            
+
             foreach (var pagto in opcao.FormaPagto)
             {
                 var f = formaPagtoAntiga.Where(x => x.Id == pagto.Id).FirstOrDefault();
+                _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Verificando se a forma de pagamento existe.");
+
                 if (f == null)
                 {
-                    var p = mapper.Map<FormaPagtoCriacaoRequestViewModel>(pagto);
-                    List<FormaPagtoCriacaoRequestViewModel> lstPagto = new List<FormaPagtoCriacaoRequestViewModel>();
+                    var p = mapper.Map<CadastroOrcamentoOpcaoFormaPagtoRequest>(pagto);
+                    List<CadastroOrcamentoOpcaoFormaPagtoRequest> lstPagto = new List<CadastroOrcamentoOpcaoFormaPagtoRequest>();
                     lstPagto.Add(p);
-                    lstRetorno.Add(CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(lstPagto, opcao.Id, dbGravacao).FirstOrDefault());
+                    var responseOpcoesPagtoResponse = CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(lstPagto, opcao.Id, dbGravacao, opcao.CorrelationId);
+                    if (responseOpcoesPagtoResponse.Sucesso && responseOpcoesPagtoResponse.TorcamentoCotacaoOpcaoPagtos.Count == 0)
+                    {
+                        response.Mensagem = "Falha ao gravar forma de pagamento!";
+                        return response;
+                    }
+                    _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Nova forma de pagamento cadastrada. Response => [{JsonSerializer.Serialize(responseOpcoesPagtoResponse.TorcamentoCotacaoOpcaoPagtos.FirstOrDefault())}]");
+                    response.TorcamentoCotacaoOpcaoPagtos.Add(responseOpcoesPagtoResponse.TorcamentoCotacaoOpcaoPagtos.FirstOrDefault());
                 }
                 else
                 {
@@ -217,11 +240,13 @@ namespace OrcamentoCotacaoBusiness.Bll
                         Pu_vencto_apos = pagto.Pu_vencto_apos
                     };
 
-                    lstRetorno.Add(orcamentoCotacaoOpcaoPagtoBll.AtualizarComTransacao(torcamentoCotacaoOpcaoPagto, dbGravacao));
+                    _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Atualizando forma de pagamento Id[{torcamentoCotacaoOpcaoPagto.Id}]. Response => [{JsonSerializer.Serialize(torcamentoCotacaoOpcaoPagto)}]");
+                    response.TorcamentoCotacaoOpcaoPagtos.Add(orcamentoCotacaoOpcaoPagtoBll.AtualizarComTransacao(torcamentoCotacaoOpcaoPagto, dbGravacao));
                 }
             }
 
-            return lstRetorno;
+            response.Sucesso = true;
+            return response;
         }
 
         public List<TorcamentoCotacaoOpcaoPagto> BuscarOpcaoFormasPagtos(int idOpcao)
@@ -234,7 +259,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public void RemoverOrcamentoCotacaoOpcaoPagtoComTransacao(List<TorcamentoCotacaoOpcaoPagto> formaPagtoAntiga,
-            OrcamentoOpcaoResponseViewModel opcao, ContextoBdGravacao dbGravacao)
+            AtualizarOrcamentoOpcaoRequest opcao, ContextoBdGravacao dbGravacao)
         {
             foreach (var pagtoAntigo in formaPagtoAntiga)
             {
@@ -242,15 +267,21 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 if (pagto == null)
                 {
+                    _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. RemoverOrcamentoCotacaoOpcaoPagtoComTransacao. Buscando forma de pagamento. Id => [{pagtoAntigo.Id}]");
                     var itemAtomicoCusto = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.PorFiltro(new TorcamentoCotacaoOpcaoItemAtomicoCustoFinFiltro() { IdOpcaoPagto = pagtoAntigo.Id });
 
                     if (itemAtomicoCusto != null)
                     {
                         foreach (var item in itemAtomicoCusto)
+                        {
                             orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.ExcluirComTransacao(item, dbGravacao);
+                            _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. RemoverOrcamentoCotacaoOpcaoPagtoComTransacao. Produto atômico custo fin excluída. Id => [{item.Id}]");
+                        }
                     }
 
                     orcamentoCotacaoOpcaoPagtoBll.ExcluirComTransacao(pagtoAntigo, dbGravacao);
+                    _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. RemoverOrcamentoCotacaoOpcaoPagtoComTransacao. Forma de pagamento excluída. Id => [{pagtoAntigo.Id}]");
+
                 }
             }
         }

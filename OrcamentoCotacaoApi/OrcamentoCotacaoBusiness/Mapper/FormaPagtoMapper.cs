@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
-using OrcamentoCotacaoBusiness.Models.Request;
+using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace OrcamentoCotacaoBusiness.Mapper
 {
@@ -11,7 +8,8 @@ namespace OrcamentoCotacaoBusiness.Mapper
     {
         public FormaPagtoMapper()
         {
-            CreateMap<FormaPagtoCriacaoResponseViewModel, FormaPagtoCriacaoRequestViewModel>();
+            CreateMap<FormaPagtoCriacaoResponseViewModel, CadastroOrcamentoOpcaoFormaPagtoRequest>();
+            CreateMap<AtualizarOrcamentoOpcaoFormaPagtoRequest, CadastroOrcamentoOpcaoFormaPagtoRequest>();
         }
     }
 }

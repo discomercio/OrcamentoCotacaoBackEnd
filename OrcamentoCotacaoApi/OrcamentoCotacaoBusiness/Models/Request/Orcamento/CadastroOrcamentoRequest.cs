@@ -1,10 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using UtilsGlobais.RequestResponse;
 
-namespace OrcamentoCotacaoBusiness.Models.Request
+namespace OrcamentoCotacaoBusiness.Models.Request.Orcamento
 {
-    public class OrcamentoRequestViewModel : IViewModelRequest
+    public class CadastroOrcamentoRequest : RequestBase
     {
         [JsonProperty("vendedor")]
         public string Vendedor { get; set; }
@@ -40,10 +41,10 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         public int InstaladorInstala { get; set; }
 
         [JsonProperty("clienteOrcamentoCotacaoDto")]
-        public ClienteOrcamentoCotacaoRequestViewModel ClienteOrcamentoCotacaoDto { get; set; }
+        public CadastroOrcamentoClienteRequest ClienteOrcamentoCotacaoDto { get; set; }
 
         [JsonProperty("listaOrcamentoCotacaoDto")]
-        public List<OrcamentoOpcaoRequestViewModel> ListaOrcamentoCotacaoDto { get; set; }
+        public List<CadastroOrcamentoOpcaoRequest> ListaOrcamentoCotacaoDto { get; set; }
 
         [JsonProperty("id")]
         public long Id { get; set; }
@@ -53,8 +54,5 @@ namespace OrcamentoCotacaoBusiness.Models.Request
 
         [JsonProperty("versaoPoliticaPrivacidade")]
         public string VersaoPoliticaPrivacidade { get; set; }
-
-        [JsonProperty("erro")]
-        public string Erro { get; set; }
     }
 }
