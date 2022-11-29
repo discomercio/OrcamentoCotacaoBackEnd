@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using static InfraBanco.Constantes.Constantes;
 
 namespace OrcamentistaEIndicadorVendedor
 {
@@ -65,13 +66,24 @@ namespace OrcamentistaEIndicadorVendedor
             return _data.Inserir(objOrcamentistaEIndicadorVendedor);
         }
 
-        public TorcamentistaEIndicadorVendedor Atualizar(TorcamentistaEIndicadorVendedor objOrcamentistaEIndicadorVendedor, string senha, string parceiro, string vendedor)
+        public TorcamentistaEIndicadorVendedor Atualizar(TorcamentistaEIndicadorVendedor objOrcamentistaEIndicadorVendedor, 
+            string senha, 
+            string parceiro,
+            string vendedor, 
+            TipoUsuario tipoUsuario)
         {
             var oeiv = _data.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro() { id = objOrcamentistaEIndicadorVendedor.Id }).FirstOrDefault();
             if (oeiv == null) throw new KeyNotFoundException();
 
+
+            var oei = _dataIndicador.PorFiltro(new TorcamentistaEindicadorFiltro()
+            {
+                apelido = parceiro
+            });
+
+            /*
             if (oeiv.VendedorResponsavel != vendedor)
-                throw new ArgumentException("Não é permitido alterar um usuário de outro vendedor responsável");
+                throw new ArgumentException("Não é permitido alterar um usuário de outro vendedor responsável");*/
 
             var existeEmail = _data.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro()
             {
@@ -99,11 +111,12 @@ namespace OrcamentistaEIndicadorVendedor
 
             if (oeiv.Datastamp != senha_codificada)
             {
-                oeiv.DataUltimaAlteracaoSenha = DateTime.Now;
+                oeiv.DataUltimaAlteracaoSenha = null;
             }
             oeiv.Datastamp = senha_codificada;
 
             oeiv.Nome = objOrcamentistaEIndicadorVendedor.Nome;
+            oeiv.IdIndicador = oei.First().IdIndicador;
             oeiv.Celular = objOrcamentistaEIndicadorVendedor.Celular;
             oeiv.Telefone = objOrcamentistaEIndicadorVendedor.Telefone;
             oeiv.Email = objOrcamentistaEIndicadorVendedor.Email;

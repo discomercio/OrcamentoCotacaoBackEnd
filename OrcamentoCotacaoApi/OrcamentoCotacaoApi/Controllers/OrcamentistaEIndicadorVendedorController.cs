@@ -109,6 +109,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 Nome = usuarios.Nome,
                 Email = usuarios.Email,
                 IdIndicador = usuarios.IdIndicador,
+                Parceiro = usuarios.Parceiro,
                 Ativo = usuarios.Ativo,
                 Id = usuarios.Id,
                 Telefone = usuarios.Telefone,
@@ -142,6 +143,28 @@ namespace OrcamentoCotacaoApi.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("vendedores-parceiros-usuario-interno")]
+        public IActionResult PostPorUsuarioInterno(UsuarioRequestViewModel model)
+        {
+            _logger.LogInformation("Inserindo vendedor parceiro");
+
+            if (!User.ValidaPermissao((int)ePermissao.CadastroVendedorParceiroIncluirEditar))
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
+            var objOrcamentistaEIndicadorVendedor = _mapper.Map<TorcamentistaEIndicadorVendedor>(model);
+            try
+            {
+                var result = _orcamentistaEindicadorVendedorBll.Inserir(objOrcamentistaEIndicadorVendedor, model.Senha, model.Parceiro, User.GetVendedor());
+
+                return Ok(_mapper.Map<OrcamentistaEIndicadorVendedorResponseViewModel>(result));
+            }
+            catch (ArgumentException e)
+            {
+                return UnprocessableEntity(e);
+            }
+        }
+
         [HttpPut]
         [Route("vendedores-parceiros")]
         public IActionResult Put(UsuarioRequestViewModel model)
@@ -153,7 +176,12 @@ namespace OrcamentoCotacaoApi.Controllers
             try
             {
                 var objOrcamentistaEIndicadorVendedor = _mapper.Map<TorcamentistaEIndicadorVendedor>(model);
-                var result = _orcamentistaEindicadorVendedorBll.Atualizar(objOrcamentistaEIndicadorVendedor, model.Senha, User.GetParceiro(), User.GetVendedor());
+                var result = _orcamentistaEindicadorVendedorBll.Atualizar(
+                    objOrcamentistaEIndicadorVendedor, 
+                    model.Senha, 
+                    model.Parceiro, 
+                    User.GetVendedor(),
+                    User.GetTipoUsuario());
                 return Ok(result);
             }
             catch (ArgumentException e)
