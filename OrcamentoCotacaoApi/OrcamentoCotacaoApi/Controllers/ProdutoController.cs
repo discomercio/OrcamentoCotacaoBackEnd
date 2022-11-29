@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static OrcamentoCotacaoBusiness.Enums.Enums;
 
 namespace OrcamentoCotacaoApi.BaseController
 {
@@ -54,6 +56,9 @@ namespace OrcamentoCotacaoApi.BaseController
         [HttpGet("propriedades")]
         public async Task<IActionResult> ObterListaPropriedadesProdutos()
         {
+            if (!User.ValidaPermissao((int)ePermissao.CatalogoPropriedadeConsultar))
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
             _logger.LogInformation("Buscando propriedades do produto");
 
             var ret = await _produtoBll.ObterListaPropriedadesProdutos();
@@ -148,6 +153,9 @@ namespace OrcamentoCotacaoApi.BaseController
         [HttpPost("buscar-produtos-opcoes-ativos")]
         public async Task<IActionResult> ObterPropriedadesEOpcoesProdutosPorProduto(ProdutosAtivosRequestViewModel obj)
         {
+            if (!User.ValidaPermissao((int)ePermissao.CatalogoConsultar))
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
             _logger.LogInformation("BuscarProdutoCatalogoParaVisualizacao - Request: [idProduto: {0} - propriedadeOculta: {1} - propriedadeOcultaItem: {2}]", obj.idProduto, obj.propriedadeOculta, obj.propriedadeOcultaItem);
 
             var retorno = await _produtoBll.BuscarProdutoCatalogoParaVisualizacao(obj.idProduto, obj.propriedadeOculta, obj.propriedadeOcultaItem);
@@ -160,7 +168,10 @@ namespace OrcamentoCotacaoApi.BaseController
         [HttpGet("listar-produtos-ativos")]
         public async Task<IActionResult> ObterProdutosAtivos()
         {
-           return Ok(await _produtoBll.ObterProdutosAtivos());
+            if (!User.ValidaPermissao((int)ePermissao.CatalogoConsultar))
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
+            return Ok(await _produtoBll.ObterProdutosAtivos());
         }
     }
 }

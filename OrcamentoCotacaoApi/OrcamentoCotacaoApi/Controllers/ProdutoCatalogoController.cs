@@ -8,12 +8,11 @@ using Newtonsoft.Json;
 using OrcamentoCotacaoApi.Filters;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
+using OrcamentoCotacaoBusiness.Models.Request;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using OrcamentoCotacaoBusiness.Models.Response;
 using UtilsGlobais.Configs;
-using OrcamentoCotacaoBusiness.Models.Request;
 using static OrcamentoCotacaoBusiness.Enums.Enums;
 
 namespace OrcamentoCotacaoApi.Controllers
@@ -44,7 +43,7 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Listar(int page, int pageItens, int idCliente)
         {
-            if (!User.ValidaPermissao((int)ePermissao.ConsultarProdutos))
+            if (!User.ValidaPermissao((int)ePermissao.CatalogoCaradastrarIncluirEditar))
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
             var saida = _bll.PorFiltro(new InfraBanco.Modelos.Filtros.TprodutoCatalogoFiltro()
@@ -108,9 +107,6 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpGet("{id}/detalhes")]
         public async Task<IActionResult> Detalhes(int id)
         {
-            if (!User.ValidaPermissao((int)ePermissao.IncluirProdutos))
-                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
-
             var saida = _bll.Detalhes(id);
 
             if (saida != null)
@@ -177,7 +173,7 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPut]
         public async Task<IActionResult> Atualizar(IFormFile arquivo, IFormCollection form)
         {
-            if (!User.ValidaPermissao((int)ePermissao.IncluirProdutos))
+            if (!User.ValidaPermissao((int)ePermissao.CatalogoCaradastrarIncluirEditar))
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
             var tProduto = JsonConvert.DeserializeObject<TprodutoCatalogo>(form["produto"]);
@@ -236,7 +232,7 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost("criar")]
         public async Task<IActionResult> Criar(IFormFile arquivo, IFormCollection form)
         {
-            if (!User.ValidaPermissao((int)ePermissao.IncluirProdutos))
+            if (!User.ValidaPermissao((int)ePermissao.CatalogoCaradastrarIncluirEditar))
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
             try
@@ -288,6 +284,9 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost("propriedades")]
         public async Task<IActionResult> GravarPropriedade(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
         {
+            if (!User.ValidaPermissao((int)ePermissao.CatalogoPropriedadeIncluirEditar))
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
             _logger.LogInformation($"ProdutoCatalogoController/GravarPropriedade/POST - Request => [{JsonConvert.SerializeObject(produtoCatalogoPropriedade)}].");
 
             //var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
@@ -315,6 +314,9 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPut("propriedades")]
         public async Task<IActionResult> AtualizarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
         {
+            if (!User.ValidaPermissao((int)ePermissao.CatalogoPropriedadeIncluirEditar))
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
             try
             {
                 _logger.LogInformation($"ProdutoCatalogoController/AtualizarPropriedadesProdutos/PUT - Request => [{JsonConvert.SerializeObject(produtoCatalogoPropriedade)}]");
@@ -332,9 +334,6 @@ namespace OrcamentoCotacaoApi.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            
-
-            
         }
 
         [HttpGet("ObterPropriedadesUtilizadosPorProdutos/{idPropriedade}")]
@@ -354,6 +353,9 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost("ExcluirPropriedades/{idPropriedade}")]
         public async Task<IActionResult> ExcluirPropriedades(int idPropriedade)
         {
+            if (!User.ValidaPermissao((int)ePermissao.CatalogoPropriedadeIncluirEditar))
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
             var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoCatalogoController/ExcluirPropriedades/POST - Request => [{idPropriedade}].");

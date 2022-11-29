@@ -23,8 +23,10 @@
             CancelarPrePedido = 102200,
             IncluirPrePedido = 102100,
             ConsultarPedido = 102300,
-            ConsultarProdutos = 102400,
-            IncluirProdutos = 102500
+            CatalogoConsultar = 102400,
+            CatalogoCaradastrarIncluirEditar = 102500,
+            CatalogoPropriedadeConsultar = 102600,
+            CatalogoPropriedadeIncluirEditar = 102700
         }
 
         public enum StatusOrcamento
