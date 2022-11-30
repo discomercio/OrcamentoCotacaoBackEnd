@@ -88,17 +88,24 @@ namespace OrcamentoCotacaoApi.Controllers
                 response.Expiration = "";
                 response.AccessToken = "";
 
-                if (objUsuarioLogin == null || objUsuarioLogin.Token == null)
+                if (objUsuarioLogin == null || objUsuarioLogin.IdErro == int.Parse(Constantes.ERR_SENHA_INVALIDA))
                 {
                     response.Mensagem = "Usuário ou senha incorretos";
                     _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - {response.Mensagem}. Response => [{JsonSerializer.Serialize(objUsuarioLogin)}].");
                     return Ok(response);
                 }
 
-                if (objUsuarioLogin.Bloqueado)
+                if(objUsuarioLogin.IdErro == int.Parse(Constantes.ERR_USUARIO_BLOQUEADO))
                 {
                     response.Mensagem = "Usuário inativo";
                     _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - {response.Mensagem}. Response => [{JsonSerializer.Serialize(objUsuarioLogin)}]");
+                    return Ok(response);
+                }
+
+                if(objUsuarioLogin.Token == null)
+                {
+                    response.Mensagem = "Usuário ou senha incorretos";
+                    _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - {response.Mensagem}. Response => [{JsonSerializer.Serialize(objUsuarioLogin)}].");
                     return Ok(response);
                 }
 

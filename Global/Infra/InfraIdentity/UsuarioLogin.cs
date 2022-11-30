@@ -29,5 +29,6 @@ namespace InfraIdentity
         public DateTime? Dt_Ult_Alteracao_Senha { get; set; }
         public bool Bloqueado { get; set; }
         public string Datastamp { get; set; }
+        public bool AcessoHabilitado { get; set; }
     }
 }
