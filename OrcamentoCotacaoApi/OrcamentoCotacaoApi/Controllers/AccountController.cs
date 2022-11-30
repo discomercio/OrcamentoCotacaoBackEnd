@@ -7,19 +7,26 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OrcamentistaEindicador;
 using OrcamentistaEIndicadorVendedor;
+using OrcamentoCotacaoApi.Filters;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Models.Request;
+using OrcamentoCotacaoBusiness.Models.Request.Login;
 using OrcamentoCotacaoBusiness.Models.Response;
+using OrcamentoCotacaoBusiness.Models.Response.Login;
 using Prepedido.Dto;
 using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Usuario;
 using UtilsGlobais;
+using UtilsGlobais.Configs;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [TypeFilter(typeof(ResourceFilter))]
+    [TypeFilter(typeof(ExceptionFilter))]
     public class AccountController : BaseController
     {
         private readonly IServicoAutenticacao _servicoAutenticacao;
@@ -48,13 +55,16 @@ namespace OrcamentoCotacaoApi.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("Login")]
-        public async Task<ActionResult<object>> Login(LoginRequestViewModel login)
+        public IActionResult Login(LoginRequest login)
         {
             try
             {
+                login.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+                _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - Request => [{JsonSerializer.Serialize(login)}].");
+
                 var appSettingsSection = _configuration.GetSection("AppSettings");
                 var appSettings = appSettingsSection.Get<Configuracao>();
-                string apelido = login.Login.ToUpper();
+                string apelido = login.Usuario.ToUpper();
                 string senha = login.Senha;
 
                 UsuarioLogin objUsuarioLogin = new UsuarioLogin()
@@ -72,31 +82,27 @@ namespace OrcamentoCotacaoApi.Controllers
                     out bool unidade_negocio_desconhecida
                     );
 
+                var response = new LoginResponse();
+                response.Sucesso = false;
+                response.Created = "";
+                response.Expiration = "";
+                response.AccessToken = "";
+
                 if (objUsuarioLogin == null || objUsuarioLogin.Token == null)
                 {
-                    return BadRequest(new LoginResponseViewModel
-                    {
-                        Authenticated = false,
-                        Created = "",
-                        Expiration = "",
-                        AccessToken = "",
-                        Message = "Usuário ou senha incorretos!"
-                    });
+                    response.Mensagem = "Usuário ou senha incorretos";
+                    _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - {response.Mensagem}. Response => [{JsonSerializer.Serialize(objUsuarioLogin)}].");
+                    return Ok(response);
                 }
 
                 if (objUsuarioLogin.Bloqueado)
                 {
-                    return BadRequest(new LoginResponseViewModel
-                    {
-                        Authenticated = false,
-                        Created = "",
-                        Expiration = "",
-                        AccessToken = "",
-                        Message = "Usuário inativo."
-                    });
+                    response.Mensagem = "Usuário inativo";
+                    _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - {response.Mensagem}. Response => [{JsonSerializer.Serialize(objUsuarioLogin)}]");
+                    return Ok(response);
                 }
 
-                _logger.LogInformation("Gerando token");
+                _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - Gerando token de autenticação.");
 
                 DateTime dataCriacao = DateTime.Now;
                 DateTime dataExpiracao = dataCriacao + TimeSpan.FromSeconds(10000);
@@ -104,28 +110,23 @@ namespace OrcamentoCotacaoApi.Controllers
                 if (objUsuarioLogin.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR &&
                     !objUsuarioLogin.Permissoes.Contains(((int)Constantes.ePermissoes.ACESSO_AO_MODULO_100100).ToString()))
                 {
-                    return await Task.FromResult(BadRequest( new LoginResponseViewModel
-                    {
-                        Authenticated = false,
-                        Created = "",
-                        Expiration = "",
-                        AccessToken = "",
-                        Message = "Usuário não possui acesso ao Módulo."
-                    }));
+                    response.Mensagem = "Usuário não possui acesso ao Módulo";
+                    _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - {response.Mensagem}. Response => [{JsonSerializer.Serialize(objUsuarioLogin)}]");
+                    return Ok(response);
                 }
 
-                return await Task.FromResult(Ok(new LoginResponseViewModel
-                {
-                    Authenticated = true,
-                    Created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
-                    Expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
-                    AccessToken = objUsuarioLogin.Token,
-                    Message = "OK"
-                }));
+                response.Sucesso = true;
+                response.Created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss");
+                response.Expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss");
+                response.AccessToken = objUsuarioLogin.Token;
+
+                _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - Response => [{JsonSerializer.Serialize(response)}].");
+
+                return Ok(response);
             }
-            catch 
+            catch (Exception ex)
             {
-                throw;
+                throw new Exception(ex.Message);
             }
         }
 
