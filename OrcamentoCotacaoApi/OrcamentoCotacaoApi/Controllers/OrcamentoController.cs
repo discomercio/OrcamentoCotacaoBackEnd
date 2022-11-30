@@ -1,11 +1,9 @@
-﻿using InfraBanco.Constantes;
-using InfraBanco.Modelos.Filtros;
+﻿using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoApi.Filters;
-using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
@@ -15,7 +13,6 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using UtilsGlobais.Configs;
-using static OrcamentoCotacaoBusiness.Enums.Enums;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -28,11 +25,16 @@ namespace OrcamentoCotacaoApi.Controllers
     {
         private readonly ILogger<OrcamentoController> _logger;
         private readonly OrcamentoCotacaoBll _orcamentoBll;
+        private readonly PermissaoBll _permissaoBll;
 
-        public OrcamentoController(ILogger<OrcamentoController> logger, OrcamentoCotacaoBll orcamentoBll)
+        public OrcamentoController(
+            ILogger<OrcamentoController> logger,
+            OrcamentoCotacaoBll orcamentoBll,
+            PermissaoBll permissaoBll)
         {
             _logger = logger;
             _orcamentoBll = orcamentoBll;
+            _permissaoBll = permissaoBll;
         }
 
         [HttpPost("porfiltro")]
@@ -94,6 +96,11 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(int id)
         {
+            var permissao = this.ObterPermissaoOrcamento(id);
+
+            if (!permissao.VisualizarOrcamento)
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
             var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
 
             var orcamentoCotacao = _orcamentoBll.PorFiltro(id, (int)user.TipoUsuario);
@@ -112,6 +119,11 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPut("atualizarOrcamentoOpcao")]
         public IActionResult AtualizarOrcamentoOpcao(AtualizarOrcamentoOpcaoRequest opcao)
         {
+            var permissao = this.ObterPermissaoOrcamento(opcao.IdOrcamentoCotacao);
+
+            if (!permissao.EditarOpcaoOrcamento)
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
             opcao.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
             opcao.Usuario = LoggedUser.Apelido;
 
@@ -127,6 +139,14 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPut("{id}/status/{idStatus}")]
         public IActionResult AtualizarStatus(int id,short idStatus)
         {
+            if (idStatus == 2) //Cancelar
+            {
+                var permissao = this.ObterPermissaoOrcamento(id);
+
+                if (!permissao.CancelarOrcamento)
+                    return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+            }
+
             var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
             return Ok(_orcamentoBll.AtualizarStatus(id, user, idStatus));            
         }
@@ -134,6 +154,11 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPut("{id}/reenviar")]
         public IActionResult ReenviarOrcamento(int id)
         {
+            var permissao = this.ObterPermissaoOrcamento(id);
+
+            if (!permissao.ReenviarOrcamento)
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
             var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
             return Ok(_orcamentoBll.ReenviarOrcamentoCotacao(id));
         }
@@ -141,8 +166,10 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost("{id}/prorrogar")]
         public IActionResult ProrrogarOrcamento(int id, string lojaLogada)
         {
-            if(!User.ValidaPermissao((int)ePermissao.ProrrogarVencimentoOrcamento))
-                return BadRequest(new {message = "Não encontramos a permissão necessária para realizar atividade!" });
+            var permissao = this.ObterPermissaoOrcamento(id);
+
+            if (!permissao.ProrrogarOrcamento)
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
             return Ok(_orcamentoBll.ProrrogarOrcamento(id, LoggedUser.Id, lojaLogada, LoggedUser.TipoUsuario));
         }
@@ -153,13 +180,28 @@ namespace OrcamentoCotacaoApi.Controllers
             return Ok(_orcamentoBll.BuscarParametros(idCfgParametro, lojaLogada));
         }
 
-
         [HttpPost("atualizarDados")]
         public IActionResult AtualizarDados(OrcamentoResponseViewModel model)
         {
+            var permissao = this.ObterPermissaoOrcamento((int)model.Id);
+
+            if (!permissao.EditarOrcamento)
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
             var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
             var retorno = _orcamentoBll.AtualizarDadosCadastraisOrcamento(model, user);
             return Ok(retorno);
+        }
+
+        private PermissaoOrcamentoResponse ObterPermissaoOrcamento(int IdOrcamento)
+        {
+            return _permissaoBll.RetornarPermissaoOrcamento(new PermissaoOrcamentoRequest()
+            {
+                IdOrcamento = IdOrcamento,
+                PermissoesUsuario = LoggedUser.Permissoes,
+                TipoUsuario = LoggedUser.TipoUsuario.Value,
+                Usuario = LoggedUser.Apelido
+            }).Result;
         }
     }
 }
