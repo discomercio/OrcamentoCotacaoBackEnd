@@ -116,6 +116,7 @@ namespace InfraBanco.Modelos
 
         [Column("razao_social_nome_iniciais_em_maiusculas")]
         [MaxLength(60)]
-        public string Razao_social_nome_iniciais_em_maiusculas { get; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public string Razao_social_nome_iniciais_em_maiusculas { get; set; }
     }
 }
