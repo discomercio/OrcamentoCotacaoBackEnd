@@ -40,6 +40,7 @@ namespace OrcamentoCotacaoApi.Controllers
         [Route("vendedores-parceiros")]
         public async Task<IEnumerable<OrcamentistaEIndicadorVendedorResponseViewModel>> BuscarVendedoresDosParceiros(string parceiro)
         {
+
             _logger.LogInformation("Buscando lista de vendedores parceiros");
 
             var torcamentista = orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = parceiro});
@@ -181,7 +182,9 @@ namespace OrcamentoCotacaoApi.Controllers
                     model.Senha, 
                     model.Parceiro, 
                     User.GetVendedor(),
-                    User.GetTipoUsuario());
+                    User.GetTipoUsuario(),
+                    User.ValidaPermissao((int)ePermissao.SelecionarQualquerIndicadorDaLoja)
+                    );
                 return Ok(result);
             }
             catch (ArgumentException e)

@@ -70,7 +70,9 @@ namespace OrcamentistaEIndicadorVendedor
             string senha, 
             string parceiro,
             string vendedor, 
-            TipoUsuario tipoUsuario)
+            TipoUsuario tipoUsuario,
+            bool SelecionarQualquerIndicadorDaLoja
+            )
         {
             var oeiv = _data.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro() { id = objOrcamentistaEIndicadorVendedor.Id }).FirstOrDefault();
             if (oeiv == null) throw new KeyNotFoundException();
@@ -81,9 +83,19 @@ namespace OrcamentistaEIndicadorVendedor
                 apelido = parceiro
             });
 
-            /*
-            if (oeiv.VendedorResponsavel != vendedor)
-                throw new ArgumentException("Não é permitido alterar um usuário de outro vendedor responsável");*/
+            // Parceiro
+            if ((int)tipoUsuario ==2)
+            {
+                if (oeiv.VendedorResponsavel != vendedor)
+                    throw new ArgumentException("Não é permitido alterar um usuário de outro vendedor responsável");
+            }
+
+            // Usuário Interno
+            if ((int)tipoUsuario == 1 && !SelecionarQualquerIndicadorDaLoja)
+            {
+                if (oeiv.VendedorResponsavel != vendedor)
+                    throw new ArgumentException("Não é permitido alterar um usuário de outro vendedor responsável");
+            }
 
             var existeEmail = _data.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro()
             {
@@ -116,7 +128,7 @@ namespace OrcamentistaEIndicadorVendedor
             oeiv.Datastamp = senha_codificada;
 
             oeiv.Nome = objOrcamentistaEIndicadorVendedor.Nome;
-            oeiv.IdIndicador = oei.First().IdIndicador;
+            //oeiv.IdIndicador = oei.First().IdIndicador;
             oeiv.Celular = objOrcamentistaEIndicadorVendedor.Celular;
             oeiv.Telefone = objOrcamentistaEIndicadorVendedor.Telefone;
             oeiv.Email = objOrcamentistaEIndicadorVendedor.Email;
