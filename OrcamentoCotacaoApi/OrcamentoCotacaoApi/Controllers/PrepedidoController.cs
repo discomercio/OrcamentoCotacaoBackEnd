@@ -1,5 +1,6 @@
 ﻿using FormaPagamento;
 using InfraBanco.Constantes;
+using InfraIdentity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -7,6 +8,8 @@ using Prepedido.Bll;
 using Prepedido.Dto;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using UtilsGlobais;
 
@@ -123,9 +126,14 @@ namespace PrepedidoApi.Controllers
             var appSettingsSection = configuration.GetSection("AppSettings");
             var appSettings = appSettingsSection.Get<Configuracao>();
             //LIMITE_ARREDONDAMENTO_PRECO_VENDA_ORCAMENTO_ITEM fixo em 1 centavo
+
+            var usuario = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+
             IEnumerable<string> ret = await prepedidoApiBll.CadastrarPrepedido(prePedido, apelido.Trim(), 0.01M,
                 appSettings.VerificarPrepedidoRepetido,
-                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS, appSettings.LimiteItens);
+                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, 
+                appSettings.LimiteItens,
+                (Constantes.TipoUsuarioContexto)usuario.TipoUsuario, usuario.Id);
 
             return Ok(ret);
         }
