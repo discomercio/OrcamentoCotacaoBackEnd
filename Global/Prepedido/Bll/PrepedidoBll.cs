@@ -308,7 +308,6 @@ namespace Prepedido.Bll
             var totalDestePedidoComRa = lstProdutoTask.Select(r => r.TotalItemRA).Sum();
             var totalDestePedido = lstProdutoTask.Select(r => r.VlTotalItem).Sum();
 
-
             PrePedidoDados prepedidoDados = new PrePedidoDados
             {
                 CorHeader = corHeader,
@@ -416,27 +415,71 @@ namespace Prepedido.Bll
 
         private DetalhesPrepedidoDados ObterDetalhesPrePedido(Torcamento torcamento, string apelido)
         {
-            //TODO: Retornar usuario torcamento.Etg_Imediata_Usuario
-            //var usuario = torcamento.Etg_Imediata_Usuario // tipo usuario[1] idusario 50116 
+            string nomeUsuario = null;
+
+            var db = contextoProvider.GetContextoLeitura();
+
+            //Previsão de entrega
+            if (torcamento.PrevisaoEntregaIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.UsuarioInterno)
+            {
+                nomeUsuario = (from c in db.Tusuario
+                               where c.Id == torcamento.PrevisaoEntregaIdUsuarioUltAtualiz
+                               select c.Usuario).FirstOrDefault();
+            }
+            if (torcamento.PrevisaoEntregaIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.Parceiro)
+            {
+                nomeUsuario = (from c in db.TorcamentistaEindicador
+                               where c.IdIndicador == torcamento.PrevisaoEntregaIdUsuarioUltAtualiz
+                               select c.Apelido).FirstOrDefault();
+            }
+            if (torcamento.PrevisaoEntregaIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.VendedorParceiro)
+            {
+                //buscar na t_orcamentista_indicador_vendedor nome amigável
+                var nomeCompleto = (from c in db.TorcamentistaEindicadorVendedor
+                                    where c.Id == torcamento.PrevisaoEntregaIdUsuarioUltAtualiz
+                                    select c.Nome).FirstOrDefault();
+                nomeUsuario = nomeCompleto.Split(" ")[0];
+            }
+
+            string previsaoEntregaTexto = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
+                    torcamento.PrevisaoEntregaData?.ToString("dd/MM/yyyy") + " (" + Texto.iniciaisEmMaiusculas(nomeUsuario) +
+                    " - " + torcamento.PrevisaoEntregaDtHrUltAtualiz?.ToString("dd/MM/yyyy HH:mm") + ")" : null;
+
+
+            //Entrega imediata
+            if (torcamento.EtgImediataIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.UsuarioInterno)
+            {
+                nomeUsuario = (from c in db.Tusuario
+                               where c.Id == torcamento.EtgImediataIdUsuarioUltAtualiz
+                               select c.Usuario).FirstOrDefault();
+            }
+            if (torcamento.EtgImediataIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.Parceiro)
+            {
+                nomeUsuario = (from c in db.TorcamentistaEindicador
+                               where c.IdIndicador == torcamento.EtgImediataIdUsuarioUltAtualiz
+                               select c.Apelido).FirstOrDefault();
+            }
+            if (torcamento.EtgImediataIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.VendedorParceiro)
+            {
+                //buscar na t_orcamentista_indicador_vendedor nome amigável
+                var nomeCompleto = (from c in db.TorcamentistaEindicadorVendedor
+                                    where c.Id == torcamento.EtgImediataIdUsuarioUltAtualiz
+                                    select c.Nome).FirstOrDefault();
+                nomeUsuario = nomeCompleto.Split(" ")[0]; //paliativo pois não temos um nome curto para esse usuário
+            }
+            string entregaImediataTexto = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
+                "NÃO (" + Texto.iniciaisEmMaiusculas(nomeUsuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
+                "SIM (" + Texto.iniciaisEmMaiusculas(nomeUsuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")";
 
             var detail = new DetalhesPrepedidoDados
             {
                 Observacoes = torcamento.Obs_1,
                 NumeroNF = torcamento.Obs_2,
-
-                PrevisaoEntregaTexto = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
-                torcamento.PrevisaoEntregaData?.ToString("dd/MM/yyyy") + " (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) +
-                " - " + torcamento.PrevisaoEntregaDtHrUltAtualiz?.ToString("dd/MM/yyyy HH:mm") + ")" : null,
-
-                EntregaImediata = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
-                "NÃO (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
-                "SIM (" + Texto.iniciaisEmMaiusculas(torcamento.Etg_Imediata_Usuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")",
-
+                PrevisaoEntregaTexto = previsaoEntregaTexto,
+                EntregaImediata = entregaImediataTexto,
                 BemDeUso_Consumo = torcamento.StBemUsoConsumo,
                 InstaladorInstala = torcamento.InstaladorInstalaStatus,
-                GarantiaIndicadorTexto = Convert.ToString(torcamento.GarantiaIndicadorStatus) ==
-                Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO ?
-                "NÃO" : "SIM",
+                GarantiaIndicadorTexto = Convert.ToString(torcamento.GarantiaIndicadorStatus) == Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO ? "NÃO" : "SIM",
                 DescricaoFormaPagamento = torcamento.Forma_Pagamento
             };
 
@@ -1008,7 +1051,7 @@ namespace Prepedido.Bll
             torcamento.UsuarioCadastroIdTipoUsuarioContexto = prepedido.UsuarioCadastroIdTipoUsuarioContexto;//Id do contexto do usuário logado de acordo com a tabela t_CFG_TIPO_USUARIO_CONTEXTO.Id Se aprovação pelo cliente em rota pública preencher com 4
             torcamento.UsuarioCadastroId = prepedido.UsuarioCadastroId;//Id do registro do usuário logado (t_ORCAMENTISTA_E_INDICADOR_VENDEDOR.Id, t_ORCAMENTISTA_E_INDICADOR.Id ou t_USUARIO.Id) Se aprovação pelo cliente em rota pública deve ser nulo
             torcamento.Usuario_cadastro = prepedido.Usuario_cadastro;//preencher com "[N] 999999", onde  N = UsuarioCadastroIdTipoUsuarioContexto  999999 = UsuarioCadastroId
-            
+
 
             //inclui os campos de endereço cadastral no Torccamento
             IncluirDadosClienteParaTorcamento(prepedido, torcamento);
@@ -1178,7 +1221,7 @@ namespace Prepedido.Bll
             torcamento.PrevisaoEntregaDtHrUltAtualiz = prepedido.DetalhesPrepedido.PrevisaoEntregaDtHrUltAtualiz;
             torcamento.PrevisaoEntregaIdTipoUsuarioContexto = prepedido.DetalhesPrepedido.PrevisaoEntregaIdTipoUsuarioContexto;
             torcamento.PrevisaoEntregaIdUsuarioUltAtualiz = prepedido.DetalhesPrepedido.PrevisaoEntregaIdUsuarioUltAtualiz;
-            
+
             torcamento.St_Etg_Imediata = short.Parse(prepedido.DetalhesPrepedido.EntregaImediata) == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
                    (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO : (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM;
             torcamento.Etg_Imediata_Usuario = prepedido.EnderecoEntrega.Etg_Imediata_Usuario;
@@ -1251,7 +1294,7 @@ namespace Prepedido.Bll
                         "" : prepedido.EnderecoEntrega.EndEtg_ie;
                     torcamento.EndEtg_rg = string.IsNullOrEmpty(prepedido.EnderecoEntrega.EndEtg_rg) ?
                         "" : prepedido.EnderecoEntrega.EndEtg_rg;
-                    
+
                 }
             }
         }

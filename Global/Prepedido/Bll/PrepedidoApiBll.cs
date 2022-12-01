@@ -34,7 +34,9 @@ namespace Prepedido.Bll
             decimal limiteArredondamento, 
             bool verificarPrepedidoRepetido,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
-            int limite_de_itens)
+            int limite_de_itens, 
+            Constantes.TipoUsuarioContexto tipoUsuarioContexto,
+            int usuarioId)
         {
             
             if(!string.IsNullOrEmpty(prePedido.DetalhesPrepedido.EntregaImediata) && 
@@ -53,6 +55,36 @@ namespace Prepedido.Bll
             prePedido.DetalhesPrepedido.EntregaImediataData = DateTime.Now;
 
             PrePedidoDados prePedidoDados = PrePedidoDto.PrePedidoDados_De_PrePedidoDto(prePedido);
+
+            //Prepearar campos de auditoria
+            var orcamentista = await prepedidoBll.BuscarTorcamentista(apelido);
+            if(orcamentista == null)
+            {
+                return new List<string>() { "Ops! Usuário não encontrado." };
+            }
+
+            //pegar o contexto do usuário que esta cadastrando
+            prePedidoDados.UsuarioCadastroId = usuarioId;
+            prePedidoDados.UsuarioCadastroIdTipoUsuarioContexto = (short)tipoUsuarioContexto;
+            prePedidoDados.Usuario_cadastro = $"[{prePedidoDados.UsuarioCadastroIdTipoUsuarioContexto}] {usuarioId}";
+
+            prePedidoDados.DetalhesPrepedido.InstaladorInstalaIdTipoUsuarioContexto = (short)usuarioId;
+            prePedidoDados.DetalhesPrepedido.InstaladorInstalaIdUsuarioUltAtualiz = usuarioId;
+            prePedidoDados.DetalhesPrepedido.InstaladorInstalaUsuarioUltAtualiz = prePedidoDados.Usuario_cadastro;
+            prePedidoDados.DetalhesPrepedido.InstaladorInstalaDtHrUltAtualiz = DateTime.Now;
+            prePedidoDados.DetalhesPrepedido.GarantiaIndicadorIdTipoUsuarioContexto = (short)tipoUsuarioContexto;
+            prePedidoDados.DetalhesPrepedido.GarantiaIndicadorIdUsuarioUltAtualiz = usuarioId;
+            prePedidoDados.DetalhesPrepedido.GarantiaIndicadorUsuarioUltAtualiz = prePedidoDados.Usuario_cadastro;
+            prePedidoDados.DetalhesPrepedido.GarantiaIndicadorDtHrUltAtualiz = DateTime.Now;
+            prePedidoDados.DetalhesPrepedido.PrevisaoEntregaIdTipoUsuarioContexto = (short)tipoUsuarioContexto;
+            prePedidoDados.DetalhesPrepedido.PrevisaoEntregaIdUsuarioUltAtualiz = usuarioId;
+            prePedidoDados.DetalhesPrepedido.PrevisaoEntregaDtHrUltAtualiz = DateTime.Now;
+            prePedidoDados.DetalhesPrepedido.PrevisaoEntregaUsuarioUltAtualiz = prePedidoDados.Usuario_cadastro;
+
+            prePedidoDados.EnderecoEntrega.EtgImediataIdTipoUsuarioContexto = (short)tipoUsuarioContexto;
+            prePedidoDados.EnderecoEntrega.EtgImediataIdUsuarioUltAtualiz = usuarioId;
+            prePedidoDados.EnderecoEntrega.Etg_Imediata_Usuario = prePedidoDados.Usuario_cadastro;
+            prePedidoDados.EnderecoEntrega.Etg_imediata_data = DateTime.Now;
 
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTO))
             {

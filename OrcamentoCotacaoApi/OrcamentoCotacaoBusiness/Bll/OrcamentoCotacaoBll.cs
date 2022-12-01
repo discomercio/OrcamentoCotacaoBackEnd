@@ -380,8 +380,9 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
                     id = (int)orcamento.IdIndicadorVendedor
                 }).FirstOrDefault();
-                vendedorParceiro = tipoUsuario != (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO ?
-                    tVendedorParceiro?.Nome : tVendedorParceiro.Email;
+                //vendedorParceiro = tipoUsuario != (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO ?
+                //    tVendedorParceiro?.Nome : tVendedorParceiro.Email;
+                vendedorParceiro = tVendedorParceiro?.Nome;
             }
 
 
