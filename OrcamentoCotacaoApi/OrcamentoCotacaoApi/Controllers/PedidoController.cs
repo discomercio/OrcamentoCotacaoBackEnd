@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OrcamentoCotacaoApi.Controllers;
+using OrcamentoCotacaoBusiness.Bll;
+using OrcamentoCotacaoBusiness.Models.Request;
+using OrcamentoCotacaoBusiness.Models.Response;
 using Prepedido.PedidoVisualizacao;
-using Prepedido.Bll;
 using System;
 using System.Threading.Tasks;
 using UtilsGlobais;
-using OrcamentoCotacaoBusiness.Bll;
 
 namespace PrepedidoApi.Controllers
 {
@@ -19,15 +20,18 @@ namespace PrepedidoApi.Controllers
         private readonly PedidoVisualizacaoBll pedidoBll;
         private readonly PedidoPrepedidoApiBll pedidoPrepedidoApiBll;
         private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
+        private readonly PermissaoBll permissaoBll;
 
         public PedidoController(
-            PedidoVisualizacaoBll pedidoBll, 
+            PedidoVisualizacaoBll pedidoBll,
             InfraIdentity.IServicoDecodificarToken servicoDecodificarToken,
-            PedidoPrepedidoApiBll pedidoPrepedidoApiBll)
+            PedidoPrepedidoApiBll pedidoPrepedidoApiBll,
+            PermissaoBll permissaoBll)
         {
             this.pedidoBll = pedidoBll;
             this.servicoDecodificarToken = servicoDecodificarToken;
             this.pedidoPrepedidoApiBll = pedidoPrepedidoApiBll;
+            this.permissaoBll = permissaoBll;
         }
 
         [HttpGet("listarNumerosPedidosCombo")]
@@ -47,10 +51,10 @@ namespace PrepedidoApi.Controllers
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
             var ret = await pedidoPrepedidoApiBll.ListarPedidos(
                 apelido.Trim(),
-                (PedidoVisualizacaoBll.TipoBuscaPedido)tipoBusca, 
+                (PedidoVisualizacaoBll.TipoBuscaPedido)tipoBusca,
                 clienteBusca,
-                numPedido, 
-                dataInicial, 
+                numPedido,
+                dataInicial,
                 dataFinal
                 );
 
@@ -70,9 +74,26 @@ namespace PrepedidoApi.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> BuscarPedido(string numPedido)
         {
+            var permissao = this.ObterPermissaoPedido(numPedido);
+
+            if (!permissao.VisualizarPedido)
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
             return Ok(await pedidoPrepedidoApiBll.BuscarPedido(apelido.Trim(), numPedido));
+        }
+
+        private PermissaoPedidoResponse ObterPermissaoPedido(string IdPedido)
+        {
+            return this.permissaoBll.RetornarPermissaoPedido(new PermissaoPedidoRequest()
+            {
+                IdPedido = IdPedido,
+                IdUsuario = LoggedUser.Id,
+                PermissoesUsuario = LoggedUser.Permissoes,
+                TipoUsuario = LoggedUser.TipoUsuario.Value,
+                Usuario = LoggedUser.Apelido
+            }).Result;
         }
     }
 }

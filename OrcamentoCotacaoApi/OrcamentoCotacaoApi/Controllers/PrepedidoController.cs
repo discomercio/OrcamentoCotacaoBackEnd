@@ -3,6 +3,10 @@ using InfraBanco.Constantes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using OrcamentoCotacaoApi.Controllers;
+using OrcamentoCotacaoBusiness.Bll;
+using OrcamentoCotacaoBusiness.Models.Request;
+using OrcamentoCotacaoBusiness.Models.Response;
 using Prepedido.Bll;
 using Prepedido.Dto;
 using System;
@@ -15,7 +19,7 @@ namespace PrepedidoApi.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(Roles = Autenticacao.RoleAcesso)]
-    public class PrepedidoController : ControllerBase
+    public class PrepedidoController : BaseController
     {
         private readonly PrepedidoBll prepedidoBll;
         private readonly PrepedidoApiBll prepedidoApiBll;
@@ -24,6 +28,7 @@ namespace PrepedidoApi.Controllers
         private readonly FormaPagtoPrepedidoBll formaPagtoPrepedidoBll;
         private readonly CoeficientePrepedidoBll coeficientePrepedidoBll;
         private readonly IConfiguration configuration;
+        private readonly PermissaoBll permissaoBll;
 
         public PrepedidoController(
             PrepedidoBll prepedidoBll,
@@ -32,7 +37,8 @@ namespace PrepedidoApi.Controllers
             FormaPagtoBll formaPagtoBll,
             Prepedido.Bll.FormaPagtoPrepedidoBll formaPagtoPrepedidoBll,
             Prepedido.Bll.CoeficientePrepedidoBll coeficientePrepedidoBll,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            PermissaoBll permissaoBll)
         {
             this.prepedidoBll = prepedidoBll;
             this.prepedidoApiBll = prepedidoApiBll;
@@ -41,6 +47,7 @@ namespace PrepedidoApi.Controllers
             this.formaPagtoPrepedidoBll = formaPagtoPrepedidoBll;
             this.coeficientePrepedidoBll = coeficientePrepedidoBll;
             this.configuration = configuration;
+            this.permissaoBll = permissaoBll;
         }
 
         [HttpGet("listarNumerosPrepedidosCombo")]
@@ -78,6 +85,11 @@ namespace PrepedidoApi.Controllers
         [HttpPost("removerPrePedido/{numeroPrePedido}")]
         public async Task<IActionResult> RemoverPrePedido(string numeroPrePedido)
         {
+            var permissao = this.ObterPermissaoPrePedido(numeroPrePedido);
+
+            if (!permissao.CancelarPrePedido)
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
             bool ret = await prepedidoBll.RemoverPrePedido(numeroPrePedido, apelido);
@@ -94,6 +106,11 @@ namespace PrepedidoApi.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> BuscarPrePedido(string numPrepedido)
         {
+            var permissao = this.ObterPermissaoPrePedido(numPrepedido);
+
+            if (!permissao.VisualizarPrePedido)
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
             return Ok(await prepedidoApiBll.BuscarPrePedido(apelido, numPrepedido));
@@ -118,6 +135,11 @@ namespace PrepedidoApi.Controllers
         [HttpPost("cadastrarPrepedido")]
         public async Task<IActionResult> CadastrarPrepedido(PrePedidoDto prePedido)
         {
+            var permissao = this.ObterPermissaoInclusaoPrePedido();
+
+            if (!permissao.IncluirPrePedido)
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
             var appSettingsSection = configuration.GetSection("AppSettings");
@@ -168,6 +190,25 @@ namespace PrepedidoApi.Controllers
         {
             return Ok(await formaPagtoBll.BuscarQtdeParcCartaoVisa());
         }
+
+        private PermissaoPrePedidoResponse ObterPermissaoPrePedido(string IdPrePedido)
+        {
+            return this.permissaoBll.RetornarPermissaoPrePedido(new PermissaoPrePedidoRequest()
+            {
+                IdPrePedido = IdPrePedido,
+                IdUsuario = LoggedUser.Id,
+                PermissoesUsuario = LoggedUser.Permissoes,
+                TipoUsuario = LoggedUser.TipoUsuario.Value,
+                Usuario = LoggedUser.Apelido
+            }).Result;
+        }
+
+        private PermissaoIncluirPrePedidoResponse ObterPermissaoInclusaoPrePedido()
+        {
+            return this.permissaoBll.RetornarPermissaoIncluirPrePedido(new PermissaoIncluirPrePedidoRequest()
+            {
+                PermissoesUsuario = LoggedUser.Permissoes
+            }).Result;
+        }
     }
 }
-
