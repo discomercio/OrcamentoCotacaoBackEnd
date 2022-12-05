@@ -33,8 +33,6 @@ namespace OrcamentoCotacaoBusiness.Bll
         {
             var parceiro = orcamentistaEIndicadorBll.PorFiltro(filtro).FirstOrDefault();
 
-            if (parceiro == null) throw new ArgumentException("Parceiro não encontrado!");
-
             return parceiro;
         }
     }

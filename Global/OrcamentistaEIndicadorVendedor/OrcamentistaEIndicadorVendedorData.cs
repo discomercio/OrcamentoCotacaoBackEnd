@@ -121,6 +121,10 @@ namespace OrcamentistaEIndicadorVendedor
                     {
                         vendedorParceiro = vendedorParceiro.Where(x => x.VendedorResponsavel == obj.nomeVendedor);
                     }
+                    if(obj.ativo != null)
+                    {
+                        vendedorParceiro = vendedorParceiro.Where(x => x.Ativo == obj.ativo);
+                    }
                     return vendedorParceiro.ToList();
                 }
 

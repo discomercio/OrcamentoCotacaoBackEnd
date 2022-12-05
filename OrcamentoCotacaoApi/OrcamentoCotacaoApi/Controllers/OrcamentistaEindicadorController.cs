@@ -47,7 +47,7 @@ namespace OrcamentoCotacaoApi.Controllers
         public async Task<IEnumerable<OrcamentistaIndicadorResponseViewModel>> BuscarParceiros(string loja)
         {
             _logger.LogInformation("Buscando lista de parceiros por loja");
-            var usuarios = _orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { loja = loja,  status = Constantes.ORCAMENTISTA_INDICADOR_STATUS_ATIVO });
+            var usuarios = _orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { loja = loja,  status = Constantes.ORCAMENTISTA_INDICADOR_STATUS_ATIVO, acessoHabilitado = 1 });
             if (usuarios != null)
                 usuarios = usuarios.OrderBy(o => o.Apelido).ToList();
             usuarios.Insert(0, _orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = Constantes.SEM_INDICADOR, status = Constantes.ORCAMENTISTA_INDICADOR_STATUS_INATIVO }).FirstOrDefault());
