@@ -1,33 +1,42 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoApi.Controllers;
+using OrcamentoCotacaoApi.Filters;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
 using Prepedido.PedidoVisualizacao;
 using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 using UtilsGlobais;
+using UtilsGlobais.Configs;
+using System.Linq;
 
 namespace PrepedidoApi.Controllers
 {
     [ApiExplorerSettings(IgnoreApi = true)]
     [Route("api/[controller]")]
     [ApiController]
+    [TypeFilter(typeof(ResourceFilter))]
     [Authorize(Roles = Autenticacao.RoleAcesso)]
     public class PedidoController : BaseController
     {
+        private readonly ILogger<PedidoController> _logger;
         private readonly PedidoVisualizacaoBll pedidoBll;
         private readonly PedidoPrepedidoApiBll pedidoPrepedidoApiBll;
         private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
         private readonly PermissaoBll permissaoBll;
 
         public PedidoController(
+            ILogger<PedidoController> logger,
             PedidoVisualizacaoBll pedidoBll,
             InfraIdentity.IServicoDecodificarToken servicoDecodificarToken,
             PedidoPrepedidoApiBll pedidoPrepedidoApiBll,
             PermissaoBll permissaoBll)
         {
+            this._logger = logger;
             this.pedidoBll = pedidoBll;
             this.servicoDecodificarToken = servicoDecodificarToken;
             this.pedidoPrepedidoApiBll = pedidoPrepedidoApiBll;
@@ -38,16 +47,49 @@ namespace PrepedidoApi.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> ListarNumerosPedidosCombo()
         {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PedidoController/ListarNumerosPedidosCombo/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
+
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            return Ok(await pedidoBll.ListarNumerosPedidoCombo(apelido.Trim()));
+            var response = await pedidoBll.ListarNumerosPedidoCombo(apelido.Trim());
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/Get/GET - Response => [{JsonSerializer.Serialize(response.Count())}].");
+
+            return Ok(response);
         }
 
         [HttpGet("listarPedidos")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<IActionResult> ListarPedidos(string clienteBusca, int tipoBusca, string numPedido,
-            DateTime? dataInicial, DateTime? dataFinal)
+        public async Task<IActionResult> ListarPedidos(
+            string clienteBusca, 
+            int tipoBusca, 
+            string numPedido,
+            DateTime? dataInicial, 
+            DateTime? dataFinal)
         {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                ClienteBusca = clienteBusca,
+                TipoBusca = tipoBusca,
+                NumPedido = numPedido,
+                DataInicial = dataInicial,
+                DataFinal = dataFinal
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PedidoController/ListarPedidos/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
+
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
             var ret = await pedidoPrepedidoApiBll.ListarPedidos(
                 apelido.Trim(),
@@ -58,6 +100,8 @@ namespace PrepedidoApi.Controllers
                 dataFinal
                 );
 
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/Get/GET - Response => [{JsonSerializer.Serialize(ret.Count())}].");
+
             return Ok(ret);
         }
 
@@ -65,15 +109,38 @@ namespace PrepedidoApi.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> ListarCpfCnpjPedidosCombo()
         {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PedidoController/ListarCpfCnpjPedidosCombo/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            return Ok(await pedidoBll.ListarCpfCnpjPedidosCombo(apelido.Trim()));
+            var response = await pedidoBll.ListarCpfCnpjPedidosCombo(apelido.Trim());
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/Get/GET - Response => [{JsonSerializer.Serialize(response.Count())}].");
+
+            return Ok(response);
         }
 
         [HttpGet("buscarPedido")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> BuscarPedido(string numPedido)
         {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PedidoController/BuscarPedido/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
+
             var permissao = this.ObterPermissaoPedido(numPedido);
 
             if (!permissao.VisualizarPedido)
@@ -81,7 +148,11 @@ namespace PrepedidoApi.Controllers
 
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            return Ok(await pedidoPrepedidoApiBll.BuscarPedido(apelido.Trim(), numPedido));
+            var response = await pedidoPrepedidoApiBll.BuscarPedido(apelido.Trim(), numPedido);
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PedidoController/BuscarPedido/GET - Response => [{JsonSerializer.Serialize(response.NumeroPedido)}].");
+
+            return Ok(response);
         }
 
         private PermissaoPedidoResponse ObterPermissaoPedido(string IdPedido)

@@ -4,7 +4,9 @@ using InfraIdentity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoApi.Controllers;
+using OrcamentoCotacaoApi.Filters;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
@@ -16,14 +18,17 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using UtilsGlobais;
+using UtilsGlobais.Configs;
 
 namespace PrepedidoApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [TypeFilter(typeof(ResourceFilter))]
     [Authorize(Roles = Autenticacao.RoleAcesso)]
     public class PrepedidoController : BaseController
     {
+        private readonly ILogger<PrepedidoController> _logger;
         private readonly PrepedidoBll prepedidoBll;
         private readonly PrepedidoApiBll prepedidoApiBll;
         private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
@@ -34,6 +39,7 @@ namespace PrepedidoApi.Controllers
         private readonly PermissaoBll permissaoBll;
 
         public PrepedidoController(
+            ILogger<PrepedidoController> logger,
             PrepedidoBll prepedidoBll,
             Prepedido.Bll.PrepedidoApiBll prepedidoApiBll,
             InfraIdentity.IServicoDecodificarToken servicoDecodificarToken,
@@ -43,6 +49,7 @@ namespace PrepedidoApi.Controllers
             IConfiguration configuration,
             PermissaoBll permissaoBll)
         {
+            this._logger = logger;
             this.prepedidoBll = prepedidoBll;
             this.prepedidoApiBll = prepedidoApiBll;
             this.servicoDecodificarToken = servicoDecodificarToken;
@@ -57,30 +64,80 @@ namespace PrepedidoApi.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> ListarNumerosPrepedidosCombo()
         {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/ListarNumerosPrepedidosCombo/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            
-            return Ok(await prepedidoBll.ListarNumerosPrepedidosCombo(apelido));
+
+            var response = await prepedidoBll.ListarNumerosPrepedidosCombo(apelido);
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/ListarNumerosPrepedidosCombo/GET - Response => [{JsonSerializer.Serialize(response.Count())}].");
+
+            return Ok(response);
         }
 
         [HttpGet("listarCpfCnpjPrepedidosCombo")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> ListarCpfCnpjPrepedidosCombo()
         {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/ListarCpfCnpjPrepedidosCombo/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            return Ok(await prepedidoBll.ListarCpfCnpjPrepedidosCombo(apelido));
+            var response = await prepedidoBll.ListarCpfCnpjPrepedidosCombo(apelido);
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/ListarCpfCnpjPrepedidosCombo/GET - Response => [{JsonSerializer.Serialize(response.Count())}].");
+
+            return Ok(response);
         }
 
         [HttpGet("listarPrePedidos")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public async Task<IActionResult> ListarPrePedidos(int tipoBusca, string clienteBusca, string numeroPrePedido,
-            DateTime? dataInicial, DateTime? dataFinal)
+        public async Task<IActionResult> ListarPrePedidos(
+            int tipoBusca, 
+            string clienteBusca, 
+            string numeroPrePedido,
+            DateTime? dataInicial, 
+            DateTime? dataFinal)
         {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                TipoBusca = tipoBusca,
+                ClienteBusca = clienteBusca,
+                NumeroPrePedido = numeroPrePedido,
+                DataInicial = dataInicial,
+                DataFinal = dataFinal
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/ListarPrePedidos/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            IEnumerable<Prepedido.Dto.PrepedidosCadastradosDtoPrepedido> lista = await prepedidoApiBll.ListarPrePedidos(apelido,
+            var lista = await prepedidoApiBll.ListarPrePedidos(
+                apelido,
                 (PrepedidoBll.TipoBuscaPrepedido)tipoBusca,
-                clienteBusca, numeroPrePedido, dataInicial, dataFinal);
+                clienteBusca, 
+                numeroPrePedido, 
+                dataInicial, 
+                dataFinal);
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/ListarPrePedidos/GET - Response => [{JsonSerializer.Serialize(lista.Count())}].");
 
             return Ok(lista);
         }
@@ -88,6 +145,16 @@ namespace PrepedidoApi.Controllers
         [HttpPost("removerPrePedido/{numeroPrePedido}")]
         public async Task<IActionResult> RemoverPrePedido(string numeroPrePedido)
         {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                NumeroPrePedido = numeroPrePedido
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/RemoverPrePedido/POST - Request => [{JsonSerializer.Serialize(request)}].");
+
             var permissao = this.ObterPermissaoPrePedido(numeroPrePedido);
 
             if (!permissao.CancelarPrePedido)
@@ -99,9 +166,11 @@ namespace PrepedidoApi.Controllers
 
             if (ret)
             {
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/RemoverPrePedido/POST - Response => [PrePedido removido.].");
                 return Ok();
             }
 
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/RemoverPrePedido/POST - Response => [PrePedido não foi removido.].");
             return NotFound();
         }
 
@@ -109,6 +178,17 @@ namespace PrepedidoApi.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> BuscarPrePedido(string numPrepedido)
         {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                NumeroPrePedido = numPrepedido
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/BuscarPrePedido/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
+
             var permissao = this.ObterPermissaoPrePedido(numPrepedido);
 
             if (!permissao.VisualizarPrePedido)
@@ -116,28 +196,68 @@ namespace PrepedidoApi.Controllers
 
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            return Ok(await prepedidoApiBll.BuscarPrePedido(apelido, numPrepedido));
+            var response = await prepedidoApiBll.BuscarPrePedido(apelido, numPrepedido);
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/BuscarPrePedido/GET - Response => [{JsonSerializer.Serialize(response.NumeroPrePedido)}].");
+
+            return Ok(response);
         }
 
         [HttpGet("obtemPercentualVlPedidoRA")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> ObtemPercentualVlPedidoRA()
         {
-            return Ok(await prepedidoBll.ObtemPercentualVlPedidoRA());
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/ObtemPercentualVlPedidoRA/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
+            var response = await prepedidoBll.ObtemPercentualVlPedidoRA();
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/BuscarPrePedido/GET - Response => [{JsonSerializer.Serialize(response)}].");
+
+            return Ok(response);
         }
 
         [HttpGet("obter_permite_ra_status")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> Obter_Permite_RA_Status()
         {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/Obter_Permite_RA_Status/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            return Ok(await prepedidoBll.Obter_Permite_RA_Status(apelido));
+            var response = await prepedidoBll.Obter_Permite_RA_Status(apelido);
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/Obter_Permite_RA_Status/GET - Response => [{JsonSerializer.Serialize(response)}].");
+
+            return Ok(response);
         }
 
         [HttpPost("cadastrarPrepedido")]
         public async Task<IActionResult> CadastrarPrepedido(PrePedidoDto prePedido)
         {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                NumeroPrePedido = prePedido.NumeroPrePedido
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/CadastrarPrepedido/POST - Request => [{JsonSerializer.Serialize(request)}].");
+
             var permissao = this.ObterPermissaoInclusaoPrePedido();
 
             if (!permissao.IncluirPrePedido)
@@ -157,15 +277,30 @@ namespace PrepedidoApi.Controllers
                 appSettings.LimiteItens,
                 (Constantes.TipoUsuarioContexto)usuario.TipoUsuario, usuario.Id);
 
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/CadastrarPrepedido/POST - Response => [{JsonSerializer.Serialize(ret.Count())}].");
+
             return Ok(ret);
         }
 
         [HttpPost("deletarPrepedido")]
         public async Task<IActionResult> DeletarPrePedido(PrePedidoDto prePedido)
         {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                NumeroPrePedido = prePedido.NumeroPrePedido
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/DeletarPrePedido/POST - Request => [{JsonSerializer.Serialize(request)}].");
+
+
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
             await prepedidoApiBll.DeletarOrcamentoExisteComTransacao(prePedido, apelido.Trim());
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/CadastrarPrepedido/POST - Response => [Não tem response].");
 
             return Ok();
         }
@@ -174,29 +309,84 @@ namespace PrepedidoApi.Controllers
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> BuscarFormasPagto(string tipo_pessoa)
         {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                TipoPessoa = tipo_pessoa
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/BuscarFormasPagto/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
             string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            return Ok(await formaPagtoPrepedidoBll.ObterFormaPagto(apelido.Trim(), tipo_pessoa));
+            var response = await formaPagtoPrepedidoBll.ObterFormaPagto(apelido.Trim(), tipo_pessoa);
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/BuscarFormasPagto/GET - Response => [Retorna formas de pagamento.].");
+
+            return Ok(response);
         }
 
         [HttpPost("buscarCoeficiente")]
         public async Task<IActionResult> BuscarCoeficiente(
             List<Prepedido.Dto.PrepedidoProdutoDtoPrepedido> lstProdutos)
         {
-            return Ok(await coeficientePrepedidoBll.BuscarListaCoeficientes(lstProdutos));
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                LstProdutos = lstProdutos.Count
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/BuscarCoeficiente/POST - Request => [{JsonSerializer.Serialize(request)}].");
+
+            var response = await coeficientePrepedidoBll.BuscarListaCoeficientes(lstProdutos);
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/BuscarCoeficiente/POST - Response => [{JsonSerializer.Serialize(response.Count())}].");
+
+            return Ok(response);
         }
 
         [HttpPost("buscarCoeficienteFornecedores")]
         public async Task<IActionResult> BuscarCoeficienteFornecedores(List<string> lstFornecedores)
         {
-            return Ok(await coeficientePrepedidoBll.BuscarListaCoeficientesFornecedores(lstFornecedores));
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                LstFornecedores = lstFornecedores.Count
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/BuscarCoeficienteFornecedores/POST - Request => [{JsonSerializer.Serialize(request)}].");
+
+            var response = await coeficientePrepedidoBll.BuscarListaCoeficientesFornecedores(lstFornecedores);
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/BuscarCoeficiente/POST - Response => [{JsonSerializer.Serialize(response.Count())}].");
+
+            return Ok(response);
         }
 
         [HttpGet("buscarQtdeParcCartaoVisa")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> BuscarQtdeParcCartaoVisa()
         {
-            return Ok(await formaPagtoBll.BuscarQtdeParcCartaoVisa());
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/BuscarQtdeParcCartaoVisa/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
+            var response = await formaPagtoBll.BuscarQtdeParcCartaoVisa();
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/BuscarQtdeParcCartaoVisa/GET - Response => [{JsonSerializer.Serialize(response)}].");
+
+            return Ok(response);
         }
 
         private PermissaoPrePedidoResponse ObterPermissaoPrePedido(string IdPrePedido)

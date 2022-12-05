@@ -42,8 +42,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]),
                 Usuario = LoggedUser.Apelido
             };
-
-            //_logger.LogWarning("ENDPOINT: ObterEstrutura: LogWarning");
+            
             _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ArquivoController/ObterEstrutura/GET - Request => [{JsonSerializer.Serialize(request)}].");
             
             var response = await _arquivoBll.ArquivoObterEstrutura(request);

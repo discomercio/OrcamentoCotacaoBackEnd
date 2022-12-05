@@ -1,23 +1,28 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using OrcamentoCotacaoApi.Filters;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
 using System;
+using System.Text.Json;
 using System.Threading.Tasks;
+using UtilsGlobais.Configs;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     [Authorize]
-    //[TypeFilter(typeof(ExceptionFilter))]
+    [TypeFilter(typeof(ResourceFilter))]
     public class PermissaoController : BaseController
     {
         private readonly ILogger<PermissaoController> _logger;
         private readonly PermissaoBll _permissaoBll;
 
-        public PermissaoController(ILogger<PermissaoController> logger, PermissaoBll permissaoBll)
+        public PermissaoController(
+            ILogger<PermissaoController> logger, 
+            PermissaoBll permissaoBll)
         {
             _logger = logger;
             _permissaoBll = permissaoBll;
@@ -29,6 +34,8 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             try
             {
+                var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
                 var request = new PermissaoOrcamentoRequest()
                 {
                     PermissoesUsuario = LoggedUser.Permissoes,
@@ -37,22 +44,11 @@ namespace OrcamentoCotacaoApi.Controllers
                     TipoUsuario = LoggedUser.TipoUsuario.Value,
                 };
 
-                _logger.LogInformation($"Verificando permissões do usuario: {LoggedUser.Nome} para o orçamento: {idOrcamento}.");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. PermissaoController/RetornarPermissaoOrcamento/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
                 var response = await _permissaoBll.RetornarPermissaoOrcamento(request);
 
-                _logger.LogInformation(
-                    $"Retornando permissões do usuario: {LoggedUser.Nome} para o orçamento: {idOrcamento}. " +
-                    $"VizualizarOrcamento = {response.VisualizarOrcamento}" +
-                    $"ProrrogarOrcamento = {response.ProrrogarOrcamento}" +
-                    $"EditarOrcamento = {response.EditarOrcamento}" +
-                    $"CancelarOrcamento = {response.CancelarOrcamento}" +
-                    $"ClonarOrcamento = {response.ClonarOrcamento}" +
-                    $"ReenviarOrcamento = {response.ReenviarOrcamento}" +
-                    $"EditarOpcaoOrcamento = {response.EditarOpcaoOrcamento}" +
-                    $"AprovarOpcaoOrcamento = {response.DesabilitarAprovarOpcaoOrcamento}" +
-                    $"NenhumaOpcaoOrcamento = {response.NenhumaOpcaoOrcamento}" +
-                    $"DesabilitarBotoes = {response.DesabilitarBotoes}");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. PermissaoController/RetornarPermissaoOrcamento/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
                 return Ok(response);
             }
@@ -68,6 +64,8 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             try
             {
+                var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
                 var request = new PermissaoPrePedidoRequest()
                 {
                     PermissoesUsuario = LoggedUser.Permissoes,
@@ -77,14 +75,11 @@ namespace OrcamentoCotacaoApi.Controllers
                     IdUsuario = LoggedUser.Id
                 };
 
-                _logger.LogInformation($"Verificando permissões do usuario: {LoggedUser.Nome} para o orçamento: {idPrePedido}.");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. PermissaoController/RetornarPermissaoPrePedido/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
                 var response = await _permissaoBll.RetornarPermissaoPrePedido(request);
 
-                _logger.LogInformation(
-                    $"Retornando permissões do usuario: {LoggedUser.Nome} para o pré pedido: {idPrePedido}. " +
-                    $"VizualizarOrcamento = {response.VisualizarPrePedido}" +
-                    $"ProrrogarOrcamento = {response.CancelarPrePedido}");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. PermissaoController/RetornarPermissaoPrePedido/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
                 return Ok(response);
             }
@@ -100,6 +95,8 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             try
             {
+                var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
                 var request = new PermissaoPedidoRequest()
                 {
                     PermissoesUsuario = LoggedUser.Permissoes,
@@ -109,13 +106,11 @@ namespace OrcamentoCotacaoApi.Controllers
                     IdUsuario = LoggedUser.Id
                 };
 
-                _logger.LogInformation($"Verificando permissões do usuario: {LoggedUser.Nome} para o pedido: {idPedido}.");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. PermissaoController/RetornarPermissaoPedido/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
                 var response = await _permissaoBll.RetornarPermissaoPedido(request);
 
-                _logger.LogInformation(
-                    $"Retornando permissões do usuario: {LoggedUser.Nome} para o pedido: {idPedido}. " +
-                    $"VizualizarOrcamento = {response.VisualizarPedido}");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. PermissaoController/RetornarPermissaoPedido/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
                 return Ok(response);
             }
@@ -131,16 +126,18 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             try
             {
+                var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
                 var request = new PermissaoIncluirPrePedidoRequest()
                 {
                     PermissoesUsuario = LoggedUser.Permissoes,
                 };
 
-                _logger.LogInformation($"Verificando permissões do usuario: {LoggedUser.Nome} para incluir pré pedido.");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. PermissaoController/RetornarPermissaoIncluirPrePedido/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
                 var response = await _permissaoBll.RetornarPermissaoIncluirPrePedido(request);
 
-                _logger.LogInformation($"Retornando permissões do usuario: {LoggedUser.Nome} para incluir pré pedido. {response.IncluirPrePedido}");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. PermissaoController/RetornarPermissaoIncluirPrePedido/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
                 return Ok(response);
             }

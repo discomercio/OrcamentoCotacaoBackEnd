@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentistaEindicador;
 using OrcamentistaEIndicadorVendedor;
+using OrcamentoCotacaoApi.Filters;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
 using System;
@@ -12,12 +13,14 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Usuario;
+using UtilsGlobais.Configs;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     [Authorize]
+    [TypeFilter(typeof(ResourceFilter))]
     public class UsuarioController : BaseController
     {
         private readonly ILogger<UsuarioController> _logger;
@@ -42,9 +45,20 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             try
             {
-                _logger.LogInformation("Buscando lista de usuários");
+                var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+                var request = new
+                {
+                    Usuario = LoggedUser.Apelido
+                };
+
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/Get/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
+
                 var usuarios = _usuarioBll.PorFiltro(new InfraBanco.Modelos.Filtros.TusuarioFiltro() { Page = 1, RecordsPerPage = 1 });//GetAll(1, 1);
                 var retorno = _mapper.Map<List<UsuarioResponseViewModel>>(usuarios);
+
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/Get/GET - Response => [{JsonSerializer.Serialize(retorno)}].");
 
                 return Ok(JsonSerializer.Serialize(new { data = retorno }));
             }
@@ -58,12 +72,25 @@ namespace OrcamentoCotacaoApi.Controllers
         [Route("vendedores")]
         public async Task<IEnumerable<UsuarioResponseViewModel>> BuscarVendedores(string loja)
         {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                Loja = loja
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/BuscarVendedores/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
             string vendedorId = User.Identity.Name;
-            _logger.LogInformation("Buscando lista de vendedores");
 
             var usuarios = await _usuarioBll.FiltrarPorPerfil(loja);
 
-            return _mapper.Map<List<UsuarioResponseViewModel>>(usuarios);
+            var response = _mapper.Map<List<UsuarioResponseViewModel>>(usuarios);
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/BuscarVendedores/GET - Response => [{JsonSerializer.Serialize(response.Count)}].");
+
+            return response;
         }
 
 
@@ -81,27 +108,66 @@ namespace OrcamentoCotacaoApi.Controllers
         [Route("{id}")]
         public async Task<UsuarioResponseViewModel> Get(int id)
         {
-            _logger.LogInformation("Buscando lista de usuários");
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                Id= id
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/Get/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
             var usuario = _usuarioBll.GetById(id);
-            return _mapper.Map<UsuarioResponseViewModel>(usuario);
+            var response = _mapper.Map<UsuarioResponseViewModel>(usuario);
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/Get/GET - Response => [{JsonSerializer.Serialize(response)}].");
+
+            return response;
         }
 
         [HttpPost]
         public async Task<UsuarioResponseViewModel> Post(UsuarioRequestViewModel model)
         {
-            _logger.LogInformation("Inserindo usuário");
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                UsuarioRequestViewModel = model
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/Post/POST - Request => [{JsonSerializer.Serialize(request)}].");
+
             var objUsuario = _mapper.Map<Tusuario>(model);
             var usuario = _usuarioBll.Inserir(objUsuario);// model, User.Identity.Name);
-            return _mapper.Map<UsuarioResponseViewModel>(usuario);
+            var response = _mapper.Map<UsuarioResponseViewModel>(usuario);
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/Post/POST - Response => [{JsonSerializer.Serialize(response)}].");
+
+            return response;
         }
 
         [HttpPut]
         public async Task<UsuarioResponseViewModel> Put(UsuarioRequestViewModel model)
         {
-            _logger.LogInformation("Alterando usuário");
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                UsuarioRequestViewModel = model
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/Put/PUT - Request => [{JsonSerializer.Serialize(request)}].");
+
             var objUsuario = _mapper.Map<Tusuario>(model);
             var usuario = _usuarioBll.Atualizar(objUsuario);//model, User.Identity.Name);
-            return _mapper.Map<UsuarioResponseViewModel>(usuario);
+            var response = _mapper.Map<UsuarioResponseViewModel>(usuario);
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/Put/PUT - Response => [{JsonSerializer.Serialize(response)}].");
+
+            return response;
         }
     }
 }

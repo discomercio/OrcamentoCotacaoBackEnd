@@ -9,8 +9,9 @@ namespace OrcamentoCotacaoApi.Filters
         public void OnResourceExecuting(ResourceExecutingContext context)
         {
             var headers = context.HttpContext.Request.Headers;
-            
-            headers.Add(HttpHeader.CorrelationIdHeader, Guid.NewGuid().ToString());
+
+            if (!headers.ContainsKey(HttpHeader.CorrelationIdHeader))
+                headers.Add(HttpHeader.CorrelationIdHeader, Guid.NewGuid().ToString());
         }
 
         public void OnResourceExecuted(ResourceExecutedContext context)
