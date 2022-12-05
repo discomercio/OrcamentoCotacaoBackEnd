@@ -11,7 +11,6 @@ using OrcamentoCotacaoApi.Filters;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Request.Login;
-using OrcamentoCotacaoBusiness.Models.Response;
 using OrcamentoCotacaoBusiness.Models.Response.Login;
 using Prepedido.Dto;
 using System;
@@ -38,9 +37,16 @@ namespace OrcamentoCotacaoApi.Controllers
         private readonly OrcamentistaEIndicadorVendedorBll _orcamentistaEindicadorVendedorBll;
         private readonly LojaBll _lojaBll;
 
-        public AccountController(IServicoAutenticacao servicoAutenticacao, IConfiguration configuration, ILogger<AccountController> logger,
-            OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll, ITokenService tokenService, UsuarioBll usuarioBll, OrcamentistaEIndicadorBll orcamentistaEindicadorBll,
-            OrcamentistaEIndicadorVendedorBll orcamentistaEindicadorVendedorBll, LojaBll lojaBll)
+        public AccountController(
+            IServicoAutenticacao servicoAutenticacao, 
+            IConfiguration configuration, 
+            ILogger<AccountController> logger,
+            OrcamentoCotacaoBusiness.Bll.AcessoBll acessoBll, 
+            ITokenService tokenService, 
+            UsuarioBll usuarioBll, 
+            OrcamentistaEIndicadorBll orcamentistaEindicadorBll,
+            OrcamentistaEIndicadorVendedorBll orcamentistaEindicadorVendedorBll, 
+            LojaBll lojaBll)
         {
             _servicoAutenticacao = servicoAutenticacao;
             _configuration = configuration;
@@ -60,7 +66,8 @@ namespace OrcamentoCotacaoApi.Controllers
             try
             {
                 login.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
-                _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - Request => [{JsonSerializer.Serialize(login)}].");
+
+                _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - Request => [{JsonSerializer.Serialize(login.Usuario)}].");
 
                 var appSettingsSection = _configuration.GetSection("AppSettings");
                 var appSettings = appSettingsSection.Get<Configuracao>();
@@ -143,11 +150,17 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             try
             {
+                var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. AccountController/VerificarExpiracao/POST - Request => [{JsonSerializer.Serialize(request)}].");
+
                 var response = await _acessoBll.VerificarExpiracao(new AtualizarSenhaDto()
                 {
                     TipoUsuario = request.TipoUsuario,
                     Apelido = request.Apelido
                 });
+
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. AccountController/VerificarExpiracao/POST - Response => [{JsonSerializer.Serialize(response)}].");
 
                 return Ok(response);
             }
@@ -164,6 +177,10 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             try
             {
+                var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. AccountController/AtualzarSenha/POST - Request => [{JsonSerializer.Serialize(request.Apelido)}].");
+
                 var response = await _acessoBll.AtualizarSenhaAsync(new AtualizarSenhaDto()
                 {
                     TipoUsuario = request.TipoUsuario,
@@ -173,6 +190,8 @@ namespace OrcamentoCotacaoApi.Controllers
                     ConfirmacaoSenha = request.ConfirmacaoSenha
                 });
 
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. AccountController/AtualzarSenha/POST - Response => [{JsonSerializer.Serialize(response)}].");
+
                 return Ok(response);
             }
             catch (Exception ex)
@@ -180,6 +199,5 @@ namespace OrcamentoCotacaoApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
     }
 }

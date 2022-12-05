@@ -1,21 +1,23 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentistaEindicador;
 using OrcamentistaEIndicadorVendedor;
+using OrcamentoCotacaoApi.Filters;
 using OrcamentoCotacaoBusiness.Models.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Text.Json;
+using UtilsGlobais.Configs;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
     [Route("[controller]")]
     [ApiController]
     [Authorize]
+    [TypeFilter(typeof(ResourceFilter))]
     public class ParceiroController : BaseController
     {
         private readonly OrcamentistaEIndicadorBll _orcamentistaEindicadorBll;
@@ -38,34 +40,74 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpGet]
         public IEnumerable<OrcamentistaIndicadorResponseViewModel> BuscarParceiros(string vendedorId, string loja)
         {
-            _logger.LogInformation("Buscando lista de parceiros");
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                VendedorId = vendedorId,
+                Loja = loja
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. ParceiroController/BuscarParceiros/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
             var usuarios = _orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { vendedorId = vendedorId, loja = loja });
 
-            return _mapper.Map<List<OrcamentistaIndicadorResponseViewModel>>(usuarios); ;
+            var response = _mapper.Map<List<OrcamentistaIndicadorResponseViewModel>>(usuarios);
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. ParceiroController/BuscarParceiros/GET - Response => [{JsonSerializer.Serialize(response)}].");
+
+            return response;
         }
 
         [HttpGet]
         [Route("vendedores-parceiros")]
         public IEnumerable<OrcamentistaEIndicadorVendedorResponseViewModel> BuscarVendedoresDosParceiros(string apelidoParceiro)
         {
-            _logger.LogInformation("Buscando lista de vendedores parceiros");
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                ApelidoParceiro = apelidoParceiro
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. ParceiroController/BuscarVendedoresDosParceiros/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
             var parceiro = _orcamentistaEindicadorBll
                 .PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = apelidoParceiro }).FirstOrDefault();
             if (parceiro == null) return null;
 
             var usuarios = _orcamentistaEindicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { IdIndicador = parceiro.IdIndicador });
 
-            return _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(usuarios);
+            var response = _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(usuarios);
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. ParceiroController/BuscarVendedoresDosParceiros/GET - Response => [{JsonSerializer.Serialize(response)}].");
+
+            return response;
         }
 
         [HttpGet]
         [Route("parceiros-por-vendedor")]
         public IEnumerable<OrcamentistaIndicadorResponseViewModel> BuscarParceirosByVendedor(string vendedor)
         {
-            _logger.LogInformation("Buscando lista de parceiros por vendedor");
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                Vendedor = vendedor
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. ParceiroController/BuscarParceirosByVendedor/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
             var usuarios = _orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { vendedorId = vendedor }).ToList();
 
-            return _mapper.Map<List<OrcamentistaIndicadorResponseViewModel>>(usuarios);
+            var response = _mapper.Map<List<OrcamentistaIndicadorResponseViewModel>>(usuarios);
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. ParceiroController/BuscarParceirosByVendedor/GET - Response => [{JsonSerializer.Serialize(response)}].");
+
+            return response;
         }
     }
 }
