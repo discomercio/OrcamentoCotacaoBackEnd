@@ -4,6 +4,7 @@ using InfraBanco.Modelos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using OrcamentoCotacaoApi.Filters;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
@@ -11,7 +12,9 @@ using OrcamentoCotacaoBusiness.Models.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
+using UtilsGlobais.Configs;
 using static OrcamentoCotacaoBusiness.Enums.Enums;
 
 namespace OrcamentoCotacaoApi.Controllers
@@ -19,6 +22,7 @@ namespace OrcamentoCotacaoApi.Controllers
     [Route("[controller]")]
     [ApiController]
     [Authorize]
+    [TypeFilter(typeof(ResourceFilter))]
     public class OrcamentistaEIndicadorVendedorController : BaseController
     {
         private readonly OrcamentistaEIndicadorVendedor.OrcamentistaEIndicadorVendedorBll _orcamentistaEindicadorVendedorBll;
@@ -41,70 +45,151 @@ namespace OrcamentoCotacaoApi.Controllers
         [Route("vendedores-parceiros")]
         public async Task<IEnumerable<OrcamentistaEIndicadorVendedorResponseViewModel>> BuscarVendedoresDosParceiros(string parceiro)
         {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
-            _logger.LogInformation("Buscando lista de vendedores parceiros");
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                Parceiro = parceiro
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/BuscarVendedoresDosParceiros/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
             var torcamentista = orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = parceiro, acessoHabilitado = 1, status = Constantes.ORCAMENTISTA_INDICADOR_STATUS_ATIVO });
-            if (torcamentista == null) throw new ArgumentException("Parceiro não encontrado!");
-            
+            if (torcamentista == null)
+            {
+                response.Mensagem = "Parceiro não encontrado!";
+                return response;
+            }
+
             var usuarios = _orcamentistaEindicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { IdIndicador = torcamentista.IdIndicador, ativo = true });
 
             if (usuarios != null) usuarios = usuarios.OrderBy(x => x.Nome).ToList();
 
-            return _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(usuarios);
+
+            var result = _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(usuarios);
+
+            var response = new
+            {
+                OrcamentistaEIndicadorVendedor = result.Count
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/BuscarVendedoresDosParceiros/GET - Response => [{JsonSerializer.Serialize(response)}].");
+            
+            if (usuarios != null) usuarios = usuarios.OrderBy(x => x.Nome).ToList();
+
+            return result;
         }
 
         [HttpGet]
         [Route("vendedores-parceiros-apelido-loja")]
         public async Task<IEnumerable<OrcamentistaEIndicadorVendedorResponseViewModel>> BuscarVendedoresDosParceirosPorApelidoELoja(string apelido, string loja)
         {
-            _logger.LogInformation("Buscando lista de vendedores parceiros");
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                Apelido = apelido,
+                Loja = loja
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/BuscarVendedoresDosParceirosPorApelidoELoja/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
             var torcamentista = orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = apelido, loja = loja });
             if (torcamentista == null) throw new ArgumentException("Parceiro não encontrado!");
 
             var usuarios = _orcamentistaEindicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { IdIndicador = torcamentista.IdIndicador, loja = loja });
 
-
             if (usuarios != null) usuarios = usuarios.OrderBy(x => x.Nome).ToList();
 
-            return _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(usuarios);
-        }
+            var result = _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(usuarios);
 
+            var response = new
+            {
+                OrcamentistaEIndicadorVendedor = result.Count
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/BuscarVendedoresDosParceiros/GET - Response => [{JsonSerializer.Serialize(response)}].");
+
+            return result;
+        }
 
         [HttpGet]
         [Route("vendedores-parceiros-vendedor-loja")]
         public async Task<IEnumerable<OrcamentistaEIndicadorVendedorResponseViewModel>> BuscarVendedoresPorVendedorELoja(string vendedor, string loja)
         {
-            _logger.LogInformation("Buscando lista de vendedores parceiros");
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                Vendedor = vendedor,
+                Loja = loja
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/BuscarVendedoresPorVendedorELoja/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
             var usuarios = _orcamentistaEindicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { nomeVendedor = vendedor, loja = loja });
 
-
             if (usuarios != null) usuarios = usuarios.OrderBy(x => x.Nome).ToList();
 
-            return _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(usuarios);
-        }
+            var result = _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(usuarios);
 
+            var response = new
+            {
+                OrcamentistaEIndicadorVendedor = result.Count
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/BuscarVendedoresPorVendedorELoja/GET - Response => [{JsonSerializer.Serialize(response)}].");
+
+            return result;
+        }
 
         [HttpGet]
         [Route("vendedores-parceiros-loja")]
         public async Task<IEnumerable<OrcamentistaEIndicadorVendedorResponseViewModel>> BuscarVendedoresDosParceirosPorLoja(string loja)
         {
-            _logger.LogInformation("Buscando lista de vendedores parceiros por loja");
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                Loja = loja
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/BuscarVendedoresDosParceirosPorLoja/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
             var usuarios = _orcamentistaEindicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { loja = loja });
 
             if (usuarios != null) usuarios = usuarios.OrderBy(x => x.Nome).ToList();
 
-            return _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(usuarios);
+            var result = _mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(usuarios);
+
+            var response = new
+            {
+                OrcamentistaEIndicadorVendedor = result.Count
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/BuscarVendedoresDosParceirosPorLoja/GET - Response => [{JsonSerializer.Serialize(response)}].");
+
+            return result;
         }
 
         [HttpGet]
         [Route("vendedores-parceiros/{id}")]
         public async Task<OrcamentistaEIndicadorVendedorResponseViewModel> BuscarVendedoresDosParceirosPorId(int id)
         {
-            _logger.LogInformation("Buscando um vendedor parceiro");
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                Id = id
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/BuscarVendedoresDosParceirosPorId/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
             var usuarios = _orcamentistaEindicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { id = id }).FirstOrDefault();
 
             if (usuarios == null) return null;
@@ -123,6 +208,13 @@ namespace OrcamentoCotacaoApi.Controllers
                 Senha = usuarios.Datastamp
             };
 
+            var response = new
+            {
+                OrcamentistaEIndicadorVendedor = ret
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/BuscarVendedoresDosParceirosPorId/GET - Response => [{JsonSerializer.Serialize(response)}].");
+
             return ret;
         }
 
@@ -130,7 +222,15 @@ namespace OrcamentoCotacaoApi.Controllers
         [Route("vendedores-parceiros")]
         public IActionResult Post(UsuarioRequestViewModel model)
         {
-            _logger.LogInformation("Inserindo vendedor parceiro");
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                UsuarioRequest = model
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/vendedores-parceiros/POST - Request => [{JsonSerializer.Serialize(request)}].");
 
             if (!User.ValidaPermissao((int)ePermissao.CadastroVendedorParceiroIncluirEditar))
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
@@ -140,7 +240,16 @@ namespace OrcamentoCotacaoApi.Controllers
             {
                 var result = _orcamentistaEindicadorVendedorBll.Inserir(objOrcamentistaEIndicadorVendedor, model.Senha, User.GetParceiro(), User.GetVendedor());
 
-                return Ok(_mapper.Map<OrcamentistaEIndicadorVendedorResponseViewModel>(result));
+                var ret = _mapper.Map<OrcamentistaEIndicadorVendedorResponseViewModel>(result);
+
+                var response = new
+                {
+                    OrcamentistaEIndicadorVendedor = ret
+                };
+
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/vendedores-parceiros/POST - Response => [{JsonSerializer.Serialize(response)}].");
+
+                return Ok(ret);
             }
             catch (ArgumentException e)
             {
@@ -152,7 +261,15 @@ namespace OrcamentoCotacaoApi.Controllers
         [Route("vendedores-parceiros-usuario-interno")]
         public IActionResult PostPorUsuarioInterno(UsuarioRequestViewModel model)
         {
-            _logger.LogInformation("Inserindo vendedor parceiro");
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                UsuarioRequest = model
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/vendedores-parceiros-usuario-interno/POST - Request => [{JsonSerializer.Serialize(request)}].");
 
             if (!User.ValidaPermissao((int)ePermissao.CadastroVendedorParceiroIncluirEditar))
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
@@ -162,7 +279,16 @@ namespace OrcamentoCotacaoApi.Controllers
             {
                 var result = _orcamentistaEindicadorVendedorBll.Inserir(objOrcamentistaEIndicadorVendedor, model.Senha, model.Parceiro, User.GetVendedor());
 
-                return Ok(_mapper.Map<OrcamentistaEIndicadorVendedorResponseViewModel>(result));
+                var ret = _mapper.Map<OrcamentistaEIndicadorVendedorResponseViewModel>(result);
+
+                var response = new
+                {
+                    OrcamentistaEIndicadorVendedor = ret
+                };
+
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/vendedores-parceiros-usuario-interno/POST - Response => [{JsonSerializer.Serialize(response)}].");
+
+                return Ok(ret);
             }
             catch (ArgumentException e)
             {
@@ -174,7 +300,16 @@ namespace OrcamentoCotacaoApi.Controllers
         [Route("vendedores-parceiros")]
         public IActionResult Put(UsuarioRequestViewModel model)
         {
-            _logger.LogInformation("Altera vendedor parceiro");
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                UsuarioRequest = model
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/vendedores-parceiros/PUT - Request => [{JsonSerializer.Serialize(request)}].");
+
             if (!User.ValidaPermissao((int)ePermissao.CadastroVendedorParceiroIncluirEditar))
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
@@ -189,6 +324,14 @@ namespace OrcamentoCotacaoApi.Controllers
                     User.GetTipoUsuario(),
                     User.ValidaPermissao((int)ePermissao.SelecionarQualquerIndicadorDaLoja)
                     );
+
+                var response = new
+                {
+                    OrcamentistaEIndicadorVendedor = result
+                };
+
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/vendedores-parceiros/PUT - Response => [{JsonSerializer.Serialize(response)}].");
+
                 return Ok(result);
             }
             catch (ArgumentException e)
