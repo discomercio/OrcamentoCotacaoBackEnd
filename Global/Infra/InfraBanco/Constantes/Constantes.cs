@@ -2561,6 +2561,8 @@ namespace InfraBanco.Constantes
 
         public const string ERR_USUARIO_BLOQUEADO = "7";
 
+        public const string ERR_USUARIO_INATIVO = "23";
+
         public const string ERR_FALHA_OPERACAO_BD = "8";
 
         public const string ERR_FALHA_OPERACAO_GERAR_NSU = "9";

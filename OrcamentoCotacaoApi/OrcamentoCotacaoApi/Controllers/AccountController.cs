@@ -102,6 +102,13 @@ namespace OrcamentoCotacaoApi.Controllers
                     return Ok(response);
                 }
 
+                if(objUsuarioLogin.IdErro == int.Parse(Constantes.ERR_USUARIO_INATIVO))
+                {
+                    response.Mensagem = "Usuário Inativo";
+                    _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - {response.Mensagem}. Response => [{JsonSerializer.Serialize(objUsuarioLogin)}]");
+                    return Ok(response);
+                }
+
                 if(objUsuarioLogin.Token == null)
                 {
                     response.Mensagem = "Usuário ou senha incorretos";

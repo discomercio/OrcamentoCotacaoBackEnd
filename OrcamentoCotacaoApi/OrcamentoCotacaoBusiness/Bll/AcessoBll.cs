@@ -62,7 +62,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                                 Email = "",
                                 Datastamp = c.Datastamp,
                                 Dt_Ult_Alteracao_Senha = c.Dt_Ult_Alteracao_Senha,
-                                Bloqueado = (c.Status == "I"),
+                                Bloqueado = c.Status != "A",
                                 AcessoHabilitado = c.Hab_Acesso_Sistema == 1,
                                 Loja = c.Loja,
                                 TipoUsuario = (int)Constantes.TipoUsuario.PARCEIRO,
@@ -83,7 +83,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                                     Email = c.Email,
                                     Datastamp = c.Datastamp,
                                     Dt_Ult_Alteracao_Senha = c.DataUltimaAlteracao,
-                                    Bloqueado = !c.Ativo,
+                                    Bloqueado = d.Status != "A" || !c.Ativo,
                                     AcessoHabilitado = d.Hab_Acesso_Sistema == 1,
                                     Loja = c.Loja,
                                     TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO,
@@ -105,6 +105,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                 if (t.Datastamp == "")
                 {
                     msgErro = Constantes.ERR_USUARIO_BLOQUEADO;
+                    return null;
+                }
+
+                if (t.Bloqueado)
+                {
+                    msgErro = Constantes.ERR_USUARIO_INATIVO;
                     return null;
                 }
 
