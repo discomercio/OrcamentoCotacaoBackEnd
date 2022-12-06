@@ -69,6 +69,21 @@ namespace OrcamentoCotacaoApi.Controllers
             return Ok(response);
         }
 
+        [HttpGet("orcamento/vendedor-interno")]
+        public async Task<IActionResult> DashboardOrcamentoVendedorInterno([FromQuery] DashboardRequest request)
+        {
+
+            request.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+            request.Usuario = LoggedUser.Apelido;
+
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. DashboardController/DashboardOrcamentoVendedorInterno/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
+            var response = _orcamentoCotacaoBll.Dashboard(new TorcamentoFiltro() { Loja = request.Loja, Origem = request.Origem, StatusId = request.Status }, LoggedUser);
+
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. DashboardController/DashboardOrcamentoVendedorInterno/GET - Response => [{JsonSerializer.Serialize(response)}].");
+
+            return Ok(response);
+        }
 
     }
 }
