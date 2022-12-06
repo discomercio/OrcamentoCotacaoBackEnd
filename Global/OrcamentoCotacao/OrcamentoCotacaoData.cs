@@ -215,6 +215,11 @@ namespace OrcamentoCotacao
 
                     saida = saida.OrderByDescending(a => a.DataHoraCadastro);
 
+                    if (obj.StatusId != 0)
+                    {
+                        saida = saida.Where(x => x.Status == obj.StatusId);
+                    }
+
                     if (obj.Id != 0)
                     {
                         saida = saida.Where(x => x.Id == obj.Id);
