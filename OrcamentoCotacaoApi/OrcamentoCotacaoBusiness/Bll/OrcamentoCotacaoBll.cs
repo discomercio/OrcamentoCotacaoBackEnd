@@ -120,6 +120,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 var usuario = _usuarioBll.PorFiltro(new TusuarioFiltro() { id = orcamento.idVendedor }).FirstOrDefault();
                 var parceiro = orcamento.idIndicador != null ? _orcamentistaEIndicadorBll
                     .BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = (int)orcamento.idIndicador, acessoHabilitado = 1 }) : null;
+                if (parceiro == null) throw new ArgumentException("Parceiro não encontrado!");
 
                 string vendedorParceiro = null;
                 if (orcamento.idIndicadorVendedor != null)
@@ -372,6 +373,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             var usuario = _usuarioBll.PorFiltro(new TusuarioFiltro() { id = orcamento.IdVendedor }).FirstOrDefault();
             var parceiro = orcamento.IdIndicador != null ? _orcamentistaEIndicadorBll
                 .BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = (int)orcamento.IdIndicador, acessoHabilitado = 1 }) : null;
+            if (parceiro == null) throw new ArgumentException("Parceiro não encontrado!");
 
             string vendedorParceiro = null;
             if (orcamento.IdIndicadorVendedor != null)
@@ -500,6 +502,12 @@ namespace OrcamentoCotacaoBusiness.Bll
             var usuario = _usuarioBll.PorFiltro(new TusuarioFiltro() { id = orcamento.IdVendedor }).FirstOrDefault();
             var parceiro = orcamento.IdIndicador != null ? _orcamentistaEIndicadorBll
                 .BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = (int)orcamento.IdIndicador, acessoHabilitado = 1 }) : null;
+            if (parceiro == null)
+            {
+                response.Mensagem = "Parceiro não encontrado!";
+                return response;
+
+            }
 
             string vendedorParceiro = null;
             if (orcamento.IdIndicadorVendedor != null)
@@ -725,6 +733,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                     _logger.LogInformation($"CorrelationId => [{orcamento.CorrelationId}]. {nomeMetodo}. Retorno da busca de percentual de desconto e comissão por loja. Response => [{JsonSerializer.Serialize(percentualMaxDescontoEComissao)}].");
 
                     var tOrcamentoCotacao = MontarTorcamentoCotacao(orcamento, usuarioLogado, percentualMaxDescontoEComissao, 1);
+                    if (tOrcamentoCotacao == null)
+                    {
+                        response.Mensagem = "Falha ao tentar montar os dados do orçamento!";
+                        return response;
+                    }
                     _logger.LogInformation($"CorrelationId => [{orcamento.CorrelationId}]. {nomeMetodo}. Cadastrar orçamento cotação. Request => [{JsonSerializer.Serialize(tOrcamentoCotacao)}].");
                     tOrcamentoCotacao = _orcamentoCotacaoBll.InserirComTransacao(tOrcamentoCotacao, dbGravacao);
                     if (tOrcamentoCotacao.Id == 0)
@@ -1077,6 +1090,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (orcamento.IdIndicadorVendedor == null && orcamento.IdIndicador != null)
             {
                 var parceiro = _orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { apelido = orcamento.Parceiro, acessoHabilitado = 1 });
+                if (parceiro == null) return "Parceiro não encontrado!";
 
                 if (usuarioLogado.Apelido == parceiro.Apelido) return null;
             }
@@ -1338,7 +1352,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 var vendedor = _usuarioBll.PorFiltro(new TusuarioFiltro() { usuario = orcamento.Vendedor }).FirstOrDefault();
 
-                if (vendedor == null) throw new ArgumentException("Vendedor não encontrado!");
+                if (vendedor == null) return null;
 
                 torcamentoCotacao.IdVendedor = vendedor.Id;
             }
@@ -1347,8 +1361,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                 if (usuarioLogado.TipoUsuario != (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
                 {
                     var torcamentista = _orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { apelido = orcamento.Parceiro, acessoHabilitado = 1 });
+                    if (torcamentista == null) return null;
 
-                    if (torcamentista == null) throw new ArgumentException("Parceiro não encontrado!");
 
                     torcamentoCotacao.IdIndicador = torcamentista.IdIndicador;
                 }
@@ -1356,8 +1370,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 if (usuarioLogado.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
                 {
                     var torcamentista = _orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = int.Parse(orcamento.Parceiro), acessoHabilitado = 1 });
-
-                    if (torcamentista == null) throw new ArgumentException("Parceiro não encontrado!");
+                    if (torcamentista == null) return null;
 
                     torcamentoCotacao.IdIndicador = torcamentista.IdIndicador;
                 }
@@ -1370,7 +1383,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 if (usuarioLogado.TipoUsuario != (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
                 {
                     var vendedoresParceiro = _orcamentistaEIndicadorVendedorBll.BuscarVendedoresParceiro(orcamento.Parceiro);
-                    if (vendedoresParceiro == null) throw new ArgumentException("Nenhum vendedor do parceiro encontrado!");
+                    if (vendedoresParceiro == null) return null;
 
                     torcamentoCotacao.IdIndicadorVendedor = vendedoresParceiro
                         .Where(x => x.Nome == orcamento.VendedorParceiro)
@@ -1380,7 +1393,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 if (usuarioLogado.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
                 {
                     var vendedoresParceiro = _orcamentistaEIndicadorVendedorBll.BuscarVendedoresParceiroPorId(int.Parse(orcamento.Parceiro));
-                    if (vendedoresParceiro == null) throw new ArgumentException("Nenhum vendedor do parceiro encontrado!");
+                    if (vendedoresParceiro == null) return null;
 
                     torcamentoCotacao.IdIndicadorVendedor = vendedoresParceiro
                         .Where(x => x.Email.ToUpper() == orcamento.VendedorParceiro)

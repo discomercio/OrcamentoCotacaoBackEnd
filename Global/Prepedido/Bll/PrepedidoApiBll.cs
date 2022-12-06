@@ -68,7 +68,7 @@ namespace Prepedido.Bll
             prePedidoDados.UsuarioCadastroIdTipoUsuarioContexto = (short)tipoUsuarioContexto;
             prePedidoDados.Usuario_cadastro = $"[{prePedidoDados.UsuarioCadastroIdTipoUsuarioContexto}] {usuarioId}";
 
-            prePedidoDados.DetalhesPrepedido.InstaladorInstalaIdTipoUsuarioContexto = (short)usuarioId;
+            prePedidoDados.DetalhesPrepedido.InstaladorInstalaIdTipoUsuarioContexto = (short)tipoUsuarioContexto;
             prePedidoDados.DetalhesPrepedido.InstaladorInstalaIdUsuarioUltAtualiz = usuarioId;
             prePedidoDados.DetalhesPrepedido.InstaladorInstalaUsuarioUltAtualiz = prePedidoDados.Usuario_cadastro;
             prePedidoDados.DetalhesPrepedido.InstaladorInstalaDtHrUltAtualiz = DateTime.Now;
