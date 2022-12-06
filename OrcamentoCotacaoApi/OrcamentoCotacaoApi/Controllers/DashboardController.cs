@@ -13,6 +13,7 @@ using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 using UtilsGlobais.Configs;
+using static OrcamentoCotacaoBusiness.Enums.Enums;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -42,6 +43,9 @@ namespace OrcamentoCotacaoApi.Controllers
         public async Task<IActionResult> DashboardOrcamentoParceiro([FromQuery] DashboardRequest request)
         {
 
+            if (!User.ValidaPermissao((int)ePermissao.AcessoAoModulo))
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar essa atividade!" });
+
             request.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
             request.Usuario = LoggedUser.Apelido;            
 
@@ -57,6 +61,10 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpGet("orcamento/vendedor-parceiro")]
         public async Task<IActionResult> DashboardOrcamentoVendedorParceiro([FromQuery] DashboardRequest request)
         {
+
+            if (!User.ValidaPermissao((int)ePermissao.AcessoAoModulo))
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar essa atividade!" });
+
             request.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
             request.Usuario = LoggedUser.Apelido;
 
@@ -72,6 +80,9 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpGet("orcamento/vendedor-interno")]
         public async Task<IActionResult> DashboardOrcamentoVendedorInterno([FromQuery] DashboardRequest request)
         {
+            
+            if (!User.ValidaPermissao((int)ePermissao.AcessoAoModulo))
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar essa atividade!" });
 
             request.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
             request.Usuario = LoggedUser.Apelido;
