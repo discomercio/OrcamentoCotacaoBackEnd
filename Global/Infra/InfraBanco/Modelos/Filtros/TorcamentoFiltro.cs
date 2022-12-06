@@ -12,6 +12,7 @@ namespace InfraBanco.Modelos.Filtros
         public int? TipoUsuario { get; set; }
         public string Apelido { get; set; }
         public string[] Status { get; set; }
+        public int StatusId { get; set; }
         public string NumeroOrcamento { get; set; }
         public string Vendedor { get; set; }
         public string Parceiro { get; set; }
