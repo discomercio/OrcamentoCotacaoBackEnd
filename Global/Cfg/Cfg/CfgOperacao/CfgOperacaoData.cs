@@ -4,7 +4,8 @@ using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cfg.CfgOperacao
 {
@@ -49,7 +50,14 @@ namespace Cfg.CfgOperacao
 
         public List<TcfgOperacao> PorFilroComTransacao(TcfgOperacaoFiltro obj, ContextoBdGravacao contextoBdGravacao)
         {
-            throw new NotImplementedException();
+            var saida = from c in contextoBdGravacao.TcfgOperacao
+                        select c;
+
+            if(saida == null) return null;
+
+            if(obj.Id != 0) saida = saida.Where(x => x.Id == obj.Id);
+
+            return saida.ToList();
         }
 
         public List<TcfgOperacao> PorFiltro(TcfgOperacaoFiltro obj)

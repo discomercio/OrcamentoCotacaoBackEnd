@@ -747,7 +747,7 @@ namespace UtilsGlobais
             return true;
         }
 
-        public static TLogV2 GravaLogV2(ContextoBdGravacao dbgravacao, string log,short idTipoUsuarioContexto, 
+        public static TLogV2 GravaLogV2(ContextoBdGravacao dbgravacao, string log, short idTipoUsuarioContexto, 
             int idUsuario, string loja, string pedido, int? idOrcamentoCotacao, string idCliente, 
             Constantes.CodSistemaResponsavel codSistemaResponsavel, int? idOpercao, string ip)
         {

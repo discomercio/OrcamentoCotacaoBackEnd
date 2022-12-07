@@ -1,6 +1,7 @@
 ﻿using Arquivo.Dto;
 using Arquivo.Requests;
 using Arquivo.Responses;
+using Cfg.CfgOperacao;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
@@ -17,13 +18,16 @@ namespace Arquivo
     {
         private readonly ILogger<ArquivoBll> _logger;
         private readonly InfraBanco.ContextoBdProvider _contextoProvider;
+        private readonly CfgOperacaoBll _cfgOperacaoBll;
 
         public ArquivoBll(
             ILogger<ArquivoBll> logger,
-            InfraBanco.ContextoBdProvider contextoProvider)
+            InfraBanco.ContextoBdProvider contextoProvider,
+            CfgOperacaoBll cfgOperacaoBll)
         {
             _logger = logger;
             _contextoProvider = contextoProvider;
+            _cfgOperacaoBll = cfgOperacaoBll;
         }
 
         public async Task<ArquivoObterEstruturaResponse> ArquivoObterEstrutura(ArquivoObterEstruturaRequest request)
@@ -282,11 +286,23 @@ namespace Arquivo
                     tOrcamentoCotacaoArquivos = this.InserirComTransacao(tOrcamentoCotacaoArquivos, dbGravacao);
                     
                     string log = "";
-                    log = UtilsGlobais.Util.MontaLog(tOrcamentoCotacaoArquivos, log, "");
-                    //var idOperacao = 
-                    //var tLogV2 = UtilsGlobais.Util.GravaLogV2(dbGravacao, log, usuarioLogin.TipoUsuario, usuarioLogin.Id, request.Loja, null, null, null, 
-                    //    InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, idOperacao, request.IP)
 
+                    _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Montando log de operação.");
+                    log = UtilsGlobais.Util.MontaLog(tOrcamentoCotacaoArquivos, log, "");
+
+                    _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Buscando operação de criação de pasta.");
+                    var cfgOperacao = _cfgOperacaoBll.PorFiltroComTransacao(new TcfgOperacaoFiltro() { Id = 12 }, dbGravacao).FirstOrDefault();
+                    if(cfgOperacao == null)
+                    {
+                        response.Sucesso = false;
+                        response.Mensagem = "Ops! Falha ao criar pasta.";
+                        return response;
+                    }
+                    var tLogV2 = UtilsGlobais.Util.GravaLogV2(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, request.Loja, null, null, null,
+                        InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, request.IP);
+
+                    dbGravacao.SaveChanges();
+                    dbGravacao.transacao.Commit();
 
                     _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Pasta [{request.Nome}] criada com sucesso.");
                     response.CorrelationId = request.CorrelationId;

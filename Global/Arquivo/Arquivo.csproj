@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Cfg\Cfg\Cfg.csproj" />
     <ProjectReference Include="..\ClassesBase\ClassesBase.csproj" />
     <ProjectReference Include="..\Infra\InfraBanco\InfraBanco.csproj" />
     <ProjectReference Include="..\Infra\InfraIdentity\InfraIdentity.csproj" />

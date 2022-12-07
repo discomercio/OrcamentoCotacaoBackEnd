@@ -13,7 +13,7 @@ namespace InfraBanco.Modelos
         [Required]
         public Guid Id { get; set; }
 
-        [Column("Nome")]
+        [Column("nome")]
         [MaxLength(100)]
         [Required]
         public string Nome { get; set; }
