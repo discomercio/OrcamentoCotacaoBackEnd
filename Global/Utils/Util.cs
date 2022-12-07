@@ -676,7 +676,7 @@ namespace UtilsGlobais
         public static string MontaLog(Object obj, string log, string campos_a_omitir)
         {
             PropertyInfo[] property = obj.GetType().GetProperties();
-            string[] campos = campos_a_omitir.Split('|');
+            //string[] campos = campos_a_omitir.Split('|');
 
             foreach (var c in property)
             {
@@ -722,6 +722,55 @@ namespace UtilsGlobais
             dbgravacao.SaveChanges();
 
             return true;
+        }
+
+        public static bool GravaLog2(ContextoBdGravacao dbgravacao, string apelido, string loja, string pedido, string id_cliente,
+            string operacao, string log)
+        {
+            if (apelido == null)
+                return false;
+
+            Tlog tLog = new Tlog
+            {
+                Data = DateTime.Now,
+                Usuario = apelido,
+                Loja = loja,
+                Pedido = pedido,
+                Id_Cliente = id_cliente,
+                Operacao = operacao,
+                Complemento = log
+            };
+
+            dbgravacao.Add(tLog);
+            dbgravacao.SaveChanges();
+
+            return true;
+        }
+
+        public static TLogV2 GravaLogV2(ContextoBdGravacao dbgravacao, string log,short idTipoUsuarioContexto, 
+            int idUsuario, string loja, string pedido, int? idOrcamentoCotacao, string idCliente, 
+            Constantes.CodSistemaResponsavel codSistemaResponsavel, int? idOpercao, string ip)
+        {
+            TLogV2 tLogV2 = new TLogV2()
+            {
+                Data = DateTime.Now.Date,
+                DataHora = DateTime.Now,
+                IdTipoUsuarioContexto = idTipoUsuarioContexto,
+                IdUsuario = idUsuario,
+                Loja = loja,
+                Pedido = pedido,
+                IdOrcamentoCotacao = idOrcamentoCotacao,
+                IdCliente = idCliente,
+                SistemaResponsavel = (int)codSistemaResponsavel,
+                IdOperacao = idOpercao,
+                Complemento = log,
+                IP = ip
+            };
+
+            dbgravacao.Add(tLogV2);
+            dbgravacao.SaveChanges();
+
+            return tLogV2;
         }
 
         public static string Normaliza_Codigo(string cod, int tamanho_default)

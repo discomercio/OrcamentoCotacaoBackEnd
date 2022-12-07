@@ -3,6 +3,7 @@ using Arquivo.Requests;
 using Arquivo.Responses;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
+using InfraIdentity;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -233,7 +234,7 @@ namespace Arquivo
             }
         }
 
-        public async Task<ArquivoCriarPastaResponse> ArquivoCriarPasta(ArquivoCriarPastaRequest request)
+        public async Task<ArquivoCriarPastaResponse> ArquivoCriarPasta(ArquivoCriarPastaRequest request, UsuarioLogin usuarioLogin)
         {
             var response = new ArquivoCriarPastaResponse();
             var nomeMetodo = response.ObterNomeMetodoAtualAsync();
@@ -266,22 +267,47 @@ namespace Arquivo
             try
             {
                 _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Criando pasta no banco de dados. Nome => [{request.Nome}].");
-                var tOrcamentoCotacaoArquivos = this.Inserir(new TorcamentoCotacaoArquivos()
-                {
-                    Id = Guid.NewGuid(),
-                    Nome = request.Nome.Trim(),
-                    Pai = !string.IsNullOrEmpty(request.IdPai) ? Guid.Parse(request.IdPai) : (Guid?)null,
-                    Descricao = !string.IsNullOrEmpty(request.Descricao) ? request.Descricao.Trim() : string.Empty,
-                    Tamanho = string.Empty,
-                    Tipo = "Folder"
-                });
 
-                _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Pasta [{request.Nome}] criada com sucesso.");
-                response.CorrelationId = request.CorrelationId;
-                response.Id = tOrcamentoCotacaoArquivos.Id;
-                response.Sucesso = true;
-                response.Mensagem = $"Pasta '{request.Nome}' criada com sucesso.";
-                return response;
+                using (var dbGravacao = _contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+                {
+                    var tOrcamentoCotacaoArquivos = new TorcamentoCotacaoArquivos()
+                    {
+                        Id = Guid.NewGuid(),
+                        Nome = request.Nome.Trim(),
+                        Pai = !string.IsNullOrEmpty(request.IdPai) ? Guid.Parse(request.IdPai) : (Guid?)null,
+                        Descricao = !string.IsNullOrEmpty(request.Descricao) ? request.Descricao.Trim() : string.Empty,
+                        Tamanho = string.Empty,
+                        Tipo = "Folder"
+                    };
+                    tOrcamentoCotacaoArquivos = this.InserirComTransacao(tOrcamentoCotacaoArquivos, dbGravacao);
+                    
+                    string log = "";
+                    log = UtilsGlobais.Util.MontaLog(tOrcamentoCotacaoArquivos, log, "");
+                    //var idOperacao = 
+                    //var tLogV2 = UtilsGlobais.Util.GravaLogV2(dbGravacao, log, usuarioLogin.TipoUsuario, usuarioLogin.Id, request.Loja, null, null, null, 
+                    //    InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, idOperacao, request.IP)
+
+
+                    _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Pasta [{request.Nome}] criada com sucesso.");
+                    response.CorrelationId = request.CorrelationId;
+                    response.Id = tOrcamentoCotacaoArquivos.Id;
+                    response.Sucesso = true;
+                    response.Mensagem = $"Pasta '{request.Nome}' criada com sucesso.";
+                    return response;
+                }
+                    
+                //var tOrcamentoCotacaoArquivos = this.Inserir(new TorcamentoCotacaoArquivos()
+                //{
+                //    Id = Guid.NewGuid(),
+                //    Nome = request.Nome.Trim(),
+                //    Pai = !string.IsNullOrEmpty(request.IdPai) ? Guid.Parse(request.IdPai) : (Guid?)null,
+                //    Descricao = !string.IsNullOrEmpty(request.Descricao) ? request.Descricao.Trim() : string.Empty,
+                //    Tamanho = string.Empty,
+                //    Tipo = "Folder"
+                //});
+                
+
+                
             }
             catch (Exception ex)
             {
@@ -534,7 +560,9 @@ namespace Arquivo
 
         public TorcamentoCotacaoArquivos InserirComTransacao(TorcamentoCotacaoArquivos model, InfraBanco.ContextoBdGravacao contextoBdGravacao)
         {
-            throw new NotImplementedException();
+            contextoBdGravacao.TorcamentoCotacaoArquivos.Add(model);
+            contextoBdGravacao.SaveChanges();
+            return model;
         }
 
         public List<TorcamentoCotacaoArquivos> PorFilroComTransacao(TorcamentoCotacaoArquivosFiltro obj, InfraBanco.ContextoBdGravacao contextoBdGravacao)

@@ -130,10 +130,11 @@ namespace OrcamentoCotacaoApi.Controllers
 
             request.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
             request.Usuario = LoggedUser.Apelido;
+            request.IP = Request.HttpContext.Connection.RemoteIpAddress.ToString();
 
             _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ArquivoController/CriarPasta/POST - Request => [{JsonSerializer.Serialize(request)}].");
 
-            var response = await _arquivoBll.ArquivoCriarPasta(request);
+            var response = await _arquivoBll.ArquivoCriarPasta(request, LoggedUser);
 
             _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ArquivoController/CriarPasta/POST - Response => [{JsonSerializer.Serialize(response)}].");
 
