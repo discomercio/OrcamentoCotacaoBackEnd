@@ -196,7 +196,7 @@ namespace Arquivo
             }
         }
 
-        public async Task<ArquivoEditarResponse> ArquivoEditar(ArquivoEditarRequest request)
+        public async Task<ArquivoEditarResponse> ArquivoEditar(ArquivoEditarRequest request, UsuarioLogin usuarioLogin)
         {
             var response = new ArquivoEditarResponse();
             var nomeMetodo = response.ObterNomeMetodoAtualAsync();
@@ -236,19 +236,53 @@ namespace Arquivo
 
             try
             {
-                _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Editando Pasta/Arquivo do banco de dados. Arquivo => [{request.Id}]. Nome => [{request.Nome}]. Descrição => [{request.Descricao}].");
-                var retorno = this.Editar(new TorcamentoCotacaoArquivos
+                using (var dbGravacao = _contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
-                    Id = Guid.Parse(request.Id),
-                    Nome = request.Nome.Trim(),
-                    Descricao = !string.IsNullOrEmpty(request.Descricao) ? request.Descricao.Trim() : string.Empty,
-                });
+                    _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Editando Pasta/Arquivo do banco de dados. Arquivo => [{request.Id}]. Nome => [{request.Nome}]. Descrição => [{request.Descricao}].");
+                   
+                    var tOrcamentoCotacaoArquivosAntigo = this.ObterArquivoPorID(Guid.Parse(request.Id));
 
-                _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Salvo com sucesso.");
-                response.CorrelationId = request.CorrelationId;
-                response.Sucesso = true;
-                response.Mensagem = "Salvo com sucesso.";
-                return response;
+                    var tOrcamentoCotacaoArquivosNovo = new TorcamentoCotacaoArquivos
+                    {
+                        Id = Guid.Parse(request.Id),
+                        Nome = request.Nome.Trim(),
+                        Descricao = !string.IsNullOrEmpty(request.Descricao) ? request.Descricao.Trim() : string.Empty,
+                    };
+
+                    var retorno = EditarComTransacao(tOrcamentoCotacaoArquivosNovo, dbGravacao);
+
+                    
+                    string log = "";
+                   
+                    _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Montando log de operação.");
+                    log = UtilsGlobais.Util.MontalogComparacao(retorno, tOrcamentoCotacaoArquivosAntigo, log);
+
+                    _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Buscando operação de criação de pasta.");
+
+                    var cfgOperacao = _cfgOperacaoBll.PorFiltroComTransacao(new TcfgOperacaoFiltro() { Id = retorno.Tipo == "Folder" ? 14 : 15 }, dbGravacao).FirstOrDefault();
+                    if (cfgOperacao == null)
+                    {
+                        response.Sucesso = false;
+                        response.Mensagem = "Ops! Falha ao criar pasta.";
+                        return response;
+                    }
+
+                    if (!string.IsNullOrEmpty(log))
+                    {
+                        log = $"id={retorno.Id}; {log}";
+                        var tLogV2 = UtilsGlobais.Util.GravaLogV2(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, request.Loja, null, null, null,
+                        InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, request.IP);
+                    }
+
+                    dbGravacao.SaveChanges();
+                    dbGravacao.transacao.Commit();
+
+                    _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Salvo com sucesso.");
+                    response.CorrelationId = request.CorrelationId;
+                    response.Sucesso = true;
+                    response.Mensagem = "Salvo com sucesso.";
+                    return response;
+                }
             }
             catch (Exception ex)
             {
@@ -510,6 +544,19 @@ namespace Arquivo
             }
         }
 
+        public TorcamentoCotacaoArquivos EditarComTransacao(TorcamentoCotacaoArquivos obj, InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            var retorno = contextoBdGravacao.TorcamentoCotacaoArquivos.FirstOrDefault(x => x.Id == obj.Id);
+            if (retorno == null) return null;
+
+            retorno.Nome = obj.Nome;
+            retorno.Descricao = obj.Descricao;
+
+            contextoBdGravacao.SaveChanges();
+
+            return retorno;
+        }
+
         private string calculaTamanho(long tamanhoBytes)
         {
             string sOut = "";
@@ -528,9 +575,6 @@ namespace Arquivo
 
             return sOut;
         }
-
-
-
 
         public TorcamentoCotacaoArquivos Atualizar(TorcamentoCotacaoArquivos obj)
         {

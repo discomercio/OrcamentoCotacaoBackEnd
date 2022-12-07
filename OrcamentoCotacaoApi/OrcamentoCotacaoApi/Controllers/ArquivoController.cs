@@ -97,27 +97,35 @@ namespace OrcamentoCotacaoApi.Controllers
             return Ok(response);
         }
 
+        //[HttpPut("Editar")]
+        //public async Task<IActionResult> Editar(
+        //    string id,
+        //    [FromQuery] string nome,
+        //    [FromQuery] string descricao)
         [HttpPut("Editar")]
         public async Task<IActionResult> Editar(
-            string id,
-            [FromQuery] string nome,
-            [FromQuery] string descricao)
+            ArquivoEditarRequest request)
         {
             if (!User.ValidaPermissao((int)ePermissao.ArquivosDownloadIncluirEditarPastasArquivos))
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
-            var request = new ArquivoEditarRequest()
-            {
-                Id = id,
-                Nome = nome,
-                Descricao = descricao,
-                CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]),
-                Usuario = LoggedUser.Apelido
-            };
+            request.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+            request.Usuario = LoggedUser?.Apelido;
+            request.IP = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+            //var request = new ArquivoEditarRequest()
+            //{
+            //    Id = id,
+            //    Nome = nome,
+            //    Descricao = descricao,
+            //    CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]),
+            //    Usuario = LoggedUser.Apelido,
+            //    IP = Request.HttpContext.Connection.RemoteIpAddress.ToString(),
+            //    Loja = ""
+            //};
 
             _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ArquivoController/Editar/PUT - Request => [{JsonSerializer.Serialize(request)}].");
 
-            var response = await _arquivoBll.ArquivoEditar(request);
+            var response = await _arquivoBll.ArquivoEditar(request, LoggedUser);
 
             _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ArquivoController/Editar/PUT - Response => [{JsonSerializer.Serialize(response)}].");
 
@@ -148,7 +156,7 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             if (!User.ValidaPermissao((int)ePermissao.ArquivosDownloadIncluirEditarPastasArquivos))
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
-            
+
             var request = new ArquivoUploadRequest()
             {
                 IdPai = form["idPai"].ToString(),
