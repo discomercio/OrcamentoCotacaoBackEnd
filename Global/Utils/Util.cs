@@ -676,7 +676,6 @@ namespace UtilsGlobais
         public static string MontaLog(Object obj, string log, string campos_a_omitir)
         {
             PropertyInfo[] property = obj.GetType().GetProperties();
-            //string[] campos = campos_a_omitir.Split('|');
 
             foreach (var c in property)
             {
