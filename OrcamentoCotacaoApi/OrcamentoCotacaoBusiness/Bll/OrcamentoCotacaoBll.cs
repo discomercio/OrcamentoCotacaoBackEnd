@@ -450,25 +450,36 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             }
 
-            if (opcao.Count <= 0) throw new Exception("Falha ao buscar Opções do Orçamento!");
+            if (opcao.Count <= 0)
+            {
+                throw new Exception("Falha ao buscar Opções do Orçamento!");
+            }
 
-            var usuario = _usuarioBll.PorFiltro(new TusuarioFiltro() { id = orcamento.IdVendedor }).FirstOrDefault();
-            var parceiro = orcamento.IdIndicador != null ? _orcamentistaEIndicadorBll
-                .BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = (int)orcamento.IdIndicador, acessoHabilitado = 1 }) : null;
-            if (parceiro == null) throw new ArgumentException("Parceiro não encontrado!");
+            var usuario = _usuarioBll.PorFiltro(
+                new TusuarioFiltro()
+                {
+                    id = orcamento.IdVendedor
+                }).FirstOrDefault();
+
+            var parceiro = orcamento.IdIndicador != null
+                ? _orcamentistaEIndicadorBll.BuscarParceiroPorApelido(
+                    new TorcamentistaEindicadorFiltro()
+                    {
+                        idParceiro = (int)orcamento.IdIndicador
+                    })
+                : null;
 
             string vendedorParceiro = null;
+
             if (orcamento.IdIndicadorVendedor != null)
             {
                 var tVendedorParceiro = _orcamentistaEIndicadorVendedorBll.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro()
                 {
                     id = (int)orcamento.IdIndicadorVendedor
                 }).FirstOrDefault();
-                //vendedorParceiro = tipoUsuario != (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO ?
-                //    tVendedorParceiro?.Nome : tVendedorParceiro.Email;
+
                 vendedorParceiro = tVendedorParceiro?.Nome;
             }
-
 
             OrcamentoResponseViewModel orcamentoResponse = new OrcamentoResponseViewModel()
             {
