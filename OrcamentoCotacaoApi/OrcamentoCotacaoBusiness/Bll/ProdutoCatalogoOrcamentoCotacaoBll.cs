@@ -1,5 +1,6 @@
 ﻿using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
+using InfraIdentity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Models.Response;
@@ -21,17 +22,20 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly InfraBanco.ContextoBdProvider _contextoBdProvider;
         private readonly ProdutoGeralBll _produtoGeralBll;
         private readonly ILogger<ProdutoCatalogoOrcamentoCotacaoBll> _logger;
+        private readonly Cfg.CfgOperacao.CfgOperacaoBll _cfgOperacaoBll;
 
         public ProdutoCatalogoOrcamentoCotacaoBll(
             ProdutoCatalogoBll bll,
             InfraBanco.ContextoBdProvider contextoBdProvider,
             ProdutoGeralBll produtoGeralBll,
-            ILogger<ProdutoCatalogoOrcamentoCotacaoBll> logger)
+            ILogger<ProdutoCatalogoOrcamentoCotacaoBll> logger,
+            Cfg.CfgOperacao.CfgOperacaoBll cfgOperacaoBll)
         {
             _bll = bll;
             _contextoBdProvider = contextoBdProvider;
             _produtoGeralBll = produtoGeralBll;
             _logger = logger;
+            _cfgOperacaoBll = cfgOperacaoBll;
         }
 
         public List<TprodutoCatalogo> PorFiltro(TprodutoCatalogoFiltro filtro)
@@ -149,7 +153,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             TprodutoCatalogo produtoCatalogo1,
             string usuario_cadastro,
             IFormFile arquivo,
-            string caminho)
+            string caminho, UsuarioLogin usuarioLogin, string loja, string ip)
         {
             var retornoValidacao = await ValidarTiposPropriedadesProdutoCatalogo(produtoCatalogo1.campos);
 
@@ -188,7 +192,20 @@ namespace OrcamentoCotacaoBusiness.Bll
                     {
                         return "Ops! Erro ao criar novo produto!";
                     }
+                    string log = "";
 
+                    //campos a omitir
+                    string camposAOmitir = "usuario_cadastro|usuario_edicao|dt_cadastro|dt_edicao";
+
+                    log = UtilsGlobais.Util.MontaLog(prod, log, camposAOmitir);
+                    log = $"Produto: {log}";
+
+                    var cfgOperacao = _cfgOperacaoBll.PorFiltroComTransacao(new TcfgOperacaoFiltro() { Id = 7 }, dbGravacao).FirstOrDefault();
+                    if (cfgOperacao == null)
+                    {
+                        return "Ops! Falha ao criar pasta.";
+                    }
+                    
                     if (produtoCatalogo1.campos == null
                         || produtoCatalogo1.campos.Count == 0)
                     {
@@ -200,6 +217,16 @@ namespace OrcamentoCotacaoBusiness.Bll
                         tProdutoCatalogo.Id,
                         dbGravacao);
 
+                    log = log + "\n\r";
+                    string logProdutos = "";
+                    foreach (var prop in tProdutoCatalogo.campos)
+                    {
+                        logProdutos = UtilsGlobais.Util.MontaLog(prop, logProdutos, "");
+                        logProdutos = logProdutos + "\n";
+                    }
+
+                    log = $"{log}Lista de propriedades: {logProdutos}";
+                    
                     if (produtoCatalogo1.imagem != null)
                     {
                         var retorno = await CriarImagemComTransacao(
@@ -214,22 +241,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                             dbGravacao.transacao.Rollback();
                             return retorno;
                         }
-                    }
-                    //if (produtoCatalogo.imagens != null && produtoCatalogo.imagens.Count > 0)
-                    //{
-                    //    var retorno = await CriarImagemComTransacao(
-                    //        arquivo,
-                    //        produtoCatalogo.imagens,
-                    //        caminho,
-                    //        produtoCatalogo.Id,
-                    //        dbGravacao);
 
-                    //    if (!string.IsNullOrEmpty(retorno))
-                    //    {
-                    //        dbGravacao.transacao.Rollback();
-                    //        return retorno;
-                    //    }
-                    //}
+                        
+                    }
+
+                    var tLogV2 = UtilsGlobais.Util.GravaLogV2(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, loja, null, null, null,
+                        InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
 
                     dbGravacao.transacao.Commit();
                     return null;

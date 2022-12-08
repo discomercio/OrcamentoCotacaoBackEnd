@@ -73,8 +73,6 @@ namespace OrcamentoCotacaoApi.Controllers
             return Ok(response);
         }
 
-        //[HttpPost("Excluir")]
-        //public async Task<IActionResult> Excluir(string id, string loja)
         [HttpPost("Excluir")]
         public async Task<IActionResult> Excluir(ArquivoExcluirRequest request)
         {
@@ -97,11 +95,6 @@ namespace OrcamentoCotacaoApi.Controllers
             return Ok(response);
         }
 
-        //[HttpPut("Editar")]
-        //public async Task<IActionResult> Editar(
-        //    string id,
-        //    [FromQuery] string nome,
-        //    [FromQuery] string descricao)
         [HttpPut("Editar")]
         public async Task<IActionResult> Editar(
             ArquivoEditarRequest request)
@@ -112,16 +105,6 @@ namespace OrcamentoCotacaoApi.Controllers
             request.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
             request.Usuario = LoggedUser?.Apelido;
             request.IP = Request.HttpContext.Connection.RemoteIpAddress.ToString();
-            //var request = new ArquivoEditarRequest()
-            //{
-            //    Id = id,
-            //    Nome = nome,
-            //    Descricao = descricao,
-            //    CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]),
-            //    Usuario = LoggedUser.Apelido,
-            //    IP = Request.HttpContext.Connection.RemoteIpAddress.ToString(),
-            //    Loja = ""
-            //};
 
             _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ArquivoController/Editar/PUT - Request => [{JsonSerializer.Serialize(request)}].");
 

@@ -475,7 +475,7 @@ namespace OrcamentoCotacaoApi.Controllers
             var request = new
             {
                 Usuario = LoggedUser.Apelido,
-                Arquivo = arquivo.Name
+                Arquivo = arquivo?.Name
             };
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoCatalogoController/Criar/POST - Request => [{System.Text.Json.JsonSerializer.Serialize(request)}].");
@@ -489,10 +489,12 @@ namespace OrcamentoCotacaoApi.Controllers
                 var usuario = LoggedUser.Apelido;
 
                 var tProduto = JsonConvert.DeserializeObject<TprodutoCatalogo>(form["produto"]);
+                var lojaLogada = form["loja"];
+                var ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
 
                 _logger.LogInformation("Criar - Request: {0}", System.Text.Json.JsonSerializer.Serialize(tProduto));
 
-                var retorno = await _bll.Criar(tProduto, usuario, arquivo, _appSettings.Value.ImgCaminho);
+                var retorno = await _bll.Criar(tProduto, usuario, arquivo, _appSettings.Value.ImgCaminho, LoggedUser, lojaLogada, ip);
 
                 if (retorno != null)
                 {
