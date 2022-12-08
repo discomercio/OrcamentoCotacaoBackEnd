@@ -4,6 +4,7 @@ using InfraIdentity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Models.Response;
+using OrcamentoCotacaoBusiness.Models.Response.ProdutoCatalogo;
 using Produto;
 using ProdutoCatalogo;
 using System;
@@ -132,10 +133,10 @@ namespace OrcamentoCotacaoBusiness.Bll
                     {
                         var retorno = await CriarImagemComTransacao(arquivo, produtoCatalogo.imagem, caminho, tProdutoCatalogo.Id,
                             dbGravacao);
-                        if (!string.IsNullOrEmpty(retorno))
+                        if (!retorno.Sucesso)
                         {
                             dbGravacao.transacao.Rollback();
-                            return retorno;
+                            return retorno.Mensagem;
                         }
                     }
 
@@ -193,8 +194,6 @@ namespace OrcamentoCotacaoBusiness.Bll
                         return "Ops! Erro ao criar novo produto!";
                     }
                     string log = "";
-
-                    //campos a omitir
                     string camposAOmitir = "usuario_cadastro|usuario_edicao|dt_cadastro|dt_edicao";
 
                     log = UtilsGlobais.Util.MontaLog(prod, log, camposAOmitir);
@@ -217,12 +216,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                         tProdutoCatalogo.Id,
                         dbGravacao);
 
-                    log = log + "\n\r";
+                    log = log + "\r";
                     string logProdutos = "";
                     foreach (var prop in tProdutoCatalogo.campos)
                     {
                         logProdutos = UtilsGlobais.Util.MontaLog(prop, logProdutos, "");
-                        logProdutos = logProdutos + "\n";
+                        logProdutos = logProdutos + "\r";
                     }
 
                     log = $"{log}Lista de propriedades: {logProdutos}";
@@ -236,13 +235,15 @@ namespace OrcamentoCotacaoBusiness.Bll
                             tProdutoCatalogo.Id,
                             dbGravacao);
 
-                        if (!string.IsNullOrEmpty(retorno))
+                        if (!retorno.Sucesso)
                         {
                             dbGravacao.transacao.Rollback();
-                            return retorno;
+                            return retorno.Mensagem;
                         }
 
-                        
+                        var logImagem = "Imagem: ";
+                        logImagem = UtilsGlobais.Util.MontaLog(retorno.TprodutoCatalogoImagem, logImagem, "");
+                        log = log + logImagem;
                     }
 
                     var tLogV2 = UtilsGlobais.Util.GravaLogV2(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, loja, null, null, null,
@@ -260,13 +261,16 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
         }
 
-        public async Task<string> CriarImagemComTransacao(
+        public async Task<CadastroProdutoCatalogoImagemResponse> CriarImagemComTransacao(
             IFormFile arquivo,
             TprodutoCatalogoImagem produtoCatalogoImagem,
             string caminho,
             int idProdutoCatalogo,
             InfraBanco.ContextoBdGravacao dbGravacao)
-        {
+        { 
+            var response = new CadastroProdutoCatalogoImagemResponse();
+            response.Sucesso = false;
+            
             if (arquivo == null)
             {
                 var nomeArquivoCopia = produtoCatalogoImagem.Caminho;
@@ -276,18 +280,20 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 if (string.IsNullOrEmpty(novoNomeArquivo))
                 {
-                    return "Falha ao gerar nome do arquivo!";
+                    response.Mensagem = "Falha ao gerar nome do arquivo!";
+                    return response;
                 }
 
                 produtoCatalogoImagem.Caminho = novoNomeArquivo;
 
-                produtoCatalogoImagem = _bll.CriarImagensComTransacao(
+                response.TprodutoCatalogoImagem = _bll.CriarImagensComTransacao(
                     produtoCatalogoImagem,
                     idProdutoCatalogo, dbGravacao);
 
-                if (produtoCatalogoImagem == null)
+                if (response.TprodutoCatalogoImagem == null)
                 {
-                    return "Ops! Erro ao salvar dados da imagem!";
+                    response.Mensagem = "Ops! Erro ao salvar dados da imagem!";
+                    return response;
                 }
 
                 var arquivoABuscar = Path.Combine(caminho, nomeArquivoCopia);
@@ -296,10 +302,12 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 if (!string.IsNullOrEmpty(retorno))
                 {
-                    return retorno;
+                    response.Mensagem = retorno;
+                    return response;
                 }
 
-                return null;
+                response.Sucesso = true;
+                return response;
             }
             else
             {
@@ -309,29 +317,33 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 if (string.IsNullOrEmpty(nomeArquivo))
                 {
-                    return "Falha ao gerar nome do arquivo!";
+                    response.Mensagem = "Falha ao gerar nome do arquivo!";
+                    return response;
                 }
 
                 produtoCatalogoImagem.Caminho = nomeArquivo;
 
-                produtoCatalogoImagem = _bll.CriarImagensComTransacao(
+                response.TprodutoCatalogoImagem = _bll.CriarImagensComTransacao(
                     produtoCatalogoImagem,
                     idProdutoCatalogo,
                     dbGravacao);
 
-                if (produtoCatalogoImagem == null)
+                if (response.TprodutoCatalogoImagem == null)
                 {
-                    return "Ops! Erro ao salvar dados da imagem!";
+                    response.Mensagem = "Ops! Erro ao salvar dados da imagem!";
+                    return response;
                 }
 
                 var retorno = await InserirImagemDiretorio(arquivo, caminho, nomeArquivo);
 
                 if (!string.IsNullOrEmpty(retorno))
                 {
-                    return retorno;
+                    response.Mensagem = retorno;
+                    return response;
                 }
 
-                return null;
+                response.Sucesso = true;
+                return response;
             }
         }
 
