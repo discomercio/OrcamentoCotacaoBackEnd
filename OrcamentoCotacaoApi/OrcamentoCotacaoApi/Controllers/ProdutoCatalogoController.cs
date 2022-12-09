@@ -475,7 +475,7 @@ namespace OrcamentoCotacaoApi.Controllers
             var request = new
             {
                 Usuario = LoggedUser.Apelido,
-                Arquivo = arquivo.Name
+                Arquivo = arquivo?.Name
             };
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoCatalogoController/Criar/POST - Request => [{System.Text.Json.JsonSerializer.Serialize(request)}].");
