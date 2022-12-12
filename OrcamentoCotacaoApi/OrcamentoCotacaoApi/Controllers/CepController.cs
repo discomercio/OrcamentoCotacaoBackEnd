@@ -65,7 +65,7 @@ namespace PrepedidoApi.Controllers
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. CepController/BuscarUfs/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
-            return Ok();
+            return Ok(response);
         }
 
         [HttpGet("buscarCepPorEndereco")]
@@ -99,7 +99,7 @@ namespace PrepedidoApi.Controllers
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. CepController/BuscarLocalidades/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
-            return Ok();
+            return Ok(response);
         }
     }
 }
