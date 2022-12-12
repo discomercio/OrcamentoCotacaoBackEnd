@@ -117,7 +117,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 try
                 {
                     if (produtoCatalogo == null)
-                        throw new ArgumentException("Ops! Parece que não existe dados de produto para catálogo!");
+                        return "Ops! Parece que não existe dados de produto para catálogo!";
 
 
                     var tProdutoCatalogo = _bll.AtualizarComTransacao(produtoCatalogo, dbGravacao);
