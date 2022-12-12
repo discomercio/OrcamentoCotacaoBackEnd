@@ -393,11 +393,13 @@ namespace OrcamentoCotacaoApi.Controllers
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
             var tProduto = JsonConvert.DeserializeObject<TprodutoCatalogo>(form["produto"]);
+            var lojaLogada = form["loja"];
+            var ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
             tProduto.UsuarioEdicao = LoggedUser.Apelido;
 
             _logger.LogInformation("Atualizar - Request: {0}", System.Text.Json.JsonSerializer.Serialize(tProduto));
 
-            var retorno = await _bll.Atualizar(tProduto, arquivo, _appSettings.Value.ImgCaminho);
+            var retorno = await _bll.Atualizar(tProduto, arquivo, _appSettings.Value.ImgCaminho, lojaLogada, ip, LoggedUser);
 
             if (retorno != null)
             {

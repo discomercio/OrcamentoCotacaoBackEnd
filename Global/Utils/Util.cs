@@ -711,19 +711,20 @@ namespace UtilsGlobais
             foreach (var propNovo in lstPropertyNovo)
             {
                 var coluna = (ColumnAttribute)Attribute.GetCustomAttribute(propNovo, typeof(ColumnAttribute));
+                if(coluna == null) continue;
 
                 var propAntigo = lstPropertyAntigo.Where(x => x.Name == propNovo.Name).FirstOrDefault();
                 if (propAntigo == null) continue;
 
-                var valorAntigo = propAntigo.GetValue(objAntigo, null);
-                var valorNovo = propNovo.GetValue(objNovo, null);
+                var valorAntigo = propAntigo.GetValue(objAntigo, null)??"";
+                var valorNovo = propNovo.GetValue(objNovo, null)??"";
                 
                 if(valorAntigo == null && valorNovo == null) continue;
 
-                if(valorAntigo.GetType().Name == "Guid" && valorNovo.GetType().Name == "Guid")
+                if(propAntigo.Name == "Guid" && propNovo.Name == "Guid")
                 {
-                    valorNovo = valorNovo.ToString();
-                    valorAntigo = valorAntigo.ToString();
+                    valorNovo = valorNovo?.ToString();
+                    valorAntigo = valorAntigo?.ToString();
                 }
 
                 if (!valorAntigo.Equals(valorNovo))

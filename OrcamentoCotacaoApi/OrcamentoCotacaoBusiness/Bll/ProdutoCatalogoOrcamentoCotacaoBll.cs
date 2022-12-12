@@ -103,11 +103,14 @@ namespace OrcamentoCotacaoBusiness.Bll
             return _bll.SalvarArquivo(nomeArquivo, idProdutoCatalogo, idTipo, ordem);
         }
 
-        public async Task<string> Atualizar(TprodutoCatalogo produtoCatalogo, IFormFile arquivo, string caminho)
+        public async Task<string> Atualizar(TprodutoCatalogo produtoCatalogo, IFormFile arquivo, string caminho,
+            string lojaLogada, string ip, UsuarioLogin usuarioLogin)
         {
             var retornoValidacao = await ValidarTiposPropriedadesProdutoCatalogo(produtoCatalogo.campos);
 
             if (!string.IsNullOrEmpty(retornoValidacao)) return retornoValidacao;
+
+            var tProdutoCatalogoAntigo = _bll.BuscarTprodutoCatalogo(new TprodutoCatalogoFiltro() { Id = produtoCatalogo.Id.ToString(), IncluirImagem = true, IncluirPropriedades = true }).FirstOrDefault();
 
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
@@ -115,6 +118,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
                     if (produtoCatalogo == null)
                         throw new ArgumentException("Ops! Parece que não existe dados de produto para catálogo!");
+
 
                     var tProdutoCatalogo = _bll.AtualizarComTransacao(produtoCatalogo, dbGravacao);
 
@@ -124,10 +128,60 @@ namespace OrcamentoCotacaoBusiness.Bll
                     if (produtoCatalogo.campos == null || produtoCatalogo.campos.Count == 0)
                         return "Ops! As propriedades do produto não pode estar vazio!";
 
+                    string log = "";
+                    log = UtilsGlobais.Util.MontalogComparacao(tProdutoCatalogo, tProdutoCatalogoAntigo, log);
+                    if (!string.IsNullOrEmpty(log)) log = $"Produto: produto={tProdutoCatalogo.Produto}; {log}";
+
                     tProdutoCatalogo.campos = _bll.AtualizarItensComTransacao(produtoCatalogo.campos, tProdutoCatalogo.Id,
                         dbGravacao);
                     if (tProdutoCatalogo.campos == null || tProdutoCatalogo.campos.Count == 0)
                         return "Falha ao atualizar as propriedades do produto catálogo!";
+
+                    //log = log + "\r";
+                    string logPropriedades = "";
+
+                    foreach (var prop in tProdutoCatalogo.campos)
+                    {
+                        string logApoio = "";
+                        var propAntiga = tProdutoCatalogoAntigo.campos
+                            .Where(x => x.IdProdutoCatalogoPropriedade == prop.IdProdutoCatalogoPropriedade).FirstOrDefault();
+                        if (propAntiga == null)
+                            logApoio = UtilsGlobais.Util.MontaLog(prop, logApoio, "");
+                        else
+                        {
+                            string logVerificacao = "";
+                            logVerificacao = UtilsGlobais.Util.MontalogComparacao(prop, propAntiga, logVerificacao);
+                            if (!string.IsNullOrEmpty(logVerificacao)) logApoio += $"id={prop.IdProdutoCatalogoPropriedade}; {logVerificacao}";
+                        }
+
+                        if (!string.IsNullOrEmpty(logApoio))
+                            logPropriedades = $"{logPropriedades}\r {logApoio}";
+                    }
+                    if (!string.IsNullOrEmpty(logPropriedades)) log = $"{log}\rLista de propriedades: {logPropriedades}";
+
+                    var logExclusaoPropriedade = "";
+                    foreach (var propAntiga in tProdutoCatalogoAntigo.campos)
+                    {
+                        var lstPropriedades = await _produtoGeralBll.ObterListaPropriedadesProdutos();
+                        var lstPropriedadesOpcoes = await _produtoGeralBll.ObterListaPropriedadesOpcoes();
+
+                        var propriedade = lstPropriedades.Where(x => x.id == propAntiga.IdProdutoCatalogoPropriedade).FirstOrDefault();
+                        var propriedadeOpcao = lstPropriedadesOpcoes.Where(x => x.id_produto_catalogo_propriedade == propAntiga.IdProdutoCatalogoPropriedade && x.id == propAntiga.IdProdutoCatalogoPropriedadeOpcao).FirstOrDefault();
+                        propAntiga.TprodutoCatalogoPropriedade = new TProdutoCatalogoPropriedade();
+
+                        var propNovo = tProdutoCatalogo.campos
+                            .Where(x => x.IdProdutoCatalogoPropriedade == propAntiga.IdProdutoCatalogoPropriedade).FirstOrDefault();
+                        if (propNovo == null)
+                        {
+                            propNovo = new TprodutoCatalogoItem();
+                            propNovo.IdProdutoCatalogo = propAntiga.IdProdutoCatalogo;
+                            string logApoio = $"id={propAntiga.IdProdutoCatalogoPropriedade}; nome={propriedade.descricao}; valor={propriedadeOpcao.valor}; ";
+                            logExclusaoPropriedade = $"{logExclusaoPropriedade}\r {logApoio}";
+                        }
+
+                    }
+
+                    if (!string.IsNullOrEmpty(logExclusaoPropriedade)) log = $"{log}\rLista de propriedades excluídas: {logExclusaoPropriedade}";
 
                     if (arquivo != null)
                     {
@@ -138,7 +192,20 @@ namespace OrcamentoCotacaoBusiness.Bll
                             dbGravacao.transacao.Rollback();
                             return retorno.Mensagem;
                         }
+
+                        var logImagem = "\nImagem: ";
+
+                        logImagem = UtilsGlobais.Util.MontaLog(retorno.TprodutoCatalogoImagem, logImagem, "");
+                        log = log + logImagem;
                     }
+
+                    var cfgOperacao = _cfgOperacaoBll.PorFiltroComTransacao(new TcfgOperacaoFiltro() { Id = 8 }, dbGravacao).FirstOrDefault();
+                    if (cfgOperacao == null)
+                    {
+                        return "Ops! Falha ao editar produto.";
+                    }
+                    var tLogV2 = UtilsGlobais.Util.GravaLogV2(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, lojaLogada, null, null, null,
+                        InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
 
                     dbGravacao.transacao.Commit();
                     return null;
@@ -204,7 +271,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     {
                         return "Ops! Falha ao criar pasta.";
                     }
-                    
+
                     if (produtoCatalogo1.campos == null
                         || produtoCatalogo1.campos.Count == 0)
                     {
@@ -225,7 +292,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     }
 
                     log = $"{log}Lista de propriedades: {logProdutos}";
-                    
+
                     if (produtoCatalogo1.imagem != null)
                     {
                         var retorno = await CriarImagemComTransacao(
@@ -267,10 +334,10 @@ namespace OrcamentoCotacaoBusiness.Bll
             string caminho,
             int idProdutoCatalogo,
             InfraBanco.ContextoBdGravacao dbGravacao)
-        { 
+        {
             var response = new CadastroProdutoCatalogoImagemResponse();
             response.Sucesso = false;
-            
+
             if (arquivo == null)
             {
                 var nomeArquivoCopia = produtoCatalogoImagem.Caminho;
@@ -619,8 +686,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                 _logger.LogInformation($"AtualizarPropriedadesProdutos: Atualizando propriedade.");
                 var tProdutoCatalogoPropriedade = await _produtoGeralBll.AtualizarPropriedadeComTransacao(produtoCatalogoPropriedade, dbGravacao);
 
-                if (produtoCatalogoPropriedade.IdCfgTipoPropriedade == 1 && 
-                    produtoCatalogoPropriedade.id > 10000 && 
+                if (produtoCatalogoPropriedade.IdCfgTipoPropriedade == 1 &&
+                    produtoCatalogoPropriedade.id > 10000 &&
                     produtoCatalogoPropriedade.IdCfgTipoPermissaoEdicaoCadastro == tipoPermissaoEdicaoCadastroUsuario.Id)
                 {
                     _logger.LogInformation($"AtualizarPropriedadesProdutos: Atualizando opcoes da propriedade.");
@@ -752,7 +819,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     }
                 }
             }
-            
+
 
             return retorno;
         }
