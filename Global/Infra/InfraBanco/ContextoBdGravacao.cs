@@ -209,7 +209,7 @@ namespace InfraBanco
         public DbSet<TcodigoDescricao> TcodigoDescricao { get => contexto.TcodigoDescricao; }
         public DbSet<Toperacao> Toperacao { get => contexto.Toperacao; }
         public DbSet<Tlog> Tlog { get => contexto.Tlog; }
-
-
+        public DbSet<TLogV2> TLogV2 { get => contexto.TlogV2; }
+        public DbSet<TcfgOperacao> TcfgOperacao { get => contexto.TcfgOperacao; }
     }
 }

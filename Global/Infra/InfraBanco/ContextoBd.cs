@@ -142,5 +142,7 @@ namespace InfraBanco
         public IQueryable<TcfgTipoPermissaoEdicaoCadastro> TcfgTipoPermissaoEdicaoCadastro { get => contexto.TcfgTipoPermissaoEdicaoCadastro.AsNoTracking().AsNoTracking(); }
         public IQueryable<TcfgTipoPropriedadeProdutoCatalogo> TcfgTipoPropriedadeProdutoCatalogo { get => contexto.TcfgTipoPropriedadeProdutoCatalogo.AsNoTracking(); }
         public IQueryable<TcfgDataType> TcfgDataType { get => contexto.TcfgDataType.AsNoTracking(); }
+        public IQueryable<TLogV2> TLoV2 { get => contexto.TlogV2.AsNoTracking(); }
+        public IQueryable<TcfgOperacao> TcfgOperacao { get => contexto.TcfgOperacao.AsNoTracking(); }
     }
 }

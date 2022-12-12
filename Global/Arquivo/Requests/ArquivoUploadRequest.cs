@@ -8,5 +8,6 @@ namespace Arquivo.Requests
         public string IdPai { get; set; }
         public string CaminhoArquivo { get; set; }
         public IFormFile Arquivo { get; set; }
+        public string Loja { get; set; }
     }
 }

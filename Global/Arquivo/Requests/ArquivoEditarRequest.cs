@@ -7,5 +7,6 @@ namespace Arquivo.Requests
         public string Id { get; set; }
         public string Nome { get; set; }
         public string Descricao { get; set; }
+        public string Loja { get; set; }
     }
 }

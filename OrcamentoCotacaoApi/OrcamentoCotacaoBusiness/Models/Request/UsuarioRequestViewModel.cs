@@ -27,5 +27,8 @@ namespace OrcamentoCotacaoBusiness.Models.Request
 
         [JsonProperty("celular")]
         public string Celular { get; set; }
+
+        [JsonProperty("loja")]
+        public string Loja { get; set; }
     }
 }

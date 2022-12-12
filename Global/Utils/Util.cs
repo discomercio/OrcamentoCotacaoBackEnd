@@ -676,7 +676,6 @@ namespace UtilsGlobais
         public static string MontaLog(Object obj, string log, string campos_a_omitir)
         {
             PropertyInfo[] property = obj.GetType().GetProperties();
-            string[] campos = campos_a_omitir.Split('|');
 
             foreach (var c in property)
             {
@@ -701,6 +700,42 @@ namespace UtilsGlobais
 
             return log;
         }
+
+        public static string MontalogComparacao(Object objNovo, Object objAntigo, string log)
+        {
+            //vamos analisar as diferenças de objetos 
+
+            PropertyInfo[] lstPropertyNovo = objNovo.GetType().GetProperties();
+            PropertyInfo[] lstPropertyAntigo = objAntigo.GetType().GetProperties();
+
+            foreach (var propNovo in lstPropertyNovo)
+            {
+                var coluna = (ColumnAttribute)Attribute.GetCustomAttribute(propNovo, typeof(ColumnAttribute));
+                if(coluna == null) continue;
+
+                var propAntigo = lstPropertyAntigo.Where(x => x.Name == propNovo.Name).FirstOrDefault();
+                if (propAntigo == null) continue;
+
+                var valorAntigo = propAntigo.GetValue(objAntigo, null)??"";
+                var valorNovo = propNovo.GetValue(objNovo, null)??"";
+                
+                if(valorAntigo == null && valorNovo == null) continue;
+
+                if(propAntigo.Name == "Guid" && propNovo.Name == "Guid")
+                {
+                    valorNovo = valorNovo?.ToString();
+                    valorAntigo = valorAntigo?.ToString();
+                }
+
+                if (!valorAntigo.Equals(valorNovo))
+                {
+                    log = log + coluna.Name + $": {(string.IsNullOrEmpty(valorAntigo.ToString()) ? "\"\"" : valorAntigo)} => {(string.IsNullOrEmpty(valorNovo.ToString()) ? "\"\"" : valorNovo)}; ";
+                }
+            }
+
+            return log;
+        }
+
         public static bool GravaLog(ContextoBdGravacao dbgravacao, string apelido, string loja, string pedido, string id_cliente,
             string operacao, string log)
         {
@@ -722,6 +757,55 @@ namespace UtilsGlobais
             dbgravacao.SaveChanges();
 
             return true;
+        }
+
+        public static bool GravaLog2(ContextoBdGravacao dbgravacao, string apelido, string loja, string pedido, string id_cliente,
+            string operacao, string log)
+        {
+            if (apelido == null)
+                return false;
+
+            Tlog tLog = new Tlog
+            {
+                Data = DateTime.Now,
+                Usuario = apelido,
+                Loja = loja,
+                Pedido = pedido,
+                Id_Cliente = id_cliente,
+                Operacao = operacao,
+                Complemento = log
+            };
+
+            dbgravacao.Add(tLog);
+            dbgravacao.SaveChanges();
+
+            return true;
+        }
+
+        public static TLogV2 GravaLogV2(ContextoBdGravacao dbgravacao, string log, short idTipoUsuarioContexto,
+            int idUsuario, string loja, string pedido, int? idOrcamentoCotacao, string idCliente,
+            Constantes.CodSistemaResponsavel codSistemaResponsavel, int? idOpercao, string ip)
+        {
+            TLogV2 tLogV2 = new TLogV2()
+            {
+                Data = DateTime.Now.Date,
+                DataHora = DateTime.Now,
+                IdTipoUsuarioContexto = idTipoUsuarioContexto,
+                IdUsuario = idUsuario,
+                Loja = loja,
+                Pedido = pedido,
+                IdOrcamentoCotacao = idOrcamentoCotacao,
+                IdCliente = idCliente,
+                SistemaResponsavel = (int)codSistemaResponsavel,
+                IdOperacao = idOpercao,
+                Complemento = log,
+                IP = ip
+            };
+
+            dbgravacao.Add(tLogV2);
+            dbgravacao.SaveChanges();
+
+            return tLogV2;
         }
 
         public static string Normaliza_Codigo(string cod, int tamanho_default)

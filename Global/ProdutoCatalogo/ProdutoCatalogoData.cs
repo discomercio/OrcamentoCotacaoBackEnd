@@ -195,6 +195,31 @@ namespace ProdutoCatalogo
             throw new NotImplementedException();
         }
 
+        public List<TprodutoCatalogo> BuscarTprodutoCatalogo(TprodutoCatalogoFiltro obj)
+        {
+            using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+            {
+                var produtos = from c in db.TprodutoCatalogo
+                               select c;
+
+
+                if (!String.IsNullOrEmpty(obj.Id))
+                    produtos = produtos.Where(x => x.Id == int.Parse(obj.Id));
+
+                if (!String.IsNullOrEmpty(obj.Produto))
+                    produtos = produtos.Where(x => x.Produto.PadLeft(6, '0') == obj.Produto.PadLeft(6, '0'));
+
+                if (obj.Ativo)
+                    produtos = produtos.Where(x => x.Ativo == obj.Ativo);
+
+                if (obj.IncluirImagem) produtos = produtos.Include(x => x.imagem);
+
+                if (obj.IncluirPropriedades) produtos = produtos.Include(x => x.campos);
+
+                return produtos.ToList();
+            }
+        }
+
         public List<TprodutoCatalogo> PorFiltro(TprodutoCatalogoFiltro obj)
         {
 

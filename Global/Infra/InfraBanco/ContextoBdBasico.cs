@@ -318,6 +318,7 @@ namespace InfraBanco
         public DbSet<TavisoLido> TavisoLido { get; set; }
         public DbSet<TperfilItem> TperfilIten { get; set; }
         public DbSet<TorcamentistaEIndicadorVendedor> TorcamentistaEIndicadorVendedor { get; set; }
-
+        public DbSet<TLogV2> TlogV2{ get; set; }
+        public DbSet<TcfgOperacao> TcfgOperacao { get; set;}
     }
 }

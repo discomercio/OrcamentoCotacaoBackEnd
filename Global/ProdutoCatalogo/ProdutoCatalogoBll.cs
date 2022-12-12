@@ -19,6 +19,11 @@ namespace ProdutoCatalogo
             return _data.Detalhes(id);
         }
 
+        public List<TprodutoCatalogo> BuscarTprodutoCatalogo(TprodutoCatalogoFiltro obj)
+        {
+            return _data.BuscarTprodutoCatalogo(obj);
+        }
+
         public List<TprodutoCatalogo> PorFiltro(TprodutoCatalogoFiltro filtro)
         {
             return _data.PorFiltro(filtro);
