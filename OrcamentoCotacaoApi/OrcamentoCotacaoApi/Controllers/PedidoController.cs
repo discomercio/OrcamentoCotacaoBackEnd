@@ -135,11 +135,11 @@ namespace PrepedidoApi.Controllers
 
             var request = new
             {
-                Usuario = LoggedUser.Apelido
+                Usuario = LoggedUser.Apelido,
+                NumPedido = numPedido
             };
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. PedidoController/BuscarPedido/GET - Request => [{JsonSerializer.Serialize(request)}].");
-
 
             var permissao = this.ObterPermissaoPedido(numPedido);
 
@@ -150,7 +150,7 @@ namespace PrepedidoApi.Controllers
 
             var response = await pedidoPrepedidoApiBll.BuscarPedido(apelido.Trim(), numPedido);
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. PedidoController/BuscarPedido/GET - Response => [{JsonSerializer.Serialize(response.NumeroPedido)}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PedidoController/BuscarPedido/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
             return Ok(response);
         }

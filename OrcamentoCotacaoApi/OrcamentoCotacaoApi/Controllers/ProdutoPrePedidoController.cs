@@ -45,7 +45,13 @@ namespace PrepedidoApi.Controllers
 
             var ret = await _bll.ListaProdutosComboApiArclube(loja, id_cliente);
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/Get/GET - Response => [Retorna ProdutoDto(s) e ProdutoCompostoDto(s)].");
+            var response = new
+            {
+                Produto = ret?.ProdutoDto?.Count,
+                ProdutoComposto = ret?.ProdutoCompostoDto?.Count
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoPrePedidoController/BuscarProduto/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
             return Ok(ret);
         }

@@ -370,7 +370,7 @@ namespace OrcamentoCotacaoApi.BaseController
 
             var response = new
             {
-                ProdutoCatalogo = retorno.Count
+                ProdutoCatalogo = retorno
             };
 
             _logger.LogInformation($"CorrelationId => [{correlationId}].  ProdutoController/ObterPropriedadesEOpcoesProdutosPorProduto/POST - Response => [{JsonSerializer.Serialize(response)}].");

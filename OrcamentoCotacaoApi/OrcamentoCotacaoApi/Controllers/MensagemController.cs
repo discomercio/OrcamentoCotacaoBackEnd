@@ -44,7 +44,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 IdOrcamentoCotacao = IdOrcamentoCotacao
             };
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/ObterListaMensagem/GET - Request => [{JsonSerializer.Serialize(request)}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/ObterListaMensagem/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
             var saida = await _mensagemBll.ObterListaMensagem(IdOrcamentoCotacao);
 
@@ -55,12 +55,12 @@ namespace OrcamentoCotacaoApi.Controllers
                     ListaMensagem = saida.Count
                 };
 
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/ObterListaMensagem/GET - Response => [{JsonSerializer.Serialize(response)}].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/ObterListaMensagem/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
                 return Ok(saida);
             }
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/ObterListaMensagem/GET - Response => [Não tem response].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/ObterListaMensagem/GET - Response => [Não tem response].");
             return NoContent();
         }
 
@@ -76,7 +76,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 IdOrcamentoCotacao = IdOrcamentoCotacao
             };
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/ObterListaMensagemPendente/GET - Request => [{JsonSerializer.Serialize(request)}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/ObterListaMensagemPendente/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
             var saida = await _mensagemBll.ObterListaMensagemPendente(IdOrcamentoCotacao);
 
@@ -87,12 +87,12 @@ namespace OrcamentoCotacaoApi.Controllers
                     MensagemPendente = saida.Count
                 };
 
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/ObterListaMensagemPendente/GET - Response => [{JsonSerializer.Serialize(response)}].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/ObterListaMensagemPendente/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
                 return Ok(saida);
             }
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/ObterListaMensagemPendente/GET - Response => [Não tem response].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/ObterListaMensagemPendente/GET - Response => [Não tem response].");
             return NoContent();
         }
 
@@ -108,7 +108,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 OrcamentoCotacaoMensagem = orcamentoCotacaoMensagem
             };
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/EnviarMensagem/POST - Request => [{JsonSerializer.Serialize(request)}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/EnviarMensagem/POST - Request => [{JsonSerializer.Serialize(request)}].");
 
             var saida = false;
 
@@ -116,7 +116,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             if (saida)
             {
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/EnviarMensagem/POST - Response => [Mensagem criada com sucesso.].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/EnviarMensagem/POST - Response => [Mensagem criada com sucesso.].");
 
                 return Ok(new
                 {
@@ -125,7 +125,7 @@ namespace OrcamentoCotacaoApi.Controllers
             }
             else
             {
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/EnviarMensagem/POST - Response => [Não foi possível criar a mensagem.].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/EnviarMensagem/POST - Response => [Não foi possível criar a mensagem.].");
 
                 return BadRequest(new
                 {
@@ -145,7 +145,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 Usuario = LoggedUser.Apelido
             };
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/ObterQuantidadeMensagemPendente/GET - Request => [{JsonSerializer.Serialize(request)}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/ObterQuantidadeMensagemPendente/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
             if (User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin") != null)
             {
@@ -154,13 +154,13 @@ namespace OrcamentoCotacaoApi.Controllers
 
                 var saida = _mensagemBll.ObterQuantidadeMensagemPendente(user.Id, (int)user.TipoUsuario);
 
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/ObterQuantidadeMensagemPendente/GET - Response => [{JsonSerializer.Serialize(saida)}].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/ObterQuantidadeMensagemPendente/GET - Response => [{JsonSerializer.Serialize(saida)}].");
 
                 return saida;
             }
             else
             {
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/ObterQuantidadeMensagemPendente/GET - Response => [0].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/ObterQuantidadeMensagemPendente/GET - Response => [0].");
                 return 0;
             }
         }
@@ -178,7 +178,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 IdOrcamentoCotacao = IdOrcamentoCotacao
             };
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/MarcarLida/GET - Request => [{JsonSerializer.Serialize(request)}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/MarcarLida/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
             var saida = false;
 
@@ -190,7 +190,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             if (saida)
             {
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/ObterQuantidadeMensagemPendente/GET - Response => [Mensagens marcadas como lida.].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/MarcarLida/GET - Response => [Mensagens marcadas como lida.].");
 
                 return Ok(new
                 {
@@ -199,7 +199,7 @@ namespace OrcamentoCotacaoApi.Controllers
             }
             else
             {
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/ObterQuantidadeMensagemPendente/GET - Response => [Não foi possível marcar como lida.].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/MarcarLida/GET - Response => [Não foi possível marcar como lida.].");
 
                 return BadRequest(new
                 {
@@ -221,13 +221,13 @@ namespace OrcamentoCotacaoApi.Controllers
                 IdOrcamentoCotacao = IdOrcamentoCotacao
             };
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/MarcarPendencia/PUT - Request => [{JsonSerializer.Serialize(request)}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/MarcarPendencia/PUT - Request => [{JsonSerializer.Serialize(request)}].");
 
             var saida = _mensagemBll.MarcarPendencia(IdOrcamentoCotacao);
 
             if (saida)
             {
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/ObterQuantidadeMensagemPendente/PUT - Response => [Mensagens marcadas como pendência tratada.].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/MarcarPendencia/PUT - Response => [Mensagens marcadas como pendência tratada.].");
 
                 return Ok(new
                 {
@@ -236,7 +236,7 @@ namespace OrcamentoCotacaoApi.Controllers
             }
             else
             {
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/ObterQuantidadeMensagemPendente/PUT - Response => [Mensagens marcadas como pendência tratada.].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/MarcarPendencia/PUT - Response => [Mensagens marcadas como pendência tratada.].");
 
                 return BadRequest(new
                 {
@@ -258,13 +258,13 @@ namespace OrcamentoCotacaoApi.Controllers
                 IdOrcamentoCotacao = IdOrcamentoCotacao
             };
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/DesmarcarPendencia/PUT - Request => [{JsonSerializer.Serialize(request)}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/DesmarcarPendencia/PUT - Request => [{JsonSerializer.Serialize(request)}].");
 
             var saida = _mensagemBll.DesmarcarPendencia(IdOrcamentoCotacao);
 
             if (saida)
             {
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/DesmarcarPendencia/PUT - Response => [Mensagens desmarcadas como pendência tratada.].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/DesmarcarPendencia/PUT - Response => [Mensagens desmarcadas como pendência tratada.].");
 
                 return Ok(new
                 {
@@ -273,7 +273,7 @@ namespace OrcamentoCotacaoApi.Controllers
             }
             else
             {
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/DesmarcarPendencia/PUT - Response => [Mensagens desmarcadas como pendência tratada.].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/DesmarcarPendencia/PUT - Response => [Mensagens desmarcadas como pendência tratada.].");
 
                 return BadRequest(new
                 {
@@ -302,7 +302,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 Valor = guid
             };
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/MarcarLidaRotaPublica/PUT - Request => [{JsonSerializer.Serialize(request)}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/MarcarLidaRotaPublica/PUT - Request => [{JsonSerializer.Serialize(request)}].");
 
             var orcamento = _orcamentoCotacaoBll.ObterIdOrcamentoCotacao(guid);
 
@@ -318,7 +318,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             if (saida)
             {
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/MarcarLidaRotaPublica/PUT - Response => [Mensagens marcadas como lida].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/MarcarLidaRotaPublica/PUT - Response => [Mensagens marcadas como lida].");
 
                 return Ok(new
                 {
@@ -327,7 +327,7 @@ namespace OrcamentoCotacaoApi.Controllers
             }
             else
             {
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/MarcarLidaRotaPublica/PUT - Response => [Não foi possível marcar como lida.].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/MarcarLidaRotaPublica/PUT - Response => [Não foi possível marcar como lida.].");
 
                 return BadRequest(new
                 {
@@ -347,13 +347,13 @@ namespace OrcamentoCotacaoApi.Controllers
                 Valor = guid
             };
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/ObterListaMensagemRotaPublica/GET - Request => [{JsonSerializer.Serialize(request)}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/ObterListaMensagemRotaPublica/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
             var orcamento = _orcamentoCotacaoBll.ObterIdOrcamentoCotacao(guid);
 
             if (orcamento == null)
             {
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/ObterListaMensagemRotaPublica/GET - Response => [Acesso negado.].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/ObterListaMensagemRotaPublica/GET - Response => [Acesso negado.].");
                 return BadRequest(new { message = "Acesso negado." });
             }
 
@@ -366,13 +366,13 @@ namespace OrcamentoCotacaoApi.Controllers
                     ListaMensagem = saida.Count
                 };
 
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/ObterListaMensagemRotaPublica/GET - Response => [{JsonSerializer.Serialize(response)}].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/ObterListaMensagemRotaPublica/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
                 return Ok(saida);
             }
             else
             {
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/ObterListaMensagemRotaPublica/GET - Response => [Não tem response].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/ObterListaMensagemRotaPublica/GET - Response => [Não tem response].");
                 return NoContent();
             }
         }
@@ -389,20 +389,20 @@ namespace OrcamentoCotacaoApi.Controllers
                 Valor = guid
             };
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/EnviarMensagemRotaPublica/GET - Request => [{JsonSerializer.Serialize(request)}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/EnviarMensagemRotaPublica/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
             var saida = false;
             var orcamento = _orcamentoCotacaoBll.ObterIdOrcamentoCotacao(guid);
 
             if (orcamento == null)
             {
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/EnviarMensagemRotaPublica/GET - Response => [Acesso negado.].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/EnviarMensagemRotaPublica/GET - Response => [Acesso negado.].");
                 return BadRequest(new { message = "Acesso negado." });
             }
 
             if (orcamento.id != orcamentoCotacaoMensagem.IdOrcamentoCotacao)
             {
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/EnviarMensagemRotaPublica/GET - Response => [Acesso negado.].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/EnviarMensagemRotaPublica/GET - Response => [Acesso negado.].");
                 return BadRequest(new { message = "Acesso negado." });
             }
 
@@ -411,7 +411,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             if (saida)
             {
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/EnviarMensagemRotaPublica/GET - Response => [Mensagem criada com sucesso.].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/EnviarMensagemRotaPublica/GET - Response => [Mensagem criada com sucesso.].");
 
                 return Ok(new
                 {
@@ -420,7 +420,7 @@ namespace OrcamentoCotacaoApi.Controllers
             }
             else
             {
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/EnviarMensagemRotaPublica/GET - Response => [Não foi possível criar a mensagem.].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/EnviarMensagemRotaPublica/GET - Response => [Não foi possível criar a mensagem.].");
 
                 return BadRequest(new
                 {
