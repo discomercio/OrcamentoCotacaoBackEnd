@@ -198,7 +198,7 @@ namespace PrepedidoApi.Controllers
 
             var response = await prepedidoApiBll.BuscarPrePedido(apelido, numPrepedido);
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/BuscarPrePedido/GET - Response => [{JsonSerializer.Serialize(response.NumeroPrePedido)}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/BuscarPrePedido/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
             return Ok(response);
         }
@@ -253,7 +253,7 @@ namespace PrepedidoApi.Controllers
             var request = new
             {
                 Usuario = LoggedUser.Apelido,
-                NumeroPrePedido = prePedido.NumeroPrePedido
+                PrePedido = prePedido
             };
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/CadastrarPrepedido/POST - Request => [{JsonSerializer.Serialize(request)}].");
@@ -277,7 +277,7 @@ namespace PrepedidoApi.Controllers
                 appSettings.LimiteItens,
                 (Constantes.TipoUsuarioContexto)usuario.TipoUsuario, usuario.Id);
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/CadastrarPrepedido/POST - Response => [{JsonSerializer.Serialize(ret.Count())}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/CadastrarPrepedido/POST - Response => [{JsonSerializer.Serialize(ret)}].");
 
             return Ok(ret);
         }
@@ -323,7 +323,7 @@ namespace PrepedidoApi.Controllers
 
             var response = await formaPagtoPrepedidoBll.ObterFormaPagto(apelido.Trim(), tipo_pessoa);
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/BuscarFormasPagto/GET - Response => [Retorna formas de pagamento.].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/BuscarFormasPagto/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
             return Ok(response);
         }
@@ -344,7 +344,7 @@ namespace PrepedidoApi.Controllers
 
             var response = await coeficientePrepedidoBll.BuscarListaCoeficientes(lstProdutos);
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/BuscarCoeficiente/POST - Response => [{JsonSerializer.Serialize(response.Count())}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/BuscarCoeficiente/POST - Response => [{JsonSerializer.Serialize(response)}].");
 
             return Ok(response);
         }
@@ -364,7 +364,7 @@ namespace PrepedidoApi.Controllers
 
             var response = await coeficientePrepedidoBll.BuscarListaCoeficientesFornecedores(lstFornecedores);
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/BuscarCoeficiente/POST - Response => [{JsonSerializer.Serialize(response.Count())}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/BuscarCoeficienteFornecedores/POST - Response => [{JsonSerializer.Serialize(response)}].");
 
             return Ok(response);
         }

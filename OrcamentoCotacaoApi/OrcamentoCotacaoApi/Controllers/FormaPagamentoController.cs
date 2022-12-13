@@ -44,8 +44,11 @@ namespace OrcamentoCotacaoApi.Controllers
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. FormaPagamentoController/BuscarFormasPagamentos/POST - Request => [{JsonSerializer.Serialize(request)}].");
 
-            var retorno = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(formaPagtoRequest.TipoCliente, 
-                formaPagtoRequest.TipoUsuario, formaPagtoRequest.Apelido, formaPagtoRequest.ComIndicacao);
+            var retorno = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(
+                formaPagtoRequest.TipoCliente,
+                formaPagtoRequest.TipoUsuario,
+                formaPagtoRequest.Apelido,
+                formaPagtoRequest.ComIndicacao);
 
             if (retorno == null)
             {
@@ -55,13 +58,12 @@ namespace OrcamentoCotacaoApi.Controllers
 
             var response = new
             {
-                FormasPagamentos = retorno.Count
+                FormasPagamentos = retorno
             };
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. FormaPagamentoController/BuscarFormasPagamentos/POST - Response => [{JsonSerializer.Serialize(response)}].");
 
-            return Ok(retorno);
-            
+            return Ok(retorno);   
         }
 
         [HttpGet("buscarQtdeMaxPacelas")]

@@ -62,7 +62,7 @@ namespace PrepedidoApi.Controllers
                 RefComercial = dadosCliente.RefComercial.Count
             };
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. ArquivoController/ObterEstrutura/GET - Response => [{JsonSerializer.Serialize(response)}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. ClienteController/BuscarCliente/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
             return Ok(dadosCliente);
         }
@@ -119,7 +119,7 @@ namespace PrepedidoApi.Controllers
                 ListaBancos = listaBancos.Count()
             };
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. ArquivoController/ListaBancosCombo/GET - Response => [{JsonSerializer.Serialize(response)}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. ClienteController/ListaBancosCombo/GET  - Response => [{JsonSerializer.Serialize(response)}].");
 
             return Ok(listaBancos);
         }
@@ -148,7 +148,7 @@ namespace PrepedidoApi.Controllers
                 Clientes = cliente.Count()
             };
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. ArquivoController/CadastrarCliente/POST - Response => [{JsonSerializer.Serialize(response)}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. ClienteController/CadastrarCliente/POST - Response => [{JsonSerializer.Serialize(response)}].");
 
             return Ok(cliente);
         }
@@ -172,7 +172,7 @@ namespace PrepedidoApi.Controllers
                 JustificaEnderecos = justificaEnderecos.Count()
             };
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. ArquivoController/ListarComboJustificaEndereco/GET - Response => [{JsonSerializer.Serialize(response)}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. ClienteController/ListarComboJustificaEndereco/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
             return Ok(justificaEnderecos);
         }

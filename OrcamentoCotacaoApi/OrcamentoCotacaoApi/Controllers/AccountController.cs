@@ -141,7 +141,16 @@ namespace OrcamentoCotacaoApi.Controllers
                 response.Expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss");
                 response.AccessToken = objUsuarioLogin.Token;
 
-                _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - Response => [{JsonSerializer.Serialize(response)}].");
+                var ret = new
+                {
+                    Usuario = objUsuarioLogin,
+                    Sucesso = response.Sucesso,
+                    Created = response.Created,
+                    Expiration = response.Expiration,
+                    AccessToken = response.AccessToken
+                };
+
+                _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - Response => [{JsonSerializer.Serialize(ret)}].");
 
                 return Ok(response);
             }
