@@ -23,12 +23,25 @@ namespace InfraBanco.Modelos
             DescricaoHtml = descricaoHtml;
         }
 
+        [Column("Id")]
         public int Id { get; set; }
+
+        [Column("IdItemUnificado")]
         public int IdItemUnificado { get; set; }
+
+        [Column("Fabricante")]
         public string Fabricante { get; set; }
+
+        [Column("Produto")]
         public string Produto { get; set; }
+
+        [Column("Qtde")]
         public short Qtde { get; set; }
+
+        [Column("Descricao")]
         public string Descricao { get; set; }
+
+        [Column("DescricaoHtml")]
         public string DescricaoHtml { get; set; }
 
         public TorcamentoCotacaoItemUnificado TorcamentoCotacaoItemUnificado { get; set; }

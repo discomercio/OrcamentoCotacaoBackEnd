@@ -58,6 +58,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly ClienteBll _clienteBll;
         private readonly ILogger<OrcamentoCotacaoBll> _logger;
         private readonly Prepedido.Bll.PrepedidoBll _prepedidoBll;
+        private readonly Cfg.CfgOperacao.CfgOperacaoBll _cfgOperacaoBll;
 
         public OrcamentoCotacaoBll(
             OrcamentoBll orcamentoBll,
@@ -82,7 +83,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll,
             ClienteBll clienteBll,
             ILogger<OrcamentoCotacaoBll> logger,
-            Prepedido.Bll.PrepedidoBll _prepedidoBll
+            Prepedido.Bll.PrepedidoBll _prepedidoBll,
+            Cfg.CfgOperacao.CfgOperacaoBll _cfgOperacaoBll
             )
         {
             _orcamentoBll = orcamentoBll;
@@ -108,6 +110,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             _clienteBll = clienteBll;
             _logger = logger;
             this._prepedidoBll = _prepedidoBll;
+            this._cfgOperacaoBll = _cfgOperacaoBll;
         }
 
         public OrcamentoCotacaoDto PorGuid(string guid)
@@ -854,6 +857,18 @@ namespace OrcamentoCotacaoBusiness.Bll
                         response.Mensagem = responseOpcoes.Mensagem;
                         return response;
                     }
+
+                    log = $"{log}\r   {responseOpcoes.LogOperacao}";
+
+                    var cfgOperacao = _cfgOperacaoBll.PorFiltroComTransacao(new TcfgOperacaoFiltro() { Id = 1 }, dbGravacao).FirstOrDefault();
+                    if (cfgOperacao == null)
+                    {
+                        response.Mensagem = "Ops! Falha ao criar pasta.";
+                        return response;
+                    }
+
+                    var tLogV2 = UtilsGlobais.Util.GravaLogV2(dbGravacao, log, (short)usuarioLogado.TipoUsuario, usuarioLogado.Id, orcamento.Loja, null, null, null,
+                        InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, orcamento.IP);
 
                     var guid = Guid.NewGuid();
 

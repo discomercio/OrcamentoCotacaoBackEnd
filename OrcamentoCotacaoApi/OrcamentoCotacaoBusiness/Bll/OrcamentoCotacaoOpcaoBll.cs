@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using InfraBanco;
+using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
@@ -46,9 +47,11 @@ namespace OrcamentoCotacaoBusiness.Bll
             var nomeMetodo = response.ObterNomeMetodoAtualAsync();
             _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Iniciando cadastro das opções de orçamento. Opções => [{JsonSerializer.Serialize(orcamentoOpcoes)}].");
 
+            response.LogOperacao = "";
             int seq = 0;
             foreach (var opcao in orcamentoOpcoes)
             {
+                if (!string.IsNullOrEmpty(response.LogOperacao)) response.LogOperacao += "\r   ";
                 seq++;
                 TorcamentoCotacaoOpcao torcamentoCotacaoOpcao = MontarTorcamentoCotacaoOpcao(opcao, idOrcamentoCotacao,
                     usuarioLogado, seq);
@@ -59,6 +62,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     response.Mensagem = "Ops! Não gerou Id na opção de orçamento!";
                     return response;
                 }
+
                 string logOpcao = "";
                 string camposAOmitir = "|IdOrcamentoCotacao|Sequencia|IdTipoUsuarioContextoCadastro|IdUsuarioCadastro|DataCadastro|DataHoraCadastro|IdTipoUsuarioContextoUltAtualizacao|IdUsuarioUltAtualizacao|DataHoraUltAtualizacao|";
                 logOpcao = UtilsGlobais.Util.MontaLog(torcamentoCotacaoOpcao, logOpcao, camposAOmitir);
@@ -69,6 +73,29 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
                     response.Mensagem = "Falha ao gravar forma de pagamento!";
                     return response;
+                }
+
+                //inserir log no response do pagamento
+                string logPagto = "";
+                camposAOmitir = "|Id|IdOrcamentoCotacaoOpcao|Aprovado|IdTipoUsuarioContextoAprovado|IdUsuarioAprovado|DataAprovado|DataHoraAprovado|";
+
+                string logPagtoAprazo = "";
+                string logPagtoAvista = "";
+                foreach (var tPagto in responseOpcoesPagtoResponse.TorcamentoCotacaoOpcaoPagtos)
+                {
+                    string logApoio = "";
+                    logApoio = UtilsGlobais.Util.MontaLog(tPagto, logApoio, camposAOmitir);
+
+                    if (tPagto.Tipo_parcelamento == int.Parse(Constantes.COD_FORMA_PAGTO_A_VISTA))
+                    {
+                        logPagtoAvista = $"Forma pagamento a vista: {logApoio}";
+                    }
+                    else
+                    {
+                        logPagtoAprazo = $"Forma pagamento a prazo: {logApoio}";
+                    }
+
+                    logPagto += !string.IsNullOrEmpty(logPagto) ? $"\r{logApoio}" : logApoio;
                 }
 
                 _logger.LogInformation($"Método Cadastrar opções de orçamento - Cadastrando produtos unificados e atômicos da opção {seq}");
@@ -86,6 +113,27 @@ namespace OrcamentoCotacaoBusiness.Bll
                     return response;
                 }
 
+                string logAtomico = "";
+                string logUnificado = "";
+                foreach (var tPUnificado in responseUnificadosEAtomicos.TorcamentoCotacaoItemUnificados)
+                {
+                    string logApoio = "";
+                    foreach (var tPAtomico in tPUnificado.TorcamentoCotacaoOpcaoItemAtomicos)
+                    {
+                        logApoio = !string.IsNullOrEmpty(logApoio) ? $"{logApoio}\r         " : logApoio;
+                        camposAOmitir = "|IdOrcamentoCotacaoOpcao|DescricaoHtml|Sequencia|";
+                        logApoio = UtilsGlobais.Util.MontaLog(tPAtomico, logApoio, camposAOmitir);
+                    }
+
+                    logAtomico += logApoio;
+                    camposAOmitir = "|IdOrcamentoCotacaoOpcao|DescricaoHtml|Sequencia|";
+                    logUnificado = !string.IsNullOrEmpty(logUnificado) ? $"{logUnificado}\r         " : logUnificado;
+                    logUnificado = UtilsGlobais.Util.MontaLog(tPUnificado, logUnificado, camposAOmitir);
+                }
+
+                logAtomico = $"Lista de produtos atômicos opção: {logAtomico}";
+                logUnificado = $"Lista de produtos unificados opção: {logUnificado}";
+
                 _logger.LogInformation($"Método Cadastrar opções de orçamento - Cadastrando custo de produtos atômicos da opção {seq}");
                 var responseAtomicosCustoFin = produtoOrcamentoCotacaoBll.CadastrarProdutoAtomicoCustoFinComTransacao(responseOpcoesPagtoResponse.TorcamentoCotacaoOpcaoPagtos,
                     responseUnificadosEAtomicos.TorcamentoCotacaoItemUnificados, opcao.ListaProdutos, loja, contextoBdGravacao, correlationId);
@@ -99,6 +147,38 @@ namespace OrcamentoCotacaoBusiness.Bll
                     response.Mensagem = "Ops! Falha ao salvar custos dos produto!";
                     return response;
                 }
+
+                string logAtomicoCustoAvista = "";
+                string logAtomicoCustoAprazo = "";
+                camposAOmitir = "|Id|IdOpcaoPagto|DescDado|CustoFinancFornecCoeficiente|CustoFinancFornecPrecoListaBase|StatusDescontoSuperior|IdUsuarioDescontoSuperior|DataHoraDescontoSuperior|IdOperacaoAlcadaDescontoSuperior|";
+
+                foreach (var tPagto in responseOpcoesPagtoResponse.TorcamentoCotacaoOpcaoPagtos)
+                {
+                    var tPAtomicoCusto = responseAtomicosCustoFin.TorcamentoCotacaoOpcaoItemAtomicoCustoFins.Where(x => x.IdOpcaoPagto == tPagto.Id);
+                    foreach (var itemAtomicoCusto in tPAtomicoCusto)
+                    {
+                        if (tPagto.Tipo_parcelamento == int.Parse(Constantes.COD_FORMA_PAGTO_A_VISTA))
+                        {
+                            logAtomicoCustoAvista = !string.IsNullOrEmpty(logAtomicoCustoAvista) ? $"{logAtomicoCustoAvista}\r         " : logAtomicoCustoAvista;
+                            logAtomicoCustoAvista = UtilsGlobais.Util.MontaLog(itemAtomicoCusto, logAtomicoCustoAvista, camposAOmitir);
+                        }
+                        else
+                        {
+                            logAtomicoCustoAprazo = !string.IsNullOrEmpty(logAtomicoCustoAprazo) ? $"{logAtomicoCustoAprazo}\r         " : logAtomicoCustoAprazo;
+                            logAtomicoCustoAprazo = UtilsGlobais.Util.MontaLog(itemAtomicoCusto, logAtomicoCustoAprazo, camposAOmitir);
+                        }
+                    }
+                }
+                logAtomicoCustoAprazo = $"Valor dos produtos atômicos a prazo: {logAtomicoCustoAprazo}";
+                response.LogOperacao += $"Opção {seq}: {logOpcao}\r      {logUnificado}\r      {logAtomico}\r      {logAtomicoCustoAprazo}";
+                if (!string.IsNullOrEmpty(logAtomicoCustoAvista))
+                {
+                    logAtomicoCustoAvista = $"Valor dos produtos atômicos a vista: {logAtomicoCustoAvista}";
+                    response.LogOperacao += $"\r      {logAtomicoCustoAvista}";
+                }
+                response.LogOperacao += $"\r      {logPagtoAprazo}";
+                if (!string.IsNullOrEmpty(logPagtoAvista))
+                    response.LogOperacao += $"\r      {logPagtoAvista}";
             }
 
             response.Sucesso = true;
@@ -203,7 +283,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     {
                         response.Mensagem = "Falha ao atualizar os produtos!";
                         return response;
-                    }                    
+                    }
 
                     var responseFormaPagto = formaPagtoOrcamentoCotacaoBll
                         .AtualizarOrcamentoCotacaoOpcaoPagtoComTransacao(opcao, tOrcamentoCotacaoOpcaoPagtosAntiga, dbGravacao);
@@ -219,7 +299,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     }
 
                     var responseAtomicosCustoFin = produtoOrcamentoCotacaoBll.AtualizarProdutoAtomicoCustoFinComTransacao(opcao,
-                        tOpcao.TorcamentoCotacaoItemUnificados, responseFormaPagto.TorcamentoCotacaoOpcaoPagtos, dbGravacao, 
+                        tOpcao.TorcamentoCotacaoItemUnificados, responseFormaPagto.TorcamentoCotacaoOpcaoPagtos, dbGravacao,
                         usuarioLogado, orcamento, opcao.CorrelationId);
                     if (!string.IsNullOrEmpty(responseAtomicosCustoFin.Mensagem))
                     {
