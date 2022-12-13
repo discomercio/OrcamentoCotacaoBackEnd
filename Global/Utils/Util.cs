@@ -684,7 +684,7 @@ namespace UtilsGlobais
                 if (column != null)
                 {
                     string coluna = column.Name;
-                    if (!campos_a_omitir.Contains(coluna))
+                    if (!campos_a_omitir.Contains("|" + coluna+ "|"))
                     {
                         //pegando o valor coluna
                         var value = (c.GetValue(obj, null));

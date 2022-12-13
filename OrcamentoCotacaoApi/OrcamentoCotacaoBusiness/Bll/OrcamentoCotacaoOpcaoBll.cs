@@ -59,6 +59,9 @@ namespace OrcamentoCotacaoBusiness.Bll
                     response.Mensagem = "Ops! Não gerou Id na opção de orçamento!";
                     return response;
                 }
+                string logOpcao = "";
+                string camposAOmitir = "|IdOrcamentoCotacao|Sequencia|IdTipoUsuarioContextoCadastro|IdUsuarioCadastro|DataCadastro|DataHoraCadastro|IdTipoUsuarioContextoUltAtualizacao|IdUsuarioUltAtualizacao|DataHoraUltAtualizacao|";
+                logOpcao = UtilsGlobais.Util.MontaLog(torcamentoCotacaoOpcao, logOpcao, camposAOmitir);
 
                 _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Cadastrando formas de pagamentos da opção {seq}.");
                 var responseOpcoesPagtoResponse = formaPagtoOrcamentoCotacaoBll.CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(opcao.FormaPagto, opcaoResponse.Id, contextoBdGravacao, response.CorrelationId);

@@ -261,7 +261,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         return "Ops! Erro ao criar novo produto!";
                     }
                     string log = "";
-                    string camposAOmitir = "usuario_cadastro|usuario_edicao|dt_cadastro|dt_edicao";
+                    string camposAOmitir = "|usuario_cadastro|usuario_edicao|dt_cadastro|dt_edicao|";
 
                     log = UtilsGlobais.Util.MontaLog(prod, log, camposAOmitir);
                     log = $"Produto: {log}";

@@ -152,6 +152,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             model.CorrelationId = correlationId;
             model.Usuario = LoggedUser.Apelido;
+            model.IP = Request.HttpContext.Connection.RemoteIpAddress.ToString();
 
             var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
 

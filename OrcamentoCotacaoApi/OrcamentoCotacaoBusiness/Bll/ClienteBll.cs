@@ -53,7 +53,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             if (idCliente.Length == 12)
             {
-                string campos_a_omitir = "dt_cadastro|usuario_cadastro|dt_ult_atualizacao|usuario_ult_atualizacao";
+                string campos_a_omitir = "|dt_cadastro|usuario_cadastro|dt_ult_atualizacao|usuario_ult_atualizacao|";
                 string log = "";
                 log = UtilsGlobais.Util.MontaLog(tCliente, log, campos_a_omitir);
 
