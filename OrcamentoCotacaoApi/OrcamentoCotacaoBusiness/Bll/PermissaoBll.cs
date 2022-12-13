@@ -230,18 +230,24 @@ namespace OrcamentoCotacaoBusiness.Bll
                 return response;
             }
 
-            var usuarioEnvolvidoOrcamento = UsuarioEnvolvidoPrePedido(idTipoUsuario, idUsuario, usuario, idPrePedido);
+            var permissaoVisualizarPrePedidoConsultar = ValidaPermissao(request.PermissoesUsuario, ePermissao.VisualizarPrePedidoConsultar);
 
+            if (!permissaoVisualizarPrePedidoConsultar)
+            {
+                response.VisualizarPrePedido = false;
+                response.Sucesso = false;
+                response.Mensagem = "Não encontramos a permissão necessária para acessar essa funcionalidade!";
+                return response;
+            }
+
+            var usuarioEnvolvidoOrcamento = UsuarioEnvolvidoPrePedido(idTipoUsuario, idUsuario, usuario, idPrePedido);
             var permissaoVisualizarOrcamentoConsultar = ValidaPermissao(request.PermissoesUsuario, ePermissao.VisualizarOrcamentoConsultar);
             var permissaoAcessoUniversalOrcamentoEditar = ValidaPermissao(request.PermissoesUsuario, ePermissao.AcessoUniversalOrcamentoEditar);
-            var permissaoVisualizarPrePedidoConsultar = ValidaPermissao(request.PermissoesUsuario, ePermissao.VisualizarPrePedidoConsultar);
 
             if (usuarioEnvolvidoOrcamento 
                 || permissaoVisualizarOrcamentoConsultar
-                || permissaoAcessoUniversalOrcamentoEditar
-                || permissaoVisualizarPrePedidoConsultar)
+                || permissaoAcessoUniversalOrcamentoEditar)
             {
-                
                 var permissaoCancelarPrePedido = ValidaPermissao(request.PermissoesUsuario, ePermissao.CancelarPrePedido);
 
                 if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
