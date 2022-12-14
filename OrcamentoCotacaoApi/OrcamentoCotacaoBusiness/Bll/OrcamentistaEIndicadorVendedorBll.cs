@@ -25,7 +25,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public List<OrcamentistaEIndicadorVendedorResponseViewModel> BuscarVendedoresParceiro(string apelidoParceiro)
         {
-            var parceiro = _orcamentistaEIndicadorBll.BuscarParceiros(new TorcamentistaEindicadorFiltro() { apelido = apelidoParceiro, acessoHabilitado = 1 }).FirstOrDefault();
+            var parceiro = _orcamentistaEIndicadorBll.BuscarParceiros(new TorcamentistaEindicadorFiltro() { apelido = apelidoParceiro }).FirstOrDefault();
 
             if (parceiro == null)
                 return null;
@@ -36,7 +36,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public List<OrcamentistaEIndicadorVendedorResponseViewModel> BuscarVendedoresParceiroPorId(int idParceiro)
         {
-            var parceiro = _orcamentistaEIndicadorBll.BuscarParceiros(new TorcamentistaEindicadorFiltro() { idParceiro = idParceiro, acessoHabilitado = 1 }).FirstOrDefault();
+            var parceiro = _orcamentistaEIndicadorBll.BuscarParceiros(new TorcamentistaEindicadorFiltro() { idParceiro = idParceiro }).FirstOrDefault();
 
             if (parceiro == null)
                 return null;
