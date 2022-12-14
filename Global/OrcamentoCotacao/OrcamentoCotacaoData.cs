@@ -232,17 +232,17 @@ namespace OrcamentoCotacao
                     {
                         saida = saida.Where(x => x.Loja == obj.Loja);
                     }
-                    //if (!string.IsNullOrEmpty(obj.Vendedor))
-                    //{
-                    //    saida = saida.Where(x => x.IdVendedor == int.Parse(obj.Vendedor));
-                    //}
-                    //if (!string.IsNullOrEmpty(obj.Parceiro))
-                    //{
-                    //    saida = saida.Where(x => x.IdIndicador == int.Parse(obj.Parceiro));
-                    //}
-                    if (!string.IsNullOrEmpty(obj.Loja))
+                    if(obj.IdVendedor != 0)
                     {
-                        saida = saida.Where(x => x.Loja == obj.Loja);
+                        saida = saida.Where(x => x.IdVendedor == obj.IdVendedor);
+                    }
+                    if (obj.IdIndicador != 0)
+                    {
+                        saida = saida.Where(x => x.IdIndicador == obj.IdIndicador);
+                    }
+                    if (obj.IdIndicadorVendedor != 0)
+                    {
+                        saida = saida.Where(x => x.IdIndicadorVendedor == obj.IdIndicadorVendedor);
                     }
                     if (obj.Tusuario)
                     {

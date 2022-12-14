@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoApi.Filters;
+using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
@@ -13,6 +14,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using UtilsGlobais.Configs;
+using static OrcamentoCotacaoBusiness.Enums.Enums;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -49,6 +51,12 @@ namespace OrcamentoCotacaoApi.Controllers
             };
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/PorFiltro/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
+            /*
+             * Quando implementar a busca para usuário com permissão universal "103000"
+             * é só descomentar a linha abaixo que irá buscar todos os orçamentos por loja
+             */
+            //filtro.PermissaoUniversal = User.ValidaPermissao((int)ePermissao.VisualizarOrcamentoConsultar);
 
             var saida = _orcamentoBll.PorFiltro(filtro, LoggedUser);
 
@@ -254,7 +262,7 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpPut("{id}/status/{idStatus}")]
-        public IActionResult AtualizarStatus(int id,short idStatus)
+        public IActionResult AtualizarStatus(int id, short idStatus)
         {
             var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
