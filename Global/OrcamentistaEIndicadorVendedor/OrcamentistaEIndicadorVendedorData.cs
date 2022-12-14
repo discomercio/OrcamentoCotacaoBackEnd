@@ -88,6 +88,7 @@ namespace OrcamentistaEIndicadorVendedor
                                                Celular = usr.Celular,
                                                Ativo = usr.Ativo,
                                                UsuarioCadastro = usr.UsuarioCadastro,
+                                               DataUltimaAlteracaoSenha = usr.DataUltimaAlteracaoSenha,
                                                UsuarioUltimaAlteracao = usr.UsuarioUltimaAlteracao,
                                                DataCadastro = usr.DataCadastro,
                                                DataUltimaAlteracao = usr.DataUltimaAlteracao,

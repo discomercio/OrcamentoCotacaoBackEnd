@@ -121,10 +121,12 @@ namespace OrcamentistaEIndicadorVendedor
 
             objOrcamentistaEIndicadorVendedor.Datastamp = senha_codificada;
 
-            if (oeiv.Datastamp != senha_codificada)
+            if (oeiv.Datastamp != senha_codificada && oeiv.Datastamp != senha)
             {
                 oeiv.DataUltimaAlteracaoSenha = null;
             }
+           
+
             oeiv.Datastamp = senha_codificada;
 
             oeiv.Nome = objOrcamentistaEIndicadorVendedor.Nome;
