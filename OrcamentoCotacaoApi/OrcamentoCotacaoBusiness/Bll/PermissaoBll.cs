@@ -118,7 +118,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
                 {
                     var usuarioAcessaLoja = UsuarioAcessaLoja(usuario, loja);
-                    if (!usuarioAcessaLoja && !permissaoVisualizarOrcamentoConsultar)
+                    if (!usuarioAcessaLoja) //&& !permissaoVisualizarOrcamentoConsultar
                     {
                         response.VisualizarOrcamento = false;
                         response.Sucesso = false;
