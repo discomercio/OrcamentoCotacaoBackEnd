@@ -54,7 +54,7 @@ namespace OrcamentoCotacaoApi.Controllers
             };
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/BuscarVendedoresDosParceiros/GET - Request => [{JsonSerializer.Serialize(request)}].");
-            var torcamentista = orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = parceiro, acessoHabilitado = 1, status = Constantes.ORCAMENTISTA_INDICADOR_STATUS_ATIVO });
+            var torcamentista = orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = parceiro, status = Constantes.ORCAMENTISTA_INDICADOR_STATUS_ATIVO });
 
             var usuarios = _orcamentistaEindicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { IdIndicador = torcamentista.IdIndicador, ativo = true });
 
