@@ -129,7 +129,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         return "Ops! As propriedades do produto não pode estar vazio!";
 
                     string log = "";
-                    log = UtilsGlobais.Util.MontalogComparacao(tProdutoCatalogo, tProdutoCatalogoAntigo, log);
+                    log = UtilsGlobais.Util.MontalogComparacao(tProdutoCatalogo, tProdutoCatalogoAntigo, log, "");
                     if (!string.IsNullOrEmpty(log)) log = $"Produto: produto={tProdutoCatalogo.Produto}; {log}";
 
                     tProdutoCatalogo.campos = _bll.AtualizarItensComTransacao(produtoCatalogo.campos, tProdutoCatalogo.Id,
@@ -150,7 +150,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         else
                         {
                             string logVerificacao = "";
-                            logVerificacao = UtilsGlobais.Util.MontalogComparacao(prop, propAntiga, logVerificacao);
+                            logVerificacao = UtilsGlobais.Util.MontalogComparacao(prop, propAntiga, logVerificacao, "");
                             if (!string.IsNullOrEmpty(logVerificacao)) logApoio += $"id={prop.IdProdutoCatalogoPropriedade}; {logVerificacao}";
                         }
 

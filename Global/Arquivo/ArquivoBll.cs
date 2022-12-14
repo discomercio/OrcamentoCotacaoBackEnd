@@ -255,7 +255,7 @@ namespace Arquivo
                     string log = "";
                    
                     _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Montando log de operação.");
-                    log = UtilsGlobais.Util.MontalogComparacao(retorno, tOrcamentoCotacaoArquivosAntigo, log);
+                    log = UtilsGlobais.Util.MontalogComparacao(retorno, tOrcamentoCotacaoArquivosAntigo, log, "");
 
                     _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Buscando operação de criação de pasta.");
 

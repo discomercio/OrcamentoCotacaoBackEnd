@@ -375,7 +375,8 @@ namespace OrcamentoCotacaoApi.Controllers
             var request = new
             {
                 Usuario = LoggedUser.Apelido,
-                OrcamentoResponseViewModel = model
+                OrcamentoResponseViewModel = model,
+                IP = Request.HttpContext.Connection.RemoteIpAddress.ToString()
             };
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/AtualizarDados/POST - Request => [{JsonSerializer.Serialize(request)}].");
@@ -387,7 +388,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
             var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
-            var retorno = _orcamentoBll.AtualizarDadosCadastraisOrcamento(model, user);
+            var retorno = _orcamentoBll.AtualizarDadosCadastraisOrcamento(model, user, request.IP);
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/AtualizarDados/GET - Response => [{JsonSerializer.Serialize(retorno)}].");
 

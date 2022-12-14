@@ -701,7 +701,7 @@ namespace UtilsGlobais
             return log;
         }
 
-        public static string MontalogComparacao(Object objNovo, Object objAntigo, string log)
+        public static string MontalogComparacao(Object objNovo, Object objAntigo, string log, string camposAOmitir)
         {
             //vamos analisar as diferenças de objetos 
 
@@ -712,6 +712,8 @@ namespace UtilsGlobais
             {
                 var coluna = (ColumnAttribute)Attribute.GetCustomAttribute(propNovo, typeof(ColumnAttribute));
                 if(coluna == null) continue;
+
+                if (camposAOmitir.Contains($"|{coluna.Name}|")) continue;
 
                 var propAntigo = lstPropertyAntigo.Where(x => x.Name == propNovo.Name).FirstOrDefault();
                 if (propAntigo == null) continue;

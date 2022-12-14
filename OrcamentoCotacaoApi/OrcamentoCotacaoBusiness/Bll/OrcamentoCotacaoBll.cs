@@ -979,7 +979,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             return response;
         }
 
-        public OrcamentoResponseViewModel AtualizarDadosCadastraisOrcamento(OrcamentoResponseViewModel orcamento, UsuarioLogin usuarioLogado)
+        public OrcamentoResponseViewModel AtualizarDadosCadastraisOrcamento(OrcamentoResponseViewModel orcamento,
+            UsuarioLogin usuarioLogado, string ip)
         {
             _logger.LogInformation($"Método Atualizar dados cadastrais de orçamento - Iniciando.");
             _logger.LogInformation($"Método Atualizar dados cadastrais de orçamento - Buscando orçamento.");
@@ -997,6 +998,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (!string.IsNullOrEmpty(orcamento.Erro)) return orcamento;
 
             _logger.LogInformation($"Método Atualizar dados cadastrais de orçamento - Abrindo transação.");
+            var tOrcamentoAntigo = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro() { Id = (int)orcamento.Id }).FirstOrDefault();
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 try
@@ -1056,6 +1058,20 @@ namespace OrcamentoCotacaoBusiness.Bll
                         orcamento.Erro = "Falha ao atualizar dados cadastrais!";
                         return orcamento;
                     }
+
+                    string camposAOmitir = "|Id|Loja|ValidadeAnterior|QtdeRenovacao|IdUsuarioUltRenovacao|DataHoraUltRenovacao|Status|IdTipoUsuarioContextoUltStatus|IdUsuarioUltStatus|DataUltStatus|DataHoraUltStatus|IdOrcamento|IdPedido|IdTipoUsuarioContextoCadastro|IdUsuarioCadastro|DataCadastro|DataHoraCadastro|IdTipoUsuarioContextoUltAtualizacao|IdUsuarioUltAtualizacao|DataHoraUltAtualizacao|perc_max_comissao_padrao|perc_max_comissao_e_desconto_padrao|VersaoPoliticaCredito|VersaoPoliticaPrivacidade|InstaladorInstalaIdTipoUsuarioContexto|InstaladorInstalaIdUsuarioUltAtualiz|InstaladorInstalaDtHrUltAtualiz|GarantiaIndicadorIdTipoUsuarioContexto|GarantiaIndicadorIdUsuarioUltAtualiz|GarantiaIndicadorDtHrUltAtualiz|EtgImediataIdTipoUsuarioContexto|EtgImediataIdUsuarioUltAtualiz|EtgImediataDtHrUltAtualiz|PrevisaoEntregaIdTipoUsuarioContexto|PrevisaoEntregaIdUsuarioUltAtualiz|PrevisaoEntregaDtHrUltAtualiz|IdTipoUsuarioContextoUltRenovacao|";
+                    string log = "";
+                    log = UtilsGlobais.Util.MontalogComparacao(tOrcamento, tOrcamentoAntigo, log, camposAOmitir);
+                    if (!string.IsNullOrEmpty(log)) log = $"id={tOrcamento.Id}; {log}";
+
+                    var cfgOperacao = _cfgOperacaoBll.PorFiltroComTransacao(new TcfgOperacaoFiltro() { Id = 2 }, dbGravacao).FirstOrDefault();
+                    if (cfgOperacao == null)
+                    {
+                        orcamento.Erro = "Falha ao atualizar dados cadastrais!";
+                        return orcamento;
+                    }
+                    var tLogV2 = UtilsGlobais.Util.GravaLogV2(dbGravacao, log, (short)usuarioLogado.TipoUsuario, usuarioLogado.Id, tOrcamento.Loja, null, null, null,
+                        Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
 
                     bool atualizouLink = false;
 
