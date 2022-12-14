@@ -25,5 +25,8 @@ namespace InfraBanco.Modelos.Filtros
         public string VendedorParceiro { get; set; }
         public DateTime? DtInicio { get; set; }
         public DateTime? DtFim { get; set; }
+        public int IdVendedor { get; set; }
+        public int IdIndicador { get; set; }
+        public int IdIndicadorVendedor { get; set; }
     }
 }

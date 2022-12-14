@@ -313,25 +313,30 @@ namespace OrcamentoCotacaoBusiness.Bll
             tOrcamentoFiltro.Apelido = usuarioLogin.Nome;
             tOrcamentoFiltro.IdUsuario = usuarioLogin.Id;
 
-            if (tOrcamentoFiltro.TipoUsuario.HasValue)
+            if (!tOrcamentoFiltro.PermissaoUniversal)
             {
-                //VÊ TUDO
-                //if (tOrcamentoFiltro.TipoUsuario.Value == (int)Constantes.TipoUsuario.VENDEDOR)
-
-                //VÊ TUDO somente dele e vendedores parceiros
-                if (tOrcamentoFiltro.TipoUsuario.Value == (int)Constantes.TipoUsuario.PARCEIRO)
+                if (tOrcamentoFiltro.TipoUsuario.HasValue)
                 {
-                    tOrcamentoFiltro.Vendedor = usuarioLogin.VendedorResponsavel;
-                    tOrcamentoFiltro.Parceiro = usuarioLogin.IdParceiro;
-                    orcamentoCotacaoFiltro.Vendedor = usuarioLogin.VendedorResponsavel;
-                    orcamentoCotacaoFiltro.Parceiro = usuarioLogin.IdParceiro;
-                }
+                    if (tOrcamentoFiltro.TipoUsuario.Value == (int)Constantes.TipoUsuario.VENDEDOR)
+                    {
+                        orcamentoCotacaoFiltro.IdVendedor = usuarioLogin.Id;
+                        tOrcamentoFiltro.Vendedor = usuarioLogin.Apelido;
+                    }
 
-                //VÊ somente suas vendas
-                if (tOrcamentoFiltro.TipoUsuario.Value == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
-                {
-                    tOrcamentoFiltro.VendedorParceiro = usuarioLogin.Nome;
-                    orcamentoCotacaoFiltro.VendedorParceiro = usuarioLogin.Nome;
+                    if (tOrcamentoFiltro.TipoUsuario.Value == (int)Constantes.TipoUsuario.PARCEIRO)
+                    {
+                        orcamentoCotacaoFiltro.IdIndicador = usuarioLogin.Id;
+                        tOrcamentoFiltro.Vendedor = usuarioLogin.VendedorResponsavel;
+                        tOrcamentoFiltro.Parceiro = usuarioLogin.IdParceiro;
+                        orcamentoCotacaoFiltro.Vendedor = usuarioLogin.VendedorResponsavel;
+                        orcamentoCotacaoFiltro.Parceiro = usuarioLogin.IdParceiro;
+                    }
+
+                    if (tOrcamentoFiltro.TipoUsuario.Value == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
+                    {
+                        orcamentoCotacaoFiltro.IdIndicadorVendedor = usuarioLogin.Id;
+                        tOrcamentoFiltro.VendedorParceiro = usuarioLogin.Nome;
+                    }
                 }
             }
 
