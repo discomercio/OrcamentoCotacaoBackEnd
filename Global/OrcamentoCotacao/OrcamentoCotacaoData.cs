@@ -228,14 +228,29 @@ namespace OrcamentoCotacao
                     {
                         saida = saida.Where(x => x.DataCadastro > DateTime.Now.AddDays(-60));
                     }
+                    if (obj.LimitarDataDashboard)
+                    {
+                        saida = saida.Where(x => x.Validade >= DateTime.Now.AddDays(-1));
+                    }
                     if (!string.IsNullOrEmpty(obj.Loja))
                     {
                         saida = saida.Where(x => x.Loja == obj.Loja);
                     }
-                    //if (!string.IsNullOrEmpty(obj.Vendedor))
-                    //{
-                    //    saida = saida.Where(x => x.IdVendedor == int.Parse(obj.Vendedor));
-                    //}
+                    if (obj.IdVendedor !=0)
+                    {
+                        saida = saida.Where(x => x.IdVendedor == obj.IdVendedor);
+                    }
+
+                    if (obj.IdIndicador != 0)
+                    {
+                        saida = saida.Where(x => x.IdIndicador == obj.IdIndicador);
+                    }
+
+                    if (obj.IdIndicadorVendedor != 0)
+                    {
+                        saida = saida.Where(x => x.IdIndicadorVendedor == obj.IdIndicadorVendedor);
+                    }
+
                     //if (!string.IsNullOrEmpty(obj.Parceiro))
                     //{
                     //    saida = saida.Where(x => x.IdIndicador == int.Parse(obj.Parceiro));
