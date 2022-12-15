@@ -382,8 +382,9 @@ namespace OrcamentoCotacaoBusiness.Bll
                 return response;
             }
 
+            //se produto é simples, salvamos sempre como 1 => quem guarda a quantidade selecionada é o item unificado
             var torcamentoCotacaoOpcaoItemAtomico = new TorcamentoCotacaoOpcaoItemAtomico(idItemUnificado, tProduto.Fabricante,
-                tProduto.Produto, (short)qtde, tProduto.Descricao, tProduto.Descricao_Html);
+                tProduto.Produto, (short)1, tProduto.Descricao, tProduto.Descricao_Html);
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Cadastrando produto atômico. Request => [{JsonSerializer.Serialize(torcamentoCotacaoOpcaoItemAtomico)}].");
             response.TorcamentoCotacaoOpcaoItemAtomicos.Add(orcamentoCotacaoOpcaoItemAtomicoBll.InserirComTransacao(torcamentoCotacaoOpcaoItemAtomico,
