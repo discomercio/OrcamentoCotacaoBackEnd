@@ -225,39 +225,55 @@ namespace OrcamentoCotacaoBusiness.Bll
         public List<DashoardResponse> Dashboard(TorcamentoFiltro tOrcamentoFiltro, UsuarioLogin usuarioLogin)
         {
 
+            var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM);
+
+            int idUsuario;
+
+            if (usuarioLogin.TipoUsuario == 1)
+            {
+                var usuario = (from u in dbGravacao.Tusuario
+                                    where u.Usuario == usuarioLogin.Apelido.ToUpper().Trim()
+                                    select u).FirstOrDefault();
+                
+                idUsuario = usuario.Id;
+
+            }
+            else if (usuarioLogin.TipoUsuario == 2)
+            {
+                var orcamentista = (from u in dbGravacao.TorcamentistaEindicador
+                                         where u.Apelido == usuarioLogin.Apelido.ToUpper().Trim()
+                                         select u).FirstOrDefault();
+
+                idUsuario = orcamentista.IdIndicador;
+
+            }
+            else
+            {
+                var vendedorParceiro = (from u in dbGravacao.TorcamentistaEIndicadorVendedor
+                                             where u.Email == usuarioLogin.Apelido.ToUpper().Trim()
+                                             select u).FirstOrDefault();
+
+                idUsuario = vendedorParceiro.Id;
+
+            }
+
             TorcamentoCotacaoFiltro orcamentoCotacaoFiltro = new TorcamentoCotacaoFiltro
             {
-                Tusuario = true,
-                LimitarData = true,
+                LimitarDataDashboard = true,                
                 Loja = tOrcamentoFiltro.Loja,
-                TipoUsuario = usuarioLogin.TipoUsuario,
-                Apelido = usuarioLogin.Nome
             };
 
-            tOrcamentoFiltro.TipoUsuario = usuarioLogin.TipoUsuario;
-            tOrcamentoFiltro.Apelido = usuarioLogin.Nome;
-            tOrcamentoFiltro.IdUsuario = usuarioLogin.Id;
-
-            if (tOrcamentoFiltro.TipoUsuario.HasValue)
+            if (usuarioLogin.TipoUsuario == 1)
             {
-                //VÊ TUDO
-                //if (tOrcamentoFiltro.TipoUsuario.Value == (int)Constantes.TipoUsuario.VENDEDOR)
-
-                //VÊ TUDO somente dele e vendedores parceiros
-                if (tOrcamentoFiltro.TipoUsuario.Value == (int)Constantes.TipoUsuario.PARCEIRO)
-                {
-                    tOrcamentoFiltro.Vendedor = usuarioLogin.VendedorResponsavel;
-                    tOrcamentoFiltro.Parceiro = usuarioLogin.IdParceiro;
-                    orcamentoCotacaoFiltro.Vendedor = usuarioLogin.VendedorResponsavel;
-                    orcamentoCotacaoFiltro.Parceiro = usuarioLogin.IdParceiro;
-                }
-
-                //VÊ somente suas vendas
-                if (tOrcamentoFiltro.TipoUsuario.Value == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
-                {
-                    tOrcamentoFiltro.VendedorParceiro = usuarioLogin.Nome;
-                    orcamentoCotacaoFiltro.VendedorParceiro = usuarioLogin.Nome;
-                }
+                orcamentoCotacaoFiltro.IdVendedor = idUsuario;
+            }
+            else if (usuarioLogin.TipoUsuario == 2)
+            {
+                orcamentoCotacaoFiltro.IdIndicador = idUsuario;
+            }
+            else
+            {
+                orcamentoCotacaoFiltro.IdIndicadorVendedor = idUsuario;
             }
 
             orcamentoCotacaoFiltro.StatusId = tOrcamentoFiltro.StatusId;
@@ -270,20 +286,6 @@ namespace OrcamentoCotacaoBusiness.Bll
                 var vendedores = _usuarioBll.PorFiltro(new TusuarioFiltro { });
                 var parceiros = _orcamentistaEIndicadorBll.BuscarParceiros(new TorcamentistaEindicadorFiltro { });
                 var vendParceiros = _orcamentistaEIndicadorVendedorBll.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro { });
-
-                if (!String.IsNullOrEmpty(orcamentoCotacaoFiltro.Vendedor) && !String.IsNullOrEmpty(orcamentoCotacaoFiltro.Parceiro))
-                {
-                    var idVendedor = vendedores.FirstOrDefault(v => v.Usuario == orcamentoCotacaoFiltro.Vendedor);
-                    var idParceiro = parceiros.FirstOrDefault(p => p.Apelido == orcamentoCotacaoFiltro.Parceiro);
-
-                    if (idVendedor != null && idParceiro != null)
-                    {
-                        orcamentoCotacaoListaDto = orcamentoCotacaoListaDto.Where(o =>
-                             o.IdVendedor == idVendedor.Id
-                             && (o.IdIndicador.HasValue && o.IdIndicador.Value == idParceiro.IdIndicador)
-                         ).ToList();
-                    }
-                }
 
                 orcamentoCotacaoListaDto.ForEach(x => listaDashboard.Add(new DashoardResponse()
                 {

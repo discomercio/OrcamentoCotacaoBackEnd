@@ -228,6 +228,10 @@ namespace OrcamentoCotacao
                     {
                         saida = saida.Where(x => x.DataCadastro > DateTime.Now.AddDays(-60));
                     }
+                    if (obj.LimitarDataDashboard)
+                    {
+                        saida = saida.Where(x => x.Validade >= DateTime.Now.AddDays(-1));
+                    }
                     if (!string.IsNullOrEmpty(obj.Loja))
                     {
                         saida = saida.Where(x => x.Loja == obj.Loja);
