@@ -601,7 +601,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             var usuario = _usuarioBll.PorFiltro(new TusuarioFiltro() { id = orcamento.IdVendedor }).FirstOrDefault();
             var parceiro = orcamento.IdIndicador != null ? _orcamentistaEIndicadorBll
-                .BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = (int)orcamento.IdIndicador, acessoHabilitado = 1 }) : null;
+                .BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = (int)orcamento.IdIndicador }) : null;
             if (parceiro == null)
             {
                 response.Mensagem = "Parceiro não encontrado!";
@@ -1189,7 +1189,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             if (orcamento.IdIndicadorVendedor == null && orcamento.IdIndicador != null)
             {
-                var parceiro = _orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { apelido = orcamento.Parceiro, acessoHabilitado = 1 });
+                var parceiro = _orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { apelido = orcamento.Parceiro });
                 if (parceiro == null) return "Parceiro não encontrado!";
 
                 if (usuarioLogado.Apelido == parceiro.Apelido) return null;
