@@ -378,7 +378,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
             else
             {
-                var extensao = arquivo.FileName.Substring(arquivo.FileName.Length - 3, 3);
+                var extensao = arquivo.FileName.Substring(arquivo.FileName.Length - 4, 4).Replace(".", "").Trim();
 
                 var nomeArquivo = CriarNomeArquivo(extensao);
 
