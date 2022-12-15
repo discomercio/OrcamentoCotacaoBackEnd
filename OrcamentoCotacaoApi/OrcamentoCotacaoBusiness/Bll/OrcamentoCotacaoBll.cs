@@ -602,12 +602,6 @@ namespace OrcamentoCotacaoBusiness.Bll
             var usuario = _usuarioBll.PorFiltro(new TusuarioFiltro() { id = orcamento.IdVendedor }).FirstOrDefault();
             var parceiro = orcamento.IdIndicador != null ? _orcamentistaEIndicadorBll
                 .BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = (int)orcamento.IdIndicador }) : null;
-            if (parceiro == null)
-            {
-                response.Mensagem = "Parceiro não encontrado!";
-                return response;
-
-            }
 
             string vendedorParceiro = null;
             if (orcamento.IdIndicadorVendedor != null)
