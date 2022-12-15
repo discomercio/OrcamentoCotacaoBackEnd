@@ -221,40 +221,37 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public List<DashoardResponse> Dashboard(TorcamentoFiltro tOrcamentoFiltro, UsuarioLogin usuarioLogin)
         {
-
-            var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM);
-
             int idUsuario;
 
-            if (usuarioLogin.TipoUsuario == 1)
+            using (var dbGravacao = _contextoBdProvider.GetContextoLeitura())
             {
-                var usuario = (from u in dbGravacao.Tusuario
-                               where u.Usuario == usuarioLogin.Apelido.ToUpper().Trim()
-                               select u).FirstOrDefault();
+                if (usuarioLogin.TipoUsuario == 1)
+                {
+                    var usuario = (from u in dbGravacao.Tusuario
+                                   where u.Usuario == usuarioLogin.Apelido.ToUpper().Trim()
+                                   select u).FirstOrDefault();
 
-                idUsuario = usuario.Id;
-
-            }
-            else if (usuarioLogin.TipoUsuario == 2)
-            {
-                var orcamentista = (from u in dbGravacao.TorcamentistaEindicador
-                                    where u.Apelido == usuarioLogin.Apelido.ToUpper().Trim()
-                                    select u).FirstOrDefault();
-
-                idUsuario = orcamentista.IdIndicador;
-
-            }
-            else
-            {
-                var vendedorParceiro = (from u in dbGravacao.TorcamentistaEIndicadorVendedor
-                                        where u.Email == usuarioLogin.Apelido.ToUpper().Trim()
+                    idUsuario = usuario.Id;
+                }
+                else if (usuarioLogin.TipoUsuario == 2)
+                {
+                    var orcamentista = (from u in dbGravacao.TorcamentistaEindicador
+                                        where u.Apelido == usuarioLogin.Apelido.ToUpper().Trim()
                                         select u).FirstOrDefault();
 
-                idUsuario = vendedorParceiro.Id;
+                    idUsuario = orcamentista.IdIndicador;
+                }
+                else
+                {
+                    var vendedorParceiro = (from u in dbGravacao.TorcamentistaEindicadorVendedor
+                                            where u.Email == usuarioLogin.Apelido.ToUpper().Trim()
+                                            select u).FirstOrDefault();
 
+                    idUsuario = vendedorParceiro.Id;
+                }
             }
 
-            TorcamentoCotacaoFiltro orcamentoCotacaoFiltro = new TorcamentoCotacaoFiltro
+            var orcamentoCotacaoFiltro = new TorcamentoCotacaoFiltro
             {
                 LimitarDataDashboard = true,
                 Loja = tOrcamentoFiltro.Loja,
