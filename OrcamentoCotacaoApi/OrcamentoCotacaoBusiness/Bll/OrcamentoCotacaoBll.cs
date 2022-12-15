@@ -120,8 +120,8 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 var usuario = _usuarioBll.PorFiltro(new TusuarioFiltro() { id = orcamento.idVendedor }).FirstOrDefault();
                 var parceiro = orcamento.idIndicador != null ? _orcamentistaEIndicadorBll
-                    .BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = (int)orcamento.idIndicador, acessoHabilitado = 1 }) : null;
-                if (parceiro == null) throw new ArgumentException("Parceiro não encontrado!");
+                    .BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = (int)orcamento.idIndicador }) : null;
+                if (orcamento.idIndicador != null && parceiro == null) throw new ArgumentException("Parceiro não encontrado!");
 
                 string vendedorParceiro = null;
                 if (orcamento.idIndicadorVendedor != null)
@@ -229,17 +229,17 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (usuarioLogin.TipoUsuario == 1)
             {
                 var usuario = (from u in dbGravacao.Tusuario
-                                    where u.Usuario == usuarioLogin.Apelido.ToUpper().Trim()
-                                    select u).FirstOrDefault();
-                
+                               where u.Usuario == usuarioLogin.Apelido.ToUpper().Trim()
+                               select u).FirstOrDefault();
+
                 idUsuario = usuario.Id;
 
             }
             else if (usuarioLogin.TipoUsuario == 2)
             {
                 var orcamentista = (from u in dbGravacao.TorcamentistaEindicador
-                                         where u.Apelido == usuarioLogin.Apelido.ToUpper().Trim()
-                                         select u).FirstOrDefault();
+                                    where u.Apelido == usuarioLogin.Apelido.ToUpper().Trim()
+                                    select u).FirstOrDefault();
 
                 idUsuario = orcamentista.IdIndicador;
 
@@ -247,8 +247,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             else
             {
                 var vendedorParceiro = (from u in dbGravacao.TorcamentistaEIndicadorVendedor
-                                             where u.Email == usuarioLogin.Apelido.ToUpper().Trim()
-                                             select u).FirstOrDefault();
+                                        where u.Email == usuarioLogin.Apelido.ToUpper().Trim()
+                                        select u).FirstOrDefault();
 
                 idUsuario = vendedorParceiro.Id;
 
@@ -256,7 +256,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             TorcamentoCotacaoFiltro orcamentoCotacaoFiltro = new TorcamentoCotacaoFiltro
             {
-                LimitarDataDashboard = true,                
+                LimitarDataDashboard = true,
                 Loja = tOrcamentoFiltro.Loja,
             };
 
@@ -293,7 +293,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     IdIndicadorVendedor = vendParceiros.FirstOrDefault(v => v.Id == x.IdIndicadorVendedor)?.Id,
                     DtExpiracao = x.Validade,
                     DataServidor = new DateTime()
-            }));                
+                }));
 
             }
 
@@ -1460,7 +1460,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 if (usuarioLogado.TipoUsuario != (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
                 {
-                    var torcamentista = _orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { apelido = orcamento.Parceiro});
+                    var torcamentista = _orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { apelido = orcamento.Parceiro });
                     if (torcamentista == null) return null;
 
 
