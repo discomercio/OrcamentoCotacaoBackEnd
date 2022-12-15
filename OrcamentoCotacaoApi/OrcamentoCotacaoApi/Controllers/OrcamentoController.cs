@@ -56,7 +56,7 @@ namespace OrcamentoCotacaoApi.Controllers
              * Quando implementar a busca para usuário com permissão universal "103000"
              * é só descomentar a linha abaixo que irá buscar todos os orçamentos por loja
              */
-            //filtro.PermissaoUniversal = User.ValidaPermissao((int)ePermissao.VisualizarOrcamentoConsultar);
+            filtro.PermissaoUniversal = User.ValidaPermissao((int)ePermissao.VisualizarOrcamentoConsultar);
 
             var saida = _orcamentoBll.PorFiltro(filtro, LoggedUser);
 
