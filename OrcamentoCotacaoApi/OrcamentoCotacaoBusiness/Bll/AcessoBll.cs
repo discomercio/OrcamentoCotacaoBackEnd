@@ -402,41 +402,45 @@ namespace OrcamentoCotacaoBusiness.Bll
         public async Task<ExpiracaoSenhaResponseViewModel> VerificarExpiracao(AtualizarSenhaDto atualizarSenhaDto)
         {
 
-            var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM);
-
-            bool expirada = false;
-
-
-            if (atualizarSenhaDto.TipoUsuario == 1)
+            using (var db = contextoProvider.GetContextoLeitura())
             {
-                var usuario = await (from u in dbgravacao.Tusuario
-                                     where u.Usuario == atualizarSenhaDto.Apelido.ToUpper().Trim()
-                                     select u).FirstOrDefaultAsync();
 
 
-                if (usuario.Dt_Ult_Alteracao_Senha == null) expirada = true;
+                bool expirada = false;
 
-            }
-            else if (atualizarSenhaDto.TipoUsuario == 2)
-            {
-                var orcamentista = await (from u in dbgravacao.TorcamentistaEindicador
-                                          where u.Apelido == atualizarSenhaDto.Apelido.ToUpper().Trim()
-                                          select u).FirstOrDefaultAsync();
 
-                if (orcamentista.Dt_Ult_Alteracao_Senha == null) expirada = true;
+                if (atualizarSenhaDto.TipoUsuario == 1)
+                {
+                    var usuario = await (from u in db.Tusuario
+                                         where u.Usuario == atualizarSenhaDto.Apelido.ToUpper().Trim()
+                                         select u).FirstOrDefaultAsync();
 
-            }
-            else
-            {
-                var vendedorParceiro = await (from u in dbgravacao.TorcamentistaEIndicadorVendedor
-                                              where u.Email == atualizarSenhaDto.Apelido.ToUpper().Trim()
+
+                    if (usuario.Dt_Ult_Alteracao_Senha == null) expirada = true;
+
+                }
+                else if (atualizarSenhaDto.TipoUsuario == 2)
+                {
+                    var orcamentista = await (from u in db.TorcamentistaEindicador
+                                              where u.Apelido == atualizarSenhaDto.Apelido.ToUpper().Trim()
                                               select u).FirstOrDefaultAsync();
 
-                if (vendedorParceiro.DataUltimaAlteracaoSenha == null) expirada = true;
+                    if (orcamentista.Dt_Ult_Alteracao_Senha == null) expirada = true;
+
+                }
+                else
+                {
+                    var vendedorParceiro = await (from u in db.TorcamentistaEindicadorVendedor
+                                                  where u.Email == atualizarSenhaDto.Apelido.ToUpper().Trim()
+                                                  select u).FirstOrDefaultAsync();
+
+                    if (vendedorParceiro.DataUltimaAlteracaoSenha == null) expirada = true;
+
+                }
+
+                return new ExpiracaoSenhaResponseViewModel(expirada, "Senha expirada ou primeiro acesso.");
 
             }
-
-            return new ExpiracaoSenhaResponseViewModel(expirada, "Senha expirada ou primeiro acesso.");
 
         }
 
