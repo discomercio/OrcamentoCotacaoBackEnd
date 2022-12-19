@@ -328,9 +328,9 @@ namespace OrcamentoCotacaoBusiness.Bll
                     if (tOrcamentoFiltro.TipoUsuario.Value == (int)Constantes.TipoUsuario.PARCEIRO)
                     {
                         orcamentoCotacaoFiltro.IdIndicador = usuarioLogin.Id;
-                        tOrcamentoFiltro.Vendedor = usuarioLogin.VendedorResponsavel;
+                        //tOrcamentoFiltro.Vendedor = usuarioLogin.VendedorResponsavel;
                         tOrcamentoFiltro.Parceiro = usuarioLogin.IdParceiro;
-                        orcamentoCotacaoFiltro.Vendedor = usuarioLogin.VendedorResponsavel;
+                        //orcamentoCotacaoFiltro.Vendedor = usuarioLogin.VendedorResponsavel;
                         orcamentoCotacaoFiltro.Parceiro = usuarioLogin.IdParceiro;
                     }
 
@@ -1205,32 +1205,14 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         private string ValidarPermissaoAtualizarOpcaoOrcamentoCotacao(OrcamentoResponse orcamento, UsuarioLogin usuarioLogado)
         {
-            if (orcamento.IdIndicadorVendedor != null)
-            {
-                var vendedoresParceiro = _orcamentistaEIndicadorVendedorBll.BuscarVendedoresParceiro(orcamento.Parceiro);
-                if (vendedoresParceiro == null) return "Nenhum vendedor do parceiro encontrado!";
-
-                var email = vendedoresParceiro //IdIndicadorVendedor
-                    .Where(x => x.Id == orcamento.IdIndicadorVendedor)
-                    .FirstOrDefault().Email;
-
-                if (usuarioLogado.Apelido == email.ToUpper()) return null;
-            }
-
-            if (orcamento.IdIndicadorVendedor == null && orcamento.IdIndicador != null)
-            {
-                var parceiro = _orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { apelido = orcamento.Parceiro });
-                if (parceiro == null) return "Parceiro não encontrado!";
-
-                if (usuarioLogado.Apelido == parceiro.Apelido) return null;
-            }
+            if (usuarioLogado.Id == orcamento.IdIndicadorVendedor) return null;
+            if (usuarioLogado.Id == orcamento.IdIndicador) return null;
+            if (usuarioLogado.Id == orcamento.IdVendedor) return null;
 
             if (usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_1) ||
                 usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_2) ||
                 usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_3))
                 return null;
-
-            if (orcamento.CadastradoPor.ToUpper() == usuarioLogado.Apelido.ToUpper()) return null;
 
             return "Não encontramos a permissão do usuário necessária para atualizar o orçamento!";
         }
