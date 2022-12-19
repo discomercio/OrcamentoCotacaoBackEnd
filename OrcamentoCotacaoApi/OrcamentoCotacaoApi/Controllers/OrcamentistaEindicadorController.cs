@@ -80,7 +80,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEindicadorController/BuscarParceiros/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
-            var usuarios = _orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { loja = loja,  status = Constantes.ORCAMENTISTA_INDICADOR_STATUS_ATIVO, acessoHabilitado = 1 });
+            var usuarios = _orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { loja = loja,  status = Constantes.ORCAMENTISTA_INDICADOR_STATUS_ATIVO });
             if (usuarios != null)
                 usuarios = usuarios.OrderBy(o => o.Apelido).ToList();
             usuarios.Insert(0, _orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = Constantes.SEM_INDICADOR, status = Constantes.ORCAMENTISTA_INDICADOR_STATUS_INATIVO }).FirstOrDefault());

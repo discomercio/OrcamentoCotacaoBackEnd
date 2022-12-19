@@ -123,8 +123,8 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 var usuario = _usuarioBll.PorFiltro(new TusuarioFiltro() { id = orcamento.idVendedor }).FirstOrDefault();
                 var parceiro = orcamento.idIndicador != null ? _orcamentistaEIndicadorBll
-                    .BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = (int)orcamento.idIndicador, acessoHabilitado = 1 }) : null;
-                if (parceiro == null) throw new ArgumentException("Parceiro não encontrado!");
+                    .BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = (int)orcamento.idIndicador }) : null;
+                if (orcamento.idIndicador != null && parceiro == null) throw new ArgumentException("Parceiro não encontrado!");
 
                 string vendedorParceiro = null;
                 if (orcamento.idIndicadorVendedor != null)
@@ -224,42 +224,39 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public List<DashoardResponse> Dashboard(TorcamentoFiltro tOrcamentoFiltro, UsuarioLogin usuarioLogin)
         {
-
-            var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM);
-
             int idUsuario;
 
-            if (usuarioLogin.TipoUsuario == 1)
+            using (var dbGravacao = _contextoBdProvider.GetContextoLeitura())
             {
-                var usuario = (from u in dbGravacao.Tusuario
-                                    where u.Usuario == usuarioLogin.Apelido.ToUpper().Trim()
-                                    select u).FirstOrDefault();
-                
-                idUsuario = usuario.Id;
+                if (usuarioLogin.TipoUsuario == 1)
+                {
+                    var usuario = (from u in dbGravacao.Tusuario
+                                   where u.Usuario == usuarioLogin.Apelido.ToUpper().Trim()
+                                   select u).FirstOrDefault();
 
+                    idUsuario = usuario.Id;
+                }
+                else if (usuarioLogin.TipoUsuario == 2)
+                {
+                    var orcamentista = (from u in dbGravacao.TorcamentistaEindicador
+                                        where u.Apelido == usuarioLogin.Apelido.ToUpper().Trim()
+                                        select u).FirstOrDefault();
+
+                    idUsuario = orcamentista.IdIndicador;
+                }
+                else
+                {
+                    var vendedorParceiro = (from u in dbGravacao.TorcamentistaEindicadorVendedor
+                                            where u.Email == usuarioLogin.Apelido.ToUpper().Trim()
+                                            select u).FirstOrDefault();
+
+                    idUsuario = vendedorParceiro.Id;
+                }
             }
-            else if (usuarioLogin.TipoUsuario == 2)
+
+            var orcamentoCotacaoFiltro = new TorcamentoCotacaoFiltro
             {
-                var orcamentista = (from u in dbGravacao.TorcamentistaEindicador
-                                         where u.Apelido == usuarioLogin.Apelido.ToUpper().Trim()
-                                         select u).FirstOrDefault();
-
-                idUsuario = orcamentista.IdIndicador;
-
-            }
-            else
-            {
-                var vendedorParceiro = (from u in dbGravacao.TorcamentistaEIndicadorVendedor
-                                             where u.Email == usuarioLogin.Apelido.ToUpper().Trim()
-                                             select u).FirstOrDefault();
-
-                idUsuario = vendedorParceiro.Id;
-
-            }
-
-            TorcamentoCotacaoFiltro orcamentoCotacaoFiltro = new TorcamentoCotacaoFiltro
-            {
-                LimitarDataDashboard = true,                
+                LimitarDataDashboard = true,
                 Loja = tOrcamentoFiltro.Loja,
             };
 
@@ -604,13 +601,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             var usuario = _usuarioBll.PorFiltro(new TusuarioFiltro() { id = orcamento.IdVendedor }).FirstOrDefault();
             var parceiro = orcamento.IdIndicador != null ? _orcamentistaEIndicadorBll
-                .BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = (int)orcamento.IdIndicador, acessoHabilitado = 1 }) : null;
-            if (parceiro == null)
-            {
-                response.Mensagem = "Parceiro não encontrado!";
-                return response;
-
-            }
+                .BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { idParceiro = (int)orcamento.IdIndicador }) : null;
 
             string vendedorParceiro = null;
             if (orcamento.IdIndicadorVendedor != null)
@@ -1228,7 +1219,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             if (orcamento.IdIndicadorVendedor == null && orcamento.IdIndicador != null)
             {
-                var parceiro = _orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { apelido = orcamento.Parceiro, acessoHabilitado = 1 });
+                var parceiro = _orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { apelido = orcamento.Parceiro });
                 if (parceiro == null) return "Parceiro não encontrado!";
 
                 if (usuarioLogado.Apelido == parceiro.Apelido) return null;
@@ -1499,7 +1490,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 if (usuarioLogado.TipoUsuario != (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
                 {
-                    var torcamentista = _orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { apelido = orcamento.Parceiro});
+                    var torcamentista = _orcamentistaEIndicadorBll.BuscarParceiroPorApelido(new TorcamentistaEindicadorFiltro() { apelido = orcamento.Parceiro });
                     if (torcamentista == null) return null;
 
 
