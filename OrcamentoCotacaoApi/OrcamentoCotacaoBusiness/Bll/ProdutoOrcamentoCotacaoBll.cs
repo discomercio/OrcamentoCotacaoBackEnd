@@ -486,6 +486,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 var retorno = orcamentoCotacaoOpcaoItemUnificadoBll.AtualizarComTransacao(produto, contextoBdGravacao);
 
                 response.TorcamentoCotacaoItemUnificados.Add(retorno);
+                response.LogOperacao += UtilsGlobais.Util.MontalogComparacao(item, produto, response.LogOperacao, "");
             }
             response.Sucesso = true;
             return response;

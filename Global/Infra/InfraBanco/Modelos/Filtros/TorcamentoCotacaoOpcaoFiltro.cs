@@ -6,5 +6,7 @@ namespace InfraBanco.Modelos.Filtros
     {
         public int Id { get; set; }
         public int IdOrcamentoCotacao { get; set; }
+
+        public bool IncluirTorcamentoCotacaoProdutoUnificado { get; set; }
     }
 }

@@ -187,7 +187,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             response.TorcamentoCotacaoOpcaoPagtos = new List<TorcamentoCotacaoOpcaoPagto>();
 
             _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Verificando a remoção de formas de pagamentos");
-            RemoverOrcamentoCotacaoOpcaoPagtoComTransacao(formaPagtoAntiga, opcao, dbGravacao);
+            string logRemocao = RemoverOrcamentoCotacaoOpcaoPagtoComTransacao(formaPagtoAntiga, opcao, dbGravacao);
 
             foreach (var pagto in opcao.FormaPagto)
             {
@@ -249,18 +249,20 @@ namespace OrcamentoCotacaoBusiness.Bll
             return response;
         }
 
-        public List<TorcamentoCotacaoOpcaoPagto> BuscarOpcaoFormasPagtos(int idOpcao)
+        public List<TorcamentoCotacaoOpcaoPagto> BuscarOpcaoFormasPagtos(int idOpcao, bool incluirTorcamentoCotacaoOpcaoItemAtomicoCustoFin)
         {
             if (idOpcao == 0) return null;
 
-            var opcaoFormaPagtos = orcamentoCotacaoOpcaoPagtoBll.PorFiltro(new TorcamentoCotacaoOpcaoPagtoFiltro() { IdOpcao = idOpcao });
+            var opcaoFormaPagtos = orcamentoCotacaoOpcaoPagtoBll.PorFiltro(new TorcamentoCotacaoOpcaoPagtoFiltro() { IdOpcao = idOpcao,  IncluirTorcamentoCotacaoOpcaoItemAtomicoCustoFin = incluirTorcamentoCotacaoOpcaoItemAtomicoCustoFin});
 
             return opcaoFormaPagtos;
         }
 
-        public void RemoverOrcamentoCotacaoOpcaoPagtoComTransacao(List<TorcamentoCotacaoOpcaoPagto> formaPagtoAntiga,
+        public string RemoverOrcamentoCotacaoOpcaoPagtoComTransacao(List<TorcamentoCotacaoOpcaoPagto> formaPagtoAntiga,
             AtualizarOrcamentoOpcaoRequest opcao, ContextoBdGravacao dbGravacao)
         {
+            string logRetorno = "";
+            string logProduto = "";
             foreach (var pagtoAntigo in formaPagtoAntiga)
             {
                 var pagto = opcao.FormaPagto.Where(x => x.Id == pagtoAntigo.Id).FirstOrDefault();
@@ -276,14 +278,19 @@ namespace OrcamentoCotacaoBusiness.Bll
                         {
                             orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.ExcluirComTransacao(item, dbGravacao);
                             _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. RemoverOrcamentoCotacaoOpcaoPagtoComTransacao. Produto atômico custo fin excluída. Id => [{item.Id}]");
+
+                            if (!string.IsNullOrEmpty(logProduto)) logProduto += $"\r      ";
+                            logProduto += $"Id={item.Id}; IdItemAtomico={item.IdItemAtomico}; IdOpcaoPagto={item.IdOpcaoPagto};";
                         }
                     }
 
                     orcamentoCotacaoOpcaoPagtoBll.ExcluirComTransacao(pagtoAntigo, dbGravacao);
                     _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. RemoverOrcamentoCotacaoOpcaoPagtoComTransacao. Forma de pagamento excluída. Id => [{pagtoAntigo.Id}]");
-
+                    logRetorno = $"Forma pagamento excluída: Id={pagtoAntigo.Id}; IdOrcamentoCotacaoOpcao={pagtoAntigo.IdOrcamentoCotacaoOpcao};\rLista de produtos atômicos custo excluídos: {logProduto}";
                 }
             }
+
+            return logRetorno;
         }
 
         public List<TorcamentoCotacaoOpcaoPagto> PorFiltroComTransacao(TorcamentoCotacaoOpcaoPagtoFiltro filtro, ContextoBdGravacao dbGravacao)

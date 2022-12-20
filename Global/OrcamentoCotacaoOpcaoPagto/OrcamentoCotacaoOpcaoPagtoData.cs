@@ -2,6 +2,7 @@
 using InfraBanco;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -82,6 +83,10 @@ namespace OrcamentoCotacaoOpcaoPagto
                     if(obj.IdOpcao != 0)
                     {
                         saida = saida.Where(x => x.IdOrcamentoCotacaoOpcao == obj.IdOpcao);
+                    }
+                    if (obj.IncluirTorcamentoCotacaoOpcaoItemAtomicoCustoFin)
+                    {
+                        saida = saida.Include(x => x.TorcamentoCotacaoOpcaoItemAtomicoCustoFin);
                     }
 
                     return saida.ToList();
