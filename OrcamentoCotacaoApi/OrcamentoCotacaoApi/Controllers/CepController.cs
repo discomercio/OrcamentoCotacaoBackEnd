@@ -48,7 +48,7 @@ namespace PrepedidoApi.Controllers
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. CepController/BuscarCep/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
-            return Ok();
+            return Ok(response);
         }
 
         [HttpGet("buscarUfs")]
