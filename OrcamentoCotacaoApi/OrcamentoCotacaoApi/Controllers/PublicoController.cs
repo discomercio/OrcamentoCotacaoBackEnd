@@ -177,7 +177,8 @@ namespace OrcamentoCotacaoApi.Controllers
 
             var request = new
             {
-                Orcamento = aprovarOrcamento.IdOrcamento
+                Orcamento = aprovarOrcamento.IdOrcamento,
+                IP = HttpContext.Connection.RemoteIpAddress.ToString()
             };
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. PublicoController/AprovarOrcamento/POST - Request => [{JsonSerializer.Serialize(request)}].");
@@ -201,7 +202,7 @@ namespace OrcamentoCotacaoApi.Controllers
             var retorno = await _orcamentoBll.AprovarOrcamento(
                 aprovarOrcamento, 
                 Constantes.TipoUsuarioContexto.Cliente,
-                (int)Constantes.TipoUsuario.CLIENTE);
+                (int)Constantes.TipoUsuario.CLIENTE, request.IP);
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. PublicoController/AprovarOrcamento/GET - Response => [Retorna lista de mensagens].");
 

@@ -36,7 +36,7 @@ namespace Prepedido.Bll
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             int limite_de_itens, 
             Constantes.TipoUsuarioContexto tipoUsuarioContexto,
-            int usuarioId)
+            int usuarioId, string ip)
         {
             
             if(!string.IsNullOrEmpty(prePedido.DetalhesPrepedido.EntregaImediata) && 
@@ -89,7 +89,7 @@ namespace Prepedido.Bll
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTO))
             {
                 var ret = (await prepedidoBll.CadastrarPrepedido(prePedidoDados, apelido,
-                limiteArredondamento, verificarPrepedidoRepetido, sistemaResponsavelCadastro, limite_de_itens, dbGravacao)).ToList();
+                limiteArredondamento, verificarPrepedidoRepetido, sistemaResponsavelCadastro, limite_de_itens, dbGravacao, ip)).ToList();
 
                 if (ret.Count == 1)
                 {

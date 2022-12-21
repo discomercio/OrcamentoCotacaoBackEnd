@@ -192,6 +192,9 @@ namespace Prepedido.Bll
             {
                 campos_a_inserir += "abaixo_min_status|abaixo_min_autorizacao|abaixo_min_autorizador|abaixo_min_superv_autorizador";
             }
+            if (item.IdUsuarioDescontoSuperior.HasValue)
+                campos_a_inserir += "|IdUsuarioDescontoSuperior|DataHoraDescontoSuperior";
+
 
             return campos_a_inserir;
         }

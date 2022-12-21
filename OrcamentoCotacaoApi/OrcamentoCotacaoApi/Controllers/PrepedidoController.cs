@@ -253,7 +253,8 @@ namespace PrepedidoApi.Controllers
             var request = new
             {
                 Usuario = LoggedUser.Apelido,
-                PrePedido = prePedido
+                PrePedido = prePedido,
+                IP = HttpContext.Connection.RemoteIpAddress.ToString()
             };
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/CadastrarPrepedido/POST - Request => [{JsonSerializer.Serialize(request)}].");
@@ -275,7 +276,7 @@ namespace PrepedidoApi.Controllers
                 appSettings.VerificarPrepedidoRepetido,
                 Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, 
                 appSettings.LimiteItens,
-                (Constantes.TipoUsuarioContexto)usuario.TipoUsuario, usuario.Id);
+                (Constantes.TipoUsuarioContexto)usuario.TipoUsuario, usuario.Id, request.IP);
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/CadastrarPrepedido/POST - Response => [{JsonSerializer.Serialize(ret)}].");
 

@@ -178,7 +178,7 @@ namespace Especificacao.Ambiente.PrepedidoApi.Prepedido.Bll.PrepedidoApiBll.Cada
             //exatamente igual ao PrepedidoApi.Controllers public async Task<IActionResult> CadastrarPrepedido(PrePedidoDto prePedido)
             //mas nao verificamos prepedido repetido
             IEnumerable<string> ret = prepedidoApiBll.CadastrarPrepedido(prePedidoDto, apelido.Trim(), 0.01M, false,
-                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS, 12, (Constantes.TipoUsuarioContexto)2, 15).Result;
+                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS, 12, (Constantes.TipoUsuarioContexto)2, 15, ":1").Result;
             UltimoResultadoCadastrarPrepedido = ret;
 
             //se não tem erro, retorna somente 1 item com o prepedio, tipo ["227905Z"]

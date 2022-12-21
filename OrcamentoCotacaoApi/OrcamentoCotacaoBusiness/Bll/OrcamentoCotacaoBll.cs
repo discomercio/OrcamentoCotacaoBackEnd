@@ -30,6 +30,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response.Dashoard;
+using Microsoft.Extensions.Configuration;
+using UtilsGlobais;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -59,6 +61,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly ILogger<OrcamentoCotacaoBll> _logger;
         private readonly Prepedido.Bll.PrepedidoBll _prepedidoBll;
         private readonly Cfg.CfgOperacao.CfgOperacaoBll _cfgOperacaoBll;
+        private readonly IConfiguration _configuration;
 
         public OrcamentoCotacaoBll(
             OrcamentoBll orcamentoBll,
@@ -84,7 +87,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             ClienteBll clienteBll,
             ILogger<OrcamentoCotacaoBll> logger,
             Prepedido.Bll.PrepedidoBll _prepedidoBll,
-            Cfg.CfgOperacao.CfgOperacaoBll _cfgOperacaoBll
+            Cfg.CfgOperacao.CfgOperacaoBll _cfgOperacaoBll,
+            IConfiguration configuration
             )
         {
             _orcamentoBll = orcamentoBll;
@@ -111,6 +115,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             _logger = logger;
             this._prepedidoBll = _prepedidoBll;
             this._cfgOperacaoBll = _cfgOperacaoBll;
+            _configuration = configuration;
         }
 
         public OrcamentoCotacaoDto PorGuid(string guid)
@@ -1679,7 +1684,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public async Task<List<string>> AprovarOrcamento(AprovarOrcamentoRequestViewModel aprovarOrcamento,
-            Constantes.TipoUsuarioContexto tipoUsuarioContexto, int idUsuarioUltAtualizacao)
+            Constantes.TipoUsuarioContexto tipoUsuarioContexto, int idUsuarioUltAtualizacao, string ip)
         {
             if (aprovarOrcamento == null) return new List<string>() { "É necessário preencher o cadastro do cliente!" };
 
@@ -1733,7 +1738,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     aprovarOrcamento.ClienteCadastroDto.DadosCliente.Id = tCliente.Id;
                     //passar o id do cliente para o modelo
                     //verificar os erros 
-                    retorno = await CadastrarPrepedido(aprovarOrcamento, orcamento, dbGravacao, tipoUsuarioContexto, idUsuarioUltAtualizacao);
+                    retorno = await CadastrarPrepedido(aprovarOrcamento, orcamento, dbGravacao, tipoUsuarioContexto, 
+                        idUsuarioUltAtualizacao, ip);
                     //precisamos mudar isso, precisamos verificar se existe um número de orçamento válido ou adicionar alguma prop na classe
                     if (retorno.Count >= 1)
                     {
@@ -1784,10 +1790,6 @@ namespace OrcamentoCotacaoBusiness.Bll
                     formaPagtoSelecionada.Aprovado = true;
                     var objPagto = _formaPagtoOrcamentoCotacaoBll.AtualizarOpcaoPagtoComTransacao(formaPagtoSelecionada, dbGravacao);
 
-                    //fazer a montagem do log aqui
-                    //buscar o orçamento para fazer a montagem do log
-                    //incluir os valores: pedido = t_orcamento.orcamento | IdOrcamentoCotacao = t_orcamento_cotacao.Id | id_cliente = t_orcamento.id_cliente
-
                     await dbGravacao.SaveChangesAsync();
                     dbGravacao.transacao.Commit();
 
@@ -1802,7 +1804,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public async Task<List<string>> CadastrarPrepedido(AprovarOrcamentoRequestViewModel aprovarOrcamento, TorcamentoCotacao orcamento,
-            ContextoBdGravacao dbGravacao, Constantes.TipoUsuarioContexto tipoUsuarioContexto, int idUsuarioUltAtualizacao)
+            ContextoBdGravacao dbGravacao, Constantes.TipoUsuarioContexto tipoUsuarioContexto, int idUsuarioUltAtualizacao, string ip)
         {
             _logger.LogInformation("Iniciando criação de Pré-Pedido.");
             // criar prepedidoDto
@@ -1878,9 +1880,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                 parceiro = prepedido.DadosCliente.Indicador_Orcamentista;
             }
 
+            var appSettingsSection = _configuration.GetSection("AppSettings");
+            var appSettings = appSettingsSection.Get<Configuracao>();
+
             PrePedidoDados prePedidoDados = PrePedidoDto.PrePedidoDados_De_PrePedidoDto(prepedido);
             return (await _prepedidoBll.CadastrarPrepedido(prePedidoDados, parceiro, 0.01M, false,
-                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, 12, dbGravacao)).ToList();
+                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, appSettings.LimiteItens, dbGravacao, ip)).ToList();
         }
 
         public async Task<FormaPagtoCriacaoDto> IncluirFormaPagtoCriacaoParaPrepedido(FormaPagtoCriacaoResponseViewModel formaPagtoSelecionada)

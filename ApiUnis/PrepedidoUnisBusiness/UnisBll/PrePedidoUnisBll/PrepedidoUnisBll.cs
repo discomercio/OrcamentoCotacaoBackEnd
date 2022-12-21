@@ -117,7 +117,7 @@ namespace PrepedidoApiUnisBusiness.UnisBll.PrePedidoUnisBll
                 prePedidoUnis.Indicador_Orcamentista.ToUpper(),
                 Convert.ToDecimal(configuracaoApiUnis.LimiteArredondamentoPrecoVendaOrcamentoItem), false,
                 Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__UNIS,
-                configuracaoApiUnis.LimiteItens, dbgravacao)).ToList();
+                configuracaoApiUnis.LimiteItens, dbgravacao, ":1")).ToList();
 
                 if (lstRet.Count > 0)
                 {

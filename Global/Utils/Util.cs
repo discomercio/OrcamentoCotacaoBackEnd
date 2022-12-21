@@ -785,7 +785,7 @@ namespace UtilsGlobais
         }
 
         public static TLogV2 GravaLogV2ComTransacao(ContextoBdGravacao dbgravacao, string log, short idTipoUsuarioContexto,
-            int idUsuario, string loja, string pedido, int? idOrcamentoCotacao, string idCliente,
+            int? idUsuario, string loja, string pedido, int? idOrcamentoCotacao, string idCliente,
             Constantes.CodSistemaResponsavel codSistemaResponsavel, int? idOpercao, string ip)
         {
             TLogV2 tLogV2 = new TLogV2()
