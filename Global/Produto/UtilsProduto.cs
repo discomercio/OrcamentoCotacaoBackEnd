@@ -15,7 +15,7 @@ namespace Produto
     {
         public static async Task<Tparametro> BuscarRegistroParametro(string id, ContextoBdProvider contextoProvider)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            using var db = contextoProvider.GetContextoLeitura();
 
             var parametroTask = from c in db.Tparametro
                                 where c.Id == id
@@ -30,7 +30,7 @@ namespace Produto
         public static async Task ObterCtrlEstoqueProdutoRegra_Teste(List<string> lstErros,
             List<RegrasBll> lstRegrasCrtlEstoque, string uf, string cliente_regra, ContextoBdProvider contextoProvider)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            using var db = contextoProvider.GetContextoLeitura();
 
             var dbTwmsRegraCdXUfXPessoaXCds = from c in db.TwmsRegraCdXUfXPessoaXCd
                                               join nfe in db.TnfEmitente on c.Id_nfe_emitente equals nfe.Id
@@ -233,7 +233,7 @@ namespace Produto
 
         private static async Task<IEnumerable<ProdutosEstoqueDados>> BuscarListaQtdeEstoqueGlobal(ContextoBdProvider contextoProvider)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            using var db = contextoProvider.GetContextoLeitura();
 
             var lstEstoqueQtdeUtilZeroComSubQuery = from c in db.TestoqueItem.Include(x => x.Testoque)
                                                     where ((c.Qtde - c.Qtde_utilizada) > 0) &&
@@ -259,7 +259,7 @@ namespace Produto
         private static async Task<IEnumerable<ProdutosEstoqueDados>> BuscarListaQtdeEstoque(ContextoBdProvider contextoProvider)
         {
 
-            var db = contextoProvider.GetContextoLeitura();
+            using var db = contextoProvider.GetContextoLeitura();
 
             var lstEstoqueQtdeUtilZero = from c in db.TestoqueItem.Include(x => x.Testoque)
                                          where (c.Qtde - c.Qtde_utilizada) > 0 &&

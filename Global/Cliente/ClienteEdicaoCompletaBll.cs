@@ -1,15 +1,12 @@
-﻿using InfraBanco.Modelos;
+﻿using Cliente.Dados;
+using InfraBanco;
+using InfraBanco.Constantes;
+using InfraBanco.Modelos;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using InfraBanco.Constantes;
-using Cep;
-using Cliente.Dados;
-using InfraBanco;
-using System.Reflection;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Threading.Tasks;
 
 /*
  * estas rotinas são para atender a loja e outros módulos que precisem de edição completa
@@ -21,8 +18,11 @@ namespace Cliente
 {
     public partial class ClienteBll
     {
-        public async Task<List<string>> AtualizarClienteParcialLoja(string apelido, Cliente.Dados.ClienteCadastroDados clienteCadastroDados,
-            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel, bool edicaoCompleta)
+        public async Task<List<string>> AtualizarClienteParcialLoja(
+            string apelido, 
+            Cliente.Dados.ClienteCadastroDados clienteCadastroDados,
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel, 
+            bool edicaoCompleta)
         {
             /*
              * somente os seguintes campos serão atualizados:
@@ -30,14 +30,26 @@ namespace Cliente
              * inscrição estadual
              * tipo de contibuinte ICMS
              * */
-            var db = contextoProvider.GetContextoLeitura();
-            string log = "";
+            
+            var log = string.Empty;
+            var lstErros = new List<string>();
 
-            List<string> lstErros = new List<string>();
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await ListarBancosCombo()).ToList();
 
-            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(clienteCadastroDados.DadosCliente, true, clienteCadastroDados.RefBancaria,
-                clienteCadastroDados.RefComercial, lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, true, sistemaResponsavel, false);
+            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(
+                clienteCadastroDados.DadosCliente,
+                true,
+                clienteCadastroDados.RefBancaria,
+                clienteCadastroDados.RefComercial,
+                lstErros,
+                contextoProvider,
+                cepBll,
+                bancoNFeMunicipio,
+                lstBanco,
+                true,
+                sistemaResponsavel,
+                false);
+
             if (lstErros.Count > 0)
                 return lstErros;
 
@@ -53,8 +65,16 @@ namespace Cliente
                                               where c.Id == clienteCadastroDados.DadosCliente.Id
                                               select c).FirstOrDefaultAsync();
 
-                        log = await Verificar_AlterouClienteCadastroDados(cli, clienteCadastroDados, apelido, sistemaResponsavel, edicaoCompleta,
-                            dbgravacao, lstErros, lstBanco);
+                        log = await Verificar_AlterouClienteCadastroDados(
+                            cli, 
+                            clienteCadastroDados, 
+                            apelido, 
+                            sistemaResponsavel, 
+                            edicaoCompleta,
+                            dbgravacao, 
+                            lstErros, 
+                            lstBanco);
+
                         if (!string.IsNullOrEmpty(log))
                         {
                             log += MontarLogAlteracao_SistemaResponsavel(cli);
@@ -68,8 +88,15 @@ namespace Cliente
                             dbgravacao.Update(cli);
                             await dbgravacao.SaveChangesAsync();
 
-                            bool salvouLog = UtilsGlobais.Util.GravaLog(dbgravacao, apelido, clienteCadastroDados.DadosCliente.Loja, "",
-                                clienteCadastroDados.DadosCliente.Id, Constantes.OP_LOG_CLIENTE_ALTERACAO, log);
+                            bool salvouLog = UtilsGlobais.Util.GravaLog(
+                                dbgravacao, 
+                                apelido, 
+                                clienteCadastroDados.DadosCliente.Loja, 
+                                string.Empty,
+                                clienteCadastroDados.DadosCliente.Id, 
+                                Constantes.OP_LOG_CLIENTE_ALTERACAO, 
+                                log);
+
                             if (salvouLog)
                                 dbgravacao.transacao.Commit();
                         }
@@ -1061,4 +1088,3 @@ namespace Cliente
     }
 }
 #endif
-

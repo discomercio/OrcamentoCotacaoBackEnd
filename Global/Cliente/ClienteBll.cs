@@ -30,9 +30,10 @@ namespace Cliente
         private readonly CepBll cepBll;
         private readonly IBancoNFeMunicipio bancoNFeMunicipio;
 
-        public ClienteBll(InfraBanco.ContextoBdProvider contextoProvider,
-                    CepBll cepBll,
-                    IBancoNFeMunicipio bancoNFeMunicipio)
+        public ClienteBll(
+            InfraBanco.ContextoBdProvider contextoProvider,
+            CepBll cepBll,
+            IBancoNFeMunicipio bancoNFeMunicipio)
         {
             this.contextoProvider = contextoProvider;
             this.cepBll = cepBll;
@@ -369,21 +370,37 @@ namespace Cliente
              * inscrição estadual
              * tipo de contibuinte ICMS
              * */
-            var db = contextoProvider.GetContextoLeitura();
-            string log = "";
 
-            List<string> lstErros = new List<string>();
+            var log = string.Empty;
 
-            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(dadosClienteCadastroDados, false, null, null, lstErros,
-                contextoProvider, cepBll, bancoNFeMunicipio, null, true, sistemaResponsavel, false);
+            var lstErros = new List<string>();
+
+            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(
+                dadosClienteCadastroDados,
+                false,
+                null,
+                null,
+                lstErros,
+                contextoProvider,
+                cepBll,
+                bancoNFeMunicipio,
+                null,
+                true,
+                sistemaResponsavel,
+                false);
+
             if (lstErros.Count > 0)
                 return lstErros;
 
+            Tcliente cli = null;
 
-            var dados = from c in db.Tcliente
-                        where c.Id == dadosClienteCadastroDados.Id
-                        select c;
-            var cli = await dados.FirstOrDefaultAsync();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                var dados = await (from c in db.Tcliente
+                                   where c.Id == dadosClienteCadastroDados.Id
+                                   select c).FirstOrDefaultAsync();
+                cli = dados;
+            }
 
             if (cli != null)
             {
@@ -452,62 +469,73 @@ namespace Cliente
             }
         }
 
-        public async Task<IEnumerable<Cliente.Dados.ListaBancoDados>> ListarBancosCombo()
+        public async Task<IEnumerable<ListaBancoDados>> ListarBancosCombo()
         {
-            var db = contextoProvider.GetContextoLeitura();
+            List<ListaBancoDados> bancos;
 
-            var bancos = from c in db.Tbanco
-                         orderby c.Codigo
-                         select new Cliente.Dados.ListaBancoDados
-                         {
-                             Codigo = c.Codigo,
-                             Descricao = c.Descricao
-                         };
-
-            return await bancos.ToListAsync();
-        }
-
-        public async Task<IEnumerable<Cliente.Dados.EnderecoEntregaJustificativaDados>> ListarComboJustificaEndereco(string apelido, string loja = null)
-        {
-            var db = contextoProvider.GetContextoLeitura();
-
-            if (string.IsNullOrEmpty(loja))
+            using (var db = contextoProvider.GetContextoLeitura())
             {
-                loja = await (from c in db.TorcamentistaEindicador
-                              where c.Apelido == apelido
-                              select c.Loja).FirstOrDefaultAsync();
+                bancos = await (from c in db.Tbanco
+                                orderby c.Codigo
+                                select new ListaBancoDados
+                                {
+                                    Codigo = c.Codigo,
+                                    Descricao = c.Descricao
+                                }).ToListAsync();
             }
 
-
-            return await ListarComboJustificaEnderecoPorLoja(db, loja);
+            return bancos;
         }
 
-        public async Task<IEnumerable<EnderecoEntregaJustificativaDados>> ListarComboJustificaEnderecoPorLoja(ContextoBd db, string loja)
+        public async Task<IEnumerable<EnderecoEntregaJustificativaDados>> ListarComboJustificaEndereco(
+            string apelido, 
+            string loja = null)
         {
-            var retorno = from c in db.TcodigoDescricao
-                          where c.Grupo == Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA &&
-                          (c.Lojas_Habilitadas == null || c.Lojas_Habilitadas.Length == 0 || c.Lojas_Habilitadas.Contains("|" + loja + "|")) &&
-                          (c.St_Inativo == 0 || c.Codigo == "")
-                          select new { c.Codigo, c.Descricao };
-
-            List<Cliente.Dados.EnderecoEntregaJustificativaDados> lst = new List<Cliente.Dados.EnderecoEntregaJustificativaDados>();
-
-            foreach (var r in await retorno.ToListAsync())
+            using (var db = contextoProvider.GetContextoLeitura())
             {
-                Cliente.Dados.EnderecoEntregaJustificativaDados jus = new Cliente.Dados.EnderecoEntregaJustificativaDados
+                if (string.IsNullOrEmpty(loja))
                 {
-                    EndEtg_cod_justificativa = !string.IsNullOrEmpty(r.Codigo) && r.Codigo.Length == 1 && r.Codigo != "0" ?
-                    "00" + r.Codigo : r.Codigo,
-                    EndEtg_descricao_justificativa = r.Descricao
-                };
-                lst.Add(jus);
+                    loja = await (from c in db.TorcamentistaEindicador
+                                  where c.Apelido == apelido
+                                  select c.Loja).FirstOrDefaultAsync();
+                }
             }
+
+            return await ListarComboJustificaEnderecoPorLoja(loja);
+        }
+
+        public async Task<IEnumerable<EnderecoEntregaJustificativaDados>> ListarComboJustificaEnderecoPorLoja(string loja)
+        {
+            List<EnderecoEntregaJustificativaDados> lst;
+
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                var retorno = from c in db.TcodigoDescricao
+                              where c.Grupo == Constantes.GRUPO_T_CODIGO_DESCRICAO__ENDETG_JUSTIFICATIVA &&
+                              (c.Lojas_Habilitadas == null || c.Lojas_Habilitadas.Length == 0 || c.Lojas_Habilitadas.Contains("|" + loja + "|")) &&
+                              (c.St_Inativo == 0 || c.Codigo == "")
+                              select new { c.Codigo, c.Descricao };
+
+                lst = new List<EnderecoEntregaJustificativaDados>();
+
+                foreach (var r in await retorno.ToListAsync())
+                {
+                    var jus = new EnderecoEntregaJustificativaDados()
+                    {
+                        EndEtg_cod_justificativa = !string.IsNullOrEmpty(r.Codigo) && r.Codigo.Length == 1 && r.Codigo != "0" ?
+                        "00" + r.Codigo : r.Codigo,
+                        EndEtg_descricao_justificativa = r.Descricao
+                    };
+                    lst.Add(jus);
+                }
+            }
+
             return lst;
         }
 
-        public Cliente.Dados.DadosClienteCadastroDados ObterDadosClienteCadastro(Tcliente cli, string loja)
+        public DadosClienteCadastroDados ObterDadosClienteCadastro(Tcliente cli, string loja)
         {
-            Cliente.Dados.DadosClienteCadastroDados dados = new Cliente.Dados.DadosClienteCadastroDados
+            var dados = new DadosClienteCadastroDados
             {
                 Id = cli.Id,
                 Indicador_Orcamentista = cli.Indicador,
@@ -547,30 +575,32 @@ namespace Cliente
 
         private async Task<IEnumerable<Cliente.Dados.Referencias.RefBancariaClienteDados>> ObterReferenciaBancaria(Tcliente cli)
         {
-            List<Cliente.Dados.Referencias.RefBancariaClienteDados> lstRef = new List<Cliente.Dados.Referencias.RefBancariaClienteDados>();
-            var db = contextoProvider.GetContextoLeitura();
+            var lstRef = new List<Cliente.Dados.Referencias.RefBancariaClienteDados>();
 
-            //selecionamos as referências bancárias já incluindo a descrição do banco
-            var rBanco = from c in db.TclienteRefBancaria
-                         join banco in db.Tbanco on c.Banco equals banco.Codigo
-                         where c.Id_Cliente == cli.Id
-                         orderby c.Ordem
-                         select new { c.Banco, c.Agencia, c.Conta, c.Contato, c.Ddd, c.Telefone, banco.Descricao, c.Ordem };
-
-            foreach (var i in await rBanco.ToListAsync())
+            using (var db = contextoProvider.GetContextoLeitura())
             {
-                Cliente.Dados.Referencias.RefBancariaClienteDados refBanco = new Cliente.Dados.Referencias.RefBancariaClienteDados
+                //selecionamos as referências bancárias já incluindo a descrição do banco
+                var rBanco = from c in db.TclienteRefBancaria
+                             join banco in db.Tbanco on c.Banco equals banco.Codigo
+                             where c.Id_Cliente == cli.Id
+                             orderby c.Ordem
+                             select new { c.Banco, c.Agencia, c.Conta, c.Contato, c.Ddd, c.Telefone, banco.Descricao, c.Ordem };
+
+                foreach (var i in await rBanco.ToListAsync())
                 {
-                    Banco = i.Banco,
-                    BancoDescricao = i.Descricao,
-                    Agencia = i.Agencia,
-                    Conta = i.Conta,
-                    Contato = i.Contato,
-                    Ddd = i.Ddd,
-                    Telefone = i.Telefone,
-                    Ordem = (int)i.Ordem
-                };
-                lstRef.Add(refBanco);
+                    var refBanco = new Cliente.Dados.Referencias.RefBancariaClienteDados
+                    {
+                        Banco = i.Banco,
+                        BancoDescricao = i.Descricao,
+                        Agencia = i.Agencia,
+                        Conta = i.Conta,
+                        Contato = i.Contato,
+                        Ddd = i.Ddd,
+                        Telefone = i.Telefone,
+                        Ordem = (int)i.Ordem
+                    };
+                    lstRef.Add(refBanco);
+                }
             }
 
             return lstRef;
@@ -578,48 +608,60 @@ namespace Cliente
 
         private async Task<IEnumerable<Cliente.Dados.Referencias.RefComercialClienteDados>> ObterReferenciaComercial(Tcliente cli)
         {
-            List<Cliente.Dados.Referencias.RefComercialClienteDados> lstRefComercial = new List<Cliente.Dados.Referencias.RefComercialClienteDados>();
-            var db = contextoProvider.GetContextoLeitura();
+            var lstRefComercial = new List<Cliente.Dados.Referencias.RefComercialClienteDados>();
 
-            var rComercial = from c in db.TclienteRefComercial
-                             where c.Id_Cliente == cli.Id
-                             orderby c.Ordem
-                             select c;
-
-            foreach (var i in await rComercial.ToListAsync())
+            using (var db = contextoProvider.GetContextoLeitura())
             {
-                Cliente.Dados.Referencias.RefComercialClienteDados rCom = new Cliente.Dados.Referencias.RefComercialClienteDados
-                {
-                    Nome_Empresa = i.Nome_Empresa,
-                    Contato = i.Contato,
-                    Ddd = i.Ddd,
-                    Telefone = i.Telefone,
-                    Ordem = (int)i.Ordem
-                };
+                var rComercial = from c in db.TclienteRefComercial
+                                 where c.Id_Cliente == cli.Id
+                                 orderby c.Ordem
+                                 select c;
 
-                lstRefComercial.Add(rCom);
+                foreach (var i in await rComercial.ToListAsync())
+                {
+                    var rCom = new Cliente.Dados.Referencias.RefComercialClienteDados
+                    {
+                        Nome_Empresa = i.Nome_Empresa,
+                        Contato = i.Contato,
+                        Ddd = i.Ddd,
+                        Telefone = i.Telefone,
+                        Ordem = (int)i.Ordem
+                    };
+
+                    lstRefComercial.Add(rCom);
+                }
             }
 
             return lstRefComercial;
         }
 
-        public async Task<(List<string> listaErros, bool registroJaExiste)> CadastrarCliente(Cliente.Dados.ClienteCadastroDados clienteCadastroDados, string indicador,
+        public async Task<(List<string> listaErros, bool registroJaExiste)> CadastrarCliente(
+            Cliente.Dados.ClienteCadastroDados clienteCadastroDados, 
+            string indicador,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             string usuario_cadastro)
         {
-            string id_cliente = "";
-
-            var db = contextoProvider.GetContextoLeitura();
-
-            List<string> lstErros = new List<string>();
-            bool registroJaExiste = false;
+            var id_cliente = string.Empty;
+            var lstErros = new List<string>();
+            var registroJaExiste = false;
 
             //passar lista de bancos para validar
             List<Cliente.Dados.ListaBancoDados> lstBanco = (await ListarBancosCombo()).ToList();
-            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(clienteCadastroDados.DadosCliente, true,
+
+            await Cliente.ValidacoesClienteBll.ValidarDadosCliente(
+                clienteCadastroDados.DadosCliente,
+                true,
                 clienteCadastroDados.RefBancaria,
                 clienteCadastroDados.RefComercial,
-                lstErros, contextoProvider, cepBll, bancoNFeMunicipio, lstBanco, false, sistemaResponsavelCadastro, true);
+                lstErros,
+                contextoProvider,
+                cepBll,
+                bancoNFeMunicipio,
+                lstBanco,
+                false,
+                sistemaResponsavelCadastro,
+                true);
+
             if (lstErros.Count != 0)
                 return (lstErros, registroJaExiste);
 
@@ -635,12 +677,20 @@ namespace Cliente
                     registroJaExiste = true;
                     return (lstErros, registroJaExiste);
                 }
-                string log = "";
+
+                var log = string.Empty;
 
                 Cliente.Dados.DadosClienteCadastroDados cliente = clienteCadastroDados.DadosCliente;
-                Tcliente clienteCadastrado = new Tcliente();
-                id_cliente = await CadastrarDadosClienteDados(dbgravacao, cliente, indicador, clienteCadastrado,
-                    sistemaResponsavelCadastro, usuario_cadastro);
+
+                var clienteCadastrado = new Tcliente();
+
+                id_cliente = await CadastrarDadosClienteDados(
+                    dbgravacao, 
+                    cliente, 
+                    indicador, 
+                    clienteCadastrado,
+                    sistemaResponsavelCadastro, 
+                    usuario_cadastro);
 
                 //Por padrão o id do cliente tem 12 caracteres, caso não seja 12 caracteres esta errado
                 if (id_cliente.Length == 12)
@@ -655,11 +705,17 @@ namespace Cliente
                         log = await CadastrarRefComercial(dbgravacao, clienteCadastroDados.RefComercial, usuario_cadastro, id_cliente, log);
                     }
 
-                    bool gravouLog = UtilsGlobais.Util.GravaLog(dbgravacao, usuario_cadastro, cliente.Loja, "", id_cliente,
-                            Constantes.OP_LOG_CLIENTE_INCLUSAO, log);
+                    bool gravouLog = UtilsGlobais.Util.GravaLog(
+                        dbgravacao,
+                        usuario_cadastro,
+                        cliente.Loja,
+                        string.Empty,
+                        id_cliente,
+                        Constantes.OP_LOG_CLIENTE_INCLUSAO,
+                        log);
+
                     if (gravouLog)
                         dbgravacao.transacao.Commit();
-
                 }
                 else
                 {
@@ -670,8 +726,11 @@ namespace Cliente
             return (lstErros, registroJaExiste);
         }
 
-        public async Task<string> CadastrarDadosClienteDados(InfraBanco.ContextoBdGravacao dbgravacao,
-            Cliente.Dados.DadosClienteCadastroDados clienteDados, string indicador, Tcliente tCliente,
+        public async Task<string> CadastrarDadosClienteDados(
+            InfraBanco.ContextoBdGravacao dbgravacao,
+            Cliente.Dados.DadosClienteCadastroDados clienteDados, 
+            string indicador, 
+            Tcliente tCliente,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             string usuario_cadastro)
         {
@@ -679,6 +738,7 @@ namespace Cliente
 
             if (usuario_cadastro != null)
                 usuario_cadastro = usuario_cadastro.ToUpper();
+
             if (indicador != null)
                 indicador = indicador.ToUpper();
 
@@ -696,6 +756,7 @@ namespace Cliente
             tCliente.Contribuinte_Icms_Data_Hora = DateTime.Now;
             tCliente.Contribuinte_Icms_Usuario = usuario_cadastro;
             tCliente.Produtor_Rural_Status = clienteDados.ProdutorRural;
+
             if (clienteDados.ProdutorRural != (byte)Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_INICIAL)
             {
                 tCliente.Produtor_Rural_Data = DateTime.Now;
@@ -721,11 +782,7 @@ namespace Cliente
             tCliente.Ramal_Com_2 = clienteDados.Ramal2;
             tCliente.Ddd_Cel = clienteDados.DddCelular;
             tCliente.Tel_Cel = clienteDados.Celular;
-
-
-
             tCliente.Dt_Nasc = null;
-
             tCliente.Filiacao = clienteDados.Observacao_Filiacao == null ? "" : clienteDados.Observacao_Filiacao;
             tCliente.Obs_crediticias = "";
             tCliente.Midia = "";
@@ -741,7 +798,12 @@ namespace Cliente
             return id_cliente;
         }
 
-        private async Task<string> CadastrarRefBancaria(InfraBanco.ContextoBdGravacao dbgravacao, List<Cliente.Dados.Referencias.RefBancariaClienteDados> lstRefBancaria, string apelido, string id_cliente, string log)
+        private async Task<string> CadastrarRefBancaria(
+            InfraBanco.ContextoBdGravacao dbgravacao, 
+            List<Cliente.Dados.Referencias.RefBancariaClienteDados> lstRefBancaria, 
+            string apelido, 
+            string id_cliente, 
+            string log)
         {
             int qtdeRef = 1;
             string campos_a_omitir_ref_bancaria = "id_cliente|ordem|excluido_status|dt_cadastro|usuario_cadastro";
@@ -774,8 +836,12 @@ namespace Cliente
             return log;
         }
 
-        private async Task<string> CadastrarRefComercial(InfraBanco.ContextoBdGravacao dbgravacao,
-            List<Cliente.Dados.Referencias.RefComercialClienteDados> lstRefComercial, string apelido, string id_cliente, string log)
+        private async Task<string> CadastrarRefComercial(
+            InfraBanco.ContextoBdGravacao dbgravacao,
+            List<Cliente.Dados.Referencias.RefComercialClienteDados> lstRefComercial, 
+            string apelido, 
+            string id_cliente, 
+            string log)
         {
             int qtdeRef = 1;
 
@@ -812,54 +878,78 @@ namespace Cliente
 
         public async Task<bool> ClienteExiste(string cpf_cnpj)
         {
-            var db = contextoProvider.GetContextoLeitura();
-            cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
-            var retorno = await ((from c in db.Tcliente
+            bool retorno;
+
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
+
+                retorno = await ((from c in db.Tcliente
                                   where c.Cnpj_Cpf == cpf_cnpj
                                   select c.Id).AnyAsync());
+            }
+            
             return retorno;
         }
 
         public IQueryable<Tcliente> BuscarTcliente(string cpf_cnpj)
         {
-            var db = contextoProvider.GetContextoLeitura();
-            cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
-            IQueryable<Tcliente> retorno = (from c in db.Tcliente
-                                            where c.Cnpj_Cpf == cpf_cnpj
-                                            select c);
+            IQueryable<Tcliente> retorno;
+
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
+
+                retorno = (from c in db.Tcliente
+                           where c.Cnpj_Cpf == cpf_cnpj
+                           select c);
+            }
+
             return retorno;
         }
 
-        public async Task<Tcliente> BuscarTclienteComTransacao(string cpf_cnpj, ContextoBdGravacao dbGravacao)
+        public async Task<Tcliente> BuscarTclienteComTransacao(string cpf_cnpj)
         {
-            cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
-            var retorno = (from c in dbGravacao.Tcliente
-                           where c.Cnpj_Cpf == cpf_cnpj
-                           select c).FirstOrDefaultAsync();
-            return await retorno;
+            Tcliente retorno;
+
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
+
+                retorno = await (from c in db.Tcliente
+                                 where c.Cnpj_Cpf == cpf_cnpj
+                                 select c).FirstOrDefaultAsync();
+            }
+
+            return retorno;
         }
 
         public static async Task<string> BuscarIdCliente(string cpf_cnpj, ContextoBd db)
         {
-            string retorno = "";
+            var retorno = string.Empty;
 
             cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
 
             retorno = await (from c in db.Tcliente
                              where c.Cnpj_Cpf == cpf_cnpj
                              select c.Id).FirstOrDefaultAsync();
+
             return retorno;
         }
 
-        public async Task<string> BuscarIdClienteComTransacao(string cpf_cnpj, ContextoBdGravacao dbGravacao)
+        public async Task<string> BuscarIdClienteComTransacao(string cpf_cnpj)
         {
-            string retorno = "";
+            var retorno = string.Empty;
 
-            cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
 
-            retorno = await (from c in dbGravacao.Tcliente
-                             where c.Cnpj_Cpf == cpf_cnpj
-                             select c.Id).FirstOrDefaultAsync();
+                retorno = await (from c in db.Tcliente
+                                 where c.Cnpj_Cpf == cpf_cnpj
+                                 select c.Id).FirstOrDefaultAsync();
+            }
+
             return retorno;
         }
     }

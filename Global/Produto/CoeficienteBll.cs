@@ -22,18 +22,22 @@ namespace Produto
             List<CoeficienteDados> lstRetorno = new List<CoeficienteDados>();
             if (fabricantesDistinct.Any())
             {
-                var db = contextoProvider.GetContextoLeitura();
+                List<CoeficienteDados> lstCoeficiente;
 
-                //trazendo toda lista
-                var lstCoeficienteTask = from c in db.TpercentualCustoFinanceiroFornecedor
-                                         select new CoeficienteDados
-                                         {
-                                             Fabricante = c.Fabricante,
-                                             TipoParcela = c.Tipo_Parcelamento,
-                                             QtdeParcelas = c.Qtde_Parcelas,
-                                             Coeficiente = c.Coeficiente
-                                         };
-                var lstCoeficiente = await lstCoeficienteTask.ToListAsync();
+                using (var db = contextoProvider.GetContextoLeitura())
+                {
+                    //trazendo toda lista
+                    var lstCoeficienteTask = await (from c in db.TpercentualCustoFinanceiroFornecedor
+                                                    select new CoeficienteDados
+                                                    {
+                                                        Fabricante = c.Fabricante,
+                                                        TipoParcela = c.Tipo_Parcelamento,
+                                                        QtdeParcelas = c.Qtde_Parcelas,
+                                                        Coeficiente = c.Coeficiente
+                                                    }).ToListAsync();
+
+                    lstCoeficiente = lstCoeficienteTask;
+                }
 
                 foreach (var fabricante in fabricantesDistinct)
                 {
@@ -50,27 +54,35 @@ namespace Produto
             return lstRetorno;
         }
 
-        public async Task<IDictionary<string, CoeficienteDados>> BuscarListaCoeficientesFabricantesHistoricoDistinct(List<string> fabricantesDistinct, string tipoParcela, short qtdeParcelas, DateTime dataRefCoeficiente)
+        public async Task<IDictionary<string, CoeficienteDados>> BuscarListaCoeficientesFabricantesHistoricoDistinct(
+            List<string> fabricantesDistinct, 
+            string tipoParcela, 
+            short qtdeParcelas, 
+            DateTime dataRefCoeficiente)
         {
             Dictionary<string, CoeficienteDados> lstRetorno = new Dictionary<string, CoeficienteDados>();
             if (fabricantesDistinct.Any())
             {
-                var db = contextoProvider.GetContextoLeitura();
+                List<IGrouping<string, CoeficienteDados>> lstCoeficienteGroup;
 
-                //trazendo toda lista
-                var lstCoeficienteTask = from c in db.TpercentualCustoFinanceiroFornecedorHistorico
-                                         where
-                                         c.Qtde_Parcelas == qtdeParcelas && 
-                                         c.Tipo_Parcelamento == tipoParcela
-                                         select new CoeficienteDados
-                                         {
-                                             Fabricante = c.Fabricante,
-                                             TipoParcela = c.Tipo_Parcelamento,
-                                             QtdeParcelas = c.Qtde_Parcelas,
-                                             Coeficiente = c.Coeficiente,
-                                             Data = c.Data
-                                         };
-                var lstCoeficienteGroup = await lstCoeficienteTask.GroupBy(x=>x.Fabricante).ToListAsync();
+                using (var db = contextoProvider.GetContextoLeitura())
+                {
+                    //trazendo toda lista
+                    var lstCoeficienteTask = from c in db.TpercentualCustoFinanceiroFornecedorHistorico
+                                             where
+                                             c.Qtde_Parcelas == qtdeParcelas &&
+                                             c.Tipo_Parcelamento == tipoParcela
+                                             select new CoeficienteDados
+                                             {
+                                                 Fabricante = c.Fabricante,
+                                                 TipoParcela = c.Tipo_Parcelamento,
+                                                 QtdeParcelas = c.Qtde_Parcelas,
+                                                 Coeficiente = c.Coeficiente,
+                                                 Data = c.Data
+                                             };
+
+                    lstCoeficienteGroup = await lstCoeficienteTask.GroupBy(x => x.Fabricante).ToListAsync();
+                }
 
                 foreach (var coeficienteGroup in lstCoeficienteGroup)
                 {
@@ -91,24 +103,25 @@ namespace Produto
 
         public async Task<IEnumerable<IEnumerable<CoeficienteDados>>> BuscarListaCoeficientesFornecedores(List<string> lstFornecedores)
         {
-            List<List<CoeficienteDados>> lstRetorno = new List<List<CoeficienteDados>>();
+            var lstRetorno = new List<List<CoeficienteDados>>();
 
-            var db = contextoProvider.GetContextoLeitura();
-
-            foreach (var f in lstFornecedores)
+            using (var db = contextoProvider.GetContextoLeitura())
             {
-                List<CoeficienteDados> lstCoeficienteTask = await (from c in db.TpercentualCustoFinanceiroFornecedor
-                                                                 where c.Fabricante == f
-                                                                 select new CoeficienteDados
-                                                                 {
-                                                                     Fabricante = c.Fabricante,
-                                                                     TipoParcela = c.Tipo_Parcelamento,
-                                                                     QtdeParcelas = c.Qtde_Parcelas,
-                                                                     Coeficiente = c.Coeficiente
-                                                                 }).ToListAsync();
-                if (lstCoeficienteTask.Count > 0)
+                foreach (var f in lstFornecedores)
                 {
-                    lstRetorno.Add(lstCoeficienteTask);
+                    List<CoeficienteDados> lstCoeficienteTask = await (from c in db.TpercentualCustoFinanceiroFornecedor
+                                                                       where c.Fabricante == f
+                                                                       select new CoeficienteDados
+                                                                       {
+                                                                           Fabricante = c.Fabricante,
+                                                                           TipoParcela = c.Tipo_Parcelamento,
+                                                                           QtdeParcelas = c.Qtde_Parcelas,
+                                                                           Coeficiente = c.Coeficiente
+                                                                       }).ToListAsync();
+                    if (lstCoeficienteTask.Count > 0)
+                    {
+                        lstRetorno.Add(lstCoeficienteTask);
+                    }
                 }
             }
 

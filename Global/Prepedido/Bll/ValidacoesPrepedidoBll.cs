@@ -247,41 +247,43 @@ namespace Prepedido.Bll
             return lstcoefDados;
         }
 
-        public async Task<IEnumerable<PrepedidoProdutoPrepedidoDados>> BuscarProdutos(List<PrepedidoProdutoPrepedidoDados> lstProdutos,
-            string loja, List<string> lstErros)
+        public async Task<IEnumerable<PrepedidoProdutoPrepedidoDados>> BuscarProdutos(
+            List<PrepedidoProdutoPrepedidoDados> lstProdutos,
+            string loja, 
+            List<string> lstErros)
         {
+            var lsProdutosCompare = new List<PrepedidoProdutoPrepedidoDados>();
 
-
-            var db = contextoProvider.GetContextoLeitura();
-            List<PrepedidoProdutoPrepedidoDados> lsProdutosCompare = new List<PrepedidoProdutoPrepedidoDados>();
-
-            foreach (var x in lstProdutos)
+            using (var db = contextoProvider.GetContextoLeitura())
             {
-                //vamos verificar se o cód do produto é composto
-                if (await VerificarProdutoComposto(x, loja, lstErros))
+                foreach (var x in lstProdutos)
                 {
-                    PrepedidoProdutoPrepedidoDados produto = await (from c in db.TprodutoLoja
-                                                                    where c.Produto == x.Produto &&
-                                                                          c.Fabricante == x.Fabricante &&
-                                                                          c.Vendavel == "S" &&
-                                                                          c.Loja == loja &&
-                                                                          c.Excluido_status == 0
-                                                                    select new PrepedidoProdutoPrepedidoDados
-                                                                    {
-                                                                        Fabricante = c.Fabricante,
-                                                                        Produto = c.Produto,
-                                                                        CustoFinancFornecPrecoListaBase = c.Preco_Lista ?? 0,
-                                                                        Desc_Dado = x.Desc_Dado,
-                                                                        Qtde = x.Qtde
-                                                                    }).FirstOrDefaultAsync();
+                    //vamos verificar se o cód do produto é composto
+                    if (await VerificarProdutoComposto(x, loja, lstErros))
+                    {
+                        PrepedidoProdutoPrepedidoDados produto = await (from c in db.TprodutoLoja
+                                                                        where c.Produto == x.Produto &&
+                                                                              c.Fabricante == x.Fabricante &&
+                                                                              c.Vendavel == "S" &&
+                                                                              c.Loja == loja &&
+                                                                              c.Excluido_status == 0
+                                                                        select new PrepedidoProdutoPrepedidoDados
+                                                                        {
+                                                                            Fabricante = c.Fabricante,
+                                                                            Produto = c.Produto,
+                                                                            CustoFinancFornecPrecoListaBase = c.Preco_Lista ?? 0,
+                                                                            Desc_Dado = x.Desc_Dado,
+                                                                            Qtde = x.Qtde
+                                                                        }).FirstOrDefaultAsync();
 
-                    if (produto != null)
-                    {
-                        lsProdutosCompare.Add(produto);
-                    }
-                    else
-                    {
-                        lstErros.Add("Produto cód.(" + x.Produto + ") do fabricante cód.(" + x.Fabricante + ") não existe!");
+                        if (produto != null)
+                        {
+                            lsProdutosCompare.Add(produto);
+                        }
+                        else
+                        {
+                            lstErros.Add("Produto cód.(" + x.Produto + ") do fabricante cód.(" + x.Fabricante + ") não existe!");
+                        }
                     }
                 }
             }
@@ -291,13 +293,15 @@ namespace Prepedido.Bll
 
         private async Task<bool> VerificarProdutoComposto(PrepedidoProdutoPrepedidoDados produto, string loja, List<string> lstErros)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            TecProdutoComposto prodCompostoTask;
 
-
-            var prodCompostoTask = await (from c in db.TecProdutoComposto
-                                          where c.Produto_Composto == produto.Produto &&
-                                          c.Fabricante_Composto == produto.Fabricante
-                                          select c).FirstOrDefaultAsync();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                prodCompostoTask = await (from c in db.TecProdutoComposto
+                                              where c.Produto_Composto == produto.Produto &&
+                                              c.Fabricante_Composto == produto.Fabricante
+                                              select c).FirstOrDefaultAsync();
+            }
 
             if (prodCompostoTask != null)
             {
@@ -384,7 +388,13 @@ namespace Prepedido.Bll
 
             if (endEntrega.OutroEndereco)
             {
-                await ValidarDadosEnderecoEntrega(endEntrega, lstErros, contextoProvider, usarLojaOrcamentista, loja, orcamentista, tipoValidacaoEndereco);
+                await ValidarDadosEnderecoEntrega(
+                    endEntrega,
+                    lstErros,
+                    usarLojaOrcamentista,
+                    loja,
+                    orcamentista,
+                    tipoValidacaoEndereco);
 
                 ValidarDadosPessoaEnderecoEntrega(endEntrega, lstErros, false, tipoCliente);
                 VerificarCaracteresInvalidosEnderecoEntregaClienteCadastro(endEntrega, lstErros);
@@ -420,9 +430,12 @@ namespace Prepedido.Bll
                     Constantes.MAX_TAMANHO_CAMPO_ENDERECO + " CARACTERES");
         }
 
-        private async Task ValidarDadosEnderecoEntrega(Cliente.Dados.EnderecoEntregaClienteCadastroDados endEntrega,
+        private async Task ValidarDadosEnderecoEntrega(
+            Cliente.Dados.EnderecoEntregaClienteCadastroDados endEntrega,
             List<string> lstErros,
-            ContextoBdProvider contextoProvider, bool usarLojaOrcamentista, string loja, string orcamentista,
+            bool usarLojaOrcamentista, 
+            string loja, 
+            string orcamentista,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel tipoValidacaoEndereco)
         {
             if (!endEntrega.OutroEndereco)
@@ -442,7 +455,7 @@ namespace Prepedido.Bll
                 else
                 {
                     loja = loja ?? "";
-                    lstJustificativas = (await clienteBll.ListarComboJustificaEnderecoPorLoja(contextoProvider.GetContextoLeitura(), loja)).ToList();
+                    lstJustificativas = (await clienteBll.ListarComboJustificaEnderecoPorLoja(loja)).ToList();
                 }
                 if (!lstJustificativas.Where(r => r.EndEtg_cod_justificativa == endEntrega.EndEtg_cod_justificativa).Any())
                 {
