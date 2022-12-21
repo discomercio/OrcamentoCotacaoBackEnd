@@ -784,7 +784,7 @@ namespace UtilsGlobais
             return true;
         }
 
-        public static TLogV2 GravaLogV2(ContextoBdGravacao dbgravacao, string log, short idTipoUsuarioContexto,
+        public static TLogV2 GravaLogV2ComTransacao(ContextoBdGravacao dbgravacao, string log, short idTipoUsuarioContexto,
             int idUsuario, string loja, string pedido, int? idOrcamentoCotacao, string idCliente,
             Constantes.CodSistemaResponsavel codSistemaResponsavel, int? idOpercao, string ip)
         {
@@ -806,6 +806,44 @@ namespace UtilsGlobais
 
             dbgravacao.Add(tLogV2);
             dbgravacao.SaveChanges();
+
+            return tLogV2;
+        }
+
+        public static TLogV2 GravaLogV2(ContextoBdProvider contextoProvider, string log, short idTipoUsuarioContexto,
+            int idUsuario, string loja, string pedido, int? idOrcamentoCotacao, string idCliente,
+            Constantes.CodSistemaResponsavel codSistemaResponsavel, int? idOpercao, string ip)
+        {
+            TLogV2 tLogV2 = new TLogV2()
+            {
+                Data = DateTime.Now.Date,
+                DataHora = DateTime.Now,
+                IdTipoUsuarioContexto = idTipoUsuarioContexto,
+                IdUsuario = idUsuario,
+                Loja = loja,
+                Pedido = pedido,
+                IdOrcamentoCotacao = idOrcamentoCotacao,
+                IdCliente = idCliente,
+                SistemaResponsavel = (int)codSistemaResponsavel,
+                IdOperacao = idOpercao,
+                Complemento = log,
+                IP = ip
+            };
+
+            using (var dbGravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                try
+                {
+                    dbGravacao.Add(tLogV2);
+                    dbGravacao.SaveChanges();
+                    dbGravacao.transacao.Commit();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+                
 
             return tLogV2;
         }

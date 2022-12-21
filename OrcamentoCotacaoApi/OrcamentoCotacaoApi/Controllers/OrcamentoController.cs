@@ -325,7 +325,8 @@ namespace OrcamentoCotacaoApi.Controllers
             {
                 Usuario = LoggedUser.Apelido,
                 Id = id,
-                LojaLogada = lojaLogada
+                LojaLogada = lojaLogada,
+                IP = HttpContext.Connection.RemoteIpAddress.ToString()
             };
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/ProrrogarOrcamento/POST - Request => [{JsonSerializer.Serialize(request)}].");
@@ -335,7 +336,7 @@ namespace OrcamentoCotacaoApi.Controllers
             if (!permissao.ProrrogarOrcamento)
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
-            var response = _orcamentoBll.ProrrogarOrcamento(id, LoggedUser.Id, lojaLogada, LoggedUser.TipoUsuario);
+            var response = _orcamentoBll.ProrrogarOrcamento(id, LoggedUser.Id, lojaLogada, LoggedUser.TipoUsuario, request.IP);
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/ProrrogarOrcamento/POST - Response => [{JsonSerializer.Serialize(response)}].");
 

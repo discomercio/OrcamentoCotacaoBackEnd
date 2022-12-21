@@ -334,7 +334,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         return response;
                     }
 
-                    var tLogV2 = UtilsGlobais.Util.GravaLogV2(dbGravacao, logOpcao, (short)usuarioLogado.TipoUsuario, usuarioLogado.Id, orcamento.Loja, null, opcaoNovo.IdOrcamentoCotacao, null,
+                    var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, logOpcao, (short)usuarioLogado.TipoUsuario, usuarioLogado.Id, orcamento.Loja, null, opcaoNovo.IdOrcamentoCotacao, null,
                         Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, opcao.IP);
 
 

@@ -865,7 +865,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         return response;
                     }
 
-                    var tLogV2 = UtilsGlobais.Util.GravaLogV2(dbGravacao, log, (short)usuarioLogado.TipoUsuario, usuarioLogado.Id, orcamento.Loja, null, (int)orcamento.Id, null,
+                    var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogado.TipoUsuario, usuarioLogado.Id, orcamento.Loja, null, (int)orcamento.Id, null,
                         InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, orcamento.IP);
 
                     var guid = Guid.NewGuid();
@@ -1063,7 +1063,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         orcamento.Erro = "Falha ao atualizar dados cadastrais!";
                         return orcamento;
                     }
-                    var tLogV2 = UtilsGlobais.Util.GravaLogV2(dbGravacao, log, (short)usuarioLogado.TipoUsuario, usuarioLogado.Id, tOrcamento.Loja, null, tOrcamento.Id, null,
+                    var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogado.TipoUsuario, usuarioLogado.Id, tOrcamento.Loja, null, tOrcamento.Id, null,
                         Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
 
                     bool atualizouLink = false;
@@ -1517,7 +1517,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             return torcamentoCotacao;
         }
 
-        public MensagemDto ProrrogarOrcamento(int id, int idUsuario, string lojaLogada, int? IdTipoUsuarioContextoUltAtualizacao)
+        public MensagemDto ProrrogarOrcamento(int id, int idUsuario, string lojaLogada, 
+            int? IdTipoUsuarioContextoUltAtualizacao, string ip)
         {
             var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro { Id = id }).FirstOrDefault();
             var parametros = _parametroOrcamentoCotacaoBll.ObterParametros(lojaLogada);
@@ -1573,6 +1574,22 @@ namespace OrcamentoCotacaoBusiness.Bll
                     };
 
                 _orcamentoCotacaoBll.Atualizar(orcamento);
+
+                string log = $"Validade:{orcamento.Validade.ToString("dd/MM/yyyy")} => ValidadeAnterior: {orcamento.ValidadeAnterior?.ToString("dd/MM/yyyy")}";
+
+                var cfgOperacao = _cfgOperacaoBll.PorFiltro(new TcfgOperacaoFiltro() { Id = 4 }).FirstOrDefault();
+                if (cfgOperacao == null)
+                {
+                    return new MensagemDto
+                    {
+                        tipo = "WARN",
+                        mensagem = $"Excedida a quantidade máxima! {parametros.QtdeMaxProrrogacao} vezes"
+                    };
+                }
+
+                var tLogV2 = UtilsGlobais.Util.GravaLogV2(_contextoBdProvider, log, (short)IdTipoUsuarioContextoUltAtualizacao.Value, idUsuario, orcamento.Loja, null, orcamento.Id, null,
+                    Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
+
 
                 return new MensagemDto
                 {
