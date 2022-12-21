@@ -189,16 +189,20 @@ namespace OrcamentoCotacaoBusiness.Bll
             _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Verificando a remoção de formas de pagamentos");
             string logRemocao = RemoverOrcamentoCotacaoOpcaoPagtoComTransacao(formaPagtoAntiga, opcao, dbGravacao);
 
+            string logCriacao = "";
+            string logAPrazo = "";
+            string logAVista = "";
             foreach (var pagto in opcao.FormaPagto)
             {
-                var f = formaPagtoAntiga.Where(x => x.Id == pagto.Id).FirstOrDefault();
+                var pagtoAntigo = formaPagtoAntiga.Where(x => x.Id == pagto.Id).FirstOrDefault();
                 _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Verificando se a forma de pagamento existe.");
 
-                if (f == null)
+                if (pagtoAntigo == null)
                 {
                     var p = mapper.Map<CadastroOrcamentoOpcaoFormaPagtoRequest>(pagto);
                     List<CadastroOrcamentoOpcaoFormaPagtoRequest> lstPagto = new List<CadastroOrcamentoOpcaoFormaPagtoRequest>();
                     lstPagto.Add(p);
+
                     var responseOpcoesPagtoResponse = CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(lstPagto, opcao.Id, dbGravacao, opcao.CorrelationId);
                     if (responseOpcoesPagtoResponse.Sucesso && responseOpcoesPagtoResponse.TorcamentoCotacaoOpcaoPagtos.Count == 0)
                     {
@@ -207,6 +211,13 @@ namespace OrcamentoCotacaoBusiness.Bll
                     }
                     _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Nova forma de pagamento cadastrada. Response => [{JsonSerializer.Serialize(responseOpcoesPagtoResponse.TorcamentoCotacaoOpcaoPagtos.FirstOrDefault())}]");
                     response.TorcamentoCotacaoOpcaoPagtos.Add(responseOpcoesPagtoResponse.TorcamentoCotacaoOpcaoPagtos.FirstOrDefault());
+
+                    if (!string.IsNullOrEmpty(logCriacao)) logCriacao += "\r      ";
+                    string camposAOmitir = "|IdOrcamentoCotacao|Sequencia|IdTipoUsuarioContextoCadastro|IdUsuarioCadastro|DataCadastro|DataHoraCadastro|IdTipoUsuarioContextoUltAtualizacao|IdUsuarioUltAtualizacao|DataHoraUltAtualizacao|";
+                    logCriacao += UtilsGlobais.Util.MontaLog(responseOpcoesPagtoResponse, "", camposAOmitir);
+                    
+                    if (!string.IsNullOrEmpty(logAVista)) logAVista += $"\r      {logCriacao}";
+                    else logAVista += $"{logCriacao}";
                 }
                 else
                 {
@@ -242,8 +253,26 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Atualizando forma de pagamento Id[{torcamentoCotacaoOpcaoPagto.Id}]. Response => [{JsonSerializer.Serialize(torcamentoCotacaoOpcaoPagto)}]");
                     response.TorcamentoCotacaoOpcaoPagtos.Add(orcamentoCotacaoOpcaoPagtoBll.AtualizarComTransacao(torcamentoCotacaoOpcaoPagto, dbGravacao));
+
+                    string logApoio = UtilsGlobais.Util.MontalogComparacao(torcamentoCotacaoOpcaoPagto, pagtoAntigo, "", "");
+                    if (!string.IsNullOrEmpty(logApoio)) logApoio = $"Id={pagtoAntigo.Id}; IdOrcamentoCotacaoOpcao={pagtoAntigo.IdOrcamentoCotacaoOpcao}; {logApoio}";
+
+                    if (pagto.Tipo_parcelamento == int.Parse(Constantes.COD_FORMA_PAGTO_A_VISTA))
+                    {
+                        if (!string.IsNullOrEmpty(logAVista)) logAVista += $"\r      {logApoio}";
+                        else logAVista += $"{logApoio}";
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(logAPrazo)) logAPrazo += $"\r      {logApoio}";
+                        else logAPrazo += $"{logApoio}";
+                    }
                 }
             }
+
+            if (!string.IsNullOrEmpty(logAPrazo)) response.LogOperacao += $"\r   Forma pagamento a prazo: {logAPrazo}";
+            if (!string.IsNullOrEmpty(logAVista)) response.LogOperacao += $"\r   Forma pagamento a vista: {logAVista}";
+            if (!string.IsNullOrEmpty(logRemocao)) response.LogOperacao += $"{logRemocao}";
 
             response.Sucesso = true;
             return response;
@@ -253,7 +282,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         {
             if (idOpcao == 0) return null;
 
-            var opcaoFormaPagtos = orcamentoCotacaoOpcaoPagtoBll.PorFiltro(new TorcamentoCotacaoOpcaoPagtoFiltro() { IdOpcao = idOpcao,  IncluirTorcamentoCotacaoOpcaoItemAtomicoCustoFin = incluirTorcamentoCotacaoOpcaoItemAtomicoCustoFin});
+            var opcaoFormaPagtos = orcamentoCotacaoOpcaoPagtoBll.PorFiltro(new TorcamentoCotacaoOpcaoPagtoFiltro() { IdOpcao = idOpcao, IncluirTorcamentoCotacaoOpcaoItemAtomicoCustoFin = incluirTorcamentoCotacaoOpcaoItemAtomicoCustoFin });
 
             return opcaoFormaPagtos;
         }
@@ -284,9 +313,10 @@ namespace OrcamentoCotacaoBusiness.Bll
                         }
                     }
 
+                    pagtoAntigo.TorcamentoCotacaoOpcaoItemAtomicoCustoFin = null;
                     orcamentoCotacaoOpcaoPagtoBll.ExcluirComTransacao(pagtoAntigo, dbGravacao);
                     _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. RemoverOrcamentoCotacaoOpcaoPagtoComTransacao. Forma de pagamento excluída. Id => [{pagtoAntigo.Id}]");
-                    logRetorno = $"Forma pagamento excluída: Id={pagtoAntigo.Id}; IdOrcamentoCotacaoOpcao={pagtoAntigo.IdOrcamentoCotacaoOpcao};\rLista de produtos atômicos custo excluídos: {logProduto}";
+                    logRetorno = $"\r   Forma pagamento excluída: Id={pagtoAntigo.Id}; IdOrcamentoCotacaoOpcao={pagtoAntigo.IdOrcamentoCotacaoOpcao};\r   Lista de produtos atômicos custo excluídos: {logProduto}";
                 }
             }
 

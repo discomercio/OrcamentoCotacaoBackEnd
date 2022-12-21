@@ -865,7 +865,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         return response;
                     }
 
-                    var tLogV2 = UtilsGlobais.Util.GravaLogV2(dbGravacao, log, (short)usuarioLogado.TipoUsuario, usuarioLogado.Id, orcamento.Loja, null, null, null,
+                    var tLogV2 = UtilsGlobais.Util.GravaLogV2(dbGravacao, log, (short)usuarioLogado.TipoUsuario, usuarioLogado.Id, orcamento.Loja, null, (int)orcamento.Id, null,
                         InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, orcamento.IP);
 
                     var guid = Guid.NewGuid();
@@ -1063,7 +1063,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         orcamento.Erro = "Falha ao atualizar dados cadastrais!";
                         return orcamento;
                     }
-                    var tLogV2 = UtilsGlobais.Util.GravaLogV2(dbGravacao, log, (short)usuarioLogado.TipoUsuario, usuarioLogado.Id, tOrcamento.Loja, null, null, null,
+                    var tLogV2 = UtilsGlobais.Util.GravaLogV2(dbGravacao, log, (short)usuarioLogado.TipoUsuario, usuarioLogado.Id, tOrcamento.Loja, null, tOrcamento.Id, null,
                         Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
 
                     bool atualizouLink = false;
