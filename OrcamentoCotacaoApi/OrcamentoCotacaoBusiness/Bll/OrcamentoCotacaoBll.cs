@@ -1583,7 +1583,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     return new MensagemDto
                     {
                         tipo = "WARN",
-                        mensagem = $"Excedida a quantidade máxima! {parametros.QtdeMaxProrrogacao} vezes"
+                        mensagem = $"Falha ao montar log de operação."
                     };
                 }
 
@@ -1618,7 +1618,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
 
-        public MensagemDto AtualizarStatus(int id, UsuarioLogin user, short idStatus)
+        public MensagemDto AtualizarStatus(int id, UsuarioLogin user, short idStatus, string ip)
         {
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
@@ -1649,6 +1649,22 @@ namespace OrcamentoCotacaoBusiness.Bll
                     tOrcamento.DataHoraUltStatus = DateTime.Now;
 
                     _orcamentoCotacaoBll.AtualizarComTransacao(tOrcamento, dbGravacao);
+
+                    if(idStatus == 2)
+                    {
+                        var cfgOperacao = _cfgOperacaoBll.PorFiltro(new TcfgOperacaoFiltro() { Id = 6 }).FirstOrDefault();
+                        if (cfgOperacao == null)
+                        {
+                            return new MensagemDto
+                            {
+                                tipo = "WARN",
+                                mensagem = $"Falha ao montar log de operação."
+                            };
+                        }
+
+                        var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, "", (short)user.TipoUsuario, user.Id, tOrcamento.Loja, null, tOrcamento.Id, null,
+                            Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
+                    }
 
                     dbGravacao.transacao.Commit();
                 }
@@ -1767,6 +1783,10 @@ namespace OrcamentoCotacaoBusiness.Bll
                     formaPagtoSelecionada.DataHoraAprovado = DateTime.Now;
                     formaPagtoSelecionada.Aprovado = true;
                     var objPagto = _formaPagtoOrcamentoCotacaoBll.AtualizarOpcaoPagtoComTransacao(formaPagtoSelecionada, dbGravacao);
+
+                    //fazer a montagem do log aqui
+                    //buscar o orçamento para fazer a montagem do log
+                    //incluir os valores: pedido = t_orcamento.orcamento | IdOrcamentoCotacao = t_orcamento_cotacao.Id | id_cliente = t_orcamento.id_cliente
 
                     await dbGravacao.SaveChangesAsync();
                     dbGravacao.transacao.Commit();

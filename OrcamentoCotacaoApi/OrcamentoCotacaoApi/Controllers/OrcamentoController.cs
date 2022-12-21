@@ -248,6 +248,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             opcao.CorrelationId = correlationId;
             opcao.Usuario = LoggedUser.Apelido;
+            opcao.IP = HttpContext.Connection.RemoteIpAddress.ToString();
 
             var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
             var response = _orcamentoBll.AtualizarOrcamentoOpcao(opcao, user);
@@ -266,7 +267,8 @@ namespace OrcamentoCotacaoApi.Controllers
             {
                 Usuario = LoggedUser.Apelido,
                 Id = id,
-                IdStatus = idStatus
+                IdStatus = idStatus,
+                IP = HttpContext.Connection.RemoteIpAddress.ToString()
             };
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/AtualizarStatus/PUT - Request => [{JsonSerializer.Serialize(request)}].");
@@ -282,7 +284,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
 
-            var response = _orcamentoBll.AtualizarStatus(id, user, idStatus);
+            var response = _orcamentoBll.AtualizarStatus(id, user, idStatus, request.IP);
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/AtualizarStatus/PUT - Response => [{JsonSerializer.Serialize(response)}].");
 
