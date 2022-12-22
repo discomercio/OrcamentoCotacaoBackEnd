@@ -582,7 +582,8 @@ namespace OrcamentoCotacaoApi.Controllers
             var requests = new
             {
                 Usuario = LoggedUser.Apelido,
-                ProdutoCatalogoPropriedade = produtoCatalogoPropriedade
+                ProdutoCatalogoPropriedade = produtoCatalogoPropriedade,
+                IP = HttpContext.Connection.RemoteIpAddress.ToString()
             };
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoCatalogoController/GravarPropriedade/POST - Request => [{System.Text.Json.JsonSerializer.Serialize(requests)}].");
@@ -591,8 +592,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
             //var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
-
-            var saida = await _bll.GravarPropriedadesProdutos(produtoCatalogoPropriedade);
+            var saida = await _bll.GravarPropriedadesProdutos(produtoCatalogoPropriedade, LoggedUser, requests.IP);
 
             if (!string.IsNullOrEmpty(saida)) return BadRequest(new { message = saida });
 

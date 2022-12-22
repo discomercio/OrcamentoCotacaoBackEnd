@@ -547,7 +547,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             return await Task.FromResult(_bll.ObterTipoPropriedadesPorFiltro(new TcfgTipoPropriedadeProdutoCatalogoFiltro()));
         }
 
-        public async Task<string> GravarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade)
+        public async Task<string> GravarPropriedadesProdutos(Produto.Dados.ProdutoCatalogoPropriedadeDados produtoCatalogoPropriedade,
+            UsuarioLogin usuarioLogado, string ip)
         {
             var validacao = await ValidarPropriedade(produtoCatalogoPropriedade);
             if (!string.IsNullOrEmpty(validacao)) return validacao;
@@ -558,8 +559,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                 var tProdutoCatalogoPropriedade = await _produtoGeralBll.GravarPropriedadeComTransacao(produtoCatalogoPropriedade, dbGravacao);
                 if (tProdutoCatalogoPropriedade.id == 0) return "Falha ao gravar propriedade!";
 
+                string logOpcoes = "";
+                string omitirCampos = "";
                 if (produtoCatalogoPropriedade.IdCfgTipoPropriedade == 1)
                 {
+                    omitirCampos = "|dt_cadastro|usuario_cadastro|";
                     int index = 100;
                     foreach (var opcao in produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados)
                     {
@@ -568,8 +572,29 @@ namespace OrcamentoCotacaoBusiness.Bll
                         var tProdutoCatalogoPropriedadeOpcao = await _produtoGeralBll.GravarPropriedadeOpcaoComTransacao(opcao, dbGravacao);
                         if (tProdutoCatalogoPropriedadeOpcao.id == 0) return "Falha ao gravar opção da propriedade";
                         index = index + 100;
+
+                        if (!string.IsNullOrEmpty(logOpcoes)) logOpcoes += "\r   ";
+                        logOpcoes = UtilsGlobais.Util.MontaLog(tProdutoCatalogoPropriedadeOpcao, logOpcoes, omitirCampos);
                     }
                 }
+
+                string logPropriedade = "";
+                omitirCampos = "|dt_cadastro|usuario_cadastro|";
+                logPropriedade = UtilsGlobais.Util.MontaLog(tProdutoCatalogoPropriedade, logPropriedade, omitirCampos);
+
+                var cfgOperacao = _cfgOperacaoBll.PorFiltroComTransacao(new TcfgOperacaoFiltro() { Id = 9 }, dbGravacao).FirstOrDefault();
+                if (cfgOperacao == null)
+                {
+                    return "Ops! Falha ao criar pasta.";
+                }
+
+                string log = $"Propriedade: {logPropriedade}";
+
+                if (!string.IsNullOrEmpty(logOpcoes)) log += $"\rLista de valores válidos:\r   {logOpcoes}";
+
+                var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogado.TipoUsuario,
+                    usuarioLogado.Id, produtoCatalogoPropriedade.loja, null, null, null,
+                    InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
 
                 dbGravacao.transacao.Commit();
                 _logger.LogInformation($"GravarPropriedadesProdutos: Finalizando cadastro de propriedade.");
