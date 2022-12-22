@@ -9,5 +9,7 @@ namespace InfraBanco.Modelos.Filtros
     {
         public int IdOpcao { get; set; }
         public int Id { get; set; }
+
+        public bool IncluirTorcamentoCotacaoOpcaoItemAtomicoCustoFin { get; set; }
     }
 }

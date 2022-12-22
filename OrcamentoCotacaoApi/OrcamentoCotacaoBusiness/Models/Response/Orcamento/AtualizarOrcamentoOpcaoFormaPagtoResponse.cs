@@ -8,5 +8,6 @@ namespace OrcamentoCotacaoBusiness.Models.Response.Orcamento
     public class AtualizarOrcamentoOpcaoFormaPagtoResponse : UtilsGlobais.RequestResponse.ResponseBase
     {
         public List<TorcamentoCotacaoOpcaoPagto> TorcamentoCotacaoOpcaoPagtos { get; set; }
+        public string LogOperacao { get; set; }
     }
 }

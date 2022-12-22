@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Cfg.CfgOperacao;
 using InfraBanco;
+using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
@@ -12,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -23,11 +26,13 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll;
         private readonly FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll;
         private readonly ILogger<OrcamentoCotacaoOpcaoBll> _logger;
+        private readonly CfgOperacaoBll _cfgOperacaoBll;
 
         public OrcamentoCotacaoOpcaoBll(ContextoBdProvider contextoBdProvider,
             OrcamentoCotacaoOpcao.OrcamentoCotacaoOpcaoBll orcamentoCotacaoOpcaoBll, IMapper mapper,
             ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll,
-            FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll, ILogger<OrcamentoCotacaoOpcaoBll> _logger)
+            FormaPagtoOrcamentoCotacaoBll formaPagtoOrcamentoCotacaoBll, ILogger<OrcamentoCotacaoOpcaoBll> _logger,
+            CfgOperacaoBll cfgOperacaoBll)
         {
             this.contextoBdProvider = contextoBdProvider;
             this.orcamentoCotacaoOpcaoBll = orcamentoCotacaoOpcaoBll;
@@ -35,6 +40,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             this.produtoOrcamentoCotacaoBll = produtoOrcamentoCotacaoBll;
             this.formaPagtoOrcamentoCotacaoBll = formaPagtoOrcamentoCotacaoBll;
             this._logger = _logger;
+            _cfgOperacaoBll = cfgOperacaoBll;
         }
 
         public CadastroOrcamentoOpcaoResponse CadastrarOrcamentoCotacaoOpcoesComTransacao(List<CadastroOrcamentoOpcaoRequest> orcamentoOpcoes,
@@ -46,9 +52,11 @@ namespace OrcamentoCotacaoBusiness.Bll
             var nomeMetodo = response.ObterNomeMetodoAtualAsync();
             _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Iniciando cadastro das opções de orçamento. Opções => [{JsonSerializer.Serialize(orcamentoOpcoes)}].");
 
+            response.LogOperacao = "";
             int seq = 0;
             foreach (var opcao in orcamentoOpcoes)
             {
+                if (!string.IsNullOrEmpty(response.LogOperacao)) response.LogOperacao += "\r   ";
                 seq++;
                 TorcamentoCotacaoOpcao torcamentoCotacaoOpcao = MontarTorcamentoCotacaoOpcao(opcao, idOrcamentoCotacao,
                     usuarioLogado, seq);
@@ -60,12 +68,38 @@ namespace OrcamentoCotacaoBusiness.Bll
                     return response;
                 }
 
+                string logOpcao = "";
+                string camposAOmitir = "|IdOrcamentoCotacao|Sequencia|IdTipoUsuarioContextoCadastro|IdUsuarioCadastro|DataCadastro|DataHoraCadastro|IdTipoUsuarioContextoUltAtualizacao|IdUsuarioUltAtualizacao|DataHoraUltAtualizacao|";
+                logOpcao = UtilsGlobais.Util.MontaLog(torcamentoCotacaoOpcao, logOpcao, camposAOmitir);
+
                 _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Cadastrando formas de pagamentos da opção {seq}.");
                 var responseOpcoesPagtoResponse = formaPagtoOrcamentoCotacaoBll.CadastrarOrcamentoCotacaoOpcaoPagtoComTransacao(opcao.FormaPagto, opcaoResponse.Id, contextoBdGravacao, response.CorrelationId);
                 if (responseOpcoesPagtoResponse.Sucesso && responseOpcoesPagtoResponse.TorcamentoCotacaoOpcaoPagtos.Count == 0)
                 {
                     response.Mensagem = "Falha ao gravar forma de pagamento!";
                     return response;
+                }
+
+                string logPagto = "";
+                camposAOmitir = "|Id|IdOrcamentoCotacaoOpcao|Aprovado|IdTipoUsuarioContextoAprovado|IdUsuarioAprovado|DataAprovado|DataHoraAprovado|";
+
+                string logPagtoAprazo = "";
+                string logPagtoAvista = "";
+                foreach (var tPagto in responseOpcoesPagtoResponse.TorcamentoCotacaoOpcaoPagtos)
+                {
+                    string logApoio = "";
+                    logApoio = UtilsGlobais.Util.MontaLog(tPagto, logApoio, camposAOmitir);
+
+                    if (tPagto.Tipo_parcelamento == int.Parse(Constantes.COD_FORMA_PAGTO_A_VISTA))
+                    {
+                        logPagtoAvista = $"Forma pagamento a vista: {logApoio}";
+                    }
+                    else
+                    {
+                        logPagtoAprazo = $"Forma pagamento a prazo: {logApoio}";
+                    }
+
+                    logPagto += !string.IsNullOrEmpty(logPagto) ? $"\r{logApoio}" : logApoio;
                 }
 
                 _logger.LogInformation($"Método Cadastrar opções de orçamento - Cadastrando produtos unificados e atômicos da opção {seq}");
@@ -83,6 +117,27 @@ namespace OrcamentoCotacaoBusiness.Bll
                     return response;
                 }
 
+                string logAtomico = "";
+                string logUnificado = "";
+                foreach (var tPUnificado in responseUnificadosEAtomicos.TorcamentoCotacaoItemUnificados)
+                {
+                    string logApoio = "";
+                    foreach (var tPAtomico in tPUnificado.TorcamentoCotacaoOpcaoItemAtomicos)
+                    {
+                        logApoio = !string.IsNullOrEmpty(logApoio) ? $"{logApoio}\r         " : logApoio;
+                        camposAOmitir = "|IdOrcamentoCotacaoOpcao|DescricaoHtml|Sequencia|";
+                        logApoio = UtilsGlobais.Util.MontaLog(tPAtomico, logApoio, camposAOmitir);
+                    }
+
+                    logAtomico += logApoio;
+                    camposAOmitir = "|IdOrcamentoCotacaoOpcao|DescricaoHtml|Sequencia|";
+                    logUnificado = !string.IsNullOrEmpty(logUnificado) ? $"{logUnificado}\r         " : logUnificado;
+                    logUnificado = UtilsGlobais.Util.MontaLog(tPUnificado, logUnificado, camposAOmitir);
+                }
+
+                logAtomico = $"Lista de produtos atômicos opção: {logAtomico}";
+                logUnificado = $"Lista de produtos unificados opção: {logUnificado}";
+
                 _logger.LogInformation($"Método Cadastrar opções de orçamento - Cadastrando custo de produtos atômicos da opção {seq}");
                 var responseAtomicosCustoFin = produtoOrcamentoCotacaoBll.CadastrarProdutoAtomicoCustoFinComTransacao(responseOpcoesPagtoResponse.TorcamentoCotacaoOpcaoPagtos,
                     responseUnificadosEAtomicos.TorcamentoCotacaoItemUnificados, opcao.ListaProdutos, loja, contextoBdGravacao, correlationId);
@@ -96,6 +151,38 @@ namespace OrcamentoCotacaoBusiness.Bll
                     response.Mensagem = "Ops! Falha ao salvar custos dos produto!";
                     return response;
                 }
+
+                string logAtomicoCustoAvista = "";
+                string logAtomicoCustoAprazo = "";
+                camposAOmitir = "|Id|IdOpcaoPagto|DescDado|CustoFinancFornecCoeficiente|CustoFinancFornecPrecoListaBase|StatusDescontoSuperior|IdUsuarioDescontoSuperior|DataHoraDescontoSuperior|IdOperacaoAlcadaDescontoSuperior|";
+
+                foreach (var tPagto in responseOpcoesPagtoResponse.TorcamentoCotacaoOpcaoPagtos)
+                {
+                    var tPAtomicoCusto = responseAtomicosCustoFin.TorcamentoCotacaoOpcaoItemAtomicoCustoFins.Where(x => x.IdOpcaoPagto == tPagto.Id);
+                    foreach (var itemAtomicoCusto in tPAtomicoCusto)
+                    {
+                        if (tPagto.Tipo_parcelamento == int.Parse(Constantes.COD_FORMA_PAGTO_A_VISTA))
+                        {
+                            logAtomicoCustoAvista = !string.IsNullOrEmpty(logAtomicoCustoAvista) ? $"{logAtomicoCustoAvista}\r         " : logAtomicoCustoAvista;
+                            logAtomicoCustoAvista = UtilsGlobais.Util.MontaLog(itemAtomicoCusto, logAtomicoCustoAvista, camposAOmitir);
+                        }
+                        else
+                        {
+                            logAtomicoCustoAprazo = !string.IsNullOrEmpty(logAtomicoCustoAprazo) ? $"{logAtomicoCustoAprazo}\r         " : logAtomicoCustoAprazo;
+                            logAtomicoCustoAprazo = UtilsGlobais.Util.MontaLog(itemAtomicoCusto, logAtomicoCustoAprazo, camposAOmitir);
+                        }
+                    }
+                }
+                logAtomicoCustoAprazo = $"Valor dos produtos atômicos a prazo: {logAtomicoCustoAprazo}";
+                response.LogOperacao += $"Opção {seq}: {logOpcao}\r      {logUnificado}\r      {logAtomico}\r      {logAtomicoCustoAprazo}";
+                if (!string.IsNullOrEmpty(logAtomicoCustoAvista))
+                {
+                    logAtomicoCustoAvista = $"Valor dos produtos atômicos a vista: {logAtomicoCustoAvista}";
+                    response.LogOperacao += $"\r      {logAtomicoCustoAvista}";
+                }
+                response.LogOperacao += $"\r      {logPagtoAprazo}";
+                if (!string.IsNullOrEmpty(logPagtoAvista))
+                    response.LogOperacao += $"\r      {logPagtoAvista}";
             }
 
             response.Sucesso = true;
@@ -129,7 +216,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Início da atualização da opção Id[{opcao.Id}] orçamento Id[{opcao.IdOrcamentoCotacao}].");
 
             _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Buscando opção a ser atualizada.");
-            var tOrcamentoCotacaoOpcoes = orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro() { IdOrcamentoCotacao = opcao.IdOrcamentoCotacao });
+            var tOrcamentoCotacaoOpcoes = orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro() { IdOrcamentoCotacao = opcao.IdOrcamentoCotacao, IncluirTorcamentoCotacaoProdutoUnificado = true });
             if (tOrcamentoCotacaoOpcoes == null)
             {
                 response.Mensagem = "Falha ao buscar opção de orçamento";
@@ -137,7 +224,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             var tOrcamentoCotacaoOpcaoAntiga = tOrcamentoCotacaoOpcoes.Where(x => x.Id == opcao.Id).FirstOrDefault();
-            _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Retorno da busca de opção a ser atualizada. Response => [{JsonSerializer.Serialize(tOrcamentoCotacaoOpcaoAntiga)}]");
+            JsonSerializerOptions options = new JsonSerializerOptions() { ReferenceHandler = ReferenceHandler.IgnoreCycles, WriteIndented = true };
+            _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Retorno da busca de opção a ser atualizada. Response => [{JsonSerializer.Serialize(tOrcamentoCotacaoOpcaoAntiga, options)}]");
 
             var opcaoNovo = new TorcamentoCotacaoOpcao()
             {
@@ -155,15 +243,14 @@ namespace OrcamentoCotacaoBusiness.Bll
             };
 
             _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Buscando todas as formas de pagamentos da opção a ser atualizada.");
-            var tOrcamentoCotacaoOpcaoPagtosAntiga = formaPagtoOrcamentoCotacaoBll.BuscarOpcaoFormasPagtos(opcao.Id);
+            var tOrcamentoCotacaoOpcaoPagtosAntiga = formaPagtoOrcamentoCotacaoBll.BuscarOpcaoFormasPagtos(opcao.Id, true);
             if (tOrcamentoCotacaoOpcaoPagtosAntiga == null)
             {
                 response.Mensagem = "Falha ao busca formas de pagamentos da opção!";
                 return response;
             }
 
-            _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Retorno da busca de todas as formas de pagamentos da opção a ser atualizada. Response => [{JsonSerializer.Serialize(tOrcamentoCotacaoOpcaoPagtosAntiga)}]");
-
+            _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Retorno da busca de todas as formas de pagamentos da opção a ser atualizada. Response => [{JsonSerializer.Serialize(tOrcamentoCotacaoOpcaoPagtosAntiga, options)}]");
 
             using (var dbGravacao = contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
@@ -173,7 +260,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     var tOpcao = orcamentoCotacaoOpcaoBll.AtualizarComTransacao(opcaoNovo, dbGravacao);
 
                     var responseUnificados = produtoOrcamentoCotacaoBll
-                        .AtualizarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(opcao.ListaProdutos, opcao.Id, dbGravacao, opcao.CorrelationId);
+                        .AtualizarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(opcao.ListaProdutos, opcao.Id, 
+                        dbGravacao, opcao.CorrelationId, tOrcamentoCotacaoOpcaoAntiga.TorcamentoCotacaoItemUnificados, tOpcao.Sequencia);
                     if (!string.IsNullOrEmpty(responseUnificados.Mensagem))
                     {
                         response.Mensagem = responseUnificados.Mensagem;
@@ -200,7 +288,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     {
                         response.Mensagem = "Falha ao atualizar os produtos!";
                         return response;
-                    }                    
+                    }
 
                     var responseFormaPagto = formaPagtoOrcamentoCotacaoBll
                         .AtualizarOrcamentoCotacaoOpcaoPagtoComTransacao(opcao, tOrcamentoCotacaoOpcaoPagtosAntiga, dbGravacao);
@@ -216,8 +304,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     }
 
                     var responseAtomicosCustoFin = produtoOrcamentoCotacaoBll.AtualizarProdutoAtomicoCustoFinComTransacao(opcao,
-                        tOpcao.TorcamentoCotacaoItemUnificados, responseFormaPagto.TorcamentoCotacaoOpcaoPagtos, dbGravacao, 
-                        usuarioLogado, orcamento, opcao.CorrelationId);
+                        tOpcao.TorcamentoCotacaoItemUnificados, responseFormaPagto.TorcamentoCotacaoOpcaoPagtos, dbGravacao,
+                        usuarioLogado, orcamento, opcao.CorrelationId, tOrcamentoCotacaoOpcaoPagtosAntiga);
                     if (!string.IsNullOrEmpty(responseAtomicosCustoFin.Mensagem))
                     {
                         response.Mensagem = responseAtomicosCustoFin.Mensagem;
@@ -228,6 +316,27 @@ namespace OrcamentoCotacaoBusiness.Bll
                         response.Mensagem = "Falha ao atualizar produtos!";
                         return response;
                     }
+
+                    //tOpcao.Sequencia
+                    string logOpcao = $"Opcão {tOpcao.Sequencia}:\r   Id={tOpcao.Id}; ";
+                    logOpcao = UtilsGlobais.Util.MontalogComparacao(tOpcao, tOrcamentoCotacaoOpcaoAntiga, logOpcao, "");
+
+                    if (!string.IsNullOrEmpty(responseUnificados.LogOperacao)) logOpcao += responseUnificados.LogOperacao;
+                    if (!string.IsNullOrEmpty(responseAtomicosCustoFin.LogOperacao)) logOpcao += responseAtomicosCustoFin.LogOperacao;
+                    if (!string.IsNullOrEmpty(responseFormaPagto.LogOperacao)) logOpcao += responseFormaPagto.LogOperacao;
+
+                    _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Buscando operação de criação de pasta.");
+                    var cfgOperacao = _cfgOperacaoBll.PorFiltroComTransacao(new TcfgOperacaoFiltro() { Id = 3 }, dbGravacao).FirstOrDefault();
+                    if (cfgOperacao == null)
+                    {
+                        response.Sucesso = false;
+                        response.Mensagem = "Ops! Falha ao excluir pasta.";
+                        return response;
+                    }
+
+                    var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, logOpcao, (short)usuarioLogado.TipoUsuario, usuarioLogado.Id, orcamento.Loja, null, opcaoNovo.IdOrcamentoCotacao, null,
+                        Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, opcao.IP);
+
 
                     dbGravacao.transacao.Commit();
                 }
@@ -252,7 +361,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             foreach (var opcao in orcamentoOpcoes)
             {
-                var opcaoFormaPagtos = formaPagtoOrcamentoCotacaoBll.BuscarOpcaoFormasPagtos(opcao.Id);
+                var opcaoFormaPagtos = formaPagtoOrcamentoCotacaoBll.BuscarOpcaoFormasPagtos(opcao.Id, false);
 
                 if (opcaoFormaPagtos == null) throw new ArgumentException("Pagamento da opção não encontrado!");
 

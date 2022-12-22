@@ -117,7 +117,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 try
                 {
                     if (produtoCatalogo == null)
-                        throw new ArgumentException("Ops! Parece que não existe dados de produto para catálogo!");
+                        return "Ops! Parece que não existe dados de produto para catálogo!";
 
 
                     var tProdutoCatalogo = _bll.AtualizarComTransacao(produtoCatalogo, dbGravacao);
@@ -129,7 +129,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         return "Ops! As propriedades do produto não pode estar vazio!";
 
                     string log = "";
-                    log = UtilsGlobais.Util.MontalogComparacao(tProdutoCatalogo, tProdutoCatalogoAntigo, log);
+                    log = UtilsGlobais.Util.MontalogComparacao(tProdutoCatalogo, tProdutoCatalogoAntigo, log, "");
                     if (!string.IsNullOrEmpty(log)) log = $"Produto: produto={tProdutoCatalogo.Produto}; {log}";
 
                     tProdutoCatalogo.campos = _bll.AtualizarItensComTransacao(produtoCatalogo.campos, tProdutoCatalogo.Id,
@@ -150,7 +150,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         else
                         {
                             string logVerificacao = "";
-                            logVerificacao = UtilsGlobais.Util.MontalogComparacao(prop, propAntiga, logVerificacao);
+                            logVerificacao = UtilsGlobais.Util.MontalogComparacao(prop, propAntiga, logVerificacao, "");
                             if (!string.IsNullOrEmpty(logVerificacao)) logApoio += $"id={prop.IdProdutoCatalogoPropriedade}; {logVerificacao}";
                         }
 
@@ -204,7 +204,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     {
                         return "Ops! Falha ao editar produto.";
                     }
-                    var tLogV2 = UtilsGlobais.Util.GravaLogV2(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, lojaLogada, null, null, null,
+                    var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, lojaLogada, null, null, null,
                         InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
 
                     dbGravacao.transacao.Commit();
@@ -261,7 +261,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         return "Ops! Erro ao criar novo produto!";
                     }
                     string log = "";
-                    string camposAOmitir = "usuario_cadastro|usuario_edicao|dt_cadastro|dt_edicao";
+                    string camposAOmitir = "|usuario_cadastro|usuario_edicao|dt_cadastro|dt_edicao|";
 
                     log = UtilsGlobais.Util.MontaLog(prod, log, camposAOmitir);
                     log = $"Produto: {log}";
@@ -313,7 +313,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         log = log + logImagem;
                     }
 
-                    var tLogV2 = UtilsGlobais.Util.GravaLogV2(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, loja, null, null, null,
+                    var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, loja, null, null, null,
                         InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
 
                     dbGravacao.transacao.Commit();

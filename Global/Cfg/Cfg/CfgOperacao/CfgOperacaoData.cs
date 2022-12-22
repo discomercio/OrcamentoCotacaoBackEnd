@@ -53,16 +53,36 @@ namespace Cfg.CfgOperacao
             var saida = from c in contextoBdGravacao.TcfgOperacao
                         select c;
 
-            if(saida == null) return null;
+            if (saida == null) return null;
 
-            if(obj.Id != 0) saida = saida.Where(x => x.Id == obj.Id);
+            if (obj.Id != 0) saida = saida.Where(x => x.Id == obj.Id);
 
             return saida.ToList();
         }
 
         public List<TcfgOperacao> PorFiltro(TcfgOperacaoFiltro obj)
         {
-            throw new NotImplementedException();
+            using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                try
+                {
+                    var saida = from c in db.TcfgOperacao
+                                select c;
+
+                    if (saida == null) return null;
+
+                    if (obj.Id != 0) saida = saida.Where(x => x.Id == obj.Id);
+
+                    return saida.ToList();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                finally { db.Dispose(); }
+                
+            }
+           
         }
     }
 }
