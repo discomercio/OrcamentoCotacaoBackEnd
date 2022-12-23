@@ -118,5 +118,17 @@ namespace InfraBanco.Modelos
         [MaxLength(60)]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public string Razao_social_nome_iniciais_em_maiusculas { get; set; }
+
+        [Column("QtdeConsecutivaFalhaLogin")]
+        public int QtdeConsecutivaFalhaLogin { get; set; }
+
+        [Column("StLoginBloqueadoAutomatico")]
+        public int StLoginBloqueadoAutomatico { get; set; }
+
+        [Column("DataHoraBloqueadoAutomatico")]
+        public DateTime DataHoraBloqueadoAutomatico { get; set; }
+
+        [Column("EnderecoIpBloqueadoAutomatico ")]
+        public string EnderecoIpBloqueadoAutomatico { get; set; }
     }
 }

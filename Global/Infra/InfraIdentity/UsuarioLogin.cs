@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace InfraIdentity
 {
@@ -30,5 +27,6 @@ namespace InfraIdentity
         public bool Bloqueado { get; set; }
         public string Datastamp { get; set; }
         public bool AcessoHabilitado { get; set; }
+        public int QtdeConsecutivaFalhaLogin { get; set; }
     }
 }

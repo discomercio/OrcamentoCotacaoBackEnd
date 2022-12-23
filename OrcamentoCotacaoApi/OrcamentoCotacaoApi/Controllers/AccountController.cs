@@ -66,6 +66,7 @@ namespace OrcamentoCotacaoApi.Controllers
             try
             {
                 login.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+                //var ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
 
                 _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - Request => [{JsonSerializer.Serialize(login.Usuario)}].");
 

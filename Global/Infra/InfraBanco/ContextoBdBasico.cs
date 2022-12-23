@@ -320,5 +320,6 @@ namespace InfraBanco
         public DbSet<TorcamentistaEIndicadorVendedor> TorcamentistaEIndicadorVendedor { get; set; }
         public DbSet<TLogV2> TlogV2{ get; set; }
         public DbSet<TcfgOperacao> TcfgOperacao { get; set;}
+        public DbSet<TloginHistorico> TloginHistorico { get; set; }
     }
 }
