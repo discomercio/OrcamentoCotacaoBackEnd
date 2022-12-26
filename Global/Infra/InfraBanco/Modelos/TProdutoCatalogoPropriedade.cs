@@ -9,14 +9,31 @@ namespace InfraBanco.Modelos
 {
     public class TProdutoCatalogoPropriedade : IModel
     {  
+        [Column("id")]
         public int id { get; set; }
+
+        [Column("IdCfgTipoPropriedade")]
         public short IdCfgTipoPropriedade { get; set; }
+
+        [Column("IdCfgTipoPermissaoEdicaoCadastro")]
         public short IdCfgTipoPermissaoEdicaoCadastro { get; set; }
+
+        [Column("IdCfgDataType")]
         public short IdCfgDataType { get; set; }
+
+        [Column("descricao")]
         public string descricao { get; set; }
+
+        [Column("oculto")]
         public bool oculto { get; set; }
+
+        [Column("ordem")]
         public int ordem { get; set; }
+
+        [Column("dt_cadastro")]
         public DateTime dt_cadastro { get; set; }
+
+        [Column("usuario_cadastro")]
         public string usuario_cadastro { get; set; }
 
         public TcfgDataType TcfgDataType { get; set; }

@@ -582,7 +582,8 @@ namespace OrcamentoCotacaoApi.Controllers
             var requests = new
             {
                 Usuario = LoggedUser.Apelido,
-                ProdutoCatalogoPropriedade = produtoCatalogoPropriedade
+                ProdutoCatalogoPropriedade = produtoCatalogoPropriedade,
+                IP = HttpContext.Connection.RemoteIpAddress.ToString()
             };
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoCatalogoController/GravarPropriedade/POST - Request => [{System.Text.Json.JsonSerializer.Serialize(requests)}].");
@@ -591,8 +592,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
             //var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
-
-            var saida = await _bll.GravarPropriedadesProdutos(produtoCatalogoPropriedade);
+            var saida = await _bll.GravarPropriedadesProdutos(produtoCatalogoPropriedade, LoggedUser, requests.IP);
 
             if (!string.IsNullOrEmpty(saida)) return BadRequest(new { message = saida });
 
@@ -653,7 +653,8 @@ namespace OrcamentoCotacaoApi.Controllers
 
             try
             {
-                var saida = await _bll.AtualizarPropriedadesProdutos(produtoCatalogoPropriedade);
+                string ip = HttpContext.Connection.RemoteIpAddress.ToString();
+                var saida = await _bll.AtualizarPropriedadesProdutos(produtoCatalogoPropriedade, LoggedUser, ip);
 
                 if (!string.IsNullOrEmpty(saida.Mensagem) || saida.ProdutosCatalogo?.Count > 0) return Ok(saida);
 
@@ -682,7 +683,7 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpPost("ExcluirPropriedades/{idPropriedade}")]
-        public async Task<IActionResult> ExcluirPropriedades(int idPropriedade)
+        public async Task<IActionResult> ExcluirPropriedades(int idPropriedade, string lojaLogada)
         {
             var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
@@ -691,7 +692,8 @@ namespace OrcamentoCotacaoApi.Controllers
             if (!User.ValidaPermissao((int)ePermissao.CatalogoPropriedadeIncluirEditar))
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
-            var response = await _bll.ExcluirPropriedades(idPropriedade);
+            string ip = HttpContext.Connection.RemoteIpAddress.ToString();
+            var response = await _bll.ExcluirPropriedades(idPropriedade, LoggedUser, lojaLogada, ip);
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. ArquivoController/ExcluirPropriedades/POST - Response => [{response}].");
 

@@ -866,7 +866,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     var cfgOperacao = _cfgOperacaoBll.PorFiltroComTransacao(new TcfgOperacaoFiltro() { Id = 1 }, dbGravacao).FirstOrDefault();
                     if (cfgOperacao == null)
                     {
-                        response.Mensagem = "Ops! Falha ao criar pasta.";
+                        response.Mensagem = "Ops! Falha ao cadastrar orçamento.";
                         return response;
                     }
 

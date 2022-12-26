@@ -871,7 +871,7 @@ namespace Produto
                 oculto = produtoCatalogoPropriedade.oculto,
                 ordem = produtoCatalogoPropriedade.ordem,
                 usuario_cadastro = produtoCatalogoPropriedade.usuario_cadastro,
-                dt_cadastro = DateTime.Now
+                dt_cadastro = produtoCatalogoPropriedade.dt_cadastro
             };
 
             dbGravacao.Update(tProdutoCatalogoPropriedade);
@@ -971,7 +971,7 @@ namespace Produto
             return count > 0;
         }
 
-        public async Task<bool> ExcluirPropriedades(int idPropriedade, ContextoBdGravacao dbGravacao)
+        public async Task<string> ExcluirPropriedades(int idPropriedade, ContextoBdGravacao dbGravacao)
         {
             TProdutoCatalogoPropriedade tProdutoCatalogoPropriedade;
             List<TProdutoCatalogoPropriedadeOpcao> tProdutoCatalogoPropriedadeOpcaos;
@@ -983,27 +983,37 @@ namespace Produto
                                                      select p).SingleOrDefaultAsync();
 
                 tProdutoCatalogoPropriedadeOpcaos = await (from p in db.TProdutoCatalogoPropriedadeOpcao
-                                                          where p.id_produto_catalogo_propriedade == idPropriedade
-                                                          select p).ToListAsync();
+                                                           where p.id_produto_catalogo_propriedade == idPropriedade
+                                                           select p).ToListAsync();
             }
 
+            string logOpcoes = "";
+            string omitirCampos = "|dt_cadastro|usuario_cadastro|";
             if (tProdutoCatalogoPropriedadeOpcaos != null)
             {
                 foreach (var propriedadeOpcao in tProdutoCatalogoPropriedadeOpcaos)
                 {
                     dbGravacao.Remove(propriedadeOpcao);
                     await dbGravacao.SaveChangesAsync();
+
+                    if (!string.IsNullOrEmpty(logOpcoes)) logOpcoes += "\r      ";
+                    logOpcoes = UtilsGlobais.Util.MontaLog(propriedadeOpcao, logOpcoes, omitirCampos);
                 }
             }
-
+            string log = "";
             if (tProdutoCatalogoPropriedade != null)
             {
                 dbGravacao.Remove(tProdutoCatalogoPropriedade);
                 var result = await dbGravacao.SaveChangesAsync();
-                return result > 0;
+
+                log = UtilsGlobais.Util.MontaLog(tProdutoCatalogoPropriedade, log, omitirCampos);
+
+                if (!string.IsNullOrEmpty(logOpcoes)) log = $"{log}\r   Lista de valores válidos: {logOpcoes}";
+
+                return log;
             }
 
-            return false;
+            return null;
         }
     }
 }
