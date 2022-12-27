@@ -19,6 +19,8 @@ namespace Produto.Dados
         public int ordem { get; set; }
         public DateTime dt_cadastro { get; set; }
         public string usuario_cadastro { get; set; }
+        public string loja { get; set; }
+
         [JsonProperty("produtoCatalogoPropriedadeOpcao")]
         public List<ProdutoCatalogoPropriedadeOpcoesDados> produtoCatalogoPropriedadeOpcoesDados { get; set; }
     }
