@@ -272,24 +272,40 @@ namespace OrcamentoCotacaoApi.Controllers
 
             try
             {
-                var objOrcamentistaEIndicadorVendedor = _mapper.Map<TorcamentistaEIndicadorVendedor>(model);
-                var result = _orcamentistaEindicadorVendedorBll.Atualizar(
-                    objOrcamentistaEIndicadorVendedor,
-                    model.Senha,
-                    model.Parceiro,
-                    User.GetVendedor(),
-                    User.GetTipoUsuario(),
-                    User.ValidaPermissao((int)ePermissao.SelecionarQualquerIndicadorDaLoja)
-                    );
+                //Novo
+                var usuarioLogado = LoggedUser;
+                string ip = HttpContext.Connection.RemoteIpAddress.ToString();
+                var selecionaQualquerIndicadorLoja = User.ValidaPermissao((int)ePermissao.SelecionarQualquerIndicadorDaLoja);
+                var ret = _orcamentistaEIndicadorVendedorBll.Atualizar(model, usuarioLogado, ip, selecionaQualquerIndicadorLoja, User.GetVendedor());
 
                 var response = new
                 {
-                    OrcamentistaEIndicadorVendedor = result
+                    OrcamentistaEIndicadorVendedor = ret
                 };
 
                 _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/vendedores-parceiros/PUT - Response => [{JsonSerializer.Serialize(response)}].");
 
-                return Ok(result);
+                return Ok(ret);
+                //Fim novo
+
+                //var objOrcamentistaEIndicadorVendedor = _mapper.Map<TorcamentistaEIndicadorVendedor>(model);
+                //var result = _orcamentistaEindicadorVendedorBll.Atualizar(
+                //    objOrcamentistaEIndicadorVendedor,
+                //    model.Senha,
+                //    model.Parceiro,
+                //    User.GetVendedor(),
+                //    User.GetTipoUsuario(),
+                //    User.ValidaPermissao((int)ePermissao.SelecionarQualquerIndicadorDaLoja)
+                //    );
+
+                //var responsea = new
+                //{
+                //    OrcamentistaEIndicadorVendedor = result
+                //};
+
+                //_logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/vendedores-parceiros/PUT - Response => [{JsonSerializer.Serialize(response)}].");
+
+                //return Ok(result);
             }
             catch (ArgumentException e)
             {
