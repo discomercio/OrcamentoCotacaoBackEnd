@@ -57,7 +57,9 @@ namespace OrcamentistaEIndicadorVendedor
 
         public TorcamentistaEIndicadorVendedor InserirComTransacao(TorcamentistaEIndicadorVendedor model, ContextoBdGravacao contextoBdGravacao)
         {
-            throw new NotImplementedException();
+            contextoBdGravacao.TorcamentistaEIndicadorVendedor.Add(model);
+            contextoBdGravacao.SaveChanges();
+            return model;
         }
 
         public List<TorcamentistaEIndicadorVendedor> PorFilroComTransacao(TorcamentistaEIndicadorVendedorFiltro obj, ContextoBdGravacao contextoBdGravacao)

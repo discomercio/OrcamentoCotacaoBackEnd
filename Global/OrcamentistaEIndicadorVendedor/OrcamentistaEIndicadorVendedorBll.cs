@@ -141,7 +141,7 @@ namespace OrcamentistaEIndicadorVendedor
             return _data.Atualizar(oeiv);
         }
 
-        private string SenhaValida(
+        public string SenhaValida(
             string usuario,
             string senha)
         {
