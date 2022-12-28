@@ -29,16 +29,19 @@ namespace OrcamentoCotacaoApi.Controllers
         private readonly ILogger<OrcamentistaEIndicadorVendedorController> _logger;
         private readonly IMapper _mapper;
         private readonly OrcamentistaEIndicadorBll orcamentistaEIndicadorBll;
+        private readonly OrcamentistaEIndicadorVendedorBll _orcamentistaEIndicadorVendedorBll;
 
         public OrcamentistaEIndicadorVendedorController(
             OrcamentistaEIndicadorVendedor.OrcamentistaEIndicadorVendedorBll orcamentistaEindicadorVendedorBll,
             ILogger<OrcamentistaEIndicadorVendedorController> logger, IMapper mapper,
-            OrcamentistaEIndicadorBll orcamentistaEIndicadorBll)
+            OrcamentistaEIndicadorBll orcamentistaEIndicadorBll, 
+            OrcamentistaEIndicadorVendedorBll _orcamentistaEIndicadorVendedorBll)
         {
             this._orcamentistaEindicadorVendedorBll = orcamentistaEindicadorVendedorBll;
             this._logger = logger;
             this._mapper = mapper;
             this.orcamentistaEIndicadorBll = orcamentistaEIndicadorBll;
+            this._orcamentistaEIndicadorVendedorBll = _orcamentistaEIndicadorVendedorBll;
         }
 
         [HttpGet]
@@ -229,12 +232,11 @@ namespace OrcamentoCotacaoApi.Controllers
             if (!User.ValidaPermissao((int)ePermissao.CadastroVendedorParceiroIncluirEditar))
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
-            var objOrcamentistaEIndicadorVendedor = _mapper.Map<TorcamentistaEIndicadorVendedor>(model);
             try
             {
-                var result = _orcamentistaEindicadorVendedorBll.Inserir(objOrcamentistaEIndicadorVendedor, model.Senha, User.GetParceiro(), User.GetVendedor());
-
-                var ret = _mapper.Map<OrcamentistaEIndicadorVendedorResponseViewModel>(result);
+                var usuarioLogado = LoggedUser;
+                string ip = HttpContext.Connection.RemoteIpAddress.ToString();
+                var ret = _orcamentistaEIndicadorVendedorBll.Inserir(model, usuarioLogado, ip);
 
                 var response = new
                 {
@@ -242,45 +244,6 @@ namespace OrcamentoCotacaoApi.Controllers
                 };
 
                 _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/vendedores-parceiros/POST - Response => [{JsonSerializer.Serialize(response)}].");
-
-                return Ok(ret);
-            }
-            catch (ArgumentException e)
-            {
-                return UnprocessableEntity(e);
-            }
-        }
-
-        [HttpPost]
-        [Route("vendedores-parceiros-usuario-interno")]
-        public IActionResult PostPorUsuarioInterno(UsuarioRequestViewModel model)
-        {
-            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
-
-            var request = new
-            {
-                Usuario = LoggedUser.Apelido,
-                UsuarioRequest = model
-            };
-
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/vendedores-parceiros-usuario-interno/POST - Request => [{JsonSerializer.Serialize(request)}].");
-
-            if (!User.ValidaPermissao((int)ePermissao.CadastroVendedorParceiroIncluirEditar))
-                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
-
-            var objOrcamentistaEIndicadorVendedor = _mapper.Map<TorcamentistaEIndicadorVendedor>(model);
-            try
-            {
-                var result = _orcamentistaEindicadorVendedorBll.Inserir(objOrcamentistaEIndicadorVendedor, model.Senha, model.Parceiro, User.GetVendedor());
-
-                var ret = _mapper.Map<OrcamentistaEIndicadorVendedorResponseViewModel>(result);
-
-                var response = new
-                {
-                    OrcamentistaEIndicadorVendedor = ret
-                };
-
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/vendedores-parceiros-usuario-interno/POST - Response => [{JsonSerializer.Serialize(response)}].");
 
                 return Ok(ret);
             }
@@ -309,24 +272,40 @@ namespace OrcamentoCotacaoApi.Controllers
 
             try
             {
-                var objOrcamentistaEIndicadorVendedor = _mapper.Map<TorcamentistaEIndicadorVendedor>(model);
-                var result = _orcamentistaEindicadorVendedorBll.Atualizar(
-                    objOrcamentistaEIndicadorVendedor,
-                    model.Senha,
-                    model.Parceiro,
-                    User.GetVendedor(),
-                    User.GetTipoUsuario(),
-                    User.ValidaPermissao((int)ePermissao.SelecionarQualquerIndicadorDaLoja)
-                    );
+                //Novo
+                var usuarioLogado = LoggedUser;
+                string ip = HttpContext.Connection.RemoteIpAddress.ToString();
+                var selecionaQualquerIndicadorLoja = User.ValidaPermissao((int)ePermissao.SelecionarQualquerIndicadorDaLoja);
+                var ret = _orcamentistaEIndicadorVendedorBll.Atualizar(model, usuarioLogado, ip, selecionaQualquerIndicadorLoja, User.GetVendedor());
 
                 var response = new
                 {
-                    OrcamentistaEIndicadorVendedor = result
+                    OrcamentistaEIndicadorVendedor = ret
                 };
 
                 _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/vendedores-parceiros/PUT - Response => [{JsonSerializer.Serialize(response)}].");
 
-                return Ok(result);
+                return Ok(ret);
+                //Fim novo
+
+                //var objOrcamentistaEIndicadorVendedor = _mapper.Map<TorcamentistaEIndicadorVendedor>(model);
+                //var result = _orcamentistaEindicadorVendedorBll.Atualizar(
+                //    objOrcamentistaEIndicadorVendedor,
+                //    model.Senha,
+                //    model.Parceiro,
+                //    User.GetVendedor(),
+                //    User.GetTipoUsuario(),
+                //    User.ValidaPermissao((int)ePermissao.SelecionarQualquerIndicadorDaLoja)
+                //    );
+
+                //var responsea = new
+                //{
+                //    OrcamentistaEIndicadorVendedor = result
+                //};
+
+                //_logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/vendedores-parceiros/PUT - Response => [{JsonSerializer.Serialize(response)}].");
+
+                //return Ok(result);
             }
             catch (ArgumentException e)
             {
