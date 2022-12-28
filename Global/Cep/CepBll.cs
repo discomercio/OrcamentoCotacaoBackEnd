@@ -240,9 +240,11 @@ namespace Cep
             List<CepDados> cepdto = new List<CepDados>();
 
             if (string.IsNullOrEmpty(endereco)) endereco = "";
-            else endereco = endereco.Replace("Rua", "").Replace("R. ", "").Replace("R ", "")
-                    .Replace("Avenida", "").Replace("Av. ", "").Replace("Av ", "")
-                    .Replace("Travessa", "").Replace("T. ", "").Replace("T ", "")
+            else endereco = endereco.Replace("Rua ", "").Replace("rua ", "").Replace("R. ", "").Replace("r. ", "")
+                    .Replace("R ", "").Replace("r ", "").Replace("Avenida ", "").Replace("avenida ", "")
+                    .Replace("Av. ", "").Replace("av. ", "").Replace("Av ", "").Replace("av ", "")
+                    .Replace("Travessa ", "").Replace("travessa ", "").Replace("T. ", "").Replace("t. ", "")
+                    .Replace("T ", "").Replace("t ", "")
                     .Replace(".", "").Replace(":", "").Trim();
 
             using (var db = contextoCepProvider.GetContextoLeitura())
