@@ -11,6 +11,8 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UtilsGlobais;
 using System.Text.Json;
+using System.Net.Mail;
+using System.Net;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -124,7 +126,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
                     if (senha_digitada_datastamp != t.Datastamp)
                     {
-                        RegistrarTentativasLogin(t.Id, t.TipoUsuario.Value, login,  "10.0.0.1", msgErro, false);
+                        RegistrarTentativasLogin(t.Id, t.TipoUsuario.Value, login, "10.0.0.1", Constantes.ERR_SENHA_INVALIDA, false);
 
                         msgErro = Constantes.ERR_SENHA_INVALIDA;
                         return null;
@@ -622,13 +624,14 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         private async Task RegistrarTentativasLogin(
-            int idUsuario, 
-            int tipoUsuario, 
+            int idUsuario,
+            int tipoUsuario,
             string login,
-            string ip, 
+            string ip,
             string mensagemErro,
             bool loginSucesso)
         {
+            bool notificarUserAdmin = false;
             int sistemaResponsavel = 6;
 
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTISTA_E_INDICADOR))
@@ -663,9 +666,10 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                         if (parametroBloqueio.Campo_inteiro == usuario.QtdeConsecutivaFalhaLogin)
                         {
-                            usuario.StLoginBloqueadoAutomatico = 1;
+                            usuario.StLoginBloqueadoAutomatico = true;
                             usuario.DataHoraBloqueadoAutomatico = DateTime.Now;
                             usuario.EnderecoIpBloqueadoAutomatico = ip;
+                            notificarUserAdmin = true;
                         }
                     }
                     else
@@ -687,9 +691,10 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                         if (parametroBloqueio.Campo_inteiro == parceiro.QtdeConsecutivaFalhaLogin)
                         {
-                            parceiro.StLoginBloqueadoAutomatico = 1;
+                            parceiro.StLoginBloqueadoAutomatico = true;
                             parceiro.DataHoraBloqueadoAutomatico = DateTime.Now;
                             parceiro.EnderecoIpBloqueadoAutomatico = ip;
+                            notificarUserAdmin = true;
                         }
                     }
                     else
@@ -711,9 +716,10 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                         if (parametroBloqueio.Campo_inteiro == parceiroParceiro.QtdeConsecutivaFalhaLogin)
                         {
-                            parceiroParceiro.StLoginBloqueadoAutomatico = 1;
+                            parceiroParceiro.StLoginBloqueadoAutomatico = true;
                             parceiroParceiro.DataHoraBloqueadoAutomatico = DateTime.Now;
                             parceiroParceiro.EnderecoIpBloqueadoAutomatico = ip;
+                            notificarUserAdmin = true;
                         }
                     }
                     else
@@ -724,8 +730,94 @@ namespace OrcamentoCotacaoBusiness.Bll
                     dbgravacao.Update(parceiroParceiro);
                 }
 
+                if (notificarUserAdmin)
+                {
+                    var parametroRemetente = await (from b in dbgravacao.Tparametros
+                                                    where b.Id == "EmailRemetenteAlertaLoginBloqueadoAutomatico"
+                                                    select b).FirstOrDefaultAsync();
+
+                    var parametroDestinatario = await (from b in dbgravacao.Tparametros
+                                                       where b.Id == "EmailDestinatarioAlertaLoginBloqueadoAutomatico"
+                                                       select b).FirstOrDefaultAsync();
+
+                    var parametroAssunto = await (from b in dbgravacao.Tparametros
+                                                  where b.Id == "SubjectEmailAlertaLoginBloqueadoAutomatico"
+                                                  select b).FirstOrDefaultAsync();
+
+                    var parametroMensagem = await (from b in dbgravacao.Tparametros
+                                                   where b.Id == "BodyEmailAlertaLoginBloqueadoAutomatico"
+                                                   select b).FirstOrDefaultAsync();
+
+                    parametroRemetente.Campo_texto = "hamilton@discomercio.com.br";
+                    parametroDestinatario.Campo_texto = "eder.belina@itssolucoes.com.br";
+
+                    var dataBloqueio = DateTime.Now.ToString();
+
+                    parametroAssunto.Campo_texto = parametroAssunto.Campo_texto
+                        .Replace("[AMBIENTE]", "TESTE")
+                        .Replace("[LOGIN_USUARIO]", login)
+                        .Replace("[DATA_HORA_BLOQUEIO]", dataBloqueio);
+
+                    parametroMensagem.Campo_texto = parametroMensagem.Campo_texto
+                        .Replace("[AMBIENTE]", "TESTE")
+                        .Replace("[LOGIN_USUARIO]", login)
+                        .Replace("[IdTipoUsuarioContexto]", tipoUsuario.ToString())
+                        .Replace("[IdUsuario]", idUsuario.ToString())
+                        .Replace("[IP]", ip)
+                        .Replace("[DATA_HORA_BLOQUEIO]", dataBloqueio)
+                        .Replace("[MAX_TENTATIVAS_LOGIN]", parametroBloqueio.Campo_inteiro.ToString());
+
+                    var email = new Email
+                    (
+                        de: parametroRemetente.Campo_texto,
+                        para: parametroDestinatario.Campo_texto,
+                        assunto: parametroAssunto.Campo_texto,
+                        mensagem: parametroMensagem.Campo_texto
+                    );
+
+                    email.Send();
+                }
+
                 await dbgravacao.SaveChangesAsync();
                 dbgravacao.transacao.Commit();
+            }
+        }
+    }
+
+    public sealed class Email
+    {
+        public string De { get; }
+        public string Para { get; }
+        public string Assunto { get; }
+        public string Mensagem { get; }
+
+        public Email(
+            string de, 
+            string para, 
+            string assunto, 
+            string mensagem)
+        {
+            De = de;
+            Para = para;
+            Assunto = assunto;
+            Mensagem = mensagem;
+        }
+
+        public void Send()
+        {
+            try
+            {
+                using (var smtpClient = new SmtpClient("smtp.sparkpostmail.com"))
+                {
+                    smtpClient.Port = 587;
+                    smtpClient.Credentials = new NetworkCredential("SMTP_Injection", "705b72a2ed6933478d0e1942dcd53c55ba7f0f2a");
+                    smtpClient.EnableSsl = true;
+                    smtpClient.Send(De, Para, Assunto, Mensagem);
+                };
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
     }

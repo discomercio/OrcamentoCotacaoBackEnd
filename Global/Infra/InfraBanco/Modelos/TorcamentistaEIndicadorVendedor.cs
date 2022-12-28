@@ -74,10 +74,10 @@ namespace InfraBanco.Modelos
         public int QtdeConsecutivaFalhaLogin { get; set; }
 
         [Column("StLoginBloqueadoAutomatico")]
-        public int StLoginBloqueadoAutomatico { get; set; }
+        public bool StLoginBloqueadoAutomatico { get; set; }
 
         [Column("DataHoraBloqueadoAutomatico")]
-        public DateTime DataHoraBloqueadoAutomatico { get; set; }
+        public DateTime? DataHoraBloqueadoAutomatico { get; set; }
 
         [Column("EnderecoIpBloqueadoAutomatico ")]
         public string EnderecoIpBloqueadoAutomatico { get; set; }
