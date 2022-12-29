@@ -40,7 +40,7 @@ namespace OrcamentoCotacaoApi.Utils
         }
 
         //retorna null se nao exisitr (ou se a senha estiver errada)
-        public async Task<InfraIdentity.UsuarioLogin> ObterUsuario(string apelido, string senha)
+        public async Task<InfraIdentity.UsuarioLogin> ObterUsuario(string apelido, string senha, string ip = null)
         {
             //trabalhamos sempre com maiúsuculas
             apelido = apelido.ToUpper().Trim();
@@ -50,7 +50,8 @@ namespace OrcamentoCotacaoApi.Utils
             senha = Util.codificaDado(senha, false);
 
             string msgErro;
-            var dadosCliente = acessoBll.ValidarUsuario(apelido, senha, false, out msgErro);
+            var dadosCliente = acessoBll.ValidarUsuario(apelido, senha, false, ip, out msgErro);
+
             //caso usuário com senha expirada ou bloqueado, retornamos um número 
             if (!string.IsNullOrEmpty(msgErro))
             {

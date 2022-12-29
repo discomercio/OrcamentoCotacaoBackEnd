@@ -9,8 +9,8 @@ namespace InfraBanco.Modelos
     {
         public Int64 Id { get; set; }
         public DateTime DataHora { get; set; }
-        public int IdTipoUsuarioContexto { get; set; }
-        public int IdUsuario { get; set; }
+        public int? IdTipoUsuarioContexto { get; set; }
+        public int? IdUsuario { get; set; }
         public bool StSucesso { get; set; }
         public string Ip { get; set; }
         public int sistema_responsavel { get; set; }

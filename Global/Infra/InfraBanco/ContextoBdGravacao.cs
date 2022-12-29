@@ -212,5 +212,7 @@ namespace InfraBanco
         public DbSet<TLogV2> TLogV2 { get => contexto.TlogV2; }
         public DbSet<TcfgOperacao> TcfgOperacao { get => contexto.TcfgOperacao; }
         public DbSet<TloginHistorico> TloginHistorico { get => contexto.TloginHistorico; }
+        public DbSet<TemailLsndsvcRemetente> TemailLsndsvcRemetente { get => contexto.TemailLsndsvcRemetente; }
+        public DbSet<TemailSndsvcMensagem> TemailSndsvcMensagem { get => contexto.TemailSndsvcMensagem; }
     }
 }

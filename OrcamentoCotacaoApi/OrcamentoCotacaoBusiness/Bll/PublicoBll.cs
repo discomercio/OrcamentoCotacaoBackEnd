@@ -35,9 +35,9 @@ namespace OrcamentoCotacaoBusiness.Bll
                 appSettings.SegredoToken, 
                 appSettings.ValidadeTokenMinutos,
                 Autenticacao.RoleAcesso, 
-                new ServicoAutenticacaoProvider(_acessoBll), 
-                out bool unidade_negocio_desconhecida
-                );
+                new ServicoAutenticacaoProvider(_acessoBll),
+                string.Empty,
+                out bool unidade_negocio_desconhecida);
 
             return usuarioAuth.Token; 
         }

@@ -7,7 +7,8 @@
             string segredoToken, 
             int validadeTokenMinutos, 
             string role,
-            IServicoAutenticacaoProvider servicoAutenticacaoProvider, 
+            IServicoAutenticacaoProvider servicoAutenticacaoProvider,
+            string ip,
             out bool unidade_negocio_desconhecida
             );
 

@@ -66,7 +66,7 @@ namespace OrcamentoCotacaoApi.Controllers
             try
             {
                 login.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
-                //var ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+                login.IP = Request.HttpContext.Connection.RemoteIpAddress.ToString();
 
                 _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - Request => [{JsonSerializer.Serialize(login.Usuario)}].");
 
@@ -87,8 +87,8 @@ namespace OrcamentoCotacaoApi.Controllers
                     appSettings.ValidadeTokenMinutos,
                     Autenticacao.RoleAcesso, 
                     new ServicoAutenticacaoProvider(_acessoBll, _usuarioBll, _orcamentistaEindicadorBll, _orcamentistaEindicadorVendedorBll, _lojaBll),
-                    out bool unidade_negocio_desconhecida
-                    );
+                    login.IP,
+                    out bool unidade_negocio_desconhecida);
 
                 var response = new LoginResponse();
                 response.Sucesso = false;
