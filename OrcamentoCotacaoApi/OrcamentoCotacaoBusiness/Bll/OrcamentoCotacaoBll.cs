@@ -165,7 +165,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 orcamento.listaOpcoes = _orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro { IdOrcamentoCotacao = orcamento.id });
                 orcamento.listaFormasPagto = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(orcamento.tipoCliente, (Constantes.TipoUsuario)usuarioLogin.TipoUsuario, orcamento.vendedor, byte.Parse(orcamento.idIndicador.HasValue ? "1" : "0"));
                 orcamento.mensageria = BuscarDadosParaMensageria(usuarioLogin, orcamento.id, false);
-                orcamento.token = _publicoBll.ObterTokenServico();
+               // orcamento.token = _publicoBll.ObterTokenServico();
 
                 if (!Validar(orcamento))
                 {
