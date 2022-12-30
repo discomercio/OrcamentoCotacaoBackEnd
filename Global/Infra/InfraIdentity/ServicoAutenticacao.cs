@@ -12,15 +12,18 @@ namespace InfraIdentity
         public UsuarioLogin ObterTokenAutenticacao(
             UsuarioLogin login, 
             string segredoToken, 
-            int validadeTokenMinutos, 
+            int validadeTokenMinutos,
+            string BloqueioUsuarioLoginAmbiente,
             string role,
             IServicoAutenticacaoProvider servicoAutenticacaoProvider, 
             string ip,
             out bool unidade_negocio_desconhecida)
         {
-            UsuarioLogin user = null;
-
-            user = servicoAutenticacaoProvider.ObterUsuario(login.Apelido, login.Senha, ip).Result;
+            UsuarioLogin user = servicoAutenticacaoProvider.ObterUsuario(
+                login.Apelido,
+                login.Senha,
+                BloqueioUsuarioLoginAmbiente,
+                ip).Result;
 
             // retorna null se não tiver usuário
             if (user == null)

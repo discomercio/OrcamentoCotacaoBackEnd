@@ -17,7 +17,11 @@ namespace OrcamentoCotacaoBusiness.PrePedido.Utils
         }
 
         //retorna null se nao exisitr (ou se a senha estiver errada)
-        public async Task<InfraIdentity.UsuarioLogin> ObterUsuario(string apelido, string senha, string ip = null)
+        public async Task<InfraIdentity.UsuarioLogin> ObterUsuario(
+            string apelido, 
+            string senha, 
+            string bloqueioUsuarioLoginAmbiente, 
+            string ip = null)
         {
             //trabalhamos sempre com maiúsuculas
             apelido = apelido.ToUpper().Trim();

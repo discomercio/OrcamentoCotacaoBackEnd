@@ -75,7 +75,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 string apelido = login.Usuario.ToUpper();
                 string senha = login.Senha;
 
-                UsuarioLogin objUsuarioLogin = new UsuarioLogin()
+                var objUsuarioLogin = new UsuarioLogin()
                 {
                     Apelido = apelido,
                     Senha = senha
@@ -85,6 +85,7 @@ namespace OrcamentoCotacaoApi.Controllers
                     objUsuarioLogin, 
                     appSettings.SegredoToken, 
                     appSettings.ValidadeTokenMinutos,
+                    appSettings.BloqueioUsuarioLoginAmbiente,
                     Autenticacao.RoleAcesso, 
                     new ServicoAutenticacaoProvider(_acessoBll, _usuarioBll, _orcamentistaEindicadorBll, _orcamentistaEindicadorVendedorBll, _lojaBll),
                     login.IP,

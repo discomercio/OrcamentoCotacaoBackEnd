@@ -34,6 +34,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 usuario, 
                 appSettings.SegredoToken, 
                 appSettings.ValidadeTokenMinutos,
+                appSettings.BloqueioUsuarioLoginAmbiente,
                 Autenticacao.RoleAcesso, 
                 new ServicoAutenticacaoProvider(_acessoBll),
                 string.Empty,

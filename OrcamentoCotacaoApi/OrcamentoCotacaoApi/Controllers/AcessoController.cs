@@ -109,6 +109,7 @@ namespace PrepedidoApi.Controllers
                 objUsuarioLogin, 
                 appSettings.SegredoToken, 
                 appSettings.ValidadeTokenMinutos,
+                appSettings.BloqueioUsuarioLoginAmbiente,
                 Autenticacao.RoleAcesso, 
                 new OrcamentoCotacaoBusiness.PrePedido.Utils.ServicoAutenticacaoProvider(acessoBll),
                 string.Empty,
