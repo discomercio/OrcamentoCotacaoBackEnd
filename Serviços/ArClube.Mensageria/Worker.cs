@@ -1,7 +1,4 @@
-using InfraBanco.Modelos;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using UtilsGlobais;
@@ -9,97 +6,105 @@ using static InfraBanco.Constantes.Constantes;
 
 namespace ArClube.Mensageria
 {
-    public class Worker : BackgroundService
+    public sealed class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
-        private readonly IServiceScopeFactory _scopeFactory;
-        private readonly ConfigurationBuilder config;
-        public List<TcfgUnidadeNegocio> _cfgUnidadeNegocios { get; set; }
-        public List<TcfgUnidadeNegocioParametro> _cfgUnidadeNegocioParametros { get; set; }
+        private readonly ConfigurationBuilder _config;
+        private readonly IMensageriaRepositorio _mensageriaRepositorio;
 
-        public Worker(ILogger<Worker> logger,
-            IServiceScopeFactory scopeFactory,
-            ConfigurationBuilder config)
+        public Worker(
+            ILogger<Worker> logger,
+            ConfigurationBuilder config,
+            IMensageriaRepositorio mensageriaRepositorio)
         {
-            _logger = logger;
-            this._scopeFactory = scopeFactory;
-            this.config = config;
+            this._logger = logger;
+            this._config = config;
+            this._mensageriaRepositorio = mensageriaRepositorio;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Started");
-            using var scope = _scopeFactory.CreateScope();
-            // Access scoped services like this:
-            var _CfgUnidadeNegocioParametroBll = scope.ServiceProvider.GetService<Cfg.CfgUnidadeNegocioParametro.CfgUnidadeNegocioParametroBll>();
-            var _sendQueueBLL = scope.ServiceProvider.GetService<OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll>();
-            var _CfgUnidadeNegocioBll = scope.ServiceProvider.GetService<Cfg.CfgUnidadeNegocio.CfgUnidadeNegocioBll>();
-            _cfgUnidadeNegocioParametros = new List<TcfgUnidadeNegocioParametro>();
-            _cfgUnidadeNegocios = _CfgUnidadeNegocioBll.PorFiltro(new InfraBanco.Modelos.Filtros.TcfgUnidadeNegocioFiltro() { });
-            foreach (var item in _cfgUnidadeNegocios)
-            {
-                _cfgUnidadeNegocioParametros.AddRange(_CfgUnidadeNegocioParametroBll.PorFiltro(new InfraBanco.Modelos.Filtros.TcfgUnidadeNegocioParametroFiltro() { IdCfgUnidadeNegocio = item.Id, IdCfgParametro = 7 })); //smtp
-                _cfgUnidadeNegocioParametros.AddRange(_CfgUnidadeNegocioParametroBll.PorFiltro(new InfraBanco.Modelos.Filtros.TcfgUnidadeNegocioParametroFiltro() { IdCfgUnidadeNegocio = item.Id, IdCfgParametro = 8 })); //porta
-                _cfgUnidadeNegocioParametros.AddRange(_CfgUnidadeNegocioParametroBll.PorFiltro(new InfraBanco.Modelos.Filtros.TcfgUnidadeNegocioParametroFiltro() { IdCfgUnidadeNegocio = item.Id, IdCfgParametro = 9 })); //usuario
-                _cfgUnidadeNegocioParametros.AddRange(_CfgUnidadeNegocioParametroBll.PorFiltro(new InfraBanco.Modelos.Filtros.TcfgUnidadeNegocioParametroFiltro() { IdCfgUnidadeNegocio = item.Id, IdCfgParametro = 10 })); //senha
-                _cfgUnidadeNegocioParametros.AddRange(_CfgUnidadeNegocioParametroBll.PorFiltro(new InfraBanco.Modelos.Filtros.TcfgUnidadeNegocioParametroFiltro() { IdCfgUnidadeNegocio = item.Id, IdCfgParametro = 11 })); //Forma de autenticação (STARTTLS)
-            }
+            this._logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Started");
+
+            this._logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Obter informações de arquivo de configuração");
+            var configuration = _config.AddEnvironmentVariables().AddJsonFile("appsettings.json").Build();
+            var recordsPerPage = configuration.GetSection("EmailsPerCicleToGetAndSend").Value.ToInt().Value;
+            var secondsToDelayAfterSend = configuration.GetSection("SecondsToDelayAfterSend").Value.ToInt().Value;
+
+            this._logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Obter Unidade Neogocio Parametros");
+            var unidadeNeogocioParametros = await this._mensageriaRepositorio.ObterUnidadeNeogocioParametrosAsync();
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                // Create service scope
-                var configuration = config.AddEnvironmentVariables().AddJsonFile("appsettings.json").Build();
                 try
                 {
+                    this._logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Obter Orcamento Cotacao Emails");
+                    var orcamentoCotacaoEmailsQueue = await this._mensageriaRepositorio.ObterOrcamentoCotacaoEmailsQueueAsync(recordsPerPage);
 
-
-                    var emails = _sendQueueBLL.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentoCotacaoEmailQueueFiltro() { Sent = false, Page = 1, RecordsPerPage = configuration.GetSection("EmailsPerCicleToGetAndSend").Value.ToInt().Value });
-                    if (emails.Count > 0)
+                    if (orcamentoCotacaoEmailsQueue.Count > 0)
                     {
                         //_logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - Using SMTPServer " + configuration.GetSection("SmtpServer").Value + " SMTPPort " + configuration.GetSection("SmtpPort").Value.ToInt().Value);
-                        foreach (var email in emails)
+                        foreach (var orcamentoCotacaoEmailsQueueItem in orcamentoCotacaoEmailsQueue)
                         {
-                            using (EmailService emailService = new EmailService(
-                                _cfgUnidadeNegocioParametros.Where(x => x.IdCfgUnidadeNegocio == email.IdCfgUnidadeNegocio && x.IdCfgParametro == 7).FirstOrDefault().Valor,
-                                _cfgUnidadeNegocioParametros.Where(x => x.IdCfgUnidadeNegocio == email.IdCfgUnidadeNegocio && x.IdCfgParametro == 8).FirstOrDefault().Valor.ToInt().Value,
-                                _cfgUnidadeNegocioParametros.Where(x => x.IdCfgUnidadeNegocio == email.IdCfgUnidadeNegocio && x.IdCfgParametro == 11).FirstOrDefault().Valor == "STARTTLS" ? MailKit.Security.SecureSocketOptions.StartTls : MailKit.Security.SecureSocketOptions.None,
-                            _cfgUnidadeNegocioParametros.Where(x => x.IdCfgUnidadeNegocio == email.IdCfgUnidadeNegocio && x.IdCfgParametro == 9).FirstOrDefault().Valor,
-                            _cfgUnidadeNegocioParametros.Where(x => x.IdCfgUnidadeNegocio == email.IdCfgUnidadeNegocio && x.IdCfgParametro == 10).FirstOrDefault().Valor))
-                            {
+                            var parametroEmail = ObteParametroEmail(unidadeNeogocioParametros, orcamentoCotacaoEmailsQueueItem.IdCfgUnidadeNegocio);
 
-                                string ret;
-                                if (emailService.Send(_logger, email, out ret))
+                            using (var emailService = new EmailService(parametroEmail))
+                            {
+                                string messageReturn = string.Empty;
+
+                                if (emailService.Send(_logger, orcamentoCotacaoEmailsQueueItem, out messageReturn))
                                 {
-                                    _logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - Email sent #" + email.Id + " [TO] [" + email.To + "] [CC]: [" + email.Cc + "] [FROM] [" + email.From + "]");
-                                    email.DateSent = DateTime.Now;
-                                    email.Status = (int)eCfgOrcamentoCotacaoEmailStatus.EnvioComSucesso;
-                                    email.Sent = true;
-                                    _sendQueueBLL.Atualizar(email);
+                                    _logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - Email sent #" + orcamentoCotacaoEmailsQueueItem.Id + " [TO] [" + orcamentoCotacaoEmailsQueueItem.To + "] [CC]: [" + orcamentoCotacaoEmailsQueueItem.Cc + "] [FROM] [" + orcamentoCotacaoEmailsQueueItem.From + "]");
+                                    orcamentoCotacaoEmailsQueueItem.Sent = true;
+                                    orcamentoCotacaoEmailsQueueItem.Status = (int)eCfgOrcamentoCotacaoEmailStatus.EnvioComSucesso;
+                                    orcamentoCotacaoEmailsQueueItem.DateSent = DateTime.Now;
+                                    orcamentoCotacaoEmailsQueueItem.AttemptsQty = 0;
+                                    orcamentoCotacaoEmailsQueueItem.DateLastAttempt = null;
+                                    orcamentoCotacaoEmailsQueueItem.ErrorMsgLastAttempt = null;
                                 }
                                 else
                                 {
-                                    _logger.LogError(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Error: #" + email.Id + " - " + ret);
-                                    email.Status = (int)eCfgOrcamentoCotacaoEmailStatus.FalhaNoEnvioTemporario;
-                                    email.DateLastAttempt = DateTime.Now;
-                                    /*Marcar como enviado?*/
-                                    _sendQueueBLL.Atualizar(email);
+                                    _logger.LogError(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Error: #" + orcamentoCotacaoEmailsQueueItem.Id + " - " + messageReturn);
+                                    orcamentoCotacaoEmailsQueueItem.Sent = false;
+                                    orcamentoCotacaoEmailsQueueItem.Status = (int)eCfgOrcamentoCotacaoEmailStatus.FalhaNoEnvioTemporario;
+                                    orcamentoCotacaoEmailsQueueItem.DateSent = null;
+                                    orcamentoCotacaoEmailsQueueItem.AttemptsQty = (orcamentoCotacaoEmailsQueueItem.AttemptsQty + 1);
+                                    orcamentoCotacaoEmailsQueueItem.DateLastAttempt = DateTime.Now;
+                                    orcamentoCotacaoEmailsQueueItem.ErrorMsgLastAttempt = messageReturn;
                                 }
+
+                                await this._mensageriaRepositorio.AtualizarOrcamentoCotacaoEmailsQueue(orcamentoCotacaoEmailsQueueItem);
                             }
                         }
                     }
 
-                    _logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "End of While -- Will delay " + configuration.GetSection("SecondsToDelayAfterSend").Value.ToInt().Value + " seconds and execute again");
+                    _logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "End of While -- Will delay " + secondsToDelayAfterSend + " seconds and execute again");
                 }
                 catch (Exception ex)
                 {
-
                     _logger.LogError(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Exception: " + ex.Message);
                     _logger.LogError(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Exception: " + ex.InnerException);
                 }
 
-                await Task.Delay(TimeSpan.FromSeconds(configuration.GetSection("SecondsToDelayAfterSend").Value.ToInt().Value), stoppingToken);
+                await Task.Delay(TimeSpan.FromSeconds(secondsToDelayAfterSend), stoppingToken);
                 _logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "End of Delay");
             }
+        }
+
+        private ParametroEmailDto ObteParametroEmail(
+            List<UnidadeNegocioParametroDto> unidadeNeogocioParametros, 
+            int? idCfgUnidadeNegocio)
+        {
+            var ParametroEmailDto = new ParametroEmailDto()
+            {
+                ServerSMTP = unidadeNeogocioParametros.Where(x => x.IdCfgUnidadeNegocio == idCfgUnidadeNegocio && x.IdCfgParametro == 7).FirstOrDefault().Valor,
+                Port = unidadeNeogocioParametros.Where(x => x.IdCfgUnidadeNegocio == idCfgUnidadeNegocio && x.IdCfgParametro == 8).FirstOrDefault().Valor.ToInt().Value,
+                Options = unidadeNeogocioParametros.Where(x => x.IdCfgUnidadeNegocio == idCfgUnidadeNegocio && x.IdCfgParametro == 11).FirstOrDefault().Valor == "STARTTLS" ? MailKit.Security.SecureSocketOptions.StartTls : MailKit.Security.SecureSocketOptions.None,
+                UserName = unidadeNeogocioParametros.Where(x => x.IdCfgUnidadeNegocio == idCfgUnidadeNegocio && x.IdCfgParametro == 9).FirstOrDefault().Valor,
+                Password = unidadeNeogocioParametros.Where(x => x.IdCfgUnidadeNegocio == idCfgUnidadeNegocio && x.IdCfgParametro == 10).FirstOrDefault().Valor
+            };
+
+            return ParametroEmailDto;
         }
     }
 }
