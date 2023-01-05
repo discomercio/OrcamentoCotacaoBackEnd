@@ -190,20 +190,20 @@ namespace Cliente
                 lstErros.Add("PREENCHA O DDD RESIDENCIAL.");
             }
 
-            if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO)
-            {
-                if (lstErros.Count == 0)
-                {
-                    if (!string.IsNullOrEmpty(dadosCliente.TelefoneResidencial) &&
-                        !string.IsNullOrEmpty(dadosCliente.DddResidencial))
-                    {
-                        if (!await ConfrontarTelefones(dadosCliente.DddResidencial, dadosCliente.TelefoneResidencial,
-                        cliente?.Ddd_Res, cliente?.Tel_Res, dadosCliente.Cnpj_Cpf, dadosCliente.Tipo, lstErros, contextoProvider))
-                            lstErros.Add("TELEFONE RESIDENCIAL (" + dadosCliente.DddResidencial + ") " + Util.FormatarTelefones(dadosCliente.TelefoneResidencial) +
-                                " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. Não foi possível concluir o cadastro.");
-                    }
-                }
-            }
+            //if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO)
+            //{
+            //    if (lstErros.Count == 0)
+            //    {
+            //        if (!string.IsNullOrEmpty(dadosCliente.TelefoneResidencial) &&
+            //            !string.IsNullOrEmpty(dadosCliente.DddResidencial))
+            //        {
+            //            if (!await ConfrontarTelefones(dadosCliente.DddResidencial, dadosCliente.TelefoneResidencial,
+            //            cliente?.Ddd_Res, cliente?.Tel_Res, dadosCliente.Cnpj_Cpf, dadosCliente.Tipo, lstErros, contextoProvider))
+            //                lstErros.Add("TELEFONE RESIDENCIAL (" + dadosCliente.DddResidencial + ") " + Util.FormatarTelefones(dadosCliente.TelefoneResidencial) +
+            //                    " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. Não foi possível concluir o cadastro.");
+            //        }
+            //    }
+            //}
 
         }
 
@@ -237,19 +237,19 @@ namespace Cliente
                 lstErros.Add("PREENCHA O TELEFONE CELULAR.");
             }
 
-            if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO)
-            {
-                if (lstErros.Count == 0)
-                {
-                    if (!string.IsNullOrEmpty(dadosCliente.DddCelular) && !string.IsNullOrEmpty(dadosCliente.Celular))
-                    {
-                        if (!await ConfrontarTelefones(dadosCliente.DddCelular, dadosCliente.Celular,
-                        cliente?.Ddd_Cel, cliente?.Tel_Cel, dadosCliente.Cnpj_Cpf, dadosCliente.Tipo, lstErros, contextoProvider))
-                            lstErros.Add("TELEFONE CELULAR (" + dadosCliente.DddCelular + ") " + Util.FormatarTelefones(dadosCliente.Celular) +
-                                " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. Não foi possível concluir o cadastro.");
-                    }
-                }
-            }
+            //if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO)
+            //{
+            //    if (lstErros.Count == 0)
+            //    {
+            //        if (!string.IsNullOrEmpty(dadosCliente.DddCelular) && !string.IsNullOrEmpty(dadosCliente.Celular))
+            //        {
+            //            if (!await ConfrontarTelefones(dadosCliente.DddCelular, dadosCliente.Celular,
+            //            cliente?.Ddd_Cel, cliente?.Tel_Cel, dadosCliente.Cnpj_Cpf, dadosCliente.Tipo, lstErros, contextoProvider))
+            //                lstErros.Add("TELEFONE CELULAR (" + dadosCliente.DddCelular + ") " + Util.FormatarTelefones(dadosCliente.Celular) +
+            //                    " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. Não foi possível concluir o cadastro.");
+            //        }
+            //    }
+            //}
 
         }
 
@@ -284,20 +284,20 @@ namespace Cliente
                 lstErros.Add("TELEFONE COMERCIAL INVÁLIDO.");
             }
 
-            if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO)
-            {
-                if (lstErros.Count == 0)
-                {
-                    if (!string.IsNullOrEmpty(dadosCliente.DddComercial) &&
-                        !string.IsNullOrEmpty(dadosCliente.TelComercial))
-                    {
-                        if (!await ConfrontarTelefones(dadosCliente.DddComercial, dadosCliente.TelComercial,
-                        cliente?.Ddd_Com, cliente?.Tel_Com, dadosCliente.Cnpj_Cpf, dadosCliente.Tipo, lstErros, contextoProvider))
-                            lstErros.Add("TELEFONE COMERCIAL (" + dadosCliente.DddComercial + ") " + Util.FormatarTelefones(dadosCliente.TelComercial) +
-                                " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. Não foi possível concluir o cadastro.");
-                    }
-                }
-            }
+            //if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO)
+            //{
+            //    if (lstErros.Count == 0)
+            //    {
+            //        if (!string.IsNullOrEmpty(dadosCliente.DddComercial) &&
+            //            !string.IsNullOrEmpty(dadosCliente.TelComercial))
+            //        {
+            //            if (!await ConfrontarTelefones(dadosCliente.DddComercial, dadosCliente.TelComercial,
+            //            cliente?.Ddd_Com, cliente?.Tel_Com, dadosCliente.Cnpj_Cpf, dadosCliente.Tipo, lstErros, contextoProvider))
+            //                lstErros.Add("TELEFONE COMERCIAL (" + dadosCliente.DddComercial + ") " + Util.FormatarTelefones(dadosCliente.TelComercial) +
+            //                    " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. Não foi possível concluir o cadastro.");
+            //        }
+            //    }
+            //}
 
             if (!string.IsNullOrEmpty(dadosCliente.Ramal) &&
                 (string.IsNullOrEmpty(dadosCliente.TelComercial) ||
@@ -345,20 +345,20 @@ namespace Cliente
                 lstErros.Add("DDD DO TELEFONE COMERCIAL2 INVÁLIDO.");
             }
 
-            if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO)
-            {
-                if (lstErros.Count == 0)
-                {
-                    if (!string.IsNullOrEmpty(dadosCliente.DddComercial2) &&
-                        !string.IsNullOrEmpty(dadosCliente.TelComercial2))
-                    {
-                        if (!await ConfrontarTelefones(dadosCliente.DddComercial2, dadosCliente.TelComercial2,
-                        cliente?.Ddd_Com_2, cliente?.Tel_Com_2, dadosCliente.Cnpj_Cpf, dadosCliente.Tipo, lstErros, contextoProvider))
-                            lstErros.Add("TELEFONE COMERCIAL2 (" + dadosCliente.DddComercial2 + ") " + Util.FormatarTelefones(dadosCliente.TelComercial2) +
-                                " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. Não foi possível concluir o cadastro.");
-                    }
-                }
-            }
+            //if (sistemaResponsavel != Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__API_MAGENTO)
+            //{
+            //    if (lstErros.Count == 0)
+            //    {
+            //        if (!string.IsNullOrEmpty(dadosCliente.DddComercial2) &&
+            //            !string.IsNullOrEmpty(dadosCliente.TelComercial2))
+            //        {
+            //            if (!await ConfrontarTelefones(dadosCliente.DddComercial2, dadosCliente.TelComercial2,
+            //            cliente?.Ddd_Com_2, cliente?.Tel_Com_2, dadosCliente.Cnpj_Cpf, dadosCliente.Tipo, lstErros, contextoProvider))
+            //                lstErros.Add("TELEFONE COMERCIAL2 (" + dadosCliente.DddComercial2 + ") " + Util.FormatarTelefones(dadosCliente.TelComercial2) +
+            //                    " JÁ ESTÁ SENDO UTILIZADO NO CADASTRO DE OUTROS CLIENTES. Não foi possível concluir o cadastro.");
+            //        }
+            //    }
+            //}
 
             if (!string.IsNullOrEmpty(dadosCliente.Ramal2) &&
                 (string.IsNullOrEmpty(dadosCliente.TelComercial2) ||
