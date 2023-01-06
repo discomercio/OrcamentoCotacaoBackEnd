@@ -3,6 +3,9 @@ using InfraBanco;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using OrcamentoCotacao.Dto;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace OrcamentoCotacao
 {
@@ -23,6 +26,11 @@ namespace OrcamentoCotacao
         public TcfgOrcamentoCotacaoStatus BuscarStatusParaOrcamentoCotacaoComtransacao(string status, ContextoBdGravacao dbGravacao)
         {
             return _data.BuscarStatusParaOrcamentoCotacaoComtransacao(status, dbGravacao);
+        }
+
+        public IQueryable<Object> ConsultaGerencial(TorcamentoCotacaoConsultaGerencialFiltro filtro)
+        {
+            return _data.ConsultaGerencial(filtro);
         }
     }
 }

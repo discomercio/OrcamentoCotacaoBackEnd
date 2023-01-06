@@ -394,6 +394,22 @@ namespace OrcamentoCotacaoApi.Controllers
             return Ok(retorno);
         }
 
+        [HttpPost("consultaGerencial")]
+        public IActionResult ConsultaGerencial(ConsultaGerencialOrcamentoRequest request)
+        {
+            request.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+            request.Usuario = LoggedUser.Apelido;
+            request.IP = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. OrcamentoController/ConsultaGerencial/POST - Request => [{JsonSerializer.Serialize(request)}].");
+            
+            var response = _orcamentoBll.ConsultaGerencial(request);
+            
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. OrcamentoController/ConsultaGerencial/GET - Response => [{JsonSerializer.Serialize(response)}].");
+
+            return Ok(response);
+        }
+
         private PermissaoOrcamentoResponse ObterPermissaoOrcamento(int IdOrcamento)
         {
             return _permissaoBll.RetornarPermissaoOrcamento(new PermissaoOrcamentoRequest()
