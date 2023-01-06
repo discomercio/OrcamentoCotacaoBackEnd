@@ -123,7 +123,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrcamentoCotacaoOpcaoItemAt
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Serviço", "Serviço", "{A2278280-8D1E-4FCB-AD5D-B61A51CDDA21}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ArClube.Mensageria", "Serviços\ArClube.Mensageria\ArClube.Mensageria.csproj", "{96485852-DC36-4D0E-8A34-3FFB7E7E6709}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrctoCotacao.Mensageria", "Serviços\ArClube.Mensageria\OrctoCotacao.Mensageria.csproj", "{96485852-DC36-4D0E-8A34-3FFB7E7E6709}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrcamentoCotacaoEmailQueue", "Global\OrcamentoCotacaoEmailQueue\OrcamentoCotacaoEmailQueue.csproj", "{3E53218F-FA40-4092-8697-37B8359BF94F}"
 EndProject
