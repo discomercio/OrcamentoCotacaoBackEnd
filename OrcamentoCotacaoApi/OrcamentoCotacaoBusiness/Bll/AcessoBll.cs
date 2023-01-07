@@ -128,7 +128,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 if (!t.AcessoHabilitado)
                 {
                     RegistrarTentativasLogin(t.Id, t.TipoUsuario.Value, login, ip, Constantes.ERR_USUARIO_BLOQUEADO, bloqueioUsuarioLoginAmbiente);
-                    msgErro = Constantes.ERR_USUARIO_BLOQUEADO;
+                    msgErro = Constantes.ERR_ACESSO_INSUFICIENTE;
                     return null;
                 }
 

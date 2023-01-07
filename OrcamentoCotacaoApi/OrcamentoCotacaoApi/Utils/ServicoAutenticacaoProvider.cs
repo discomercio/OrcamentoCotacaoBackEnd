@@ -98,7 +98,8 @@ namespace OrcamentoCotacaoApi.Utils
                             ((int)ePermissao.ParceiroIndicadorUsuarioMaster).ToString()
                         },
                         TipoUsuario = (int)Constantes.TipoUsuario.PARCEIRO,
-                        Bloqueado = parceiro.Status != "A" ? true : false
+                        Bloqueado = parceiro.Status != "A" ? true : false,
+                        StLoginBloqueadoAutomatico = parceiro.StLoginBloqueadoAutomatico
                     };
                     return usuario;
                 }
@@ -129,7 +130,8 @@ namespace OrcamentoCotacaoApi.Utils
                                     ((int)ePermissao.AcessoAoModulo).ToString()
                                 },
                                 TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO,
-                                Bloqueado = !vendedorParceiro.Ativo
+                                Bloqueado = !vendedorParceiro.Ativo,
+                                StLoginBloqueadoAutomatico = vendedorParceiro.StLoginBloqueadoAutomatico
                             };
                             return usuario;
                         }
@@ -165,7 +167,8 @@ namespace OrcamentoCotacaoApi.Utils
                             Permissoes = usuarioBll.buscarPermissoes(apelido),
                             TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR,
                             Id = usuarioInterno.FirstOrDefault().Id,
-                            Bloqueado = usuarioInterno.FirstOrDefault().Bloqueado == 1 ? true : false
+                            Bloqueado = usuarioInterno.FirstOrDefault().Bloqueado == 1 ? true : false,
+                            StLoginBloqueadoAutomatico = usuarioInterno.FirstOrDefault().StLoginBloqueadoAutomatico
                         };
                         return usuario;
                     //break;
@@ -185,7 +188,8 @@ namespace OrcamentoCotacaoApi.Utils
                             Permissoes = usuarioBll.buscarPermissoesPorPerfil(permissaoParceiro),
                             TipoUsuario = (int)Constantes.TipoUsuario.PARCEIRO,
                             Id = orcamentista.FirstOrDefault().IdIndicador,
-                            Bloqueado = orcamentista.FirstOrDefault().Status != "A" ? true : false
+                            Bloqueado = orcamentista.FirstOrDefault().Status != "A" ? true : false,
+                            StLoginBloqueadoAutomatico = orcamentista.FirstOrDefault().StLoginBloqueadoAutomatico
                         };
                         break;
                     case (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO:
@@ -204,7 +208,8 @@ namespace OrcamentoCotacaoApi.Utils
                             Permissoes = usuarioBll.buscarPermissoesPorPerfil(permissaoVendedorParceiro),
                             TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO,
                             Id = orcamentistaVendedor.FirstOrDefault().Id,
-                            Bloqueado = !orcamentistaVendedor.FirstOrDefault().Ativo
+                            Bloqueado = !orcamentistaVendedor.FirstOrDefault().Ativo,
+                            StLoginBloqueadoAutomatico = orcamentistaVendedor.FirstOrDefault().StLoginBloqueadoAutomatico
                         };
                         break;
                     default:

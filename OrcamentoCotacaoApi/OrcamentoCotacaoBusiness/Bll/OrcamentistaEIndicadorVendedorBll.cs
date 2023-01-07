@@ -171,6 +171,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 objOrcamentistaEIndicadorVendedor.DataCadastro = tOrcamentistaIndicadorVendedor.DataCadastro;
                 objOrcamentistaEIndicadorVendedor.IdIndicador = tOrcamentistaIndicadorVendedor.IdIndicador;
                 objOrcamentistaEIndicadorVendedor.UsuarioCadastro = tOrcamentistaIndicadorVendedor.UsuarioCadastro;
+                objOrcamentistaEIndicadorVendedor.StLoginBloqueadoAutomatico = model.StLoginBloqueadoAutomatico;
 
                 var retorno = _orcamentistaEindicadorVendedorBll.AtualizarComTransacao(objOrcamentistaEIndicadorVendedor, dbGravacao);
 
