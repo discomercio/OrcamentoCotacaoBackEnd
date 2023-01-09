@@ -30,6 +30,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response.Dashoard;
+using Microsoft.Extensions.Configuration;
+using UtilsGlobais;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -58,6 +60,8 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly ClienteBll _clienteBll;
         private readonly ILogger<OrcamentoCotacaoBll> _logger;
         private readonly Prepedido.Bll.PrepedidoBll _prepedidoBll;
+        private readonly Cfg.CfgOperacao.CfgOperacaoBll _cfgOperacaoBll;
+        private readonly IConfiguration _configuration;
 
         public OrcamentoCotacaoBll(
             OrcamentoBll orcamentoBll,
@@ -82,7 +86,9 @@ namespace OrcamentoCotacaoBusiness.Bll
             ProdutoOrcamentoCotacaoBll produtoOrcamentoCotacaoBll,
             ClienteBll clienteBll,
             ILogger<OrcamentoCotacaoBll> logger,
-            Prepedido.Bll.PrepedidoBll _prepedidoBll
+            Prepedido.Bll.PrepedidoBll _prepedidoBll,
+            Cfg.CfgOperacao.CfgOperacaoBll _cfgOperacaoBll,
+            IConfiguration configuration
             )
         {
             _orcamentoBll = orcamentoBll;
@@ -108,6 +114,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             _clienteBll = clienteBll;
             _logger = logger;
             this._prepedidoBll = _prepedidoBll;
+            this._cfgOperacaoBll = _cfgOperacaoBll;
+            _configuration = configuration;
         }
 
         public OrcamentoCotacaoDto PorGuid(string guid)
@@ -157,7 +165,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 orcamento.listaOpcoes = _orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro { IdOrcamentoCotacao = orcamento.id });
                 orcamento.listaFormasPagto = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(orcamento.tipoCliente, (Constantes.TipoUsuario)usuarioLogin.TipoUsuario, orcamento.vendedor, byte.Parse(orcamento.idIndicador.HasValue ? "1" : "0"));
                 orcamento.mensageria = BuscarDadosParaMensageria(usuarioLogin, orcamento.id, false);
-                orcamento.token = _publicoBll.ObterTokenServico();
+               // orcamento.token = _publicoBll.ObterTokenServico();
 
                 if (!Validar(orcamento))
                 {
@@ -837,6 +845,14 @@ namespace OrcamentoCotacaoBusiness.Bll
                         return response;
                     }
 
+                    //montar o log de t_orcamento_cotacao
+                    //incluir dataannotations nas tabelas utilizadas no orçamento para conseguir capturar o nome real da coluna da tabela
+                    string log = "";
+                    string camposAOmitir = "|Id|Loja|ValidadeAnterior|QtdeRenovacao|IdUsuarioUltRenovacao|DataHoraUltRenovacao|Status|IdTipoUsuarioContextoUltStatus|IdUsuarioUltStatus|DataUltStatus|DataHoraUltStatus|IdOrcamento|IdPedido|IdTipoUsuarioContextoCadastro|IdUsuarioCadastro|DataCadastro|DataHoraCadastro|IdTipoUsuarioContextoUltAtualizacao|IdUsuarioUltAtualizacao|DataHoraUltAtualizacao|perc_max_comissao_padrao|perc_max_comissao_e_desconto_padrao|VersaoPoliticaCredito|VersaoPoliticaPrivacidade|InstaladorInstalaIdTipoUsuarioContexto|InstaladorInstalaIdUsuarioUltAtualiz|InstaladorInstalaDtHrUltAtualiz|GarantiaIndicadorIdTipoUsuarioContexto|GarantiaIndicadorIdUsuarioUltAtualiz|GarantiaIndicadorDtHrUltAtualiz|EtgImediataIdTipoUsuarioContexto|EtgImediataIdUsuarioUltAtualiz|EtgImediataDtHrUltAtualiz|PrevisaoEntregaIdTipoUsuarioContexto|PrevisaoEntregaIdUsuarioUltAtualiz|PrevisaoEntregaDtHrUltAtualiz|IdTipoUsuarioContextoUltRenovacao|";
+                    log = UtilsGlobais.Util.MontaLog(tOrcamentoCotacao, log, camposAOmitir);
+
+
+                    //colocar uma string de log para retornar o log montado do cadastro das opções 
                     var responseOpcoes = _orcamentoCotacaoOpcaoBll.CadastrarOrcamentoCotacaoOpcoesComTransacao(orcamento.ListaOrcamentoCotacaoDto,
                         tOrcamentoCotacao.Id, usuarioLogado, dbGravacao, orcamento.Loja, orcamento.CorrelationId);
                     if (!string.IsNullOrEmpty(response.Mensagem))
@@ -844,6 +860,18 @@ namespace OrcamentoCotacaoBusiness.Bll
                         response.Mensagem = responseOpcoes.Mensagem;
                         return response;
                     }
+
+                    log = $"{log}\r   {responseOpcoes.LogOperacao}";
+
+                    var cfgOperacao = _cfgOperacaoBll.PorFiltroComTransacao(new TcfgOperacaoFiltro() { Id = 1 }, dbGravacao).FirstOrDefault();
+                    if (cfgOperacao == null)
+                    {
+                        response.Mensagem = "Ops! Falha ao cadastrar orçamento.";
+                        return response;
+                    }
+
+                    var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogado.TipoUsuario, usuarioLogado.Id, orcamento.Loja, null, (int)orcamento.Id, null,
+                        InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, orcamento.IP);
 
                     var guid = Guid.NewGuid();
 
@@ -949,7 +977,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             return response;
         }
 
-        public OrcamentoResponseViewModel AtualizarDadosCadastraisOrcamento(OrcamentoResponseViewModel orcamento, UsuarioLogin usuarioLogado)
+        public OrcamentoResponseViewModel AtualizarDadosCadastraisOrcamento(OrcamentoResponseViewModel orcamento,
+            UsuarioLogin usuarioLogado, string ip)
         {
             _logger.LogInformation($"Método Atualizar dados cadastrais de orçamento - Iniciando.");
             _logger.LogInformation($"Método Atualizar dados cadastrais de orçamento - Buscando orçamento.");
@@ -967,6 +996,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (!string.IsNullOrEmpty(orcamento.Erro)) return orcamento;
 
             _logger.LogInformation($"Método Atualizar dados cadastrais de orçamento - Abrindo transação.");
+            var tOrcamentoAntigo = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro() { Id = (int)orcamento.Id }).FirstOrDefault();
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 try
@@ -1026,6 +1056,20 @@ namespace OrcamentoCotacaoBusiness.Bll
                         orcamento.Erro = "Falha ao atualizar dados cadastrais!";
                         return orcamento;
                     }
+
+                    string camposAOmitir = "|Id|Loja|ValidadeAnterior|QtdeRenovacao|IdUsuarioUltRenovacao|DataHoraUltRenovacao|Status|IdTipoUsuarioContextoUltStatus|IdUsuarioUltStatus|DataUltStatus|DataHoraUltStatus|IdOrcamento|IdPedido|IdTipoUsuarioContextoCadastro|IdUsuarioCadastro|DataCadastro|DataHoraCadastro|IdTipoUsuarioContextoUltAtualizacao|IdUsuarioUltAtualizacao|DataHoraUltAtualizacao|perc_max_comissao_padrao|perc_max_comissao_e_desconto_padrao|VersaoPoliticaCredito|VersaoPoliticaPrivacidade|InstaladorInstalaIdTipoUsuarioContexto|InstaladorInstalaIdUsuarioUltAtualiz|InstaladorInstalaDtHrUltAtualiz|GarantiaIndicadorIdTipoUsuarioContexto|GarantiaIndicadorIdUsuarioUltAtualiz|GarantiaIndicadorDtHrUltAtualiz|EtgImediataIdTipoUsuarioContexto|EtgImediataIdUsuarioUltAtualiz|EtgImediataDtHrUltAtualiz|PrevisaoEntregaIdTipoUsuarioContexto|PrevisaoEntregaIdUsuarioUltAtualiz|PrevisaoEntregaDtHrUltAtualiz|IdTipoUsuarioContextoUltRenovacao|";
+                    string log = "";
+                    log = UtilsGlobais.Util.MontalogComparacao(tOrcamento, tOrcamentoAntigo, log, camposAOmitir);
+                    if (!string.IsNullOrEmpty(log)) log = $"id={tOrcamento.Id}; {log}";
+
+                    var cfgOperacao = _cfgOperacaoBll.PorFiltroComTransacao(new TcfgOperacaoFiltro() { Id = 2 }, dbGravacao).FirstOrDefault();
+                    if (cfgOperacao == null)
+                    {
+                        orcamento.Erro = "Falha ao atualizar dados cadastrais!";
+                        return orcamento;
+                    }
+                    var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogado.TipoUsuario, usuarioLogado.Id, tOrcamento.Loja, null, tOrcamento.Id, null,
+                        Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
 
                     bool atualizouLink = false;
 
@@ -1478,7 +1522,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             return torcamentoCotacao;
         }
 
-        public MensagemDto ProrrogarOrcamento(int id, int idUsuario, string lojaLogada, int? IdTipoUsuarioContextoUltAtualizacao)
+        public MensagemDto ProrrogarOrcamento(int id, int idUsuario, string lojaLogada, 
+            int? IdTipoUsuarioContextoUltAtualizacao, string ip)
         {
             var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro { Id = id }).FirstOrDefault();
             var parametros = _parametroOrcamentoCotacaoBll.ObterParametros(lojaLogada);
@@ -1535,6 +1580,22 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 _orcamentoCotacaoBll.Atualizar(orcamento);
 
+                string log = $"Validade:{orcamento.Validade.ToString("dd/MM/yyyy")} => ValidadeAnterior: {orcamento.ValidadeAnterior?.ToString("dd/MM/yyyy")}";
+
+                var cfgOperacao = _cfgOperacaoBll.PorFiltro(new TcfgOperacaoFiltro() { Id = 4 }).FirstOrDefault();
+                if (cfgOperacao == null)
+                {
+                    return new MensagemDto
+                    {
+                        tipo = "WARN",
+                        mensagem = $"Falha ao montar log de operação."
+                    };
+                }
+
+                var tLogV2 = UtilsGlobais.Util.GravaLogV2(_contextoBdProvider, log, (short)IdTipoUsuarioContextoUltAtualizacao.Value, idUsuario, orcamento.Loja, null, orcamento.Id, null,
+                    Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
+
+
                 return new MensagemDto
                 {
                     tipo = "INFO",
@@ -1562,7 +1623,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
 
-        public MensagemDto AtualizarStatus(int id, UsuarioLogin user, short idStatus)
+        public MensagemDto AtualizarStatus(int id, UsuarioLogin user, short idStatus, string ip)
         {
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
@@ -1594,6 +1655,22 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     _orcamentoCotacaoBll.AtualizarComTransacao(tOrcamento, dbGravacao);
 
+                    if(idStatus == 2)
+                    {
+                        var cfgOperacao = _cfgOperacaoBll.PorFiltro(new TcfgOperacaoFiltro() { Id = 6 }).FirstOrDefault();
+                        if (cfgOperacao == null)
+                        {
+                            return new MensagemDto
+                            {
+                                tipo = "WARN",
+                                mensagem = $"Falha ao montar log de operação."
+                            };
+                        }
+
+                        var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, "", (short)user.TipoUsuario, user.Id, tOrcamento.Loja, null, tOrcamento.Id, null,
+                            Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
+                    }
+
                     dbGravacao.transacao.Commit();
                 }
                 catch (Exception ex)
@@ -1607,7 +1684,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public async Task<List<string>> AprovarOrcamento(AprovarOrcamentoRequestViewModel aprovarOrcamento,
-            Constantes.TipoUsuarioContexto tipoUsuarioContexto, int idUsuarioUltAtualizacao)
+            Constantes.TipoUsuarioContexto tipoUsuarioContexto, int idUsuarioUltAtualizacao, string ip)
         {
             if (aprovarOrcamento == null) return new List<string>() { "É necessário preencher o cadastro do cliente!" };
 
@@ -1661,7 +1738,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     aprovarOrcamento.ClienteCadastroDto.DadosCliente.Id = tCliente.Id;
                     //passar o id do cliente para o modelo
                     //verificar os erros 
-                    retorno = await CadastrarPrepedido(aprovarOrcamento, orcamento, dbGravacao, tipoUsuarioContexto, idUsuarioUltAtualizacao);
+                    retorno = await CadastrarPrepedido(aprovarOrcamento, orcamento, dbGravacao, tipoUsuarioContexto, 
+                        idUsuarioUltAtualizacao, ip);
                     //precisamos mudar isso, precisamos verificar se existe um número de orçamento válido ou adicionar alguma prop na classe
                     if (retorno.Count >= 1)
                     {
@@ -1726,7 +1804,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public async Task<List<string>> CadastrarPrepedido(AprovarOrcamentoRequestViewModel aprovarOrcamento, TorcamentoCotacao orcamento,
-            ContextoBdGravacao dbGravacao, Constantes.TipoUsuarioContexto tipoUsuarioContexto, int idUsuarioUltAtualizacao)
+            ContextoBdGravacao dbGravacao, Constantes.TipoUsuarioContexto tipoUsuarioContexto, int idUsuarioUltAtualizacao, string ip)
         {
             _logger.LogInformation("Iniciando criação de Pré-Pedido.");
             // criar prepedidoDto
@@ -1802,9 +1880,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                 parceiro = prepedido.DadosCliente.Indicador_Orcamentista;
             }
 
+            var appSettingsSection = _configuration.GetSection("AppSettings");
+            var appSettings = appSettingsSection.Get<Configuracao>();
+
             PrePedidoDados prePedidoDados = PrePedidoDto.PrePedidoDados_De_PrePedidoDto(prepedido);
             return (await _prepedidoBll.CadastrarPrepedido(prePedidoDados, parceiro, 0.01M, false,
-                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, 12, dbGravacao)).ToList();
+                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, appSettings.LimiteItens, dbGravacao, ip)).ToList();
         }
 
         public async Task<FormaPagtoCriacaoDto> IncluirFormaPagtoCriacaoParaPrepedido(FormaPagtoCriacaoResponseViewModel formaPagtoSelecionada)

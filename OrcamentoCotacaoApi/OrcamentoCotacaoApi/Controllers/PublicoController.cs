@@ -27,13 +27,15 @@ namespace OrcamentoCotacaoApi.Controllers
         private readonly CepPrepedidoBll _cepPrepedidoBll;
         private readonly CepBll _cepBll;
         private readonly ClientePrepedidoBll _clientePrepedidoBll;
+        private readonly LojaOrcamentoCotacaoBll _lojaOrcamentoCotacaoBll;
 
         public PublicoController(
             ILogger<OrcamentoController> logger,
             OrcamentoCotacaoBll orcamentoBll,
             CepPrepedidoBll cepPrepedidoBll,
             CepBll cepBll,
-            ClientePrepedidoBll _clientePrepedidoBll
+            ClientePrepedidoBll _clientePrepedidoBll,
+            LojaOrcamentoCotacaoBll lojaOrcamentoCotacaoBll
             )
         {
             _logger = logger;
@@ -41,6 +43,7 @@ namespace OrcamentoCotacaoApi.Controllers
             _cepPrepedidoBll = cepPrepedidoBll;
             _cepBll = cepBll;
             this._clientePrepedidoBll = _clientePrepedidoBll;
+            _lojaOrcamentoCotacaoBll = lojaOrcamentoCotacaoBll;
         }
 
         [HttpGet("orcamentoporguid/{guid}")]
@@ -177,7 +180,8 @@ namespace OrcamentoCotacaoApi.Controllers
 
             var request = new
             {
-                Orcamento = aprovarOrcamento.IdOrcamento
+                Orcamento = aprovarOrcamento.IdOrcamento,
+                IP = HttpContext.Connection.RemoteIpAddress.ToString()
             };
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. PublicoController/AprovarOrcamento/POST - Request => [{JsonSerializer.Serialize(request)}].");
@@ -201,7 +205,7 @@ namespace OrcamentoCotacaoApi.Controllers
             var retorno = await _orcamentoBll.AprovarOrcamento(
                 aprovarOrcamento, 
                 Constantes.TipoUsuarioContexto.Cliente,
-                (int)Constantes.TipoUsuario.CLIENTE);
+                (int)Constantes.TipoUsuario.CLIENTE, request.IP);
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. PublicoController/AprovarOrcamento/GET - Response => [Retorna lista de mensagens].");
 
@@ -226,6 +230,36 @@ namespace OrcamentoCotacaoApi.Controllers
             _logger.LogInformation($"CorrelationId => [{correlationId}]. PublicoController/BuscarParametros/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
             return Ok(response);
+        }
+
+        [HttpGet("{loja}/estilo")]
+        public IActionResult BuscarLojaEstilo(string loja)
+        {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Loja = loja
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PublicoController/BuscarLojaEstilo/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
+            var saida = _lojaOrcamentoCotacaoBll.BuscarLojaEstilo(loja);
+
+            if (saida != null)
+            {
+                var response = new
+                {
+                    LojaEstilo = saida
+                };
+
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. PublicoController/BuscarLojaEstilo/GET - Response => [{JsonSerializer.Serialize(response)}].");
+
+                return Ok(saida);
+            }
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PublicoController/BuscarLojaEstilo/GET - Response => [Não tem response].");
+            return NotFound();
         }
     }
 }

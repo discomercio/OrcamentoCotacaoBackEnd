@@ -1,10 +1,12 @@
 ﻿using Cep;
+using Cfg.CfgOperacao;
 using Cliente.Dados;
 using FormaPagamento;
 using FormaPagamento.Dados;
 using InfraBanco;
 using InfraBanco.Constantes;
 using InfraBanco.Modelos;
+using InfraBanco.Modelos.Filtros;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Prepedido.Dados;
@@ -31,6 +33,7 @@ namespace Prepedido.Bll
         private readonly IBancoNFeMunicipio bancoNFeMunicipio;
         private readonly FormaPagtoBll formaPagtoBll;
         private readonly PedidoVisualizacao.PedidoVisualizacaoBll pedidoVisualizacaoBll;
+        private readonly CfgOperacaoBll _cfgOperacaoBll;
 
         public PrepedidoBll(
             ILogger<PrepedidoBll> logger,
@@ -42,8 +45,8 @@ namespace Prepedido.Bll
             Prepedido.Bll.MontarLogPrepedidoBll montarLogPrepedidoBll,
             IBancoNFeMunicipio bancoNFeMunicipio,
             FormaPagtoBll formaPagtoBll,
-            PedidoVisualizacao.PedidoVisualizacaoBll pedidoVisualizacaoBll
-            )
+            PedidoVisualizacao.PedidoVisualizacaoBll pedidoVisualizacaoBll,
+            CfgOperacaoBll cfgOperacaoBll)
         {
             this._logger = logger;
             this.contextoProvider = contextoProvider;
@@ -55,6 +58,7 @@ namespace Prepedido.Bll
             this.bancoNFeMunicipio = bancoNFeMunicipio;
             this.formaPagtoBll = formaPagtoBll;
             this.pedidoVisualizacaoBll = pedidoVisualizacaoBll;
+            _cfgOperacaoBll = cfgOperacaoBll;
         }
 
         public async Task<IEnumerable<string>> ListarNumerosPrepedidosCombo(string orcamentista)
@@ -788,7 +792,7 @@ namespace Prepedido.Bll
 
         public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDados prePedido, string apelido,
             decimal limiteArredondamento, bool verificarPrepedidoRepetido, Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
-            int limite_de_itens, ContextoBdGravacao dbGravacao)
+            int limite_de_itens, ContextoBdGravacao dbGravacao, string ip)
         {
             List<string> lstErros = new List<string>();
 
@@ -995,20 +999,24 @@ namespace Prepedido.Bll
                 List<TorcamentoItem> lstOrcamentoItem = (await MontaListaOrcamentoItem(prePedido,
                     lstPercentualCustoFinanFornec, dbGravacao, sistemaResponsavelCadastro)).ToList();
 
-                //vamos passar o coeficiente que foi criado na linha 596 e passar como param para cadastrar nos itens
-                //await ComplementarInfosOrcamentoItem(dbgravacao, lstOrcamentoItem,
-                //    prePedido.DadosCliente.Loja);
-
                 log = await CadastrarOrctoItens(dbGravacao, lstOrcamentoItem, log);
 
                 bool gravouLog = Util.GravaLog(dbGravacao, apelido, prePedido.DadosCliente.Loja, prePedido.NumeroPrePedido,
                     prePedido.DadosCliente.Id, Constantes.OP_LOG_ORCAMENTO_NOVO, log);
 
+                var cfgOperacao = _cfgOperacaoBll.PorFiltro(new TcfgOperacaoFiltro() { Id = prePedido.DadosCliente.IdOrcamentoCotacao.HasValue ? 5 : 20 }).FirstOrDefault();
+                if (cfgOperacao == null)
+                {
+                    lstErros.Add("Falha ao montar log de operação.");
+                    return lstErros;                    
+                }
+
+                var tLogV2 = Util.GravaLogV2ComTransacao(dbGravacao, log, (short)prePedido.UsuarioCadastroIdTipoUsuarioContexto, 
+                    prePedido.UsuarioCadastroId, prePedido.DadosCliente.Loja, prePedido.NumeroPrePedido, 
+                    prePedido.DadosCliente.IdOrcamentoCotacao, prePedido.DadosCliente.Id, 
+                    Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
+
                 lstErros.Add(prePedido.NumeroPrePedido);
-                //using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTO))
-                //{
-                //dbGravacao.transacao.Commit();
-                //}
             }
 
             return lstErros;

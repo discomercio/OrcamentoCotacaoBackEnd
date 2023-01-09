@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace OrcamentoCotacaoOpcao
 {
@@ -85,6 +86,10 @@ namespace OrcamentoCotacaoOpcao
                     if(obj.Id != 0)
                     {
                         saida = saida.Where(x => x.Id == obj.Id);
+                    }
+                    if (obj.IncluirTorcamentoCotacaoProdutoUnificado)
+                    {
+                        saida = saida.Include(x => x.TorcamentoCotacaoItemUnificados);
                     }
 
                     return saida.ToList();

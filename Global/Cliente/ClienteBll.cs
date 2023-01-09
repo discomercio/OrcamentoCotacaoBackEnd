@@ -695,7 +695,7 @@ namespace Cliente
                 //Por padrão o id do cliente tem 12 caracteres, caso não seja 12 caracteres esta errado
                 if (id_cliente.Length == 12)
                 {
-                    string campos_a_omitir = "dt_cadastro|usuario_cadastro|dt_ult_atualizacao|usuario_ult_atualizacao";
+                    string campos_a_omitir = "|dt_cadastro|usuario_cadastro|dt_ult_atualizacao|usuario_ult_atualizacao|";
 
                     log = UtilsGlobais.Util.MontaLog(clienteCadastrado, log, campos_a_omitir);
 
@@ -806,7 +806,7 @@ namespace Cliente
             string log)
         {
             int qtdeRef = 1;
-            string campos_a_omitir_ref_bancaria = "id_cliente|ordem|excluido_status|dt_cadastro|usuario_cadastro";
+            string campos_a_omitir_ref_bancaria = "|id_cliente|ordem|excluido_status|dt_cadastro|usuario_cadastro|";
 
             foreach (Cliente.Dados.Referencias.RefBancariaClienteDados r in lstRefBancaria)
             {
@@ -845,7 +845,7 @@ namespace Cliente
         {
             int qtdeRef = 1;
 
-            string campos_a_omitir_ref_comercial = "id_cliente|ordem|excluido_status|dt_cadastro|usuario_cadastro";
+            string campos_a_omitir_ref_comercial = "|id_cliente|ordem|excluido_status|dt_cadastro|usuario_cadastro|";
 
             foreach (Cliente.Dados.Referencias.RefComercialClienteDados r in lstRefComercial)
             {

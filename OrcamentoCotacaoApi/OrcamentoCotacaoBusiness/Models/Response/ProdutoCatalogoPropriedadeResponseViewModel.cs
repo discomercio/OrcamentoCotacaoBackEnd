@@ -10,5 +10,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response
     {
         [JsonProperty("produtosCatalogo")]
         public List<TprodutoCatalogo> ProdutosCatalogo { get; set; }
+
+        public string LogRetorno { get; set; }
     }
 }

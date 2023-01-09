@@ -177,7 +177,7 @@ namespace Arquivo
                         response.Mensagem = "Ops! Falha ao excluir pasta.";
                         return response;
                     }
-                    var tLogV2 = UtilsGlobais.Util.GravaLogV2(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, request.Loja, null, null, null,
+                    var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, request.Loja, null, null, null,
                         InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, request.IP);
 
                     dbGravacao.SaveChanges();
@@ -255,7 +255,7 @@ namespace Arquivo
                     string log = "";
                    
                     _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Montando log de operação.");
-                    log = UtilsGlobais.Util.MontalogComparacao(retorno, tOrcamentoCotacaoArquivosAntigo, log);
+                    log = UtilsGlobais.Util.MontalogComparacao(retorno, tOrcamentoCotacaoArquivosAntigo, log, "");
 
                     _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. {nomeMetodo}. Buscando operação de criação de pasta.");
 
@@ -270,7 +270,7 @@ namespace Arquivo
                     if (!string.IsNullOrEmpty(log))
                     {
                         log = $"id={retorno.Id}; {log}";
-                        var tLogV2 = UtilsGlobais.Util.GravaLogV2(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, request.Loja, null, null, null,
+                        var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, request.Loja, null, null, null,
                         InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, request.IP);
                     }
 
@@ -350,7 +350,7 @@ namespace Arquivo
                         response.Mensagem = "Ops! Falha ao criar pasta.";
                         return response;
                     }
-                    var tLogV2 = UtilsGlobais.Util.GravaLogV2(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, request.Loja, null, null, null,
+                    var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, request.Loja, null, null, null,
                         InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, request.IP);
 
                     dbGravacao.SaveChanges();
@@ -448,7 +448,7 @@ namespace Arquivo
                         response.Mensagem = "Ops! Falha ao criar pasta.";
                         return response;
                     }
-                    var tLogV2 = UtilsGlobais.Util.GravaLogV2(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, request.Loja, null, null, null,
+                    var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, request.Loja, null, null, null,
                         InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, request.IP);
 
                     dbGravacao.SaveChanges();

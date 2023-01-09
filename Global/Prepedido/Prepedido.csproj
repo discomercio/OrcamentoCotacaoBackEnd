@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Cfg\Cfg\Cfg.csproj" />
     <ProjectReference Include="..\Cliente\Cliente.csproj" />
     <ProjectReference Include="..\FormaPagamento\FormaPagamento.csproj" />
     <ProjectReference Include="..\Infra\InfraBanco\InfraBanco.csproj" />

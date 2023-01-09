@@ -455,7 +455,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public AtualizarOrcamentoOpcaoProdutoUnificadoResponse AtualizarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(List<AtualizarOrcamentoOpcaoProdutoRequest> lstProdutos, int idOpcao,
-            ContextoBdGravacao contextoBdGravacao, Guid correlationId)
+            ContextoBdGravacao contextoBdGravacao, Guid correlationId, List<TorcamentoCotacaoItemUnificado> TorcamentoCotacaoItemUnificadosAntigos, int opcaoSequencia)
         {
             var response = new AtualizarOrcamentoOpcaoProdutoUnificadoResponse();
             response.Sucesso = false;
@@ -470,6 +470,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 return response;
             }
 
+            string logRetorno = "";
             foreach (var item in lstProdutos)
             {
                 var produto = produtosUnificados.Where(x => x.Id == item.IdItemUnificado).FirstOrDefault();
@@ -481,12 +482,25 @@ namespace OrcamentoCotacaoBusiness.Bll
                 }
 
                 produto.Qtde = item.Qtde;
-                JsonSerializerOptions options = new JsonSerializerOptions() { ReferenceHandler = ReferenceHandler.IgnoreCycles, WriteIndented = true };
+                JsonSerializerOptions options = new JsonSerializerOptions() { ReferenceHandler = ReferenceHandler.IgnoreCycles, WriteIndented = false };
                 _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Atualizando produto unificado Id[{produto.Id}]. Resquest => {JsonSerializer.Serialize(produto, options)}");
                 var retorno = orcamentoCotacaoOpcaoItemUnificadoBll.AtualizarComTransacao(produto, contextoBdGravacao);
 
                 response.TorcamentoCotacaoItemUnificados.Add(retorno);
+
+                var produtoUnificadoAntigo = TorcamentoCotacaoItemUnificadosAntigos.Where(x => x.Id == produto.Id).FirstOrDefault();
+
+
+                string logApoio = UtilsGlobais.Util.MontalogComparacao(produto, produtoUnificadoAntigo, "", "");
+                if (!string.IsNullOrEmpty(logApoio))
+                {
+                    if (!string.IsNullOrEmpty(logRetorno)) logRetorno += "\r      ";
+                    logRetorno += $"Id={produto.Id}; IdOrcamentoCotacaoOpcao={produto.IdOrcamentoCotacaoOpcao}; {logApoio}";
+                }
             }
+
+            if (!string.IsNullOrEmpty(logRetorno)) response.LogOperacao = $"\r   Lista de produtos unificados opção {opcaoSequencia}: {logRetorno}";
+
             response.Sucesso = true;
             return response;
         }
@@ -532,12 +546,18 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public AtualizarOrcamentoOpcaoProdutoAtomicoCustoFinResponse AtualizarProdutoAtomicoCustoFinComTransacao(AtualizarOrcamentoOpcaoRequest opcao, List<TorcamentoCotacaoItemUnificado> produtosUnificados,
             List<TorcamentoCotacaoOpcaoPagto> opcaoPagtos, ContextoBdGravacao contextoBdGravacao,
-            UsuarioLogin usuarioLogado, OrcamentoResponse orcamento, Guid correlationId)
+            UsuarioLogin usuarioLogado, OrcamentoResponse orcamento, Guid correlationId,
+            List<TorcamentoCotacaoOpcaoPagto> formaPagtoAntiga)
         {
             var response = new AtualizarOrcamentoOpcaoProdutoAtomicoCustoFinResponse();
             response.Sucesso = false;
             var nomeMetodo = response.ObterNomeMetodoAtualAsync();
             response.TorcamentoCotacaoOpcaoItemAtomicoCustoFins = new List<TorcamentoCotacaoOpcaoItemAtomicoCustoFin>();
+
+            string logEdicaoAprazo = "";
+            string logCriacaoAPrazo = "";
+            string logEdicaoAVista = "";
+            string logCriacaoAVista = "";
 
             foreach (var item in opcao.ListaProdutos)
             {
@@ -567,7 +587,9 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     foreach (var pagto in opcao.FormaPagto)
                     {
+                        var pagtoAntigo = formaPagtoAntiga.Where(x => x.Id == pagto.Id).FirstOrDefault();
                         var atomicoCustoFin = torcamentoCotacaoOpcaoItemAtomicosFin.Where(x => x.TorcamentoCotacaoOpcaoPagto.Tipo_parcelamento == pagto.Tipo_parcelamento).FirstOrDefault();
+
                         _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Validando desconto e comissão por alçada.");
                         var validacaoResponse = ValidarDescontoComissaoAlcada(item, usuarioLogado, orcamento, opcao);
                         if (!string.IsNullOrEmpty(validacaoResponse))
@@ -614,8 +636,25 @@ namespace OrcamentoCotacaoBusiness.Bll
                             atomicoCustoFin.IdOperacaoAlcadaDescontoSuperior = idAlcada > 0 ? (int?)idAlcada : null;
 
                             _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Cadastrando produto atômico custo fin. Request => [{JsonSerializer.Serialize(atomicoCustoFin)}]");
+
                             var responseAtomicoCustoFin = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.InserirComTransacao(atomicoCustoFin, contextoBdGravacao);
                             response.TorcamentoCotacaoOpcaoItemAtomicoCustoFins.Add(responseAtomicoCustoFin);
+
+                            string camposAOmitir = "|Id|IdOpcaoPagto|DescDado|CustoFinancFornecCoeficiente|CustoFinancFornecPrecoListaBase|StatusDescontoSuperior|IdUsuarioDescontoSuperior|DataHoraDescontoSuperior|IdOperacaoAlcadaDescontoSuperior|";
+                            string logApoio = UtilsGlobais.Util.MontaLog(responseAtomicoCustoFin, "", camposAOmitir);
+
+                            if (pagto.Tipo_parcelamento == int.Parse(Constantes.COD_FORMA_PAGTO_A_VISTA))
+                            {
+                                if (!string.IsNullOrEmpty(logCriacaoAVista)) logCriacaoAVista += "\r      ";
+                                if (!string.IsNullOrEmpty(logApoio))
+                                    logCriacaoAVista += $"{logApoio}";
+                            }
+                            else
+                            {
+                                if (!string.IsNullOrEmpty(logCriacaoAPrazo)) logCriacaoAPrazo += "\r      ";
+                                if (!string.IsNullOrEmpty(logApoio))
+                                    logCriacaoAPrazo += $"{logApoio}";
+                            }
                         }
                         else
                         {
@@ -633,15 +672,38 @@ namespace OrcamentoCotacaoBusiness.Bll
                             atomicoCustoFin.IdUsuarioDescontoSuperior = idAlcada > 0 ? (int?)usuarioLogado.Id : null;
                             atomicoCustoFin.IdOperacaoAlcadaDescontoSuperior = idAlcada > 0 ? (int?)idAlcada : null;
 
-                            JsonSerializerOptions options = new JsonSerializerOptions() { ReferenceHandler = ReferenceHandler.IgnoreCycles, WriteIndented = true };
-                            _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Atualizando produto atômico custo fin. Resquest => {JsonSerializer.Serialize(atomicoCustoFin, options)}");
+                            JsonSerializerOptions options = new JsonSerializerOptions() { ReferenceHandler = ReferenceHandler.Preserve, WriteIndented = true };
+                            _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Atualizando produto atômico custo fin. Id => [{atomicoCustoFin.Id}]");
                             var responseAtomicoCustoFin = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.AtualizarComTransacao(atomicoCustoFin, contextoBdGravacao);
 
                             response.TorcamentoCotacaoOpcaoItemAtomicoCustoFins.Add(responseAtomicoCustoFin);
+
+                            var atomicoCustoAntigo = pagtoAntigo.TorcamentoCotacaoOpcaoItemAtomicoCustoFin.Where(x => x.Id == atomicoCustoFin.Id).FirstOrDefault();
+                            string logApoio = UtilsGlobais.Util.MontalogComparacao(responseAtomicoCustoFin, atomicoCustoAntigo, "", "");
+                            if (!string.IsNullOrEmpty(logApoio))
+                                logApoio = $"Id={responseAtomicoCustoFin.Id}; IdItemAtomico={responseAtomicoCustoFin.IdItemAtomico}; IdOpcaoPagto={responseAtomicoCustoFin.IdOpcaoPagto}; {logApoio}";
+
+                            if (pagto.Tipo_parcelamento == int.Parse(Constantes.COD_FORMA_PAGTO_A_VISTA))
+                            {
+                                if (!string.IsNullOrEmpty(logEdicaoAVista)) logEdicaoAVista += "\r      ";
+                                if (!string.IsNullOrEmpty(logApoio))
+                                    logEdicaoAVista += $"{logApoio}";
+                            }
+                            else
+                            {
+                                if (!string.IsNullOrEmpty(logEdicaoAprazo)) logEdicaoAprazo += "\r      ";
+                                if (!string.IsNullOrEmpty(logApoio))
+                                    logEdicaoAprazo += $"{logApoio}";
+                            }
                         }
                     }
                 }
             }
+
+            if (!string.IsNullOrEmpty(logEdicaoAprazo)) response.LogOperacao += $"\r   Valor dos produtos atômicos a prazo: {logEdicaoAprazo}";
+            if (!string.IsNullOrEmpty(logCriacaoAPrazo)) response.LogOperacao += $"\r   Valor dos produtos inseridos atômicos a prazo: {logCriacaoAPrazo}";
+            if (!string.IsNullOrEmpty(logEdicaoAVista)) response.LogOperacao += $"\r   Valor dos produtos atômicos a vista: {logEdicaoAVista}";
+            if (!string.IsNullOrEmpty(logCriacaoAVista)) response.LogOperacao += $"\r   Valor dos produtos inseridos atômicos a vista: {logCriacaoAVista}";
 
             response.Sucesso = true;
             return response;

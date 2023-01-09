@@ -31,7 +31,9 @@ namespace OrcamentistaEIndicadorVendedor
 
         public TorcamentistaEIndicadorVendedor AtualizarComTransacao(TorcamentistaEIndicadorVendedor model, ContextoBdGravacao contextoBdGravacao)
         {
-            throw new NotImplementedException();
+            contextoBdGravacao.TorcamentistaEIndicadorVendedor.Update(model);
+            contextoBdGravacao.SaveChanges();
+            return model;
         }
 
         public bool Excluir(TorcamentistaEIndicadorVendedor obj)
@@ -57,7 +59,9 @@ namespace OrcamentistaEIndicadorVendedor
 
         public TorcamentistaEIndicadorVendedor InserirComTransacao(TorcamentistaEIndicadorVendedor model, ContextoBdGravacao contextoBdGravacao)
         {
-            throw new NotImplementedException();
+            contextoBdGravacao.TorcamentistaEIndicadorVendedor.Add(model);
+            contextoBdGravacao.SaveChanges();
+            return model;
         }
 
         public List<TorcamentistaEIndicadorVendedor> PorFilroComTransacao(TorcamentistaEIndicadorVendedorFiltro obj, ContextoBdGravacao contextoBdGravacao)
@@ -83,6 +87,7 @@ namespace OrcamentistaEIndicadorVendedor
                                                Nome = usr.Nome,
                                                Email = usr.Email,
                                                Datastamp = UtilsGlobais.SenhaBll.DecodificaSenha(usr.Datastamp),
+                                               Senha = usr.Senha,
                                                IdIndicador = usr.IdIndicador,
                                                Telefone = usr.Telefone,
                                                Celular = usr.Celular,

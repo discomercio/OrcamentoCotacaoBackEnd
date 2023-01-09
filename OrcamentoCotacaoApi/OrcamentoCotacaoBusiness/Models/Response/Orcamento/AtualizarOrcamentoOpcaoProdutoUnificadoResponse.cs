@@ -8,5 +8,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response.Orcamento
     public class AtualizarOrcamentoOpcaoProdutoUnificadoResponse : UtilsGlobais.RequestResponse.ResponseBase
     {
         public List<TorcamentoCotacaoItemUnificado> TorcamentoCotacaoItemUnificados { get; set; }
+
+        public string LogOperacao { get; set; }
     }
 }

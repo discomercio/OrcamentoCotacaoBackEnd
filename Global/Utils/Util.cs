@@ -684,7 +684,7 @@ namespace UtilsGlobais
                 if (column != null)
                 {
                     string coluna = column.Name;
-                    if (!campos_a_omitir.Contains(coluna))
+                    if (!campos_a_omitir.Contains("|" + coluna+ "|"))
                     {
                         //pegando o valor coluna
                         var value = (c.GetValue(obj, null));
@@ -701,7 +701,7 @@ namespace UtilsGlobais
             return log;
         }
 
-        public static string MontalogComparacao(Object objNovo, Object objAntigo, string log)
+        public static string MontalogComparacao(Object objNovo, Object objAntigo, string log, string camposAOmitir)
         {
             //vamos analisar as diferenças de objetos 
 
@@ -712,6 +712,8 @@ namespace UtilsGlobais
             {
                 var coluna = (ColumnAttribute)Attribute.GetCustomAttribute(propNovo, typeof(ColumnAttribute));
                 if(coluna == null) continue;
+
+                if (camposAOmitir.Contains($"|{coluna.Name}|")) continue;
 
                 var propAntigo = lstPropertyAntigo.Where(x => x.Name == propNovo.Name).FirstOrDefault();
                 if (propAntigo == null) continue;
@@ -782,8 +784,8 @@ namespace UtilsGlobais
             return true;
         }
 
-        public static TLogV2 GravaLogV2(ContextoBdGravacao dbgravacao, string log, short idTipoUsuarioContexto,
-            int idUsuario, string loja, string pedido, int? idOrcamentoCotacao, string idCliente,
+        public static TLogV2 GravaLogV2ComTransacao(ContextoBdGravacao dbgravacao, string log, short idTipoUsuarioContexto,
+            int? idUsuario, string loja, string pedido, int? idOrcamentoCotacao, string idCliente,
             Constantes.CodSistemaResponsavel codSistemaResponsavel, int? idOpercao, string ip)
         {
             TLogV2 tLogV2 = new TLogV2()
@@ -804,6 +806,44 @@ namespace UtilsGlobais
 
             dbgravacao.Add(tLogV2);
             dbgravacao.SaveChanges();
+
+            return tLogV2;
+        }
+
+        public static TLogV2 GravaLogV2(ContextoBdProvider contextoProvider, string log, short idTipoUsuarioContexto,
+            int idUsuario, string loja, string pedido, int? idOrcamentoCotacao, string idCliente,
+            Constantes.CodSistemaResponsavel codSistemaResponsavel, int? idOpercao, string ip)
+        {
+            TLogV2 tLogV2 = new TLogV2()
+            {
+                Data = DateTime.Now.Date,
+                DataHora = DateTime.Now,
+                IdTipoUsuarioContexto = idTipoUsuarioContexto,
+                IdUsuario = idUsuario,
+                Loja = loja,
+                Pedido = pedido,
+                IdOrcamentoCotacao = idOrcamentoCotacao,
+                IdCliente = idCliente,
+                SistemaResponsavel = (int)codSistemaResponsavel,
+                IdOperacao = idOpercao,
+                Complemento = log,
+                IP = ip
+            };
+
+            using (var dbGravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                try
+                {
+                    dbGravacao.Add(tLogV2);
+                    dbGravacao.SaveChanges();
+                    dbGravacao.transacao.Commit();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+                
 
             return tLogV2;
         }

@@ -156,6 +156,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             model.CorrelationId = correlationId;
             model.Usuario = LoggedUser.Apelido;
+            model.IP = Request.HttpContext.Connection.RemoteIpAddress.ToString();
 
             var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
 
@@ -247,6 +248,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             opcao.CorrelationId = correlationId;
             opcao.Usuario = LoggedUser.Apelido;
+            opcao.IP = HttpContext.Connection.RemoteIpAddress.ToString();
 
             var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
             var response = _orcamentoBll.AtualizarOrcamentoOpcao(opcao, user);
@@ -265,7 +267,8 @@ namespace OrcamentoCotacaoApi.Controllers
             {
                 Usuario = LoggedUser.Apelido,
                 Id = id,
-                IdStatus = idStatus
+                IdStatus = idStatus,
+                IP = HttpContext.Connection.RemoteIpAddress.ToString()
             };
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/AtualizarStatus/PUT - Request => [{JsonSerializer.Serialize(request)}].");
@@ -281,7 +284,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
 
-            var response = _orcamentoBll.AtualizarStatus(id, user, idStatus);
+            var response = _orcamentoBll.AtualizarStatus(id, user, idStatus, request.IP);
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/AtualizarStatus/PUT - Response => [{JsonSerializer.Serialize(response)}].");
 
@@ -324,7 +327,8 @@ namespace OrcamentoCotacaoApi.Controllers
             {
                 Usuario = LoggedUser.Apelido,
                 Id = id,
-                LojaLogada = lojaLogada
+                LojaLogada = lojaLogada,
+                IP = HttpContext.Connection.RemoteIpAddress.ToString()
             };
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/ProrrogarOrcamento/POST - Request => [{JsonSerializer.Serialize(request)}].");
@@ -334,7 +338,7 @@ namespace OrcamentoCotacaoApi.Controllers
             if (!permissao.ProrrogarOrcamento)
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
-            var response = _orcamentoBll.ProrrogarOrcamento(id, LoggedUser.Id, lojaLogada, LoggedUser.TipoUsuario);
+            var response = _orcamentoBll.ProrrogarOrcamento(id, LoggedUser.Id, lojaLogada, LoggedUser.TipoUsuario, request.IP);
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/ProrrogarOrcamento/POST - Response => [{JsonSerializer.Serialize(response)}].");
 
@@ -370,7 +374,8 @@ namespace OrcamentoCotacaoApi.Controllers
             var request = new
             {
                 Usuario = LoggedUser.Apelido,
-                OrcamentoResponseViewModel = model
+                OrcamentoResponseViewModel = model,
+                IP = Request.HttpContext.Connection.RemoteIpAddress.ToString()
             };
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/AtualizarDados/POST - Request => [{JsonSerializer.Serialize(request)}].");
@@ -382,7 +387,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
             var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
-            var retorno = _orcamentoBll.AtualizarDadosCadastraisOrcamento(model, user);
+            var retorno = _orcamentoBll.AtualizarDadosCadastraisOrcamento(model, user, request.IP);
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/AtualizarDados/GET - Response => [{JsonSerializer.Serialize(retorno)}].");
 
