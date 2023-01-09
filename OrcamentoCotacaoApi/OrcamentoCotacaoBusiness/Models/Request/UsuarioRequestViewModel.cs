@@ -30,5 +30,9 @@ namespace OrcamentoCotacaoBusiness.Models.Request
 
         [JsonProperty("loja")]
         public string Loja { get; set; }
+
+        [JsonProperty("StLoginBloqueadoAutomatico")]
+        public bool StLoginBloqueadoAutomatico { get; set; }
+        
     }
 }

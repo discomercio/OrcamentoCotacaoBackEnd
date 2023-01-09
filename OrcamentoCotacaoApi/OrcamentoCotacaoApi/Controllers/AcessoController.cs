@@ -109,8 +109,10 @@ namespace PrepedidoApi.Controllers
                 objUsuarioLogin, 
                 appSettings.SegredoToken, 
                 appSettings.ValidadeTokenMinutos,
+                appSettings.BloqueioUsuarioLoginAmbiente,
                 Autenticacao.RoleAcesso, 
-                new OrcamentoCotacaoBusiness.PrePedido.Utils.ServicoAutenticacaoProvider(acessoBll), 
+                new OrcamentoCotacaoBusiness.PrePedido.Utils.ServicoAutenticacaoProvider(acessoBll),
+                string.Empty,
                 out bool unidade_negocio_desconhecida);
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. AcessoController/FazerLogin/POST - Response => [{JsonSerializer.Serialize(objUsuarioLogin.Apelido)}].");

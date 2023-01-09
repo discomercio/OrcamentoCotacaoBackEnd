@@ -99,7 +99,8 @@ namespace OrcamentistaEIndicadorVendedor
                                                DataUltimaAlteracao = usr.DataUltimaAlteracao,
                                                Loja = par.Loja,
                                                VendedorResponsavel = par.Vendedor,
-                                               Parceiro = par.Apelido
+                                               Parceiro = par.Apelido,
+                                               StLoginBloqueadoAutomatico = usr.StLoginBloqueadoAutomatico
                                            };
 
                     if (obj.id > 0)

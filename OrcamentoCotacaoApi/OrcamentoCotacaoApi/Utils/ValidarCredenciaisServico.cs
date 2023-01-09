@@ -16,7 +16,7 @@ namespace OrcamentoCotacaoApi.Utils
         public Task<bool> CredenciaisValidas(string apelido)
         {
             string msgErro;
-            var usuario = acessoBll.ValidarUsuario(apelido, null, true, out msgErro);
+            var usuario = acessoBll.ValidarUsuario(apelido, null, true, string.Empty, string.Empty, out msgErro);
             if (msgErro == null)
                 return Task.FromResult(false);
             if (int.TryParse(msgErro, out int resultado))

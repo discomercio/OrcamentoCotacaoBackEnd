@@ -120,6 +120,18 @@ namespace InfraBanco.Modelos
         [Column("Id")]
         public int Id { get; set; }
 
+        [Column("QtdeConsecutivaFalhaLogin")]
+        public int QtdeConsecutivaFalhaLogin { get; set; }
+
+        [Column("StLoginBloqueadoAutomatico")]
+        public bool StLoginBloqueadoAutomatico { get; set; }
+
+        [Column("DataHoraBloqueadoAutomatico")]
+        public DateTime? DataHoraBloqueadoAutomatico { get; set; }
+
+        [Column("EnderecoIpBloqueadoAutomatico ")]
+        public string EnderecoIpBloqueadoAutomatico { get; set; }
+
         public virtual TorcamentoCotacaoOpcaoItemAtomicoCustoFin TorcamentoCotacaoOpcaoItemAtomicoCustoFin { get; set; }
 
         public List<TorcamentoItem> TorcamentoItem { get; set; }

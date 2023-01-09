@@ -70,6 +70,18 @@ namespace InfraBanco.Modelos
         [NotMapped]
         public string Parceiro { get; set; }
 
+        [Column("QtdeConsecutivaFalhaLogin")]
+        public int QtdeConsecutivaFalhaLogin { get; set; }
+
+        [Column("StLoginBloqueadoAutomatico")]
+        public bool StLoginBloqueadoAutomatico { get; set; }
+
+        [Column("DataHoraBloqueadoAutomatico")]
+        public DateTime? DataHoraBloqueadoAutomatico { get; set; }
+
+        [Column("EnderecoIpBloqueadoAutomatico ")]
+        public string EnderecoIpBloqueadoAutomatico { get; set; }
+
         /*
 Column_name	Type	Length	Nullable
 Id	int	4	no
