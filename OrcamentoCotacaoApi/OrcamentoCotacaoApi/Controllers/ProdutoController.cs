@@ -404,5 +404,13 @@ namespace OrcamentoCotacaoApi.BaseController
 
             return Ok(ret);
         }
+
+        [HttpGet("buscarGruposProdutos")]
+        public async Task<IActionResult> BuscarGruposProdutos()
+        {
+
+
+            return Ok();
+        }
     }
 }
