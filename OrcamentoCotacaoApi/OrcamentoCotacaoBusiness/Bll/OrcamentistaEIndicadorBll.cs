@@ -1,5 +1,7 @@
 ﻿using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
+using OrcamentoCotacaoBusiness.Models.Request.OrcamentistaIndicador;
+using OrcamentoCotacaoBusiness.Models.Response.Orcamentista;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +36,45 @@ namespace OrcamentoCotacaoBusiness.Bll
             var parceiro = orcamentistaEIndicadorBll.PorFiltro(filtro).FirstOrDefault();
 
             return parceiro;
+        }
+
+        public ParceirosComboResponse BuscarParceirosCombo(BuscarParceiroRequest request)
+        {
+            try
+            {
+                var response = new ParceirosComboResponse();
+                response.Sucesso = false;
+
+                TorcamentistaEindicadorFiltro filtro = new TorcamentistaEindicadorFiltro();
+                filtro.vendedorId = request.Vendedor;
+                filtro.Lojas = new List<string>();
+                filtro.Lojas = request.Lojas;
+
+                var parceiros = orcamentistaEIndicadorBll.PorFiltro(filtro);
+
+                if (parceiros.Count == 0)
+                {
+                    response.Mensagem = "Não encontramos parceiros cadastrados para esse vendedor!";
+                    return response;
+                }
+
+                response.Parceiros = new List<ParceiroComboResponse>();
+                foreach (var parceiro in parceiros)
+                {
+                    var parca = new ParceiroComboResponse();
+                    parca.Id = parceiro.IdIndicador;
+                    parca.RazaoSocial = parceiro.Razao_social_nome_iniciais_em_maiusculas;
+                    response.Parceiros.Add(parca);
+                }
+                response.Parceiros = response.Parceiros.OrderBy(x => x.RazaoSocial).Distinct().ToList();
+
+                response.Sucesso = true;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

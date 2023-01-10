@@ -93,7 +93,10 @@ namespace OrcamentistaEindicador
                     {
                         saida = saida.Where(x => x.Status == Constantes.ORCAMENTISTA_INDICADOR_STATUS_ATIVO);
                     }
-
+                    if(obj.Lojas != null)
+                    {
+                        saida = saida.Where(x => obj.Lojas.Contains(x.Loja));
+                    }
 
 
                     return saida.ToList();

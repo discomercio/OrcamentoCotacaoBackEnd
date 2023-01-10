@@ -3,16 +3,15 @@ using InfraBanco.Modelos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using OrcamentistaEindicador;
-using OrcamentistaEIndicadorVendedor;
 using OrcamentoCotacaoApi.Filters;
+using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
+using OrcamentoCotacaoBusiness.Models.Request.Usuario;
 using OrcamentoCotacaoBusiness.Models.Response;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Usuario;
 using UtilsGlobais.Configs;
 
 namespace OrcamentoCotacaoApi.Controllers
@@ -24,20 +23,17 @@ namespace OrcamentoCotacaoApi.Controllers
     public class UsuarioController : BaseController
     {
         private readonly ILogger<UsuarioController> _logger;
-        private readonly UsuarioBll _usuarioBll;
-        private readonly OrcamentistaEIndicadorBll _orcamentistaEIndicadorBLL;
+        private readonly Usuario.UsuarioBll _usuarioGlobalBll;
         private readonly IMapper _mapper;
-        private readonly OrcamentistaEIndicadorVendedorBll _orcamentistaEIndicadorVendedorBll;
+        private readonly UsuarioBll _usuarioBll;
 
-        public UsuarioController(ILogger<UsuarioController> logger, UsuarioBll usuarioBll,
-            OrcamentistaEIndicadorBll orcamentistaEIndicadorBLL, IMapper mapper,
-            OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll)
+        public UsuarioController(ILogger<UsuarioController> logger, Usuario.UsuarioBll usuarioGlobalBll,
+            IMapper mapper, UsuarioBll usuarioBll)
         {
             _logger = logger;
-            _usuarioBll = usuarioBll;
-            _orcamentistaEIndicadorBLL = orcamentistaEIndicadorBLL;
+            _usuarioGlobalBll = usuarioGlobalBll;
             _mapper = mapper;
-            _orcamentistaEIndicadorVendedorBll = orcamentistaEIndicadorVendedorBll;
+            _usuarioBll = usuarioBll;
         }
 
         [HttpGet]
@@ -55,7 +51,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/Get/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
 
-                var usuarios = _usuarioBll.PorFiltro(new InfraBanco.Modelos.Filtros.TusuarioFiltro() { Page = 1, RecordsPerPage = 1 });//GetAll(1, 1);
+                var usuarios = _usuarioGlobalBll.PorFiltro(new InfraBanco.Modelos.Filtros.TusuarioFiltro() { Page = 1, RecordsPerPage = 1 });//GetAll(1, 1);
                 var retorno = _mapper.Map<List<UsuarioResponseViewModel>>(usuarios);
 
                 _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/Get/GET - Response => [{JsonSerializer.Serialize(retorno)}].");
@@ -84,7 +80,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             string vendedorId = User.Identity.Name;
 
-            var usuarios = await _usuarioBll.FiltrarPorPerfil(loja);
+            var usuarios = await _usuarioGlobalBll.FiltrarPorPerfil(loja);
 
             var response = _mapper.Map<List<UsuarioResponseViewModel>>(usuarios);
 
@@ -92,17 +88,6 @@ namespace OrcamentoCotacaoApi.Controllers
 
             return response;
         }
-
-
-        //[HttpGet]
-        //[Route("vendedores-parceiros")]
-        //public async Task<IEnumerable<UsuarioResponseViewModel>> BuscarVendedoresDosParceiros(string vendedorId, string parceiroId)
-        //{
-        //    _logger.LogInformation("Buscando lista de vendedores parceiros");
-        //    var usuarios = await _usuarioService.GetVendedoresDoParceiro(vendedorId, parceiroId, 1, 1);
-
-        //    return usuarios;
-        //}
 
         [HttpGet]
         [Route("{id}")]
@@ -113,12 +98,12 @@ namespace OrcamentoCotacaoApi.Controllers
             var request = new
             {
                 Usuario = LoggedUser.Apelido,
-                Id= id
+                Id = id
             };
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/Get/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
-            var usuario = _usuarioBll.GetById(id);
+            var usuario = _usuarioGlobalBll.GetById(id);
             var response = _mapper.Map<UsuarioResponseViewModel>(usuario);
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/Get/GET - Response => [{JsonSerializer.Serialize(response)}].");
@@ -140,7 +125,7 @@ namespace OrcamentoCotacaoApi.Controllers
             _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/Post/POST - Request => [{JsonSerializer.Serialize(request)}].");
 
             var objUsuario = _mapper.Map<Tusuario>(model);
-            var usuario = _usuarioBll.Inserir(objUsuario);// model, User.Identity.Name);
+            var usuario = _usuarioGlobalBll.Inserir(objUsuario);// model, User.Identity.Name);
             var response = _mapper.Map<UsuarioResponseViewModel>(usuario);
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/Post/POST - Response => [{JsonSerializer.Serialize(response)}].");
@@ -162,12 +147,29 @@ namespace OrcamentoCotacaoApi.Controllers
             _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/Put/PUT - Request => [{JsonSerializer.Serialize(request)}].");
 
             var objUsuario = _mapper.Map<Tusuario>(model);
-            var usuario = _usuarioBll.Atualizar(objUsuario);//model, User.Identity.Name);
+            var usuario = _usuarioGlobalBll.Atualizar(objUsuario);//model, User.Identity.Name);
             var response = _mapper.Map<UsuarioResponseViewModel>(usuario);
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/Put/PUT - Response => [{JsonSerializer.Serialize(response)}].");
 
             return response;
+        }
+
+        [HttpPost]
+        [Route("buscarVendedoresPorListaLojas")]
+        public async Task<IActionResult> BuscarVendedoresPorListaLojas(UsuariosPorListaLojasRequest request)
+        {
+            request.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+            request.Usuario = LoggedUser.Apelido;
+            request.IP = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. UsuarioController/BuscarVendedoresPorListaLojas/POST - Request => [{JsonSerializer.Serialize(request)}].");
+
+            var response = _usuarioBll.BuscarVendedoresPorListaLojas(request);
+
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. UsuarioController/BuscarVendedoresPorListaLojas/POST - Response => [{JsonSerializer.Serialize(response)}].");
+
+            return Ok(response);
         }
     }
 }

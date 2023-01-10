@@ -2018,11 +2018,19 @@ namespace OrcamentoCotacaoBusiness.Bll
             ListaConsultaGerencialOrcamentoResponse response = new ListaConsultaGerencialOrcamentoResponse();
             var itens = new List<ConsultaGerencialOrcamentoResponse>();
 
-            //criar a busca com base nos filtros
-            var teste = JsonSerializer.Serialize(request);
-            var filtro = JsonSerializer.Deserialize<TorcamentoCotacaoConsultaGerencialFiltro>(teste);
+            //verificar o nome das colunas para filtrar pelo nome da coluna correto
+            if (request.NomeColunaOrdenacao == "orcamento") request.NomeColunaOrdenacao = "Id";
+            if (request.NomeColunaOrdenacao == "loja") request.NomeColunaOrdenacao = "Loja";
+            if (request.NomeColunaOrdenacao == "vendedor") request.NomeColunaOrdenacao = "IdVendedor";
+            if (request.NomeColunaOrdenacao == "parceiro") request.NomeColunaOrdenacao = "IdIndicador";
+            if (request.NomeColunaOrdenacao == "uf") request.NomeColunaOrdenacao = "UF";
+            if (request.NomeColunaOrdenacao == "criacao") request.NomeColunaOrdenacao = "DataCadastro";
+            if (request.NomeColunaOrdenacao == "expiracao") request.NomeColunaOrdenacao = "Validade";
 
-            var retorno = _orcamentoCotacaoBll.ConsultaGerencial(filtro)?.ToList();
+            var json = JsonSerializer.Serialize(request);
+            var filtro = JsonSerializer.Deserialize<TorcamentoCotacaoConsultaGerencialFiltro>(json);
+
+            var retorno = _orcamentoCotacaoBll.ConsultaGerencial(filtro).ToList();
 
             //total de registros
             response.QtdeRegistros = retorno.Count();

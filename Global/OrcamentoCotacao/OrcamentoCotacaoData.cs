@@ -376,8 +376,8 @@ namespace OrcamentoCotacao
                 }
                 if (!string.IsNullOrEmpty(filtro.NomeColunaOrdenacao))
                 {
-                    if (filtro.Ascendente) saida = saida.OrderBy(x => typeof(TorcamentoCotacao).GetProperty(filtro.NomeColunaOrdenacao).GetValue(x.tOrcamentoCotacao).ToString());
-                    else saida = saida.OrderByDescending(x => typeof(TorcamentoCotacao).GetProperty(filtro.NomeColunaOrdenacao).GetValue(x.tOrcamentoCotacao).ToString());
+                    if (filtro.Ascendente) saida = saida.OrderBy(x => typeof(TorcamentoCotacao).GetProperty(filtro.NomeColunaOrdenacao).GetValue(x.tOrcamentoCotacao));
+                    else saida = saida.OrderByDescending(x => typeof(TorcamentoCotacao).GetProperty(filtro.NomeColunaOrdenacao).GetValue(x.tOrcamentoCotacao));
                 }
 
                 return saida;

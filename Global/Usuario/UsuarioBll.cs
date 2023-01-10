@@ -80,10 +80,22 @@ namespace Usuario
                 {
                     usuario = usuario.Skip(obj.RecordsPerPage.Value * (obj.Page.Value - 1)).Take(obj.RecordsPerPage.Value);
                 }
-                if(obj.id > 0)
+                if (obj.id > 0)
                 {
                     usuario = usuario.Where(x => x.Id == obj.id);
                 }
+                if (obj.Lojas != null)
+                {
+                    //usuario = usuario.Include(x => ).Where(x => obj.Lojas.Contains(x.Loja));
+                    usuario = from c in usuario
+                              join d in db.TusuarioXLoja on c.Usuario equals d.Usuario
+                              where obj.Lojas.Contains(d.Loja)
+                              select c;
+
+                }
+
+                usuario = usuario.Distinct();
+
                 return usuario.ToList();
             }
         }
@@ -131,7 +143,7 @@ namespace Usuario
 
         public List<TcfgTipoUsuarioContexto> BuscarTipoUsuarioContexto()
         {
-            using(var db = contextoProvider.GetContextoLeitura())
+            using (var db = contextoProvider.GetContextoLeitura())
             {
                 return (from c in db.TcfgTipoUsuarioContexto
                         select c).ToList();

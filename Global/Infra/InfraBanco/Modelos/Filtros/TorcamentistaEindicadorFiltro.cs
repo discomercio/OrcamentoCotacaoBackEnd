@@ -1,4 +1,5 @@
 ﻿using Interfaces;
+using System.Collections.Generic;
 
 namespace InfraBanco.Modelos.Filtros
 {
@@ -12,6 +13,7 @@ namespace InfraBanco.Modelos.Filtros
         public string loja { get; set; }
         public int acessoHabilitado { get; set; }
         public string status { get; set; }
+        public List<string> Lojas { get; set; }
     }
 }
     

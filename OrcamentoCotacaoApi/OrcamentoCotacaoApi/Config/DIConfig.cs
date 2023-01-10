@@ -102,7 +102,6 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll, Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll>();
             services.AddTransient<Usuario.UsuarioBll, Usuario.UsuarioBll>();
 
-
             //#PRE-PEDIDO
             services.AddTransient<Prepedido.Bll.AcessoBll, Prepedido.Bll.AcessoBll>(); 
             services.AddTransient<Prepedido.Bll.CepPrepedidoBll, Prepedido.Bll.CepPrepedidoBll>();
@@ -133,12 +132,14 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<PermissaoBll, PermissaoBll>();
             services.AddTransient<Cfg.CfgUnidadeNegocioParametro.CfgUnidadeNegocioParametroBll, Cfg.CfgUnidadeNegocioParametro.CfgUnidadeNegocioParametroBll>();
             services.AddTransient<ClienteBll, ClienteBll>();
+            services.AddTransient<UsuarioBll, UsuarioBll>();
 
             services.AddTransient<Operacao.OperacaoBll, Operacao.OperacaoBll>();
             services.AddTransient<Operacao.OperacaoData, Operacao.OperacaoData>();
 
             services.AddTransient<Cfg.CfgOperacao.CfgOperacaoBll, Cfg.CfgOperacao.CfgOperacaoBll>();
             services.AddTransient<Cfg.CfgOperacao.CfgOperacaoData, Cfg.CfgOperacao.CfgOperacaoData>();
+
 
 
             return services;
