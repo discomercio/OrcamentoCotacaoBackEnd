@@ -13,7 +13,7 @@ namespace ArClube.Mensageria
         private readonly SecureSocketOptions _options;
         private readonly string _username;
         private readonly string _password;
-        private readonly SmtpClient _smtp;
+        private SmtpClient _smtp;
 
         public EmailService(ParametroEmailDto parametroEmail)
         {
@@ -22,19 +22,12 @@ namespace ArClube.Mensageria
             this._options = parametroEmail.Options;
             this._username = parametroEmail.UserName;
             this._password = parametroEmail.Password;
-
-            _smtp = new SmtpClient();
-            _smtp.Connect(parametroEmail.ServerSMTP, parametroEmail.Port, parametroEmail.Options);
-            _smtp.Authenticate(parametroEmail.UserName, parametroEmail.Password);
         }
 
-        public bool Send(
+        public async Task<Tuple<bool, string>> Send(
             ILogger<Worker> logger,
-            OrcamentoCotacaoEmailQueueDto torcamentoCotacaoEmailQueue,
-            out string messageReturn)
+            OrcamentoCotacaoEmailQueueDto torcamentoCotacaoEmailQueue)
         {
-            messageReturn = string.Empty;
-
             try
             {
                 // create message 
@@ -76,19 +69,29 @@ namespace ArClube.Mensageria
 
                     logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - Trying to send Email #" + torcamentoCotacaoEmailQueue.Id + "From: [" + torcamentoCotacaoEmailQueue.From + "] [TO] [" + torcamentoCotacaoEmailQueue.To + "] [CC]: [" + torcamentoCotacaoEmailQueue.Cc + "]");
 
-                    // send email
-                    _smtp.Send(mimeMessageEmail);
+                    await this.SmtpAuthenticateAsync();
+                    await _smtp.SendAsync(mimeMessageEmail);
                 }
-
-                return true;
+                
+                return new Tuple<bool, string>(true, string.Empty);
             }
             catch (Exception ex)
             {
                 logger.LogError(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - Error: " + ex.Message);
                 logger.LogError(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - Inner: " + ex.InnerException);
-                messageReturn = ex.Message;
+                return new Tuple<bool, string>(false, ex.Message);
+            }
+        }
 
-                return false;
+        private async Task SmtpAuthenticateAsync()
+        {
+            this._smtp = new SmtpClient();
+
+            await this._smtp.ConnectAsync(this._serverSMTP, this._port, this._options);
+
+            if (!this._smtp.IsAuthenticated)
+            {
+                await _smtp.AuthenticateAsync(this._username, this._password);
             }
         }
 

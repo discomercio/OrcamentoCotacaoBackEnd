@@ -31,6 +31,11 @@ namespace ArClube.Mensageria
             var recordsPerPage = configuration.GetSection("EmailsPerCicleToGetAndSend").Value.ToInt().Value;
             var secondsToDelayAfterSend = configuration.GetSection("SecondsToDelayAfterSend").Value.ToInt().Value;
 
+            //var attempt1_2 = await this._mensageriaRepositorio.ObterParametroPorId("OrctoCotacao_Mensageria_Queue_IntervaloMinEmSegundos_Tentativa_1_2");
+            //var attempt2_3 = await this._mensageriaRepositorio.ObterParametroPorId("OrctoCotacao_Mensageria_Queue_IntervaloMinEmSegundos_Tentativa_2_3");
+            //var attemptVery = await this._mensageriaRepositorio.ObterParametroPorId("OrctoCotacao_Mensageria_Queue_IntervaloMinEmSegundos_Tentativa_Demais");
+            var attemptQtdMaxParam = await this._mensageriaRepositorio.ObterParametroPorId("OrctoCotacao_Mensageria_Queue_QtdeMaxTentativas");
+
             this._logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Obter Unidade Neogocio Parametros");
             var unidadeNeogocioParametros = await this._mensageriaRepositorio.ObterUnidadeNeogocioParametrosAsync();
 
@@ -43,16 +48,15 @@ namespace ArClube.Mensageria
 
                     if (orcamentoCotacaoEmailsQueue.Count > 0)
                     {
-                        //_logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - Using SMTPServer " + configuration.GetSection("SmtpServer").Value + " SMTPPort " + configuration.GetSection("SmtpPort").Value.ToInt().Value);
                         foreach (var orcamentoCotacaoEmailsQueueItem in orcamentoCotacaoEmailsQueue)
                         {
                             var parametroEmail = ObteParametroEmail(unidadeNeogocioParametros, orcamentoCotacaoEmailsQueueItem.IdCfgUnidadeNegocio);
 
                             using (var emailService = new EmailService(parametroEmail))
                             {
-                                string messageReturn = string.Empty;
-
-                                if (emailService.Send(_logger, orcamentoCotacaoEmailsQueueItem, out messageReturn))
+                                var valuesOfSendingEmail = await emailService.Send(_logger, orcamentoCotacaoEmailsQueueItem);
+                                
+                                if (valuesOfSendingEmail.Item1)
                                 {
                                     _logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - Email sent #" + orcamentoCotacaoEmailsQueueItem.Id + " [TO] [" + orcamentoCotacaoEmailsQueueItem.To + "] [CC]: [" + orcamentoCotacaoEmailsQueueItem.Cc + "] [FROM] [" + orcamentoCotacaoEmailsQueueItem.From + "]");
                                     orcamentoCotacaoEmailsQueueItem.Sent = true;
@@ -60,17 +64,30 @@ namespace ArClube.Mensageria
                                     orcamentoCotacaoEmailsQueueItem.DateSent = DateTime.Now;
                                     orcamentoCotacaoEmailsQueueItem.AttemptsQty = 0;
                                     orcamentoCotacaoEmailsQueueItem.DateLastAttempt = null;
-                                    orcamentoCotacaoEmailsQueueItem.ErrorMsgLastAttempt = null;
+                                    orcamentoCotacaoEmailsQueueItem.ErrorMsgLastAttempt = valuesOfSendingEmail.Item2;
                                 }
                                 else
                                 {
-                                    _logger.LogError(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Error: #" + orcamentoCotacaoEmailsQueueItem.Id + " - " + messageReturn);
-                                    orcamentoCotacaoEmailsQueueItem.Sent = false;
-                                    orcamentoCotacaoEmailsQueueItem.Status = (int)eCfgOrcamentoCotacaoEmailStatus.FalhaNoEnvioTemporario;
-                                    orcamentoCotacaoEmailsQueueItem.DateSent = null;
-                                    orcamentoCotacaoEmailsQueueItem.AttemptsQty = (orcamentoCotacaoEmailsQueueItem.AttemptsQty + 1);
-                                    orcamentoCotacaoEmailsQueueItem.DateLastAttempt = DateTime.Now;
-                                    orcamentoCotacaoEmailsQueueItem.ErrorMsgLastAttempt = messageReturn;
+                                    if (orcamentoCotacaoEmailsQueueItem.AttemptsQty >= attemptQtdMaxParam)
+                                    {
+                                        _logger.LogError(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Error: #" + orcamentoCotacaoEmailsQueueItem.Id + " - " + valuesOfSendingEmail.Item2);
+                                        orcamentoCotacaoEmailsQueueItem.Sent = false;
+                                        orcamentoCotacaoEmailsQueueItem.Status = (int)eCfgOrcamentoCotacaoEmailStatus.FalhaNoEnvioDefinitivo;
+                                        orcamentoCotacaoEmailsQueueItem.DateSent = null;
+                                        orcamentoCotacaoEmailsQueueItem.AttemptsQty = (orcamentoCotacaoEmailsQueueItem.AttemptsQty + 1);
+                                        orcamentoCotacaoEmailsQueueItem.DateLastAttempt = DateTime.Now;
+                                        orcamentoCotacaoEmailsQueueItem.ErrorMsgLastAttempt = valuesOfSendingEmail.Item2;
+                                    }
+                                    else
+                                    {
+                                        _logger.LogError(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Error: #" + orcamentoCotacaoEmailsQueueItem.Id + " - " + valuesOfSendingEmail.Item2);
+                                        orcamentoCotacaoEmailsQueueItem.Sent = false;
+                                        orcamentoCotacaoEmailsQueueItem.Status = (int)eCfgOrcamentoCotacaoEmailStatus.FalhaNoEnvioTemporario;
+                                        orcamentoCotacaoEmailsQueueItem.DateSent = null;
+                                        orcamentoCotacaoEmailsQueueItem.AttemptsQty = (orcamentoCotacaoEmailsQueueItem.AttemptsQty + 1);
+                                        orcamentoCotacaoEmailsQueueItem.DateLastAttempt = DateTime.Now;
+                                        orcamentoCotacaoEmailsQueueItem.ErrorMsgLastAttempt = valuesOfSendingEmail.Item2;
+                                    }
                                 }
 
                                 await this._mensageriaRepositorio.AtualizarOrcamentoCotacaoEmailsQueue(orcamentoCotacaoEmailsQueueItem);
