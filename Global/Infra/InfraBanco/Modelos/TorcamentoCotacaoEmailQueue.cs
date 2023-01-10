@@ -34,7 +34,7 @@ namespace InfraBanco.Modelos
         public DateTime DateCreated { get; set; }
         public short Status { get; set; }
         [Required]
-        public int AttemptsQty { get; set; }
+        public byte AttemptsQty { get; set; }
         public DateTime? DateLastAttempt { get; set; }
         public string Attachment { get; set; }
         public string ErrorMsgLastAttempt { get; set; }
