@@ -2795,6 +2795,8 @@ namespace InfraBanco.Constantes
 
         public const string ERR_MULTI_CD_REGRA_NAO_CADASTRADA = "5102";
 
+        public const string ERR_USUARIO_BLOQUEADO_AUTOMATICO = "5103";
+
         public const string NUMERO_LOJA_ECOMMERCE_AR_CLUBE = "201";
 
         public const string NUMERO_LOJA_BONSHOP = "202";

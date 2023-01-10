@@ -66,6 +66,7 @@ namespace OrcamentoCotacaoApi.Controllers
             try
             {
                 login.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+                login.IP = Request.HttpContext.Connection.RemoteIpAddress.ToString();
 
                 _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - Request => [{JsonSerializer.Serialize(login.Usuario)}].");
 
@@ -74,7 +75,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 string apelido = login.Usuario.ToUpper();
                 string senha = login.Senha;
 
-                UsuarioLogin objUsuarioLogin = new UsuarioLogin()
+                var objUsuarioLogin = new UsuarioLogin()
                 {
                     Apelido = apelido,
                     Senha = senha
@@ -84,10 +85,11 @@ namespace OrcamentoCotacaoApi.Controllers
                     objUsuarioLogin, 
                     appSettings.SegredoToken, 
                     appSettings.ValidadeTokenMinutos,
+                    appSettings.BloqueioUsuarioLoginAmbiente,
                     Autenticacao.RoleAcesso, 
                     new ServicoAutenticacaoProvider(_acessoBll, _usuarioBll, _orcamentistaEindicadorBll, _orcamentistaEindicadorVendedorBll, _lojaBll),
-                    out bool unidade_negocio_desconhecida
-                    );
+                    login.IP,
+                    out bool unidade_negocio_desconhecida);
 
                 var response = new LoginResponse();
                 response.Sucesso = false;
@@ -102,21 +104,28 @@ namespace OrcamentoCotacaoApi.Controllers
                     return Ok(response);
                 }
 
-                if(objUsuarioLogin.IdErro == int.Parse(Constantes.ERR_USUARIO_BLOQUEADO))
+                if (objUsuarioLogin.IdErro == int.Parse(Constantes.ERR_USUARIO_BLOQUEADO))
+                {
+                    response.Mensagem = "Usuario bloqueado";
+                    _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - {response.Mensagem}. Response => [{JsonSerializer.Serialize(objUsuarioLogin)}]");
+                    return Ok(response);
+                }
+
+                if (objUsuarioLogin.IdErro == int.Parse(Constantes.ERR_ACESSO_INSUFICIENTE))
                 {
                     response.Mensagem = "Usuário não habilitado para acesso ao sistema";
                     _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - {response.Mensagem}. Response => [{JsonSerializer.Serialize(objUsuarioLogin)}]");
                     return Ok(response);
                 }
 
-                if(objUsuarioLogin.IdErro == int.Parse(Constantes.ERR_USUARIO_INATIVO))
+                if (objUsuarioLogin.IdErro == int.Parse(Constantes.ERR_USUARIO_INATIVO))
                 {
                     response.Mensagem = "Usuário Inativo";
                     _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - {response.Mensagem}. Response => [{JsonSerializer.Serialize(objUsuarioLogin)}]");
                     return Ok(response);
                 }
 
-                if(objUsuarioLogin.Token == null)
+                if (objUsuarioLogin.Token == null)
                 {
                     response.Mensagem = "Usuário ou senha incorretos";
                     _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - {response.Mensagem}. Response => [{JsonSerializer.Serialize(objUsuarioLogin)}].");

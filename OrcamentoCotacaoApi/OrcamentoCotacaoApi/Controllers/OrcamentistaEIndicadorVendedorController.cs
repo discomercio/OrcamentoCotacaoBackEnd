@@ -191,7 +191,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             if (usuarios == null) return null;
 
-            OrcamentistaEIndicadorVendedorResponseViewModel ret = new OrcamentistaEIndicadorVendedorResponseViewModel()
+            var ret = new OrcamentistaEIndicadorVendedorResponseViewModel()
             {
                 Nome = usuarios.Nome,
                 Email = usuarios.Email,
@@ -202,7 +202,8 @@ namespace OrcamentoCotacaoApi.Controllers
                 Telefone = usuarios.Telefone,
                 Celular = usuarios.Celular,
                 VendedorResponsavel = usuarios.VendedorResponsavel,
-                Senha = usuarios.Datastamp
+                Senha = usuarios.Datastamp,
+                StLoginBloqueadoAutomatico = usuarios.StLoginBloqueadoAutomatico
             };
 
             var response = new
