@@ -2032,7 +2032,6 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             var retorno = _orcamentoCotacaoBll.ConsultaGerencial(filtro).ToList();
 
-            //total de registros
             response.QtdeRegistros = retorno.Count();
             retorno = retorno.Skip((request.Pagina) * request.QtdeItensPagina).Take(request.QtdeItensPagina).ToList();
 
@@ -2056,6 +2055,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             if (itens.Count <= 0)
             {
+                response.QtdeRegistros = 0;
                 response.Mensagem = "Não encontramos nenhum registro!";
                 return response;
             }

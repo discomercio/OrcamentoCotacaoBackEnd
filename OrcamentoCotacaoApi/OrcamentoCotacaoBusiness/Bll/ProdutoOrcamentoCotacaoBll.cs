@@ -11,6 +11,7 @@ using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
 using OrcamentoCotacaoBusiness.Models.Response.Orcamento;
+using OrcamentoCotacaoBusiness.Models.Response.ProdutoCatalogo;
 using Produto;
 using Produto.Dto;
 using ProdutoCatalogo;
@@ -256,6 +257,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         public async Task<List<Produto.Dados.FabricanteDados>> ObterListaFabricante()
         {
             var lstFabricantes = await produtoGeralBll.ObterListaFabricante();
+            lstFabricantes = lstFabricantes.OrderBy(x => x.Nome).ToList();
 
             return lstFabricantes;
         }
@@ -866,6 +868,39 @@ namespace OrcamentoCotacaoBusiness.Bll
         {
             var retorno = await Task.FromResult(orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.PorFiltro(filtro));
             return await Task.FromResult(retorno);
+        }
+    
+        public ProdutosGruposResponse BuscarGruposProdutos()
+        {
+            try
+            {
+                var response = new ProdutosGruposResponse();
+                response.Sucesso = false;
+
+                var retorno = _produtoCatalogoBll.BuscarProdutoGrupos(null);
+                if (retorno == null)
+                {
+                    response.Mensagem = "Ops! Falha ao buscar grupos de produtos!";
+                    return response;
+                }
+
+                response.ProdutosGrupos = new List<ProdutoGrupoResponse>();
+                foreach (var grupo in retorno)
+                {
+                    var produtoGrupo = new ProdutoGrupoResponse();
+                    produtoGrupo.Codigo = grupo.Codigo;
+                    produtoGrupo.Descricao = grupo.Descricao;
+                    response.ProdutosGrupos.Add(produtoGrupo);
+                }
+
+                response.ProdutosGrupos = response.ProdutosGrupos.OrderBy(x => x.Descricao).ToList();
+                response.Sucesso = true;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

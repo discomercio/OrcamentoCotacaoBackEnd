@@ -55,5 +55,8 @@ namespace OrcamentoCotacaoBusiness.Models.Request.Orcamento
 
         [JsonProperty("expirado")]
         public bool Expirado { get; set; }
+
+        [JsonProperty("nomeLista")]
+        public string NomeLista { get; set; }
     }
 }

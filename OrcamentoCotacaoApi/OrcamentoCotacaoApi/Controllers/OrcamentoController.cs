@@ -52,7 +52,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/PorFiltro/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
-            filtro.PermissaoUniversal = User.ValidaPermissao((int)ePermissao.VisualizarOrcamentoConsultar);
+            filtro.PermissaoUniversal = User.ValidaPermissao((int)ePermissao.AcessoUniversalOrcamentoPedidoPrepedidoConsultar);
 
             var saida = _orcamentoBll.PorFiltro(filtro, LoggedUser);
 
@@ -402,9 +402,27 @@ namespace OrcamentoCotacaoApi.Controllers
             request.IP = Request.HttpContext.Connection.RemoteIpAddress.ToString();
 
             _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. OrcamentoController/ConsultaGerencial/POST - Request => [{JsonSerializer.Serialize(request)}].");
-            
+
+
+            bool permissaoOk = true;
+            if (request.NomeLista == "vigentes")
+                if (!User.ValidaPermissao((int)ePermissao.RelOrcamentosVigente))
+                    permissaoOk = false;
+            else if (request.NomeLista == "expirados")
+                if (!User.ValidaPermissao((int)ePermissao.RelOrcamentosExpirados))
+                    permissaoOk = false;
+            else if (request.NomeLista == "cadastrados")
+                if (!User.ValidaPermissao((int)ePermissao.RelOrcamentosCadastrados))
+                    permissaoOk = false;
+            if (request.NomeLista == "pendentes")
+                if (!User.ValidaPermissao((int)ePermissao.RelOrcamentosMensagemPendente))
+                    permissaoOk = false;
+
+            if (!permissaoOk)
+                return BadRequest(new { Mensagem = "Não encontramos a permissão necessária para realizar atividade!" });
+
             var response = _orcamentoBll.ConsultaGerencial(request);
-            
+
             _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. OrcamentoController/ConsultaGerencial/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
             return Ok(response);

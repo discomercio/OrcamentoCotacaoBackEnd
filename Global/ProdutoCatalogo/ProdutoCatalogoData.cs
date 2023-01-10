@@ -699,5 +699,17 @@ namespace ProdutoCatalogo
                 return retorno.ToList();
             }
         }
+
+        public List<TprodutoGrupo> BuscarGrupos(TprodutoGrupoFiltro obj)
+        {
+            using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+            {
+                var saida = from pg in db.TprodutoGrupo
+                            join p in db.Tproduto on pg.Codigo equals p.Grupo
+                            select pg;
+
+                return saida.Distinct().ToList();
+            }
+        }
     }
 }
