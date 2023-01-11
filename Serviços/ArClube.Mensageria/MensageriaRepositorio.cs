@@ -41,9 +41,6 @@ namespace ArClube.Mensageria
 
         public async Task<List<OrcamentoCotacaoEmailQueueDto>> ObterOrcamentoCotacaoEmailsQueueAsync(int? recordsPerPage)
         {
-            var sent = false;
-            var page = 1;
-
             if (!recordsPerPage.HasValue)
             {
                 recordsPerPage = 10;
@@ -80,16 +77,17 @@ namespace ArClube.Mensageria
 	                            ( 
 		                            SELECT [t].[Id] 
 		                            FROM [T_ORCAMENTO_COTACAO_EMAIL_QUEUE] AS [t] (NOLOCK) 
-		                            WHERE (([t].[Sent] = @sent) OR ([t].[Sent] IS NULL)) AND (([t].[DateScheduled] < GETDATE()) OR ([t].[DateScheduled] IS NULL)) 
+		                            WHERE 
+                                        (([t].[Sent] = 0) OR ([t].[Sent] IS NULL)) 
+                                        AND (([t].[DateScheduled] < GETDATE()) OR ([t].[DateScheduled] IS NULL)) 
+                                        AND (([t].[Status] <> 4) OR ([t].[Status] IS NULL)) 
 		                            ORDER BY (SELECT 1) 
-		                            OFFSET @page ROWS FETCH NEXT @recordsPerPage ROWS ONLY 
+		                            OFFSET 0 ROWS FETCH NEXT @recordsPerPage ROWS ONLY 
 	                            ) 
                             ORDER BY [DateScheduled] ";
 
                 orcamentoCotacaoEmailQueue = await con.QueryAsync<OrcamentoCotacaoEmailQueueDto>(query, new
                 {
-                    sent = sent,
-                    page = page,
                     recordsPerPage = recordsPerPage.Value
                 });
             }
@@ -130,6 +128,25 @@ namespace ArClube.Mensageria
             }
 
             return result > 0 ? true : false;
+        }
+
+        public async Task<int> ObterParametroPorId(string id)
+        {
+            var result = 0;
+
+            var command = @" 
+                            SELECT 
+                                campo_inteiro 
+                            FROM 
+                                t_PARAMETRO (NOLOCK) 
+                            WHERE id = @id ";
+
+            using (var con = new SqlConnection(this._connectionString))
+            {
+                result = await con.ExecuteScalarAsync<int>(command, new { id = id });
+            }
+
+            return result;
         }
     }
 }

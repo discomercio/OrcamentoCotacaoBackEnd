@@ -4,6 +4,6 @@ namespace InfraIdentity
 {
     public interface IServicoAutenticacaoProvider
     {
-        Task<InfraIdentity.UsuarioLogin> ObterUsuario(string apelido, string senha);
+        Task<UsuarioLogin> ObterUsuario(string apelido, string senha, string bloqueioUsuarioLoginAmbiente, string ip = null);
     }
 }

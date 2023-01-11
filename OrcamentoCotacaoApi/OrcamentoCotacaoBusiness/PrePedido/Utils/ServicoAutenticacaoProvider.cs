@@ -1,7 +1,4 @@
 ﻿using InfraIdentity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace OrcamentoCotacaoBusiness.PrePedido.Utils
@@ -20,7 +17,11 @@ namespace OrcamentoCotacaoBusiness.PrePedido.Utils
         }
 
         //retorna null se nao exisitr (ou se a senha estiver errada)
-        public async Task<InfraIdentity.UsuarioLogin> ObterUsuario(string apelido, string senha)
+        public async Task<InfraIdentity.UsuarioLogin> ObterUsuario(
+            string apelido, 
+            string senha, 
+            string bloqueioUsuarioLoginAmbiente, 
+            string ip = null)
         {
             //trabalhamos sempre com maiúsuculas
             apelido = apelido.ToUpper().Trim();

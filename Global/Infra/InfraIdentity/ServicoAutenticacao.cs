@@ -9,12 +9,21 @@ namespace InfraIdentity
 {
     public class ServicoAutenticacao : IServicoAutenticacao
     {
-        public UsuarioLogin ObterTokenAutenticacao(UsuarioLogin login, string segredoToken, int validadeTokenMinutos, string role,
-            IServicoAutenticacaoProvider servicoAutenticacaoProvider, out bool unidade_negocio_desconhecida)
+        public UsuarioLogin ObterTokenAutenticacao(
+            UsuarioLogin login, 
+            string segredoToken, 
+            int validadeTokenMinutos,
+            string BloqueioUsuarioLoginAmbiente,
+            string role,
+            IServicoAutenticacaoProvider servicoAutenticacaoProvider, 
+            string ip,
+            out bool unidade_negocio_desconhecida)
         {
-            UsuarioLogin user = null;
-
-            user = servicoAutenticacaoProvider.ObterUsuario(login.Apelido, login.Senha).Result;
+            UsuarioLogin user = servicoAutenticacaoProvider.ObterUsuario(
+                login.Apelido,
+                login.Senha,
+                BloqueioUsuarioLoginAmbiente,
+                ip).Result;
 
             // retorna null se não tiver usuário
             if (user == null)
