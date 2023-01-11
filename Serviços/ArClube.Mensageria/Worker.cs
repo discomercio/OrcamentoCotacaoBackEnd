@@ -31,9 +31,9 @@ namespace ArClube.Mensageria
             var recordsPerPage = configuration.GetSection("EmailsPerCicleToGetAndSend").Value.ToInt().Value;
             var secondsToDelayAfterSend = configuration.GetSection("SecondsToDelayAfterSend").Value.ToInt().Value;
 
-            //var attempt1_2 = await this._mensageriaRepositorio.ObterParametroPorId("OrctoCotacao_Mensageria_Queue_IntervaloMinEmSegundos_Tentativa_1_2");
-            //var attempt2_3 = await this._mensageriaRepositorio.ObterParametroPorId("OrctoCotacao_Mensageria_Queue_IntervaloMinEmSegundos_Tentativa_2_3");
-            //var attemptVery = await this._mensageriaRepositorio.ObterParametroPorId("OrctoCotacao_Mensageria_Queue_IntervaloMinEmSegundos_Tentativa_Demais");
+            var attempt1_2 = await this._mensageriaRepositorio.ObterParametroPorId("OrctoCotacao_Mensageria_Queue_IntervaloMinEmSegundos_Tentativa_1_2");
+            var attempt2_3 = await this._mensageriaRepositorio.ObterParametroPorId("OrctoCotacao_Mensageria_Queue_IntervaloMinEmSegundos_Tentativa_2_3");
+            var attemptVery = await this._mensageriaRepositorio.ObterParametroPorId("OrctoCotacao_Mensageria_Queue_IntervaloMinEmSegundos_Tentativa_Demais");
             var attemptQtdMaxParam = await this._mensageriaRepositorio.ObterParametroPorId("OrctoCotacao_Mensageria_Queue_QtdeMaxTentativas");
 
             this._logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Obter Unidade Neogocio Parametros");
@@ -68,26 +68,38 @@ namespace ArClube.Mensageria
                                 }
                                 else
                                 {
-                                    if (orcamentoCotacaoEmailsQueueItem.AttemptsQty >= attemptQtdMaxParam)
+                                    _logger.LogError(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Error: #" + orcamentoCotacaoEmailsQueueItem.Id + " - " + valuesOfSendingEmail.Item2);
+
+                                    var attemptsQty = orcamentoCotacaoEmailsQueueItem.AttemptsQty + 1;
+
+                                    if (attemptsQty >= attemptQtdMaxParam)
                                     {
-                                        _logger.LogError(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Error: #" + orcamentoCotacaoEmailsQueueItem.Id + " - " + valuesOfSendingEmail.Item2);
-                                        orcamentoCotacaoEmailsQueueItem.Sent = false;
                                         orcamentoCotacaoEmailsQueueItem.Status = (int)eCfgOrcamentoCotacaoEmailStatus.FalhaNoEnvioDefinitivo;
-                                        orcamentoCotacaoEmailsQueueItem.DateSent = null;
-                                        orcamentoCotacaoEmailsQueueItem.AttemptsQty = (orcamentoCotacaoEmailsQueueItem.AttemptsQty + 1);
-                                        orcamentoCotacaoEmailsQueueItem.DateLastAttempt = DateTime.Now;
-                                        orcamentoCotacaoEmailsQueueItem.ErrorMsgLastAttempt = valuesOfSendingEmail.Item2;
+                                        orcamentoCotacaoEmailsQueueItem.DateScheduled = null;
                                     }
                                     else
                                     {
-                                        _logger.LogError(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Error: #" + orcamentoCotacaoEmailsQueueItem.Id + " - " + valuesOfSendingEmail.Item2);
-                                        orcamentoCotacaoEmailsQueueItem.Sent = false;
+                                        var newdateScheduled = DateTime.Now.AddSeconds(attempt1_2);
+
+                                        if (attemptsQty == 2 || attemptsQty == 3)
+                                        {
+                                            newdateScheduled = DateTime.Now.AddSeconds(attempt2_3);
+                                        }
+
+                                        if (attemptsQty == 4)
+                                        {
+                                            newdateScheduled = DateTime.Now.AddSeconds(attemptVery);
+                                        }
+
                                         orcamentoCotacaoEmailsQueueItem.Status = (int)eCfgOrcamentoCotacaoEmailStatus.FalhaNoEnvioTemporario;
-                                        orcamentoCotacaoEmailsQueueItem.DateSent = null;
-                                        orcamentoCotacaoEmailsQueueItem.AttemptsQty = (orcamentoCotacaoEmailsQueueItem.AttemptsQty + 1);
-                                        orcamentoCotacaoEmailsQueueItem.DateLastAttempt = DateTime.Now;
-                                        orcamentoCotacaoEmailsQueueItem.ErrorMsgLastAttempt = valuesOfSendingEmail.Item2;
+                                        orcamentoCotacaoEmailsQueueItem.DateScheduled = newdateScheduled;
                                     }
+                                    
+                                    orcamentoCotacaoEmailsQueueItem.Sent = false;
+                                    orcamentoCotacaoEmailsQueueItem.DateSent = null;
+                                    orcamentoCotacaoEmailsQueueItem.AttemptsQty = attemptsQty;
+                                    orcamentoCotacaoEmailsQueueItem.DateLastAttempt = DateTime.Now;
+                                    orcamentoCotacaoEmailsQueueItem.ErrorMsgLastAttempt = valuesOfSendingEmail.Item2;
                                 }
 
                                 await this._mensageriaRepositorio.AtualizarOrcamentoCotacaoEmailsQueue(orcamentoCotacaoEmailsQueueItem);
