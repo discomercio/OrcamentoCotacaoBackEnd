@@ -11,7 +11,7 @@ namespace InfraBanco.Modelos.Filtros
 
         public int IdVendedor { get; set; }
 
-        public bool ComParceiro { get; set; }
+        public bool? ComParceiro { get; set; }
 
         public int IdParceiro { get; set; }
 

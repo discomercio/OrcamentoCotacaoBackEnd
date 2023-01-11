@@ -12,10 +12,10 @@ namespace OrcamentoCotacaoBusiness.Models.Request.Orcamento
         public List<string> Lojas { get; set; }
 
         [JsonProperty("vendedor")]
-        public string Vendedor { get; set; }
+        public int IdVendedor { get; set; }
 
         [JsonProperty("comParceiro")]
-        public bool ComParceiro { get; set; }
+        public bool? ComParceiro { get; set; }
 
         [JsonProperty("idParceiro")]
         public int IdParceiro { get; set; }

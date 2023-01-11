@@ -331,17 +331,23 @@ namespace OrcamentoCotacao
             {
                 var saida = from o in db.TorcamentoCotacao
                             join u in db.Tusuario on o.IdVendedor equals u.Id
-                            join p in db.TorcamentistaEindicador on o.IdIndicador equals p.IdIndicador
+                            join p in db.TorcamentistaEindicador on o.IdIndicador equals p.IdIndicador into lf
+                            from x in lf.DefaultIfEmpty()
                             select new
                             {
                                 tOrcamentoCotacao = o,
                                 tUsuario = u,
-                                tOrcamentistaIndicador = p
+                                tOrcamentistaIndicador = x
                             };
 
                 if (filtro.Lojas?.Count > 0) saida = saida.Where(x => filtro.Lojas.Contains(x.tOrcamentoCotacao.Loja));
                 if (filtro.IdVendedor != 0) saida = saida.Where(x => x.tOrcamentoCotacao.IdVendedor == filtro.IdVendedor);
-                if (filtro.ComParceiro) saida = saida.Where(x => x.tOrcamentoCotacao.IdIndicador.HasValue);
+                if (filtro.ComParceiro != null)
+                {
+                    if ((bool)filtro.ComParceiro) saida = saida.Where(x => x.tOrcamentoCotacao.IdIndicador.HasValue);
+                    if ((bool)!filtro.ComParceiro) saida = saida.Where(x => x.tOrcamentoCotacao.IdIndicador == null);
+                }
+
                 if (filtro.IdParceiro != 0) saida = saida.Where(x => x.tOrcamentoCotacao.IdIndicador == filtro.IdParceiro);
                 if (filtro.IdVendedorParceiro != 0) saida = saida.Where(x => x.tOrcamentoCotacao.IdIndicadorVendedor == filtro.IdVendedorParceiro);
                 if (!string.IsNullOrEmpty(filtro.Fabricante))

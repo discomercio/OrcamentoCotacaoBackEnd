@@ -34,6 +34,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             foreach(var usuario in usuarios)
             {
                 var user = new UsuarioPorListaLojaResponse();
+                user.Id = usuario.Id;
                 user.Vendedor = usuario.Usuario;
                 user.NomeIniciaisMaiusculo = usuario.Nome_Iniciais_Em_Maiusculas;
                 response.Usuarios.Add(user);

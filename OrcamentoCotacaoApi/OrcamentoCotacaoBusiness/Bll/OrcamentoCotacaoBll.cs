@@ -2033,7 +2033,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             var retorno = _orcamentoCotacaoBll.ConsultaGerencial(filtro).ToList();
 
             response.QtdeRegistros = retorno.Count();
-            retorno = retorno.Skip((request.Pagina) * request.QtdeItensPagina).Take(request.QtdeItensPagina).ToList();
+            if (request.QtdeItensPagina != 0)
+                retorno = retorno.Skip((request.Pagina) * request.QtdeItensPagina).Take(request.QtdeItensPagina).ToList();
 
             foreach (var r in retorno)
             {
@@ -2045,7 +2046,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 item.Orcamento = tOrcamentoCotacao.Id;
                 item.Vendedor = tUsuario.Nome_Iniciais_Em_Maiusculas;
                 item.Loja = tOrcamentoCotacao.Loja;
-                item.Parceiro = tOrcamentistaIndicador.Razao_social_nome_iniciais_em_maiusculas;
+                item.Parceiro = tOrcamentistaIndicador?.Razao_social_nome_iniciais_em_maiusculas;
                 item.UF = tOrcamentoCotacao.UF;
                 item.DataCriacao = tOrcamentoCotacao.DataCadastro;
                 item.DataExpiracao = tOrcamentoCotacao.Validade;

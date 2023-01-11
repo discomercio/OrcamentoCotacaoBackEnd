@@ -7,6 +7,9 @@ namespace OrcamentoCotacaoBusiness.Models.Response.Usuario
 {
     public class UsuarioPorListaLojaResponse
     {
+        [JsonProperty("id")]
+        public int Id { get; set; }
+
         [JsonProperty("vendedor")]
         public string Vendedor { get; set; }
 
