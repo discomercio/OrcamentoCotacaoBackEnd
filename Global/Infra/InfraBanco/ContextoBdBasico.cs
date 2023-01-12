@@ -323,5 +323,6 @@ namespace InfraBanco
         public DbSet<TloginHistorico> TloginHistorico { get; set; }
         public DbSet<TemailLsndsvcRemetente> TemailLsndsvcRemetente { get; set; }
         public DbSet<TemailSndsvcMensagem> TemailSndsvcMensagem { get; set; }
+        public DbSet<TprodutoGrupo> TprodutoGrupo { get; set; }
     }
 }

@@ -236,7 +236,7 @@ namespace OrcamentoCotacao
                     {
                         saida = saida.Where(x => x.Loja == obj.Loja);
                     }
-                    if(obj.IdVendedor != 0)
+                    if (obj.IdVendedor != 0)
                     {
                         saida = saida.Where(x => x.IdVendedor == obj.IdVendedor);
                     }
@@ -323,6 +323,71 @@ namespace OrcamentoCotacao
                               select c).FirstOrDefault();
 
             return tcfgStatus;
+        }
+
+        public IQueryable<Object> ConsultaGerencial(TorcamentoCotacaoConsultaGerencialFiltro filtro)
+        {
+            using (var db = _contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                var saida = from o in db.TorcamentoCotacao
+                            join u in db.Tusuario on o.IdVendedor equals u.Id
+                            join p in db.TorcamentistaEindicador on o.IdIndicador equals p.IdIndicador into lf
+                            from x in lf.DefaultIfEmpty()
+                            select new
+                            {
+                                tOrcamentoCotacao = o,
+                                tUsuario = u,
+                                tOrcamentistaIndicador = x
+                            };
+
+                if (filtro.Lojas?.Count > 0) saida = saida.Where(x => filtro.Lojas.Contains(x.tOrcamentoCotacao.Loja));
+                if (filtro.IdVendedor != 0) saida = saida.Where(x => x.tOrcamentoCotacao.IdVendedor == filtro.IdVendedor);
+                if (filtro.ComParceiro != null)
+                {
+                    if ((bool)filtro.ComParceiro) saida = saida.Where(x => x.tOrcamentoCotacao.IdIndicador.HasValue);
+                    if ((bool)!filtro.ComParceiro) saida = saida.Where(x => x.tOrcamentoCotacao.IdIndicador == null);
+                }
+
+                if (filtro.IdParceiro != 0) saida = saida.Where(x => x.tOrcamentoCotacao.IdIndicador == filtro.IdParceiro);
+                if (filtro.IdVendedorParceiro != 0) saida = saida.Where(x => x.tOrcamentoCotacao.IdIndicadorVendedor == filtro.IdVendedorParceiro);
+                if (!string.IsNullOrEmpty(filtro.Fabricante))
+                {
+                    var lstIdOrcamentoCotacao = from c in db.TorcamentoCotacaoItemUnificado
+                                                join op in db.TorcamentoCotacaoOpcao on c.IdOrcamentoCotacaoOpcao equals op.Id
+                                                where c.Fabricante == filtro.Fabricante
+                                                select op.IdOrcamentoCotacao;
+                    saida = saida.Where(x => lstIdOrcamentoCotacao.Contains(x.tOrcamentoCotacao.Id));
+                }
+                if (!string.IsNullOrEmpty(filtro.Grupo))
+                {
+                    var lstIdOrcamentoCotacao = from c in db.TorcamentoCotacaoItemUnificado
+                                                join d in db.TorcamentoCotacaoOpcaoItemAtomico on c.Id equals d.IdItemUnificado
+                                                join e in db.Tproduto on d.Produto equals e.Produto
+                                                where e.Grupo == filtro.Grupo
+                                                select c.Id;
+                    saida = saida.Where(x => lstIdOrcamentoCotacao.Contains(x.tOrcamentoCotacao.Id));
+                }
+                if (filtro.DataCricaoInicio.HasValue) saida = saida.Where(x => x.tOrcamentoCotacao.DataCadastro >= filtro.DataCricaoInicio);
+                if (filtro.DataCriacaoFim.HasValue) saida = saida.Where(x => x.tOrcamentoCotacao.DataCadastro <= filtro.DataCriacaoFim);
+                if (filtro.DataCorrente.HasValue) saida = saida.Where(x => x.tOrcamentoCotacao.Validade.Date >= filtro.DataCorrente);
+                if (filtro.Expirado) saida = saida.Where(x => x.tOrcamentoCotacao.Validade.Date < DateTime.Now.Date);
+                if (filtro.MensagemPendente)
+                {
+                    var lstIdOrcamentoCotacao = from c in db.TorcamentoCotacaoMensagem
+                                                join d in db.TorcamentoCotacaoMensagemStatus on c.Id equals d.IdOrcamentoCotacaoMensagem
+                                                where d.IdTipoUsuarioContexto == 4 &&
+                                                      d.Lida == false
+                                                select c.IdOrcamentoCotacao;
+                    saida = saida.Where(x => lstIdOrcamentoCotacao.Contains(x.tOrcamentoCotacao.Id));
+                }
+                if (!string.IsNullOrEmpty(filtro.NomeColunaOrdenacao))
+                {
+                    if (filtro.Ascendente) saida = saida.OrderBy(x => typeof(TorcamentoCotacao).GetProperty(filtro.NomeColunaOrdenacao).GetValue(x.tOrcamentoCotacao));
+                    else saida = saida.OrderByDescending(x => typeof(TorcamentoCotacao).GetProperty(filtro.NomeColunaOrdenacao).GetValue(x.tOrcamentoCotacao));
+                }
+
+                return saida;
+            }
         }
     }
 }
