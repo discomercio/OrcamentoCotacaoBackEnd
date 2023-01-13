@@ -65,7 +65,7 @@ namespace OrcamentoCotacaoOpcaoItemAtomicoCustoFin
             }
             if (obj.IdItemAtomico > 0)
             {
-                saida = saida.Where(x => obj.IdItemAtomico == x.IdItemAtomico);
+                saida = saida.Where(x => x.IdItemAtomico == obj.IdItemAtomico);
             }
 
             return saida.ToList();

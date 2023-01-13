@@ -957,14 +957,6 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
             _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Retorno da busca de orçamento cotação. Response => [{JsonSerializer.Serialize(orcamentoResponse)}]");
 
-            _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Início da validação de permissão para atualizar orçamento.");
-            string retorno = ValidarPermissaoAtualizarOpcaoOrcamentoCotacao(orcamentoResponse, usuarioLogado);
-            if (!string.IsNullOrEmpty(retorno))
-            {
-                response.Mensagem = retorno;
-                return response;
-            }
-
             response = _orcamentoCotacaoOpcaoBll.AtualizarOrcamentoOpcao(opcao, usuarioLogado, orcamentoResponse);
             if (!string.IsNullOrEmpty(response.Mensagem))
             {
@@ -1206,20 +1198,6 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             return null;
-        }
-
-        private string ValidarPermissaoAtualizarOpcaoOrcamentoCotacao(OrcamentoResponse orcamento, UsuarioLogin usuarioLogado)
-        {
-            if (usuarioLogado.Id == orcamento.IdIndicadorVendedor) return null;
-            if (usuarioLogado.Id == orcamento.IdIndicador) return null;
-            if (usuarioLogado.Id == orcamento.IdVendedor) return null;
-
-            if (usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_1) ||
-                usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_2) ||
-                usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_3))
-                return null;
-
-            return "Não encontramos a permissão do usuário necessária para atualizar o orçamento!";
         }
 
         public string AdicionarOrcamentoCotacaoLink(TorcamentoCotacao orcamento, Guid guid, InfraBanco.ContextoBdGravacao contextoBdGravacao)
