@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Models.Request.Usuario;
 using OrcamentoCotacaoBusiness.Models.Response.Usuario;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -30,6 +31,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                 return response;
             }
 
+            usuarios = usuarios.GroupBy(x => x.Nome_Iniciais_Em_Maiusculas).Select(x => x.First()).ToList();
+
             response.Usuarios = new List<UsuarioPorListaLojaResponse>();
             foreach(var usuario in usuarios)
             {
@@ -39,6 +42,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                 user.NomeIniciaisMaiusculo = usuario.Nome_Iniciais_Em_Maiusculas;
                 response.Usuarios.Add(user);
             }
+
+            response.Usuarios = response.Usuarios.OrderBy(u => u.NomeIniciaisMaiusculo).ToList();
             
             response.Sucesso = true;
             return response;

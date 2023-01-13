@@ -34,5 +34,7 @@ namespace InfraBanco.Modelos.Filtros
         public bool MensagemPendente { get; set; }
 
         public bool Expirado { get; set; }
+
+        public int? Status { get; set; }
     }
 }

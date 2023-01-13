@@ -2030,6 +2030,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             var json = JsonSerializer.Serialize(request);
             var filtro = JsonSerializer.Deserialize<TorcamentoCotacaoConsultaGerencialFiltro>(json);
 
+            //preciso incluir um filtro para ser difStatusDe para trazer onde status != aprovado (t_cfg_orcamento_..._status)
             var retorno = _orcamentoCotacaoBll.ConsultaGerencial(filtro).ToList();
 
             response.QtdeRegistros = retorno.Count();
@@ -2054,12 +2055,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 itens.Add(item);
             }
 
-            if (itens.Count <= 0)
-            {
-                response.QtdeRegistros = 0;
-                response.Mensagem = "Não encontramos nenhum registro!";
-                return response;
-            }
+            if (itens.Count <= 0) response.QtdeRegistros = 0;
 
             response.LstConsultaGerencialOrcamentoResponse = new List<ConsultaGerencialOrcamentoResponse>(itens);
             response.Sucesso = true;

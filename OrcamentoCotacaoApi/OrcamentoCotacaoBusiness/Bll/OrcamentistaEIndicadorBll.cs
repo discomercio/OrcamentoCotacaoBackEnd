@@ -52,12 +52,6 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 var parceiros = orcamentistaEIndicadorBll.PorFiltro(filtro);
 
-                if (parceiros.Count == 0)
-                {
-                    response.Mensagem = "Não encontramos parceiros cadastrados para esse vendedor!";
-                    return response;
-                }
-
                 response.Parceiros = new List<ParceiroComboResponse>();
                 foreach (var parceiro in parceiros)
                 {

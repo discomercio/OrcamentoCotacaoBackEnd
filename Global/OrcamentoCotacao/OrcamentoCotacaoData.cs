@@ -367,6 +367,7 @@ namespace OrcamentoCotacao
                                                 select c.Id;
                     saida = saida.Where(x => lstIdOrcamentoCotacao.Contains(x.tOrcamentoCotacao.Id));
                 }
+                if(filtro.Status.HasValue) saida = saida.Where(x => x.tOrcamentoCotacao.Status == filtro.Status.Value);
                 if (filtro.DataCricaoInicio.HasValue) saida = saida.Where(x => x.tOrcamentoCotacao.DataCadastro >= filtro.DataCricaoInicio);
                 if (filtro.DataCriacaoFim.HasValue) saida = saida.Where(x => x.tOrcamentoCotacao.DataCadastro <= filtro.DataCriacaoFim);
                 if (filtro.DataCorrente.HasValue) saida = saida.Where(x => x.tOrcamentoCotacao.Validade.Date >= filtro.DataCorrente);
