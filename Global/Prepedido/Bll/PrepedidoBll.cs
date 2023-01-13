@@ -442,7 +442,7 @@ namespace Prepedido.Bll
                 var nomeCompleto = (from c in db.TorcamentistaEindicadorVendedor
                                     where c.Id == torcamento.PrevisaoEntregaIdUsuarioUltAtualiz
                                     select c.Nome).FirstOrDefault();
-                nomeUsuario = nomeCompleto.Split(" ")[0];
+                nomeUsuario = $"[VP] {nomeCompleto.Split(" ")[0]}"; ;
             }
 
             string previsaoEntregaTexto = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
@@ -469,7 +469,7 @@ namespace Prepedido.Bll
                 var nomeCompleto = (from c in db.TorcamentistaEindicadorVendedor
                                     where c.Id == torcamento.EtgImediataIdUsuarioUltAtualiz
                                     select c.Nome).FirstOrDefault();
-                nomeUsuario = nomeCompleto.Split(" ")[0]; //paliativo pois não temos um nome curto para esse usuário
+                nomeUsuario = $"[VP] {nomeCompleto.Split(" ")[0]}"; //paliativo pois não temos um nome curto para esse usuário
             }
             string entregaImediataTexto = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
                 "NÃO (" + Texto.iniciaisEmMaiusculas(nomeUsuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
