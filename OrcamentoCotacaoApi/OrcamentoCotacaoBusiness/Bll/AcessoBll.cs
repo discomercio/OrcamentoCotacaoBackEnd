@@ -814,7 +814,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         {
                             var remetente = parametroRemetente.Campo_texto;
                             var destinatario = parametroDestinatario.Campo_texto;
-                            var dataBloqueio = DateTime.Now.ToString();
+                            var dataBloqueio = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
 
                             var assunto = parametroAssunto.Campo_texto
                                 .Replace("[AMBIENTE]", bloqueioUsuarioLoginAmbiente)
