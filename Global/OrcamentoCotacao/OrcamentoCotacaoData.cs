@@ -352,22 +352,23 @@ namespace OrcamentoCotacao
                 if (filtro.IdVendedorParceiro != 0) saida = saida.Where(x => x.tOrcamentoCotacao.IdIndicadorVendedor == filtro.IdVendedorParceiro);
                 if (!string.IsNullOrEmpty(filtro.Fabricante))
                 {
-                    var lstIdOrcamentoCotacao = from c in db.TorcamentoCotacaoItemUnificado
-                                                join op in db.TorcamentoCotacaoOpcao on c.IdOrcamentoCotacaoOpcao equals op.Id
-                                                where c.Fabricante == filtro.Fabricante
-                                                select op.IdOrcamentoCotacao;
-                    saida = saida.Where(x => lstIdOrcamentoCotacao.Contains(x.tOrcamentoCotacao.Id));
+                    saida = from s in saida
+                            join op in db.TorcamentoCotacaoOpcao on s.tOrcamentoCotacao.Id equals op.IdOrcamentoCotacao
+                            join pu in db.TorcamentoCotacaoItemUnificado on op.Id equals pu.IdOrcamentoCotacaoOpcao
+                            join f in db.Tfabricante on pu.Fabricante equals f.Fabricante
+                            where f.Fabricante == filtro.Fabricante
+                            select s;
                 }
                 if (!string.IsNullOrEmpty(filtro.Grupo))
                 {
-                    saida = from s in saida
+                    saida = (from s in saida
                             join op in db.TorcamentoCotacaoOpcao on s.tOrcamentoCotacao.Id equals op.IdOrcamentoCotacao
                             join c in db.TorcamentoCotacaoItemUnificado on op.Id equals c.IdOrcamentoCotacaoOpcao
                             join d in db.TorcamentoCotacaoOpcaoItemAtomico on c.Id equals d.IdItemUnificado
                             join e in db.Tproduto on d.Produto equals e.Produto
                             join f in db.TprodutoGrupo on e.Grupo equals f.Codigo
                             where e.Grupo == filtro.Grupo
-                            select s;
+                            select s).Distinct();
                 }
                 if (filtro.Status?.Count() > 0) saida = saida.Where(x => filtro.Status.Contains(x.tOrcamentoCotacao.Status));
                 if (filtro.DataCricaoInicio.HasValue) saida = saida.Where(x => x.tOrcamentoCotacao.DataCadastro >= filtro.DataCricaoInicio);
