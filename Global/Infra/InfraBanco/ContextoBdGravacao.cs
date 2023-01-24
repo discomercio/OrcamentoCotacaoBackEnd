@@ -214,5 +214,6 @@ namespace InfraBanco
         public DbSet<TloginHistorico> TloginHistorico { get => contexto.TloginHistorico; }
         public DbSet<TemailLsndsvcRemetente> TemailLsndsvcRemetente { get => contexto.TemailLsndsvcRemetente; }
         public DbSet<TemailSndsvcMensagem> TemailSndsvcMensagem { get => contexto.TemailSndsvcMensagem; }
+        public DbSet<TprodutoGrupo> TprodutoGrupo { get => contexto.TprodutoGrupo; }
     }
 }

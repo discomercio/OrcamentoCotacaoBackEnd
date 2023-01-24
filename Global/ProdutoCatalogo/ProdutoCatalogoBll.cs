@@ -208,42 +208,6 @@ namespace ProdutoCatalogo
             return _data.ExcluirImagemComTransacao(idProduto, idImagem, contextoBdGravacao);
         }
 
-        //public bool Atualizar(TprodutoCatalogo obj)
-        //{
-        //    //TODO: NAO TEM COMO DESABILITAR TRACKING
-        //    var prodCatalogo = _data.Atualizar(obj);
-
-        //    if (prodCatalogo != null)
-        //    {
-        //        _data.ExcluirItens(obj);
-
-        //        if (obj != null && obj.Id > 0)
-        //        {
-        //            if (obj.campos?.Count > 0)
-        //            {
-        //                foreach (var c in obj.campos)
-        //                {
-        //                    _data.CriarItens(c);
-        //                }
-        //            }
-
-        //            if (obj.imagens?.Count > 0)
-        //            {
-        //                foreach (var img in obj.imagens)
-        //                {
-        //                    _data.CriarImagens(img);
-        //                }
-        //            }
-
-        //            _data.ExcluirImagemTmp();
-
-        //            return true;
-        //        }
-        //    }
-
-        //    return false;
-        //}
-
         public List<TcfgDataType> ObterDataTypesPorFiltro(TcfgDataTypeFiltro filtro)
         {
             return _data.ObterDataTypesPorFiltro(filtro);
@@ -257,6 +221,11 @@ namespace ProdutoCatalogo
         public List<TcfgTipoPermissaoEdicaoCadastro> ObterTipoPermissaoEdicaoCadastro()
         {
             return _data.ObterTipoPermissaoEdicaoCadastro();
+        }
+
+        public List<TprodutoGrupo> BuscarProdutoGrupos(TprodutoGrupoFiltro obj)
+        {
+            return _data.BuscarGrupos(obj);
         }
     }
 }

@@ -404,5 +404,24 @@ namespace OrcamentoCotacaoApi.BaseController
 
             return Ok(ret);
         }
+
+        [HttpGet("buscarGruposProdutos")]
+        public async Task<IActionResult> BuscarGruposProdutos()
+        {
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]),
+                Ip = HttpContext.Connection.RemoteIpAddress.ToString()
+            };
+
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ProdutoController/BuscarGruposProdutos/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
+            var response = _produtoBll.BuscarGruposProdutos();
+
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}].  ProdutoController/BuscarGruposProdutos/GET - Response => [{JsonSerializer.Serialize(response)}].");
+
+            return Ok(response);
+        }
     }
 }

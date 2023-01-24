@@ -452,57 +452,59 @@ namespace Prepedido.Bll
             {
                 string nomeUsuario = null;
 
-                //Previsão de entrega
-                if (torcamento.PrevisaoEntregaIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.UsuarioInterno)
-                {
-                    nomeUsuario = (from c in db.Tusuario
-                                   where c.Id == torcamento.PrevisaoEntregaIdUsuarioUltAtualiz
-                                   select c.Usuario).FirstOrDefault();
-                }
-                if (torcamento.PrevisaoEntregaIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.Parceiro)
-                {
-                    nomeUsuario = (from c in db.TorcamentistaEindicador
-                                   where c.IdIndicador == torcamento.PrevisaoEntregaIdUsuarioUltAtualiz
-                                   select c.Apelido).FirstOrDefault();
-                }
-                if (torcamento.PrevisaoEntregaIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.VendedorParceiro)
-                {
-                    //buscar na t_orcamentista_indicador_vendedor nome amigável
-                    var nomeCompleto = (from c in db.TorcamentistaEindicadorVendedor
-                                        where c.Id == torcamento.PrevisaoEntregaIdUsuarioUltAtualiz
-                                        select c.Nome).FirstOrDefault();
-                    nomeUsuario = nomeCompleto.Split(" ")[0];
-                }
+            
+
+            //Previsão de entrega
+            if (torcamento.PrevisaoEntregaIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.UsuarioInterno)
+            {
+                nomeUsuario = (from c in db.Tusuario
+                               where c.Id == torcamento.PrevisaoEntregaIdUsuarioUltAtualiz
+                               select c.Usuario).FirstOrDefault();
+            }
+            if (torcamento.PrevisaoEntregaIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.Parceiro)
+            {
+                nomeUsuario = (from c in db.TorcamentistaEindicador
+                               where c.IdIndicador == torcamento.PrevisaoEntregaIdUsuarioUltAtualiz
+                               select c.Apelido).FirstOrDefault();
+            }
+            if (torcamento.PrevisaoEntregaIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.VendedorParceiro)
+            {
+                //buscar na t_orcamentista_indicador_vendedor nome amigável
+                var nomeCompleto = (from c in db.TorcamentistaEindicadorVendedor
+                                    where c.Id == torcamento.PrevisaoEntregaIdUsuarioUltAtualiz
+                                    select c.Nome).FirstOrDefault();
+                nomeUsuario = $"[VP] {nomeCompleto.Split(" ")[0]}"; ;
+            }
 
                 string previsaoEntregaTexto = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
                         torcamento.PrevisaoEntregaData?.ToString("dd/MM/yyyy") + " (" + Texto.iniciaisEmMaiusculas(nomeUsuario) +
                         " - " + torcamento.PrevisaoEntregaDtHrUltAtualiz?.ToString("dd/MM/yyyy HH:mm") + ")" : null;
 
 
-                //Entrega imediata
-                if (torcamento.EtgImediataIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.UsuarioInterno)
-                {
-                    nomeUsuario = (from c in db.Tusuario
-                                   where c.Id == torcamento.EtgImediataIdUsuarioUltAtualiz
-                                   select c.Usuario).FirstOrDefault();
-                }
-                if (torcamento.EtgImediataIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.Parceiro)
-                {
-                    nomeUsuario = (from c in db.TorcamentistaEindicador
-                                   where c.IdIndicador == torcamento.EtgImediataIdUsuarioUltAtualiz
-                                   select c.Apelido).FirstOrDefault();
-                }
-                if (torcamento.EtgImediataIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.VendedorParceiro)
-                {
-                    //buscar na t_orcamentista_indicador_vendedor nome amigável
-                    var nomeCompleto = (from c in db.TorcamentistaEindicadorVendedor
-                                        where c.Id == torcamento.EtgImediataIdUsuarioUltAtualiz
-                                        select c.Nome).FirstOrDefault();
-                    nomeUsuario = nomeCompleto.Split(" ")[0]; //paliativo pois não temos um nome curto para esse usuário
-                }
-                string entregaImediataTexto = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
-                    "NÃO (" + Texto.iniciaisEmMaiusculas(nomeUsuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
-                    "SIM (" + Texto.iniciaisEmMaiusculas(nomeUsuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")";
+            //Entrega imediata
+            if (torcamento.EtgImediataIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.UsuarioInterno)
+            {
+                nomeUsuario = (from c in db.Tusuario
+                               where c.Id == torcamento.EtgImediataIdUsuarioUltAtualiz
+                               select c.Usuario).FirstOrDefault();
+            }
+            if (torcamento.EtgImediataIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.Parceiro)
+            {
+                nomeUsuario = (from c in db.TorcamentistaEindicador
+                               where c.IdIndicador == torcamento.EtgImediataIdUsuarioUltAtualiz
+                               select c.Apelido).FirstOrDefault();
+            }
+            if (torcamento.EtgImediataIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.VendedorParceiro)
+            {
+                //buscar na t_orcamentista_indicador_vendedor nome amigável
+                var nomeCompleto = (from c in db.TorcamentistaEindicadorVendedor
+                                    where c.Id == torcamento.EtgImediataIdUsuarioUltAtualiz
+                                    select c.Nome).FirstOrDefault();
+                nomeUsuario = $"[VP] {nomeCompleto.Split(" ")[0]}"; //paliativo pois não temos um nome curto para esse usuário
+            }
+            string entregaImediataTexto = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
+                "NÃO (" + Texto.iniciaisEmMaiusculas(nomeUsuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
+                "SIM (" + Texto.iniciaisEmMaiusculas(nomeUsuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")";
 
                 detail = new DetalhesPrepedidoDados
                 {

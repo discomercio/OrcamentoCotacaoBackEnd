@@ -165,7 +165,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 orcamento.listaOpcoes = _orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro { IdOrcamentoCotacao = orcamento.id });
                 orcamento.listaFormasPagto = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(orcamento.tipoCliente, (Constantes.TipoUsuario)usuarioLogin.TipoUsuario, orcamento.vendedor, byte.Parse(orcamento.idIndicador.HasValue ? "1" : "0"));
                 orcamento.mensageria = BuscarDadosParaMensageria(usuarioLogin, orcamento.id, false);
-               // orcamento.token = _publicoBll.ObterTokenServico();
+                // orcamento.token = _publicoBll.ObterTokenServico();
 
                 if (!Validar(orcamento))
                 {
@@ -957,14 +957,6 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
             _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Retorno da busca de orçamento cotação. Response => [{JsonSerializer.Serialize(orcamentoResponse)}]");
 
-            _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Início da validação de permissão para atualizar orçamento.");
-            string retorno = ValidarPermissaoAtualizarOpcaoOrcamentoCotacao(orcamentoResponse, usuarioLogado);
-            if (!string.IsNullOrEmpty(retorno))
-            {
-                response.Mensagem = retorno;
-                return response;
-            }
-
             response = _orcamentoCotacaoOpcaoBll.AtualizarOrcamentoOpcao(opcao, usuarioLogado, orcamentoResponse);
             if (!string.IsNullOrEmpty(response.Mensagem))
             {
@@ -1206,20 +1198,6 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             return null;
-        }
-
-        private string ValidarPermissaoAtualizarOpcaoOrcamentoCotacao(OrcamentoResponse orcamento, UsuarioLogin usuarioLogado)
-        {
-            if (usuarioLogado.Id == orcamento.IdIndicadorVendedor) return null;
-            if (usuarioLogado.Id == orcamento.IdIndicador) return null;
-            if (usuarioLogado.Id == orcamento.IdVendedor) return null;
-
-            if (usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_1) ||
-                usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_2) ||
-                usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_3))
-                return null;
-
-            return "Não encontramos a permissão do usuário necessária para atualizar o orçamento!";
         }
 
         public string AdicionarOrcamentoCotacaoLink(TorcamentoCotacao orcamento, Guid guid, InfraBanco.ContextoBdGravacao contextoBdGravacao)
@@ -1522,7 +1500,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             return torcamentoCotacao;
         }
 
-        public MensagemDto ProrrogarOrcamento(int id, int idUsuario, string lojaLogada, 
+        public MensagemDto ProrrogarOrcamento(int id, int idUsuario, string lojaLogada,
             int? IdTipoUsuarioContextoUltAtualizacao, string ip)
         {
             var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro { Id = id }).FirstOrDefault();
@@ -1655,7 +1633,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     _orcamentoCotacaoBll.AtualizarComTransacao(tOrcamento, dbGravacao);
 
-                    if(idStatus == 2)
+                    if (idStatus == 2)
                     {
                         var cfgOperacao = _cfgOperacaoBll.PorFiltro(new TcfgOperacaoFiltro() { Id = 6 }).FirstOrDefault();
                         if (cfgOperacao == null)
@@ -1738,7 +1716,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     aprovarOrcamento.ClienteCadastroDto.DadosCliente.Id = tCliente.Id;
                     //passar o id do cliente para o modelo
                     //verificar os erros 
-                    retorno = await CadastrarPrepedido(aprovarOrcamento, orcamento, dbGravacao, tipoUsuarioContexto, 
+                    retorno = await CadastrarPrepedido(aprovarOrcamento, orcamento, dbGravacao, tipoUsuarioContexto,
                         idUsuarioUltAtualizacao, ip);
                     //precisamos mudar isso, precisamos verificar se existe um número de orçamento válido ou adicionar alguma prop na classe
                     if (retorno.Count >= 1)
@@ -2011,6 +1989,59 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             return prepedidoProdutos;
+        }
+
+        public ListaConsultaGerencialOrcamentoResponse ConsultaGerencial(ConsultaGerencialOrcamentoRequest request)
+        {
+            ListaConsultaGerencialOrcamentoResponse response = new ListaConsultaGerencialOrcamentoResponse();
+            var itens = new List<ConsultaGerencialOrcamentoResponse>();
+
+            //verificar o nome das colunas para filtrar pelo nome da coluna correto
+            if (request.NomeColunaOrdenacao == "orcamento") request.NomeColunaOrdenacao = "Id";
+            if (request.NomeColunaOrdenacao == "loja") request.NomeColunaOrdenacao = "Loja";
+            if (request.NomeColunaOrdenacao == "vendedor") request.NomeColunaOrdenacao = "IdVendedor";
+            if (request.NomeColunaOrdenacao == "parceiro") request.NomeColunaOrdenacao = "IdIndicador";
+            if (request.NomeColunaOrdenacao == "uf") request.NomeColunaOrdenacao = "UF";
+            if (request.NomeColunaOrdenacao == "criacao") request.NomeColunaOrdenacao = "DataCadastro";
+            if (request.NomeColunaOrdenacao == "expiracao") request.NomeColunaOrdenacao = "Validade";
+
+            var json = JsonSerializer.Serialize(request);
+            var filtro = JsonSerializer.Deserialize<TorcamentoCotacaoConsultaGerencialFiltro>(json);
+
+            var retorno = _orcamentoCotacaoBll.ConsultaGerencial(filtro).ToList();
+
+            response.QtdeRegistros = retorno.Count();
+            if (request.QtdeItensPagina != 0)
+                retorno = retorno.Skip((request.Pagina) * request.QtdeItensPagina).Take(request.QtdeItensPagina).ToList();
+
+            foreach (var r in retorno)
+            {
+                var tOrcamentoCotacao = (TorcamentoCotacao)r.GetType().GetProperty("tOrcamentoCotacao").GetValue(r);
+                var tUsuario = (Tusuario)r.GetType().GetProperty("tUsuario").GetValue(r);
+                var tOrcamentistaIndicador = (TorcamentistaEindicador)r.GetType().GetProperty("tOrcamentistaIndicador").GetValue(r);
+
+                var item = new ConsultaGerencialOrcamentoResponse();
+                item.Orcamento = tOrcamentoCotacao.Id;
+                item.Vendedor = tUsuario.Nome_Iniciais_Em_Maiusculas;
+                item.Loja = tOrcamentoCotacao.Loja;
+                item.Parceiro = tOrcamentistaIndicador?.Razao_social_nome_iniciais_em_maiusculas;
+                item.UF = tOrcamentoCotacao.UF;
+                item.DataCriacao = tOrcamentoCotacao.DataCadastro;
+                item.DataExpiracao = tOrcamentoCotacao.Validade;
+
+                itens.Add(item);
+            }
+
+            if (itens.Count <= 0)
+            {
+                response.QtdeRegistros = 0;
+                response.Mensagem = "Não encontramos nenhum registro!";
+                return response;
+            }
+
+            response.LstConsultaGerencialOrcamentoResponse = new List<ConsultaGerencialOrcamentoResponse>(itens);
+            response.Sucesso = true;
+            return response;
         }
     }
 }

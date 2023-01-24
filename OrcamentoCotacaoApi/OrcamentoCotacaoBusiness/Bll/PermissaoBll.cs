@@ -93,7 +93,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             var usuarioEnvolvidoOrcamento = UsuarioEnvolvidoOrcamento(idTipoUsuario, usuario, idOrcamento);
 
             // Permissões
-            var permissaoVisualizarOrcamentoConsultar = ValidaPermissao(request.PermissoesUsuario, ePermissao.VisualizarOrcamentoConsultar);
+            var permissaoVisualizarOrcamentoConsultar = ValidaPermissao(request.PermissoesUsuario, ePermissao.AcessoUniversalOrcamentoPedidoPrepedidoConsultar);
             var permissaoAcessoUniversalOrcamentoEditar = ValidaPermissao(request.PermissoesUsuario, ePermissao.AcessoUniversalOrcamentoEditar);
             var permissaoDescontoSuperior1 = ValidaPermissao(request.PermissoesUsuario, ePermissao.DescontoSuperior1);
             var permissaoDescontoSuperior2 = ValidaPermissao(request.PermissoesUsuario, ePermissao.DescontoSuperior2);
@@ -118,7 +118,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
                 {
                     var usuarioAcessaLoja = UsuarioAcessaLoja(usuario, loja);
-                    if (!usuarioAcessaLoja) //&& !permissaoVisualizarOrcamentoConsultar
+                    if (!usuarioAcessaLoja)
                     {
                         response.VisualizarOrcamento = false;
                         response.Sucesso = false;
@@ -241,7 +241,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             var usuarioEnvolvidoOrcamento = UsuarioEnvolvidoPrePedido(idTipoUsuario, idUsuario, usuario, idPrePedido);
-            var permissaoVisualizarOrcamentoConsultar = ValidaPermissao(request.PermissoesUsuario, ePermissao.VisualizarOrcamentoConsultar);
+            var permissaoVisualizarOrcamentoConsultar = ValidaPermissao(request.PermissoesUsuario, ePermissao.AcessoUniversalOrcamentoPedidoPrepedidoConsultar);
             var permissaoAcessoUniversalOrcamentoEditar = ValidaPermissao(request.PermissoesUsuario, ePermissao.AcessoUniversalOrcamentoEditar);
 
             if (usuarioEnvolvidoOrcamento 
@@ -374,7 +374,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             var usuarioEnvolvido = UsuarioEnvolvidoPedido(idTipoUsuario, idUsuario, usuario, idPedido);
 
-            var permissaoVisualizarOrcamentoConsultar = ValidaPermissao(request.PermissoesUsuario, ePermissao.VisualizarOrcamentoConsultar);
+            var permissaoVisualizarOrcamentoConsultar = ValidaPermissao(request.PermissoesUsuario, ePermissao.AcessoUniversalOrcamentoPedidoPrepedidoConsultar);
 
             if (usuarioEnvolvido || permissaoVisualizarOrcamentoConsultar)
             {

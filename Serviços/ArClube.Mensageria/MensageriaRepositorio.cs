@@ -110,7 +110,8 @@ namespace ArClube.Mensageria
 	                                [Sent]                  = @Sent, 
 	                                [AttemptsQty]           = @AttemptsQty, 
 	                                [DateLastAttempt]       = @DateLastAttempt, 
-	                                [ErrorMsgLastAttempt]   = @ErrorMsgLastAttempt 
+	                                [ErrorMsgLastAttempt]   = @ErrorMsgLastAttempt, 
+                                    [DateScheduled]         = @DateScheduled 
                                 WHERE 
 	                                Id = @Id ";
 
@@ -123,7 +124,8 @@ namespace ArClube.Mensageria
                     Sent = orcamentoCotacaoEmailQueue.Sent,
                     AttemptsQty = orcamentoCotacaoEmailQueue.AttemptsQty,
                     DateLastAttempt = orcamentoCotacaoEmailQueue.DateLastAttempt,
-                    ErrorMsgLastAttempt = orcamentoCotacaoEmailQueue.ErrorMsgLastAttempt
+                    ErrorMsgLastAttempt = orcamentoCotacaoEmailQueue.ErrorMsgLastAttempt,
+                    DateScheduled = orcamentoCotacaoEmailQueue.DateScheduled
                 });
             }
 

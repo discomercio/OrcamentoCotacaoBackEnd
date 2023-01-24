@@ -15,7 +15,7 @@
             DescontoSuperior1 = 100800,
             DescontoSuperior2 = 100900,
             DescontoSuperior3 = 101000,
-            VisualizarOrcamentoConsultar = 103000,
+            AcessoUniversalOrcamentoPedidoPrepedidoConsultar = 103000,
             AcessoUniversalOrcamentoEditar = 103100,
             AprovarOrcamento = 100550,
 
@@ -26,7 +26,12 @@
             CatalogoConsultar = 102400,
             CatalogoCaradastrarIncluirEditar = 102500,
             CatalogoPropriedadeConsultar = 102600,
-            CatalogoPropriedadeIncluirEditar = 102700
+            CatalogoPropriedadeIncluirEditar = 102700,
+
+            RelOrcamentosVigente = 103200,
+            RelOrcamentosExpirados = 103300,
+            RelOrcamentosMensagemPendente = 103400,
+            RelOrcamentosCadastrados = 102900
         }
 
         public enum StatusOrcamento
