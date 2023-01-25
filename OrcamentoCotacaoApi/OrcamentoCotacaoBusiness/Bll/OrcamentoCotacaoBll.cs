@@ -2032,12 +2032,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 itens.Add(item);
             }
 
-            if (itens.Count <= 0)
-            {
-                response.QtdeRegistros = 0;
-                response.Mensagem = "Não encontramos nenhum registro!";
-                return response;
-            }
+            if (itens.Count <= 0) response.QtdeRegistros = 0;
 
             response.LstConsultaGerencialOrcamentoResponse = new List<ConsultaGerencialOrcamentoResponse>(itens);
             response.Sucesso = true;
