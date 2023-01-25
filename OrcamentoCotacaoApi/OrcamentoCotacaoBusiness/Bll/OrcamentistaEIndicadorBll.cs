@@ -43,7 +43,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             try
             {
                 var response = new ParceirosComboResponse();
-                response.Sucesso = false;
+                response.Sucesso = true;
 
                 TorcamentistaEindicadorFiltro filtro = new TorcamentistaEindicadorFiltro();
                 filtro.vendedorId = request.Vendedor;
@@ -52,11 +52,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 var parceiros = orcamentistaEIndicadorBll.PorFiltro(filtro);
 
-                if (parceiros.Count == 0)
-                {
-                    response.Mensagem = "Não encontramos parceiros cadastrados para esse vendedor!";
-                    return response;
-                }
+                if (parceiros.Count == 0) return response;
 
                 response.Parceiros = new List<ParceiroComboResponse>();
                 foreach (var parceiro in parceiros)
@@ -68,7 +64,6 @@ namespace OrcamentoCotacaoBusiness.Bll
                 }
                 response.Parceiros = response.Parceiros.OrderBy(x => x.RazaoSocial).Distinct().ToList();
 
-                response.Sucesso = true;
                 return response;
             }
             catch (Exception ex)
