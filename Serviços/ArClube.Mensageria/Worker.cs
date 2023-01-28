@@ -81,12 +81,12 @@ namespace ArClube.Mensageria
                                     {
                                         var newdateScheduled = DateTime.Now.AddSeconds(attempt1_2);
 
-                                        if (attemptsQty == 2 || attemptsQty == 3)
+                                        if (attemptsQty == 2)
                                         {
                                             newdateScheduled = DateTime.Now.AddSeconds(attempt2_3);
                                         }
 
-                                        if (attemptsQty == 4)
+                                        if (attemptsQty >= 3)
                                         {
                                             newdateScheduled = DateTime.Now.AddSeconds(attemptVery);
                                         }
