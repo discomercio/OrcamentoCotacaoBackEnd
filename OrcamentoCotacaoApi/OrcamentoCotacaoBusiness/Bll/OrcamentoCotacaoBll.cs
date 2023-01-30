@@ -426,15 +426,15 @@ namespace OrcamentoCotacaoBusiness.Bll
             var opcao = _orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro() { IdOrcamentoCotacao = id });
             if (opcao.Count <= 0) throw new Exception("Falha ao buscar Opções do Orçamento!");
 
-            foreach (var op in opcao)
-            {
-                int idPagtoAprazo = op.FormaPagto.Where(x => x.Tipo_parcelamento != int.Parse(Constantes.COD_FORMA_PAGTO_A_VISTA)).FirstOrDefault().Id;
-                var produtos = IncluirProdutosParaPrepedido(op.ListaProdutos, idPagtoAprazo, (float)orcamento.Perc_max_comissao_e_desconto_padrao).Result;
-                if(produtos.Count > 0)
-                {
-                    op.VlTotal = Math.Round((decimal)produtos.Sum(x => x.VlTotalItem), 2);
-                }
-            }
+            //foreach (var op in opcao)
+            //{
+            //    int idPagtoAprazo = op.FormaPagto.Where(x => x.Tipo_parcelamento != int.Parse(Constantes.COD_FORMA_PAGTO_A_VISTA)).FirstOrDefault().Id;
+            //    var produtos = IncluirProdutosParaPrepedido(op.ListaProdutos, idPagtoAprazo, (float)orcamento.Perc_max_comissao_e_desconto_padrao).Result;
+            //    if(produtos.Count > 0)
+            //    {
+            //        op.VlTotal = Math.Round((decimal)produtos.Sum(x => x.VlTotalItem), 2);
+            //    }
+            //}
             string statusEmail;
 
             var orcamentoCotacaoEmail = _orcamentoCotacaoEmailBll.PorFiltro(new TorcamentoCotacaoEmailFiltro() { IdOrcamentoCotacao = id }).LastOrDefault();
@@ -1963,11 +1963,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                 var somaDesconto = itens.Sum(x => x.Desc_Dado * x.Qtde);
                 var somaQtde = itens.Sum(x => x.Qtde);
                 var strDescontoMedio = (somaDesconto / somaQtde).ToString();
-                var descontoMedio = strDescontoMedio.Length> 4 ?  float.Parse(strDescontoMedio.Substring(0, 4)) : float.Parse(strDescontoMedio);
+                //var descontoMedio = strDescontoMedio.Length> 4 ?  float.Parse(strDescontoMedio.Substring(0, 4)) : float.Parse(strDescontoMedio);
+                var descontoMedio = Math.Round((decimal)(somaDesconto / somaQtde), 2);
                 var totalPrecoLista = Math.Round((decimal)(produtoPrepedido.Preco_Lista * somaQtde), 2);
                 var totalComDesconto = Math.Round(totalPrecoLista * (1 - (decimal)descontoMedio / 100), 2);
                 produtoPrepedido.Qtde = (short?)somaQtde;
-                produtoPrepedido.Desc_Dado = descontoMedio;
+                produtoPrepedido.Desc_Dado = (float)descontoMedio;
                 produtoPrepedido.Preco_Venda = Math.Round(produtoPrepedido.Preco_Lista * (decimal)(1 - descontoMedio / 100), 2);
                 produtoPrepedido.Preco_NF = produtoPrepedido.Preco_Venda;
                 produtoPrepedido.VlTotalItem = totalComDesconto;
