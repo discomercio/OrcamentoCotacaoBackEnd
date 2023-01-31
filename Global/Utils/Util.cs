@@ -690,6 +690,14 @@ namespace UtilsGlobais
                         var value = (c.GetValue(obj, null));
                         if (value == null)
                             log = log + coluna + "=" + "\"\"" + "; ";
+                        else if (value.GetType().Name == "DateTime")
+                        {
+                            DateTime data = new DateTime();
+                            if(DateTime.TryParse(value.ToString(), out data))
+                            {
+                                log = log + coluna + "=" + data.ToString("G", new CultureInfo("pt-BR")) + "; ";
+                            }
+                        }
                         else if (string.IsNullOrEmpty(value.ToString()))
                             log = log + coluna + "=" + "\"\"" + "; ";
                         else
