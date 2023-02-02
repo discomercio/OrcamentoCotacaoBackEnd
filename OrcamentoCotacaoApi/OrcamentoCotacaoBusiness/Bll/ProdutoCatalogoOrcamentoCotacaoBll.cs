@@ -130,7 +130,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     string log = "";
                     log = UtilsGlobais.Util.MontalogComparacao(tProdutoCatalogo, tProdutoCatalogoAntigo, log, "");
-                    if (!string.IsNullOrEmpty(log)) log = $"Produto: produto={tProdutoCatalogo.Produto}; {log}";
+                    if (!string.IsNullOrEmpty(log)) log = $"Produto: produto={tProdutoCatalogo.Produto}; id={tProdutoCatalogo.Id}; {log}";
 
                     tProdutoCatalogo.campos = _bll.AtualizarItensComTransacao(produtoCatalogo.campos, tProdutoCatalogo.Id,
                         dbGravacao);
@@ -142,16 +142,17 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     foreach (var prop in tProdutoCatalogo.campos)
                     {
+                        string camposAOmitir = "|id_produto_catalogo|";
                         string logApoio = "";
                         var propAntiga = tProdutoCatalogoAntigo.campos
                             .Where(x => x.IdProdutoCatalogoPropriedade == prop.IdProdutoCatalogoPropriedade).FirstOrDefault();
                         if (propAntiga == null)
-                            logApoio = UtilsGlobais.Util.MontaLog(prop, logApoio, "");
+                            logApoio = UtilsGlobais.Util.MontaLog(prop, logApoio, camposAOmitir);
                         else
                         {
                             string logVerificacao = "";
-                            logVerificacao = UtilsGlobais.Util.MontalogComparacao(prop, propAntiga, logVerificacao, "");
-                            if (!string.IsNullOrEmpty(logVerificacao)) logApoio += $"id={prop.IdProdutoCatalogoPropriedade}; {logVerificacao}";
+                            logVerificacao = UtilsGlobais.Util.MontalogComparacao(prop, propAntiga, logVerificacao, camposAOmitir);
+                            if (!string.IsNullOrEmpty(logVerificacao)) logApoio += $"id_produto_catalogo_propriedade={prop.IdProdutoCatalogoPropriedade}; {logVerificacao}";
                         }
 
                         if (!string.IsNullOrEmpty(logApoio))
@@ -195,7 +196,8 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                         var logImagem = "\nImagem: ";
 
-                        logImagem = UtilsGlobais.Util.MontaLog(retorno.TprodutoCatalogoImagem, logImagem, "");
+                        string camposAOmitir = "|ordem|";
+                        logImagem = UtilsGlobais.Util.MontaLog(retorno.TprodutoCatalogoImagem, logImagem, camposAOmitir);
                         log = log + logImagem;
                     }
 
@@ -287,7 +289,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     string logProdutos = "";
                     foreach (var prop in tProdutoCatalogo.campos)
                     {
-                        logProdutos = UtilsGlobais.Util.MontaLog(prop, logProdutos, "");
+                        string propriedadesAOmitir = "|id_produto_catalogo|";
+                        logProdutos = UtilsGlobais.Util.MontaLog(prop, logProdutos, propriedadesAOmitir);
                         logProdutos = logProdutos + "\r";
                     }
 
