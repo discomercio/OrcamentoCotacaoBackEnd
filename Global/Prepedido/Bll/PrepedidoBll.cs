@@ -579,8 +579,8 @@ namespace Prepedido.Bll
                     VlTotalRA = (decimal)(p.Qtde * (p.Preco_NF - p.Preco_Venda)),
                     Comissao = orc.Perc_RT,
                     TotalItemRA = (p.Qtde ?? 0) * (p.Preco_NF ?? 0),
-                    TotalItem = Math.Round((decimal)(p.Preco_Lista * p.Qtde) * (decimal)desc, 2),
-                    VlTotalItem = Math.Round((decimal)(p.Preco_Lista * p.Qtde) * (decimal)desc, 2)
+                    TotalItem = Math.Round((decimal)(p.Preco_Venda * p.Qtde), 2),
+                    VlTotalItem = Math.Round((decimal)(p.Preco_Venda * p.Qtde), 2)
 
                 };
 
