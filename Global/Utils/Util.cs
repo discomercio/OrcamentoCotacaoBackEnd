@@ -750,7 +750,13 @@ namespace UtilsGlobais
                         }
                     }
                 }
+                if (valorNovo.GetType().Name == "Decimal")
+                {
+                    decimal decimalAntigo = 0M;
+                    if (decimal.TryParse(valorAntigo.ToString(), out decimalAntigo))
+                        valorAntigo = Math.Round(decimalAntigo, 2);
 
+                }
                 if (!valorAntigo.Equals(valorNovo))
                 {
                     log = log + coluna.Name + $": {(string.IsNullOrEmpty(valorAntigo.ToString()) ? "\"\"" : valorAntigo)} => {(string.IsNullOrEmpty(valorNovo.ToString()) ? "\"\"" : valorNovo)}; ";
