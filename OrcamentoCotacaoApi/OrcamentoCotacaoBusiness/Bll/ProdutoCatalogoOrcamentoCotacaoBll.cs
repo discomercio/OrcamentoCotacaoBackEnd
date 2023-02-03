@@ -158,7 +158,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         if (!string.IsNullOrEmpty(logApoio))
                             logPropriedades = $"{logPropriedades}\r {logApoio}";
                     }
-                    if (!string.IsNullOrEmpty(logPropriedades)) log = $"{log}\rLista de propriedades: {logPropriedades}";
+                    if (!string.IsNullOrEmpty(logPropriedades)) log = $"{log}\rLista de propriedades incluídas/alteradas: {logPropriedades}";
 
                     var logExclusaoPropriedade = "";
                     foreach (var propAntiga in tProdutoCatalogoAntigo.campos)
@@ -176,7 +176,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         {
                             propNovo = new TprodutoCatalogoItem();
                             propNovo.IdProdutoCatalogo = propAntiga.IdProdutoCatalogo;
-                            string logApoio = $"id={propAntiga.IdProdutoCatalogoPropriedade}; nome={propriedade.descricao}; valor={propriedadeOpcao.valor}; ";
+                            string logApoio = $"id={propAntiga.IdProdutoCatalogoPropriedade}; nome={propriedade.descricao}; valor={propAntiga.Valor}; ";
                             logExclusaoPropriedade = $"{logExclusaoPropriedade}\r {logApoio}";
                         }
 
