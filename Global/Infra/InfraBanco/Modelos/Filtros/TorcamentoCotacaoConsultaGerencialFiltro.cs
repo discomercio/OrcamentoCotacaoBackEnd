@@ -35,6 +35,7 @@ namespace InfraBanco.Modelos.Filtros
 
         public bool Expirado { get; set; }
 
-        public int? Status { get; set; }
+        public List<int?> Status { get; set; }
+
     }
 }

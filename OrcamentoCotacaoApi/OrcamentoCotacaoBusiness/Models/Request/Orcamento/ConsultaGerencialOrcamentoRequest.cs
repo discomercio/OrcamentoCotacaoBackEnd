@@ -60,6 +60,6 @@ namespace OrcamentoCotacaoBusiness.Models.Request.Orcamento
         public string NomeLista { get; set; }
 
         [JsonProperty("status")]
-        public int? Status { get; set; }
+        public List<int?> Status { get; set; }
     }
 }

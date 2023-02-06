@@ -43,7 +43,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             try
             {
                 var response = new ParceirosComboResponse();
-                response.Sucesso = false;
+                response.Sucesso = true;
 
                 TorcamentistaEindicadorFiltro filtro = new TorcamentistaEindicadorFiltro();
                 filtro.vendedorId = request.Vendedor;
@@ -62,7 +62,6 @@ namespace OrcamentoCotacaoBusiness.Bll
                 }
                 response.Parceiros = response.Parceiros.OrderBy(x => x.RazaoSocial).Distinct().ToList();
 
-                response.Sucesso = true;
                 return response;
             }
             catch (Exception ex)

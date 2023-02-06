@@ -662,7 +662,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                 mensagemMotivo = "001";
             }
 
-            if (mensagemErro == Constantes.ERR_USUARIO_BLOQUEADO)
+            if (mensagemErro == Constantes.ERR_USUARIO_BLOQUEADO ||
+                mensagemErro == Constantes.ERR_USUARIO_INATIVO)
             {
                 mensagemMotivo = "002";
             }
