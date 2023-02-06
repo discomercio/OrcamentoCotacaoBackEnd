@@ -90,11 +90,20 @@ namespace OrcamentoCotacaoBusiness.Bll
                     DataRefCoeficiente = dataRefCoeficiente.GetValueOrDefault(new DateTime())
                 });
 
+                foreach (var produto in produtoComboDados.ProdutoDados)
+                {
+                    var responseItem = ProdutoSimplesResponseViewModel
+                        .ConverterProdutoDados(produto, null, GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), produto.Fabricante));
+                    produtoResponseViewModel.ProdutosSimples.Add(responseItem);
+
+                }
+
                 foreach (Produto.Dados.ProdutoCompostoDados composto in produtoComboDados.ProdutoCompostoDados)
                 {
                     var produtoCompostoResponse = new ProdutoCompostoResponseViewModel();
                     produtoCompostoResponse.Filhos = new List<ProdutoCompostoFilhosResponseViewModel>();
                     decimal? somaFilhotes = 0;
+                    decimal? somaFilhotesBase = 0;
 
                     var produtoCompostoResponseApoio = new ProdutoCompostoResponseViewModel();
                     produtoCompostoResponseApoio.Filhos = new List<ProdutoCompostoFilhosResponseViewModel>();
@@ -110,55 +119,89 @@ namespace OrcamentoCotacaoBusiness.Bll
                         continue;
                     }
 
+                    var coeficiente2 = GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), composto.PaiFabricante).Coeficiente;
                     foreach (var filho in filhotes)
                     {
                         var compostoFilho = composto.Filhos.Where(x => x.Produto == filho.Produto).FirstOrDefault();
                         produtoCompostoResponseApoio.Filhos.Add(ProdutoCompostoFilhosResponseViewModel.ConverterProdutoFilhoDados(filho, compostoFilho.Qtde, GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), composto.PaiFabricante)));
 
-                        somaFilhotes += filho.Preco_lista * compostoFilho.Qtde;
+                        //verificar se o verdinho calcula coeficiente e depois a qtde do filho
+                        somaFilhotesBase += Math.Round((decimal)filho.Preco_lista * compostoFilho.Qtde, 2);
+                        var somafilhotescoeficiente = Math.Round((decimal)filho.Preco_lista * (decimal)coeficiente2, 2);
+                        var somafilhotescoefQtdefilhote = Math.Round(somafilhotescoeficiente * compostoFilho.Qtde, 2);
+                        somaFilhotes += somafilhotescoefQtdefilhote;
                     }
 
                     var pai = produtoComboDados.ProdutoDados.Where(x => x.Fabricante == composto.PaiFabricante && x.Produto == composto.PaiProduto).FirstOrDefault();
-                    if (composto.PaiProduto == "034908")
-                    {
 
-                    }
-                    if (pai == null)
-                    {
-                        var produtoCompostoAInserir = new Produto.Dados.ProdutoDados()
-                        {
-                            Fabricante = composto.PaiFabricante,
-                            Fabricante_Nome = composto.PaiFabricanteNome,
-                            Produto = composto.PaiProduto,
-                            Descricao_html = composto.PaiDescricao,
-                            Descricao = composto.PaiDescricao,
-                            Preco_lista = somaFilhotes,
-                            Qtde_Max_Venda = filhotes.Min(x => x.Qtde_Max_Venda),
-                            Desc_Max = filhotes.Min(x => x.Desc_Max)
-                        };
-                        produtoComboDados.ProdutoDados.Add(produtoCompostoAInserir);
-                    }
-                    else
-                    {
-                        pai.Preco_lista = somaFilhotes;
-                    }
+                    //if (pai != null)
+                    //{
+
+                    //    //var produtoCompostoAInserir = new Produto.Dados.ProdutoDados()
+                    //    //{
+                    //    //    Fabricante = composto.PaiFabricante,
+                    //    //    Fabricante_Nome = composto.PaiFabricanteNome,
+                    //    //    Produto = composto.PaiProduto,
+                    //    //    Descricao_html = composto.PaiDescricao,
+                    //    //    Descricao = composto.PaiDescricao,
+                    //    //    Preco_lista = somaFilhotesBase,
+                    //    //    Qtde_Max_Venda = filhotes.Min(x => x.Qtde_Max_Venda),
+                    //    //    Desc_Max = filhotes.Min(x => x.Desc_Max)
+                    //    //};
+
+                    //    //produtoComboDados.ProdutoDados.Add(produtoCompostoAInserir);
+                    //    //var responseItem = ProdutoSimplesResponseViewModel
+                    //    //.ConverterProdutoDados(produtoCompostoAInserir, null,
+                    //    //GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), produtoCompostoAInserir.Fabricante));
+
+
+
+                    //}
+                    //else
+                    //{
+                    //    var responseItem = ProdutoSimplesResponseViewModel
+                    //    .ConverterProdutoDados(pai, null, GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), pai.Fabricante));
+
+                    //    responseItem.PrecoLista = (decimal)somaFilhotesBase;
+
+                    //    produtoResponseViewModel.ProdutosSimples.Add(responseItem);
+                    //}
+
+                    var novoItem = new ProdutoSimplesResponseViewModel();
+                    novoItem.Fabricante = composto.PaiFabricante;
+                    novoItem.FabricanteNome = composto.PaiFabricanteNome;
+                    novoItem.Produto = composto.PaiProduto;
+                    novoItem.Qtde = filhotes.Count;
+                    novoItem.DescricaoHtml = pai != null ? pai.Descricao_html : composto.PaiDescricao;
+                    novoItem.PrecoLista = (decimal)somaFilhotes;
+                    novoItem.PrecoListaBase = (decimal)somaFilhotesBase;
+                    novoItem.QtdeMaxVenda = filhotes.Min(x => x.Qtde_Max_Venda);
+                    novoItem.DescMax = filhotes.Min(x => x.Desc_Max);
+                    novoItem.Estoque = filhotes.Min(x => x.Estoque);
+                    novoItem.Alertas = filhotes.Min(x => x.Alertas);
+
+                    if (pai != null) produtoResponseViewModel.ProdutosSimples.RemoveAll(x => x.Produto == pai.Produto);
+
+                    produtoResponseViewModel.ProdutosSimples.Add(novoItem);
 
                     produtoCompostoResponse = ProdutoCompostoResponseViewModel.ConverterProdutoCompostoDados(composto);
 
                     var coeficiente = GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), composto.PaiFabricante).Coeficiente;
-                    produtoCompostoResponse.PaiPrecoTotalBase = somaFilhotes;
-                    produtoCompostoResponse.PaiPrecoTotal = somaFilhotes * Convert.ToDecimal(coeficiente);
+                    produtoCompostoResponse.PaiPrecoTotalBase = somaFilhotesBase;
+                    produtoCompostoResponse.PaiPrecoTotal = somaFilhotes;
                     produtoCompostoResponse.Filhos = produtoCompostoResponseApoio.Filhos;
                     produtoResponseViewModel.ProdutosCompostos.Add(produtoCompostoResponse);
 
 
                 }
 
-                foreach (var produto in produtoComboDados.ProdutoDados)
-                {
-                    produtoResponseViewModel.ProdutosSimples.Add(ProdutoSimplesResponseViewModel.ConverterProdutoDados(produto, null, GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), produto.Fabricante)));
+                //foreach (var produto in produtoComboDados.ProdutoDados)
+                //{
+                //    var responseItem = ProdutoSimplesResponseViewModel
+                //        .ConverterProdutoDados(produto, null, GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), produto.Fabricante));
+                //    produtoResponseViewModel.ProdutosSimples.Add(responseItem);
 
-                }
+                //}
 
                 produtoResponseViewModel.ProdutosSimples = produtoResponseViewModel.ProdutosSimples.OrderBy(x => x.Fabricante).ToList();
 
@@ -818,8 +861,6 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 var produtoResponse = new ProdutoOrcamentoOpcaoResponseViewModel();
 
-                //ITEM ATOMICO
-                //Id = item.Id,
                 produtoResponse.IdItemUnificado = item.Id;
                 produtoResponse.Fabricante = item.Fabricante;
                 produtoResponse.FabricanteNome = (await produtoGeralBll.ObterListaFabricante()).Where(x => x.Fabricante == item.Fabricante).FirstOrDefault().Nome;
@@ -827,31 +868,28 @@ namespace OrcamentoCotacaoBusiness.Bll
                 produtoResponse.UrlImagem = _produtoCatalogoBll.ObterDadosImagemPorProduto(item.Produto).FirstOrDefault().Caminho;
                 produtoResponse.Descricao = item.DescricaoHtml;
                 produtoResponse.Qtde = item.Qtde;
-                //ITEM ATOMICO CUSTO
                 produtoResponse.IdOpcaoPagto = item.Id;
                 produtoResponse.DescDado = itemAtomicoCusto.FirstOrDefault().DescDado;
 
-                //itemAtomico.ForEach(x =>
-                //{
-                //    var custo = itemAtomicoCusto.Where(c => c.IdItemAtomico == x.Id && c.CustoFinancFornecCoeficiente > 0).FirstOrDefault();
-                //    //testar
-                //    produtoResponse.PrecoLista += x.Qtde * custo.PrecoLista;
-                //    //produtoResponse.PrecoVenda += x.Qtde * custo.PrecoVenda;
-                //    //produtoResponse.PrecoNf += x.Qtde * custo.PrecoNF;
-                //    produtoResponse.CustoFinancFornecPrecoListaBase += x.Qtde * custo.CustoFinancFornecPrecoListaBase;
-                //});
-                var precoLista = itemAtomico.Sum(x => x.Qtde * itemAtomicoCusto.Where(c => c.IdItemAtomico == x.Id && c.CustoFinancFornecCoeficiente > 0).FirstOrDefault().PrecoLista);
+                decimal precoLista = 0;
+                decimal precoVenda = 0;
+                decimal precoNf = 0;
+
+                foreach (var atomico in itemAtomico)
+                {
+                    var itemCusto = itemAtomicoCusto.Where(c => c.IdItemAtomico == atomico.Id && c.CustoFinancFornecCoeficiente > 0).FirstOrDefault();
+                    precoLista += Math.Round(itemCusto.PrecoLista * (decimal)atomico.Qtde, 2);
+                    precoVenda += Math.Round(itemCusto.PrecoVenda * (decimal)atomico.Qtde, 2);
+                    precoNf += Math.Round(itemCusto.PrecoVenda * (decimal)atomico.Qtde, 2);
+                }
                 produtoResponse.PrecoLista = precoLista;
-                produtoResponse.PrecoVenda = Math.Round(precoLista * (decimal)(1 - produtoResponse.DescDado / 100), 2);
-                produtoResponse.PrecoNf = Math.Round(precoLista * (decimal)(1 - produtoResponse.DescDado / 100), 2);
+                produtoResponse.PrecoVenda = precoVenda;
+                produtoResponse.PrecoNf = precoNf;
                 produtoResponse.CustoFinancFornecPrecoListaBase = itemAtomico.Sum(x => x.Qtde * itemAtomicoCusto.Where(c => c.IdItemAtomico == x.Id && c.CustoFinancFornecCoeficiente > 0).FirstOrDefault().CustoFinancFornecPrecoListaBase);
 
                 produtoResponse.CustoFinancFornecCoeficiente = itemAtomicoCusto.Where(x => x.CustoFinancFornecCoeficiente > 0).FirstOrDefault().CustoFinancFornecCoeficiente;
-                //produtoResponse.TotalItem = produtoResponse.PrecoNf * produtoResponse.Qtde;
-                produtoResponse.TotalItem = produtoResponse.PrecoNf * item.Qtde; // aqui esta errado
+                produtoResponse.TotalItem = Math.Round(precoNf * item.Qtde, 2);
                 produtoResponse.IdOperacaoAlcadaDescontoSuperior = itemAtomicoCusto.FirstOrDefault().IdOperacaoAlcadaDescontoSuperior;
-
-
 
                 produtosResponse.Add(produtoResponse);
             }
