@@ -79,7 +79,7 @@ namespace InfraBanco.Modelos
         [Column("DataHoraBloqueadoAutomatico")]
         public DateTime? DataHoraBloqueadoAutomatico { get; set; }
 
-        [Column("EnderecoIpBloqueadoAutomatico ")]
+        [Column("EnderecoIpBloqueadoAutomatico")]
         public string EnderecoIpBloqueadoAutomatico { get; set; }
 
         /*

@@ -154,7 +154,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 string logAtomicoCustoAvista = "";
                 string logAtomicoCustoAprazo = "";
-                camposAOmitir = "|Id|IdOpcaoPagto|DescDado|CustoFinancFornecCoeficiente|CustoFinancFornecPrecoListaBase|StatusDescontoSuperior|IdUsuarioDescontoSuperior|DataHoraDescontoSuperior|IdOperacaoAlcadaDescontoSuperior|";
+                camposAOmitir = "|Id|IdOpcaoPagto|CustoFinancFornecCoeficiente|CustoFinancFornecPrecoListaBase|StatusDescontoSuperior|IdUsuarioDescontoSuperior|DataHoraDescontoSuperior|IdOperacaoAlcadaDescontoSuperior|";
 
                 foreach (var tPagto in responseOpcoesPagtoResponse.TorcamentoCotacaoOpcaoPagtos)
                 {

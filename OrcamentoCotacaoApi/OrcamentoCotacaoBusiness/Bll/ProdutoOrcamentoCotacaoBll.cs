@@ -693,7 +693,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                             }
                             else
                             {
-                                if (!string.IsNullOrEmpty(logEdicaoAprazo)) logEdicaoAprazo += "\r      ";
+                                if (!string.IsNullOrEmpty(logEdicaoAprazo) && !string.IsNullOrEmpty(logApoio))
+                                    logEdicaoAprazo += "\r      ";
                                 if (!string.IsNullOrEmpty(logApoio))
                                     logEdicaoAprazo += $"{logApoio}";
                             }
@@ -869,7 +870,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             var retorno = await Task.FromResult(orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.PorFiltro(filtro));
             return await Task.FromResult(retorno);
         }
-    
+
         public ProdutosGruposResponse BuscarGruposProdutos()
         {
             try

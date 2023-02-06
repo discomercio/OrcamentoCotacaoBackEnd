@@ -180,7 +180,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                 var cfgOperacao = _cfgOperacaoBll.PorFiltro(new TcfgOperacaoFiltro() { Id = 19 }).FirstOrDefault();
                 if (cfgOperacao == null) return null;
 
-                string log = $"id={tOrcamentistaIndicadorVendedor.Id}; {UtilsGlobais.Util.MontalogComparacao(retorno, tOrcamentistaIndicadorVendedor, "", "")}";
+                string campoAOmitir = "|Senha|datastamp|";
+                string log = $"id={tOrcamentistaIndicadorVendedor.Id}; {UtilsGlobais.Util.MontalogComparacao(retorno, tOrcamentistaIndicadorVendedor, "", campoAOmitir)}";
 
                 var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogado.TipoUsuario, usuarioLogado.Id, model.Loja, null, null, null,
                     InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO,
