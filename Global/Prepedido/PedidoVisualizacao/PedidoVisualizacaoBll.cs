@@ -531,7 +531,7 @@ namespace Prepedido.PedidoVisualizacao
                     var nomeCompleto = (from c in db.TorcamentistaEindicadorVendedor
                                         where c.Id == tPedidoPai.PrevisaoEntregaIdUsuarioUltAtualiz
                                         select c.Nome).FirstOrDefault();
-                    nomeUsuario = $"[VP] {nomeCompleto.Split(" ")[0]}"; ;
+                    nomeUsuario = $"[VP] {nomeCompleto.Split(" ")[0]}";
                 }
 
                 detalhesNf.PrevisaoEntrega = tPedidoPai.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
