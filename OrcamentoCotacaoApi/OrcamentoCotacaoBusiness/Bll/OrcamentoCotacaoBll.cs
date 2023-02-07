@@ -163,6 +163,15 @@ namespace OrcamentoCotacaoBusiness.Bll
                 orcamento.condicoesGerais = condicoesGerais[0].Valor;
                 orcamento.prazoMaximoConsultaOrcamento = prazoMaximoConsultaOrcamento[0].Valor;
                 orcamento.listaOpcoes = _orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro { IdOrcamentoCotacao = orcamento.id });
+                //foreach (var op in orcamento.listaOpcoes)
+                //{
+                //    int idPagtoAprazo = op.FormaPagto.Where(x => x.Tipo_parcelamento != int.Parse(Constantes.COD_FORMA_PAGTO_A_VISTA)).FirstOrDefault().Id;
+                //    var produtos = IncluirProdutosParaPrepedido(op.ListaProdutos, idPagtoAprazo, 0).Result;
+                //    if (produtos.Count > 0)
+                //    {
+                //        op.VlTotal = Math.Round((decimal)produtos.Sum(x => x.VlTotalItem), 2);
+                //    }
+                //}
                 orcamento.listaFormasPagto = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(orcamento.tipoCliente, (Constantes.TipoUsuario)usuarioLogin.TipoUsuario, orcamento.vendedor, byte.Parse(orcamento.idIndicador.HasValue ? "1" : "0"));
                 orcamento.mensageria = BuscarDadosParaMensageria(usuarioLogin, orcamento.id, false);
                 // orcamento.token = _publicoBll.ObterTokenServico();
@@ -848,7 +857,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     //montar o log de t_orcamento_cotacao
                     //incluir dataannotations nas tabelas utilizadas no orçamento para conseguir capturar o nome real da coluna da tabela
                     string log = "";
-                    string camposAOmitir = "|Id|Loja|ValidadeAnterior|QtdeRenovacao|IdUsuarioUltRenovacao|DataHoraUltRenovacao|Status|IdTipoUsuarioContextoUltStatus|IdUsuarioUltStatus|DataUltStatus|DataHoraUltStatus|IdOrcamento|IdPedido|IdTipoUsuarioContextoCadastro|IdUsuarioCadastro|DataCadastro|DataHoraCadastro|IdTipoUsuarioContextoUltAtualizacao|IdUsuarioUltAtualizacao|DataHoraUltAtualizacao|perc_max_comissao_padrao|perc_max_comissao_e_desconto_padrao|VersaoPoliticaCredito|VersaoPoliticaPrivacidade|InstaladorInstalaIdTipoUsuarioContexto|InstaladorInstalaIdUsuarioUltAtualiz|InstaladorInstalaDtHrUltAtualiz|GarantiaIndicadorIdTipoUsuarioContexto|GarantiaIndicadorIdUsuarioUltAtualiz|GarantiaIndicadorDtHrUltAtualiz|EtgImediataIdTipoUsuarioContexto|EtgImediataIdUsuarioUltAtualiz|EtgImediataDtHrUltAtualiz|PrevisaoEntregaIdTipoUsuarioContexto|PrevisaoEntregaIdUsuarioUltAtualiz|PrevisaoEntregaDtHrUltAtualiz|IdTipoUsuarioContextoUltRenovacao|";
+                    string camposAOmitir = "|Id|Loja|ValidadeAnterior|QtdeRenovacao|IdUsuarioUltRenovacao|DataHoraUltRenovacao|Status|IdTipoUsuarioContextoUltStatus|IdUsuarioUltStatus|DataUltStatus|DataHoraUltStatus|IdOrcamento|IdPedido|IdTipoUsuarioContextoCadastro|IdUsuarioCadastro|DataCadastro|DataHoraCadastro|IdTipoUsuarioContextoUltAtualizacao|IdUsuarioUltAtualizacao|DataHoraUltAtualizacao|perc_max_comissao_padrao|perc_max_comissao_e_desconto_padrao|VersaoPoliticaCredito|VersaoPoliticaPrivacidade|InstaladorInstalaIdTipoUsuarioContexto|InstaladorInstalaIdUsuarioUltAtualiz|InstaladorInstalaDtHrUltAtualiz|GarantiaIndicadorIdTipoUsuarioContexto|GarantiaIndicadorIdUsuarioUltAtualiz|GarantiaIndicadorDtHrUltAtualiz|EtgImediataIdTipoUsuarioContexto|EtgImediataIdUsuarioUltAtualiz|EtgImediataDtHrUltAtualiz|PrevisaoEntregaIdTipoUsuarioContexto|PrevisaoEntregaIdUsuarioUltAtualiz|PrevisaoEntregaDtHrUltAtualiz|IdTipoUsuarioContextoUltRenovacao|GarantiaIndicadorStatus|";
                     log = UtilsGlobais.Util.MontaLog(tOrcamentoCotacao, log, camposAOmitir);
 
 
@@ -870,7 +879,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         return response;
                     }
 
-                    var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogado.TipoUsuario, usuarioLogado.Id, orcamento.Loja, null, (int)orcamento.Id, null,
+                    var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogado.TipoUsuario, usuarioLogado.Id, orcamento.Loja, null, tOrcamentoCotacao.Id, null,
                         InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, orcamento.IP);
 
                     var guid = Guid.NewGuid();
@@ -1818,7 +1827,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 new List<string>() { "Falha ao buscar produtos atômicos da opção!" };
 
             prepedido.PercRT = opcaoSelecionada.PercRT;
-            prepedido.VlTotalDestePedido = prepedido.ListaProdutos.Sum(x => x.Preco_Venda * (x.Qtde ?? 0));
+            prepedido.VlTotalDestePedido = Math.Round((decimal)prepedido.ListaProdutos.Sum(x => x.VlTotalItem), 2);
             //passar esses dados abaixo
             prepedido.DadosCliente.IdOrcamentoCotacao = orcamento.Id;
             prepedido.DadosCliente.Perc_max_comissao_padrao = orcamento.Perc_max_comissao_padrao;
@@ -1905,90 +1914,87 @@ namespace OrcamentoCotacaoBusiness.Bll
                         { IdOpcaoPagto = idFormaPagto, IncluirTorcamentoCotacaoOpcaoItemAtomico = true, IncluirTorcamentoCotacaoOpcaoPagto = true });
             if (itensAtomicosFinOpcao == null) return null;
 
-            List<PrepedidoProdutoDtoPrepedido> prepedidoProdutos = new List<PrepedidoProdutoDtoPrepedido>();
-            foreach (var item in produtosOpcaoSelecionada)
+            List<PrepedidoProdutoDtoPrepedido> prepedidoProdutosTeste = new List<PrepedidoProdutoDtoPrepedido>();
+
+            List<PrepedidoProdutoDtoPrepedido> produtosDto = new List<PrepedidoProdutoDtoPrepedido>();
+            foreach(var produto in produtosOpcaoSelecionada)
             {
-                var itensAtomicosCustoFin = itensAtomicosFinOpcao.Where(x => x.TorcamentoCotacaoOpcaoItemAtomico.IdItemUnificado == item.IdItemUnificado);
-
-                foreach (var itemAtomico in itensAtomicosCustoFin)
+                var itens = itensAtomicosFinOpcao.Where(x => x.TorcamentoCotacaoOpcaoItemAtomico.IdItemUnificado == produto.IdItemUnificado);
+                foreach (var item in itens)
                 {
+                    PrepedidoProdutoDtoPrepedido produtoDto = new PrepedidoProdutoDtoPrepedido();
+                    produtoDto.Fabricante = item.TorcamentoCotacaoOpcaoItemAtomico.Fabricante;
+                    produtoDto.Produto = item.TorcamentoCotacaoOpcaoItemAtomico.Produto;
+                    produtoDto.Descricao = item.TorcamentoCotacaoOpcaoItemAtomico.DescricaoHtml;
+                    produtoDto.CustoFinancFornecPrecoListaBase = item.CustoFinancFornecPrecoListaBase;
+                    produtoDto.CustoFinancFornecCoeficiente = item.CustoFinancFornecCoeficiente;
+                    produtoDto.Preco_Lista = item.PrecoLista;
+                    produtoDto.Preco_Venda = item.PrecoVenda;
+                    produtoDto.Qtde = (short?)(item.TorcamentoCotacaoOpcaoItemAtomico.Qtde * produto.Qtde);
+                    produtoDto.Desc_Dado = produto.DescDado;
+                    produtosDto.Add(produtoDto);
+                }
+            }
 
-                    var existe = prepedidoProdutos.Where(x => x.Fabricante == itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Fabricante &&
-                    x.Produto == itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Produto).FirstOrDefault();
-                    if (existe != null)
+            var produtosDtoDistinct = produtosDto.Select(x => x.Produto).Distinct();
+
+            decimal totalPedido = 0M;
+            foreach(var produto in produtosDtoDistinct)
+            {
+                var itens = produtosDto.Where(x => x.Produto == produto);
+                PrepedidoProdutoDtoPrepedido produtoPrepedido = new PrepedidoProdutoDtoPrepedido();
+                produtoPrepedido.Fabricante = itens.First().Fabricante;
+                produtoPrepedido.Produto = itens.First().Produto;
+                produtoPrepedido.Descricao = itens.First().Descricao;
+                produtoPrepedido.Obs = "";
+                produtoPrepedido.BlnTemRa = false;
+                produtoPrepedido.CustoFinancFornecPrecoListaBase = itens.First().CustoFinancFornecPrecoListaBase;
+                produtoPrepedido.CustoFinancFornecCoeficiente = itens.First().CustoFinancFornecCoeficiente;
+                produtoPrepedido.Qtde_estoque_total_disponivel = 0;
+                produtoPrepedido.Preco_Lista = itens.First().Preco_Lista;
+                var somaDesconto = itens.Sum(x => x.Desc_Dado * x.Qtde);
+                var somaQtde = itens.Sum(x => x.Qtde);
+                var strDescontoMedio = (somaDesconto / somaQtde).ToString();
+                var descontoMedio = (decimal)(somaDesconto / somaQtde);
+                var totalPrecoVenda = Math.Round((decimal)(itens.Sum(x => x.Preco_Venda * x.Qtde)), 2);
+                var totalPrecoLista = Math.Round((decimal)(produtoPrepedido.Preco_Lista * somaQtde), 2);
+                var totalComDesconto = Math.Round(totalPrecoLista * (1 - (decimal)descontoMedio / 100), 2);
+                produtoPrepedido.Qtde = (short?)somaQtde;
+                produtoPrepedido.Desc_Dado = (float)descontoMedio;
+                produtoPrepedido.Preco_Venda = Math.Round(produtoPrepedido.Preco_Lista * (decimal)(1 - descontoMedio / 100), 2);
+                produtoPrepedido.Preco_NF = produtoPrepedido.Preco_Venda;
+                produtoPrepedido.VlTotalItem = totalPrecoVenda;
+                produtoPrepedido.TotalItem = totalPrecoVenda;
+
+                if(Perc_max_comissao_e_desconto_padrao > 0)
+                {
+                    var produtosComAlcada = itensAtomicosFinOpcao.Where(x => x.TorcamentoCotacaoOpcaoItemAtomico.Produto == produto && x.StatusDescontoSuperior);
+                    if(produtosComAlcada.Any())
                     {
-                        //preciso verificar se o desconto é maior para atribuir a maior alçada
-                        if (itemAtomico.StatusDescontoSuperior)
+                        var maiorDesconto = produtosComAlcada.Max(x => x.DescDado);
+                        if (produtoPrepedido.Desc_Dado > Perc_max_comissao_e_desconto_padrao)
                         {
-                            if (itemAtomico.DescDado > existe.Desc_Dado)
-                            {
-                                existe.StatusDescontoSuperior = true;
-                                existe.IdUsuarioDescontoSuperior = itemAtomico.IdUsuarioDescontoSuperior;
-                                existe.DataHoraDescontoSuperior = itemAtomico.DataHoraDescontoSuperior;
-                            }
+                            var idMaiorAlcada = produtosComAlcada.Max(x => x.IdOperacaoAlcadaDescontoSuperior);
+                            var itemComMaiorAlcada = produtosComAlcada.Where(x => x.IdOperacaoAlcadaDescontoSuperior == idMaiorAlcada).FirstOrDefault();
+                            produtoPrepedido.StatusDescontoSuperior = true;
+                            produtoPrepedido.IdUsuarioDescontoSuperior = itemComMaiorAlcada.IdUsuarioDescontoSuperior;
+                            produtoPrepedido.DataHoraDescontoSuperior = itemComMaiorAlcada.DataHoraDescontoSuperior;
                         }
-                        existe.Qtde += (short?)(itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Qtde * (short)item.Qtde);
-                        existe.Desc_Dado = (existe.Desc_Dado + itemAtomico.DescDado) / existe.Qtde;//média
-                        existe.Preco_Venda = Math.Round(existe.Preco_Lista * (decimal)(1 - existe.Desc_Dado / 100), 2);
-                        existe.Preco_NF = existe.Preco_Venda;
-                        existe.VlTotalItem = Math.Round((decimal)existe.Qtde * existe.Preco_Venda, 2);
-                        existe.TotalItem = Math.Round((decimal)existe.Qtde * existe.Preco_Venda, 2);
                     }
                     else
                     {
-                        PrepedidoProdutoDtoPrepedido produtoPrepedido = new PrepedidoProdutoDtoPrepedido();
-                        produtoPrepedido.Fabricante = itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Fabricante;
-                        produtoPrepedido.Produto = itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Produto;
-                        produtoPrepedido.Descricao = itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Descricao;
-                        produtoPrepedido.Obs = "";
-                        produtoPrepedido.Qtde = (short?)(itemAtomico.TorcamentoCotacaoOpcaoItemAtomico.Qtde * (short)item.Qtde);
-                        produtoPrepedido.BlnTemRa = false;
-                        produtoPrepedido.CustoFinancFornecPrecoListaBase = Math.Round(itemAtomico.CustoFinancFornecPrecoListaBase, 2);
-                        produtoPrepedido.Preco_Lista = Math.Round(itemAtomico.PrecoLista, 2);
-                        produtoPrepedido.Desc_Dado = itemAtomico.DescDado;
-                        produtoPrepedido.Preco_Venda = Math.Round(itemAtomico.PrecoVenda, 2); //Math.Round(y.Preco_Lista * (decimal)(1 - y.Desc_Dado / 100), 2);
-                        produtoPrepedido.VlTotalItem = Math.Round(item.Qtde * itemAtomico.PrecoVenda, 2);
-                        produtoPrepedido.TotalItem = Math.Round(item.Qtde * itemAtomico.PrecoVenda, 2);
-                        produtoPrepedido.Qtde_estoque_total_disponivel = 0;
-                        produtoPrepedido.CustoFinancFornecCoeficiente = itemAtomico.TorcamentoCotacaoOpcaoPagto.Tipo_parcelamento == int.Parse(Constantes.COD_FORMA_PAGTO_A_VISTA) ?
-                            int.Parse(Constantes.COD_FORMA_PAGTO_A_VISTA) : itemAtomico.CustoFinancFornecCoeficiente;
-                        produtoPrepedido.Preco_NF = Math.Round(itemAtomico.PrecoNF, 2);
-                        produtoPrepedido.StatusDescontoSuperior = itemAtomico.StatusDescontoSuperior;
-                        produtoPrepedido.IdUsuarioDescontoSuperior = itemAtomico.IdUsuarioDescontoSuperior;
-                        produtoPrepedido.DataHoraDescontoSuperior = itemAtomico.DataHoraDescontoSuperior;
-                        prepedidoProdutos.Add(produtoPrepedido);
+                        produtoPrepedido.StatusDescontoSuperior = false;
+                        produtoPrepedido.IdUsuarioDescontoSuperior = null;
+                        produtoPrepedido.DataHoraDescontoSuperior = null;
                     }
+
                 }
+                
+                prepedidoProdutosTeste.Add(produtoPrepedido);
+                totalPedido = Math.Round(totalPedido + totalComDesconto, 2);
             }
-
-
-
-            //alçada
-            foreach (var item in prepedidoProdutos)
-            {
-                if (item.StatusDescontoSuperior)
-                {
-                    if (item.Desc_Dado <= Perc_max_comissao_e_desconto_padrao)
-                    {
-                        item.StatusDescontoSuperior = false;
-                        item.IdUsuarioDescontoSuperior = null;
-                        item.DataHoraDescontoSuperior = null;
-                    }
-                    else
-                    {
-                        var produtos = itensAtomicosFinOpcao
-                           .Where(x => x.TorcamentoCotacaoOpcaoItemAtomico.Produto == item.Produto &&
-                                       x.StatusDescontoSuperior == true);
-                        var maiorAlcada = produtos.Max(x => x.IdOperacaoAlcadaDescontoSuperior);
-                        var p = produtos.Where(x => x.IdOperacaoAlcadaDescontoSuperior == maiorAlcada).FirstOrDefault();
-                        item.StatusDescontoSuperior = true;
-                        item.IdUsuarioDescontoSuperior = p.IdUsuarioDescontoSuperior;
-                        item.DataHoraDescontoSuperior = p.DataHoraDescontoSuperior;
-                    }
-                }
-            }
-
-            return prepedidoProdutos;
+            
+            return prepedidoProdutosTeste;
         }
 
         public ListaConsultaGerencialOrcamentoResponse ConsultaGerencial(ConsultaGerencialOrcamentoRequest request)
