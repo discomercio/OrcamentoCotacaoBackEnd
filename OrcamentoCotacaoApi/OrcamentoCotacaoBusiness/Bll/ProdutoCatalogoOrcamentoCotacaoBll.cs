@@ -750,7 +750,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     retorno.Mensagem = "Ops! Falha ao atualizar propriedade.";
                 }
                 var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogado.TipoUsuario,
-                    usuarioLogado.Id, produtoCatalogoPropriedade.loja, null, null, null,
+                    usuarioLogado.Id, null, null, null, null,
                     InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
 
                 await dbGravacao.SaveChangesAsync();
