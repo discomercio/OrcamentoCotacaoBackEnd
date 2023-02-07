@@ -918,7 +918,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             return propriedadesUtilizadas;
         }
 
-        public async Task<bool> ExcluirPropriedades(int idPropriedade, UsuarioLogin usuarioLogado, string loja, string ip)
+        public async Task<bool> ExcluirPropriedades(int idPropriedade, UsuarioLogin usuarioLogado, string ip)
         {
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
@@ -934,7 +934,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     string log = $"Propriedade: {logExclusao}";
                     var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogado.TipoUsuario,
-                        usuarioLogado.Id, loja, null, null, null,
+                        usuarioLogado.Id, null, null, null, null,
                         InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
 
                     dbGravacao.transacao.Commit();

@@ -683,7 +683,7 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpPost("ExcluirPropriedades/{idPropriedade}")]
-        public async Task<IActionResult> ExcluirPropriedades(int idPropriedade, string lojaLogada)
+        public async Task<IActionResult> ExcluirPropriedades(int idPropriedade)
         {
             var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
@@ -693,7 +693,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
             string ip = HttpContext.Connection.RemoteIpAddress.ToString();
-            var response = await _bll.ExcluirPropriedades(idPropriedade, LoggedUser, lojaLogada, ip);
+            var response = await _bll.ExcluirPropriedades(idPropriedade, LoggedUser, ip);
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. ArquivoController/ExcluirPropriedades/POST - Response => [{response}].");
 
