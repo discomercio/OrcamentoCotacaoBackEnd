@@ -596,7 +596,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 if (!string.IsNullOrEmpty(logOpcoes)) log += $"\rLista de valores válidos:\r   {logOpcoes}";
 
                 var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogado.TipoUsuario,
-                    usuarioLogado.Id, produtoCatalogoPropriedade.loja, null, null, null,
+                    usuarioLogado.Id, null, null, null, null,
                     InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
 
                 dbGravacao.transacao.Commit();
