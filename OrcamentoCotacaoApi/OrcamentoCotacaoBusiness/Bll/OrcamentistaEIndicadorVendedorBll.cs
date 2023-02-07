@@ -183,7 +183,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 string campoAOmitir = "|Senha|datastamp|";
                 string log = $"id={tOrcamentistaIndicadorVendedor.Id}; {UtilsGlobais.Util.MontalogComparacao(retorno, tOrcamentistaIndicadorVendedor, "", campoAOmitir)}";
 
-                var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogado.TipoUsuario, usuarioLogado.Id, model.Loja, null, null, null,
+                var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogado.TipoUsuario, usuarioLogado.Id, usuarioLogado.Loja, null, null, null,
                     InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO,
                     cfgOperacao.Id, ip);
 
