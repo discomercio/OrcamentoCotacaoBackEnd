@@ -104,7 +104,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public async Task<string> Atualizar(TprodutoCatalogo produtoCatalogo, IFormFile arquivo, string caminho,
-            string lojaLogada, string ip, UsuarioLogin usuarioLogin)
+            string ip, UsuarioLogin usuarioLogin)
         {
             var retornoValidacao = await ValidarTiposPropriedadesProdutoCatalogo(produtoCatalogo.campos);
 
@@ -206,7 +206,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     {
                         return "Ops! Falha ao editar produto.";
                     }
-                    var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, lojaLogada, null, null, null,
+                    var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, null, null, null, null,
                         InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
 
                     dbGravacao.transacao.Commit();
