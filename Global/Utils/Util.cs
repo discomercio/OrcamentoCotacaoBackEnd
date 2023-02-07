@@ -684,12 +684,20 @@ namespace UtilsGlobais
                 if (column != null)
                 {
                     string coluna = column.Name;
-                    if (!campos_a_omitir.Contains("|" + coluna+ "|"))
+                    if (!campos_a_omitir.Contains("|" + coluna + "|"))
                     {
                         //pegando o valor coluna
                         var value = (c.GetValue(obj, null));
                         if (value == null)
                             log = log + coluna + "=" + "\"\"" + "; ";
+                        else if (value.GetType().Name == "DateTime")
+                        {
+                            DateTime data = new DateTime();
+                            if (DateTime.TryParse(value.ToString(), out data))
+                            {
+                                log = log + coluna + "=" + data.ToString("G", new CultureInfo("pt-BR")) + "; ";
+                            }
+                        }
                         else if (string.IsNullOrEmpty(value.ToString()))
                             log = log + coluna + "=" + "\"\"" + "; ";
                         else
@@ -711,24 +719,44 @@ namespace UtilsGlobais
             foreach (var propNovo in lstPropertyNovo)
             {
                 var coluna = (ColumnAttribute)Attribute.GetCustomAttribute(propNovo, typeof(ColumnAttribute));
-                if(coluna == null) continue;
+                if (coluna == null) continue;
 
                 if (camposAOmitir.Contains($"|{coluna.Name}|")) continue;
 
                 var propAntigo = lstPropertyAntigo.Where(x => x.Name == propNovo.Name).FirstOrDefault();
                 if (propAntigo == null) continue;
 
-                var valorAntigo = propAntigo.GetValue(objAntigo, null)??"";
-                var valorNovo = propNovo.GetValue(objNovo, null)??"";
-                
-                if(valorAntigo == null && valorNovo == null) continue;
+                var valorAntigo = propAntigo.GetValue(objAntigo, null) ?? "";
+                var valorNovo = propNovo.GetValue(objNovo, null) ?? "";
 
-                if(propAntigo.Name == "Guid" && propNovo.Name == "Guid")
+                if (valorAntigo == null && valorNovo == null) continue;
+
+                if (propAntigo.Name == "Guid" && propNovo.Name == "Guid")
                 {
                     valorNovo = valorNovo?.ToString();
                     valorAntigo = valorAntigo?.ToString();
                 }
+                if (valorNovo.GetType().Name == "DateTime")
+                {
+                    DateTime data = new DateTime();
+                    if (DateTime.TryParse(valorNovo.ToString(), out data))
+                    {
+                        valorNovo = data.ToString("G", new CultureInfo("pt-BR"));
 
+                        DateTime dataAntiga = new DateTime();
+                        if (DateTime.TryParse(valorAntigo.ToString(), out dataAntiga))
+                        {
+                            valorAntigo = dataAntiga.ToString("G", new CultureInfo("pt-BR"));
+                        }
+                    }
+                }
+                if (valorNovo.GetType().Name == "Decimal")
+                {
+                    decimal decimalAntigo = 0M;
+                    if (decimal.TryParse(valorAntigo.ToString(), out decimalAntigo))
+                        valorAntigo = Math.Round(decimalAntigo, 2);
+
+                }
                 if (!valorAntigo.Equals(valorNovo))
                 {
                     log = log + coluna.Name + $": {(string.IsNullOrEmpty(valorAntigo.ToString()) ? "\"\"" : valorAntigo)} => {(string.IsNullOrEmpty(valorNovo.ToString()) ? "\"\"" : valorNovo)}; ";
@@ -843,7 +871,7 @@ namespace UtilsGlobais
                     throw ex;
                 }
             }
-                
+
 
             return tLogV2;
         }
