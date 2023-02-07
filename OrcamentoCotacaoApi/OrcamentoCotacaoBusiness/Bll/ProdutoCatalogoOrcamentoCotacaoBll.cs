@@ -223,7 +223,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             TprodutoCatalogo produtoCatalogo1,
             string usuario_cadastro,
             IFormFile arquivo,
-            string caminho, UsuarioLogin usuarioLogin, string loja, string ip)
+            string caminho, UsuarioLogin usuarioLogin, string ip)
         {
             var retornoValidacao = await ValidarTiposPropriedadesProdutoCatalogo(produtoCatalogo1.campos);
 
@@ -316,7 +316,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         log = log + logImagem;
                     }
 
-                    var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, loja, null, null, null,
+                    var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, null, null, null, null,
                         InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
 
                     dbGravacao.transacao.Commit();

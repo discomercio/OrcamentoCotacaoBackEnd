@@ -496,7 +496,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
                 _logger.LogInformation("Criar - Request: {0}", System.Text.Json.JsonSerializer.Serialize(tProduto));
 
-                var retorno = await _bll.Criar(tProduto, usuario, arquivo, _appSettings.Value.ImgCaminho, LoggedUser, lojaLogada, ip);
+                var retorno = await _bll.Criar(tProduto, usuario, arquivo, _appSettings.Value.ImgCaminho, LoggedUser, ip);
 
                 if (retorno != null)
                 {
