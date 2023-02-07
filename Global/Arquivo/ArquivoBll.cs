@@ -270,7 +270,7 @@ namespace Arquivo
                     if (!string.IsNullOrEmpty(log))
                     {
                         log = $"id={retorno.Id}; {log}";
-                        var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, request.Loja, null, null, null,
+                        var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, null, null, null, null,
                         InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, request.IP);
                     }
 
