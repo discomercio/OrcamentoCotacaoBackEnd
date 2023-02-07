@@ -108,7 +108,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 string omitirCampos = "|UsuarioCadastro|DataCadastro|UsuarioUltimaAlteracao|DataUltimaAlteracao|DataUltimaAlteracaoSenha|Datastamp|Senha|QtdeConsecutivaFalhaLogin|StLoginBloqueadoAutomatico|DataHoraBloqueadoAutomatico|EnderecoIpBloqueadoAutomatico|datastamp|";
                 string log = UtilsGlobais.Util.MontaLog(retorno, "", omitirCampos);
 
-                var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogado.TipoUsuario, usuarioLogado.Id, model.Loja, null, null, null,
+                var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogado.TipoUsuario, usuarioLogado.Id, usuarioLogado.Loja, null, null, null,
                     InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO,
                     cfgOperacao.Id, ip);
 
