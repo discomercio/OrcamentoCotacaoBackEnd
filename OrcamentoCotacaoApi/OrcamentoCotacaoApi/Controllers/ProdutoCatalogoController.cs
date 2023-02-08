@@ -393,13 +393,13 @@ namespace OrcamentoCotacaoApi.Controllers
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
             var tProduto = JsonConvert.DeserializeObject<TprodutoCatalogo>(form["produto"]);
-            var lojaLogada = form["loja"];
+            //var lojaLogada = form["loja"];
             var ip = Request.HttpContext.Connection.RemoteIpAddress.ToString();
             tProduto.UsuarioEdicao = LoggedUser.Apelido;
 
             _logger.LogInformation("Atualizar - Request: {0}", System.Text.Json.JsonSerializer.Serialize(tProduto));
 
-            var retorno = await _bll.Atualizar(tProduto, arquivo, _appSettings.Value.ImgCaminho, lojaLogada, ip, LoggedUser);
+            var retorno = await _bll.Atualizar(tProduto, arquivo, _appSettings.Value.ImgCaminho, ip, LoggedUser);
 
             if (retorno != null)
             {
@@ -496,7 +496,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
                 _logger.LogInformation("Criar - Request: {0}", System.Text.Json.JsonSerializer.Serialize(tProduto));
 
-                var retorno = await _bll.Criar(tProduto, usuario, arquivo, _appSettings.Value.ImgCaminho, LoggedUser, lojaLogada, ip);
+                var retorno = await _bll.Criar(tProduto, usuario, arquivo, _appSettings.Value.ImgCaminho, LoggedUser, ip);
 
                 if (retorno != null)
                 {
@@ -683,7 +683,7 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpPost("ExcluirPropriedades/{idPropriedade}")]
-        public async Task<IActionResult> ExcluirPropriedades(int idPropriedade, string lojaLogada)
+        public async Task<IActionResult> ExcluirPropriedades(int idPropriedade)
         {
             var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
@@ -693,7 +693,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
             string ip = HttpContext.Connection.RemoteIpAddress.ToString();
-            var response = await _bll.ExcluirPropriedades(idPropriedade, LoggedUser, lojaLogada, ip);
+            var response = await _bll.ExcluirPropriedades(idPropriedade, LoggedUser, ip);
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. ArquivoController/ExcluirPropriedades/POST - Response => [{response}].");
 
