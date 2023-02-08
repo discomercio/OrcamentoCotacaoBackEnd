@@ -4,7 +4,7 @@ using System.Text;
 
 namespace OrcamentoCotacaoBusiness.Models.Response.Dashoard
 {
-    public class DashoardResponse : UtilsGlobais.RequestResponse.ResponseBase
+    public class DashoardResponse
     {
 
         public string NumeroOrcamento { get; set; }

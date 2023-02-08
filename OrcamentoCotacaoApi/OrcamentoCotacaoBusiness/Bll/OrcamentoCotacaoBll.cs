@@ -305,8 +305,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     Parceiro = parceiros.FirstOrDefault(v => v.IdIndicador == x.IdIndicador) == null ? "-" : parceiros.FirstOrDefault(v => v.IdIndicador == x.IdIndicador).Apelido,
                     VendedorParceiro = vendParceiros.FirstOrDefault(v => v.Id == x.IdIndicadorVendedor)?.Nome,
                     IdIndicadorVendedor = vendParceiros.FirstOrDefault(v => v.Id == x.IdIndicadorVendedor)?.Id,
-                    DtExpiracao = x.Validade,
-                    Sucesso = true
+                    DtExpiracao = x.Validade
+                    
                 })); ;
 
             }            
