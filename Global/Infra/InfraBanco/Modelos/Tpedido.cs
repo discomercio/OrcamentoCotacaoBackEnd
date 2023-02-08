@@ -707,6 +707,36 @@ namespace InfraBanco.Modelos
 
         [Column("perc_max_comissao_e_desconto_padrao")]
         public float? Perc_max_comissao_e_desconto_padrao { get; set; }
+
+        [Column("InstaladorInstalaIdTipoUsuarioContexto")]
+        public short? InstaladorInstalaIdTipoUsuarioContexto { get; set; }
+
+        [Column("InstaladorInstalaIdUsuarioUltAtualiz")]
+        public int? InstaladorInstalaIdUsuarioUltAtualiz { get; set; }
+
+        [Column("GarantiaIndicadorIdTipoUsuarioContexto")]
+        public short? GarantiaIndicadorIdTipoUsuarioContexto { get; set; }
+
+        [Column("GarantiaIndicadorIdUsuarioUltAtualiz")]
+        public int? GarantiaIndicadorIdUsuarioUltAtualiz { get; set; }
+
+        [Column("EtgImediataIdTipoUsuarioContexto")]
+        public short? EtgImediataIdTipoUsuarioContexto { get; set; }
+
+        [Column("EtgImediataIdUsuarioUltAtualiz")]
+        public int? EtgImediataIdUsuarioUltAtualiz { get; set; }
+
+        [Column("PrevisaoEntregaIdTipoUsuarioContexto")]
+        public short? PrevisaoEntregaIdTipoUsuarioContexto { get; set; }
+
+        [Column("PrevisaoEntregaIdUsuarioUltAtualiz")]
+        public int? PrevisaoEntregaIdUsuarioUltAtualiz { get; set; }
+
+        [Column("UsuarioCadastroIdTipoUsuarioContexto")]
+        public short? UsuarioCadastroIdTipoUsuarioContexto { get; set; }
+
+        [Column("UsuarioCadastroId")]
+        public int? UsuarioCadastroId { get; set; }
     }
 }
 
