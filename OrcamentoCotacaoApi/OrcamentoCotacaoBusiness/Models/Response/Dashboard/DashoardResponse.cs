@@ -13,7 +13,6 @@ namespace OrcamentoCotacaoBusiness.Models.Response.Dashoard
         public string VendedorParceiro { get; set; }
         public int? IdIndicadorVendedor { get; set; }
         public DateTime? DtExpiracao { get; set; }
-        public DateTime? DataServidor { get; set; }
 
     }
 }

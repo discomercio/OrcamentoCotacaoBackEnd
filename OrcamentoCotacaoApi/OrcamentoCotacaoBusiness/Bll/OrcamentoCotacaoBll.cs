@@ -306,10 +306,10 @@ namespace OrcamentoCotacaoBusiness.Bll
                     VendedorParceiro = vendParceiros.FirstOrDefault(v => v.Id == x.IdIndicadorVendedor)?.Nome,
                     IdIndicadorVendedor = vendParceiros.FirstOrDefault(v => v.Id == x.IdIndicadorVendedor)?.Id,
                     DtExpiracao = x.Validade,
-                    DataServidor = new DateTime()
-                }));
+                    Sucesso = true
+                })); ;
 
-            }
+            }            
 
             return listaDashboard;
         }
