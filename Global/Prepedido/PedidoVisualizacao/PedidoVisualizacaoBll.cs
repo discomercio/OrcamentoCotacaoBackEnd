@@ -512,9 +512,31 @@ namespace Prepedido.PedidoVisualizacao
                 detalhesNf.NumeroNF = tPedidoPai.Obs_2;//consta somente no pai
                 detalhesNf.NFSimples = tPedidoPai.Obs_3;
 
+                string nomeUsuario = null;
+                if (tPedidoPai.PrevisaoEntregaIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.UsuarioInterno)
+                {
+                    nomeUsuario = (from c in db.Tusuario
+                                   where c.Id == tPedidoPai.PrevisaoEntregaIdUsuarioUltAtualiz
+                                   select c.Usuario).FirstOrDefault();
+                }
+                if (tPedidoPai.PrevisaoEntregaIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.Parceiro)
+                {
+                    nomeUsuario = (from c in db.TorcamentistaEindicador
+                                   where c.IdIndicador == tPedidoPai.PrevisaoEntregaIdUsuarioUltAtualiz
+                                   select c.Apelido).FirstOrDefault();
+                }
+                if (tPedidoPai.PrevisaoEntregaIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.VendedorParceiro)
+                {
+                    //buscar na t_orcamentista_indicador_vendedor nome amigável
+                    var nomeCompleto = (from c in db.TorcamentistaEindicadorVendedor
+                                        where c.Id == tPedidoPai.PrevisaoEntregaIdUsuarioUltAtualiz
+                                        select c.Nome).FirstOrDefault();
+                    nomeUsuario = $"[VP] {nomeCompleto.Split(" ")[0]}";
+                }
+
                 detalhesNf.PrevisaoEntrega = tPedidoPai.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
                     tPedidoPai.PrevisaoEntregaData?.ToString("dd/MM/yyyy") + " ("
-                    + Texto.iniciaisEmMaiusculas(tPedidoPai.PrevisaoEntregaUsuarioUltAtualiz) +
+                    + Texto.iniciaisEmMaiusculas(nomeUsuario) +
                     " - " + tPedidoPai.PrevisaoEntregaData?.ToString("dd/MM/yyyy") + " "
                     + tPedidoPai.PrevisaoEntregaDtHrUltAtualiz?.ToString("HH:mm") + ")" : null;
 
@@ -647,24 +669,49 @@ namespace Prepedido.PedidoVisualizacao
 
         private string ObterEntregaImediata(Tpedido p)
         {
-            string retorno = "";
-            string dataFormatada = "";
-            //varificar a variavel st_etg_imediata para saber se é sim ou não pela constante 
-            //caso não atenda nenhuma das condições o retorno fica como vazio.
-            if (p.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO)
-                retorno = "NÃO";
-            else if (p.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM)
-                retorno = "SIM";
-            //formatar a data da variavel etg_imediata_data
-            if (retorno != "")
-                dataFormatada = p.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm");
-            //verificar se o retorno acima esta vazio
-            if (!string.IsNullOrEmpty(dataFormatada))
-                //retorno += " (" + IniciaisEmMaisculas(p.Etg_Imediata_Usuario) + " - " + dataFormatada + ")";
-                retorno += " (" + Texto.iniciaisEmMaiusculas(p.Etg_Imediata_Usuario) + " - " + dataFormatada + ")";
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                string nomeUsuario = null;
+                if (p.EtgImediataIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.UsuarioInterno)
+                {
+                    nomeUsuario = (from c in db.Tusuario
+                                   where c.Id == p.EtgImediataIdUsuarioUltAtualiz
+                                   select c.Usuario).FirstOrDefault();
+                }
+                if (p.EtgImediataIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.Parceiro)
+                {
+                    nomeUsuario = (from c in db.TorcamentistaEindicador
+                                   where c.IdIndicador == p.EtgImediataIdUsuarioUltAtualiz
+                                   select c.Apelido).FirstOrDefault();
+                }
+                if (p.EtgImediataIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.VendedorParceiro)
+                {
+                    //buscar na t_orcamentista_indicador_vendedor nome amigável
+                    var nomeCompleto = (from c in db.TorcamentistaEindicadorVendedor
+                                        where c.Id == p.EtgImediataIdUsuarioUltAtualiz
+                                        select c.Nome).FirstOrDefault();
+                    nomeUsuario = $"[VP] {nomeCompleto.Split(" ")[0]}"; //paliativo pois não temos um nome curto para esse usuário
+                }
+                string retorno = "";
+                string dataFormatada = "";
+                //varificar a variavel st_etg_imediata para saber se é sim ou não pela constante 
+                //caso não atenda nenhuma das condições o retorno fica como vazio.
+                if (p.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO)
+                    retorno = "NÃO";
+                else if (p.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM)
+                    retorno = "SIM";
+                //formatar a data da variavel etg_imediata_data
+                if (retorno != "")
+                    dataFormatada = p.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm");
+                //verificar se o retorno acima esta vazio
+                if (!string.IsNullOrEmpty(dataFormatada))
+                    //retorno += " (" + IniciaisEmMaisculas(p.Etg_Imediata_Usuario) + " - " + dataFormatada + ")";
+                    retorno += " (" + Texto.iniciaisEmMaiusculas(nomeUsuario) + " - " + dataFormatada + ")";
 
 
-            return retorno;
+                return retorno;
+            }
+
         }
 
         private async Task<string> ObterNomeTransportadora(string idTransportadora)

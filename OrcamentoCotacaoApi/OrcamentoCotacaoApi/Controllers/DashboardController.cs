@@ -47,7 +47,8 @@ namespace OrcamentoCotacaoApi.Controllers
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar essa atividade!" });
 
             request.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
-            request.Usuario = LoggedUser.Apelido;            
+            request.Usuario = LoggedUser.Apelido;
+            request.IP = HttpContext.Connection.RemoteIpAddress.ToString();
 
             _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. DashboardController/DashboardOrcamentoParceiro/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
@@ -67,6 +68,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             request.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
             request.Usuario = LoggedUser.Apelido;
+            request.IP = HttpContext.Connection.RemoteIpAddress.ToString();
 
             _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. DashboardController/DashboardOrcamentoVendedorParceiro/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
@@ -86,6 +88,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             request.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
             request.Usuario = LoggedUser.Apelido;
+            request.IP = HttpContext.Connection.RemoteIpAddress.ToString();
 
             _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. DashboardController/DashboardOrcamentoVendedorInterno/GET - Request => [{JsonSerializer.Serialize(request)}].");
 

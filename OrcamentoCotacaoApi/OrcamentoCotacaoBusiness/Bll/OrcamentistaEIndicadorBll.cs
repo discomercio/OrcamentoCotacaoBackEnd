@@ -52,8 +52,6 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 var parceiros = orcamentistaEIndicadorBll.PorFiltro(filtro);
 
-                if (parceiros.Count == 0) return response;
-
                 response.Parceiros = new List<ParceiroComboResponse>();
                 foreach (var parceiro in parceiros)
                 {

@@ -305,11 +305,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                     Parceiro = parceiros.FirstOrDefault(v => v.IdIndicador == x.IdIndicador) == null ? "-" : parceiros.FirstOrDefault(v => v.IdIndicador == x.IdIndicador).Apelido,
                     VendedorParceiro = vendParceiros.FirstOrDefault(v => v.Id == x.IdIndicadorVendedor)?.Nome,
                     IdIndicadorVendedor = vendParceiros.FirstOrDefault(v => v.Id == x.IdIndicadorVendedor)?.Id,
-                    DtExpiracao = x.Validade,
-                    DataServidor = new DateTime()
-                }));
+                    DtExpiracao = x.Validade
+                    
+                })); ;
 
-            }
+            }            
 
             return listaDashboard;
         }
@@ -2014,6 +2014,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             var json = JsonSerializer.Serialize(request);
             var filtro = JsonSerializer.Deserialize<TorcamentoCotacaoConsultaGerencialFiltro>(json);
 
+            //preciso incluir um filtro para ser difStatusDe para trazer onde status != aprovado (t_cfg_orcamento_..._status)
             var retorno = _orcamentoCotacaoBll.ConsultaGerencial(filtro).ToList();
 
             response.QtdeRegistros = retorno.Count();

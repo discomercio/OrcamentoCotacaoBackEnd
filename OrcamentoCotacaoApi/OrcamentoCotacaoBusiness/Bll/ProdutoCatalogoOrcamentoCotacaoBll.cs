@@ -104,7 +104,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public async Task<string> Atualizar(TprodutoCatalogo produtoCatalogo, IFormFile arquivo, string caminho,
-            string lojaLogada, string ip, UsuarioLogin usuarioLogin)
+            string ip, UsuarioLogin usuarioLogin)
         {
             var retornoValidacao = await ValidarTiposPropriedadesProdutoCatalogo(produtoCatalogo.campos);
 
@@ -206,7 +206,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     {
                         return "Ops! Falha ao editar produto.";
                     }
-                    var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, lojaLogada, null, null, null,
+                    var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, null, null, null, null,
                         InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
 
                     dbGravacao.transacao.Commit();
@@ -223,7 +223,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             TprodutoCatalogo produtoCatalogo1,
             string usuario_cadastro,
             IFormFile arquivo,
-            string caminho, UsuarioLogin usuarioLogin, string loja, string ip)
+            string caminho, UsuarioLogin usuarioLogin, string ip)
         {
             var retornoValidacao = await ValidarTiposPropriedadesProdutoCatalogo(produtoCatalogo1.campos);
 
@@ -316,7 +316,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         log = log + logImagem;
                     }
 
-                    var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, loja, null, null, null,
+                    var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, null, null, null, null,
                         InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
 
                     dbGravacao.transacao.Commit();
@@ -596,7 +596,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 if (!string.IsNullOrEmpty(logOpcoes)) log += $"\rLista de valores válidos:\r   {logOpcoes}";
 
                 var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogado.TipoUsuario,
-                    usuarioLogado.Id, produtoCatalogoPropriedade.loja, null, null, null,
+                    usuarioLogado.Id, null, null, null, null,
                     InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
 
                 dbGravacao.transacao.Commit();
@@ -750,7 +750,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     retorno.Mensagem = "Ops! Falha ao atualizar propriedade.";
                 }
                 var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogado.TipoUsuario,
-                    usuarioLogado.Id, produtoCatalogoPropriedade.loja, null, null, null,
+                    usuarioLogado.Id, null, null, null, null,
                     InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
 
                 await dbGravacao.SaveChangesAsync();
@@ -918,7 +918,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             return propriedadesUtilizadas;
         }
 
-        public async Task<bool> ExcluirPropriedades(int idPropriedade, UsuarioLogin usuarioLogado, string loja, string ip)
+        public async Task<bool> ExcluirPropriedades(int idPropriedade, UsuarioLogin usuarioLogado, string ip)
         {
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
@@ -934,7 +934,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     string log = $"Propriedade: {logExclusao}";
                     var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogado.TipoUsuario,
-                        usuarioLogado.Id, loja, null, null, null,
+                        usuarioLogado.Id, null, null, null, null,
                         InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
 
                     dbGravacao.transacao.Commit();
