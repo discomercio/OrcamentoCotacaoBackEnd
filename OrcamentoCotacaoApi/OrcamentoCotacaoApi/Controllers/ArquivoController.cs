@@ -68,7 +68,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             var response = await _arquivoBll.ArquivoDownload(request);
 
-            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ArquivoController/Download/GET - Response => [{JsonSerializer.Serialize(response)}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ArquivoController/Download/GET - Response => [{JsonSerializer.Serialize(response.Nome)}].");
 
             return Ok(response);
         }
