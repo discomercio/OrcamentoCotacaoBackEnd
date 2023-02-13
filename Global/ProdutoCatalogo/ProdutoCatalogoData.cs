@@ -595,6 +595,22 @@ namespace ProdutoCatalogo
             return false;
         }
 
+        public bool ExcluirItensPorIdProdutoCatalogoComTransacao(int id, ContextoBdGravacao contextoBdGravacao)
+        {
+            contextoBdGravacao.TprodutoCatalogoItem.Remove(new TprodutoCatalogoItem() { IdProdutoCatalogo = id });
+            contextoBdGravacao.SaveChanges();
+
+            return true;
+        }
+
+        public bool ExcluirPorIdProdutoCatalogoComTransacao(int id, ContextoBdGravacao contextoBdGravacao)
+        {
+            contextoBdGravacao.TprodutoCatalogo.Remove(new TprodutoCatalogo() { Id = id});
+            contextoBdGravacao.SaveChanges();
+
+            return true;
+        }
+
         public bool CriarImagens(TprodutoCatalogoImagem img)
         {
             var saida = false;
