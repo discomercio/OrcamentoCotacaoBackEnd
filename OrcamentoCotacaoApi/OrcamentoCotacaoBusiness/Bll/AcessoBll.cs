@@ -836,12 +836,20 @@ namespace OrcamentoCotacaoBusiness.Bll
                                                               && b.st_envio_mensagem_habilitado == 1
                                                               select b).FirstOrDefaultAsync();
 
-                            var ultimoIdTemailSndsvcMensagem = await (from b in dbgravacao.TemailSndsvcMensagem.OrderByDescending(p => p.id)
-                                                                      select b.id).FirstOrDefaultAsync();
+                            /*var ultimoIdTemailSndsvcMensagem = await (from b in dbgravacao.TemailSndsvcMensagem.OrderByDescending(p => p.id)
+                                                                      select b.id).FirstOrDefaultAsync();*/
+
+                            var tFinControle = await (from t in dbgravacao.TfinControle.OrderByDescending(p => p.Id == "T_EMAILSNDSVC_MENSAGEM")
+                                                                      select t).FirstOrDefaultAsync();
+
+                            tFinControle.Dt_hr_ult_atualizacao = DateTime.Now;
+                            tFinControle.Nsu = tFinControle.Nsu + 1;
+                            dbgravacao.Update(tFinControle);
+
 
                             var tEmailSndsvcMensagem = new TemailSndsvcMensagem()
                             {
-                                id = (ultimoIdTemailSndsvcMensagem + 1),
+                                id = (tFinControle.Nsu + 1),
                                 id_remetente = emailSndsvcRemetente.id,
                                 dt_cadastro = DateTime.Now.Date,
                                 dt_hr_cadastro = DateTime.Now,
