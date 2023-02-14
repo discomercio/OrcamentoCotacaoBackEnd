@@ -849,7 +849,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                             var tEmailSndsvcMensagem = new TemailSndsvcMensagem()
                             {
-                                id = (tFinControle.Nsu + 1),
+                                id = tFinControle.Nsu,
                                 id_remetente = emailSndsvcRemetente.id,
                                 dt_cadastro = DateTime.Now.Date,
                                 dt_hr_cadastro = DateTime.Now,
