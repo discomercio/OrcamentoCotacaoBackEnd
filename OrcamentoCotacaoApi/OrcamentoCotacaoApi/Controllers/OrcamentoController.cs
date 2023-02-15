@@ -423,7 +423,13 @@ namespace OrcamentoCotacaoApi.Controllers
 
             var response = _orcamentoBll.ConsultaGerencial(request);
 
-            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. OrcamentoController/ConsultaGerencial/GET - Response => [{JsonSerializer.Serialize(response)}].");
+            var ret = new
+            {
+                QtdConsultaGerencial = response.LstConsultaGerencialOrcamentoResponse.Count,
+                QtdeRegistros = response.QtdeRegistros
+            };
+
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. OrcamentoController/ConsultaGerencial/POST - Response => [{JsonSerializer.Serialize(ret)}].");
 
             return Ok(response);
         }
