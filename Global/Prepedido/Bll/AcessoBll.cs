@@ -20,25 +20,20 @@ namespace Prepedido.Bll
 
         public async Task<string> ValidarUsuario(string apelido, string senha_digitada_datastamp, bool somenteValidar)
         {
+            string retorno = null;
             apelido = apelido.ToUpper().Trim();
 
-            var db = contextoProvider.GetContextoLeitura();
-            //Validar o dados no bd
-            var dados = from c in db.TorcamentistaEindicador
-                        where c.Apelido == apelido
-                        select new
-                        {
-                            c.Razao_Social_Nome,
-                            c.Senha,
-                            c.Datastamp,
-                            c.Dt_Ult_Alteracao_Senha,
-                            c.Hab_Acesso_Sistema,
-                            c.Status,
-                            c.Loja
-                        };
+            TorcamentistaEindicador dados;
 
-            string retorno = null;
-            var t = await dados.FirstOrDefaultAsync();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                //Validar o dados no bd
+                dados = await (from c in db.TorcamentistaEindicador
+                               where c.Apelido == apelido
+                               select c).FirstOrDefaultAsync();
+            }
+
+            var t = dados;
 
             //se o apelido nao existe
             if (t == null)
@@ -51,6 +46,7 @@ namespace Prepedido.Bll
                 return await Task.FromResult(Constantes.ERR_USUARIO_BLOQUEADO);
             if (t.Loja == "")
                 return await Task.FromResult(Constantes.ERR_IDENTIFICACAO_LOJA);
+
 
             if (!somenteValidar)
             {
@@ -88,11 +84,14 @@ namespace Prepedido.Bll
 
         public async Task<string> BuscarLojaUsuario(string apelido)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            string loja = string.Empty;
 
-            var loja = (from c in db.TorcamentistaEindicador
-                        where c.Apelido == apelido
-                        select c.Loja).Single();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                loja = (from c in db.TorcamentistaEindicador
+                            where c.Apelido == apelido
+                            select c.Loja).Single();
+            }
 
             return await Task.FromResult(loja);
         }

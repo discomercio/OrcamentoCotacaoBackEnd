@@ -984,20 +984,20 @@ namespace Prepedido.PedidoVisualizacao
 
         private async Task<IEnumerable<MensagemOcorrenciaPedidoDados>> ObterMensagemOcorrencia(int idOcorrencia)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                var msg = from c in db.TpedidoOcorrenciaMensagem
+                          where c.Id_Ocorrencia == idOcorrencia
+                          select new MensagemOcorrenciaPedidoDados
+                          {
+                              Dt_Hr_Cadastro = c.Dt_Hr_Cadastro,
+                              Usuario = c.Usuario_Cadastro,
+                              Loja = c.Loja,
+                              Texto_Mensagem = c.Texto_Mensagem
+                          };
 
-            var msg = from c in db.TpedidoOcorrenciaMensagem
-                      where c.Id_Ocorrencia == idOcorrencia
-                      select new MensagemOcorrenciaPedidoDados
-                      {
-                          Dt_Hr_Cadastro = c.Dt_Hr_Cadastro,
-                          Usuario = c.Usuario_Cadastro,
-                          Loja = c.Loja,
-                          Texto_Mensagem = c.Texto_Mensagem
-                      };
-
-            return await Task.FromResult(msg);
-
+                return await Task.FromResult(msg);
+            }
         }
 
         public string DescricaoAnaliseCreditoCadastroPedido(string codigo, bool visualizacao, string numero_pedido, string apelido)

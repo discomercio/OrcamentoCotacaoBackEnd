@@ -78,10 +78,10 @@ namespace OrcamentistaEIndicadorVendedor
             if (oeiv == null) throw new KeyNotFoundException();
 
 
-            var oei = _dataIndicador.PorFiltro(new TorcamentistaEindicadorFiltro()
-            {
-                apelido = parceiro
-            });
+            //var oei = _dataIndicador.PorFiltro(new TorcamentistaEindicadorFiltro()
+            //{
+            //    apelido = parceiro
+            //});
 
             // Parceiro
             if ((int)tipoUsuario ==2)

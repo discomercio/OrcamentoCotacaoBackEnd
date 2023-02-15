@@ -32,9 +32,15 @@ namespace Cliente
             bool validarReferenciasBancasUsandoLstBanco, //durante o cadastro do pedido não queremos validar as referências bancárias porque elas não existem
             List<Cliente.Dados.Referencias.RefBancariaClienteDados> lstRefBancaria,
             List<Cliente.Dados.Referencias.RefComercialClienteDados> lstRefComercial,
-            List<string> lstErros, ContextoBdProvider contextoProvider, CepBll cepBll, IBancoNFeMunicipio bancoNFeMunicipio,
-            List<Cliente.Dados.ListaBancoDados> lstBanco, bool flagMsg_IE_Cadastro_PF,
-            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel, bool novoCliente, Tcliente cliente = null)
+            List<string> lstErros, 
+            ContextoBdProvider contextoProvider, 
+            CepBll cepBll, 
+            IBancoNFeMunicipio bancoNFeMunicipio,
+            List<Cliente.Dados.ListaBancoDados> lstBanco, 
+            bool flagMsg_IE_Cadastro_PF,
+            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavel, 
+            bool novoCliente, 
+            Tcliente cliente = null)
         {
             if (dadosCliente != null)
             {

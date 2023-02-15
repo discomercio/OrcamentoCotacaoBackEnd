@@ -49,64 +49,72 @@ namespace FormaPagamento
 
         public async Task<int> GetMaximaQtdeParcelasCartaoVisa()
         {
-            var db = contextoProvider.GetContextoLeitura();
-            /*
-             * private string COD_VISANET_PRAZO_PAGTO_LOJA = "PRAZO_LOJA";
+            var qtdeParcelas = 0;
+
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+             /*
+                private string COD_VISANET_PRAZO_PAGTO_LOJA = "PRAZO_LOJA";
                 string SelectQtdeMaxParcelaCartaoVisa = "SELECT qtde_parcelas FROM t_PRAZO_PAGTO_VISANET WHERE tipo = @COD_VISANET_PRAZO_PAGTO_LOJA";
              */
-            var formaPagto = from c in db.TprazoPagtoVisanet
-                             where c.Tipo == Constantes.COD_VISANET_PRAZO_PAGTO_LOJA
-                             select c.Qtde_parcelas;
-            var qtdeParcelas = await formaPagto.FirstOrDefaultAsync();
+                var formaPagto = await (from c in db.TprazoPagtoVisanet
+                                 where c.Tipo == Constantes.COD_VISANET_PRAZO_PAGTO_LOJA
+                                 select c.Qtde_parcelas).FirstOrDefaultAsync();
+
+                qtdeParcelas = formaPagto;
+            }
+
             return qtdeParcelas;
         }
 
         private async Task<IEnumerable<AvistaDados>> ObterFormaPagtoAVista(string apelido, string tipo_pessoa)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            List<AvistaDados> formaPagto;
 
-            var formaPagtoTask = from c in db.TformaPagto
-                                 where c.Hab_a_vista == 1 &&
-                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
-                                         where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
-                                               d.Id_orcamentista_e_indicador == Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
-                                               d.Tipo_cliente == tipo_pessoa &&
-                                               d.St_restricao_ativa != 0
-                                         select d.Id_forma_pagto).Contains(c.Id)
-                                 orderby c.Ordenacao
-                                 select new AvistaDados
-                                 {
-                                     Id = c.Id,
-                                     Descricao = c.Descricao,
-                                     Ordenacao = c.Ordenacao
-                                 };
-
-            var formaPagto = await formaPagtoTask.ToListAsync();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                formaPagto = await (from c in db.TformaPagto
+                                    where c.Hab_a_vista == 1 &&
+                                          !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
+                                            where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
+                                                  d.Id_orcamentista_e_indicador == Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
+                                                  d.Tipo_cliente == tipo_pessoa &&
+                                                  d.St_restricao_ativa != 0
+                                            select d.Id_forma_pagto).Contains(c.Id)
+                                    orderby c.Ordenacao
+                                    select new AvistaDados
+                                    {
+                                        Id = c.Id,
+                                        Descricao = c.Descricao,
+                                        Ordenacao = c.Ordenacao
+                                    }).ToListAsync();
+            }
 
             return formaPagto;
         }
 
         private async Task<IEnumerable<ParcUnicaDados>> ObterFormaPagtoParcUnica(string apelido, string tipo_pessoa)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            List<ParcUnicaDados> formaPagto;
 
-            var formaPagtoTask = from c in db.TformaPagto
-                                 where c.Hab_parcela_unica == 1 &&
-                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
-                                         where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
-                                               d.Id_orcamentista_e_indicador == Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
-                                               d.Tipo_cliente == tipo_pessoa &&
-                                               d.St_restricao_ativa != 0
-                                         select d.Id_forma_pagto).Contains(c.Id)
-                                 orderby c.Ordenacao
-                                 select new ParcUnicaDados
-                                 {
-                                     Id = c.Id,
-                                     Descricao = c.Descricao,
-                                     Ordenacao = c.Ordenacao
-                                 };
-
-            var formaPagto = await formaPagtoTask.ToListAsync();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                formaPagto = await (from c in db.TformaPagto
+                                    where c.Hab_parcela_unica == 1 &&
+                                          !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
+                                            where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
+                                                  d.Id_orcamentista_e_indicador == Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
+                                                  d.Tipo_cliente == tipo_pessoa &&
+                                                  d.St_restricao_ativa != 0
+                                            select d.Id_forma_pagto).Contains(c.Id)
+                                    orderby c.Ordenacao
+                                    select new ParcUnicaDados
+                                    {
+                                        Id = c.Id,
+                                        Descricao = c.Descricao,
+                                        Ordenacao = c.Ordenacao
+                                    }).ToListAsync();
+            }
 
             return formaPagto;
         }
@@ -115,19 +123,18 @@ namespace FormaPagamento
         {
             bool retorno = false;
 
-            var db = contextoProvider.GetContextoLeitura();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                var flag = await (from c in db.TorcamentistaEIndicadorRestricaoFormaPagto
+                                  where c.Id_orcamentista_e_indicador == apelido &&
+                                        c.Id_forma_pagto == (short)Constantes.FormaPagto.ID_FORMA_PAGTO_CARTAO &&
+                                        c.Tipo_cliente == tipo_pessoa &&
+                                        c.St_restricao_ativa != 0
+                                  select c).ToListAsync();
 
-            var flagTask = from c in db.TorcamentistaEIndicadorRestricaoFormaPagto
-                           where c.Id_orcamentista_e_indicador == apelido &&
-                                 c.Id_forma_pagto == (short)Constantes.FormaPagto.ID_FORMA_PAGTO_CARTAO &&
-                                 c.Tipo_cliente == tipo_pessoa &&
-                                 c.St_restricao_ativa != 0
-                           select c;
-
-            var flag = await flagTask.ToListAsync();
-
-            if (!flag.Any())
-                retorno = true;
+                if (!flag.Any())
+                    retorno = true;
+            }
 
             return retorno;
         }
@@ -136,120 +143,123 @@ namespace FormaPagamento
         {
             bool retorno = false;
 
-            var db = contextoProvider.GetContextoLeitura();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                var flag = await (from c in db.TorcamentistaEIndicadorRestricaoFormaPagto
+                                  where c.Id_orcamentista_e_indicador == apelido &&
+                                        c.Id_forma_pagto == (short)Constantes.FormaPagto.ID_FORMA_PAGTO_CARTAO_MAQUINETA &&
+                                        c.Tipo_cliente == tipo_pessoa &&
+                                        c.St_restricao_ativa != 0
+                                  select c).ToListAsync();
 
-            var flagTask = from c in db.TorcamentistaEIndicadorRestricaoFormaPagto
-                           where c.Id_orcamentista_e_indicador == apelido &&
-                                 c.Id_forma_pagto == (short)Constantes.FormaPagto.ID_FORMA_PAGTO_CARTAO_MAQUINETA &&
-                                 c.Tipo_cliente == tipo_pessoa &&
-                                 c.St_restricao_ativa != 0
-                           select c;
-
-            var flag = await flagTask.ToListAsync();
-
-            if (!flag.Any())
-                retorno = true;
+                if (!flag.Any())
+                    retorno = true;
+            }
 
             return retorno;
         }
 
         private async Task<IEnumerable<ParcComEntradaDados>> ObterFormaPagtoParcComEntrada(string apelido, string tipo_pessoa)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            List<ParcComEntradaDados> formaPagto;
 
-            var formaPagtoTask = from c in db.TformaPagto
-                                 where c.Hab_entrada == 1 &&
-                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
-                                         where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
-                                               d.Id_orcamentista_e_indicador ==
-                                               Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
-                                               d.Tipo_cliente == tipo_pessoa &&
-                                               d.St_restricao_ativa != 0
-                                         select d.Id_forma_pagto).Contains(c.Id)
-                                 orderby c.Ordenacao
-                                 select new ParcComEntradaDados
-                                 {
-                                     Id = c.Id,
-                                     Descricao = c.Descricao,
-                                     Ordenacao = c.Ordenacao
-                                 };
-
-            var formaPagto = await formaPagtoTask.ToListAsync();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                formaPagto = await (from c in db.TformaPagto
+                                    where c.Hab_entrada == 1 &&
+                                          !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
+                                            where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
+                                                  d.Id_orcamentista_e_indicador ==
+                                                  Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
+                                                  d.Tipo_cliente == tipo_pessoa &&
+                                                  d.St_restricao_ativa != 0
+                                            select d.Id_forma_pagto).Contains(c.Id)
+                                    orderby c.Ordenacao
+                                    select new ParcComEntradaDados
+                                    {
+                                        Id = c.Id,
+                                        Descricao = c.Descricao,
+                                        Ordenacao = c.Ordenacao
+                                    }).ToListAsync();
+            }
 
             return formaPagto;
         }
 
         private async Task<IEnumerable<ParcComEntPrestacaoDados>> ObterFormaPagtoParcComEntPrestacao(string apelido, string tipo_pessoa)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            List<ParcComEntPrestacaoDados> formaPagto;
 
-            var formaPagtoTask = from c in db.TformaPagto
-                                 where c.Hab_prestacao == 1 &&
-                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
-                                         where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
-                                               d.Id_orcamentista_e_indicador == Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
-                                               d.Tipo_cliente == tipo_pessoa &&
-                                               d.St_restricao_ativa != 0
-                                         select d.Id_forma_pagto).Contains(c.Id)
-                                 orderby c.Ordenacao
-                                 select new ParcComEntPrestacaoDados
-                                 {
-                                     Id = c.Id,
-                                     Descricao = c.Descricao,
-                                     Ordenacao = c.Ordenacao
-                                 };
-
-            var formaPagto = await formaPagtoTask.ToListAsync();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                formaPagto = await (from c in db.TformaPagto
+                                    where c.Hab_prestacao == 1 &&
+                                          !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
+                                            where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
+                                                  d.Id_orcamentista_e_indicador == Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
+                                                  d.Tipo_cliente == tipo_pessoa &&
+                                                  d.St_restricao_ativa != 0
+                                            select d.Id_forma_pagto).Contains(c.Id)
+                                    orderby c.Ordenacao
+                                    select new ParcComEntPrestacaoDados
+                                    {
+                                        Id = c.Id,
+                                        Descricao = c.Descricao,
+                                        Ordenacao = c.Ordenacao
+                                    }).ToListAsync();
+            }
 
             return formaPagto;
         }
 
         private async Task<IEnumerable<ParcSemEntradaPrimPrestDados>> ObterFormaPagtoParcSemEntPrimPrest(string apelido, string tipo_pessoa)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            List<ParcSemEntradaPrimPrestDados> formaPagto;
 
-            var formaPagtoTask = from c in db.TformaPagto
-                                 where c.Hab_prestacao == 1 &&
-                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
-                                         where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
-                                               d.Id_orcamentista_e_indicador == Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
-                                               d.Tipo_cliente == tipo_pessoa &&
-                                               d.St_restricao_ativa != 0
-                                         select d.Id_forma_pagto).Contains(c.Id)
-                                 orderby c.Ordenacao
-                                 select new ParcSemEntradaPrimPrestDados
-                                 {
-                                     Id = c.Id,
-                                     Descricao = c.Descricao,
-                                     Ordenacao = c.Ordenacao
-                                 };
-
-            var formaPagto = await formaPagtoTask.ToListAsync();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                formaPagto = await (from c in db.TformaPagto
+                                    where c.Hab_prestacao == 1 &&
+                                          !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
+                                            where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
+                                                  d.Id_orcamentista_e_indicador == Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
+                                                  d.Tipo_cliente == tipo_pessoa &&
+                                                  d.St_restricao_ativa != 0
+                                            select d.Id_forma_pagto).Contains(c.Id)
+                                    orderby c.Ordenacao
+                                    select new ParcSemEntradaPrimPrestDados
+                                    {
+                                        Id = c.Id,
+                                        Descricao = c.Descricao,
+                                        Ordenacao = c.Ordenacao
+                                    }).ToListAsync();
+            }
 
             return formaPagto;
         }
 
         private async Task<IEnumerable<ParcSemEntPrestacaoDados>> ObterFormaPagtoParcSemEntPrestacao(string apelido, string tipo_pessoa)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            List<ParcSemEntPrestacaoDados> formaPagto;
 
-            var formaPagtoTask = from c in db.TformaPagto
-                                 where c.Hab_prestacao == 1 &&
-                                       !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
-                                         where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
-                                               d.Id_orcamentista_e_indicador == Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
-                                               d.Tipo_cliente == tipo_pessoa &&
-                                               d.St_restricao_ativa != 0
-                                         select d.Id_forma_pagto).Contains(c.Id)
-                                 orderby c.Ordenacao
-                                 select new ParcSemEntPrestacaoDados
-                                 {
-                                     Id = c.Id,
-                                     Descricao = c.Descricao,
-                                     Ordenacao = c.Ordenacao
-                                 };
-
-            var formaPagto = await formaPagtoTask.ToListAsync();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                formaPagto = await (from c in db.TformaPagto
+                                    where c.Hab_prestacao == 1 &&
+                                          !(from d in db.TorcamentistaEIndicadorRestricaoFormaPagto
+                                            where (d.Id_orcamentista_e_indicador == apelido.ToUpper() ||
+                                                  d.Id_orcamentista_e_indicador == Constantes.ID_ORCAMENTISTA_E_INDICADOR_RESTRICAO_FP_TODOS) &&
+                                                  d.Tipo_cliente == tipo_pessoa &&
+                                                  d.St_restricao_ativa != 0
+                                            select d.Id_forma_pagto).Contains(c.Id)
+                                    orderby c.Ordenacao
+                                    select new ParcSemEntPrestacaoDados
+                                    {
+                                        Id = c.Id,
+                                        Descricao = c.Descricao,
+                                        Ordenacao = c.Ordenacao
+                                    }).ToListAsync();
+            }
 
             return formaPagto;
         }
