@@ -533,6 +533,10 @@ namespace Prepedido.PedidoVisualizacao
                                         select c.Nome).FirstOrDefault();
                     nomeUsuario = $"[VP] {nomeCompleto.Split(" ")[0]}";
                 }
+                if (string.IsNullOrEmpty(nomeUsuario))
+                {
+                    nomeUsuario = tPedidoPai.PrevisaoEntregaUsuarioUltAtualiz;
+                }
 
                 detalhesNf.PrevisaoEntrega = tPedidoPai.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
                     tPedidoPai.PrevisaoEntregaData?.ToString("dd/MM/yyyy") + " ("
@@ -691,6 +695,10 @@ namespace Prepedido.PedidoVisualizacao
                                         where c.Id == p.EtgImediataIdUsuarioUltAtualiz
                                         select c.Nome).FirstOrDefault();
                     nomeUsuario = $"[VP] {nomeCompleto.Split(" ")[0]}"; //paliativo pois não temos um nome curto para esse usuário
+                }
+                if (string.IsNullOrEmpty(nomeUsuario))
+                {
+                    nomeUsuario = p.Etg_Imediata_Usuario;
                 }
                 string retorno = "";
                 string dataFormatada = "";
