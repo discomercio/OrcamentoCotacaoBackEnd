@@ -63,30 +63,40 @@ namespace Prepedido.Bll
 
         public async Task<IEnumerable<string>> ListarNumerosPrepedidosCombo(string orcamentista)
         {
+            IEnumerable<string> res;
+
             //toda vez precisamos de uma nova conexao para os casos em que houver transacao
-            var db = contextoProvider.GetContextoLeitura();
-            var lista = from r in db.Torcamento
-                        where r.Orcamentista == orcamentista &&
-                              r.St_Orcamento != "CAN"
-                              && r.Data >= Util.LimiteDataBuscas()
-                        orderby r.Orcamento
-                        select r.Orcamento;
-            var res = lista.AsEnumerable();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                var lista = from r in db.Torcamento
+                            where r.Orcamentista == orcamentista &&
+                                  r.St_Orcamento != "CAN"
+                                  && r.Data >= Util.LimiteDataBuscas()
+                            orderby r.Orcamento
+                            select r.Orcamento;
+
+                res = lista.AsEnumerable();
+            }
+
             return await Task.FromResult(res);
         }
 
         public async Task<IEnumerable<string>> ListarCpfCnpjPrepedidosCombo(string apelido)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            List<string> ret;
 
-            var lista = (from c in db.Torcamento
-                         where c.Orcamentista == apelido &&
-                               c.St_Orcamento != "CAN" &&
-                               c.Data >= Util.LimiteDataBuscas()
-                         orderby c.Tcliente.Cnpj_Cpf
-                         select c.Tcliente.Cnpj_Cpf).Distinct();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                var lista = (from c in db.Torcamento
+                             where c.Orcamentista == apelido &&
+                                   c.St_Orcamento != "CAN" &&
+                                   c.Data >= Util.LimiteDataBuscas()
+                             orderby c.Tcliente.Cnpj_Cpf
+                             select c.Tcliente.Cnpj_Cpf).Distinct();
 
-            var ret = await lista.Distinct().ToListAsync();
+                ret = await lista.Distinct().ToListAsync();
+            }
+
             List<string> cpfCnpjFormat = new List<string>();
 
             foreach (string cpf in ret)
@@ -135,14 +145,21 @@ namespace Prepedido.Bll
         }
 
         //a busca sem malabarismos para econtrar algum registro
-        public async Task<IEnumerable<PrepedidosCadastradosPrepedidoDados>> ListarPrePedidosFiltroEstrito(string apelido, TipoBuscaPrepedido tipoBusca,
-                string clienteBusca, string numeroPrePedido, DateTime? dataInicial, DateTime? dataFinal)
+        public async Task<IEnumerable<PrepedidosCadastradosPrepedidoDados>> ListarPrePedidosFiltroEstrito(
+            string apelido,
+            TipoBuscaPrepedido tipoBusca,
+            string clienteBusca,
+            string numeroPrePedido,
+            DateTime? dataInicial,
+            DateTime? dataFinal)
         {
 
-            var db = contextoProvider.GetContextoLeitura();
+            IQueryable<Torcamento> lst;
 
-            var lst = db.Torcamento.
-                Where(r => r.Orcamentista == apelido);
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                lst = db.Torcamento.Where(r => r.Orcamentista == apelido);
+            }
 
             //filtro conforme o tipo do prepedido
             switch (tipoBusca)
@@ -254,111 +271,121 @@ namespace Prepedido.Bll
 
         public async Task<PrePedidoDados> BuscarPrePedido(string apelido, string numPrePedido)
         {
-            var db = contextoProvider.GetContextoLeitura();
 
-            var prepedido = from c in db.Torcamento
-                            where c.Orcamento == numPrePedido
-                            select c;
+            PrePedidoDados prepedidoDados;
 
-
-            Torcamento pp = prepedido.FirstOrDefault();
-
-            Tloja t = await (from c in db.Tloja
-                             where c.Loja == pp.Loja
-                             select c).FirstOrDefaultAsync();
-
-            if (pp == null)
-                return null;
-
-            string corHeader = "black";
-            string textoHeader = "";
-            string canceladoData = "";
-
-            if (pp.St_Orcamento == Constantes.ST_ORCAMENTO_CANCELADO)
+            using (var db = contextoProvider.GetContextoLeitura())
             {
-                corHeader = "red";
-                textoHeader = "CANCELADO";
-                canceladoData = pp.Cancelado_Data?.ToString("dd/MM/yyyy");
-            }
+                var prepedido = from c in db.Torcamento
+                                where c.Orcamento == numPrePedido
+                                select c;
 
-            if (pp.St_Orc_Virou_Pedido == 1)
-            {
-                var pedido = from c in db.Tpedido
-                             where c.Orcamento == numPrePedido
-                             select c.Pedido;
+                Torcamento pp = prepedido.FirstOrDefault();
 
-                PrePedidoDados prepedidoPedido = new PrePedidoDados
+                Tloja t = await (from c in db.Tloja
+                                 where c.Loja == pp.Loja
+                                 select c).FirstOrDefaultAsync();
+
+                if (pp == null)
+                    return null;
+
+                string corHeader = "black";
+                string textoHeader = "";
+                string canceladoData = "";
+
+                if (pp.St_Orcamento == Constantes.ST_ORCAMENTO_CANCELADO)
                 {
-                    St_Orc_Virou_Pedido = true,
-                    NumeroPedido = pedido.Select(r => r.ToString()).FirstOrDefault()
+                    corHeader = "red";
+                    textoHeader = "CANCELADO";
+                    canceladoData = pp.Cancelado_Data?.ToString("dd/MM/yyyy");
+                }
+
+                if (pp.St_Orc_Virou_Pedido == 1)
+                {
+                    var pedido = from c in db.Tpedido
+                                 where c.Orcamento == numPrePedido
+                                 select c.Pedido;
+
+                    PrePedidoDados prepedidoPedido = new PrePedidoDados
+                    {
+                        St_Orc_Virou_Pedido = true,
+                        NumeroPedido = pedido.Select(r => r.ToString()).FirstOrDefault()
+                    };
+                    return prepedidoPedido;
+                }
+
+                Cliente.Dados.DadosClienteCadastroDados cadastroCliente = new Cliente.Dados.DadosClienteCadastroDados();
+                if (pp.St_memorizacao_completa_enderecos == 0)
+                {
+                    cadastroCliente = await ObterDadosCliente(t.Loja, pp.Orcamentista, pp.Vendedor, pp.Id_Cliente);
+                }
+                else
+                {
+                    //vamos preencher os dados do cliente com o prepedido
+                    cadastroCliente = await ObterDadosClientePrepedido(pp, t.Loja);
+                }
+                var enderecoEntregaTask = ObterEnderecoEntrega(pp);
+                var lstProdutoTask = await ObterProdutos(pp);
+
+                var vltotalRa = lstProdutoTask.Select(r => r.VlTotalRA).Sum();
+                var totalDestePedidoComRa = lstProdutoTask.Select(r => r.TotalItemRA).Sum();
+                var totalDestePedido = lstProdutoTask.Select(r => r.VlTotalItem).Sum();
+
+                prepedidoDados = new PrePedidoDados
+                {
+                    CorHeader = corHeader,
+                    TextoHeader = textoHeader,
+                    CanceladoData = canceladoData,
+                    NumeroPrePedido = pp.Orcamento,
+                    DataHoraPedido = Convert.ToString(pp.Data?.ToString("dd/MM/yyyy")),
+                    Hora_Prepedido = Util.FormataHora(pp.Hora),
+                    DadosCliente = cadastroCliente,
+                    EnderecoEntrega = await enderecoEntregaTask,
+                    ListaProdutos = lstProdutoTask.ToList(),
+                    TotalFamiliaParcelaRA = vltotalRa,
+                    PermiteRAStatus = pp.Permite_RA_Status,
+                    CorTotalFamiliaRA = vltotalRa > 0 ? "green" : "red",
+                    PercRT = pp.Perc_RT,
+                    Vl_total_NF = totalDestePedidoComRa,
+                    Vl_total = totalDestePedido,
+                    DetalhesPrepedido = ObterDetalhesPrePedido(pp, apelido),
+                    FormaPagto = ObterFormaPagto(pp).ToList(),
+                    FormaPagtoCriacao = await ObterFormaPagtoPrePedido(pp)
                 };
-                return prepedidoPedido;
             }
-
-            Cliente.Dados.DadosClienteCadastroDados cadastroCliente = new Cliente.Dados.DadosClienteCadastroDados();
-            if (pp.St_memorizacao_completa_enderecos == 0)
-            {
-                cadastroCliente = await ObterDadosCliente(t.Loja, pp.Orcamentista, pp.Vendedor, pp.Id_Cliente);
-            }
-            else
-            {
-                //vamos preencher os dados do cliente com o prepedido
-                cadastroCliente = await ObterDadosClientePrepedido(pp, t.Loja);
-            }
-            var enderecoEntregaTask = ObterEnderecoEntrega(pp);
-            var lstProdutoTask = await ObterProdutos(pp);
-
-            var vltotalRa = lstProdutoTask.Select(r => r.VlTotalRA).Sum();
-            var totalDestePedidoComRa = lstProdutoTask.Select(r => r.TotalItemRA).Sum();
-            var totalDestePedido = lstProdutoTask.Select(r => r.VlTotalItem).Sum();
-
-            PrePedidoDados prepedidoDados = new PrePedidoDados
-            {
-                CorHeader = corHeader,
-                TextoHeader = textoHeader,
-                CanceladoData = canceladoData,
-                NumeroPrePedido = pp.Orcamento,
-                DataHoraPedido = Convert.ToString(pp.Data?.ToString("dd/MM/yyyy")),
-                Hora_Prepedido = Util.FormataHora(pp.Hora),
-                DadosCliente = cadastroCliente,
-                EnderecoEntrega = await enderecoEntregaTask,
-                ListaProdutos = lstProdutoTask.ToList(),
-                TotalFamiliaParcelaRA = vltotalRa,
-                PermiteRAStatus = pp.Permite_RA_Status,
-                CorTotalFamiliaRA = vltotalRa > 0 ? "green" : "red",
-                PercRT = pp.Perc_RT,
-                Vl_total_NF = totalDestePedidoComRa,
-                Vl_total = totalDestePedido,
-                DetalhesPrepedido = ObterDetalhesPrePedido(pp, apelido),
-                FormaPagto = ObterFormaPagto(pp).ToList(),
-                FormaPagtoCriacao = await ObterFormaPagtoPrePedido(pp)
-            };
 
             return await Task.FromResult(prepedidoDados);
         }
 
         public async Task<decimal> ObtemPercentualVlPedidoRA()
         {
-            var db = contextoProvider.GetContextoLeitura();
+            decimal retorno;
 
-            string percentual = await (from c in db.Tcontrole
-                                       where c.Id_Nsu == Constantes.ID_PARAM_PercVlPedidoLimiteRA
-                                       select c.Nsu).FirstOrDefaultAsync();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                string percentual = await (from c in db.Tcontrole
+                                           where c.Id_Nsu == Constantes.ID_PARAM_PercVlPedidoLimiteRA
+                                           select c.Nsu).FirstOrDefaultAsync();
 
-            decimal retorno = decimal.Parse(percentual);
+                retorno = decimal.Parse(percentual);
+            }
 
             return retorno;
         }
 
         private async Task<string> ObterDescricaoFormaPagto(short av_forma_pagto)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            string tipo;
 
-            var tipoTask = from c in db.TformaPagto
-                           where c.Id == av_forma_pagto
-                           select c.Descricao;
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                var tipoTask = from c in db.TformaPagto
+                               where c.Id == av_forma_pagto
+                               select c.Descricao;
 
-            string tipo = await tipoTask.FirstOrDefaultAsync();
+                tipo = await tipoTask.FirstOrDefaultAsync();
+            }
+
             return tipo;
         }
 
@@ -419,73 +446,84 @@ namespace Prepedido.Bll
 
         private DetalhesPrepedidoDados ObterDetalhesPrePedido(Torcamento torcamento, string apelido)
         {
-            string nomeUsuario = null;
+            DetalhesPrepedidoDados detail;
 
-            var db = contextoProvider.GetContextoLeitura();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                string nomeUsuario = null;
 
-            //Previsão de entrega
-            if (torcamento.PrevisaoEntregaIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.UsuarioInterno)
-            {
-                nomeUsuario = (from c in db.Tusuario
-                               where c.Id == torcamento.PrevisaoEntregaIdUsuarioUltAtualiz
-                               select c.Usuario).FirstOrDefault();
-            }
-            if (torcamento.PrevisaoEntregaIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.Parceiro)
-            {
-                nomeUsuario = (from c in db.TorcamentistaEindicador
-                               where c.IdIndicador == torcamento.PrevisaoEntregaIdUsuarioUltAtualiz
-                               select c.Apelido).FirstOrDefault();
-            }
-            if (torcamento.PrevisaoEntregaIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.VendedorParceiro)
-            {
-                //buscar na t_orcamentista_indicador_vendedor nome amigável
-                var nomeCompleto = (from c in db.TorcamentistaEindicadorVendedor
-                                    where c.Id == torcamento.PrevisaoEntregaIdUsuarioUltAtualiz
-                                    select c.Nome).FirstOrDefault();
-                nomeUsuario = $"[VP] {nomeCompleto.Split(" ")[0]}"; ;
-            }
+                if (torcamento.PrevisaoEntregaIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.UsuarioInterno)
+                {
+                    nomeUsuario = (from c in db.Tusuario
+                                   where c.Id == torcamento.PrevisaoEntregaIdUsuarioUltAtualiz
+                                   select c.Usuario).FirstOrDefault();
+                }
+                if (torcamento.PrevisaoEntregaIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.Parceiro)
+                {
+                    nomeUsuario = (from c in db.TorcamentistaEindicador
+                                   where c.IdIndicador == torcamento.PrevisaoEntregaIdUsuarioUltAtualiz
+                                   select c.Apelido).FirstOrDefault();
+                }
+                if (torcamento.PrevisaoEntregaIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.VendedorParceiro)
+                {
+                    //buscar na t_orcamentista_indicador_vendedor nome amigável
+                    var nomeCompleto = (from c in db.TorcamentistaEindicadorVendedor
+                                        where c.Id == torcamento.PrevisaoEntregaIdUsuarioUltAtualiz
+                                        select c.Nome).FirstOrDefault();
+                    nomeUsuario = $"[VP] {nomeCompleto.Split(" ")[0]}"; ;
+                }
 
-            string previsaoEntregaTexto = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
-                    torcamento.PrevisaoEntregaData?.ToString("dd/MM/yyyy") + " (" + Texto.iniciaisEmMaiusculas(nomeUsuario) +
-                    " - " + torcamento.PrevisaoEntregaDtHrUltAtualiz?.ToString("dd/MM/yyyy HH:mm") + ")" : null;
+                if (string.IsNullOrEmpty(nomeUsuario))
+                {
+                    nomeUsuario = torcamento.PrevisaoEntregaUsuarioUltAtualiz;
+                }
+
+                string previsaoEntregaTexto = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
+                        torcamento.PrevisaoEntregaData?.ToString("dd/MM/yyyy") + " (" + Texto.iniciaisEmMaiusculas(nomeUsuario) +
+                        " - " + torcamento.PrevisaoEntregaDtHrUltAtualiz?.ToString("dd/MM/yyyy HH:mm") + ")" : null;
 
 
-            //Entrega imediata
-            if (torcamento.EtgImediataIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.UsuarioInterno)
-            {
-                nomeUsuario = (from c in db.Tusuario
-                               where c.Id == torcamento.EtgImediataIdUsuarioUltAtualiz
-                               select c.Usuario).FirstOrDefault();
-            }
-            if (torcamento.EtgImediataIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.Parceiro)
-            {
-                nomeUsuario = (from c in db.TorcamentistaEindicador
-                               where c.IdIndicador == torcamento.EtgImediataIdUsuarioUltAtualiz
-                               select c.Apelido).FirstOrDefault();
-            }
-            if (torcamento.EtgImediataIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.VendedorParceiro)
-            {
-                //buscar na t_orcamentista_indicador_vendedor nome amigável
-                var nomeCompleto = (from c in db.TorcamentistaEindicadorVendedor
-                                    where c.Id == torcamento.EtgImediataIdUsuarioUltAtualiz
-                                    select c.Nome).FirstOrDefault();
-                nomeUsuario = $"[VP] {nomeCompleto.Split(" ")[0]}"; //paliativo pois não temos um nome curto para esse usuário
-            }
-            string entregaImediataTexto = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
-                "NÃO (" + Texto.iniciaisEmMaiusculas(nomeUsuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
-                "SIM (" + Texto.iniciaisEmMaiusculas(nomeUsuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")";
+                nomeUsuario = string.Empty;
+                if (torcamento.EtgImediataIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.UsuarioInterno)
+                {
+                    nomeUsuario = (from c in db.Tusuario
+                                   where c.Id == torcamento.EtgImediataIdUsuarioUltAtualiz
+                                   select c.Usuario).FirstOrDefault();
+                }
+                if (torcamento.EtgImediataIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.Parceiro)
+                {
+                    nomeUsuario = (from c in db.TorcamentistaEindicador
+                                   where c.IdIndicador == torcamento.EtgImediataIdUsuarioUltAtualiz
+                                   select c.Apelido).FirstOrDefault();
+                }
+                if (torcamento.EtgImediataIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.VendedorParceiro)
+                {
+                    var nomeCompleto = (from c in db.TorcamentistaEindicadorVendedor
+                                        where c.Id == torcamento.EtgImediataIdUsuarioUltAtualiz
+                                        select c.Nome).FirstOrDefault();
+                    nomeUsuario = $"[VP] {nomeCompleto.Split(" ")[0]}"; 
+                }
+                if (string.IsNullOrEmpty(nomeUsuario))
+                {
+                    nomeUsuario = torcamento.Etg_Imediata_Usuario;
+                }
+                
+                string entregaImediataTexto = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
+                    "NÃO (" + Texto.iniciaisEmMaiusculas(nomeUsuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
+                    "SIM (" + Texto.iniciaisEmMaiusculas(nomeUsuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")";
 
-            var detail = new DetalhesPrepedidoDados
-            {
-                Observacoes = torcamento.Obs_1,
-                NumeroNF = torcamento.Obs_2,
-                PrevisaoEntregaTexto = previsaoEntregaTexto,
-                EntregaImediata = entregaImediataTexto,
-                BemDeUso_Consumo = torcamento.StBemUsoConsumo,
-                InstaladorInstala = torcamento.InstaladorInstalaStatus,
-                GarantiaIndicadorTexto = Convert.ToString(torcamento.GarantiaIndicadorStatus) == Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO ? "NÃO" : "SIM",
-                DescricaoFormaPagamento = torcamento.Forma_Pagamento
-            };
+                detail = new DetalhesPrepedidoDados
+                {
+                    Observacoes = torcamento.Obs_1,
+                    NumeroNF = torcamento.Obs_2,
+                    PrevisaoEntregaTexto = previsaoEntregaTexto,
+                    EntregaImediata = entregaImediataTexto,
+                    BemDeUso_Consumo = torcamento.StBemUsoConsumo,
+                    InstaladorInstala = torcamento.InstaladorInstalaStatus,
+                    GarantiaIndicadorTexto = Convert.ToString(torcamento.GarantiaIndicadorStatus) == Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO ? "NÃO" : "SIM",
+                    DescricaoFormaPagamento = torcamento.Forma_Pagamento
+                };
+            }
 
             return detail;
         }
@@ -550,14 +588,17 @@ namespace Prepedido.Bll
         //Obtem produtos do orçamento
         private async Task<IEnumerable<PrepedidoProdutoPrepedidoDados>> ObterProdutos(Torcamento orc)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            List<TorcamentoItem> produtos;
 
-            var produtos = from c in db.TorcamentoItem
-                           where c.Orcamento == orc.Orcamento
-                           orderby c.Sequencia
-                           select c;
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                produtos = await (from c in db.TorcamentoItem
+                                  where c.Orcamento == orc.Orcamento
+                                  orderby c.Sequencia
+                                  select c).ToListAsync();
+            }
 
-            List<PrepedidoProdutoPrepedidoDados> listaProduto = new List<PrepedidoProdutoPrepedidoDados>();
+            var listaProduto = new List<PrepedidoProdutoPrepedidoDados>();
 
             foreach (var p in produtos)
             {
@@ -592,12 +633,18 @@ namespace Prepedido.Bll
 
         private async Task<Cliente.Dados.DadosClienteCadastroDados> ObterDadosClientePrepedido(Torcamento orcamento, string loja)
         {
-            var dadosCliente = from c in contextoProvider.GetContextoLeitura().Tcliente
-                               where c.Id == orcamento.Id_Cliente
-                               select c;
-            var cli = await dadosCliente.FirstOrDefaultAsync();
+            Tcliente dadosCliente;
 
-            Cliente.Dados.DadosClienteCadastroDados cadastroCliente = new Cliente.Dados.DadosClienteCadastroDados
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                dadosCliente = await (from c in db.Tcliente
+                                      where c.Id == orcamento.Id_Cliente
+                                      select c).FirstOrDefaultAsync();
+            }
+
+            var cli = dadosCliente;
+
+            var cadastroCliente = new Cliente.Dados.DadosClienteCadastroDados
             {
                 Loja = await pedidoVisualizacaoBll.ObterRazaoSocial_Nome_Loja(loja),
                 Indicador_Orcamentista = orcamento.Orcamentista,
@@ -640,11 +687,18 @@ namespace Prepedido.Bll
         {
             //afazer: criar a condição para preencher os dados do cliente que estão salvos no t_ORCAMENTO ou no t_CLIENTE
 
-            var dadosCliente = from c in contextoProvider.GetContextoLeitura().Tcliente
+            IQueryable<Tcliente> dadosCliente;
+
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                dadosCliente = from c in db.Tcliente
                                where c.Id == idCliente
                                select c;
+            }
+
             var cli = await dadosCliente.FirstOrDefaultAsync();
-            Cliente.Dados.DadosClienteCadastroDados cadastroCliente = new Cliente.Dados.DadosClienteCadastroDados
+
+            var cadastroCliente = new Cliente.Dados.DadosClienteCadastroDados
             {
                 Loja = await pedidoVisualizacaoBll.ObterRazaoSocial_Nome_Loja(loja),
                 Indicador_Orcamentista = indicador_orcamentista,
@@ -684,7 +738,7 @@ namespace Prepedido.Bll
 
         private async Task<Cliente.Dados.EnderecoEntregaClienteCadastroDados> ObterEnderecoEntrega(Torcamento p)
         {
-            Cliente.Dados.EnderecoEntregaClienteCadastroDados enderecoEntrega = new Cliente.Dados.EnderecoEntregaClienteCadastroDados();
+            var enderecoEntrega = new Cliente.Dados.EnderecoEntregaClienteCadastroDados();
             enderecoEntrega.OutroEndereco = Convert.ToBoolean(p.St_End_Entrega);
 
             //afazer: criar método para pegar todos os dados de endereço com os campos novos
@@ -732,13 +786,16 @@ namespace Prepedido.Bll
 
         public async Task<short> Obter_Permite_RA_Status(string apelido)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            short raStatus;
 
-            var raStatus = (from c in db.TorcamentistaEindicador
-                            where c.Apelido == apelido
-                            select c.Permite_RA_Status).FirstOrDefaultAsync();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                raStatus = await (from c in db.TorcamentistaEindicador
+                                  where c.Apelido == apelido
+                                  select c.Permite_RA_Status).FirstOrDefaultAsync();
+            }
 
-            return await raStatus;
+            return raStatus;
         }
 
         public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDados prePedido, string apelido,
@@ -783,8 +840,8 @@ namespace Prepedido.Bll
             loja = !string.IsNullOrEmpty(apelido) ? prePedido.DadosCliente.Loja : loja;
 
             //verificamos se tem ID para saber que o cliente existe
-            Tcliente cliente = (await clienteBll.BuscarTclienteComTransacao(prePedido.EnderecoCadastroClientePrepedido.Endereco_cnpj_cpf,
-                dbGravacao));
+            Tcliente cliente = await clienteBll.BuscarTclienteComTransacao(
+                prePedido.EnderecoCadastroClientePrepedido.Endereco_cnpj_cpf);
 
             if (cliente != null)
             {
@@ -959,12 +1016,12 @@ namespace Prepedido.Bll
                 if (cfgOperacao == null)
                 {
                     lstErros.Add("Falha ao montar log de operação.");
-                    return lstErros;                    
+                    return lstErros;
                 }
 
-                var tLogV2 = Util.GravaLogV2ComTransacao(dbGravacao, log, (short)prePedido.UsuarioCadastroIdTipoUsuarioContexto, 
-                    prePedido.UsuarioCadastroId, prePedido.DadosCliente.Loja, prePedido.NumeroPrePedido, 
-                    prePedido.DadosCliente.IdOrcamentoCotacao, prePedido.DadosCliente.Id, 
+                var tLogV2 = Util.GravaLogV2ComTransacao(dbGravacao, log, (short)prePedido.UsuarioCadastroIdTipoUsuarioContexto,
+                    prePedido.UsuarioCadastroId, prePedido.DadosCliente.Loja, prePedido.NumeroPrePedido,
+                    prePedido.DadosCliente.IdOrcamentoCotacao, prePedido.DadosCliente.Id,
                     Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
 
                 lstErros.Add(prePedido.NumeroPrePedido);
@@ -1392,22 +1449,23 @@ namespace Prepedido.Bll
 
         private async Task ExisteProdutoDescontinuado(PrePedidoDados prepedido, List<string> lstErros)
         {
-            var db = contextoProvider.GetContextoLeitura();
-
-            foreach (var p in prepedido.ListaProdutos)
+            using (var db = contextoProvider.GetContextoLeitura())
             {
-                if (!string.IsNullOrEmpty(p.Produto) && !string.IsNullOrEmpty(p.Fabricante))
+                foreach (var p in prepedido.ListaProdutos)
                 {
-                    var produtoTask = (from c in db.Tproduto
-                                       where c.Produto == p.Produto && c.Fabricante == p.Fabricante
-                                       select c.Descontinuado).FirstOrDefaultAsync();
-                    var produto = await produtoTask;
-
-                    if (produto != null && produto.ToUpper() == "S")
+                    if (!string.IsNullOrEmpty(p.Produto) && !string.IsNullOrEmpty(p.Fabricante))
                     {
-                        if (p.Qtde > p.Qtde_estoque_total_disponivel)
-                            lstErros.Add("Produto (" + p.Fabricante + ")" + p.Produto +
-                                " consta como 'descontinuado' e não há mais saldo suficiente no estoque para atender à quantidade solicitada.");
+                        var produtoTask = (from c in db.Tproduto
+                                           where c.Produto == p.Produto && c.Fabricante == p.Fabricante
+                                           select c.Descontinuado).FirstOrDefaultAsync();
+                        var produto = await produtoTask;
+
+                        if (produto != null && produto.ToUpper() == "S")
+                        {
+                            if (p.Qtde > p.Qtde_estoque_total_disponivel)
+                                lstErros.Add("Produto (" + p.Fabricante + ")" + p.Produto +
+                                    " consta como 'descontinuado' e não há mais saldo suficiente no estoque para atender à quantidade solicitada.");
+                        }
                     }
                 }
             }
@@ -1601,38 +1659,38 @@ namespace Prepedido.Bll
 
         public async Task<IEnumerable<TpercentualCustoFinanceiroFornecedor>> BuscarCoeficientePercentualCustoFinanFornec(PrePedidoDados prePedido, short qtdeParcelas, string siglaPagto, List<string> lstErros)
         {
-            List<TpercentualCustoFinanceiroFornecedor> lstPercentualCustoFinanFornec =
-                new List<TpercentualCustoFinanceiroFornecedor>();
+            var lstPercentualCustoFinanFornec = new List<TpercentualCustoFinanceiroFornecedor>();
 
-            var db = contextoProvider.GetContextoLeitura();
-
-            if (siglaPagto != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA)
+            using (var db = contextoProvider.GetContextoLeitura())
             {
-                var lstFabricantes = prePedido.ListaProdutos.Select(x => x.Fabricante).Distinct();
-
-                foreach (var fabr in lstFabricantes)
+                if (siglaPagto != Constantes.COD_CUSTO_FINANC_FORNEC_TIPO_PARCELAMENTO__A_VISTA)
                 {
-                    TpercentualCustoFinanceiroFornecedor percCustoTask =
-                        await (from c in db.TpercentualCustoFinanceiroFornecedor
-                               where c.Fabricante == fabr &&
-                                     c.Tipo_Parcelamento == siglaPagto &&
-                                     c.Qtde_Parcelas == qtdeParcelas
-                               select c).FirstOrDefaultAsync();
+                    var lstFabricantes = prePedido.ListaProdutos.Select(x => x.Fabricante).Distinct();
 
-                    lstPercentualCustoFinanFornec.Add(percCustoTask);
-
-                    foreach (var i in prePedido.ListaProdutos)
+                    foreach (var fabr in lstFabricantes)
                     {
-                        if (fabr == i.Fabricante)
+                        TpercentualCustoFinanceiroFornecedor percCustoTask =
+                            await (from c in db.TpercentualCustoFinanceiroFornecedor
+                                   where c.Fabricante == fabr &&
+                                         c.Tipo_Parcelamento == siglaPagto &&
+                                         c.Qtde_Parcelas == qtdeParcelas
+                                   select c).FirstOrDefaultAsync();
+
+                        lstPercentualCustoFinanFornec.Add(percCustoTask);
+
+                        foreach (var i in prePedido.ListaProdutos)
                         {
-                            if (percCustoTask != null)
+                            if (fabr == i.Fabricante)
                             {
-                                i.Preco_Lista = (decimal)percCustoTask.Coeficiente * (decimal)i.CustoFinancFornecPrecoListaBase;
-                            }
-                            else
-                            {
-                                lstErros.Add("Opção de parcelamento não disponível para fornecedor " + i.Fabricante + ": " +
-                                    DecodificaCustoFinanFornecQtdeParcelas(prePedido.FormaPagtoCriacao.C_forma_pagto, qtdeParcelas) + " parcela(s)");
+                                if (percCustoTask != null)
+                                {
+                                    i.Preco_Lista = (decimal)percCustoTask.Coeficiente * (decimal)i.CustoFinancFornecPrecoListaBase;
+                                }
+                                else
+                                {
+                                    lstErros.Add("Opção de parcelamento não disponível para fornecedor " + i.Fabricante + ": " +
+                                        DecodificaCustoFinanFornecQtdeParcelas(prePedido.FormaPagtoCriacao.C_forma_pagto, qtdeParcelas) + " parcela(s)");
+                                }
                             }
                         }
                     }
@@ -1677,121 +1735,96 @@ namespace Prepedido.Bll
 
             List<RegrasBll> lstRegrasCrtlEstoque = new List<RegrasBll>();
 
-            var dbreal = contextoProvider.GetContextoLeitura();
-
-            //monta um cache de dados para não repetir s acessos
-            var produtosDistintos = prePedido.ListaProdutos.Select(r => r.Produto).Distinct();
-            var dbTprodutoXwmsRegraCds = await (from c in dbreal.TprodutoXwmsRegraCd
-                                                where produtosDistintos.Contains(c.Produto)
-                                                select new { c.Produto, c.Fabricante, c.Id_wms_regra_cd }).ToListAsync();
-            var regraId_wms_regra_cdDistinct = dbTprodutoXwmsRegraCds.Select(r => r.Id_wms_regra_cd).Distinct();
-            var dbTwmsRegraCds = await (from c in dbreal.TwmsRegraCd
-                                        where regraId_wms_regra_cdDistinct.Contains(c.Id)
-                                        select new { c.Id, c.Apelido, c.Descricao, c.St_inativo }).ToListAsync();
-            var dbTwmsRegraCdXUfs = await (from c in dbreal.TwmsRegraCdXUf
-                                           where regraId_wms_regra_cdDistinct.Contains(c.Id_wms_regra_cd) &&
-                                                 c.Uf == prePedido.DadosCliente.Uf
-                                           select new { c.Id, c.Id_wms_regra_cd, c.Uf, c.St_inativo }).ToListAsync();
-
-            //esta tabela é pequena
-            var dbTnfEmitentes = await (from c in dbreal.TnfEmitente select new { c.Id, c.St_Ativo }).ToListAsync(); ;
-
-            //para melhorar a velocidade, poderíamos terminar de montar o cache
-
-            //buscar a sigla tipo pessoa
-            var tipo_pessoa = UtilsProduto.MultiCdRegraDeterminaPessoa(prePedido.DadosCliente.Tipo,
-                (Constantes.ContribuinteICMS)prePedido.DadosCliente.Contribuinte_Icms_Status,
-                (Constantes.ProdutorRural)prePedido.DadosCliente.ProdutorRural);
-            if (string.IsNullOrEmpty(tipo_pessoa))
+            using (var dbreal = contextoProvider.GetContextoLeitura())
             {
-                lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf +
-                    "': não foi possível determinar o tipo de pessoa (tipo_cliente=" +
-                    prePedido.DadosCliente.Tipo + ", contribuinte_icms_status=" + prePedido.DadosCliente.Contribuinte_Icms_Status +
-                    ", produtor_rural_status=" + prePedido.DadosCliente.ProdutorRural + ")");
-                return lstRegrasCrtlEstoque;
-            }
+                //monta um cache de dados para não repetir s acessos
+                var produtosDistintos = prePedido.ListaProdutos.Select(r => r.Produto).Distinct();
+                var dbTprodutoXwmsRegraCds = await (from c in dbreal.TprodutoXwmsRegraCd
+                                                    where produtosDistintos.Contains(c.Produto)
+                                                    select new { c.Produto, c.Fabricante, c.Id_wms_regra_cd }).ToListAsync();
+                var regraId_wms_regra_cdDistinct = dbTprodutoXwmsRegraCds.Select(r => r.Id_wms_regra_cd).Distinct();
+                var dbTwmsRegraCds = await (from c in dbreal.TwmsRegraCd
+                                            where regraId_wms_regra_cdDistinct.Contains(c.Id)
+                                            select new { c.Id, c.Apelido, c.Descricao, c.St_inativo }).ToListAsync();
+                var dbTwmsRegraCdXUfs = await (from c in dbreal.TwmsRegraCdXUf
+                                               where regraId_wms_regra_cdDistinct.Contains(c.Id_wms_regra_cd) &&
+                                                     c.Uf == prePedido.DadosCliente.Uf
+                                               select new { c.Id, c.Id_wms_regra_cd, c.Uf, c.St_inativo }).ToListAsync();
 
-            foreach (var item in prePedido.ListaProdutos)
-            {
-                var regraProdutoTask = from c in dbTprodutoXwmsRegraCds
-                                       where c.Fabricante == item.Fabricante &&
-                                             c.Produto == item.Produto
-                                       select c;
+                //esta tabela é pequena
+                var dbTnfEmitentes = await (from c in dbreal.TnfEmitente select new { c.Id, c.St_Ativo }).ToListAsync(); ;
 
-                var regraLista = regraProdutoTask.ToList();
+                //para melhorar a velocidade, poderíamos terminar de montar o cache
 
-                if (regraLista.Count() != 1)
+                //buscar a sigla tipo pessoa
+                var tipo_pessoa = UtilsProduto.MultiCdRegraDeterminaPessoa(prePedido.DadosCliente.Tipo,
+                    (Constantes.ContribuinteICMS)prePedido.DadosCliente.Contribuinte_Icms_Status,
+                    (Constantes.ProdutorRural)prePedido.DadosCliente.ProdutorRural);
+                if (string.IsNullOrEmpty(tipo_pessoa))
                 {
-                    lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
-                        Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': produto (" + item.Fabricante + ")" +
-                        item.Produto + " não possui regra associada");
+                    lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf +
+                        "': não foi possível determinar o tipo de pessoa (tipo_cliente=" +
+                        prePedido.DadosCliente.Tipo + ", contribuinte_icms_status=" + prePedido.DadosCliente.Contribuinte_Icms_Status +
+                        ", produtor_rural_status=" + prePedido.DadosCliente.ProdutorRural + ")");
+                    return lstRegrasCrtlEstoque;
                 }
-                else
+
+                foreach (var item in prePedido.ListaProdutos)
                 {
-                    var regra = regraLista.First();
-                    if (regra.Id_wms_regra_cd == 0)
+                    var regraProdutoTask = from c in dbTprodutoXwmsRegraCds
+                                           where c.Fabricante == item.Fabricante &&
+                                                 c.Produto == item.Produto
+                                           select c;
+
+                    var regraLista = regraProdutoTask.ToList();
+
+                    if (regraLista.Count() != 1)
+                    {
                         lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
                             Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': produto (" + item.Fabricante + ")" +
-                            item.Produto + " não está associado a nenhuma regra");
+                            item.Produto + " não possui regra associada");
+                    }
                     else
                     {
-                        var wmsRegraCdTask = from c in dbTwmsRegraCds
-                                             where c.Id == regra.Id_wms_regra_cd
-                                             select c;
-
-                        var wmsRegraCdLista = wmsRegraCdTask.ToList();
-                        if (wmsRegraCdLista.Count() != 1)
+                        var regra = regraLista.First();
+                        if (regra.Id_wms_regra_cd == 0)
                             lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
-                                Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante + ")" +
-                                item.Produto + " não foi localizada no banco de dados (Id=" + regra.Id_wms_regra_cd + ")");
+                                Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': produto (" + item.Fabricante + ")" +
+                                item.Produto + " não está associado a nenhuma regra");
                         else
                         {
-                            var wmsRegraCd = wmsRegraCdLista.First();
-                            RegrasBll itemRegra = new RegrasBll();
-                            itemRegra.Fabricante = item.Fabricante;
-                            itemRegra.Produto = item.Produto;
-                            itemRegra.St_Regra_ok = true;
+                            var wmsRegraCdTask = from c in dbTwmsRegraCds
+                                                 where c.Id == regra.Id_wms_regra_cd
+                                                 select c;
 
-                            itemRegra.TwmsRegraCd = new Produto.RegrasCrtlEstoque.t_WMS_REGRA_CD
-                            {
-                                Id = wmsRegraCd.Id,
-                                Apelido = wmsRegraCd.Apelido,
-                                Descricao = wmsRegraCd.Descricao,
-                                St_inativo = wmsRegraCd.St_inativo
-                            };
-
-                            var wmsRegraCdXUfTask = from c in dbTwmsRegraCdXUfs
-                                                    where c.Id_wms_regra_cd == regra.Id_wms_regra_cd &&
-                                                          c.Uf == prePedido.DadosCliente.Uf
-                                                    select c;
-                            var wmsRegraCdXUfLista = wmsRegraCdXUfTask.ToList();
-
-                            if (wmsRegraCdXUfLista.Count() != 1)
-                            {
-                                itemRegra.St_Regra_ok = false;
+                            var wmsRegraCdLista = wmsRegraCdTask.ToList();
+                            if (wmsRegraCdLista.Count() != 1)
                                 lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
                                     Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante + ")" +
-                                    item.Produto + " não está cadastrada para a UF '" + prePedido.DadosCliente.Uf + "' (Id=" + regra.Id_wms_regra_cd + ")");
-                            }
+                                    item.Produto + " não foi localizada no banco de dados (Id=" + regra.Id_wms_regra_cd + ")");
                             else
                             {
-                                var wmsRegraCdXUf = wmsRegraCdXUfLista.First();
-                                itemRegra.TwmsRegraCdXUf = new Produto.RegrasCrtlEstoque.t_WMS_REGRA_CD_X_UF
+                                var wmsRegraCd = wmsRegraCdLista.First();
+                                RegrasBll itemRegra = new RegrasBll();
+                                itemRegra.Fabricante = item.Fabricante;
+                                itemRegra.Produto = item.Produto;
+                                itemRegra.St_Regra_ok = true;
+
+                                itemRegra.TwmsRegraCd = new Produto.RegrasCrtlEstoque.t_WMS_REGRA_CD
                                 {
-                                    Id = wmsRegraCdXUf.Id,
-                                    Id_wms_regra_cd = wmsRegraCdXUf.Id_wms_regra_cd,
-                                    Uf = wmsRegraCdXUf.Uf,
-                                    St_inativo = wmsRegraCdXUf.St_inativo
+                                    Id = wmsRegraCd.Id,
+                                    Apelido = wmsRegraCd.Apelido,
+                                    Descricao = wmsRegraCd.Descricao,
+                                    St_inativo = wmsRegraCd.St_inativo
                                 };
 
-                                var wmsRegraCdXUfXPessoaTask = from c in dbreal.TwmsRegraCdXUfPessoa
-                                                               where c.Id_wms_regra_cd_x_uf == itemRegra.TwmsRegraCdXUf.Id &&
-                                                                     c.Tipo_pessoa == tipo_pessoa
-                                                               select c;
+                                var wmsRegraCdXUfTask = from c in dbTwmsRegraCdXUfs
+                                                        where c.Id_wms_regra_cd == regra.Id_wms_regra_cd &&
+                                                              c.Uf == prePedido.DadosCliente.Uf
+                                                        select c;
+                                var wmsRegraCdXUfLista = wmsRegraCdXUfTask.ToList();
 
-                                var wmsRegraCdXUfXPessoaLista = await wmsRegraCdXUfXPessoaTask.ToListAsync();
-
-                                if (wmsRegraCdXUfXPessoaLista.Count() != 1)
+                                if (wmsRegraCdXUfLista.Count() != 1)
                                 {
                                     itemRegra.St_Regra_ok = false;
                                     lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
@@ -1800,117 +1833,143 @@ namespace Prepedido.Bll
                                 }
                                 else
                                 {
-                                    var wmsRegraCdXUfXPessoa = wmsRegraCdXUfXPessoaLista.First();
-                                    itemRegra.TwmsRegraCdXUfXPessoa = new Produto.RegrasCrtlEstoque.t_WMS_REGRA_CD_X_UF_X_PESSOA
+                                    var wmsRegraCdXUf = wmsRegraCdXUfLista.First();
+                                    itemRegra.TwmsRegraCdXUf = new Produto.RegrasCrtlEstoque.t_WMS_REGRA_CD_X_UF
                                     {
-                                        Id = wmsRegraCdXUfXPessoa.Id,
-                                        Id_wms_regra_cd_x_uf = wmsRegraCdXUfXPessoa.Id_wms_regra_cd_x_uf,
-                                        Tipo_pessoa = wmsRegraCdXUfXPessoa.Tipo_pessoa,
-                                        St_inativo = wmsRegraCdXUfXPessoa.St_inativo,
-                                        Spe_id_nfe_emitente = wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente
+                                        Id = wmsRegraCdXUf.Id,
+                                        Id_wms_regra_cd = wmsRegraCdXUf.Id_wms_regra_cd,
+                                        Uf = wmsRegraCdXUf.Uf,
+                                        St_inativo = wmsRegraCdXUf.St_inativo
                                     };
 
-                                    if (wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente == 0)
+                                    var wmsRegraCdXUfXPessoaTask = from c in dbreal.TwmsRegraCdXUfPessoa
+                                                                   where c.Id_wms_regra_cd_x_uf == itemRegra.TwmsRegraCdXUf.Id &&
+                                                                         c.Tipo_pessoa == tipo_pessoa
+                                                                   select c;
+
+                                    var wmsRegraCdXUfXPessoaLista = await wmsRegraCdXUfXPessoaTask.ToListAsync();
+
+                                    if (wmsRegraCdXUfXPessoaLista.Count() != 1)
                                     {
                                         itemRegra.St_Regra_ok = false;
                                         lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
                                             Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante + ")" +
-                                            item.Produto + " não especifica nenhum CD para aguardar produtos sem presença no estoque (Id=" + regra.Id_wms_regra_cd + ")");
+                                            item.Produto + " não está cadastrada para a UF '" + prePedido.DadosCliente.Uf + "' (Id=" + regra.Id_wms_regra_cd + ")");
                                     }
                                     else
                                     {
-                                        var nfEmitenteTask = from c in dbTnfEmitentes
-                                                             where c.Id == wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente
-                                                             select c;
-                                        var nfEmitente = nfEmitenteTask.FirstOrDefault();
-
-                                        if (nfEmitente != null)
+                                        var wmsRegraCdXUfXPessoa = wmsRegraCdXUfXPessoaLista.First();
+                                        itemRegra.TwmsRegraCdXUfXPessoa = new Produto.RegrasCrtlEstoque.t_WMS_REGRA_CD_X_UF_X_PESSOA
                                         {
-                                            if (nfEmitente.St_Ativo != 1)
-                                            {
-                                                itemRegra.St_Regra_ok = false;
-                                                lstErros.Add("Falha na regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
-                                                    Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante +
-                                                    ")" + item.Produto + " especifica um CD para aguardar produtos sem presença no estoque que não está habilitado " +
-                                                    "(Id=" + regra.Id_wms_regra_cd + ")");
-                                            }
-                                        }
-                                        var wmsRegraCdXUfXPessoaXcdTask = from c in dbreal.TwmsRegraCdXUfXPessoaXCd
-                                                                          where c.Id_wms_regra_cd_x_uf_x_pessoa == wmsRegraCdXUfXPessoa.Id
-                                                                          orderby c.Ordem_prioridade
-                                                                          select c;
-                                        var wmsRegraCdXUfXPessoaXcd = await wmsRegraCdXUfXPessoaXcdTask.ToListAsync();
+                                            Id = wmsRegraCdXUfXPessoa.Id,
+                                            Id_wms_regra_cd_x_uf = wmsRegraCdXUfXPessoa.Id_wms_regra_cd_x_uf,
+                                            Tipo_pessoa = wmsRegraCdXUfXPessoa.Tipo_pessoa,
+                                            St_inativo = wmsRegraCdXUfXPessoa.St_inativo,
+                                            Spe_id_nfe_emitente = wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente
+                                        };
 
-                                        if (wmsRegraCdXUfXPessoaXcd.Count == 0)
+                                        if (wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente == 0)
                                         {
                                             itemRegra.St_Regra_ok = false;
                                             lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
                                                 Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante + ")" +
-                                                item.Produto + " não especifica nenhum CD para consumo do estoque (Id=" + regra.Id_wms_regra_cd + ")");
+                                                item.Produto + " não especifica nenhum CD para aguardar produtos sem presença no estoque (Id=" + regra.Id_wms_regra_cd + ")");
                                         }
                                         else
                                         {
-                                            itemRegra.TwmsCdXUfXPessoaXCd = new List<t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD>();
-                                            foreach (var i in wmsRegraCdXUfXPessoaXcd)
+                                            var nfEmitenteTask = from c in dbTnfEmitentes
+                                                                 where c.Id == wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente
+                                                                 select c;
+                                            var nfEmitente = nfEmitenteTask.FirstOrDefault();
+
+                                            if (nfEmitente != null)
                                             {
-                                                Produto.RegrasCrtlEstoque.t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD item_cd_uf_pess_cd = new Produto.RegrasCrtlEstoque.t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD
+                                                if (nfEmitente.St_Ativo != 1)
                                                 {
-                                                    Id = i.Id,
-                                                    Id_wms_regra_cd_x_uf_x_pessoa = i.Id_wms_regra_cd_x_uf_x_pessoa,
-                                                    Id_nfe_emitente = i.Id_nfe_emitente,
-                                                    Ordem_prioridade = i.Ordem_prioridade,
-                                                    St_inativo = i.St_inativo
-                                                };
+                                                    itemRegra.St_Regra_ok = false;
+                                                    lstErros.Add("Falha na regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
+                                                        Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante +
+                                                        ")" + item.Produto + " especifica um CD para aguardar produtos sem presença no estoque que não está habilitado " +
+                                                        "(Id=" + regra.Id_wms_regra_cd + ")");
+                                                }
+                                            }
+                                            var wmsRegraCdXUfXPessoaXcdTask = from c in dbreal.TwmsRegraCdXUfXPessoaXCd
+                                                                              where c.Id_wms_regra_cd_x_uf_x_pessoa == wmsRegraCdXUfXPessoa.Id
+                                                                              orderby c.Ordem_prioridade
+                                                                              select c;
+                                            var wmsRegraCdXUfXPessoaXcd = await wmsRegraCdXUfXPessoaXcdTask.ToListAsync();
 
-                                                var nfeCadastroPrincipalTask = from c in dbTnfEmitentes
-                                                                               where c.Id == item_cd_uf_pess_cd.Id_nfe_emitente
-                                                                               select c;
-
-                                                var nfeCadastroPrincipal = nfeCadastroPrincipalTask.FirstOrDefault();
-
-                                                if (nfeCadastroPrincipal != null)
+                                            if (wmsRegraCdXUfXPessoaXcd.Count == 0)
+                                            {
+                                                itemRegra.St_Regra_ok = false;
+                                                lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
+                                                    Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" + item.Fabricante + ")" +
+                                                    item.Produto + " não especifica nenhum CD para consumo do estoque (Id=" + regra.Id_wms_regra_cd + ")");
+                                            }
+                                            else
+                                            {
+                                                itemRegra.TwmsCdXUfXPessoaXCd = new List<t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD>();
+                                                foreach (var i in wmsRegraCdXUfXPessoaXcd)
                                                 {
-                                                    if (nfeCadastroPrincipal.St_Ativo != 1)
-                                                        item_cd_uf_pess_cd.St_inativo = 1;
+                                                    Produto.RegrasCrtlEstoque.t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD item_cd_uf_pess_cd = new Produto.RegrasCrtlEstoque.t_WMS_REGRA_CD_X_UF_X_PESSOA_X_CD
+                                                    {
+                                                        Id = i.Id,
+                                                        Id_wms_regra_cd_x_uf_x_pessoa = i.Id_wms_regra_cd_x_uf_x_pessoa,
+                                                        Id_nfe_emitente = i.Id_nfe_emitente,
+                                                        Ordem_prioridade = i.Ordem_prioridade,
+                                                        St_inativo = i.St_inativo
+                                                    };
+
+                                                    var nfeCadastroPrincipalTask = from c in dbTnfEmitentes
+                                                                                   where c.Id == item_cd_uf_pess_cd.Id_nfe_emitente
+                                                                                   select c;
+
+                                                    var nfeCadastroPrincipal = nfeCadastroPrincipalTask.FirstOrDefault();
+
+                                                    if (nfeCadastroPrincipal != null)
+                                                    {
+                                                        if (nfeCadastroPrincipal.St_Ativo != 1)
+                                                            item_cd_uf_pess_cd.St_inativo = 1;
+                                                    }
+
+                                                    itemRegra.TwmsCdXUfXPessoaXCd.Add(item_cd_uf_pess_cd);
                                                 }
 
-                                                itemRegra.TwmsCdXUfXPessoaXCd.Add(item_cd_uf_pess_cd);
-                                            }
+                                                //'VERIFICA SE O CD SELECIONADO PARA ALOCAR OS PRODUTOS PENDENTES ESTÁ HABILITADO NA LISTA DOS CD'S P/ PRODUTOS DISPONÍVEIS
+                                                //'OBSERVAÇÃO: ESTA CHECAGEM É FEITA POR UMA QUESTÃO DE COERÊNCIA, POIS SE OCORRER A SITUAÇÃO EM QUE UM CD SELECIONADO P/
+                                                //'PRODUTOS PENDENTES NÃO ESTEJA HABILITADO P/ OS PRODUTOS DISPONÍVEIS, O SISTEMA IRIA PROCESSAR DA SEGUINTE FORMA:
+                                                //'	1) AO ANALISAR A DISPONIBILIDADE DOS PRODUTOS NOS CD'S, SE O CD 'X' ESTIVER DESATIVADO ELE SERÁ IGNORADO.
+                                                //'	2) SE AO FINAL DA ALOCAÇÃO DOS PRODUTOS DISPONÍVEIS RESTAR UMA QUANTIDADE PENDENTE P/ SER ALOCADA COMO
+                                                //'		PRODUTO SEM PRESENÇA NO ESTOQUE E, CASO O CD SELECIONADO P/ TAL SEJA O CD 'X', O SISTEMA IRÁ ALOCAR A
+                                                //'		QUANTIDADE REMANESCENTE P/ O CD 'X', SENDO QUE SE ESSE CD POSSUIR DISPONIBILIDADE NO ESTOQUE, OS PRODUTOS SERÃO
+                                                //'		CONSUMIDOS NORMALMENTE AO INVÉS DE FICAREM COMO PENDENTES.
 
-                                            //'VERIFICA SE O CD SELECIONADO PARA ALOCAR OS PRODUTOS PENDENTES ESTÁ HABILITADO NA LISTA DOS CD'S P/ PRODUTOS DISPONÍVEIS
-                                            //'OBSERVAÇÃO: ESTA CHECAGEM É FEITA POR UMA QUESTÃO DE COERÊNCIA, POIS SE OCORRER A SITUAÇÃO EM QUE UM CD SELECIONADO P/
-                                            //'PRODUTOS PENDENTES NÃO ESTEJA HABILITADO P/ OS PRODUTOS DISPONÍVEIS, O SISTEMA IRIA PROCESSAR DA SEGUINTE FORMA:
-                                            //'	1) AO ANALISAR A DISPONIBILIDADE DOS PRODUTOS NOS CD'S, SE O CD 'X' ESTIVER DESATIVADO ELE SERÁ IGNORADO.
-                                            //'	2) SE AO FINAL DA ALOCAÇÃO DOS PRODUTOS DISPONÍVEIS RESTAR UMA QUANTIDADE PENDENTE P/ SER ALOCADA COMO
-                                            //'		PRODUTO SEM PRESENÇA NO ESTOQUE E, CASO O CD SELECIONADO P/ TAL SEJA O CD 'X', O SISTEMA IRÁ ALOCAR A
-                                            //'		QUANTIDADE REMANESCENTE P/ O CD 'X', SENDO QUE SE ESSE CD POSSUIR DISPONIBILIDADE NO ESTOQUE, OS PRODUTOS SERÃO
-                                            //'		CONSUMIDOS NORMALMENTE AO INVÉS DE FICAREM COMO PENDENTES.
-
-                                            foreach (var i in itemRegra.TwmsCdXUfXPessoaXCd)
-                                            {
-
-                                                if (i.Id_nfe_emitente == itemRegra.TwmsRegraCdXUfXPessoa.Spe_id_nfe_emitente)
+                                                foreach (var i in itemRegra.TwmsCdXUfXPessoaXCd)
                                                 {
-                                                    if (i.St_inativo == 1)
+
+                                                    if (i.Id_nfe_emitente == itemRegra.TwmsRegraCdXUfXPessoa.Spe_id_nfe_emitente)
                                                     {
-                                                        itemRegra.St_Regra_ok = false;
-                                                        lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
-                                                            Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" +
-                                                            item.Fabricante + ")" + item.Produto + " especifica o CD '" + Util.ObterApelidoEmpresaNfeEmitentes(wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente, contextoProvider) +
-                                                            "' para alocação de produtos sem presença no estoque, sendo que este CD está desativado para " +
-                                                            "processar produtos disponíveis (Id=" + regra.Id_wms_regra_cd + ")");
+                                                        if (i.St_inativo == 1)
+                                                        {
+                                                            itemRegra.St_Regra_ok = false;
+                                                            lstErros.Add("Falha na leitura da regra de consumo do estoque para a UF '" + prePedido.DadosCliente.Uf + "' e '" +
+                                                                Util.DescricaoMultiCDRegraTipoPessoa(prePedido.DadosCliente.Tipo) + "': regra associada ao produto (" +
+                                                                item.Fabricante + ")" + item.Produto + " especifica o CD '" + Util.ObterApelidoEmpresaNfeEmitentes(wmsRegraCdXUfXPessoa.Spe_id_nfe_emitente, contextoProvider) +
+                                                                "' para alocação de produtos sem presença no estoque, sendo que este CD está desativado para " +
+                                                                "processar produtos disponíveis (Id=" + regra.Id_wms_regra_cd + ")");
+                                                        }
                                                     }
                                                 }
                                             }
                                         }
                                     }
                                 }
+                                lstRegrasCrtlEstoque.Add(itemRegra);
                             }
-                            lstRegrasCrtlEstoque.Add(itemRegra);
                         }
                     }
-                }
 
+                }
             }
 
             return lstRegrasCrtlEstoque;
@@ -2063,13 +2122,15 @@ namespace Prepedido.Bll
         {
             bool retorno = false;
 
-            var db = contextoProvider.GetContextoLeitura();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                var orcamentistaTask = await (from c in db.TorcamentistaEindicador
+                                              where c.Apelido == apelido
+                                              select c.Apelido).FirstOrDefaultAsync();
 
-            var orcamentistaTask = await (from c in db.TorcamentistaEindicador
-                                          where c.Apelido == apelido
-                                          select c.Apelido).FirstOrDefaultAsync();
-            if (orcamentistaTask == apelido)
-                return retorno = true;
+                if (orcamentistaTask == apelido)
+                    return retorno = true;
+            }
 
             return retorno;
         }
@@ -2088,22 +2149,32 @@ namespace Prepedido.Bll
 
         public async Task<TorcamentistaEindicador> BuscarTorcamentista(string apelido)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            TorcamentistaEindicador tOrcamentista;
 
-            var tOrcamentistaTask = from c in db.TorcamentistaEindicador
-                                    where c.Apelido == apelido
-                                    select c;
-            TorcamentistaEindicador tOrcamentista = await tOrcamentistaTask.FirstOrDefaultAsync();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                var tOrcamentistaTask = from c in db.TorcamentistaEindicador
+                                        where c.Apelido == apelido
+                                        select c;
+
+                tOrcamentista = await tOrcamentistaTask.FirstOrDefaultAsync();
+            }
 
             return tOrcamentista;
         }
 
         public async Task<bool> TorcamentistaExiste(string apelido)
         {
-            var db = contextoProvider.GetContextoLeitura();
-            return await ((from c in db.TorcamentistaEindicador
-                           where c.Apelido == apelido
-                           select c).AnyAsync());
+            bool retorno;
+
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                retorno = await (from c in db.TorcamentistaEindicador
+                                 where c.Apelido == apelido
+                                 select c).AnyAsync();
+            }
+
+            return retorno;
         }
 
         public async Task GerarNumeroOrcamento(ContextoBdGravacao dbgravacao, PrePedidoDados prepedido)
@@ -2124,41 +2195,42 @@ namespace Prepedido.Bll
 
         public async Task<BuscarStatusPrepedidoRetornoDados> BuscarStatusPrepedido(string orcamento)
         {
-            BuscarStatusPrepedidoRetornoDados ret = new BuscarStatusPrepedidoRetornoDados();
-
             //vamos buscar o prepedido para verificar se ele virou pedido
-            var db = contextoProvider.GetContextoLeitura();
+            var ret = new BuscarStatusPrepedidoRetornoDados();
 
-            var orcamentotask = await (from c in db.Torcamento
-                                       where c.Orcamento == orcamento
-                                       select c).FirstOrDefaultAsync();
-
-            if (orcamentotask != null)
+            using (var db = contextoProvider.GetContextoLeitura())
             {
-                ret.St_orc_virou_pedido = Convert.ToBoolean(orcamentotask.St_Orc_Virou_Pedido);
+                var orcamentotask = await (from c in db.Torcamento
+                                           where c.Orcamento == orcamento
+                                           select c).FirstOrDefaultAsync();
 
-                //virou
-                if ((bool)ret.St_orc_virou_pedido)
+                if (orcamentotask != null)
                 {
-                    Tpedido pedido_pai = (from c in db.Tpedido
-                                          where c.Orcamento == orcamentotask.Orcamento
-                                          select c).FirstOrDefault();
+                    ret.St_orc_virou_pedido = Convert.ToBoolean(orcamentotask.St_Orc_Virou_Pedido);
 
-                    List<Tpedido> lstPedido = await (from c in db.Tpedido
-                                                     where c.Pedido.Contains(pedido_pai.Pedido)
-                                                     select c).ToListAsync();
-
-                    if (lstPedido.Count > 0)
+                    //virou
+                    if ((bool)ret.St_orc_virou_pedido)
                     {
-                        ret.Pedidos = new List<StatusPedidoPrepedidoDados>();
-                        lstPedido.ForEach(x =>
+                        Tpedido pedido_pai = (from c in db.Tpedido
+                                              where c.Orcamento == orcamentotask.Orcamento
+                                              select c).FirstOrDefault();
+
+                        List<Tpedido> lstPedido = await (from c in db.Tpedido
+                                                         where c.Pedido.Contains(pedido_pai.Pedido)
+                                                         select c).ToListAsync();
+
+                        if (lstPedido.Count > 0)
                         {
-                            ret.Pedidos.Add(new StatusPedidoPrepedidoDados
+                            ret.Pedidos = new List<StatusPedidoPrepedidoDados>();
+                            lstPedido.ForEach(x =>
                             {
-                                Pedido = x.Pedido,
-                                St_Entrega = x.St_Entrega
+                                ret.Pedidos.Add(new StatusPedidoPrepedidoDados
+                                {
+                                    Pedido = x.Pedido,
+                                    St_Entrega = x.St_Entrega
+                                });
                             });
-                        });
+                        }
                     }
                 }
             }
@@ -2166,52 +2238,57 @@ namespace Prepedido.Bll
             return ret;
         }
 
-        public async Task<List<InformacoesStatusPrepedidoRetornoDados>> ListarStatusPrepedido(DateTime? dataLimiteInferior, List<string> lstPrepedido,
+        public async Task<List<InformacoesStatusPrepedidoRetornoDados>> ListarStatusPrepedido(
+            DateTime? dataLimiteInferior,
+            List<string> lstPrepedido,
             int sistema_responsavel)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            var lstInfosStatusPrepedido = new List<InformacoesStatusPrepedidoRetornoDados>();
 
-            List<InformacoesStatusPrepedidoRetornoDados> lstInfosStatusPrepedido = new List<InformacoesStatusPrepedidoRetornoDados>();
-
-            var lstTorcamentoQuery = from c in db.Torcamento
-                                     where c.Sistema_responsavel_cadastro == sistema_responsavel
-                                     select c;
-            if (lstPrepedido != null && lstPrepedido.Count > 0)
+            using (var db = contextoProvider.GetContextoLeitura())
             {
-                lstTorcamentoQuery = from c in lstTorcamentoQuery
-                                     where lstPrepedido.Contains(c.Orcamento)
-                                     select c;
+                var lstTorcamentoQuery = from c in db.Torcamento
+                                         where c.Sistema_responsavel_cadastro == sistema_responsavel
+                                         select c;
+                if (lstPrepedido != null && lstPrepedido.Count > 0)
+                {
+                    lstTorcamentoQuery = from c in lstTorcamentoQuery
+                                         where lstPrepedido.Contains(c.Orcamento)
+                                         select c;
+                }
+
+                if (dataLimiteInferior != null)
+                {
+                    lstTorcamentoQuery = from c in lstTorcamentoQuery
+                                         where c.Data >= dataLimiteInferior.Value
+                                         select c;
+                }
+
+                var lstTorcamento = await lstTorcamentoQuery.ToListAsync();
+
+                //vamos buscar todos que viraram pedido
+                //aqui ja estamos buscando todos que contém o orçamento
+                List<string> lstViraramPedido = (from d in lstTorcamento
+                                                 where d.St_Orc_Virou_Pedido == 1
+                                                 select d.Orcamento).ToList();
+
+                List<Tpedido> lstPedidosPai = await (from c in db.Tpedido
+                                                     where lstViraramPedido.Contains(c.Orcamento)
+                                                     select c).ToListAsync();
+
+                lstInfosStatusPrepedido = MontarInformacoesStatusPrepedidoRetornoDados(lstTorcamento, lstPedidosPai);
             }
 
-            if (dataLimiteInferior != null)
-            {
-                lstTorcamentoQuery = from c in lstTorcamentoQuery
-                                     where c.Data >= dataLimiteInferior.Value
-                                     select c;
-            }
-
-            var lstTorcamento = await lstTorcamentoQuery.ToListAsync();
-
-            //vamos buscar todos que viraram pedido
-            //aqui ja estamos buscando todos que contém o orçamento
-            List<string> lstViraramPedido = (from d in lstTorcamento
-                                             where d.St_Orc_Virou_Pedido == 1
-                                             select d.Orcamento).ToList();
-
-            List<Tpedido> lstPedidosPai = await (from c in db.Tpedido
-                                                 where lstViraramPedido.Contains(c.Orcamento)
-                                                 select c).ToListAsync();
-
-
-            lstInfosStatusPrepedido = MontarInformacoesStatusPrepedidoRetornoDados(lstTorcamento, lstPedidosPai);
             return lstInfosStatusPrepedido;
         }
 
 
-        private List<InformacoesStatusPrepedidoRetornoDados> MontarInformacoesStatusPrepedidoRetornoDados(List<Torcamento> lstTorcamento,
+        private List<InformacoesStatusPrepedidoRetornoDados> MontarInformacoesStatusPrepedidoRetornoDados(
+            List<Torcamento> lstTorcamento,
             List<Tpedido> lstPedidos)
         {
-            List<InformacoesStatusPrepedidoRetornoDados> lstRetPedido = new List<InformacoesStatusPrepedidoRetornoDados>();
+            var lstRetPedido = new List<InformacoesStatusPrepedidoRetornoDados>();
+
             foreach (var orcamento in lstTorcamento)
             {
 #pragma warning disable IDE0017 // Simplify object initialization

@@ -32,7 +32,7 @@ namespace UtilsGlobais.Usuario
 
         private static async Task<List<int>> BuscaListaOperacoesPermitidas(string usuario, InfraBanco.ContextoBdProvider contextoProvider)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            using var db = contextoProvider.GetContextoLeitura();
 
             var lstTask = (from perfil in db.Tperfil
                            join perfilitem in db.TperfilItem on perfil.Id equals perfilitem.Id_perfil

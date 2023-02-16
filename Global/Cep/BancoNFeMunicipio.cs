@@ -1,14 +1,13 @@
-﻿using InfraBanco;
+﻿using Cep.Dados;
+using InfraBanco;
+using InfraBanco.Constantes;
 using InfraBanco.Modelos;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using InfraBanco.Constantes;
-using Cep.Dados;
 
 namespace Cep
 {
@@ -21,7 +20,10 @@ namespace Cep
 
     public class BancoNFeMunicipio : IBancoNFeMunicipio
     {
-        public async Task<IEnumerable<NfeMunicipio>> BuscarSiglaUf(string uf, string municipio, bool buscaParcial,
+        public async Task<IEnumerable<NfeMunicipio>> BuscarSiglaUf(
+            string uf, 
+            string municipio, 
+            bool buscaParcial,
             ContextoBdProvider contextoProvider)
         {
             List<NfeMunicipio> lstNfeMunicipio = new List<NfeMunicipio>();
@@ -141,32 +143,38 @@ namespace Cep
 
         public async Task<string> MontarProviderStringParaNFeMunicipio(ContextoBdProvider contextoProvider)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            string providerString = string.Empty;
 
-            //buscando os dados para se conectar no servidor de banco de dados
-            TnfEmitente nova_conexao = await (from c in db.TnfEmitente
-                                              where c.NFe_st_emitente_padrao == 1
-                                              select new TnfEmitente
-                                              {
-                                                  NFe_T1_nome_BD = c.NFe_T1_nome_BD,
-                                                  NFe_T1_servidor_BD = c.NFe_T1_servidor_BD,
-                                                  NFe_T1_usuario_BD = c.NFe_T1_usuario_BD,
-                                                  NFe_T1_senha_BD = c.NFe_T1_senha_BD
-                                              }).FirstOrDefaultAsync();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                //buscando os dados para se conectar no servidor de banco de dados
+                TnfEmitente nova_conexao = await (from c in db.TnfEmitente
+                                                  where c.NFe_st_emitente_padrao == 1
+                                                  select new TnfEmitente
+                                                  {
+                                                      NFe_T1_nome_BD = c.NFe_T1_nome_BD,
+                                                      NFe_T1_servidor_BD = c.NFe_T1_servidor_BD,
+                                                      NFe_T1_usuario_BD = c.NFe_T1_usuario_BD,
+                                                      NFe_T1_senha_BD = c.NFe_T1_senha_BD
+                                                  }).FirstOrDefaultAsync();
 
-            SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();
-            sqlBuilder.DataSource = nova_conexao.NFe_T1_servidor_BD;
-            sqlBuilder.InitialCatalog = nova_conexao.NFe_T1_nome_BD;
-            sqlBuilder.UserID = nova_conexao.NFe_T1_usuario_BD;
+                SqlConnectionStringBuilder sqlBuilder = new SqlConnectionStringBuilder();
+                sqlBuilder.DataSource = nova_conexao.NFe_T1_servidor_BD;
+                sqlBuilder.InitialCatalog = nova_conexao.NFe_T1_nome_BD;
+                sqlBuilder.UserID = nova_conexao.NFe_T1_usuario_BD;
 
-            sqlBuilder.Password = UtilsGlobais.Util.decodificaDado(nova_conexao.NFe_T1_senha_BD, Constantes.FATOR_BD);
+                sqlBuilder.Password = UtilsGlobais.Util.decodificaDado(nova_conexao.NFe_T1_senha_BD, Constantes.FATOR_BD);
 
-            string providerString = sqlBuilder.ToString();
+                providerString = sqlBuilder.ToString();
+            }
 
             return providerString;
         }
 
-        public async Task<IEnumerable<UFeMunicipiosDados>> BuscarSiglaTodosUf(ContextoBdProvider contextoProvider, string uf, string municipioParcial)
+        public async Task<IEnumerable<UFeMunicipiosDados>> BuscarSiglaTodosUf(
+            ContextoBdProvider contextoProvider, 
+            string uf, 
+            string municipioParcial)
         {
             List<UFeMunicipiosDados> lstUF_Municipio = new List<UFeMunicipiosDados>();
             List<MunicipioDados> lstMunicipios = new List<MunicipioDados>();
