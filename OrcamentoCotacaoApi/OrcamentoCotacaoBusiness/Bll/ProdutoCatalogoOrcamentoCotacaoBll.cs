@@ -44,9 +44,42 @@ namespace OrcamentoCotacaoBusiness.Bll
             return _bll.PorFiltro(filtro);
         }
 
-        public bool Excluir(int id)
+        public string Excluir(int id, string caminho)
         {
-            return _bll.Excluir(id);
+            var tProdutoCatalogoAntigo = _bll.BuscarTprodutoCatalogo(new TprodutoCatalogoFiltro() { Id = id.ToString(), IncluirImagem = true, IncluirPropriedades = true }).FirstOrDefault();
+            if(tProdutoCatalogoAntigo == null)
+            {
+                return "Produto não encontrado!";
+            }
+
+            using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                if(tProdutoCatalogoAntigo.imagem != null)
+                {
+                    var file = Path.Combine(caminho, tProdutoCatalogoAntigo.imagem.Caminho);
+                    if (!File.Exists(file))
+                        return "Ops! O arquivo não foi encontrado no diretório!";
+
+                    File.Delete(file);
+
+                    if (File.Exists(file)) return "Falha ao deletar arquivo do diretório!";
+                    
+                    if (!_bll.ExcluirImagemComTransacao(id, tProdutoCatalogoAntigo.imagem.Id, dbGravacao)) return "Falha ao excluir a imagem do produto!";
+
+                }
+
+                if(!_bll.ExcluirItensComTransacao(tProdutoCatalogoAntigo.campos, dbGravacao))
+                {
+                    return "Falha ao excluir propriedades do produto.";
+                };
+                
+                var remover = _bll.ExcluirProdutoCatalogoComTransacao(id, dbGravacao);
+
+                dbGravacao.SaveChanges();
+                dbGravacao.transacao.Commit();
+            }
+
+            return null;
         }
 
         public TprodutoCatalogo Detalhes(int id)

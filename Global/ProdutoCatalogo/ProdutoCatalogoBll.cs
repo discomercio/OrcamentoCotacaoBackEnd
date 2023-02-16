@@ -227,5 +227,20 @@ namespace ProdutoCatalogo
         {
             return _data.BuscarGrupos(obj);
         }
+
+        public bool ExcluirItensComTransacao(List<TprodutoCatalogoItem> propriedades, InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            foreach(var propriedade in propriedades)
+            {
+                var removeu = _data.ExcluirItensComTransacao(propriedade, contextoBdGravacao);
+                if (!removeu) return false;
+            }
+            return true;
+        }
+
+        public bool ExcluirProdutoCatalogoComTransacao(int id, InfraBanco.ContextoBdGravacao contextoBdGravacao)
+        {
+            return _data.ExcluirPorIdProdutoCatalogoComTransacao(id, contextoBdGravacao);
+        }
     }
 }
