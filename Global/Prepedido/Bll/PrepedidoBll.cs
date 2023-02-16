@@ -77,7 +77,7 @@ namespace Prepedido.Bll
 
                 res = lista.AsEnumerable();
             }
-            
+
             return await Task.FromResult(res);
         }
 
@@ -96,7 +96,7 @@ namespace Prepedido.Bll
 
                 ret = await lista.Distinct().ToListAsync();
             }
-            
+
             List<string> cpfCnpjFormat = new List<string>();
 
             foreach (string cpf in ret)
@@ -146,11 +146,11 @@ namespace Prepedido.Bll
 
         //a busca sem malabarismos para econtrar algum registro
         public async Task<IEnumerable<PrepedidosCadastradosPrepedidoDados>> ListarPrePedidosFiltroEstrito(
-            string apelido, 
+            string apelido,
             TipoBuscaPrepedido tipoBusca,
-            string clienteBusca, 
-            string numeroPrePedido, 
-            DateTime? dataInicial, 
+            string clienteBusca,
+            string numeroPrePedido,
+            DateTime? dataInicial,
             DateTime? dataFinal)
         {
 
@@ -452,59 +452,65 @@ namespace Prepedido.Bll
             {
                 string nomeUsuario = null;
 
-            
+                if (torcamento.PrevisaoEntregaIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.UsuarioInterno)
+                {
+                    nomeUsuario = (from c in db.Tusuario
+                                   where c.Id == torcamento.PrevisaoEntregaIdUsuarioUltAtualiz
+                                   select c.Usuario).FirstOrDefault();
+                }
+                if (torcamento.PrevisaoEntregaIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.Parceiro)
+                {
+                    nomeUsuario = (from c in db.TorcamentistaEindicador
+                                   where c.IdIndicador == torcamento.PrevisaoEntregaIdUsuarioUltAtualiz
+                                   select c.Apelido).FirstOrDefault();
+                }
+                if (torcamento.PrevisaoEntregaIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.VendedorParceiro)
+                {
+                    //buscar na t_orcamentista_indicador_vendedor nome amigável
+                    var nomeCompleto = (from c in db.TorcamentistaEindicadorVendedor
+                                        where c.Id == torcamento.PrevisaoEntregaIdUsuarioUltAtualiz
+                                        select c.Nome).FirstOrDefault();
+                    nomeUsuario = $"[VP] {nomeCompleto.Split(" ")[0]}"; ;
+                }
 
-            //Previsão de entrega
-            if (torcamento.PrevisaoEntregaIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.UsuarioInterno)
-            {
-                nomeUsuario = (from c in db.Tusuario
-                               where c.Id == torcamento.PrevisaoEntregaIdUsuarioUltAtualiz
-                               select c.Usuario).FirstOrDefault();
-            }
-            if (torcamento.PrevisaoEntregaIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.Parceiro)
-            {
-                nomeUsuario = (from c in db.TorcamentistaEindicador
-                               where c.IdIndicador == torcamento.PrevisaoEntregaIdUsuarioUltAtualiz
-                               select c.Apelido).FirstOrDefault();
-            }
-            if (torcamento.PrevisaoEntregaIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.VendedorParceiro)
-            {
-                //buscar na t_orcamentista_indicador_vendedor nome amigável
-                var nomeCompleto = (from c in db.TorcamentistaEindicadorVendedor
-                                    where c.Id == torcamento.PrevisaoEntregaIdUsuarioUltAtualiz
-                                    select c.Nome).FirstOrDefault();
-                nomeUsuario = $"[VP] {nomeCompleto.Split(" ")[0]}"; ;
-            }
+                if (string.IsNullOrEmpty(nomeUsuario))
+                {
+                    nomeUsuario = torcamento.PrevisaoEntregaUsuarioUltAtualiz;
+                }
 
                 string previsaoEntregaTexto = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
                         torcamento.PrevisaoEntregaData?.ToString("dd/MM/yyyy") + " (" + Texto.iniciaisEmMaiusculas(nomeUsuario) +
                         " - " + torcamento.PrevisaoEntregaDtHrUltAtualiz?.ToString("dd/MM/yyyy HH:mm") + ")" : null;
 
 
-            //Entrega imediata
-            if (torcamento.EtgImediataIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.UsuarioInterno)
-            {
-                nomeUsuario = (from c in db.Tusuario
-                               where c.Id == torcamento.EtgImediataIdUsuarioUltAtualiz
-                               select c.Usuario).FirstOrDefault();
-            }
-            if (torcamento.EtgImediataIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.Parceiro)
-            {
-                nomeUsuario = (from c in db.TorcamentistaEindicador
-                               where c.IdIndicador == torcamento.EtgImediataIdUsuarioUltAtualiz
-                               select c.Apelido).FirstOrDefault();
-            }
-            if (torcamento.EtgImediataIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.VendedorParceiro)
-            {
-                //buscar na t_orcamentista_indicador_vendedor nome amigável
-                var nomeCompleto = (from c in db.TorcamentistaEindicadorVendedor
-                                    where c.Id == torcamento.EtgImediataIdUsuarioUltAtualiz
-                                    select c.Nome).FirstOrDefault();
-                nomeUsuario = $"[VP] {nomeCompleto.Split(" ")[0]}"; //paliativo pois não temos um nome curto para esse usuário
-            }
-            string entregaImediataTexto = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
-                "NÃO (" + Texto.iniciaisEmMaiusculas(nomeUsuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
-                "SIM (" + Texto.iniciaisEmMaiusculas(nomeUsuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")";
+                nomeUsuario = string.Empty;
+                if (torcamento.EtgImediataIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.UsuarioInterno)
+                {
+                    nomeUsuario = (from c in db.Tusuario
+                                   where c.Id == torcamento.EtgImediataIdUsuarioUltAtualiz
+                                   select c.Usuario).FirstOrDefault();
+                }
+                if (torcamento.EtgImediataIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.Parceiro)
+                {
+                    nomeUsuario = (from c in db.TorcamentistaEindicador
+                                   where c.IdIndicador == torcamento.EtgImediataIdUsuarioUltAtualiz
+                                   select c.Apelido).FirstOrDefault();
+                }
+                if (torcamento.EtgImediataIdTipoUsuarioContexto == (short)Constantes.TipoUsuarioContexto.VendedorParceiro)
+                {
+                    var nomeCompleto = (from c in db.TorcamentistaEindicadorVendedor
+                                        where c.Id == torcamento.EtgImediataIdUsuarioUltAtualiz
+                                        select c.Nome).FirstOrDefault();
+                    nomeUsuario = $"[VP] {nomeCompleto.Split(" ")[0]}"; 
+                }
+                if (string.IsNullOrEmpty(nomeUsuario))
+                {
+                    nomeUsuario = torcamento.Etg_Imediata_Usuario;
+                }
+                
+                string entregaImediataTexto = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
+                    "NÃO (" + Texto.iniciaisEmMaiusculas(nomeUsuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
+                    "SIM (" + Texto.iniciaisEmMaiusculas(nomeUsuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")";
 
                 detail = new DetalhesPrepedidoDados
                 {
@@ -587,9 +593,9 @@ namespace Prepedido.Bll
             using (var db = contextoProvider.GetContextoLeitura())
             {
                 produtos = await (from c in db.TorcamentoItem
-                               where c.Orcamento == orc.Orcamento
-                               orderby c.Sequencia
-                               select c).ToListAsync();
+                                  where c.Orcamento == orc.Orcamento
+                                  orderby c.Sequencia
+                                  select c).ToListAsync();
             }
 
             var listaProduto = new List<PrepedidoProdutoPrepedidoDados>();
@@ -632,8 +638,8 @@ namespace Prepedido.Bll
             using (var db = contextoProvider.GetContextoLeitura())
             {
                 dadosCliente = await (from c in db.Tcliente
-                               where c.Id == orcamento.Id_Cliente
-                               select c).FirstOrDefaultAsync();
+                                      where c.Id == orcamento.Id_Cliente
+                                      select c).FirstOrDefaultAsync();
             }
 
             var cli = dadosCliente;
@@ -686,10 +692,10 @@ namespace Prepedido.Bll
             using (var db = contextoProvider.GetContextoLeitura())
             {
                 dadosCliente = from c in db.Tcliente
-                                   where c.Id == idCliente
-                                   select c;
+                               where c.Id == idCliente
+                               select c;
             }
-            
+
             var cli = await dadosCliente.FirstOrDefaultAsync();
 
             var cadastroCliente = new Cliente.Dados.DadosClienteCadastroDados
@@ -785,8 +791,8 @@ namespace Prepedido.Bll
             using (var db = contextoProvider.GetContextoLeitura())
             {
                 raStatus = await (from c in db.TorcamentistaEindicador
-                                where c.Apelido == apelido
-                                select c.Permite_RA_Status).FirstOrDefaultAsync();
+                                  where c.Apelido == apelido
+                                  select c.Permite_RA_Status).FirstOrDefaultAsync();
             }
 
             return raStatus;
@@ -1010,12 +1016,12 @@ namespace Prepedido.Bll
                 if (cfgOperacao == null)
                 {
                     lstErros.Add("Falha ao montar log de operação.");
-                    return lstErros;                    
+                    return lstErros;
                 }
 
-                var tLogV2 = Util.GravaLogV2ComTransacao(dbGravacao, log, (short)prePedido.UsuarioCadastroIdTipoUsuarioContexto, 
-                    prePedido.UsuarioCadastroId, prePedido.DadosCliente.Loja, prePedido.NumeroPrePedido, 
-                    prePedido.DadosCliente.IdOrcamentoCotacao, prePedido.DadosCliente.Id, 
+                var tLogV2 = Util.GravaLogV2ComTransacao(dbGravacao, log, (short)prePedido.UsuarioCadastroIdTipoUsuarioContexto,
+                    prePedido.UsuarioCadastroId, prePedido.DadosCliente.Loja, prePedido.NumeroPrePedido,
+                    prePedido.DadosCliente.IdOrcamentoCotacao, prePedido.DadosCliente.Id,
                     Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
 
                 lstErros.Add(prePedido.NumeroPrePedido);
@@ -2233,7 +2239,7 @@ namespace Prepedido.Bll
         }
 
         public async Task<List<InformacoesStatusPrepedidoRetornoDados>> ListarStatusPrepedido(
-            DateTime? dataLimiteInferior, 
+            DateTime? dataLimiteInferior,
             List<string> lstPrepedido,
             int sistema_responsavel)
         {
@@ -2272,7 +2278,7 @@ namespace Prepedido.Bll
 
                 lstInfosStatusPrepedido = MontarInformacoesStatusPrepedidoRetornoDados(lstTorcamento, lstPedidosPai);
             }
-            
+
             return lstInfosStatusPrepedido;
         }
 
