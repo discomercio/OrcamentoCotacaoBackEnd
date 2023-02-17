@@ -91,7 +91,7 @@ namespace PrepedidoApi.Controllers
                 Retorno = retorno.Count
             };
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. ArquivoController/AtualizarClienteParcial/POST - Response => [{JsonSerializer.Serialize(response)}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. ClienteController/AtualizarClienteParcial/POST - Response => [{JsonSerializer.Serialize(response)}].");
 
             return Ok(retorno);
         }

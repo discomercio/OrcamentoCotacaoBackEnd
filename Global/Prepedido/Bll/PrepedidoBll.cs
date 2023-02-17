@@ -63,20 +63,16 @@ namespace Prepedido.Bll
 
         public async Task<IEnumerable<string>> ListarNumerosPrepedidosCombo(string orcamentista)
         {
-            IEnumerable<string> res;
+            var db = contextoProvider.GetContextoLeitura();
 
-            //toda vez precisamos de uma nova conexao para os casos em que houver transacao
-            using (var db = contextoProvider.GetContextoLeitura())
-            {
-                var lista = from r in db.Torcamento
-                            where r.Orcamentista == orcamentista &&
-                                  r.St_Orcamento != "CAN"
-                                  && r.Data >= Util.LimiteDataBuscas()
-                            orderby r.Orcamento
-                            select r.Orcamento;
+            var lista = from r in db.Torcamento
+                        where r.Orcamentista == orcamentista &&
+                              r.St_Orcamento != "CAN"
+                              && r.Data >= Util.LimiteDataBuscas()
+                        orderby r.Orcamento
+                        select r.Orcamento;
 
-                res = lista.AsEnumerable();
-            }
+            var res = lista.AsEnumerable();
 
             return await Task.FromResult(res);
         }
@@ -156,10 +152,9 @@ namespace Prepedido.Bll
 
             IQueryable<Torcamento> lst;
 
-            using (var db = contextoProvider.GetContextoLeitura())
-            {
-                lst = db.Torcamento.Where(r => r.Orcamentista == apelido);
-            }
+            var db = contextoProvider.GetContextoLeitura();
+
+            lst = db.Torcamento.Where(r => r.Orcamentista == apelido);
 
             //filtro conforme o tipo do prepedido
             switch (tipoBusca)
@@ -282,12 +277,12 @@ namespace Prepedido.Bll
 
                 Torcamento pp = prepedido.FirstOrDefault();
 
+                if (pp == null)
+                    return null;
+
                 Tloja t = await (from c in db.Tloja
                                  where c.Loja == pp.Loja
                                  select c).FirstOrDefaultAsync();
-
-                if (pp == null)
-                    return null;
 
                 string corHeader = "black";
                 string textoHeader = "";
