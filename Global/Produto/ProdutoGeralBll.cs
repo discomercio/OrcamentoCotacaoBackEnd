@@ -67,7 +67,7 @@ namespace Produto
 
         private async Task ExisteMensagensAlertaProdutos(List<ProdutoDados> lst_produtos)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            using var db = contextoProvider.GetContextoLeitura();
 
             var alertasTask = from c in db.TprodutoXAlerta
                               where c.TalertaProduto.Ativo == "S"
@@ -111,7 +111,7 @@ namespace Produto
 
         private async Task<IEnumerable<ProdutoCompostoDados>> BuscarProdutosCompostos(string loja)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            using var db = contextoProvider.GetContextoLeitura();
 
             //buscar todos os produtos compostos com seus filhos
             //não acessar t_produto
@@ -161,7 +161,7 @@ namespace Produto
 
         public async Task<List<Produto.Dados.ProdutoDados>> BuscarTodosProdutos(string loja)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            using var db = contextoProvider.GetContextoLeitura();
 
             var todosProdutosTask = from c in db.Tproduto
                                     join pl in db.TprodutoLoja on c.Produto equals pl.Produto
@@ -192,7 +192,7 @@ namespace Produto
 
         public async Task<IEnumerable<ProdutoDados>> BuscarProdutosEspecificos(string loja, List<string> lstProdutos)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            using var db = contextoProvider.GetContextoLeitura();
 
             var todosProdutosTask = from c in db.Tproduto
                                     join pl in db.TprodutoLoja on c.Produto equals pl.Produto

@@ -61,7 +61,7 @@ namespace PrepedidoApi.Controllers
 
             var response = await pedidoBll.ListarNumerosPedidoCombo(apelido.Trim());
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/Get/GET - Response => [{JsonSerializer.Serialize(response.Count())}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PedidoController/ListarNumerosPedidosCombo/GET - Response => [{JsonSerializer.Serialize(response.Count())}].");
 
             return Ok(response);
         }
@@ -100,7 +100,7 @@ namespace PrepedidoApi.Controllers
                 dataFinal
                 );
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/Get/GET - Response => [{JsonSerializer.Serialize(ret.Count())}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PedidoController/ListarPedidos/GET - Response => [{JsonSerializer.Serialize(ret.Count())}].");
 
             return Ok(ret);
         }
@@ -122,7 +122,7 @@ namespace PrepedidoApi.Controllers
 
             var response = await pedidoBll.ListarCpfCnpjPedidosCombo(apelido.Trim());
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/Get/GET - Response => [{JsonSerializer.Serialize(response.Count())}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PedidoController/ListarCpfCnpjPedidosCombo/GET - Response => [{JsonSerializer.Serialize(response.Count())}].");
 
             return Ok(response);
         }

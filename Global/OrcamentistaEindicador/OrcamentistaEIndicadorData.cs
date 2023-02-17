@@ -112,11 +112,18 @@ namespace OrcamentistaEindicador
         {
             apelido = apelido.ToUpper().Trim();
 
-            var db = contextoProvider.GetContextoLeitura();
-            //Validar o dados no bd
-            var dados = from c in db.TorcamentistaEindicador
-                        where c.Apelido == apelido
-                        select c;
+            TorcamentistaEindicador dados;
+
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                //Validar o dados no bd
+                dados = await (from c in db.TorcamentistaEindicador
+                            where c.Apelido == apelido
+                            select c).FirstOrDefaultAsync();
+            }
+
+
+
             //new
             //{
             //    c.Razao_Social_Nome,
@@ -128,8 +135,10 @@ namespace OrcamentistaEindicador
             //    c.Loja
             //};
 
+
+            var t = dados;
+
             string retorno = null;
-            var t = await dados.FirstOrDefaultAsync();
 
             //se o apelido nao existe
             if (t == null)

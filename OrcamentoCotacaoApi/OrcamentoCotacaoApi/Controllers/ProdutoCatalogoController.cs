@@ -244,14 +244,16 @@ namespace OrcamentoCotacaoApi.Controllers
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoCatalogoController/Excluir/DELETE - Request => [{System.Text.Json.JsonSerializer.Serialize(request)}].");
 
-            _bll.Excluir(id);
+            var retorno = _bll.Excluir(id, _appSettings.Value.ImgCaminho);
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoCatalogoController/Excluir/DELETE - Response => [Produto Catalogo Removido.].");
 
-            //if (saida)
+            if(!string.IsNullOrEmpty(retorno))
+            {
+                return BadRequest(new { message = retorno });
+            }
+            
             return Ok(true);
-            //else
-            //    return NotFound();
         }
 
         [HttpDelete("imagem")]

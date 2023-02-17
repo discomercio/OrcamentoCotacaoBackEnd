@@ -145,7 +145,7 @@ namespace PrepedidoApi.Controllers
 
             var response = new
             {
-                Clientes = cliente.Count()
+                Clientes = cliente
             };
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. ClienteController/CadastrarCliente/POST - Response => [{JsonSerializer.Serialize(response)}].");

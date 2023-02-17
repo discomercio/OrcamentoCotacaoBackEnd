@@ -102,18 +102,23 @@ namespace Loja
 
         public PercMaxDescEComissaoDados BuscarPercMaxPorLoja(string loja)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            PercMaxDescEComissaoDados percMaxDescEComissaoDados;
 
-            return (from c in db.Tloja
-                    where c.Loja == loja
-                    select new PercMaxDescEComissaoDados
-                    {
-                        PercMaxComissao = c.Perc_Max_Comissao,
-                        PercMaxComissaoEDesconto = c.Perc_Max_Comissao_E_Desconto,
-                        PercMaxComissaoEDescontoPJ = c.Perc_Max_Comissao_E_Desconto_Pj,
-                        PercMaxComissaoEDescontoNivel2 = c.Perc_Max_Comissao_E_Desconto_Nivel2,
-                        PercMaxComissaoEDescontoNivel2PJ = c.Perc_Max_Comissao_E_Desconto_Nivel2_Pj
-                    }).FirstOrDefault();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                percMaxDescEComissaoDados = (from c in db.Tloja
+                                             where c.Loja == loja
+                                             select new PercMaxDescEComissaoDados
+                                             {
+                                                 PercMaxComissao = c.Perc_Max_Comissao,
+                                                 PercMaxComissaoEDesconto = c.Perc_Max_Comissao_E_Desconto,
+                                                 PercMaxComissaoEDescontoPJ = c.Perc_Max_Comissao_E_Desconto_Pj,
+                                                 PercMaxComissaoEDescontoNivel2 = c.Perc_Max_Comissao_E_Desconto_Nivel2,
+                                                 PercMaxComissaoEDescontoNivel2PJ = c.Perc_Max_Comissao_E_Desconto_Nivel2_Pj
+                                             }).FirstOrDefault();
+            }
+
+            return percMaxDescEComissaoDados;
         }
 
         public Tloja InserirComTransacao(Tloja model, ContextoBdGravacao contextoBdGravacao)

@@ -34,7 +34,7 @@ namespace Usuario
 
         public async Task<List<Tusuario>> FiltrarPorPerfil(string loja)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            using var db = contextoProvider.GetContextoLeitura();
 
             var usuarioFiltrado = await (from u in db.Tusuario
                                          join uxl in db.TusuarioXLoja on u.Usuario equals uxl.Usuario

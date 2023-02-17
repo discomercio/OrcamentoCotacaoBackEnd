@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 
@@ -23,61 +22,75 @@ namespace Avisos
 
         public async Task<IEnumerable<Taviso>> BuscarTodosAvisos(List<string> lst)
         {
-            var db = contextoProvider.GetContextoLeitura();
-            var ret = (from c in db.Tavisos
-                       where (from d in lst
-                              select d).Contains(c.Id)
-                       select c).ToListAsync();
+            List<Taviso> ret;
 
-            return await ret;
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                ret = await (from c in db.Tavisos
+                             where (from d in lst
+                                    select d).Contains(c.Id)
+                             select c).ToListAsync();
+            }
+
+            return ret;
         }
 
         public async Task<IEnumerable<Taviso>> BuscarTodosAvisosNaoLidos(string loja, string usuario)
         {
-            var db = contextoProvider.GetContextoLeitura();
-            var ret = (from c in db.Tavisos
-                       where (!(from d in db.TavisoLidos
-                                where d.Usuario == usuario
-                                select d.Id).Contains(c.Id)) &&
-                       ((c.Destinatario == "") ||
-                             (c.Destinatario == null) ||
-                             (c.Destinatario == loja))
-                       select c).OrderByDescending(x => x.Dt_ult_atualizacao).ToListAsync();
+            List<Taviso> ret;
 
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                ret = await (from c in db.Tavisos
+                             where (!(from d in db.TavisoLidos
+                                      where d.Usuario == usuario
+                                      select d.Id).Contains(c.Id)) &&
+                             ((c.Destinatario == "") ||
+                                   (c.Destinatario == null) ||
+                                   (c.Destinatario == loja))
+                             select c)
+                             .OrderByDescending(x => x.Dt_ult_atualizacao)
+                             .ToListAsync();
+            }
 
-            return await ret;
+            return ret;
         }
 
         public async Task<IEnumerable<TavisoLido>> BuscarAvisosLidos(string usuario)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            List<TavisoLido> ret;
 
-            var ret = (from c in db.TavisoLidos
-                       where c.Usuario == usuario
-                       select c).ToListAsync();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                ret = await (from c in db.TavisoLidos
+                             where c.Usuario == usuario
+                             select c).ToListAsync();
+            }
 
-            return await ret;
+            return ret;
         }
 
         public async Task<IEnumerable<TavisoExibido>> BuscarAvisosExibidos(string usuario)
         {
-            var db = contextoProvider.GetContextoLeitura();
+            List<TavisoExibido> ret;
 
-            var ret = (from c in db.TavisoExibidos
-                       where c.Usuario == usuario
-                       select c).ToListAsync();
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                ret = await (from c in db.TavisoExibidos
+                             where c.Usuario == usuario
+                             select c).ToListAsync();
+            }
 
-            return await ret;
+            return ret;
         }
 
         public async Task<IEnumerable<AvisoDados>> BuscarAvisosNaoLidos(string loja, string usuario)
         {
-            var db = contextoProvider.GetContextoLeitura();
             //vamos buscar todos os avisos
             List<Taviso> avisos = (await BuscarTodosAvisosNaoLidos(loja, usuario)).ToList();
 
             //vamos buscar os avisos lidos
-            List<AvisoDados> ret = new List<AvisoDados>();
+            var ret = new List<AvisoDados>();
 
             if (avisos != null)
             {
@@ -276,4 +289,3 @@ namespace Avisos
         }
     }
 }
-

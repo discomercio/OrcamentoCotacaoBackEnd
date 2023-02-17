@@ -63,6 +63,7 @@ namespace ProdutoCatalogo
             produtoCatalogo.UsuarioEdicao = model.UsuarioEdicao;
             produtoCatalogo.DtEdicao = DateTime.Now;
             produtoCatalogo.Ativo = model.Ativo;
+            produtoCatalogo.Fabricante = model.Fabricante;
 
             contextoBdGravacao.SaveChanges();
 
@@ -273,7 +274,7 @@ namespace ProdutoCatalogo
                                  {
                                      Id = pc.Id,
                                      Nome = pc.Nome,
-                                     Fabricante = $"{f.Fabricante} - {f.Nome}",
+                                     Fabricante = f.Fabricante,
                                      Descricao = pc.Descricao,
                                      Produto = pc.Produto,
                                      UsuarioCadastro = pc.UsuarioCadastro,
@@ -593,6 +594,22 @@ namespace ProdutoCatalogo
             }
 
             return false;
+        }
+
+        public bool ExcluirItensPorIdProdutoCatalogoComTransacao(int id, ContextoBdGravacao contextoBdGravacao)
+        {
+            contextoBdGravacao.TprodutoCatalogoItem.Remove(new TprodutoCatalogoItem() { IdProdutoCatalogo = id });
+            contextoBdGravacao.SaveChanges();
+
+            return true;
+        }
+
+        public bool ExcluirPorIdProdutoCatalogoComTransacao(int id, ContextoBdGravacao contextoBdGravacao)
+        {
+            contextoBdGravacao.TprodutoCatalogo.Remove(new TprodutoCatalogo() { Id = id});
+            contextoBdGravacao.SaveChanges();
+
+            return true;
         }
 
         public bool CriarImagens(TprodutoCatalogoImagem img)

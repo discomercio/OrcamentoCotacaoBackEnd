@@ -107,7 +107,7 @@ namespace OrcamentoCotacaoApi.Controllers
                 OrcamentistaEIndicadorVendedor = result.Count
             };
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/BuscarVendedoresDosParceiros/GET - Response => [{JsonSerializer.Serialize(response)}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/BuscarVendedoresDosParceirosPorApelidoELoja/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
             return result;
         }
