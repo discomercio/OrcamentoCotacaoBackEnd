@@ -793,13 +793,19 @@ namespace Prepedido.Bll
             return raStatus;
         }
 
-        public async Task<IEnumerable<string>> CadastrarPrepedido(PrePedidoDados prePedido, string apelido,
-            decimal limiteArredondamento, bool verificarPrepedidoRepetido, Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
-            int limite_de_itens, ContextoBdGravacao dbGravacao, string ip)
+        public async Task<IEnumerable<string>> CadastrarPrepedido(
+            PrePedidoDados prePedido, 
+            string apelido,
+            decimal limiteArredondamento, 
+            bool verificarPrepedidoRepetido, 
+            Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
+            int limite_de_itens, 
+            ContextoBdGravacao dbGravacao, 
+            string ip)
         {
-            List<string> lstErros = new List<string>();
+            var lstErros = new List<string>();
+            var loja = string.Empty;
 
-            string loja = "";
             if (!string.IsNullOrEmpty(apelido))
             {
                 TorcamentistaEindicador tOrcamentista = await BuscarTorcamentista(apelido);
@@ -824,7 +830,6 @@ namespace Prepedido.Bll
 
                 loja = tOrcamentista.Loja;
             }
-
 
             if (string.IsNullOrEmpty(prePedido.DadosCliente.Id))
             {
@@ -891,8 +896,11 @@ namespace Prepedido.Bll
             await validacoesPrepedidoBll.ValidarEnderecoEntrega(prePedido.EnderecoEntrega, lstErros,
                 prePedido.DadosCliente.Indicador_Orcamentista, prePedido.DadosCliente.Tipo, true, prePedido.DadosCliente.Loja,
                 sistemaResponsavelCadastro);
+
             if (lstErros.Any())
+            {
                 return lstErros;
+            }
 
             //busca a sigla do tipo de pagamento pelo código enviado
             string c_custoFinancFornecTipoParcelamento = ObterSiglaFormaPagto(prePedido.FormaPagtoCriacao);
@@ -1068,8 +1076,12 @@ namespace Prepedido.Bll
             }
         }
 
-        private async Task<string> EfetivarCadastroPrepedido(ContextoBdGravacao dbgravacao, PrePedidoDados prepedido,
-            string loja, string siglaPagto, InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
+        private async Task<string> EfetivarCadastroPrepedido(
+            ContextoBdGravacao dbgravacao, 
+            PrePedidoDados prepedido,
+            string loja, 
+            string siglaPagto, 
+            Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             float perc_limite_RA_sem_desagio = 0)
         {
             //vamos buscar a midia do cliente para cadastrar no orçamento
@@ -1077,7 +1089,7 @@ namespace Prepedido.Bll
                                   where c.Cnpj_Cpf == prepedido.DadosCliente.Cnpj_Cpf
                                   select c.Midia).FirstOrDefaultAsync();
 
-            Torcamento torcamento = new Torcamento();
+            var torcamento = new Torcamento();
             //Varificar se tem tem os dados no prepedido => loja, apelido, vendedor e permiteRaStatus(se não tiver parceiro = false)
             torcamento.Orcamento = prepedido.NumeroPrePedido;
             torcamento.Loja = prepedido.DadosCliente.Loja;
@@ -1112,7 +1124,6 @@ namespace Prepedido.Bll
             torcamento.UsuarioCadastroId = prepedido.UsuarioCadastroId;//Id do registro do usuário logado (t_ORCAMENTISTA_E_INDICADOR_VENDEDOR.Id, t_ORCAMENTISTA_E_INDICADOR.Id ou t_USUARIO.Id) Se aprovação pelo cliente em rota pública deve ser nulo
             torcamento.Usuario_cadastro = prepedido.Usuario_cadastro;//preencher com "[N] 999999", onde  N = UsuarioCadastroIdTipoUsuarioContexto  999999 = UsuarioCadastroId
 
-
             //inclui os campos de endereço cadastral no Torccamento
             IncluirDadosClienteParaTorcamento(prepedido, torcamento);
 
@@ -1120,19 +1131,21 @@ namespace Prepedido.Bll
             IncluirFormaPagtoParaTorcamento(prepedido, torcamento);
 
             //vamos incluir os campos de detalhesPrepedido para Torcamento
-            IncluirDetalhesPrepedidoParaTorcamento(prepedido, torcamento, prepedido.DadosCliente.UsuarioCadastro.ToUpper());
+            IncluirDetalhesPrepedidoParaTorcamento(prepedido, torcamento);
 
             if (prepedido.EnderecoEntrega == null)
             {
                 prepedido.EnderecoEntrega = new EnderecoEntregaClienteCadastroDados();
             }
+
             //vamos incluir os campos de endereço de entrega
             IncluirEnderecoEntregaParaTorcamento(prepedido, torcamento);
 
             //vamos alterar o modo de criar o log e montar apenas os campos que devem ser salvos
             string campos_a_inserir = montarLogPrepedidoBll.MontarCamposAInserirPrepedido(torcamento, prepedido);
 
-            string log = "";
+            var log = string.Empty;
+
             log = Util.MontaLogInserir(torcamento, log, campos_a_inserir, true);
 
             dbgravacao.Add(torcamento);
@@ -1255,13 +1268,15 @@ namespace Prepedido.Bll
             }
         }
 
-        private void IncluirDetalhesPrepedidoParaTorcamento(PrePedidoDados prepedido, Torcamento torcamento, string orcamentista)
+        private void IncluirDetalhesPrepedidoParaTorcamento(PrePedidoDados prepedido, Torcamento torcamento)
         {
+            torcamento.Obs_1 = this.ConcatenarCamposObservacao(
+                prepedido.DetalhesPrepedido.Observacoes, 
+                prepedido.FormaPagtoCriacao.C_forma_pagto);
 
-            torcamento.Obs_1 = prepedido.DetalhesPrepedido.Observacoes == null ?
-                "" : prepedido.DetalhesPrepedido.Observacoes;
-            torcamento.Obs_2 = prepedido.DetalhesPrepedido.NumeroNF == null ?
-                "" : prepedido.DetalhesPrepedido.NumeroNF;
+            torcamento.Obs_2 = string.IsNullOrEmpty(prepedido.DetalhesPrepedido.NumeroNF) ?
+                string.Empty : prepedido.DetalhesPrepedido.NumeroNF;
+
             torcamento.StBemUsoConsumo = prepedido.DetalhesPrepedido.BemDeUso_Consumo !=
                 (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO ?
                 (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_SIM : (short)Constantes.Bem_DeUsoComum.COD_ST_BEM_USO_CONSUMO_NAO;
@@ -1284,16 +1299,41 @@ namespace Prepedido.Bll
 
             torcamento.St_Etg_Imediata = short.Parse(prepedido.DetalhesPrepedido.EntregaImediata) == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
                    (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO : (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_SIM;
+
             torcamento.Etg_Imediata_Usuario = prepedido.EnderecoEntrega.Etg_Imediata_Usuario;
             torcamento.EtgImediataIdTipoUsuarioContexto = prepedido.EnderecoEntrega.EtgImediataIdTipoUsuarioContexto;
             torcamento.EtgImediataIdUsuarioUltAtualiz = prepedido.EnderecoEntrega.EtgImediataIdUsuarioUltAtualiz;
             torcamento.Etg_Imediata_Data = prepedido.EnderecoEntrega.Etg_imediata_data;
-
-            torcamento.GarantiaIndicadorStatus = prepedido.DetalhesPrepedido.GarantiaIndicador;// == null ? byte.Parse(Constantes.COD_GARANTIA_INDICADOR_STATUS__NAO) : byte.Parse(Constantes.COD_GARANTIA_INDICADOR_STATUS__SIM);
+            torcamento.GarantiaIndicadorStatus = prepedido.DetalhesPrepedido.GarantiaIndicador;
             torcamento.GarantiaIndicadorIdTipoUsuarioContexto = prepedido.DetalhesPrepedido.GarantiaIndicadorIdTipoUsuarioContexto;
             torcamento.GarantiaIndicadorIdUsuarioUltAtualiz = prepedido.DetalhesPrepedido.GarantiaIndicadorIdUsuarioUltAtualiz;
             torcamento.GarantiaIndicadorUsuarioUltAtualiz = prepedido.DetalhesPrepedido.GarantiaIndicadorUsuarioUltAtualiz;
             torcamento.GarantiaIndicadorDtHrUltAtualiz = prepedido.DetalhesPrepedido.GarantiaIndicadorDtHrUltAtualiz;
+        }
+
+        private string ConcatenarCamposObservacao(string observacaoGeral, string observacaoFormaPagamento)
+        {
+            var novaObservacao = observacaoGeral;
+            var quebraLinha = "<br/> ";
+
+            if (!string.IsNullOrEmpty(novaObservacao))
+            {
+                novaObservacao += quebraLinha;
+            }
+
+            if (!string.IsNullOrEmpty(observacaoFormaPagamento))
+            {
+                if (!string.IsNullOrEmpty(novaObservacao))
+                {
+                    novaObservacao += observacaoFormaPagamento;
+                }
+                else
+                {
+                    novaObservacao = observacaoFormaPagamento;
+                }
+            }
+
+            return novaObservacao;
         }
 
         private void IncluirEnderecoEntregaParaTorcamento(PrePedidoDados prepedido, Torcamento torcamento)
