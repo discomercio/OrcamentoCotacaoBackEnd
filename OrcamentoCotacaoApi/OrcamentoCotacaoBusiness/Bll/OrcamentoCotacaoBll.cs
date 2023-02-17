@@ -1670,19 +1670,35 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
-        public async Task<List<string>> AprovarOrcamento(AprovarOrcamentoRequestViewModel aprovarOrcamento,
-            Constantes.TipoUsuarioContexto tipoUsuarioContexto, int idUsuarioUltAtualizacao, string ip)
+        public async Task<List<string>> AprovarOrcamento(
+            AprovarOrcamentoRequestViewModel aprovarOrcamento,
+            Constantes.TipoUsuarioContexto tipoUsuarioContexto, 
+            int idUsuarioUltAtualizacao, 
+            string ip)
         {
-            if (aprovarOrcamento == null) return new List<string>() { "É necessário preencher o cadastro do cliente!" };
+            if (aprovarOrcamento == null)
+            {
+                return new List<string>() { "É necessário preencher o cadastro do cliente!" };
+            }
 
-            var tCliente = await _clienteBll.BuscarTcliente(UtilsGlobais.Util.SoDigitosCpf_Cnpj(aprovarOrcamento.ClienteCadastroDto.DadosCliente.Cnpj_Cpf));
+            var tCliente = await _clienteBll
+                .BuscarTcliente(UtilsGlobais.Util.SoDigitosCpf_Cnpj(aprovarOrcamento.ClienteCadastroDto.DadosCliente.Cnpj_Cpf));
 
-            var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro() { Id = aprovarOrcamento.IdOrcamento }).FirstOrDefault();
-            if (orcamento == null) return new List<string>() { "Falha ao buscar Orçamento!" };
+            var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro()
+            {
+                Id = aprovarOrcamento.IdOrcamento
+            }).FirstOrDefault();
+
+            if (orcamento == null)
+            {
+                return new List<string>() { "Falha ao buscar Orçamento!" };
+            }
 
             if (orcamento.Status == (short)Constantes.eCfgOrcamentoCotacaoStatus.APROVADO ||
                 orcamento.Status == (short)Constantes.eCfgOrcamentoCotacaoStatus.CANCELADO)
+            {
                 return new List<string>() { "Esse orçamento não pode ser aprovado!" };
+            }
 
             aprovarOrcamento.ClienteCadastroDto.DadosCliente.Perc_max_comissao_e_desconto_padrao = orcamento.Perc_max_comissao_e_desconto_padrao;
             aprovarOrcamento.ClienteCadastroDto.DadosCliente.Perc_max_comissao_padrao = orcamento.Perc_max_comissao_padrao;
@@ -1703,11 +1719,16 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             _logger.LogInformation("Validando cadastro de cliente!");
             var erros = await _clienteBll.ValidarClienteOrcamentoCotacao(clienteCadastroDados);
-            if (erros != null) return erros;
+
+            if (erros != null)
+            {
+                return erros;
+            }
 
             _logger.LogInformation("Fim da validação do cadastro de cliente!");
 
-            List<string> retorno = new List<string>();
+            var retorno = new List<string>();
+
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTO))
             {
                 try
@@ -1790,41 +1811,53 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
         }
 
-        public async Task<List<string>> CadastrarPrepedido(AprovarOrcamentoRequestViewModel aprovarOrcamento, TorcamentoCotacao orcamento,
-            ContextoBdGravacao dbGravacao, Constantes.TipoUsuarioContexto tipoUsuarioContexto, int idUsuarioUltAtualizacao, string ip)
+        public async Task<List<string>> CadastrarPrepedido(
+            AprovarOrcamentoRequestViewModel aprovarOrcamento, 
+            TorcamentoCotacao orcamento,
+            ContextoBdGravacao dbGravacao, 
+            Constantes.TipoUsuarioContexto tipoUsuarioContexto, 
+            int idUsuarioUltAtualizacao, 
+            string ip)
         {
             _logger.LogInformation("Iniciando criação de Pré-Pedido.");
+
             // criar prepedidoDto
-            PrePedidoDto prepedido = new PrePedidoDto();
+            var prepedido = new PrePedidoDto();
             prepedido.UsuarioCadastroId = tipoUsuarioContexto == Constantes.TipoUsuarioContexto.Cliente ? null : (int?)idUsuarioUltAtualizacao;
             prepedido.Usuario_cadastro = $"[{idUsuarioUltAtualizacao}] {tipoUsuarioContexto}";
             prepedido.UsuarioCadastroIdTipoUsuarioContexto = (short?)idUsuarioUltAtualizacao;
             prepedido.DadosCliente = new DadosClienteCadastroDto();
             prepedido.DadosCliente = aprovarOrcamento.ClienteCadastroDto.DadosCliente;
             prepedido.EnderecoCadastroClientePrepedido = new EnderecoCadastralClientePrepedidoDto();
-            prepedido.EnderecoCadastroClientePrepedido =
-                EnderecoCadastralClientePrepedidoDto
-                .EnderecoCadastralClientePrepedidoDto_De_DadosClienteCadastroDto
-                (aprovarOrcamento.ClienteCadastroDto.DadosCliente);
-
+            prepedido.EnderecoCadastroClientePrepedido = EnderecoCadastralClientePrepedidoDto
+                .EnderecoCadastralClientePrepedidoDto_De_DadosClienteCadastroDto(aprovarOrcamento.ClienteCadastroDto.DadosCliente);
             prepedido.EnderecoEntrega = aprovarOrcamento.enderecoEntrega;
 
 
             var opcaoSelecionada = _orcamentoCotacaoOpcaoBll
                 .PorFiltro(new TorcamentoCotacaoOpcaoFiltro() { Id = aprovarOrcamento.IdOpcao }).FirstOrDefault();
+
             if (opcaoSelecionada == null)
+            {
                 return new List<string>() { "Falha ao buscar opção selecionada para aprovação do orçamento!" };
+            }
 
             var formaPagtoSelecionada = opcaoSelecionada.FormaPagto.Where(x => x.Id == aprovarOrcamento.IdFormaPagto).FirstOrDefault();
+
             if (formaPagtoSelecionada == null)
+            {
                 return new List<string>() { "Falha ao buscar forma de pagamento selecionada da opção!" };
+            }
 
             prepedido.FormaPagtoCriacao = new FormaPagtoCriacaoDto();
             prepedido.FormaPagtoCriacao = await IncluirFormaPagtoCriacaoParaPrepedido(formaPagtoSelecionada);
 
             prepedido.ListaProdutos = await IncluirProdutosParaPrepedido(opcaoSelecionada.ListaProdutos, formaPagtoSelecionada.Id, (float)orcamento.Perc_max_comissao_e_desconto_padrao);
+
             if (prepedido.ListaProdutos == null)
+            {
                 new List<string>() { "Falha ao buscar produtos atômicos da opção!" };
+            }
 
             prepedido.PercRT = opcaoSelecionada.PercRT;
             prepedido.VlTotalDestePedido = Math.Round((decimal)prepedido.ListaProdutos.Sum(x => x.VlTotalItem), 2);
@@ -1860,6 +1893,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             prepedido.DetalhesPrepedido.GarantiaIndicadorIdUsuarioUltAtualiz = orcamento.GarantiaIndicadorIdUsuarioUltAtualiz;
             prepedido.DetalhesPrepedido.GarantiaIndicadorUsuarioUltAtualiz = $"[{orcamento.GarantiaIndicadorIdTipoUsuarioContexto}] {orcamento.GarantiaIndicadorIdUsuarioUltAtualiz}";
             prepedido.DetalhesPrepedido.GarantiaIndicadorDtHrUltAtualiz = orcamento.GarantiaIndicadorDtHrUltAtualiz;
+            prepedido.DetalhesPrepedido.Observacoes = orcamento.Observacao;
 
             string parceiro = null;
             if (!string.IsNullOrEmpty(prepedido.DadosCliente.Indicador_Orcamentista))
@@ -1870,9 +1904,17 @@ namespace OrcamentoCotacaoBusiness.Bll
             var appSettingsSection = _configuration.GetSection("AppSettings");
             var appSettings = appSettingsSection.Get<Configuracao>();
 
+            //TODO: "appSettings.LimiteItens" deve vir de tabela de parametrização?
             PrePedidoDados prePedidoDados = PrePedidoDto.PrePedidoDados_De_PrePedidoDto(prepedido);
-            return (await _prepedidoBll.CadastrarPrepedido(prePedidoDados, parceiro, 0.01M, false,
-                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, appSettings.LimiteItens, dbGravacao, ip)).ToList();
+            return (await _prepedidoBll
+                .CadastrarPrepedido(prePedidoDados, 
+                parceiro, 
+                0.01M, 
+                false,
+                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, 
+                appSettings.LimiteItens, 
+                dbGravacao, 
+                ip)).ToList();
         }
 
         public async Task<FormaPagtoCriacaoDto> IncluirFormaPagtoCriacaoParaPrepedido(FormaPagtoCriacaoResponseViewModel formaPagtoSelecionada)

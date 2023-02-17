@@ -272,11 +272,17 @@ namespace PrepedidoApi.Controllers
 
             var usuario = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
 
-            IEnumerable<string> ret = await prepedidoApiBll.CadastrarPrepedido(prePedido, apelido.Trim(), 0.01M,
+            IEnumerable<string> ret = await prepedidoApiBll
+                .CadastrarPrepedido(
+                prePedido,
+                apelido.Trim(),
+                0.01M,
                 appSettings.VerificarPrepedidoRepetido,
-                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, 
+                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO,
                 appSettings.LimiteItens,
-                (Constantes.TipoUsuarioContexto)usuario.TipoUsuario, usuario.Id, request.IP);
+                (Constantes.TipoUsuarioContexto)usuario.TipoUsuario,
+                usuario.Id,
+                request.IP);
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/CadastrarPrepedido/POST - Response => [{JsonSerializer.Serialize(ret)}].");
 

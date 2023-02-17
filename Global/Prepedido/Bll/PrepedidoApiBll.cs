@@ -33,10 +33,11 @@ namespace Prepedido.Bll
             string apelido,
             decimal limiteArredondamento, 
             bool verificarPrepedidoRepetido,
-            InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
+            Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             int limite_de_itens, 
             Constantes.TipoUsuarioContexto tipoUsuarioContexto,
-            int usuarioId, string ip)
+            int usuarioId, 
+            string ip)
         {
             
             if(!string.IsNullOrEmpty(prePedido.DetalhesPrepedido.EntregaImediata) && 
@@ -54,10 +55,11 @@ namespace Prepedido.Bll
 
             prePedido.DetalhesPrepedido.EntregaImediataData = DateTime.Now;
 
-            PrePedidoDados prePedidoDados = PrePedidoDto.PrePedidoDados_De_PrePedidoDto(prePedido);
+            var prePedidoDados = PrePedidoDto.PrePedidoDados_De_PrePedidoDto(prePedido);
 
             //Prepearar campos de auditoria
             var orcamentista = await prepedidoBll.BuscarTorcamentista(apelido);
+
             if(orcamentista == null)
             {
                 return new List<string>() { "Ops! Usuário não encontrado." };
@@ -88,8 +90,16 @@ namespace Prepedido.Bll
 
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTO))
             {
-                var ret = (await prepedidoBll.CadastrarPrepedido(prePedidoDados, apelido,
-                limiteArredondamento, verificarPrepedidoRepetido, sistemaResponsavelCadastro, limite_de_itens, dbGravacao, ip)).ToList();
+                var ret = (await prepedidoBll
+                    .CadastrarPrepedido(
+                    prePedidoDados, 
+                    apelido,
+                    limiteArredondamento, 
+                    verificarPrepedidoRepetido, 
+                    sistemaResponsavelCadastro, 
+                    limite_de_itens, 
+                    dbGravacao, 
+                    ip)).ToList();
 
                 if (ret.Count == 1)
                 {
@@ -97,11 +107,9 @@ namespace Prepedido.Bll
                     {
                         dbGravacao.transacao.Commit();
                     }
-                        
                 }
                 return ret;
             }
-
         }
 
         public async Task<PrePedidoDto> BuscarPrePedido(string apelido, string numPrePedido)
