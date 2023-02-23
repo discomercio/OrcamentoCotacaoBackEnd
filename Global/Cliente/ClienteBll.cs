@@ -906,18 +906,13 @@ namespace Cliente
             return retorno;
         }
 
-        public async Task<Tcliente> BuscarTclienteComTransacao(string cpf_cnpj)
+        public async Task<Tcliente> BuscarTclienteComTransacao(string cpf_cnpj, ContextoBdGravacao dbGravacao)
         {
-            Tcliente retorno;
+            cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
 
-            using (var db = contextoProvider.GetContextoLeitura())
-            {
-                cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
-
-                retorno = await (from c in db.Tcliente
-                                 where c.Cnpj_Cpf == cpf_cnpj
-                                 select c).FirstOrDefaultAsync();
-            }
+            var retorno = await (from c in dbGravacao.Tcliente
+                             where c.Cnpj_Cpf == cpf_cnpj
+                             select c).FirstOrDefaultAsync();
 
             return retorno;
         }

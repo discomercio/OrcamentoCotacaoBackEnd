@@ -840,8 +840,10 @@ namespace Prepedido.Bll
             loja = !string.IsNullOrEmpty(apelido) ? prePedido.DadosCliente.Loja : loja;
 
             //verificamos se tem ID para saber que o cliente existe
-            Tcliente cliente = await clienteBll.BuscarTclienteComTransacao(
-                prePedido.EnderecoCadastroClientePrepedido.Endereco_cnpj_cpf);
+            Tcliente cliente = await clienteBll
+                .BuscarTclienteComTransacao(
+                prePedido.EnderecoCadastroClientePrepedido.Endereco_cnpj_cpf, 
+                dbGravacao);
 
             if (cliente != null)
             {
@@ -1314,11 +1316,10 @@ namespace Prepedido.Bll
         private string ConcatenarCamposObservacao(string observacaoGeral, string observacaoFormaPagamento)
         {
             var novaObservacao = observacaoGeral;
-            var quebraLinha = "<br/> ";
 
             if (!string.IsNullOrEmpty(novaObservacao))
             {
-                novaObservacao += quebraLinha;
+                novaObservacao += $"{Environment.NewLine}";
             }
 
             if (!string.IsNullOrEmpty(observacaoFormaPagamento))
