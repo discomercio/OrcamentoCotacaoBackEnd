@@ -488,7 +488,7 @@ namespace Cliente
         }
 
         public async Task<IEnumerable<EnderecoEntregaJustificativaDados>> ListarComboJustificaEndereco(
-            string apelido, 
+            string apelido,
             string loja = null)
         {
             using (var db = contextoProvider.GetContextoLeitura())
@@ -636,7 +636,7 @@ namespace Cliente
         }
 
         public async Task<(List<string> listaErros, bool registroJaExiste)> CadastrarCliente(
-            Cliente.Dados.ClienteCadastroDados clienteCadastroDados, 
+            Cliente.Dados.ClienteCadastroDados clienteCadastroDados,
             string indicador,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             string usuario_cadastro)
@@ -685,11 +685,11 @@ namespace Cliente
                 var clienteCadastrado = new Tcliente();
 
                 id_cliente = await CadastrarDadosClienteDados(
-                    dbgravacao, 
-                    cliente, 
-                    indicador, 
+                    dbgravacao,
+                    cliente,
+                    indicador,
                     clienteCadastrado,
-                    sistemaResponsavelCadastro, 
+                    sistemaResponsavelCadastro,
                     usuario_cadastro);
 
                 //Por padrão o id do cliente tem 12 caracteres, caso não seja 12 caracteres esta errado
@@ -728,8 +728,8 @@ namespace Cliente
 
         public async Task<string> CadastrarDadosClienteDados(
             InfraBanco.ContextoBdGravacao dbgravacao,
-            Cliente.Dados.DadosClienteCadastroDados clienteDados, 
-            string indicador, 
+            Cliente.Dados.DadosClienteCadastroDados clienteDados,
+            string indicador,
             Tcliente tCliente,
             InfraBanco.Constantes.Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             string usuario_cadastro)
@@ -799,10 +799,10 @@ namespace Cliente
         }
 
         private async Task<string> CadastrarRefBancaria(
-            InfraBanco.ContextoBdGravacao dbgravacao, 
-            List<Cliente.Dados.Referencias.RefBancariaClienteDados> lstRefBancaria, 
-            string apelido, 
-            string id_cliente, 
+            InfraBanco.ContextoBdGravacao dbgravacao,
+            List<Cliente.Dados.Referencias.RefBancariaClienteDados> lstRefBancaria,
+            string apelido,
+            string id_cliente,
             string log)
         {
             int qtdeRef = 1;
@@ -838,9 +838,9 @@ namespace Cliente
 
         private async Task<string> CadastrarRefComercial(
             InfraBanco.ContextoBdGravacao dbgravacao,
-            List<Cliente.Dados.Referencias.RefComercialClienteDados> lstRefComercial, 
-            string apelido, 
-            string id_cliente, 
+            List<Cliente.Dados.Referencias.RefComercialClienteDados> lstRefComercial,
+            string apelido,
+            string id_cliente,
             string log)
         {
             int qtdeRef = 1;
@@ -888,7 +888,7 @@ namespace Cliente
                                   where c.Cnpj_Cpf == cpf_cnpj
                                   select c.Id).AnyAsync());
             }
-            
+
             return retorno;
         }
 
@@ -896,14 +896,12 @@ namespace Cliente
         {
             IQueryable<Tcliente> retorno;
 
-            using (var db = contextoProvider.GetContextoLeitura())
-            {
-                cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
+            var db = contextoProvider.GetContextoLeitura();
+            cpf_cnpj = UtilsGlobais.Util.SoDigitosCpf_Cnpj(cpf_cnpj);
 
-                retorno = (from c in db.Tcliente
-                           where c.Cnpj_Cpf == cpf_cnpj
-                           select c);
-            }
+            retorno = (from c in db.Tcliente
+                       where c.Cnpj_Cpf == cpf_cnpj
+                       select c);
 
             return retorno;
         }
