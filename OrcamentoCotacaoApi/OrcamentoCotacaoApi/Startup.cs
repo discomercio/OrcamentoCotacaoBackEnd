@@ -125,9 +125,6 @@ namespace OrcamentoCotacaoApi
                         context.Response.Headers.Add("Content-Type", "text/html; charset=UTF-8");
                         var msg = $"Erro: use um cabeçalho \"X-API-Version\" com o valor {nossaApiVersion}. Formato: <br><br>X-API-Version: {nossaApiVersion}";
                         context.Response.Body.Write(Encoding.UTF8.GetBytes(msg));
-
-                        //return;
-                        await next();
                     }
 
                 }
