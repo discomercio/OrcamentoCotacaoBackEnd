@@ -392,6 +392,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         IdIndicadorVendedor = vendParceiros.FirstOrDefault(v => v.Id == x.IdIndicadorVendedor)?.Id,
                         Valor = "0",
                         Status = x.StatusNome,
+                        IdStatus = x.Status,
                         VistoEm = "",
                         Mensagem = _mensagemBll.ObterListaMensagemPendente(x.Id).Result.Any() ? "Sim" : "Não",
                         DtCadastro = x.DataCadastro,
