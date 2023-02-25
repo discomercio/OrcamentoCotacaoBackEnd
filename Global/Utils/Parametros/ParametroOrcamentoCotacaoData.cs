@@ -21,35 +21,40 @@ namespace UtilsGlobais.Parametros
                 15, //ModuloOrcamentoCotacao_ValidadeOrcamento_PrazoProrrogacaoPadrao
                 16, //ModuloOrcamentoCotacao_ValidadeOrcamento_QtdeMaxProrrogacao
                 17, //ModuloOrcamentoCotacao_ValidadeOrcamento_MaxPrazoValidadeGlobal
+                20, //ModuloOrcamentoCotacao_MaxPeriodoConsulta_FiltroPesquisa
             };
 
             using (var db = _contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 var saida =
                     from p in db.TcfgParametro
-                     join pu in db.TcfgUnidadeNegocioParametro on p.Id equals pu.IdCfgParametro
-                     join un in db.TcfgUnidadeNegocio on pu.IdCfgUnidadeNegocio equals un.Id
-                     join l in db.Tloja on un.Sigla equals l.Unidade_Negocio
-                     where
-                         lista.Contains(p.Id) &&
-                         l.Loja == lojaLogada
-                     select new
-                     {
-                         p.Id,
-                         p.Sigla,
-                         pu.Valor,
-                         pu.IdCfgUnidadeNegocio
-                     };
+                    join pu in db.TcfgUnidadeNegocioParametro on p.Id equals pu.IdCfgParametro
+                    join un in db.TcfgUnidadeNegocio on pu.IdCfgUnidadeNegocio equals un.Id
+                    join l in db.Tloja on un.Sigla equals l.Unidade_Negocio
+                    where
+                        lista.Contains(p.Id) &&
+                        l.Loja == lojaLogada
+                    select new
+                    {
+                        p.Id,
+                        p.Sigla,
+                        pu.Valor,
+                        pu.IdCfgUnidadeNegocio
+                    };
 
-                return new ParametroOrcamentoCotacaoDto
+                ParametroOrcamentoCotacaoDto retorno = new ParametroOrcamentoCotacaoDto();
+
+                retorno.QtdePadrao_DiasValidade = saida.FirstOrDefault(x => x.Id == 14).Valor;
+                retorno.QtdePadrao_DiasProrrogacao = saida.FirstOrDefault(x => x.Id == 15).Valor;
+                retorno.QtdeMaxProrrogacao = saida.FirstOrDefault(x => x.Id == 16).Valor;
+                retorno.QtdeGlobal_Validade = saida.FirstOrDefault(x => x.Id == 17).Valor;
+                int periodoConsulta = 0;
+                if (int.TryParse(saida.FirstOrDefault(x => x.Id == 20).Valor, out periodoConsulta))
                 {
-                    QtdePadrao_DiasValidade = saida.FirstOrDefault(x => x.Id == 14).Valor,
-                    QtdePadrao_DiasProrrogacao = saida.FirstOrDefault(x => x.Id == 15).Valor,
+                    retorno.MaxPeriodoConsultaFiltroPesquisa = periodoConsulta;
+                }
 
-                    QtdeMaxProrrogacao = saida.FirstOrDefault(x => x.Id == 16).Valor,
-
-                    QtdeGlobal_Validade = saida.FirstOrDefault(x => x.Id == 17).Valor,
-                };
+                return retorno;
             }
         }
     }
