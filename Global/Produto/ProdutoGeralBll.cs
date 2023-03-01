@@ -166,13 +166,17 @@ namespace Produto
             var todosProdutosTask = from c in db.Tproduto
                                     join pl in db.TprodutoLoja on c.Produto equals pl.Produto
                                     join fab in db.Tfabricante on c.Fabricante equals fab.Fabricante
+                                    join grp in db.TprodutoGrupo on c.Grupo equals grp.Codigo into lfgrp
+                                    from leftgrp in lfgrp.DefaultIfEmpty()
+                                    join sbgrp in db.TprodutoSubgrupo on c.Subgrupo equals sbgrp.Codigo into lfsbgrp
+                                    from leftsbgrp in lfsbgrp.DefaultIfEmpty()
                                     where pl.Vendavel == "S" &&
                                           c.Descontinuado != "S" &&
                                           pl.Loja == loja &&
                                           c.Excluido_status == 0 &&
                                           pl.Excluido_status == 0 &&
                                           c.Descricao_Html != "." &&
-                                          pl.Preco_Lista > 0
+                                          pl.Preco_Lista > 0 
                                     select new Produto.Dados.ProdutoDados
                                     {
                                         Fabricante = c.Fabricante,
@@ -182,7 +186,11 @@ namespace Produto
                                         Descricao = c.Descricao,
                                         Preco_lista = pl.Preco_Lista,
                                         Qtde_Max_Venda = pl.Qtde_Max_Venda,
-                                        Desc_Max = pl.Desc_Max
+                                        Desc_Max = pl.Desc_Max,
+                                        Grupo = c.Grupo,
+                                        GrupoDescricao = leftgrp.Descricao,
+                                        SubGrupo = c.Subgrupo,
+                                        SubGrupoDescricao = leftsbgrp.Descricao
                                     };
 
             List<Produto.Dados.ProdutoDados> lstTodosProdutos = await todosProdutosTask.ToListAsync();

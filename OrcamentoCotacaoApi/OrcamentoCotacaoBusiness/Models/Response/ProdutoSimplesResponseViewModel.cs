@@ -31,11 +31,17 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 
         [JsonProperty("qtdeMaxVenda")]
         public short? QtdeMaxVenda { get; set; }
-            
+
         [JsonProperty("descMax")]
         public float? DescMax { get; set; }
 
         public int? Qtde { get; set; }
+
+        [JsonProperty("codGrupoSubgrupo")]
+        public string CodGrupoSubgrupo { get; set; }
+
+        [JsonProperty("descricaoGrupoSubgrupo")]
+        public string DescricaoGrupoSubgrupo { get; set; }
 
         internal static ProdutoSimplesResponseViewModel ConverterProdutoDados(Produto.Dados.ProdutoDados produto, int? qtdeFilho,
             CoeficienteResponseViewModel coeficienteDados)
@@ -46,21 +52,48 @@ namespace OrcamentoCotacaoBusiness.Models.Response
                 precoLista = Convert.ToDecimal(coeficienteDados.Coeficiente) * precoLista.GetValueOrDefault();
             }
 
-            return new ProdutoSimplesResponseViewModel()
+            var retorno = new ProdutoSimplesResponseViewModel();
+            retorno.Fabricante = produto.Fabricante;
+            retorno.FabricanteNome = produto.Fabricante_Nome;
+            retorno.Produto = produto.Produto;
+            retorno.Qtde = qtdeFilho.HasValue ? qtdeFilho : null;
+            retorno.DescricaoHtml = produto.Descricao_html;
+            retorno.PrecoLista = Decimal.Parse(precoLista?.ToString("N"));
+            retorno.PrecoListaBase = Decimal.Parse(produto.Preco_lista?.ToString("N"));
+            retorno.QtdeMaxVenda = produto.Qtde_Max_Venda;
+            retorno.DescMax = produto.Desc_Max;
+            retorno.Estoque = produto.Estoque;
+            retorno.Alertas = produto.Alertas;
+            retorno.CodGrupoSubgrupo = produto.Grupo + produto.SubGrupo;
+            if (string.IsNullOrEmpty(produto.Grupo) && string.IsNullOrEmpty(produto.SubGrupo))
             {
-                Fabricante = produto.Fabricante,
-                FabricanteNome = produto.Fabricante_Nome,
-                Produto = produto.Produto,
-                Qtde = qtdeFilho.HasValue ? qtdeFilho : null,
-                DescricaoHtml = produto.Descricao_html,
-                PrecoLista = Decimal.Parse(precoLista?.ToString("N")),
-                PrecoListaBase = Decimal.Parse(produto.Preco_lista?.ToString("N")),
-                QtdeMaxVenda = produto.Qtde_Max_Venda,
-                DescMax = produto.Desc_Max,
-                Estoque = produto.Estoque,
-                Alertas = produto.Alertas
-            };
-        }
+                retorno.CodGrupoSubgrupo = "V";
+                retorno.DescricaoGrupoSubgrupo = "Vazio";
+            }
+            if (!string.IsNullOrEmpty(produto.Grupo) && !string.IsNullOrEmpty(produto.SubGrupo))
+            {
+                if (produto.Grupo == produto.SubGrupo)
+                {
+                    retorno.CodGrupoSubgrupo = produto.Grupo;
+                    retorno.DescricaoGrupoSubgrupo = produto.GrupoDescricao;
+                }
+                else
+                {
+                    retorno.DescricaoGrupoSubgrupo = $"{produto.GrupoDescricao} - {produto.SubGrupoDescricao}";
+                }
+            }
+            if (string.IsNullOrEmpty(produto.Grupo) && !string.IsNullOrEmpty(produto.SubGrupo))
+            {
+                retorno.DescricaoGrupoSubgrupo = produto.SubGrupoDescricao;
+            }
+            if (!string.IsNullOrEmpty(produto.Grupo) && string.IsNullOrEmpty(produto.SubGrupo))
+            {
+                retorno.DescricaoGrupoSubgrupo = produto.GrupoDescricao;
+            }
 
+            return retorno;
+        }
     }
+
 }
+

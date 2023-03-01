@@ -34,6 +34,13 @@ namespace Produto.Dados
 
         public float? Desc_Max { get; set; }
 
+        public string Grupo { get; set; }
+
+        public string GrupoDescricao { get; set; }
+
+        public string SubGrupo { get; set; }
+
+        public string SubGrupoDescricao { get; set; }
     }
 }
         
