@@ -41,6 +41,12 @@ namespace Produto.Dados
         public string SubGrupo { get; set; }
 
         public string SubGrupoDescricao { get; set; }
+
+        public int? Capacidade { get; set; }
+
+        public string Ciclo { get; set; }
+
+        public string CicloDescricao { get; set; }
     }
 }
         

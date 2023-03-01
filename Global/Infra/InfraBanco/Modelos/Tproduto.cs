@@ -75,6 +75,13 @@ namespace InfraBanco.Modelos
         [Column("excluido_status")]
         public short? Excluido_status { get; set; }
 
+        [Column("potencia_BTU")]
+        public int? PotenciaBtu { get; set; }
+
+        [Column("ciclo")]
+        [MaxLength(5)]
+        public string Ciclo { get; set; }
+
         public ICollection<TprodutoLoja> TprodutoLoja { get; set; }
     }
 }

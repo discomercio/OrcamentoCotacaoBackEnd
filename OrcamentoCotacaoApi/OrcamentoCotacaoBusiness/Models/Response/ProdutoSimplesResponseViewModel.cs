@@ -43,6 +43,15 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         [JsonProperty("descricaoGrupoSubgrupo")]
         public string DescricaoGrupoSubgrupo { get; set; }
 
+        [JsonProperty("capacidade")]
+        public int? Capacidade { get; set; }
+
+        [JsonProperty("ciclo")]
+        public string Ciclo { get; set; }
+
+        [JsonProperty("cicloDescricao")]
+        public string CicloDescricao { get; set; }
+
         internal static ProdutoSimplesResponseViewModel ConverterProdutoDados(Produto.Dados.ProdutoDados produto, int? qtdeFilho,
             CoeficienteResponseViewModel coeficienteDados)
         {
@@ -90,6 +99,9 @@ namespace OrcamentoCotacaoBusiness.Models.Response
             {
                 retorno.DescricaoGrupoSubgrupo = produto.GrupoDescricao;
             }
+            retorno.Capacidade = produto.Capacidade;
+            retorno.Ciclo = produto.Ciclo;
+            retorno.CicloDescricao = produto.CicloDescricao;
 
             return retorno;
         }

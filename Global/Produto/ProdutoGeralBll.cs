@@ -176,7 +176,7 @@ namespace Produto
                                           c.Excluido_status == 0 &&
                                           pl.Excluido_status == 0 &&
                                           c.Descricao_Html != "." &&
-                                          pl.Preco_Lista > 0 
+                                          pl.Preco_Lista > 0
                                     select new Produto.Dados.ProdutoDados
                                     {
                                         Fabricante = c.Fabricante,
@@ -190,7 +190,10 @@ namespace Produto
                                         Grupo = c.Grupo,
                                         GrupoDescricao = leftgrp.Descricao,
                                         SubGrupo = c.Subgrupo,
-                                        SubGrupoDescricao = leftsbgrp.Descricao
+                                        SubGrupoDescricao = leftsbgrp.Descricao,
+                                        Capacidade = c.PotenciaBtu,
+                                        Ciclo = c.Ciclo,
+                                        CicloDescricao = c.Ciclo == "F" ? "Frio" : c.Ciclo == "QF" ? "Quente/Frio" : null
                                     };
 
             List<Produto.Dados.ProdutoDados> lstTodosProdutos = await todosProdutosTask.ToListAsync();
