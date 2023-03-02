@@ -134,39 +134,6 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     var pai = produtoComboDados.ProdutoDados.Where(x => x.Fabricante == composto.PaiFabricante && x.Produto == composto.PaiProduto).FirstOrDefault();
 
-                    //if (pai != null)
-                    //{
-
-                    //    //var produtoCompostoAInserir = new Produto.Dados.ProdutoDados()
-                    //    //{
-                    //    //    Fabricante = composto.PaiFabricante,
-                    //    //    Fabricante_Nome = composto.PaiFabricanteNome,
-                    //    //    Produto = composto.PaiProduto,
-                    //    //    Descricao_html = composto.PaiDescricao,
-                    //    //    Descricao = composto.PaiDescricao,
-                    //    //    Preco_lista = somaFilhotesBase,
-                    //    //    Qtde_Max_Venda = filhotes.Min(x => x.Qtde_Max_Venda),
-                    //    //    Desc_Max = filhotes.Min(x => x.Desc_Max)
-                    //    //};
-
-                    //    //produtoComboDados.ProdutoDados.Add(produtoCompostoAInserir);
-                    //    //var responseItem = ProdutoSimplesResponseViewModel
-                    //    //.ConverterProdutoDados(produtoCompostoAInserir, null,
-                    //    //GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), produtoCompostoAInserir.Fabricante));
-
-
-
-                    //}
-                    //else
-                    //{
-                    //    var responseItem = ProdutoSimplesResponseViewModel
-                    //    .ConverterProdutoDados(pai, null, GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), pai.Fabricante));
-
-                    //    responseItem.PrecoLista = (decimal)somaFilhotesBase;
-
-                    //    produtoResponseViewModel.ProdutosSimples.Add(responseItem);
-                    //}
-
                     var novoItem = new ProdutoSimplesResponseViewModel();
                     novoItem.Fabricante = composto.PaiFabricante;
                     novoItem.FabricanteNome = composto.PaiFabricanteNome;
@@ -194,14 +161,6 @@ namespace OrcamentoCotacaoBusiness.Bll
 
 
                 }
-
-                //foreach (var produto in produtoComboDados.ProdutoDados)
-                //{
-                //    var responseItem = ProdutoSimplesResponseViewModel
-                //        .ConverterProdutoDados(produto, null, GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), produto.Fabricante));
-                //    produtoResponseViewModel.ProdutosSimples.Add(responseItem);
-
-                //}
 
                 produtoResponseViewModel.ProdutosSimples = produtoResponseViewModel.ProdutosSimples.OrderBy(x => x.Fabricante).ToList();
 
