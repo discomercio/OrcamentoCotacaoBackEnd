@@ -12,6 +12,7 @@ namespace Orcamento.Dto
         public string VendedorParceiro { get; set; }
         public string Valor { get; set; }
         public string Status { get; set; }
+        public int IdStatus { get; set; }
         public string VistoEm { get; set; }
         public string Mensagem { get; set; }
         public DateTime? DtCadastro { get; set; }

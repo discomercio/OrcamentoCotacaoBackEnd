@@ -6,5 +6,6 @@
         public string QtdeGlobal_Validade { get; set; } = "30";
         public string QtdePadrao_DiasProrrogacao { get; set; } = "7";
         public string QtdeMaxProrrogacao { get; set; } = "2";
+        public int MaxPeriodoConsultaFiltroPesquisa { get; set; }
     }
 }
