@@ -14,14 +14,16 @@ namespace ArClube.Mensageria
         private readonly string _username;
         private readonly string _password;
         private SmtpClient _smtp;
+        private readonly bool _shouldGenerateLog;
 
-        public EmailService(ParametroEmailDto parametroEmail)
+        public EmailService(ParametroEmailDto parametroEmail, bool shouldGenerateLog)
         {
             this._serverSMTP = parametroEmail.ServerSMTP;
             this._port = parametroEmail.Port;
             this._options = parametroEmail.Options;
             this._username = parametroEmail.UserName;
             this._password = parametroEmail.Password;
+            this._shouldGenerateLog = shouldGenerateLog;
         }
 
         public async Task<Tuple<bool, string>> Send(
@@ -67,7 +69,10 @@ namespace ArClube.Mensageria
                     mimeMessageEmail.Subject = torcamentoCotacaoEmailQueue.Subject;
                     mimeMessageEmail.Body = new TextPart(TextFormat.Html) { Text = torcamentoCotacaoEmailQueue.Body };
 
-                    logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - Trying to send Email #" + torcamentoCotacaoEmailQueue.Id + "From: [" + torcamentoCotacaoEmailQueue.From + "] [TO] [" + torcamentoCotacaoEmailQueue.To + "] [CC]: [" + torcamentoCotacaoEmailQueue.Cc + "]");
+                    if (this._shouldGenerateLog)
+                    {
+                        logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - Trying to send Email #" + torcamentoCotacaoEmailQueue.Id + "From: [" + torcamentoCotacaoEmailQueue.From + "] [TO] [" + torcamentoCotacaoEmailQueue.To + "] [CC]: [" + torcamentoCotacaoEmailQueue.Cc + "]");
+                    }
 
                     await this.SmtpAuthenticateAsync();
                     await _smtp.SendAsync(mimeMessageEmail);
@@ -77,8 +82,13 @@ namespace ArClube.Mensageria
             }
             catch (Exception ex)
             {
-                logger.LogError(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - Error: " + ex.Message);
-                logger.LogError(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - Inner: " + ex.InnerException);
+                
+                if (this._shouldGenerateLog)
+                {
+                    logger.LogError(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - Error: " + ex.Message);
+                    logger.LogError(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - Inner: " + ex.InnerException);
+                }
+
                 return new Tuple<bool, string>(false, ex.Message);
             }
         }
