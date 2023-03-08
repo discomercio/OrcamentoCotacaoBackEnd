@@ -14,7 +14,7 @@ namespace InfraBanco.Mapping
             builder.Property(x => x.Id)
                 .HasColumnName("id")
                 .HasColumnType("int")
-                .UseSqlServerIdentityColumn();
+                .UseIdentityColumn();
 
             builder.Property(x => x.Produto)
                 .HasColumnName("produto")

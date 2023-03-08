@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <LangVersion>8.0</LangVersion>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+	  <TargetFramework>net7.0</TargetFramework>
     <Configurations>Debug;Release;Release_OrcamentoCotacao;Debug_OrcamentoCotacao</Configurations>
     <DebugType Condition=" '$(Configuration)' == 'Release_OrcamentoCotacao' ">None</DebugType>
   </PropertyGroup>
@@ -13,9 +13,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
   </ItemGroup>
 
   <ItemGroup>

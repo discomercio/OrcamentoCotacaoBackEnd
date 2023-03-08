@@ -211,7 +211,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             using (var db = contextoProvider.GetContextoLeitura())
             {
                 var unidade_negocio = await ((from c in db.Tloja
-                                              join l in lojas on c.Loja equals l.Loja
+                                              where lojas.Select(x=>x.Loja).Contains(c.Loja)
                                               select c.Unidade_Negocio).ToListAsync());
 
                 return string.Join(',', unidade_negocio);

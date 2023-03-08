@@ -1,13 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+	  <TargetFramework>net7.0</TargetFramework>
     <Configurations>Debug;Release;Release_OrcamentoCotacao;Debug_OrcamentoCotacao</Configurations>
     <DebugType Condition=" '$(Configuration)' == 'Release_OrcamentoCotacao' ">None</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="Dados\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
   </ItemGroup>
 
   <ItemGroup>

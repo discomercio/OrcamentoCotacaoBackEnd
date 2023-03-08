@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <LangVersion>8.0</LangVersion>
     <Configurations>Debug;Release_Banco_Pedido;Release_Banco_Prepedido;Release_Banco_Loja;Release_Banco_Central;Release_OrcamentoCotacao;Debug_OrcamentoCotacao</Configurations>
     <DebugType Condition=" '$(Configuration)' == 'Release_OrcamentoCotacao' ">None</DebugType>
@@ -28,7 +28,7 @@
   </PropertyGroup>
 
   <ItemGroup>
- <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.6" />
+ <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.3" />
   </ItemGroup>
 
   <ItemGroup>
