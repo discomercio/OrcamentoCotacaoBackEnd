@@ -80,7 +80,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
         [HttpGet]
         [Route("vendedores-parceiros-apelido-loja")]
-        public async Task<IEnumerable<OrcamentistaEIndicadorVendedorResponseViewModel>> BuscarVendedoresDosParceirosPorApelidoELoja(string apelido, string loja)
+        public async Task<IEnumerable<OrcamentistaEIndicadorVendedorResponseViewModel>> BuscarVendedoresDosParceirosPorApelidoELoja(string? apelido, string? loja)
         {
             var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 

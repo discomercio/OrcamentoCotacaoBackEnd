@@ -40,7 +40,7 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpGet("orcamento/parceiro")]
-        public async Task<IActionResult> DashboardOrcamentoParceiro([FromQuery] DashboardRequest request)
+        public async Task<IActionResult> DashboardOrcamentoParceiro([FromQuery] DashboardRequest? request)
         {
 
             if (!User.ValidaPermissao((int)ePermissao.AcessoAoModulo))
@@ -60,7 +60,7 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpGet("orcamento/vendedor-parceiro")]
-        public async Task<IActionResult> DashboardOrcamentoVendedorParceiro([FromQuery] DashboardRequest request)
+        public async Task<IActionResult> DashboardOrcamentoVendedorParceiro([FromQuery] DashboardRequest? request)
         {
 
             if (!User.ValidaPermissao((int)ePermissao.AcessoAoModulo))
@@ -80,7 +80,7 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpGet("orcamento/vendedor-interno")]
-        public async Task<IActionResult> DashboardOrcamentoVendedorInterno([FromQuery] DashboardRequest request)
+        public async Task<IActionResult> DashboardOrcamentoVendedorInterno([FromQuery] DashboardRequest? request)
         {
             
             if (!User.ValidaPermissao((int)ePermissao.AcessoAoModulo))
