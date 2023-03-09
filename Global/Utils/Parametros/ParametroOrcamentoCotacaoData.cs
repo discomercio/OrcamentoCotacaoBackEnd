@@ -37,7 +37,6 @@ namespace UtilsGlobais.Parametros
                     select new
                     {
                         p.Id,
-                        p.Sigla,
                         pu.Valor,
                         pu.IdCfgUnidadeNegocio
                     };

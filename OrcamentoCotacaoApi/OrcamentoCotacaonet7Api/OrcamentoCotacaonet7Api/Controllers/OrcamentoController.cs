@@ -75,7 +75,7 @@ namespace OrcamentoCotacaonet7Api.Controllers
         }
 
         [HttpGet("status")]
-        public async Task<IActionResult> ObterListaStatus(string origem, string lojaLogada)
+        public async Task<IActionResult> ObterListaStatus(string origem, string? lojaLogada)
         {
             var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 

@@ -29,7 +29,7 @@ namespace InfraBanco.Modelos
         [Column("desc_dado")]
         public Single? Desc_Dado { get; set; }
 
-        [Column("preco_venda", TypeName = "money(19,4)")]
+        [Column("preco_venda", TypeName = "money")]
         [Required]
         public decimal Preco_Venda { get; set; }
 

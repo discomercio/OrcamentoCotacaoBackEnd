@@ -249,7 +249,7 @@ namespace ProdutoCatalogo
                         produtos = produtos.Where(x => x.Id == int.Parse(obj.Id));
 
                     if (!String.IsNullOrEmpty(obj.Produto))
-                        produtos = produtos.Where(x => x.Produto.PadLeft(6, '0') == obj.Produto.PadLeft(6, '0'));
+                        produtos = produtos.Where(x => x.Produto == obj.Produto.PadLeft(6, '0'));
 
                     if (obj.Ativo)
                         produtos = produtos.Where(x => x.Ativo == obj.Ativo);

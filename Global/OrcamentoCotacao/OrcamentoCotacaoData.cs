@@ -208,7 +208,7 @@ namespace OrcamentoCotacao
             {
                 using (var db = _contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
-                    var listaStatus = db.TcfgOrcamentoCotacaoStatus.ToList();
+                    //var listaStatus = db.TcfgOrcamentoCotacaoStatus.ToList();
                     var saida = from c in db.TorcamentoCotacao select c;
 
                     if (saida == null) return null;
@@ -252,6 +252,7 @@ namespace OrcamentoCotacao
                     {
                         saida = from c in saida
                                 join u in db.Tusuario on c.IdVendedor equals u.Id
+                                join s in db.TcfgOrcamentoCotacaoStatus on c.Status equals s.Id
                                 select new TorcamentoCotacao()
                                 {
                                     Id = c.Id,
@@ -284,7 +285,7 @@ namespace OrcamentoCotacao
                                     PrevisaoEntregaData = c.PrevisaoEntregaData,
                                     QtdeRenovacao = c.QtdeRenovacao,
                                     Status = c.Status,
-                                    StatusNome = listaStatus.FirstOrDefault(x => x.Id == c.Status).Descricao,
+                                    StatusNome = s.Descricao,
                                     StEtgImediata = c.StEtgImediata,
                                     Telefone = c.Telefone,
                                     TipoCliente = c.TipoCliente,
