@@ -104,37 +104,61 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
                     t.AcessoHabilitado = true;
                 }
+
+                var parametro = new ParametroTentativasLogin();
+                parametro.SomenteValidar = somenteValidar;
+                parametro.IdUsuario = null;
+                parametro.IdTipoUsuario = null;
+                parametro.Login = login;
+                parametro.Ip = ip;
+                parametro.MensagemErro = string.Empty;
+                parametro.BloqueioUsuarioLoginAmbiente = bloqueioUsuarioLoginAmbiente;
+
+
                 if (t == null)
                 {
-                    RegistrarTentativasLogin(null, null, login, ip, Constantes.ERR_USUARIO_NAO_CADASTRADO, bloqueioUsuarioLoginAmbiente);
+                    parametro.MensagemErro = Constantes.ERR_USUARIO_NAO_CADASTRADO;
+                    RegistrarTentativasLogin(parametro);
+
                     msgErro = Constantes.ERR_USUARIO_NAO_CADASTRADO;
                     return null;
                 }
 
+                parametro.IdUsuario = t.Id;
+                parametro.IdTipoUsuario = t.TipoUsuario.Value;
+
                 if (t.Datastamp == "")
                 {
-                    RegistrarTentativasLogin(t.Id, t.TipoUsuario.Value, login, ip, Constantes.ERR_USUARIO_BLOQUEADO, bloqueioUsuarioLoginAmbiente);
+                    parametro.MensagemErro = Constantes.ERR_USUARIO_BLOQUEADO;
+                    RegistrarTentativasLogin(parametro);
+
                     msgErro = Constantes.ERR_USUARIO_BLOQUEADO;
                     return null;
                 }
 
                 if (t.Bloqueado)
                 {
-                    RegistrarTentativasLogin(t.Id, t.TipoUsuario.Value, login, ip, Constantes.ERR_USUARIO_INATIVO, bloqueioUsuarioLoginAmbiente);
+                    parametro.MensagemErro = Constantes.ERR_USUARIO_INATIVO;
+                    RegistrarTentativasLogin(parametro);
+
                     msgErro = Constantes.ERR_USUARIO_INATIVO;
                     return null;
                 }
 
                 if (!t.AcessoHabilitado)
                 {
-                    RegistrarTentativasLogin(t.Id, t.TipoUsuario.Value, login, ip, Constantes.ERR_USUARIO_BLOQUEADO, bloqueioUsuarioLoginAmbiente);
+                    parametro.MensagemErro = Constantes.ERR_USUARIO_BLOQUEADO;
+                    RegistrarTentativasLogin(parametro);
+
                     msgErro = Constantes.ERR_ACESSO_INSUFICIENTE;
                     return null;
                 }
 
                 if (t.StLoginBloqueadoAutomatico)
                 {
-                    RegistrarTentativasLogin(t.Id, t.TipoUsuario.Value, login, ip, Constantes.ERR_USUARIO_BLOQUEADO_AUTOMATICO, bloqueioUsuarioLoginAmbiente);
+                    parametro.MensagemErro = Constantes.ERR_USUARIO_BLOQUEADO_AUTOMATICO;
+                    RegistrarTentativasLogin(parametro);
+
                     msgErro = Constantes.ERR_USUARIO_BLOQUEADO;
                     return null;
                 }
@@ -143,12 +167,14 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
                     if (senha_digitada_datastamp != t.Datastamp)
                     {
-                        RegistrarTentativasLogin(t.Id, t.TipoUsuario.Value, login, ip, Constantes.ERR_SENHA_INVALIDA, bloqueioUsuarioLoginAmbiente);
+                        parametro.MensagemErro = Constantes.ERR_SENHA_INVALIDA;
+                        RegistrarTentativasLogin(parametro);
+
                         msgErro = Constantes.ERR_SENHA_INVALIDA;
                         return null;
                     }
-
-                    RegistrarTentativasLogin(t.Id, t.TipoUsuario.Value, login, ip, string.Empty, bloqueioUsuarioLoginAmbiente);
+                    
+                    RegistrarTentativasLogin(parametro);
 
                     //Fazer Update no bd
                     using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
@@ -645,35 +671,34 @@ namespace OrcamentoCotacaoBusiness.Bll
             return string.Empty;
         }
 
-        private async Task RegistrarTentativasLogin(
-            int? idUsuario,
-            int? idTipoUsuario,
-            string login,
-            string ip,
-            string mensagemErro,
-            string bloqueioUsuarioLoginAmbiente)
+        private async Task RegistrarTentativasLogin(ParametroTentativasLogin parametro)
         {
+            if (parametro.SomenteValidar)
+            {
+                return;
+            }
+
             var notificarUserAdmin = false;
             var sistemaResponsavel = 6;
             var mensagemMotivo = string.Empty;
 
-            if (mensagemErro == Constantes.ERR_SENHA_INVALIDA)
+            if (parametro.MensagemErro == Constantes.ERR_SENHA_INVALIDA)
             {
                 mensagemMotivo = "001";
             }
 
-            if (mensagemErro == Constantes.ERR_USUARIO_BLOQUEADO ||
-                mensagemErro == Constantes.ERR_USUARIO_INATIVO)
+            if (parametro.MensagemErro == Constantes.ERR_USUARIO_BLOQUEADO ||
+                parametro.MensagemErro == Constantes.ERR_USUARIO_INATIVO)
             {
                 mensagemMotivo = "002";
             }
 
-            if (mensagemErro == Constantes.ERR_USUARIO_BLOQUEADO_AUTOMATICO)
+            if (parametro.MensagemErro == Constantes.ERR_USUARIO_BLOQUEADO_AUTOMATICO)
             {
                 mensagemMotivo = "003";
             }
 
-            if (mensagemErro == Constantes.ERR_USUARIO_NAO_CADASTRADO)
+            if (parametro.MensagemErro == Constantes.ERR_USUARIO_NAO_CADASTRADO)
             {
                 mensagemMotivo = "004";
             }
@@ -683,30 +708,30 @@ namespace OrcamentoCotacaoBusiness.Bll
                 var tloginHistorico = new TloginHistorico()
                 {
                     DataHora = DateTime.Now,
-                    IdTipoUsuarioContexto = idTipoUsuario,
-                    IdUsuario = idUsuario,
-                    Ip = ip,
+                    IdTipoUsuarioContexto = parametro.IdTipoUsuario,
+                    IdUsuario = parametro.IdUsuario,
+                    Ip = parametro.Ip,
                     sistema_responsavel = sistemaResponsavel,
-                    StSucesso = string.IsNullOrEmpty(mensagemErro) ? true : false,
-                    Login = login,
+                    StSucesso = string.IsNullOrEmpty(parametro.MensagemErro) ? true : false,
+                    Login = parametro.Login,
                     Motivo = mensagemMotivo
                 };
 
                 dbgravacao.Add(tloginHistorico);
 
-                if (idUsuario.HasValue && idTipoUsuario.HasValue)
+                if (parametro.IdUsuario.HasValue && parametro.IdTipoUsuario.HasValue)
                 {
                     var parametroBloqueio = await (from b in dbgravacao.Tparametros
                                                    where b.Id == "MAX_TENTATIVAS_LOGIN"
                                                    select b).FirstOrDefaultAsync();
 
-                    if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
+                    if (parametro.IdTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
                     {
                         var usuario = await (from c in dbgravacao.Tusuario
-                                             where c.Id == idUsuario
+                                             where c.Id == parametro.IdUsuario
                                              select c).FirstOrDefaultAsync();
 
-                        if (mensagemErro == Constantes.ERR_SENHA_INVALIDA)
+                        if (parametro.MensagemErro == Constantes.ERR_SENHA_INVALIDA)
                         {
                             usuario.QtdeConsecutivaFalhaLogin = usuario.QtdeConsecutivaFalhaLogin + 1;
 
@@ -714,7 +739,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                             {
                                 usuario.StLoginBloqueadoAutomatico = true;
                                 usuario.DataHoraBloqueadoAutomatico = DateTime.Now;
-                                usuario.EnderecoIpBloqueadoAutomatico = ip;
+                                usuario.EnderecoIpBloqueadoAutomatico = parametro.Ip;
                                 dbgravacao.Update(usuario);
 
                                 notificarUserAdmin = true;
@@ -722,7 +747,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         }
                         else
                         {
-                            if (string.IsNullOrEmpty(mensagemErro))
+                            if (string.IsNullOrEmpty(parametro.MensagemErro))
                             {
                                 usuario.QtdeConsecutivaFalhaLogin = 0;
                                 dbgravacao.Update(usuario);
@@ -730,13 +755,13 @@ namespace OrcamentoCotacaoBusiness.Bll
                         }
                     }
 
-                    if (idTipoUsuario == (int)Constantes.TipoUsuario.PARCEIRO)
+                    if (parametro.IdTipoUsuario == (int)Constantes.TipoUsuario.PARCEIRO)
                     {
                         var parceiro = await (from c in dbgravacao.TorcamentistaEindicador
-                                              where c.IdIndicador == idUsuario
+                                              where c.IdIndicador == parametro.IdUsuario
                                               select c).FirstOrDefaultAsync();
 
-                        if (mensagemErro == Constantes.ERR_SENHA_INVALIDA)
+                        if (parametro.MensagemErro == Constantes.ERR_SENHA_INVALIDA)
                         {
                             parceiro.QtdeConsecutivaFalhaLogin = parceiro.QtdeConsecutivaFalhaLogin + 1;
 
@@ -744,7 +769,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                             {
                                 parceiro.StLoginBloqueadoAutomatico = true;
                                 parceiro.DataHoraBloqueadoAutomatico = DateTime.Now;
-                                parceiro.EnderecoIpBloqueadoAutomatico = ip;
+                                parceiro.EnderecoIpBloqueadoAutomatico = parametro.Ip;
                                 dbgravacao.Update(parceiro);
 
                                 notificarUserAdmin = true;
@@ -752,7 +777,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         }
                         else
                         {
-                            if (string.IsNullOrEmpty(mensagemErro))
+                            if (string.IsNullOrEmpty(parametro.MensagemErro))
                             {
                                 parceiro.QtdeConsecutivaFalhaLogin = 0;
                                 dbgravacao.Update(parceiro);
@@ -760,13 +785,13 @@ namespace OrcamentoCotacaoBusiness.Bll
                         }
                     }
 
-                    if (idTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
+                    if (parametro.IdTipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
                     {
                         var parceiroParceiro = await (from c in dbgravacao.TorcamentistaEIndicadorVendedor
-                                                      where c.Id == idUsuario
+                                                      where c.Id == parametro.IdUsuario
                                                       select c).FirstOrDefaultAsync();
 
-                        if (mensagemErro == Constantes.ERR_SENHA_INVALIDA)
+                        if (parametro.MensagemErro == Constantes.ERR_SENHA_INVALIDA)
                         {
                             parceiroParceiro.QtdeConsecutivaFalhaLogin = parceiroParceiro.QtdeConsecutivaFalhaLogin + 1;
 
@@ -774,7 +799,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                             {
                                 parceiroParceiro.StLoginBloqueadoAutomatico = true;
                                 parceiroParceiro.DataHoraBloqueadoAutomatico = DateTime.Now;
-                                parceiroParceiro.EnderecoIpBloqueadoAutomatico = ip;
+                                parceiroParceiro.EnderecoIpBloqueadoAutomatico = parametro.Ip;
                                 dbgravacao.Update(parceiroParceiro);
 
                                 notificarUserAdmin = true;
@@ -782,7 +807,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         }
                         else
                         {
-                            if (string.IsNullOrEmpty(mensagemErro))
+                            if (string.IsNullOrEmpty(parametro.MensagemErro))
                             {
                                 parceiroParceiro.QtdeConsecutivaFalhaLogin = 0;
                                 dbgravacao.Update(parceiroParceiro);
@@ -818,16 +843,16 @@ namespace OrcamentoCotacaoBusiness.Bll
                             var dataBloqueio = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
 
                             var assunto = parametroAssunto.Campo_texto
-                                .Replace("[AMBIENTE]", bloqueioUsuarioLoginAmbiente)
-                                .Replace("[LOGIN_USUARIO]", login)
+                                .Replace("[AMBIENTE]", parametro.BloqueioUsuarioLoginAmbiente)
+                                .Replace("[LOGIN_USUARIO]", parametro.Login)
                                 .Replace("[DATA_HORA_BLOQUEIO]", dataBloqueio);
 
                             var mensagem = parametroMensagem.Campo_texto
-                                .Replace("[AMBIENTE]", bloqueioUsuarioLoginAmbiente)
-                                .Replace("[LOGIN_USUARIO]", login)
-                                .Replace("[IdTipoUsuarioContexto]", idTipoUsuario.ToString())
-                                .Replace("[IdUsuario]", idUsuario.ToString())
-                                .Replace("[IP]", ip)
+                                .Replace("[AMBIENTE]", parametro.BloqueioUsuarioLoginAmbiente)
+                                .Replace("[LOGIN_USUARIO]", parametro.Login)
+                                .Replace("[IdTipoUsuarioContexto]", parametro.IdTipoUsuario.ToString())
+                                .Replace("[IdUsuario]", parametro.IdUsuario.ToString())
+                                .Replace("[IP]", parametro.Ip)
                                 .Replace("[DATA_HORA_BLOQUEIO]", dataBloqueio)
                                 .Replace("[MAX_TENTATIVAS_LOGIN]", parametroBloqueio.Campo_inteiro.ToString());
 
@@ -884,5 +909,16 @@ namespace OrcamentoCotacaoBusiness.Bll
                 dbgravacao.transacao.Commit();
             }
         }
+    }
+
+    public sealed class ParametroTentativasLogin
+    {
+        public bool SomenteValidar { get; set; }
+        public int? IdUsuario { get; set; }
+        public int? IdTipoUsuario { get; set; }
+        public string Login { get; set; }
+        public string Ip { get; set; }
+        public string MensagemErro { get; set; }
+        public string BloqueioUsuarioLoginAmbiente { get; set; }
     }
 }
