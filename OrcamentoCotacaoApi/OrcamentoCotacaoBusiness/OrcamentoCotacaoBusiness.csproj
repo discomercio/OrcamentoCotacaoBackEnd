@@ -31,10 +31,10 @@
     <ProjectReference Include="..\..\Global\OrcamentoCotacaoOpcaoItemUnificado\OrcamentoCotacaoOpcaoItemUnificado.csproj" />
     <ProjectReference Include="..\..\Global\OrcamentoCotacaoOpcaoPagto\OrcamentoCotacaoOpcaoPagto.csproj" />
     <ProjectReference Include="..\..\Global\OrcamentoCotacaoOpcao\OrcamentoCotacaoOpcao.csproj" />
-    <ProjectReference Include="..\..\Global\OrcamentoCotacao\OrcamentoCotacao.csproj" />
 	<ProjectReference Include="..\..\Global\OrcamentoCotacaoEmailQueue\OrcamentoCotacaoEmailQueue.csproj" />
 	<ProjectReference Include="..\..\Global\OrcamentoCotacaoEmail\OrcamentoCotacaoEmail.csproj" />
 	<ProjectReference Include="..\..\Global\OrcamentoCotacaoLink\OrcamentoCotacaoLink.csproj" />
+	<ProjectReference Include="..\..\Global\OrcamentoCotacao\OrcamentoCotacao.csproj" />
     <ProjectReference Include="..\..\Global\Orcamento\Orcamento.csproj" />
     <ProjectReference Include="..\..\Global\Prepedido\Prepedido.csproj" />
     <ProjectReference Include="..\..\Global\ProdutoCatalogo\ProdutoCatalogo.csproj" />

@@ -113,7 +113,7 @@ namespace OrcamentoCotacaonet7Api
                      * X-API-Version: SUBSTITUIR_VERSAO_API
                      * */
                     var apiVersion = context.Request.Headers["X-API-Version"];
-                    if (!env.IsDevelopment())
+                    if (!env.IsDevelopment() || env.IsProduction())
                     {
                         if (!apiVersion.Any(r => r == nossaApiVersion))
                         {
@@ -142,7 +142,7 @@ namespace OrcamentoCotacaonet7Api
                 }
             });
 
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() || env.IsProduction())
             {
                 app.UseSwaggerX(Configuration);
             }

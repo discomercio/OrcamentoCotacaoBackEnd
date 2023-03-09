@@ -42,7 +42,7 @@ namespace OrcamentoCotacaonet7Api
             try
             {
                 logger.Debug("init main");
-                var app = CreateWebHostBuilder(args).Build();
+                var app = CreateHostBuilder(args).Build();
 
                 /*
                  * 
@@ -77,11 +77,37 @@ namespace OrcamentoCotacaonet7Api
             }
         }
 
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+         Host.CreateDefaultBuilder(args)
+             .ConfigureWebHostDefaults(webBuilder =>
+             {
+                 webBuilder.UseStartup<Startup>();
+             }).ConfigureLogging(logging =>
+             {
+                 /*
+                 para remover o |10400|WARN|Microsoft.EntityFrameworkCore.Model.Validation|Sensitive data logging is enabled. Log entries and exception messages may include sensitive application data, this mode should only be enabled during development.|
+                 devemos colocar no nlog.config:
+                 <logger name="Microsoft.EntityFrameworkCore.Model.Validation" minlevel="WARN" writeTo="logrequisicao" final="true" />
+                 como o segundo logger
+                 */
+
+                 logging.ClearProviders();
+                 logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+#if DEBUG
+                 logging.AddConsole();
+                 logging.AddDebug();
+#endif
+             }).UseNLog();
+
+        //public static IHostBuilder CreateHostBuilder(string[] args) =>
+        //   Host.CreateDefaultBuilder(args)
+        //       .ConfigureWebHostDefaults(webBuilder =>
+        //       {
+        //           webBuilder.UseStartup<Startup>();
+        //       });
+
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-            .UseUrls("http://0.0.0.0:3101")
-            .UseStartup<Startup>()
-
                 .ConfigureLogging(logging =>
                 {
                     /*
@@ -97,7 +123,6 @@ namespace OrcamentoCotacaonet7Api
                     logging.AddConsole();
                     logging.AddDebug();
 #endif
-                })
-                .UseNLog();
+                }).UseNLog();
     }
 }
