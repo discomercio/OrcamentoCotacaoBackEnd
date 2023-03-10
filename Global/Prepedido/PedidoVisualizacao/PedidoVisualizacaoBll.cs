@@ -799,7 +799,7 @@ namespace Prepedido.PedidoVisualizacao
             return retorno;
         }
 
-        private string Formata_hhmmss_para_hh_minuto_ss(string hora)
+        private static string Formata_hhmmss_para_hh_minuto_ss(string hora)
         {
             string hh = "";
             string mm = "";
@@ -1085,15 +1085,15 @@ namespace Prepedido.PedidoVisualizacao
                 var vlFamiliaP = from c in db.TpedidoPagamento
                                  where c.Pedido.StartsWith(numPedido)
                                  select c;
-                var vl_TotalFamiliaPagoTask = vlFamiliaP.Select(r => r.Valor).SumAsync();
+                var vl_TotalFamiliaPagoTask =  await vlFamiliaP.Select(r => r.Valor).SumAsync();
 
                 //buscar valor total NF
                 var vlNf = from c in db.TpedidoItem
                            where c.Tpedido.St_Entrega != Constantes.ST_ENTREGA_CANCELADO && c.Tpedido.Pedido.StartsWith(numPedido)
                            select c.Qtde * c.Preco_NF;
-                var vl_TotalFamiliaPrecoNFTask = vlNf.Select(r => r.Value).SumAsync();
+                var vl_TotalFamiliaPrecoNFTask = await vlNf.Select(r => r.Value).SumAsync();
 
-                decimal result = await vl_TotalFamiliaPrecoNFTask - await vl_TotalFamiliaPagoTask - vlDevNf;
+                decimal result = vl_TotalFamiliaPrecoNFTask - vl_TotalFamiliaPagoTask - vlDevNf;
 
                 return await Task.FromResult(result);
             }

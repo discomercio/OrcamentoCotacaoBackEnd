@@ -2,6 +2,7 @@
 using InfraBanco;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
+using Microsoft.EntityFrameworkCore;
 using OrcamentoCotacao.Dto;
 using System;
 using System.Collections.Generic;
@@ -389,8 +390,8 @@ namespace OrcamentoCotacao
                 }
                 if (!string.IsNullOrEmpty(filtro.NomeColunaOrdenacao))
                 {
-                    if (filtro.Ascendente) saida = saida.OrderBy(x => typeof(TorcamentoCotacao).GetProperty(filtro.NomeColunaOrdenacao).GetValue(x.tOrcamentoCotacao));
-                    else saida = saida.OrderByDescending(x => typeof(TorcamentoCotacao).GetProperty(filtro.NomeColunaOrdenacao).GetValue(x.tOrcamentoCotacao));
+                    if (filtro.Ascendente) saida = saida.OrderBy(x => EF.Property<TorcamentoCotacao>(x.tOrcamentoCotacao, filtro.NomeColunaOrdenacao));
+                    else saida = saida.OrderByDescending(x => EF.Property<TorcamentoCotacao>(x.tOrcamentoCotacao, filtro.NomeColunaOrdenacao));
                 }
 
                 return saida;
