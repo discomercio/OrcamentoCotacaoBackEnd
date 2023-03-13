@@ -114,7 +114,6 @@ namespace OrcamentoCotacaoBusiness.Bll
                 parametro.MensagemErro = string.Empty;
                 parametro.BloqueioUsuarioLoginAmbiente = bloqueioUsuarioLoginAmbiente;
 
-
                 if (t == null)
                 {
                     parametro.MensagemErro = Constantes.ERR_USUARIO_NAO_CADASTRADO;
@@ -173,7 +172,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         msgErro = Constantes.ERR_SENHA_INVALIDA;
                         return null;
                     }
-                    
+
                     RegistrarTentativasLogin(parametro);
 
                     //Fazer Update no bd
@@ -833,7 +832,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                                                        where b.Id == "BodyEmailAlertaLoginBloqueadoAutomatico"
                                                        select b).FirstOrDefaultAsync();
 
-                        if (parametroRemetente != null 
+                        if (parametroRemetente != null
                             && parametroDestinatario != null
                             && parametroAssunto != null
                             && parametroMensagem != null)
@@ -865,7 +864,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                                                                       select b.id).FirstOrDefaultAsync();*/
 
                             var tFinControle = await (from t in dbgravacao.TfinControle.OrderByDescending(p => p.Id == "T_EMAILSNDSVC_MENSAGEM")
-                                                                      select t).FirstOrDefaultAsync();
+                                                      select t).FirstOrDefaultAsync();
 
                             tFinControle.Dt_hr_ult_atualizacao = DateTime.Now;
                             tFinControle.Nsu = tFinControle.Nsu + 1;
