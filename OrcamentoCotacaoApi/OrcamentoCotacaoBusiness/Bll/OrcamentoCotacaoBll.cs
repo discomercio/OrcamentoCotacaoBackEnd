@@ -163,18 +163,15 @@ namespace OrcamentoCotacaoBusiness.Bll
                 orcamento.condicoesGerais = condicoesGerais[0].Valor;
                 orcamento.prazoMaximoConsultaOrcamento = prazoMaximoConsultaOrcamento[0].Valor;
                 orcamento.listaOpcoes = _orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro { IdOrcamentoCotacao = orcamento.id });
-                //foreach (var op in orcamento.listaOpcoes)
-                //{
-                //    int idPagtoAprazo = op.FormaPagto.Where(x => x.Tipo_parcelamento != int.Parse(Constantes.COD_FORMA_PAGTO_A_VISTA)).FirstOrDefault().Id;
-                //    var produtos = IncluirProdutosParaPrepedido(op.ListaProdutos, idPagtoAprazo, 0).Result;
-                //    if (produtos.Count > 0)
-                //    {
-                //        op.VlTotal = Math.Round((decimal)produtos.Sum(x => x.VlTotalItem), 2);
-                //    }
-                //}
-                orcamento.listaFormasPagto = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(orcamento.tipoCliente, (Constantes.TipoUsuario)usuarioLogin.TipoUsuario, orcamento.vendedor, byte.Parse(orcamento.idIndicador.HasValue ? "1" : "0"));
+
+                var contextoUsuario = orcamento.idTipoUsuarioContextoCadastro;
+                if(orcamento.idIndicador != null && orcamento.idIndicador != 0)
+                {
+                    contextoUsuario = (int)Constantes.TipoUsuarioContexto.Parceiro;
+                }
+
+                orcamento.listaFormasPagto = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(orcamento.tipoCliente, (Constantes.TipoUsuario)contextoUsuario, orcamento.parceiro, byte.Parse(orcamento.idIndicador.HasValue ? "1" : "0"));
                 orcamento.mensageria = BuscarDadosParaMensageria(usuarioLogin, orcamento.id, false);
-                // orcamento.token = _publicoBll.ObterTokenServico();
 
                 if (!Validar(orcamento))
                 {
