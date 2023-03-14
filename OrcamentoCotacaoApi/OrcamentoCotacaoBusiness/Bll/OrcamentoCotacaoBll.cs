@@ -268,12 +268,15 @@ namespace OrcamentoCotacaoBusiness.Bll
             var orcamentoCotacaoFiltro = new TorcamentoCotacaoFiltro
             {
                 LimitarDataDashboard = true,
-                Loja = tOrcamentoFiltro.Loja,
+                Loja = tOrcamentoFiltro.Loja,                
             };
 
             if (usuarioLogin.TipoUsuario == 1)
             {
-                orcamentoCotacaoFiltro.IdVendedor = idUsuario;
+                if (!tOrcamentoFiltro.PermissaoUniversal)
+                {
+                    orcamentoCotacaoFiltro.IdVendedor = idUsuario;
+                }
             }
             else if (usuarioLogin.TipoUsuario == 2)
             {
