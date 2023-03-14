@@ -5,6 +5,7 @@ using OrcamentoCotacaoApi.Filters;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
+using OrcamentoCotacaoBusiness.Models.Request.GrupoSubgrupoProduto;
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -418,6 +419,22 @@ namespace OrcamentoCotacaoApi.BaseController
             _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ProdutoController/BuscarGruposProdutos/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
             var response = _produtoBll.BuscarGruposProdutos();
+
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}].  ProdutoController/BuscarGruposProdutos/GET - Response => [{JsonSerializer.Serialize(response)}].");
+
+            return Ok(response);
+        }
+
+        [HttpPost("buscarGruposSubgruposProdutos")]
+        public IActionResult BuscarGruposSubgruposProdutos(GrupoSubgrupoProdutoRequest request)
+        {
+            request.Usuario = LoggedUser.Apelido;
+            request.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+            request.IP = HttpContext.Connection.RemoteIpAddress.ToString();
+
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ProdutoController/BuscarGruposSubgruposProdutos/GET");
+
+            var response = _produtoBll.BuscarGrupoSubgrupoProduto(38, request.Loja);
 
             _logger.LogInformation($"CorrelationId => [{request.CorrelationId}].  ProdutoController/BuscarGruposProdutos/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
