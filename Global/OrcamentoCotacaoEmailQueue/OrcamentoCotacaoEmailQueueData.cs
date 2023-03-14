@@ -189,7 +189,10 @@ namespace OrcamentoCotacaoEmailQueue
                             parametros = parametros.Where(x => x.Sent == obj.Sent);
                     }
 
-                    parametros = parametros.Where(x => x.DateScheduled < DateTime.Now || x.DateScheduled == null);
+                    if (obj.UseDateScheduled)
+                    {
+                        parametros = parametros.Where(x => x.DateScheduled < DateTime.Now || x.DateScheduled == null);
+                    }
 
                     if (obj.Page.HasValue || obj.RecordsPerPage.HasValue)
                     {
