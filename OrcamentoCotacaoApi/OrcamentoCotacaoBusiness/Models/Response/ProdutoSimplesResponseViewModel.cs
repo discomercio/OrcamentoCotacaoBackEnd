@@ -73,7 +73,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response
             retorno.DescMax = produto.Desc_Max;
             retorno.Estoque = produto.Estoque;
             retorno.Alertas = produto.Alertas;
-            retorno.CodGrupoSubgrupo = produto.Grupo + produto.SubGrupo;
+            retorno.CodGrupoSubgrupo = $"{produto.Grupo}§{produto.SubGrupo}";
             if (string.IsNullOrEmpty(produto.Grupo) && string.IsNullOrEmpty(produto.SubGrupo))
             {
                 retorno.CodGrupoSubgrupo = "V";

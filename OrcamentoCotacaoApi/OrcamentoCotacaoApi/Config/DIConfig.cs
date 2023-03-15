@@ -140,6 +140,8 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<Cfg.CfgOperacao.CfgOperacaoBll, Cfg.CfgOperacao.CfgOperacaoBll>();
             services.AddTransient<Cfg.CfgOperacao.CfgOperacaoData, Cfg.CfgOperacao.CfgOperacaoData>();
 
+            services.AddTransient<Cfg.CfgParametro.CfgParametroBll, Cfg.CfgParametro.CfgParametroBll>();
+            services.AddTransient<Cfg.CfgParametro.CfgParametroData, Cfg.CfgParametro.CfgParametroData>();
 
 
             return services;

@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using Cfg.CfgParametro;
+using Cfg.CfgUnidadeNegocio;
+using Cfg.CfgUnidadeNegocioParametro;
 using InfraBanco;
 using InfraBanco.Constantes;
 using InfraBanco.Modelos;
@@ -9,7 +12,9 @@ using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response;
+using OrcamentoCotacaoBusiness.Models.Response.Cfg.CfgParametro;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
+using OrcamentoCotacaoBusiness.Models.Response.GrupoSubgrupoProduto;
 using OrcamentoCotacaoBusiness.Models.Response.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response.ProdutoCatalogo;
 using Produto;
@@ -36,6 +41,9 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly LojaOrcamentoCotacaoBll _lojaOrcamentoCotacaoBll;
         private readonly LojaBll _lojaBll;
         private readonly ProdutoCatalogoBll _produtoCatalogoBll;
+        private readonly CfgParametroBll cfgParametroBll;
+        private readonly CfgUnidadeNegocioParametroBll cfgUnidadeNegocioParametroBll;
+        private readonly CfgUnidadeNegocioBll cfgUnidadeNegocioBll;
 
         public ProdutoOrcamentoCotacaoBll(
             ILogger<ProdutoOrcamentoCotacaoBll> logger,
@@ -45,7 +53,10 @@ namespace OrcamentoCotacaoBusiness.Bll
             OrcamentoCotacaoOpcaoItemAtomicoCustoFin.OrcamentoCotacaoOpcaoItemAtomicoCustoFinBll orcamentoCotacaoOpcaoItemAtomicoCustoFinBll,
             LojaOrcamentoCotacaoBll _lojaOrcamentoCotacaoBll,
             LojaBll _lojaBll,
-            ProdutoCatalogoBll _produtoCatalogoBll)
+            ProdutoCatalogoBll _produtoCatalogoBll,
+            CfgParametroBll cfgParametroBll,
+            CfgUnidadeNegocioParametroBll cfgUnidadeNegocioParametroBll,
+            CfgUnidadeNegocioBll cfgUnidadeNegocioBll)
         {
             _logger = logger;
             this.produtoGeralBll = produtoGeralBll;
@@ -57,6 +68,9 @@ namespace OrcamentoCotacaoBusiness.Bll
             this._lojaOrcamentoCotacaoBll = _lojaOrcamentoCotacaoBll;
             this._lojaBll = _lojaBll;
             this._produtoCatalogoBll = _produtoCatalogoBll;
+            this.cfgParametroBll = cfgParametroBll;
+            this.cfgUnidadeNegocioParametroBll = cfgUnidadeNegocioParametroBll;
+            this.cfgUnidadeNegocioBll = cfgUnidadeNegocioBll;
         }
 
         public async Task<ProdutoResponseViewModel> ListaProdutosCombo(ProdutosRequestViewModel produtos)
@@ -875,7 +889,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 var response = new ProdutosGruposResponse();
                 response.Sucesso = false;
 
-                var retorno = _produtoCatalogoBll.BuscarProdutoGrupos(null);
+                var retorno = _produtoCatalogoBll.BuscarProdutoGrupos(new TprodutoGrupoFiltro() { IncluirTProduto = true});
                 if (retorno == null)
                 {
                     response.Mensagem = "Ops! Falha ao buscar grupos de produtos!";
@@ -899,6 +913,102 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 throw ex;
             }
+        }
+
+        public CfgParametroResponse BuscarParametro(int id)
+        {
+            var parametro = cfgParametroBll.PorFiltro(new InfraBanco.Modelos.Filtros.TcfgParametroFiltro() { Id = id }).FirstOrDefault();
+            if (parametro == null) return null;
+
+            CfgParametroResponse response = new CfgParametroResponse();
+            response.Id = parametro.Id;
+            response.Descricao = parametro.Descricao;
+            response.Sigla = parametro.Sigla;
+            response.IdCfgDataType = parametro.IdCfgDataType;
+
+            return response;
+        }
+
+        public ListaGruposSubgruposProdutosResponse BuscarGrupoSubgrupoProduto(int id, string loja)
+        {
+            var response = new ListaGruposSubgruposProdutosResponse();
+
+            response.Sucesso = false;
+            var parametro = BuscarParametro(38);
+            if(parametro == null)
+            {
+                response.Mensagem = "Falha ao buscar parâmetro para categorias!";
+                return response;
+            }
+
+            var objLoja = _lojaBll.PorFiltro(new TlojaFiltro() { Loja = loja }).FirstOrDefault();
+            if (objLoja == null)
+            {
+                response.Mensagem = "Falha ao buscar loja para categorias!";
+                return response;
+            }
+
+            var unidadeNegocio = cfgUnidadeNegocioBll.PorFiltro(new TcfgUnidadeNegocioFiltro() { Sigla = objLoja.Unidade_Negocio}).FirstOrDefault();
+            if(unidadeNegocio == null)
+            {
+                response.Mensagem = "Falha ao buscar unidade de negócio para categorias!";
+                return response;
+            }
+
+            var unidadeNegocioParametro = cfgUnidadeNegocioParametroBll.PorFiltro(
+                new TcfgUnidadeNegocioParametroFiltro()
+                {
+                    IdCfgUnidadeNegocio = unidadeNegocio.Id,
+                    IdCfgParametro = parametro.Id
+                }).FirstOrDefault();
+            if(unidadeNegocioParametro == null)
+            {
+                response.Mensagem = "Falha ao buscar parâmetro de unidade de negócio para categorias!";
+                return response;
+            }
+
+            var grupo = _produtoCatalogoBll.BuscarProdutoGrupos(new TprodutoGrupoFiltro());
+            if(grupo == null)
+            {
+                response.Mensagem = "Falha ao buscar grupo para categorias!";
+                return response;
+            }
+
+            var subGrupo = _produtoCatalogoBll.BuscarProdutosSubgrupos(new TprodutoSubgrupoFiltro());
+            if(subGrupo == null)
+            {
+                response.Mensagem = "Falha ao buscar subgrupos para categorias!";
+                return response;
+            }
+
+            response.ListaGruposSubgruposProdutos = new List<GrupoSubgrupoProdutoResponse>();
+            
+            //CRT§CRT|FAN§DUT|FAN§HW|FAN§K74
+            var listaSplit = unidadeNegocioParametro.Valor.Split("|");
+            foreach(var split in listaSplit )
+            {
+                var listaSplit2 = split.Split("§");
+                var grp = grupo.Where(x => x.Codigo == listaSplit2[0]).FirstOrDefault();
+                var sbgrp = subGrupo.Where(x => x.Codigo == listaSplit2[1]).FirstOrDefault();
+
+                var grupoSubgrupoResponse = new GrupoSubgrupoProdutoResponse();
+
+                if (grp.Codigo == sbgrp.Codigo)
+                {
+                    grupoSubgrupoResponse.Descricao = grp.Descricao;
+                }
+                else
+                {
+                    grupoSubgrupoResponse.Descricao = $"{grp.Descricao} - {sbgrp.Descricao}";
+                }
+
+                grupoSubgrupoResponse.Codigo = split;
+                response.ListaGruposSubgruposProdutos.Add(grupoSubgrupoResponse);
+            }
+
+            response.Sucesso = true;
+
+            return response;
         }
     }
 }
