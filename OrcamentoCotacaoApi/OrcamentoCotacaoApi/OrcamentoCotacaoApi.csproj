@@ -32,6 +32,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Global\Arquivo\Arquivo.csproj" />
+    <ProjectReference Include="..\..\Global\CodigoDescricao\CodigoDescricao.csproj" />
     <ProjectReference Include="..\..\Global\FormaPagamento\FormaPagamento.csproj" />
     <ProjectReference Include="..\..\Global\Loja\Loja.csproj" />
     <ProjectReference Include="..\..\Global\Operacao\Operacao.csproj" />

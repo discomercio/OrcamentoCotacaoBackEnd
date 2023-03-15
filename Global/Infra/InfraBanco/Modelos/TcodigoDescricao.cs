@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Interfaces;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InfraBanco.Modelos
 {
     [Table("t_CODIGO_DESCRICAO")]
-    public class TcodigoDescricao
+    public class TcodigoDescricao : IModel
     {
         [Required]
         [MaxLength(60)]
@@ -16,6 +17,9 @@ namespace InfraBanco.Modelos
         [Required]
         [MaxLength(20)]
         public string Codigo { get; set; }
+
+        [Column("ordenacao")]
+        public short Ordenacao { get; set; }
 
         [Column("st_inativo")]
         [Required]
