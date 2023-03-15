@@ -80,7 +80,7 @@ namespace ArClube.Mensageria
 		                            WHERE 
                                         (([t].[Sent] = 0) OR ([t].[Sent] IS NULL)) 
                                         AND (([t].[DateScheduled] < GETDATE()) OR ([t].[DateScheduled] IS NULL)) 
-                                        AND (([t].[Status] <> 4) OR ([t].[Status] IS NULL)) 
+                                        AND (([t].[Status] IN (0, 3)) OR ([t].[Status] IS NULL)) 
 		                            ORDER BY (SELECT 1) 
 		                            OFFSET 0 ROWS FETCH NEXT @recordsPerPage ROWS ONLY 
 	                            ) 
