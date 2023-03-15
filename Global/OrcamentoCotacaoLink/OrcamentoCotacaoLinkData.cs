@@ -62,8 +62,14 @@ namespace OrcamentoCotacaoLink
         {
             var orcamentoCotacaoLink = (from c in contextoBdGravacao.TorcamentoCotacaoLink
                                         where c.IdOrcamentoCotacao == model.IdOrcamentoCotacao
-                                        select c).LastOrDefault();
-            if (orcamentoCotacaoLink == null) return null;
+                                        select c)
+                                        .OrderByDescending(c => c.Id)
+                                        .FirstOrDefault();
+
+            if (orcamentoCotacaoLink == null)
+            {
+                return null;
+            }
 
             orcamentoCotacaoLink.Status = model.Status;
             orcamentoCotacaoLink.DataUltStatus = model.DataUltStatus;
