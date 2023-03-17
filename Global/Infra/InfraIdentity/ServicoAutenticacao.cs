@@ -19,31 +19,40 @@ namespace InfraIdentity
             string ip,
             out bool unidade_negocio_desconhecida)
         {
-            UsuarioLogin user = servicoAutenticacaoProvider.ObterUsuario(
+            var usuarioLogin = servicoAutenticacaoProvider.ObterUsuario(
                 login.Apelido,
                 login.Senha,
                 BloqueioUsuarioLoginAmbiente,
                 ip).Result;
 
             // retorna null se não tiver usuário
-            if (user == null)
+            if (usuarioLogin == null)
             {
                 unidade_negocio_desconhecida = false;
                 return null;
             }
 
             //Se retornar erro de usuário bloqueado ou senha expirada
-            if (!string.IsNullOrEmpty(user.IdErro.ToString()) && user.IdErro != 0)
+            if (!string.IsNullOrEmpty(usuarioLogin.IdErro.ToString()) && usuarioLogin.IdErro != 0)
             {
                 unidade_negocio_desconhecida = false;
-                return user;
+                return usuarioLogin;
             }
 
-            return GerarTokenAutenticacao(user, segredoToken, validadeTokenMinutos, role, out unidade_negocio_desconhecida);
+            return GerarTokenAutenticacao(
+                usuarioLogin, 
+                segredoToken, 
+                validadeTokenMinutos, 
+                role, 
+                out unidade_negocio_desconhecida);
         }
 
-        public UsuarioLogin RenovarTokenAutenticacao(UsuarioLogin usuario, string segredoToken, int validadeTokenMinutos,
-            string role, out bool unidade_negocio_desconhecida)
+        public UsuarioLogin RenovarTokenAutenticacao(
+            UsuarioLogin usuario, 
+            string segredoToken, 
+            int validadeTokenMinutos,
+            string role, 
+            out bool unidade_negocio_desconhecida)
         {
             //vamos verificar se usuario ainda tem permissão
             //ainda nao estamos fazendo, deveráimos fazer?
@@ -51,8 +60,12 @@ namespace InfraIdentity
             return GerarTokenAutenticacao(usuario, segredoToken, validadeTokenMinutos, role, out unidade_negocio_desconhecida);
         }
 
-        private static UsuarioLogin GerarTokenAutenticacao(UsuarioLogin usuario, string segredoToken, int validadeTokenMinutos,
-            string role, out bool unidade_negocio_desconhecida)
+        private static UsuarioLogin GerarTokenAutenticacao(
+            UsuarioLogin usuario, 
+            string segredoToken, 
+            int validadeTokenMinutos,
+            string role, 
+            out bool unidade_negocio_desconhecida)
         {
             //unidade_negocio: BS ou VRF, se diferente dar erro no login
             if (String.IsNullOrEmpty(usuario.Unidade_negocio))
@@ -60,11 +73,13 @@ namespace InfraIdentity
                 unidade_negocio_desconhecida = true;
                 return null;
             }
+
             if (!usuario.Unidade_negocio.ToUpper().Trim().Contains("BS") && !(usuario.Unidade_negocio.ToUpper().Trim().Contains("VRF")))
             {
                 unidade_negocio_desconhecida = true;
                 return null;
             }
+
             unidade_negocio_desconhecida = false;
 
             // authentication successful so generate jwt token

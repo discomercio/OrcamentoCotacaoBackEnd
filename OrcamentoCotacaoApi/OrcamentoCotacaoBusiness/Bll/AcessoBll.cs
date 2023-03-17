@@ -126,6 +126,29 @@ namespace OrcamentoCotacaoBusiness.Bll
                 parametro.IdUsuario = t.Id;
                 parametro.IdTipoUsuario = t.TipoUsuario.Value;
 
+                if (t.TipoUsuario.HasValue && 
+                    t.TipoUsuario.Value == (int)Constantes.TipoUsuario.VENDEDOR)
+                {
+                    var permissoesUsuario = (from o in db.Toperacao
+                                             join pi in db.TperfilItem on o.Id equals pi.Id_operacao
+                                             join p in db.Tperfil on pi.Id_perfil equals p.Id
+                                             join pu in db.TperfilUsuario on p.Id equals pu.Id_perfil
+                                             join u in db.Tusuario on pu.Usuario equals u.Usuario
+                                             where o.Modulo == "COTAC" 
+                                             && u.Usuario == login
+                                             && o.Id == (int)Constantes.ePermissoes.ACESSO_AO_MODULO_100100
+                                             select o.Id.ToString()).SingleOrDefault();
+
+                    if (permissoesUsuario == null)
+                    {
+                        parametro.MensagemErro = Constantes.ERR_USUARIO_BLOQUEADO_PERMISSAO;
+                        RegistrarTentativasLogin(parametro);
+
+                        msgErro = Constantes.ERR_USUARIO_BLOQUEADO_PERMISSAO;
+                        return null;
+                    }
+                }
+
                 if (t.Datastamp == "")
                 {
                     parametro.MensagemErro = Constantes.ERR_USUARIO_BLOQUEADO;
@@ -161,6 +184,15 @@ namespace OrcamentoCotacaoBusiness.Bll
                     msgErro = Constantes.ERR_USUARIO_BLOQUEADO;
                     return null;
                 }
+
+                //if (!t.Permissoes.Contains(((int)Constantes.ePermissoes.ACESSO_AO_MODULO_100100).ToString()))
+                //{
+                //    parametro.MensagemErro = Constantes.ERR_USUARIO_BLOQUEADO_AUTOMATICO;
+                //    RegistrarTentativasLogin(parametro);
+
+                //    msgErro = Constantes.ERR_USUARIO_BLOQUEADO;
+                //    return null;
+                //}
 
                 if (!somenteValidar)
                 {
@@ -702,6 +734,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                 mensagemMotivo = "004";
             }
 
+            if (parametro.MensagemErro == Constantes.ERR_USUARIO_BLOQUEADO_PERMISSAO)
+            {
+                mensagemMotivo = "005";
+            }
+
             using (var dbgravacao = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTISTA_E_INDICADOR))
             {
                 var tloginHistorico = new TloginHistorico()
@@ -744,6 +781,10 @@ namespace OrcamentoCotacaoBusiness.Bll
                                 notificarUserAdmin = true;
                             }
                         }
+                        else if (parametro.MensagemErro == Constantes.ERR_USUARIO_BLOQUEADO_AUTOMATICO)
+                        {
+                            usuario.QtdeConsecutivaFalhaLogin = usuario.QtdeConsecutivaFalhaLogin + 1;
+                        }
                         else
                         {
                             if (string.IsNullOrEmpty(parametro.MensagemErro))
@@ -774,6 +815,10 @@ namespace OrcamentoCotacaoBusiness.Bll
                                 notificarUserAdmin = true;
                             }
                         }
+                        else if (parametro.MensagemErro == Constantes.ERR_USUARIO_BLOQUEADO_AUTOMATICO)
+                        {
+                            parceiro.QtdeConsecutivaFalhaLogin = parceiro.QtdeConsecutivaFalhaLogin + 1;
+                        }
                         else
                         {
                             if (string.IsNullOrEmpty(parametro.MensagemErro))
@@ -803,6 +848,10 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                                 notificarUserAdmin = true;
                             }
+                        }
+                        else if (parametro.MensagemErro == Constantes.ERR_USUARIO_BLOQUEADO_AUTOMATICO)
+                        {
+                            parceiroParceiro.QtdeConsecutivaFalhaLogin = parceiroParceiro.QtdeConsecutivaFalhaLogin + 1;
                         }
                         else
                         {
@@ -859,9 +908,6 @@ namespace OrcamentoCotacaoBusiness.Bll
                                                               where b.email_remetente == remetente
                                                               && b.st_envio_mensagem_habilitado == 1
                                                               select b).FirstOrDefaultAsync();
-
-                            /*var ultimoIdTemailSndsvcMensagem = await (from b in dbgravacao.TemailSndsvcMensagem.OrderByDescending(p => p.id)
-                                                                      select b.id).FirstOrDefaultAsync();*/
 
                             var tFinControle = await (from t in dbgravacao.TfinControle.OrderByDescending(p => p.Id == "T_EMAILSNDSVC_MENSAGEM")
                                                       select t).FirstOrDefaultAsync();
