@@ -16,5 +16,7 @@ namespace InfraBanco.Modelos
         public int sistema_responsavel { get; set; }
         public string Login { get; set; }
         public string Motivo { get; set; }
+        public short IdCfgModulo { get; set; }
+        public string Loja { get; set; }
     }
 }

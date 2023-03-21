@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
 using OrcamentoCotacaoBusiness.Models.Request;
+using OrcamentoCotacaoBusiness.Models.Request.LoginHistorico;
+using OrcamentoCotacaoBusiness.Models.Request.OrcamentistaIndicadorVendedor;
 using OrcamentoCotacaoBusiness.Models.Response;
+using OrcamentoCotacaoBusiness.Models.Response.OrcamentistaIndicadorVendedor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,13 +21,15 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly IMapper _mapper;
         private readonly Cfg.CfgOperacao.CfgOperacaoBll _cfgOperacaoBll;
         private readonly InfraBanco.ContextoBdProvider _contextoBdProvider;
+        private readonly LoginHistoricoBll _loginHistoricoBll;
 
         public OrcamentistaEIndicadorVendedorBll(
             OrcamentistaEIndicadorVendedor.OrcamentistaEIndicadorVendedorBll _orcamentistaEindicadorVendedorBll,
             IMapper _mapper,
              OrcamentistaEIndicadorBll _orcamentistaEIndicadorBll,
              Cfg.CfgOperacao.CfgOperacaoBll cfgOperacaoBll,
-             InfraBanco.ContextoBdProvider contextoBdProvider
+             InfraBanco.ContextoBdProvider contextoBdProvider,
+             LoginHistoricoBll _loginHistoricoBll
             )
         {
             this._orcamentistaEindicadorVendedorBll = _orcamentistaEindicadorVendedorBll;
@@ -31,6 +37,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             this._orcamentistaEIndicadorBll = _orcamentistaEIndicadorBll;
             _cfgOperacaoBll = cfgOperacaoBll;
             _contextoBdProvider = contextoBdProvider;
+            this._loginHistoricoBll = _loginHistoricoBll;
         }
 
         public List<OrcamentistaEIndicadorVendedorResponseViewModel> BuscarVendedoresParceiro(string apelidoParceiro)
@@ -193,6 +200,32 @@ namespace OrcamentoCotacaoBusiness.Bll
                 dbGravacao.transacao.Commit();
                 return ret;
             }
+        }
+
+        public OrcamentistaIndicadorVendedorDeleteResponse Deletar(OrcamentistaIndicadorVendedorDeleteRequest request)
+        {
+            var response = new OrcamentistaIndicadorVendedorDeleteResponse();
+            response.Sucesso = false;
+
+            //validar o usuário
+            var tOrcamentistaIndicadorVendedor = _orcamentistaEindicadorVendedorBll.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro() { id = request.IdIndicadorVendedor }).FirstOrDefault();
+            if (tOrcamentistaIndicadorVendedor == null)
+            {
+                response.Mensagem = "Ops! Usuário não encontrado!";
+                return response;
+            }
+
+            //existe, então vamos verificar se podemos excluir o usuário
+            //Verificar na tabela t_LOGIN_HISTORICO se já fez login com sucesso
+            var loginHistorico = _loginHistoricoBll.PorFiltro(new LoginHistoricoRequest() { IdUsuario = request.IdIndicadorVendedor });
+            //se tiver feito, retornar mensagem "Exclusão não permitida. Usuário efetuou logon no Sistema alguma vez."
+
+            //Se tiver relacionado em algum orçamento, retornar mensagem "Exclusão não permitida. Usuário está relacionado a algum orçamento."
+
+
+            response.Sucesso = true;
+
+            return null;
         }
     }
 }
