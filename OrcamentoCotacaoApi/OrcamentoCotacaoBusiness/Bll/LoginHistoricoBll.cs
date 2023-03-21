@@ -26,8 +26,13 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             response.Sucesso = false;
 
-            var saida = loginHistoricoBll.PorFiltro(new InfraBanco.Modelos.Filtros.TloginHistoricoFiltro() { IdUsuario = loginHistoricoRequest.IdUsuario });
-            if(saida == null)
+            var saida = loginHistoricoBll.PorFiltro(new InfraBanco.Modelos.Filtros.TloginHistoricoFiltro()
+            {
+                IdUsuario = loginHistoricoRequest.IdUsuario,
+                SistemaResponsavel = loginHistoricoRequest.SistemaResponsavel
+            });
+
+            if (saida == null)
             {
                 response.Mensagem = "Nenhum histórico encontrado!";
                 return response;
@@ -35,7 +40,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             response.LstLoginHistoricoResponse = new List<LoginHistoricoResponse>();
 
-            foreach ( var item in saida)
+            foreach (var item in saida)
             {
                 var retorno = new LoginHistoricoResponse();
                 retorno.Id = item.Id;
@@ -45,7 +50,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 retorno.StSucesso = item.StSucesso;
                 retorno.Ip = item.Ip;
                 retorno.sistema_responsavel = item.sistema_responsavel;
-                retorno.Login= item.Login;
+                retorno.Login = item.Login;
                 retorno.Motivo = item.Motivo;
                 retorno.IdCfgModulo = item.IdCfgModulo;
                 retorno.Loja = item.Loja;

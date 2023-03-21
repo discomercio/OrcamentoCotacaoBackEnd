@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace InfraBanco.Modelos.Filtros
 {
-    public class TloginHistoricoFiltro : IFilter
+    public class TcfgModuloFiltro : IFilter
     {
-        public int IdUsuario { get; set; }
-
-        public int SistemaResponsavel { get; set; }
+        public string Descricao { get; set; }
     }
 }

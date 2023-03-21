@@ -105,6 +105,8 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<Cfg.CfgParametro.CfgParametroData, Cfg.CfgParametro.CfgParametroData>();
             services.AddTransient<LoginHistorico.LoginHistoricoBll, LoginHistorico.LoginHistoricoBll>();
             services.AddTransient<LoginHistorico.LoginHistoricoData, LoginHistorico.LoginHistoricoData>();
+            services.AddTransient<Cfg.CfgModulo.CfgModuloBll, Cfg.CfgModulo.CfgModuloBll>();
+            services.AddTransient<Cfg.CfgModulo.CfgModuloData, Cfg.CfgModulo.CfgModuloData>();
 
             //#PRE-PEDIDO
             services.AddTransient<Prepedido.Bll.AcessoBll, Prepedido.Bll.AcessoBll>(); 

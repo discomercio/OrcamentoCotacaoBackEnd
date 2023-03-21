@@ -22,6 +22,8 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly Cfg.CfgOperacao.CfgOperacaoBll _cfgOperacaoBll;
         private readonly InfraBanco.ContextoBdProvider _contextoBdProvider;
         private readonly LoginHistoricoBll _loginHistoricoBll;
+        private readonly Cfg.CfgModulo.CfgModuloBll _cfgModuloBll;
+        private readonly OrcamentoCotacao.OrcamentoCotacaoBll orcamentoCotacaoBll;
 
         public OrcamentistaEIndicadorVendedorBll(
             OrcamentistaEIndicadorVendedor.OrcamentistaEIndicadorVendedorBll _orcamentistaEindicadorVendedorBll,
@@ -29,7 +31,9 @@ namespace OrcamentoCotacaoBusiness.Bll
              OrcamentistaEIndicadorBll _orcamentistaEIndicadorBll,
              Cfg.CfgOperacao.CfgOperacaoBll cfgOperacaoBll,
              InfraBanco.ContextoBdProvider contextoBdProvider,
-             LoginHistoricoBll _loginHistoricoBll
+             LoginHistoricoBll _loginHistoricoBll,
+             Cfg.CfgModulo.CfgModuloBll _cfgModuloBll,
+             OrcamentoCotacao.OrcamentoCotacaoBll orcamentoCotacaoBll
             )
         {
             this._orcamentistaEindicadorVendedorBll = _orcamentistaEindicadorVendedorBll;
@@ -38,6 +42,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             _cfgOperacaoBll = cfgOperacaoBll;
             _contextoBdProvider = contextoBdProvider;
             this._loginHistoricoBll = _loginHistoricoBll;
+            this._cfgModuloBll = _cfgModuloBll;
+            this.orcamentoCotacaoBll = orcamentoCotacaoBll;
         }
 
         public List<OrcamentistaEIndicadorVendedorResponseViewModel> BuscarVendedoresParceiro(string apelidoParceiro)
@@ -207,7 +213,13 @@ namespace OrcamentoCotacaoBusiness.Bll
             var response = new OrcamentistaIndicadorVendedorDeleteResponse();
             response.Sucesso = false;
 
-            //validar o usuário
+            var modulo = _cfgModuloBll.PorFiltro(new TcfgModuloFiltro() { Descricao = "Orçamento/Cotação" }).FirstOrDefault();
+            if (modulo == null)
+            {
+                response.Mensagem = "Ops! Não encontramos o módulo de sistema.";
+                return response;
+            }
+
             var tOrcamentistaIndicadorVendedor = _orcamentistaEindicadorVendedorBll.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro() { id = request.IdIndicadorVendedor }).FirstOrDefault();
             if (tOrcamentistaIndicadorVendedor == null)
             {
@@ -215,10 +227,24 @@ namespace OrcamentoCotacaoBusiness.Bll
                 return response;
             }
 
-            //existe, então vamos verificar se podemos excluir o usuário
-            //Verificar na tabela t_LOGIN_HISTORICO se já fez login com sucesso
-            var loginHistorico = _loginHistoricoBll.PorFiltro(new LoginHistoricoRequest() { IdUsuario = request.IdIndicadorVendedor });
-            //se tiver feito, retornar mensagem "Exclusão não permitida. Usuário efetuou logon no Sistema alguma vez."
+            var loginHistoricoresponse = _loginHistoricoBll.PorFiltro(new LoginHistoricoRequest()
+            {
+                IdUsuario = request.IdIndicadorVendedor,
+                SistemaResponsavel = modulo.Id
+            });
+
+            if(!loginHistoricoresponse.Sucesso)
+            {
+                response.Mensagem = loginHistoricoresponse.Mensagem;
+                return response;
+            }
+
+            var logou = loginHistoricoresponse.LstLoginHistoricoResponse.Where(x => x.StSucesso == true).FirstOrDefault();
+            if(logou != null)
+            {
+                response.Mensagem = "Exclusão não permitida. Usuário efetuou logon no Sistema alguma vez.";
+                return response;
+            }
 
             //Se tiver relacionado em algum orçamento, retornar mensagem "Exclusão não permitida. Usuário está relacionado a algum orçamento."
 
