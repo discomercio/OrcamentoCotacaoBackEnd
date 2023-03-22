@@ -318,7 +318,7 @@ namespace OrcamentoCotacaoApi.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpPost("delete")]
         public IActionResult Delete(OrcamentistaIndicadorVendedorDeleteRequest request)
         {
             try

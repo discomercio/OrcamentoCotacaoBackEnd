@@ -18,11 +18,13 @@ namespace InfraBanco.Mapping
 
             builder.Property(x => x.Id)
                 .HasColumnName("Id")
-                .HasColumnType("int");
+                .HasColumnType("bigint")
+                .IsRequired();
 
             builder.Property(x => x.DataHora)
                 .HasColumnName("DataHora")
-                .HasColumnType("datetime");
+                .HasColumnType("datetime")
+                .IsRequired();
 
             builder.Property(x => x.IdTipoUsuarioContexto)
                 .HasColumnName("IdTipoUsuarioContexto")

@@ -233,25 +233,41 @@ namespace OrcamentoCotacaoBusiness.Bll
                 SistemaResponsavel = modulo.Id
             });
 
-            if(!loginHistoricoresponse.Sucesso)
+            if (!loginHistoricoresponse.Sucesso)
             {
                 response.Mensagem = loginHistoricoresponse.Mensagem;
                 return response;
             }
 
             var logou = loginHistoricoresponse.LstLoginHistoricoResponse.Where(x => x.StSucesso == true).FirstOrDefault();
-            if(logou != null)
+            if (logou != null)
             {
                 response.Mensagem = "Exclusão não permitida. Usuário efetuou logon no Sistema alguma vez.";
                 return response;
             }
 
-            //Se tiver relacionado em algum orçamento, retornar mensagem "Exclusão não permitida. Usuário está relacionado a algum orçamento."
+            var existe = orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro()
+            {
+                IdIndicadorVendedor = request.IdIndicadorVendedor
+            });
 
+            if (existe.Count > 0)
+            {
+                response.Mensagem = "Exclusão não permitida. Usuário está relacionado a algum orçamento.";
+                return response;
+            }
 
-            response.Sucesso = true;
+            using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                _orcamentistaEindicadorVendedorBll.ExcluirComTransacao(tOrcamentistaIndicadorVendedor, dbGravacao);
 
-            return null;
+                dbGravacao.SaveChanges();
+                dbGravacao.transacao.Commit();
+
+                response.Sucesso = true;
+
+                return response;
+            }
         }
     }
 }

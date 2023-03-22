@@ -23,7 +23,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response.LoginHistorico
         public string Ip { get; set; }
 
         [JsonProperty("sistemaResponsavel")]
-        public int sistema_responsavel { get; set; }
+        public int? sistema_responsavel { get; set; }
 
         [JsonProperty("login")]
         public string Login { get; set; }
@@ -32,7 +32,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response.LoginHistorico
         public string Motivo { get; set; }
 
         [JsonProperty("idCfgModulo")]
-        public short IdCfgModulo { get; set; }
+        public short? IdCfgModulo { get; set; }
 
         [JsonProperty("loja")]
         public string Loja { get; set; }

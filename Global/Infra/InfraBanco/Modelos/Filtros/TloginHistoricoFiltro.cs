@@ -9,8 +9,8 @@ namespace InfraBanco.Modelos.Filtros
 {
     public class TloginHistoricoFiltro : IFilter
     {
-        public int IdUsuario { get; set; }
+        public int? IdUsuario { get; set; }
 
-        public int SistemaResponsavel { get; set; }
+        public short? SistemaResponsavel { get; set; }
     }
 }
