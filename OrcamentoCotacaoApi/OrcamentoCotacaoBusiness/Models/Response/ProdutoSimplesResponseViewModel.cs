@@ -83,7 +83,6 @@ namespace OrcamentoCotacaoBusiness.Models.Response
             {
                 if (produto.Grupo == produto.SubGrupo)
                 {
-                    retorno.CodGrupoSubgrupo = produto.Grupo;
                     retorno.DescricaoGrupoSubgrupo = produto.GrupoDescricao;
                 }
                 else
@@ -93,10 +92,12 @@ namespace OrcamentoCotacaoBusiness.Models.Response
             }
             if (string.IsNullOrEmpty(produto.Grupo) && !string.IsNullOrEmpty(produto.SubGrupo))
             {
+                retorno.CodGrupoSubgrupo = $"{produto.SubGrupo}§{produto.SubGrupo}";
                 retorno.DescricaoGrupoSubgrupo = produto.SubGrupoDescricao;
             }
             if (!string.IsNullOrEmpty(produto.Grupo) && string.IsNullOrEmpty(produto.SubGrupo))
             {
+                retorno.CodGrupoSubgrupo = $"{produto.Grupo}§{produto.Grupo}";
                 retorno.DescricaoGrupoSubgrupo = produto.GrupoDescricao;
             }
             retorno.Capacidade = produto.Capacidade;
