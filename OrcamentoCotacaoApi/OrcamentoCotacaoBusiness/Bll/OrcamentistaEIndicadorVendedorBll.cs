@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Azure.Core;
+using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
@@ -22,7 +23,6 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly Cfg.CfgOperacao.CfgOperacaoBll _cfgOperacaoBll;
         private readonly InfraBanco.ContextoBdProvider _contextoBdProvider;
         private readonly LoginHistoricoBll _loginHistoricoBll;
-        private readonly Cfg.CfgModulo.CfgModuloBll _cfgModuloBll;
         private readonly OrcamentoCotacao.OrcamentoCotacaoBll orcamentoCotacaoBll;
 
         public OrcamentistaEIndicadorVendedorBll(
@@ -32,7 +32,6 @@ namespace OrcamentoCotacaoBusiness.Bll
              Cfg.CfgOperacao.CfgOperacaoBll cfgOperacaoBll,
              InfraBanco.ContextoBdProvider contextoBdProvider,
              LoginHistoricoBll _loginHistoricoBll,
-             Cfg.CfgModulo.CfgModuloBll _cfgModuloBll,
              OrcamentoCotacao.OrcamentoCotacaoBll orcamentoCotacaoBll
             )
         {
@@ -42,7 +41,6 @@ namespace OrcamentoCotacaoBusiness.Bll
             _cfgOperacaoBll = cfgOperacaoBll;
             _contextoBdProvider = contextoBdProvider;
             this._loginHistoricoBll = _loginHistoricoBll;
-            this._cfgModuloBll = _cfgModuloBll;
             this.orcamentoCotacaoBll = orcamentoCotacaoBll;
         }
 
@@ -213,13 +211,6 @@ namespace OrcamentoCotacaoBusiness.Bll
             var response = new OrcamentistaIndicadorVendedorDeleteResponse();
             response.Sucesso = false;
 
-            var modulo = _cfgModuloBll.PorFiltro(new TcfgModuloFiltro() { Descricao = "Orçamento/Cotação" }).FirstOrDefault();
-            if (modulo == null)
-            {
-                response.Mensagem = "Ops! Não encontramos o módulo de sistema.";
-                return response;
-            }
-
             var tOrcamentistaIndicadorVendedor = _orcamentistaEindicadorVendedorBll.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro() { id = request.IdIndicadorVendedor }).FirstOrDefault();
             if (tOrcamentistaIndicadorVendedor == null)
             {
@@ -230,7 +221,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             var loginHistoricoresponse = _loginHistoricoBll.PorFiltro(new LoginHistoricoRequest()
             {
                 IdUsuario = request.IdIndicadorVendedor,
-                SistemaResponsavel = modulo.Id
+                SistemaResponsavel = (short?)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO
             });
 
             if (!loginHistoricoresponse.Sucesso)
