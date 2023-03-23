@@ -2,6 +2,7 @@
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using Microsoft.EntityFrameworkCore;
+using ProdutoCatalogo.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -254,6 +255,168 @@ namespace ProdutoCatalogo
                     if (obj.Ativo)
                         produtos = produtos.Where(x => x.Ativo == obj.Ativo);
                     return produtos.ToList();
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public List<ProdutoCatalogoListarDto> ListarProdutoCatalogo(
+            string[] fabricantes,
+            string codAlfaNumFabricante,
+            string descargaCondensadora,
+            string[] voltagem,
+            string[] capacidade,
+            string ciclo,
+            string[] tipoUnidade,
+            bool? imagem,
+            bool? ativo)
+        {
+            try
+            {
+                using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+                {
+                    var produtos = (from pc in db.TprodutoCatalogo
+                                    join f in db.Tfabricante on pc.Fabricante equals f.Fabricante
+                                    join pci in db.TprodutoCatalogoImagem on pc.Id equals pci.IdProdutoCatalogo into img
+                                    from Timg in img.DefaultIfEmpty()
+                                    join p1 in
+                                    (
+                                        from pci in db.TprodutoCatalogoItem
+                                        join pcp in db.TProdutoCatalogoPropriedade on pci.IdProdutoCatalogoPropriedade equals pcp.id
+                                        where pcp.descricao.Trim().ToUpper() == "Código Alfanumérico do Fabricante".ToUpper()
+                                        select new { p1IdProdutoCatalogo = pci.IdProdutoCatalogo, p1Id = 0, p1Valor = pci.Valor }
+                                    ) on pc.Id equals p1.p1IdProdutoCatalogo into TempP1
+                                    from TTempP1 in TempP1.DefaultIfEmpty()
+                                    join p2 in
+                                    (
+                                         from pci in db.TprodutoCatalogoItem
+                                         join pcp in db.TProdutoCatalogoPropriedade on pci.IdProdutoCatalogoPropriedade equals pcp.id
+                                         join pcpo in db.TProdutoCatalogoPropriedadeOpcao
+                                         on new { a = pci.IdProdutoCatalogoPropriedade, b = pci.IdProdutoCatalogoPropriedadeOpcao.Value } equals new { a = pcpo.id_produto_catalogo_propriedade, b = pcpo.id }
+                                         where pcp.descricao.Trim().ToUpper() == "Capacidade (BTU/h)".ToUpper()
+                                         select new { p2IdProdutoCatalogo = pci.IdProdutoCatalogo, p2Id = pcpo.id, p2Valor = pcpo.valor }
+                                    ) on pc.Id equals p2.p2IdProdutoCatalogo into TempP2
+                                    from TTempP2 in TempP2.DefaultIfEmpty()
+                                    join p3 in
+                                    (
+                                         from pci in db.TprodutoCatalogoItem
+                                         join pcp in db.TProdutoCatalogoPropriedade on pci.IdProdutoCatalogoPropriedade equals pcp.id
+                                         join pcpo in db.TProdutoCatalogoPropriedadeOpcao
+                                         on new { a = pci.IdProdutoCatalogoPropriedade, b = pci.IdProdutoCatalogoPropriedadeOpcao.Value } equals new { a = pcpo.id_produto_catalogo_propriedade, b = pcpo.id }
+                                         where pcp.descricao.Trim().ToUpper() == "Ciclo".ToUpper()
+                                         select new { p3IdProdutoCatalogo = pci.IdProdutoCatalogo, p3Id = pcpo.id, p3Valor = pcpo.valor }
+                                    ) on pc.Id equals p3.p3IdProdutoCatalogo into TempP3
+                                    from TTempP3 in TempP3.DefaultIfEmpty()
+                                    join p4 in
+                                    (
+                                         from pci in db.TprodutoCatalogoItem
+                                         join pcp in db.TProdutoCatalogoPropriedade on pci.IdProdutoCatalogoPropriedade equals pcp.id
+                                         join pcpo in db.TProdutoCatalogoPropriedadeOpcao
+                                         on new { a = pci.IdProdutoCatalogoPropriedade, b = pci.IdProdutoCatalogoPropriedadeOpcao.Value } equals new { a = pcpo.id_produto_catalogo_propriedade, b = pcpo.id }
+                                         where pcp.descricao.Trim().ToUpper() == "Tipo da Unidade".ToUpper()
+                                         select new { p4IdProdutoCatalogo = pci.IdProdutoCatalogo, p4Id = pcpo.id, p4Valor = pcpo.valor }
+                                    ) on pc.Id equals p4.p4IdProdutoCatalogo into TempP4
+                                    from TTempP4 in TempP4.DefaultIfEmpty()
+                                    join p5 in
+                                    (
+                                         from pci in db.TprodutoCatalogoItem
+                                         join pcp in db.TProdutoCatalogoPropriedade on pci.IdProdutoCatalogoPropriedade equals pcp.id
+                                         join pcpo in db.TProdutoCatalogoPropriedadeOpcao
+                                         on new { a = pci.IdProdutoCatalogoPropriedade, b = pci.IdProdutoCatalogoPropriedadeOpcao.Value } equals new { a = pcpo.id_produto_catalogo_propriedade, b = pcpo.id }
+                                         where pcp.descricao.Trim().ToUpper() == "Descarga Condensadora".ToUpper()
+                                         select new { p5IdProdutoCatalogo = pci.IdProdutoCatalogo, p5Id = pcpo.id, p5Valor = pcpo.valor }
+                                    ) on pc.Id equals p5.p5IdProdutoCatalogo into TempP5
+                                    from TTempP5 in TempP5.DefaultIfEmpty()
+                                    join p6 in
+                                    (
+                                         from pci in db.TprodutoCatalogoItem
+                                         join pcp in db.TProdutoCatalogoPropriedade on pci.IdProdutoCatalogoPropriedade equals pcp.id
+                                         join pcpo in db.TProdutoCatalogoPropriedadeOpcao
+                                         on new { a = pci.IdProdutoCatalogoPropriedade, b = pci.IdProdutoCatalogoPropriedadeOpcao.Value } equals new { a = pcpo.id_produto_catalogo_propriedade, b = pcpo.id }
+                                         where pcp.descricao.Trim().ToUpper() == "Voltagem".ToUpper()
+                                         select new { p6IdProdutoCatalogo = pci.IdProdutoCatalogo, p6Id = pcpo.id, p6Valor = pcpo.valor }
+                                    ) on pc.Id equals p6.p6IdProdutoCatalogo into TempP6
+                                    from TTempP6 in TempP6.DefaultIfEmpty()
+                                    select new ProdutoCatalogoListarDto
+                                    {
+                                        Id = pc.Id,
+                                        Codigo = pc.Produto,
+                                        CodigoFabricante = f.Fabricante,
+                                        Fabricante = f.Nome,
+                                        CodAlfanumericoFabricante = TTempP1.p1Valor,
+                                        DescricaoCompleta = pc.Descricao,
+                                        IdCapacidade = (int?)TTempP2.p2Id,
+                                        Capacidade = TTempP2.p2Valor,
+                                        IdCiclo = (int?)TTempP3.p3Id,
+                                        Ciclo = TTempP3.p3Valor,
+                                        IdTipoUnidade = (int?)TTempP4.p4Id,
+                                        TipoUnidade = TTempP4.p4Valor,
+                                        IdDescargaCondensadora = (int?)TTempP5.p5Id,
+                                        DescargaCondensadora = TTempP5.p5Valor,
+                                        IdVoltagem = (int?)TTempP6.p6Id,
+                                        Voltagem = TTempP6.p6Valor,
+                                        Imagem = Timg != null ? true : false,
+                                        Ativo = pc.Ativo,
+                                    }).ToList();
+
+                    if (fabricantes.Length > 0)
+                    {
+                        produtos = produtos.Where(x => fabricantes.Any(y => x.CodigoFabricante.Contains(y.ToString()))).ToList();
+                    }
+
+                    if (!string.IsNullOrEmpty(codAlfaNumFabricante) && codAlfaNumFabricante.Length >= 3)
+                    {
+                        produtos = produtos
+                            .Where(f => !string.IsNullOrEmpty(f.CodAlfanumericoFabricante)
+                            && f.CodAlfanumericoFabricante.Trim().ToUpper() == codAlfaNumFabricante.Trim().ToUpper()).ToList();
+                    }
+
+                    if (!string.IsNullOrEmpty(descargaCondensadora))
+                    {
+                        produtos = produtos
+                            .Where(f => f.IdDescargaCondensadora.HasValue 
+                            && f.IdDescargaCondensadora.Value == Convert.ToInt32(descargaCondensadora)).ToList();
+                    }
+
+                    if (voltagem.Length > 0)
+                    {
+                        produtos = produtos
+                            .Where(x => voltagem.Any(y => x.IdVoltagem.HasValue && x.IdVoltagem.Value.ToString().Contains(y.ToString()))).ToList();
+                    }
+
+                    if (capacidade.Length > 0)
+                    {
+                        produtos = produtos
+                            .Where(x => capacidade.Any(y => x.IdCapacidade.HasValue && x.IdCapacidade.Value.ToString().Contains(y.ToString()))).ToList();
+                    }
+
+                    if (!string.IsNullOrEmpty(ciclo))
+                    {
+                        produtos = produtos
+                            .Where(f => f.IdCiclo.HasValue
+                            && f.IdCiclo.Value == Convert.ToInt32(ciclo)).ToList();
+                    }
+
+                    if (tipoUnidade.Length > 0)
+                    {
+                        produtos = produtos
+                            .Where(x => tipoUnidade.Any(y => x.IdTipoUnidade.HasValue && x.IdTipoUnidade.Value.ToString().Contains(y.ToString()))).ToList();
+                    }
+
+                    if (imagem.HasValue)
+                    {
+                        produtos = produtos.Where(x => x.Imagem == imagem.Value).ToList();
+                    }
+
+                    if (ativo.HasValue)
+                    {
+                        produtos = produtos.Where(x => x.Ativo == ativo.Value).ToList();
+                    }
+
+                    return produtos;
                 }
             }
             catch

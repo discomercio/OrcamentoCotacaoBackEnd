@@ -3,6 +3,7 @@ using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using OrcamentoCotacaoBusiness.Models.Request.ProdutoCatalogo;
 using OrcamentoCotacaoBusiness.Models.Response;
 using OrcamentoCotacaoBusiness.Models.Response.ProdutoCatalogo;
 using Produto;
@@ -11,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -42,6 +42,49 @@ namespace OrcamentoCotacaoBusiness.Bll
         public List<TprodutoCatalogo> PorFiltro(TprodutoCatalogoFiltro filtro)
         {
             return _bll.PorFiltro(filtro);
+        }
+        public List<ProdutoCatalogoListarResponse> ListarProdutoCatalogo(ProdutoCatalogoListarRequest request)
+        {
+            var response = new List<ProdutoCatalogoListarResponse>();
+
+            var produtoCatalogoListarDto = _bll.ListarProdutoCatalogo(
+                                request.FabricantesSelecionados,
+                                request.CodAlfaNumFabricanteSelecionado,
+                                request.DescargaCondensadoraSelecionado,
+                                request.VoltagemSelecionadas,
+                                request.CapacidadeSelecionadas,
+                                request.CicloSelecionado,
+                                request.TipoUnidadeSelecionado,
+                                request.ImagemSelecionado,
+                                request.AtivoSelecionado);
+
+            foreach (var produtoCatalogoItem in produtoCatalogoListarDto)
+            {
+                response.Add(new ProdutoCatalogoListarResponse()
+                {
+                    Ativo = produtoCatalogoItem.Ativo,
+                    Capacidade = produtoCatalogoItem.Capacidade,
+                    Ciclo = produtoCatalogoItem.Ciclo,
+                    CodAlfanumericoFabricante = produtoCatalogoItem.CodAlfanumericoFabricante,
+                    Codigo = produtoCatalogoItem.Codigo,
+                    CodigoFabricante = produtoCatalogoItem.CodigoFabricante,
+                    DescargaCondensadora = produtoCatalogoItem.DescargaCondensadora,
+                    DescricaoCompleta = produtoCatalogoItem.DescricaoCompleta,
+                    Fabricante = produtoCatalogoItem.Fabricante,
+                    Id = produtoCatalogoItem.Id,
+                    IdCapacidade = produtoCatalogoItem.IdCapacidade,
+                    IdCiclo = produtoCatalogoItem.IdCiclo,
+                    IdDescargaCondensadora = produtoCatalogoItem.IdDescargaCondensadora,
+                    IdTipoUnidade = produtoCatalogoItem.IdTipoUnidade,
+                    IdVoltagem = produtoCatalogoItem.IdVoltagem,
+                    Imagem = produtoCatalogoItem.Imagem,
+                    TipoUnidade = produtoCatalogoItem.TipoUnidade,
+                    Voltagem = produtoCatalogoItem.Voltagem
+                });
+            }
+
+            return response;
+
         }
 
         public string Excluir(int id, string caminho)

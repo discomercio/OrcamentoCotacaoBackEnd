@@ -1,5 +1,6 @@
 ﻿using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
+using ProdutoCatalogo.Dto;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -27,6 +28,29 @@ namespace ProdutoCatalogo
         public List<TprodutoCatalogo> PorFiltro(TprodutoCatalogoFiltro filtro)
         {
             return _data.PorFiltro(filtro);
+        }
+
+        public List<ProdutoCatalogoListarDto> ListarProdutoCatalogo(
+            string[] fabricantes,
+            string codAlfaNumFabricante,
+            string descargaCondensadora,
+            string[] voltagem,
+            string[] capacidade,
+            string ciclo,
+            string[] tipoUnidade,
+            bool? imagem,
+            bool? ativo)
+        {
+            return _data.ListarProdutoCatalogo(
+                fabricantes,
+                codAlfaNumFabricante,
+                descargaCondensadora,
+                voltagem,
+                capacidade,
+                ciclo,
+                tipoUnidade,
+                imagem,
+                ativo);
         }
 
         public bool ExcluirImagem(int idProduto, int idImagem)

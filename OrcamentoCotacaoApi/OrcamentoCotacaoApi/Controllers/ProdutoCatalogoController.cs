@@ -9,6 +9,7 @@ using OrcamentoCotacaoApi.Filters;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
+using OrcamentoCotacaoBusiness.Models.Request.ProdutoCatalogo;
 using OrcamentoCotacaoBusiness.Models.Response.ProdutoCatalogo;
 using System;
 using System.IO;
@@ -84,6 +85,36 @@ namespace OrcamentoCotacaoApi.Controllers
             else
             {
                 _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoCatalogoController/Listar/GET - Response => [Não tem response].");
+                return NoContent();
+            }
+        }
+
+        [HttpPost("ProdutoCatalogoListar")]
+        public async Task<IActionResult> ProdutoCatalogoListar(ProdutoCatalogoListarRequest request)
+        {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoCatalogoController/ProdutoCatalogoListar/POST - Request => [{System.Text.Json.JsonSerializer.Serialize(request)}].");
+
+            if (!User.ValidaPermissao((int)ePermissao.CatalogoCaradastrarIncluirEditar))
+                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
+            var response = _bll.ListarProdutoCatalogo(request);
+
+            if (response.Count > 0)
+            {
+                var responseRet = new
+                {
+                    ProdutoCatalogoListar = response.Count
+                };
+
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoCatalogoController/ProdutoCatalogoListar/POST - Response => [{System.Text.Json.JsonSerializer.Serialize(responseRet)}].");
+
+                return Ok(response);
+            }
+            else
+            {
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoCatalogoController/ProdutoCatalogoListar/POST - Response => [Não tem response].");
                 return NoContent();
             }
         }
