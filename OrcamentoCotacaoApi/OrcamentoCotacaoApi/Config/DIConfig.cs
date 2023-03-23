@@ -143,6 +143,9 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<Cfg.CfgParametro.CfgParametroBll, Cfg.CfgParametro.CfgParametroBll>();
             services.AddTransient<Cfg.CfgParametro.CfgParametroData, Cfg.CfgParametro.CfgParametroData>();
 
+            services.AddTransient<CodigoDescricao.CodigoDescricaoBll, CodigoDescricao.CodigoDescricaoBll>();
+            services.AddTransient<CodigoDescricao.CodigoDescricaoData, CodigoDescricao.CodigoDescricaoData>();
+            services.AddTransient<CodigoDescricaoBll, CodigoDescricaoBll>();
 
             return services;
         }

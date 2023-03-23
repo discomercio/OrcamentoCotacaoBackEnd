@@ -32,6 +32,7 @@ using OrcamentoCotacaoBusiness.Models.Response.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response.Dashoard;
 using Microsoft.Extensions.Configuration;
 using UtilsGlobais;
+using CodigoDescricao;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -62,6 +63,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly Prepedido.Bll.PrepedidoBll _prepedidoBll;
         private readonly Cfg.CfgOperacao.CfgOperacaoBll _cfgOperacaoBll;
         private readonly IConfiguration _configuration;
+        private readonly CodigoDescricaoBll _codigoDescricaoBll;
 
         public OrcamentoCotacaoBll(
             OrcamentoBll orcamentoBll,
@@ -88,7 +90,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             ILogger<OrcamentoCotacaoBll> logger,
             Prepedido.Bll.PrepedidoBll _prepedidoBll,
             Cfg.CfgOperacao.CfgOperacaoBll _cfgOperacaoBll,
-            IConfiguration configuration
+            IConfiguration configuration,
+            CodigoDescricaoBll _codigoDescricaoBll
             )
         {
             _orcamentoBll = orcamentoBll;
@@ -116,6 +119,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             this._prepedidoBll = _prepedidoBll;
             this._cfgOperacaoBll = _cfgOperacaoBll;
             _configuration = configuration;
+            this._codigoDescricaoBll = _codigoDescricaoBll;
         }
 
         public OrcamentoCotacaoDto PorGuid(string guid)
@@ -408,12 +412,22 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 return _orcamentoBll.OrcamentoPorFiltro(tOrcamentoFiltro);
             }
-            else //if (tOrcamentoFiltro.Origem == "PEDIDOS")
+            else
             {
                 var lista = _pedidoPrepedidoApiBll.ListarPedidos(tOrcamentoFiltro);
 
-                foreach (var item in lista)
-                    item.Status = TcfgPedidoStatus.ObterStatus(item.Status);
+                var listaCodigoDescricao = _codigoDescricaoBll.StatusPorFiltro(new Models.Request.CodigoDescricao.CodigoDescricaoRequest()
+                {
+                    Grupo = "Pedido_St_Entrega"
+                });
+
+                if (listaCodigoDescricao.Sucesso)
+                {
+                    foreach (var item in lista)
+                    {
+                        item.Status = listaCodigoDescricao.ListaCodigoDescricao.Where(x => x.Codigo == item.Status).FirstOrDefault().Descricao;
+                    }
+                }
 
                 return lista;
             }
