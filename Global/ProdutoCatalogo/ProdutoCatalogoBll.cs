@@ -228,6 +228,11 @@ namespace ProdutoCatalogo
             return _data.BuscarGrupos(obj);
         }
 
+        public List<TprodutoSubgrupo> BuscarProdutosSubgrupos(TprodutoSubgrupoFiltro obj)
+        {
+            return _data.BuscarProdutosSubgrupos(obj);
+        }
+
         public bool ExcluirItensComTransacao(List<TprodutoCatalogoItem> propriedades, InfraBanco.ContextoBdGravacao contextoBdGravacao)
         {
             foreach(var propriedade in propriedades)

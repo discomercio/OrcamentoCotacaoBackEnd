@@ -606,7 +606,7 @@ namespace ProdutoCatalogo
 
         public bool ExcluirPorIdProdutoCatalogoComTransacao(int id, ContextoBdGravacao contextoBdGravacao)
         {
-            contextoBdGravacao.TprodutoCatalogo.Remove(new TprodutoCatalogo() { Id = id});
+            contextoBdGravacao.TprodutoCatalogo.Remove(new TprodutoCatalogo() { Id = id });
             contextoBdGravacao.SaveChanges();
 
             return true;
@@ -721,11 +721,28 @@ namespace ProdutoCatalogo
         {
             using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
             {
-                var saida = from pg in db.TprodutoGrupo
-                            join p in db.Tproduto on pg.Codigo equals p.Grupo
-                            select pg;
+                var saida = from c in db.TprodutoGrupo
+                            select c;
 
-                return saida.Distinct().ToList();
+                if (obj.IncluirTProduto)
+                {
+                    saida = from c in saida
+                            join tp in db.Tproduto on c.Codigo equals tp.Grupo
+                            select c;
+                }
+
+                return saida.ToList();
+            }
+        }
+
+        public List<TprodutoSubgrupo> BuscarProdutosSubgrupos(TprodutoSubgrupoFiltro obj)
+        {
+            using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+            {
+                var saida = from c in db.TprodutoSubgrupo
+                            select c;
+
+                return saida.ToList();
             }
         }
     }

@@ -40,7 +40,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response
                 FabricanteNome = produto.Fabricante_Nome,
                 Produto = produto.Produto,
                 Qtde = qtdeFilho.HasValue ? qtdeFilho : null,
-                CodGrupoSubgrupo = produto.Grupo + produto.SubGrupo,
+                CodGrupoSubgrupo = $"{produto.Grupo}§{produto.SubGrupo}",
                 Ciclo = produto.Ciclo,
                 Capacidade = produto.Capacidade
             };

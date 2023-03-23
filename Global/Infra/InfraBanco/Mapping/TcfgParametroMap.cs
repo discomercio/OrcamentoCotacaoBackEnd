@@ -11,9 +11,13 @@ namespace InfraBanco.Mapping
             builder.ToTable("t_CFG_PARAMETRO");
             builder.HasKey(o => o.Id);
 
+            builder.Property(x => x.Id)
+                .HasColumnName("Id")
+                .HasColumnType("int");
+
             builder.Property(x => x.IdCfgDataType)
                 .HasColumnName("IdCfgDataType")
-                .HasColumnType("int");
+                .HasColumnType("smallint");
 
             builder.Property(x => x.Sigla)
                 .HasColumnName("Sigla")
