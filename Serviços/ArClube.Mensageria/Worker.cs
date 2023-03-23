@@ -30,20 +30,29 @@ namespace ArClube.Mensageria
             var configuration = _config.AddEnvironmentVariables().AddJsonFile("appsettings.json").Build();
             var recordsPerPage = configuration.GetSection("EmailsPerCicleToGetAndSend").Value.ToInt().Value;
             var secondsToDelayAfterSend = configuration.GetSection("SecondsToDelayAfterSend").Value.ToInt().Value;
+            var shouldGenerateLog = bool.Parse(configuration.GetSection("GerarLogProcessoAutomatizado").Value);
 
             var attempt1_2 = await this._mensageriaRepositorio.ObterParametroPorId("OrctoCotacao_Mensageria_Queue_IntervaloMinEmSegundos_Tentativa_1_2");
             var attempt2_3 = await this._mensageriaRepositorio.ObterParametroPorId("OrctoCotacao_Mensageria_Queue_IntervaloMinEmSegundos_Tentativa_2_3");
             var attemptVery = await this._mensageriaRepositorio.ObterParametroPorId("OrctoCotacao_Mensageria_Queue_IntervaloMinEmSegundos_Tentativa_Demais");
             var attemptQtdMaxParam = await this._mensageriaRepositorio.ObterParametroPorId("OrctoCotacao_Mensageria_Queue_QtdeMaxTentativas");
 
-            this._logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Obter Unidade Neogocio Parametros");
+            if (shouldGenerateLog)
+            {
+                this._logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Obter Unidade Neogocio Parametros");
+            }
+
             var unidadeNeogocioParametros = await this._mensageriaRepositorio.ObterUnidadeNeogocioParametrosAsync();
 
             while (!stoppingToken.IsCancellationRequested)
             {
                 try
                 {
-                    this._logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Obter Orcamento Cotacao Emails");
+                    if (shouldGenerateLog)
+                    {
+                        this._logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Obter Orcamento Cotacao Emails");
+                    }
+
                     var orcamentoCotacaoEmailsQueue = await this._mensageriaRepositorio.ObterOrcamentoCotacaoEmailsQueueAsync(recordsPerPage);
 
                     if (orcamentoCotacaoEmailsQueue.Count > 0)
@@ -52,13 +61,16 @@ namespace ArClube.Mensageria
                         {
                             var parametroEmail = ObteParametroEmail(unidadeNeogocioParametros, orcamentoCotacaoEmailsQueueItem.IdCfgUnidadeNegocio);
 
-                            using (var emailService = new EmailService(parametroEmail))
+                            using (var emailService = new EmailService(parametroEmail, shouldGenerateLog))
                             {
                                 var valuesOfSendingEmail = await emailService.Send(_logger, orcamentoCotacaoEmailsQueueItem);
                                 
                                 if (valuesOfSendingEmail.Item1)
                                 {
-                                    _logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - Email sent #" + orcamentoCotacaoEmailsQueueItem.Id + " [TO] [" + orcamentoCotacaoEmailsQueueItem.To + "] [CC]: [" + orcamentoCotacaoEmailsQueueItem.Cc + "] [FROM] [" + orcamentoCotacaoEmailsQueueItem.From + "]");
+                                    if (shouldGenerateLog)
+                                    {
+                                        _logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - Email sent #" + orcamentoCotacaoEmailsQueueItem.Id + " [TO] [" + orcamentoCotacaoEmailsQueueItem.To + "] [CC]: [" + orcamentoCotacaoEmailsQueueItem.Cc + "] [FROM] [" + orcamentoCotacaoEmailsQueueItem.From + "]");
+                                    }
                                     orcamentoCotacaoEmailsQueueItem.Sent = true;
                                     orcamentoCotacaoEmailsQueueItem.Status = (int)eCfgOrcamentoCotacaoEmailStatus.EnvioComSucesso;
                                     orcamentoCotacaoEmailsQueueItem.DateSent = DateTime.Now;
@@ -68,7 +80,10 @@ namespace ArClube.Mensageria
                                 }
                                 else
                                 {
-                                    _logger.LogError(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Error: #" + orcamentoCotacaoEmailsQueueItem.Id + " - " + valuesOfSendingEmail.Item2);
+                                    if (shouldGenerateLog)
+                                    {
+                                        _logger.LogError(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Error: #" + orcamentoCotacaoEmailsQueueItem.Id + " - " + valuesOfSendingEmail.Item2);
+                                    }
 
                                     var attemptsQty = orcamentoCotacaoEmailsQueueItem.AttemptsQty + 1;
 
@@ -107,16 +122,26 @@ namespace ArClube.Mensageria
                         }
                     }
 
-                    _logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "End of While -- Will delay " + secondsToDelayAfterSend + " seconds and execute again");
+                    if (shouldGenerateLog)
+                    {
+                        _logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "End of While -- Will delay " + secondsToDelayAfterSend + " seconds and execute again");
+                    }
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Exception: " + ex.Message);
-                    _logger.LogError(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Exception: " + ex.InnerException);
+                    if (shouldGenerateLog)
+                    {
+                        _logger.LogError(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Exception: " + ex.Message);
+                        _logger.LogError(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "Exception: " + ex.InnerException);
+                    }
                 }
 
                 await Task.Delay(TimeSpan.FromSeconds(secondsToDelayAfterSend), stoppingToken);
-                _logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "End of Delay");
+
+                if (shouldGenerateLog)
+                {
+                    _logger.LogInformation(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ff") + " - " + "End of Delay");
+                }
             }
         }
 

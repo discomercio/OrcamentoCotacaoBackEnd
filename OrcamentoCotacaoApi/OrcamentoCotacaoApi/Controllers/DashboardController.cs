@@ -82,6 +82,8 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpGet("orcamento/vendedor-interno")]
         public async Task<IActionResult> DashboardOrcamentoVendedorInterno([FromQuery] DashboardRequest? request)
         {
+
+            var permissaoUniversal = false;
             
             if (!User.ValidaPermissao((int)ePermissao.AcessoAoModulo))
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar essa atividade!" });
@@ -92,7 +94,14 @@ namespace OrcamentoCotacaoApi.Controllers
 
             _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. DashboardController/DashboardOrcamentoVendedorInterno/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
-            var response = _orcamentoCotacaoBll.Dashboard(new TorcamentoFiltro() { Loja = request.Loja, Origem = request.Origem, StatusId = request.Status }, LoggedUser);
+
+            if (User.ValidaPermissao((int)ePermissao.AcessoUniversalOrcamentoPedidoPrepedidoConsultar))
+            {
+                permissaoUniversal = true;
+            }
+
+            var response = _orcamentoCotacaoBll.Dashboard(new TorcamentoFiltro() { Loja = request.Loja, Origem = request.Origem, StatusId = request.Status, PermissaoUniversal = permissaoUniversal }, LoggedUser);
+            
 
             _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. DashboardController/DashboardOrcamentoVendedorInterno/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
