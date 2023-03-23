@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using UtilsGlobais;
 using UtilsGlobais.Configs;
 using System.Linq;
+using OrcamentoCotacaoBusiness.Models.Request.CodigoDescricao;
 
 namespace PrepedidoApi.Controllers
 {
@@ -28,19 +29,22 @@ namespace PrepedidoApi.Controllers
         private readonly PedidoPrepedidoApiBll pedidoPrepedidoApiBll;
         private readonly InfraIdentity.IServicoDecodificarToken servicoDecodificarToken;
         private readonly PermissaoBll permissaoBll;
+        private readonly CodigoDescricaoBll codigoDescricaoBll;
 
         public PedidoController(
             ILogger<PedidoController> logger,
             PedidoVisualizacaoBll pedidoBll,
             InfraIdentity.IServicoDecodificarToken servicoDecodificarToken,
             PedidoPrepedidoApiBll pedidoPrepedidoApiBll,
-            PermissaoBll permissaoBll)
+            PermissaoBll permissaoBll,
+            CodigoDescricaoBll codigoDescricaoBll)
         {
             this._logger = logger;
             this.pedidoBll = pedidoBll;
             this.servicoDecodificarToken = servicoDecodificarToken;
             this.pedidoPrepedidoApiBll = pedidoPrepedidoApiBll;
             this.permissaoBll = permissaoBll;
+            this.codigoDescricaoBll = codigoDescricaoBll;
         }
 
         [HttpGet("listarNumerosPedidosCombo")]
@@ -165,6 +169,23 @@ namespace PrepedidoApi.Controllers
                 TipoUsuario = LoggedUser.TipoUsuario.Value,
                 Usuario = LoggedUser.Apelido
             }).Result;
+        }
+
+        [HttpPost("statusPorFiltro")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public async Task<IActionResult> StatusPorFiltro(CodigoDescricaoRequest request)
+        {
+            request.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+            request.Usuario = LoggedUser.Apelido;
+            request.IP = HttpContext.Connection.RemoteIpAddress.ToString();
+
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. PedidoController/StatusPorFiltro/POST - Request => [{JsonSerializer.Serialize(request)}].");
+
+            var response = codigoDescricaoBll.StatusPorFiltro(request);
+
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. PedidoController/StatusPorFiltro/POST - Response => [{JsonSerializer.Serialize(response)}].");
+
+            return Ok(response);
         }
     }
 }

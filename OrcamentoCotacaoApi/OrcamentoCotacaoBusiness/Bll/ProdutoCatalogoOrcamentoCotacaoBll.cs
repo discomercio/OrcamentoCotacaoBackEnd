@@ -47,14 +47,14 @@ namespace OrcamentoCotacaoBusiness.Bll
         public string Excluir(int id, string caminho)
         {
             var tProdutoCatalogoAntigo = _bll.BuscarTprodutoCatalogo(new TprodutoCatalogoFiltro() { Id = id.ToString(), IncluirImagem = true, IncluirPropriedades = true }).FirstOrDefault();
-            if(tProdutoCatalogoAntigo == null)
+            if (tProdutoCatalogoAntigo == null)
             {
                 return "Produto não encontrado!";
             }
 
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
-                if(tProdutoCatalogoAntigo.imagem != null)
+                if (tProdutoCatalogoAntigo.imagem != null)
                 {
                     var file = Path.Combine(caminho, tProdutoCatalogoAntigo.imagem.Caminho);
                     if (!File.Exists(file))
@@ -63,16 +63,16 @@ namespace OrcamentoCotacaoBusiness.Bll
                     File.Delete(file);
 
                     if (File.Exists(file)) return "Falha ao deletar arquivo do diretório!";
-                    
+
                     if (!_bll.ExcluirImagemComTransacao(id, tProdutoCatalogoAntigo.imagem.Id, dbGravacao)) return "Falha ao excluir a imagem do produto!";
 
                 }
 
-                if(!_bll.ExcluirItensComTransacao(tProdutoCatalogoAntigo.campos, dbGravacao))
+                if (!_bll.ExcluirItensComTransacao(tProdutoCatalogoAntigo.campos, dbGravacao))
                 {
                     return "Falha ao excluir propriedades do produto.";
                 };
-                
+
                 var remover = _bll.ExcluirProdutoCatalogoComTransacao(id, dbGravacao);
 
                 dbGravacao.SaveChanges();
@@ -252,116 +252,118 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
         }
 
-        public async Task<string> Criar(
+        public async Task<CadastroProdutoCatalogoResponse> Criar(
             TprodutoCatalogo produtoCatalogo1,
             string usuario_cadastro,
             IFormFile arquivo,
             string caminho, UsuarioLogin usuarioLogin, string ip)
         {
+            var response = new CadastroProdutoCatalogoResponse();
+            response.Sucesso = false;
+
             var retornoValidacao = await ValidarTiposPropriedadesProdutoCatalogo(produtoCatalogo1.campos);
 
             if (!string.IsNullOrEmpty(retornoValidacao))
             {
-                return retornoValidacao;
+                response.Mensagem = retornoValidacao;
+                return response;
             }
 
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
-                try
+                if (produtoCatalogo1 == null)
                 {
-                    if (produtoCatalogo1 == null)
-                    {
-                        return "Ops! Parece que não existe dados de produto para catálogo!";
-                    }
+                    response.Mensagem = "Ops! Parece que não existe dados de produto para catálogo!";
+                    return response;
+                }
 
-                    if (produtoCatalogo1.imagem != null)
-                    {
-                        var tipo = _bll.BuscarTipoImagemComTransacao(new TprodutoCatalogoImagemTipoFiltro() { Id = 1 }, dbGravacao).FirstOrDefault();
-                        produtoCatalogo1.imagem.IdTipoImagem = tipo.Id;
-                    }
+                if (produtoCatalogo1.imagem != null)
+                {
+                    var tipo = _bll.BuscarTipoImagemComTransacao(new TprodutoCatalogoImagemTipoFiltro() { Id = 1 }, dbGravacao).FirstOrDefault();
+                    produtoCatalogo1.imagem.IdTipoImagem = tipo.Id;
+                }
 
-                    var prod = new TprodutoCatalogo()
-                    {
-                        Ativo = produtoCatalogo1.Ativo,
-                        Descricao = produtoCatalogo1.Descricao,
-                        Fabricante = produtoCatalogo1.Fabricante,
-                        Nome = produtoCatalogo1.Nome,
-                        Produto = produtoCatalogo1.Produto
-                    };
+                var prod = new TprodutoCatalogo()
+                {
+                    Ativo = produtoCatalogo1.Ativo,
+                    Descricao = produtoCatalogo1.Descricao,
+                    Fabricante = produtoCatalogo1.Fabricante,
+                    Nome = produtoCatalogo1.Nome,
+                    Produto = produtoCatalogo1.Produto
+                };
 
-                    var tProdutoCatalogo = _bll.CriarComTransacao(prod, usuario_cadastro, dbGravacao);
+                var tProdutoCatalogo = _bll.CriarComTransacao(prod, usuario_cadastro, dbGravacao);
 
-                    if (tProdutoCatalogo.Id == 0)
-                    {
-                        return "Ops! Erro ao criar novo produto!";
-                    }
-                    string log = "";
-                    string camposAOmitir = "|usuario_cadastro|usuario_edicao|dt_cadastro|dt_edicao|";
+                if (tProdutoCatalogo.Id == 0)
+                {
+                    response.Mensagem = "Ops! Erro ao criar novo produto!";
+                    return response;
+                }
+                string log = "";
+                string camposAOmitir = "|usuario_cadastro|usuario_edicao|dt_cadastro|dt_edicao|";
 
-                    log = UtilsGlobais.Util.MontaLog(prod, log, camposAOmitir);
-                    log = $"Produto: {log}";
+                log = UtilsGlobais.Util.MontaLog(prod, log, camposAOmitir);
+                log = $"Produto: {log}";
 
-                    var cfgOperacao = _cfgOperacaoBll.PorFiltroComTransacao(new TcfgOperacaoFiltro() { Id = 7 }, dbGravacao).FirstOrDefault();
-                    if (cfgOperacao == null)
-                    {
-                        return "Ops! Falha ao cadastrar produto.";
-                    }
+                var cfgOperacao = _cfgOperacaoBll.PorFiltroComTransacao(new TcfgOperacaoFiltro() { Id = 7 }, dbGravacao).FirstOrDefault();
+                if (cfgOperacao == null)
+                {
+                    response.Mensagem = "Ops! Falha ao cadastrar produto.";
+                    return response;
+                }
 
-                    if (produtoCatalogo1.campos == null
-                        || produtoCatalogo1.campos.Count == 0)
-                    {
-                        return "Ops! As propriedades do produto não pode estar vazio!";
-                    }
+                if (produtoCatalogo1.campos == null
+                    || produtoCatalogo1.campos.Count == 0)
+                {
+                    response.Mensagem = "Ops! As propriedades do produto não pode estar vazio!";
+                    return response;
+                }
 
-                    tProdutoCatalogo.campos = _bll.CriarItensComTransacao(
-                        produtoCatalogo1.campos,
+                tProdutoCatalogo.campos = _bll.CriarItensComTransacao(
+                    produtoCatalogo1.campos,
+                    tProdutoCatalogo.Id,
+                    dbGravacao);
+
+                log = log + "\r";
+                string logProdutos = "";
+                foreach (var prop in tProdutoCatalogo.campos)
+                {
+                    string propriedadesAOmitir = "|id_produto_catalogo|";
+                    logProdutos = UtilsGlobais.Util.MontaLog(prop, logProdutos, propriedadesAOmitir);
+                    logProdutos = logProdutos + "\r";
+                }
+
+                log = $"{log}Lista de propriedades: {logProdutos}";
+
+                if (produtoCatalogo1.imagem != null)
+                {
+                    var retorno = await CriarImagemComTransacao(
+                        arquivo,
+                        produtoCatalogo1.imagem,
+                        caminho,
                         tProdutoCatalogo.Id,
                         dbGravacao);
 
-                    log = log + "\r";
-                    string logProdutos = "";
-                    foreach (var prop in tProdutoCatalogo.campos)
+                    if (!retorno.Sucesso)
                     {
-                        string propriedadesAOmitir = "|id_produto_catalogo|";
-                        logProdutos = UtilsGlobais.Util.MontaLog(prop, logProdutos, propriedadesAOmitir);
-                        logProdutos = logProdutos + "\r";
+                        dbGravacao.transacao.Rollback();
+                        response.Mensagem = retorno.Mensagem;
+                        return response;
                     }
 
-                    log = $"{log}Lista de propriedades: {logProdutos}";
-
-                    if (produtoCatalogo1.imagem != null)
-                    {
-                        var retorno = await CriarImagemComTransacao(
-                            arquivo,
-                            produtoCatalogo1.imagem,
-                            caminho,
-                            tProdutoCatalogo.Id,
-                            dbGravacao);
-
-                        if (!retorno.Sucesso)
-                        {
-                            dbGravacao.transacao.Rollback();
-                            return retorno.Mensagem;
-                        }
-
-                        var logImagem = "Imagem: ";
-                        logImagem = UtilsGlobais.Util.MontaLog(retorno.TprodutoCatalogoImagem, logImagem, "");
-                        log = log + logImagem;
-                    }
-
-                    var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, null, null, null, null,
-                        InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
-
-                    dbGravacao.transacao.Commit();
-                    return null;
-
+                    var logImagem = "Imagem: ";
+                    logImagem = UtilsGlobais.Util.MontaLog(retorno.TprodutoCatalogoImagem, logImagem, "");
+                    log = log + logImagem;
                 }
-                catch (Exception ex)
-                {
-                    _logger.LogDebug(JsonSerializer.Serialize(ex));
-                    return ex.Message;
-                }
+
+                var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuarioLogin.TipoUsuario, usuarioLogin.Id, null, null, null, null,
+                    InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
+
+                dbGravacao.transacao.Commit();
             }
+
+            response.Sucesso = true;
+            return response;
         }
 
         public async Task<CadastroProdutoCatalogoImagemResponse> CriarImagemComTransacao(
@@ -774,7 +776,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     retorno = await AtualizarPropriedadesProdutosOpcao(produtoCatalogoPropriedade, prodPropriedadesParaComparacao, tProdutoCatalogoPropriedade.id, dbGravacao);
                     if (!string.IsNullOrEmpty(retorno.Mensagem)) return retorno;
 
-                    if(!string.IsNullOrEmpty(retorno.LogRetorno)) log += $"\r{retorno.LogRetorno}";
+                    if (!string.IsNullOrEmpty(retorno.LogRetorno)) log += $"\r{retorno.LogRetorno}";
                 }
 
                 var cfgOperacao = _cfgOperacaoBll.PorFiltroComTransacao(new TcfgOperacaoFiltro() { Id = 10 }, dbGravacao).FirstOrDefault();
@@ -874,7 +876,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                         if (!string.IsNullOrEmpty(logAtualizacao)) logAtualizacao += "\r   ";
                         string logApoio = UtilsGlobais.Util.MontalogComparacao(tPropriedadeOpcao, propAntiga, "", "");
-                        if(!string.IsNullOrEmpty(logApoio)) logAtualizacao += $"id={propAntiga.id}; {logApoio}";
+                        if (!string.IsNullOrEmpty(logApoio)) logAtualizacao += $"id={propAntiga.id}; {logApoio}";
 
                     }
                 }

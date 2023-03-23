@@ -9,7 +9,9 @@ using System.Linq;
 using System.Text.Json;
 using System;
 using OrcamentoCotacaoApi.Filters;
+using UtilsGlobais;
 using UtilsGlobais.Configs;
+using Microsoft.Extensions.Configuration;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -21,15 +23,18 @@ namespace OrcamentoCotacaoApi.Controllers
         private readonly ILogger<MensagemController> _logger;
         private readonly MensagemOrcamentoCotacaoBll _mensagemBll;
         private readonly OrcamentoCotacaoBll _orcamentoCotacaoBll;
+        private readonly IConfiguration configuration;
 
         public MensagemController(
-            ILogger<MensagemController> logger, 
+            ILogger<MensagemController> logger,
+            IConfiguration configuration,
             MensagemOrcamentoCotacaoBll mensagemBll, 
             OrcamentoCotacaoBll orcamentoCotacaoBll)
         {
-            _logger = logger;
+            _logger = logger;            
             _mensagemBll = mensagemBll;
             _orcamentoCotacaoBll = orcamentoCotacaoBll;
+            this.configuration = configuration;
         }
 
         [Authorize]
@@ -67,7 +72,8 @@ namespace OrcamentoCotacaoApi.Controllers
         [Authorize]
         [HttpGet("pendente")]
         public async Task<IActionResult> ObterListaMensagemPendente(int IdOrcamentoCotacao)
-        {
+        {            
+
             var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
             var request = new
@@ -140,29 +146,42 @@ namespace OrcamentoCotacaoApi.Controllers
         {
             var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
-            var request = new
-            {
-                Usuario = LoggedUser.Apelido
-            };
+            var appSettingsSection = configuration.GetSection("AppSettings");
+            var appSettings = appSettingsSection.Get<Configuracao>();
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/ObterQuantidadeMensagemPendente/GET - Request => [{JsonSerializer.Serialize(request)}].");
+            if (appSettings.GerarLogProcessoAutomatizado)
+            {
+                var request = new
+                {
+                    Usuario = LoggedUser.Apelido
+                };
+
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/ObterQuantidadeMensagemPendente/GET - Request => [{JsonSerializer.Serialize(request)}].");
+            }
 
             if (User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin") != null)
             {
-                _logger.LogInformation("ObterQuantidadeMensagemPendente");
+
+                if (appSettings.GerarLogProcessoAutomatizado)
+                {
+                    _logger.LogInformation("ObterQuantidadeMensagemPendente");
+                }
                 var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
 
                 var saida = _mensagemBll.ObterQuantidadeMensagemPendente(user.Id, (int)user.TipoUsuario);
 
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/ObterQuantidadeMensagemPendente/GET - Response => [{JsonSerializer.Serialize(saida)}].");
+                if (appSettings.GerarLogProcessoAutomatizado)
+                {
+                    _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/ObterQuantidadeMensagemPendente/GET - Response => [{JsonSerializer.Serialize(saida)}].");
+                }
 
                 return saida;
             }
             else
             {
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/ObterQuantidadeMensagemPendente/GET - Response => [0].");
                 return 0;
             }
+
         }
 
         [Authorize]

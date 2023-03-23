@@ -896,6 +896,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     return response;
                 }
 
+                retorno = retorno.Distinct().ToList();
+
                 response.ProdutosGrupos = new List<ProdutoGrupoResponse>();
                 foreach (var grupo in retorno)
                 {
