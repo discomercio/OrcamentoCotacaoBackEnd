@@ -124,6 +124,13 @@ namespace OrcamentoCotacaoApi.Controllers
                     _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - {response.Mensagem}. Response => [{JsonSerializer.Serialize(objUsuarioLogin)}]");
                     return Ok(response);
                 }
+                
+                if (objUsuarioLogin.IdErro == int.Parse(Constantes.ERR_USUARIO_BLOQUEADO_PERMISSAO))
+                {
+                    response.Mensagem = "Usuário não possui acesso ao Módulo";
+                    _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - {response.Mensagem}. Response => [{JsonSerializer.Serialize(objUsuarioLogin)}]");
+                    return Ok(response);
+                }
 
                 if (objUsuarioLogin.Token == null)
                 {
@@ -136,14 +143,6 @@ namespace OrcamentoCotacaoApi.Controllers
 
                 DateTime dataCriacao = DateTime.Now;
                 DateTime dataExpiracao = dataCriacao + TimeSpan.FromSeconds(10000);
-
-                if (objUsuarioLogin.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR &&
-                    !objUsuarioLogin.Permissoes.Contains(((int)Constantes.ePermissoes.ACESSO_AO_MODULO_100100).ToString()))
-                {
-                    response.Mensagem = "Usuário não possui acesso ao Módulo";
-                    _logger.LogInformation($"CorrelationId => [{login.CorrelationId}]. AccountController/Login/POST - {response.Mensagem}. Response => [{JsonSerializer.Serialize(objUsuarioLogin)}]");
-                    return Ok(response);
-                }
 
                 response.Sucesso = true;
                 response.Created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss");

@@ -2797,6 +2797,8 @@ namespace InfraBanco.Constantes
 
         public const string ERR_USUARIO_BLOQUEADO_AUTOMATICO = "5103";
 
+        public const string ERR_USUARIO_BLOQUEADO_PERMISSAO = "5104";
+
         public const string NUMERO_LOJA_ECOMMERCE_AR_CLUBE = "201";
 
         public const string NUMERO_LOJA_BONSHOP = "202";
