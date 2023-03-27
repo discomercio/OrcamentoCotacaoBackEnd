@@ -137,7 +137,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                                              where o.Modulo == "COTAC" 
                                              && u.Usuario == login
                                              && o.Id == (int)Constantes.ePermissoes.ACESSO_AO_MODULO_100100
-                                             select o.Id.ToString()).SingleOrDefault();
+                                             select o.Id.ToString()).SingleOrDefaultAsync();
 
                     if (permissoesUsuario == null)
                     {
