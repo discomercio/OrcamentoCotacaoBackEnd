@@ -190,7 +190,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public OrcamentoCotacaoDto ObterIdOrcamentoCotacao(string guid)
         {
-            var orcamento = _orcamentoCotacaoBll.PorGuid(guid);
+            var orcamento = PorGuid(guid);
 
             if (orcamento != null)
             {
@@ -207,31 +207,16 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public bool Validar(OrcamentoCotacaoDto orcamentoCotacaoDto)
         {
-            DateTime dataAtual = DateTime.Now;
-
             if (orcamentoCotacaoDto.statusOrcamentoCotacaoLink != 1)
                 return false;
 
-            // [3] Aprovado
-            if (orcamentoCotacaoDto.status == 3)
+            DateTime dataCriacao = (DateTime)orcamentoCotacaoDto.dataCadastro;
+            DateTime dataMaximaConsulta = dataCriacao.AddDays(int.Parse(orcamentoCotacaoDto.prazoMaximoConsultaOrcamento));
+
+            if (dataMaximaConsulta.Date < DateTime.Now.Date)
             {
-
-                var prazomaximoConsultaOrcamento = this.BuscarParametros(14, orcamentoCotacaoDto.loja)[0].Valor;
-
-                DateTime dataCriacao = (DateTime)orcamentoCotacaoDto.dataCadastro;
-                DateTime dataValidade = dataCriacao.AddDays(int.Parse(prazomaximoConsultaOrcamento));
-
-                if (dataAtual > dataValidade) return false;
-                else return true;
+                return false;
             }
-
-            // [2] Cancelado
-            if (orcamentoCotacaoDto.status == 2)
-                return false;
-
-            // Expirado
-            if (dataAtual > orcamentoCotacaoDto.validade)
-                return false;
 
             return true;
         }
