@@ -91,6 +91,10 @@ namespace OrcamentoCotacaoApi
             {
                 assemblyPath = "bin/Debug/net7.0/OrcamentoCotacaoApi.dll";
             }
+            else
+            {
+                assemblyPath = "OrcamentoCotacaoApi.dll";
+            }
 
             versionInfo = FileVersionInfo.GetVersionInfo(assemblyPath);
 
