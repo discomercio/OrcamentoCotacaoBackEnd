@@ -53,14 +53,14 @@ namespace OrcamentoCotacaoApi.Controllers
                     assemblyPath = "OrcamentoCotacaoApi.dll";
                 }
                     
-                versionInfo = FileVersionInfo.GetVersionInfo(assemblyPath);               
-                
-                return new ContentResult 
-                { 
-                    Content = versionInfo.FileVersion.ToString(), 
-                    ContentType= "text/plain",
-                    StatusCode= 200
+                versionInfo = FileVersionInfo.GetVersionInfo(assemblyPath);
+
+                var retorno = new
+                {
+                    versao = versionInfo.FileVersion.ToString()
                 };
+
+                return Ok(retorno);
             }
             catch (Exception ex)
             {
