@@ -1213,8 +1213,7 @@ namespace Prepedido.Bll
             if (torcamento != null)
             {
                 torcamento.Qtde_Parcelas = ObterQtdeParcelasDeFormaPagto(prepedido.FormaPagtoCriacao);
-                torcamento.Forma_Pagamento = prepedido.FormaPagtoCriacao.C_forma_pagto == null ?
-                    "" : prepedido.FormaPagtoCriacao.C_forma_pagto;
+                torcamento.Forma_Pagamento = string.Empty;
                 torcamento.Tipo_Parcelamento = short.Parse(prepedido.FormaPagtoCriacao.Rb_forma_pagto);
 
                 if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA)
