@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Global\Cep\Cep.csproj" />
     <ProjectReference Include="..\..\Global\Cliente\Cliente.csproj" />
+    <ProjectReference Include="..\..\Global\CodigoDescricao\CodigoDescricao.csproj" />
     <ProjectReference Include="..\..\Global\Coeficiente\Coeficiente.csproj" />
     <ProjectReference Include="..\..\Global\Infra\InfraBanco\InfraBanco.csproj" />
     <ProjectReference Include="..\..\Global\Infra\InfraIdentity\InfraIdentity.csproj" />

@@ -29,8 +29,7 @@ namespace OrcamentoCotacaoApi.Utils
             UsuarioBll usuarioBll,
             OrcamentistaEIndicadorBll orcamentistaEindicadorBll,
             OrcamentistaEIndicadorVendedorBll orcamentistaEIndicadorVendedorBll,
-            LojaBll lojaBll
-            )
+            LojaBll lojaBll)
         {
             this.acessoBll = acessoBll;
             this.usuarioBll = usuarioBll;
@@ -40,7 +39,7 @@ namespace OrcamentoCotacaoApi.Utils
         }
 
         //retorna null se nao exisitr (ou se a senha estiver errada)
-        public async Task<InfraIdentity.UsuarioLogin> ObterUsuario(
+        public async Task<UsuarioLogin> ObterUsuario(
             string apelido, 
             string senha, 
             string bloqueioUsuarioLoginAmbiente, 
@@ -77,13 +76,24 @@ namespace OrcamentoCotacaoApi.Utils
             if (dadosCliente == null)
             {
                 //Buscar Parceiros e depois buscar vendedores-parceiros
-                var parceiro = orcamentistaEindicadorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = apelido, datastamp = senha }).FirstOrDefault();
+                var parceiro = orcamentistaEindicadorBll.PorFiltro(
+                    new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro()
+                    {
+                        apelido = apelido,
+                        datastamp = senha
+                    }).FirstOrDefault();
+
                 if (parceiro != null)
                 {
                     //var loja = await acessoBll.BuscarLojaUsuario(apelido);
                     //var unidade_negocio = await acessoBll.Buscar_unidade_negocio(loja);
-                    var loja = lojaBll.PorFiltro(new InfraBanco.Modelos.Filtros.TlojaFiltro() { Loja = parceiro.Loja });
-                    UsuarioLogin usuario = new UsuarioLogin
+                    var loja = lojaBll.PorFiltro(
+                        new InfraBanco.Modelos.Filtros.TlojaFiltro()
+                        {
+                            Loja = parceiro.Loja
+                        });
+
+                    var usuario = new UsuarioLogin
                     {
                         Apelido = apelido,
                         Nome = parceiro.Razao_Social_Nome,
@@ -106,7 +116,13 @@ namespace OrcamentoCotacaoApi.Utils
                 else
                 {
                     //Buscar vendedores-parceiros
-                    var vendedorParceiro = orcamentistaEIndicadorVendedorBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro() { email = apelido, datastamp = senha }).FirstOrDefault();
+                    var vendedorParceiro = orcamentistaEIndicadorVendedorBll.PorFiltro(
+                        new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro()
+                        {
+                            email = apelido,
+                            datastamp = senha
+                        }).FirstOrDefault();
+
                     if (vendedorParceiro != null)
                     {
                         var parceiroValidacao = await orcamentistaEindicadorBll.ValidarParceiro(vendedorParceiro.VendedorResponsavel, null, true);
@@ -148,7 +164,8 @@ namespace OrcamentoCotacaoApi.Utils
             }
             else
             {
-                UsuarioLogin usuario = new UsuarioLogin();
+                var usuario = new UsuarioLogin();
+
                 switch (dadosCliente.TipoUsuario)
                 {
                     case (int)Constantes.TipoUsuario.VENDEDOR:

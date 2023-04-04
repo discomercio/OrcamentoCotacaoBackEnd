@@ -167,9 +167,10 @@ namespace OrcamentoCotacaoBusiness.Bll
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 var objOrcamentistaEIndicadorVendedor = _mapper.Map<TorcamentistaEIndicadorVendedor>(model);
-                if (senhaBaseCodificada != senha_codificada && tOrcamentistaIndicadorVendedor.Senha != model.Senha)
-                    objOrcamentistaEIndicadorVendedor.DataUltimaAlteracaoSenha = DateTime.Now;
-                else objOrcamentistaEIndicadorVendedor.DataUltimaAlteracaoSenha = tOrcamentistaIndicadorVendedor.DataUltimaAlteracaoSenha;
+                if(senhaBaseCodificada == senha_codificada)
+                {
+                    objOrcamentistaEIndicadorVendedor.DataUltimaAlteracaoSenha = tOrcamentistaIndicadorVendedor.DataUltimaAlteracaoSenha;
+                }
 
                 objOrcamentistaEIndicadorVendedor.Datastamp = senha_codificada;
                 objOrcamentistaEIndicadorVendedor.Nome = model.Nome;

@@ -135,6 +135,19 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<PermissaoBll, PermissaoBll>();
             services.AddTransient<ClienteBll, ClienteBll>();
             services.AddTransient<UsuarioBll, UsuarioBll>();
+
+            services.AddTransient<Operacao.OperacaoBll, Operacao.OperacaoBll>();
+            services.AddTransient<Operacao.OperacaoData, Operacao.OperacaoData>();
+
+            services.AddTransient<Cfg.CfgOperacao.CfgOperacaoBll, Cfg.CfgOperacao.CfgOperacaoBll>();
+            services.AddTransient<Cfg.CfgOperacao.CfgOperacaoData, Cfg.CfgOperacao.CfgOperacaoData>();
+
+            services.AddTransient<Cfg.CfgParametro.CfgParametroBll, Cfg.CfgParametro.CfgParametroBll>();
+            services.AddTransient<Cfg.CfgParametro.CfgParametroData, Cfg.CfgParametro.CfgParametroData>();
+
+            services.AddTransient<CodigoDescricao.CodigoDescricaoBll, CodigoDescricao.CodigoDescricaoBll>();
+            services.AddTransient<CodigoDescricao.CodigoDescricaoData, CodigoDescricao.CodigoDescricaoData>();
+            services.AddTransient<CodigoDescricaoBll, CodigoDescricaoBll>();
             services.AddTransient<LoginHistoricoBll, LoginHistoricoBll>();
 
             return services;

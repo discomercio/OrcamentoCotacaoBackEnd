@@ -9,6 +9,7 @@ using OrcamentoCotacaoApi.Filters;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
+using OrcamentoCotacaoBusiness.Models.Response.ProdutoCatalogo;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -248,11 +249,11 @@ namespace OrcamentoCotacaoApi.Controllers
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoCatalogoController/Excluir/DELETE - Response => [Produto Catalogo Removido.].");
 
-            if(!string.IsNullOrEmpty(retorno))
+            if (!string.IsNullOrEmpty(retorno))
             {
                 return BadRequest(new { message = retorno });
             }
-            
+
             return Ok(true);
         }
 
@@ -486,7 +487,11 @@ namespace OrcamentoCotacaoApi.Controllers
 
 
             if (!User.ValidaPermissao((int)ePermissao.CatalogoCaradastrarIncluirEditar))
-                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+                return Ok(new CadastroProdutoCatalogoResponse()
+                {
+                    Sucesso = false,
+                    Mensagem = "Não encontramos a permissão necessária para realizar atividade!"
+                }); ;
 
             try
             {
@@ -504,13 +509,12 @@ namespace OrcamentoCotacaoApi.Controllers
                 {
                     _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoCatalogoController/Criar/POST - Response => [{retorno}].");
 
-                    _logger.LogInformation("Atualizar - Response: {0}", retorno);
-                    return BadRequest(new { message = retorno });
+                    return Ok(retorno);
                 }
 
                 _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoCatalogoController/Criar/POST - Response => [Produto criado com sucesso.].");
 
-                return Ok(new { message = "Produto criado com sucesso." });
+                return Ok(retorno);
             }
             catch (Exception ex)
             {

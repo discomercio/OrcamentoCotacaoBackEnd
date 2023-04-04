@@ -5,6 +5,8 @@
     <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
     <Configurations>Debug;Release;Release_OrcamentoCotacao;Debug_OrcamentoCotacao</Configurations>
     <DebugType Condition=" '$(Configuration)' == 'Release_OrcamentoCotacao' ">None</DebugType>
+    <AssemblyVersion>1.0.0.4</AssemblyVersion>
+    <FileVersion>1.0.0.4</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -32,6 +34,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Global\Arquivo\Arquivo.csproj" />
+    <ProjectReference Include="..\..\Global\CodigoDescricao\CodigoDescricao.csproj" />
     <ProjectReference Include="..\..\Global\FormaPagamento\FormaPagamento.csproj" />
     <ProjectReference Include="..\..\Global\LoginHistorico\LoginHistorico.csproj" />
     <ProjectReference Include="..\..\Global\Loja\Loja.csproj" />

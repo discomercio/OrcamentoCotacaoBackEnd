@@ -32,6 +32,7 @@ using OrcamentoCotacaoBusiness.Models.Response.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response.Dashoard;
 using Microsoft.Extensions.Configuration;
 using UtilsGlobais;
+using CodigoDescricao;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -62,6 +63,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly Prepedido.Bll.PrepedidoBll _prepedidoBll;
         private readonly Cfg.CfgOperacao.CfgOperacaoBll _cfgOperacaoBll;
         private readonly IConfiguration _configuration;
+        private readonly CodigoDescricaoBll _codigoDescricaoBll;
 
         public OrcamentoCotacaoBll(
             OrcamentoBll orcamentoBll,
@@ -88,7 +90,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             ILogger<OrcamentoCotacaoBll> logger,
             Prepedido.Bll.PrepedidoBll _prepedidoBll,
             Cfg.CfgOperacao.CfgOperacaoBll _cfgOperacaoBll,
-            IConfiguration configuration
+            IConfiguration configuration,
+            CodigoDescricaoBll _codigoDescricaoBll
             )
         {
             _orcamentoBll = orcamentoBll;
@@ -116,6 +119,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             this._prepedidoBll = _prepedidoBll;
             this._cfgOperacaoBll = _cfgOperacaoBll;
             _configuration = configuration;
+            this._codigoDescricaoBll = _codigoDescricaoBll;
         }
 
         public OrcamentoCotacaoDto PorGuid(string guid)
@@ -186,7 +190,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public OrcamentoCotacaoDto ObterIdOrcamentoCotacao(string guid)
         {
-            var orcamento = _orcamentoCotacaoBll.PorGuid(guid);
+            var orcamento = PorGuid(guid);
 
             if (orcamento != null)
             {
@@ -203,31 +207,16 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public bool Validar(OrcamentoCotacaoDto orcamentoCotacaoDto)
         {
-            DateTime dataAtual = DateTime.Now;
-
             if (orcamentoCotacaoDto.statusOrcamentoCotacaoLink != 1)
                 return false;
 
-            // [3] Aprovado
-            if (orcamentoCotacaoDto.status == 3)
+            DateTime dataCriacao = (DateTime)orcamentoCotacaoDto.dataCadastro;
+            DateTime dataMaximaConsulta = dataCriacao.AddDays(int.Parse(orcamentoCotacaoDto.prazoMaximoConsultaOrcamento));
+
+            if (dataMaximaConsulta.Date < DateTime.Now.Date)
             {
-
-                var prazomaximoConsultaOrcamento = this.BuscarParametros(14, orcamentoCotacaoDto.loja)[0].Valor;
-
-                DateTime dataCriacao = (DateTime)orcamentoCotacaoDto.dataCadastro;
-                DateTime dataValidade = dataCriacao.AddDays(int.Parse(prazomaximoConsultaOrcamento));
-
-                if (dataAtual > dataValidade) return false;
-                else return true;
+                return false;
             }
-
-            // [2] Cancelado
-            if (orcamentoCotacaoDto.status == 2)
-                return false;
-
-            // Expirado
-            if (dataAtual > orcamentoCotacaoDto.validade)
-                return false;
 
             return true;
         }
@@ -408,12 +397,22 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 return _orcamentoBll.OrcamentoPorFiltro(tOrcamentoFiltro);
             }
-            else //if (tOrcamentoFiltro.Origem == "PEDIDOS")
+            else
             {
                 var lista = _pedidoPrepedidoApiBll.ListarPedidos(tOrcamentoFiltro);
 
-                foreach (var item in lista)
-                    item.Status = TcfgPedidoStatus.ObterStatus(item.Status);
+                var listaCodigoDescricao = _codigoDescricaoBll.StatusPorFiltro(new Models.Request.CodigoDescricao.CodigoDescricaoRequest()
+                {
+                    Grupo = "Pedido_St_Entrega"
+                });
+
+                if (listaCodigoDescricao.Sucesso)
+                {
+                    foreach (var item in lista)
+                    {
+                        item.Status = listaCodigoDescricao.ListaCodigoDescricao.Where(x => x.Codigo == item.Status).FirstOrDefault().Descricao;
+                    }
+                }
 
                 return lista;
             }

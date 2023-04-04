@@ -103,6 +103,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrcamentoCotacaoMensagemSta
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Operacao", "Global\Operacao\Operacao.csproj", "{2A9D12FE-2868-4ADA-8416-67A3B10CEB69}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodigoDescricao", "Global\CodigoDescricao\CodigoDescricao.csproj", "{F965EB30-2352-4CDB-A355-492F3156BE99}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoginHistorico", "Global\LoginHistorico\LoginHistorico.csproj", "{9DA34E22-477A-45D7-9BBF-8F4166748E6A}"
 EndProject
 Global
@@ -759,6 +761,22 @@ Global
 		{9DA34E22-477A-45D7-9BBF-8F4166748E6A}.Release_PrepedidoApi|Any CPU.Build.0 = Release|Any CPU
 		{9DA34E22-477A-45D7-9BBF-8F4166748E6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DA34E22-477A-45D7-9BBF-8F4166748E6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F965EB30-2352-4CDB-A355-492F3156BE99}.Debug_OrcamentoCotacao|Any CPU.ActiveCfg = Debug|Any CPU
+		{F965EB30-2352-4CDB-A355-492F3156BE99}.Debug_OrcamentoCotacao|Any CPU.Build.0 = Debug|Any CPU
+		{F965EB30-2352-4CDB-A355-492F3156BE99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F965EB30-2352-4CDB-A355-492F3156BE99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F965EB30-2352-4CDB-A355-492F3156BE99}.Release_ApiMagento|Any CPU.ActiveCfg = Release|Any CPU
+		{F965EB30-2352-4CDB-A355-492F3156BE99}.Release_ApiMagento|Any CPU.Build.0 = Release|Any CPU
+		{F965EB30-2352-4CDB-A355-492F3156BE99}.Release_ApiUnis|Any CPU.ActiveCfg = Release|Any CPU
+		{F965EB30-2352-4CDB-A355-492F3156BE99}.Release_ApiUnis|Any CPU.Build.0 = Release|Any CPU
+		{F965EB30-2352-4CDB-A355-492F3156BE99}.Release_Loja|Any CPU.ActiveCfg = Release|Any CPU
+		{F965EB30-2352-4CDB-A355-492F3156BE99}.Release_Loja|Any CPU.Build.0 = Release|Any CPU
+		{F965EB30-2352-4CDB-A355-492F3156BE99}.Release_OrcamentoCotacao|Any CPU.ActiveCfg = Release|Any CPU
+		{F965EB30-2352-4CDB-A355-492F3156BE99}.Release_OrcamentoCotacao|Any CPU.Build.0 = Release|Any CPU
+		{F965EB30-2352-4CDB-A355-492F3156BE99}.Release_PrepedidoApi|Any CPU.ActiveCfg = Release|Any CPU
+		{F965EB30-2352-4CDB-A355-492F3156BE99}.Release_PrepedidoApi|Any CPU.Build.0 = Release|Any CPU
+		{F965EB30-2352-4CDB-A355-492F3156BE99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F965EB30-2352-4CDB-A355-492F3156BE99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -806,6 +824,7 @@ Global
 		{DDB9DCD1-16F2-409E-8BC5-BAF573625CBA} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 		{2A9D12FE-2868-4ADA-8416-67A3B10CEB69} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 		{9DA34E22-477A-45D7-9BBF-8F4166748E6A} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
+		{F965EB30-2352-4CDB-A355-492F3156BE99} = {72A8B380-D737-4BAD-AF5A-9BD4015ACE7F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {139E9C0D-48C6-4635-9645-BF9C5AA65398}
