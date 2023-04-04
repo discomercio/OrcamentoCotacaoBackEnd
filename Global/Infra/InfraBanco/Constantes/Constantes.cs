@@ -1374,6 +1374,10 @@ namespace InfraBanco.Constantes
 
         public const string ID_PARAMETRO_EmailDestinatarioAlertaEdicaoCadastroClienteComPedidoCreditoOkEntregaPendente = "EmailDestinatarioAlertaEdicaoCadastroClienteComPedidoCreditoOkEntregaPendente";
 
+        public const string ID_PARAMETRO_VendaCondicionada_RegraProporcao_PercentualMaximoPedido = "VendaCondicionada_RegraProporcao_PercentualMaximoPedido";
+
+        public const string ID_PARAMETRO_VendaCondicionada_RegraProporcao_ListaProdutos = "VendaCondicionada_RegraProporcao_ListaProdutos";
+
 
         //' CONSTANTES PARA USAR COM O BANCO DE DADOS
 
