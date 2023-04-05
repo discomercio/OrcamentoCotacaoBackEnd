@@ -17,6 +17,7 @@ using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
 using OrcamentoCotacaoBusiness.Models.Response.GrupoSubgrupoProduto;
 using OrcamentoCotacaoBusiness.Models.Response.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response.ProdutoCatalogo;
+using Prepedido.Bll;
 using Produto;
 using Produto.Dto;
 using ProdutoCatalogo;
@@ -342,6 +343,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     tEcProdutoComposto.Fabricante_Composto, tEcProdutoComposto.Produto_Composto, produto.Qtde, tEcProdutoComposto.Descricao, tEcProdutoComposto.Descricao, sequencia);
                 }
 
+
+
                 _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Cadastrando produto unificado. Request => [{JsonSerializer.Serialize(torcamentoCotacaoItemUnificado)}].");
                 var produtoUnificado = orcamentoCotacaoOpcaoItemUnificadoBll.InserirComTransacao(torcamentoCotacaoItemUnificado, contextoBdGravacao);
 
@@ -420,7 +423,6 @@ namespace OrcamentoCotacaoBusiness.Bll
             response.TorcamentoCotacaoOpcaoItemAtomicoCustoFins = new List<TorcamentoCotacaoOpcaoItemAtomicoCustoFin>();
             response.Sucesso = false;
             var nomeMetodo = response.ObterNomeMetodoAtualAsync();
-
 
             int index = 0;
             foreach (var pagto in tOrcamentoCotacaoOpcaoPagtos)

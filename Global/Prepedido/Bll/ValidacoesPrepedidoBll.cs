@@ -85,6 +85,42 @@ namespace Prepedido.Bll
             }
         }
 
+        public async Task<string> ValidarVendaCondicional(List<PrepedidoProdutoPrepedidoDados> listaProdutos)
+        {
+            string retorno = string.Empty;
+            var proporcaoListaProdutos = await Util.BuscarRegistroParametro(Constantes.ID_PARAMETRO_VendaCondicionada_RegraProporcao_ListaProdutos, contextoProvider);
+            var proporcaoPercentualMaximo = await Util.BuscarRegistroParametro(Constantes.ID_PARAMETRO_VendaCondicionada_RegraProporcao_PercentualMaximoPedido, contextoProvider);
+
+            var vlTotalPrecoLista = 0m;
+            var vlTotalVendaCondicionada = 0m;
+            var qtdeProdutosCondicionados = 0;
+            string produtosCondicionados = string.Empty;
+            foreach (var item in listaProdutos)
+            {
+                vlTotalPrecoLista += (decimal)(item.Qtde * item.Preco_Lista);
+                if (proporcaoListaProdutos.Campo_texto.IndexOf(item.Produto) > -1)
+                {
+                    qtdeProdutosCondicionados++;
+                    vlTotalVendaCondicionada += (decimal)(item.Qtde * item.Preco_Lista);
+                    if (!string.IsNullOrEmpty(produtosCondicionados)) produtosCondicionados += ", ";
+
+                    produtosCondicionados += item.Produto;
+                }
+            }
+
+            if (vlTotalVendaCondicionada > 0)
+            {
+                if (qtdeProdutosCondicionados > 0 &&
+                    (vlTotalVendaCondicionada / vlTotalPrecoLista) > (decimal)(proporcaoPercentualMaximo.Campo_Real / 100))
+                {
+                    if (qtdeProdutosCondicionados > 1) retorno = $"Os produtos {produtosCondicionados} não podem ser vendidos neste pedido!";
+                    else retorno = $"O produto {produtosCondicionados} não pode ser vendido neste pedido!";
+                }
+            }
+
+            return retorno;
+        }
+
         public async Task<IEnumerable<CoeficienteDados>> MontarListaCoeficiente(List<string> lstFornec,
             int qtdeParcelas, string siglaFormaPagto)
         {

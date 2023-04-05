@@ -1,14 +1,18 @@
 ﻿using AutoMapper;
+using Azure;
 using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoApi.Filters;
 using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
+using OrcamentoCotacaoBusiness.Models.Request.OrcamentistaIndicadorVendedor;
 using OrcamentoCotacaoBusiness.Models.Response;
+using OrcamentoCotacaoBusiness.Models.Response.OrcamentistaIndicadorVendedor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -311,6 +315,37 @@ namespace OrcamentoCotacaoApi.Controllers
             catch (ArgumentException e)
             {
                 return UnprocessableEntity(e);
+            }
+        }
+
+        [HttpPost("delete")]
+        public IActionResult Delete(OrcamentistaIndicadorVendedorDeleteRequest request)
+        {
+            try
+            {
+                request.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+                request.Usuario = LoggedUser.Apelido;
+                request.IP = HttpContext.Connection.RemoteIpAddress.ToString();
+
+                _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. OrcamentistaEIndicadorVendedorController/Delete - Request => [{JsonSerializer.Serialize(request)}].");
+
+                var response = new OrcamentistaIndicadorVendedorDeleteResponse();
+
+                if (!User.ValidaPermissao((int)ePermissao.CadastroVendedorParceiroIncluirEditar))
+                {
+                    response.Mensagem = "Não encontramos a permissão necessária para realizar atividade!";
+                    response.Sucesso = false;
+                    return Ok(response);
+                }
+                
+                response = _orcamentistaEIndicadorVendedorBll.Deletar(request);
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
             }
         }
     }

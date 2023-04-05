@@ -15,6 +15,9 @@ using UtilsGlobais;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using NuGet.Protocol.Core.Types;
+using System.Diagnostics;
 
 namespace OrcamentoCotacaoApi
 {
@@ -79,10 +82,23 @@ namespace OrcamentoCotacaoApi
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseSession();
+            
+            FileVersionInfo versionInfo;
+            string assemblyPath = string.Empty;
 
-            app.UseSession();           
+            if (env.IsDevelopment())
+            {
+                assemblyPath = "bin/Debug/net7.0/OrcamentoCotacaoApi.dll";
+            }
+            else
+            {
+                assemblyPath = "OrcamentoCotacaoApi.dll";
+            }
 
-            var nossaApiVersion = System.IO.File.ReadAllText("version.txt");
+            versionInfo = FileVersionInfo.GetVersionInfo(assemblyPath);
+
+            var nossaApiVersion = versionInfo.FileVersion;
             
 
             //var nossaApiVersion = Configuration.GetSection("Configuracoes").GetSection("VersaoApi").Value;
@@ -113,8 +129,9 @@ namespace OrcamentoCotacaoApi
                      * exigimos a versão da API
                      * X-API-Version: SUBSTITUIR_VERSAO_API
                      * */
-                    var apiVersion = context.Request.Headers["X-API-Version"];
-                    if (!apiVersion.Any(r => r == nossaApiVersion))
+                    var versaoOrigem = context.Request.Headers["X-API-Version"];
+
+                    if (!versaoOrigem.Any(r => r == nossaApiVersion))
                     {
                         context.Response.StatusCode = 412; // 412 Precondition Failed 
 
