@@ -43,7 +43,8 @@ namespace OrcamentistaEIndicadorVendedor
 
         public void ExcluirComTransacao(TorcamentistaEIndicadorVendedor obj, ContextoBdGravacao contextoBdGravacao)
         {
-            throw new NotImplementedException();
+            contextoBdGravacao.TorcamentistaEIndicadorVendedor.Remove(obj);
+            contextoBdGravacao.SaveChanges();
         }
 
         public TorcamentistaEIndicadorVendedor Inserir(TorcamentistaEIndicadorVendedor obj)

@@ -1,9 +1,14 @@
 ﻿using AutoMapper;
+using Azure.Core;
+using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
 using OrcamentoCotacaoBusiness.Models.Request;
+using OrcamentoCotacaoBusiness.Models.Request.LoginHistorico;
+using OrcamentoCotacaoBusiness.Models.Request.OrcamentistaIndicadorVendedor;
 using OrcamentoCotacaoBusiness.Models.Response;
+using OrcamentoCotacaoBusiness.Models.Response.OrcamentistaIndicadorVendedor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,13 +22,17 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly IMapper _mapper;
         private readonly Cfg.CfgOperacao.CfgOperacaoBll _cfgOperacaoBll;
         private readonly InfraBanco.ContextoBdProvider _contextoBdProvider;
+        private readonly LoginHistoricoBll _loginHistoricoBll;
+        private readonly OrcamentoCotacao.OrcamentoCotacaoBll orcamentoCotacaoBll;
 
         public OrcamentistaEIndicadorVendedorBll(
             OrcamentistaEIndicadorVendedor.OrcamentistaEIndicadorVendedorBll _orcamentistaEindicadorVendedorBll,
             IMapper _mapper,
              OrcamentistaEIndicadorBll _orcamentistaEIndicadorBll,
              Cfg.CfgOperacao.CfgOperacaoBll cfgOperacaoBll,
-             InfraBanco.ContextoBdProvider contextoBdProvider
+             InfraBanco.ContextoBdProvider contextoBdProvider,
+             LoginHistoricoBll _loginHistoricoBll,
+             OrcamentoCotacao.OrcamentoCotacaoBll orcamentoCotacaoBll
             )
         {
             this._orcamentistaEindicadorVendedorBll = _orcamentistaEindicadorVendedorBll;
@@ -31,6 +40,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             this._orcamentistaEIndicadorBll = _orcamentistaEIndicadorBll;
             _cfgOperacaoBll = cfgOperacaoBll;
             _contextoBdProvider = contextoBdProvider;
+            this._loginHistoricoBll = _loginHistoricoBll;
+            this.orcamentoCotacaoBll = orcamentoCotacaoBll;
         }
 
         public List<OrcamentistaEIndicadorVendedorResponseViewModel> BuscarVendedoresParceiro(string apelidoParceiro)
@@ -193,6 +204,61 @@ namespace OrcamentoCotacaoBusiness.Bll
                 dbGravacao.SaveChanges();
                 dbGravacao.transacao.Commit();
                 return ret;
+            }
+        }
+
+        public OrcamentistaIndicadorVendedorDeleteResponse Deletar(OrcamentistaIndicadorVendedorDeleteRequest request)
+        {
+            var response = new OrcamentistaIndicadorVendedorDeleteResponse();
+            response.Sucesso = false;
+
+            var tOrcamentistaIndicadorVendedor = _orcamentistaEindicadorVendedorBll.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro() { id = request.IdIndicadorVendedor }).FirstOrDefault();
+            if (tOrcamentistaIndicadorVendedor == null)
+            {
+                response.Mensagem = "Ops! Usuário não encontrado!";
+                return response;
+            }
+
+            var loginHistoricoresponse = _loginHistoricoBll.PorFiltro(new LoginHistoricoRequest()
+            {
+                IdUsuario = request.IdIndicadorVendedor,
+                SistemaResponsavel = (short?)Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO
+            });
+
+            if (!loginHistoricoresponse.Sucesso)
+            {
+                response.Mensagem = loginHistoricoresponse.Mensagem;
+                return response;
+            }
+
+            var logou = loginHistoricoresponse.LstLoginHistoricoResponse.Where(x => x.StSucesso == true).FirstOrDefault();
+            if (logou != null)
+            {
+                response.Mensagem = "Exclusão não permitida. Usuário efetuou logon no Sistema alguma vez.";
+                return response;
+            }
+
+            var existe = orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro()
+            {
+                IdIndicadorVendedor = request.IdIndicadorVendedor
+            });
+
+            if (existe.Count > 0)
+            {
+                response.Mensagem = "Exclusão não permitida. Usuário está relacionado a algum orçamento.";
+                return response;
+            }
+
+            using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                _orcamentistaEindicadorVendedorBll.ExcluirComTransacao(tOrcamentistaIndicadorVendedor, dbGravacao);
+
+                dbGravacao.SaveChanges();
+                dbGravacao.transacao.Commit();
+
+                response.Sucesso = true;
+
+                return response;
             }
         }
     }

@@ -1374,6 +1374,10 @@ namespace InfraBanco.Constantes
 
         public const string ID_PARAMETRO_EmailDestinatarioAlertaEdicaoCadastroClienteComPedidoCreditoOkEntregaPendente = "EmailDestinatarioAlertaEdicaoCadastroClienteComPedidoCreditoOkEntregaPendente";
 
+        public const string ID_PARAMETRO_VendaCondicionada_RegraProporcao_PercentualMaximoPedido = "VendaCondicionada_RegraProporcao_PercentualMaximoPedido";
+
+        public const string ID_PARAMETRO_VendaCondicionada_RegraProporcao_ListaProdutos = "VendaCondicionada_RegraProporcao_ListaProdutos";
+
 
         //' CONSTANTES PARA USAR COM O BANCO DE DADOS
 
@@ -2825,7 +2829,8 @@ namespace InfraBanco.Constantes
         public const string SESSION_CTRL_MODULO_ORCAMENTO = "ORCTO";
         public const string SESSION_CTRL_MODULO_APIUNIS = "APIUN";
         public const string SESSION_CTRL_MODULO_APIMAGENTO = "APIMA";
-
+        
+        public const string CONTROLELOGIN_FALHA_MOTIVO = "ControleLogin_Falha_Motivo";
 
         //Para o t_LOJA.magento_api_versao
         /*

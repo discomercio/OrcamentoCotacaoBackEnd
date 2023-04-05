@@ -55,10 +55,8 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<MeioPagamentos.MeiosPagamentosData, MeioPagamentos.MeiosPagamentosData>();
             services.AddTransient<OrcamentoCotacaoMensagem.OrcamentoCotacaoMensagemBll, OrcamentoCotacaoMensagem.OrcamentoCotacaoMensagemBll>();
             services.AddTransient<OrcamentoCotacaoMensagem.OrcamentoCotacaoMensagemData, OrcamentoCotacaoMensagem.OrcamentoCotacaoMensagemData>();
-
             services.AddTransient<OrcamentoCotacaoMensagemStatus.OrcamentoCotacaoMensagemStatusBll, OrcamentoCotacaoMensagemStatus.OrcamentoCotacaoMensagemStatusBll>();
             services.AddTransient<OrcamentoCotacaoMensagemStatus.OrcamentoCotacaoMensagemStatusData, OrcamentoCotacaoMensagemStatus.OrcamentoCotacaoMensagemStatusData>();
-
             services.AddTransient<Orcamento.OrcamentoBll, Orcamento.OrcamentoBll>();
             services.AddTransient<Orcamento.OrcamentoOpcaoBll, Orcamento.OrcamentoOpcaoBll>();
             services.AddTransient<OrcamentistaEindicador.OrcamentistaEIndicadorBll, OrcamentistaEindicador.OrcamentistaEIndicadorBll>();
@@ -78,20 +76,14 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<OrcamentoCotacaoOpcaoItemAtomicoCustoFin.OrcamentoCotacaoOpcaoItemAtomicoCustoFinData, OrcamentoCotacaoOpcaoItemAtomicoCustoFin.OrcamentoCotacaoOpcaoItemAtomicoCustoFinData>();
             services.AddTransient<OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll, OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll>();
             services.AddTransient<OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueData, OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueData>();
-
             services.AddTransient<OrcamentoCotacaoEmail.OrcamentoCotacaoEmailBll, OrcamentoCotacaoEmail.OrcamentoCotacaoEmailBll>();
             services.AddTransient<OrcamentoCotacaoEmail.OrcamentoCotacaoEmailData, OrcamentoCotacaoEmail.OrcamentoCotacaoEmailData>();
-
             services.AddTransient<OrcamentoCotacaoLink.OrcamentoCotacaoLinkBll, OrcamentoCotacaoLink.OrcamentoCotacaoLinkBll>();
             services.AddTransient<OrcamentoCotacaoLink.OrcamentoCotacaoLinkData, OrcamentoCotacaoLink.OrcamentoCotacaoLinkData>();
-
-
             services.AddTransient<Cfg.CfgOrcamentoCotacaoEmailTemplate.CfgOrcamentoCotacaoEmailTemplateBll, Cfg.CfgOrcamentoCotacaoEmailTemplate.CfgOrcamentoCotacaoEmailTemplateBll>();
             services.AddTransient<Cfg.CfgOrcamentoCotacaoEmailTemplate.CfgOrcamentoCotacaoEmailTemplateData, Cfg.CfgOrcamentoCotacaoEmailTemplate.CfgOrcamentoCotacaoEmailTemplateData>();
-           
             services.AddTransient<Cfg.CfgUnidadeNegocio.CfgUnidadeNegocioBll, Cfg.CfgUnidadeNegocio.CfgUnidadeNegocioBll>();
             services.AddTransient<Cfg.CfgUnidadeNegocio.CfgUnidadeNegocioData, Cfg.CfgUnidadeNegocio.CfgUnidadeNegocioData>();
-
             services.AddTransient<Produto.ProdutoGeralBll, Produto.ProdutoGeralBll>();
             services.AddTransient<ProdutoCatalogo.ProdutoCatalogoBll, ProdutoCatalogo.ProdutoCatalogoBll>();
             services.AddTransient<ProdutoCatalogo.ProdutoCatalogoData, ProdutoCatalogo.ProdutoCatalogoData>();
@@ -101,6 +93,20 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<Prepedido.Bll.ValidacoesPrepedidoBll, Prepedido.Bll.ValidacoesPrepedidoBll>();
             services.AddTransient<Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll, Prepedido.PedidoVisualizacao.PedidoVisualizacaoBll>();
             services.AddTransient<Usuario.UsuarioBll, Usuario.UsuarioBll>();
+            services.AddTransient<OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll, OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll>();
+            services.AddTransient<Cfg.CfgOrcamentoCotacaoEmailTemplate.CfgOrcamentoCotacaoEmailTemplateBll, Cfg.CfgOrcamentoCotacaoEmailTemplate.CfgOrcamentoCotacaoEmailTemplateBll>();
+            services.AddTransient<Cfg.CfgUnidadeNegocio.CfgUnidadeNegocioBll, Cfg.CfgUnidadeNegocio.CfgUnidadeNegocioBll>();
+            services.AddTransient<Cfg.CfgUnidadeNegocioParametro.CfgUnidadeNegocioParametroBll, Cfg.CfgUnidadeNegocioParametro.CfgUnidadeNegocioParametroBll>();
+            services.AddTransient<Operacao.OperacaoBll, Operacao.OperacaoBll>();
+            services.AddTransient<Operacao.OperacaoData, Operacao.OperacaoData>();
+            services.AddTransient<Cfg.CfgOperacao.CfgOperacaoBll, Cfg.CfgOperacao.CfgOperacaoBll>();
+            services.AddTransient<Cfg.CfgOperacao.CfgOperacaoData, Cfg.CfgOperacao.CfgOperacaoData>();
+            services.AddTransient<Cfg.CfgParametro.CfgParametroBll, Cfg.CfgParametro.CfgParametroBll>();
+            services.AddTransient<Cfg.CfgParametro.CfgParametroData, Cfg.CfgParametro.CfgParametroData>();
+            services.AddTransient<LoginHistorico.LoginHistoricoBll, LoginHistorico.LoginHistoricoBll>();
+            services.AddTransient<LoginHistorico.LoginHistoricoData, LoginHistorico.LoginHistoricoData>();
+            services.AddTransient<Cfg.CfgModulo.CfgModuloBll, Cfg.CfgModulo.CfgModuloBll>();
+            services.AddTransient<Cfg.CfgModulo.CfgModuloData, Cfg.CfgModulo.CfgModuloData>();
 
             //#PRE-PEDIDO
             services.AddTransient<Prepedido.Bll.AcessoBll, Prepedido.Bll.AcessoBll>(); 
@@ -126,11 +132,7 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<OrcamentoCotacaoOpcaoBll, OrcamentoCotacaoOpcaoBll>();
             services.AddTransient<ProdutoOrcamentoCotacaoBll, ProdutoOrcamentoCotacaoBll>();
             services.AddTransient<ProdutoCatalogoOrcamentoCotacaoBll, ProdutoCatalogoOrcamentoCotacaoBll>();
-            services.AddTransient<OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll, OrcamentoCotacaoEmailQueue.OrcamentoCotacaoEmailQueueBll>();
-            services.AddTransient<Cfg.CfgOrcamentoCotacaoEmailTemplate.CfgOrcamentoCotacaoEmailTemplateBll, Cfg.CfgOrcamentoCotacaoEmailTemplate.CfgOrcamentoCotacaoEmailTemplateBll>();
-            services.AddTransient<Cfg.CfgUnidadeNegocio.CfgUnidadeNegocioBll, Cfg.CfgUnidadeNegocio.CfgUnidadeNegocioBll>();
             services.AddTransient<PermissaoBll, PermissaoBll>();
-            services.AddTransient<Cfg.CfgUnidadeNegocioParametro.CfgUnidadeNegocioParametroBll, Cfg.CfgUnidadeNegocioParametro.CfgUnidadeNegocioParametroBll>();
             services.AddTransient<ClienteBll, ClienteBll>();
             services.AddTransient<UsuarioBll, UsuarioBll>();
 
@@ -146,6 +148,7 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<CodigoDescricao.CodigoDescricaoBll, CodigoDescricao.CodigoDescricaoBll>();
             services.AddTransient<CodigoDescricao.CodigoDescricaoData, CodigoDescricao.CodigoDescricaoData>();
             services.AddTransient<CodigoDescricaoBll, CodigoDescricaoBll>();
+            services.AddTransient<LoginHistoricoBll, LoginHistoricoBll>();
 
             return services;
         }
