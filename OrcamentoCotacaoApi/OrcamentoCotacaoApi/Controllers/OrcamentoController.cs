@@ -9,7 +9,9 @@ using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response;
+using OrcamentoCotacaoBusiness.Models.Response.Orcamento;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -60,7 +62,8 @@ namespace OrcamentoCotacaoApi.Controllers
             {
                 var response = new
                 {
-                    Orcamentos = saida.Count
+                    QtdOrcamentos = saida.orcamentoCotacaoListaDto.Count,
+                    QtdeRegistros = saida.qtdeRegistros
                 };
 
                 _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/PorFiltro/GET - Response => [{JsonSerializer.Serialize(response)}].");

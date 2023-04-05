@@ -5,8 +5,6 @@ namespace InfraBanco.Modelos.Filtros
 {
     public class TorcamentoFiltro : IFilter
     {
-        public int? Page { get; set; }
-        public int? RecordsPerPage { get; set; }
         public string Origem { get; set; }
         public string Loja { get; set; }
         public int? TipoUsuario { get; set; }
@@ -24,5 +22,10 @@ namespace InfraBanco.Modelos.Filtros
         public int IdIndicador { get; set; }
         public int IdIndicadorVendedor { get; set; }
         public bool PermissaoUniversal { get; set; }
+
+        public int Pagina { get; set; }
+        public int QtdeItensPagina { get; set; }
+        public string NomeColunaOrdenacao { get; set; }
+        public bool OrdenacaoAscendente { get; set; }
     }
 }

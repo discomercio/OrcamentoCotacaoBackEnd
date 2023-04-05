@@ -33,6 +33,9 @@ using OrcamentoCotacaoBusiness.Models.Response.Dashoard;
 using Microsoft.Extensions.Configuration;
 using UtilsGlobais;
 using CodigoDescricao;
+using System.Collections;
+using Azure;
+using Azure.Core;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -303,15 +306,18 @@ namespace OrcamentoCotacaoBusiness.Bll
             return listaDashboard;
         }
 
-        public List<OrcamentoCotacaoListaDto> PorFiltro(TorcamentoFiltro tOrcamentoFiltro, UsuarioLogin usuarioLogin)
+        public OrcamentoCotacaoListaResponse PorFiltro(TorcamentoFiltro tOrcamentoFiltro, UsuarioLogin usuarioLogin)
         {
-            TorcamentoCotacaoFiltro orcamentoCotacaoFiltro = new TorcamentoCotacaoFiltro
+            var orcamentoCotacaoFiltro = new TorcamentoCotacaoFiltro
             {
                 Tusuario = true,
                 LimitarData = true,
                 Loja = tOrcamentoFiltro.Loja,
                 TipoUsuario = usuarioLogin.TipoUsuario,
-                Apelido = usuarioLogin.Nome
+                Apelido = usuarioLogin.Nome,
+                //QtdeItensPagina = tOrcamentoFiltro.QtdeItensPagina,
+                //Pagina = tOrcamentoFiltro.Pagina,
+                //OrdenarAscendente = tOrcamentoFiltro.OrdenarAscendente
             };
 
             tOrcamentoFiltro.TipoUsuario = usuarioLogin.TipoUsuario;
@@ -349,28 +355,46 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 var orcamentoCotacaoListaDto = _orcamentoCotacaoBll.PorFiltro(orcamentoCotacaoFiltro);
 
-                List<OrcamentoCotacaoListaDto> lista = new List<OrcamentoCotacaoListaDto>();
+                //if (!string.IsNullOrEmpty(obj.NomeColunaOrdenacao))
+                //{
+                //    if (obj.OrdenarAscendente)
+                //    {
+                //        saida = saida.OrderBy(x => EF.Property<TorcamentoCotacao>(x.tOrcamentoCotacao, filtro.NomeColunaOrdenacao));
+                //    }
+                //    else
+                //    {
+                //        saida = saida.OrderByDescending(x => EF.Property<TorcamentoCotacao>(x.tOrcamentoCotacao, filtro.NomeColunaOrdenacao));
+                //    }
+                //}
+
+                var result = orcamentoCotacaoListaDto
+                        .Skip((tOrcamentoFiltro.Pagina) * tOrcamentoFiltro.QtdeItensPagina)
+                        .Take(tOrcamentoFiltro.QtdeItensPagina)
+                        .ToList();
+
+                var lista = new List<OrcamentoCotacaoListaDto>();
+
                 if (orcamentoCotacaoListaDto != null)
                 {
                     var vendedores = _usuarioBll.PorFiltro(new TusuarioFiltro { });
                     var parceiros = _orcamentistaEIndicadorBll.BuscarParceiros(new TorcamentistaEindicadorFiltro { });
                     var vendParceiros = _orcamentistaEIndicadorVendedorBll.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro { });
 
-                    if (!String.IsNullOrEmpty(orcamentoCotacaoFiltro.Vendedor) && !String.IsNullOrEmpty(orcamentoCotacaoFiltro.Parceiro))
+                    if (!string.IsNullOrEmpty(orcamentoCotacaoFiltro.Vendedor) && !string.IsNullOrEmpty(orcamentoCotacaoFiltro.Parceiro))
                     {
                         var idVendedor = vendedores.FirstOrDefault(v => v.Usuario == orcamentoCotacaoFiltro.Vendedor);
                         var idParceiro = parceiros.FirstOrDefault(p => p.Apelido == orcamentoCotacaoFiltro.Parceiro);
 
                         if (idVendedor != null && idParceiro != null)
                         {
-                            orcamentoCotacaoListaDto = orcamentoCotacaoListaDto.Where(o =>
-                                 o.IdVendedor == idVendedor.Id
+                            orcamentoCotacaoListaDto = orcamentoCotacaoListaDto
+                                .Where(o => o.IdVendedor == idVendedor.Id
                                  && (o.IdIndicador.HasValue && o.IdIndicador.Value == idParceiro.IdIndicador)
                              ).ToList();
                         }
                     }
 
-                    orcamentoCotacaoListaDto.ForEach(x => lista.Add(new OrcamentoCotacaoListaDto()
+                    result.ForEach(x => lista.Add(new OrcamentoCotacaoListaDto()
                     {
                         NumeroOrcamento = x.Id.ToString(),
                         NumPedido = String.IsNullOrEmpty(x.IdPedido) ? "-" : x.IdPedido,
@@ -391,11 +415,23 @@ namespace OrcamentoCotacaoBusiness.Bll
                     }));
                 }
 
-                return lista;
+                return new OrcamentoCotacaoListaResponse() 
+                { 
+                    Sucesso = true, 
+                    orcamentoCotacaoListaDto = lista, 
+                    qtdeRegistros = orcamentoCotacaoListaDto.Count
+                };
             }
             else if (tOrcamentoFiltro.Origem == "PENDENTES") //PrePedido/Em Aprovação [tOrcamentos]
             {
-                return _orcamentoBll.OrcamentoPorFiltro(tOrcamentoFiltro);
+                var response = _orcamentoBll.OrcamentoPorFiltro(tOrcamentoFiltro);
+
+                return new OrcamentoCotacaoListaResponse()
+                {
+                    Sucesso = true,
+                    orcamentoCotacaoListaDto = response,
+                    qtdeRegistros = response.Count
+                };
             }
             else
             {
@@ -414,7 +450,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                     }
                 }
 
-                return lista;
+                return new OrcamentoCotacaoListaResponse()
+                {
+                    Sucesso = true,
+                    orcamentoCotacaoListaDto = lista,
+                    qtdeRegistros = lista.Count
+                };
             }
         }
 
@@ -2088,5 +2129,11 @@ namespace OrcamentoCotacaoBusiness.Bll
             response.Sucesso = true;
             return response;
         }
+    }
+
+    public sealed class OrcamentoCotacaoListaResponse : UtilsGlobais.RequestResponse.ResponseBase
+    {
+        public List<OrcamentoCotacaoListaDto> orcamentoCotacaoListaDto { get; set; }
+        public int qtdeRegistros { get; set; }
     }
 }
