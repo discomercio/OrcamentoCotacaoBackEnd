@@ -99,7 +99,8 @@ namespace Prepedido.Bll
                     sistemaResponsavelCadastro, 
                     limite_de_itens, 
                     dbGravacao, 
-                    ip)).ToList();
+                    ip, 
+                    false)).ToList();
 
                 if (ret.Count == 1)
                 {
