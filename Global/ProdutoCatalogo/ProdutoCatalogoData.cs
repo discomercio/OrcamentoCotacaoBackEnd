@@ -476,6 +476,16 @@ namespace ProdutoCatalogo
             {
                 using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
+                    var existeItem = (from item 
+                                      in db.TprodutoCatalogoItem
+                                      where item.IdProdutoCatalogo == id
+                                      select item).Any();
+
+                    if(!existeItem)
+                    {
+                        return new List<TprodutoCatalogoItem>();
+                    }
+
                     return (
                             from item in db.TprodutoCatalogoItem
                             .Where(x => x.IdProdutoCatalogo == id).DefaultIfEmpty()
