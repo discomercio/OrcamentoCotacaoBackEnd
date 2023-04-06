@@ -213,7 +213,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             DateTime dataCriacao = (DateTime)orcamentoCotacaoDto.dataCadastro;
             DateTime dataMaximaConsulta = dataCriacao.AddDays(int.Parse(orcamentoCotacaoDto.prazoMaximoConsultaOrcamento));
 
-            if (dataMaximaConsulta.Date < DateTime.Now.Date)
+            if (dataMaximaConsulta.Date <= DateTime.Now.Date)
             {
                 return false;
             }
