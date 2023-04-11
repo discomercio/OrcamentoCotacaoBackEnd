@@ -496,13 +496,13 @@ namespace Prepedido.Bll
                     var nomeCompleto = (from c in db.TorcamentistaEindicadorVendedor
                                         where c.Id == torcamento.EtgImediataIdUsuarioUltAtualiz
                                         select c.Nome).FirstOrDefault();
-                    nomeUsuario = $"[VP] {nomeCompleto.Split(" ")[0]}"; 
+                    nomeUsuario = $"[VP] {nomeCompleto.Split(" ")[0]}";
                 }
                 if (string.IsNullOrEmpty(nomeUsuario))
                 {
                     nomeUsuario = torcamento.Etg_Imediata_Usuario;
                 }
-                
+
                 string entregaImediataTexto = torcamento.St_Etg_Imediata == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO ?
                     "NÃO (" + Texto.iniciaisEmMaiusculas(nomeUsuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")" :
                     "SIM (" + Texto.iniciaisEmMaiusculas(nomeUsuario) + " - " + torcamento.Etg_Imediata_Data?.ToString("dd/MM/yyyy HH:mm") + ")";
@@ -794,14 +794,15 @@ namespace Prepedido.Bll
         }
 
         public async Task<IEnumerable<string>> CadastrarPrepedido(
-            PrePedidoDados prePedido, 
+            PrePedidoDados prePedido,
             string apelido,
-            decimal limiteArredondamento, 
-            bool verificarPrepedidoRepetido, 
+            decimal limiteArredondamento,
+            bool verificarPrepedidoRepetido,
             Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
-            int limite_de_itens, 
-            ContextoBdGravacao dbGravacao, 
-            string ip)
+            int limite_de_itens,
+            ContextoBdGravacao dbGravacao,
+            string ip,
+            bool aprovandoOrcamentoCotacao)
         {
             var lstErros = new List<string>();
             var loja = string.Empty;
@@ -842,7 +843,7 @@ namespace Prepedido.Bll
             //verificamos se tem ID para saber que o cliente existe
             Tcliente cliente = await clienteBll
                 .BuscarTclienteComTransacao(
-                prePedido.EnderecoCadastroClientePrepedido.Endereco_cnpj_cpf, 
+                prePedido.EnderecoCadastroClientePrepedido.Endereco_cnpj_cpf,
                 dbGravacao);
 
             if (cliente != null)
@@ -934,6 +935,9 @@ namespace Prepedido.Bll
                 prePedido.DadosCliente.Loja, lstErros, percVlPedidoRA, limiteArredondamento,
                 ValidacoesPrepedidoBll.AmbienteValidacao.PrepedidoValidacao);
             }
+
+            if (!aprovandoOrcamentoCotacao)
+                lstErros.Add(await validacoesPrepedidoBll.ValidarVendaCondicional(prePedido.ListaProdutos));
 
             Util.ValidarTipoCustoFinanceiroFornecedor(lstErros, c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas);
             if (lstErros.Count > 0)
@@ -1079,10 +1083,10 @@ namespace Prepedido.Bll
         }
 
         private async Task<string> EfetivarCadastroPrepedido(
-            ContextoBdGravacao dbgravacao, 
+            ContextoBdGravacao dbgravacao,
             PrePedidoDados prepedido,
-            string loja, 
-            string siglaPagto, 
+            string loja,
+            string siglaPagto,
             Constantes.CodSistemaResponsavel sistemaResponsavelCadastro,
             float perc_limite_RA_sem_desagio = 0)
         {
@@ -1272,7 +1276,7 @@ namespace Prepedido.Bll
         private void IncluirDetalhesPrepedidoParaTorcamento(PrePedidoDados prepedido, Torcamento torcamento)
         {
             torcamento.Obs_1 = this.ConcatenarCamposObservacao(
-                prepedido.DetalhesPrepedido.Observacoes, 
+                prepedido.DetalhesPrepedido.Observacoes,
                 prepedido.FormaPagtoCriacao.C_forma_pagto);
 
             torcamento.Obs_2 = string.IsNullOrEmpty(prepedido.DetalhesPrepedido.NumeroNF) ?

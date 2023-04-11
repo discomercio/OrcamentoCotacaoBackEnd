@@ -211,7 +211,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             DateTime dataCriacao = (DateTime)orcamentoCotacaoDto.dataCadastro;
             DateTime dataMaximaConsulta = dataCriacao.AddDays(int.Parse(orcamentoCotacaoDto.prazoMaximoConsultaOrcamento));
 
-            if (dataMaximaConsulta.Date < DateTime.Now.Date)
+            if (dataMaximaConsulta.Date <= DateTime.Now.Date)
             {
                 return false;
             }
@@ -936,7 +936,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     //colocar uma string de log para retornar o log montado do cadastro das opções 
                     var responseOpcoes = _orcamentoCotacaoOpcaoBll.CadastrarOrcamentoCotacaoOpcoesComTransacao(orcamento.ListaOrcamentoCotacaoDto,
                         tOrcamentoCotacao.Id, usuarioLogado, dbGravacao, orcamento.Loja, orcamento.CorrelationId);
-                    if (!string.IsNullOrEmpty(response.Mensagem))
+                    if (!string.IsNullOrEmpty(responseOpcoes.Mensagem))
                     {
                         response.Mensagem = responseOpcoes.Mensagem;
                         return response;
@@ -1819,7 +1819,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     //passar o id do cliente para o modelo
                     //verificar os erros 
                     retorno = await CadastrarPrepedido(aprovarOrcamento, orcamento, dbGravacao, tipoUsuarioContexto,
-                        idUsuarioUltAtualizacao, ip);
+                        idUsuarioUltAtualizacao, ip, true);
                     //precisamos mudar isso, precisamos verificar se existe um número de orçamento válido ou adicionar alguma prop na classe
                     if (retorno.Count >= 1)
                     {
@@ -1889,7 +1889,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             ContextoBdGravacao dbGravacao, 
             Constantes.TipoUsuarioContexto tipoUsuarioContexto, 
             int idUsuarioUltAtualizacao, 
-            string ip)
+            string ip, 
+            bool aprovandoOrcamentoCotacao)
         {
             _logger.LogInformation("Iniciando criação de Pré-Pedido.");
 
@@ -1986,7 +1987,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, 
                 appSettings.LimiteItens, 
                 dbGravacao, 
-                ip)).ToList();
+                ip, aprovandoOrcamentoCotacao)).ToList();
         }
 
         public async Task<FormaPagtoCriacaoDto> IncluirFormaPagtoCriacaoParaPrepedido(FormaPagtoCriacaoResponseViewModel formaPagtoSelecionada)

@@ -12,9 +12,11 @@ using OrcamentoCotacaoBusiness.Models.Response;
 using OrcamentoCotacaoBusiness.Models.Response.Orcamento;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using UtilsGlobais;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -141,6 +143,10 @@ namespace OrcamentoCotacaoBusiness.Bll
                 _logger.LogInformation($"Método Cadastrar opções de orçamento - Cadastrando custo de produtos atômicos da opção {seq}");
                 var responseAtomicosCustoFin = produtoOrcamentoCotacaoBll.CadastrarProdutoAtomicoCustoFinComTransacao(responseOpcoesPagtoResponse.TorcamentoCotacaoOpcaoPagtos,
                     responseUnificadosEAtomicos.TorcamentoCotacaoItemUnificados, opcao.ListaProdutos, loja, contextoBdGravacao, correlationId);
+
+                //aqui seria o ponto ideal para validar venda condicional por opção
+
+
                 if (!string.IsNullOrEmpty(responseAtomicosCustoFin.Mensagem))
                 {
                     response.Mensagem = responseAtomicosCustoFin.Mensagem;
@@ -149,6 +155,21 @@ namespace OrcamentoCotacaoBusiness.Bll
                 if (responseAtomicosCustoFin.Sucesso && responseAtomicosCustoFin.TorcamentoCotacaoOpcaoItemAtomicoCustoFins.Count == 0)
                 {
                     response.Mensagem = "Ops! Falha ao salvar custos dos produto!";
+                    return response;
+                }
+
+                var msgRetorno = ValidarVendaCondicionalPorOpcao(responseAtomicosCustoFin.TorcamentoCotacaoOpcaoItemAtomicoCustoFins);
+                if (!string.IsNullOrEmpty(msgRetorno))
+                {
+                    var split = msgRetorno.Split(", ").Distinct();
+                    msgRetorno = String.Join(", ", split);
+
+                    if (msgRetorno.IndexOf(",") > -1)
+                    {
+                        response.Mensagem = $"Os produtos {msgRetorno} da opção {seq} não podem ser vendidos neste orcamento!";
+                    }
+                    else response.Mensagem = $"O produto {msgRetorno} da opção {seq} não pode ser vendido neste orçamento!";
+
                     return response;
                 }
 
@@ -187,6 +208,43 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             response.Sucesso = true;
             return response;
+        }
+
+        private string ValidarVendaCondicionalPorOpcao(List<TorcamentoCotacaoOpcaoItemAtomicoCustoFin> lstCustoFin)
+        {
+            string retorno = string.Empty;
+            var proporcaoListaProdutos = Util.BuscarRegistroParametro(Constantes.ID_PARAMETRO_VendaCondicionada_RegraProporcao_ListaProdutos, contextoBdProvider).Result;
+            var proporcaoPercentualMaximo = Util.BuscarRegistroParametro(Constantes.ID_PARAMETRO_VendaCondicionada_RegraProporcao_PercentualMaximoPedido, contextoBdProvider).Result;
+
+            var vlTotalPrecoLista = 0m;
+            var vlTotalVendaCondicionada = 0m;
+            var qtdeProdutosCondicionados = 0;
+            string produtosCondicionados = string.Empty;
+            foreach (var item in lstCustoFin)
+            {
+                var atomico = item.TorcamentoCotacaoOpcaoItemAtomico;
+                var qtdeAtomicoReal = atomico.Qtde * atomico.TorcamentoCotacaoItemUnificado.Qtde;
+                vlTotalPrecoLista += (decimal)(qtdeAtomicoReal * item.PrecoLista);
+                if (proporcaoListaProdutos.Campo_texto.IndexOf(atomico.Produto) > -1)
+                {
+                    qtdeProdutosCondicionados++;
+                    vlTotalVendaCondicionada += (decimal)(qtdeAtomicoReal * item.PrecoLista);
+                    if (!string.IsNullOrEmpty(produtosCondicionados)) produtosCondicionados += ", ";
+
+                    produtosCondicionados += atomico.Produto;
+                }
+            }
+
+            if (vlTotalVendaCondicionada > 0)
+            {
+                if (qtdeProdutosCondicionados > 0 &&
+                    (vlTotalVendaCondicionada / vlTotalPrecoLista) > (decimal)(proporcaoPercentualMaximo.Campo_Real / 100))
+                {
+                    retorno = produtosCondicionados;
+                }
+            }
+
+            return retorno;
         }
 
         private TorcamentoCotacaoOpcao MontarTorcamentoCotacaoOpcao(CadastroOrcamentoOpcaoRequest opcao, int idOrcamentoCotacao,
@@ -260,7 +318,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     var tOpcao = orcamentoCotacaoOpcaoBll.AtualizarComTransacao(opcaoNovo, dbGravacao);
 
                     var responseUnificados = produtoOrcamentoCotacaoBll
-                        .AtualizarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(opcao.ListaProdutos, opcao.Id, 
+                        .AtualizarOrcamentoCotacaoOpcaoProdutosUnificadosComTransacao(opcao.ListaProdutos, opcao.Id,
                         dbGravacao, opcao.CorrelationId, tOrcamentoCotacaoOpcaoAntiga.TorcamentoCotacaoItemUnificados, tOpcao.Sequencia);
                     if (!string.IsNullOrEmpty(responseUnificados.Mensagem))
                     {
@@ -314,6 +372,21 @@ namespace OrcamentoCotacaoBusiness.Bll
                     if (responseAtomicosCustoFin.TorcamentoCotacaoOpcaoItemAtomicoCustoFins == null)
                     {
                         response.Mensagem = "Falha ao atualizar produtos!";
+                        return response;
+                    }
+
+                    var msgRetorno = ValidarVendaCondicionalPorOpcao(responseAtomicosCustoFin.TorcamentoCotacaoOpcaoItemAtomicoCustoFins);
+                    if (!string.IsNullOrEmpty(msgRetorno))
+                    {
+                        var split = msgRetorno.Split(", ").Distinct();
+                        msgRetorno = String.Join(", ", split);
+
+                        if (msgRetorno.IndexOf(",") > -1)
+                        {
+                            response.Mensagem = $"Os produtos {msgRetorno} não podem ser vendidos neste orcamento!";
+                        }
+                        else response.Mensagem = $"O produto {msgRetorno} não pode ser vendido neste orçamento!";
+
                         return response;
                     }
 
