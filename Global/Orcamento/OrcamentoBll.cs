@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Orcamento
 {
@@ -92,58 +93,251 @@ namespace Orcamento
             }
         }
 
-        public List<OrcamentoCotacaoListaDto> OrcamentoPorFiltro(TorcamentoFiltro filtro)
+        public OrcamentoConsultaDto OrcamentoPorFiltro(TorcamentoFiltro filtro)
         {
             try
             {
                 using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
-                    List<OrcamentoCotacaoListaDto> saida = (from c in db.Torcamento
-                                                            join vp in db.TorcamentistaEIndicadorVendedor on c.IdIndicadorVendedor equals vp.Id into gj
-                                                            from loj in gj.DefaultIfEmpty()
-                                                            where c.Data > DateTime.Now.AddDays(-60) && 
-                                                                  c.Loja == filtro.Loja
-                                                            orderby c.Data descending
-                                                            select new OrcamentoCotacaoListaDto
-                                                            {
-                                                                NumeroOrcamento = !c.IdOrcamentoCotacao.HasValue || c.IdOrcamentoCotacao == 0 ? "-" : c.IdOrcamentoCotacao.Value.ToString(),
-                                                                NumPedido = c.Orcamento,
-                                                                Cliente_Obra = $"{c.Endereco_nome}",
-                                                                Vendedor = c.Vendedor == null ? "-" : c.Vendedor,
-                                                                Parceiro = c.Orcamentista == null ? "-" : c.Orcamentista,
-                                                                VendedorParceiro = loj.Nome,
-                                                                Valor = c.Permite_RA_Status == 1 ? c.Vl_Total_NF.Value.ToString() : c.Vl_Total.ToString(),
-                                                                Orcamentista = c.Orcamentista == null ? "" : c.Orcamentista,
-                                                                Status = c.St_Orc_Virou_Pedido == 1 ? "Pedido em andamento" : c.St_Orcamento != "CAN" ? "Pedido em processamento" : "Cancelado",
-                                                                VistoEm = "",
-                                                                IdIndicadorVendedor = c.IdIndicadorVendedor == null ? null : c.IdIndicadorVendedor,
-                                                                St_Orc_Virou_Pedido = c.St_Orc_Virou_Pedido,
-                                                                Mensagem = "",
-                                                                DtCadastro = c.Data,
-                                                                DtExpiracao = null,
-                                                                DtInicio = filtro.DtInicio,
-                                                                DtFim = filtro.DtFim
-                                                            }).ToList();
-
-                    if (filtro.Status?.Length > 0)
-                        saida = saida.Where(x => filtro.Status.Contains(x.Status)).ToList();
-
-                    if (!String.IsNullOrEmpty(filtro.NumeroOrcamento))
-                        saida = saida.Where(x => x.NumeroOrcamento == filtro.NumeroOrcamento).ToList();
-
-                    if (!String.IsNullOrEmpty(filtro.Parceiro))
-                        saida = saida.Where(x => x.Parceiro == filtro.Parceiro).ToList();
-
-                    if (!String.IsNullOrEmpty(filtro.Vendedor))
-                        saida = saida.Where(x => x.Vendedor == filtro.Vendedor).ToList();
-
-                    if (!String.IsNullOrEmpty(filtro.VendedorParceiro))
-                        saida = saida.Where(x => x.VendedorParceiro == filtro.VendedorParceiro).ToList();
+                    var paraterQuery = (from p in db.TcfgParametro
+                                        join unp in db.TcfgUnidadeNegocioParametro on p.Id equals unp.IdCfgParametro
+                                        where p.Id == 20
+                                        select unp.Valor).FirstOrDefault();
 
                     if (filtro.DtInicio.HasValue && filtro.DtFim.HasValue)
-                        saida = saida.Where(x => filtro.DtInicio.Value >= x.DtInicio.Value && filtro.DtFim.Value <= x.DtFim.Value).ToList();
+                    {
+                        if (filtro.DtFim.Value.Date < filtro.DtInicio.Value.Date)
+                        {
+                            return new OrcamentoConsultaDto()
+                            {
+                                Sucesso = false,
+                                Mensagem = "Data 'Início da expiração' não deve ser menor que data 'Fim da expiração'!",
+                                OrcamentoCotacaoLista = new List<OrcamentoCotacaoListaDto>(),
+                                QtdeRegistros = 0
+                            };
+                        }
 
-                    return saida;
+                        TimeSpan difference = filtro.DtFim.Value.Date - filtro.DtInicio.Value.Date;
+
+                        if (difference.Days >= Convert.ToInt32(paraterQuery))
+                        {
+                            return new OrcamentoConsultaDto()
+                            {
+                                Sucesso = false,
+                                Mensagem = $"Número máximo de dias para o intervalo da consulta deve ser menor ou igual {paraterQuery}",
+                                OrcamentoCotacaoLista = new List<OrcamentoCotacaoListaDto>(),
+                                QtdeRegistros = 0
+                            };
+                        }
+                    }
+
+                    var query = from c in db.Torcamento
+
+                                join v in db.Tusuario on c.Vendedor equals v.Usuario into vendedorTemp
+                                from vendedor in vendedorTemp.DefaultIfEmpty()
+
+                                join vp in db.TorcamentistaEIndicadorVendedor on c.IdIndicadorVendedor equals vp.Id into gj
+                                from loj in gj.DefaultIfEmpty()
+
+                                where 
+                                    c.Data > DateTime.Now.AddDays(-60) 
+                                    && c.Loja == filtro.Loja
+
+                                select new OrcamentoCotacaoListaDto
+                                {
+                                    NumeroOrcamento = !c.IdOrcamentoCotacao.HasValue || c.IdOrcamentoCotacao == 0 ? "-" : c.IdOrcamentoCotacao.Value.ToString(),
+                                    NumPedido = c.Orcamento,
+                                    Cliente_Obra = c.Endereco_nome,
+                                    IdVendedor = vendedor.Id,
+                                    Vendedor = c.Vendedor == null ? "-" : c.Vendedor,
+                                    Parceiro = c.Orcamentista == null ? "-" : c.Orcamentista,
+                                    VendedorParceiro = loj.Nome,
+                                    Valor = c.Permite_RA_Status == 1 ? c.Vl_Total_NF.Value.ToString() : c.Vl_Total.ToString(),
+                                    Orcamentista = c.Orcamentista == null ? "" : c.Orcamentista,
+                                    IdStatus = c.St_Orc_Virou_Pedido == 1 ? 1 : c.St_Orcamento != "CAN" ? 2 : 3,
+                                    Status = c.St_Orc_Virou_Pedido == 1 ? "Pedido em andamento" : c.St_Orcamento != "CAN" ? "Pedido em processamento" : "Cancelado",
+                                    VistoEm = "",
+                                    IdIndicadorVendedor = c.IdIndicadorVendedor == null ? null : c.IdIndicadorVendedor,
+                                    St_Orc_Virou_Pedido = c.St_Orc_Virou_Pedido,
+                                    Mensagem = "",
+                                    DtCadastro = c.Data,
+                                    DtExpiracao = null,
+                                    DtInicio = filtro.DtInicio,
+                                    DtFim = filtro.DtFim
+                                };
+
+                    #region Where
+
+                    if (filtro.Status != null && filtro.Status.Length > 0)
+                    {
+                        query = query.Where(f => filtro.Status.Contains(f.IdStatus.ToString()));
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(filtro.Nome_numero))
+                    {
+                        int aux = 0;
+
+                        if (int.TryParse(filtro.Nome_numero, out aux))
+                        {
+                            query = query.Where(f => f.NumeroOrcamento.Contains(aux.ToString()));
+                        }
+                        else
+                        {
+                            query = query.Where(f => 
+                            f.Cliente_Obra.Contains(filtro.Nome_numero)
+                            || f.NumPedido.Contains(filtro.Nome_numero));
+                        }
+                    }
+
+                    if (filtro.Vendedores != null && filtro.Vendedores.Length > 0)
+                    {
+                        query = query.Where(f => filtro.Vendedores.Contains(f.IdVendedor.ToString()));
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(filtro.Vendedor))
+                    {
+                        query = query.Where(f => f.Vendedor == filtro.Vendedor);
+                    }
+
+                    if (filtro.Parceiros != null && filtro.Parceiros.Length > 0)
+                    {
+                        query = query.Where(f => filtro.Parceiros.Contains(f.Parceiro));
+                    }
+
+                    if (filtro.VendedorParceiros != null && filtro.VendedorParceiros.Length > 0)
+                    {
+                        query = query.Where(f => filtro.VendedorParceiros.Contains(f.IdIndicadorVendedor.ToString()));
+                    }
+
+                    if (filtro.DtInicio.HasValue)
+                    {
+                        query = query.Where(f => f.DtCadastro.Value.Date >= filtro.DtInicio.Value.Date);
+                    }
+
+                    if (filtro.DtFim.HasValue)
+                    {
+                        query = query.Where(f => f.DtCadastro.Value.Date <= filtro.DtFim.Value.Date);
+                    }
+
+                    #endregion
+
+                    #region Ordenação
+
+                    if (!string.IsNullOrWhiteSpace(filtro.NomeColunaOrdenacao))
+                    {
+                        switch (filtro.NomeColunaOrdenacao.ToUpper())
+                        {
+                            case "NUMEROORCAMENTO":
+                                if (filtro.OrdenacaoAscendente)
+                                {
+                                    query = query.OrderBy(o => o.NumeroOrcamento);
+                                }
+                                else
+                                {
+                                    query = query.OrderByDescending(o => o.NumeroOrcamento);
+                                }
+                                break;
+                            case "CLIENTE_OBRA":
+                                if (filtro.OrdenacaoAscendente)
+                                {
+                                    query = query.OrderBy(o =>
+                                    !string.IsNullOrWhiteSpace(o.NomeCliente) ? o.NomeCliente
+                                    : !string.IsNullOrWhiteSpace(o.NomeObra) ? o.NomeObra : o.NumeroOrcamento);
+                                }
+                                else
+                                {
+                                    query = query.OrderByDescending(o =>
+                                    !string.IsNullOrWhiteSpace(o.NomeCliente) ? o.NomeCliente
+                                    : !string.IsNullOrWhiteSpace(o.NomeObra) ? o.NomeObra : o.NumeroOrcamento);
+                                }
+                                break;
+
+                            case "VENDEDOR":
+                                if (filtro.OrdenacaoAscendente)
+                                {
+                                    query = query.OrderBy(o => o.Vendedor);
+                                }
+                                else
+                                {
+                                    query = query.OrderByDescending(o => o.Vendedor);
+                                }
+                                break;
+
+                            case "PARCEIRO":
+                                if (filtro.OrdenacaoAscendente)
+                                {
+                                    query = query.OrderBy(o => o.Parceiro);
+                                }
+                                else
+                                {
+                                    query = query.OrderByDescending(o => o.Parceiro);
+                                }
+                                break;
+
+                            case "VENDEDORPARCEIRO":
+                                if (filtro.OrdenacaoAscendente)
+                                {
+                                    query = query.OrderBy(o => o.VendedorParceiro);
+                                }
+                                else
+                                {
+                                    query = query.OrderByDescending(o => o.VendedorParceiro);
+                                }
+                                break;
+
+                            case "STATUS":
+                                if (filtro.OrdenacaoAscendente)
+                                {
+                                    query = query.OrderBy(o => o.Status);
+                                }
+                                else
+                                {
+                                    query = query.OrderByDescending(o => o.Status);
+                                }
+                                break;
+
+                            case "DTCADASTRO":
+                                if (filtro.OrdenacaoAscendente)
+                                {
+                                    query = query.OrderBy(o => o.DtCadastro);
+                                }
+                                else
+                                {
+                                    query = query.OrderByDescending(o => o.DtCadastro);
+                                }
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        query = query.OrderByDescending(o => o.DtCadastro);
+                    }
+
+                    #endregion
+
+                    #region Paginação
+
+                    int qtdeRegistros = query.Count();
+
+                    if (filtro.Exportar)
+                    {
+                        filtro.QtdeItensPagina = qtdeRegistros;
+                    }
+
+                    query = query
+                            .Skip((filtro.Pagina) * filtro.QtdeItensPagina)
+                            .Take(filtro.QtdeItensPagina);
+
+                    #endregion
+
+                    var result = query.ToList();
+
+                    return new OrcamentoConsultaDto()
+                    {
+                        Sucesso = true,
+                        OrcamentoCotacaoLista = result,
+                        QtdeRegistros = qtdeRegistros
+                    };
                 }
             }
             catch (Exception e)

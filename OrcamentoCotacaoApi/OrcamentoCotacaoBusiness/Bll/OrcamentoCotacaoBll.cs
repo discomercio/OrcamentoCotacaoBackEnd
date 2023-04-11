@@ -7,35 +7,30 @@ using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
 using Loja;
 using Loja.Dados;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Orcamento;
 using Orcamento.Dto;
+using OrcamentoCotacao;
 using OrcamentoCotacao.Dto;
 using OrcamentoCotacaoBusiness.Dto;
 using OrcamentoCotacaoBusiness.Models.Request;
+using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response;
+using OrcamentoCotacaoBusiness.Models.Response.Dashoard;
+using OrcamentoCotacaoBusiness.Models.Response.Orcamento;
 using OrcamentoCotacaoLink;
+using Prepedido.Dados.DetalhesPrepedido;
 using Prepedido.Dto;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading.Tasks;
-using UtilsGlobais.Parametros;
-using Microsoft.EntityFrameworkCore;
-using Prepedido.Dados.DetalhesPrepedido;
 using System.Text.Json;
-using System.ComponentModel.DataAnnotations.Schema;
-using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
-using OrcamentoCotacaoBusiness.Models.Response.Orcamento;
-using OrcamentoCotacaoBusiness.Models.Response.Dashoard;
-using Microsoft.Extensions.Configuration;
+using System.Threading.Tasks;
 using UtilsGlobais;
-using CodigoDescricao;
-using System.Collections;
-using Azure;
-using Azure.Core;
+using UtilsGlobais.Parametros;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -314,10 +309,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 LimitarData = true,
                 Loja = tOrcamentoFiltro.Loja,
                 TipoUsuario = usuarioLogin.TipoUsuario,
-                Apelido = usuarioLogin.Nome,
-                //QtdeItensPagina = tOrcamentoFiltro.QtdeItensPagina,
-                //Pagina = tOrcamentoFiltro.Pagina,
-                //OrdenarAscendente = tOrcamentoFiltro.OrdenarAscendente
+                Apelido = usuarioLogin.Nome
             };
 
             tOrcamentoFiltro.TipoUsuario = usuarioLogin.TipoUsuario;
@@ -353,109 +345,147 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             if (tOrcamentoFiltro.Origem == "ORCAMENTOS")
             {
-                var orcamentoCotacaoListaDto = _orcamentoCotacaoBll.PorFiltro(orcamentoCotacaoFiltro);
+                var response = new OrcamentoCotacaoListaResponse();
 
-                //if (!string.IsNullOrEmpty(obj.NomeColunaOrdenacao))
-                //{
-                //    if (obj.OrdenarAscendente)
-                //    {
-                //        saida = saida.OrderBy(x => EF.Property<TorcamentoCotacao>(x.tOrcamentoCotacao, filtro.NomeColunaOrdenacao));
-                //    }
-                //    else
-                //    {
-                //        saida = saida.OrderByDescending(x => EF.Property<TorcamentoCotacao>(x.tOrcamentoCotacao, filtro.NomeColunaOrdenacao));
-                //    }
-                //}
+                var orcamentoCotacaoConusltaDto = _orcamentoCotacaoBll.ConsultaOrcamento(tOrcamentoFiltro);
 
-                var result = orcamentoCotacaoListaDto
-                        .Skip((tOrcamentoFiltro.Pagina) * tOrcamentoFiltro.QtdeItensPagina)
-                        .Take(tOrcamentoFiltro.QtdeItensPagina)
-                        .ToList();
+                response.CorrelationId = orcamentoCotacaoConusltaDto.CorrelationId;
+                response.Sucesso = orcamentoCotacaoConusltaDto.Sucesso;
+                response.Mensagem = orcamentoCotacaoConusltaDto.Mensagem;
+                response.Mensagens = orcamentoCotacaoConusltaDto.Mensagens;
+                response.qtdeRegistros = orcamentoCotacaoConusltaDto.QtdeRegistros;
 
-                var lista = new List<OrcamentoCotacaoListaDto>();
-
-                if (orcamentoCotacaoListaDto != null)
+                if (orcamentoCotacaoConusltaDto.OrcamentoCotacaoLista.Count > 0)
                 {
-                    var vendedores = _usuarioBll.PorFiltro(new TusuarioFiltro { });
-                    var parceiros = _orcamentistaEIndicadorBll.BuscarParceiros(new TorcamentistaEindicadorFiltro { });
-                    var vendParceiros = _orcamentistaEIndicadorVendedorBll.PorFiltro(new TorcamentistaEIndicadorVendedorFiltro { });
-
-                    if (!string.IsNullOrEmpty(orcamentoCotacaoFiltro.Vendedor) && !string.IsNullOrEmpty(orcamentoCotacaoFiltro.Parceiro))
+                    foreach (var OrcamentoCotacaoItem in orcamentoCotacaoConusltaDto.OrcamentoCotacaoLista)
                     {
-                        var idVendedor = vendedores.FirstOrDefault(v => v.Usuario == orcamentoCotacaoFiltro.Vendedor);
-                        var idParceiro = parceiros.FirstOrDefault(p => p.Apelido == orcamentoCotacaoFiltro.Parceiro);
-
-                        if (idVendedor != null && idParceiro != null)
+                        response.orcamentoCotacaoListaDto.Add(new OrcamentoCotacaoListaDto()
                         {
-                            orcamentoCotacaoListaDto = orcamentoCotacaoListaDto
-                                .Where(o => o.IdVendedor == idVendedor.Id
-                                 && (o.IdIndicador.HasValue && o.IdIndicador.Value == idParceiro.IdIndicador)
-                             ).ToList();
-                        }
+                            NumeroOrcamento = OrcamentoCotacaoItem.NumeroOrcamento,
+                            NumPedido = OrcamentoCotacaoItem.NumPedido,
+                            Cliente_Obra = OrcamentoCotacaoItem.Cliente_Obra,
+                            Vendedor = OrcamentoCotacaoItem.Vendedor,
+                            Parceiro = OrcamentoCotacaoItem.Parceiro,
+                            VendedorParceiro = OrcamentoCotacaoItem.VendedorParceiro,
+                            Valor = OrcamentoCotacaoItem.Valor,
+                            Status = OrcamentoCotacaoItem.Status,
+                            IdStatus = OrcamentoCotacaoItem.IdStatus,
+                            VistoEm = OrcamentoCotacaoItem.VistoEm,
+                            Mensagem = OrcamentoCotacaoItem.Mensagem,
+                            DtCadastro = OrcamentoCotacaoItem.DtCadastro,
+                            DtExpiracao = OrcamentoCotacaoItem.DtExpiracao,
+                            Orcamentista = OrcamentoCotacaoItem.Orcamentista,
+                            Loja = OrcamentoCotacaoItem.Loja,
+                            IdOrcamentoCotacao = OrcamentoCotacaoItem.IdOrcamentoCotacao,
+                            IdIndicadorVendedor = OrcamentoCotacaoItem.IdIndicadorVendedor,
+                            DtInicio = OrcamentoCotacaoItem.DtInicio,
+                            DtFim = OrcamentoCotacaoItem.DtFim,
+                            St_Orc_Virou_Pedido = OrcamentoCotacaoItem.St_Orc_Virou_Pedido,
+                            IdVendedor = OrcamentoCotacaoItem.IdVendedor,
+                            DataHoraCadastro = OrcamentoCotacaoItem.DataHoraCadastro,
+                            NomeCliente = OrcamentoCotacaoItem.NomeCliente,
+                            NomeObra = OrcamentoCotacaoItem.NomeObra
+                        });
                     }
-
-                    result.ForEach(x => lista.Add(new OrcamentoCotacaoListaDto()
-                    {
-                        NumeroOrcamento = x.Id.ToString(),
-                        NumPedido = String.IsNullOrEmpty(x.IdPedido) ? "-" : x.IdPedido,
-                        Cliente_Obra = !string.IsNullOrEmpty(x.NomeObra) ? $"{x.NomeCliente} - {x.NomeObra}" : x.NomeCliente,
-                        Vendedor = vendedores.FirstOrDefault(v => v.Id == x.IdVendedor)?.Usuario,
-                        Parceiro = parceiros.FirstOrDefault(v => v.IdIndicador == x.IdIndicador) == null ? "-" : parceiros.FirstOrDefault(v => v.IdIndicador == x.IdIndicador).Apelido,
-                        VendedorParceiro = vendParceiros.FirstOrDefault(v => v.Id == x.IdIndicadorVendedor)?.Nome,
-                        IdIndicadorVendedor = vendParceiros.FirstOrDefault(v => v.Id == x.IdIndicadorVendedor)?.Id,
-                        Valor = "0",
-                        Status = x.StatusNome,
-                        IdStatus = x.Status,
-                        VistoEm = "",
-                        Mensagem = _mensagemBll.ObterListaMensagemPendente(x.Id).Result.Any() ? "Sim" : "Não",
-                        DtCadastro = x.DataCadastro,
-                        DtExpiracao = x.Validade,
-                        DtInicio = tOrcamentoFiltro.DtInicio,
-                        DtFim = tOrcamentoFiltro.DtFim
-                    }));
                 }
 
-                return new OrcamentoCotacaoListaResponse() 
-                { 
-                    Sucesso = true, 
-                    orcamentoCotacaoListaDto = lista, 
-                    qtdeRegistros = orcamentoCotacaoListaDto.Count
-                };
+                return response;
             }
             else if (tOrcamentoFiltro.Origem == "PENDENTES") //PrePedido/Em Aprovação [tOrcamentos]
             {
-                var response = _orcamentoBll.OrcamentoPorFiltro(tOrcamentoFiltro);
+                var response = new OrcamentoCotacaoListaResponse();
 
-                return new OrcamentoCotacaoListaResponse()
-                {
-                    Sucesso = true,
-                    orcamentoCotacaoListaDto = response,
-                    qtdeRegistros = response.Count
-                };
-            }
-            else
-            {
-                var lista = _pedidoPrepedidoApiBll.ListarPedidos(tOrcamentoFiltro);
+                var orcamentoConusltaDto = _orcamentoBll.OrcamentoPorFiltro(tOrcamentoFiltro);
 
-                var listaCodigoDescricao = _codigoDescricaoBll.StatusPorFiltro(new Models.Request.CodigoDescricao.CodigoDescricaoRequest()
-                {
-                    Grupo = "Pedido_St_Entrega"
-                });
+                response.CorrelationId = orcamentoConusltaDto.CorrelationId;
+                response.Sucesso = orcamentoConusltaDto.Sucesso;
+                response.Mensagem = orcamentoConusltaDto.Mensagem;
+                response.Mensagens = orcamentoConusltaDto.Mensagens;
+                response.qtdeRegistros = orcamentoConusltaDto.QtdeRegistros;
 
-                if (listaCodigoDescricao.Sucesso)
+                if (orcamentoConusltaDto.OrcamentoCotacaoLista.Count > 0)
                 {
-                    foreach (var item in lista)
+                    foreach (var OrcamentoCotacaoItem in orcamentoConusltaDto.OrcamentoCotacaoLista)
                     {
-                        item.Status = listaCodigoDescricao.ListaCodigoDescricao.Where(x => x.Codigo == item.Status).FirstOrDefault().Descricao;
+                        response.orcamentoCotacaoListaDto.Add(new OrcamentoCotacaoListaDto()
+                        {
+                            NumeroOrcamento = OrcamentoCotacaoItem.NumeroOrcamento,
+                            NumPedido = OrcamentoCotacaoItem.NumPedido,
+                            Cliente_Obra = OrcamentoCotacaoItem.Cliente_Obra,
+                            Vendedor = OrcamentoCotacaoItem.Vendedor,
+                            Parceiro = OrcamentoCotacaoItem.Parceiro,
+                            VendedorParceiro = OrcamentoCotacaoItem.VendedorParceiro,
+                            Valor = OrcamentoCotacaoItem.Valor,
+                            Status = OrcamentoCotacaoItem.Status,
+                            IdStatus = OrcamentoCotacaoItem.IdStatus,
+                            VistoEm = OrcamentoCotacaoItem.VistoEm,
+                            Mensagem = OrcamentoCotacaoItem.Mensagem,
+                            DtCadastro = OrcamentoCotacaoItem.DtCadastro,
+                            DtExpiracao = OrcamentoCotacaoItem.DtExpiracao,
+                            Orcamentista = OrcamentoCotacaoItem.Orcamentista,
+                            Loja = OrcamentoCotacaoItem.Loja,
+                            IdOrcamentoCotacao = OrcamentoCotacaoItem.IdOrcamentoCotacao,
+                            IdIndicadorVendedor = OrcamentoCotacaoItem.IdIndicadorVendedor,
+                            DtInicio = OrcamentoCotacaoItem.DtInicio,
+                            DtFim = OrcamentoCotacaoItem.DtFim,
+                            St_Orc_Virou_Pedido = OrcamentoCotacaoItem.St_Orc_Virou_Pedido,
+                            IdVendedor = OrcamentoCotacaoItem.IdVendedor,
+                            DataHoraCadastro = OrcamentoCotacaoItem.DataHoraCadastro,
+                            NomeCliente = OrcamentoCotacaoItem.NomeCliente,
+                            NomeObra = OrcamentoCotacaoItem.NomeObra
+                        });
                     }
                 }
 
-                return new OrcamentoCotacaoListaResponse()
+                return response;
+            }
+            else
+            {
+                var response = new OrcamentoCotacaoListaResponse();
+
+                var pedidoConsultaDto = _pedidoPrepedidoApiBll.ListarPedidos(tOrcamentoFiltro);
+
+                response.CorrelationId = pedidoConsultaDto.CorrelationId;
+                response.Sucesso = pedidoConsultaDto.Sucesso;
+                response.Mensagem = pedidoConsultaDto.Mensagem;
+                response.Mensagens = pedidoConsultaDto.Mensagens;
+                response.qtdeRegistros = pedidoConsultaDto.QtdeRegistros;
+
+                if (pedidoConsultaDto.OrcamentoCotacaoLista.Count > 0)
                 {
-                    Sucesso = true,
-                    orcamentoCotacaoListaDto = lista,
-                    qtdeRegistros = lista.Count
-                };
+                    foreach (var OrcamentoCotacaoItem in pedidoConsultaDto.OrcamentoCotacaoLista)
+                    {
+                        response.orcamentoCotacaoListaDto.Add(new OrcamentoCotacaoListaDto()
+                        {
+                            NumeroOrcamento = OrcamentoCotacaoItem.NumeroOrcamento,
+                            NumPedido = OrcamentoCotacaoItem.NumPedido,
+                            Cliente_Obra = OrcamentoCotacaoItem.Cliente_Obra,
+                            Vendedor = OrcamentoCotacaoItem.Vendedor,
+                            Parceiro = OrcamentoCotacaoItem.Parceiro,
+                            VendedorParceiro = OrcamentoCotacaoItem.VendedorParceiro,
+                            Valor = OrcamentoCotacaoItem.Valor,
+                            Status = OrcamentoCotacaoItem.Status,
+                            IdStatus = OrcamentoCotacaoItem.IdStatus,
+                            VistoEm = OrcamentoCotacaoItem.VistoEm,
+                            Mensagem = OrcamentoCotacaoItem.Mensagem,
+                            DtCadastro = OrcamentoCotacaoItem.DtCadastro,
+                            DtExpiracao = OrcamentoCotacaoItem.DtExpiracao,
+                            Orcamentista = OrcamentoCotacaoItem.Orcamentista,
+                            Loja = OrcamentoCotacaoItem.Loja,
+                            IdOrcamentoCotacao = OrcamentoCotacaoItem.IdOrcamentoCotacao,
+                            IdIndicadorVendedor = OrcamentoCotacaoItem.IdIndicadorVendedor,
+                            DtInicio = OrcamentoCotacaoItem.DtInicio,
+                            DtFim = OrcamentoCotacaoItem.DtFim,
+                            St_Orc_Virou_Pedido = OrcamentoCotacaoItem.St_Orc_Virou_Pedido,
+                            IdVendedor = OrcamentoCotacaoItem.IdVendedor,
+                            DataHoraCadastro = OrcamentoCotacaoItem.DataHoraCadastro,
+                            NomeCliente = OrcamentoCotacaoItem.NomeCliente,
+                            NomeObra = OrcamentoCotacaoItem.NomeObra
+                        });
+                    }
+                }
+
+                return response;
             }
         }
 
@@ -2129,11 +2159,5 @@ namespace OrcamentoCotacaoBusiness.Bll
             response.Sucesso = true;
             return response;
         }
-    }
-
-    public sealed class OrcamentoCotacaoListaResponse : UtilsGlobais.RequestResponse.ResponseBase
-    {
-        public List<OrcamentoCotacaoListaDto> orcamentoCotacaoListaDto { get; set; }
-        public int qtdeRegistros { get; set; }
     }
 }

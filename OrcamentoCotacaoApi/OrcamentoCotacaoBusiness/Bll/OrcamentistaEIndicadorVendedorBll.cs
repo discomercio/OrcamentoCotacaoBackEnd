@@ -195,5 +195,10 @@ namespace OrcamentoCotacaoBusiness.Bll
                 return ret;
             }
         }
+
+        public List<TorcamentistaEIndicadorVendedor> BuscarVendedorParceirosPorParceiros(TorcamentistaEIndicadorVendedorFiltro obj)
+        {
+            return _orcamentistaEindicadorVendedorBll.BuscarVendedorParceirosPorParceiros(obj);
+        }
     }
 }

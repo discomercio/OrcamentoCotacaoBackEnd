@@ -81,6 +81,12 @@ namespace OrcamentistaEindicador
                     {
                         saida = saida.Where(x => x.Vendedor == obj.vendedorId);
                     }
+
+                    //if (obj.vendedores != null && obj.vendedores.Length > 0)
+                    //{
+                    //    saida = saida.Where(x => obj.vendedores.Contains(x.IdIndicador.ToString()));
+                    //}
+
                     if (obj.idParceiro > 0)
                     {
                         saida = saida.Where(x => x.IdIndicador == obj.idParceiro);
