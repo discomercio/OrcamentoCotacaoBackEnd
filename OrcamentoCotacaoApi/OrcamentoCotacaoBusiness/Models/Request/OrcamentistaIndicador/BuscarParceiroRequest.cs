@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace OrcamentoCotacaoBusiness.Models.Request.OrcamentistaIndicador
 {
@@ -12,5 +10,11 @@ namespace OrcamentoCotacaoBusiness.Models.Request.OrcamentistaIndicador
 
         [JsonProperty("lojas")]
         public List<string> Lojas { get; set; }
+
+        //[JsonProperty("vendedores")]
+        //public string[] Vendedores { get; set; }
+
+        //[JsonProperty("loja")]
+        //public string Loja { get; set; }
     }
 }

@@ -18,11 +18,16 @@ namespace Orcamento.Dto
         public DateTime? DtCadastro { get; set; }
         public DateTime? DtExpiracao { get; set; }
         public string Orcamentista { get; set; }
-        public string Loja { get; internal set; }
+        public string Loja { get; set; }
         public int? IdOrcamentoCotacao { get; set; }
         public int? IdIndicadorVendedor { get; set; }
         public DateTime? DtInicio { get; set; }
         public DateTime? DtFim { get; set; }
-        public short? St_Orc_Virou_Pedido { get; internal set; }
+        public short? St_Orc_Virou_Pedido { get; set; }
+        public int IdVendedor { get; set; }
+        public DateTime DataHoraCadastro { get; set; }
+        public string NomeCliente { get; set; }
+        public string NomeObra { get; set; }
+        public string St_Entrega { get; set; }
     }
 }

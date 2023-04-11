@@ -11,5 +11,6 @@ namespace InfraBanco.Modelos.Filtros
         public int IdIndicador { get; set; }
         public string nomeVendedor { get; set; }
         public bool? ativo { get; set; }
+        public string[] Parceiros { get; set; }
     }
 }

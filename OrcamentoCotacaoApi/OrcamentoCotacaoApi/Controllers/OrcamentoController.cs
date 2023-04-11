@@ -60,7 +60,8 @@ namespace OrcamentoCotacaoApi.Controllers
             {
                 var response = new
                 {
-                    Orcamentos = saida.Count
+                    QtdOrcamentos = saida.orcamentoCotacaoListaDto.Count,
+                    QtdeRegistros = saida.qtdeRegistros
                 };
 
                 _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/PorFiltro/GET - Response => [{JsonSerializer.Serialize(response)}].");

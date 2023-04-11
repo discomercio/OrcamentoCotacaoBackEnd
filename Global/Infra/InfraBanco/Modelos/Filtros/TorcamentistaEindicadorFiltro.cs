@@ -16,4 +16,3 @@ namespace InfraBanco.Modelos.Filtros
         public List<string> Lojas { get; set; }
     }
 }
-    

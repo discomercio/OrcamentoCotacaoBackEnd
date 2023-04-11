@@ -1,7 +1,5 @@
 ﻿using Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace InfraBanco.Modelos.Filtros
 {
@@ -9,12 +7,8 @@ namespace InfraBanco.Modelos.Filtros
     {
         public int Id { get; set; }
         public bool LimitarData { get; set; }
-
         public bool LimitarDataDashboard { get; set; }
         public bool Tusuario { get; set; }
-
-        public int? Page { get; set; }
-        public int? RecordsPerPage { get; set; }
         public string Origem { get; set; }
         public string Loja { get; set; }
         public int? TipoUsuario { get; set; }
@@ -30,5 +24,10 @@ namespace InfraBanco.Modelos.Filtros
         public string VendedorParceiro { get; set; }
         public DateTime? DtInicio { get; set; }
         public DateTime? DtFim { get; set; }
+
+        //public int Pagina { get; set; }
+        //public int QtdeItensPagina { get; set; }
+        //public string NomeColunaOrdenacao { get; set; }
+        //public bool OrdenarAscendente { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using InfraBanco.Modelos.Filtros;
-using Orcamento.Dto;
 using OrcamentoCotacaoBusiness.Dto.Pedido;
 using OrcamentoCotacaoBusiness.Dto.Pedido.DetalhesPedido;
+using Prepedido.Dto;
 using Prepedido.PedidoVisualizacao;
 using System;
 using System.Collections.Generic;
@@ -32,7 +32,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             return PedidoDto.PedidoDto_De_PedidoDados(ret);
         }
 
-        public List<OrcamentoCotacaoListaDto> ListarPedidos(TorcamentoFiltro tOrcamentoFiltro)
+        public PedidoConsultaDto ListarPedidos(TorcamentoFiltro tOrcamentoFiltro)
         {
             return _pedidoBll.ListarPedidosPorFiltro(tOrcamentoFiltro);
         }

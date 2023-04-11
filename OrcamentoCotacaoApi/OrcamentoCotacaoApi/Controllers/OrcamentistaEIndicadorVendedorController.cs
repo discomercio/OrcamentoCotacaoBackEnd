@@ -348,5 +348,39 @@ namespace OrcamentoCotacaoApi.Controllers
                 throw;
             }
         }
+
+        [HttpPost]
+        [Route("vendedores-parceiros-por-parceiros")]
+        public async Task<IEnumerable<OrcamentistaEIndicadorVendedorResponseViewModel>> BuscarVendedoresDosParceirosPorParceiros(string[] parceiros)
+        {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                Parceiros = parceiros
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/BuscarVendedoresDosParceirosPorParceiros/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
+            var result = new List<OrcamentistaEIndicadorVendedorResponseViewModel>();
+
+            var usuarios = _orcamentistaEindicadorVendedorBll.BuscarVendedorParceirosPorParceiros(
+                new InfraBanco.Modelos.Filtros.TorcamentistaEIndicadorVendedorFiltro()
+                {
+                    Parceiros = parceiros
+                });
+
+            result.AddRange(_mapper.Map<List<OrcamentistaEIndicadorVendedorResponseViewModel>>(usuarios));
+
+            var response = new
+            {
+                OrcamentistaEIndicadorVendedor = result.Count
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/BuscarVendedoresDosParceirosPorParceiros/GET - Response => [{JsonSerializer.Serialize(response)}].");
+
+            return result;
+        }
     }
 }

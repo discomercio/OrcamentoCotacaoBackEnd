@@ -1,10 +1,10 @@
 ﻿using ClassesBase;
 using InfraBanco;
+using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 
 namespace OrcamentistaEIndicadorVendedor
@@ -133,13 +133,56 @@ namespace OrcamentistaEIndicadorVendedor
                     {
                         vendedorParceiro = vendedorParceiro.Where(x => x.Ativo == obj.ativo);
                     }
+
                     return vendedorParceiro.ToList();
                 }
-
             }
             catch (Exception ex)
             {
+                throw ex;
+            }
+        }
 
+        public List<TorcamentistaEIndicadorVendedor> BuscarVendedorParceirosPorParceiros(TorcamentistaEIndicadorVendedorFiltro obj)
+        {
+            try
+            {
+                using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+                {
+                    var vendedorParceiro = from usr in db.TorcamentistaEIndicadorVendedor
+                                           join par in db.TorcamentistaEindicador on usr.IdIndicador equals par.IdIndicador
+                                           where 
+                                                par.Status == Constantes.ORCAMENTISTA_INDICADOR_STATUS_ATIVO
+                                                && usr.Ativo == true
+                                                && obj.Parceiros.Contains(par.Apelido)
+                                                orderby usr.Nome
+                                            select new TorcamentistaEIndicadorVendedor()
+                                           {
+                                               Id = usr.Id,
+                                               Nome = usr.Nome,
+                                               Email = usr.Email,
+                                               Datastamp = UtilsGlobais.SenhaBll.DecodificaSenha(usr.Datastamp),
+                                               Senha = usr.Senha,
+                                               IdIndicador = usr.IdIndicador,
+                                               Telefone = usr.Telefone,
+                                               Celular = usr.Celular,
+                                               Ativo = usr.Ativo,
+                                               UsuarioCadastro = usr.UsuarioCadastro,
+                                               DataUltimaAlteracaoSenha = usr.DataUltimaAlteracaoSenha,
+                                               UsuarioUltimaAlteracao = usr.UsuarioUltimaAlteracao,
+                                               DataCadastro = usr.DataCadastro,
+                                               DataUltimaAlteracao = usr.DataUltimaAlteracao,
+                                               Loja = par.Loja,
+                                               VendedorResponsavel = par.Vendedor,
+                                               Parceiro = par.Apelido,
+                                               StLoginBloqueadoAutomatico = usr.StLoginBloqueadoAutomatico
+                                           };
+
+                    return vendedorParceiro.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
                 throw ex;
             }
         }
