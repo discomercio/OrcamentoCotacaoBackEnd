@@ -10,6 +10,7 @@ using Produto;
 using ProdutoCatalogo;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -43,9 +44,12 @@ namespace OrcamentoCotacaoBusiness.Bll
         {
             return _bll.PorFiltro(filtro);
         }
-        public List<ProdutoCatalogoListarResponse> ListarProdutoCatalogo(ProdutoCatalogoListarRequest request)
+
+        public ListaProdutoCatalogoListarResponse ListarProdutoCatalogo(ProdutoCatalogoListarRequest request)
         {
-            var response = new List<ProdutoCatalogoListarResponse>();
+            var response = new ListaProdutoCatalogoListarResponse();
+            response.Sucesso = false;
+            response.ListaProdutoCatalogoResponse = new List<ProdutoCatalogoListarResponse>();
 
             var produtoCatalogoListarDto = _bll.ListarProdutoCatalogo(
                                 request.FabricantesSelecionados,
@@ -56,11 +60,21 @@ namespace OrcamentoCotacaoBusiness.Bll
                                 request.CicloSelecionado,
                                 request.TipoUnidadeSelecionado,
                                 request.ImagemSelecionado,
-                                request.AtivoSelecionado);
+                                request.AtivoSelecionado,
+                                request.Pagina,
+                                request.QtdeItensPorPagina,
+                                request.NomeColunaOrdenacao);
+
+            response.QtdeRegistros = produtoCatalogoListarDto.Count;
+
+            if (request.QtdeItensPorPagina != 0)
+            {
+                produtoCatalogoListarDto = produtoCatalogoListarDto.Skip(request.Pagina * request.QtdeItensPorPagina).Take(request.QtdeItensPorPagina).ToList();
+            }
 
             foreach (var produtoCatalogoItem in produtoCatalogoListarDto)
             {
-                response.Add(new ProdutoCatalogoListarResponse()
+                response.ListaProdutoCatalogoResponse.Add(new ProdutoCatalogoListarResponse()
                 {
                     Ativo = produtoCatalogoItem.Ativo,
                     Capacidade = produtoCatalogoItem.Capacidade,
@@ -83,6 +97,9 @@ namespace OrcamentoCotacaoBusiness.Bll
                 });
             }
 
+            if (response.ListaProdutoCatalogoResponse.Count <= 0) response.QtdeRegistros = 0;
+
+            response.Sucesso = true;
             return response;
 
         }
