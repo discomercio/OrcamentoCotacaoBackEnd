@@ -367,7 +367,7 @@ namespace ProdutoCatalogo
                                         Ativo = pc.Ativo,
                                     }).ToList();
 
-                    if (fabricantes.Length > 0)
+                    if (fabricantes != null)
                     {
                         produtos = produtos.Where(x => fabricantes.Any(y => x.CodigoFabricante.Contains(y.ToString()))).ToList();
                     }
@@ -376,7 +376,7 @@ namespace ProdutoCatalogo
                     {
                         produtos = produtos
                             .Where(f => !string.IsNullOrEmpty(f.CodAlfanumericoFabricante)
-                            && f.CodAlfanumericoFabricante.Trim().ToUpper() == codAlfaNumFabricante.Trim().ToUpper()).ToList();
+                            && f.CodAlfanumericoFabricante.Trim().ToUpper().Contains(codAlfaNumFabricante.Trim().ToUpper())).ToList();
                     }
 
                     if (!string.IsNullOrEmpty(descargaCondensadora))
@@ -386,13 +386,13 @@ namespace ProdutoCatalogo
                             && f.IdDescargaCondensadora.Value == Convert.ToInt32(descargaCondensadora)).ToList();
                     }
 
-                    if (voltagem.Length > 0)
+                    if (voltagem != null)
                     {
                         produtos = produtos
                             .Where(x => voltagem.Any(y => x.IdVoltagem.HasValue && x.IdVoltagem.Value.ToString().Contains(y.ToString()))).ToList();
                     }
 
-                    if (capacidade.Length > 0)
+                    if (capacidade != null)
                     {
                         produtos = produtos
                             .Where(x => capacidade.Any(y => x.IdCapacidade.HasValue && x.IdCapacidade.Value.ToString().Contains(y.ToString()))).ToList();
@@ -405,7 +405,7 @@ namespace ProdutoCatalogo
                             && f.IdCiclo.Value == Convert.ToInt32(ciclo)).ToList();
                     }
 
-                    if (tipoUnidade.Length > 0)
+                    if (tipoUnidade != null)
                     {
                         produtos = produtos
                             .Where(x => tipoUnidade.Any(y => x.IdTipoUnidade.HasValue && x.IdTipoUnidade.Value.ToString().Contains(y.ToString()))).ToList();
