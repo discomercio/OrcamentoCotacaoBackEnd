@@ -101,22 +101,9 @@ namespace OrcamentoCotacaoApi.Controllers
 
             var response = _bll.ListarProdutoCatalogo(request);
 
-            if (response.Count > 0)
-            {
-                var responseRet = new
-                {
-                    ProdutoCatalogoListar = response.Count
-                };
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoCatalogoController/ProdutoCatalogoListar/POST - Response => [{System.Text.Json.JsonSerializer.Serialize(response)}].");
 
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoCatalogoController/ProdutoCatalogoListar/POST - Response => [{System.Text.Json.JsonSerializer.Serialize(responseRet)}].");
-
-                return Ok(response);
-            }
-            else
-            {
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoCatalogoController/ProdutoCatalogoListar/POST - Response => [Não tem response].");
-                return NoContent();
-            }
+            return Ok(response);
         }
 
         [HttpGet("ativos")]

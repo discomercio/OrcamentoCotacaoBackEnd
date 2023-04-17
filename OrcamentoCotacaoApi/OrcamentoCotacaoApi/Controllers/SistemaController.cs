@@ -57,7 +57,8 @@ namespace OrcamentoCotacaoApi.Controllers
 
                 var retorno = new
                 {
-                    versao = versionInfo.FileVersion.ToString()
+                    versao = versionInfo.FileVersion.ToString(),
+                    versaoFront = System.IO.File.ReadAllText("versaoFront.txt")
                 };
 
                 return Ok(retorno);

@@ -82,6 +82,10 @@ namespace InfraBanco.Modelos
         [MaxLength(5)]
         public string Ciclo { get; set; }
 
+        [Column("cod_produto_alfanum_fabricante")]
+        [MaxLength(36)]
+        public string CodProdutoAlfaNumFabricante { get; set; }
+
         public ICollection<TprodutoLoja> TprodutoLoja { get; set; }
     }
 }

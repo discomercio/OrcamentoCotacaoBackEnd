@@ -39,7 +39,10 @@ namespace ProdutoCatalogo
             string ciclo,
             string[] tipoUnidade,
             bool? imagem,
-            bool? ativo)
+            bool? ativo,
+            int pagina, 
+            int qtdeItensPorPagina,
+            string nomeColunaOrdenacao)
         {
             return _data.ListarProdutoCatalogo(
                 fabricantes,
@@ -50,7 +53,10 @@ namespace ProdutoCatalogo
                 ciclo,
                 tipoUnidade,
                 imagem,
-                ativo);
+                ativo,
+                pagina,
+                qtdeItensPorPagina,
+                nomeColunaOrdenacao);
         }
 
         public bool ExcluirImagem(int idProduto, int idImagem)
