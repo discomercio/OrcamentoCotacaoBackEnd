@@ -190,6 +190,11 @@ namespace Prepedido.PedidoVisualizacao
                         query = query.Where(f => filtro.Parceiros.Contains(f.Parceiro));
                     }
 
+                    if(filtro.VendedorParceiros != null && filtro.VendedorParceiros.Count() > 0)
+                    {
+                        query = query.Where(x => filtro.VendedorParceiros.Contains(x.VendedorParceiro));
+                    }
+
                     if (filtro.DtInicio.HasValue)
                     {
                         query = query.Where(f => f.DtCadastro.Value.Date >= filtro.DtInicio.Value.Date);
