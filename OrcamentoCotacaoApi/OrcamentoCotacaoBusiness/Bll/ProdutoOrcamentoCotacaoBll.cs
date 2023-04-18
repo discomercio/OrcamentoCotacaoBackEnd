@@ -129,8 +129,8 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     if (composto.Filhos.Count != filhotes.Count)
                     {
-                        var prodARemover = produtoComboDados.ProdutoDados.Where(x => x.Fabricante == composto.PaiFabricante && x.Produto == composto.PaiProduto).FirstOrDefault();
-                        if (prodARemover != null) produtoComboDados.ProdutoDados.Remove(prodARemover);
+                        var prodARemover = produtoResponseViewModel.ProdutosSimples.Where(x => x.Fabricante == composto.PaiFabricante && x.Produto == composto.PaiProduto).FirstOrDefault();
+                        if (prodARemover != null) produtoResponseViewModel.ProdutosSimples.Remove(prodARemover);
                         continue;
                     }
 
@@ -173,8 +173,6 @@ namespace OrcamentoCotacaoBusiness.Bll
                     produtoCompostoResponse.PaiPrecoTotal = somaFilhotes;
                     produtoCompostoResponse.Filhos = produtoCompostoResponseApoio.Filhos;
                     produtoResponseViewModel.ProdutosCompostos.Add(produtoCompostoResponse);
-
-
                 }
 
                 produtoResponseViewModel.ProdutosSimples = produtoResponseViewModel.ProdutosSimples.OrderBy(x => x.Fabricante).ToList();
