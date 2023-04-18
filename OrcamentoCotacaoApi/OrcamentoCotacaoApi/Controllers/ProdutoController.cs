@@ -115,7 +115,8 @@ namespace OrcamentoCotacaoApi.BaseController
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoController/ObterListaPropriedadesProdutos/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
-            if (!User.ValidaPermissao((int)ePermissao.CatalogoPropriedadeConsultar))
+            if (!User.ValidaPermissao((int)ePermissao.CatalogoPropriedadeConsultar) &&
+                !User.ValidaPermissao((int)ePermissao.CatalogoConsultar))
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
             var ret = await _produtoBll.ObterListaPropriedadesProdutos();
