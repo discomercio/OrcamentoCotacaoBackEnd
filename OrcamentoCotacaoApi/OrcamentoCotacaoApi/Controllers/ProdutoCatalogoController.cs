@@ -96,7 +96,8 @@ namespace OrcamentoCotacaoApi.Controllers
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoCatalogoController/ProdutoCatalogoListar/POST - Request => [{System.Text.Json.JsonSerializer.Serialize(request)}].");
 
-            if (!User.ValidaPermissao((int)ePermissao.CatalogoCaradastrarIncluirEditar))
+            if (!User.ValidaPermissao((int)ePermissao.CatalogoCaradastrarIncluirEditar) &&
+                !User.ValidaPermissao((int)ePermissao.CatalogoConsultar))
                 return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
             var response = _bll.ListarProdutoCatalogo(request);
