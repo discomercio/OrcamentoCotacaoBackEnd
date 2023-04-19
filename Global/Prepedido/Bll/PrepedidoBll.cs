@@ -937,7 +937,9 @@ namespace Prepedido.Bll
             }
 
             if (!aprovandoOrcamentoCotacao)
-                lstErros.Add(await validacoesPrepedidoBll.ValidarVendaCondicional(prePedido.ListaProdutos));
+            {
+                await validacoesPrepedidoBll.ValidarVendaCondicional(prePedido.ListaProdutos, lstErros);
+            }
 
             Util.ValidarTipoCustoFinanceiroFornecedor(lstErros, c_custoFinancFornecTipoParcelamento, c_custoFinancFornecQtdeParcelas);
             if (lstErros.Count > 0)
