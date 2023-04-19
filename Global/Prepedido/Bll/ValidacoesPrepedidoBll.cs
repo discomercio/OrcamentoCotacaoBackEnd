@@ -85,9 +85,8 @@ namespace Prepedido.Bll
             }
         }
 
-        public async Task<string> ValidarVendaCondicional(List<PrepedidoProdutoPrepedidoDados> listaProdutos)
+        public async Task ValidarVendaCondicional(List<PrepedidoProdutoPrepedidoDados> listaProdutos, List<string>lstErros)
         {
-            string retorno = string.Empty;
             var proporcaoListaProdutos = await Util.BuscarRegistroParametro(Constantes.ID_PARAMETRO_VendaCondicionada_RegraProporcao_ListaProdutos, contextoProvider);
             var proporcaoPercentualMaximo = await Util.BuscarRegistroParametro(Constantes.ID_PARAMETRO_VendaCondicionada_RegraProporcao_PercentualMaximoPedido, contextoProvider);
 
@@ -113,12 +112,10 @@ namespace Prepedido.Bll
                 if (qtdeProdutosCondicionados > 0 &&
                     (vlTotalVendaCondicionada / vlTotalPrecoLista) > (decimal)(proporcaoPercentualMaximo.Campo_Real / 100))
                 {
-                    if (qtdeProdutosCondicionados > 1) retorno = $"Os produtos {produtosCondicionados} não podem ser vendidos neste pedido!";
-                    else retorno = $"O produto {produtosCondicionados} não pode ser vendido neste pedido!";
+                    if (qtdeProdutosCondicionados > 1) lstErros.Add($"Os produtos {produtosCondicionados} não podem ser vendidos neste pedido!");
+                    else lstErros.Add($"O produto {produtosCondicionados} não pode ser vendido neste pedido!");
                 }
             }
-
-            return retorno;
         }
 
         public async Task<IEnumerable<CoeficienteDados>> MontarListaCoeficiente(List<string> lstFornec,
