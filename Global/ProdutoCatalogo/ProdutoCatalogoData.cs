@@ -284,7 +284,6 @@ namespace ProdutoCatalogo
                 {
                     var produtos = (from pc in db.TprodutoCatalogo
                                     join f in db.Tfabricante on pc.Fabricante equals f.Fabricante
-                                    join tp in db.Tproduto on pc.Produto equals tp.Produto
                                     join pci in db.TprodutoCatalogoImagem on pc.Id equals pci.IdProdutoCatalogo into img
                                     from Timg in img.DefaultIfEmpty()
                                     join p1 in
@@ -351,7 +350,7 @@ namespace ProdutoCatalogo
                                         Codigo = pc.Produto,
                                         CodigoFabricante = f.Fabricante,
                                         Fabricante = f.Nome,
-                                        CodAlfanumericoFabricante = tp.CodProdutoAlfaNumFabricante,
+                                        CodAlfanumericoFabricante = TTempP1.p1Valor,
                                         DescricaoCompleta = pc.Descricao,
                                         IdCapacidade = (int?)TTempP2.p2Id,
                                         Capacidade = TTempP2.p2Valor,

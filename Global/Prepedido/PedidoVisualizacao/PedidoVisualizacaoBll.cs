@@ -96,7 +96,7 @@ namespace Prepedido.PedidoVisualizacao
                             return new PedidoConsultaDto()
                             {
                                 Sucesso = false,
-                                Mensagem = "Data 'Início da expiração' não deve ser menor que data 'Fim da expiração'!",
+                                Mensagem = "Data 'Início da criação' não deve ser menor que data 'Fim da criação'!",
                                 OrcamentoCotacaoLista = new List<OrcamentoCotacaoListaDto>(),
                                 QtdeRegistros = 0
                             };
@@ -104,7 +104,7 @@ namespace Prepedido.PedidoVisualizacao
 
                         TimeSpan difference = filtro.DtFim.Value.Date - filtro.DtInicio.Value.Date;
 
-                        if (difference.Days >= Convert.ToInt32(paraterQuery))
+                        if (difference.Days > Convert.ToInt32(paraterQuery))
                         {
                             return new PedidoConsultaDto()
                             {
@@ -192,7 +192,7 @@ namespace Prepedido.PedidoVisualizacao
 
                     if(filtro.VendedorParceiros != null && filtro.VendedorParceiros.Count() > 0)
                     {
-                        query = query.Where(x => filtro.VendedorParceiros.Contains(x.VendedorParceiro));
+                        query = query.Where(x => filtro.VendedorParceiros.Contains(x.IdIndicadorVendedor.ToString()));
                     }
 
                     if (filtro.DtInicio.HasValue)
