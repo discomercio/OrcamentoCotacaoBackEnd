@@ -111,7 +111,7 @@ namespace Orcamento
                             return new OrcamentoConsultaDto()
                             {
                                 Sucesso = false,
-                                Mensagem = "Data 'Início da expiração' não deve ser menor que data 'Fim da expiração'!",
+                                Mensagem = "Data 'Início da criação' não deve ser menor que data 'Fim da criação'!",
                                 OrcamentoCotacaoLista = new List<OrcamentoCotacaoListaDto>(),
                                 QtdeRegistros = 0
                             };
@@ -119,7 +119,7 @@ namespace Orcamento
 
                         TimeSpan difference = filtro.DtFim.Value.Date - filtro.DtInicio.Value.Date;
 
-                        if (difference.Days >= Convert.ToInt32(paraterQuery))
+                        if (difference.Days > Convert.ToInt32(paraterQuery))
                         {
                             return new OrcamentoConsultaDto()
                             {

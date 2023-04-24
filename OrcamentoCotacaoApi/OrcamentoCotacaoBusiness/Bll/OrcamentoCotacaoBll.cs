@@ -347,6 +347,19 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 var response = new OrcamentoCotacaoListaResponse();
 
+                if(!tOrcamentoFiltro.DtInicio.HasValue)
+                {
+                    response.Mensagem = "O campo 'Início da criação' é obrigatório!";
+                    response.Sucesso = false;
+                    return response;
+                }
+                if (!tOrcamentoFiltro.DtFim.HasValue)
+                {
+                    response.Mensagem = "O campo 'Fim da criação' é obrigatório!";
+                    response.Sucesso = false;
+                    return response;
+                }
+
                 var orcamentoCotacaoConusltaDto = _orcamentoCotacaoBll.ConsultaOrcamento(tOrcamentoFiltro);
 
                 response.CorrelationId = orcamentoCotacaoConusltaDto.CorrelationId;
@@ -395,6 +408,19 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 var response = new OrcamentoCotacaoListaResponse();
 
+                if (!tOrcamentoFiltro.DtInicio.HasValue)
+                {
+                    response.Mensagem = "O campo 'Início da criação' é obrigatório!";
+                    response.Sucesso = false;
+                    return response;
+                }
+                if (!tOrcamentoFiltro.DtFim.HasValue)
+                {
+                    response.Mensagem = "O campo 'Fim da criação' é obrigatório!";
+                    response.Sucesso = false;
+                    return response;
+                }
+
                 var orcamentoConusltaDto = _orcamentoBll.OrcamentoPorFiltro(tOrcamentoFiltro);
 
                 response.CorrelationId = orcamentoConusltaDto.CorrelationId;
@@ -442,6 +468,19 @@ namespace OrcamentoCotacaoBusiness.Bll
             else
             {
                 var response = new OrcamentoCotacaoListaResponse();
+
+                if (!tOrcamentoFiltro.DtInicio.HasValue)
+                {
+                    response.Mensagem = "O campo 'Início da criação' é obrigatório!";
+                    response.Sucesso = false;
+                    return response;
+                }
+                if (!tOrcamentoFiltro.DtFim.HasValue)
+                {
+                    response.Mensagem = "O campo 'Fim da criação' é obrigatório!";
+                    response.Sucesso = false;
+                    return response;
+                }
 
                 var pedidoConsultaDto = _pedidoPrepedidoApiBll.ListarPedidos(tOrcamentoFiltro);
 
