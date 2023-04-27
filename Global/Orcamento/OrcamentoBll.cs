@@ -204,9 +204,19 @@ namespace Orcamento
                         query = query.Where(f => filtro.Parceiros.Contains(f.Parceiro));
                     }
 
+                    if (!string.IsNullOrEmpty(filtro.Parceiro))
+                    {
+                        query = query.Where(x => x.Parceiro == filtro.Parceiro);    
+                    }
+
                     if (filtro.VendedorParceiros != null && filtro.VendedorParceiros.Length > 0)
                     {
                         query = query.Where(f => filtro.VendedorParceiros.Contains(f.IdIndicadorVendedor.ToString()));
+                    }
+
+                    if (!string.IsNullOrEmpty(filtro.VendedorParceiro)) { }
+                    {
+                        query = query.Where(x => x.VendedorParceiro == filtro.VendedorParceiro);
                     }
 
                     if (filtro.DtInicio.HasValue)
