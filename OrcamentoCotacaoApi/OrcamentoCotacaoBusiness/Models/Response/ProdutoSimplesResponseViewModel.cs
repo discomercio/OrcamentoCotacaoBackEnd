@@ -52,6 +52,9 @@ namespace OrcamentoCotacaoBusiness.Models.Response
         [JsonProperty("cicloDescricao")]
         public string CicloDescricao { get; set; }
 
+        [JsonProperty("unitarioVendavel")]
+        public bool UnitarioVendavel { get; set; } = true;
+
         internal static ProdutoSimplesResponseViewModel ConverterProdutoDados(Produto.Dados.ProdutoDados produto, int? qtdeFilho,
             CoeficienteResponseViewModel coeficienteDados)
         {

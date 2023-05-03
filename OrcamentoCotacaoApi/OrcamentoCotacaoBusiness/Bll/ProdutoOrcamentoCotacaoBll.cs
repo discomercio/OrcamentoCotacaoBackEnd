@@ -107,8 +107,16 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 foreach (var produto in produtoComboDados.ProdutoDados)
                 {
+                    
                     var responseItem = ProdutoSimplesResponseViewModel
                         .ConverterProdutoDados(produto, null, GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), produto.Fabricante));
+
+                    // se o produto for um filho não insere aqui
+                    var pai = produtoComboDados.ProdutoCompostoDados.Where(x => x.Filhos.Where(f => f.Produto == produto.Produto).Any()).FirstOrDefault();
+                    if (pai != null)
+                    {
+                        responseItem.UnitarioVendavel = false;
+                    }
                     produtoResponseViewModel.ProdutosSimples.Add(responseItem);
 
                 }
@@ -889,7 +897,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 var response = new ProdutosGruposResponse();
                 response.Sucesso = false;
 
-                var retorno = _produtoCatalogoBll.BuscarProdutoGrupos(new TprodutoGrupoFiltro() { IncluirTProduto = true});
+                var retorno = _produtoCatalogoBll.BuscarProdutoGrupos(new TprodutoGrupoFiltro() { IncluirTProduto = true });
                 if (retorno == null)
                 {
                     response.Mensagem = "Ops! Falha ao buscar grupos de produtos!";
@@ -937,7 +945,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             response.Sucesso = false;
             var parametro = BuscarParametro(38);
-            if(parametro == null)
+            if (parametro == null)
             {
                 response.Mensagem = "Falha ao buscar parâmetro para categorias!";
                 return response;
@@ -950,8 +958,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                 return response;
             }
 
-            var unidadeNegocio = cfgUnidadeNegocioBll.PorFiltro(new TcfgUnidadeNegocioFiltro() { Sigla = objLoja.Unidade_Negocio}).FirstOrDefault();
-            if(unidadeNegocio == null)
+            var unidadeNegocio = cfgUnidadeNegocioBll.PorFiltro(new TcfgUnidadeNegocioFiltro() { Sigla = objLoja.Unidade_Negocio }).FirstOrDefault();
+            if (unidadeNegocio == null)
             {
                 response.Mensagem = "Falha ao buscar unidade de negócio para categorias!";
                 return response;
@@ -963,31 +971,31 @@ namespace OrcamentoCotacaoBusiness.Bll
                     IdCfgUnidadeNegocio = unidadeNegocio.Id,
                     IdCfgParametro = parametro.Id
                 }).FirstOrDefault();
-            if(unidadeNegocioParametro == null)
+            if (unidadeNegocioParametro == null)
             {
                 response.Mensagem = "Falha ao buscar parâmetro de unidade de negócio para categorias!";
                 return response;
             }
 
             var grupo = _produtoCatalogoBll.BuscarProdutoGrupos(new TprodutoGrupoFiltro());
-            if(grupo == null)
+            if (grupo == null)
             {
                 response.Mensagem = "Falha ao buscar grupo para categorias!";
                 return response;
             }
 
             var subGrupo = _produtoCatalogoBll.BuscarProdutosSubgrupos(new TprodutoSubgrupoFiltro());
-            if(subGrupo == null)
+            if (subGrupo == null)
             {
                 response.Mensagem = "Falha ao buscar subgrupos para categorias!";
                 return response;
             }
 
             response.ListaGruposSubgruposProdutos = new List<GrupoSubgrupoProdutoResponse>();
-            
+
             //CRT§CRT|FAN§DUT|FAN§HW|FAN§K74
             var listaSplit = unidadeNegocioParametro.Valor.Split("|");
-            foreach(var split in listaSplit )
+            foreach (var split in listaSplit)
             {
                 var listaSplit2 = split.Split("§");
                 var grp = grupo.Where(x => x.Codigo == listaSplit2[0]).FirstOrDefault();
