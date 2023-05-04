@@ -22,7 +22,7 @@ namespace Prepedido.Dto
             return ret;
         }
 
-        internal static ProdutoFilhoDto ProdutoFilhoDto_De_ProdutoFilhoDados(ProdutoFilhoDados p)
+        public static ProdutoFilhoDto ProdutoFilhoDto_De_ProdutoFilhoDados(ProdutoFilhoDados p)
         {
             if (p == null) return null;
             return new ProdutoFilhoDto()
