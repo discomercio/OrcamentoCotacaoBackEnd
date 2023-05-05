@@ -57,7 +57,11 @@ namespace OrcamentoCotacaoEmailQueue
                 List<TcfgOrcamentoCotacaoEmailTemplate> tcfgOrcamentoCotacaoEmailTemplates = cfgOrcamentoCotacaoEmailTemplateBll.PorFiltro(new TcfgOrcamentoCotacaoEmailTemplateFiltro() { Id = IdCfgOrcamentoCotacaoEmailTemplates });
                 string emailTemplateBody = tcfgOrcamentoCotacaoEmailTemplates[0].EmailTemplateBody;
 
-                orcamentoCotacaoEmailQueue.Subject = tcfgOrcamentoCotacaoEmailTemplates[0].EmailTemplateSubject;
+                var emailTemplateSubject = tcfgOrcamentoCotacaoEmailTemplates[0].EmailTemplateSubject;
+                emailTemplateSubject = emailTemplateSubject.Replace("{NumeroOrcamento}", tagHtml[3]);
+                emailTemplateSubject = emailTemplateSubject.Replace("{Cliente}", tagHtml[0]);
+                orcamentoCotacaoEmailQueue.Subject = emailTemplateSubject;
+
                 orcamentoCotacaoEmailQueue.DateCreated = DateTime.Now;
                 emailTemplateBody = emailTemplateBody.Replace("{Cliente}", tagHtml[0]);
                 emailTemplateBody = emailTemplateBody.Replace("{DadosEmpresa}", tagHtml[1]);

@@ -1424,7 +1424,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         orcamento.ClienteOrcamentoCotacaoDto.NomeCliente,
                         nomeEmpresa,
                         guid.ToString(),
-                        orcamento.Id.ToString(),
+                        idOrcamentoCotacao.ToString(),
                         urlBaseFront,
                         logoEmpresa
                     };
