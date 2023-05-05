@@ -26,6 +26,7 @@ using Prepedido.Dto;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Configuration;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -816,9 +817,18 @@ namespace OrcamentoCotacaoBusiness.Bll
             var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro() { Id = id }).FirstOrDefault();
             if (orcamento == null) throw new Exception("Falha ao buscar Orçamento!");
 
+            var loja = _lojaBll.PorFiltro(new InfraBanco.Modelos.Filtros.TlojaFiltro() { Loja = orcamento.Loja }).FirstOrDefault();
+            var tcfgUnidadeNegocio = _cfgUnidadeNegocioBll.PorFiltro(new TcfgUnidadeNegocioFiltro() { Sigla = loja.Unidade_Negocio });
+
+            var prazoMaximoConsultaOrcamento = _cfgUnidadeNegocioParametroBll.PorFiltro(new TcfgUnidadeNegocioParametroFiltro() { IdCfgUnidadeNegocio = tcfgUnidadeNegocio.FirstOrDefault().Id, IdCfgParametro = 24 }).FirstOrDefault();
+
             if (!usuarioIterno) return _mensagemBll.CriarRemetenteCliente(orcamento);
 
-            return _mensagemBll.CriarRemetenteUsuarioInterno(orcamento, usuario.Id);
+            var dataMaxTrocaMsg = orcamento.DataCadastro.AddDays(int.Parse(prazoMaximoConsultaOrcamento.Valor) - 7);
+
+            var response = _mensagemBll.CriarRemetenteUsuarioInterno(orcamento, usuario.Id, dataMaxTrocaMsg);
+
+            return response;
         }
 
         public async Task<List<TcfgSelectItem>> ObterListaStatus(TorcamentoFiltro tOrcamentoFiltro)

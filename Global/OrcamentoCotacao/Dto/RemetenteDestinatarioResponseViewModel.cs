@@ -33,5 +33,8 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 
         [JsonProperty("validade")]
         public DateTime? Validade { get; set; }
+
+        [JsonProperty("dataMaxTrocaMsg")]
+        public DateTime DataMaxTrocaMsg { get; set; }
     }
 }
