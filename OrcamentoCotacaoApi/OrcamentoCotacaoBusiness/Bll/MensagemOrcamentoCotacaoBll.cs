@@ -217,13 +217,14 @@ namespace OrcamentoCotacaoBusiness.Bll
             return response;
         }
 
-        public RemetenteDestinatarioResponseViewModel CriarRemetenteUsuarioInterno(TorcamentoCotacao orcamento, int idUsuario)
+        public RemetenteDestinatarioResponseViewModel CriarRemetenteUsuarioInterno(TorcamentoCotacao orcamento, int idUsuario, DateTime dataMaxTrocaMsg)
         {
             RemetenteDestinatarioResponseViewModel response = new RemetenteDestinatarioResponseViewModel();
             response.IdOrcamentoCotacao = orcamento.Id;
             response.Status = orcamento.Status;
             response.Validade = orcamento.Validade;
             response.IdTipoUsuarioContextoDestinatario = (int)Constantes.TipoUsuario.CLIENTE;
+            response.DataMaxTrocaMsg = dataMaxTrocaMsg;
 
             setarDonoOrcamento(orcamento, idUsuario,response);
 
