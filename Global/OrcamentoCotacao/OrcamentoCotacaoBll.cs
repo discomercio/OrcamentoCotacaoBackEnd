@@ -27,11 +27,6 @@ namespace OrcamentoCotacao
             return _data.BuscarStatusParaOrcamentoCotacaoComtransacao(status, dbGravacao);
         }
 
-        public IQueryable<Object> ConsultaGerencial(TorcamentoCotacaoConsultaGerencialFiltro filtro)
-        {
-            return _data.ConsultaGerencial(filtro);
-        }
-
         public OrcamentoCotacaoConsultaDto ConsultaOrcamento(TorcamentoFiltro filtro)
         {
             return _data.ConsultaOrcamento(filtro);
