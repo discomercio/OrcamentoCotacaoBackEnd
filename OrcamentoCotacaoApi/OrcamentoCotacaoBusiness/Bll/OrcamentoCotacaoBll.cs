@@ -646,7 +646,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 },
                 ListaOrcamentoCotacaoDto = opcao,
                 CadastradoPor = VerificarContextoCadastroOrcamento(orcamento.IdTipoUsuarioContextoCadastro, usuario.Usuario, parceiro?.Apelido, vendedorParceiro),
-                AmigavelCadastradoPor = BuscarCadastradoPorAmigavel(orcamento.IdTipoUsuarioContextoCadastro, usuario.Nome_Iniciais_Em_Maiusculas, string.IsNullOrEmpty(parceiro.NomeFantasia) ? parceiro.Razao_social_nome_iniciais_em_maiusculas : parceiro.NomeFantasia, vendedorParceiro),
+                AmigavelCadastradoPor = BuscarCadastradoPorAmigavel(orcamento.IdTipoUsuarioContextoCadastro, usuario.Nome_Iniciais_Em_Maiusculas, parceiro != null ? string.IsNullOrEmpty(parceiro.NomeFantasia) ? parceiro.Razao_social_nome_iniciais_em_maiusculas : parceiro.NomeFantasia : null, vendedorParceiro),
                 InstaladorInstala = orcamento.InstaladorInstalaStatus
             };
 
