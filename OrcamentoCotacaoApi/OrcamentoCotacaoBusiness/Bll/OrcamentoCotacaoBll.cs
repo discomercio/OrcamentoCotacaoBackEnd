@@ -650,6 +650,16 @@ namespace OrcamentoCotacaoBusiness.Bll
                 InstaladorInstala = orcamento.InstaladorInstalaStatus
             };
 
+            var loja = _lojaBll.PorFiltro(new TlojaFiltro() { Loja = orcamento.Loja });
+            var tcfgUnidadeNegocio = _cfgUnidadeNegocioBll.PorFiltro(new TcfgUnidadeNegocioFiltro() { Sigla = loja[0].Unidade_Negocio });
+            var tcfgUnidadeNegocioParametros = _cfgUnidadeNegocioParametroBll.PorFiltro(new TcfgUnidadeNegocioParametroFiltro() { IdCfgUnidadeNegocio = tcfgUnidadeNegocio.FirstOrDefault().Id });
+            var tOrcamentoCotacaoLink = _orcamentoCotacaoLinkBll.PorFiltro(new TorcamentoCotacaoLinkFiltro() { IdOrcamentoCotacao = orcamento.Id, Status = 1 }).FirstOrDefault();
+
+            var link = "{URL_Base_Front}#/publico/orcamento/{LinkOrcamento}";
+            link = link.Replace("{URL_Base_Front}", tcfgUnidadeNegocioParametros.Where(x => x.IdCfgParametro == 2).FirstOrDefault().Valor);
+            link = link.Replace("{LinkOrcamento}", tOrcamentoCotacaoLink.Guid.ToString());
+            orcamentoResponse.Link = link;
+
             return orcamentoResponse;
         }
 
