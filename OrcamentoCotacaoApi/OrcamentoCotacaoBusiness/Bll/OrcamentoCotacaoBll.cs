@@ -168,7 +168,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 orcamento.listaOpcoes = _orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro { IdOrcamentoCotacao = orcamento.id });
 
                 var contextoUsuario = orcamento.idTipoUsuarioContextoCadastro;
-                if(orcamento.idIndicador != null && orcamento.idIndicador != 0)
+                if (orcamento.idIndicador != null && orcamento.idIndicador != 0)
                 {
                     contextoUsuario = (int)Constantes.TipoUsuarioContexto.Parceiro;
                 }
@@ -256,7 +256,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             var orcamentoCotacaoFiltro = new TorcamentoCotacaoFiltro
             {
                 LimitarDataDashboard = true,
-                Loja = tOrcamentoFiltro.Loja,                
+                Loja = tOrcamentoFiltro.Loja,
             };
 
             if (usuarioLogin.TipoUsuario == 1)
@@ -294,10 +294,10 @@ namespace OrcamentoCotacaoBusiness.Bll
                     VendedorParceiro = vendParceiros.FirstOrDefault(v => v.Id == x.IdIndicadorVendedor)?.Nome,
                     IdIndicadorVendedor = vendParceiros.FirstOrDefault(v => v.Id == x.IdIndicadorVendedor)?.Id,
                     DtExpiracao = x.Validade
-                    
+
                 })); ;
 
-            }            
+            }
 
             return listaDashboard;
         }
@@ -348,7 +348,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 var response = new OrcamentoCotacaoListaResponse();
 
-                if(!tOrcamentoFiltro.DtInicio.HasValue)
+                if (!tOrcamentoFiltro.DtInicio.HasValue)
                 {
                     response.Mensagem = "O campo 'Início da criação' é obrigatório!";
                     response.Sucesso = false;
@@ -619,7 +619,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 Vendedor = usuario.Usuario,
                 NomeIniciaisEmMaiusculasVendedor = usuario.Nome_Iniciais_Em_Maiusculas,
                 Parceiro = parceiro != null ? parceiro.Apelido : null,
-                RazaoSocialNomeIniciaisEmMaiusculasParceiro = parceiro != null ? parceiro.Razao_social_nome_iniciais_em_maiusculas : null,
+                RazaoSocialNomeIniciaisEmMaiusculasParceiro = parceiro != null ? string.IsNullOrEmpty(parceiro.NomeFantasia) ? parceiro.Razao_social_nome_iniciais_em_maiusculas : parceiro.NomeFantasia : null,
                 VendedorParceiro = vendedorParceiro,
                 Loja = orcamento.Loja,
                 Validade = orcamento.Validade,
@@ -646,7 +646,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 },
                 ListaOrcamentoCotacaoDto = opcao,
                 CadastradoPor = VerificarContextoCadastroOrcamento(orcamento.IdTipoUsuarioContextoCadastro, usuario.Usuario, parceiro?.Apelido, vendedorParceiro),
-                AmigavelCadastradoPor = BuscarCadastradoPorAmigavel(orcamento.IdTipoUsuarioContextoCadastro, usuario.Nome_Iniciais_Em_Maiusculas, parceiro?.Razao_social_nome_iniciais_em_maiusculas, vendedorParceiro),
+                AmigavelCadastradoPor = BuscarCadastradoPorAmigavel(orcamento.IdTipoUsuarioContextoCadastro, usuario.Nome_Iniciais_Em_Maiusculas, string.IsNullOrEmpty(parceiro.NomeFantasia) ? parceiro.Razao_social_nome_iniciais_em_maiusculas : parceiro.NomeFantasia, vendedorParceiro),
                 InstaladorInstala = orcamento.InstaladorInstalaStatus
             };
 
@@ -1793,8 +1793,8 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public async Task<List<string>> AprovarOrcamento(
             AprovarOrcamentoRequestViewModel aprovarOrcamento,
-            Constantes.TipoUsuarioContexto tipoUsuarioContexto, 
-            int idUsuarioUltAtualizacao, 
+            Constantes.TipoUsuarioContexto tipoUsuarioContexto,
+            int idUsuarioUltAtualizacao,
             string ip)
         {
             if (aprovarOrcamento == null)
@@ -1933,12 +1933,12 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         public async Task<List<string>> CadastrarPrepedido(
-            AprovarOrcamentoRequestViewModel aprovarOrcamento, 
+            AprovarOrcamentoRequestViewModel aprovarOrcamento,
             TorcamentoCotacao orcamento,
-            ContextoBdGravacao dbGravacao, 
-            Constantes.TipoUsuarioContexto tipoUsuarioContexto, 
-            int idUsuarioUltAtualizacao, 
-            string ip, 
+            ContextoBdGravacao dbGravacao,
+            Constantes.TipoUsuarioContexto tipoUsuarioContexto,
+            int idUsuarioUltAtualizacao,
+            string ip,
             bool aprovandoOrcamentoCotacao)
         {
             _logger.LogInformation("Iniciando criação de Pré-Pedido.");
@@ -2029,13 +2029,13 @@ namespace OrcamentoCotacaoBusiness.Bll
             //TODO: "appSettings.LimiteItens" deve vir de tabela de parametrização?
             PrePedidoDados prePedidoDados = PrePedidoDto.PrePedidoDados_De_PrePedidoDto(prepedido);
             return (await _prepedidoBll
-                .CadastrarPrepedido(prePedidoDados, 
-                parceiro, 
-                0.01M, 
+                .CadastrarPrepedido(prePedidoDados,
+                parceiro,
+                0.01M,
                 false,
-                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, 
-                appSettings.LimiteItens, 
-                dbGravacao, 
+                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO,
+                appSettings.LimiteItens,
+                dbGravacao,
                 ip, aprovandoOrcamentoCotacao)).ToList();
         }
 
@@ -2081,7 +2081,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             List<PrepedidoProdutoDtoPrepedido> prepedidoProdutosTeste = new List<PrepedidoProdutoDtoPrepedido>();
 
             List<PrepedidoProdutoDtoPrepedido> produtosDto = new List<PrepedidoProdutoDtoPrepedido>();
-            foreach(var produto in produtosOpcaoSelecionada)
+            foreach (var produto in produtosOpcaoSelecionada)
             {
                 var itens = itensAtomicosFinOpcao.Where(x => x.TorcamentoCotacaoOpcaoItemAtomico.IdItemUnificado == produto.IdItemUnificado);
                 foreach (var item in itens)
@@ -2103,7 +2103,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             var produtosDtoDistinct = produtosDto.Select(x => x.Produto).Distinct();
 
             decimal totalPedido = 0M;
-            foreach(var produto in produtosDtoDistinct)
+            foreach (var produto in produtosDtoDistinct)
             {
                 var itens = produtosDto.Where(x => x.Produto == produto);
                 PrepedidoProdutoDtoPrepedido produtoPrepedido = new PrepedidoProdutoDtoPrepedido();
@@ -2130,10 +2130,10 @@ namespace OrcamentoCotacaoBusiness.Bll
                 produtoPrepedido.VlTotalItem = totalPrecoVenda;
                 produtoPrepedido.TotalItem = totalPrecoVenda;
 
-                if(Perc_max_comissao_e_desconto_padrao > 0)
+                if (Perc_max_comissao_e_desconto_padrao > 0)
                 {
                     var produtosComAlcada = itensAtomicosFinOpcao.Where(x => x.TorcamentoCotacaoOpcaoItemAtomico.Produto == produto && x.StatusDescontoSuperior);
-                    if(produtosComAlcada.Any())
+                    if (produtosComAlcada.Any())
                     {
                         var maiorDesconto = produtosComAlcada.Max(x => x.DescDado);
                         if (produtoPrepedido.Desc_Dado > Perc_max_comissao_e_desconto_padrao)
@@ -2153,11 +2153,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                     }
 
                 }
-                
+
                 prepedidoProdutosTeste.Add(produtoPrepedido);
                 totalPedido = Math.Round(totalPedido + totalComDesconto, 2);
             }
-            
+
             return prepedidoProdutosTeste;
         }
 
