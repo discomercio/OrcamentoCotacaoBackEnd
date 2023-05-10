@@ -908,13 +908,16 @@ namespace Prepedido.Bll
             //busca a sigla do tipo de pagamento pelo código enviado
             string c_custoFinancFornecTipoParcelamento = ObterSiglaFormaPagto(prePedido.FormaPagtoCriacao);
 
-            //precisa incluir uma validação de forma de pagamento com base no orçamentista enviado
-            FormaPagtoDados formasPagto = await formaPagtoBll.ObterFormaPagto(apelido ?? prePedido.DadosCliente.Vendedor, prePedido.DadosCliente.Tipo, sistemaResponsavelCadastro);
-            validacoesFormaPagtoBll.ValidarFormaPagto(prePedido.FormaPagtoCriacao, lstErros, limiteArredondamento,
-                0.1M, c_custoFinancFornecTipoParcelamento, formasPagto, prePedido.PermiteRAStatus,
-                prePedido.Vl_total_NF, prePedido.Vl_total);
-            if (lstErros.Any())
-                return lstErros;
+            if (!aprovandoOrcamentoCotacao)
+            {
+                //precisa incluir uma validação de forma de pagamento com base no orçamentista enviado
+                FormaPagtoDados formasPagto = await formaPagtoBll.ObterFormaPagto(apelido ?? prePedido.DadosCliente.Vendedor, prePedido.DadosCliente.Tipo, sistemaResponsavelCadastro);
+                validacoesFormaPagtoBll.ValidarFormaPagto(prePedido.FormaPagtoCriacao, lstErros, limiteArredondamento,
+                    0.1M, c_custoFinancFornecTipoParcelamento, formasPagto, prePedido.PermiteRAStatus,
+                    prePedido.Vl_total_NF, prePedido.Vl_total);
+                if (lstErros.Any())
+                    return lstErros;
+            }
 
             //Esta sendo verificado qual o tipo de pagamento que esta sendo feito e retornando a quantidade de parcelas
             int c_custoFinancFornecQtdeParcelas = ObterCustoFinancFornecQtdeParcelasDeFormaPagto(prePedido.FormaPagtoCriacao);
