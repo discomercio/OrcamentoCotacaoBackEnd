@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using InfraBanco;
 using InfraBanco.Modelos;
 using Cep.Dados;
@@ -20,13 +20,13 @@ namespace Cep
                 return "Município '" + municipio + "' não consta na relação de municípios do IBGE para a UF de '" + uf + "'!";
             }
         }
-        
+
         private readonly InfraBanco.ContextoCepProvider contextoCepProvider;
         private readonly IBancoNFeMunicipio bancoNFeMunicipio;
         private readonly ContextoBdProvider contextoProvider;
 
         public CepBll(
-            InfraBanco.ContextoCepProvider contextoCepProvider, 
+            InfraBanco.ContextoCepProvider contextoCepProvider,
             IBancoNFeMunicipio bancoNFeMunicipio,
             ContextoBdProvider contextoProvider)
         {
@@ -254,12 +254,29 @@ namespace Cep
             List<CepDados> cepdto = new List<CepDados>();
 
             if (string.IsNullOrEmpty(endereco)) endereco = "";
-            else endereco = endereco.Replace("Rua ", "").Replace("rua ", "").Replace("R. ", "").Replace("r. ", "")
-                    .Replace("R ", "").Replace("r ", "").Replace("Avenida ", "").Replace("avenida ", "")
-                    .Replace("Av. ", "").Replace("av. ", "").Replace("Av ", "").Replace("av ", "")
-                    .Replace("Travessa ", "").Replace("travessa ", "").Replace("T. ", "").Replace("t. ", "")
-                    .Replace("T ", "").Replace("t ", "")
-                    .Replace(".", "").Replace(":", "").Trim();
+            else
+            {
+                var enderecoSplit = endereco.Split(' ');
+                string endApoio = string.Empty;
+                if (enderecoSplit[0].ToLower() == "rua" ||
+                    enderecoSplit[0].ToLower() == "r." ||
+                    enderecoSplit[0].ToLower() == "r" ||
+                    enderecoSplit[0].ToLower() == "avenida" ||
+                    enderecoSplit[0].ToLower() == "av" ||
+                    enderecoSplit[0].ToLower() == "av." ||
+                    enderecoSplit[0].ToLower() == "travessa" ||
+                    enderecoSplit[0].ToLower() == "t" ||
+                    enderecoSplit[0].ToLower() == "t." ||
+                    enderecoSplit[0] == "." ||
+                    enderecoSplit[0].ToLower() == ":")
+                {
+                    for(int i = 1; i < enderecoSplit.Length; i++)
+                    {
+                        endApoio += !string.IsNullOrEmpty(endApoio) ? $" {enderecoSplit[i]}" : enderecoSplit[i];
+                    }
+                    endereco = endApoio;
+                }
+            }
 
             using (var db = contextoCepProvider.GetContextoLeitura())
             {
@@ -307,11 +324,14 @@ namespace Cep
                         "FROM LOG_LOGRADOURO " +
                         "INNER JOIN LOG_BAIRRO ON LOG_LOGRADOURO.BAI_NU_SEQUENCIAL_INI = LOG_BAIRRO.BAI_NU_SEQUENCIAL " +
                         "INNER JOIN LOG_LOCALIDADE ON LOG_LOGRADOURO.LOC_NU_SEQUENCIAL = LOG_LOCALIDADE.LOC_NU_SEQUENCIAL " +
-                        "WHERE " +
-                            "LOG_LOGRADOURO.LOG_NO LIKE @logradouroLike COLLATE Latin1_General_CI_AI ";
+                        "WHERE ";
+                    if (!string.IsNullOrEmpty(endereco))
+                    {
+                        sql += "LOG_LOGRADOURO.LOG_NO LIKE @logradouroLike COLLATE Latin1_General_CI_AI AND ";
+                    }
                     if (!string.IsNullOrWhiteSpace(uf))
                     {
-                        sql += " AND LOG_LOGRADOURO.UFE_SG = @UF  COLLATE Latin1_General_CI_AI ";
+                        sql += "LOG_LOGRADOURO.UFE_SG = @UF  COLLATE Latin1_General_CI_AI ";
                     }
                     if (!string.IsNullOrWhiteSpace(cidade))
                     {
@@ -423,10 +443,10 @@ namespace Cep
         }
 
         public static async Task<bool> ConsisteMunicipioIBGE(
-            string municipio, 
+            string municipio,
             string uf,
-            List<string> lstErros, 
-            ContextoBdProvider contextoProvider, 
+            List<string> lstErros,
+            ContextoBdProvider contextoProvider,
             IBancoNFeMunicipio bancoNFeMunicipio,
             bool mostrarMensagemErro)
         {
