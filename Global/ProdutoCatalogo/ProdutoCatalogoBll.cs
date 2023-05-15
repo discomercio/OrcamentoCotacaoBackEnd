@@ -284,7 +284,7 @@ namespace ProdutoCatalogo
             return _data.ConsultarProdutoCatalogoAtivo(id);
         }
 
-        public Object BuscarPropriedadesProdutoCatalogoAtivo(int id)
+        public IQueryable<Object> BuscarPropriedadesProdutoCatalogoAtivo(int id)
         {
             return _data.BuscarPropriedadesProdutoCatalogoAtivo(id);
         }

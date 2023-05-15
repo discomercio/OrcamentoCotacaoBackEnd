@@ -259,11 +259,11 @@ namespace OrcamentoCotacaoApi.Controllers
             request.IP = HttpContext.Connection.RemoteIpAddress.ToString();
             request.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
-            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ProdutoCatalogoController/ConsultarProdutoCatalogoAtivo/GET - Request => [{System.Text.Json.JsonSerializer.Serialize(request)}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ProdutoCatalogoController/ConsultarProdutoCatalogoAtivo/POST - Request => [{System.Text.Json.JsonSerializer.Serialize(request)}].");
 
             var response = _bll.ConsultarProdutoCatalogoAtivo(request);
 
-            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ProdutoCatalogoController/ConsultarProdutoCatalogoAtivo/GET - Response => [{System.Text.Json.JsonSerializer.Serialize(response)}].");
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ProdutoCatalogoController/ConsultarProdutoCatalogoAtivo/POST - Response => [{System.Text.Json.JsonSerializer.Serialize(response)}].");
             
             return Ok(response);
         }

@@ -938,11 +938,11 @@ namespace ProdutoCatalogo
                                 fabricante = f
                             };
 
-                return saida;
+                return saida.FirstOrDefault();
             }
         }
 
-        public Object BuscarPropriedadesProdutoCatalogoAtivo(int idProdutoCatalogo)
+        public IQueryable<Object> BuscarPropriedadesProdutoCatalogoAtivo(int idProdutoCatalogo)
         {
             using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
             {
@@ -953,7 +953,8 @@ namespace ProdutoCatalogo
                             from e in lfs2.DefaultIfEmpty()
                             where c.IdProdutoCatalogo == idProdutoCatalogo &&
                                   c.Oculto == false &&
-                                  e.oculto == false 
+                                  e.oculto == false
+                            orderby e.ordem
                             select new
                             {
                                 nome = e.descricao,
