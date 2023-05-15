@@ -147,6 +147,43 @@ namespace OrcamentoCotacaoBusiness.Bll
             return _bll.Detalhes(id);
         }
 
+        public ConsultaProdutoCatalogoAtivoResponse ConsultarProdutoCatalogoAtivo(ConsultaProdutoCatalogoAtivoRequest request)
+        {
+            /*
+            Fabricante
+            FabricanteNome
+            Produto
+            Produto.Nome
+            Produto.DescricaoCompleta
+            Imagem
+            Lista de propriedade ativos
+                Nome: t_produto_catalogo_propriedade.descricao
+                Valor: t_produto_catalogo_item.valor ou t_produto_catalogo_propriedade_opcao.valor
+             */
+
+            var response = new ConsultaProdutoCatalogoAtivoResponse();
+            response.Sucesso = false;
+
+            var retorno = _bll.ConsultarProdutoCatalogoAtivo(request.Id);
+            if(retorno == null)
+            {
+                response.Mensagem = "Falha ao buscar produto!";
+                return response;
+            }
+
+            //response.ProdutoNome = retorno
+
+            var propriedades = _bll.BuscarPropriedadesProdutoCatalogoAtivo(request.Id);
+
+            var imagem = _bll.ObterListaImagensPorId(request.Id).FirstOrDefault();
+            if(imagem != null)
+            {
+                response.ImagemCaminho = imagem.Caminho;
+            }
+
+            return response;
+        }
+
         public string ExcluirImagem(int idProduto, int idImagem, string caminho)
         {
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))

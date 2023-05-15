@@ -1,6 +1,7 @@
 ﻿using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using ProdutoCatalogo.Dto;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -276,6 +277,16 @@ namespace ProdutoCatalogo
         public bool ExcluirProdutoCatalogoComTransacao(int id, InfraBanco.ContextoBdGravacao contextoBdGravacao)
         {
             return _data.ExcluirPorIdProdutoCatalogoComTransacao(id, contextoBdGravacao);
+        }
+
+        public Object ConsultarProdutoCatalogoAtivo(int id)
+        {
+            return _data.ConsultarProdutoCatalogoAtivo(id);
+        }
+
+        public Object BuscarPropriedadesProdutoCatalogoAtivo(int id)
+        {
+            return _data.BuscarPropriedadesProdutoCatalogoAtivo(id);
         }
     }
 }

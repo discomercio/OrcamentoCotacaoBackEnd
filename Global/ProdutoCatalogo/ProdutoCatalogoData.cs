@@ -381,7 +381,7 @@ namespace ProdutoCatalogo
                     if (!string.IsNullOrEmpty(descargaCondensadora))
                     {
                         produtos = produtos
-                            .Where(f => f.IdDescargaCondensadora.HasValue 
+                            .Where(f => f.IdDescargaCondensadora.HasValue
                             && f.IdDescargaCondensadora.Value == Convert.ToInt32(descargaCondensadora)).ToList();
                     }
 
@@ -474,18 +474,20 @@ namespace ProdutoCatalogo
             }
         }
 
+
+
         public List<TprodutoCatalogoItem> ObterListaItens(int id)
         {
             try
             {
                 using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
                 {
-                    var existeItem = (from item 
+                    var existeItem = (from item
                                       in db.TprodutoCatalogoItem
                                       where item.IdProdutoCatalogo == id
                                       select item).Any();
 
-                    if(!existeItem)
+                    if (!existeItem)
                     {
                         return new List<TprodutoCatalogoItem>();
                     }
@@ -920,6 +922,46 @@ namespace ProdutoCatalogo
                             select c;
 
                 return saida.ToList();
+            }
+        }
+
+        public Object ConsultarProdutoCatalogoAtivo(int id)
+        {
+            using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+            {
+                var saida = from c in db.TprodutoCatalogo
+                            join f in db.Tfabricante on c.Fabricante equals f.Fabricante
+                            where c.Id == id
+                            select new
+                            {
+                                produto = c,
+                                fabricante = f
+                            };
+
+                return saida;
+            }
+        }
+
+        public Object BuscarPropriedadesProdutoCatalogoAtivo(int idProdutoCatalogo)
+        {
+            using (var db = _contextoProvider.GetContextoGravacaoParaUsing(BloqueioTControle.NENHUM))
+            {
+                var saida = from c in db.TprodutoCatalogoItem
+                            join lf1 in db.TProdutoCatalogoPropriedadeOpcao on c.IdProdutoCatalogoPropriedadeOpcao equals lf1.id into lfs
+                            from d in lfs.DefaultIfEmpty()
+                            join lf2 in db.TProdutoCatalogoPropriedade on c.IdProdutoCatalogoPropriedade equals lf2.id into lfs2
+                            from e in lfs2.DefaultIfEmpty()
+                            where c.IdProdutoCatalogo == idProdutoCatalogo &&
+                                  c.Oculto == false &&
+                                  e.oculto == false 
+                            select new
+                            {
+                                nome = e.descricao,
+                                valorTexto = c.Valor,
+                                valorLista = d.valor
+                            };
+
+                return saida;
             }
         }
     }
