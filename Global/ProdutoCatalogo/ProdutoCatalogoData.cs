@@ -290,7 +290,7 @@ namespace ProdutoCatalogo
                                     (
                                         from pci in db.TprodutoCatalogoItem
                                         join pcp in db.TProdutoCatalogoPropriedade on pci.IdProdutoCatalogoPropriedade equals pcp.id
-                                        where pcp.descricao.Trim().ToUpper() == "Código Alfanumérico do Fabricante".ToUpper()
+                                        where pcp.id == 9
                                         select new { p1IdProdutoCatalogo = pci.IdProdutoCatalogo, p1Id = 0, p1Valor = pci.Valor }
                                     ) on pc.Id equals p1.p1IdProdutoCatalogo into TempP1
                                     from TTempP1 in TempP1.DefaultIfEmpty()
@@ -300,7 +300,7 @@ namespace ProdutoCatalogo
                                          join pcp in db.TProdutoCatalogoPropriedade on pci.IdProdutoCatalogoPropriedade equals pcp.id
                                          join pcpo in db.TProdutoCatalogoPropriedadeOpcao
                                          on new { a = pci.IdProdutoCatalogoPropriedade, b = pci.IdProdutoCatalogoPropriedadeOpcao.Value } equals new { a = pcpo.id_produto_catalogo_propriedade, b = pcpo.id }
-                                         where pcp.descricao.Trim().ToUpper() == "Capacidade (BTU/h)".ToUpper()
+                                         where pcp.id == 5
                                          select new { p2IdProdutoCatalogo = pci.IdProdutoCatalogo, p2Id = pcpo.id, p2Valor = pcpo.valor }
                                     ) on pc.Id equals p2.p2IdProdutoCatalogo into TempP2
                                     from TTempP2 in TempP2.DefaultIfEmpty()
@@ -310,7 +310,7 @@ namespace ProdutoCatalogo
                                          join pcp in db.TProdutoCatalogoPropriedade on pci.IdProdutoCatalogoPropriedade equals pcp.id
                                          join pcpo in db.TProdutoCatalogoPropriedadeOpcao
                                          on new { a = pci.IdProdutoCatalogoPropriedade, b = pci.IdProdutoCatalogoPropriedadeOpcao.Value } equals new { a = pcpo.id_produto_catalogo_propriedade, b = pcpo.id }
-                                         where pcp.descricao.Trim().ToUpper() == "Ciclo".ToUpper()
+                                         where pcp.id == 6
                                          select new { p3IdProdutoCatalogo = pci.IdProdutoCatalogo, p3Id = pcpo.id, p3Valor = pcpo.valor }
                                     ) on pc.Id equals p3.p3IdProdutoCatalogo into TempP3
                                     from TTempP3 in TempP3.DefaultIfEmpty()
@@ -320,7 +320,7 @@ namespace ProdutoCatalogo
                                          join pcp in db.TProdutoCatalogoPropriedade on pci.IdProdutoCatalogoPropriedade equals pcp.id
                                          join pcpo in db.TProdutoCatalogoPropriedadeOpcao
                                          on new { a = pci.IdProdutoCatalogoPropriedade, b = pci.IdProdutoCatalogoPropriedadeOpcao.Value } equals new { a = pcpo.id_produto_catalogo_propriedade, b = pcpo.id }
-                                         where pcp.descricao.Trim().ToUpper() == "Tipo da Unidade".ToUpper()
+                                         where pcp.id == 2
                                          select new { p4IdProdutoCatalogo = pci.IdProdutoCatalogo, p4Id = pcpo.id, p4Valor = pcpo.valor }
                                     ) on pc.Id equals p4.p4IdProdutoCatalogo into TempP4
                                     from TTempP4 in TempP4.DefaultIfEmpty()
@@ -330,7 +330,7 @@ namespace ProdutoCatalogo
                                          join pcp in db.TProdutoCatalogoPropriedade on pci.IdProdutoCatalogoPropriedade equals pcp.id
                                          join pcpo in db.TProdutoCatalogoPropriedadeOpcao
                                          on new { a = pci.IdProdutoCatalogoPropriedade, b = pci.IdProdutoCatalogoPropriedadeOpcao.Value } equals new { a = pcpo.id_produto_catalogo_propriedade, b = pcpo.id }
-                                         where pcp.descricao.Trim().ToUpper() == "Descarga Condensadora".ToUpper()
+                                         where pcp.id == 3
                                          select new { p5IdProdutoCatalogo = pci.IdProdutoCatalogo, p5Id = pcpo.id, p5Valor = pcpo.valor }
                                     ) on pc.Id equals p5.p5IdProdutoCatalogo into TempP5
                                     from TTempP5 in TempP5.DefaultIfEmpty()
@@ -340,7 +340,7 @@ namespace ProdutoCatalogo
                                          join pcp in db.TProdutoCatalogoPropriedade on pci.IdProdutoCatalogoPropriedade equals pcp.id
                                          join pcpo in db.TProdutoCatalogoPropriedadeOpcao
                                          on new { a = pci.IdProdutoCatalogoPropriedade, b = pci.IdProdutoCatalogoPropriedadeOpcao.Value } equals new { a = pcpo.id_produto_catalogo_propriedade, b = pcpo.id }
-                                         where pcp.descricao.Trim().ToUpper() == "Voltagem".ToUpper()
+                                         where pcp.id == 4
                                          select new { p6IdProdutoCatalogo = pci.IdProdutoCatalogo, p6Id = pcpo.id, p6Valor = pcpo.valor }
                                     ) on pc.Id equals p6.p6IdProdutoCatalogo into TempP6
                                     from TTempP6 in TempP6.DefaultIfEmpty()
