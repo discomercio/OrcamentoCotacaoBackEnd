@@ -1424,7 +1424,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         orcamento.ClienteOrcamentoCotacaoDto.NomeCliente,
                         nomeEmpresa,
                         guid.ToString(),
-                        orcamento.Id.ToString(),
+                        idOrcamentoCotacao.ToString(),
                         urlBaseFront,
                         logoEmpresa
                     };
@@ -2159,55 +2159,6 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             return prepedidoProdutosTeste;
-        }
-
-        public ListaConsultaGerencialOrcamentoResponse ConsultaGerencial(ConsultaGerencialOrcamentoRequest request)
-        {
-            ListaConsultaGerencialOrcamentoResponse response = new ListaConsultaGerencialOrcamentoResponse();
-            var itens = new List<ConsultaGerencialOrcamentoResponse>();
-
-            //verificar o nome das colunas para filtrar pelo nome da coluna correto
-            if (request.NomeColunaOrdenacao == "orcamento") request.NomeColunaOrdenacao = "Id";
-            if (request.NomeColunaOrdenacao == "loja") request.NomeColunaOrdenacao = "Loja";
-            if (request.NomeColunaOrdenacao == "vendedor") request.NomeColunaOrdenacao = "IdVendedor";
-            if (request.NomeColunaOrdenacao == "parceiro") request.NomeColunaOrdenacao = "IdIndicador";
-            if (request.NomeColunaOrdenacao == "uf") request.NomeColunaOrdenacao = "UF";
-            if (request.NomeColunaOrdenacao == "criacao") request.NomeColunaOrdenacao = "DataCadastro";
-            if (request.NomeColunaOrdenacao == "expiracao") request.NomeColunaOrdenacao = "Validade";
-
-            var json = JsonSerializer.Serialize(request);
-            var filtro = JsonSerializer.Deserialize<TorcamentoCotacaoConsultaGerencialFiltro>(json);
-
-            //preciso incluir um filtro para ser difStatusDe para trazer onde status != aprovado (t_cfg_orcamento_..._status)
-            var retorno = _orcamentoCotacaoBll.ConsultaGerencial(filtro).ToList();
-
-            response.QtdeRegistros = retorno.Count();
-            if (request.QtdeItensPagina != 0)
-                retorno = retorno.Skip((request.Pagina) * request.QtdeItensPagina).Take(request.QtdeItensPagina).ToList();
-
-            foreach (var r in retorno)
-            {
-                var tOrcamentoCotacao = (TorcamentoCotacao)r.GetType().GetProperty("tOrcamentoCotacao").GetValue(r);
-                var tUsuario = (Tusuario)r.GetType().GetProperty("tUsuario").GetValue(r);
-                var tOrcamentistaIndicador = (TorcamentistaEindicador)r.GetType().GetProperty("tOrcamentistaIndicador").GetValue(r);
-
-                var item = new ConsultaGerencialOrcamentoResponse();
-                item.Orcamento = tOrcamentoCotacao.Id;
-                item.Vendedor = tUsuario.Nome_Iniciais_Em_Maiusculas;
-                item.Loja = tOrcamentoCotacao.Loja;
-                item.Parceiro = tOrcamentistaIndicador?.Razao_social_nome_iniciais_em_maiusculas;
-                item.UF = tOrcamentoCotacao.UF;
-                item.DataCriacao = tOrcamentoCotacao.DataCadastro;
-                item.DataExpiracao = tOrcamentoCotacao.Validade;
-
-                itens.Add(item);
-            }
-
-            if (itens.Count <= 0) response.QtdeRegistros = 0;
-
-            response.LstConsultaGerencialOrcamentoResponse = new List<ConsultaGerencialOrcamentoResponse>(itens);
-            response.Sucesso = true;
-            return response;
         }
     }
 }

@@ -28,6 +28,8 @@ namespace Prepedido.Dto
         public string Alertas { get; set; }
         public short? Qtde_Max_Venda { get; set; }
 
+        public bool UnitarioVendavel { get; set; } = true;
+
         internal static List<ProdutoDto> ProdutoDtoLista_De_ProdutoDados(List<ProdutoDados> produtoDados)
         {
             if (produtoDados == null) return null;
@@ -38,7 +40,7 @@ namespace Prepedido.Dto
             return ret;
         }
 
-        private static ProdutoDto ProdutoDto_De_ProdutoDados(ProdutoDados p)
+        public static ProdutoDto ProdutoDto_De_ProdutoDados(ProdutoDados p)
         {
             if (p == null) return null;
             return new ProdutoDto()
