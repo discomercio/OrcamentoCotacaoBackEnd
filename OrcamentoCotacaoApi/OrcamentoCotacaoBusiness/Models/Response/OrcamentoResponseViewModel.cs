@@ -81,5 +81,8 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 
         [JsonProperty("erro")]
         public string Erro { get; set; }
+
+        [JsonProperty("link")]
+        public string Link { get; set; }
     }
 }
