@@ -395,46 +395,6 @@ namespace OrcamentoCotacaoApi.Controllers
             return Ok(retorno);
         }
 
-        [HttpPost("consultaGerencial")]
-        public IActionResult ConsultaGerencial(ConsultaGerencialOrcamentoRequest request)
-        {
-            request.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
-            request.Usuario = LoggedUser.Apelido;
-            request.IP = Request.HttpContext.Connection.RemoteIpAddress.ToString();
-
-            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. OrcamentoController/ConsultaGerencial/POST - Request => [{JsonSerializer.Serialize(request)}].");
-
-
-            bool permissaoOk = true;
-            if (request.NomeLista == "vigentes")
-                if (!User.ValidaPermissao((int)ePermissao.RelOrcamentosVigente))
-                    permissaoOk = false;
-            else if (request.NomeLista == "expirados")
-                if (!User.ValidaPermissao((int)ePermissao.RelOrcamentosExpirados))
-                    permissaoOk = false;
-            else if (request.NomeLista == "cadastrados")
-                if (!User.ValidaPermissao((int)ePermissao.RelOrcamentosCadastrados))
-                    permissaoOk = false;
-            if (request.NomeLista == "pendentes")
-                if (!User.ValidaPermissao((int)ePermissao.RelOrcamentosMensagemPendente))
-                    permissaoOk = false;
-
-            if (!permissaoOk)
-                return BadRequest(new { Mensagem = "Não encontramos a permissão necessária para realizar atividade!" });
-
-            var response = _orcamentoBll.ConsultaGerencial(request);
-
-            var ret = new
-            {
-                QtdConsultaGerencial = response.LstConsultaGerencialOrcamentoResponse.Count,
-                QtdeRegistros = response.QtdeRegistros
-            };
-
-            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. OrcamentoController/ConsultaGerencial/POST - Response => [{JsonSerializer.Serialize(ret)}].");
-
-            return Ok(response);
-        }
-
         private PermissaoOrcamentoResponse ObterPermissaoOrcamento(int IdOrcamento)
         {
             return _permissaoBll.RetornarPermissaoOrcamento(new PermissaoOrcamentoRequest()
