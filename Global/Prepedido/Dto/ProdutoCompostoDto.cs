@@ -24,7 +24,7 @@ namespace Prepedido.Dto
             return ret;
         }
 
-        private static ProdutoCompostoDto ProdutoCompostoDto_De_ProdutoCompostoDados(ProdutoCompostoDados p)
+        public static ProdutoCompostoDto ProdutoCompostoDto_De_ProdutoCompostoDados(ProdutoCompostoDados p)
         {
             if (p == null) return null;
             return new ProdutoCompostoDto()

@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Prepedido.Dto;
 using Produto;
 using Produto.Dados;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -48,54 +50,74 @@ namespace Prepedido.Bll
                     (Constantes.ContribuinteICMS)cliente.contribuite_icms_status,
                     (Constantes.ProdutorRural)cliente.produtor_rural_status);
 
-                //tratar a lista de compostos
-                foreach (Produto.Dados.ProdutoCompostoDados composto in aux.ProdutoCompostoDados)
+                ProdutoComboDto response = new ProdutoComboDto();
+                response.ProdutoDto = new List<ProdutoDto>();
+                response.ProdutoCompostoDto = new List<ProdutoCompostoDto>();
+
+                foreach (var produto in aux.ProdutoDados)
                 {
+                    var responseItem = ProdutoDto.ProdutoDto_De_ProdutoDados(produto);
+
+                    var pai = aux.ProdutoCompostoDados.Where(x => x.Filhos.Where(f => f.Produto == produto.Produto).Any()).FirstOrDefault();
+                    if (pai != null)
+                    {
+                        responseItem.UnitarioVendavel = false;
+                    }
+                    response.ProdutoDto.Add(responseItem);
+                }
+
+                foreach (ProdutoCompostoDados composto in aux.ProdutoCompostoDados)
+                {
+                    var produtoCompostoResponse = new ProdutoCompostoDto();
+                    produtoCompostoResponse.Filhos = new List<ProdutoFilhoDto>();
                     decimal? somaFilhotes = 0;
+
+                    var produtoCompostoResponseApoio = new ProdutoCompostoDto();
+                    produtoCompostoResponseApoio.Filhos = new List<ProdutoFilhoDto>();
 
                     var filhotes = (from c in aux.ProdutoDados
                                     join d in composto.Filhos on new { a = c.Fabricante, b = c.Produto } equals new { a = d.Fabricante, b = d.Produto }
                                     select c).ToList();
 
-
                     if (composto.Filhos.Count != filhotes.Count)
                     {
-                        var prodARemover = aux.ProdutoDados.Where(x => x.Fabricante == composto.PaiFabricante && x.Produto == composto.PaiProduto).FirstOrDefault();
-                        if (prodARemover != null) aux.ProdutoDados.Remove(prodARemover);
+                        var prodARemover = response.ProdutoDto.Where(x => x.Fabricante == composto.PaiFabricante && x.Produto == composto.PaiProduto).FirstOrDefault();
+                        if (prodARemover != null) response.ProdutoDto.Remove(prodARemover);
                         continue;
                     }
 
                     foreach (var filho in filhotes)
                     {
                         var compostoFilho = composto.Filhos.Where(x => x.Produto == filho.Produto).FirstOrDefault();
+                        produtoCompostoResponseApoio.Filhos.Add(ProdutoFilhoDto.ProdutoFilhoDto_De_ProdutoFilhoDados(compostoFilho));
 
-                        somaFilhotes += filho.Preco_lista * compostoFilho.Qtde;
+                        somaFilhotes += Math.Round((decimal)filho.Preco_lista * compostoFilho.Qtde, 2);
                     }
 
                     var pai = aux.ProdutoDados.Where(x => x.Fabricante == composto.PaiFabricante && x.Produto == composto.PaiProduto).FirstOrDefault();
-                    if (pai == null)
-                    {
-                        var produtoCompostoAInserir = new Produto.Dados.ProdutoDados()
-                        {
-                            Fabricante = composto.PaiFabricante,
-                            Fabricante_Nome = composto.PaiFabricanteNome,
-                            Produto = composto.PaiProduto,
-                            Descricao_html = composto.PaiDescricao,
-                            Descricao = composto.PaiDescricao,
-                            Preco_lista = somaFilhotes,
-                            Qtde_Max_Venda = filhotes.Min(x => x.Qtde_Max_Venda),
-                            Desc_Max = filhotes.Min(x => x.Desc_Max)
-                        };
-                        aux.ProdutoDados.Add(produtoCompostoAInserir);
-                    }
-                    else
-                    {
-                        pai.Preco_lista = somaFilhotes;
-                    }
-                }
-            }
 
-            return ProdutoComboDto.ProdutoComboDto_De_ProdutoComboDados(aux);
+                    var novoItem = new ProdutoDto();
+                    novoItem.Fabricante = composto.PaiFabricante;
+                    novoItem.Fabricante_Nome = composto.PaiFabricanteNome;
+                    novoItem.Produto = composto.PaiProduto;
+                    novoItem.Descricao_html = pai != null ? pai.Descricao_html : composto.PaiDescricao;
+                    novoItem.Preco_lista = (decimal)somaFilhotes;
+                    novoItem.Qtde_Max_Venda = filhotes.Min(x => x.Qtde_Max_Venda);
+                    novoItem.Estoque = filhotes.Min(x => x.Estoque);
+                    novoItem.Alertas = filhotes.Min(x => x.Alertas);
+
+                    if (pai != null) response.ProdutoDto.RemoveAll(x => x.Produto == pai.Produto);
+
+                    response.ProdutoDto.Add(novoItem);
+
+                    produtoCompostoResponse = ProdutoCompostoDto.ProdutoCompostoDto_De_ProdutoCompostoDados(composto);
+
+                    produtoCompostoResponse.Preco_total_Itens = (decimal)somaFilhotes;
+                    produtoCompostoResponse.Filhos = produtoCompostoResponseApoio.Filhos;
+                    response.ProdutoCompostoDto.Add(produtoCompostoResponse);
+                }
+                return response;
+            }
         }
     }
 }
