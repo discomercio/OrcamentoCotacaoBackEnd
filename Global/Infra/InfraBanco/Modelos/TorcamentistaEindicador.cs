@@ -130,5 +130,9 @@ namespace InfraBanco.Modelos
 
         [Column("EnderecoIpBloqueadoAutomatico ")]
         public string EnderecoIpBloqueadoAutomatico { get; set; }
+
+        [Column("nome_fantasia")]
+        [MaxLength(60)]
+        public string NomeFantasia { get; set; }
     }
 }
