@@ -251,6 +251,23 @@ namespace OrcamentoCotacaoApi.Controllers
             }
         }
 
+
+        [HttpPost("consultaProdutoCatalogo")]
+        public IActionResult ConsultarProdutoCatalogoAtivo(ConsultaProdutoCatalogoAtivoRequest request)
+        {
+            request.Usuario = LoggedUser.Apelido;
+            request.IP = HttpContext.Connection.RemoteIpAddress.ToString();
+            request.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ProdutoCatalogoController/ConsultarProdutoCatalogoAtivo/POST - Request => [{System.Text.Json.JsonSerializer.Serialize(request)}].");
+
+            var response = _bll.ConsultarProdutoCatalogoAtivo(request);
+
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ProdutoCatalogoController/ConsultarProdutoCatalogoAtivo/POST - Response => [{System.Text.Json.JsonSerializer.Serialize(response)}].");
+            
+            return Ok(response);
+        }
+
         [HttpDelete("{id}")]
         public IActionResult Excluir(int id)
         {

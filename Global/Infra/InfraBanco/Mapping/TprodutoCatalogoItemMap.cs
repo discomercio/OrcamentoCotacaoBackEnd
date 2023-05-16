@@ -31,7 +31,7 @@ namespace InfraBanco.Mapping
 
             builder.Property(x => x.Oculto)
                 .HasColumnName("oculto")
-                .HasColumnType("bool");
+                .HasColumnType("bit");
 
             builder
                 .HasOne(x => x.TprodutoCatalogoPropriedadeOpcao)

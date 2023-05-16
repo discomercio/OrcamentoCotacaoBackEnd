@@ -147,6 +147,54 @@ namespace OrcamentoCotacaoBusiness.Bll
             return _bll.Detalhes(id);
         }
 
+        public ConsultaProdutoCatalogoAtivoResponse ConsultarProdutoCatalogoAtivo(ConsultaProdutoCatalogoAtivoRequest request)
+        {
+            var response = new ConsultaProdutoCatalogoAtivoResponse();
+            response.Sucesso = false;
+
+            var retorno = _bll.ConsultarProdutoCatalogoAtivo(request.Id);
+            if (retorno == null)
+            {
+                response.Mensagem = "Falha ao buscar produto!";
+                return response;
+            }
+
+            var tProduto = (TprodutoCatalogo)retorno.GetType().GetProperty("produto").GetValue(retorno, null);
+            response.Fabricante = tProduto.Fabricante;
+            response.FabricanteNome = tProduto.Tfabricante.Nome;
+            response.Produto = tProduto.Produto;
+            response.ProdutoNome = tProduto.Nome;
+            response.ProdutoDescricaoCompleta = tProduto.Descricao;
+
+            var propriedades = _bll.BuscarPropriedadesProdutoCatalogoAtivo(request.Id).ToList();
+            if (propriedades != null)
+            {
+                response.ListPropriedades = new List<ConsultaProdutoCatalogoPropriedadeResponse>();
+                foreach (var prop in propriedades)
+                {
+                    var propResponse = new ConsultaProdutoCatalogoPropriedadeResponse();
+                    propResponse.Nome = (string)prop.GetType().GetProperty("nome").GetValue(prop, null);
+                    var valorTexto = (string)prop.GetType().GetProperty("valorTexto").GetValue(prop, null);
+                    if (!string.IsNullOrEmpty(valorTexto))
+                    {
+                        propResponse.Valor = valorTexto;
+                    }
+                    else
+                    {
+                        propResponse.Valor = (string)prop.GetType().GetProperty("valorLista").GetValue(prop, null);
+                    }
+
+                    response.ListPropriedades.Add(propResponse);
+                }
+            }
+
+            var imagem = _bll.ObterListaImagensPorId(request.Id).FirstOrDefault();
+            response.ImagemCaminho = imagem != null ? imagem.Caminho : "sem-imagem.png";
+
+            response.Sucesso = true;
+            return response;
+        }
+
         public string ExcluirImagem(int idProduto, int idImagem, string caminho)
         {
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
