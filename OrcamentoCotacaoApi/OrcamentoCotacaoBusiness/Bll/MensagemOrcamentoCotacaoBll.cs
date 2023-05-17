@@ -134,7 +134,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 switch (item.IdCfgParametro)
                 {
                     case 2:
-                        urlBaseFront = $"{item.Valor}#";
+                        urlBaseFront = item.Valor;
                         break;
                     case 5:
                         orcamentoCotacaoEmailQueueModel.From = item.Valor;

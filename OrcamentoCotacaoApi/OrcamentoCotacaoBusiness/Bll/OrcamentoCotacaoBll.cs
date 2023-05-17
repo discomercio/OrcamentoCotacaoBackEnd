@@ -1406,7 +1406,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
 
                     case 2:
-                        urlBaseFront = $"{item.Valor}#";
+                        urlBaseFront = item.Valor;
                         break;
                     case 5:
                         orcamentoCotacaoEmailQueueModel.From = item.Valor;
@@ -1484,7 +1484,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
 
                     case 2:
-                        urlBaseFront = $"{item.Valor}#";
+                        urlBaseFront = item.Valor;
                         break;
                     case 5:
                         orcamentoCotacaoEmailQueueModel.From = item.Valor;

@@ -40,7 +40,9 @@ namespace OrcamentoCotacaoEmailQueue
                 emailTemplateBody = emailTemplateBody.Replace("{DadosEmpresa}", tagHtml[1]);
                 emailTemplateBody = emailTemplateBody.Replace("{LinkOrcamento}", tagHtml[2]);
                 emailTemplateBody = emailTemplateBody.Replace("{NroOrcamento}", tagHtml[3]);
-                emailTemplateBody = emailTemplateBody.Replace("{URL_Base_Front}", tagHtml[4]);
+                //emailTemplateBody = emailTemplateBody.Replace("{URL_Base_Front}", tagHtml[4]);
+                emailTemplateBody = emailTemplateBody.Replace("src=\"{URL_Base_Front}/", $"src=\"{tagHtml[4]}");
+                emailTemplateBody = emailTemplateBody.Replace("href=\"{URL_Base_Front}", $"href=\"{tagHtml[4]}#");
                 emailTemplateBody = emailTemplateBody.Replace("{LogoEmpresa}", tagHtml[5]);
                 orcamentoCotacaoEmailQueue.Body = emailTemplateBody;
                 
