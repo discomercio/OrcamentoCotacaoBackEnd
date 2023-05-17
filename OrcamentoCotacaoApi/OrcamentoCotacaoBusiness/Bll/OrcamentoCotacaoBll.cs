@@ -656,8 +656,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             var tOrcamentoCotacaoLink = _orcamentoCotacaoLinkBll.PorFiltro(new TorcamentoCotacaoLinkFiltro() { IdOrcamentoCotacao = orcamento.Id, Status = 1 }).FirstOrDefault();
 
             var link = "{URL_Base_Front}#/publico/orcamento/{LinkOrcamento}";
-            link = link.Replace("src=\"{URL_Base_Front}/", $"src=\"{tcfgUnidadeNegocioParametros.Where(x => x.IdCfgParametro == 2).FirstOrDefault().Valor}");
-            link = link.Replace("href=\"{URL_Base_Front}", $"href=\"{tcfgUnidadeNegocioParametros.Where(x => x.IdCfgParametro == 2).FirstOrDefault().Valor}#");
+            link = link.Replace("{URL_Base_Front}", tcfgUnidadeNegocioParametros.Where(x => x.IdCfgParametro == 2).FirstOrDefault().Valor);
             link = link.Replace("{LinkOrcamento}", tOrcamentoCotacaoLink.Guid.ToString());
             orcamentoResponse.Link = link;
 
