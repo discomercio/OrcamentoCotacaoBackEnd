@@ -107,7 +107,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 foreach (var produto in produtoComboDados.ProdutoDados)
                 {
-                    
+
                     var responseItem = ProdutoSimplesResponseViewModel
                         .ConverterProdutoDados(produto, null, GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), produto.Fabricante));
 
@@ -837,7 +837,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 var itemAtomico = orcamentoCotacaoOpcaoItemAtomicoBll.PorFiltro(new TorcamentoCotacaoOpcaoItemAtomicoFiltro() { IdItemUnificado = item.Id });
                 var itemAtomicoCusto = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.PorFiltro(new TorcamentoCotacaoOpcaoItemAtomicoCustoFinFiltro() { LstIdItemAtomico = itemAtomico.Select(x => x.Id).ToList() });
-
+                var urlImagem = _produtoCatalogoBll.ObterDadosImagemPorProduto(item.Produto).FirstOrDefault().Caminho;
+                
                 if (itemAtomico == null || itemAtomicoCusto == null) break;
 
                 var produtoResponse = new ProdutoOrcamentoOpcaoResponseViewModel();
@@ -846,7 +847,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 produtoResponse.Fabricante = item.Fabricante;
                 produtoResponse.FabricanteNome = (await produtoGeralBll.ObterListaFabricante()).Where(x => x.Fabricante == item.Fabricante).FirstOrDefault().Nome;
                 produtoResponse.Produto = item.Produto;
-                produtoResponse.UrlImagem = _produtoCatalogoBll.ObterDadosImagemPorProduto(item.Produto).FirstOrDefault().Caminho;
+                produtoResponse.UrlImagem = urlImagem == "sem-imagem.png" ? null : urlImagem;
                 produtoResponse.Descricao = item.DescricaoHtml;
                 produtoResponse.Qtde = item.Qtde;
                 produtoResponse.IdOpcaoPagto = item.Id;
