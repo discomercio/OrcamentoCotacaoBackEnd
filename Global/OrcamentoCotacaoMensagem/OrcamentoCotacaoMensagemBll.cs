@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using OrcamentoCotacaoMensagemStatus;
 using System.Linq;
-
+using System;
 
 namespace OrcamentoCotacaoMensagem
 {
@@ -28,12 +28,6 @@ namespace OrcamentoCotacaoMensagem
         {
             return await _data.ObterListaMensagemPendente(IdOrcamentoCotacao);
         }
-
-        public int ObterQuantidadeMensagemPendente(int idUsuarioRemetente, int idTipoUsuarioRemetente)
-        {
-            return _data.ObterQuantidadeMensagemPendente(idUsuarioRemetente, idTipoUsuarioRemetente);
-        }
-
 
         public bool EnviarMensagem(TorcamentoCotacaoMensagemFiltro orcamentoCotacaoMensagem,
             InfraBanco.ContextoBdGravacao contextoBdGravacao, 
@@ -111,5 +105,9 @@ namespace OrcamentoCotacaoMensagem
             return _data.DesmarcarPendencia(IdOrcamentoCotacao);
         }
 
+        public IQueryable<object> ObterQuantidadeMensagemPendentePorLojas(int IdUsuarioDestinatario, int IdTipoUsuarioDestinatario, List<string> lojas, DateTime dataInicio)
+        {
+            return _data.ObterQuantidadeMensagemPendentePorLojas(IdUsuarioDestinatario, IdTipoUsuarioDestinatario, lojas, dataInicio);
+        }
     }
 }

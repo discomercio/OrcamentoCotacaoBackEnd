@@ -12,6 +12,7 @@ using OrcamentoCotacaoApi.Filters;
 using UtilsGlobais;
 using UtilsGlobais.Configs;
 using Microsoft.Extensions.Configuration;
+using OrcamentoCotacaoBusiness.Models.Response.Mensagem;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -141,8 +142,8 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [Authorize]
-        [HttpGet("pendente/quantidade")]
-        public int ObterQuantidadeMensagemPendente()
+        [HttpGet("pendente/quantidadePorLoja")]
+        public IActionResult ObterQuantidadeMensagemPendentePorLojas()
         {
             var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
@@ -156,32 +157,31 @@ namespace OrcamentoCotacaoApi.Controllers
                     Usuario = LoggedUser.Apelido
                 };
 
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/ObterQuantidadeMensagemPendente/GET - Request => [{JsonSerializer.Serialize(request)}].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/ObterQuantidadeMensagemPendentePorLojas/GET - Request => [{JsonSerializer.Serialize(request)}].");
             }
 
+            var response = new ListaQuantidadeMensagemPendenteResponse();
+            response.Sucesso = false;
             if (User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin") != null)
             {
 
                 if (appSettings.GerarLogProcessoAutomatizado)
                 {
-                    _logger.LogInformation("ObterQuantidadeMensagemPendente");
+                    _logger.LogInformation("ObterQuantidadeMensagemPendentePorLojas");
                 }
                 var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
 
-                var saida = _mensagemBll.ObterQuantidadeMensagemPendente(user.Id, (int)user.TipoUsuario);
+                response = _mensagemBll.ObterQuantidadeMensagemPendentePorLojas(user);
 
                 if (appSettings.GerarLogProcessoAutomatizado)
                 {
-                    _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/ObterQuantidadeMensagemPendente/GET - Response => [{JsonSerializer.Serialize(saida)}].");
+                    _logger.LogInformation($"CorrelationId => [{correlationId}]. MensagemController/ObterQuantidadeMensagemPendentePorLojas/GET - Response => [{JsonSerializer.Serialize(response)}].");
                 }
 
-                return saida;
-            }
-            else
-            {
-                return 0;
+                return Ok(response);
             }
 
+            return Ok(response);
         }
 
         [Authorize]
