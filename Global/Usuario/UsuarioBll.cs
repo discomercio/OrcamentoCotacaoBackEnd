@@ -159,5 +159,26 @@ namespace Usuario
         {
             throw new NotImplementedException();
         }
+
+        public IQueryable<object> BuscarLojasEUnidadesNegocio(string apelido)
+        {
+            using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                var saida = from c in db.TusuarioXLoja
+                            join d in db.Tloja on c.Loja equals d.Loja
+                            join e in db.TcfgUnidadeNegocio on d.Unidade_Negocio equals e.Sigla
+                            join f in db.TcfgUnidadeNegocioParametro on e.Id equals f.IdCfgUnidadeNegocio
+                            where c.Usuario == apelido &&
+                                  f.IdCfgParametro == 13 &&
+                                  f.Valor == "1"
+                            select new
+                            {
+                                loja = c.Loja,
+                                unidadeNegocio = e.Sigla
+                            };
+
+                return saida;
+            }
+        }
     }
 }
