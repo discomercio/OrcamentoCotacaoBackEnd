@@ -124,10 +124,8 @@ namespace Prepedido.PedidoVisualizacao
                                 join vp in db.TorcamentistaEindicadorVendedor on c.IdIndicadorVendedor equals vp.Id into gj
                                 from loj in gj.DefaultIfEmpty()
 
-                                where
-                                    c.Data > DateTime.Now.AddDays(-60)
-                                    && c.St_Entrega != "CAN" //CANCELADOS
-                                    && c.Loja == filtro.Loja
+                                where c.St_Entrega != "CAN" //CANCELADOS
+                                      && c.Loja == filtro.Loja
 
                                 select new OrcamentoCotacaoListaDto
                                 {

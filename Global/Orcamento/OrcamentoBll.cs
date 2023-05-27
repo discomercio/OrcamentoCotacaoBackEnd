@@ -139,8 +139,7 @@ namespace Orcamento
                                 from loj in gj.DefaultIfEmpty()
 
                                 where
-                                    c.Data > DateTime.Now.AddDays(-60)
-                                    && c.Loja == filtro.Loja
+                                    c.Loja == filtro.Loja
 
                                 select new OrcamentoCotacaoListaDto
                                 {
