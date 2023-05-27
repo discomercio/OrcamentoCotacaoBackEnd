@@ -133,22 +133,22 @@ namespace Orcamento
 
                     var query = from c in db.Torcamento
 
-                                join v in db.Tusuario on c.Vendedor equals v.Usuario into vendedorTemp
-                                from vendedor in vendedorTemp.DefaultIfEmpty()
+                                join v in db.Tusuario on c.Vendedor equals v.Usuario
 
                                 join vp in db.TorcamentistaEIndicadorVendedor on c.IdIndicadorVendedor equals vp.Id into gj
                                 from loj in gj.DefaultIfEmpty()
 
-                                where 
-                                    c.Data > DateTime.Now.AddDays(-60) 
+                                where
+                                    c.Data > DateTime.Now.AddDays(-60)
                                     && c.Loja == filtro.Loja
 
                                 select new OrcamentoCotacaoListaDto
                                 {
+                                    NumPedidoOrdenacao = Convert.ToInt32(c.Orcamento.Replace("Z", "")),
                                     NumeroOrcamento = !c.IdOrcamentoCotacao.HasValue || c.IdOrcamentoCotacao == 0 ? "-" : c.IdOrcamentoCotacao.Value.ToString(),
                                     NumPedido = c.Orcamento,
                                     Cliente_Obra = c.Endereco_nome,
-                                    IdVendedor = vendedor.Id,
+                                    IdVendedor = v.Id,
                                     Vendedor = c.Vendedor == null ? "-" : c.Vendedor,
                                     Parceiro = c.Orcamentista == null ? "-" : c.Orcamentista,
                                     VendedorParceiro = loj.Nome,
@@ -163,11 +163,16 @@ namespace Orcamento
                                     DtCadastro = c.Data,
                                     DtExpiracao = null,
                                     DtInicio = filtro.DtInicio,
-                                    DtFim = filtro.DtFim
+                                    DtFim = filtro.DtFim,
+                                    IdOrcamentoCotacao = !c.IdOrcamentoCotacao.HasValue || c.IdOrcamentoCotacao == 0 ? null : c.IdOrcamentoCotacao
                                 };
 
                     #region Where
 
+                    if (!string.IsNullOrEmpty(filtro.IdBaseBusca))
+                    {
+                        query = query.Where(x => Convert.ToInt32(x.NumPedidoOrdenacao) <= Convert.ToInt32(filtro.IdBaseBusca.Replace("Z", "")));
+                    }
                     if (filtro.Status != null && filtro.Status.Length > 0)
                     {
                         query = query.Where(f => filtro.Status.Contains(f.IdStatus.ToString()));
@@ -179,11 +184,11 @@ namespace Orcamento
 
                         if (int.TryParse(filtro.Nome_numero, out aux))
                         {
-                            query = query.Where(f => f.NumeroOrcamento.Contains(aux.ToString()));
+                            query = query.Where(f => f.IdOrcamentoCotacao == aux);
                         }
                         else
                         {
-                            query = query.Where(f => 
+                            query = query.Where(f =>
                             f.Cliente_Obra.Contains(filtro.Nome_numero)
                             || f.NumPedido.Contains(filtro.Nome_numero));
                         }
@@ -206,7 +211,7 @@ namespace Orcamento
 
                     if (!string.IsNullOrEmpty(filtro.Parceiro))
                     {
-                        query = query.Where(x => x.Parceiro == filtro.Parceiro);    
+                        query = query.Where(x => x.Parceiro == filtro.Parceiro);
                     }
 
                     if (filtro.VendedorParceiros != null && filtro.VendedorParceiros.Length > 0)
@@ -214,7 +219,7 @@ namespace Orcamento
                         query = query.Where(f => filtro.VendedorParceiros.Contains(f.IdIndicadorVendedor.ToString()));
                     }
 
-                    if (!string.IsNullOrEmpty(filtro.VendedorParceiro)) { }
+                    if (!string.IsNullOrEmpty(filtro.VendedorParceiro))
                     {
                         query = query.Where(x => x.VendedorParceiro == filtro.VendedorParceiro);
                     }
@@ -237,28 +242,34 @@ namespace Orcamento
                     {
                         switch (filtro.NomeColunaOrdenacao.ToUpper())
                         {
-                            case "NUMEROORCAMENTO":
+                            case "NUMPEDIDO":
                                 if (filtro.OrdenacaoAscendente)
                                 {
-                                    query = query.OrderBy(o => o.NumeroOrcamento);
+                                    query = query.OrderBy(o => o.NumPedidoOrdenacao);
                                 }
                                 else
                                 {
-                                    query = query.OrderByDescending(o => o.NumeroOrcamento);
+                                    query = query.OrderByDescending(o => o.NumPedidoOrdenacao);
+                                }
+                                break;
+                            case "NUMEROORCAMENTO":
+                                if (filtro.OrdenacaoAscendente)
+                                {
+                                    query = query.OrderBy(o => Convert.ToInt32(o.NumeroOrcamento));
+                                }
+                                else
+                                {
+                                    query = query.OrderByDescending(o => Convert.ToInt32(o.NumeroOrcamento));
                                 }
                                 break;
                             case "CLIENTE_OBRA":
                                 if (filtro.OrdenacaoAscendente)
                                 {
-                                    query = query.OrderBy(o =>
-                                    !string.IsNullOrWhiteSpace(o.NomeCliente) ? o.NomeCliente
-                                    : !string.IsNullOrWhiteSpace(o.NomeObra) ? o.NomeObra : o.NumeroOrcamento);
+                                    query = query.OrderBy(o => o.Cliente_Obra);
                                 }
                                 else
                                 {
-                                    query = query.OrderByDescending(o =>
-                                    !string.IsNullOrWhiteSpace(o.NomeCliente) ? o.NomeCliente
-                                    : !string.IsNullOrWhiteSpace(o.NomeObra) ? o.NomeObra : o.NumeroOrcamento);
+                                    query = query.OrderByDescending(o => o.Cliente_Obra);
                                 }
                                 break;
 

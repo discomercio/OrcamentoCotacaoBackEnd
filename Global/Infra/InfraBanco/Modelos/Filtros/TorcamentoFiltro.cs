@@ -37,5 +37,7 @@ namespace InfraBanco.Modelos.Filtros
         public int QtdeItensPagina { get; set; }
         public string NomeColunaOrdenacao { get; set; }
         public bool OrdenacaoAscendente { get; set; }
+
+        public string IdBaseBusca { get; set; }
     }
 }

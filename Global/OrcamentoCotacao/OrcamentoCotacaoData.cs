@@ -415,8 +415,6 @@ namespace OrcamentoCotacao
                                 join oeiv in db.TorcamentistaEIndicadorVendedor on oc.IdIndicadorVendedor equals oeiv.Id into vendedorParceiroTemp
                                 from vendedorParceiro in vendedorParceiroTemp.DefaultIfEmpty()
 
-                                where oc.DataCadastro > DateTime.Now.AddDays(-60)
-
                                 select new Orcamento.Dto.OrcamentoCotacaoListaDto
                                 {
                                     Loja = oc.Loja,
@@ -448,6 +446,10 @@ namespace OrcamentoCotacao
                                 };
 
                     #region Where
+                    if (!string.IsNullOrEmpty(filtro.IdBaseBusca))
+                    {
+                        query = query.Where(x => Convert.ToInt32(x.NumeroOrcamento) <= Convert.ToInt32(filtro.IdBaseBusca));
+                    }
 
                     if (!string.IsNullOrWhiteSpace(filtro.Loja))
                     {
@@ -541,11 +543,11 @@ namespace OrcamentoCotacao
                             case "NUMEROORCAMENTO":
                                 if (filtro.OrdenacaoAscendente)
                                 {
-                                    query = query.OrderBy(o => o.NumeroOrcamento);
+                                    query = query.OrderBy(o => Convert.ToInt32(o.NumeroOrcamento));
                                 }
                                 else
                                 {
-                                    query = query.OrderByDescending(o => o.NumeroOrcamento);
+                                    query = query.OrderByDescending(o => Convert.ToInt32(o.NumeroOrcamento));
                                 }
                                 break;
                             case "CLIENTE_OBRA":
@@ -618,7 +620,7 @@ namespace OrcamentoCotacao
                                 }
                                 break;
 
-                            case "DtExpiracao":
+                            case "DTEXPIRACAO":
                                 if (filtro.OrdenacaoAscendente)
                                 {
                                     query = query.OrderBy(o => o.DtExpiracao);
