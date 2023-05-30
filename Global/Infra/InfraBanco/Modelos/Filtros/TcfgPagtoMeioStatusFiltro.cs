@@ -18,5 +18,6 @@ namespace InfraBanco.Modelos.Filtros
         public bool IncluirTcfgPagtoMeio { get; set; }
         public bool IncluirTorcamentistaEIndicadorRestricaoFormaPagtos { get; set; }
         public string Apelido { get; set; }
+        public string ApelidoParceiro { get; set; }
     }
 }

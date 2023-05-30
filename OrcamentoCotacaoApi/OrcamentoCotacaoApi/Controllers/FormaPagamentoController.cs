@@ -48,7 +48,8 @@ namespace OrcamentoCotacaoApi.Controllers
                 formaPagtoRequest.TipoCliente,
                 formaPagtoRequest.TipoUsuario,
                 formaPagtoRequest.Apelido,
-                formaPagtoRequest.ComIndicacao);
+                formaPagtoRequest.ComIndicacao, 
+                formaPagtoRequest.ApelidoParceiro);
 
             if (retorno == null)
             {
@@ -85,39 +86,6 @@ namespace OrcamentoCotacaoApi.Controllers
             }
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. FormaPagamentoController/BuscarQtdeMaxPacelas/GET - Response => [{JsonSerializer.Serialize(retorno)}].");
-
-            return Ok(retorno);
-        }
-
-        [HttpGet("buscarMeiosPagtos")]
-        public IActionResult BuscarMeiosPagtos(List<int> tiposPagtos, string tipoCliente, byte comIndicacao)
-        {
-            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
-
-            var request = new
-            {
-                Usuario = LoggedUser.Apelido,
-                TiposPagtos = tiposPagtos.Count,
-                TipoCliente = tipoCliente,
-                ComIndicacao = comIndicacao
-            };
-
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. FormaPagamentoController/BuscarMeiosPagtos/GET - Request => [{JsonSerializer.Serialize(request)}].");
-
-            var retorno = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(tipoCliente, (Constantes.TipoUsuario)LoggedUser.TipoUsuario, LoggedUser.Apelido, comIndicacao);
-
-            if (retorno == null)
-            {
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. FormaPagamentoController/BuscarMeiosPagtos/POST - Response => [Não tem response].");
-                return NoContent();
-            }
-
-            var response = new
-            {
-                FormasPagamentos = retorno.Count
-            };
-
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. FormaPagamentoController/BuscarMeiosPagtos/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
             return Ok(retorno);
         }
