@@ -167,13 +167,29 @@ namespace OrcamentoCotacaoBusiness.Bll
                 orcamento.prazoMaximoConsultaOrcamento = prazoMaximoConsultaOrcamento[0].Valor;
                 orcamento.listaOpcoes = _orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro { IdOrcamentoCotacao = orcamento.id });
 
-                var contextoUsuario = orcamento.idTipoUsuarioContextoCadastro;
-                if (orcamento.idIndicador != null && orcamento.idIndicador != 0)
+                string apelidoParceiro = null;
+                string apelido = null;
+                byte comIndicador = 0;
+                if (orcamento.usuarioCadastro == orcamento.vendedor)
                 {
-                    contextoUsuario = (int)Constantes.TipoUsuarioContexto.Parceiro;
+                    apelido = orcamento.vendedor;
+                    if (!string.IsNullOrEmpty(orcamento.parceiro))
+                    {
+                        comIndicador = 1;
+                        apelidoParceiro = orcamento.parceiro;
+                    }
+                }
+                if(orcamento.usuarioCadastro == orcamento.parceiro || orcamento.usuarioCadastro == orcamento.vendedorParceiro)
+                {
+                    comIndicador = 1;
+                    apelido = orcamento.parceiro;
+                    apelidoParceiro = orcamento.parceiro;
                 }
 
-                orcamento.listaFormasPagto = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(orcamento.tipoCliente, (Constantes.TipoUsuario)contextoUsuario, orcamento.parceiro, byte.Parse(orcamento.idIndicador.HasValue ? "1" : "0"));
+                int contextoUsuario = orcamento.idTipoUsuarioContextoCadastro;
+
+                orcamento.listaFormasPagto = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(orcamento.tipoCliente, 
+                    (Constantes.TipoUsuario)contextoUsuario, apelido, comIndicador, apelidoParceiro);
                 orcamento.mensageria = BuscarDadosParaMensageria(usuarioLogin, orcamento.id, false);
 
                 if (!Validar(orcamento))

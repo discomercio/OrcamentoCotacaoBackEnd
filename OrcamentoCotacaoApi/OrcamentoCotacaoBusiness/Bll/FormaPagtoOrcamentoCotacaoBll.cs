@@ -43,18 +43,20 @@ namespace OrcamentoCotacaoBusiness.Bll
             this._logger = _logger;
         }
 
-        public List<FormaPagamentoResponseViewModel> BuscarFormasPagamentos(string tipoCliente, Constantes.TipoUsuario tipoUsuario, string apelido, byte comIndicacao)
+        public List<FormaPagamentoResponseViewModel> BuscarFormasPagamentos(string tipoCliente, Constantes.TipoUsuario tipoUsuario, 
+            string apelido, byte comIndicacao, string apelidoParceiro)
         {
             var tiposPagtos = _formaPagtoBll.BuscarFormasPagtos(true, Constantes.Modulos.COD_MODULO_ORCAMENTOCOTACAO,
                 tipoCliente, comIndicacao == 1, true, Constantes.TipoUsuarioPerfil.getUsuarioPerfil(tipoUsuario));
 
             if (tiposPagtos == null) return null;
 
-            return BuscarMeiosPagamento(tiposPagtos, tipoCliente, Constantes.TipoUsuarioPerfil.getUsuarioPerfil(tipoUsuario), apelido, comIndicacao);
+            return BuscarMeiosPagamento(tiposPagtos, tipoCliente, Constantes.TipoUsuarioPerfil.getUsuarioPerfil(tipoUsuario), apelido, 
+                comIndicacao, apelidoParceiro);
         }
 
         private List<FormaPagamentoResponseViewModel> BuscarMeiosPagamento(List<InfraBanco.Modelos.TcfgPagtoFormaStatus> tiposPagtos,
-            string tipoCliente, Constantes.eTipoUsuarioPerfil tipoUsuario, string apelido, byte comIndicacao)
+            string tipoCliente, Constantes.eTipoUsuarioPerfil tipoUsuario, string apelido, byte comIndicacao, string apelidoParceiro)
         {
             if (tiposPagtos == null) return null;
 
@@ -67,7 +69,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 item.IdTipoPagamento = fp.TcfgPagtoForma.Id;
                 item.TipoPagamentoDescricao = fp.TcfgPagtoForma.Descricao;
 
-                var filtro = CriarFiltro(fp, tipoCliente, (short)tipoUsuario, apelido, comIndicacao);
+                var filtro = CriarFiltro(fp, tipoCliente, (short)tipoUsuario, apelido, comIndicacao, apelidoParceiro);
                 meiosPagamento = _meiosPagamentosBll.PorFiltro(filtro);
 
                 item.MeiosPagamentos = MeioPagamentoResponseViewModel.ListaMeioPagamentoResponseViewModel_De_TcfgPagtoMeioStatus(meiosPagamento);
@@ -79,7 +81,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         }
 
         private InfraBanco.Modelos.Filtros.TcfgPagtoMeioStatusFiltro CriarFiltro(InfraBanco.Modelos.TcfgPagtoFormaStatus tipoPagto,
-            string tipoCliente, short tipoUsuario, string apelido, byte comIndicacao)
+            string tipoCliente, short tipoUsuario, string apelido, byte comIndicacao, string apelidoParceiro)
         {
             var filtro = new InfraBanco.Modelos.Filtros.TcfgPagtoMeioStatusFiltro()
             {
@@ -90,7 +92,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                 Habilitado = 1,
                 IncluirTcfgPagtoMeio = true,
                 IncluirTorcamentistaEIndicadorRestricaoFormaPagtos = comIndicacao == 1 ? true : false,
-                Apelido = apelido
+                Apelido = apelido,
+                ApelidoParceiro = apelidoParceiro
             };
 
             switch (tipoPagto.TcfgPagtoForma.Id.ToString())

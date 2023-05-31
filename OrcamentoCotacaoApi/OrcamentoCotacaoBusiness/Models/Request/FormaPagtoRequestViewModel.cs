@@ -11,5 +11,7 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         public byte ComIndicacao { get; set; }
         public Constantes.TipoUsuario TipoUsuario { get; set; }
         public string Apelido { get; set; }
+
+        public string ApelidoParceiro { get; set; }
     }
 }
