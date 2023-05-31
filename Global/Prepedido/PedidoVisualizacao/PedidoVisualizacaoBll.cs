@@ -124,13 +124,12 @@ namespace Prepedido.PedidoVisualizacao
                                 join vp in db.TorcamentistaEindicadorVendedor on c.IdIndicadorVendedor equals vp.Id into gj
                                 from loj in gj.DefaultIfEmpty()
 
-                                where
-                                    c.Data > DateTime.Now.AddDays(-60)
-                                    && c.St_Entrega != "CAN" //CANCELADOS
-                                    && c.Loja == filtro.Loja
+                                where c.St_Entrega != "CAN" //CANCELADOS
+                                      && c.Loja == filtro.Loja
 
                                 select new OrcamentoCotacaoListaDto
                                 {
+                                    //NumPedidoOrdenacao = Convert.ToInt32(c.Pedido.Replace("N", "")),
                                     NumeroOrcamento = c.IdOrcamentoCotacao.HasValue ? c.IdOrcamentoCotacao.Value.ToString() : "-",
                                     NumPedido = c.Pedido,
                                     Cliente_Obra = c.Endereco_nome,
@@ -154,6 +153,10 @@ namespace Prepedido.PedidoVisualizacao
 
                     #region Where
 
+                    if (!string.IsNullOrEmpty(filtro.IdBaseBusca))
+                    {
+                        query = query.Where(x => Convert.ToInt32(x.NumPedido.Substring(0,6)) <= Convert.ToInt32(filtro.IdBaseBusca.Substring(0,6)));
+                    }
                     if (filtro.Status != null && filtro.Status.Length > 0)
                     {
                         query = query.Where(f => filtro.Status.Contains(f.St_Entrega));
@@ -223,6 +226,16 @@ namespace Prepedido.PedidoVisualizacao
                     {
                         switch (filtro.NomeColunaOrdenacao.ToUpper())
                         {
+                            case "NUMPEDIDO":
+                                if (filtro.OrdenacaoAscendente)
+                                {
+                                    query = query.OrderBy(o => o.NumPedido);
+                                }
+                                else
+                                {
+                                    query = query.OrderByDescending(o => o.NumPedido);
+                                }
+                                break;
                             case "NUMEROORCAMENTO":
                                 if (filtro.OrdenacaoAscendente)
                                 {
@@ -236,15 +249,11 @@ namespace Prepedido.PedidoVisualizacao
                             case "CLIENTE_OBRA":
                                 if (filtro.OrdenacaoAscendente)
                                 {
-                                    query = query.OrderBy(o =>
-                                    !string.IsNullOrWhiteSpace(o.NomeCliente) ? o.NomeCliente
-                                    : !string.IsNullOrWhiteSpace(o.NomeObra) ? o.NomeObra : o.NumeroOrcamento);
+                                    query = query.OrderBy(o => o.Cliente_Obra);
                                 }
                                 else
                                 {
-                                    query = query.OrderByDescending(o =>
-                                    !string.IsNullOrWhiteSpace(o.NomeCliente) ? o.NomeCliente
-                                    : !string.IsNullOrWhiteSpace(o.NomeObra) ? o.NomeObra : o.NumeroOrcamento);
+                                    query = query.OrderByDescending(o => o.Cliente_Obra);
                                 }
                                 break;
 

@@ -6,6 +6,7 @@ namespace Orcamento.Dto
     {
         public string NumeroOrcamento { get; set; }
         public string NumPedido { get; set; }
+        public int NumPedidoOrdenacao { get; set; }
         public string Cliente_Obra { get; set; }
         public string Vendedor { get; set; }
         public string Parceiro { get; set; }
