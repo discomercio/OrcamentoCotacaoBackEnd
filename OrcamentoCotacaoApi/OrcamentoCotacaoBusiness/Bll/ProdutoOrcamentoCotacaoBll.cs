@@ -798,9 +798,6 @@ namespace OrcamentoCotacaoBusiness.Bll
         public string ValidarDescontos(PercMaxDescEComissaoResponseViewModel percMaxDescEComissaoResponse,
             AtualizarOrcamentoOpcaoProdutoRequest produto, string tipoCliente, bool temAlcada)
         {
-            if (produto.DescDado < 0) return $"O valor de desconto do produto {produto.Fabricante}/" +
-                 $"{produto.Produto} não pode ser negativo!";
-
             var percMaxDescComissao = temAlcada ? percMaxDescEComissaoResponse.PercMaxComissaoEDesconto :
                 tipoCliente == Constantes.ID_PF ? percMaxDescEComissaoResponse.PercMaxComissaoEDesconto :
                 percMaxDescEComissaoResponse.PercMaxComissaoEDescontoPJ;
