@@ -451,16 +451,23 @@ namespace OrcamentoCotacaoBusiness.Bll
                     foreach (var atomico in itensAtomicos)
                     {
                         var item = pDados.Where(x => x.Produto == atomico.Produto).FirstOrDefault();
+
+                        var precoLista = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ?
+                            Math.Round((decimal)item.Preco_lista, 2, MidpointRounding.AwayFromZero) :
+                            Math.Round((decimal)item.Preco_lista * (decimal)itemOpcao.CustoFinancFornecCoeficiente, 2, MidpointRounding.AwayFromZero);
+
+                        var proporcao = precoLista / itemOpcao.PrecoLista;
+                        var precoVenda = Math.Round(proporcao * itemOpcao.PrecoVenda, 2, MidpointRounding.AwayFromZero);
                         TorcamentoCotacaoOpcaoItemAtomicoCustoFin atomicoCustoFin = new TorcamentoCotacaoOpcaoItemAtomicoCustoFin()
                         {
                             IdItemAtomico = atomico.Id,
                             IdOpcaoPagto = pagto.Id,
                             DescDado = itemOpcao.DescDado,
-                            PrecoLista = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? Math.Round((decimal)item.Preco_lista, 2) : Math.Round((decimal)item.Preco_lista * (decimal)itemOpcao.CustoFinancFornecCoeficiente, 2),
-                            PrecoVenda = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? Math.Round((decimal)item.Preco_lista * (decimal)(1 - itemOpcao.DescDado / 100), 2) : Math.Round(Math.Round((decimal)item.Preco_lista * (decimal)itemOpcao.CustoFinancFornecCoeficiente, 2) * (decimal)(1 - itemOpcao.DescDado / 100), 2),
-                            PrecoNF = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? Math.Round((decimal)item.Preco_lista * (decimal)(1 - itemOpcao.DescDado / 100), 2) : Math.Round(Math.Round((decimal)item.Preco_lista * (decimal)itemOpcao.CustoFinancFornecCoeficiente, 2) * (decimal)(1 - itemOpcao.DescDado / 100), 2),
+                            PrecoLista = precoLista,
+                            PrecoVenda = precoVenda,
+                            PrecoNF = precoVenda,
                             CustoFinancFornecCoeficiente = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? 0 : itemOpcao.CustoFinancFornecCoeficiente,
-                            CustoFinancFornecPrecoListaBase = Math.Round((decimal)item.Preco_lista, 2)
+                            CustoFinancFornecPrecoListaBase = Math.Round((decimal)item.Preco_lista, 2, MidpointRounding.AwayFromZero)
                         };
 
                         _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Cadastrando produto atômico custo fin. Request => [{JsonSerializer.Serialize(atomicoCustoFin)}]");
@@ -644,6 +651,27 @@ namespace OrcamentoCotacaoBusiness.Bll
                             _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Usuário com permissão de alçada. Id => [{idAlcada}]");
                         }
 
+                        //var precoLista = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ?
+                        //    Math.Round((decimal)p.Preco_lista, 4) :
+                        //    Math.Round((decimal)item.Preco_lista * (decimal)itemOpcao.CustoFinancFornecCoeficiente, 4);
+
+                        //var proporcao = precoLista / itemOpcao.PrecoLista;
+                        //var precoVenda = Math.Round(proporcao * itemOpcao.PrecoVenda, 4);
+                        decimal precoVenda = 0;
+                        decimal precoLista = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ?
+                            Math.Round((decimal)p.Preco_lista, 2, MidpointRounding.AwayFromZero) :
+                            Math.Round((decimal)p.Preco_lista * (decimal)item.CustoFinancFornecCoeficiente, 2, MidpointRounding.AwayFromZero);
+                        if (item.PrecoLista != item.PrecoVenda)
+                        {
+                            var proporcao = precoLista / item.PrecoLista;
+                            precoVenda = Math.Round(proporcao * item.PrecoVenda, 2, MidpointRounding.AwayFromZero);
+                        }
+                        else
+                        {
+                            precoVenda = precoLista;
+                        }
+
+
                         if (atomicoCustoFin == null)
                         {
                             var opcaoPagtoAvista = opcaoPagtos.Where(x => x.Tipo_parcelamento == pagto.Tipo_parcelamento).FirstOrDefault();
@@ -651,11 +679,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                             atomicoCustoFin.IdItemAtomico = atomico.Id;
                             atomicoCustoFin.IdOpcaoPagto = opcaoPagtoAvista.Id;
                             atomicoCustoFin.DescDado = item.DescDado;
-                            atomicoCustoFin.PrecoLista = Math.Round((decimal)p.Preco_lista, 2);
-                            atomicoCustoFin.PrecoVenda = Math.Round((decimal)p.Preco_lista * (decimal)(1 - item.DescDado / 100), 2);
-                            atomicoCustoFin.PrecoNF = Math.Round((decimal)p.Preco_lista * (decimal)(1 - item.DescDado / 100), 2);
+                            atomicoCustoFin.PrecoLista = Math.Round((decimal)p.Preco_lista, 2, MidpointRounding.AwayFromZero);
+                            atomicoCustoFin.PrecoVenda = precoVenda;
+                            atomicoCustoFin.PrecoNF = precoVenda;
                             atomicoCustoFin.CustoFinancFornecCoeficiente = 0;
-                            atomicoCustoFin.CustoFinancFornecPrecoListaBase = Math.Round((decimal)p.Preco_lista, 2);
+                            atomicoCustoFin.CustoFinancFornecPrecoListaBase = Math.Round((decimal)p.Preco_lista, 2, MidpointRounding.AwayFromZero);
                             atomicoCustoFin.StatusDescontoSuperior = idAlcada > 0 ? true : false;
                             atomicoCustoFin.DataHoraDescontoSuperior = idAlcada > 0 ? (DateTime?)DateTime.Now : null;
                             atomicoCustoFin.IdUsuarioDescontoSuperior = idAlcada > 0 ? (int?)usuarioLogado.Id : null;
@@ -688,11 +716,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                             atomicoCustoFin.IdItemAtomico = atomico.Id;
                             atomicoCustoFin.IdOpcaoPagto = pagto.Id;
                             atomicoCustoFin.DescDado = item.DescDado;
-                            atomicoCustoFin.PrecoLista = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? Math.Round((decimal)p.Preco_lista, 2) : Math.Round((decimal)p.Preco_lista * (decimal)item.CustoFinancFornecCoeficiente, 2);
-                            atomicoCustoFin.PrecoVenda = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? Math.Round((decimal)p.Preco_lista * (decimal)(1 - item.DescDado / 100), 2) : Math.Round((decimal)p.Preco_lista * (decimal)item.CustoFinancFornecCoeficiente * (decimal)(1 - item.DescDado / 100), 2);
-                            atomicoCustoFin.PrecoNF = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? Math.Round((decimal)p.Preco_lista * (decimal)(1 - item.DescDado / 100), 2) : Math.Round((decimal)p.Preco_lista * (decimal)item.CustoFinancFornecCoeficiente * (decimal)(1 - item.DescDado / 100), 2);
+                            atomicoCustoFin.PrecoLista = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? Math.Round((decimal)p.Preco_lista, 2, MidpointRounding.AwayFromZero) : Math.Round((decimal)p.Preco_lista * (decimal)item.CustoFinancFornecCoeficiente, 2, MidpointRounding.AwayFromZero);
+                            atomicoCustoFin.PrecoVenda = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? precoLista : precoVenda;
+                            atomicoCustoFin.PrecoNF = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? precoLista : precoVenda;
                             atomicoCustoFin.CustoFinancFornecCoeficiente = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ? 0 : item.CustoFinancFornecCoeficiente;
-                            atomicoCustoFin.CustoFinancFornecPrecoListaBase = Math.Round((decimal)p.Preco_lista, 2);
+                            atomicoCustoFin.CustoFinancFornecPrecoListaBase = Math.Round((decimal)p.Preco_lista, 2, MidpointRounding.AwayFromZero);
                             atomicoCustoFin.StatusDescontoSuperior = idAlcada > 0 ? true : false;
                             atomicoCustoFin.DataHoraDescontoSuperior = idAlcada > 0 ? (DateTime?)DateTime.Now : null;
                             atomicoCustoFin.IdUsuarioDescontoSuperior = idAlcada > 0 ? (int?)usuarioLogado.Id : null;
@@ -835,7 +863,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 var itemAtomico = orcamentoCotacaoOpcaoItemAtomicoBll.PorFiltro(new TorcamentoCotacaoOpcaoItemAtomicoFiltro() { IdItemUnificado = item.Id });
                 var itemAtomicoCusto = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.PorFiltro(new TorcamentoCotacaoOpcaoItemAtomicoCustoFinFiltro() { LstIdItemAtomico = itemAtomico.Select(x => x.Id).ToList() });
                 var urlImagem = _produtoCatalogoBll.ObterDadosImagemPorProduto(item.Produto).FirstOrDefault().Caminho;
-                
+
                 if (itemAtomico == null || itemAtomicoCusto == null) break;
 
                 var produtoResponse = new ProdutoOrcamentoOpcaoResponseViewModel();
