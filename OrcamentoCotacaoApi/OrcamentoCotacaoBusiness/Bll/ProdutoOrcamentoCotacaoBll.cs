@@ -651,12 +651,6 @@ namespace OrcamentoCotacaoBusiness.Bll
                             _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Usuário com permissão de alçada. Id => [{idAlcada}]");
                         }
 
-                        //var precoLista = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ?
-                        //    Math.Round((decimal)p.Preco_lista, 4) :
-                        //    Math.Round((decimal)item.Preco_lista * (decimal)itemOpcao.CustoFinancFornecCoeficiente, 4);
-
-                        //var proporcao = precoLista / itemOpcao.PrecoLista;
-                        //var precoVenda = Math.Round(proporcao * itemOpcao.PrecoVenda, 4);
                         decimal precoVenda = 0;
                         decimal precoLista = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ?
                             Math.Round((decimal)p.Preco_lista, 2, MidpointRounding.AwayFromZero) :
