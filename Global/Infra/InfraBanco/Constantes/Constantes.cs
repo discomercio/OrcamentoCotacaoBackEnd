@@ -51,6 +51,8 @@ namespace InfraBanco.Constantes
                         retorno = eTipoUsuarioPerfil.USUÁRIO_DA_CENTRAL;
                         break;
                     case TipoUsuario.VENDEDOR:
+                        retorno = eTipoUsuarioPerfil.USUARIO_LOJA;
+                        break;
                     case TipoUsuario.CLIENTE:
                         retorno = eTipoUsuarioPerfil.USUARIO_LOJA;
                         break;

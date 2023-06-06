@@ -70,8 +70,8 @@ namespace OrcamentoCotacaoBusiness.Models.Response
             retorno.Produto = produto.Produto;
             retorno.Qtde = qtdeFilho.HasValue ? qtdeFilho : null;
             retorno.DescricaoHtml = produto.Descricao_html;
-            retorno.PrecoLista = Decimal.Parse(precoLista?.ToString("N"));
-            retorno.PrecoListaBase = Decimal.Parse(produto.Preco_lista?.ToString("N"));
+            retorno.PrecoLista = Math.Round((decimal)precoLista, 2, MidpointRounding.AwayFromZero);
+            retorno.PrecoListaBase = Math.Round((decimal)produto.Preco_lista, 2, MidpointRounding.AwayFromZero);
             retorno.QtdeMaxVenda = produto.Qtde_Max_Venda;
             retorno.DescMax = produto.Desc_Max;
             retorno.Estoque = produto.Estoque;
