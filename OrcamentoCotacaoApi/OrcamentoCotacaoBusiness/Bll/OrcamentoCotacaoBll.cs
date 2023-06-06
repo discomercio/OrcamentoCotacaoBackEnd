@@ -165,7 +165,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 orcamento.condicoesGerais = condicoesGerais[0].Valor;
                 orcamento.prazoMaximoConsultaOrcamento = prazoMaximoConsultaOrcamento[0].Valor;
-                orcamento.listaOpcoes = _orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro { IdOrcamentoCotacao = orcamento.id });
+                orcamento.listaOpcoes = _orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro { IdOrcamentoCotacao = orcamento.id }, true);
 
                 string apelidoParceiro = null;
                 string apelido = null;
@@ -550,7 +550,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             var orcamento = _orcamentoCotacaoBll.PorFiltro(new TorcamentoCotacaoFiltro() { Id = id }).FirstOrDefault();
             if (orcamento == null) throw new Exception("Falha ao buscar Orçamento!");
 
-            var opcao = _orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro() { IdOrcamentoCotacao = id });
+            var opcao = _orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro() { IdOrcamentoCotacao = id }, false);
             if (opcao.Count <= 0) throw new Exception("Falha ao buscar Opções do Orçamento!");
 
             string statusEmail;
@@ -692,7 +692,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 return response;
             }
 
-            var opcao = _orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro() { IdOrcamentoCotacao = id });
+            var opcao = _orcamentoCotacaoOpcaoBll.PorFiltro(new TorcamentoCotacaoOpcaoFiltro() { IdOrcamentoCotacao = id }, false);
             if (opcao.Count <= 0)
             {
                 response.Mensagem = "Falha ao buscar Opções do Orçamento!";
@@ -1983,7 +1983,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
 
             var opcaoSelecionada = _orcamentoCotacaoOpcaoBll
-                .PorFiltro(new TorcamentoCotacaoOpcaoFiltro() { Id = aprovarOrcamento.IdOpcao }).FirstOrDefault();
+                .PorFiltro(new TorcamentoCotacaoOpcaoFiltro() { Id = aprovarOrcamento.IdOpcao }, false).FirstOrDefault();
 
             if (opcaoSelecionada == null)
             {
@@ -2107,6 +2107,9 @@ namespace OrcamentoCotacaoBusiness.Bll
             List<PrepedidoProdutoDtoPrepedido> prepedidoProdutosTeste = new List<PrepedidoProdutoDtoPrepedido>();
 
             List<PrepedidoProdutoDtoPrepedido> produtosDto = new List<PrepedidoProdutoDtoPrepedido>();
+
+            //calcular total de preço lista do item
+
             foreach (var produto in produtosOpcaoSelecionada)
             {
                 var itens = itensAtomicosFinOpcao.Where(x => x.TorcamentoCotacaoOpcaoItemAtomico.IdItemUnificado == produto.IdItemUnificado);
@@ -2131,6 +2134,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             decimal totalPedido = 0M;
             foreach (var produto in produtosDtoDistinct)
             {
+                
                 var itens = produtosDto.Where(x => x.Produto == produto);
                 PrepedidoProdutoDtoPrepedido produtoPrepedido = new PrepedidoProdutoDtoPrepedido();
                 produtoPrepedido.Fabricante = itens.First().Fabricante;
