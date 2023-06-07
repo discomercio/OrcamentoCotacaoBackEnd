@@ -458,7 +458,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                         var totalItem = Math.Round(precoLista * atomico.Qtde, 2, MidpointRounding.AwayFromZero);
                         var proporcao = totalItem / itemOpcao.PrecoLista;
-                        var totalItemPrecoVenda = Math.Round(proporcao * itemOpcao.PrecoVenda, 2, MidpointRounding.AwayFromZero);
+                        var totalItemPrecoVenda = Math.Round(proporcao * itemOpcao.PrecoVenda, 4, MidpointRounding.AwayFromZero);
                         var precoVenda = Math.Round(totalItemPrecoVenda / atomico.Qtde, 4, MidpointRounding.AwayFromZero);
                         TorcamentoCotacaoOpcaoItemAtomicoCustoFin atomicoCustoFin = new TorcamentoCotacaoOpcaoItemAtomicoCustoFin()
                         {
@@ -661,7 +661,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         {
                             var totalItem = Math.Round(precoLista * atomico.Qtde, 2, MidpointRounding.AwayFromZero);
                             var proporcao = totalItem / item.PrecoLista;
-                            var totalItemPrecoVenda = Math.Round(proporcao * item.PrecoVenda, 2, MidpointRounding.AwayFromZero);
+                            var totalItemPrecoVenda = Math.Round(proporcao * item.PrecoVenda, 4, MidpointRounding.AwayFromZero);
                             precoVenda = Math.Round(totalItemPrecoVenda / atomico.Qtde, 4, MidpointRounding.AwayFromZero);
                         }
                         else
@@ -884,8 +884,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
                     var itemCusto = itemAtomicoCusto.Where(c => c.IdItemAtomico == atomico.Id && c.CustoFinancFornecCoeficiente > 0).FirstOrDefault();
                     precoLista += Math.Round(itemCusto.PrecoLista * (decimal)atomico.Qtde, 2, MidpointRounding.AwayFromZero);
-                    precoVenda += Math.Round(itemCusto.PrecoVenda * (decimal)atomico.Qtde, 2, MidpointRounding.AwayFromZero);
-                    precoNf += Math.Round(itemCusto.PrecoVenda * (decimal)atomico.Qtde, 2, MidpointRounding.AwayFromZero);
+                    precoVenda += Math.Round(itemCusto.PrecoVenda * (decimal)atomico.Qtde, 4, MidpointRounding.AwayFromZero);
+                    precoNf += Math.Round(itemCusto.PrecoVenda * (decimal)atomico.Qtde, 4, MidpointRounding.AwayFromZero);
                 }
                 produtoResponse.PrecoLista = precoLista;
                 produtoResponse.PrecoVenda = precoVenda;
