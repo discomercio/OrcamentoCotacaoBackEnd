@@ -179,7 +179,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         apelidoParceiro = orcamento.parceiro;
                     }
                 }
-                if(orcamento.usuarioCadastro == orcamento.parceiro || orcamento.usuarioCadastro == orcamento.vendedorParceiro)
+                if (orcamento.usuarioCadastro == orcamento.parceiro || orcamento.usuarioCadastro == orcamento.vendedorParceiro)
                 {
                     comIndicador = 1;
                     apelido = orcamento.parceiro;
@@ -188,7 +188,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 int contextoUsuario = orcamento.idTipoUsuarioContextoCadastro;
 
-                orcamento.listaFormasPagto = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(orcamento.tipoCliente, 
+                orcamento.listaFormasPagto = _formaPagtoOrcamentoCotacaoBll.BuscarFormasPagamentos(orcamento.tipoCliente,
                     (Constantes.TipoUsuario)contextoUsuario, apelido, comIndicador, apelidoParceiro);
                 orcamento.mensageria = BuscarDadosParaMensageria(usuarioLogin, orcamento.id, false);
 
@@ -2007,9 +2007,15 @@ namespace OrcamentoCotacaoBusiness.Bll
                 new List<string>() { "Falha ao buscar produtos atômicos da opção!" };
             }
 
+            prepedido.VlTotalDestePedido = Math.Round((decimal)prepedido.ListaProdutos.Sum(x => x.Preco_Venda * x.Qtde), 2);
+            if (opcaoSelecionada.VlTotal != prepedido.VlTotalDestePedido)
+            {
+                decimal valorTotalDif = opcaoSelecionada.VlTotal - (decimal)prepedido.VlTotalDestePedido;
+                prepedido.ListaProdutos = DistribuirDiferencaValores(prepedido.ListaProdutos, valorTotalDif);
+            }
+
             prepedido.PercRT = opcaoSelecionada.PercRT;
-            prepedido.VlTotalDestePedido = Math.Round((decimal)prepedido.ListaProdutos.Sum(x => x.VlTotalItem), 2);
-            //passar esses dados abaixo
+            
             prepedido.DadosCliente.IdOrcamentoCotacao = orcamento.Id;
             prepedido.DadosCliente.Perc_max_comissao_padrao = orcamento.Perc_max_comissao_padrao;
             prepedido.DadosCliente.Perc_max_comissao_e_desconto_padrao = orcamento.Perc_max_comissao_e_desconto_padrao;
@@ -2104,11 +2110,9 @@ namespace OrcamentoCotacaoBusiness.Bll
                         { IdOpcaoPagto = idFormaPagto, IncluirTorcamentoCotacaoOpcaoItemAtomico = true, IncluirTorcamentoCotacaoOpcaoPagto = true });
             if (itensAtomicosFinOpcao == null) return null;
 
-            List<PrepedidoProdutoDtoPrepedido> prepedidoProdutosTeste = new List<PrepedidoProdutoDtoPrepedido>();
+            List<PrepedidoProdutoDtoPrepedido> response = new List<PrepedidoProdutoDtoPrepedido>();
 
             List<PrepedidoProdutoDtoPrepedido> produtosDto = new List<PrepedidoProdutoDtoPrepedido>();
-
-            //calcular total de preço lista do item
 
             foreach (var produto in produtosOpcaoSelecionada)
             {
@@ -2131,34 +2135,18 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             var produtosDtoDistinct = produtosDto.Select(x => x.Produto).Distinct();
 
-            decimal totalPedido = 0M;
             foreach (var produto in produtosDtoDistinct)
             {
-                
+
                 var itens = produtosDto.Where(x => x.Produto == produto);
-                PrepedidoProdutoDtoPrepedido produtoPrepedido = new PrepedidoProdutoDtoPrepedido();
+                var produtoPrepedido = CalcularProdutoParaPrepedido(itens);
+
                 produtoPrepedido.Fabricante = itens.First().Fabricante;
                 produtoPrepedido.Produto = itens.First().Produto;
                 produtoPrepedido.Descricao = itens.First().Descricao;
                 produtoPrepedido.Obs = "";
                 produtoPrepedido.BlnTemRa = false;
-                produtoPrepedido.CustoFinancFornecPrecoListaBase = itens.First().CustoFinancFornecPrecoListaBase;
-                produtoPrepedido.CustoFinancFornecCoeficiente = itens.First().CustoFinancFornecCoeficiente;
                 produtoPrepedido.Qtde_estoque_total_disponivel = 0;
-                produtoPrepedido.Preco_Lista = itens.First().Preco_Lista;
-                var somaDesconto = itens.Sum(x => x.Desc_Dado * x.Qtde);
-                var somaQtde = itens.Sum(x => x.Qtde);
-                var strDescontoMedio = (somaDesconto / somaQtde).ToString();
-                var descontoMedio = (decimal)(somaDesconto / somaQtde);
-                var totalPrecoVenda = Math.Round((decimal)(itens.Sum(x => x.Preco_Venda * x.Qtde)), 2);
-                var totalPrecoLista = Math.Round((decimal)(produtoPrepedido.Preco_Lista * somaQtde), 2);
-                var totalComDesconto = Math.Round(totalPrecoLista * (1 - (decimal)descontoMedio / 100), 2);
-                produtoPrepedido.Qtde = (short?)somaQtde;
-                produtoPrepedido.Desc_Dado = (float)descontoMedio;
-                produtoPrepedido.Preco_Venda = Math.Round(produtoPrepedido.Preco_Lista * (decimal)(1 - descontoMedio / 100), 2);
-                produtoPrepedido.Preco_NF = produtoPrepedido.Preco_Venda;
-                produtoPrepedido.VlTotalItem = totalPrecoVenda;
-                produtoPrepedido.TotalItem = totalPrecoVenda;
 
                 if (Perc_max_comissao_e_desconto_padrao > 0)
                 {
@@ -2184,11 +2172,79 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 }
 
-                prepedidoProdutosTeste.Add(produtoPrepedido);
-                totalPedido = Math.Round(totalPedido + totalComDesconto, 2);
+                response.Add(produtoPrepedido);
             }
 
-            return prepedidoProdutosTeste;
+            return response;
+        }
+
+        private PrepedidoProdutoDtoPrepedido CalcularProdutoParaPrepedido(IEnumerable<PrepedidoProdutoDtoPrepedido> itens)
+        {
+            PrepedidoProdutoDtoPrepedido response = new PrepedidoProdutoDtoPrepedido();
+
+            var somaQtde = itens.Sum(x => x.Qtde);
+            decimal precoVendaTotal = Math.Round((decimal)itens.Sum(x => x.Preco_Venda * x.Qtde), 4, MidpointRounding.AwayFromZero);
+            decimal precoListaTotal = Math.Round((decimal)itens.Sum(x => x.Preco_Lista * x.Qtde), 2, MidpointRounding.AwayFromZero);
+            decimal precoLista = Math.Round(itens.Select(x => x.Preco_Lista).First(), 2, MidpointRounding.AwayFromZero);
+            decimal precoListaMedio = Math.Round(precoListaTotal / (int)somaQtde, 2, MidpointRounding.AwayFromZero);
+            decimal precoVendaMedio = Math.Round(precoVendaTotal / (int)somaQtde, 2, MidpointRounding.AwayFromZero);
+            var descontoMedio = 100 * (precoListaMedio - precoVendaMedio) / precoListaMedio;
+
+            response.CustoFinancFornecPrecoListaBase = itens.First().CustoFinancFornecPrecoListaBase;
+            response.CustoFinancFornecCoeficiente = itens.First().CustoFinancFornecCoeficiente;
+            response.Preco_Lista = precoListaMedio;
+            response.Qtde = (short?)somaQtde;
+            response.Desc_Dado = (float)descontoMedio;
+            response.Preco_Venda = precoVendaMedio;
+            response.Preco_NF = precoVendaMedio;
+            response.VlTotalItem = Math.Round(precoVendaTotal, 2);
+            response.TotalItem = Math.Round(precoVendaTotal, 2);
+
+            return response;
+        }
+
+        private List<PrepedidoProdutoDtoPrepedido> DistribuirDiferencaValores(List<PrepedidoProdutoDtoPrepedido> produtos, decimal valorTotalDif)
+        {
+            bool ajustou = false;
+            
+            foreach (var item in produtos)
+            {
+                if ((Math.Abs(valorTotalDif) % item.Qtde) == 0)
+                {
+                    item.Preco_Venda = Math.Round(item.Preco_Venda + (1 * (Math.Abs(valorTotalDif) / (int)item.Qtde)), 2, MidpointRounding.AwayFromZero);
+                    item.Preco_NF = item.Preco_Venda;
+                    ajustou = true;
+                    break;
+                }
+            }
+
+            if (!ajustou)
+            {
+                decimal menorPrecoVendaDif = Math.Abs(valorTotalDif);
+                int indice = -1;
+                for (int i = 0; i < produtos.Count; i++)
+                {
+                    decimal precoVendaAux = Convert.ToInt32(
+                        Math.Round(produtos[i].Preco_Venda + 
+                        (1 * (Math.Abs(valorTotalDif) / (int)produtos[i].Qtde)), 2, MidpointRounding.AwayFromZero));
+                    decimal totalPrecoVenda = (decimal)produtos[i].VlTotalItem;
+                    decimal novoTotalPrecoVenda = precoVendaAux * (short)produtos[i].Qtde;
+                    decimal menorPrecoVendaDifAux = Math.Abs(totalPrecoVenda - novoTotalPrecoVenda);
+                    if (menorPrecoVendaDifAux < menorPrecoVendaDif)
+                    {
+                        menorPrecoVendaDif = menorPrecoVendaDifAux;
+                        indice = i;
+                    }
+                }
+
+                if (indice > -1)
+                {
+                    produtos[indice].Preco_Venda = Math.Round(produtos[indice].Preco_Venda + (1 * Math.Abs(menorPrecoVendaDif) / (short)produtos[indice].Qtde), 2, MidpointRounding.AwayFromZero);
+                    produtos[indice].Preco_NF = produtos[indice].Preco_Venda;
+                }
+            }
+
+            return produtos;
         }
     }
 }
