@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
+using System.Globalization;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -2012,10 +2013,11 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 decimal valorTotalDif = opcaoSelecionada.VlTotal - (decimal)prepedido.VlTotalDestePedido;
                 prepedido.ListaProdutos = DistribuirDiferencaValores(prepedido.ListaProdutos, valorTotalDif);
+                prepedido.VlTotalDestePedido = Math.Round((decimal)prepedido.ListaProdutos.Sum(x => x.Preco_Venda * x.Qtde), 2);
             }
 
             prepedido.PercRT = opcaoSelecionada.PercRT;
-            
+
             prepedido.DadosCliente.IdOrcamentoCotacao = orcamento.Id;
             prepedido.DadosCliente.Perc_max_comissao_padrao = orcamento.Perc_max_comissao_padrao;
             prepedido.DadosCliente.Perc_max_comissao_e_desconto_padrao = orcamento.Perc_max_comissao_e_desconto_padrao;
@@ -2206,13 +2208,23 @@ namespace OrcamentoCotacaoBusiness.Bll
         private List<PrepedidoProdutoDtoPrepedido> DistribuirDiferencaValores(List<PrepedidoProdutoDtoPrepedido> produtos, decimal valorTotalDif)
         {
             bool ajustou = false;
-            
+            var sinalAjuste = 0;
+            if (valorTotalDif > 0)
+            {
+                sinalAjuste = 1;
+            }
+            else
+            {
+                sinalAjuste = -1;
+            }
+
             foreach (var item in produtos)
             {
-                if ((Math.Abs(valorTotalDif) % item.Qtde) == 0)
+                if ((Convert.ToInt32(Math.Abs(valorTotalDif) * 100) % item.Qtde) == 0)
                 {
-                    item.Preco_Venda = Math.Round(item.Preco_Venda + (1 * (Math.Abs(valorTotalDif) / (int)item.Qtde)), 2, MidpointRounding.AwayFromZero);
+                    item.Preco_Venda = Math.Round(item.Preco_Venda + (sinalAjuste * (Math.Abs(valorTotalDif) / (int)item.Qtde)), 2, MidpointRounding.AwayFromZero);
                     item.Preco_NF = item.Preco_Venda;
+                    item.Desc_Dado = (float)(100 * (item.Preco_Lista - item.Preco_Venda) / item.Preco_Lista);
                     ajustou = true;
                     break;
                 }
@@ -2224,9 +2236,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                 int indice = -1;
                 for (int i = 0; i < produtos.Count; i++)
                 {
-                    decimal precoVendaAux = Convert.ToInt32(
-                        Math.Round(produtos[i].Preco_Venda + 
-                        (1 * (Math.Abs(valorTotalDif) / (int)produtos[i].Qtde)), 2, MidpointRounding.AwayFromZero));
+                    decimal precoVendaAux = Math.Round(produtos[i].Preco_Venda +
+                        (sinalAjuste * (Math.Abs(valorTotalDif) / (int)produtos[i].Qtde)), 2, MidpointRounding.AwayFromZero);
                     decimal totalPrecoVenda = (decimal)produtos[i].VlTotalItem;
                     decimal novoTotalPrecoVenda = precoVendaAux * (short)produtos[i].Qtde;
                     decimal menorPrecoVendaDifAux = Math.Abs(totalPrecoVenda - novoTotalPrecoVenda);
@@ -2239,8 +2250,9 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 if (indice > -1)
                 {
-                    produtos[indice].Preco_Venda = Math.Round(produtos[indice].Preco_Venda + (1 * Math.Abs(menorPrecoVendaDif) / (short)produtos[indice].Qtde), 2, MidpointRounding.AwayFromZero);
+                    produtos[indice].Preco_Venda = Math.Round(produtos[indice].Preco_Venda + (sinalAjuste * Math.Abs(menorPrecoVendaDif) / (short)produtos[indice].Qtde), 2, MidpointRounding.AwayFromZero);
                     produtos[indice].Preco_NF = produtos[indice].Preco_Venda;
+                    produtos[indice].Desc_Dado = (float)(100 * (produtos[indice].Preco_Lista - produtos[indice].Preco_Venda) / produtos[indice].Preco_Lista);
                 }
             }
 
