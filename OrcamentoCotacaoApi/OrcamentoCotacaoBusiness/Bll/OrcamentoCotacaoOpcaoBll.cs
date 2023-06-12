@@ -424,7 +424,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             return response;
         }
 
-        public List<OrcamentoOpcaoResponseViewModel> PorFiltro(TorcamentoCotacaoOpcaoFiltro filtro)
+        public List<OrcamentoOpcaoResponseViewModel> PorFiltro(TorcamentoCotacaoOpcaoFiltro filtro, bool buscaPorGuid)
         {
             var orcamentoOpcoes = orcamentoCotacaoOpcaoBll.PorFiltro(filtro);
 
@@ -438,7 +438,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 if (opcaoFormaPagtos == null) throw new ArgumentException("Pagamento da opção não encontrado!");
 
-                var itensOpcao = produtoOrcamentoCotacaoBll.BuscarOpcaoProdutos(opcao.Id).Result;
+                var itensOpcao = produtoOrcamentoCotacaoBll.BuscarOpcaoProdutos(opcao.Id, buscaPorGuid).Result;
 
                 if (itensOpcao == null) throw new ArgumentException("Produtos da opção não encontrados!");
 

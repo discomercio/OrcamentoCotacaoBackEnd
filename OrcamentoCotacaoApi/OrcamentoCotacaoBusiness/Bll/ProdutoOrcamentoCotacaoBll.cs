@@ -849,7 +849,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
-        public async Task<List<ProdutoOrcamentoOpcaoResponseViewModel>> BuscarOpcaoProdutos(int idOpcao)
+        public async Task<List<ProdutoOrcamentoOpcaoResponseViewModel>> BuscarOpcaoProdutos(int idOpcao, bool buscaPorGuid)
         {
             var opcaoProdutosUnificados = orcamentoCotacaoOpcaoItemUnificadoBll.PorFiltro(new TorcamentoCotacaoOpcaoItemUnificadoFiltro() { IdOpcao = idOpcao });
 
@@ -870,7 +870,14 @@ namespace OrcamentoCotacaoBusiness.Bll
                 produtoResponse.Fabricante = item.Fabricante;
                 produtoResponse.FabricanteNome = (await produtoGeralBll.ObterListaFabricante()).Where(x => x.Fabricante == item.Fabricante).FirstOrDefault().Nome;
                 produtoResponse.Produto = item.Produto;
-                produtoResponse.UrlImagem = urlImagem == "sem-imagem.png" ? null : urlImagem;
+                if (buscaPorGuid)
+                {
+                    produtoResponse.UrlImagem = urlImagem == "sem-imagem.png" ? null : urlImagem;
+                }
+                else
+                {
+                    produtoResponse.UrlImagem = urlImagem;
+                }
                 produtoResponse.Descricao = item.DescricaoHtml;
                 produtoResponse.Qtde = item.Qtde;
                 produtoResponse.IdOpcaoPagto = item.Id;
