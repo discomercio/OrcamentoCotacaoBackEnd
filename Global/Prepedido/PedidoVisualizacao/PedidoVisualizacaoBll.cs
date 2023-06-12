@@ -155,7 +155,7 @@ namespace Prepedido.PedidoVisualizacao
 
                     if (!string.IsNullOrEmpty(filtro.IdBaseBusca))
                     {
-                        query = query.Where(x => Convert.ToInt32(x.NumPedido.Substring(0,6)) <= Convert.ToInt32(filtro.IdBaseBusca.Substring(0,6)));
+                        query = query.Where(x => Convert.ToInt32(x.NumPedido.Substring(0, 6)) <= Convert.ToInt32(filtro.IdBaseBusca.Substring(0, 6)));
                     }
                     if (filtro.Status != null && filtro.Status.Length > 0)
                     {
@@ -198,14 +198,14 @@ namespace Prepedido.PedidoVisualizacao
                         query = query.Where(x => x.Parceiro == filtro.Parceiro);
                     }
 
-                    if(filtro.VendedorParceiros != null && filtro.VendedorParceiros.Count() > 0)
+                    if (filtro.VendedorParceiros != null && filtro.VendedorParceiros.Count() > 0)
                     {
                         query = query.Where(x => filtro.VendedorParceiros.Contains(x.IdIndicadorVendedor.ToString()));
                     }
 
                     if (!string.IsNullOrEmpty(filtro.VendedorParceiro))
                     {
-                        query = query.Where(x=> x.VendedorParceiro == filtro.VendedorParceiro);
+                        query = query.Where(x => x.VendedorParceiro == filtro.VendedorParceiro);
                     }
 
                     if (filtro.DtInicio.HasValue)
@@ -309,6 +309,16 @@ namespace Prepedido.PedidoVisualizacao
                                 else
                                 {
                                     query = query.OrderByDescending(o => o.DtCadastro);
+                                }
+                                break;
+                            case "VALOR":
+                                if (filtro.OrdenacaoAscendente)
+                                {
+                                    query = query.OrderBy(o => Convert.ToDecimal(o.Valor));
+                                }
+                                else
+                                {
+                                    query = query.OrderByDescending(o => Convert.ToDecimal(o.Valor));
                                 }
                                 break;
                         }
@@ -1304,7 +1314,7 @@ namespace Prepedido.PedidoVisualizacao
                 var vlFamiliaP = from c in db.TpedidoPagamento
                                  where c.Pedido.StartsWith(numPedido)
                                  select c;
-                var vl_TotalFamiliaPagoTask =  await vlFamiliaP.Select(r => r.Valor).SumAsync();
+                var vl_TotalFamiliaPagoTask = await vlFamiliaP.Select(r => r.Valor).SumAsync();
 
                 //buscar valor total NF
                 var vlNf = from c in db.TpedidoItem

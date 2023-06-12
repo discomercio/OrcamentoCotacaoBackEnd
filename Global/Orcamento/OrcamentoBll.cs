@@ -326,6 +326,16 @@ namespace Orcamento
                                     query = query.OrderByDescending(o => o.DtCadastro);
                                 }
                                 break;
+                            case "VALOR":
+                                if (filtro.OrdenacaoAscendente)
+                                {
+                                    query = query.OrderBy(o => Convert.ToDecimal(o.Valor));
+                                }
+                                else
+                                {
+                                    query = query.OrderByDescending(o => Convert.ToDecimal(o.Valor));
+                                }
+                                break;
                         }
                     }
                     else
