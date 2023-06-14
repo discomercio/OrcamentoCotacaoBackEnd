@@ -301,7 +301,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             };
 
             _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Buscando todas as formas de pagamentos da opção a ser atualizada.");
-            var tOrcamentoCotacaoOpcaoPagtosAntiga = formaPagtoOrcamentoCotacaoBll.BuscarOpcaoFormasPagtos(opcao.Id, true);
+            var tOrcamentoCotacaoOpcaoPagtosAntiga = formaPagtoOrcamentoCotacaoBll.BuscarOpcaoFormasPagtos(opcao.Id, true, 0);
             if (tOrcamentoCotacaoOpcaoPagtosAntiga == null)
             {
                 response.Mensagem = "Falha ao busca formas de pagamentos da opção!";
@@ -434,11 +434,11 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             foreach (var opcao in orcamentoOpcoes)
             {
-                var opcaoFormaPagtos = formaPagtoOrcamentoCotacaoBll.BuscarOpcaoFormasPagtos(opcao.Id, false);
+                var opcaoFormaPagtos = formaPagtoOrcamentoCotacaoBll.BuscarOpcaoFormasPagtos(opcao.Id, false, filtro.IdFormaPagto);
 
                 if (opcaoFormaPagtos == null) throw new ArgumentException("Pagamento da opção não encontrado!");
 
-                var itensOpcao = produtoOrcamentoCotacaoBll.BuscarOpcaoProdutos(opcao.Id, buscaPorGuid).Result;
+                var itensOpcao = produtoOrcamentoCotacaoBll.BuscarOpcaoProdutos(opcao.Id, buscaPorGuid, filtro.IdFormaPagto).Result;
 
                 if (itensOpcao == null) throw new ArgumentException("Produtos da opção não encontrados!");
 

@@ -88,6 +88,10 @@ namespace OrcamentoCotacaoOpcaoPagto
                     {
                         saida = saida.Include(x => x.TorcamentoCotacaoOpcaoItemAtomicoCustoFin);
                     }
+                    if(obj.Id != 0)
+                    {
+                        saida = saida.Where(x => x.Id == obj.Id);
+                    }
 
                     return saida.ToList();
                 }
