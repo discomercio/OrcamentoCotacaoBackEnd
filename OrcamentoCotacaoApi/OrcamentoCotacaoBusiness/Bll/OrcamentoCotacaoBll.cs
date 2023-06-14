@@ -1984,7 +1984,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
 
             var opcaoSelecionada = _orcamentoCotacaoOpcaoBll
-                .PorFiltro(new TorcamentoCotacaoOpcaoFiltro() { Id = aprovarOrcamento.IdOpcao }, false).FirstOrDefault();
+                .PorFiltro(new TorcamentoCotacaoOpcaoFiltro() { Id = aprovarOrcamento.IdOpcao, IdFormaPagto = aprovarOrcamento.IdFormaPagto }, false).FirstOrDefault();
 
             if (opcaoSelecionada == null)
             {

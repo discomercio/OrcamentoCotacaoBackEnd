@@ -456,9 +456,16 @@ namespace OrcamentoCotacaoBusiness.Bll
                             Math.Round((decimal)item.Preco_lista, 2, MidpointRounding.AwayFromZero) :
                             Math.Round((decimal)item.Preco_lista * (decimal)itemOpcao.CustoFinancFornecCoeficiente, 2, MidpointRounding.AwayFromZero);
 
+                        var totalOpcao = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ?
+                            Math.Round(itemOpcao.PrecoLista / (decimal)itemOpcao.CustoFinancFornecCoeficiente, 2, MidpointRounding.AwayFromZero) :
+                            itemOpcao.PrecoLista;
+
                         var totalItem = Math.Round(precoLista * atomico.Qtde, 2, MidpointRounding.AwayFromZero);
-                        var proporcao = totalItem / itemOpcao.PrecoLista;
-                        var totalItemPrecoVenda = Math.Round(proporcao * itemOpcao.PrecoVenda, 4, MidpointRounding.AwayFromZero);
+                        var proporcao = totalItem / totalOpcao;
+                        var totalPrecoVenda = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ?
+                            Math.Round(totalOpcao * (1- (decimal)itemOpcao.DescDado / 100), 2, MidpointRounding.AwayFromZero) :
+                            itemOpcao.PrecoVenda;
+                        var totalItemPrecoVenda = Math.Round(proporcao * totalPrecoVenda, 4, MidpointRounding.AwayFromZero);
                         var precoVenda = Math.Round(totalItemPrecoVenda / atomico.Qtde, 4, MidpointRounding.AwayFromZero);
                         TorcamentoCotacaoOpcaoItemAtomicoCustoFin atomicoCustoFin = new TorcamentoCotacaoOpcaoItemAtomicoCustoFin()
                         {
@@ -849,7 +856,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
-        public async Task<List<ProdutoOrcamentoOpcaoResponseViewModel>> BuscarOpcaoProdutos(int idOpcao, bool buscaPorGuid)
+        public async Task<List<ProdutoOrcamentoOpcaoResponseViewModel>> BuscarOpcaoProdutos(int idOpcao, bool buscaPorGuid, int idFormaPagto)
         {
             var opcaoProdutosUnificados = orcamentoCotacaoOpcaoItemUnificadoBll.PorFiltro(new TorcamentoCotacaoOpcaoItemUnificadoFiltro() { IdOpcao = idOpcao });
 
@@ -859,7 +866,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             foreach (var item in opcaoProdutosUnificados)
             {
                 var itemAtomico = orcamentoCotacaoOpcaoItemAtomicoBll.PorFiltro(new TorcamentoCotacaoOpcaoItemAtomicoFiltro() { IdItemUnificado = item.Id });
-                var itemAtomicoCusto = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.PorFiltro(new TorcamentoCotacaoOpcaoItemAtomicoCustoFinFiltro() { LstIdItemAtomico = itemAtomico.Select(x => x.Id).ToList() });
+                var itemAtomicoCusto = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.PorFiltro(new TorcamentoCotacaoOpcaoItemAtomicoCustoFinFiltro() { LstIdItemAtomico = itemAtomico.Select(x => x.Id).ToList(), IdOpcaoPagto = idFormaPagto });
                 var urlImagem = _produtoCatalogoBll.ObterDadosImagemPorProduto(item.Produto).FirstOrDefault().Caminho;
 
                 if (itemAtomico == null || itemAtomicoCusto == null) break;
@@ -889,7 +896,15 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 foreach (var atomico in itemAtomico)
                 {
-                    var itemCusto = itemAtomicoCusto.Where(c => c.IdItemAtomico == atomico.Id && c.CustoFinancFornecCoeficiente > 0).FirstOrDefault();
+                    var itemCusto = new TorcamentoCotacaoOpcaoItemAtomicoCustoFin();
+                    if (idFormaPagto == 0)
+                    {
+                        itemCusto = itemAtomicoCusto.Where(c => c.IdItemAtomico == atomico.Id && c.CustoFinancFornecCoeficiente > 0).FirstOrDefault();
+                    }
+                    else
+                    {
+                        itemCusto = itemAtomicoCusto.Where(c => c.IdItemAtomico == atomico.Id && c.IdOpcaoPagto == idFormaPagto).FirstOrDefault();
+                    }
                     precoLista += Math.Round(itemCusto.PrecoLista * (decimal)atomico.Qtde, 2, MidpointRounding.AwayFromZero);
                     precoVenda += Math.Round(itemCusto.PrecoVenda * (decimal)atomico.Qtde, 4, MidpointRounding.AwayFromZero);
                     precoNf += Math.Round(itemCusto.PrecoVenda * (decimal)atomico.Qtde, 4, MidpointRounding.AwayFromZero);
@@ -897,9 +912,18 @@ namespace OrcamentoCotacaoBusiness.Bll
                 produtoResponse.PrecoLista = precoLista;
                 produtoResponse.PrecoVenda = precoVenda;
                 produtoResponse.PrecoNf = precoNf;
-                produtoResponse.CustoFinancFornecPrecoListaBase = itemAtomico.Sum(x => x.Qtde * itemAtomicoCusto.Where(c => c.IdItemAtomico == x.Id && c.CustoFinancFornecCoeficiente > 0).FirstOrDefault().CustoFinancFornecPrecoListaBase);
+                if (idFormaPagto == 0)
+                {
+                    produtoResponse.CustoFinancFornecPrecoListaBase = itemAtomico.Sum(x => x.Qtde * itemAtomicoCusto.Where(c => c.IdItemAtomico == x.Id && c.CustoFinancFornecCoeficiente > 0).FirstOrDefault().CustoFinancFornecPrecoListaBase);
+                    produtoResponse.CustoFinancFornecCoeficiente = itemAtomicoCusto.Where(x => x.CustoFinancFornecCoeficiente > 0).FirstOrDefault().CustoFinancFornecCoeficiente;
 
-                produtoResponse.CustoFinancFornecCoeficiente = itemAtomicoCusto.Where(x => x.CustoFinancFornecCoeficiente > 0).FirstOrDefault().CustoFinancFornecCoeficiente;
+                }
+                else
+                {
+                    produtoResponse.CustoFinancFornecPrecoListaBase = itemAtomico.Sum(x => x.Qtde * itemAtomicoCusto.Where(c => c.IdItemAtomico == x.Id && c.IdOpcaoPagto == idFormaPagto).FirstOrDefault().CustoFinancFornecPrecoListaBase);
+                    produtoResponse.CustoFinancFornecCoeficiente = itemAtomicoCusto.Where(x => x.IdOpcaoPagto == idFormaPagto).FirstOrDefault().CustoFinancFornecCoeficiente;
+                }
+
                 produtoResponse.TotalItem = Math.Round(precoNf * item.Qtde, 2, MidpointRounding.AwayFromZero);
                 produtoResponse.IdOperacaoAlcadaDescontoSuperior = itemAtomicoCusto.FirstOrDefault().IdOperacaoAlcadaDescontoSuperior;
 

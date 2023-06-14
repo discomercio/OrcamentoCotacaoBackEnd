@@ -281,11 +281,11 @@ namespace OrcamentoCotacaoBusiness.Bll
             return response;
         }
 
-        public List<TorcamentoCotacaoOpcaoPagto> BuscarOpcaoFormasPagtos(int idOpcao, bool incluirTorcamentoCotacaoOpcaoItemAtomicoCustoFin)
+        public List<TorcamentoCotacaoOpcaoPagto> BuscarOpcaoFormasPagtos(int idOpcao, bool incluirTorcamentoCotacaoOpcaoItemAtomicoCustoFin, int idFormaPagto)
         {
             if (idOpcao == 0) return null;
 
-            var opcaoFormaPagtos = orcamentoCotacaoOpcaoPagtoBll.PorFiltro(new TorcamentoCotacaoOpcaoPagtoFiltro() { IdOpcao = idOpcao, IncluirTorcamentoCotacaoOpcaoItemAtomicoCustoFin = incluirTorcamentoCotacaoOpcaoItemAtomicoCustoFin });
+            var opcaoFormaPagtos = orcamentoCotacaoOpcaoPagtoBll.PorFiltro(new TorcamentoCotacaoOpcaoPagtoFiltro() { IdOpcao = idOpcao, IncluirTorcamentoCotacaoOpcaoItemAtomicoCustoFin = incluirTorcamentoCotacaoOpcaoItemAtomicoCustoFin, Id = idFormaPagto });
 
             return opcaoFormaPagtos;
         }
