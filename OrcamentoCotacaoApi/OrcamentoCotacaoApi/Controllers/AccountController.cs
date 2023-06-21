@@ -22,6 +22,7 @@ using UtilsGlobais.Configs;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
+    [TypeFilter(typeof(ControleDelayFilter))]
     [ApiController]
     [Route("[controller]")]
     [TypeFilter(typeof(ResourceFilter))]

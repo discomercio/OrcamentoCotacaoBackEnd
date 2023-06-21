@@ -15,6 +15,7 @@ using UtilsGlobais.Configs;
 
 namespace PrepedidoApi.Controllers
 {
+    [TypeFilter(typeof(ControleDelayFilter))]
     [Authorize(Roles = Autenticacao.RoleAcesso)]
     [TypeFilter(typeof(ResourceFilter))]
     [ApiController]

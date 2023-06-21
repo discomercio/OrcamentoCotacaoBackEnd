@@ -22,6 +22,7 @@ using UtilsGlobais.Configs;
 
 namespace PrepedidoApi.Controllers
 {
+    [TypeFilter(typeof(ControleDelayFilter))]
     [Route("api/[controller]")]
     [ApiController]
     [TypeFilter(typeof(ResourceFilter))]

@@ -18,6 +18,7 @@ using static OrcamentoCotacaoBusiness.Enums.Enums;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
+    [TypeFilter(typeof(ControleDelayFilter))]
     [Route("[controller]")]
     [ApiController]
     [Authorize]
@@ -110,7 +111,7 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpGet("validade")]
-        public IActionResult BuscarConfigValidade(string lojaLogada)
+        public async Task<IActionResult> BuscarConfigValidade(string lojaLogada)
         {
             var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
@@ -122,7 +123,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/BuscarConfigValidade/GET - Request => [{JsonSerializer.Serialize(request)}].");
 
-            var saida = _orcamentoBll.BuscarConfigValidade(lojaLogada);
+            var saida = await Task.FromResult(_orcamentoBll.BuscarConfigValidade(lojaLogada));
 
             if (saida != null)
             {

@@ -14,6 +14,7 @@ using static OrcamentoCotacaoBusiness.Enums.Enums;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
+    [TypeFilter(typeof(ControleDelayFilter))]
     [ApiController]
     [Route("[controller]")]
     [Authorize]

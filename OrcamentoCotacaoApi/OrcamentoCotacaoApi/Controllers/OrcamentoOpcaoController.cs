@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Orcamento;
+using OrcamentoCotacaoApi.Filters;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Response;
 using OrcamentoCotacaoBusiness.Models.Response.Errors;
@@ -14,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
+    [TypeFilter(typeof(ControleDelayFilter))]
     [Route("[controller]")]
     [ApiController]
     [Authorize]

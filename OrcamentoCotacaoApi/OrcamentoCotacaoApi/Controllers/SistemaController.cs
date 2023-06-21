@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Reflection;
 using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Microsoft.AspNetCore.Hosting;
+using OrcamentoCotacaoApi.Filters;
 
 namespace OrcamentoCotacaoApi.Controllers
 {

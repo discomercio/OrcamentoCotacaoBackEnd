@@ -20,6 +20,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageReference Include="ClosedXML" Version="0.101.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.3" />
@@ -50,6 +51,7 @@
     <ProjectReference Include="..\..\Global\Orcamento\Orcamento.csproj" />
     <ProjectReference Include="..\..\Global\Produto\Produto.csproj" />
     <ProjectReference Include="..\..\Global\Usuario\Usuario.csproj" />
+    <ProjectReference Include="..\..\TesteEndpoint\TesteEndpoint.csproj" />
     <ProjectReference Include="..\OrcamentoCotacaoBusiness\OrcamentoCotacaoBusiness.csproj" />
   </ItemGroup>
 
