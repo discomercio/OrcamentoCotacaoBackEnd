@@ -325,6 +325,6 @@ namespace InfraBanco
         public DbSet<TemailSndsvcMensagem> TemailSndsvcMensagem { get; set; }
         public DbSet<TprodutoGrupo> TprodutoGrupo { get; set; }
 
-        public DbSet<TEndpoints> TEndpoints { get; set; }
+        public DbSet<TcfgOrcamentoCotacaoEndpointFilter> TcfgOrcamentoCotacaoEndpointFilter { get; set; }
     }
 }

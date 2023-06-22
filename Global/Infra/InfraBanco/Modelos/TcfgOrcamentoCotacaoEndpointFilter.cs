@@ -9,18 +9,19 @@ using System.Threading.Tasks;
 
 namespace InfraBanco.Modelos
 {
-    [Table("EndPoints")]
-    public class TEndpoints:IModel
+    [Table("t_CFG_ORCAMENTO_COTACAO_ENDPOINT_FILTER")]
+    public class TcfgOrcamentoCotacaoEndpointFilter : IModel
     {
         [Column("Id")]
-        [Key]
-        [Required]
         public int Id { get; set; }
 
-        [Column("ActionName")]
-        public string ActionName { get; set; }
+        [Column("Endpoint")]
+        public string Endpoint { get; set; }
 
         [Column("Delay")]
         public int Delay { get; set; }
+
+        [Column("Observacoes")]
+        public string Observacoes { get; set; }
     }
 }

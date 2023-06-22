@@ -1,11 +1,11 @@
-﻿using InfraBanco;
+﻿using Cfg.CfgOrcamentoCotacaoEndpointFilter;
+using InfraBanco;
 using InfraBanco.Modelos;
 using InfraIdentity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OrcamentoCotacaoBusiness.Bll;
-using TesteEndpoint;
 using UtilsGlobais;
 using UtilsGlobais.Parametros;
 
@@ -38,8 +38,8 @@ namespace OrcamentoCotacaoApi.Config
             services.AddScoped<ITokenService, TokenService>();
 
             //#GLOBAL
-            services.AddTransient<TesteEndpointBll, TesteEndpointBll>();
-            services.AddTransient<TesteEndpointData, TesteEndpointData>();
+            services.AddTransient<TcfgOrcamentoCotacaoEndpointFilterBll, TcfgOrcamentoCotacaoEndpointFilterBll>();
+            services.AddTransient<TcfgOrcamentoCotacaoEndpointFilterData, TcfgOrcamentoCotacaoEndpointFilterData>();
             services.AddTransient<ParametroOrcamentoCotacaoBll, ParametroOrcamentoCotacaoBll>();
             services.AddTransient<ParametroOrcamentoCotacaoData, ParametroOrcamentoCotacaoData>();
             services.AddTransient<PublicoBll, PublicoBll>();

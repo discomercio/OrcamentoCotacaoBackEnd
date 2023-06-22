@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace InfraBanco.Modelos.Filtros
 {
-    public class EndpointsFiltro : IFilter
+    public class TcfgOrcamentoCotacaoEndpointFilterFiltro : IFilter
     {
     }
 }

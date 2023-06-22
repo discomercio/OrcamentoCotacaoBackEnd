@@ -217,6 +217,6 @@ namespace InfraBanco
         public DbSet<TprodutoGrupo> TprodutoGrupo { get => contexto.TprodutoGrupo; }
         public DbSet<TprodutoSubgrupo> TprodutoSubgrupo { get => contexto.TprodutoSubgrupo; }
 
-        public DbSet<TEndpoints> TEndpoints { get => contexto.TEndpoints; }
+        public DbSet<TcfgOrcamentoCotacaoEndpointFilter> TcfgOrcamentoCotacaoEndpointFilter { get => contexto.TcfgOrcamentoCotacaoEndpointFilter; }
     }
 }

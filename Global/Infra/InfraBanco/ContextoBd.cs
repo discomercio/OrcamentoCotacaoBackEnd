@@ -147,6 +147,6 @@ namespace InfraBanco
         public IQueryable<TcfgOperacao> TcfgOperacao { get => contexto.TcfgOperacao.AsNoTracking(); }
         public IQueryable<TprodutoGrupo> TprodutoGrupo { get => contexto.TprodutoGrupo.AsNoTracking(); }
         public IQueryable<TloginHistorico> TloginHistorico { get => contexto.TloginHistorico.AsNoTracking(); }
-        public IQueryable<TEndpoints> TEndpoints { get => contexto.TEndpoints.AsNoTracking(); }
+        public IQueryable<TcfgOrcamentoCotacaoEndpointFilter> TcfgOrcamentoCotacaoEndpointFilter { get => contexto.TcfgOrcamentoCotacaoEndpointFilter.AsNoTracking(); }
     }
 }

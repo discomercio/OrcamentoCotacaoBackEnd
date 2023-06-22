@@ -9,5 +9,6 @@
         public bool VerificarPrepedidoRepetido { get; set; } = true;
         public string BloqueioUsuarioLoginAmbiente { get; set; }
         public bool GerarLogProcessoAutomatizado { get; set; } = true;
+        public bool CadastrarEControlarTempoRespostaEndpoint { get; set; }
     }
 }
