@@ -112,12 +112,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             if (saida != null)
             {
-                var response = new
-                {
-                    PercMaxPorLojaAlcada = saida
-                };
-
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/BuscarPercMaxPorLojaAlcada/GET - Response => [{JsonSerializer.Serialize(response)}].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/BuscarPercMaxPorLojaAlcada/GET - Response => [{JsonSerializer.Serialize(saida)}].");
 
                 return Ok(saida);
             }
