@@ -786,12 +786,12 @@ namespace OrcamentoCotacaoBusiness.Bll
             var percPadraoPorTipo = orcamento.ClienteOrcamentoCotacaoDto.Tipo == Constantes.ID_PF ?
                 percPadrao.PercMaxComissaoEDesconto : percPadrao.PercMaxComissaoEDescontoPJ;
 
-            if (produto.DescDado > percPadraoPorTipo && percMaxPorAlcada.PercMaxComissaoEDesconto == 0)
+            if ((produto.DescDado + percRT) > percPadraoPorTipo && percMaxPorAlcada.PercMaxComissaoEDesconto == 0)
                 return "Ops! Não pode execeder o limite máximo de desconto.";
 
             if (produto.DescDado > 0 || percRT > 0)
             {
-                if (produto.DescDado > percPadraoPorTipo) return "Sim";
+                if ((produto.DescDado + percRT) > percPadraoPorTipo) return "Sim";
             }
 
             return null;
