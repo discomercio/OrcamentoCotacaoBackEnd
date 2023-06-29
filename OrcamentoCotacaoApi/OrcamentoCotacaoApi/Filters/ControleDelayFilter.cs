@@ -51,7 +51,17 @@ namespace OrcamentoCotacaoApi.Filters
                 {
                     var lista = _bll.PorFiltro(new TcfgOrcamentoCotacaoEndpointFilterFiltro());
 
-                    var actionName = context.RouteData.Values.Values.ToList()[1] + "/" + context.RouteData.Values.Values.ToList()[0].ToString();
+                    string actionName = string.Empty;
+                    if(context.RouteData.Values.Values.Count > 2)
+                    {
+                        actionName = context.RouteData.Values.Values.ToList()[2] + "/" + context.RouteData.Values.Values.ToList()[1].ToString();
+                    }
+                    else
+                    {
+                        actionName = context.RouteData.Values.Values.ToList()[1] + "/" + context.RouteData.Values.Values.ToList()[0].ToString();
+
+                    }
+                    
                     var itemEncontrado = lista.Where(x => x.Endpoint == actionName).FirstOrDefault();
                     if (itemEncontrado == null)
                     {
