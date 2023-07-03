@@ -791,7 +791,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             if (produto.DescDado > 0 || percRT > 0)
             {
-                if ((produto.DescDado + percRT) > percPadraoPorTipo) return "Sim";
+                if ((produto.DescDado + percPadrao.PercMaxComissao) > percPadraoPorTipo) return "Sim";
             }
 
             return null;
