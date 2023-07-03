@@ -61,5 +61,14 @@ namespace InfraBanco.Modelos
         [MaxLength(5)]
         public string Unidade_Negocio { get; set; }
 
+        [Column("perc_max_comissao_alcada1")]
+        public float Perc_max_comissao_alcada1 { get; set; }
+
+        [Column("perc_max_comissao_alcada2")]
+        public float Perc_max_comissao_alcada2 { get; set; }
+
+        [Column("perc_max_comissao_alcada3")]
+        public float Perc_max_comissao_alcada3 { get; set; }
+
     }
 }

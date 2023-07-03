@@ -11,6 +11,7 @@ using UtilsGlobais.Configs;
 
 namespace PrepedidoApi.Controllers
 {
+    [TypeFilter(typeof(ControleDelayFilter))]
     [Route("api/produto")]
     [ApiController]
     [Authorize(Roles = Autenticacao.RoleAcesso)]

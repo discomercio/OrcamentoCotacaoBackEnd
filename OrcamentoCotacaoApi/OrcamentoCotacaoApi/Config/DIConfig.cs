@@ -1,4 +1,5 @@
-﻿using InfraBanco;
+﻿using Cfg.CfgOrcamentoCotacaoEndpointFilter;
+using InfraBanco;
 using InfraBanco.Modelos;
 using InfraIdentity;
 using Microsoft.EntityFrameworkCore;
@@ -37,6 +38,8 @@ namespace OrcamentoCotacaoApi.Config
             services.AddScoped<ITokenService, TokenService>();
 
             //#GLOBAL
+            services.AddTransient<TcfgOrcamentoCotacaoEndpointFilterBll, TcfgOrcamentoCotacaoEndpointFilterBll>();
+            services.AddTransient<TcfgOrcamentoCotacaoEndpointFilterData, TcfgOrcamentoCotacaoEndpointFilterData>();
             services.AddTransient<ParametroOrcamentoCotacaoBll, ParametroOrcamentoCotacaoBll>();
             services.AddTransient<ParametroOrcamentoCotacaoData, ParametroOrcamentoCotacaoData>();
             services.AddTransient<PublicoBll, PublicoBll>();

@@ -11,6 +11,7 @@ using UtilsGlobais.Configs;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
+    [TypeFilter(typeof(ControleDelayFilter))]
     [Route("[controller]")]
     [ApiController]
     [TypeFilter(typeof(ResourceFilter))]
@@ -112,12 +113,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             if (saida != null)
             {
-                var response = new
-                {
-                    PercMaxPorLojaAlcada = saida
-                };
-
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/BuscarPercMaxPorLojaAlcada/GET - Response => [{JsonSerializer.Serialize(response)}].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. LojaController/BuscarPercMaxPorLojaAlcada/GET - Response => [{JsonSerializer.Serialize(saida)}].");
 
                 return Ok(saida);
             }

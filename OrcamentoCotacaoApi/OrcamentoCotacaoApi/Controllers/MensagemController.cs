@@ -16,6 +16,7 @@ using OrcamentoCotacaoBusiness.Models.Response.Mensagem;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
+    [TypeFilter(typeof(ControleDelayFilter))]
     [Route("[controller]")]
     [ApiController]
     [TypeFilter(typeof(ResourceFilter))]

@@ -17,6 +17,7 @@ using OrcamentoCotacaoBusiness.Models.Request.CodigoDescricao;
 
 namespace PrepedidoApi.Controllers
 {
+    [TypeFilter(typeof(ControleDelayFilter))]
     [ApiExplorerSettings(IgnoreApi = true)]
     [Route("api/[controller]")]
     [ApiController]
