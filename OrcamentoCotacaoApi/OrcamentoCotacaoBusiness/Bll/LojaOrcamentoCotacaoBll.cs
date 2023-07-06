@@ -55,20 +55,20 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             PercMaxDescEComissaoResponseViewModel retorno = new PercMaxDescEComissaoResponseViewModel();
 
-            var permissoesAlcadas = new List<int>()
+            var permissoesAlcadas = new List<string>()
             {
-                int.Parse(Constantes.COMISSAO_DESCONTO_ALCADA_1),
-                int.Parse(Constantes.COMISSAO_DESCONTO_ALCADA_2),
-                int.Parse(Constantes.COMISSAO_DESCONTO_ALCADA_3)
+                Constantes.COMISSAO_DESCONTO_ALCADA_1,
+                Constantes.COMISSAO_DESCONTO_ALCADA_2,
+                Constantes.COMISSAO_DESCONTO_ALCADA_3
             };
 
-            var maiorAlcada = permissoesAlcadas.Max();
+            var permissao2 = lstPermissoes.Where(x => permissoesAlcadas.Contains(x)).ToList();
 
-            var permis = lstPermissoes.Where(x => int.Parse(x) == maiorAlcada).FirstOrDefault();
+            var maiorAlcada = permissao2.Max();
 
-            if (permis == null) return null;
+            if (maiorAlcada == null) return null;
 
-            if (permis == Constantes.COMISSAO_DESCONTO_ALCADA_1)
+            if (maiorAlcada == Constantes.COMISSAO_DESCONTO_ALCADA_1)
             {
                 if (tipoCliente == Constantes.ID_PF)
                 {
@@ -82,7 +82,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 }
 
             }
-            if (permis == Constantes.COMISSAO_DESCONTO_ALCADA_2)
+            if (maiorAlcada == Constantes.COMISSAO_DESCONTO_ALCADA_2)
             {
                 if (tipoCliente == Constantes.ID_PF)
                 {
@@ -95,7 +95,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     retorno.PercMaxComissaoEDesconto = tLoja.Perc_max_comissao_e_desconto_alcada2_pj;
                 }
             }
-            if (permis == Constantes.COMISSAO_DESCONTO_ALCADA_3)
+            if (maiorAlcada == Constantes.COMISSAO_DESCONTO_ALCADA_3)
             {
                 if (tipoCliente == Constantes.ID_PF)
                 {
@@ -110,65 +110,6 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             return retorno;
-
-            //if (alcadas.Any())
-            //{
-            //    foreach (var permissao in alcadas)
-            //    {
-
-            //        if (tipoCliente == Constantes.ID_PF)
-            //        {
-            //            if (permissao == Constantes.COMISSAO_DESCONTO_ALCADA_1)
-            //            {
-
-            //                alcada.PercMaxComissaoAlcada1 = tLoja.Perc_max_comissao_alcada1;
-            //                alcada.PercMaxComissaoEDescontoAlcada1Pf = tLoja.Perc_max_comissao_e_desconto_alcada1_pf;
-            //            }
-
-            //            if (permissao == Constantes.COMISSAO_DESCONTO_ALCADA_2)
-            //            {
-
-            //            }
-
-            //            if (permissao == Constantes.COMISSAO_DESCONTO_ALCADA_3)
-            //            {
-
-            //            }
-            //        }
-            //        if (tipoCliente == Constantes.ID_PJ)
-            //        {
-            //            if (permissao == Constantes.COMISSAO_DESCONTO_ALCADA_1)
-            //            {
-            //                alcada.PercMaxComissaoAlcada1 = tLoja.Perc_max_comissao_alcada1;
-            //                alcada.PercMaxComissaoEDescontoAlcada1Pj = tLoja.Perc_max_comissao_e_desconto_alcada1_pj;
-            //            }
-
-            //            if (permissao == Constantes.COMISSAO_DESCONTO_ALCADA_2)
-            //            {
-
-            //            }
-
-
-            //            if (permissao == Constantes.COMISSAO_DESCONTO_ALCADA_3)
-            //            {
-
-            //            }
-            //        }
-
-            //        lstAlcadas.Add(alcada);
-            //    }
-
-            //    if (lstAlcadas.Count > 0)
-            //    {
-
-            //        //retorno.PercMaxComissaoEDesconto = lstAlcadas.Max();
-            //        return retorno;
-            //    }
-            //}
-
-
-
-            //return null;
         }
 
         public LojaViewModel BuscarLojaEstilo(string loja)
