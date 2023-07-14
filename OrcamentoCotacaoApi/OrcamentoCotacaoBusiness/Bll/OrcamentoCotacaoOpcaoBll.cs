@@ -310,6 +310,14 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Retorno da busca de todas as formas de pagamentos da opção a ser atualizada. Response => [{JsonSerializer.Serialize(tOrcamentoCotacaoOpcaoPagtosAntiga, options)}]");
 
+
+            string retornoValidacaoDesc = produtoOrcamentoCotacaoBll.ValidarDescontoMedioMaisComissao(usuarioLogado, orcamento, opcao);
+            if(retornoValidacaoDesc != null)
+            {
+                response.Mensagem = retornoValidacaoDesc;
+                return response;
+            }
+
             using (var dbGravacao = contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 try

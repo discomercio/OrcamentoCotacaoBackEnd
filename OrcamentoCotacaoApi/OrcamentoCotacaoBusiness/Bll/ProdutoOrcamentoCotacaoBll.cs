@@ -797,6 +797,39 @@ namespace OrcamentoCotacaoBusiness.Bll
             return null;
         }
 
+        public string ValidarDescontoMedioMaisComissao(UsuarioLogin usuarioLogado, OrcamentoResponse orcamento,
+            AtualizarOrcamentoOpcaoRequest opcao)
+        {
+            var totalSemDesconto = Math.Round(opcao.ListaProdutos.Sum(x => x.PrecoLista * x.Qtde), MidpointRounding.AwayFromZero);
+            var totalComDesconto = Math.Round(opcao.ListaProdutos.Sum(x => x.TotalItem), MidpointRounding.AwayFromZero);
+            var descontoMedio = (totalSemDesconto - totalComDesconto) / totalSemDesconto * 100;
+
+            PercMaxDescEComissaoResponseViewModel percMaxPorAlcada = new PercMaxDescEComissaoResponseViewModel();
+            if (usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_1) ||
+                usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_2) ||
+                usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_3))
+            {
+                percMaxPorAlcada = _lojaOrcamentoCotacaoBll.BuscarPercMaxPorLojaAlcada(orcamento.Loja, orcamento.ClienteOrcamentoCotacaoDto.Tipo, usuarioLogado.Permissoes);
+                if (opcao.PercRT > percMaxPorAlcada.PercMaxComissao)
+                    return $"O percentual de comissão excede o máximo permitido!";
+
+                if ((float)descontoMedio + opcao.PercRT > percMaxPorAlcada.PercMaxComissaoEDesconto)
+                    return $"O percentual de desconto mais comissão excede o máximo permitido!";
+
+                return null;
+            }
+
+            var percPadrao = _lojaOrcamentoCotacaoBll.BuscarPercMaxPorLoja(orcamento.Loja);
+            var percMaxComissaoEDesconto = orcamento.ClienteOrcamentoCotacaoDto.Tipo == Constantes.ID_PF ? percPadrao.PercMaxComissaoEDesconto : percPadrao.PercMaxComissaoEDescontoPJ;
+
+            if (opcao.PercRT > percPadrao.PercMaxComissao)
+                return $"O percentual de comissão excede o máximo permitido!";
+
+            if ((float)descontoMedio + opcao.PercRT > percMaxComissaoEDesconto) 
+                return $"O percentual de desconto mais comissão excede o máximo permitido!";
+
+            return null;
+        }
         private string ValidarDescontoComissaoAlcada(AtualizarOrcamentoOpcaoProdutoRequest produto,
             UsuarioLogin usuarioLogado, OrcamentoResponse orcamento, AtualizarOrcamentoOpcaoRequest opcao)
         {
@@ -811,7 +844,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 percMaxPorAlcada = _lojaOrcamentoCotacaoBll.BuscarPercMaxPorLojaAlcada(orcamento.Loja, orcamento.ClienteOrcamentoCotacaoDto.Tipo, usuarioLogado.Permissoes);
                 if (produto.DescDado > percMaxPorAlcada.PercMaxComissaoEDesconto)
-                    return $"O desconto no '{produto.Produto}' está excedendo o máximo permitido!";
+                    return $"O desconto no produto '{produto.Produto}' está excedendo o máximo permitido!";
                 temAlcada = true;
             }
 
@@ -850,8 +883,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                 return "Ops! Não pode conter percentual de comissão!";
 
             if (opcao.PercRT > 0)
+            {
                 if (opcao.PercRT > percMaxDescEComissaoResponse.PercMaxComissao)
                     return "Ops! O valor de comissão excede o máximo permitido";
+            }
+                
 
             return null;
         }
