@@ -8,9 +8,11 @@ using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
 using Loja;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
+using OrcamentoCotacaoBusiness.Models.Request.Produto;
 using OrcamentoCotacaoBusiness.Models.Response;
 using OrcamentoCotacaoBusiness.Models.Response.Cfg.CfgParametro;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
@@ -18,6 +20,7 @@ using OrcamentoCotacaoBusiness.Models.Response.GrupoSubgrupoProduto;
 using OrcamentoCotacaoBusiness.Models.Response.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response.ProdutoCatalogo;
 using Prepedido.Bll;
+using Prepedido.Dto;
 using Produto;
 using Produto.Dto;
 using ProdutoCatalogo;
@@ -27,6 +30,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using static InfraBanco.Constantes.Constantes;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -74,6 +78,43 @@ namespace OrcamentoCotacaoBusiness.Bll
             this.cfgUnidadeNegocioBll = cfgUnidadeNegocioBll;
         }
 
+
+        public async Task<ProdutoResponseViewModel> ListarProdutosComboParaEdicao(ProdutosOpcaoEdicaoResquest request)
+        {
+            Constantes.ContribuinteICMS contribuinteICMSStatus = Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;
+            Constantes.ProdutorRural produtorRuralStatus = Constantes.ProdutorRural.COD_ST_CLIENTE_PRODUTOR_RURAL_NAO;
+
+            var aux = await produtoGeralBll.ListaProdutosComboDados(request.Loja, request.UF, request.TipoCliente,
+                contribuinteICMSStatus, produtorRuralStatus);
+
+            var produtoComboDados = new Produto.Dados.ProdutoComboDados();
+            produtoComboDados.ProdutoCompostoDados = aux.ProdutoCompostoDados.Where(x => request.Produtos.Contains(x.PaiProduto)).ToList();
+            List<string> filhotes = new List<string>();
+            foreach(var item in produtoComboDados.ProdutoCompostoDados)
+            {
+                var itensFilhos = item.Filhos.Select(x => x.Produto);
+                filhotes.AddRange(itensFilhos);
+            }
+            produtoComboDados.ProdutoDados = aux.ProdutoDados.Where(x => filhotes.Contains(x.Produto)).ToList();
+
+            //busca os produtos da opção para passar os valores base em todos os produtos;
+            var produtosUnificados = orcamentoCotacaoOpcaoItemUnificadoBll.PorFiltro(new TorcamentoCotacaoOpcaoItemUnificadoFiltro() { IdOpcao = request.IdOpcao });
+            var idUnificados = produtosUnificados.Select(x => x.Id).ToList();
+            var itemAtomico = orcamentoCotacaoOpcaoItemAtomicoBll.PorFiltro(new TorcamentoCotacaoOpcaoItemAtomicoFiltro() { LstIdItensUnifcados = idUnificados});
+            var idsAtomicos = itemAtomico.Select(x => x.Id).ToList();
+            var itemAtomicoCusto = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.PorFiltro(new TorcamentoCotacaoOpcaoItemAtomicoCustoFinFiltro() { LstIdItemAtomico = idsAtomicos, IdOpcaoPagto = request.IdOpcaoFormaPagto });
+
+            foreach(var item in produtoComboDados.ProdutoDados)
+            {
+                var itemOpcaoAtomico = itemAtomico.Where(x => x.Produto == item.Produto).FirstOrDefault();
+                var itemOpcaoCusto = itemAtomicoCusto.Where(x => x.IdItemAtomico == itemOpcaoAtomico.Id).FirstOrDefault();
+                item.Preco_lista = itemOpcaoCusto.CustoFinancFornecPrecoListaBase;
+            }
+
+            var retorno = await CalcularCoeficiente(produtoComboDados, request.TipoParcela, request.QtdeParcelas, request.DataRefCoeficiente);
+
+            return retorno;
+        }
         public async Task<ProdutoResponseViewModel> ListaProdutosCombo(ProdutosRequestViewModel produtos)
         {
             Constantes.ContribuinteICMS contribuinteICMSStatus = Constantes.ContribuinteICMS.COD_ST_CLIENTE_CONTRIBUINTE_ICMS_NAO;

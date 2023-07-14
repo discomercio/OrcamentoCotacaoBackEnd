@@ -6,6 +6,7 @@ using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Request.GrupoSubgrupoProduto;
+using OrcamentoCotacaoBusiness.Models.Request.Produto;
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -50,6 +51,41 @@ namespace OrcamentoCotacaoApi.BaseController
             _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoController/BuscarProduto/POST - Request => [{JsonSerializer.Serialize(request)}].");
 
             var response = await _produtoBll.ListaProdutosCombo(produtosRequest);
+
+            if (response == null)
+            {
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoController/BuscarProduto/POST - Response => [Não tem response].");
+                return NoContent();
+            }
+            else
+            {
+                var responses = new
+                {
+                    ProdutosSimples = response.ProdutosSimples.Count,
+                    ProdutosCompostos = response.ProdutosCompostos.Count
+                };
+
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoController/BuscarProduto/POST - Response => [{JsonSerializer.Serialize(responses)}].");
+
+                return Ok(response);
+            }
+        }
+
+        [HttpPost("buscarProdutosOrcamentoEdicao")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public async Task<IActionResult> BuscarProdutosOrcamentoEdicao(ProdutosOpcaoEdicaoResquest produtosRequest)
+        {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                ProdutosRequest = produtosRequest
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. ProdutoController/BuscarProduto/POST - Request => [{JsonSerializer.Serialize(request)}].");
+
+            var response = await _produtoBll.ListarProdutosComboParaEdicao(produtosRequest);
 
             if (response == null)
             {

@@ -8,5 +8,6 @@ namespace InfraBanco.Modelos.Filtros
     public class TorcamentoCotacaoOpcaoItemAtomicoFiltro : IFilter
     {
         public int IdItemUnificado { get; set; }
+        public List<int> LstIdItensUnifcados { get; set; } 
     }
 }

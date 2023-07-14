@@ -88,6 +88,10 @@ namespace OrcamentoCotacaoOpcaoItemAtomico
                     {
                         saida = saida.Where(x => x.IdItemUnificado == obj.IdItemUnificado);
                     }
+                    if(obj.LstIdItensUnifcados != null)
+                    {
+                        saida = saida.Where(x => obj.LstIdItensUnifcados.Contains(x.IdItemUnificado));
+                    }
 
                     return saida.ToList();
                 }
