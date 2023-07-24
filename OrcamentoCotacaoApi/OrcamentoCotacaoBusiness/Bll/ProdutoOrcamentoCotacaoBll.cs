@@ -88,14 +88,20 @@ namespace OrcamentoCotacaoBusiness.Bll
                 contribuinteICMSStatus, produtorRuralStatus);
 
             var produtoComboDados = new Produto.Dados.ProdutoComboDados();
+            produtoComboDados.ProdutoDados = new List<Produto.Dados.ProdutoDados>();
             produtoComboDados.ProdutoCompostoDados = aux.ProdutoCompostoDados.Where(x => request.Produtos.Contains(x.PaiProduto)).ToList();
-            List<string> filhotes = new List<string>();
-            foreach(var item in produtoComboDados.ProdutoCompostoDados)
+            if(produtoComboDados.ProdutoCompostoDados.Count > 0)
             {
-                var itensFilhos = item.Filhos.Select(x => x.Produto);
-                filhotes.AddRange(itensFilhos);
+                List<string> filhotes = new List<string>();
+                foreach (var item in produtoComboDados.ProdutoCompostoDados)
+                {
+                    var itensFilhos = item.Filhos.Select(x => x.Produto);
+                    filhotes.AddRange(itensFilhos);
+                }
+                produtoComboDados.ProdutoDados = aux.ProdutoDados.Where(x => filhotes.Contains(x.Produto)).ToList();
             }
-            produtoComboDados.ProdutoDados = aux.ProdutoDados.Where(x => filhotes.Contains(x.Produto)).ToList();
+
+            produtoComboDados.ProdutoDados.AddRange(aux.ProdutoDados.Where(x => request.Produtos.Contains(x.Produto)).ToList());
 
             //busca os produtos da opção para passar os valores base em todos os produtos;
             var produtosUnificados = orcamentoCotacaoOpcaoItemUnificadoBll.PorFiltro(new TorcamentoCotacaoOpcaoItemUnificadoFiltro() { IdOpcao = request.IdOpcao });
@@ -107,8 +113,11 @@ namespace OrcamentoCotacaoBusiness.Bll
             foreach(var item in produtoComboDados.ProdutoDados)
             {
                 var itemOpcaoAtomico = itemAtomico.Where(x => x.Produto == item.Produto).FirstOrDefault();
-                var itemOpcaoCusto = itemAtomicoCusto.Where(x => x.IdItemAtomico == itemOpcaoAtomico.Id).FirstOrDefault();
-                item.Preco_lista = itemOpcaoCusto.CustoFinancFornecPrecoListaBase;
+                if(itemOpcaoAtomico != null)
+                {
+                    var itemOpcaoCusto = itemAtomicoCusto.Where(x => x.IdItemAtomico == itemOpcaoAtomico.Id).FirstOrDefault();
+                    item.Preco_lista = itemOpcaoCusto.CustoFinancFornecPrecoListaBase;
+                }
             }
 
             var retorno = await CalcularCoeficiente(produtoComboDados, request.TipoParcela, request.QtdeParcelas, request.DataRefCoeficiente);
