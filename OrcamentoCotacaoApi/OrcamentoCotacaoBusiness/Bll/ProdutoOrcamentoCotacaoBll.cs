@@ -850,9 +850,9 @@ namespace OrcamentoCotacaoBusiness.Bll
         public string ValidarDescontoMedioMaisComissao(UsuarioLogin usuarioLogado, OrcamentoResponse orcamento,
             AtualizarOrcamentoOpcaoRequest opcao)
         {
-            var totalSemDesconto = Math.Round(opcao.ListaProdutos.Sum(x => x.PrecoLista * x.Qtde), MidpointRounding.AwayFromZero);
-            var totalComDesconto = Math.Round(opcao.ListaProdutos.Sum(x => x.TotalItem), MidpointRounding.AwayFromZero);
-            var descontoMedio = (totalSemDesconto - totalComDesconto) / totalSemDesconto * 100;
+            var totalSemDesconto = Math.Round(opcao.ListaProdutos.Sum(x => x.PrecoLista * x.Qtde), 2, MidpointRounding.AwayFromZero);
+            var totalComDesconto = Math.Round(opcao.ListaProdutos.Sum(x => x.TotalItem), 2, MidpointRounding.AwayFromZero);
+            var descontoMedio = Math.Round((totalSemDesconto - totalComDesconto) / totalSemDesconto * 100, 2, MidpointRounding.AwayFromZero);
 
             PercMaxDescEComissaoResponseViewModel percMaxPorAlcada = new PercMaxDescEComissaoResponseViewModel();
             if (usuarioLogado.Permissoes.Contains((string)Constantes.COMISSAO_DESCONTO_ALCADA_1) ||
