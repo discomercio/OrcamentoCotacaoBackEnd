@@ -22,6 +22,9 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         [JsonProperty("produto")]
         public string Produto { get; set; }
 
+        [JsonProperty("descricaoHtml")]
+        public string DescricaoHtml { get; set; }
+
         [JsonProperty("descricao")]
         public string Descricao { get; set; }
 

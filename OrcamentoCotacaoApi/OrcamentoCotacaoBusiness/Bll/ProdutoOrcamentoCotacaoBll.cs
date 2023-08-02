@@ -971,7 +971,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
                     produtoResponse.UrlImagem = urlImagem;
                 }
-                produtoResponse.Descricao = item.DescricaoHtml;
+                produtoResponse.Descricao = item.Descricao;
+                produtoResponse.DescricaoHtml = item.DescricaoHtml;
                 produtoResponse.Qtde = item.Qtde;
                 produtoResponse.IdOpcaoPagto = item.Id;
                 produtoResponse.DescDado = itemAtomicoCusto.FirstOrDefault().DescDado;
