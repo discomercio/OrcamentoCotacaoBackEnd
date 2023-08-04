@@ -143,7 +143,8 @@ namespace OrcamentoCotacaoMensagem
                 var orcamentoCotacaoMensagemStatus = (from ocm in db.TorcamentoCotacaoMensagem
                                                       join ocms in db.TorcamentoCotacaoMensagemStatus on ocm.Id equals ocms.IdOrcamentoCotacaoMensagem
 
-                                                      where ocm.IdOrcamentoCotacao == IdOrcamentoCotacao && ocms.IdUsuario == idUsuarioRemetente
+                                                      where ocm.IdOrcamentoCotacao == IdOrcamentoCotacao && 
+                                                            ocm.IdTipoUsuarioContextoDestinatario == 4
 
                                                       select new TorcamentoCotacaoMensagemStatus()
                                                       {
@@ -191,7 +192,8 @@ namespace OrcamentoCotacaoMensagem
                 var orcamentoCotacaoMensagemStatus = (from ocm in db.TorcamentoCotacaoMensagem
                                                       join ocms in db.TorcamentoCotacaoMensagemStatus on ocm.Id equals ocms.IdOrcamentoCotacaoMensagem
 
-                                                      where ocm.IdOrcamentoCotacao == IdOrcamentoCotacao && ocms.IdUsuario == 0
+                                                      where ocm.IdOrcamentoCotacao == IdOrcamentoCotacao && 
+                                                            ocm.IdTipoUsuarioContextoDestinatario != 4
 
                                                       select new TorcamentoCotacaoMensagemStatus()
                                                       {
