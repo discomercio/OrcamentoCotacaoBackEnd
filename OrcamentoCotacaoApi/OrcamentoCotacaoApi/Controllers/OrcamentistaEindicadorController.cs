@@ -131,7 +131,7 @@ namespace OrcamentoCotacaoApi.Controllers
         }
 
         [HttpGet]
-        [Route("parceiro-por-apelido/{apelido}")]
+        [Route("parceiro-por-apelido")]
         public async Task<OrcamentistaIndicadorResponseViewModel> BuscarParceiroPorApelido(string apelido)
         {
             var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
