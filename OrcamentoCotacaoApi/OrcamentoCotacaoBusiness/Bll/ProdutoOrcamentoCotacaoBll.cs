@@ -863,7 +863,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 if (opcao.PercRT > percMaxPorAlcada.PercMaxComissao)
                     return $"O percentual de comissão excede o máximo permitido!";
 
-                if ((float)descontoMedio + opcao.PercRT > percMaxPorAlcada.PercMaxComissaoEDesconto)
+                if (Math.Round((float)descontoMedio + opcao.PercRT, 2, MidpointRounding.AwayFromZero) > percMaxPorAlcada.PercMaxComissaoEDesconto)
                     return $"O percentual de desconto mais comissão excede o máximo permitido!";
 
                 return null;
@@ -875,7 +875,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (opcao.PercRT > percPadrao.PercMaxComissao)
                 return $"O percentual de comissão excede o máximo permitido!";
 
-            if ((float)descontoMedio + opcao.PercRT > percMaxComissaoEDesconto) 
+            if (Math.Round((float)descontoMedio + opcao.PercRT, 2, MidpointRounding.AwayFromZero) > percMaxComissaoEDesconto) 
                 return $"O percentual de desconto mais comissão excede o máximo permitido!";
 
             return null;
