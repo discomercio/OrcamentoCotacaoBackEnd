@@ -87,5 +87,8 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 
         [JsonProperty("qtde_Parcelas")]
         public int Qtde_Parcelas { get; set; }
+
+        [JsonProperty("habilitado")]
+        public bool Habilitado { get; set; }
     }
 }

@@ -252,7 +252,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                         Pse_demais_prest_periodo = pagto.Pse_demais_prest_periodo,
                         Pu_forma_pagto = pagto.Pu_forma_pagto,
                         Pu_valor = pagto.Pu_valor,
-                        Pu_vencto_apos = pagto.Pu_vencto_apos
+                        Pu_vencto_apos = pagto.Pu_vencto_apos,
+                        Habilitado = pagto.Habilitado
                     };
 
                     _logger.LogInformation($"CorrelationId => [{opcao.CorrelationId}]. {nomeMetodo}. Atualizando forma de pagamento Id[{torcamentoCotacaoOpcaoPagto.Id}]. Response => [{JsonSerializer.Serialize(torcamentoCotacaoOpcaoPagto)}]");
