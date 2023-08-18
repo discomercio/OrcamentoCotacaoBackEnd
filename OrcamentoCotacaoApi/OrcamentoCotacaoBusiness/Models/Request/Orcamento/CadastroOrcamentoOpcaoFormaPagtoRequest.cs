@@ -86,5 +86,8 @@ namespace OrcamentoCotacaoBusiness.Models.Request.Orcamento
 
         [JsonProperty("qtde_Parcelas")]
         public int Qtde_Parcelas { get; set; }
+
+        [JsonProperty("habilitado")]
+        public bool Habilitado { get; set; }
     }
 }
