@@ -1939,7 +1939,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     if (formaPagtoSelecionada == null)
                         return new List<string>() { "Falha ao buscar forma de pagamento da opção selecionada para aprovação do orçamento!" };
 
-                    formaPagtoSelecionada.IdTipoUsuarioContextoAprovado = (short?)idUsuarioUltAtualizacao;
+                    formaPagtoSelecionada.IdTipoUsuarioContextoAprovado = idUsuarioUltAtualizacao == (int)Constantes.TipoUsuarioContexto.Cliente ? (short?)idUsuarioUltAtualizacao:
+                       (short)tipoUsuarioContexto;
                     formaPagtoSelecionada.IdUsuarioAprovado = idUsuarioUltAtualizacao == (int)Constantes.TipoUsuarioContexto.Cliente ? null : (int?)idUsuarioUltAtualizacao;
                     formaPagtoSelecionada.DataAprovado = DateTime.Now.Date;
                     formaPagtoSelecionada.DataHoraAprovado = DateTime.Now;
@@ -1973,7 +1974,9 @@ namespace OrcamentoCotacaoBusiness.Bll
             // criar prepedidoDto
             var prepedido = new PrePedidoDto();
             prepedido.UsuarioCadastroId = tipoUsuarioContexto == Constantes.TipoUsuarioContexto.Cliente ? null : (int?)idUsuarioUltAtualizacao;
-            prepedido.Usuario_cadastro = $"[{idUsuarioUltAtualizacao}] {tipoUsuarioContexto}";
+            prepedido.Usuario_cadastro = 
+                tipoUsuarioContexto == Constantes.TipoUsuarioContexto.Cliente ? $"[{idUsuarioUltAtualizacao}] {tipoUsuarioContexto}" :
+                $"[{(int)tipoUsuarioContexto}] {idUsuarioUltAtualizacao}";
             prepedido.UsuarioCadastroIdTipoUsuarioContexto = (short?)idUsuarioUltAtualizacao;
             prepedido.DadosCliente = new DadosClienteCadastroDto();
             prepedido.DadosCliente = aprovarOrcamento.ClienteCadastroDto.DadosCliente;
