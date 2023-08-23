@@ -158,6 +158,11 @@ namespace InfraBanco.Mapping
                 .HasColumnType("smallint")
                 .IsRequired();
 
+            builder.Property(x => x.Habilitado)
+                .HasColumnName("Habilitado")
+                .HasColumnType("bit")
+                .IsRequired();
+
             builder.HasOne(x => x.TcfgTipoUsuarioContexto)
                 .WithOne(x => x.TorcamentoCotacaoOpcaoPagto)
                 .HasForeignKey<TcfgTipoUsuarioContexto>(f => f.Id);

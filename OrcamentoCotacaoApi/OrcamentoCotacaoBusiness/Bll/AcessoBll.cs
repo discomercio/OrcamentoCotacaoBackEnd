@@ -537,7 +537,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             string senha_nova,
             string senha_nova_confirma)
         {
-            var regex = new Regex(@"^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]{8,}$");
+            var regex = new Regex(@"^(?=.*[Aa - Zz])(?=.*[0-9]).{8,15}$");
 
             if (!regex.IsMatch(senha_nova))
             {

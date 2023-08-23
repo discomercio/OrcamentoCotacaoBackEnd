@@ -97,8 +97,11 @@ namespace InfraBanco.Modelos
         public decimal Pu_valor { get; set; }
 
         [Column("pu_vencto_apos")]
-        public int Pu_vencto_apos { get; set; }      
-        
+        public int Pu_vencto_apos { get; set; }
+
+        [Column("Habilitado")]
+        public bool Habilitado { get; set; }
+
         public List<TorcamentoCotacaoOpcaoItemAtomicoCustoFin> TorcamentoCotacaoOpcaoItemAtomicoCustoFin { get; set; }
         public TcfgTipoUsuarioContexto TcfgTipoUsuarioContexto { get; set; }
     }
