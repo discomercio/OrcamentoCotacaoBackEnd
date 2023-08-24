@@ -31,7 +31,10 @@
             RelOrcamentosVigente = 103200,
             RelOrcamentosExpirados = 103300,
             RelOrcamentosMensagemPendente = 103400,
-            RelOrcamentosCadastrados = 102900
+            RelOrcamentosCadastrados = 102900,
+
+            ExcluirOrcamento = 103500,
+            AnularOrcamentoAprovado = 103600
         }
 
         public enum StatusOrcamento

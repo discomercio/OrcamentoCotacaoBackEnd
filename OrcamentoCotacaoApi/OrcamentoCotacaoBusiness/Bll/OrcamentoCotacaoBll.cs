@@ -7,6 +7,7 @@ using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
 using Loja;
 using Loja.Dados;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -1767,7 +1768,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     var tOrcamento = _orcamentoCotacaoBll.PorFiltroComTransacao(new TorcamentoCotacaoFiltro() { Id = id }, dbGravacao).FirstOrDefault();
                     if (tOrcamento == null) throw new Exception("Falha ao buscar Orçamento!");
 
-                    if (idStatus == 2)
+                    if (idStatus == (short)Constantes.eCfgOrcamentoCotacaoStatus.CANCELADO)
                     {
 
                         if (tOrcamento.Status == (short)Constantes.eCfgOrcamentoCotacaoStatus.APROVADO)
@@ -1775,6 +1776,17 @@ namespace OrcamentoCotacaoBusiness.Bll
                             {
                                 tipo = "WARN",
                                 mensagem = "Não é possível cancelar orçamentos aprovados!"
+                            };
+                    }
+
+                    if (idStatus == (short)Constantes.eCfgOrcamentoCotacaoStatus.EXCLUIDO)
+                    {
+
+                        if (tOrcamento.Status == (short)Constantes.eCfgOrcamentoCotacaoStatus.APROVADO)
+                            return new MensagemDto
+                            {
+                                tipo = "WARN",
+                                mensagem = "Não é possível excluir orçamentos aprovados!"
                             };
                     }
 
@@ -2260,6 +2272,25 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             return produtos;
+        }
+
+        public ExcluirOrcamentoResponse ExcluirOrcamento(OrcamentoResponseViewModel orcamento, UsuarioLogin usuario, string ip)
+        {
+            var response = new ExcluirOrcamentoResponse();
+            response.Sucesso = false;
+
+            //alterar o status do orçamento para excluido
+            var atualizaStatus = AtualizarStatus((int)orcamento.Id, usuario, (short)Constantes.eCfgOrcamentoCotacaoStatus.EXCLUIDO, ip);
+
+            if(atualizaStatus != null)
+            {
+                response.Mensagem = atualizaStatus.mensagem;
+                return response;
+            }
+
+            response.Sucesso = true;
+            return response;
+
         }
     }
 }

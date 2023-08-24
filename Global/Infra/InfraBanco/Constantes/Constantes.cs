@@ -2861,7 +2861,8 @@ namespace InfraBanco.Constantes
             ENVIADO = 1,
             CANCELADO = 2,
             APROVADO = 3,
-            EMAIL_INCORRETO = 4,
+            EXPIRADO = 4,
+            EXCLUIDO = 5
         };
 
         public enum ePermissoes

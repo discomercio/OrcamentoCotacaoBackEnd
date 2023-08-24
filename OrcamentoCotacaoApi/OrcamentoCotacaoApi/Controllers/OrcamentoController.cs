@@ -11,6 +11,7 @@ using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response;
+using OrcamentoCotacaoBusiness.Models.Response.Orcamento;
 using System;
 using System.Linq;
 using System.Text.Json;
@@ -447,6 +448,37 @@ namespace OrcamentoCotacaoApi.Controllers
             _logger.LogInformation($"CorrelationId => [{correlationId}]. PublicoController/AprovarOrcamento/GET - Response => [Retorna lista de mensagens].");
 
             return Ok(retorno);
+        }
+
+        [HttpPost("excluir")]
+        public IActionResult ExcluirOrcamento(OrcamentoResponseViewModel model)
+        {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                OrcamentoResponseViewModel = model,
+                IP = Request.HttpContext.Connection.RemoteIpAddress.ToString()
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/ExcluirOrcamento/POST - Request => [{JsonSerializer.Serialize(request)}].");
+
+            var response = new ExcluirOrcamentoResponse();
+            response.Sucesso = false;
+
+            var permissao = this.ObterPermissaoOrcamento((int)model.Id);
+            if (permissao != null && !permissao.ExcluirOrcamento)
+            {
+               response.Mensagem = "Não encontramos a permissão necessária para realizar atividade!";
+                return Ok(response);
+            }
+
+            var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+
+            response = _orcamentoBll.ExcluirOrcamento(model, user, request.IP);
+
+            return Ok(response);
         }
     }
 }
