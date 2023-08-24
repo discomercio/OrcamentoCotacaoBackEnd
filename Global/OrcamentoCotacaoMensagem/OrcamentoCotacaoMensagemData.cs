@@ -1,4 +1,5 @@
-﻿using InfraBanco.Modelos;
+﻿using InfraBanco.Constantes;
+using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
@@ -90,7 +91,8 @@ namespace OrcamentoCotacaoMensagem
                                   tocm.IdTipoUsuarioContextoDestinatario == IdTipoUsuarioDestinatario &&
                                   tocms.PendenciaTratada == false &&
                                   lojas.Contains(toc.Loja) &&
-                                  toc.DataCadastro >= dataInicio
+                                  toc.DataCadastro >= dataInicio &&
+                                  toc.Status != (short)Constantes.eCfgOrcamentoCotacaoStatus.EXCLUIDO
                             select new
                             {
                                 id = toc.Id,

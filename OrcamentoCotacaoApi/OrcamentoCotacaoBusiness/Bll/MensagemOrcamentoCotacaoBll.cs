@@ -321,7 +321,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 if (retorno.Count() == 0)
                 {
                     response.Sucesso = true;
-                    response.ListaQtdeMensagemPendente = null;
+                    //response.ListaQtdeMensagemPendente = null;
                     return response;
                 }
                 var lojasDistinct = retorno.Select(x => (string)x.GetType().GetProperty("loja").GetValue(x, null)).Distinct().ToList();
