@@ -1,4 +1,6 @@
-﻿using InfraBanco.Modelos.Filtros;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using InfraBanco.Constantes;
+using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -405,6 +407,46 @@ namespace OrcamentoCotacaoApi.Controllers
                 TipoUsuario = LoggedUser.TipoUsuario.Value,
                 Usuario = LoggedUser.Apelido
             }).Result;
+        }
+
+        [HttpPost("aprovarOrcamento")]
+        public async Task<IActionResult> AprovarOrcamento(AprovarOrcamentoRequestViewModel aprovarOrcamento)
+        {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                Orcamento = aprovarOrcamento.IdOrcamento,
+                IP = HttpContext.Connection.RemoteIpAddress.ToString()
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/AprovarOrcamento/POST - Request => [{JsonSerializer.Serialize(request)}].");
+
+            var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+            var orcamento = _orcamentoBll.PorFiltro(aprovarOrcamento.IdOrcamento, (int)user.TipoUsuario);
+
+            if (orcamento == null)
+            {
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/AprovarOrcamento/GET - Response => [Não tem response].");
+                return BadRequest(new { message = "Acesso negado." });
+            }
+
+
+            if (orcamento.Id != aprovarOrcamento.IdOrcamento)
+            {
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. PublicoController/AprovarOrcamento/GET - Response => [Não tem response].");
+                return BadRequest(new { message = "Acesso negado." });
+            }
+
+            var retorno = await _orcamentoBll.AprovarOrcamento(
+                aprovarOrcamento,
+                (Constantes.TipoUsuarioContexto)user.TipoUsuario,
+                user.Id, request.IP);
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PublicoController/AprovarOrcamento/GET - Response => [Retorna lista de mensagens].");
+
+            return Ok(retorno);
         }
     }
 }
