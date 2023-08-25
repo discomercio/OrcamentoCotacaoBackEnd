@@ -13,5 +13,6 @@
         public bool MensagemOrcamento { get; set; }
         public bool NenhumaOpcaoOrcamento { get; set; }
         public bool DesabilitarBotoes { get; set; }
+        public bool ExcluirOrcamento{ get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using ClassesBase;
 using InfraBanco;
+using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
 using Microsoft.EntityFrameworkCore;
@@ -414,6 +415,8 @@ namespace OrcamentoCotacao
 
                                 join oeiv in db.TorcamentistaEIndicadorVendedor on oc.IdIndicadorVendedor equals oeiv.Id into vendedorParceiroTemp
                                 from vendedorParceiro in vendedorParceiroTemp.DefaultIfEmpty()
+
+                                where oc.Status != (short)Constantes.eCfgOrcamentoCotacaoStatus.EXCLUIDO
 
                                 select new Orcamento.Dto.OrcamentoCotacaoListaDto
                                 {

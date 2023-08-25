@@ -99,6 +99,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             var permissaoDescontoSuperior2 = ValidaPermissao(request.PermissoesUsuario, ePermissao.DescontoSuperior2);
             var permissaoDescontoSuperior3 = ValidaPermissao(request.PermissoesUsuario, ePermissao.DescontoSuperior3);
             var permissaoDesconto = (permissaoDescontoSuperior1 || permissaoDescontoSuperior2 || permissaoDescontoSuperior3);
+            var permissaoExcluirOrcamento = ValidaPermissao(request.PermissoesUsuario, ePermissao.ExcluirOrcamento);
 
             if (usuarioEnvolvidoOrcamento 
                 || permissaoVisualizarOrcamentoConsultar 
@@ -139,6 +140,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     response.EditarOpcaoOrcamento = true;
                     response.DesabilitarAprovarOpcaoOrcamento = !permissaoAprovarOrcamento;
                     response.MensagemOrcamento = true;
+                    response.ExcluirOrcamento = permissaoExcluirOrcamento;
 
                     if (orcamentoExpirado)
                     {
@@ -159,6 +161,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     response.DesabilitarBotoes = false;
                     response.EditarOpcaoOrcamento = false;
                     response.DesabilitarAprovarOpcaoOrcamento = true;
+                    response.ExcluirOrcamento = false;
                 }
             }
             else
