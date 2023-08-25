@@ -337,6 +337,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             response.Sucesso = true;
+            response.ListaQtdeMensagemPendente = response.ListaQtdeMensagemPendente.OrderBy(x => int.Parse(x.Loja)).ToList();
 
             return response;
         }
