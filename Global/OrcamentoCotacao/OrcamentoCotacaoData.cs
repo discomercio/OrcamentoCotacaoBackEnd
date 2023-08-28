@@ -512,7 +512,26 @@ namespace OrcamentoCotacao
 
                     if (!string.IsNullOrWhiteSpace(filtro.Mensagem))
                     {
-                        query = query.Where(f => f.Mensagem == filtro.Mensagem);
+                        if(filtro.Mensagem == Constantes.SIM_TODAS)
+                        {
+                            query = query.Where(x => x.Mensagem == "Sim");
+                        }
+                        if(filtro.Mensagem == Constantes.SIM_SOMENTE_MINHAS)
+                        {
+                            query = query.Where(x => x.Parceiro == "-");
+                            query = query.Where(x => x.IdVendedor == filtro.IdUsuario);
+                            query = query.Where(x => x.Mensagem == "Sim");
+                        }
+                        if(filtro.Mensagem == Constantes.SIM_SOMENTE_TERCEIROS)
+                        {
+                            query = query.Where(x => x.Mensagem == "Sim");
+                            query = query.Where(x => (x.IdVendedor == filtro.IdUsuario && x.Parceiro != "-") || x.IdVendedor != filtro.IdUsuario);
+                            
+                        }
+                        if(filtro.Mensagem == Constantes.NAO)
+                        {
+                            query = query.Where(f => f.Mensagem == filtro.Mensagem);
+                        }
                     }
 
                     if (filtro.DtInicioExpiracao.HasValue)
