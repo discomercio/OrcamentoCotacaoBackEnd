@@ -345,8 +345,8 @@ namespace OrcamentoCotacao
                 using (var db = _contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
                 {
                     var paraterQuery = (from p in db.TcfgParametro
-                                       join unp in db.TcfgUnidadeNegocioParametro on p.Id equals unp.IdCfgParametro
-                                       where p.Id == 20
+                                        join unp in db.TcfgUnidadeNegocioParametro on p.Id equals unp.IdCfgParametro
+                                        where p.Id == 20
                                         select unp.Valor).FirstOrDefault();
 
                     if (filtro.DtInicioExpiracao.HasValue && filtro.DtFimExpiracao.HasValue)
@@ -474,8 +474,8 @@ namespace OrcamentoCotacao
                         }
                         else
                         {
-                            query = query.Where(f => 
-                            f.NomeCliente.Contains(filtro.Nome_numero) 
+                            query = query.Where(f =>
+                            f.NomeCliente.Contains(filtro.Nome_numero)
                             || f.NomeObra.Contains(filtro.Nome_numero));
                         }
                     }
@@ -505,32 +505,62 @@ namespace OrcamentoCotacao
                         query = query.Where(f => filtro.VendedorParceiros.Contains(f.IdIndicadorVendedor.ToString()));
                     }
 
-                    if(!string.IsNullOrEmpty(filtro.VendedorParceiro))
+                    if (!string.IsNullOrEmpty(filtro.VendedorParceiro))
                     {
                         query = query.Where(x => x.VendedorParceiro == filtro.VendedorParceiro);
                     }
 
                     if (!string.IsNullOrWhiteSpace(filtro.Mensagem))
                     {
-                        if(filtro.Mensagem == Constantes.SIM_TODAS)
+                        if (filtro.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR ||
+                            filtro.TipoUsuario == (int)Constantes.TipoUsuario.PARCEIRO)
                         {
-                            query = query.Where(x => x.Mensagem == "Sim");
+                            if (filtro.Mensagem == Constantes.SIM_TODAS)
+                            {
+                                query = query.Where(x => x.Mensagem == "Sim");
+                            }
+                            if (filtro.Mensagem == Constantes.SIM_SOMENTE_MINHAS)
+                            {
+                                if (filtro.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
+                                {
+                                    query = query.Where(x => x.Parceiro == "-");
+                                    query = query.Where(x => x.IdVendedor == filtro.IdUsuario);
+                                }
+                                if (filtro.TipoUsuario == (int)Constantes.TipoUsuario.PARCEIRO)
+                                {
+                                    query = query.Where(x => x.Parceiro == filtro.Parceiro);
+                                    query = query.Where(x => x.IdIndicadorVendedor == null);
+                                }
+
+                                query = query.Where(x => x.Mensagem == "Sim");
+                            }
+                            if (filtro.Mensagem == Constantes.SIM_SOMENTE_TERCEIROS)
+                            {
+                                query = query.Where(x => x.Mensagem == "Sim");
+                                if (filtro.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
+                                {
+                                    query = query.Where(x => (x.IdVendedor == filtro.IdUsuario && x.Parceiro != "-") || x.IdVendedor != filtro.IdUsuario);
+                                }
+                                if (filtro.TipoUsuario == (int)Constantes.TipoUsuario.PARCEIRO)
+                                {
+                                    query = query.Where(x => x.Parceiro == filtro.Parceiro && x.VendedorParceiro != null);
+                                }
+                            }
+                            if (filtro.Mensagem == Constantes.NAO)
+                            {
+                                query = query.Where(f => f.Mensagem == filtro.Mensagem);
+                            }
                         }
-                        if(filtro.Mensagem == Constantes.SIM_SOMENTE_MINHAS)
+                        if (filtro.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO)
                         {
-                            query = query.Where(x => x.Parceiro == "-");
-                            query = query.Where(x => x.IdVendedor == filtro.IdUsuario);
-                            query = query.Where(x => x.Mensagem == "Sim");
-                        }
-                        if(filtro.Mensagem == Constantes.SIM_SOMENTE_TERCEIROS)
-                        {
-                            query = query.Where(x => x.Mensagem == "Sim");
-                            query = query.Where(x => (x.IdVendedor == filtro.IdUsuario && x.Parceiro != "-") || x.IdVendedor != filtro.IdUsuario);
-                            
-                        }
-                        if(filtro.Mensagem == Constantes.NAO)
-                        {
-                            query = query.Where(f => f.Mensagem == filtro.Mensagem);
+                            if (filtro.Mensagem == Constantes.NAO)
+                            {
+                                query = query.Where(f => f.Mensagem == filtro.Mensagem);
+                            }
+                            else
+                            {
+                                query = query.Where(x => x.Mensagem == "Sim");
+                            }
                         }
                     }
 
@@ -575,8 +605,8 @@ namespace OrcamentoCotacao
                             case "CLIENTE_OBRA":
                                 if (filtro.OrdenacaoAscendente)
                                 {
-                                    query = query.OrderBy(o => 
-                                    !string.IsNullOrWhiteSpace(o.NomeCliente) ? o.NomeCliente 
+                                    query = query.OrderBy(o =>
+                                    !string.IsNullOrWhiteSpace(o.NomeCliente) ? o.NomeCliente
                                     : !string.IsNullOrWhiteSpace(o.NomeObra) ? o.NomeObra : o.NumeroOrcamento);
                                 }
                                 else
