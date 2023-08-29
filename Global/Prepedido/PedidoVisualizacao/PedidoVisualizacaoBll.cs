@@ -125,7 +125,6 @@ namespace Prepedido.PedidoVisualizacao
                                 from loj in gj.DefaultIfEmpty()
 
                                 where c.St_Entrega != "CAN" //CANCELADOS
-                                      && c.Loja == filtro.Loja
 
                                 select new OrcamentoCotacaoListaDto
                                 {
@@ -133,6 +132,7 @@ namespace Prepedido.PedidoVisualizacao
                                     NumeroOrcamento = c.IdOrcamentoCotacao.HasValue ? c.IdOrcamentoCotacao.Value.ToString() : "-",
                                     NumPedido = c.Pedido,
                                     Cliente_Obra = c.Endereco_nome,
+                                    Loja = c.Loja,
                                     IdVendedor = vendedor.Id,
                                     Vendedor = c.Vendedor,
                                     Parceiro = !String.IsNullOrEmpty(c.Indicador) ? c.Indicador : "-",
@@ -176,6 +176,11 @@ namespace Prepedido.PedidoVisualizacao
                             f.Cliente_Obra.Contains(filtro.Nome_numero)
                             || f.NumPedido.Contains(filtro.Nome_numero));
                         }
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(filtro.Loja))
+                    {
+                        query = query.Where(f => f.Loja == filtro.Loja);
                     }
 
                     if (filtro.Vendedores != null && filtro.Vendedores.Length > 0)

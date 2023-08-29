@@ -1,6 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
@@ -10,12 +11,12 @@ namespace InfraIdentity
     public class ServicoAutenticacao : IServicoAutenticacao
     {
         public UsuarioLogin ObterTokenAutenticacao(
-            UsuarioLogin login, 
-            string segredoToken, 
+            UsuarioLogin login,
+            string segredoToken,
             int validadeTokenMinutos,
             string BloqueioUsuarioLoginAmbiente,
             string role,
-            IServicoAutenticacaoProvider servicoAutenticacaoProvider, 
+            IServicoAutenticacaoProvider servicoAutenticacaoProvider,
             string ip,
             out bool unidade_negocio_desconhecida)
         {
@@ -40,18 +41,18 @@ namespace InfraIdentity
             }
 
             return GerarTokenAutenticacao(
-                usuarioLogin, 
-                segredoToken, 
-                validadeTokenMinutos, 
-                role, 
+                usuarioLogin,
+                segredoToken,
+                validadeTokenMinutos,
+                role,
                 out unidade_negocio_desconhecida);
         }
 
         public UsuarioLogin RenovarTokenAutenticacao(
-            UsuarioLogin usuario, 
-            string segredoToken, 
+            UsuarioLogin usuario,
+            string segredoToken,
             int validadeTokenMinutos,
-            string role, 
+            string role,
             out bool unidade_negocio_desconhecida)
         {
             //vamos verificar se usuario ainda tem permissão
@@ -61,10 +62,10 @@ namespace InfraIdentity
         }
 
         private static UsuarioLogin GerarTokenAutenticacao(
-            UsuarioLogin usuario, 
-            string segredoToken, 
+            UsuarioLogin usuario,
+            string segredoToken,
             int validadeTokenMinutos,
-            string role, 
+            string role,
             out bool unidade_negocio_desconhecida)
         {
             //unidade_negocio: BS ou VRF, se diferente dar erro no login
@@ -102,7 +103,8 @@ namespace InfraIdentity
                     new Claim("Lojas", !string.IsNullOrEmpty(usuario.Loja)?usuario.Loja:""),
                     new Claim("Permissoes", usuario.Permissoes != null?string.Join(",",usuario.Permissoes):""),
                     new Claim("UsuarioLogin", JsonSerializer.Serialize(usuario)),
-                    new Claim("Id", usuario.Id.ToString())
+                    new Claim("Id", usuario.Id.ToString()),
+                    new Claim("LojaLogada", usuario.Loja.Split(",").Count() > 1 ? "": usuario.Loja)
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(validadeTokenMinutos),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
