@@ -138,14 +138,12 @@ namespace Orcamento
                                 join vp in db.TorcamentistaEIndicadorVendedor on c.IdIndicadorVendedor equals vp.Id into gj
                                 from loj in gj.DefaultIfEmpty()
 
-                                where
-                                    c.Loja == filtro.Loja
-
                                 select new OrcamentoCotacaoListaDto
                                 {
                                     NumPedidoOrdenacao = Convert.ToInt32(c.Orcamento.Replace("Z", "")),
                                     NumeroOrcamento = !c.IdOrcamentoCotacao.HasValue || c.IdOrcamentoCotacao == 0 ? "-" : c.IdOrcamentoCotacao.Value.ToString(),
                                     NumPedido = c.Orcamento,
+                                    Loja = c.Loja,
                                     Cliente_Obra = c.Endereco_nome,
                                     IdVendedor = v.Id,
                                     Vendedor = c.Vendedor == null ? "-" : c.Vendedor,
@@ -191,6 +189,11 @@ namespace Orcamento
                             f.Cliente_Obra.Contains(filtro.Nome_numero)
                             || f.NumPedido.Contains(filtro.Nome_numero));
                         }
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(filtro.Loja))
+                    {
+                        query = query.Where(f => f.Loja == filtro.Loja);
                     }
 
                     if (filtro.Vendedores != null && filtro.Vendedores.Length > 0)

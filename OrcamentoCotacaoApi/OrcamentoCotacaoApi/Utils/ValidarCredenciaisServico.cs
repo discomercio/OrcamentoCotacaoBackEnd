@@ -13,7 +13,7 @@ namespace OrcamentoCotacaoApi.Utils
             this.acessoBll = acessoBll;
         }
 
-        public Task<bool> CredenciaisValidas(string apelido)
+        public Task<bool> CredenciaisValidas(string apelido, string loja)
         {
             string msgErro;
             var usuario = acessoBll.ValidarUsuario(apelido, null, true, string.Empty, string.Empty, out msgErro);
@@ -21,6 +21,13 @@ namespace OrcamentoCotacaoApi.Utils
                 return Task.FromResult(false);
             if (int.TryParse(msgErro, out int resultado))
                 return Task.FromResult(false);
+            if (!string.IsNullOrEmpty(loja))
+            {
+                if(usuario.Loja != loja)
+                {
+                    return Task.FromResult(false);
+                }
+            }
 
             //acesso liberado
             return Task.FromResult(true);
