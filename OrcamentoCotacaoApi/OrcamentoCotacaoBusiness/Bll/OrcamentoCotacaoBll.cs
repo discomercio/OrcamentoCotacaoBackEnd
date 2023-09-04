@@ -1818,6 +1818,22 @@ namespace OrcamentoCotacaoBusiness.Bll
                             Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
                     }
 
+                    if (idStatus == (short)Constantes.eCfgOrcamentoCotacaoStatus.EXCLUIDO)
+                    {
+                        var cfgOperacao = _cfgOperacaoBll.PorFiltro(new TcfgOperacaoFiltro() { Id = (int)Constantes.eCfgLogOperacao.ORCAMENTO_COTACAO_EXCLUSAO }).FirstOrDefault();
+                        if (cfgOperacao == null)
+                        {
+                            return new MensagemDto
+                            {
+                                tipo = "WARN",
+                                mensagem = $"Falha ao montar log de operação."
+                            };
+                        }
+
+                        var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, "", (short)user.TipoUsuario, user.Id, tOrcamento.Loja, null, tOrcamento.Id, null,
+                            Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
+                    }
+
                     dbGravacao.transacao.Commit();
                 }
                 catch (Exception ex)

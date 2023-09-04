@@ -2896,5 +2896,31 @@ namespace InfraBanco.Constantes
             ModuloOrcamentoCotacao_EmailTransacional_SmtpUsername = 9,
             ModuloOrcamentoCotacao_EmailTransacional_SmtpPassword = 10
         }
+
+        public enum eCfgLogOperacao
+        {
+            ORCAMENTO_COTACAO_INCLUSAO = 1,
+            ORCAMENTO_COTACAO_EDICAO_GERAL = 2,
+            ORCAMENTO_COTACAO_EDICAO_OPCAO = 3,
+            ORCAMENTO_COTACAO_PRORROGACAO = 4,
+            ORCAMENTO_COTACAO_APROVACAO = 5,
+            ORCAMENTO_COTACAO_CANCELAMENTO = 6,
+            PRODUTO_CATALOGO_INCLUSAO = 7,
+            PRODUTO_CATALOGO_EDICAO = 8,
+            PROPRIEDADE_PRODUTO_INCLUSAO = 9,
+            PROPRIEDADE_PRODUTO_EDICAO = 10,
+            PROPRIEDADE_PRODUTO_EXCLUSAO = 11,
+            DOWNLOADS_INCLUSAO_DE_PASTA = 12,
+            DOWNLOADS_INCLUSAO_DE_ARQUIVO = 13,
+            DOWNLOADS_ALTERACAO_DE_PASTA = 14,
+            DOWNLOADS_ALTERACAO_DE_ARQUIVO = 15,
+            DOWNLOADS_EXCLUSAO_DE_PASTA = 16,
+            DOWNLOADS_EXCLUSAO_DE_ARQUIVO = 17,
+            VENDEDORES_PARCEIROS_INCLUSAO = 18,
+            VENDEDORES_PARCEIROS_ALTERACAO = 19,
+            PRE_PEDIDO_INCLUSAO = 20,
+            ORCAMENTO_COTACAO_EXCLUSAO = 21,
+            ORCAMENTO_COTACAO_ANULACAO = 22
+        }
     }
 }
