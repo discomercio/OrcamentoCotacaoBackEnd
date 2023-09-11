@@ -877,7 +877,6 @@ namespace OrcamentoCotacaoBusiness.Bll
                 if (!string.IsNullOrEmpty(logPropriedade)) log += $"{logPropriedade}";
 
                 if (produtoCatalogoPropriedade.IdCfgTipoPropriedade == 1 &&
-                    produtoCatalogoPropriedade.id > 10000 &&
                     produtoCatalogoPropriedade.IdCfgTipoPermissaoEdicaoCadastro == tipoPermissaoEdicaoCadastroUsuario.Id)
                 {
                     _logger.LogInformation($"AtualizarPropriedadesProdutos: Atualizando opcoes da propriedade.");
@@ -1007,24 +1006,10 @@ namespace OrcamentoCotacaoBusiness.Bll
             retorno.Sucesso = false;
 
             //id == 0 => Usuário
-            if (produtoCatalogoPropriedade.id > 10000 && produtoCatalogoPropriedade.IdCfgTipoPermissaoEdicaoCadastro == tipoPermissaoEdicaoCadastroUsuario.Id)
+            if (produtoCatalogoPropriedade.IdCfgTipoPermissaoEdicaoCadastro == tipoPermissaoEdicaoCadastroUsuario.Id)
             {
                 if (produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados != null)
                 {
-                    //int index = 100;
-                    //foreach (var prop in produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados)
-                    //{
-                    //    if (produtoCatalogoPropriedade.id <= 10000 &&
-                    //                produtoCatalogoPropriedade.IdCfgTipoPermissaoEdicaoCadastro == tipoPermissaoEdicaoCadastroUsuario.Id && prop.id == 0)
-                    //    {
-                    //        retorno.Mensagem = $"Não é permitido inserir um novo valor válido para essa propriedade!";
-                    //        return retorno;
-                    //    }
-
-                    //    prop.ordem = index;
-                    //    index = index + 100;
-                    //}
-
                     foreach (var prop in prodPropriedadesParaComparacao.produtoCatalogoPropriedadeOpcoesDados)
                     {
                         var comparar = produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados
