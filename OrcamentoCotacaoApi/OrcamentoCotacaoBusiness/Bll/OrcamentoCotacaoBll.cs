@@ -1818,6 +1818,21 @@ namespace OrcamentoCotacaoBusiness.Bll
                             Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
                     }
 
+                    if (idStatus == (short)Constantes.eCfgOrcamentoCotacaoStatus.EXCLUIDO)
+                    {
+                        var cfgOperacao = _cfgOperacaoBll.PorFiltro(new TcfgOperacaoFiltro() { Id = (int)Constantes.eCfgLogOperacao.ORCAMENTO_COTACAO_EXCLUSAO }).FirstOrDefault();
+                        if (cfgOperacao == null)
+                        {
+                            return new MensagemDto
+                            {
+                                tipo = "WARN",
+                                mensagem = $"Falha ao montar log de operação."
+                            };
+                        }
+                        var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, "", (short)user.TipoUsuario, user.Id, tOrcamento.Loja, null, tOrcamento.Id, null,
+                            Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
+                    }
+
                     dbGravacao.transacao.Commit();
                 }
                 catch (Exception ex)
@@ -1951,7 +1966,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     if (formaPagtoSelecionada == null)
                         return new List<string>() { "Falha ao buscar forma de pagamento da opção selecionada para aprovação do orçamento!" };
 
-                    formaPagtoSelecionada.IdTipoUsuarioContextoAprovado = idUsuarioUltAtualizacao == (int)Constantes.TipoUsuarioContexto.Cliente ? (short?)idUsuarioUltAtualizacao:
+                    formaPagtoSelecionada.IdTipoUsuarioContextoAprovado = idUsuarioUltAtualizacao == (int)Constantes.TipoUsuarioContexto.Cliente ? (short?)idUsuarioUltAtualizacao :
                        (short)tipoUsuarioContexto;
                     formaPagtoSelecionada.IdUsuarioAprovado = idUsuarioUltAtualizacao == (int)Constantes.TipoUsuarioContexto.Cliente ? null : (int?)idUsuarioUltAtualizacao;
                     formaPagtoSelecionada.DataAprovado = DateTime.Now.Date;
@@ -1986,7 +2001,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             // criar prepedidoDto
             var prepedido = new PrePedidoDto();
             prepedido.UsuarioCadastroId = tipoUsuarioContexto == Constantes.TipoUsuarioContexto.Cliente ? null : (int?)idUsuarioUltAtualizacao;
-            prepedido.Usuario_cadastro = 
+            prepedido.Usuario_cadastro =
                 tipoUsuarioContexto == Constantes.TipoUsuarioContexto.Cliente ? $"[{idUsuarioUltAtualizacao}] {tipoUsuarioContexto}" :
                 $"[{(int)tipoUsuarioContexto}] {idUsuarioUltAtualizacao}";
             prepedido.UsuarioCadastroIdTipoUsuarioContexto = (short?)idUsuarioUltAtualizacao;
@@ -2282,7 +2297,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             //alterar o status do orçamento para excluido
             var atualizaStatus = AtualizarStatus((int)orcamento.Id, usuario, (short)Constantes.eCfgOrcamentoCotacaoStatus.EXCLUIDO, ip);
 
-            if(atualizaStatus != null)
+            if (atualizaStatus != null)
             {
                 response.Mensagem = atualizaStatus.mensagem;
                 return response;
