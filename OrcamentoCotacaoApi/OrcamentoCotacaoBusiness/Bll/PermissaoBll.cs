@@ -151,8 +151,18 @@ namespace OrcamentoCotacaoBusiness.Bll
                         response.MensagemOrcamento = false;
                     }
                 }
-                else if (statusOrcamentoEnviado == StatusOrcamento.Aprovado
-                        || statusOrcamentoEnviado == StatusOrcamento.Cancelado)
+                else if (statusOrcamentoEnviado == StatusOrcamento.Cancelado)
+                {
+                    response.ProrrogarOrcamento = false;
+                    response.EditarOrcamento = false;
+                    response.CancelarOrcamento = false;
+                    response.ReenviarOrcamento = false;
+                    response.DesabilitarBotoes = false;
+                    response.EditarOpcaoOrcamento = false;
+                    response.DesabilitarAprovarOpcaoOrcamento = true;
+                    response.ExcluirOrcamento = permissaoExcluirOrcamento;
+                }
+                else if (statusOrcamentoEnviado == StatusOrcamento.Aprovado)
                 {
                     response.ProrrogarOrcamento = false;
                     response.EditarOrcamento = false;
