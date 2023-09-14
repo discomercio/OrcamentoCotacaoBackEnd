@@ -143,6 +143,10 @@ namespace OrcamentoCotacao
             {
                 saida = saida.Where(x => x.Loja == obj.Loja);
             }
+            if(obj.StatusId != 0)
+            {
+                saida = saida.Where(x => x.Status == obj.StatusId);
+            }
             //if (!string.IsNullOrEmpty(obj.Vendedor))
             //{
             //    saida = saida.Where(x => x.IdVendedor == int.Parse(obj.Vendedor));

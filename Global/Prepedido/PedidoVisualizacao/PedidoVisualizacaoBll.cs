@@ -1,4 +1,5 @@
 ﻿using Cliente.Dados;
+using InfraBanco;
 using InfraBanco.Constantes;
 using InfraBanco.Modelos;
 using InfraBanco.Modelos.Filtros;
@@ -1583,5 +1584,66 @@ namespace Prepedido.PedidoVisualizacao
             return retorno;
         }
 
+        public bool BuscarPedidosParaAnular(string pedidoBase)
+        {
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                var saida = from c in db.Tpedido
+                            join d in db.TpedidoItemDevolvido on c.Pedido equals d.Pedido into dev
+                            from devolvido in dev.DefaultIfEmpty()
+                            join e in db.TpedidoPerda on c.Pedido equals e.Pedido into per
+                            from perda in per.DefaultIfEmpty()
+                            where c.PedidoBase == pedidoBase
+                            select new
+                            {
+                                pedido = c.Pedido,
+                                stEntrega = c.St_Entrega,
+                                comissaoPaga = c.ComissaoPaga,
+                                devolvidoComissaoDescontada = devolvido == null ? 0 : devolvido.ComissaoDescontada,
+                                perdaComissaoDescontada = perda == null ? 0 : perda.ComissaoDescontada
+                            };
+
+                if (saida != null)
+                {
+                    var can = saida.Where(x => x.stEntrega != Constantes.ST_ENTREGA_CANCELADO).FirstOrDefault();
+                    if (can == null) return false;
+
+                    var comissaoPaga = saida.Where(x => x.comissaoPaga == 1).FirstOrDefault();
+                    if (comissaoPaga != null) return false;
+
+                    var devolComissaoPaga = saida.Where(x => x.devolvidoComissaoDescontada == 1).FirstOrDefault();
+                    if (devolComissaoPaga != null) return false;
+
+                    var perdaComissaoPaga = saida.Where(x => x.perdaComissaoDescontada == 1).FirstOrDefault();
+                    if (perdaComissaoPaga != null) return false;
+                }
+            }
+
+            return true;
+        }
+
+        public void AtualizarAnulacaoOrcamentoCotacaoPedido(string pedidoBase, ContextoBdGravacao dbGravacao)
+        {
+            var pedidos = from c in dbGravacao.Tpedido
+                          where c.PedidoBase == pedidoBase
+                          select c;
+
+            if (pedidos == null) return;
+
+            foreach (var pedido in pedidos)
+            {
+                pedido.IdOrcamentoCotacao = null;
+                pedido.Orcamento = null;
+                pedido.Orcamentista = "";
+                pedido.IdIndicadorVendedor = null;
+                pedido.St_Orc_Virou_Pedido = 0;
+
+                dbGravacao.Update(pedido);
+            }
+
+            dbGravacao.SaveChanges();
+
+            return;
+        }
     }
 }

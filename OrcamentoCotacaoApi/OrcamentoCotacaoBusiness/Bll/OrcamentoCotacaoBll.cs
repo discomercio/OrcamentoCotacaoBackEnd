@@ -2307,5 +2307,91 @@ namespace OrcamentoCotacaoBusiness.Bll
             return response;
 
         }
+
+        public ExcluirOrcamentoResponse AnularOrcamento(OrcamentoResponseViewModel orcamento, UsuarioLogin usuario, string ip)
+        {
+            var response = new ExcluirOrcamentoResponse();
+            response.Sucesso = false;
+
+            //vamos abrir a transação e fazer as modificações nas tabelas
+            using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTO))
+            {
+                //atualizar o orçamento cotação
+                var tOrcamentoCotacao = _orcamentoCotacaoBll.PorFiltroComTransacao(new TorcamentoCotacaoFiltro() { Id = (int)orcamento.Id, StatusId = (short)Constantes.eCfgOrcamentoCotacaoStatus.APROVADO }, dbGravacao).FirstOrDefault();
+                if (tOrcamentoCotacao == null)
+                {
+                    response.Mensagem = "Falha ao buscar Orçamento!";
+                    return response;
+                }
+                var retornoOrcamento = AtualizarAnulacaoOrcamento(tOrcamentoCotacao, usuario, dbGravacao);
+                if (!string.IsNullOrEmpty(retornoOrcamento.mensagem))
+                {
+                    response.Mensagem = retornoOrcamento.mensagem;
+                    return response;
+                }
+                //atualizar o pré-pedido
+                var retornoPrepedido = _prepedidoBll.AtualizarAnulacaoOrcamentoCotacaoPrepedido(tOrcamentoCotacao.IdOrcamento, usuario.Id, (int)usuario.TipoUsuario, dbGravacao);
+                //atualizar todos os pedidos que existir na tabela(procurar por pedido base que está no pré-pedido)
+                if (!string.IsNullOrEmpty(retornoPrepedido))
+                {
+                    //retornou o pedido no orçamento, então vamos atualizar
+                    _pedidoPrepedidoApiBll.AtualizarAnulacaoOrcamentoCotacaoPedido(retornoPrepedido, dbGravacao);
+                }
+                //registrar o log de operação
+                var cfgOperacao = _cfgOperacaoBll.PorFiltroComTransacao(new TcfgOperacaoFiltro() { Id = (int)Constantes.eCfgLogOperacao.ORCAMENTO_COTACAO_ANULACAO }, dbGravacao).FirstOrDefault();
+                if (cfgOperacao == null)
+                {
+                    response.Mensagem = "Ops! Falha ao anular orçamento aprovado.";
+                    return response;
+                }
+                var pedido = string.Empty;
+
+                var log = $"Orcamento: {orcamento.Id}; Pre-pedido: {tOrcamentoCotacao.IdOrcamento};";
+
+                if (!string.IsNullOrEmpty(retornoPrepedido))
+                {
+                    log = $"{log} Pedido: {retornoPrepedido}";
+                }
+
+                var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuario.TipoUsuario, usuario.Id, orcamento.Loja, pedido, (int)orcamento.Id, null,
+                        InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
+
+                dbGravacao.SaveChanges();
+                dbGravacao.transacao.Commit();
+            }
+
+            response.Sucesso = true;
+            return response;
+        }
+
+        public MensagemDto AtualizarAnulacaoOrcamento(TorcamentoCotacao tOrcamentoCotacao, UsuarioLogin usuario, ContextoBdGravacao dbGravacao)
+        {
+            var response = new MensagemDto();
+
+            tOrcamentoCotacao.Status = (short)Constantes.eCfgOrcamentoCotacaoStatus.EXCLUIDO;
+            tOrcamentoCotacao.IdOrcamento = null;
+            tOrcamentoCotacao.IdPedido = null;
+            tOrcamentoCotacao.IdTipoUsuarioContextoUltStatus = (int)usuario.TipoUsuario;
+            tOrcamentoCotacao.IdUsuarioUltStatus = usuario.Id;
+            tOrcamentoCotacao.DataUltStatus = DateTime.Now.Date;
+            tOrcamentoCotacao.DataHoraUltStatus = DateTime.Now;
+
+            var retorno = _orcamentoCotacaoBll.AtualizarComTransacao(tOrcamentoCotacao, dbGravacao);
+            if (retorno == null)
+            {
+                response.mensagem = "Falha ao atualizar anulação do orçamento!";
+                return response;
+            }
+
+            return response;
+        }
+
+        public bool VerificaPermissaoAnularOrcamento(int idOrcamento)
+        {
+            var pedidoBase = _prepedidoBll.BuscarPedidoPrepedidoPorIdOrcamento(idOrcamento);
+            if (pedidoBase == null) return true;
+
+            return _pedidoPrepedidoApiBll.BuscarPedidosParaAnular(pedidoBase);
+        }
     }
 }

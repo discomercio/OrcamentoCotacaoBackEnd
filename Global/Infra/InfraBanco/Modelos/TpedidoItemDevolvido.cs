@@ -41,6 +41,9 @@ namespace InfraBanco.Modelos
         [Column("preco_NF", TypeName = "money")]
         public decimal? Preco_NF { get; set; }
 
+        [Column("comissao_descontada")]
+        public short ComissaoDescontada { get; set; }
+
         [Column("descricao_html")]
         [MaxLength(4000)]
         public string Descricao_Html { get; set; }
