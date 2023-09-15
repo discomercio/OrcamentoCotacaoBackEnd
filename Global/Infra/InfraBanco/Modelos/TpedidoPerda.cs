@@ -31,5 +31,8 @@ namespace InfraBanco.Modelos
         [Column("obs")]
         [MaxLength(80)]
         public string Obs { get; set; }
+
+        [Column("comissao_descontada")]
+        public short ComissaoDescontada { get; set; }
     }
 }

@@ -16,11 +16,13 @@ namespace OrcamentoCotacaoBusiness.Bll
     {
         private readonly ILogger<PermissaoBll> _logger;
         private readonly ContextoBdProvider _contextoProvider;
+        private readonly OrcamentoCotacaoBll _orcamentoCotacaoBll;
 
-        public PermissaoBll(ILogger<PermissaoBll> logger, ContextoBdProvider contextoProvider)
+        public PermissaoBll(ILogger<PermissaoBll> logger, ContextoBdProvider contextoProvider, OrcamentoCotacaoBll orcamentoCotacaoBll)
         {
             _logger = logger;
             _contextoProvider = contextoProvider;
+            _orcamentoCotacaoBll = orcamentoCotacaoBll;
         }
 
         public async Task<PermissaoOrcamentoResponse> RetornarPermissaoOrcamento(PermissaoOrcamentoRequest request)
@@ -100,11 +102,14 @@ namespace OrcamentoCotacaoBusiness.Bll
             var permissaoDescontoSuperior3 = ValidaPermissao(request.PermissoesUsuario, ePermissao.DescontoSuperior3);
             var permissaoDesconto = (permissaoDescontoSuperior1 || permissaoDescontoSuperior2 || permissaoDescontoSuperior3);
             var permissaoExcluirOrcamento = ValidaPermissao(request.PermissoesUsuario, ePermissao.ExcluirOrcamento);
+            var permissaoAnularOrcamento = ValidaPermissao(request.PermissoesUsuario, ePermissao.AnularOrcamentoAprovado);
 
             if (usuarioEnvolvidoOrcamento 
                 || permissaoVisualizarOrcamentoConsultar 
                 || permissaoAcessoUniversalOrcamentoEditar
-                || permissaoDesconto)
+                || permissaoDesconto
+                || permissaoExcluirOrcamento
+                || permissaoAnularOrcamento)
             {
                 // Status Orçamento
                 var statusOrcamentoEnviado = ObterStatusOrcamento(orcamento);
@@ -130,6 +135,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 response.VisualizarOrcamento = true;
                 response.ClonarOrcamento = true;
+                response.AnularOrcamentoAprovado = false;
 
                 if (statusOrcamentoEnviado == StatusOrcamento.Enviado)
                 {
@@ -151,8 +157,18 @@ namespace OrcamentoCotacaoBusiness.Bll
                         response.MensagemOrcamento = false;
                     }
                 }
-                else if (statusOrcamentoEnviado == StatusOrcamento.Aprovado
-                        || statusOrcamentoEnviado == StatusOrcamento.Cancelado)
+                else if (statusOrcamentoEnviado == StatusOrcamento.Cancelado)
+                {
+                    response.ProrrogarOrcamento = false;
+                    response.EditarOrcamento = false;
+                    response.CancelarOrcamento = false;
+                    response.ReenviarOrcamento = false;
+                    response.DesabilitarBotoes = false;
+                    response.EditarOpcaoOrcamento = false;
+                    response.DesabilitarAprovarOpcaoOrcamento = true;
+                    response.ExcluirOrcamento = permissaoExcluirOrcamento;
+                }
+                else if (statusOrcamentoEnviado == StatusOrcamento.Aprovado)
                 {
                     response.ProrrogarOrcamento = false;
                     response.EditarOrcamento = false;
@@ -162,6 +178,12 @@ namespace OrcamentoCotacaoBusiness.Bll
                     response.EditarOpcaoOrcamento = false;
                     response.DesabilitarAprovarOpcaoOrcamento = true;
                     response.ExcluirOrcamento = false;
+
+                    //Se tiver permissão e se status aprovado => devemos verificar se pode ser aprovado
+                    if(permissaoAnularOrcamento)
+                    {
+                        response.AnularOrcamentoAprovado = _orcamentoCotacaoBll.VerificaPermissaoAnularOrcamento(idOrcamento);
+                    }
                 }
             }
             else

@@ -1,4 +1,5 @@
-﻿using InfraBanco.Modelos.Filtros;
+﻿using InfraBanco;
+using InfraBanco.Modelos.Filtros;
 using OrcamentoCotacaoBusiness.Dto.Pedido;
 using OrcamentoCotacaoBusiness.Dto.Pedido.DetalhesPedido;
 using Prepedido.Dto;
@@ -35,6 +36,16 @@ namespace OrcamentoCotacaoBusiness.Bll
         public PedidoConsultaDto ListarPedidos(TorcamentoFiltro tOrcamentoFiltro)
         {
             return _pedidoBll.ListarPedidosPorFiltro(tOrcamentoFiltro);
+        }
+
+        public bool BuscarPedidosParaAnular(string pedidoBase)
+        {
+            return _pedidoBll.BuscarPedidosParaAnular(pedidoBase);
+        }
+
+        public void AtualizarAnulacaoOrcamentoCotacaoPedido(string pedidoBase, ContextoBdGravacao dbGravacao)
+        {
+            _pedidoBll.AtualizarAnulacaoOrcamentoCotacaoPedido(pedidoBase, dbGravacao);
         }
     }
 }

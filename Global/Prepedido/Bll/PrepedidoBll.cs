@@ -2405,5 +2405,46 @@ namespace Prepedido.Bll
             return lstRetPedido;
         }
 
+        public string BuscarPedidoPrepedidoPorIdOrcamento(int idOrcamento)
+        {
+            var retorno = string.Empty;
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                var orcamento = (from c in db.Torcamento
+                                 where c.IdOrcamentoCotacao == idOrcamento
+                                 select c.Pedido).FirstOrDefault();
+
+                if (orcamento != null) retorno = orcamento;
+            }
+
+            return retorno;
+        }
+
+        public string AtualizarAnulacaoOrcamentoCotacaoPrepedido(string orcamento, int idUsuario, int idTipoContextoUsuario, ContextoBdGravacao dbGravacao)
+        {
+            var response = string.Empty;
+
+            var tOrcamento = (from c in dbGravacao.Torcamento
+                              where c.Orcamento == orcamento
+                              select c).FirstOrDefault();
+
+            tOrcamento.IdOrcamentoCotacao = null;
+            tOrcamento.St_Orcamento = Constantes.ST_ENTREGA_CANCELADO;
+            tOrcamento.Cancelado_Data = DateTime.Now;
+            tOrcamento.Cancelado_Usuario = $"[{idTipoContextoUsuario}]{idUsuario}";
+            tOrcamento.St_Orc_Virou_Pedido = 0;
+            tOrcamento.Orcamentista = "";
+            tOrcamento.IdIndicadorVendedor = null;
+            tOrcamento.Pedido = null;
+
+            dbGravacao.Update(tOrcamento);
+            dbGravacao.SaveChanges();
+
+            if (!string.IsNullOrEmpty(tOrcamento.Pedido)) {
+                response = tOrcamento.Pedido;
+            }
+            
+            return response;
+        }
     }
 }

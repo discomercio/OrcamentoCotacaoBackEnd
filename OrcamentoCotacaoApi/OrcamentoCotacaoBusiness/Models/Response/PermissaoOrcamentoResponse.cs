@@ -14,5 +14,6 @@
         public bool NenhumaOpcaoOrcamento { get; set; }
         public bool DesabilitarBotoes { get; set; }
         public bool ExcluirOrcamento{ get; set; }
+        public bool AnularOrcamentoAprovado{ get; set; }   
     }
 }
