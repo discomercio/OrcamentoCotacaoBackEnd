@@ -222,7 +222,7 @@ namespace Produto
                                         Descricao = c.Descricao,
                                         Preco_lista = pl.Preco_Lista,
                                         Qtde_Max_Venda = pl.Qtde_Max_Venda,
-                                        Desc_Max = pl.Desc_Max
+                                        Desc_Max = pl.Desc_Max,
                                     };
 
             List<Produto.Dados.ProdutoDados> lstTodosProdutos = await todosProdutosTask.ToListAsync();
@@ -1025,6 +1025,41 @@ namespace Produto
             }
 
             return null;
+        }
+
+        public async Task<Produto.Dados.ProdutoDados> BuscarProdutosEspecificoComplemento(string produto)
+        {
+            using var db = contextoProvider.GetContextoLeitura();
+
+            var retorno = await (from c in db.Tproduto
+                                    join fab in db.Tfabricante on c.Fabricante equals fab.Fabricante
+                                    join grp in db.TprodutoGrupo on c.Grupo equals grp.Codigo into lfgrp
+                                    from leftgrp in lfgrp.DefaultIfEmpty()
+                                    join sbgrp in db.TprodutoSubgrupo on c.Subgrupo equals sbgrp.Codigo into lfsbgrp
+                                    from leftsbgrp in lfsbgrp.DefaultIfEmpty()
+                                    where c.Produto == produto &&
+                                          c.Descricao_Html != "."
+                                    select new Produto.Dados.ProdutoDados
+                                    {
+                                        Fabricante = c.Fabricante,
+                                        Fabricante_Nome = fab.Nome,
+                                        Produto = c.Produto,
+                                        Descricao_html = c.Descricao_Html,
+                                        Descricao = c.Descricao,
+                                        Preco_lista = 0,
+                                        Qtde_Max_Venda = 0,
+                                        Desc_Max = 0,
+                                        Grupo = c.Grupo,
+                                        GrupoDescricao = leftgrp.Descricao,
+                                        SubGrupo = c.Subgrupo,
+                                        SubGrupoDescricao = leftsbgrp.Descricao,
+                                        Capacidade = c.PotenciaBtu,
+                                        Ciclo = c.Ciclo,
+                                        CicloDescricao = c.Ciclo == "F" ? "Frio" : c.Ciclo == "QF" ? "Quente/Frio" : null
+                                    }).FirstOrDefaultAsync();
+
+
+            return retorno;
         }
     }
 }
