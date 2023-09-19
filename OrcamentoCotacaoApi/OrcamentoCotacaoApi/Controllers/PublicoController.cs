@@ -61,22 +61,14 @@ namespace OrcamentoCotacaoApi.Controllers
 
             var orcamento = _orcamentoBll.PorGuid(guid);
 
-            if (orcamento != null)
+            var response = new
             {
-                var response = new
-                {
-                    Orcamento = orcamento.id
-                };
+                Orcamento = orcamento?.id
+            };
 
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. PublicoController/OrcamentoPorGuid/GET - Response => [{JsonSerializer.Serialize(response)}].");
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PublicoController/OrcamentoPorGuid/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
-                return Ok(orcamento);
-            }
-            else
-            {
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. PublicoController/OrcamentoPorGuid/GET - Response => [Não tem response].");
-                return NoContent();
-            }
+            return Ok(orcamento);
         }
 
         [HttpGet("buscarCep")]
