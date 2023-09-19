@@ -90,7 +90,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             var produtoComboDados = new Produto.Dados.ProdutoComboDados();
             produtoComboDados.ProdutoDados = new List<Produto.Dados.ProdutoDados>();
             produtoComboDados.ProdutoCompostoDados = aux.ProdutoCompostoDados.Where(x => request.Produtos.Contains(x.PaiProduto)).ToList();
-            if(produtoComboDados.ProdutoCompostoDados.Count > 0)
+            if (produtoComboDados.ProdutoCompostoDados.Count > 0)
             {
                 List<string> filhotes = new List<string>();
                 foreach (var item in produtoComboDados.ProdutoCompostoDados)
@@ -106,14 +106,14 @@ namespace OrcamentoCotacaoBusiness.Bll
             //busca os produtos da opção para passar os valores base em todos os produtos;
             var produtosUnificados = orcamentoCotacaoOpcaoItemUnificadoBll.PorFiltro(new TorcamentoCotacaoOpcaoItemUnificadoFiltro() { IdOpcao = request.IdOpcao });
             var idUnificados = produtosUnificados.Select(x => x.Id).ToList();
-            var itemAtomico = orcamentoCotacaoOpcaoItemAtomicoBll.PorFiltro(new TorcamentoCotacaoOpcaoItemAtomicoFiltro() { LstIdItensUnifcados = idUnificados});
+            var itemAtomico = orcamentoCotacaoOpcaoItemAtomicoBll.PorFiltro(new TorcamentoCotacaoOpcaoItemAtomicoFiltro() { LstIdItensUnifcados = idUnificados });
             var idsAtomicos = itemAtomico.Select(x => x.Id).ToList();
             var itemAtomicoCusto = orcamentoCotacaoOpcaoItemAtomicoCustoFinBll.PorFiltro(new TorcamentoCotacaoOpcaoItemAtomicoCustoFinFiltro() { LstIdItemAtomico = idsAtomicos, IdOpcaoPagto = request.IdOpcaoFormaPagto });
 
-            foreach(var item in produtoComboDados.ProdutoDados)
+            foreach (var item in produtoComboDados.ProdutoDados)
             {
                 var itemOpcaoAtomico = itemAtomico.Where(x => x.Produto == item.Produto).FirstOrDefault();
-                if(itemOpcaoAtomico != null)
+                if (itemOpcaoAtomico != null)
                 {
                     var itemOpcaoCusto = itemAtomicoCusto.Where(x => x.IdItemAtomico == itemOpcaoAtomico.Id).FirstOrDefault();
                     item.Preco_lista = itemOpcaoCusto.CustoFinancFornecPrecoListaBase;
@@ -208,6 +208,20 @@ namespace OrcamentoCotacaoBusiness.Bll
                     var pai = produtoComboDados.ProdutoDados.Where(x => x.Fabricante == composto.PaiFabricante && x.Produto == composto.PaiProduto).FirstOrDefault();
 
                     var novoItem = new ProdutoSimplesResponseViewModel();
+
+                    if (pai == null)
+                    {
+                        //precisa busar diretamente na t_produto para trazer os dados que serão utilizados para filtros na tela
+                        var produtoComplemento = await produtoGeralBll.BuscarProdutosEspecificoComplemento(composto.PaiProduto);
+                        novoItem = ProdutoSimplesResponseViewModel
+                            .ConverterProdutoDados(produtoComplemento, null, GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), produtoComplemento.Fabricante));
+                    }
+
+                    if (pai != null)
+                    {
+                        novoItem = ProdutoSimplesResponseViewModel
+                            .ConverterProdutoDados(pai, null, GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), pai.Fabricante));
+                    }
                     novoItem.Fabricante = composto.PaiFabricante;
                     novoItem.FabricanteNome = composto.PaiFabricanteNome;
                     novoItem.Produto = composto.PaiProduto;
@@ -513,7 +527,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                         var totalItem = Math.Round(precoLista * atomico.Qtde, 2, MidpointRounding.AwayFromZero);
                         var proporcao = totalItem / totalOpcao;
                         var totalPrecoVenda = pagto.Tipo_parcelamento == (int)Constantes.TipoParcela.A_VISTA ?
-                            Math.Round(totalOpcao * (1- (decimal)itemOpcao.DescDado / 100), 2, MidpointRounding.AwayFromZero) :
+                            Math.Round(totalOpcao * (1 - (decimal)itemOpcao.DescDado / 100), 2, MidpointRounding.AwayFromZero) :
                             itemOpcao.PrecoVenda;
                         var totalItemPrecoVenda = Math.Round(proporcao * totalPrecoVenda, 4, MidpointRounding.AwayFromZero);
                         var precoVenda = Math.Round(totalItemPrecoVenda / atomico.Qtde, 4, MidpointRounding.AwayFromZero);
@@ -883,7 +897,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (opcao.PercRT > percPadrao.PercMaxComissao)
                 return $"O percentual de comissão excede o máximo permitido!";
 
-            if (Math.Round((float)descontoMedio + opcao.PercRT, 2, MidpointRounding.AwayFromZero) > percMaxComissaoEDesconto) 
+            if (Math.Round((float)descontoMedio + opcao.PercRT, 2, MidpointRounding.AwayFromZero) > percMaxComissaoEDesconto)
                 return $"O percentual de desconto mais comissão excede o máximo permitido!";
 
             return null;
@@ -945,7 +959,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 if (opcao.PercRT > percMaxDescEComissaoResponse.PercMaxComissao)
                     return "Ops! O valor de comissão excede o máximo permitido";
             }
-                
+
 
             return null;
         }
@@ -1153,20 +1167,36 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 var grupoSubgrupoResponse = new GrupoSubgrupoProdutoResponse();
 
-                if (grp.Codigo == sbgrp.Codigo)
+                if (grp != null && sbgrp != null)
                 {
-                    grupoSubgrupoResponse.Descricao = grp.Descricao;
+                    if (grp.Codigo == sbgrp.Codigo)
+                    {
+                        grupoSubgrupoResponse.Descricao = grp.Descricao;
+                    }
+                    else
+                    {
+                        grupoSubgrupoResponse.Descricao = $"{grp.Descricao} - {sbgrp.Descricao}";
+                    }
                 }
-                else
+                if (grp != null && sbgrp == null)
                 {
-                    grupoSubgrupoResponse.Descricao = $"{grp.Descricao} - {sbgrp.Descricao}";
+                    
+                    grupoSubgrupoResponse.Descricao = !string.IsNullOrEmpty(grp.Descricao) ? grp.Descricao : listaSplit2[0];
+                }
+                if (grp == null && sbgrp != null)
+                {
+                    grupoSubgrupoResponse.Descricao = !string.IsNullOrEmpty(sbgrp.Descricao) ?  sbgrp.Descricao: listaSplit2[1];
                 }
 
-                grupoSubgrupoResponse.Codigo = split;
-                response.ListaGruposSubgruposProdutos.Add(grupoSubgrupoResponse);
+                if(grp != null || sbgrp != null)
+                {
+                    grupoSubgrupoResponse.Codigo = split;
+                    response.ListaGruposSubgruposProdutos.Add(grupoSubgrupoResponse);
+                }
             }
 
             response.Sucesso = true;
+            response.ListaGruposSubgruposProdutos = response.ListaGruposSubgruposProdutos.OrderBy(x => x.Descricao).ToList();
 
             return response;
         }
