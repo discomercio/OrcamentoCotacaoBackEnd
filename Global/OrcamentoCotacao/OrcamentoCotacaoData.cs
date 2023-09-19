@@ -442,7 +442,9 @@ namespace OrcamentoCotacao
                                     Mensagem = (from ocm in db.TorcamentoCotacaoMensagem
                                                 join ocms in db.TorcamentoCotacaoMensagemStatus
                                                 on ocm.Id equals ocms.IdOrcamentoCotacaoMensagem
-                                                where ocm.IdOrcamentoCotacao == oc.Id && ocms.PendenciaTratada.Value == false
+                                                where ocm.IdOrcamentoCotacao == oc.Id && 
+                                                      ocms.PendenciaTratada.Value == false &&
+                                                      ocm.IdTipoUsuarioContextoDestinatario != (short)Constantes.TipoUsuarioContexto.Cliente
                                                 orderby ocm.Id descending
                                                 select ocm).Any() ? "Sim" : "Não",
                                     DtCadastro = oc.DataCadastro,
