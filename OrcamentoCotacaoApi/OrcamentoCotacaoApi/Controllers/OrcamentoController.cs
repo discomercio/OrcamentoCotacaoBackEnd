@@ -509,7 +509,7 @@ namespace OrcamentoCotacaoApi.Controllers
 
             response = _orcamentoBll.AnularOrcamento(model, user, request.IP);
 
-            return Ok();
+            return Ok(response);
         }
     }
 }
