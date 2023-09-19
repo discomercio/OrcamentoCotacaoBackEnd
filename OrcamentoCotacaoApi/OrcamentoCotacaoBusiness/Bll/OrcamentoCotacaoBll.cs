@@ -2323,6 +2323,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     response.Mensagem = "Falha ao buscar Orçamento!";
                     return response;
                 }
+                string idOrcamento = tOrcamentoCotacao.IdOrcamento;
                 var retornoOrcamento = AtualizarAnulacaoOrcamento(tOrcamentoCotacao, usuario, dbGravacao);
                 if (!string.IsNullOrEmpty(retornoOrcamento.mensagem))
                 {
@@ -2330,7 +2331,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     return response;
                 }
                 //atualizar o pré-pedido
-                var retornoPrepedido = _prepedidoBll.AtualizarAnulacaoOrcamentoCotacaoPrepedido(tOrcamentoCotacao.IdOrcamento, usuario.Id, (int)usuario.TipoUsuario, dbGravacao);
+                var retornoPrepedido = _prepedidoBll.AtualizarAnulacaoOrcamentoCotacaoPrepedido(idOrcamento, usuario.Id, (int)usuario.TipoUsuario, dbGravacao);
                 //atualizar todos os pedidos que existir na tabela(procurar por pedido base que está no pré-pedido)
                 if (!string.IsNullOrEmpty(retornoPrepedido))
                 {
@@ -2389,7 +2390,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         public bool VerificaPermissaoAnularOrcamento(int idOrcamento)
         {
             var pedidoBase = _prepedidoBll.BuscarPedidoPrepedidoPorIdOrcamento(idOrcamento);
-            if (pedidoBase == null) return true;
+            if (string.IsNullOrEmpty(pedidoBase)) return true;
 
             return _pedidoPrepedidoApiBll.BuscarPedidosParaAnular(pedidoBase);
         }
