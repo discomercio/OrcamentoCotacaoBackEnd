@@ -322,12 +322,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     lojasPorUnidade = lojasUnidades.ListaLojaEUnidadeNegocio.Where(x => x.UnidadeNegocio == unidade).Select(x => x.Loja).ToList();
                 }
                 var retorno = _bll.ObterQuantidadeMensagemPendentePorLojas(usuario.Id, (int)usuario.TipoUsuario, lojasPorUnidade, dataInicio).ToList();
-                if (retorno.Count() == 0)
-                {
-                    response.Sucesso = true;
-                    //response.ListaQtdeMensagemPendente = null;
-                    return response;
-                }
+                if (retorno.Count() == 0) continue;
+
                 var lojasDistinct = retorno.Select(x => (string)x.GetType().GetProperty("loja").GetValue(x, null)).Distinct().ToList();
 
                 foreach (var x in lojasDistinct)
@@ -345,24 +341,5 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             return response;
         }
-
-        //public ListaQuantidadeMensagemPendenteResponse ObterQuantidadeMensagemPendenteParaParceirosEVendedoresDoParceiro(UsuarioLogin usuario)
-        //{
-        //    var response = new ListaQuantidadeMensagemPendenteResponse();
-        //    response.Sucesso = false;
-
-        //    response.ListaQtdeMensagemPendente = new List<QuantidadeMensagemPendenteResponse>();
-
-        //    var retorno = _bll.ObterQuantidadeMensagemPendentePorLojas(usuario.Id, (int)usuario.TipoUsuario, lojasPorUnidade, dataInicio).ToList();
-        //    if (retorno.Count() == 0)
-        //    {
-        //        response.Sucesso = true;
-        //        //response.ListaQtdeMensagemPendente = null;
-        //        return response;
-        //    }
-
-        //    response.Sucesso = true;
-        //    return response;
-        //}
     }
 }
