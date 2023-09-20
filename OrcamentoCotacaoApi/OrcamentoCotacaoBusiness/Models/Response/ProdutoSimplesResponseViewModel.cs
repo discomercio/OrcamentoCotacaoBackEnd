@@ -37,8 +37,11 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 
         public int? Qtde { get; set; }
 
-        [JsonProperty("codGrupoSubgrupo")]
-        public string CodGrupoSubgrupo { get; set; }
+        [JsonProperty("grupo")]
+        public string Grupo { get; set; }
+
+        [JsonProperty("subgrupo")]
+        public string Subgrupo { get; set; }
 
         [JsonProperty("descricaoGrupoSubgrupo")]
         public string DescricaoGrupoSubgrupo { get; set; }
@@ -76,10 +79,15 @@ namespace OrcamentoCotacaoBusiness.Models.Response
             retorno.DescMax = produto.Desc_Max;
             retorno.Estoque = produto.Estoque;
             retorno.Alertas = produto.Alertas;
-            retorno.CodGrupoSubgrupo = $"{produto.Grupo}§{produto.SubGrupo}";
+            retorno.Capacidade = produto.Capacidade;
+            retorno.Ciclo = produto.Ciclo;
+            retorno.CicloDescricao = produto.CicloDescricao;
+            retorno.Grupo = produto.Grupo;
+            retorno.Subgrupo = produto.SubGrupo;
             if (string.IsNullOrEmpty(produto.Grupo) && string.IsNullOrEmpty(produto.SubGrupo))
             {
-                retorno.CodGrupoSubgrupo = "V";
+                retorno.Grupo = "V";
+                retorno.Subgrupo = "V"; 
                 retorno.DescricaoGrupoSubgrupo = "Vazio";
             }
             if (!string.IsNullOrEmpty(produto.Grupo) && !string.IsNullOrEmpty(produto.SubGrupo))
@@ -101,9 +109,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response
             {
                 retorno.DescricaoGrupoSubgrupo = produto.GrupoDescricao;
             }
-            retorno.Capacidade = produto.Capacidade;
-            retorno.Ciclo = produto.Ciclo;
-            retorno.CicloDescricao = produto.CicloDescricao;
+            
 
             return retorno;
         }
