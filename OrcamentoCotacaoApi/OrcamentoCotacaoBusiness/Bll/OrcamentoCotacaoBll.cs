@@ -125,6 +125,11 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public OrcamentoCotacaoDto PorGuid(string guid)
         {
+            if(!Guid.TryParse(guid, out _))
+            {
+                return null;
+            }
+
             var orcamento = _orcamentoCotacaoBll.PorGuid(guid);
 
             if (orcamento != null)
