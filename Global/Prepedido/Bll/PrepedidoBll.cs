@@ -2428,6 +2428,11 @@ namespace Prepedido.Bll
                               where c.Orcamento == orcamento
                               select c).FirstOrDefault();
 
+            if (!string.IsNullOrEmpty(tOrcamento.Pedido))
+            {
+                response = tOrcamento.Pedido;
+            }
+
             tOrcamento.IdOrcamentoCotacao = null;
             tOrcamento.St_Orcamento = Constantes.ST_ENTREGA_CANCELADO;
             tOrcamento.Cancelado_Data = DateTime.Now;
@@ -2439,10 +2444,6 @@ namespace Prepedido.Bll
 
             dbGravacao.Update(tOrcamento);
             dbGravacao.SaveChanges();
-
-            if (!string.IsNullOrEmpty(tOrcamento.Pedido)) {
-                response = tOrcamento.Pedido;
-            }
             
             return response;
         }

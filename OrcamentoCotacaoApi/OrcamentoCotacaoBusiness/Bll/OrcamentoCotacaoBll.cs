@@ -2352,7 +2352,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 }
                 var pedido = string.Empty;
 
-                var log = $"Orcamento: {orcamento.Id}; Pre-pedido: {tOrcamentoCotacao.IdOrcamento};";
+                var log = $"Orcamento: {orcamento.Id}; Pre-pedido: {idOrcamento};";
 
                 if (!string.IsNullOrEmpty(retornoPrepedido))
                 {

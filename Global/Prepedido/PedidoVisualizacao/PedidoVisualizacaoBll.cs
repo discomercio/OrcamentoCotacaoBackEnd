@@ -1638,7 +1638,7 @@ namespace Prepedido.PedidoVisualizacao
                 pedido.IdIndicadorVendedor = null;
                 pedido.St_Orc_Virou_Pedido = 0;
 
-                dbGravacao.Update(pedido);
+                //dbGravacao.Update(pedido);
             }
 
             dbGravacao.SaveChanges();
