@@ -2009,7 +2009,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             prepedido.Usuario_cadastro =
                 tipoUsuarioContexto == Constantes.TipoUsuarioContexto.Cliente ? $"[{idUsuarioUltAtualizacao}] {tipoUsuarioContexto}" :
                 $"[{(int)tipoUsuarioContexto}] {idUsuarioUltAtualizacao}";
-            prepedido.UsuarioCadastroIdTipoUsuarioContexto = (short?)idUsuarioUltAtualizacao;
+            prepedido.UsuarioCadastroIdTipoUsuarioContexto = (short?)tipoUsuarioContexto;
             prepedido.DadosCliente = new DadosClienteCadastroDto();
             prepedido.DadosCliente = aprovarOrcamento.ClienteCadastroDto.DadosCliente;
             prepedido.EnderecoCadastroClientePrepedido = new EnderecoCadastralClientePrepedidoDto();
