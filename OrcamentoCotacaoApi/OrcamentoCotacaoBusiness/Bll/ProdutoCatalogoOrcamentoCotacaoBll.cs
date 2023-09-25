@@ -1046,8 +1046,16 @@ namespace OrcamentoCotacaoBusiness.Bll
             return propriedadesUtilizadas;
         }
 
-        public async Task<bool> ExcluirPropriedades(int idPropriedade, UsuarioLogin usuarioLogado, string ip)
+        public async Task<ProdutoCatalogoPropriedadeResponseViewModel> ExcluirPropriedades(int idPropriedade, UsuarioLogin usuarioLogado, string ip)
         {
+            var response = new ProdutoCatalogoPropriedadeResponseViewModel();
+            response.Sucesso = false;
+            if (idPropriedade <= 10000)
+            {
+                response.Mensagem = "Essa propriedade não pode ser excluída!";
+                return response;
+            }
+
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 try
@@ -1057,7 +1065,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     var cfgOperacao = _cfgOperacaoBll.PorFiltroComTransacao(new TcfgOperacaoFiltro() { Id = 11 }, dbGravacao).FirstOrDefault();
                     if (cfgOperacao == null)
                     {
-                        return false;
+                        return response;
                     }
 
                     string log = $"Propriedade: {logExclusao}";
@@ -1066,12 +1074,14 @@ namespace OrcamentoCotacaoBusiness.Bll
                         InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
 
                     dbGravacao.transacao.Commit();
-                    return true;
+
+                    response.Sucesso = true;
+                    return response;
                 }
                 catch
                 {
                     dbGravacao.transacao.Rollback();
-                    return false;
+                    return response;
                 }
             }
         }
