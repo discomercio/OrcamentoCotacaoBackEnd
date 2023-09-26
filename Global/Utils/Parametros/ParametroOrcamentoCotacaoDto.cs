@@ -7,5 +7,6 @@
         public string QtdePadrao_DiasProrrogacao { get; set; } = "7";
         public string QtdeMaxProrrogacao { get; set; } = "2";
         public int MaxPeriodoConsultaFiltroPesquisa { get; set; }
+        public int MaxPeriodoConsulta_RelatorioGerencial { get; set; }
     }
 }

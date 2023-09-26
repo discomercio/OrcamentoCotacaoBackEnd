@@ -692,6 +692,7 @@ namespace InfraBanco.Constantes
 
         public const string ORCAMENTISTA_INDICADOR_STATUS_ATIVO = "A";
         public const string ORCAMENTISTA_INDICADOR_STATUS_INATIVO = "I";
+        public const int ORCAMENTISTA_INDICADOR_HAB_ACESSO_SISTEMA = 1;
 
         //'   STATUS DE RECEBIMENTO DO PEDIDO POR PARTE DO CLIENTE
 
@@ -2894,7 +2895,14 @@ namespace InfraBanco.Constantes
             ModuloOrcamentoCotacao_EmailTransacional_SmtpHost = 7,
             ModuloOrcamentoCotacao_EmailTransacional_SmtpPort = 8,
             ModuloOrcamentoCotacao_EmailTransacional_SmtpUsername = 9,
-            ModuloOrcamentoCotacao_EmailTransacional_SmtpPassword = 10
+            ModuloOrcamentoCotacao_EmailTransacional_SmtpPassword = 10,
+            ModuloOrcamentoCotacao_ValidadeOrcamento_ValidadePadrao = 14,
+            ModuloOrcamentoCotacao_ValidadeOrcamento_PrazoProrrogacaoPadrao = 15,
+            ModuloOrcamentoCotacao_ValidadeOrcamento_QtdeMaxProrrogacao = 16,
+            ModuloOrcamentoCotacao_ValidadeOrcamento_MaxPrazoValidadeGlobal = 17,
+            ModuloOrcamentoCotacao_MaxPeriodoConsulta_FiltroPesquisa = 20,
+            ModuloOrcamentoCotacao_NovoOrcto_Filtro_GrupoSubgrupo = 38,
+            ModuloOrcamentoCotacao_MaxPeriodoConsulta_RelatorioGerencial = 42
         }
 
         public const string SIM_TODAS = "Sim - Todas";

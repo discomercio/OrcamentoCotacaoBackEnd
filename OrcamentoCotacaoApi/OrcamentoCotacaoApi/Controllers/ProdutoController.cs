@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using InfraBanco.Constantes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoApi.Filters;
@@ -472,7 +473,23 @@ namespace OrcamentoCotacaoApi.BaseController
 
             _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ProdutoController/BuscarGruposSubgruposProdutos/GET");
 
-            var response = _produtoBll.BuscarGrupoSubgrupoProduto(38, request.Loja);
+            var response = _produtoBll.BuscarGrupoSubgrupoProduto((int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_NovoOrcto_Filtro_GrupoSubgrupo, request.Loja);
+
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}].  ProdutoController/BuscarGruposProdutos/GET - Response => [{JsonSerializer.Serialize(response)}].");
+
+            return Ok(response);
+        }
+
+        [HttpPost("buscarGruposSubgruposProdutosPorLojas")]
+        public IActionResult BuscarGruposSubgruposProdutosPorLojas(GrupoSubgrupoProdutoRequest request)
+        {
+            request.Usuario = LoggedUser.Apelido;
+            request.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+            request.IP = HttpContext.Connection.RemoteIpAddress.ToString();
+
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ProdutoController/BuscarGruposSubgruposProdutos/GET");
+
+            var response = _produtoBll.BuscarGrupoSubgrupoProdutoPorLojas((int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_NovoOrcto_Filtro_GrupoSubgrupo, request.Lojas);
 
             _logger.LogInformation($"CorrelationId => [{request.CorrelationId}].  ProdutoController/BuscarGruposProdutos/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
