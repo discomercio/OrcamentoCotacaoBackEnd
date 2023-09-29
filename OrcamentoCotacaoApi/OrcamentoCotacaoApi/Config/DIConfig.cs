@@ -162,7 +162,7 @@ namespace OrcamentoCotacaoApi.Config
 
             services.AddTransient<Relatorios.RelatoriosBll, Relatorios.RelatoriosBll>();
             services.AddTransient<Relatorios.RelatoriosData, Relatorios.RelatoriosData>();
-
+            services.AddTransient<RelatoriosBll, RelatoriosBll>();
 
             return services;
         }

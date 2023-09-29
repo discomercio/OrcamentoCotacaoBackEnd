@@ -1,4 +1,7 @@
 ﻿using InfraBanco;
+using InfraBanco.Modelos.Filtros;
+using Relatorios.Dto;
+using Relatorios.Filtros;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +19,10 @@ namespace Relatorios
             _data = new RelatoriosData(contextoProvider);
         }
 
-        
+        public List<ItensOrcamentoDto> RelatorioItensOrcamento(ItensOrcamentosFiltro filtro)
+        {
+            return _data.RelatorioItensOrcamento(filtro);
+        }
+
     }
 }
