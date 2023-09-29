@@ -15,11 +15,12 @@ namespace OrcamentoCotacaoApi.Config
     {
         public static IServiceCollection AddInjecaoDependencia(this IServiceCollection services, IConfiguration Configuration)
         {
+            string conexaoRelatorio = Configuration.GetConnectionString("conexaoRelatorio");
             string conexaoBasica = Configuration.GetConnectionString("conexao");
             var appSettings = Configuration.GetSection("AppSettings").Get<Configuracao>();
             services.AddTransient<ContextoBdProvider, ContextoBdProvider>();
             services.AddTransient<ContextoCepProvider, ContextoCepProvider>();
-            services.AddDbContext<Contexto>(options => options.UseSqlServer(Configuration.GetConnectionString("conexao")));
+            services.AddTransient<ContextoRelatorioProvider, ContextoRelatorioProvider>();
             services.AddDbContext<ContextoCepBd>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaoCep"));
@@ -32,6 +33,11 @@ namespace OrcamentoCotacaoApi.Config
             services.AddDbContext<ContextoBdBasico>(options =>
             {
                 options.UseSqlServer(conexaoBasica);
+                options.EnableSensitiveDataLogging();
+            });
+            services.AddDbContext<ContextoRelatorioBd>(options =>
+            {
+                options.UseSqlServer(conexaoRelatorio);
                 options.EnableSensitiveDataLogging();
             });
 
