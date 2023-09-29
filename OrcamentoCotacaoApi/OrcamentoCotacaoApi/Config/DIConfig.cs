@@ -5,6 +5,7 @@ using InfraIdentity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OrcamentoCotacaoApi.Controllers;
 using OrcamentoCotacaoBusiness.Bll;
 using UtilsGlobais;
 using UtilsGlobais.Parametros;
@@ -158,6 +159,10 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<CodigoDescricao.CodigoDescricaoData, CodigoDescricao.CodigoDescricaoData>();
             services.AddTransient<CodigoDescricaoBll, CodigoDescricaoBll>();
             services.AddTransient<LoginHistoricoBll, LoginHistoricoBll>();
+
+            services.AddTransient<Relatorios.RelatoriosBll, Relatorios.RelatoriosBll>();
+            services.AddTransient<Relatorios.RelatoriosData, Relatorios.RelatoriosData>();
+
 
             return services;
         }
