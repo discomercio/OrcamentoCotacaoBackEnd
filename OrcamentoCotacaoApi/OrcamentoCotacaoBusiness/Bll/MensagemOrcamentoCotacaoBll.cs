@@ -316,17 +316,17 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                 DateTime dataInicio = DateTime.Now.AddDays(-int.Parse(periodoMaxConsulta.Valor));
 
-                var lojasPorUnidade = lojasUnidades.ListaLojaEUnidadeNegocio.Where(x => x.UnidadeNegocio == unidade).Select(x => x.Loja).ToList();
-                var retorno = _bll.ObterQuantidadeMensagemPendentePorLojas(usuario.Id, (int)usuario.TipoUsuario, lojasPorUnidade, dataInicio).ToList();
-                if (retorno.Count() == 0)
+                var lojasPorUnidade = new List<string>();
+                if (usuario.TipoUsuario == (int)Constantes.TipoUsuarioContexto.UsuarioInterno)
                 {
-                    response.Sucesso = true;
-                    //response.ListaQtdeMensagemPendente = null;
-                    return response;
+                    lojasPorUnidade = lojasUnidades.ListaLojaEUnidadeNegocio.Where(x => x.UnidadeNegocio == unidade).Select(x => x.Loja).ToList();
                 }
+                var retorno = _bll.ObterQuantidadeMensagemPendentePorLojas(usuario.Id, (int)usuario.TipoUsuario, lojasPorUnidade, dataInicio).ToList();
+                if (retorno.Count() == 0) continue;
+
                 var lojasDistinct = retorno.Select(x => (string)x.GetType().GetProperty("loja").GetValue(x, null)).Distinct().ToList();
-                
-                foreach( var x in lojasDistinct )
+
+                foreach (var x in lojasDistinct)
                 {
                     var qtde = retorno.Where(y => (string)y.GetType().GetProperty("loja").GetValue(y, null) == x).Distinct().Count();
                     var qtdeMsgELoja = new QuantidadeMensagemPendenteResponse();
@@ -337,6 +337,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             response.Sucesso = true;
+            response.ListaQtdeMensagemPendente = response.ListaQtdeMensagemPendente.OrderBy(x => int.Parse(x.Loja)).ToList();
 
             return response;
         }

@@ -10,7 +10,7 @@ namespace InfraIdentity
 {
     public interface IValidarCredenciaisServico
     {
-        Task<bool> CredenciaisValidas(string apelido);
+        Task<bool> CredenciaisValidas(string apelido, string loja);
     }
 
 
@@ -62,8 +62,9 @@ namespace InfraIdentity
                 
                 ServicoDecodificarToken servico = new ServicoDecodificarToken();
                 string usuario = servico.ObterApelidoOrcamentista(principal);
+                string lojaLogada = servico.ObterLojaToken(principal);
 
-                if (!validarCredenciaisServico.CredenciaisValidas(usuario).Result)
+                if (!validarCredenciaisServico.CredenciaisValidas(usuario, lojaLogada).Result)
                 {
                     securityToken += "1";
 

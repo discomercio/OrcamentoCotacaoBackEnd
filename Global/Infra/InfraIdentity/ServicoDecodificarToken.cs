@@ -25,6 +25,16 @@ namespace InfraIdentity
             string apelido = aux.Value;
             return apelido;
         }
+
+        public string ObterLojaToken(ClaimsPrincipal User)
+        {
+            if (User == null) return string.Empty;
+
+            var lojaLogada = User.Claims.FirstOrDefault(r => r.Type == "LojaLogada");
+            if(lojaLogada == null) return string.Empty;
+
+            return lojaLogada.Value;
+        }
     }
 }
 

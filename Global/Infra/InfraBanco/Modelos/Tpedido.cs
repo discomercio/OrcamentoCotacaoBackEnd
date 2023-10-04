@@ -166,6 +166,9 @@ namespace InfraBanco.Modelos
         [Column("perc_RT")]
         public float? Perc_RT { get; set; }
 
+        [Column("st_orc_virou_pedido")]
+        public short? St_Orc_Virou_Pedido { get; set; }
+
         [Column("orcamento")]
         [MaxLength(9)]
         public string Orcamento { get; set; }
@@ -173,6 +176,9 @@ namespace InfraBanco.Modelos
         [Column("orcamentista")]
         [MaxLength(20)]
         public string Orcamentista { get; set; }
+
+        [Column("comissao_paga")]
+        public short ComissaoPaga { get; set; }
 
         [Column("EndEtg_endereco")]
         [MaxLength(80)]
@@ -243,6 +249,10 @@ namespace InfraBanco.Modelos
         [Column("opcao_possui_RA")]
         [MaxLength(1)]
         public string Opcao_Possui_RA { get; set; }
+
+        [Column("pedido_base")]
+        [MaxLength(7)]
+        public string PedidoBase { get; set; }
 
         [Column("obs_3")]
         [MaxLength(3)]

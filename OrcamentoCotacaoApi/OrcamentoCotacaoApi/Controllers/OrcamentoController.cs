@@ -480,5 +480,36 @@ namespace OrcamentoCotacaoApi.Controllers
 
             return Ok(response);
         }
+
+        [HttpPost("anular")]
+        public IActionResult AnularOrcamento(OrcamentoResponseViewModel model)
+        {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                OrcamentoResponseViewModel = model,
+                IP = Request.HttpContext.Connection.RemoteIpAddress.ToString()
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/AnularOrcamento/POST - Request => [{JsonSerializer.Serialize(request)}].");
+
+            var response = new ExcluirOrcamentoResponse();
+            response.Sucesso = false;
+
+            var permissao = this.ObterPermissaoOrcamento((int)model.Id);
+            if (permissao != null && !permissao.AnularOrcamentoAprovado)
+            {
+                response.Mensagem = "Este orçamento não pode ser anulado!";
+                return Ok(response);
+            }
+
+            var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+
+            response = _orcamentoBll.AnularOrcamento(model, user, request.IP);
+
+            return Ok(response);
+        }
     }
 }

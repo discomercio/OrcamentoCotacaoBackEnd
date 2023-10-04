@@ -877,7 +877,6 @@ namespace OrcamentoCotacaoBusiness.Bll
                 if (!string.IsNullOrEmpty(logPropriedade)) log += $"{logPropriedade}";
 
                 if (produtoCatalogoPropriedade.IdCfgTipoPropriedade == 1 &&
-                    produtoCatalogoPropriedade.id > 10000 &&
                     produtoCatalogoPropriedade.IdCfgTipoPermissaoEdicaoCadastro == tipoPermissaoEdicaoCadastroUsuario.Id)
                 {
                     _logger.LogInformation($"AtualizarPropriedadesProdutos: Atualizando opcoes da propriedade.");
@@ -1007,24 +1006,10 @@ namespace OrcamentoCotacaoBusiness.Bll
             retorno.Sucesso = false;
 
             //id == 0 => Usuário
-            if (produtoCatalogoPropriedade.id > 10000 && produtoCatalogoPropriedade.IdCfgTipoPermissaoEdicaoCadastro == tipoPermissaoEdicaoCadastroUsuario.Id)
+            if (produtoCatalogoPropriedade.IdCfgTipoPermissaoEdicaoCadastro == tipoPermissaoEdicaoCadastroUsuario.Id)
             {
                 if (produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados != null)
                 {
-                    //int index = 100;
-                    //foreach (var prop in produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados)
-                    //{
-                    //    if (produtoCatalogoPropriedade.id <= 10000 &&
-                    //                produtoCatalogoPropriedade.IdCfgTipoPermissaoEdicaoCadastro == tipoPermissaoEdicaoCadastroUsuario.Id && prop.id == 0)
-                    //    {
-                    //        retorno.Mensagem = $"Não é permitido inserir um novo valor válido para essa propriedade!";
-                    //        return retorno;
-                    //    }
-
-                    //    prop.ordem = index;
-                    //    index = index + 100;
-                    //}
-
                     foreach (var prop in prodPropriedadesParaComparacao.produtoCatalogoPropriedadeOpcoesDados)
                     {
                         var comparar = produtoCatalogoPropriedade.produtoCatalogoPropriedadeOpcoesDados
@@ -1061,8 +1046,16 @@ namespace OrcamentoCotacaoBusiness.Bll
             return propriedadesUtilizadas;
         }
 
-        public async Task<bool> ExcluirPropriedades(int idPropriedade, UsuarioLogin usuarioLogado, string ip)
+        public async Task<ProdutoCatalogoPropriedadeResponseViewModel> ExcluirPropriedades(int idPropriedade, UsuarioLogin usuarioLogado, string ip)
         {
+            var response = new ProdutoCatalogoPropriedadeResponseViewModel();
+            response.Sucesso = false;
+            if (idPropriedade <= 10000)
+            {
+                response.Mensagem = "Essa propriedade não pode ser excluída!";
+                return response;
+            }
+
             using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
             {
                 try
@@ -1072,7 +1065,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     var cfgOperacao = _cfgOperacaoBll.PorFiltroComTransacao(new TcfgOperacaoFiltro() { Id = 11 }, dbGravacao).FirstOrDefault();
                     if (cfgOperacao == null)
                     {
-                        return false;
+                        return response;
                     }
 
                     string log = $"Propriedade: {logExclusao}";
@@ -1081,12 +1074,14 @@ namespace OrcamentoCotacaoBusiness.Bll
                         InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
 
                     dbGravacao.transacao.Commit();
-                    return true;
+
+                    response.Sucesso = true;
+                    return response;
                 }
                 catch
                 {
                     dbGravacao.transacao.Rollback();
-                    return false;
+                    return response;
                 }
             }
         }

@@ -2897,6 +2897,12 @@ namespace InfraBanco.Constantes
             ModuloOrcamentoCotacao_EmailTransacional_SmtpPassword = 10
         }
 
+        public const string SIM_TODAS = "Sim - Todas";
+        public const string SIM_SOMENTE_MINHAS = "Sim - Somente as minhas";
+        public const string SIM_SOMENTE_TERCEIROS = "Sim - Somente de terceiros";
+        public const string NAO = "Não";
+
+
         public enum eCfgLogOperacao
         {
             ORCAMENTO_COTACAO_INCLUSAO = 1,

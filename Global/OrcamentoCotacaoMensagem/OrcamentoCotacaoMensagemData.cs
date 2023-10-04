@@ -90,7 +90,7 @@ namespace OrcamentoCotacaoMensagem
                                   tocm.IdUsuarioDestinatario == IdUsuarioDestinatario &&
                                   tocm.IdTipoUsuarioContextoDestinatario == IdTipoUsuarioDestinatario &&
                                   tocms.PendenciaTratada == false &&
-                                  lojas.Contains(toc.Loja) &&
+                                  //lojas.Contains(toc.Loja) &&
                                   toc.DataCadastro >= dataInicio &&
                                   toc.Status != (short)Constantes.eCfgOrcamentoCotacaoStatus.EXCLUIDO
                             select new
@@ -98,6 +98,11 @@ namespace OrcamentoCotacaoMensagem
                                 id = toc.Id,
                                 loja = toc.Loja
                             };
+
+                if(lojas.Count() > 0)
+                {
+                    saida = saida.Where(x => lojas.Contains(x.loja));
+                }
 
                 return saida;
             }

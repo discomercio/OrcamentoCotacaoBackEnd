@@ -125,6 +125,11 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public OrcamentoCotacaoDto PorGuid(string guid)
         {
+            if(!Guid.TryParse(guid, out _))
+            {
+                return null;
+            }
+
             var orcamento = _orcamentoCotacaoBll.PorGuid(guid);
 
             if (orcamento != null)
@@ -1829,7 +1834,6 @@ namespace OrcamentoCotacaoBusiness.Bll
                                 mensagem = $"Falha ao montar log de operação."
                             };
                         }
-
                         var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, "", (short)user.TipoUsuario, user.Id, tOrcamento.Loja, null, tOrcamento.Id, null,
                             Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
                     }
@@ -1967,7 +1971,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     if (formaPagtoSelecionada == null)
                         return new List<string>() { "Falha ao buscar forma de pagamento da opção selecionada para aprovação do orçamento!" };
 
-                    formaPagtoSelecionada.IdTipoUsuarioContextoAprovado = idUsuarioUltAtualizacao == (int)Constantes.TipoUsuarioContexto.Cliente ? (short?)idUsuarioUltAtualizacao:
+                    formaPagtoSelecionada.IdTipoUsuarioContextoAprovado = idUsuarioUltAtualizacao == (int)Constantes.TipoUsuarioContexto.Cliente ? (short?)idUsuarioUltAtualizacao :
                        (short)tipoUsuarioContexto;
                     formaPagtoSelecionada.IdUsuarioAprovado = idUsuarioUltAtualizacao == (int)Constantes.TipoUsuarioContexto.Cliente ? null : (int?)idUsuarioUltAtualizacao;
                     formaPagtoSelecionada.DataAprovado = DateTime.Now.Date;
@@ -2002,7 +2006,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             // criar prepedidoDto
             var prepedido = new PrePedidoDto();
             prepedido.UsuarioCadastroId = tipoUsuarioContexto == Constantes.TipoUsuarioContexto.Cliente ? null : (int?)idUsuarioUltAtualizacao;
-            prepedido.Usuario_cadastro = 
+            prepedido.Usuario_cadastro =
                 tipoUsuarioContexto == Constantes.TipoUsuarioContexto.Cliente ? $"[{idUsuarioUltAtualizacao}] {tipoUsuarioContexto}" :
                 $"[{(int)tipoUsuarioContexto}] {idUsuarioUltAtualizacao}";
             prepedido.UsuarioCadastroIdTipoUsuarioContexto = (short?)idUsuarioUltAtualizacao;
@@ -2298,7 +2302,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             //alterar o status do orçamento para excluido
             var atualizaStatus = AtualizarStatus((int)orcamento.Id, usuario, (short)Constantes.eCfgOrcamentoCotacaoStatus.EXCLUIDO, ip);
 
-            if(atualizaStatus != null)
+            if (atualizaStatus != null)
             {
                 response.Mensagem = atualizaStatus.mensagem;
                 return response;
@@ -2307,6 +2311,93 @@ namespace OrcamentoCotacaoBusiness.Bll
             response.Sucesso = true;
             return response;
 
+        }
+
+        public ExcluirOrcamentoResponse AnularOrcamento(OrcamentoResponseViewModel orcamento, UsuarioLogin usuario, string ip)
+        {
+            var response = new ExcluirOrcamentoResponse();
+            response.Sucesso = false;
+
+            //vamos abrir a transação e fazer as modificações nas tabelas
+            using (var dbGravacao = _contextoBdProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.XLOCK_SYNC_ORCAMENTO))
+            {
+                //atualizar o orçamento cotação
+                var tOrcamentoCotacao = _orcamentoCotacaoBll.PorFiltroComTransacao(new TorcamentoCotacaoFiltro() { Id = (int)orcamento.Id, StatusId = (short)Constantes.eCfgOrcamentoCotacaoStatus.APROVADO }, dbGravacao).FirstOrDefault();
+                if (tOrcamentoCotacao == null)
+                {
+                    response.Mensagem = "Falha ao buscar Orçamento!";
+                    return response;
+                }
+                string idOrcamento = tOrcamentoCotacao.IdOrcamento;
+                var retornoOrcamento = AtualizarAnulacaoOrcamento(tOrcamentoCotacao, usuario, dbGravacao);
+                if (!string.IsNullOrEmpty(retornoOrcamento.mensagem))
+                {
+                    response.Mensagem = retornoOrcamento.mensagem;
+                    return response;
+                }
+                //atualizar o pré-pedido
+                var retornoPrepedido = _prepedidoBll.AtualizarAnulacaoOrcamentoCotacaoPrepedido(idOrcamento, usuario.Id, (int)usuario.TipoUsuario, dbGravacao);
+                //atualizar todos os pedidos que existir na tabela(procurar por pedido base que está no pré-pedido)
+                if (!string.IsNullOrEmpty(retornoPrepedido))
+                {
+                    //retornou o pedido no orçamento, então vamos atualizar
+                    _pedidoPrepedidoApiBll.AtualizarAnulacaoOrcamentoCotacaoPedido(retornoPrepedido, dbGravacao);
+                }
+                //registrar o log de operação
+                var cfgOperacao = _cfgOperacaoBll.PorFiltroComTransacao(new TcfgOperacaoFiltro() { Id = (int)Constantes.eCfgLogOperacao.ORCAMENTO_COTACAO_ANULACAO }, dbGravacao).FirstOrDefault();
+                if (cfgOperacao == null)
+                {
+                    response.Mensagem = "Ops! Falha ao anular orçamento aprovado.";
+                    return response;
+                }
+                var pedido = string.Empty;
+
+                var log = $"Orcamento: {orcamento.Id}; Pre-pedido: {idOrcamento};";
+
+                if (!string.IsNullOrEmpty(retornoPrepedido))
+                {
+                    log = $"{log} Pedido: {retornoPrepedido}";
+                }
+
+                var tLogV2 = UtilsGlobais.Util.GravaLogV2ComTransacao(dbGravacao, log, (short)usuario.TipoUsuario, usuario.Id, orcamento.Loja, pedido, (int)orcamento.Id, null,
+                        InfraBanco.Constantes.Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO, cfgOperacao.Id, ip);
+
+                dbGravacao.SaveChanges();
+                dbGravacao.transacao.Commit();
+            }
+
+            response.Sucesso = true;
+            return response;
+        }
+
+        public MensagemDto AtualizarAnulacaoOrcamento(TorcamentoCotacao tOrcamentoCotacao, UsuarioLogin usuario, ContextoBdGravacao dbGravacao)
+        {
+            var response = new MensagemDto();
+
+            tOrcamentoCotacao.Status = (short)Constantes.eCfgOrcamentoCotacaoStatus.EXCLUIDO;
+            tOrcamentoCotacao.IdOrcamento = null;
+            tOrcamentoCotacao.IdPedido = null;
+            tOrcamentoCotacao.IdTipoUsuarioContextoUltStatus = (int)usuario.TipoUsuario;
+            tOrcamentoCotacao.IdUsuarioUltStatus = usuario.Id;
+            tOrcamentoCotacao.DataUltStatus = DateTime.Now.Date;
+            tOrcamentoCotacao.DataHoraUltStatus = DateTime.Now;
+
+            var retorno = _orcamentoCotacaoBll.AtualizarComTransacao(tOrcamentoCotacao, dbGravacao);
+            if (retorno == null)
+            {
+                response.mensagem = "Falha ao atualizar anulação do orçamento!";
+                return response;
+            }
+
+            return response;
+        }
+
+        public bool VerificaPermissaoAnularOrcamento(int idOrcamento)
+        {
+            var pedidoBase = _prepedidoBll.BuscarPedidoPrepedidoPorIdOrcamento(idOrcamento);
+            if (string.IsNullOrEmpty(pedidoBase)) return true;
+
+            return _pedidoPrepedidoApiBll.BuscarPedidosParaAnular(pedidoBase);
         }
     }
 }

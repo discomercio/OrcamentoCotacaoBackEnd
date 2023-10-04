@@ -93,7 +93,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                                     Dt_Ult_Alteracao_Senha = c.DataUltimaAlteracao,
                                     Bloqueado = d.Status != "A" || !c.Ativo,
                                     AcessoHabilitado = d.Hab_Acesso_Sistema == 1,
-                                    Loja = c.Loja,
+                                    Loja = d.Loja,
                                     TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO,
                                     Id = c.Id,
                                     StLoginBloqueadoAutomatico = c.StLoginBloqueadoAutomatico
