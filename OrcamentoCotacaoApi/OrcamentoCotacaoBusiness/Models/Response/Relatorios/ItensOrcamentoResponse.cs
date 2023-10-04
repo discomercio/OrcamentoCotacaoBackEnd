@@ -37,7 +37,7 @@ namespace OrcamentoCotacaoBusiness.Models.Response.Relatorios
 
         public string EntregaImediata { get; set; }
 
-        public string PrevisaoEntrega { get; set; }
+        public DateTime? PrevisaoEntrega { get; set; }
 
         public string InstaladorInstala { get; set; }
 
@@ -63,26 +63,26 @@ namespace OrcamentoCotacaoBusiness.Models.Response.Relatorios
 
         public string Categoria { get; set; }
 
-        public string PrecoListaUnitAVista { get; set; }
+        public decimal? PrecoListaUnitAVista { get; set; }
 
-        public string PrecoListaUnitAPrazo { get; set; }
+        public decimal? PrecoListaUnitAPrazo { get; set; }
 
-        public string PrecoNFUnitAVista { get; set; }
+        public decimal? PrecoNFUnitAVista { get; set; }
 
-        public string PrecoNFUnitAPrazo { get; set; }
+        public decimal? PrecoNFUnitAPrazo { get; set; }
 
-        public string DescontoAVista { get; set; }
+        public decimal? DescontoAVista { get; set; }
 
-        public string DescontoAPrazo { get; set; }
+        public decimal? DescontoAPrazo { get; set; }
 
-        public string DescSuperiorAVista { get; set; }
+        public decimal? DescSuperiorAVista { get; set; }
 
-        public string DescSuperiorAPrazo { get; set; }
+        public decimal? DescSuperiorAPrazo { get; set; }
 
-        public string Comissao { get; set; }
+        public decimal? Comissao { get; set; }
 
-        public string DataCadastro { get; set; }
+        public DateTime? DataCadastro { get; set; }
 
-        public string Validade { get; set; }
+        public DateTime? Validade { get; set; }
     }
 }
