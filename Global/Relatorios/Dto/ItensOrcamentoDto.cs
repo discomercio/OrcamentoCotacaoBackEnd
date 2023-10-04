@@ -55,6 +55,7 @@
         public string Descricao { get; set; }
 
         public string Categoria { get; set; }
+        public string GrupoSubgrupo { get; set; }
 
         public string PrecoListaUnitAVista { get; set; }
 
