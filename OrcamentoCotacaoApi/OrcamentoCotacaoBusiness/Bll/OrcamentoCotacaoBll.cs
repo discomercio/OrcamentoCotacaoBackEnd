@@ -125,6 +125,11 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public OrcamentoCotacaoDto PorGuid(string guid)
         {
+            if(!Guid.TryParse(guid, out _))
+            {
+                return null;
+            }
+
             var orcamento = _orcamentoCotacaoBll.PorGuid(guid);
 
             if (orcamento != null)
@@ -2350,7 +2355,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 }
                 var pedido = string.Empty;
 
-                var log = $"Orcamento: {orcamento.Id}; Pre-pedido: {tOrcamentoCotacao.IdOrcamento};";
+                var log = $"Orcamento: {orcamento.Id}; Pre-pedido: {idOrcamento};";
 
                 if (!string.IsNullOrEmpty(retornoPrepedido))
                 {
