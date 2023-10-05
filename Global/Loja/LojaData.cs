@@ -51,6 +51,10 @@ namespace Loja
                     {
                         lojas = lojas.Where(x => x.Loja == obj.Loja);
                     }
+                    if(obj.Lojas != null && obj.Lojas.Count() > 0)
+                    {
+                        lojas = lojas.Where(x => obj.Lojas.Contains(x.Loja));
+                    }
 
                     return lojas.ToList();
                 }

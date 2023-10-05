@@ -880,7 +880,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                 QtdeDiasProrrogacao = int.Parse(parametros.QtdePadrao_DiasProrrogacao),
                 QtdeMaxProrrogacao = int.Parse(parametros.QtdeMaxProrrogacao),
                 QtdeGlobalValidade = int.Parse(parametros.QtdeGlobal_Validade),
-                MaxPeriodoConsultaFiltroPesquisa = parametros.MaxPeriodoConsultaFiltroPesquisa
+                MaxPeriodoConsultaFiltroPesquisa = parametros.MaxPeriodoConsultaFiltroPesquisa,
+                MaxPeriodoConsulta_RelatorioGerencial = parametros.MaxPeriodoConsulta_RelatorioGerencial 
             };
         }
 

@@ -1,6 +1,8 @@
 ﻿using InfraBanco;
+using InfraBanco.Constantes;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Schema;
 
 namespace UtilsGlobais.Parametros
 {
@@ -17,11 +19,12 @@ namespace UtilsGlobais.Parametros
         {
             List<int> lista = new List<int>
             {
-                14, //ModuloOrcamentoCotacao_ValidadeOrcamento_ValidadePadrao
-                15, //ModuloOrcamentoCotacao_ValidadeOrcamento_PrazoProrrogacaoPadrao
-                16, //ModuloOrcamentoCotacao_ValidadeOrcamento_QtdeMaxProrrogacao
-                17, //ModuloOrcamentoCotacao_ValidadeOrcamento_MaxPrazoValidadeGlobal
-                20, //ModuloOrcamentoCotacao_MaxPeriodoConsulta_FiltroPesquisa
+                (int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_ValidadeOrcamento_ValidadePadrao,
+                (int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_ValidadeOrcamento_PrazoProrrogacaoPadrao,
+                (int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_ValidadeOrcamento_QtdeMaxProrrogacao,
+                (int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_ValidadeOrcamento_MaxPrazoValidadeGlobal,
+                (int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_MaxPeriodoConsulta_FiltroPesquisa,
+                (int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_MaxPeriodoConsulta_RelatorioGerencial
             };
 
             using (var db = _contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
@@ -43,14 +46,18 @@ namespace UtilsGlobais.Parametros
 
                 ParametroOrcamentoCotacaoDto retorno = new ParametroOrcamentoCotacaoDto();
 
-                retorno.QtdePadrao_DiasValidade = saida.FirstOrDefault(x => x.Id == 14).Valor;
-                retorno.QtdePadrao_DiasProrrogacao = saida.FirstOrDefault(x => x.Id == 15).Valor;
-                retorno.QtdeMaxProrrogacao = saida.FirstOrDefault(x => x.Id == 16).Valor;
-                retorno.QtdeGlobal_Validade = saida.FirstOrDefault(x => x.Id == 17).Valor;
+                retorno.QtdePadrao_DiasValidade = saida.FirstOrDefault(x => x.Id == (int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_ValidadeOrcamento_ValidadePadrao).Valor;
+                retorno.QtdePadrao_DiasProrrogacao = saida.FirstOrDefault(x => x.Id == (int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_ValidadeOrcamento_PrazoProrrogacaoPadrao).Valor;
+                retorno.QtdeMaxProrrogacao = saida.FirstOrDefault(x => x.Id == (int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_ValidadeOrcamento_QtdeMaxProrrogacao).Valor;
+                retorno.QtdeGlobal_Validade = saida.FirstOrDefault(x => x.Id == (int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_ValidadeOrcamento_MaxPrazoValidadeGlobal).Valor;
                 int periodoConsulta = 0;
-                if (int.TryParse(saida.FirstOrDefault(x => x.Id == 20).Valor, out periodoConsulta))
+                if (int.TryParse(saida.FirstOrDefault(x => x.Id == (int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_MaxPeriodoConsulta_FiltroPesquisa).Valor, out periodoConsulta))
                 {
                     retorno.MaxPeriodoConsultaFiltroPesquisa = periodoConsulta;
+                }
+                if (int.TryParse(saida.FirstOrDefault(x => x.Id == (int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_MaxPeriodoConsulta_RelatorioGerencial).Valor, out periodoConsulta))
+                {
+                    retorno.MaxPeriodoConsulta_RelatorioGerencial = periodoConsulta;
                 }
 
                 return retorno;

@@ -14,12 +14,10 @@ namespace ProdutoCatalogo
     public class ProdutoCatalogoData
     {
         private readonly ContextoBdProvider _contextoProvider;
-        private readonly Contexto _contexto;
 
-        public ProdutoCatalogoData(ContextoBdProvider contextoProvider, Contexto contexto)
+        public ProdutoCatalogoData(ContextoBdProvider contextoProvider)
         {
             _contextoProvider = contextoProvider;
-            _contexto = contexto;
         }
 
         public TprodutoCatalogo Atualizar(TprodutoCatalogo obj)

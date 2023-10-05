@@ -7,6 +7,8 @@ namespace OrcamentoCotacaoBusiness.Models.Response
 {
     public class OrcamentistaIndicadorResponseViewModel : IViewModelResponse
     {
+        [JsonProperty("idIndicador")]
+        public int IdIndicador { get; set; }
         [JsonProperty("nome")]
         public string Apelido { get; set; }
         [JsonProperty("razaoSocial")]

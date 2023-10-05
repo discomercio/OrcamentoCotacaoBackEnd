@@ -1108,7 +1108,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             var response = new ListaGruposSubgruposProdutosResponse();
 
             response.Sucesso = false;
-            var parametro = BuscarParametro(38);
+            var parametro = BuscarParametro(id);
             if (parametro == null)
             {
                 response.Mensagem = "Falha ao buscar parâmetro para categorias!";
@@ -1197,6 +1197,112 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             response.Sucesso = true;
             response.ListaGruposSubgruposProdutos = response.ListaGruposSubgruposProdutos.OrderBy(x => x.Descricao).ToList();
+
+            return response;
+        }
+
+        public ListaGruposSubgruposProdutosResponse BuscarGrupoSubgrupoProdutoPorLojas(int id, List<string> lojas)
+        {
+            var response = new ListaGruposSubgruposProdutosResponse();
+
+            response.Sucesso = false;
+            var parametro = BuscarParametro(id);
+            if (parametro == null)
+            {
+                response.Mensagem = "Falha ao buscar parâmetro para categorias!";
+                return response;
+            }
+
+            var objLoja = _lojaBll.PorFiltro(new TlojaFiltro() { Lojas = lojas });
+            if (objLoja == null)
+            {
+                response.Mensagem = "Falha ao buscar loja para categorias!";
+                return response;
+            }
+
+            var unidades = objLoja.DistinctBy(x => x.Unidade_Negocio).Select(x => x.Unidade_Negocio).ToList();
+
+            var unidadesNegocios = cfgUnidadeNegocioBll.PorFiltro(new TcfgUnidadeNegocioFiltro() { Siglas = unidades });
+            if (unidadesNegocios == null)
+            {
+                response.Mensagem = "Falha ao buscar unidade de negócio para categorias!";
+                return response;
+            }
+
+            response.ListaGruposSubgruposProdutos = new List<GrupoSubgrupoProdutoResponse>();
+
+            foreach ( var unidade in unidadesNegocios)
+            {
+                var unidadeNegocioParametro = cfgUnidadeNegocioParametroBll.PorFiltro(
+                new TcfgUnidadeNegocioParametroFiltro()
+                {
+                    IdCfgUnidadeNegocio = unidade.Id,
+                    IdCfgParametro = parametro.Id
+                }).FirstOrDefault();
+                if (unidadeNegocioParametro == null)
+                {
+                    response.Mensagem = "Falha ao buscar parâmetro de unidade de negócio para categorias!";
+                    return response;
+                }
+
+                var grupo = _produtoCatalogoBll.BuscarProdutoGrupos(new TprodutoGrupoFiltro());
+                if (grupo == null)
+                {
+                    response.Mensagem = "Falha ao buscar grupo para categorias!";
+                    return response;
+                }
+
+                var subGrupo = _produtoCatalogoBll.BuscarProdutosSubgrupos(new TprodutoSubgrupoFiltro());
+                if (subGrupo == null)
+                {
+                    response.Mensagem = "Falha ao buscar subgrupos para categorias!";
+                    return response;
+                }
+
+
+                //CRT§CRT|FAN§DUT|FAN§HW|FAN§K74
+                var listaSplit = unidadeNegocioParametro.Valor.Split("|");
+                foreach (var split in listaSplit)
+                {
+                    var listaSplit2 = split.Split("§");
+                    var grp = grupo.Where(x => x.Codigo == listaSplit2[0]).FirstOrDefault();
+                    var sbgrp = subGrupo.Where(x => x.Codigo == listaSplit2[1]).FirstOrDefault();
+
+                    var grupoSubgrupoResponse = new GrupoSubgrupoProdutoResponse();
+
+                    if (grp != null && sbgrp != null)
+                    {
+                        if (grp.Codigo == sbgrp.Codigo)
+                        {
+                            grupoSubgrupoResponse.Descricao = grp.Descricao;
+                        }
+                        else
+                        {
+                            grupoSubgrupoResponse.Descricao = $"{grp.Descricao} - {sbgrp.Descricao}";
+                        }
+                    }
+                    if (grp != null && sbgrp == null)
+                    {
+
+                        grupoSubgrupoResponse.Descricao = !string.IsNullOrEmpty(grp.Descricao) ? grp.Descricao : listaSplit2[0];
+                    }
+                    if (grp == null && sbgrp != null)
+                    {
+                        grupoSubgrupoResponse.Descricao = !string.IsNullOrEmpty(sbgrp.Descricao) ? sbgrp.Descricao : listaSplit2[1];
+                    }
+
+                    if (grp != null || sbgrp != null)
+                    {
+                        grupoSubgrupoResponse.Codigo = split;
+                        response.ListaGruposSubgruposProdutos.Add(grupoSubgrupoResponse);
+                    }
+                }
+            }
+
+
+            response.Sucesso = true;
+            response.ListaGruposSubgruposProdutos = response.ListaGruposSubgruposProdutos.OrderBy(x => x.Descricao).ToList();
+            response.ListaGruposSubgruposProdutos = response.ListaGruposSubgruposProdutos.DistinctBy(x => x.Codigo).ToList();
 
             return response;
         }

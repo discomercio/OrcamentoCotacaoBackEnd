@@ -7,5 +7,6 @@
         public int QtdeMaxProrrogacao { get; set; }
         public int QtdeGlobalValidade { get; set; }
         public int MaxPeriodoConsultaFiltroPesquisa { get; set; }
+        public int MaxPeriodoConsulta_RelatorioGerencial { get; set; }
     }
 }
