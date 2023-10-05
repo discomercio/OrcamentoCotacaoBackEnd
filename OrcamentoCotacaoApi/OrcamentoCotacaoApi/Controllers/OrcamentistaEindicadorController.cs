@@ -174,5 +174,33 @@ namespace OrcamentoCotacaoApi.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet]
+        [Route("buscarParceirosHabilitados")]
+        public async Task<IEnumerable<OrcamentistaIndicadorResponseViewModel>> BuscarParceirosHabilitados()
+        {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEindicadorController/BuscarParceirosHabilitados/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
+            var usuarios = await Task.FromResult(_orcamentistaEindicadorGlobalBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { status = Constantes.ORCAMENTISTA_INDICADOR_STATUS_ATIVO}));
+            usuarios.Insert(0, _orcamentistaEindicadorGlobalBll.PorFiltro(new InfraBanco.Modelos.Filtros.TorcamentistaEindicadorFiltro() { apelido = Constantes.SEM_INDICADOR, status = Constantes.ORCAMENTISTA_INDICADOR_STATUS_INATIVO }).FirstOrDefault());
+
+            var result = _mapper.Map<List<OrcamentistaIndicadorResponseViewModel>>(usuarios);
+
+            var response = new
+            {
+                OrcamentistaIndicador = result.Count
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEindicadorController/BuscarParceirosHabilitados/GET - Response => [{JsonSerializer.Serialize(response)}].");
+
+            return result;
+        }
     }
 }

@@ -16,12 +16,10 @@ namespace Produto
     public class ProdutoGeralBll
     {
         private readonly ContextoBdProvider contextoProvider;
-        private readonly Contexto contexto;
 
-        public ProdutoGeralBll(InfraBanco.ContextoBdProvider contextoProvider, Contexto contexto)
+        public ProdutoGeralBll(InfraBanco.ContextoBdProvider contextoProvider)
         {
             this.contextoProvider = contextoProvider;
-            this.contexto = contexto;
         }
 
         public async Task<ProdutoComboDados> ListaProdutosComboDados(string loja, string uf, string tipo,

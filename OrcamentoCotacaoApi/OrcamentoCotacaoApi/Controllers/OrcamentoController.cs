@@ -511,5 +511,11 @@ namespace OrcamentoCotacaoApi.Controllers
 
             return Ok(response);
         }
+
+        [HttpPost("relatorioItensOrcamento")]
+        public IActionResult RelatorioItensOrcamento()
+        {
+            return Ok();
+        }
     }
 }

@@ -11,5 +11,8 @@ namespace OrcamentoCotacaoBusiness.Models.Request.GrupoSubgrupoProduto
     {
         [JsonProperty("loja")]
         public string Loja { get; set; }
+
+        [JsonProperty("lojas")]
+        public List<string> Lojas { get; set; }
     }
 }
