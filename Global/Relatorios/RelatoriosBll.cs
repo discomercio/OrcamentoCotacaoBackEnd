@@ -24,5 +24,9 @@ namespace Relatorios
             return _data.RelatorioItensOrcamento(filtro);
         }
 
+        public List<DadosOrcamentoDto> RelatorioDadosOrcamento(DadosOrcamentosFiltro filtro)
+        {
+            return _data.RelatorioDadosOrcamento(filtro);
+        }
     }
 }
