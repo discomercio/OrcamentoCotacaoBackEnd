@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using InfraBanco.Constantes;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -104,7 +105,7 @@ namespace InfraIdentity
                     new Claim("Permissoes", usuario.Permissoes != null?string.Join(",",usuario.Permissoes):""),
                     new Claim("UsuarioLogin", JsonSerializer.Serialize(usuario)),
                     new Claim("Id", usuario.Id.ToString()),
-                    new Claim("LojaLogada", usuario.Loja.Split(",").Count() > 1 ? "": usuario.Loja)
+                    new Claim("LojaLogada", usuario.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR ? "": usuario.Loja)
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(validadeTokenMinutos),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
