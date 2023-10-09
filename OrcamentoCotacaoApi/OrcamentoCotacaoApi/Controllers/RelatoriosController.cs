@@ -52,8 +52,33 @@ namespace OrcamentoCotacaoApi.Controllers
                 return Ok(response);
             }
 
-            //criar função na bll
             response = _relatoriosBll.RelatorioItensOrcamento(model);
+
+            return Ok(response);
+        }
+
+        [HttpPost("relatorioDadosOrcamento")]
+        public IActionResult RelatorioDadosOrcamento(DadosOrcamentoRequest model)
+        {
+            var request = new
+            {
+                CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]),
+                IP = Request.HttpContext.Connection.RemoteIpAddress.ToString()
+            };
+
+            _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. RelatoriosController/RelatorioDadosOrcamento/POST - Request => [{JsonSerializer.Serialize(model)}].");
+
+            var response = new RelatorioDadosOrcamentosResponse();
+            //verificar a permissão
+            var permissao = User.ValidaPermissao((int)ePermissao.RelatoriosGerenciais);
+            if (!permissao)
+            {
+                response.Sucesso = false;
+                response.Mensagem = "Não encontramos a permissão necessária para acessar essa funcionalidade!";
+                return Ok(response);
+            }
+
+            response = _relatoriosBll.RelatorioDadosOrcamento(model);
 
             return Ok(response);
         }
