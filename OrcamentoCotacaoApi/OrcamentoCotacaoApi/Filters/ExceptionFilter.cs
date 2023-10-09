@@ -39,7 +39,6 @@ namespace OrcamentoCotacaoApi.Filters
             }
             else
             {
-                string json = string.Empty;
                 if (context.HttpContext.Request.Method == "POST" || context.HttpContext.Request.Method == "PUT")
                 {
                     response.StatusCode = (int)HttpStatusCode.InternalServerError;
@@ -47,7 +46,7 @@ namespace OrcamentoCotacaoApi.Filters
                     object param = await Task.FromResult(context.Exception.Data.Values.ToJson());
                     if (param.ToString().Length > 2)
                     {
-                        _logger.LogError($"CorrelationId => [{correlationIdParsed}] /PARAMETROS: {param} / EXCEPTION: [{exception}] / INNEREXCEPTION: [{exception?.InnerException}].");
+                        _logger.LogError($"CorrelationId => [{correlationIdParsed}] / PARAMETROS: {param} / EXCEPTION: [{exception}] / INNEREXCEPTION: [{exception?.InnerException}].");
                     }
                     else
                     {

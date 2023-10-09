@@ -1990,6 +1990,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 }
                 catch (Exception ex)
                 {
+                    ex.Data.Add("params", new { aprovarOrcamento, tipoUsuarioContexto, idUsuarioUltAtualizacao });
                     dbGravacao.transacao.Rollback();
                     throw ex;
                 }
