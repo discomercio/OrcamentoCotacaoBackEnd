@@ -13,6 +13,7 @@ namespace OrcamentoCotacaoBusiness.Mapper
         public RelatoriosMapper()
         {
             CreateMap<ItensOrcamentoRequest, Relatorios.Filtros.ItensOrcamentosFiltro>();
+            CreateMap<DadosOrcamentoRequest, Relatorios.Filtros.DadosOrcamentosFiltro>();
         }
     }
 }
