@@ -46,7 +46,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 response.Mensagem = "O campo 'Fim da criação' é obrigatório!";
                 return response;
             }
-            var diferenca = (request.DtFim.Value - request.DtInicio.Value).TotalDays;
+            var diferenca = (request.DtFim.Value.Date - request.DtInicio.Value.Date).TotalDays;
             if (diferenca > config.MaxPeriodoConsulta_RelatorioGerencial)
             {
                 response.Mensagem = $"A diferença entre as datas de \"Início da criação\" e \"Fim da criação\" ultrapassa o período de {config.MaxPeriodoConsulta_RelatorioGerencial} de dias!";
