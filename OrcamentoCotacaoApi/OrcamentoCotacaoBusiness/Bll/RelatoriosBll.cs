@@ -97,8 +97,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     DescSuperiorAVista = !string.IsNullOrEmpty(item.DescSuperiorAVista) ? Math.Round(Decimal.Parse(item.DescSuperiorAVista), 2, MidpointRounding.AwayFromZero) : null,
                     DescSuperiorAPrazo = !string.IsNullOrEmpty(item.DescSuperiorAPrazo) ? Math.Round(Decimal.Parse(item.DescSuperiorAPrazo), 2, MidpointRounding.AwayFromZero) : null,
                     Comissao = !string.IsNullOrEmpty(item.Comissao) ? Math.Round(Decimal.Parse(item.Comissao), 1, MidpointRounding.AwayFromZero) : null,
-                    DataCadastro = DateTime.TryParse(item.Criacao, out var datacria) ? datacria : null,
-                    Validade = DateTime.TryParse(item.Expiracao, out var exp) ? exp : null,
+                    DataCadastro = DateTime.TryParse(item.Criacao, out var datacria) ? datacria.AddHours(9) : null,
+                    Validade = DateTime.TryParse(item.Expiracao, out var exp) ? exp.AddHours(9) : null,
                 };
                 response.ListaItensOrcamento.Add(itemOrcamento);
             }
