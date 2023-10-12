@@ -63,11 +63,11 @@ namespace Relatorios
                     {
                         sql = sql + $" AND (tOc.IdVendedor IN ({String.Join(",", obj.Vendedores)}))";
                     }
-                    if (obj.ComParceiro != null && obj.ComParceiro == true)
+                    if (obj.ComIndicador != null && obj.ComIndicador == true)
                     {
                         sql = sql + $" AND (tOc.IdIndicador IS NOT NULL)";
                     }
-                    if (obj.ComParceiro != null && obj.ComParceiro == false)
+                    if (obj.ComIndicador != null && obj.ComIndicador == false)
                     {
                         sql = sql + $" AND (tOc.IdIndicador IS NULL)";
                     }

@@ -11,7 +11,7 @@ namespace OrcamentoCotacaoBusiness.Models.Request.Relatorios
         public string[] Lojas { get; set; }
         public string[] Status { get; set; }
         public string[] Vendedores { get; set; }
-        public bool? ComParceiro { get; set; }
+        public bool? ComIndicador { get; set; }
         public string[] Parceiros { get; set; }
         public string OpcoesOrcamento { get; set; }
         public string[] Fabricantes { get; set; }
