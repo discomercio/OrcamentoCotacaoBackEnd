@@ -75,7 +75,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     TipoCliente = item.TipoCliente,
                     ContribuinteIcms = item.ContribuinteIcms,
                     EntregaImediata = item.EntregaImediata,
-                    PrevisaoEntrega = DateTime.TryParse(item.PrevisaoEntrega, out var data) ? data : null,
+                    PrevisaoEntrega = DateTime.TryParse(item.PrevisaoEntrega, out var data) ? data.AddHours(9) : null,
                     InstaladorInstala = item.InstaladorInstala,
                     NumOpcaoOrcamento = item.NumOpcaoOrcamento,
                     FormaPagtoAVista = item.FormaPagtoAVista,
