@@ -46,7 +46,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 response.Mensagem = "O campo 'Fim da criação' é obrigatório!";
                 return response;
             }
-            var diferenca = (request.DtFim.Value - request.DtInicio.Value).TotalDays;
+            var diferenca = (request.DtFim.Value.Date - request.DtInicio.Value.Date).TotalDays;
             if (diferenca > config.MaxPeriodoConsulta_RelatorioGerencial)
             {
                 response.Mensagem = $"A diferença entre as datas de \"Início da criação\" e \"Fim da criação\" ultrapassa o período de {config.MaxPeriodoConsulta_RelatorioGerencial} de dias!";
@@ -97,8 +97,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     DescSuperiorAVista = !string.IsNullOrEmpty(item.DescSuperiorAVista) ? Math.Round(Decimal.Parse(item.DescSuperiorAVista), 2, MidpointRounding.AwayFromZero) : null,
                     DescSuperiorAPrazo = !string.IsNullOrEmpty(item.DescSuperiorAPrazo) ? Math.Round(Decimal.Parse(item.DescSuperiorAPrazo), 2, MidpointRounding.AwayFromZero) : null,
                     Comissao = !string.IsNullOrEmpty(item.Comissao) ? Math.Round(Decimal.Parse(item.Comissao), 1, MidpointRounding.AwayFromZero) : null,
-                    DataCadastro = DateTime.TryParse(item.Criacao, out var datacria) ? datacria : null,
-                    Validade = DateTime.TryParse(item.Expiracao, out var exp) ? exp : null,
+                    DataCadastro = DateTime.TryParse(item.Criacao, out var datacria) ? datacria.AddHours(9) : null,
+                    Validade = DateTime.TryParse(item.Expiracao, out var exp) ? exp.AddHours(9) : null,
                 };
                 response.ListaItensOrcamento.Add(itemOrcamento);
             }
@@ -129,7 +129,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 response.Mensagem = "O campo 'Fim da criação' é obrigatório!";
                 return response;
             }
-            var diferenca = (request.DtFim.Value - request.DtInicio.Value).TotalDays;
+            var diferenca = (request.DtFim.Value.Date - request.DtInicio.Value.Date).TotalDays;
             if (diferenca > config.MaxPeriodoConsulta_RelatorioGerencial)
             {
                 response.Mensagem = $"A diferença entre as datas de \"Início da criação\" e \"Fim da criação\" ultrapassa o período de {config.MaxPeriodoConsulta_RelatorioGerencial} de dias!";
@@ -157,47 +157,49 @@ namespace OrcamentoCotacaoBusiness.Bll
                     UF = item.UF,
                     TipoCliente = item.TipoCliente,
                     ContribuinteIcms = item.ContribuinteIcms,
+                    QtdeMsgPendente = item.QtdeMsgPendente,
                     EntregaImediata = item.EntregaImediata,
-                    PrevisaoEntrega = DateTime.TryParse(item.PrevisaoEntrega, out var data) ? data : null,
+                    PrevisaoEntrega = DateTime.TryParse(item.PrevisaoEntrega, out var data) ? data.AddHours(9) : null,
                     InstaladorInstala = item.InstaladorInstala,
                     ComissaoOpcao1 = item.ComissaoOpcao1,
+                    DescMedioAVistaOpcao1 = !string.IsNullOrEmpty(item.DescMedioAVistaOpcao1) ? Math.Round(Decimal.Parse(item.DescMedioAVistaOpcao1), 2, MidpointRounding.AwayFromZero) : null,
+                    DescMedioAPrazoOpcao1 = !string.IsNullOrEmpty(item.DescMedioAPrazoOpcao1) ? Math.Round(Decimal.Parse(item.DescMedioAPrazoOpcao1), 2, MidpointRounding.AwayFromZero) : null,
                     FormaPagtoAVistaOpcao1 = item.FormaPagtoAVistaOpcao1,
-                    ValorFormaPagtoAVistaOpcao1 = !string.IsNullOrEmpty(item.ValorFormaPagtoAPrazoOpcao1)? Math.Round(decimal.Parse(item.ValorFormaPagtoAPrazoOpcao1), 2, MidpointRounding.AwayFromZero): null,
+                    ValorFormaPagtoAVistaOpcao1 = !string.IsNullOrEmpty(item.ValorFormaPagtoAVistaOpcao1) ? Math.Round(decimal.Parse(item.ValorFormaPagtoAVistaOpcao1), 2, MidpointRounding.AwayFromZero): null,
                     StatusDescSuperiorAVistaOpcao1 = item.StatusDescSuperiorAVistaOpcao1,
-                    DescMedioDescSuperiorAVistaOpcao1 = !string.IsNullOrEmpty(item.DescMedioDescSuperiorAVistaOpcao1) ? Math.Round(Decimal.Parse(item.DescMedioDescSuperiorAVistaOpcao1), 2, MidpointRounding.AwayFromZero) : null,
                     FormaPagtoAPrazoOpcao1 = item.FormaPagtoAPrazoOpcao1,
                     ValorFormaPagtoAPrazoOpcao1 = !string.IsNullOrEmpty(item.ValorFormaPagtoAPrazoOpcao1) ? Math.Round(Decimal.Parse(item.ValorFormaPagtoAPrazoOpcao1), 2, MidpointRounding.AwayFromZero) : null,
                     QtdeParcelasFormaPagtoAPrazoOpcao1=item.QtdeParcelasFormaPagtoAPrazoOpcao1,
                     StatusDescSuperiorAPrazoOpcao1 = item.StatusDescSuperiorAPrazoOpcao1,
-                    DescMedioDescSuperiorAPrazoOpcao1 = !string.IsNullOrEmpty(item.DescMedioDescSuperiorAPrazoOpcao1)? Math.Round(decimal.Parse(item.DescMedioDescSuperiorAPrazoOpcao1), 2, MidpointRounding.AwayFromZero):null,
                     ComissaoOpcao2 = item.ComissaoOpcao2,
+                    DescMedioAVistaOpcao2 = !string.IsNullOrEmpty(item.DescMedioAVistaOpcao2) ? Math.Round(Decimal.Parse(item.DescMedioAVistaOpcao2), 2, MidpointRounding.AwayFromZero) : null,
+                    DescMedioAPrazoOpcao2 = !string.IsNullOrEmpty(item.DescMedioAPrazoOpcao2) ? Math.Round(Decimal.Parse(item.DescMedioAPrazoOpcao2), 2, MidpointRounding.AwayFromZero) : null,
                     FormaPagtoAVistaOpcao2 = item.FormaPagtoAVistaOpcao2,
-                    ValorFormaPagtoAVistaOpcao2 = !string.IsNullOrEmpty(item.ValorFormaPagtoAPrazoOpcao2) ? Math.Round(decimal.Parse(item.ValorFormaPagtoAPrazoOpcao2), 2, MidpointRounding.AwayFromZero) : null,
+                    ValorFormaPagtoAVistaOpcao2 = !string.IsNullOrEmpty(item.ValorFormaPagtoAVistaOpcao2) ? Math.Round(decimal.Parse(item.ValorFormaPagtoAVistaOpcao2), 2, MidpointRounding.AwayFromZero) : null,
                     StatusDescSuperiorAVistaOpcao2 = item.StatusDescSuperiorAVistaOpcao2,
-                    DescMedioDescSuperiorAVistaOpcao2 = !string.IsNullOrEmpty(item.DescMedioDescSuperiorAVistaOpcao2) ? Math.Round(Decimal.Parse(item.DescMedioDescSuperiorAVistaOpcao2), 2, MidpointRounding.AwayFromZero) : null,
                     FormaPagtoAPrazoOpcao2 = item.FormaPagtoAPrazoOpcao2,
                     ValorFormaPagtoAPrazoOpcao2 = !string.IsNullOrEmpty(item.ValorFormaPagtoAPrazoOpcao2) ? Math.Round(Decimal.Parse(item.ValorFormaPagtoAPrazoOpcao2), 2, MidpointRounding.AwayFromZero) : null,
                     QtdeParcelasFormaPagtoAPrazoOpcao2 = item.QtdeParcelasFormaPagtoAPrazoOpcao2,
                     StatusDescSuperiorAPrazoOpcao2 = item.StatusDescSuperiorAPrazoOpcao2,
-                    DescMedioDescSuperiorAPrazoOpcao2 = !string.IsNullOrEmpty(item.DescMedioDescSuperiorAPrazoOpcao2) ? Math.Round(decimal.Parse(item.DescMedioDescSuperiorAPrazoOpcao2), 2, MidpointRounding.AwayFromZero) : null,
                     ComissaoOpcao3 = item.ComissaoOpcao3,
+                    DescMedioAVistaOpcao3 = !string.IsNullOrEmpty(item.DescMedioAVistaOpcao3) ? Math.Round(Decimal.Parse(item.DescMedioAVistaOpcao3), 2, MidpointRounding.AwayFromZero) : null,
+                    DescMedioAPrazoOpcao3 = !string.IsNullOrEmpty(item.DescMedioAPrazoOpcao3) ? Math.Round(Decimal.Parse(item.DescMedioAPrazoOpcao3), 2, MidpointRounding.AwayFromZero) : null,
                     FormaPagtoAVistaOpcao3 = item.FormaPagtoAVistaOpcao3,
-                    ValorFormaPagtoAVistaOpcao3 = !string.IsNullOrEmpty(item.ValorFormaPagtoAPrazoOpcao3) ? Math.Round(decimal.Parse(item.ValorFormaPagtoAPrazoOpcao3), 2, MidpointRounding.AwayFromZero) : null,
+                    ValorFormaPagtoAVistaOpcao3 = !string.IsNullOrEmpty(item.ValorFormaPagtoAVistaOpcao3) ? Math.Round(decimal.Parse(item.ValorFormaPagtoAVistaOpcao3), 2, MidpointRounding.AwayFromZero) : null,
                     StatusDescSuperiorAVistaOpcao3 = item.StatusDescSuperiorAVistaOpcao3,
-                    DescMedioDescSuperiorAVistaOpcao3 = !string.IsNullOrEmpty(item.DescMedioDescSuperiorAVistaOpcao3) ? Math.Round(Decimal.Parse(item.DescMedioDescSuperiorAVistaOpcao3), 2, MidpointRounding.AwayFromZero) : null,
                     FormaPagtoAPrazoOpcao3 = item.FormaPagtoAPrazoOpcao3,
                     ValorFormaPagtoAPrazoOpcao3 = !string.IsNullOrEmpty(item.ValorFormaPagtoAPrazoOpcao3) ? Math.Round(Decimal.Parse(item.ValorFormaPagtoAPrazoOpcao3), 2, MidpointRounding.AwayFromZero) : null,
                     QtdeParcelasFormaPagtoAPrazoOpcao3 = item.QtdeParcelasFormaPagtoAPrazoOpcao3,
                     StatusDescSuperiorAPrazoOpcao3 = item.StatusDescSuperiorAPrazoOpcao3,
-                    DescMedioDescSuperiorAPrazoOpcao3 = !string.IsNullOrEmpty(item.DescMedioDescSuperiorAPrazoOpcao3) ? Math.Round(decimal.Parse(item.DescMedioDescSuperiorAPrazoOpcao3), 2, MidpointRounding.AwayFromZero) : null,
                     OpcaoAprovada = item.OpcaoAprovada,
+                    ComissaoOpcaoAprovada = item.ComissaoOpcaoAprovada,
+                    DescMedioOpcaoAprovada = !string.IsNullOrEmpty(item.DescMedioOpcaoAprovada) ? Math.Round(decimal.Parse(item.DescMedioOpcaoAprovada), 2, MidpointRounding.AwayFromZero) : null,
                     FormaPagtoOpcaoAprovada = item.FormaPagtoOpcaoAprovada,
                     ValorFormaPagtoOpcaoAprovada = !string.IsNullOrEmpty(item.ValorFormaPagtoOpcaoAprovada)? Math.Round(decimal.Parse(item.ValorFormaPagtoOpcaoAprovada), 2, MidpointRounding.AwayFromZero): null,
                     QtdeParcelasFormaOpcaoAprovada= item.QtdeParcelasFormaOpcaoAprovada,
                     StatusDescSuperiorOpcaoAprovada = item.StatusDescSuperiorOpcaoAprovada,
-                    DescMedioDescSuperiorOpcaoAprovada = !string.IsNullOrEmpty(item.DescMedioDescSuperiorOpcaoAprovada)? Math.Round(decimal.Parse(item.DescMedioDescSuperiorOpcaoAprovada), 2, MidpointRounding.AwayFromZero): null,
-                    DataCadastro = DateTime.TryParse(item.Criacao, out var datacria) ? datacria : null,
-                    Validade = DateTime.TryParse(item.Expiracao, out var exp) ? exp : null,
+                    DataCadastro = DateTime.TryParse(item.Criacao, out var datacria) ? datacria.AddHours(9) : null,
+                    Validade = DateTime.TryParse(item.Expiracao, out var exp) ? exp.AddHours(9) : null,
                 };
                 response.ListaDadosOrcamento.Add(dadoOrcamento);
             }
