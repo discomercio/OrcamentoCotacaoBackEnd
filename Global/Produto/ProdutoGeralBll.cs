@@ -174,6 +174,7 @@ namespace Produto
                                           c.Excluido_status == 0 &&
                                           pl.Excluido_status == 0 &&
                                           c.Descricao_Html != "." &&
+                                          c.Descricao != "." &&
                                           pl.Preco_Lista > 0
                                     select new Produto.Dados.ProdutoDados
                                     {
