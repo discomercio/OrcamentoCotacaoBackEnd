@@ -10,6 +10,8 @@ using System;
 using InfraBanco;
 using Produto.Dto;
 using System.Data;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Azure.Core;
 
 namespace Produto
 {
@@ -889,9 +891,6 @@ namespace Produto
             return tProdutoCatalogoPropriedade;
         }
 
-
-
-
         public async Task<TProdutoCatalogoPropriedadeOpcao> GravarPropriedadeOpcaoComTransacao(ProdutoCatalogoPropriedadeOpcoesDados produtoCatalogoPropriedadeOpcao, ContextoBdGravacao dbGravacao)
         {
             TProdutoCatalogoPropriedadeOpcao tProdutoCatalogoPropriedadeOpcao = new TProdutoCatalogoPropriedadeOpcao()
@@ -1030,34 +1029,97 @@ namespace Produto
             using var db = contextoProvider.GetContextoLeitura();
 
             var retorno = await (from c in db.Tproduto
-                                    join fab in db.Tfabricante on c.Fabricante equals fab.Fabricante
-                                    join grp in db.TprodutoGrupo on c.Grupo equals grp.Codigo into lfgrp
-                                    from leftgrp in lfgrp.DefaultIfEmpty()
-                                    join sbgrp in db.TprodutoSubgrupo on c.Subgrupo equals sbgrp.Codigo into lfsbgrp
-                                    from leftsbgrp in lfsbgrp.DefaultIfEmpty()
-                                    where c.Produto == produto &&
-                                          c.Descricao_Html != "."
-                                    select new Produto.Dados.ProdutoDados
-                                    {
-                                        Fabricante = c.Fabricante,
-                                        Fabricante_Nome = fab.Nome,
-                                        Produto = c.Produto,
-                                        Descricao_html = c.Descricao_Html,
-                                        Descricao = c.Descricao,
-                                        Preco_lista = 0,
-                                        Qtde_Max_Venda = 0,
-                                        Desc_Max = 0,
-                                        Grupo = c.Grupo,
-                                        GrupoDescricao = leftgrp.Descricao,
-                                        SubGrupo = c.Subgrupo,
-                                        SubGrupoDescricao = leftsbgrp.Descricao,
-                                        Capacidade = c.PotenciaBtu,
-                                        Ciclo = c.Ciclo,
-                                        CicloDescricao = c.Ciclo == "F" ? "Frio" : c.Ciclo == "QF" ? "Quente/Frio" : null
-                                    }).FirstOrDefaultAsync();
+                                 join fab in db.Tfabricante on c.Fabricante equals fab.Fabricante
+                                 join grp in db.TprodutoGrupo on c.Grupo equals grp.Codigo into lfgrp
+                                 from leftgrp in lfgrp.DefaultIfEmpty()
+                                 join sbgrp in db.TprodutoSubgrupo on c.Subgrupo equals sbgrp.Codigo into lfsbgrp
+                                 from leftsbgrp in lfsbgrp.DefaultIfEmpty()
+                                 where c.Produto == produto &&
+                                       c.Descricao_Html != "."
+                                 select new Produto.Dados.ProdutoDados
+                                 {
+                                     Fabricante = c.Fabricante,
+                                     Fabricante_Nome = fab.Nome,
+                                     Produto = c.Produto,
+                                     Descricao_html = c.Descricao_Html,
+                                     Descricao = c.Descricao,
+                                     Preco_lista = 0,
+                                     Qtde_Max_Venda = 0,
+                                     Desc_Max = 0,
+                                     Grupo = c.Grupo,
+                                     GrupoDescricao = leftgrp.Descricao,
+                                     SubGrupo = c.Subgrupo,
+                                     SubGrupoDescricao = leftsbgrp.Descricao,
+                                     Capacidade = c.PotenciaBtu,
+                                     Ciclo = c.Ciclo,
+                                     CicloDescricao = c.Ciclo == "F" ? "Frio" : c.Ciclo == "QF" ? "Quente/Frio" : null
+                                 }).FirstOrDefaultAsync();
 
 
             return retorno;
+        }
+
+        public ListaPropriedadeDados ListarPropriedadesProdutos(PropriedadesDados filtro)
+        {
+            
+            using (var db = contextoProvider.GetContextoLeitura())
+            {
+                var saida = from p in db.TProdutoCatalogoPropriedade
+                            select new Produto.Dados.ProdutoCatalogoPropriedadeDados
+                            {
+                                id = p.id,
+                                descricao = p.descricao,
+                                oculto = p.oculto,
+                                ordem = p.ordem,
+                            };
+
+                if (!string.IsNullOrEmpty(filtro.Descricao))
+                {
+                    saida = saida.Where(x => x.descricao.ToLower().Contains(filtro.Descricao.ToLower()));
+                }
+                if (filtro.Ativo != null)
+                {
+                    saida = saida.Where(x => x.oculto == filtro.Ativo);
+                }
+
+                var response = new ListaPropriedadeDados();
+                response.QtdeRegistros = saida.Count();
+
+                if (!string.IsNullOrWhiteSpace(filtro.NomeColunaOrdenacao))
+                {
+                    switch (filtro.NomeColunaOrdenacao.ToUpper())
+                    {
+                        case ("DESCRICAO"):
+                            if (filtro.OrdenacaoAscendente)
+                            {
+                                saida = saida.OrderBy(o => o.descricao);
+                            }
+                            else
+                            {
+                                saida = saida.OrderByDescending(o => o.descricao);
+                            }
+                            break;
+                        case ("ATIVO"):
+                            if (filtro.OrdenacaoAscendente)
+                            {
+                                saida = saida.OrderBy(o => o.oculto);
+                            }
+                            else
+                            {
+                                saida = saida.OrderByDescending(o => o.oculto);
+                            }
+                            break;
+                    }
+                }
+                else
+                {
+                    saida = saida.OrderBy(o => o.ordem);
+                }
+
+                response.ListaPropriedade = saida.Skip(filtro.Pagina * filtro.QtdeItensPorPagina).Take(filtro.QtdeItensPorPagina).ToList();
+
+                return response;
+            }
         }
     }
 }

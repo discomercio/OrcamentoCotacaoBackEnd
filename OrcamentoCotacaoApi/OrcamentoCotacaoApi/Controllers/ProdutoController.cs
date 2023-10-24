@@ -1,4 +1,5 @@
-﻿using InfraBanco.Constantes;
+﻿using Azure;
+using InfraBanco.Constantes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -8,6 +9,7 @@ using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Request.GrupoSubgrupoProduto;
 using OrcamentoCotacaoBusiness.Models.Request.Produto;
+using OrcamentoCotacaoBusiness.Models.Request.Propriedades;
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -28,7 +30,7 @@ namespace OrcamentoCotacaoApi.BaseController
         private readonly CoeficienteBll _coeficienteBll;
 
         public ProdutoController(
-            ILogger<ProdutoController> logger, 
+            ILogger<ProdutoController> logger,
             ProdutoOrcamentoCotacaoBll produtoBll,
             CoeficienteBll coeficienteBll)
         {
@@ -176,6 +178,34 @@ namespace OrcamentoCotacaoApi.BaseController
                 return Ok(ret);
             }
         }
+
+        [HttpPost("listar-propriedades")]
+        public IActionResult ListarPropriedadesProdutos(PropriedadesRequest request)
+        {
+            try
+            {
+                request.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+                request.Usuario = LoggedUser.Apelido;
+
+                _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. ProdutoController/ListarPropriedadesProdutos/POST - Request => [{JsonSerializer.Serialize(request)}].");
+
+                if (!User.ValidaPermissao((int)ePermissao.CatalogoPropriedadeConsultar) &&
+                    !User.ValidaPermissao((int)ePermissao.CatalogoConsultar))
+                    return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+
+                var response = _produtoBll.ListarPropriedadesProdutos(request);
+
+                _logger.LogInformation($"CorrelationId => [{request.CorrelationId}].  ProdutoController/ListarPropriedadesProdutos/POST - Response => [{JsonSerializer.Serialize(response)}].");
+
+                return Ok(response);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
 
         [HttpGet("propriedades/{id}")]
         public async Task<IActionResult> ObterListaPropriedadesProdutos(int id)
@@ -338,7 +368,7 @@ namespace OrcamentoCotacaoApi.BaseController
 
                 return Ok(ret);
             }
-        }        
+        }
 
         [HttpGet("listar-produtos-propriedades-ativos")]
         public async Task<IActionResult> ObterListaProdutosPropriedadesProdutosAtivos()
