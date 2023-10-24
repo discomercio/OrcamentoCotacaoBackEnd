@@ -5,8 +5,8 @@
     <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
     <Configurations>Debug;Release;Release_OrcamentoCotacao;Debug_OrcamentoCotacao</Configurations>
     <DebugType Condition=" '$(Configuration)' == 'Release_OrcamentoCotacao' ">None</DebugType>
-    <AssemblyVersion>1.8.1.0</AssemblyVersion>
-    <FileVersion>1.8.1.0</FileVersion>
+    <AssemblyVersion>1.8.0.7</AssemblyVersion>
+    <FileVersion>1.8.0.7</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -50,6 +50,7 @@
     <ProjectReference Include="..\..\Global\OrcamentoCotacaoOpcao\OrcamentoCotacaoOpcao.csproj" />
     <ProjectReference Include="..\..\Global\Orcamento\Orcamento.csproj" />
     <ProjectReference Include="..\..\Global\Produto\Produto.csproj" />
+    <ProjectReference Include="..\..\Global\Relatorios\Relatorios.csproj" />
     <ProjectReference Include="..\..\Global\Usuario\Usuario.csproj" />
     <ProjectReference Include="..\OrcamentoCotacaoBusiness\OrcamentoCotacaoBusiness.csproj" />
   </ItemGroup>

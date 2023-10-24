@@ -20,6 +20,7 @@ namespace OrcamentoCotacaoApi.Utils
                 x.AddProfile(new OrcamentoCotacaoOpcaoMapper());
                 x.AddProfile(new ProdutoMapper());
                 x.AddProfile(new FormaPagtoMapper());
+                x.AddProfile(new RelatoriosMapper());
             }, type);
         }
     }

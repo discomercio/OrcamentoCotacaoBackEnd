@@ -880,7 +880,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                 QtdeDiasProrrogacao = int.Parse(parametros.QtdePadrao_DiasProrrogacao),
                 QtdeMaxProrrogacao = int.Parse(parametros.QtdeMaxProrrogacao),
                 QtdeGlobalValidade = int.Parse(parametros.QtdeGlobal_Validade),
-                MaxPeriodoConsultaFiltroPesquisa = parametros.MaxPeriodoConsultaFiltroPesquisa
+                MaxPeriodoConsultaFiltroPesquisa = parametros.MaxPeriodoConsultaFiltroPesquisa,
+                MaxPeriodoConsulta_RelatorioGerencial = parametros.MaxPeriodoConsulta_RelatorioGerencial 
             };
         }
 
@@ -1874,10 +1875,13 @@ namespace OrcamentoCotacaoBusiness.Bll
                 return new List<string>() { "Falha ao buscar Orçamento!" };
             }
 
-            if (orcamento.Status == (short)Constantes.eCfgOrcamentoCotacaoStatus.APROVADO ||
-                orcamento.Status == (short)Constantes.eCfgOrcamentoCotacaoStatus.CANCELADO)
+            if (orcamento.Status != (short)Constantes.eCfgOrcamentoCotacaoStatus.ENVIADO)
             {
-                return new List<string>() { "Esse orçamento não pode ser aprovado!" };
+                return new List<string>() { "Este orçamento está indisponível para aprovação." };
+            }
+            if(orcamento.Validade.Date < DateTime.Now.Date)
+            {
+                return new List<string>() { "Este orçamento está indisponível para aprovação." };
             }
 
             aprovarOrcamento.ClienteCadastroDto.DadosCliente.Perc_max_comissao_e_desconto_padrao = orcamento.Perc_max_comissao_e_desconto_padrao;
@@ -2009,7 +2013,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             prepedido.Usuario_cadastro =
                 tipoUsuarioContexto == Constantes.TipoUsuarioContexto.Cliente ? $"[{idUsuarioUltAtualizacao}] {tipoUsuarioContexto}" :
                 $"[{(int)tipoUsuarioContexto}] {idUsuarioUltAtualizacao}";
-            prepedido.UsuarioCadastroIdTipoUsuarioContexto = (short?)idUsuarioUltAtualizacao;
+            prepedido.UsuarioCadastroIdTipoUsuarioContexto = (short?)tipoUsuarioContexto;
             prepedido.DadosCliente = new DadosClienteCadastroDto();
             prepedido.DadosCliente = aprovarOrcamento.ClienteCadastroDto.DadosCliente;
             prepedido.EnderecoCadastroClientePrepedido = new EnderecoCadastralClientePrepedidoDto();

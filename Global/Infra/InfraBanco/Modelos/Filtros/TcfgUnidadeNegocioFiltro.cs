@@ -1,4 +1,5 @@
 ﻿using Interfaces;
+using System.Collections.Generic;
 
 namespace InfraBanco.Modelos.Filtros
 {
@@ -6,5 +7,7 @@ namespace InfraBanco.Modelos.Filtros
     {
         public string Sigla { get; set; }
         public string NomeCurto { get; set; }
+
+        public List<string> Siglas { get; set; }
     }
 }

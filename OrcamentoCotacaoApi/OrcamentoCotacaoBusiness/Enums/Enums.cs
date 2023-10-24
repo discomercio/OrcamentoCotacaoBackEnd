@@ -34,7 +34,8 @@
             RelOrcamentosCadastrados = 102900,
 
             ExcluirOrcamento = 103500,
-            AnularOrcamentoAprovado = 103600
+            AnularOrcamentoAprovado = 103600,
+            RelatoriosGerenciais = 103700
         }
 
         public enum StatusOrcamento

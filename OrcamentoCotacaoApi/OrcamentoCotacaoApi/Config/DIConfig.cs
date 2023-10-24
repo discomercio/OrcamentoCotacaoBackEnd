@@ -5,6 +5,7 @@ using InfraIdentity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OrcamentoCotacaoApi.Controllers;
 using OrcamentoCotacaoBusiness.Bll;
 using UtilsGlobais;
 using UtilsGlobais.Parametros;
@@ -15,11 +16,12 @@ namespace OrcamentoCotacaoApi.Config
     {
         public static IServiceCollection AddInjecaoDependencia(this IServiceCollection services, IConfiguration Configuration)
         {
+            string conexaoRelatorio = Configuration.GetConnectionString("conexaoRelatorio");
             string conexaoBasica = Configuration.GetConnectionString("conexao");
             var appSettings = Configuration.GetSection("AppSettings").Get<Configuracao>();
             services.AddTransient<ContextoBdProvider, ContextoBdProvider>();
             services.AddTransient<ContextoCepProvider, ContextoCepProvider>();
-            services.AddDbContext<Contexto>(options => options.UseSqlServer(Configuration.GetConnectionString("conexao")));
+            services.AddTransient<ContextoRelatorioProvider, ContextoRelatorioProvider>();
             services.AddDbContext<ContextoCepBd>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("conexaoCep"));
@@ -32,6 +34,11 @@ namespace OrcamentoCotacaoApi.Config
             services.AddDbContext<ContextoBdBasico>(options =>
             {
                 options.UseSqlServer(conexaoBasica);
+                options.EnableSensitiveDataLogging();
+            });
+            services.AddDbContext<ContextoRelatorioBd>(options =>
+            {
+                options.UseSqlServer(conexaoRelatorio);
                 options.EnableSensitiveDataLogging();
             });
 
@@ -152,6 +159,10 @@ namespace OrcamentoCotacaoApi.Config
             services.AddTransient<CodigoDescricao.CodigoDescricaoData, CodigoDescricao.CodigoDescricaoData>();
             services.AddTransient<CodigoDescricaoBll, CodigoDescricaoBll>();
             services.AddTransient<LoginHistoricoBll, LoginHistoricoBll>();
+
+            services.AddTransient<Relatorios.RelatoriosBll, Relatorios.RelatoriosBll>();
+            services.AddTransient<Relatorios.RelatoriosData, Relatorios.RelatoriosData>();
+            services.AddTransient<RelatoriosBll, RelatoriosBll>();
 
             return services;
         }
