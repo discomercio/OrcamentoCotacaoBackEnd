@@ -129,7 +129,7 @@ namespace OrcamentistaEIndicadorVendedor
                     {
                         vendedorParceiro = vendedorParceiro.Where(x => x.VendedorResponsavel == obj.nomeVendedor);
                     }
-                    if(obj.ativo != null)
+                    if (obj.ativo != null)
                     {
                         vendedorParceiro = vendedorParceiro.Where(x => x.Ativo == obj.ativo);
                     }
@@ -151,12 +151,12 @@ namespace OrcamentistaEIndicadorVendedor
                 {
                     var vendedorParceiro = from usr in db.TorcamentistaEIndicadorVendedor
                                            join par in db.TorcamentistaEindicador on usr.IdIndicador equals par.IdIndicador
-                                           where 
+                                           where
                                                 par.Status == Constantes.ORCAMENTISTA_INDICADOR_STATUS_ATIVO
                                                 && usr.Ativo == true
                                                 && obj.Parceiros.Contains(par.Apelido)
-                                                orderby usr.Nome
-                                            select new TorcamentistaEIndicadorVendedor()
+                                           orderby usr.Nome
+                                           select new TorcamentistaEIndicadorVendedor()
                                            {
                                                Id = usr.Id,
                                                Nome = usr.Nome,
@@ -184,6 +184,64 @@ namespace OrcamentistaEIndicadorVendedor
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        public Object ListarOrcamentistaVendedor(TorcamentistaEIndicadorVendedorFiltro obj)
+        {
+            using (var db = contextoProvider.GetContextoGravacaoParaUsing(InfraBanco.ContextoBdGravacao.BloqueioTControle.NENHUM))
+            {
+                var saida = from usr in db.TorcamentistaEIndicadorVendedor
+                            join par in db.TorcamentistaEindicador on usr.IdIndicador equals par.IdIndicador
+                            select new TorcamentistaEIndicadorVendedor()
+                            {
+                                Id = usr.Id,
+                                Nome = usr.Nome,
+                                Email = usr.Email,
+                                IdIndicador = usr.IdIndicador,
+                                Ativo = usr.Ativo,
+                                Loja = par.Loja,
+                                VendedorResponsavel = par.Vendedor,
+                                Parceiro = par.Apelido,
+                                StringBusca = $"|{par.Apelido}|{usr.Nome}|{usr.Email}|{par.Vendedor}|"
+                            };
+
+
+                if (obj.ativo != null)
+                {
+                    saida = saida.Where(x => x.Ativo == obj.ativo);
+                }
+                if (!string.IsNullOrEmpty(obj.loja))
+                {
+                    saida = saida.Where(x => x.Loja == obj.loja);
+                }
+                if (obj.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR && !string.IsNullOrEmpty(obj.nomeVendedor))
+                {
+                    saida = saida.Where(x => x.VendedorResponsavel == obj.nomeVendedor);
+                }
+                if (!string.IsNullOrEmpty(obj.Parceiro))
+                {
+                    saida = saida.Where(x => x.Parceiro == obj.Parceiro);
+                }
+
+                var response = saida.ToList();
+
+                if (!string.IsNullOrEmpty(obj.Pesquisa))
+                {
+                    response = response.Where(x => x.StringBusca.ToLower().Contains(obj.Pesquisa.ToLower())).ToList();
+                }
+
+                var qtdeRegistros = response.Count;
+
+                response = response.Skip(obj.Pagina * obj.QtdeItensPagina).Take(obj.QtdeItensPagina).ToList();
+
+                var retorno = new
+                {
+                    QtdeRegistros = qtdeRegistros,
+                    Lista = response
+                };
+
+                return retorno;
             }
         }
     }
