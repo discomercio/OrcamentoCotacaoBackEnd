@@ -97,8 +97,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     DescSuperiorAVista = !string.IsNullOrEmpty(item.DescSuperiorAVista) ? Math.Round(Decimal.Parse(item.DescSuperiorAVista), 2, MidpointRounding.AwayFromZero) : null,
                     DescSuperiorAPrazo = !string.IsNullOrEmpty(item.DescSuperiorAPrazo) ? Math.Round(Decimal.Parse(item.DescSuperiorAPrazo), 2, MidpointRounding.AwayFromZero) : null,
                     Comissao = !string.IsNullOrEmpty(item.Comissao) ? Math.Round(Decimal.Parse(item.Comissao), 1, MidpointRounding.AwayFromZero) : null,
-                    DataCadastro = DateTime.TryParse(item.Criacao, out var datacria) ? datacria.AddHours(9) : null,
-                    Validade = DateTime.TryParse(item.Expiracao, out var exp) ? exp.AddHours(9) : null,
+                    DataCadastro = DateTime.TryParse(item.Criacao, out var datacria) ? datacria : null,
+                    Validade = DateTime.TryParse(item.Expiracao, out var exp) ? exp : null,
                 };
                 response.ListaItensOrcamento.Add(itemOrcamento);
             }
@@ -159,7 +159,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                     ContribuinteIcms = item.ContribuinteIcms,
                     QtdeMsgPendente = item.QtdeMsgPendente,
                     EntregaImediata = item.EntregaImediata,
-                    PrevisaoEntrega = DateTime.TryParse(item.PrevisaoEntrega, out var data) ? data.AddHours(9) : null,
+                    PrevisaoEntrega = DateTime.TryParse(item.PrevisaoEntrega, out var data) ? data : null,
                     InstaladorInstala = item.InstaladorInstala,
                     ComissaoOpcao1 = item.ComissaoOpcao1,
                     DescMedioAVistaOpcao1 = !string.IsNullOrEmpty(item.DescMedioAVistaOpcao1) ? Math.Round(Decimal.Parse(item.DescMedioAVistaOpcao1), 2, MidpointRounding.AwayFromZero) : null,
@@ -198,8 +198,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                     ValorFormaPagtoOpcaoAprovada = !string.IsNullOrEmpty(item.ValorFormaPagtoOpcaoAprovada)? Math.Round(decimal.Parse(item.ValorFormaPagtoOpcaoAprovada), 2, MidpointRounding.AwayFromZero): null,
                     QtdeParcelasFormaOpcaoAprovada= item.QtdeParcelasFormaOpcaoAprovada,
                     StatusDescSuperiorOpcaoAprovada = item.StatusDescSuperiorOpcaoAprovada,
-                    DataCadastro = DateTime.TryParse(item.Criacao, out var datacria) ? datacria.AddHours(9) : null,
-                    Validade = DateTime.TryParse(item.Expiracao, out var exp) ? exp.AddHours(9) : null,
+                    DataCadastro = DateTime.TryParse(item.Criacao, out var datacria) ? datacria : null,
+                    Validade = DateTime.TryParse(item.Expiracao, out var exp) ? exp : null,
                 };
                 response.ListaDadosOrcamento.Add(dadoOrcamento);
             }
