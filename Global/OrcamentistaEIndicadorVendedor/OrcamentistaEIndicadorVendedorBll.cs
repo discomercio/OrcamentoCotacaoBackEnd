@@ -164,5 +164,10 @@ namespace OrcamentistaEIndicadorVendedor
         {
             return _data.BuscarVendedorParceirosPorParceiros(obj);
         }
+
+        public Object ListarOrcamentistaVendedor(TorcamentistaEIndicadorVendedorFiltro obj)
+        {
+            return _data.ListarOrcamentistaVendedor(obj);
+        }
     }
 }

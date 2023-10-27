@@ -13,15 +13,18 @@ using Microsoft.Extensions.Logging;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Request.Produto;
+using OrcamentoCotacaoBusiness.Models.Request.Propriedades;
 using OrcamentoCotacaoBusiness.Models.Response;
 using OrcamentoCotacaoBusiness.Models.Response.Cfg.CfgParametro;
 using OrcamentoCotacaoBusiness.Models.Response.FormaPagamento;
 using OrcamentoCotacaoBusiness.Models.Response.GrupoSubgrupoProduto;
 using OrcamentoCotacaoBusiness.Models.Response.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response.ProdutoCatalogo;
+using OrcamentoCotacaoBusiness.Models.Response.Propriedade;
 using Prepedido.Bll;
 using Prepedido.Dto;
 using Produto;
+using Produto.Dados;
 using Produto.Dto;
 using ProdutoCatalogo;
 using System;
@@ -311,6 +314,39 @@ namespace OrcamentoCotacaoBusiness.Bll
             var lstProdutoPropriedades = await produtoGeralBll.ObterListaPropriedadesProdutos();
 
             return lstProdutoPropriedades.OrderBy(x => x.ordem).ToList();
+        }
+
+        public ListaPropriedadesResponse ListarPropriedadesProdutos(PropriedadesRequest request)
+        {
+            PropriedadesDados filtro = new PropriedadesDados();
+            filtro.Descricao = request.Descricao;
+            filtro.Ativo = request.Ativo;
+            filtro.Pagina = request.Pagina;
+            filtro.QtdeItensPorPagina = request.QtdeItensPorPagina;
+            filtro.NomeColunaOrdenacao = request.NomeColunaOrdenacao;
+            filtro.OrdenacaoAscendente = request.OrdenacaoAscendente;
+
+            var response = new ListaPropriedadesResponse();
+            response.ListaPropriedades = new List<PropriedadesResponse>();
+            response.Sucesso = false;
+
+            var retorno = produtoGeralBll.ListarPropriedadesProdutos(filtro);
+            if (retorno != null)
+            {
+                response.QtdeRegistros = retorno.QtdeRegistros;
+
+                foreach (var item in retorno.ListaPropriedade)
+                {
+                    var prop = new PropriedadesResponse();
+                    prop.Id = item.id;
+                    prop.Descricao = item.descricao;
+                    prop.Oculto = item.oculto;
+                    response.ListaPropriedades.Add(prop);
+                }
+            }
+
+            response.Sucesso = true;
+            return response;
         }
 
         public async Task<List<ProdutoCatalogoItemProdutosAtivosResponseViewModel>> ObterListaProdutosPropriedadesProdutosAtivos()
@@ -1180,15 +1216,15 @@ namespace OrcamentoCotacaoBusiness.Bll
                 }
                 if (grp != null && sbgrp == null)
                 {
-                    
+
                     grupoSubgrupoResponse.Descricao = !string.IsNullOrEmpty(grp.Descricao) ? grp.Descricao : listaSplit2[0];
                 }
                 if (grp == null && sbgrp != null)
                 {
-                    grupoSubgrupoResponse.Descricao = !string.IsNullOrEmpty(sbgrp.Descricao) ?  sbgrp.Descricao: listaSplit2[1];
+                    grupoSubgrupoResponse.Descricao = !string.IsNullOrEmpty(sbgrp.Descricao) ? sbgrp.Descricao : listaSplit2[1];
                 }
 
-                if(grp != null || sbgrp != null)
+                if (grp != null || sbgrp != null)
                 {
                     grupoSubgrupoResponse.Codigo = split;
                     response.ListaGruposSubgruposProdutos.Add(grupoSubgrupoResponse);
@@ -1231,7 +1267,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             response.ListaGruposSubgruposProdutos = new List<GrupoSubgrupoProdutoResponse>();
 
-            foreach ( var unidade in unidadesNegocios)
+            foreach (var unidade in unidadesNegocios)
             {
                 var unidadeNegocioParametro = cfgUnidadeNegocioParametroBll.PorFiltro(
                 new TcfgUnidadeNegocioParametroFiltro()
