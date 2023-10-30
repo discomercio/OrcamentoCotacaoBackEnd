@@ -7,6 +7,7 @@ using InfraIdentity;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Request.LoginHistorico;
 using OrcamentoCotacaoBusiness.Models.Request.OrcamentistaIndicadorVendedor;
+using OrcamentoCotacaoBusiness.Models.Request.Usuario;
 using OrcamentoCotacaoBusiness.Models.Response;
 using OrcamentoCotacaoBusiness.Models.Response.OrcamentistaIndicadorVendedor;
 using System;
@@ -265,6 +266,49 @@ namespace OrcamentoCotacaoBusiness.Bll
         public List<TorcamentistaEIndicadorVendedor> BuscarVendedorParceirosPorParceiros(TorcamentistaEIndicadorVendedorFiltro obj)
         {
             return _orcamentistaEindicadorVendedorBll.BuscarVendedorParceirosPorParceiros(obj);
+        }
+
+        public ListaOrcamentistaVendedorResponse ListarOrcamentistaVendedor(UsuariosRequest request)
+        {
+            var response = new ListaOrcamentistaVendedorResponse();
+            response.Sucesso = false;
+
+            var filtro = new TorcamentistaEIndicadorVendedorFiltro();
+            filtro.TipoUsuario = request.TipoUsuario;
+            filtro.nomeVendedor= request.Vendedor;
+            filtro.Parceiro = request.Parceiro;
+            filtro.loja= request.Loja;
+            filtro.Pesquisa = request.Pesquisa;
+            filtro.ativo = request.Ativo;
+            filtro.Pagina = request.Pagina;
+            filtro.QtdeItensPagina = request.QtdeItensPagina;
+            filtro.OrdenacaoAscendente = request.OrdenacaoAscendente;
+            filtro.NomeColuna = request.NomeColuna;
+
+            var objRetorno = _orcamentistaEindicadorVendedorBll.ListarOrcamentistaVendedor(filtro);
+            if(objRetorno != null)
+            {
+                response.QtdeRegistros = (int)objRetorno.GetType().GetProperty("QtdeRegistros").GetValue(objRetorno, null);
+                var lista = (List<TorcamentistaEIndicadorVendedor>)objRetorno.GetType().GetProperty("Lista").GetValue(objRetorno, null);
+                response.ListaOrcamentistaVendedor = new List<OrcamentistaVendedorResponse>();
+                foreach (var item in lista)
+                {
+                    var usuario = new OrcamentistaVendedorResponse();
+                    usuario.Id = item.Id;
+                    usuario.Nome = item.Nome;
+                    usuario.Email = item.Email;
+                    usuario.Parceiro = item.Parceiro;
+                    usuario.Ativo = item.Ativo;
+                    usuario.AtivoLabel = item.Ativo ? "Sim" : "Não";
+                    usuario.VendedorResponsavel = item.VendedorResponsavel;
+                    response.ListaOrcamentistaVendedor.Add(usuario);
+                }
+            }
+
+            response.ListaOrcamentistaVendedor = response.ListaOrcamentistaVendedor.OrderBy(o => o.Nome).ToList();
+            //fazer a busca
+            response.Sucesso = true;
+            return response;
         }
     }
 }

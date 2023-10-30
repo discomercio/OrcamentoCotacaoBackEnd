@@ -82,20 +82,7 @@ namespace InfraBanco.Modelos
         [Column("EnderecoIpBloqueadoAutomatico")]
         public string EnderecoIpBloqueadoAutomatico { get; set; }
 
-        /*
-Column_name	Type	Length	Nullable
-Id	int	4	no
-Nome	varchar	255	yes
-Email	varchar	255	yes
-Senha	varchar	100	yes
-IdIndicador	varchar	20	yes
-Telefone	varchar	15	yes
-Celular	varchar	15	yes
-Ativo	bit	1	yes
-UsuarioCadastro	varchar	20	yes
-UsuarioUltimaAlteracao	varchar	20	yes
-DataCadastro	datetime	8	yes
-DataUltimaAlteracao	datetime	8	yes
-         */
+        [NotMapped]
+        public string StringBusca { get; set; }
     }
 }

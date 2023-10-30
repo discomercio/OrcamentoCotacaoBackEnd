@@ -1,4 +1,5 @@
-﻿using InfraBanco.Constantes;
+﻿using Azure;
+using InfraBanco.Constantes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -21,6 +22,7 @@ namespace PrepedidoApi.Controllers
     [ApiController]
     [Authorize(Roles = Autenticacao.RoleAcesso)]
     [TypeFilter(typeof(ResourceFilter))]
+    [TypeFilter(typeof(ExceptionFilter))]
     public class ClienteController : BaseController
     {
         private readonly ILogger<ClienteController> _logger;
@@ -128,30 +130,38 @@ namespace PrepedidoApi.Controllers
         [HttpPost("cadastrarCliente")]
         public async Task<IActionResult> CadastrarCliente(ClienteCadastroDto clienteDto)
         {
-            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
-
-            var request = new
+            try
             {
-                Usuario = LoggedUser.Apelido,
-                DadosCliente = clienteDto.DadosCliente,
-                RefBancaria = clienteDto.RefBancaria.Count,
-                RefComercial = clienteDto.RefComercial.Count
-            };
+                var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. ClienteController/CadastrarCliente/POST - Request => [{JsonSerializer.Serialize(request)}].");
+                var request = new
+                {
+                    Usuario = LoggedUser.Apelido,
+                    DadosCliente = clienteDto.DadosCliente,
+                    RefBancaria = clienteDto.RefBancaria.Count,
+                    RefComercial = clienteDto.RefComercial.Count
+                };
 
-            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. ClienteController/CadastrarCliente/POST - Request => [{JsonSerializer.Serialize(request)}].");
 
-            var cliente = await clientePrepedidoBll.CadastrarCliente(clienteDto, apelido.Trim());
+                string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            var response = new
+                var cliente = await clientePrepedidoBll.CadastrarCliente(clienteDto, apelido.Trim());
+
+                var response = new
+                {
+                    Clientes = cliente
+                };
+
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. ClienteController/CadastrarCliente/POST - Response => [{JsonSerializer.Serialize(response)}].");
+
+                return Ok(cliente);
+            }
+            catch (Exception e)
             {
-                Clientes = cliente
-            };
-
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. ClienteController/CadastrarCliente/POST - Response => [{JsonSerializer.Serialize(response)}].");
-
-            return Ok(cliente);
+                e.Data.Add("params", clienteDto);
+                throw e;
+            }
         }
 
         [HttpGet("listarComboJustificaEndereco")]

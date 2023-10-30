@@ -11,6 +11,7 @@ using OrcamentoCotacaoApi.Utils;
 using OrcamentoCotacaoBusiness.Bll;
 using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Request.OrcamentistaIndicadorVendedor;
+using OrcamentoCotacaoBusiness.Models.Request.Usuario;
 using OrcamentoCotacaoBusiness.Models.Response;
 using OrcamentoCotacaoBusiness.Models.Response.OrcamentistaIndicadorVendedor;
 using System;
@@ -382,6 +383,41 @@ namespace OrcamentoCotacaoApi.Controllers
             _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentistaEIndicadorVendedorController/BuscarVendedoresDosParceirosPorParceiros/GET - Response => [{JsonSerializer.Serialize(response)}].");
 
             return result;
+        }
+
+        [HttpPost]
+        [Route("listar-orcamentista-vendedor")]
+        public IActionResult ListarOrcamentistaVendedor(UsuariosRequest request)
+        {
+            try
+            {
+                request.CorrelationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+                request.Usuario = LoggedUser.Apelido;
+
+                var response = new ListaOrcamentistaVendedorResponse();
+
+                if (request.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR)
+                {
+                    //verificar permissão do usuário
+                    if (string.IsNullOrEmpty(request.Vendedor) && !User.ValidaPermissao((int)ePermissao.SelecionarQualquerIndicadorDaLoja))
+                    {
+                        response.Sucesso = false;
+                        response.Mensagem = "Não encontramos a permissão necessária para realizar atividade!";
+                        return Ok(response);
+                    }
+                }
+
+                _logger.LogInformation($"CorrelationId => [{request.CorrelationId}]. OrcamentistaEIndicadorVendedorController/ListarOrcamentistaVendedor/POST - Request => [{JsonSerializer.Serialize(request)}].");
+
+
+                response = _orcamentistaEIndicadorVendedorBll.ListarOrcamentistaVendedor(request);
+
+                return Ok(response);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

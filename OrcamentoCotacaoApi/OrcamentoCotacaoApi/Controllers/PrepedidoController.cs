@@ -22,6 +22,7 @@ using UtilsGlobais.Configs;
 
 namespace PrepedidoApi.Controllers
 {
+    [TypeFilter(typeof(ExceptionFilter))]
     [TypeFilter(typeof(ControleDelayFilter))]
     [Route("api/[controller]")]
     [ApiController]
@@ -108,10 +109,10 @@ namespace PrepedidoApi.Controllers
         [HttpGet("listarPrePedidos")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> ListarPrePedidos(
-            int tipoBusca, 
-            string clienteBusca, 
+            int tipoBusca,
+            string clienteBusca,
             string numeroPrePedido,
-            DateTime? dataInicial, 
+            DateTime? dataInicial,
             DateTime? dataFinal)
         {
             var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
@@ -133,9 +134,9 @@ namespace PrepedidoApi.Controllers
             var lista = await prepedidoApiBll.ListarPrePedidos(
                 apelido,
                 (PrepedidoBll.TipoBuscaPrepedido)tipoBusca,
-                clienteBusca, 
-                numeroPrePedido, 
-                dataInicial, 
+                clienteBusca,
+                numeroPrePedido,
+                dataInicial,
                 dataFinal);
 
             _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/ListarPrePedidos/GET - Response => [{JsonSerializer.Serialize(lista.Count())}].");
@@ -249,45 +250,54 @@ namespace PrepedidoApi.Controllers
         [HttpPost("cadastrarPrepedido")]
         public async Task<IActionResult> CadastrarPrepedido(PrePedidoDto prePedido)
         {
-            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
-
-            var request = new
+            try
             {
-                Usuario = LoggedUser.Apelido,
-                PrePedido = prePedido,
-                IP = HttpContext.Connection.RemoteIpAddress.ToString()
-            };
+                var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/CadastrarPrepedido/POST - Request => [{JsonSerializer.Serialize(request)}].");
+                var request = new
+                {
+                    Usuario = LoggedUser.Apelido,
+                    PrePedido = prePedido,
+                    IP = HttpContext.Connection.RemoteIpAddress.ToString()
+                };
 
-            var permissao = this.ObterPermissaoInclusaoPrePedido();
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/CadastrarPrepedido/POST - Request => [{JsonSerializer.Serialize(request)}].");
 
-            if (!permissao.IncluirPrePedido)
-                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+                var permissao = this.ObterPermissaoInclusaoPrePedido();
 
-            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+                if (!permissao.IncluirPrePedido)
+                    return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
-            var appSettingsSection = configuration.GetSection("AppSettings");
-            var appSettings = appSettingsSection.Get<Configuracao>();
-            //LIMITE_ARREDONDAMENTO_PRECO_VENDA_ORCAMENTO_ITEM fixo em 1 centavo
+                string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
 
-            var usuario = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+                var appSettingsSection = configuration.GetSection("AppSettings");
+                var appSettings = appSettingsSection.Get<Configuracao>();
+                //LIMITE_ARREDONDAMENTO_PRECO_VENDA_ORCAMENTO_ITEM fixo em 1 centavo
 
-            IEnumerable<string> ret = await prepedidoApiBll
-                .CadastrarPrepedido(
-                prePedido,
-                apelido.Trim(),
-                0.01M,
-                appSettings.VerificarPrepedidoRepetido,
-                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO,
-                appSettings.LimiteItens,
-                (Constantes.TipoUsuarioContexto)usuario.TipoUsuario,
-                usuario.Id,
-                request.IP);
+                var usuario = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/CadastrarPrepedido/POST - Response => [{JsonSerializer.Serialize(ret)}].");
+                IEnumerable<string> ret = await prepedidoApiBll
+                    .CadastrarPrepedido(
+                    prePedido,
+                    apelido.Trim(),
+                    0.01M,
+                    appSettings.VerificarPrepedidoRepetido,
+                    Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO,
+                    appSettings.LimiteItens,
+                    (Constantes.TipoUsuarioContexto)usuario.TipoUsuario,
+                    usuario.Id,
+                    request.IP);
 
-            return Ok(ret);
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. PrepedidoController/CadastrarPrepedido/POST - Response => [{JsonSerializer.Serialize(ret)}].");
+
+                return Ok(ret);
+            }
+            catch (Exception e)
+            {
+                e.Data.Add("params", prePedido);
+                throw e;
+            }
+
         }
 
         [HttpPost("deletarPrepedido")]

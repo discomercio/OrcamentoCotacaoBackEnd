@@ -12,5 +12,12 @@ namespace InfraBanco.Modelos.Filtros
         public string nomeVendedor { get; set; }
         public bool? ativo { get; set; }
         public string[] Parceiros { get; set; }
+        public string Parceiro { get; set; }
+        public string Pesquisa { get; set; }
+        public int Pagina { get; set; }
+        public int QtdeItensPagina { get; set; }
+        public bool OrdenacaoAscendente { get; set; }
+        public string NomeColuna { get; set; }
+        public int TipoUsuario { get; set; }
     }
 }
