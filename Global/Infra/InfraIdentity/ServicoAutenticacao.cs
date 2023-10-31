@@ -105,7 +105,8 @@ namespace InfraIdentity
                     new Claim("Permissoes", usuario.Permissoes != null?string.Join(",",usuario.Permissoes):""),
                     new Claim("UsuarioLogin", JsonSerializer.Serialize(usuario)),
                     new Claim("Id", usuario.Id.ToString()),
-                    new Claim("LojaLogada", usuario.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR ? "": usuario.Loja)
+                    new Claim("LojaLogada", usuario.TipoUsuario == (int)Constantes.TipoUsuario.VENDEDOR ? "": usuario.Loja),
+                    new Claim("NomeAmigavel", usuario.NomeAmigavel)
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(validadeTokenMinutos),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
