@@ -28,5 +28,6 @@ namespace InfraIdentity
         public string Datastamp { get; set; }
         public bool AcessoHabilitado { get; set; }
         public bool StLoginBloqueadoAutomatico { get; set; }
+        public string NomeAmigavel { get; set; }
     }
 }

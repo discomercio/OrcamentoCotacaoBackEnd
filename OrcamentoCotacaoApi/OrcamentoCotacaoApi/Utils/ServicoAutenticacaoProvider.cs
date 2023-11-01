@@ -185,7 +185,8 @@ namespace OrcamentoCotacaoApi.Utils
                             TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR,
                             Id = usuarioInterno.FirstOrDefault().Id,
                             Bloqueado = usuarioInterno.FirstOrDefault().Bloqueado == 1 ? true : false,
-                            StLoginBloqueadoAutomatico = usuarioInterno.FirstOrDefault().StLoginBloqueadoAutomatico
+                            StLoginBloqueadoAutomatico = usuarioInterno.FirstOrDefault().StLoginBloqueadoAutomatico,
+                            NomeAmigavel = usuarioInterno.FirstOrDefault().Nome
                         };
                         return usuario;
                     //break;
@@ -206,7 +207,8 @@ namespace OrcamentoCotacaoApi.Utils
                             TipoUsuario = (int)Constantes.TipoUsuario.PARCEIRO,
                             Id = orcamentista.FirstOrDefault().IdIndicador,
                             Bloqueado = orcamentista.FirstOrDefault().Status != "A" ? true : false,
-                            StLoginBloqueadoAutomatico = orcamentista.FirstOrDefault().StLoginBloqueadoAutomatico
+                            StLoginBloqueadoAutomatico = orcamentista.FirstOrDefault().StLoginBloqueadoAutomatico,
+                            NomeAmigavel = !string.IsNullOrEmpty(orcamentista.FirstOrDefault().NomeFantasia) ? orcamentista.FirstOrDefault().NomeFantasia : orcamentista.FirstOrDefault().Razao_Social_Nome
                         };
                         break;
                     case (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO:
@@ -226,7 +228,8 @@ namespace OrcamentoCotacaoApi.Utils
                             TipoUsuario = (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO,
                             Id = orcamentistaVendedor.FirstOrDefault().Id,
                             Bloqueado = !orcamentistaVendedor.FirstOrDefault().Ativo,
-                            StLoginBloqueadoAutomatico = orcamentistaVendedor.FirstOrDefault().StLoginBloqueadoAutomatico
+                            StLoginBloqueadoAutomatico = orcamentistaVendedor.FirstOrDefault().StLoginBloqueadoAutomatico,
+                            NomeAmigavel = orcamentistaVendedor.FirstOrDefault().Nome
                         };
                         break;
                     default:
