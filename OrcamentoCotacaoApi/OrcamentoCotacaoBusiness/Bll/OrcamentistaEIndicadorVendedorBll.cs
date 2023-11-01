@@ -13,6 +13,7 @@ using OrcamentoCotacaoBusiness.Models.Response.OrcamentistaIndicadorVendedor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UtilsGlobais;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -108,6 +109,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 objOrcamentistaEIndicadorVendedor.DataCadastro = DateTime.Now;
                 objOrcamentistaEIndicadorVendedor.DataUltimaAlteracao = DateTime.Now;
                 objOrcamentistaEIndicadorVendedor.DataUltimaAlteracaoSenha = null;
+                objOrcamentistaEIndicadorVendedor.Senha = Util.GerarSenhaAleatoria();
 
                 var retorno = _orcamentistaEindicadorVendedorBll
                     .InserirComTransacao(objOrcamentistaEIndicadorVendedor, dbGravacao);
@@ -185,6 +187,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 objOrcamentistaEIndicadorVendedor.IdIndicador = tOrcamentistaIndicadorVendedor.IdIndicador;
                 objOrcamentistaEIndicadorVendedor.UsuarioCadastro = tOrcamentistaIndicadorVendedor.UsuarioCadastro;
                 objOrcamentistaEIndicadorVendedor.StLoginBloqueadoAutomatico = model.StLoginBloqueadoAutomatico;
+                objOrcamentistaEIndicadorVendedor.Senha = Util.GerarSenhaAleatoria();
 
                 var retorno = _orcamentistaEindicadorVendedorBll.AtualizarComTransacao(objOrcamentistaEIndicadorVendedor, dbGravacao);
 
