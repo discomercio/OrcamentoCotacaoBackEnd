@@ -175,6 +175,9 @@ namespace OrcamentoCotacaoApi.Controllers
             var request = new
             {
                 Orcamento = aprovarOrcamento.IdOrcamento,
+                OpcaoAprovada = aprovarOrcamento.OpcaoSequencia,
+                PagamentoAprovado = aprovarOrcamento.PagtoAprovadoTexto,
+                IdPagamentoAprovado = aprovarOrcamento.IdFormaPagto,
                 IP = HttpContext.Connection.RemoteIpAddress.ToString()
             };
 
