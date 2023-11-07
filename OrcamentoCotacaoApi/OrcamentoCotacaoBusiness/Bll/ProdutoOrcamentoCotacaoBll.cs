@@ -535,6 +535,15 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 foreach (var unificado in tOrcamentoCotacaoItemUnificados)
                 {
+                    var unificadoValido = produtoGeralBll.BuscarProdutosEspecificos(loja, new List<string> { unificado.Produto }).Result.FirstOrDefault();
+                    if(unificadoValido != null)
+                    {
+                        if(unificado.Qtde > unificadoValido.Qtde_Max_Venda)
+                        {
+                            response.Mensagem = "Há produto(s) que excede(m) a quantidade máxima permitida por produto!";
+                            return response;
+                        }
+                    }
 
                     var produtosEspecificos = unificado.TorcamentoCotacaoOpcaoItemAtomicos.Select(x => x.Produto).ToList();
                     _logger.LogInformation($"CorrelationId => [{correlationId}]. {nomeMetodo}. Buscando lista de produtos específicos. Loja => [{loja}]");
@@ -708,6 +717,16 @@ namespace OrcamentoCotacaoBusiness.Bll
                 {
                     response.Mensagem = "Falha ao buscar item atômico para atualização!";
                     return response;
+                }
+
+                var unificadoValido = produtoGeralBll.BuscarProdutosEspecificos(opcao.Loja, new List<string> { unificado.Produto }).Result.FirstOrDefault();
+                if (unificadoValido != null)
+                {
+                    if (unificado.Qtde > unificadoValido.Qtde_Max_Venda)
+                    {
+                        response.Mensagem = "Há produto(s) que excede(m) a quantidade máxima permitida por produto!";
+                        return response;
+                    }
                 }
 
                 var produtosEspecificos = unificado.TorcamentoCotacaoOpcaoItemAtomicos.Select(x => x.Produto).ToList();
