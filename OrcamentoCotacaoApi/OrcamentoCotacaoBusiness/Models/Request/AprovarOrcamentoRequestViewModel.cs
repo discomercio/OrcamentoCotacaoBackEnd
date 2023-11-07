@@ -17,8 +17,14 @@ namespace OrcamentoCotacaoBusiness.Models.Request
         [JsonProperty("idOpcao")]
         public int IdOpcao { get; set; }
 
+        [JsonProperty("opcaoSequencia")]
+        public int OpcaoSequencia { get; set; }
+
         [JsonProperty("idFormaPagto")]
         public int IdFormaPagto { get; set; }
+
+        [JsonProperty("pagtoAprovadoTexto")]
+        public string PagtoAprovadoTexto { get; set; }
 
         [JsonProperty("clienteCadastroDto")]
         public ClienteCadastroDto ClienteCadastroDto { get; set; }

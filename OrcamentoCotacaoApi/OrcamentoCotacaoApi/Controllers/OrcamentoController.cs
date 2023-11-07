@@ -419,6 +419,9 @@ namespace OrcamentoCotacaoApi.Controllers
             {
                 Usuario = LoggedUser.Apelido,
                 Orcamento = aprovarOrcamento.IdOrcamento,
+                OpcaoAprovada = aprovarOrcamento.OpcaoSequencia,
+                PagamentoAprovado = aprovarOrcamento.PagtoAprovadoTexto,
+                IdPagamentoAprovado = aprovarOrcamento.IdFormaPagto,
                 IP = HttpContext.Connection.RemoteIpAddress.ToString()
             };
 
