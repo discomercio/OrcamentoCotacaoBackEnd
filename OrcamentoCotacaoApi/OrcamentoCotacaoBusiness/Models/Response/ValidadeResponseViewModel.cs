@@ -8,5 +8,6 @@
         public int QtdeGlobalValidade { get; set; }
         public int MaxPeriodoConsultaFiltroPesquisa { get; set; }
         public int MaxPeriodoConsulta_RelatorioGerencial { get; set; }
+        public int LimiteQtdeMaxOpcaoOrcamento { get; set; }
     }
 }

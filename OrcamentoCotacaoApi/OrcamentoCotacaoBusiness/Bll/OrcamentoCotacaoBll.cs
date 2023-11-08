@@ -874,6 +874,10 @@ namespace OrcamentoCotacaoBusiness.Bll
             var parametros = _parametroOrcamentoCotacaoBll.ObterParametros(unidadeNegocio);
             if (parametros == null) throw new ArgumentException("Falha ao buscar configurações de orçamento!");
 
+            var appSettingsSection = _configuration.GetSection("AppSettings");
+            var appSettings = appSettingsSection.Get<Configuracao>();
+            var limiteMaxQtdeOpcoes = appSettings.LimiteQtdeMaxOpcaoOrcamento;
+
             return new ValidadeResponseViewModel
             {
                 QtdeDiasValidade = int.Parse(parametros.QtdePadrao_DiasValidade),
@@ -881,7 +885,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                 QtdeMaxProrrogacao = int.Parse(parametros.QtdeMaxProrrogacao),
                 QtdeGlobalValidade = int.Parse(parametros.QtdeGlobal_Validade),
                 MaxPeriodoConsultaFiltroPesquisa = parametros.MaxPeriodoConsultaFiltroPesquisa,
-                MaxPeriodoConsulta_RelatorioGerencial = parametros.MaxPeriodoConsulta_RelatorioGerencial 
+                MaxPeriodoConsulta_RelatorioGerencial = parametros.MaxPeriodoConsulta_RelatorioGerencial,
+                LimiteQtdeMaxOpcaoOrcamento = limiteMaxQtdeOpcoes
             };
         }
 
@@ -970,6 +975,14 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (orcamento.ListaOrcamentoCotacaoDto.Count <= 0)
             {
                 response.Mensagem = "Necessário ter ao menos uma opção de orçamento!";
+                return response;
+            }
+            var appSettingsSection = _configuration.GetSection("AppSettings");
+            var appSettings = appSettingsSection.Get<Configuracao>();
+            var limiteMaxQtdeOpcoes = appSettings.LimiteQtdeMaxOpcaoOrcamento;
+            if(orcamento.ListaOrcamentoCotacaoDto.Count > limiteMaxQtdeOpcoes)
+            {
+                response.Mensagem = $"É permitido incluir somente {limiteMaxQtdeOpcoes} opções de orçamento!";
                 return response;
             }
 
