@@ -5,8 +5,8 @@
     <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
     <Configurations>Debug;Release;Release_OrcamentoCotacao;Debug_OrcamentoCotacao</Configurations>
     <DebugType Condition=" '$(Configuration)' == 'Release_OrcamentoCotacao' ">None</DebugType>
-    <AssemblyVersion>1.9.0.6</AssemblyVersion>
-    <FileVersion>1.9.0.6</FileVersion>
+    <AssemblyVersion>1.9.0.7</AssemblyVersion>
+    <FileVersion>1.9.0.7</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
