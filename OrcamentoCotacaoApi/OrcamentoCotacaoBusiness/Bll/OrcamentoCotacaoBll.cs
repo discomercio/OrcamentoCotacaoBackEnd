@@ -1,4 +1,5 @@
-﻿using Cfg.CfgUnidadeNegocio;
+﻿using Azure.Core;
+using Cfg.CfgUnidadeNegocio;
 using Cfg.CfgUnidadeNegocioParametro;
 using InfraBanco;
 using InfraBanco.Constantes;
@@ -881,7 +882,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                 QtdeMaxProrrogacao = int.Parse(parametros.QtdeMaxProrrogacao),
                 QtdeGlobalValidade = int.Parse(parametros.QtdeGlobal_Validade),
                 MaxPeriodoConsultaFiltroPesquisa = parametros.MaxPeriodoConsultaFiltroPesquisa,
-                MaxPeriodoConsulta_RelatorioGerencial = parametros.MaxPeriodoConsulta_RelatorioGerencial 
+                MaxPeriodoConsulta_RelatorioGerencial = parametros.MaxPeriodoConsulta_RelatorioGerencial,
+                LimiteQtdeMaxOpcaoOrcamento = parametros.MaxQtdeOpcoes
             };
         }
 
@@ -970,6 +972,14 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (orcamento.ListaOrcamentoCotacaoDto.Count <= 0)
             {
                 response.Mensagem = "Necessário ter ao menos uma opção de orçamento!";
+                return response;
+            }
+            
+            var config = BuscarConfigValidade(orcamento.Loja);
+            var limiteMaxQtdeOpcoes = config.LimiteQtdeMaxOpcaoOrcamento;
+            if (orcamento.ListaOrcamentoCotacaoDto.Count > limiteMaxQtdeOpcoes)
+            {
+                response.Mensagem = $"É permitido incluir somente {limiteMaxQtdeOpcoes} opções de orçamento!";
                 return response;
             }
 

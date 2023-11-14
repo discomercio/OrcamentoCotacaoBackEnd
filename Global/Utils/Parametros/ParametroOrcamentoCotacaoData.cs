@@ -24,7 +24,8 @@ namespace UtilsGlobais.Parametros
                 (int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_ValidadeOrcamento_QtdeMaxProrrogacao,
                 (int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_ValidadeOrcamento_MaxPrazoValidadeGlobal,
                 (int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_MaxPeriodoConsulta_FiltroPesquisa,
-                (int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_MaxPeriodoConsulta_RelatorioGerencial
+                (int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_MaxPeriodoConsulta_RelatorioGerencial,
+                (int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_MaxQtdeOpcoes
             };
 
             using (var db = _contextoProvider.GetContextoGravacaoParaUsing(ContextoBdGravacao.BloqueioTControle.NENHUM))
@@ -50,6 +51,8 @@ namespace UtilsGlobais.Parametros
                 retorno.QtdePadrao_DiasProrrogacao = saida.FirstOrDefault(x => x.Id == (int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_ValidadeOrcamento_PrazoProrrogacaoPadrao).Valor;
                 retorno.QtdeMaxProrrogacao = saida.FirstOrDefault(x => x.Id == (int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_ValidadeOrcamento_QtdeMaxProrrogacao).Valor;
                 retorno.QtdeGlobal_Validade = saida.FirstOrDefault(x => x.Id == (int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_ValidadeOrcamento_MaxPrazoValidadeGlobal).Valor;
+                retorno.MaxQtdeOpcoes = int.Parse(saida.FirstOrDefault(x => x.Id == (int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_MaxQtdeOpcoes).Valor);
+                
                 int periodoConsulta = 0;
                 if (int.TryParse(saida.FirstOrDefault(x => x.Id == (int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_MaxPeriodoConsulta_FiltroPesquisa).Valor, out periodoConsulta))
                 {
