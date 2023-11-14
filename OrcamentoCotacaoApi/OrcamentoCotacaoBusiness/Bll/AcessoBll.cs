@@ -673,12 +673,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 vendedorParceiro.DataUltimaAlteracao = DateTime.Now;
                 vendedorParceiro.DataUltimaAlteracaoSenha = DateTime.Now;
 
-
-                // Campo da tabela t_log hoje comporta até 20 e no futuro iremos utilizar outra tabela de log v2
-                if (apelido.Length > 20)
-                {
-                    apelido = apelido.Substring(0, 20);
-                }
+                apelido = $"[{(int)Constantes.TipoUsuarioContexto.VendedorParceiro}] {vendedorParceiro.Id}";
 
                 var novoLog = Util.GravaLog(
                                             dbgravacao,
