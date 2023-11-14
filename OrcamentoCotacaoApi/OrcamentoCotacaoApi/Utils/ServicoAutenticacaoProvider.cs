@@ -208,7 +208,7 @@ namespace OrcamentoCotacaoApi.Utils
                             Id = orcamentista.FirstOrDefault().IdIndicador,
                             Bloqueado = orcamentista.FirstOrDefault().Status != "A" ? true : false,
                             StLoginBloqueadoAutomatico = orcamentista.FirstOrDefault().StLoginBloqueadoAutomatico,
-                            NomeAmigavel = !string.IsNullOrEmpty(orcamentista.FirstOrDefault().NomeFantasia) ? orcamentista.FirstOrDefault().NomeFantasia : orcamentista.FirstOrDefault().Razao_Social_Nome
+                            NomeAmigavel = !string.IsNullOrEmpty(orcamentista.FirstOrDefault().NomeFantasia) ? orcamentista.FirstOrDefault().NomeFantasia : orcamentista.FirstOrDefault().Apelido
                         };
                         break;
                     case (int)Constantes.TipoUsuario.VENDEDOR_DO_PARCEIRO:
