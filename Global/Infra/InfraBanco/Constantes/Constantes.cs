@@ -2902,7 +2902,8 @@ namespace InfraBanco.Constantes
             ModuloOrcamentoCotacao_ValidadeOrcamento_MaxPrazoValidadeGlobal = 17,
             ModuloOrcamentoCotacao_MaxPeriodoConsulta_FiltroPesquisa = 20,
             ModuloOrcamentoCotacao_NovoOrcto_Filtro_GrupoSubgrupo = 38,
-            ModuloOrcamentoCotacao_MaxPeriodoConsulta_RelatorioGerencial = 42
+            ModuloOrcamentoCotacao_MaxPeriodoConsulta_RelatorioGerencial = 42,
+            ModuloOrcamentoCotacao_MaxQtdeOpcoes = 43
         }
 
         public const string SIM_TODAS = "Sim - Todas";

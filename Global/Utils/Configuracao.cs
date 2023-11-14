@@ -10,6 +10,5 @@
         public string BloqueioUsuarioLoginAmbiente { get; set; }
         public bool GerarLogProcessoAutomatizado { get; set; } = true;
         public bool CadastrarEControlarTempoRespostaEndpoint { get; set; }
-        public int LimiteQtdeMaxOpcaoOrcamento { get; set; }
     }
 }
