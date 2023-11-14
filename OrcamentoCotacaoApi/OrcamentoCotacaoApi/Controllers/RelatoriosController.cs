@@ -11,6 +11,10 @@ using UtilsGlobais.Configs;
 using OrcamentoCotacaoBusiness.Bll;
 using System.Text.Json;
 using OrcamentoCotacaoBusiness.Models.Request.Relatorios;
+using NuGet.Packaging;
+using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace OrcamentoCotacaoApi.Controllers
 {
@@ -50,6 +54,16 @@ namespace OrcamentoCotacaoApi.Controllers
                 response.Sucesso = false;
                 response.Mensagem = "Não encontramos a permissão necessária para acessar essa funcionalidade!";
                 return Ok(response);
+            }
+
+            var acessoUniversal = User.ValidaPermissao((int)ePermissao.AcessoUniversalOrcamentoPedidoPrepedidoConsultar);
+            if (!acessoUniversal)
+            {
+                var usuario = new List<string>
+                {
+                    LoggedUser.Id.ToString()
+                };
+                model.Vendedores = usuario.ToArray();
             }
 
             response = _relatoriosBll.RelatorioItensOrcamento(model);
