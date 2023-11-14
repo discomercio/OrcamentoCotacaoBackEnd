@@ -92,6 +92,16 @@ namespace OrcamentoCotacaoApi.Controllers
                 return Ok(response);
             }
 
+            var acessoUniversal = User.ValidaPermissao((int)ePermissao.AcessoUniversalOrcamentoPedidoPrepedidoConsultar);
+            if (!acessoUniversal)
+            {
+                var usuario = new List<string>
+                {
+                    LoggedUser.Id.ToString()
+                };
+                model.Vendedores = usuario.ToArray();
+            }
+
             response = _relatoriosBll.RelatorioDadosOrcamento(model);
 
             return Ok(response);
