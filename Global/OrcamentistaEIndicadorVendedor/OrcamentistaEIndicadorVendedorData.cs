@@ -193,6 +193,7 @@ namespace OrcamentistaEIndicadorVendedor
             {
                 var saida = from usr in db.TorcamentistaEIndicadorVendedor
                             join par in db.TorcamentistaEindicador on usr.IdIndicador equals par.IdIndicador
+                            join ven in db.Tusuario on  par.Vendedor equals ven.Usuario
                             select new TorcamentistaEIndicadorVendedor()
                             {
                                 Id = usr.Id,
@@ -201,6 +202,7 @@ namespace OrcamentistaEIndicadorVendedor
                                 IdIndicador = usr.IdIndicador,
                                 Ativo = usr.Ativo,
                                 Loja = par.Loja,
+                                IdVendedor = ven.Id,
                                 VendedorResponsavel = par.Vendedor,
                                 Parceiro = par.Apelido,
                                 StLoginBloqueadoAutomatico = usr.StLoginBloqueadoAutomatico,
@@ -213,6 +215,10 @@ namespace OrcamentistaEIndicadorVendedor
                 {
                     saida = saida.Where(x => x.Ativo == obj.ativo);
                 }
+                if(obj.Bloqueado != null)
+                {
+                    saida = saida.Where(x => x.StLoginBloqueadoAutomatico == (obj.Bloqueado == 1 ? true : false));
+                }
                 if (!string.IsNullOrEmpty(obj.loja))
                 {
                     saida = saida.Where(x => x.Loja == obj.loja);
@@ -224,6 +230,14 @@ namespace OrcamentistaEIndicadorVendedor
                 if (!string.IsNullOrEmpty(obj.Parceiro))
                 {
                     saida = saida.Where(x => x.Parceiro == obj.Parceiro);
+                }
+                if(obj.Vendedores.Count() > 0)
+                {
+                    saida = saida.Where(x => obj.Vendedores.Contains(x.IdVendedor));
+                }
+                if(obj.Parceiros.Count() > 0)
+                {
+                    saida = saida.Where(x => obj.Parceiros.Contains(x.Parceiro));
                 }
 
                 var response = saida.ToList();

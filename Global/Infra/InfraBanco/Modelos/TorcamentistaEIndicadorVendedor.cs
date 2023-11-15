@@ -66,6 +66,8 @@ namespace InfraBanco.Modelos
 
         [NotMapped]
         public string VendedorResponsavel { get; set; }
+        [NotMapped]
+        public int IdVendedor { get; set; }
 
         [NotMapped]
         public string Parceiro { get; set; }
