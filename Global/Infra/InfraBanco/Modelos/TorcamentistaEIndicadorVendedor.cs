@@ -84,5 +84,10 @@ namespace InfraBanco.Modelos
 
         [NotMapped]
         public string StringBusca { get; set; }
+
+        [NotMapped]
+        public bool? StSucesso { get; set; }
+        [NotMapped]
+        public DateTime? UltimoLogin { get; set; }
     }
 }

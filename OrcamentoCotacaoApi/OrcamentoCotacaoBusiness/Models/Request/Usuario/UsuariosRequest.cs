@@ -38,5 +38,14 @@ namespace OrcamentoCotacaoBusiness.Models.Request.Usuario
 
         [JsonProperty("nomeColuna")]
         public string NomeColuna { get; set; }
+
+        [JsonProperty("parceiros")]
+        public string[] Parceiros { get; set; }
+
+        [JsonProperty("vendedores")]
+        public int[] Vendedores { get; set; }
+
+        [JsonProperty("stLoginBloqueadoAutomatico")]
+        public bool? stLoginBloqueadoAutomatico { get; set; }
     }
 }

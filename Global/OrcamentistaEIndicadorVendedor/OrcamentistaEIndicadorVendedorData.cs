@@ -203,10 +203,12 @@ namespace OrcamentistaEIndicadorVendedor
                                 Loja = par.Loja,
                                 VendedorResponsavel = par.Vendedor,
                                 Parceiro = par.Apelido,
-                                StringBusca = $"|{par.Apelido}|{usr.Nome}|{usr.Email}|{par.Vendedor}|"
+                                StLoginBloqueadoAutomatico = usr.StLoginBloqueadoAutomatico,
+                                DataCadastro = usr.DataCadastro,
+                                StringBusca = $"|{usr.Nome}|{usr.Email}|"
                             };
 
-
+                //vou preencher os dados restantes com 
                 if (obj.ativo != null)
                 {
                     saida = saida.Where(x => x.Ativo == obj.ativo);
@@ -240,6 +242,24 @@ namespace OrcamentistaEIndicadorVendedor
                     QtdeRegistros = qtdeRegistros,
                     Lista = response
                 };
+
+                var idsUsuario = response.Select(x => x.Id).ToList();
+                var loginHisto = from c in db.TloginHistorico
+                                 where idsUsuario.Contains((int)c.IdUsuario) &&
+                                       c.StSucesso == true
+                                 select c;
+                if(loginHisto != null)
+                {
+                    foreach(var i in response)
+                    {
+                        var login = loginHisto.Where(x => x.IdUsuario == i.Id).OrderByDescending(x => x.DataHora).FirstOrDefault();
+                        if(login != null)
+                        {
+                            i.StSucesso = true;
+                            i.UltimoLogin = login.DataHora;
+                        }
+                    }
+                }
 
                 return retorno;
             }
