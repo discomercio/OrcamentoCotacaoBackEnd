@@ -314,7 +314,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 }
             }
 
-            response.ListaOrcamentistaVendedor = response.ListaOrcamentistaVendedor.OrderBy(o => o.Nome).ToList();
+            //response.ListaOrcamentistaVendedor = response.ListaOrcamentistaVendedor.OrderBy(o => o.Nome).ToList();
             //fazer a busca
             response.Sucesso = true;
             return response;
