@@ -21,6 +21,7 @@ namespace OrcamentoCotacaoApi.Controllers
     [Route("[controller]")]
     [Authorize]
     [TypeFilter(typeof(ResourceFilter))]
+    [TypeFilter(typeof(ExceptionFilter))]
     public class UsuarioController : BaseController
     {
         private readonly ILogger<UsuarioController> _logger;
@@ -112,49 +113,65 @@ namespace OrcamentoCotacaoApi.Controllers
             return response;
         }
 
-        [HttpPost]
-        public async Task<UsuarioResponseViewModel> Post(UsuarioRequestViewModel model)
-        {
-            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+        //[HttpPost]
+        //public async Task<UsuarioResponseViewModel> Post(UsuarioRequestViewModel model)
+        //{
+        //    try
+        //    {
+        //        var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
-            var request = new
-            {
-                Usuario = LoggedUser.Apelido,
-                UsuarioRequestViewModel = model
-            };
+        //        var request = new
+        //        {
+        //            Usuario = LoggedUser.Apelido,
+        //            UsuarioRequestViewModel = model
+        //        };
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/Post/POST - Request => [{JsonSerializer.Serialize(request)}].");
+        //        _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/Post/POST - Request => [{JsonSerializer.Serialize(request)}].");
 
-            var objUsuario = _mapper.Map<Tusuario>(model);
-            var usuario = _usuarioGlobalBll.Inserir(objUsuario);// model, User.Identity.Name);
-            var response = _mapper.Map<UsuarioResponseViewModel>(usuario);
+        //        var objUsuario = _mapper.Map<Tusuario>(model);
+        //        var usuario = _usuarioGlobalBll.Inserir(objUsuario);// model, User.Identity.Name);
+        //        var response = _mapper.Map<UsuarioResponseViewModel>(usuario);
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/Post/POST - Response => [{JsonSerializer.Serialize(response)}].");
+        //        _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/Post/POST - Response => [{JsonSerializer.Serialize(response)}].");
 
-            return response;
-        }
+        //        return response;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        e.Data.Add("params", model);
+        //        throw;
+        //    }
+        //}
 
-        [HttpPut]
-        public async Task<UsuarioResponseViewModel> Put(UsuarioRequestViewModel model)
-        {
-            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+        //[HttpPut]
+        //public async Task<UsuarioResponseViewModel> Put(UsuarioRequestViewModel model)
+        //{
+        //    try
+        //    {
+        //        var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
-            var request = new
-            {
-                Usuario = LoggedUser.Apelido,
-                UsuarioRequestViewModel = model
-            };
+        //        var request = new
+        //        {
+        //            Usuario = LoggedUser.Apelido,
+        //            UsuarioRequestViewModel = model
+        //        };
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/Put/PUT - Request => [{JsonSerializer.Serialize(request)}].");
+        //        _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/Put/PUT - Request => [{JsonSerializer.Serialize(request)}].");
 
-            var objUsuario = _mapper.Map<Tusuario>(model);
-            var usuario = _usuarioGlobalBll.Atualizar(objUsuario);//model, User.Identity.Name);
-            var response = _mapper.Map<UsuarioResponseViewModel>(usuario);
+        //        var objUsuario = _mapper.Map<Tusuario>(model);
+        //        var usuario = _usuarioGlobalBll.Atualizar(objUsuario);//model, User.Identity.Name);
+        //        var response = _mapper.Map<UsuarioResponseViewModel>(usuario);
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/Put/PUT - Response => [{JsonSerializer.Serialize(response)}].");
+        //        _logger.LogInformation($"CorrelationId => [{correlationId}]. UsuarioController/Put/PUT - Response => [{JsonSerializer.Serialize(response)}].");
 
-            return response;
-        }
+        //        return response;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        e.Data.Add("params", model);
+        //        throw;
+        //    }
+        //}
 
         [HttpPost]
         [Route("buscarVendedoresPorListaLojas")]

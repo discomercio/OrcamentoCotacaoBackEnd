@@ -73,30 +73,40 @@ namespace PrepedidoApi.Controllers
         [HttpPost("atualizarClienteparcial")]
         public async Task<IActionResult> AtualizarClienteParcial(DadosClienteCadastroDto dadosClienteCadastroDto)
         {
-            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
-
-            var request = new { Usuario = LoggedUser.Apelido, Dto = dadosClienteCadastroDto };
-
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. ClienteController/AtualizarClienteParcial/POST - Request => [{JsonSerializer.Serialize(request)}].");
-
-            string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
-            List<string> retorno = await clientePrepedidoBll.AtualizarClienteParcial(apelido.Trim(), dadosClienteCadastroDto,
-                Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);
-
-            if (retorno == null)
+            try
             {
-                _logger.LogInformation($"CorrelationId => [{correlationId}]. ClienteController/AtualizarClienteParcial/POST - Response => [Não tem response].");
-                return NoContent();
+                var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+                var request = new { Usuario = LoggedUser.Apelido, Dto = dadosClienteCadastroDto };
+
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. ClienteController/AtualizarClienteParcial/POST - Request => [{JsonSerializer.Serialize(request)}].");
+
+                string apelido = servicoDecodificarToken.ObterApelidoOrcamentista(User);
+                List<string> retorno = await clientePrepedidoBll.AtualizarClienteParcial(apelido.Trim(), dadosClienteCadastroDto,
+                    Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ITS);
+
+                if (retorno == null)
+                {
+                    _logger.LogInformation($"CorrelationId => [{correlationId}]. ClienteController/AtualizarClienteParcial/POST - Response => [Não tem response].");
+                    return NoContent();
+                }
+
+                var response = new
+                {
+                    Retorno = retorno.Count
+                };
+
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. ClienteController/AtualizarClienteParcial/POST - Response => [{JsonSerializer.Serialize(response)}].");
+
+                return Ok(retorno);
             }
-
-            var response = new
+            catch (Exception e)
             {
-                Retorno = retorno.Count
-            };
+                e.Data.Add("params", dadosClienteCadastroDto);
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. ClienteController/AtualizarClienteParcial/POST - Response => [{JsonSerializer.Serialize(response)}].");
-
-            return Ok(retorno);
+                throw;
+            }
+            
         }
 
         [HttpGet("listarBancosCombo")]
