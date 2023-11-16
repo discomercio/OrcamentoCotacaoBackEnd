@@ -12,6 +12,7 @@ using OrcamentoCotacaoBusiness.Models.Request;
 using OrcamentoCotacaoBusiness.Models.Request.Orcamento;
 using OrcamentoCotacaoBusiness.Models.Response;
 using OrcamentoCotacaoBusiness.Models.Response.Orcamento;
+using Prepedido.Dto;
 using System;
 using System.Linq;
 using System.Text.Json;
@@ -149,27 +150,35 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost]
         public IActionResult Post(CadastroOrcamentoRequest model)
         {
-            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
-
-            var request = new
+            try
             {
-                Usuario = LoggedUser.Apelido,
-                Model = model,
-            };
+                var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/Post/POST - Request => [{JsonSerializer.Serialize(request)}].");
+                var request = new
+                {
+                    Usuario = LoggedUser.Apelido,
+                    Model = model,
+                };
 
-            model.CorrelationId = correlationId;
-            model.Usuario = LoggedUser.Apelido;
-            model.IP = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/Post/POST - Request => [{JsonSerializer.Serialize(request)}].");
 
-            var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+                model.CorrelationId = correlationId;
+                model.Usuario = LoggedUser.Apelido;
+                model.IP = Request.HttpContext.Connection.RemoteIpAddress.ToString();
 
-            var response = _orcamentoBll.CadastrarOrcamentoCotacao(model, user);
+                var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/Post/POST - Response => [{JsonSerializer.Serialize(response)}].");
+                var response = _orcamentoBll.CadastrarOrcamentoCotacao(model, user);
 
-            return Ok(response);
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/Post/POST - Response => [{JsonSerializer.Serialize(response)}].");
+
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                e.Data.Add("params", model);
+                throw;
+            }
         }
 
         [HttpGet]
@@ -235,119 +244,154 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPut("atualizarOrcamentoOpcao")]
         public IActionResult AtualizarOrcamentoOpcao(AtualizarOrcamentoOpcaoRequest opcao)
         {
-            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
-
-            var request = new
+            try
             {
-                Usuario = LoggedUser.Apelido,
-                AtualizarOrcamentoOpcaoRequest = opcao
-            };
+                var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/AtualizarOrcamentoOpcao/PUT - Request => [{JsonSerializer.Serialize(request)}].");
+                var request = new
+                {
+                    Usuario = LoggedUser.Apelido,
+                    AtualizarOrcamentoOpcaoRequest = opcao
+                };
+
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/AtualizarOrcamentoOpcao/PUT - Request => [{JsonSerializer.Serialize(request)}].");
 
 
-            var permissao = this.ObterPermissaoOrcamento(opcao.IdOrcamentoCotacao);
+                var permissao = this.ObterPermissaoOrcamento(opcao.IdOrcamentoCotacao);
 
-            if (!permissao.EditarOpcaoOrcamento)
-                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+                if (!permissao.EditarOpcaoOrcamento)
+                    return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
-            opcao.CorrelationId = correlationId;
-            opcao.Usuario = LoggedUser.Apelido;
-            opcao.IP = HttpContext.Connection.RemoteIpAddress.ToString();
+                opcao.CorrelationId = correlationId;
+                opcao.Usuario = LoggedUser.Apelido;
+                opcao.IP = HttpContext.Connection.RemoteIpAddress.ToString();
 
-            var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
-            var response = _orcamentoBll.AtualizarOrcamentoOpcao(opcao, user);
+                var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+                var response = _orcamentoBll.AtualizarOrcamentoOpcao(opcao, user);
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/AtualizarOrcamentoOpcao/PUT - Response => [{JsonSerializer.Serialize(response)}].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/AtualizarOrcamentoOpcao/PUT - Response => [{JsonSerializer.Serialize(response)}].");
 
-            return Ok(response);
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                e.Data.Add("params", opcao);
+                throw;
+            }
         }
 
         [HttpPut("{id}/status/{idStatus}")]
         public IActionResult AtualizarStatus(int id, short idStatus)
         {
-            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
-
-            var request = new
+            try
             {
-                Usuario = LoggedUser.Apelido,
-                Id = id,
-                IdStatus = idStatus,
-                IP = HttpContext.Connection.RemoteIpAddress.ToString()
-            };
+                var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/AtualizarStatus/PUT - Request => [{JsonSerializer.Serialize(request)}].");
+                var request = new
+                {
+                    Usuario = LoggedUser.Apelido,
+                    Id = id,
+                    IdStatus = idStatus,
+                    IP = HttpContext.Connection.RemoteIpAddress.ToString()
+                };
+
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/AtualizarStatus/PUT - Request => [{JsonSerializer.Serialize(request)}].");
 
 
-            if (idStatus == 2) //Cancelar
-            {
-                var permissao = this.ObterPermissaoOrcamento(id);
+                if (idStatus == 2) //Cancelar
+                {
+                    var permissao = this.ObterPermissaoOrcamento(id);
 
-                if (!permissao.CancelarOrcamento)
-                    return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+                    if (!permissao.CancelarOrcamento)
+                        return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+                }
+
+                var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+
+                var response = _orcamentoBll.AtualizarStatus(id, user, idStatus, request.IP);
+
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/AtualizarStatus/PUT - Response => [{JsonSerializer.Serialize(response)}].");
+
+                return Ok(response);
             }
-
-            var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
-
-            var response = _orcamentoBll.AtualizarStatus(id, user, idStatus, request.IP);
-
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/AtualizarStatus/PUT - Response => [{JsonSerializer.Serialize(response)}].");
-
-            return Ok(response);
+            catch (Exception e)
+            {
+                var dados = new { Id = id, IdStatus = idStatus };
+                e.Data.Add("params", dados);
+                throw;
+            }
         }
 
         [HttpPut("{id}/reenviar")]
         public IActionResult ReenviarOrcamento(int id)
         {
-            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
-
-            var request = new
+            try
             {
-                Usuario = LoggedUser.Apelido,
-                Id = id
-            };
+                var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/ReenviarOrcamento/PUT - Request => [{JsonSerializer.Serialize(request)}].");
+                var request = new
+                {
+                    Usuario = LoggedUser.Apelido,
+                    Id = id
+                };
 
-            var permissao = this.ObterPermissaoOrcamento(id);
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/ReenviarOrcamento/PUT - Request => [{JsonSerializer.Serialize(request)}].");
 
-            if (!permissao.ReenviarOrcamento)
-                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+                var permissao = this.ObterPermissaoOrcamento(id);
 
-            var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+                if (!permissao.ReenviarOrcamento)
+                    return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
-            var response = _orcamentoBll.ReenviarOrcamentoCotacao(id);
+                var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/ReenviarOrcamento/PUT - Response => [{JsonSerializer.Serialize(response)}].");
+                var response = _orcamentoBll.ReenviarOrcamentoCotacao(id);
 
-            return Ok(response);
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/ReenviarOrcamento/PUT - Response => [{JsonSerializer.Serialize(response)}].");
+
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                var dados = new { Id = id };
+                e.Data.Add("params", dados);
+                throw;
+            }
         }
 
         [HttpPost("{id}/prorrogar")]
         public IActionResult ProrrogarOrcamento(int id, string lojaLogada)
         {
-            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
-
-            var request = new
+            try
             {
-                Usuario = LoggedUser.Apelido,
-                Id = id,
-                LojaLogada = lojaLogada,
-                IP = HttpContext.Connection.RemoteIpAddress.ToString()
-            };
+                var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/ProrrogarOrcamento/POST - Request => [{JsonSerializer.Serialize(request)}].");
+                var request = new
+                {
+                    Usuario = LoggedUser.Apelido,
+                    Id = id,
+                    LojaLogada = lojaLogada,
+                    IP = HttpContext.Connection.RemoteIpAddress.ToString()
+                };
 
-            var permissao = this.ObterPermissaoOrcamento(id);
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/ProrrogarOrcamento/POST - Request => [{JsonSerializer.Serialize(request)}].");
 
-            if (!permissao.ProrrogarOrcamento)
-                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+                var permissao = this.ObterPermissaoOrcamento(id);
 
-            var response = _orcamentoBll.ProrrogarOrcamento(id, LoggedUser.Id, lojaLogada, LoggedUser.TipoUsuario, request.IP);
+                if (!permissao.ProrrogarOrcamento)
+                    return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/ProrrogarOrcamento/POST - Response => [{JsonSerializer.Serialize(response)}].");
+                var response = _orcamentoBll.ProrrogarOrcamento(id, LoggedUser.Id, lojaLogada, LoggedUser.TipoUsuario, request.IP);
 
-            return Ok(response);
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/ProrrogarOrcamento/POST - Response => [{JsonSerializer.Serialize(response)}].");
+
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                var dados = new { Id = id, Loja = lojaLogada };
+                e.Data.Add("params", dados);
+                throw;
+            }
         }
 
         [HttpGet("parametros")]
@@ -374,29 +418,37 @@ namespace OrcamentoCotacaoApi.Controllers
         [HttpPost("atualizarDados")]
         public IActionResult AtualizarDados(OrcamentoResponseViewModel model)
         {
-            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
-
-            var request = new
+            try
             {
-                Usuario = LoggedUser.Apelido,
-                OrcamentoResponseViewModel = model,
-                IP = Request.HttpContext.Connection.RemoteIpAddress.ToString()
-            };
+                var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/AtualizarDados/POST - Request => [{JsonSerializer.Serialize(request)}].");
+                var request = new
+                {
+                    Usuario = LoggedUser.Apelido,
+                    OrcamentoResponseViewModel = model,
+                    IP = Request.HttpContext.Connection.RemoteIpAddress.ToString()
+                };
+
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/AtualizarDados/POST - Request => [{JsonSerializer.Serialize(request)}].");
 
 
-            var permissao = this.ObterPermissaoOrcamento((int)model.Id);
+                var permissao = this.ObterPermissaoOrcamento((int)model.Id);
 
-            if (!permissao.EditarOrcamento)
-                return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
+                if (!permissao.EditarOrcamento)
+                    return BadRequest(new { message = "Não encontramos a permissão necessária para realizar atividade!" });
 
-            var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
-            var retorno = _orcamentoBll.AtualizarDadosCadastraisOrcamento(model, user, request.IP);
+                var user = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
+                var retorno = _orcamentoBll.AtualizarDadosCadastraisOrcamento(model, user, request.IP);
 
-            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/AtualizarDados/GET - Response => [{JsonSerializer.Serialize(retorno)}].");
+                _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/AtualizarDados/GET - Response => [{JsonSerializer.Serialize(retorno)}].");
 
-            return Ok(retorno);
+                return Ok(retorno);
+            }
+            catch (Exception e)
+            {
+                e.Data.Add("params", model);
+                throw;
+            }
         }
 
         private PermissaoOrcamentoResponse ObterPermissaoOrcamento(int IdOrcamento)
@@ -473,7 +525,7 @@ namespace OrcamentoCotacaoApi.Controllers
             var permissao = this.ObterPermissaoOrcamento((int)model.Id);
             if (permissao != null && !permissao.ExcluirOrcamento)
             {
-               response.Mensagem = "Não encontramos a permissão necessária para realizar atividade!";
+                response.Mensagem = "Não encontramos a permissão necessária para realizar atividade!";
                 return Ok(response);
             }
 
