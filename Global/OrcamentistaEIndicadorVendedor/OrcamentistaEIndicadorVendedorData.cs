@@ -6,6 +6,7 @@ using InfraBanco.Modelos.Filtros;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace OrcamentistaEIndicadorVendedor
 {
@@ -193,6 +194,7 @@ namespace OrcamentistaEIndicadorVendedor
             {
                 var saida = from usr in db.TorcamentistaEIndicadorVendedor
                             join par in db.TorcamentistaEindicador on usr.IdIndicador equals par.IdIndicador
+                            join ven in db.Tusuario on par.Vendedor equals ven.Usuario
                             select new TorcamentistaEIndicadorVendedor()
                             {
                                 Id = usr.Id,
@@ -201,15 +203,21 @@ namespace OrcamentistaEIndicadorVendedor
                                 IdIndicador = usr.IdIndicador,
                                 Ativo = usr.Ativo,
                                 Loja = par.Loja,
+                                IdVendedor = ven.Id,
                                 VendedorResponsavel = par.Vendedor,
                                 Parceiro = par.Apelido,
-                                StringBusca = $"|{par.Apelido}|{usr.Nome}|{usr.Email}|{par.Vendedor}|"
+                                StLoginBloqueadoAutomatico = usr.StLoginBloqueadoAutomatico,
+                                DataCadastro = usr.DataCadastro,
+                                StringBusca = $"|{usr.Nome}|{usr.Email}|"
                             };
-
 
                 if (obj.ativo != null)
                 {
                     saida = saida.Where(x => x.Ativo == obj.ativo);
+                }
+                if (obj.Bloqueado != null)
+                {
+                    saida = saida.Where(x => x.StLoginBloqueadoAutomatico == (obj.Bloqueado == 1 ? true : false));
                 }
                 if (!string.IsNullOrEmpty(obj.loja))
                 {
@@ -223,8 +231,137 @@ namespace OrcamentistaEIndicadorVendedor
                 {
                     saida = saida.Where(x => x.Parceiro == obj.Parceiro);
                 }
+                if (obj.Vendedores != null && obj.Vendedores.Count() > 0)
+                {
+                    saida = saida.Where(x => obj.Vendedores.Contains(x.IdVendedor));
+                }
+                if (obj.Parceiros != null && obj.Parceiros.Count() > 0)
+                {
+                    saida = saida.Where(x => obj.Parceiros.Contains(x.Parceiro));
+                }
+
+
+
+                if (!string.IsNullOrWhiteSpace(obj.NomeColuna))
+                {
+                    switch (obj.NomeColuna.ToUpper())
+                    {
+                        case "PARCEIRO":
+                            if (obj.OrdenacaoAscendente)
+                            {
+                                saida = saida.OrderBy(o => o.Parceiro);
+                            }
+                            else
+                            {
+                                saida = saida.OrderByDescending(o => o.Parceiro);
+                            }
+                            break;
+                        case "NOME":
+                            if (obj.OrdenacaoAscendente)
+                            {
+                                saida = saida.OrderBy(o => o.Nome);
+                            }
+                            else
+                            {
+                                saida = saida.OrderByDescending(o => o.Nome);
+                            }
+                            break;
+
+                        case "E-MAIL":
+                            if (obj.OrdenacaoAscendente)
+                            {
+                                saida = saida.OrderBy(o => o.Email);
+                            }
+                            else
+                            {
+                                saida = saida.OrderByDescending(o => o.Email);
+                            }
+                            break;
+
+                        case "RESPONSAVEL":
+                            if (obj.OrdenacaoAscendente)
+                            {
+                                saida = saida.OrderBy(o => o.VendedorResponsavel);
+                            }
+                            else
+                            {
+                                saida = saida.OrderByDescending(o => o.VendedorResponsavel);
+                            }
+                            break;
+
+                        case "ATIVO":
+                            if (obj.OrdenacaoAscendente)
+                            {
+                                saida = saida.OrderBy(o => o.Ativo ? 1 : 0);
+                            }
+                            else
+                            {
+                                saida = saida.OrderByDescending(o => o.Ativo ? 1 : 0);
+                            }
+                            break;
+
+                        case "BLOQUEADO":
+                            if (obj.OrdenacaoAscendente)
+                            {
+                                saida = saida.OrderBy(o => o.StLoginBloqueadoAutomatico);
+                            }
+                            else
+                            {
+                                saida = saida.OrderByDescending(o => o.StLoginBloqueadoAutomatico);
+                            }
+                            break;
+
+                        case "DATACRIACAO":
+                            if (obj.OrdenacaoAscendente)
+                            {
+                                saida = saida.OrderBy(o => o.DataCadastro);
+                            }
+                            else
+                            {
+                                saida = saida.OrderByDescending(o => o.DataCadastro);
+                            }
+                            break;
+                    }
+                }
+                else
+                {
+                    saida = saida.OrderBy(o => o.Nome);
+                }
 
                 var response = saida.ToList();
+
+                var idsUsuario = response.Select(x => x.Id).ToList();
+                var loginHisto = (from c in db.TloginHistorico
+                                 where idsUsuario.Contains((int)c.IdUsuario) &&
+                                       c.StSucesso == true
+                                 select c).ToList();
+                if (loginHisto != null)
+                {
+                    foreach (var i in response)
+                    {
+                        var login = loginHisto.Where(x => x.IdUsuario == i.Id).OrderByDescending(x => x.DataHora).FirstOrDefault();
+                        if (login != null)
+                        {
+                            i.StSucesso = true;
+                            i.UltimoLogin = login.DataHora;
+                        }
+                    }
+                }
+
+                if (!string.IsNullOrWhiteSpace(obj.NomeColuna))
+                {
+                    if (obj.NomeColuna.ToUpper() == "ULTIMOLOGIN")
+                    {
+                        if (obj.OrdenacaoAscendente)
+                        {
+                            response = response.OrderBy(o => o.UltimoLogin).ToList();
+                        }
+                        else
+                        {
+                            response = response.OrderByDescending(o => o.UltimoLogin).ToList();
+                        }
+                    }
+                }
 
                 if (!string.IsNullOrEmpty(obj.Pesquisa))
                 {
@@ -240,6 +377,8 @@ namespace OrcamentistaEIndicadorVendedor
                     QtdeRegistros = qtdeRegistros,
                     Lista = response
                 };
+
+
 
                 return retorno;
             }

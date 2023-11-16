@@ -32,5 +32,14 @@ namespace OrcamentoCotacaoBusiness.Models.Response.OrcamentistaIndicadorVendedor
 
         [JsonProperty("vendedorResponsavel")]
         public string VendedorResponsavel { get; set; }
+
+        [JsonProperty("bloqueado")]
+        public string Bloqueado { get; set; }
+
+        [JsonProperty("dtCriacao")]
+        public DateTime? DtCriacao { get; set; }
+
+        [JsonProperty("ultimoLogin")]
+        public DateTime? UltimoLogin { get; set; }
     }
 }

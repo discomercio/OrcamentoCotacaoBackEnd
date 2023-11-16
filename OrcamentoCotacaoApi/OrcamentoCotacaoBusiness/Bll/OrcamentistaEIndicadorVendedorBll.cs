@@ -283,6 +283,9 @@ namespace OrcamentoCotacaoBusiness.Bll
             filtro.loja= request.Loja;
             filtro.Pesquisa = request.Pesquisa;
             filtro.ativo = request.Ativo;
+            filtro.Vendedores = request.Vendedores;
+            filtro.Parceiros = request.Parceiros;
+            filtro.Bloqueado = request.stLoginBloqueadoAutomatico == null ? null : request.stLoginBloqueadoAutomatico ==  true ? 1 : 0;
             filtro.Pagina = request.Pagina;
             filtro.QtdeItensPagina = request.QtdeItensPagina;
             filtro.OrdenacaoAscendente = request.OrdenacaoAscendente;
@@ -303,12 +306,15 @@ namespace OrcamentoCotacaoBusiness.Bll
                     usuario.Parceiro = item.Parceiro;
                     usuario.Ativo = item.Ativo;
                     usuario.AtivoLabel = item.Ativo ? "Sim" : "Não";
+                    usuario.Bloqueado = item.StLoginBloqueadoAutomatico ? "Sim" : "Não";
+                    usuario.DtCriacao = item.DataCadastro;
+                    usuario.UltimoLogin = item.UltimoLogin;
                     usuario.VendedorResponsavel = item.VendedorResponsavel;
                     response.ListaOrcamentistaVendedor.Add(usuario);
                 }
             }
 
-            response.ListaOrcamentistaVendedor = response.ListaOrcamentistaVendedor.OrderBy(o => o.Nome).ToList();
+            //response.ListaOrcamentistaVendedor = response.ListaOrcamentistaVendedor.OrderBy(o => o.Nome).ToList();
             //fazer a busca
             response.Sucesso = true;
             return response;

@@ -66,6 +66,8 @@ namespace InfraBanco.Modelos
 
         [NotMapped]
         public string VendedorResponsavel { get; set; }
+        [NotMapped]
+        public int IdVendedor { get; set; }
 
         [NotMapped]
         public string Parceiro { get; set; }
@@ -84,5 +86,10 @@ namespace InfraBanco.Modelos
 
         [NotMapped]
         public string StringBusca { get; set; }
+
+        [NotMapped]
+        public bool? StSucesso { get; set; }
+        [NotMapped]
+        public DateTime? UltimoLogin { get; set; }
     }
 }
