@@ -9,5 +9,6 @@
         public int MaxPeriodoConsultaFiltroPesquisa { get; set; }
         public int MaxPeriodoConsulta_RelatorioGerencial { get; set; }
         public int MaxQtdeOpcoes { get; set; }
+        public int MaxQtdeItens { get; set; }
     }
 }

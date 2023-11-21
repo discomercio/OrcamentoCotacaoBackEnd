@@ -174,6 +174,7 @@ namespace InfraBanco.Constantes
 
         public const int PERC_DESAGIO_RA_LIQUIDA = 25;
         public const string ID_PARAMETRO_PERC_DESAGIO_RA_LIQUIDA = "PERC_DESAGIO_RA_LIQUIDA";
+        public const string PEDIDOITEM_MAXQTDEITENS = "PedidoItem_MaxQtdeItens";
 
 
         //'	PARÂMETRO DE FUNCIONAMENTO DO SITE (ARTVEN3 = BONSHOP; ARTVEN = FABRICANTE)
@@ -1175,10 +1176,6 @@ namespace InfraBanco.Constantes
         public const int MIN_LINHAS_ITENS_IMPRESSAO_PEDIDO = 4;
 
         public const int MIN_LINHAS_ITENS_IMPRESSAO_ORCAMENTO = 4;
-
-        //' QUANTIDADE MÁXIMA DE ITENS EM UM PEDIDO
-
-        public const int MAX_ITENS = 12;
 
         //' QUANTIDADE MÁXIMA DE PRODUTOS QUE COMPÕEM UM PRODUTO COMPOSTO
 

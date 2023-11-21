@@ -276,6 +276,8 @@ namespace PrepedidoApi.Controllers
 
                 var usuario = JsonSerializer.Deserialize<UsuarioLogin>(User.Claims.FirstOrDefault(x => x.Type == "UsuarioLogin").Value);
 
+                var parametro = await prepedidoApiBll.BuscarRegistroParametro(Constantes.PEDIDOITEM_MAXQTDEITENS);
+
                 IEnumerable<string> ret = await prepedidoApiBll
                     .CadastrarPrepedido(
                     prePedido,
@@ -283,7 +285,7 @@ namespace PrepedidoApi.Controllers
                     0.01M,
                     appSettings.VerificarPrepedidoRepetido,
                     Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO,
-                    appSettings.LimiteItens,
+                    parametro.Campo_inteiro,
                     (Constantes.TipoUsuarioContexto)usuario.TipoUsuario,
                     usuario.Id,
                     request.IP);

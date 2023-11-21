@@ -23,6 +23,7 @@ using OrcamentoCotacaoBusiness.Models.Response;
 using OrcamentoCotacaoBusiness.Models.Response.Dashoard;
 using OrcamentoCotacaoBusiness.Models.Response.Orcamento;
 using OrcamentoCotacaoLink;
+using Prepedido.Bll;
 using Prepedido.Dados.DetalhesPrepedido;
 using Prepedido.Dto;
 using System;
@@ -66,6 +67,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         private readonly Cfg.CfgOperacao.CfgOperacaoBll _cfgOperacaoBll;
         private readonly IConfiguration _configuration;
         private readonly CodigoDescricaoBll _codigoDescricaoBll;
+        private readonly PrepedidoApiBll _prepedidoApiBll;
 
         public OrcamentoCotacaoBll(
             OrcamentoBll orcamentoBll,
@@ -93,7 +95,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             Prepedido.Bll.PrepedidoBll _prepedidoBll,
             Cfg.CfgOperacao.CfgOperacaoBll _cfgOperacaoBll,
             IConfiguration configuration,
-            CodigoDescricaoBll _codigoDescricaoBll
+            CodigoDescricaoBll _codigoDescricaoBll,
+            PrepedidoApiBll _prepedidoApiBll
             )
         {
             _orcamentoBll = orcamentoBll;
@@ -122,6 +125,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             this._cfgOperacaoBll = _cfgOperacaoBll;
             _configuration = configuration;
             this._codigoDescricaoBll = _codigoDescricaoBll;
+            this._prepedidoApiBll = _prepedidoApiBll;
         }
 
         public OrcamentoCotacaoDto PorGuid(string guid)
@@ -883,7 +887,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                 QtdeGlobalValidade = int.Parse(parametros.QtdeGlobal_Validade),
                 MaxPeriodoConsultaFiltroPesquisa = parametros.MaxPeriodoConsultaFiltroPesquisa,
                 MaxPeriodoConsulta_RelatorioGerencial = parametros.MaxPeriodoConsulta_RelatorioGerencial,
-                LimiteQtdeMaxOpcaoOrcamento = parametros.MaxQtdeOpcoes
+                LimiteQtdeMaxOpcaoOrcamento = parametros.MaxQtdeOpcoes,
+                LimiteQtdeItens = parametros.MaxQtdeItens
             };
         }
 
@@ -2110,7 +2115,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             var appSettingsSection = _configuration.GetSection("AppSettings");
             var appSettings = appSettingsSection.Get<Configuracao>();
 
-            //TODO: "appSettings.LimiteItens" deve vir de tabela de parametrização?
+            var parametro = await _prepedidoApiBll.BuscarRegistroParametro(Constantes.PEDIDOITEM_MAXQTDEITENS);
+
             PrePedidoDados prePedidoDados = PrePedidoDto.PrePedidoDados_De_PrePedidoDto(prepedido);
             return (await _prepedidoBll
                 .CadastrarPrepedido(prePedidoDados,
@@ -2118,7 +2124,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 0.01M,
                 false,
                 Constantes.CodSistemaResponsavel.COD_SISTEMA_RESPONSAVEL_CADASTRO__ORCAMENTO_COTACAO,
-                appSettings.LimiteItens,
+                parametro.Campo_inteiro,
                 dbGravacao,
                 ip, aprovandoOrcamentoCotacao)).ToList();
         }

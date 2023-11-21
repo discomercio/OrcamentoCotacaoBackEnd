@@ -1,4 +1,6 @@
-﻿using InfraBanco.Constantes;
+﻿using InfraBanco;
+using InfraBanco.Constantes;
+using InfraBanco.Modelos;
 using Prepedido.Dados;
 using Prepedido.Dados.DetalhesPrepedido;
 using Prepedido.Dto;
@@ -7,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UtilsGlobais;
 
 namespace Prepedido.Bll
 {
@@ -128,6 +131,13 @@ namespace Prepedido.Bll
                 numeroPrePedido, dataInicial, dataFinal);
 
             return PrepedidosCadastradosDtoPrepedido.ListaPrepedidosCadastradosDtoPrepedido_De_PrepedidosCadastradosPrepedidoDados(lista);
+        }
+
+        public async Task<Tparametro> BuscarRegistroParametro(string id)
+        {
+            Tparametro parametroRegra = await Util.BuscarRegistroParametro(id, _contextoBdProvider);
+
+            return parametroRegra;
         }
     }
 }

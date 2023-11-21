@@ -63,6 +63,9 @@ namespace UtilsGlobais.Parametros
                     retorno.MaxPeriodoConsulta_RelatorioGerencial = periodoConsulta;
                 }
 
+                var param = Util.BuscarRegistroParametro(Constantes.PEDIDOITEM_MAXQTDEITENS, _contextoProvider).Result;
+                retorno.MaxQtdeItens = param.Campo_inteiro;
+
                 return retorno;
             }
         }
