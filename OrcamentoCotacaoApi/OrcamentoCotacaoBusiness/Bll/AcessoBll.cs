@@ -135,9 +135,11 @@ namespace OrcamentoCotacaoBusiness.Bll
                                                    join p in db.Tperfil on pi.Id_perfil equals p.Id
                                                    join pu in db.TperfilUsuario on p.Id equals pu.Id_perfil
                                                    join u in db.Tusuario on pu.Usuario equals u.Usuario
-                                                   where o.Modulo == "COTAC"
-                                                   && u.Usuario == login
-                                                   && o.Id == (int)Constantes.ePermissoes.ACESSO_AO_MODULO_100100
+                                                   where o.Modulo == "COTAC" && 
+                                                         u.Usuario == login && 
+                                                         o.Id == (int)Constantes.ePermissoes.ACESSO_AO_MODULO_100100 &&
+                                                         o.St_inativo == 0 &&
+                                                         p.St_inativo == 0
                                                    select o.Id.ToString()).AnyAsync();
 
                     if (!existePermissoesUsuario.Result)

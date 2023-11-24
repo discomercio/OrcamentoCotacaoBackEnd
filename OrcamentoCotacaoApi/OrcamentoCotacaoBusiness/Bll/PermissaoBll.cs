@@ -77,7 +77,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             // Prazo orçamento encerrado
-            var MaxPrazoConsultaOrcamentoEncerrado = 18;
+            var MaxPrazoConsultaOrcamentoEncerrado = (int)Constantes.eCfgParametro.ModuloOrcamentoCotacao_MaxPrazoConsulta_OrcamentoEncerrado;
             var prazoOrcamentoEncerrado = VerificarUnidadeNegocioParametro(
                 orcamento.Loja,
                 orcamento.DataCadastro,
