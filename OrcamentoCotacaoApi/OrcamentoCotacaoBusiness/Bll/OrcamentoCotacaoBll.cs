@@ -130,7 +130,7 @@ namespace OrcamentoCotacaoBusiness.Bll
 
         public OrcamentoCotacaoDto PorGuid(string guid)
         {
-            if(!Guid.TryParse(guid, out _))
+            if (!Guid.TryParse(guid, out _))
             {
                 return null;
             }
@@ -979,7 +979,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 response.Mensagem = "Necessário ter ao menos uma opção de orçamento!";
                 return response;
             }
-            
+
             var config = BuscarConfigValidade(orcamento.Loja);
             var limiteMaxQtdeOpcoes = config.LimiteQtdeMaxOpcaoOrcamento;
             if (orcamento.ListaOrcamentoCotacaoDto.Count > limiteMaxQtdeOpcoes)
@@ -1702,7 +1702,23 @@ namespace OrcamentoCotacaoBusiness.Bll
                         mensagem = $"Excedida a quantidade máxima! {parametros.QtdeMaxProrrogacao} vezes"
                     };
 
-                orcamento.ValidadeAnterior = orcamento.Validade;
+                var validadeAtual = orcamento.Validade;
+                var validadeMaximaGlobal = orcamento.DataCadastro.AddDays(int.Parse(parametros.QtdeGlobal_Validade));
+                if (orcamento.Validade.Date == validadeMaximaGlobal.Date)
+                {
+                    return new MensagemDto
+                    {
+                        tipo = "WARN",
+                        mensagem = $"Não é possível prorrogar o orçamento. Validade máxima permitida de {parametros.QtdeGlobal_Validade} dias."
+                    };
+                }
+                var validadeFutura = validadeAtual.AddDays(int.Parse(parametros.QtdePadrao_DiasProrrogacao));
+                if (validadeFutura.Date > validadeMaximaGlobal.Date)
+                {
+                    validadeFutura = validadeMaximaGlobal;
+                }
+
+                orcamento.ValidadeAnterior = validadeAtual;
                 orcamento.QtdeRenovacao += 1;
                 orcamento.IdUsuarioUltRenovacao = idUsuario;
                 orcamento.DataHoraUltRenovacao = DateTime.Now;
@@ -1710,30 +1726,7 @@ namespace OrcamentoCotacaoBusiness.Bll
                 orcamento.IdUsuarioUltAtualizacao = idUsuario;
                 orcamento.IdTipoUsuarioContextoUltAtualizacao = IdTipoUsuarioContextoUltAtualizacao.Value;
                 orcamento.IdTipoUsuarioContextoUltRenovacao = IdTipoUsuarioContextoUltAtualizacao.Value;
-
-                if (DateTime.Now.AddDays(byte.Parse(parametros.QtdePadrao_DiasProrrogacao)).Date > orcamento.DataCadastro.AddDays(byte.Parse(parametros.QtdeGlobal_Validade)).Date)
-                {
-                    if (orcamento.DataCadastro.AddDays(byte.Parse(parametros.QtdeGlobal_Validade)).Date > DateTime.Now.Date)
-                        orcamento.Validade = orcamento.DataCadastro.AddDays(byte.Parse(parametros.QtdeGlobal_Validade)).Date;
-
-                    if (DateTime.Now.Date > orcamento.DataCadastro.AddDays(byte.Parse(parametros.QtdeGlobal_Validade)).Date)
-                        return new MensagemDto
-                        {
-                            tipo = "WARN",
-                            mensagem = $"Não é possível prorrogar o orçamento. Validade máxima permitida de {parametros.QtdeGlobal_Validade} dias."
-                        };
-                }
-                else
-                {
-                    orcamento.Validade = orcamento.Validade.AddDays(byte.Parse(parametros.QtdePadrao_DiasProrrogacao));
-                }
-
-                if (orcamento.Validade.Date == orcamento.ValidadeAnterior.Value.Date)
-                    return new MensagemDto
-                    {
-                        tipo = "WARN",
-                        mensagem = $"Orçamento já foi prorrogado para {orcamento.Validade.ToString("dd/MM/yyyy")}!"
-                    };
+                orcamento.Validade = validadeFutura;
 
                 _orcamentoCotacaoBll.Atualizar(orcamento);
 
@@ -1894,7 +1887,7 @@ namespace OrcamentoCotacaoBusiness.Bll
             {
                 return new List<string>() { "Este orçamento está indisponível para aprovação." };
             }
-            if(orcamento.Validade.Date < DateTime.Now.Date)
+            if (orcamento.Validade.Date < DateTime.Now.Date)
             {
                 return new List<string>() { "Este orçamento está indisponível para aprovação." };
             }
