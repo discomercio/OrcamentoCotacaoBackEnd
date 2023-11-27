@@ -66,7 +66,6 @@ namespace OrcamentoCotacaoApi
                     */
 
                     logging.ClearProviders();
-                    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
 #if DEBUG
                     logging.AddConsole();
                     logging.AddDebug();
