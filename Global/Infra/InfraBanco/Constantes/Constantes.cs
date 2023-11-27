@@ -2897,6 +2897,7 @@ namespace InfraBanco.Constantes
             ModuloOrcamentoCotacao_ValidadeOrcamento_PrazoProrrogacaoPadrao = 15,
             ModuloOrcamentoCotacao_ValidadeOrcamento_QtdeMaxProrrogacao = 16,
             ModuloOrcamentoCotacao_ValidadeOrcamento_MaxPrazoValidadeGlobal = 17,
+            ModuloOrcamentoCotacao_MaxPrazoConsulta_OrcamentoEncerrado = 18,
             ModuloOrcamentoCotacao_MaxPeriodoConsulta_FiltroPesquisa = 20,
             ModuloOrcamentoCotacao_NovoOrcto_Filtro_GrupoSubgrupo = 38,
             ModuloOrcamentoCotacao_MaxPeriodoConsulta_RelatorioGerencial = 42,

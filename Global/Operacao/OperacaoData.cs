@@ -63,6 +63,7 @@ namespace Operacao
                 {
 
                     var saida = from c in db.Toperacao
+                                where c.St_inativo == 0
                                 select c;
 
                     if (obj.Modulo != null)

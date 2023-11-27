@@ -124,7 +124,10 @@ namespace Usuario
                         join p in db.Tperfil on pi.Id_perfil equals p.Id
                         join pu in db.TperfilUsuario on p.Id equals pu.Id_perfil
                         join u in db.Tusuario on pu.Usuario equals u.Usuario
-                        where o.Modulo == "COTAC" && u.Usuario == apelido
+                        where o.Modulo == "COTAC" && 
+                              u.Usuario == apelido && 
+                              p.St_inativo == 0 &&
+                              o.St_inativo == 0
                         select o.Id.ToString()).ToList();
             }
         }
@@ -136,7 +139,9 @@ namespace Usuario
                 return (from o in db.Toperacao
                         join pi in db.TperfilItem on o.Id equals pi.Id_operacao
                         join p in db.Tperfil on pi.Id_perfil equals p.Id
-                        where p.Id == perfilId
+                        where p.Id == perfilId &&
+                              o.St_inativo == 0 &&
+                              p.St_inativo == 0
                         select o.Id.ToString()).ToList();
             }
         }
