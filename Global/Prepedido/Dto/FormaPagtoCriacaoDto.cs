@@ -34,6 +34,7 @@ namespace Prepedido.Dto
 
         //incluimos esse campo apenas para validar o que esta sendo enviado pela API Unis
         public string CustoFinancFornecTipoParcelamento { get; set; }
+        public int? IdOpcaoPagto { get; set; }
 
         public static FormaPagtoCriacaoDto FormaPagtoCriacaoDto_De_FormaPagtoCriacaoDados(FormaPagtoCriacaoDados origem)
         {
@@ -100,6 +101,7 @@ namespace Prepedido.Dto
                 Descricao_meio_pagto = origem.Descricao_meio_pagto,
                 Tipo_parcelamento = origem.Tipo_parcelamento,
                 CustoFinancFornecTipoParcelamento = origem.CustoFinancFornecTipoParcelamento,
+                IdOpcaoPagto = origem.IdOpcaoPagto
             };
 
             ret.CustoFinancFornecQtdeParcelas = PrepedidoBll.ObterCustoFinancFornecQtdeParcelasDeFormaPagto(ret);

@@ -88,6 +88,11 @@ namespace Prepedido.Bll
             string campos_a_inserir = "";
             campos_a_inserir += "tipo_parcelamento|";
 
+            if(forma_pagto_criacao.IdOpcaoPagto.HasValue)
+            {
+                campos_a_inserir += "sequencia_opcao_aprovada|forma_de_pagamento|id_opcao_pagto|";
+            }
+
             if (forma_pagto_criacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA)
                 campos_a_inserir += "av_forma_pagto|";
             else if (forma_pagto_criacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_PARCELA_UNICA)
