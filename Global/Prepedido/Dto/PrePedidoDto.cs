@@ -31,6 +31,7 @@ namespace Prepedido.Dto
         public int? UsuarioCadastroId { get; set; }
         public short? UsuarioCadastroIdTipoUsuarioContexto { get; set; }
         public string Usuario_cadastro { get; set; }
+        public int? SequenciaAprovada { get; set; }
 
         public static PrePedidoDto PrePedidoDto_De_PrePedidoDados(PrePedidoDados origem)
         {
@@ -95,7 +96,7 @@ namespace Prepedido.Dto
                 UsuarioCadastroId = origem.UsuarioCadastroId,//Id do registro do usuário logado (t_ORCAMENTISTA_E_INDICADOR_VENDEDOR.Id, t_ORCAMENTISTA_E_INDICADOR.Id ou t_USUARIO.Id) Se aprovação pelo cliente em rota pública deve ser nulo
                 UsuarioCadastroIdTipoUsuarioContexto = origem.UsuarioCadastroIdTipoUsuarioContexto,//Id do contexto do usuário logado de acordo com a tabela t_CFG_TIPO_USUARIO_CONTEXTO.Id Se aprovação pelo cliente em rota pública preencher com 4
                 Usuario_cadastro = origem.Usuario_cadastro,//preencher com "[N] 999999", onde  N = UsuarioCadastroIdTipoUsuarioContexto  999999 = UsuarioCadastroId
-
+                SequenciaAprovada = origem.SequenciaAprovada
             };
 
             return ret;

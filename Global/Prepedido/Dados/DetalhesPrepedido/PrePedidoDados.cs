@@ -33,5 +33,7 @@ namespace Prepedido.Dados.DetalhesPrepedido
         public short? UsuarioCadastroIdTipoUsuarioContexto { get; set; }
         public int? UsuarioCadastroId { get; set; }
         public string Usuario_cadastro { get; set; }
+
+        public int? SequenciaAprovada { get; set; }
     }
 }

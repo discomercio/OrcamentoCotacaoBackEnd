@@ -38,5 +38,7 @@ namespace FormaPagamento.Dados
         //somente para exibição
         public int Qtde_Parcelas_Para_Exibicao { get; set; }
 
+        public int? IdOpcaoPagto { get; set; }
+
     }
 }

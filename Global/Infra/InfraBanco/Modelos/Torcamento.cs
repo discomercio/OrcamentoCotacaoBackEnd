@@ -89,6 +89,19 @@ namespace InfraBanco.Modelos
         [Required]
         public short Tipo_Parcelamento { get; set; }
 
+        [NotMapped]
+        [Column("sequencia_opcao_aprovada")]
+        public int? SequeciaOpcaoAprovada { get; set; }
+
+        [NotMapped]
+        [Column("forma_de_pagamento")]
+        public int? FormaDePagamento { get; set; }
+
+        [NotMapped]
+        [Column("id_opcao_pagto")]
+        public int? IdOpcaoPagto { get; set; }
+
+
         [Column("av_forma_pagto")]
         [Required]
         public short Av_Forma_Pagto { get; set; }

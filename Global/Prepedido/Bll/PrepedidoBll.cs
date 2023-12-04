@@ -1134,6 +1134,8 @@ namespace Prepedido.Bll
             torcamento.UsuarioCadastroIdTipoUsuarioContexto = prepedido.UsuarioCadastroIdTipoUsuarioContexto;//Id do contexto do usuário logado de acordo com a tabela t_CFG_TIPO_USUARIO_CONTEXTO.Id Se aprovação pelo cliente em rota pública preencher com 4
             torcamento.UsuarioCadastroId = prepedido.UsuarioCadastroId;//Id do registro do usuário logado (t_ORCAMENTISTA_E_INDICADOR_VENDEDOR.Id, t_ORCAMENTISTA_E_INDICADOR.Id ou t_USUARIO.Id) Se aprovação pelo cliente em rota pública deve ser nulo
             torcamento.Usuario_cadastro = prepedido.Usuario_cadastro;//preencher com "[N] 999999", onde  N = UsuarioCadastroIdTipoUsuarioContexto  999999 = UsuarioCadastroId
+            torcamento.SequeciaOpcaoAprovada = prepedido.SequenciaAprovada;
+
 
             //inclui os campos de endereço cadastral no Torccamento
             IncluirDadosClienteParaTorcamento(prepedido, torcamento);
@@ -1224,6 +1226,12 @@ namespace Prepedido.Bll
                 torcamento.Qtde_Parcelas = ObterQtdeParcelasDeFormaPagto(prepedido.FormaPagtoCriacao);
                 torcamento.Forma_Pagamento = string.Empty;
                 torcamento.Tipo_Parcelamento = short.Parse(prepedido.FormaPagtoCriacao.Rb_forma_pagto);
+                torcamento.IdOpcaoPagto = prepedido.FormaPagtoCriacao.IdOpcaoPagto;
+
+                if (torcamento.IdOrcamentoCotacao.HasValue)
+                {
+                    torcamento.FormaDePagamento = prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA ? 1 : 0;
+                }
 
                 if (prepedido.FormaPagtoCriacao.Rb_forma_pagto == Constantes.COD_FORMA_PAGTO_A_VISTA)
                 {
@@ -2444,7 +2452,7 @@ namespace Prepedido.Bll
 
             dbGravacao.Update(tOrcamento);
             dbGravacao.SaveChanges();
-            
+
             return response;
         }
     }

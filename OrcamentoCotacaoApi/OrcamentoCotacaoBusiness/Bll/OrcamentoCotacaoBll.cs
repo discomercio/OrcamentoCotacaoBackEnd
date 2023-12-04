@@ -2039,6 +2039,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                 return new List<string>() { "Falha ao buscar opção selecionada para aprovação do orçamento!" };
             }
 
+            prepedido.SequenciaAprovada = aprovarOrcamento.OpcaoSequencia;
+
             var formaPagtoSelecionada = opcaoSelecionada.FormaPagto.Where(x => x.Id == aprovarOrcamento.IdFormaPagto).FirstOrDefault();
 
             if (formaPagtoSelecionada == null)
@@ -2047,7 +2049,8 @@ namespace OrcamentoCotacaoBusiness.Bll
             }
 
             prepedido.FormaPagtoCriacao = new FormaPagtoCriacaoDto();
-            prepedido.FormaPagtoCriacao = await IncluirFormaPagtoCriacaoParaPrepedido(formaPagtoSelecionada);
+            prepedido.FormaPagtoCriacao = await IncluirFormaPagtoCriacaoParaPrepedido(formaPagtoSelecionada,
+                aprovarOrcamento.IdFormaPagto);
 
             prepedido.ListaProdutos = await IncluirProdutosParaPrepedido(opcaoSelecionada.ListaProdutos, formaPagtoSelecionada.Id, (float)orcamento.Perc_max_comissao_e_desconto_padrao);
 
@@ -2122,7 +2125,9 @@ namespace OrcamentoCotacaoBusiness.Bll
                 ip, aprovandoOrcamentoCotacao)).ToList();
         }
 
-        public async Task<FormaPagtoCriacaoDto> IncluirFormaPagtoCriacaoParaPrepedido(FormaPagtoCriacaoResponseViewModel formaPagtoSelecionada)
+        public async Task<FormaPagtoCriacaoDto> IncluirFormaPagtoCriacaoParaPrepedido(
+            FormaPagtoCriacaoResponseViewModel formaPagtoSelecionada,
+            int idOpcaoPagto)
         {
             return await Task.FromResult(new FormaPagtoCriacaoDto()
             {
@@ -2149,7 +2154,8 @@ namespace OrcamentoCotacaoBusiness.Bll
                 C_pse_demais_prest_periodo = formaPagtoSelecionada.Pse_demais_prest_periodo,
                 C_forma_pagto = formaPagtoSelecionada.Observacao,
                 Tipo_parcelamento = (short)formaPagtoSelecionada.Tipo_parcelamento,
-                Rb_forma_pagto = formaPagtoSelecionada.Tipo_parcelamento.ToString()
+                Rb_forma_pagto = formaPagtoSelecionada.Tipo_parcelamento.ToString(),
+                IdOpcaoPagto = idOpcaoPagto
             });
         }
 
