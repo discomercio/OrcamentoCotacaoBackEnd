@@ -26,36 +26,6 @@ namespace OrcamentoCotacaoBusiness.Models.Response.Relatorios
         public DateTime? PrevisaoEntrega { get; set; }
         public string InstaladorInstala { get; set; }
         public List<OpcaoDadosOrcamento> ListaOpcoes { get; set; }
-        //public float? ComissaoOpcao1 { get; set; }
-        //public decimal? DescMedioAVistaOpcao1 { get; set; }
-        //public decimal? DescMedioAPrazoOpcao1 { get; set; }
-        //public string FormaPagtoAVistaOpcao1 { get; set; }
-        //public decimal? ValorFormaPagtoAVistaOpcao1 { get; set; }
-        //public string StatusDescSuperiorAVistaOpcao1 { get; set; }
-        //public string FormaPagtoAPrazoOpcao1 { get; set; }
-        //public decimal? ValorFormaPagtoAPrazoOpcao1 { get; set; }
-        //public int? QtdeParcelasFormaPagtoAPrazoOpcao1 { get; set; }
-        //public string StatusDescSuperiorAPrazoOpcao1 { get; set; }
-        //public float? ComissaoOpcao2 { get; set; }
-        //public decimal? DescMedioAVistaOpcao2 { get; set; }
-        //public decimal? DescMedioAPrazoOpcao2 { get; set; }
-        //public string FormaPagtoAVistaOpcao2 { get; set; }
-        //public decimal? ValorFormaPagtoAVistaOpcao2 { get; set; }
-        //public string StatusDescSuperiorAVistaOpcao2 { get; set; }
-        //public string FormaPagtoAPrazoOpcao2 { get; set; }
-        //public decimal? ValorFormaPagtoAPrazoOpcao2 { get; set; }
-        //public int? QtdeParcelasFormaPagtoAPrazoOpcao2 { get; set; }
-        //public string StatusDescSuperiorAPrazoOpcao2 { get; set; }
-        //public float? ComissaoOpcao3 { get; set; }
-        //public decimal? DescMedioAVistaOpcao3 { get; set; }
-        //public decimal? DescMedioAPrazoOpcao3 { get; set; }
-        //public string FormaPagtoAVistaOpcao3 { get; set; }
-        //public decimal? ValorFormaPagtoAVistaOpcao3 { get; set; }
-        //public string StatusDescSuperiorAVistaOpcao3 { get; set; }
-        //public string FormaPagtoAPrazoOpcao3 { get; set; }
-        //public decimal? ValorFormaPagtoAPrazoOpcao3 { get; set; }
-        //public int? QtdeParcelasFormaPagtoAPrazoOpcao3 { get; set; }
-        //public string StatusDescSuperiorAPrazoOpcao3 { get; set; }
         public short? OpcaoAprovada { get; set; }
         public float? ComissaoOpcaoAprovada { get; set; }
         public decimal? DescMedioOpcaoAprovada { get; set; }

@@ -111,7 +111,7 @@ namespace OrcamentoCotacaoBusiness.Bll
         {
             var response = new RelatorioDadosOrcamentosResponse();
             response.Sucesso = false;
-            //validar data de criação e fim
+            
             var config = orcamentoCotacaoBll.BuscarConfigValidade(request.LojaLogada);
             if (config == null)
             {
@@ -178,36 +178,6 @@ namespace OrcamentoCotacaoBusiness.Bll
                     op.StatusDescSuperiorAPrazoOpcao = opcao.StatusDescSuperiorAPrazoOpcao;
                     dadoOrcamento.ListaOpcoes.Add(op);
                 }
-                //ComissaoOpcao1 = item.ComissaoOpcao1,
-                //DescMedioAVistaOpcao1 = !string.IsNullOrEmpty(item.DescMedioAVistaOpcao1) ? Math.Round(Decimal.Parse(item.DescMedioAVistaOpcao1), 2, MidpointRounding.AwayFromZero) : null,
-                //DescMedioAPrazoOpcao1 = !string.IsNullOrEmpty(item.DescMedioAPrazoOpcao1) ? Math.Round(Decimal.Parse(item.DescMedioAPrazoOpcao1), 2, MidpointRounding.AwayFromZero) : null,
-                //FormaPagtoAVistaOpcao1 = item.FormaPagtoAVistaOpcao1,
-                //ValorFormaPagtoAVistaOpcao1 = !string.IsNullOrEmpty(item.ValorFormaPagtoAVistaOpcao1) ? Math.Round(decimal.Parse(item.ValorFormaPagtoAVistaOpcao1), 2, MidpointRounding.AwayFromZero): null,
-                //StatusDescSuperiorAVistaOpcao1 = item.StatusDescSuperiorAVistaOpcao1,
-                //FormaPagtoAPrazoOpcao1 = item.FormaPagtoAPrazoOpcao1,
-                //ValorFormaPagtoAPrazoOpcao1 = !string.IsNullOrEmpty(item.ValorFormaPagtoAPrazoOpcao1) ? Math.Round(Decimal.Parse(item.ValorFormaPagtoAPrazoOpcao1), 2, MidpointRounding.AwayFromZero) : null,
-                //QtdeParcelasFormaPagtoAPrazoOpcao1=item.QtdeParcelasFormaPagtoAPrazoOpcao1,
-                //StatusDescSuperiorAPrazoOpcao1 = item.StatusDescSuperiorAPrazoOpcao1,
-                //ComissaoOpcao2 = item.ComissaoOpcao2,
-                //DescMedioAVistaOpcao2 = !string.IsNullOrEmpty(item.DescMedioAVistaOpcao2) ? Math.Round(Decimal.Parse(item.DescMedioAVistaOpcao2), 2, MidpointRounding.AwayFromZero) : null,
-                //DescMedioAPrazoOpcao2 = !string.IsNullOrEmpty(item.DescMedioAPrazoOpcao2) ? Math.Round(Decimal.Parse(item.DescMedioAPrazoOpcao2), 2, MidpointRounding.AwayFromZero) : null,
-                //FormaPagtoAVistaOpcao2 = item.FormaPagtoAVistaOpcao2,
-                //ValorFormaPagtoAVistaOpcao2 = !string.IsNullOrEmpty(item.ValorFormaPagtoAVistaOpcao2) ? Math.Round(decimal.Parse(item.ValorFormaPagtoAVistaOpcao2), 2, MidpointRounding.AwayFromZero) : null,
-                //StatusDescSuperiorAVistaOpcao2 = item.StatusDescSuperiorAVistaOpcao2,
-                //FormaPagtoAPrazoOpcao2 = item.FormaPagtoAPrazoOpcao2,
-                //ValorFormaPagtoAPrazoOpcao2 = !string.IsNullOrEmpty(item.ValorFormaPagtoAPrazoOpcao2) ? Math.Round(Decimal.Parse(item.ValorFormaPagtoAPrazoOpcao2), 2, MidpointRounding.AwayFromZero) : null,
-                //QtdeParcelasFormaPagtoAPrazoOpcao2 = item.QtdeParcelasFormaPagtoAPrazoOpcao2,
-                //StatusDescSuperiorAPrazoOpcao2 = item.StatusDescSuperiorAPrazoOpcao2,
-                //ComissaoOpcao3 = item.ComissaoOpcao3,
-                //DescMedioAVistaOpcao3 = !string.IsNullOrEmpty(item.DescMedioAVistaOpcao3) ? Math.Round(Decimal.Parse(item.DescMedioAVistaOpcao3), 2, MidpointRounding.AwayFromZero) : null,
-                //DescMedioAPrazoOpcao3 = !string.IsNullOrEmpty(item.DescMedioAPrazoOpcao3) ? Math.Round(Decimal.Parse(item.DescMedioAPrazoOpcao3), 2, MidpointRounding.AwayFromZero) : null,
-                //FormaPagtoAVistaOpcao3 = item.FormaPagtoAVistaOpcao3,
-                //ValorFormaPagtoAVistaOpcao3 = !string.IsNullOrEmpty(item.ValorFormaPagtoAVistaOpcao3) ? Math.Round(decimal.Parse(item.ValorFormaPagtoAVistaOpcao3), 2, MidpointRounding.AwayFromZero) : null,
-                //StatusDescSuperiorAVistaOpcao3 = item.StatusDescSuperiorAVistaOpcao3,
-                //FormaPagtoAPrazoOpcao3 = item.FormaPagtoAPrazoOpcao3,
-                //ValorFormaPagtoAPrazoOpcao3 = !string.IsNullOrEmpty(item.ValorFormaPagtoAPrazoOpcao3) ? Math.Round(Decimal.Parse(item.ValorFormaPagtoAPrazoOpcao3), 2, MidpointRounding.AwayFromZero) : null,
-                //QtdeParcelasFormaPagtoAPrazoOpcao3 = item.QtdeParcelasFormaPagtoAPrazoOpcao3,
-                //StatusDescSuperiorAPrazoOpcao3 = item.StatusDescSuperiorAPrazoOpcao3,
                 dadoOrcamento.OpcaoAprovada = item.OpcaoAprovada;
                 dadoOrcamento.ComissaoOpcaoAprovada = item.ComissaoOpcaoAprovada;
                 dadoOrcamento.DescMedioOpcaoAprovada = !string.IsNullOrEmpty(item.DescMedioOpcaoAprovada) ? Math.Round(decimal.Parse(item.DescMedioOpcaoAprovada), 2, MidpointRounding.AwayFromZero) : null;
