@@ -19,5 +19,6 @@ namespace Relatorios.Filtros
         public DateTime? DtFim { get; set; }
         public DateTime? DtInicioExpiracao { get; set; }
         public DateTime? DtFimExpiracao { get; set; }
+        public int ParamLimiteQtdeMaxOpcao { get; set; }
     }
 }
