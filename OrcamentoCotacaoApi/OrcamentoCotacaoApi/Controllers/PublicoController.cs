@@ -258,5 +258,23 @@ namespace OrcamentoCotacaoApi.Controllers
             _logger.LogInformation($"CorrelationId => [{correlationId}]. PublicoController/BuscarLojaEstilo/GET - Response => [Não tem response].");
             return NotFound();
         }
+
+        [HttpGet("buscarParametroClienteEmailBoleto")]
+        public IActionResult BuscarParametro_CLIENTE_EMAILBOLETO_REQUIREDFIELD()
+        {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Parametro = Constantes.CLIENTE_EMAILBOLETO_REQUIREDFIELD_FLAGHABILITACAO,
+                IP = Request.HttpContext.Connection.RemoteIpAddress.ToString()
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. PublicoController/BuscarParametro_CLIENTE_EMAILBOLETO_REQUIREDFIELD/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
+            var retorno = _orcamentoBll.BuscarParametro_CLIENTE_EMAILBOLETO_REQUIREDFIELD();
+
+            return Ok(retorno);
+        }
     }
 }
