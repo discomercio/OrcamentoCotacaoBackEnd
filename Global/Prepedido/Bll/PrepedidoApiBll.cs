@@ -31,6 +31,36 @@ namespace Prepedido.Bll
             await prepedidoBll.DeletarOrcamentoExisteComTransacao(prePedidoDados, apelido.Trim());
         }
 
+        private bool VerificarCadastroPrepedidoPagto(PrePedidoDto prePedido, string paramIdPagtoMonitorado)
+        {
+            if(prePedido.FormaPagtoCriacao.Tipo_parcelamento.ToString() == Constantes.COD_FORMA_PAGTO_A_VISTA)
+            {
+                if(paramIdPagtoMonitorado.IndexOf($"|{prePedido.FormaPagtoCriacao.Op_av_forma_pagto}|") > -1)
+                {
+                    return true;
+                }
+            }
+
+            if (prePedido.FormaPagtoCriacao.Tipo_parcelamento.ToString() == Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA)
+            {
+                if (paramIdPagtoMonitorado.IndexOf($"|{prePedido.FormaPagtoCriacao.Op_pce_entrada_forma_pagto}|") > -1 ||
+                    paramIdPagtoMonitorado.IndexOf($"|{prePedido.FormaPagtoCriacao.Op_pce_prestacao_forma_pagto}|") > -1)
+                {
+                    return true;
+                }
+            }
+
+            if (prePedido.FormaPagtoCriacao.Tipo_parcelamento.ToString() == Constantes.COD_FORMA_PAGTO_PARCELA_UNICA)
+            {
+                if (paramIdPagtoMonitorado.IndexOf($"|{prePedido.FormaPagtoCriacao.Op_pu_forma_pagto}|") > -1)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public async Task<IEnumerable<string>> CadastrarPrepedido(
             PrePedidoDto prePedido, 
             string apelido,
@@ -42,8 +72,25 @@ namespace Prepedido.Bll
             int usuarioId, 
             string ip)
         {
-            
-            if(!string.IsNullOrEmpty(prePedido.DetalhesPrepedido.EntregaImediata) && 
+
+            var parametro = await BuscarRegistroParametro(Constantes.CLIENTE_EMAILBOLETO_REQUIREDFIELD_FLAGHABILITACAO);
+            if(parametro == null)
+            {
+                return new List<string>() { "Falha ao buscar parâmetro para validação de e-mail boleto" };
+            }
+
+            var paramSplit = parametro.Campo_texto.Split('=');
+            var paramIdPagtoMonitorado = paramSplit[1];
+
+            if(VerificarCadastroPrepedidoPagto(prePedido, paramIdPagtoMonitorado))
+            {
+                if(string.IsNullOrEmpty(prePedido.EnderecoCadastroClientePrepedido.Endereco_Email_Boleto))
+                {
+                    return new List<string>() { "O campo 'E-mail boleto' é obrigatório!" };
+                }
+            }
+
+            if (!string.IsNullOrEmpty(prePedido.DetalhesPrepedido.EntregaImediata) && 
                 short.Parse(prePedido.DetalhesPrepedido.EntregaImediata) == (short)Constantes.EntregaImediata.COD_ETG_IMEDIATA_NAO)
             {
                 prePedido.DetalhesPrepedido.PrevisaoEntregaData = prePedido.DetalhesPrepedido.EntregaImediataData;

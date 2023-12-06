@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Orcamento;
 using OrcamentoCotacaoApi.Controllers;
 using OrcamentoCotacaoApi.Filters;
 using OrcamentoCotacaoBusiness.Bll;
@@ -39,6 +40,7 @@ namespace PrepedidoApi.Controllers
         private readonly CoeficientePrepedidoBll coeficientePrepedidoBll;
         private readonly IConfiguration configuration;
         private readonly PermissaoBll permissaoBll;
+        private readonly OrcamentoCotacaoBll _orcamentoBll;
 
         public PrepedidoController(
             ILogger<PrepedidoController> logger,
@@ -49,7 +51,8 @@ namespace PrepedidoApi.Controllers
             Prepedido.Bll.FormaPagtoPrepedidoBll formaPagtoPrepedidoBll,
             Prepedido.Bll.CoeficientePrepedidoBll coeficientePrepedidoBll,
             IConfiguration configuration,
-            PermissaoBll permissaoBll)
+            PermissaoBll permissaoBll,
+            OrcamentoCotacaoBll _orcamentoBll)
         {
             this._logger = logger;
             this.prepedidoBll = prepedidoBll;
@@ -60,6 +63,7 @@ namespace PrepedidoApi.Controllers
             this.coeficientePrepedidoBll = coeficientePrepedidoBll;
             this.configuration = configuration;
             this.permissaoBll = permissaoBll;
+            this._orcamentoBll = _orcamentoBll;
         }
 
         [HttpGet("listarNumerosPrepedidosCombo")]
@@ -427,6 +431,25 @@ namespace PrepedidoApi.Controllers
             {
                 PermissoesUsuario = LoggedUser.Permissoes
             }).Result;
+        }
+
+        [HttpGet("buscarParametroClienteEmailBoleto")]
+        public IActionResult BuscarParametro_CLIENTE_EMAILBOLETO_REQUIREDFIELD()
+        {
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                Parametro = Constantes.CLIENTE_EMAILBOLETO_REQUIREDFIELD_FLAGHABILITACAO,
+                IP = Request.HttpContext.Connection.RemoteIpAddress.ToString()
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/BuscarParametro_CLIENTE_EMAILBOLETO_REQUIREDFIELD/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
+            var retorno = _orcamentoBll.BuscarParametro_CLIENTE_EMAILBOLETO_REQUIREDFIELD();
+
+            return Ok(retorno);
         }
     }
 }
