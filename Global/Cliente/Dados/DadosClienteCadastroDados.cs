@@ -43,6 +43,7 @@ namespace Cliente.Dados
         public int? IdIndicadorVendedor { get; set; }
         public float? Perc_max_comissao_padrao { get; set; }
         public float? Perc_max_comissao_e_desconto_padrao { get; set; }
+        public string EmailBoleto { get; set; }
 
         public static DadosClienteCadastroDados DadosClienteCadastroDadosDeEnderecoCadastralClientePrepedidoDados(
             EnderecoCadastralClientePrepedidoDados endCadastral, string indicadorOrcamentista, string loja, string idCliente, string usuarioCadastro)
@@ -93,7 +94,8 @@ namespace Cliente.Dados
                 IdOrcamentoCotacao = endCadastral.IdOrcamentoCotacao,
                 IdIndicadorVendedor = endCadastral.IdIndicadorVendedor,
                 Perc_max_comissao_padrao = endCadastral.Perc_max_comissao_padrao,
-                Perc_max_comissao_e_desconto_padrao = endCadastral.Perc_max_comissao_e_desconto_padrao
+                Perc_max_comissao_e_desconto_padrao = endCadastral.Perc_max_comissao_e_desconto_padrao,
+                EmailBoleto = endCadastral.Endereco_email_boleto
             };
 
             return ret;

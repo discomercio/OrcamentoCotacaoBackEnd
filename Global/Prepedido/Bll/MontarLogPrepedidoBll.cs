@@ -121,7 +121,7 @@ namespace Prepedido.Bll
                 "endereco_tel_res|endereco_ddd_com|endereco_tel_com|endereco_ramal_com|endereco_ddd_cel|" +
                 "endereco_tel_cel|endereco_ddd_com_2|endereco_tel_com_2|endereco_ramal_com_2|endereco_tipo_pessoa|" +
                 "endereco_cnpj_cpf|endereco_contribuinte_icms_status|endereco_produtor_rural_status|endereco_ie|" +
-                "endereco_rg|endereco_contato|";
+                "endereco_rg|endereco_contato|endereco_email_boleto|";
 
             return campos_a_inserir;
         }

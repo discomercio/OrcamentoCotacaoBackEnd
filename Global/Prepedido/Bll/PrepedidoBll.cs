@@ -1216,6 +1216,7 @@ namespace Prepedido.Bll
                     prePedido.DadosCliente.Rg : "";
                 torcamento.Endereco_contato = !string.IsNullOrEmpty(prePedido.DadosCliente.Contato) ?
                     prePedido.DadosCliente.Contato : "";
+                torcamento.EnderecoEmailBoleto = prePedido.DadosCliente.EmailBoleto;
             }
         }
 

@@ -41,6 +41,8 @@ namespace Prepedido.Dto
         public float? Perc_max_comissao_padrao { get; set; }
         public float? Perc_max_comissao_e_desconto_padrao { get; set; }
         public string Vendedor { get; set; }
+        public string Endereco_Email_Boleto { get; set; }
+
         public static EnderecoCadastralClientePrepedidoDto EnderecoCadastralClientePrepedidoDto_De_EnderecoCadastralClientePrepedidoDados(EnderecoCadastralClientePrepedidoDados origem)
         {
             if (origem == null) return null;
@@ -118,7 +120,8 @@ namespace Prepedido.Dto
                 IdIndicadorVendedor = origem.IdIndicadorVendedor,
                 Perc_max_comissao_padrao = origem.Perc_max_comissao_e_desconto_padrao,
                 Perc_max_comissao_e_desconto_padrao = origem.Perc_max_comissao_padrao,
-                Vendedor = origem.Vendedor
+                Vendedor = origem.Vendedor,
+                Endereco_email_boleto = origem.Endereco_Email_Boleto
             };
         }
         public static EnderecoCadastralClientePrepedidoDto EnderecoCadastralClientePrepedidoDto_De_DadosClienteCadastroDto(DadosClienteCadastroDto dadosClienteCadastroDto)
@@ -175,6 +178,7 @@ namespace Prepedido.Dto
             enderecoCadastralClientePrepedidoDto.Perc_max_comissao_padrao = dadosClienteCadastroDto.Perc_max_comissao_e_desconto_padrao;
             enderecoCadastralClientePrepedidoDto.Perc_max_comissao_e_desconto_padrao = dadosClienteCadastroDto.Perc_max_comissao_padrao;
             enderecoCadastralClientePrepedidoDto.Vendedor = dadosClienteCadastroDto.Vendedor;
+            enderecoCadastralClientePrepedidoDto.Endereco_Email_Boleto = dadosClienteCadastroDto.EmailBoleto;
 
             return enderecoCadastralClientePrepedidoDto;
         }

@@ -36,6 +36,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using UtilsGlobais;
 using UtilsGlobais.Parametros;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace OrcamentoCotacaoBusiness.Bll
 {
@@ -1903,9 +1904,6 @@ namespace OrcamentoCotacaoBusiness.Bll
             aprovarOrcamento.enderecoEntrega.EtgImediataIdUsuarioUltAtualiz = orcamento.EtgImediataIdUsuarioUltAtualiz;
             aprovarOrcamento.enderecoEntrega.Etg_Imediata_Usuario = $"[{orcamento.EtgImediataIdTipoUsuarioContexto}] {orcamento.EtgImediataIdUsuarioUltAtualiz}";
 
-            //previsão entrega
-
-
             var clienteCadastroDados = ClienteCadastroDto
                 .ClienteCadastroDados_De_ClienteCadastroDto(aprovarOrcamento.ClienteCadastroDto);
 
@@ -1914,6 +1912,13 @@ namespace OrcamentoCotacaoBusiness.Bll
 
             if (erros != null)
             {
+                return erros;
+            }
+
+            var erro = ValidarAprovacaoOrcamentoEmailBoleto(aprovarOrcamento, tipoUsuarioContexto);
+            if (erro != null)
+            {
+                erros.Add(erro);
                 return erros;
             }
 
@@ -2123,6 +2128,70 @@ namespace OrcamentoCotacaoBusiness.Bll
                 parametro.Campo_inteiro,
                 dbGravacao,
                 ip, aprovandoOrcamentoCotacao)).ToList();
+        }
+
+        private string ValidarAprovacaoOrcamentoEmailBoleto(AprovarOrcamentoRequestViewModel aprovarOrcamento,
+            Constantes.TipoUsuarioContexto tipoUsuarioContexto)
+        {
+            var orcamento = PorFiltro(aprovarOrcamento.IdOrcamento, (int)tipoUsuarioContexto);
+
+            var orcamentoOpcao = orcamento.ListaOrcamentoCotacaoDto.Where(x => x.Id == aprovarOrcamento.IdOpcao).FirstOrDefault();
+            if (orcamentoOpcao == null)
+            {
+                return "Falha ao buscar opção do orçamento para validar o pagamento aprovado!";
+            }
+
+            var orcamentoOpcaoPagto = orcamentoOpcao.FormaPagto.Where(x => x.Id == aprovarOrcamento.IdFormaPagto).FirstOrDefault();
+            if (orcamentoOpcaoPagto == null)
+            {
+                return "Falha ao buscar pagamento para validação!";
+            }
+
+            var parametro = BuscarParametro_CLIENTE_EMAILBOLETO_REQUIREDFIELD();
+            if (parametro == null)
+            {
+                return "Falha ao buscar parâmetro para validação de meio de pagamentos monitorados!";
+            }
+
+            var emailBoletoObrigatório = false;
+            if (orcamentoOpcaoPagto.Tipo_parcelamento == int.Parse(Constantes.COD_FORMA_PAGTO_A_VISTA))
+            {
+                if (parametro.mensagem.IndexOf($"|{orcamentoOpcaoPagto.Av_forma_pagto}|") > -1)
+                {
+                    emailBoletoObrigatório = true;
+                }
+            }
+            if (orcamentoOpcaoPagto.Tipo_parcelamento == int.Parse(Constantes.COD_FORMA_PAGTO_PARCELADO_COM_ENTRADA))
+            {
+                if (parametro.mensagem.IndexOf($"|{orcamentoOpcaoPagto.Pce_forma_pagto_entrada}|") > -1 ||
+                    parametro.mensagem.IndexOf($"|{orcamentoOpcaoPagto.Pce_forma_pagto_prestacao}|") > -1)
+                {
+                    emailBoletoObrigatório = true;
+                }
+            }
+            if (orcamentoOpcaoPagto.Tipo_parcelamento == int.Parse(Constantes.COD_FORMA_PAGTO_PARCELA_UNICA))
+            {
+                if (parametro.mensagem.IndexOf($"|{orcamentoOpcaoPagto.Pu_forma_pagto}|") > -1)
+                {
+                    emailBoletoObrigatório = true;
+                }
+
+                var erros = new List<string>();
+                Util.ValidarEmail(aprovarOrcamento.ClienteCadastroDto.DadosCliente.EmailBoleto, erros);
+                if (erros.Count > 0)
+                {
+                    return erros[0];
+                }
+            }
+            if (emailBoletoObrigatório)
+            {
+                if (string.IsNullOrEmpty(aprovarOrcamento.ClienteCadastroDto.DadosCliente.EmailBoleto))
+                {
+                    return "O campo 'E-mail boleto' é obrigatório!";
+                }
+            }
+
+            return null;
         }
 
         public async Task<FormaPagtoCriacaoDto> IncluirFormaPagtoCriacaoParaPrepedido(
@@ -2418,6 +2487,21 @@ namespace OrcamentoCotacaoBusiness.Bll
             if (string.IsNullOrEmpty(pedidoBase)) return true;
 
             return _pedidoPrepedidoApiBll.BuscarPedidosParaAnular(pedidoBase);
+        }
+
+        public MensagemDto BuscarParametro_CLIENTE_EMAILBOLETO_REQUIREDFIELD()
+        {
+            var parametro = _prepedidoApiBll.BuscarRegistroParametro(Constantes.CLIENTE_EMAILBOLETO_REQUIREDFIELD_FLAGHABILITACAO).Result;
+
+            if (parametro == null) return null;
+
+            if (parametro.Campo_inteiro != 1) return null;
+
+            MensagemDto retorno = new MensagemDto();
+            retorno.tipo = "SUCCESS";
+            var split = parametro.Campo_texto.Split('=');
+            retorno.mensagem = split[1];
+            return retorno;
         }
     }
 }

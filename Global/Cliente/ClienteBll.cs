@@ -567,7 +567,8 @@ namespace Cliente
                 Uf = cli.Uf,
                 Cep = cli.Cep,
                 Contato = cli.Contato,
-                Loja = loja
+                Loja = loja,
+                EmailBoleto = cli.EmailBoleto
             };
 
             return dados;
@@ -792,6 +793,7 @@ namespace Cliente
             tCliente.Usuario_Ult_Atualizacao = usuario_cadastro;
             tCliente.Sistema_responsavel_cadastro = (int)sistemaResponsavelCadastro;
             tCliente.Sistema_responsavel_atualizacao = (int)sistemaResponsavelCadastro;
+            tCliente.EmailBoleto = clienteDados.EmailBoleto;
 
             dbgravacao.Add(tCliente);
             await dbgravacao.SaveChangesAsync();
