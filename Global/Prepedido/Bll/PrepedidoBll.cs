@@ -672,7 +672,8 @@ namespace Prepedido.Bll
                 Cidade = orcamento.Endereco_cidade,
                 Uf = orcamento.Endereco_uf,
                 Cep = orcamento.Endereco_cep,
-                Contato = orcamento.Endereco_contato
+                Contato = orcamento.Endereco_contato,
+                EmailBoleto = orcamento.EnderecoEmailBoleto
             };
 
             return cadastroCliente;
