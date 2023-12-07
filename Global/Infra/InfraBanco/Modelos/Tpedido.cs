@@ -747,6 +747,10 @@ namespace InfraBanco.Modelos
 
         [Column("UsuarioCadastroId")]
         public int? UsuarioCadastroId { get; set; }
+
+        [Column("endereco_email_boleto")]
+        [MaxLength(60)]
+        public string EnderecoEmailBoleto { get; set; }
     }
 }
 
