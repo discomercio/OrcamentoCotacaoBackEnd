@@ -175,6 +175,7 @@ namespace InfraBanco.Constantes
         public const int PERC_DESAGIO_RA_LIQUIDA = 25;
         public const string ID_PARAMETRO_PERC_DESAGIO_RA_LIQUIDA = "PERC_DESAGIO_RA_LIQUIDA";
         public const string PEDIDOITEM_MAXQTDEITENS = "PedidoItem_MaxQtdeItens";
+        public const string CLIENTE_EMAILBOLETO_REQUIREDFIELD_FLAGHABILITACAO = "Cliente_EmailBoleto_RequiredField_FlagHabilitacao";
 
 
         //'	PARÂMETRO DE FUNCIONAMENTO DO SITE (ARTVEN3 = BONSHOP; ARTVEN = FABRICANTE)

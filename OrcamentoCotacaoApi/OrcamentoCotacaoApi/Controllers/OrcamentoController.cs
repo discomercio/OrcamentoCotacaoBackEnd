@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
+﻿
+using DocumentFormat.OpenXml.Spreadsheet;
 using InfraBanco.Constantes;
 using InfraBanco.Modelos.Filtros;
 using InfraIdentity;
@@ -567,10 +568,23 @@ namespace OrcamentoCotacaoApi.Controllers
             return Ok(response);
         }
 
-        [HttpPost("relatorioItensOrcamento")]
-        public IActionResult RelatorioItensOrcamento()
+        [HttpGet("buscarParametroClienteEmailBoleto")]
+        public IActionResult BuscarParametro_CLIENTE_EMAILBOLETO_REQUIREDFIELD()
         {
-            return Ok();
+            var correlationId = Guid.Parse(Request.Headers[HttpHeader.CorrelationIdHeader]);
+
+            var request = new
+            {
+                Usuario = LoggedUser.Apelido,
+                Parametro = Constantes.CLIENTE_EMAILBOLETO_REQUIREDFIELD_FLAGHABILITACAO,
+                IP = Request.HttpContext.Connection.RemoteIpAddress.ToString()
+            };
+
+            _logger.LogInformation($"CorrelationId => [{correlationId}]. OrcamentoController/BuscarParametro_CLIENTE_EMAILBOLETO_REQUIREDFIELD/GET - Request => [{JsonSerializer.Serialize(request)}].");
+
+            var retorno = _orcamentoBll.BuscarParametro_CLIENTE_EMAILBOLETO_REQUIREDFIELD();
+
+            return Ok(retorno);
         }
     }
 }

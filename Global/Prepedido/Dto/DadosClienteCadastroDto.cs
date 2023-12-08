@@ -44,6 +44,7 @@ namespace Prepedido.Dto
         public int? IdIndicadorVendedor { get; set; }
         public float? Perc_max_comissao_padrao { get; set; }
         public float? Perc_max_comissao_e_desconto_padrao { get; set; }
+        public string EmailBoleto { get; set; }
 
         public static DadosClienteCadastroDto DadosClienteCadastroDto_De_DadosClienteCadastroDados(Cliente.Dados.DadosClienteCadastroDados origem)
         {
@@ -86,7 +87,8 @@ namespace Prepedido.Dto
                 IdOrcamentoCotacao = origem.IdOrcamentoCotacao,
                 IdIndicadorVendedor = origem.IdIndicadorVendedor,
                 Perc_max_comissao_padrao = origem.Perc_max_comissao_padrao,
-                Perc_max_comissao_e_desconto_padrao = origem.Perc_max_comissao_e_desconto_padrao
+                Perc_max_comissao_e_desconto_padrao = origem.Perc_max_comissao_e_desconto_padrao,
+                EmailBoleto = origem.EmailBoleto
             };
         }
 
@@ -131,7 +133,8 @@ namespace Prepedido.Dto
                 IdOrcamentoCotacao = origem.IdOrcamentoCotacao,
                 IdIndicadorVendedor = origem.IdIndicadorVendedor,
                 Perc_max_comissao_padrao = origem.Perc_max_comissao_padrao,
-                Perc_max_comissao_e_desconto_padrao = origem.Perc_max_comissao_e_desconto_padrao
+                Perc_max_comissao_e_desconto_padrao = origem.Perc_max_comissao_e_desconto_padrao,
+                EmailBoleto = origem.EmailBoleto
             };
         }
 

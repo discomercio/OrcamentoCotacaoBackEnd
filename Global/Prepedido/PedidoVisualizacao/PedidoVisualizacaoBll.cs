@@ -514,7 +514,8 @@ namespace Prepedido.PedidoVisualizacao
                     Cidade = cli.Cidade,
                     Uf = cli.Uf,
                     Cep = cli.Cep,
-                    Contato = cli.Contato
+                    Contato = cli.Contato,
+                    EmailBoleto = cli.EmailBoleto
                 };
                 return cadastroCliente;
             }
@@ -561,7 +562,8 @@ namespace Prepedido.PedidoVisualizacao
                     Cidade = pedido.Endereco_cidade,
                     Uf = pedido.Endereco_uf,
                     Cep = pedido.Endereco_cep,
-                    Contato = pedido.Endereco_contato
+                    Contato = pedido.Endereco_contato,
+                    EmailBoleto = pedido.EnderecoEmailBoleto
                 };
                 return cadastroCliente;
             }

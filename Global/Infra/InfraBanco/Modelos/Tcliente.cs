@@ -194,5 +194,9 @@ namespace InfraBanco.Modelos
         [Required]
         public int Sistema_responsavel_atualizacao { get; set; }
 
+        [Column("email_boleto")]
+        [MaxLength(60)]
+        public string EmailBoleto { get; set; }
+
     }
 }
