@@ -2256,7 +2256,7 @@ namespace Prepedido.Bll
                                 where c.Id_Nsu == Constantes.NSU_ORCAMENTO
                          select c.Ano_Letra_Seq).FirstOrDefaultAsync();
 
-            prepedido.NumeroPedido = $"{nsuStr}{sufixo}";
+            prepedido.NumeroPrePedido = $"{nsuStr}{sufixo}";
         }
 
         public async Task<BuscarStatusPrepedidoRetornoDados> BuscarStatusPrepedido(string orcamento)
