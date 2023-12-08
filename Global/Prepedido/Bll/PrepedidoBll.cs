@@ -2233,18 +2233,30 @@ namespace Prepedido.Bll
 
         public async Task GerarNumeroOrcamento(ContextoBdGravacao dbgravacao, PrePedidoDados prepedido)
         {
-            string sufixoIdOrcamento = Constantes.SUFIXO_ID_ORCAMENTO;
-
             var nsuTask = await Nsu.GerarNsu(dbgravacao, Constantes.NSU_ORCAMENTO);
             string nsu = nsuTask.ToString();
 
-            int ndescarte = nsu.Length - Constantes.TAM_MIN_NUM_ORCAMENTO;
-            string sdescarte = nsu.Substring(0, ndescarte);
+            var nsuInt = int.Parse(nsu);
+            var nsuStr = nsuInt.ToString();
 
-            if (sdescarte.Length == ndescarte)
+            if(nsuStr.Length > Constantes.TAM_MIN_ID_ORCAMENTO)
             {
-                prepedido.NumeroPrePedido = nsu.Substring(ndescarte) + sufixoIdOrcamento;
+                throw new ApplicationException($"O NSU está ultrapassando o máximo de caracteres {Constantes.TAM_MAX_ID_ORCAMENTO}");
             }
+
+            if(nsuStr.Length < Constantes.TAM_MIN_NUM_ORCAMENTO)
+            {
+                while (nsuStr.Length < Constantes.TAM_MIN_NUM_ORCAMENTO)
+                {
+                    nsuStr = $"0{nsuStr}";
+                }
+            }
+
+            var sufixo = await (from c in dbgravacao.Tcontrole
+                                where c.Id_Nsu == Constantes.NSU_ORCAMENTO
+                         select c.Ano_Letra_Seq).FirstOrDefaultAsync();
+
+            prepedido.NumeroPedido = $"{nsuStr}{sufixo}";
         }
 
         public async Task<BuscarStatusPrepedidoRetornoDados> BuscarStatusPrepedido(string orcamento)

@@ -140,6 +140,7 @@ namespace Orcamento
 
                                 select new OrcamentoCotacaoListaDto
                                 {
+                                    Nsu = c.Nsu,
                                     NumPedidoOrdenacao = Convert.ToInt32(c.Orcamento.Replace("Z", "")),
                                     NumeroOrcamento = !c.IdOrcamentoCotacao.HasValue || c.IdOrcamentoCotacao == 0 ? "-" : c.IdOrcamentoCotacao.Value.ToString(),
                                     NumPedido = c.Orcamento,
@@ -247,11 +248,11 @@ namespace Orcamento
                             case "NUMPEDIDO":
                                 if (filtro.OrdenacaoAscendente)
                                 {
-                                    query = query.OrderBy(o => o.NumPedidoOrdenacao);
+                                    query = query.OrderBy(o => o.Nsu);
                                 }
                                 else
                                 {
-                                    query = query.OrderByDescending(o => o.NumPedidoOrdenacao);
+                                    query = query.OrderByDescending(o => o.Nsu);
                                 }
                                 break;
                             case "NUMEROORCAMENTO":

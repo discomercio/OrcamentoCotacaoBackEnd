@@ -751,6 +751,12 @@ namespace InfraBanco.Modelos
         [Column("endereco_email_boleto")]
         [MaxLength(60)]
         public string EnderecoEmailBoleto { get; set; }
+
+        [Column("nsu")]
+        public int Nsu { get; set; }
+
+        [Column("nsu_pedido_base")]
+        public int NsuPedidoBase { get; set; }
     }
 }
 

@@ -30,5 +30,8 @@ namespace Orcamento.Dto
         public string NomeCliente { get; set; }
         public string NomeObra { get; set; }
         public string St_Entrega { get; set; }
+
+        public int Nsu { get; set; }// utilizado para ordenação de listagem de pré-pedidoa e pedidos
+        public int NsuPedidoBase { get; set; } //utilizado somente para ordenação da lista de pedidos
     }
 }
