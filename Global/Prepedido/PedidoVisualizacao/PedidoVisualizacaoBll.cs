@@ -129,7 +129,8 @@ namespace Prepedido.PedidoVisualizacao
 
                                 select new OrcamentoCotacaoListaDto
                                 {
-                                    //NumPedidoOrdenacao = Convert.ToInt32(c.Pedido.Replace("N", "")),
+                                    Nsu = c.Nsu,
+                                    NsuPedidoBase = c.NsuPedidoBase,
                                     NumeroOrcamento = c.IdOrcamentoCotacao.HasValue ? c.IdOrcamentoCotacao.Value.ToString() : "-",
                                     NumPedido = c.Pedido,
                                     Cliente_Obra = c.Endereco_nome,
@@ -235,11 +236,11 @@ namespace Prepedido.PedidoVisualizacao
                             case "NUMPEDIDO":
                                 if (filtro.OrdenacaoAscendente)
                                 {
-                                    query = query.OrderBy(o => o.NumPedido);
+                                    query = query.OrderBy(o => o.NsuPedidoBase).ThenBy(n => n.Nsu);
                                 }
                                 else
                                 {
-                                    query = query.OrderByDescending(o => o.NumPedido);
+                                    query = query.OrderByDescending(o => o.NsuPedidoBase).ThenByDescending(n => n.Nsu);
                                 }
                                 break;
                             case "NUMEROORCAMENTO":
