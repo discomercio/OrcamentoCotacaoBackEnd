@@ -164,14 +164,16 @@ namespace OrcamentoCotacaoBusiness.Bll
                     var responseItem = ProdutoSimplesResponseViewModel
                         .ConverterProdutoDados(produto, null, GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), produto.Fabricante));
 
-                    // se o produto for um filho não insere aqui
-                    var pai = produtoComboDados.ProdutoCompostoDados.Where(x => x.Filhos.Where(f => f.Produto == produto.Produto).Any()).FirstOrDefault();
-                    if (pai != null)
+                    if(responseItem.PrecoLista > 0)
                     {
-                        responseItem.UnitarioVendavel = false;
+                        // se o produto for um filho não insere aqui
+                        var pai = produtoComboDados.ProdutoCompostoDados.Where(x => x.Filhos.Where(f => f.Produto == produto.Produto).Any()).FirstOrDefault();
+                        if (pai != null)
+                        {
+                            responseItem.UnitarioVendavel = false;
+                        }
+                        produtoResponseViewModel.ProdutosSimples.Add(responseItem);
                     }
-                    produtoResponseViewModel.ProdutosSimples.Add(responseItem);
-
                 }
 
                 foreach (Produto.Dados.ProdutoCompostoDados composto in produtoComboDados.ProdutoCompostoDados)
@@ -239,15 +241,18 @@ namespace OrcamentoCotacaoBusiness.Bll
 
                     if (pai != null) produtoResponseViewModel.ProdutosSimples.RemoveAll(x => x.Produto == pai.Produto);
 
-                    produtoResponseViewModel.ProdutosSimples.Add(novoItem);
+                    if(novoItem.PrecoLista > 0)
+                    {
+                        produtoResponseViewModel.ProdutosSimples.Add(novoItem);
 
-                    produtoCompostoResponse = ProdutoCompostoResponseViewModel.ConverterProdutoCompostoDados(composto);
+                        produtoCompostoResponse = ProdutoCompostoResponseViewModel.ConverterProdutoCompostoDados(composto);
 
-                    var coeficiente = GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), composto.PaiFabricante).Coeficiente;
-                    produtoCompostoResponse.PaiPrecoTotalBase = somaFilhotesBase;
-                    produtoCompostoResponse.PaiPrecoTotal = somaFilhotes;
-                    produtoCompostoResponse.Filhos = produtoCompostoResponseApoio.Filhos;
-                    produtoResponseViewModel.ProdutosCompostos.Add(produtoCompostoResponse);
+                        var coeficiente = GetCoeficienteOuNull(dicCoeficiente.ToDictionary(x => x.Fabricante, x => x), composto.PaiFabricante).Coeficiente;
+                        produtoCompostoResponse.PaiPrecoTotalBase = somaFilhotesBase;
+                        produtoCompostoResponse.PaiPrecoTotal = somaFilhotes;
+                        produtoCompostoResponse.Filhos = produtoCompostoResponseApoio.Filhos;
+                        produtoResponseViewModel.ProdutosCompostos.Add(produtoCompostoResponse);
+                    }
                 }
 
                 produtoResponseViewModel.ProdutosSimples = produtoResponseViewModel.ProdutosSimples.OrderBy(x => x.Fabricante).ToList();
