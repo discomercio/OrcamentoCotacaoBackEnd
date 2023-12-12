@@ -504,7 +504,7 @@ namespace InfraBanco.Modelos
 
         [Column("EndEtg_rg")]
         [MaxLength(20)]
-        public string EndEtg_rg { get; set; }        
+        public string EndEtg_rg { get; set; }
 
         [Column("IdOrcamentoCotacao")]
         public int? IdOrcamentoCotacao { get; set; }
@@ -557,6 +557,6 @@ namespace InfraBanco.Modelos
         public string EnderecoEmailBoleto { get; set; }
 
         [Column("nsu")]
-        public int Nsu { get; set; }
+        public int Nsu { get; }
     }
 }

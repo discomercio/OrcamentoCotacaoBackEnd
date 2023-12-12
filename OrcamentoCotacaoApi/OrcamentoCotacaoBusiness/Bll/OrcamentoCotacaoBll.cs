@@ -1908,7 +1908,9 @@ namespace OrcamentoCotacaoBusiness.Bll
                 .ClienteCadastroDados_De_ClienteCadastroDto(aprovarOrcamento.ClienteCadastroDto);
 
             _logger.LogInformation("Validando cadastro de cliente!");
-            var erros = await _clienteBll.ValidarClienteOrcamentoCotacao(clienteCadastroDados);
+
+            List<string> erros = new List<string>();
+            erros = await _clienteBll.ValidarClienteOrcamentoCotacao(clienteCadastroDados);
 
             if (erros != null)
             {
